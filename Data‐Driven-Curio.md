@@ -27,3 +27,20 @@ For the Acceosseries part, We've created a Data-Driven Curio generator, which si
 - LavaImmune: Accept any
 - MagicQuiver: Accept any
 - Scope: Accept any
+
+## Available Rarities
+- GRAY
+- WHITE
+- BLUE
+- GREEN
+- ORANGE
+- LIGHT_RED
+- PINK
+- LIGHT_PURPLE
+- LIME
+- YELLOW
+- CYAN
+- RED
+- PURPLE
+- EXPERT
+- MASTER

@@ -44,3 +44,30 @@ For the Acceosseries part, We've created a Data-Driven Curio generator, which si
 - PURPLE
 - EXPERT
 - MASTER
+
+## Tooltips
+The `tooltips` is an array of string, which will show in hover text
+
+Such as `Hi from Confluence Team` or `item.confluence.data_driven_test.tooltip`
+
+## Example
+```json
+{
+    "data_driven_test": {
+        "rarity": "MASTER",
+        "tooltips": ["It's a Data Driven item", "Hi from Confluence Team!"],
+        "interfaces": {
+            "AutoAttack": {},
+            "FallResistance": -1,
+            "MayFly": [32, 0.3]
+        }
+    }
+}
+```
+
+## Where should I put my own curio?
+It's `./config/confluence/curio.json` relative to your game folder
+
+## Do I have to create a tag for it?
+If you forgot about it, the generator will automatically create one
+But you should create all assets for it, such as texture, language key, item model

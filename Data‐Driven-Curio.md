@@ -66,8 +66,9 @@ Such as `Hi from Confluence Team` or `item.confluence.data_driven_test.tooltip`
 ```
 
 ## Where should I put my own curio?
-It's `./config/confluence/curio.json` relative to your game folder
+It's relative to your game folder on `./config/confluence/curio.json`
 
 ## Do I have to create a tag for it?
-If you forgot about it, the generator will automatically create one
+If you forget about it, the generator will automatically create one
+
 But you should create all assets for it, such as texture, language key, item model

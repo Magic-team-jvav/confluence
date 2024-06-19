@@ -21,7 +21,7 @@ For the Acceosseries part, We've created a Data-Driven Curio generator, which si
  - flyTicks: An integer in range of [0, 2147483647]
  - flySpeed: A number in range of [0.0, 1.7976931348623157E308]
 - MultiJump: Accept a number as `jumpSpeed` in range of [0.0, 1.7976931348623157E308], could not use with `OneTimeJump`
-- OneTimeJump: Accept an array like [jumpTicks, jumpSpeed]
+- OneTimeJump: Accept an array like [jumpTicks, jumpSpeed], could not use with `MultiJump`
  - jumpTicks: An integer in range of [0, 2147483647]
  - jumpSpeed: A number in range of [0.0, 1.7976931348623157E308]
 - LavaImmune: Accept any

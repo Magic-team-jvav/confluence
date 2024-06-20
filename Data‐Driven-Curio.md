@@ -21,10 +21,6 @@ For the Acceosseries part, We've created a Data-Driven Curio generator, which si
 >- MayFly: Accept an array like [flyTicks, flySpeed]
 >    - flyTicks: An integer in range of [0, 2147483647]
 >    - flySpeed: A number in range of [0.0, 1.7976931348623157E308]
->- MultiJump: Accept a number as `jumpSpeed` in range of [0.0, 1.7976931348623157E308], could not use with `OneTimeJump`
->- OneTimeJump: Accept an array like [jumpTicks, jumpSpeed], could not use with `MultiJump`
->    - jumpTicks: An integer in range of [0, 2147483647]
->    - jumpSpeed: A number in range of [0.0, 1.7976931348623157E308]
 >- LavaImmune: Accept any
 >- MagicQuiver: Accept any
 >- Scope: Accept any
@@ -38,7 +34,6 @@ For the Acceosseries part, We've created a Data-Driven Curio generator, which si
 >- ManaReduce: Accept a number as ratio in range of [0.0, 1.0], value `0.1` will reduce mana consume by 10%;
 
 ## Available Rarities
-It's optional, defaults to `WHITE`
 - GRAY
 - WHITE
 - BLUE
@@ -55,12 +50,14 @@ It's optional, defaults to `WHITE`
 - EXPERT
 - MASTER
 
+It's optional, defaults to `WHITE`
+
 ## Tooltips
 The `tooltips` is an array of string, which will show in hover text
 
 Such as `Hi from Confluence Team` or `item.confluence.data_driven_test.tooltip`
 
-It's optional, defaults to []
+It's optional, defaults to `[]`
 
 ## Slot
 Accept a string, which is available for Curios API
@@ -75,7 +72,7 @@ Accept an object, which defining all attributes the curio requires
 >- MULTIPLY_BASE
 >- MULTIPLY_TOTAL
 
-It's optional, defaults to {}
+It's optional, defaults to `{}`
 
 ## Example
 ```json

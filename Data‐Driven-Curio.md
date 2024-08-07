@@ -24,6 +24,7 @@ For the Acceosseries part, We've created a Data-Driven Curio generator, which si
 >- LavaImmune: Accept any
 >- MagicQuiver: Accept any
 >- Scope: Accept any
+>- WallClimb: Accept any
 
 >### Master Project
 >- FishingPower: Accept a number in range of [0.0, 1.7976931348623157E308]

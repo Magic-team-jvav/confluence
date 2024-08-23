@@ -5,7 +5,7 @@ For the Acceosseries part, We've created a Data-Driven Curio generator, which si
 >- AggroAttach: Accept an integer in range of [-2147483648, 2147483647]
 >- ArmorPass: Accept an integer in range of [0, 2147483647]
 >- AutoAttack: Accpet any
->- CriticalHit: Accept a number as `chance` in range of [0.0, 1.0]
+>- FallResistance: Accept an integer in range of [-1, 2147483647], '-1' means canceling fall damage
 >- FireAttack: Accept any
 >- FireImmune: Accept any
 >- Honeycomb: Accept any
@@ -66,6 +66,10 @@ It's optional, defaults to `curio`
 
 ## Attributes
 Accept an object, which defining all attributes the curio requires
+
+> The `CriticalChance` has been reproduced to attribute since 0.1.5, the id is `confluence:crit_chance`
+>
+> If you installed `Apothic Attributes`, please replace the id to `attributeslib:crit_chance`
 
 >### Available Operations
 >- ADDITION

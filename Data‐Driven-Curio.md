@@ -16,7 +16,6 @@ For the Acceosseries part, We've created a Data-Driven Curio generator, which si
 >- ProjectileAttack: Accept a number as `attackBonus` in range of [0.0, 1.7976931348623157E308]
 >- StarCloak: Accept any
 >- BreakSpeedBonus: Accept a number in range of [0.0, 1.7976931348623157E308]
->- FallResistance: Accept an integer in range of [-1, 2147483647], '-1' means canceling fall damage
 >- JumpBoost: Accept a number in range of [0.0, 1.7976931348623157E308]
 >- MayFly: Accept an array like [flyTicks, flySpeed]
 >    - flyTicks: An integer in range of [0, 2147483647]

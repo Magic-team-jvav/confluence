@@ -1,4 +1,4 @@
-For the Acceosseries part, We've created a Data-Driven Curio generator, which simply generate an interface-based item.
+For the Acceosseries part, We've created a Data-Driven Accessory generator, which simply generate an interface-based item.
 
 ## Available Interfaces
 >### General(both available for master project and curio only)
@@ -84,10 +84,10 @@ It's optional, defaults to `{}`
     "data_driven_test": {
         "rarity": "MASTER",
         "tooltips": [
-            "It's a Data Driven curio",
+            "It's a Data Driven Accessory",
             "Hi from Confluence Team!"
         ],
-        "slot": "curio",
+        "slot": "accessory",
         "attributes": {
             "minecraft:generic.movement_speed": {
                 "uuid": "DC2CE9B0-2637-329F-2E1F-998F1A8FA5A1",
@@ -102,6 +102,21 @@ It's optional, defaults to `{}`
             "MayFly": [32, 0.3]
         }
     }
+}
+```
+
+## How can I create more than one accessories?
+```json
+{
+    "accessory_1": {
+        ......
+    },
+    "accessory_2": {
+        ......
+    },
+    "accessory_3": {
+        ......
+    },
 }
 ```
 

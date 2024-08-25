@@ -1,4 +1,4 @@
-For the Acceosseries part, We've created a Data-Driven Accessory generator, which simply generate an interface-based item.
+For the Acceosseries part, We've created a Data-Driven Curio generator, which simply generate an interface-based item.
 
 ## Available Interfaces
 >### General(both available for master project and curio only)
@@ -84,7 +84,7 @@ It's optional, defaults to `{}`
     "data_driven_test": {
         "rarity": "MASTER",
         "tooltips": [
-            "It's a Data Driven Accessory",
+            "It's a Data Driven Curio",
             "Hi from Confluence Team!"
         ],
         "slot": "accessory",
@@ -105,16 +105,16 @@ It's optional, defaults to `{}`
 }
 ```
 
-## How can I create more than one accessories?
+## How can I create more than one curios?
 ```json
 {
-    "accessory_1": {
+    "curio_1": {
         ......
     },
-    "accessory_2": {
+    "curio_2": {
         ......
     },
-    "accessory_3": {
+    "curio_3": {
         ......
     },
 }

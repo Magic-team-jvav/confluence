@@ -1,5 +1,6 @@
-For more compatibility, our attributes can replace with other mod's attributes
+For more compatibility, our attributes can be replace with other mod's attributes
 
+## Where should I replace the attribute
 The config file should create by your self, it's relative to your game folder on `./config/confluence/attributes.json`
 
 ## Example

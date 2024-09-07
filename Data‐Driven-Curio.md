@@ -2,20 +2,14 @@ For the Acceosseries part, We've created a Data-Driven Curio generator, which si
 
 ## Available Interfaces
 >### General(both available for master project and curio only)
->- AggroAttach: Accept an integer in range of [-2147483648, 2147483647]
->- ArmorPass: Accept an integer in range of [0, 2147483647]
 >- AutoAttack: Accpet any
 >- FallResistance: Accept an integer in range of [-1, 2147483647], '-1' means canceling fall damage
 >- FireAttack: Accept any
 >- FireImmune: Accept any
 >- Honeycomb: Accept any
->- HurtEvasion: Accept any
 >- InvulnerableTime: Accept an integer in range of [0, 2147483647]
 >- LavaHurtReduce: Accept any
->- MagicAttack: Accept a number as `attackBonus` in range of [0.0, 1.7976931348623157E308]
->- ProjectileAttack: Accept a number as `attackBonus` in range of [0.0, 1.7976931348623157E308]
 >- StarCloak: Accept any
->- BreakSpeedBonus: Accept a number in range of [0.0, 1.7976931348623157E308]
 >- JumpBoost: Accept a number in range of [0.0, 1.7976931348623157E308]
 >- MayFly: Accept an array like [flyTicks, flySpeed]
 >    - flyTicks: An integer in range of [0, 2147483647]
@@ -70,6 +64,8 @@ Accept an object, which defining all attributes the curio requires
 > The `CriticalChance` has been reproduced to attribute since 0.1.5, the id is `confluence:crit_chance`
 >
 > If you installed `Apothic Attributes`, please replace the id to `attributeslib:crit_chance`
+>
+> Removed `ProjectileAttack`, `AggroAttach`, `ArmorPass`, `HurtEvasion`, `MagicAttack` from Data-Driven because of replaceable attributes, since 0.1.7
 
 >### Available Operations
 >- ADDITION

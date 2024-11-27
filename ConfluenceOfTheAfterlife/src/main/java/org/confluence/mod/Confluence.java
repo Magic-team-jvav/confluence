@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 public class Confluence {
     public static final String MODID = "confluence";
     public static final Logger LOGGER = LoggerFactory.getLogger("Confluence");
-    public static final int MAX_STACK_SIZE = 9999;
     public static GameRules.Key<GameRules.IntegerValue> SPREADABLE_CHANCE;
 
     public Confluence(IEventBus eventBus, ModContainer container) {

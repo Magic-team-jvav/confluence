@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CoinItem extends BlockItem {
     public CoinItem(Block block, ModRarity rarity) {
-        super(block, new Properties().fireResistant().stacksTo(9999).component(TCDataComponentTypes.MOD_RARITY, rarity));
+        super(block, new Properties().fireResistant().stacksTo(99).component(TCDataComponentTypes.MOD_RARITY, rarity));
     }
 
     @Override

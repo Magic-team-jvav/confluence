@@ -1,8 +1,5 @@
 package org.confluence.mod.mixin.entity;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -39,11 +36,6 @@ public abstract class ItemEntityMixin implements IItemEntity {
     @Override
     public void confluence$item_setCoolDown(int ticks) {
         this.confluence$item_coolDown = ticks;
-    }
-
-    @WrapOperation(method = "merge(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;I)Lnet/minecraft/world/item/ItemStack;",at= @At(value = "INVOKE", target = "Ljava/lang/Math;min(II)I",ordinal = 1))
-    private static int merge(int a, int b, Operation<Integer> original, @Local(argsOnly = true, ordinal = 0) ItemStack destinationStack) {
-        return Math.max(a, b);
     }
 
     @Inject(method = "tick", at = @At("TAIL"))

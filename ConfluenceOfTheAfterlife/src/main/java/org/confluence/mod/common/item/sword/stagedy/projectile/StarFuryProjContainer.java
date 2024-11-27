@@ -92,11 +92,6 @@ public class StarFuryProjContainer implements AbstractProjContainer {
         return 0;
     }
 
-    @Override
-    public int getAttackSpeed(LivingEntity living) {
-        return 0;
-    }
-
 
     private LivingEntity getTargets(Vec3 ori, Vec3 end, Level level, Entity entity){
         //扩大包围盒

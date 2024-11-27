@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.ItemAbility;
@@ -65,6 +66,7 @@ public class BaseSwordItem extends SwordItem {
         super(tier, new Item.Properties()
                 .durability(tier.getUses())
                 .component(TCDataComponentTypes.MOD_RARITY, rarity)
+                .component(DataComponents.UNBREAKABLE,new Unbreakable(modifier.unbreakable))
                 .component(DataComponents.ATTRIBUTE_MODIFIERS,
                         modifier.attributeModifiersBuilder
                                 .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, rawDamage + tier.getAttackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
@@ -87,6 +89,12 @@ public class BaseSwordItem extends SwordItem {
         private int modifyCount = 0;
         public boolean canPerformSweep = true;
         private float sweepRange = 1.0F;
+        private boolean unbreakable = false;
+
+        public ModifierBuilder setUnbreakable(){
+            this.unbreakable = true;
+            return this;
+        }
 
         /**添加击中效果
          * @see EffectStrategy

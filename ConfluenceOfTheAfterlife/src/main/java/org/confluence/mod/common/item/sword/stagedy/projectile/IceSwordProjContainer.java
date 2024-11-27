@@ -45,10 +45,4 @@ public class IceSwordProjContainer implements AbstractProjContainer {
         return velocity;
     }
 
-    public int getAttackSpeed(LivingEntity living) {
-        int cooldown = getCooldown();
-        AttributeInstance attributeInstance = living.getAttribute(Attributes.ATTACK_SPEED);
-        if (attributeInstance != null) return Math.max(cooldown - (int) (attributeInstance.getValue() / 3.0), 0);
-        return cooldown;
-    }
 }

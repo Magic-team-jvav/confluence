@@ -120,10 +120,11 @@ public class SwordItems {
         return ITEMS.register(name, supplier);
     }
     public static DeferredItem<SwordItem> register(String name, Tier tier, int rawDamage, float rawSpeed, BaseSwordItem.ModifierBuilder modifierBuilder) {
-        return ITEMS.register(name, () -> new BaseSwordItem(tier, ModRarity.WHITE, rawDamage, rawSpeed, modifierBuilder));
+        return register(name, tier, rawDamage, rawSpeed, ModRarity.WHITE, modifierBuilder);
     }
     public static DeferredItem<SwordItem> register(String name, Tier tier, int rawDamage, float rawSpeed ,ModRarity rarity, BaseSwordItem.ModifierBuilder modifierBuilder) {
-        return ITEMS.register(name, () -> new BaseSwordItem(tier, rarity, rawDamage, rawSpeed, modifierBuilder));
+        if(tier == ModTiers.TITANIUM) modifierBuilder.setUnbreakable();
+        return register(name, () -> new BaseSwordItem(tier, rarity, rawDamage, rawSpeed, modifierBuilder));
     }
 
 }

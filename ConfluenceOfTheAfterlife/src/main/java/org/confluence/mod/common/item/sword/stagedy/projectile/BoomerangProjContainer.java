@@ -33,7 +33,7 @@ public class BoomerangProjContainer extends IceSwordProjContainer {
     }
 
     public SoundEvent getSound(){// todo 默认冰雪剑声音
-        return ModSoundEvents.FROZEN_ARROW.get();
+        return ModSoundEvents.WAVING.get();
     }
 
     //todo 生成弹幕

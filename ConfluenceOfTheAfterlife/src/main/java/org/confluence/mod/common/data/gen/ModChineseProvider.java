@@ -6,6 +6,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import top.theillusivec4.curios.common.capability.CurioItemHandler;
 
 public class ModChineseProvider extends LanguageProvider {
     public ModChineseProvider(PackOutput output) {
@@ -993,6 +994,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.CANDY_CANE.get(), "拐杖糖");
         add(ModItems.CANDY_APPLE.get(), "糖葫芦");
         add(ConsumableItems.VITAL_CRYSTAL.get(), "活力水晶");
+        add(ConsumableItems.MINECART_UPGRADE_KIT.get(), "矿车升级包");
         add(ConsumableItems.GALAXY_PEARL.get(), "银河珍珠");
         add(ConsumableItems.ARCANE_CRYSTAL.get(), "奥术水晶");
         add(ConsumableItems.AEGIS_APPLE.get(), "神盾果");
@@ -1048,6 +1050,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.TIMERS_BLOCK_1_2.get(), "1/2秒计时器");
         add(FunctionalBlocks.TIMERS_BLOCK_1_4.get(), "1/4秒计时器");
         add(FunctionalBlocks.EVER_POWERED_RAIL.get(), "永久动力铁轨");
+
+        add(MinecartItems.MECHANICAL_CART.get(), "机械矿车");
+        add(MinecartItems.DIGGING_MOLECART.get(), "挖掘鼹鼠矿车");
 
 
         add(FishingPoleItems.HOTLINE_FISHING_HOOK.get(), "熔线钓竿");
@@ -1608,7 +1613,57 @@ public class ModChineseProvider extends LanguageProvider {
         add(PotionItems.DANGERSENSE_POTION.get(), "危险感药水");
         add(PotionItems.HUNTER_POTION.get(), "狩猎药水");
 
-
+        // 饰品
+        add(AccessoryItems.ADHESIVE_BANDAGE.get(), "粘性绷带");
+        add(AccessoryItems.MEDICATED_BANDAGE.get(), "药用绷带");
+        add(AccessoryItems.POCKET_MIRROR.get(), "袖珍镜");
+        add(AccessoryItems.REFLECTIVE_SHADES.get(), "反光墨镜");
+        add(AccessoryItems.ARMOR_POLISH.get(), "盔甲抛光剂");
+        add(AccessoryItems.ARMOR_BRACING.get(), "盔甲背带");
+        add(AccessoryItems.MEGAPHONE.get(), "扩音器");
+        add(AccessoryItems.NAZAR.get(), "邪眼");
+        add(AccessoryItems.COUNTERCURSE_MANTRA.get(), "反诅咒咒语");
+        add(AccessoryItems.LUCKY_COIN.get(), "幸运币");
+        add(AccessoryItems.COIN_RING.get(), "钱币戒指");
+        add(AccessoryItems.HIGH_TEST_FISHING_LINE.get(), "优质钓鱼线");
+        add(AccessoryItems.TACKLE_BOX.get(), "钓具箱");
+        add(AccessoryItems.ANGLER_TACKLE_BAG.get(), "渔夫渔具袋");
+        add(AccessoryItems.LAVA_MOSS_FISHING_BOBBER.get(), "熔岩苔藓钓鱼浮标");
+        add(AccessoryItems.LAVAPROOF_FISHING_HOOK.get(), "防熔岩钓钩");
+        add(AccessoryItems.LAVAPROOF_TACKLE_BAG.get(), "防熔岩渔具袋");
+        add(AccessoryItems.FISHING_BOBBER.get(), "钓鱼浮标");
+        add(AccessoryItems.GLOWING_FISHING_BOBBER.get(), "发光钓鱼浮标");
+        add(AccessoryItems.HELIUM_MOSS_FISHING_BOBBER.get(), "氦苔藓钓鱼浮标");
+        add(AccessoryItems.NEON_MOSS_FISHING_BOBBER.get(), "氖苔藓钓鱼浮标");
+        add(AccessoryItems.ARGON_MOSS_FISHING_BOBBER.get(), "氩苔藓钓鱼浮标");
+        add(AccessoryItems.KRYPTON_MOSS_FISHING_BOBBER.get(), "氪苔藓钓鱼浮标");
+        add(AccessoryItems.XENON_MOSS_FISHING_BOBBER.get(), "氙苔藓钓鱼浮标");
+        add(AccessoryItems.MANA_CLOAK.get(), "魔力斗篷");
+        add(AccessoryItems.ARCANE_FLOWER.get(), "奥术花");
+        add(AccessoryItems.CELESTIAL_CUFFS.get(), "天界手铐");
+        add(AccessoryItems.CELESTIAL_MAGNET.get(), "天界磁石");
+        add(AccessoryItems.CELESTIAL_EMBLEM.get(), "天界徽章");
+        add(AccessoryItems.CHARM_OF_MYTHS.get(), "神话护身符");
+        add(AccessoryItems.MAGIC_CUFFS.get(), "魔法手铐");
+        add(AccessoryItems.MAGNET_FLOWER.get(), "磁花");
+        add(AccessoryItems.MANA_FLOWER.get(), "魔力花");
+        add(AccessoryItems.BAND_OF_STARPOWER.get(), "星力手环");
+        add(AccessoryItems.MANA_REGENERATION_BAND.get(), "魔力再生手环");
+        add(AccessoryItems.NATURES_GIFT.get(), "大自然的恩赐");
+        add(AccessoryItems.PHILOSOPHERS_STONE.get(), "点金石");
+        add(AccessoryItems.MECHANICAL_LENS.get(), "机械晶状体");
+        add(AccessoryItems.DISCOUNT_CARD.get(), "优惠卡");
+        add(AccessoryItems.GREEDY_RING.get(), "贪婪戒指");
+        add(AccessoryItems.GUIDE_TO_PLANT_FIBER_CORDAGE.get(), "植物纤维绳索宝典");
+        add(AccessoryItems.SUMMONER_EMBLEM.get(), "召唤师徽章");
+        add(AccessoryItems.APPRENTICES_SCARF.get(), "学徒围巾");
+        add(AccessoryItems.SQUIRES_SHIELD.get(), "侍卫护盾");
+        add(AccessoryItems.HUNTRESSS_BUCKLER.get(), "女猎人圆盾");
+        add(AccessoryItems.MONKS_BELT.get(), "武僧腰带");
+        add(AccessoryItems.HERCULES_BEETLE.get(), "大力士甲虫");
+        add(AccessoryItems.NECROMANTIC_SCROLL.get(), "死灵卷轴");
+        add(AccessoryItems.PAPYRUS_SCARAB.get(), "甲虫莎草纸");
+        add(AccessoryItems.PYGMY_NECKLACE.get(), "矮人项链");
         // 药水效果
         add(ModEffects.MANA_SICKNESS.get(), "魔力病");
         add(ModEffects.SHINE.get(), "发光");

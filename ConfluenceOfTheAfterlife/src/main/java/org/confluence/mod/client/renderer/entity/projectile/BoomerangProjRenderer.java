@@ -44,7 +44,7 @@ public class BoomerangProjRenderer extends EntityRenderer<BoomerangProjectile> {
         // 随时间旋转
         poseStack.mulPose(Axis.ZN.rotation((entity.tickCount + partialTick)));
 
-        Minecraft.getInstance().getItemRenderer().renderStatic(entity.weapon, ItemDisplayContext.FIXED, packedLight,pack,poseStack, bufferSource,  entity.level(),0);
+        Minecraft.getInstance().getItemRenderer().renderStatic(entity.weapon, ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY,poseStack, bufferSource,  entity.level(),0);
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
 

@@ -16,7 +16,7 @@ public abstract class AbstractPrefab {
      * @param knockbackResistance 击退抗性
      */
     public AbstractPrefab(int health, int armor, int attack, int followRange, float knockBack, float knockbackResistance) {
-        SIMPLE_FLY_DASH_MONSTER = new AbstractMonster.Builder()
+        SIMPLE_MONSTER = new AbstractMonster.Builder()
                 .setHealth(health)
                 .setArmor(armor)
                 .setAttackDamage(attack)
@@ -31,9 +31,9 @@ public abstract class AbstractPrefab {
     }
 
 
-    protected final AbstractMonster.Builder SIMPLE_FLY_DASH_MONSTER;
+    protected final AbstractMonster.Builder SIMPLE_MONSTER;
 
     public AbstractMonster.Builder getPrefab() {
-        return SIMPLE_FLY_DASH_MONSTER;
+        return SIMPLE_MONSTER;
     }
 }

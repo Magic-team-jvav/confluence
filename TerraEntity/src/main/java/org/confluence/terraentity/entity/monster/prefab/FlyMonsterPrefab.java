@@ -73,7 +73,7 @@ public class FlyMonsterPrefab extends AbstractPrefab {
 
     public FlyMonsterPrefab(int health,int armor,int attack,int followRange,float knockBack,float knockbackResistance) {
         super(health,armor,attack,followRange,knockBack,knockbackResistance);
-        SIMPLE_FLY_DASH_MONSTER
+        SIMPLE_MONSTER
                 .setNavigation((e)->new FlyingPathNavigation(e,e.level()))
                 .setSafeFall(1000)
                 .setNoGravity()
@@ -88,7 +88,7 @@ public class FlyMonsterPrefab extends AbstractPrefab {
     }
 
     public AbstractMonster.Builder getPrefab() {
-        return SIMPLE_FLY_DASH_MONSTER;
+        return SIMPLE_MONSTER;
     }
 
 }

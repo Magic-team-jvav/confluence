@@ -80,7 +80,8 @@ public final class TEEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<AbstractMonster>> DRIPPLER = registerSimpleMonster("drippler", FlyMonsterPrefab.DRIPPLER_BUILDER,1.6f,1.6f);
     public static final DeferredHolder<EntityType<?>, EntityType<AbstractMonster>> FLYING_FISH = registerSimpleMonster("flying_fish", FlyMonsterPrefab.FLYING_FISH_BUILDER,0.75F,0.75F);
 
-    public static final DeferredHolder<EntityType<?>, EntityType<AbstractMonster>> FACE_MONSTER = registerSimpleMonster("face_monster", LandMonsterPrefab.FACE_MONSTER_BUILDER,0.75F,2F);
+    public static final DeferredHolder<EntityType<?>, EntityType<AbstractMonster>> FACE_MONSTER = registerSimpleMonster("face_monster", LandMonsterPrefab.FACE_MONSTER_BUILDER,0.75F,1.95F);
+    public static final DeferredHolder<EntityType<?>, EntityType<AbstractMonster>> BLOOD_TUMORS = registerSimpleMonster("blood_tumors", LandMonsterPrefab.BLOOD_TUMORS,0.5F,0.5F);
 
 
 
@@ -141,6 +142,7 @@ public final class TEEntities {
 
 
         event.registerEntityRenderer(FACE_MONSTER.get(), c->new GeoNormalRenderer<>(c,"face_monster",false));
+        event.registerEntityRenderer(BLOOD_TUMORS.get(), c->new GeoNormalRenderer<>(c,"blood_tumors",false));
 
 
         // boss
@@ -192,6 +194,7 @@ public final class TEEntities {
         event.put(DRIPPLER.get(), AbstractMonster.createAttributes().build());
         event.put(FLYING_FISH.get(), AbstractMonster.createAttributes().build());
         event.put(FACE_MONSTER.get(), AbstractMonster.createAttributes().build());
+        event.put(BLOOD_TUMORS.get(), AbstractMonster.createAttributes().build());
 
 
         event.put(KING_SLIME.get(), KingSlime.createSlimeAttributes().build());

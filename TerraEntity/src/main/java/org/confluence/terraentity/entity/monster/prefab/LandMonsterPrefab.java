@@ -1,16 +1,21 @@
 package org.confluence.terraentity.entity.monster.prefab;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import org.confluence.terraentity.entity.ai.goal.JumpAttack;
 import org.confluence.terraentity.entity.ai.goal.JumpOverBlockGoal;
 import org.confluence.terraentity.entity.monster.AbstractMonster;
+import org.confluence.terraentity.entity.monster.BloodCrawler;
+import org.confluence.terraentity.init.TEEntities;
 import software.bernie.geckolib.constant.DefaultAnimations;
 
 import java.util.function.Supplier;
@@ -36,6 +41,24 @@ public class LandMonsterPrefab extends AbstractPrefab {
                     })
             ;
 
+    public static Supplier<AbstractMonster.Builder> BLOOD_TUMORS =
+            ()->new LandMonsterPrefab(1,0,0,0,0,0,0).getPrefab()
+                    .setSafeFall(80)
+                    .setNoAttackAttack()
+                    .setAttackDamage((int) (Math.random() * 60 + 100))
+                    .setTicker(e->{
+                        if(!e.level().isClientSide && e.isAlive() && e.tickCount == e.getAttributeValue(Attributes.ATTACK_DAMAGE)){
+                            Entity summon = TEEntities.BLOOD_CRAWLER.get().create(e.level());
+                            summon.setPos(e.getX(),e.getY(),e.getZ());
+                            summon.setDeltaMovement(new Vec3(0,0.25f,0));
+                            e.level().addFreshEntity(summon);
+                            e.discard();
+                        }
+                    })
+                    .setController((c,e)->{
+                        c.add(DefaultAnimations.genericIdleController(e));
+                    })
+            ;
     public LandMonsterPrefab(int health,int armor,int attack,int followRange,float knockBack,float knockbackResistance) {
         this(health,armor,attack,0.3f,followRange,knockBack,knockbackResistance);
     }

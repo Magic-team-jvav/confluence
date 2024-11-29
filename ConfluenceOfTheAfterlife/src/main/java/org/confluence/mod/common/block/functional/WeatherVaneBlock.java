@@ -1,0 +1,97 @@
+package org.confluence.mod.common.block.functional;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.util.ModUtils;
+import org.confluence.terra_curio.client.handler.InformationHandler;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2f;
+
+public class WeatherVaneBlock extends Block implements EntityBlock {
+    public WeatherVaneBlock(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
+        return new Entity(pos, state);
+    }
+
+    @Override
+    protected @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
+        return RenderShape.MODEL;
+    }
+
+    @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
+        return ModUtils.getTicker(blockEntityType, FunctionalBlocks.WEATHER_VANE_ENTITY.get(), Entity::tick);
+    }
+
+    public static class Entity extends BlockEntity {
+        private static final float INACCURACY = 0.3F / 20.0F;
+        private final Vector2f lastWindSpeed = new Vector2f();
+        private int shakeTime = 20;
+        private float targetRotation = 0.0F;
+        public float rotationO = 0.0F;
+        public float rotation = 0.0F;
+        public float shakeO = 0.0F;
+        public float shake = 0.0F;
+
+        public Entity(BlockPos pos, BlockState blockState) {
+            super(FunctionalBlocks.WEATHER_VANE_ENTITY.get(), pos, blockState);
+        }
+
+        public static void tick(Level level, BlockPos blockPos, BlockState blockState, Entity entity) {
+            if (level.isClientSide) {
+                float windSpeedX = InformationHandler.getWindSpeedX();
+                float windSpeedZ = InformationHandler.getWindSpeedZ();
+                if (entity.lastWindSpeed.x != windSpeedX || entity.lastWindSpeed.y != windSpeedZ) {
+                    entity.lastWindSpeed.set(windSpeedX, windSpeedZ);
+                    float target = Mth.HALF_PI - (float) Mth.atan2(windSpeedZ, windSpeedX);
+                    if (target > entity.targetRotation) {
+                        entity.shakeTime = Mth.abs((int) ((entity.targetRotation - target) * 10));
+                    } else {
+                        entity.shakeTime = Mth.abs((int) ((target - entity.targetRotation) * 10));
+                    }
+                    entity.targetRotation = target;
+                }
+                if (entity.rotation == entity.targetRotation) {
+                    if (entity.shakeTime > 0) {
+                        entity.shakeO = entity.shake;
+                        entity.shake = Mth.sin((level.getGameTime() % 360L) * Mth.DEG_TO_RAD * 30) * (entity.shakeTime * INACCURACY);
+                        entity.shakeTime--;
+                    } else {
+                        entity.shake = 0.0F;
+                        entity.shakeO = 0.0F;
+                    }
+                } else {
+                    entity.rotationO = entity.rotation;
+                    entity.shakeO = entity.shake;
+                    float delta = entity.targetRotation - entity.rotation;
+                    if (Mth.abs(delta) > Mth.PI * 0.05F) {
+                        if (entity.targetRotation > entity.rotation) {
+                            entity.shake = delta * 0.2F;
+                            entity.rotation += entity.shake;
+                        } else {
+                            entity.shake = (entity.rotation - entity.targetRotation) * 0.2F;
+                            entity.rotation -= entity.shake;
+                        }
+                    } else {
+                        entity.rotationO = entity.targetRotation;
+                        entity.rotation = entity.targetRotation;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -5,12 +5,11 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class AetheriumBlock extends Block {
-    public AetheriumBlock() {
-        super(Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).lightLevel(blockState -> 10));
+    public AetheriumBlock(Properties properties) {
+        super(properties);
     }
 
     @Override

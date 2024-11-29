@@ -3,7 +3,6 @@ package org.confluence.mod.common.init.block;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -103,5 +102,6 @@ public final class ModBlocks {
         BoxBlocks.BLOCKS.register(eventBus);
         FunctionalBlocks.register(eventBus);
         NatureBlocks.BLOCKS.register(eventBus);
+        PotBlocks.BLOCKS.register(eventBus);
     }
 }

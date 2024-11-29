@@ -52,10 +52,10 @@ public class MechanicalBlockRenderer<E extends AbstractMechanicalBlock.Entity> i
                 pPoseStack.pushPose();
                 Vec3 subtract = pos.getCenter().subtract(vec31);
                 Vec3 normalize = subtract.normalize();
-                pPoseStack.translate(0.5, 0.5, 0.5);
+                pPoseStack.translate(0.5F, 0.5F, 0.5F);
                 pPoseStack.mulPose(Axis.YP.rotation(Mth.HALF_PI - (float) Math.atan2(normalize.z, normalize.x)));
                 pPoseStack.mulPose(Axis.XP.rotation((float) Math.acos(normalize.y)));
-                pPoseStack.translate(-0.5, 0.0, -0.5);
+                pPoseStack.translate(-0.5F, 0.0F, -0.5F);
                 int height = (int) Math.round(subtract.length());
                 BeaconRenderer.renderBeaconBeam(pPoseStack, pBuffer, BeaconRenderer.BEAM_LOCATION, pPartialTick, 1.0F, gameTime, 0, height, color, 0.2F, 0.25F);
                 pPoseStack.popPose();

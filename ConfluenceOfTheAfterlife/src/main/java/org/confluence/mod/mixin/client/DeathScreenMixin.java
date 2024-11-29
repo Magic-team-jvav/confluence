@@ -34,8 +34,9 @@ public abstract class DeathScreenMixin extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     private void init(CallbackInfo ci) {
-        exitButtons.getFirst().visible = false;
         if (this.minecraft != null) {
+            delayTicker = 0;
+            exitButtons.getFirst().visible = false;
             if (this.minecraft.player != null && !this.minecraft.player.isCreative()) {
                 confluence$respawnWaitTime = ModUtils.getRespawnWaitTime(this.minecraft.player);
             } else {

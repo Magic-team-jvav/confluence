@@ -43,7 +43,7 @@ public final class ModLootTables {
         return ResourceKey.create(Registries.LOOT_TABLE, Confluence.asResource(name));
     }
 
-    public static ResourceKey<LootTable> registerOrGet(ResourceLocation location) {
+    public static ResourceKey<LootTable> getOrCreate(ResourceLocation location) {
         return ResourceKey.create(Registries.LOOT_TABLE, location);
     }
 }

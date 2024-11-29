@@ -46,6 +46,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("creativetab.confluence.mechanical", "Confluence | Mechanical");
         add("creativetab.confluence.developer", "Confluence | Developer");
 
+        add("chat.type.advancement.achievement", "%s has achieved the achievement %s");
+
         add("item.confluence.meteorite_ingot.tooltip", "Warm to the touch");
         add("item.confluence.alpha.desc", "C418 - alpha");
 

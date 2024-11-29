@@ -11,10 +11,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.functional.DeathChestBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
-import org.confluence.mod.common.init.block.DecorativeBlocks;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.init.block.OreBlocks;
+import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 
 
@@ -40,6 +37,7 @@ public final class ModTabs {
                             Item item = block.get().asItem();
                             if (item != Items.AIR) output.accept(item);
                         });
+                        PotBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
                     })
                     .build()
     );

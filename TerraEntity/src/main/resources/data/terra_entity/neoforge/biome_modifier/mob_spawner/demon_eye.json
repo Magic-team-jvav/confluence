@@ -1,0 +1,10 @@
+{
+    "type": "neoforge:add_spawns",
+    "biomes": "#c:is_overworld",
+    "spawners": {
+        "type": "terra_entity:demon_eye",
+        "weight": 60,
+        "minCount": 1,
+        "maxCount": 1
+    }
+}

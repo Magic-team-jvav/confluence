@@ -1,0 +1,39 @@
+{
+    "display": {
+        "icon": {
+            "id": "confluence:pink_gel"
+        },
+        "title": {
+            "translate": "achievements.confluence.pretty_in_pink.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.pretty_in_pink.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "confluence:pink_slime": {
+            "trigger": "minecraft:player_killed_entity",
+            "conditions": {
+                "entity": [
+                    {
+                        "condition": "minecraft:entity_properties",
+                        "entity": "this",
+                        "predicate": {
+                            "type": "confluence:pink_slime"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        [
+            "confluence:pink_slime"
+        ]
+    ]
+}

@@ -108,7 +108,8 @@ public final class PlayerUtils {
         int max = 0;
         ItemStack ret = ItemStack.EMPTY;
         for (ItemStack itemStack : player.getInventory().items) {
-            if (!itemStack.isEmpty() && itemStack.getItem() instanceof PickaxeItem pickaxeItem) {
+            if (itemStack.isEmpty()) continue;
+            if (itemStack.getItem() instanceof PickaxeItem pickaxeItem) {
                 Tier tier = pickaxeItem.getTier();
                 if (tier instanceof ModTiers.PoweredTier poweredTier) {
                     if (poweredTier.getPower() > max) {

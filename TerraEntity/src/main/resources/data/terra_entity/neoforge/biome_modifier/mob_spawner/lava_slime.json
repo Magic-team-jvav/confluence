@@ -1,0 +1,10 @@
+{
+    "type": "neoforge:add_spawns",
+    "biomes":"minecraft:nether_wastes",
+    "spawners": {
+        "type": "terra_entity:lava_slime",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 1
+    }
+}

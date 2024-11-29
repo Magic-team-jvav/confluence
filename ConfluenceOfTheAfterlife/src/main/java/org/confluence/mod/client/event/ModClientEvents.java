@@ -7,6 +7,7 @@ import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -23,15 +24,18 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.gui.AchievementToast;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.client.gui.hud.HealthHudLayer;
 import org.confluence.mod.client.gui.hud.ManaHudLayer;
 import org.confluence.mod.client.gui.screens.GroupWikiScreen;
 import org.confluence.mod.client.gui.screens.ObjectWikiScreen;
+import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.model.entity.FallingStarRenderer;
 import org.confluence.mod.client.model.entity.bomb.*;
 import org.confluence.mod.client.model.entity.fishing.BaseFishingHookModel;
@@ -47,6 +51,7 @@ import org.confluence.mod.client.model.entity.projectile.IceBladeSwordProjectile
 import org.confluence.mod.client.renderer.block.BaseChestBlockRenderer;
 import org.confluence.mod.client.renderer.block.DeathChestBlockRenderer;
 import org.confluence.mod.client.renderer.block.MechanicalBlockRenderer;
+import org.confluence.mod.client.renderer.block.WeatherVaneBlockRenderer;
 import org.confluence.mod.client.renderer.entity.bomb.*;
 import org.confluence.mod.client.renderer.entity.fishing.BaseFishingHookRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.BloodyFishingHookRenderer;
@@ -54,6 +59,7 @@ import org.confluence.mod.client.renderer.entity.fishing.GlowingFishingHookRende
 import org.confluence.mod.client.renderer.entity.fishing.HotlineFishingHookRenderer;
 import org.confluence.mod.client.renderer.entity.hook.*;
 import org.confluence.mod.client.renderer.entity.projectile.*;
+import org.confluence.mod.common.block.natural.LifeCrystalBlock;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -63,6 +69,9 @@ import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.util.color.IntegerRGB;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.renderer.GeoBlockRenderer;
+import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 import java.util.List;
 
@@ -93,6 +102,7 @@ public final class ModClientEvents {
             BowItems.registerProperties();
             FishingPoleItems.registerCast();
             ArrowInBowHud.initAdaptionMap();
+            AchievementToast.registerAll();
 
             ItemBlockRenderTypes.setRenderLayer(NatureBlocks.RED_ICE.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(NatureBlocks.PURPLE_ICE.get(), RenderType.translucent());
@@ -200,16 +210,15 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MECHANICAL_CART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
         event.registerEntityRenderer(DIGGING_MOLECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
 
-        //event.registerBlockEntityRenderer(ModBlocks.ALTAR_BLOCK_ENTITY.get(), AltarBlockRenderer::new);
-        //event.registerBlockEntityRenderer(ModBlocks.SKY_MILL_ENTITY.get(), SkyMillBlockRenderer::new);
-        //event.registerBlockEntityRenderer(ModBlocks.EXTRACTINATOR_ENTITY.get(), ExtractinatorBlockRenderer::new);
-
         event.registerBlockEntityRenderer(ModBlocks.SIGN_BLOCK_ENTITY.get(), SignRenderer::new);
+        //event.registerBlockEntityRenderer(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), AltarBlockRenderer::new);
+        //event.registerBlockEntityRenderer(FunctionalBlocks.SKY_MILL_ENTITY.get(), SkyMillBlockRenderer::new);
+        //event.registerBlockEntityRenderer(FunctionalBlocks.EXTRACTINATOR_ENTITY.get(), ExtractinatorBlockRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.MECHANICAL_BLOCK_ENTITY.get(), MechanicalBlockRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.BASE_CHEST_BLOCK_ENTITY.get(), BaseChestBlockRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.DEATH_CHEST_BLOCK_ENTITY.get(), DeathChestBlockRenderer::new);
-
-        //event.registerBlockEntityRenderer(ModBlocks.LIFE_CRYSTAL_BLOCK_ENTITY.get(), LifeCrystalBlockRenderer::new);
+        event.registerBlockEntityRenderer(FunctionalBlocks.WEATHER_VANE_ENTITY.get(), WeatherVaneBlockRenderer::new);
+        event.registerBlockEntityRenderer(NatureBlocks.LIFE_CRYSTAL_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new LifeCrystalBlockModel()));
     }
 
     @SubscribeEvent
@@ -276,5 +285,31 @@ public final class ModClientEvents {
                 RenderSystem.setShaderFogEnd(10.0F);
             }
         }, ModFluids.SHIMMER.type());
+        event.registerItem(new IClientItemExtensions() {
+            private GeoItemRenderer<LifeCrystalBlock.Item> renderer;
+
+            @Override
+            public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                if (renderer == null) {
+                    this.renderer = new GeoItemRenderer<>(new GeoModel<>() {
+                        @Override
+                        public ResourceLocation getModelResource(LifeCrystalBlock.Item animatable) {
+                            return LifeCrystalBlockModel.MODEL;
+                        }
+
+                        @Override
+                        public ResourceLocation getTextureResource(LifeCrystalBlock.Item animatable) {
+                            return LifeCrystalBlockModel.TEXTURE;
+                        }
+
+                        @Override
+                        public ResourceLocation getAnimationResource(LifeCrystalBlock.Item animatable) {
+                            return null;
+                        }
+                    });
+                }
+                return renderer;
+            }
+        }, NatureBlocks.LIFE_CRYSTAL_BLOCK.asItem());
     }
 }

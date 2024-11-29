@@ -96,7 +96,6 @@ public final class ModFluids {
         ));
     }
 
-    // todo 移植嬗变
     public static void registerShimmerTransform() {
         // 黑名单
         blackList(ItemTags.STAIRS);
@@ -121,9 +120,9 @@ public final class ModFluids {
         addItem(TRIFOLD_MAP.get(), FAST_CLOCK.get());
         addItem(NAZAR.get(), MEGAPHONE.get());
         addItem(MEGAPHONE.get(), NAZAR.get());
-//        addItem(HIGH_TEST_FISHING_LINE.get(), ANGLER_EARRING.get());
-//        addItem(ANGLER_EARRING.get(), TACKLE_BOX.get());
-//        addItem(TACKLE_BOX.get(), HIGH_TEST_FISHING_LINE.get());
+        addItem(HIGH_TEST_FISHING_LINE.get(), ANGLER_EARRING.get());
+        addItem(ANGLER_EARRING.get(), TACKLE_BOX.get());
+        addItem(TACKLE_BOX.get(), HIGH_TEST_FISHING_LINE.get());
         // todo 火把转化
         // todo 匣子转化
         // 宝石转化

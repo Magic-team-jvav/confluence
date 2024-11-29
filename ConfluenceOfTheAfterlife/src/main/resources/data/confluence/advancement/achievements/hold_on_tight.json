@@ -1,0 +1,28 @@
+{
+    "display": {
+        "icon": {
+            "id": "confluence:grappling_hook"
+        },
+        "title": {
+            "translate": "achievements.confluence.hold_on_tight.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.hold_on_tight.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "trigger": "terra_curio:curios_equipped",
+            "conditions": {
+                "item": {
+                    "tag": "curios:hook"
+                }
+            }
+        }
+    }
+}

@@ -2,6 +2,7 @@ package org.confluence.mod.common.init.block;
 
 import com.mojang.datafixers.DSL;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -18,6 +19,7 @@ import org.confluence.mod.common.block.natural.spreadable.*;
 import org.confluence.mod.common.init.ModTreeGrower;
 import org.confluence.mod.common.init.item.ModItems;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static org.confluence.mod.common.block.natural.LogBlockSet.WoodSetType.*;
@@ -38,8 +40,8 @@ public class NatureBlocks {
     // 流体接触块
     public static final DeferredBlock<Block> THIN_HONEY_BLOCK = registerWithItem("thin_honey_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.HONEY_BLOCK)));
     public static final DeferredBlock<Block> LOOSE_HONEY_BLOCK = registerWithItem("loose_honey_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.HONEY_BLOCK)));
-    public static final DeferredBlock<Block> AETHERIUM_BLOCK = registerWithItem("aetherium_block", () -> new Block(BlockBehaviour.Properties.of()));
-    public static final DeferredBlock<Block> DARK_AETHERIUM_BLOCK = registerWithItem("dark_aetherium_block", () -> new Block(BlockBehaviour.Properties.of()));
+    public static final DeferredBlock<AetheriumBlock> AETHERIUM_BLOCK = registerWithItem("aetherium_block", () -> new AetheriumBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).lightLevel(blockState -> 10)));
+    public static final DeferredBlock<Block> DARK_AETHERIUM_BLOCK = registerWithItem("dark_aetherium_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK)));
 
     // 环境辅助
     public static final DeferredBlock<ThinIceBlock> THIN_ICE_BLOCK = registerWithItem("thin_ice_block", ThinIceBlock::new);
@@ -51,6 +53,9 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> DESERT_FOSSIL = registerWithItem("desert_fossil", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SAND)));
     public static final DeferredBlock<Block> SLUSH = registerWithItem("slush", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SAND)));
     public static final DeferredBlock<Block> MARINE_GRAVEL = registerWithItem("marine_gravel", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SAND)));
+    public static final DeferredBlock<Block> STONY_LOG = registerWithItem("stony_log", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));
+    public static final DeferredBlock<LifeCrystalBlock> LIFE_CRYSTAL_BLOCK = registerWithItem("life_crystal_block", () -> new LifeCrystalBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_CLUSTER).mapColor(MapColor.COLOR_RED).lightLevel(state -> 5)), LifeCrystalBlock.Item::new);
+    public static final Supplier<BlockEntityType<LifeCrystalBlock.Entity>> LIFE_CRYSTAL_BLOCK_ENTITY = ModBlocks.BLOCK_ENTITIES.register("life_crystal_block_entity", () -> BlockEntityType.Builder.of(LifeCrystalBlock.Entity::new, LIFE_CRYSTAL_BLOCK.get()).build(null));
 
     // 腐化
     public static final DeferredBlock<Block> CORRUPT_GRASS_BLOCK = registerWithItem("corrupt_grass_block", () -> new SpreadingGrassBlock(ISpreadable.Type.CORRUPT, BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)));
@@ -141,6 +146,7 @@ public class NatureBlocks {
     public static final DeferredBlock<JungleSporeBlock> JUNGLE_SPORE = registerWithoutItem("jungle_spore", JungleSporeBlock::new);
     public static final DeferredBlock<Block> NATURES_GIFT = registerWithoutItem("natures_gift", NaturesGiftBlock::new);
     public static final DeferredBlock<Block> JUNGLE_HIVE_BLOCK = registerWithItem("jungle_hive_block", JungleHiveBlock::new);
+    public static final DeferredBlock<Block> JUNGLE_ROSE = registerWithItem("jungle_rose", ()->new Block(BlockBehaviour.Properties.of()));
 
     // 空岛
     public static final DeferredBlock<CloudBlock> CLOUD_BLOCK = registerWithItem("cloud_block", CloudBlock::new);
@@ -152,6 +158,16 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> CLOUDWEAVER = registerWithItem("cloudweaver", () -> new CloudWeaverBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION).offsetType(BlockBehaviour.OffsetType.NONE)));
     public static final DeferredBlock<Block> FLOATING_WHEAT = registerWithItem("floating_wheat", () -> new FloatingWheatBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).offsetType(BlockBehaviour.OffsetType.NONE)));
 
+    // 枝杈
+    public static final DeferredBlock<Block> AMBER_BRANCHES = registerWithItem("amber_branches", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_PLANKS)));
+    public static final DeferredBlock<Block> RUBY_BRANCHES = registerWithItem("ruby_branches", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_PLANKS)));
+    public static final DeferredBlock<Block> TOPAZ_BRANCHES = registerWithItem("topaz_branches", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_PLANKS)));
+    public static final DeferredBlock<Block> EMERALD_BRANCHES = registerWithItem("emerald_branches", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_PLANKS)));
+    public static final DeferredBlock<Block> DIAMOND_BRANCHES = registerWithItem("diamond_branches", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_PLANKS)));
+    public static final DeferredBlock<Block> SAPPHIRE_BRANCHES = registerWithItem("sapphire_branches", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_PLANKS)));
+    public static final DeferredBlock<Block> TR_AMETHYST_BRANCHES = registerWithItem("tr_amethyst_branches", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_PLANKS)));
+    public static final DeferredBlock<Block> ASH_BRANCHES = registerWithItem("ash_branches", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_PLANKS)));
+
     private static <B extends Block> DeferredBlock<B> registerWithoutItem(String id, Supplier<B> block) {
         return BLOCKS.register(id, block);
     }
@@ -159,6 +175,12 @@ public class NatureBlocks {
     private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> block) {
         DeferredBlock<B> object = BLOCKS.register(id, block);
         ModItems.BLOCK_ITEMS.registerSimpleBlockItem(object);
+        return object;
+    }
+
+    private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> block, Function<B, BlockItem> function) {
+        DeferredBlock<B> object = BLOCKS.register(id, block);
+        ModItems.BLOCK_ITEMS.register(id, () -> function.apply(object.get()));
         return object;
     }
 }

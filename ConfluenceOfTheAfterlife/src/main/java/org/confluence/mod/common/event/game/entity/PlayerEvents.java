@@ -1,6 +1,9 @@
 package org.confluence.mod.common.event.game.entity;
 
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -20,6 +23,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.*;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.advancement.ModAchievements;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.effect.harmful.CursedEffect;
 import org.confluence.mod.common.effect.harmful.SilencedEffect;
@@ -215,6 +219,14 @@ public final class PlayerEvents {
             if (!((IServerPlayer) serverPlayer).confluence$isCouldPickupItem()) {
                 event.setCanPickup(TriState.FALSE);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void advancementEarn(AdvancementEvent.AdvancementEarnEvent event) {
+        AdvancementHolder advancement = event.getAdvancement();
+        if (event.getEntity() instanceof ServerPlayer player && ModAchievements.DISPLAY_OFFSET.containsKey(advancement.id())) {
+            player.server.getPlayerList().broadcastSystemMessage(Component.translatable("chat.type.advancement.achievement", player.getDisplayName(), Advancement.name(advancement)), false);
         }
     }
 }

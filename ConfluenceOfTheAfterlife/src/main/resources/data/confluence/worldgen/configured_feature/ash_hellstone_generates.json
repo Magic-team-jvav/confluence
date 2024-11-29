@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:ore",
+  "config": {
+    "size": 24,
+    "discard_chance_on_air_exposure": 0,
+    "targets": [
+      {
+        "target": {
+          "predicate_type": "block_match",
+          "block": "confluence:ash_block"
+        },
+        "state": {
+          "Name": "confluence:ash_hellstone"
+        }
+      }
+    ]
+  }
+}

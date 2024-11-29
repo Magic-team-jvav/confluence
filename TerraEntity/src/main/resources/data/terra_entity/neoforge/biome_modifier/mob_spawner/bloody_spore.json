@@ -1,0 +1,10 @@
+{
+    "type": "neoforge:add_spawns",
+    "biomes":"#c:is_overworld",
+    "spawners": {
+        "type": "terra_entity:bloody_spore",
+        "weight": 30,
+        "minCount": 1,
+        "maxCount": 1
+    }
+}

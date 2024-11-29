@@ -32,6 +32,8 @@ public class FunctionalBlocks {
     //public static final Supplier<BlockEntityType<AltarBlock.Entity>> ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("altar_block_entity", () -> BlockEntityType.Builder.of(AltarBlock.Entity::new, DEMON_ALTAR.get(), CRIMSON_ALTAR.get()).build(null));
     public static final Supplier<Block> SKY_MILL = registerWithItem("sky_mill", () -> new Block(BlockBehaviour.Properties.of()));
     //public static final Supplier<BlockEntityType<SkyMillBlock.Entity>> SKY_MILL_ENTITY = BLOCK_ENTITIES.register("sky_mill_entity", () -> BlockEntityType.Builder.of(SkyMillBlock.Entity::new, SKY_MILL.get()).build(null));
+    public static final Supplier<WeatherVaneBlock> WEATHER_VANE = registerWithItem("weather_vane", () -> new WeatherVaneBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)));
+    public static final Supplier<BlockEntityType<WeatherVaneBlock.Entity>> WEATHER_VANE_ENTITY = ModBlocks.BLOCK_ENTITIES.register("weather_vane_entity", () -> BlockEntityType.Builder.of(WeatherVaneBlock.Entity::new, WEATHER_VANE.get()).build(null));
 
     public static final Supplier<EchoBlock> ECHO_BLOCK = registerWithItem("echo_block", EchoBlock::new);
     public static final Supplier<BaseChestBlock> BASE_CHEST_BLOCK = registerWithItemButHidden("base_chest_block", BaseChestBlock::new);

@@ -16,12 +16,12 @@ import org.confluence.mod.client.gui.GuiHelper;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 
 public class HealthHudLayer implements LayeredDraw.Layer {
-    public static final ResourceLocation HEART_SINGLE_FANCY = Confluence.asResource("textures/gui/screens/heart_single_fancy.png");
-    public static final ResourceLocation HEART_LEFT = Confluence.asResource("textures/gui/screens/heart_left.png");
-    public static final ResourceLocation HEART_MIDDLE = Confluence.asResource("textures/gui/screens/heart_middle.png");
-    public static final ResourceLocation HEART_RIGHT_FANCY = Confluence.asResource("textures/gui/screens/heart_right_fancy.png");
-    public static final ResourceLocation HEART_RIGHT = Confluence.asResource("textures/gui/screens/heart_right.png");
-    public static final ResourceLocation HEART_FILL = Confluence.asResource("textures/gui/screens/heart_fill.png");
+    public static final ResourceLocation HEART_SINGLE_FANCY = Confluence.asResource("textures/gui/hud/heart_single_fancy.png");
+    public static final ResourceLocation HEART_LEFT = Confluence.asResource("textures/gui/hud/heart_left.png");
+    public static final ResourceLocation HEART_MIDDLE = Confluence.asResource("textures/gui/hud/heart_middle.png");
+    public static final ResourceLocation HEART_RIGHT_FANCY = Confluence.asResource("textures/gui/hud/heart_right_fancy.png");
+    public static final ResourceLocation HEART_RIGHT = Confluence.asResource("textures/gui/hud/heart_right.png");
+    public static final ResourceLocation HEART_FILL = Confluence.asResource("textures/gui/hud/heart_fill.png");
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {

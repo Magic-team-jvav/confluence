@@ -11,11 +11,11 @@ import org.confluence.mod.client.gui.GuiHelper;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 
 public class ManaHudLayer implements LayeredDraw.Layer {
-    public static final ResourceLocation STAR_SINGLE = Confluence.asResource("textures/gui/screens/star_single.png");
-    public static final ResourceLocation STAR_A = Confluence.asResource("textures/gui/screens/star_a.png");
-    public static final ResourceLocation STAR_C = Confluence.asResource("textures/gui/screens/star_c.png");
-    public static final ResourceLocation STAR_B = Confluence.asResource("textures/gui/screens/star_b.png");
-    public static final ResourceLocation STAR_FILL = Confluence.asResource("textures/gui/screens/star_fill.png");
+    public static final ResourceLocation STAR_SINGLE = Confluence.asResource("textures/gui/hud/star_single.png");
+    public static final ResourceLocation STAR_A = Confluence.asResource("textures/gui/hud/star_a.png");
+    public static final ResourceLocation STAR_C = Confluence.asResource("textures/gui/hud/star_c.png");
+    public static final ResourceLocation STAR_B = Confluence.asResource("textures/gui/hud/star_b.png");
+    public static final ResourceLocation STAR_FILL = Confluence.asResource("textures/gui/hud/star_fill.png");
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {

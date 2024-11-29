@@ -1,0 +1,23 @@
+{
+    "display": {
+        "icon": {
+            "id": "confluence:bottomless_shimmer_bucket"
+        },
+        "title": {
+            "translate": "achievements.confluence.a_shimmer_in_the_dark.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.a_shimmer_in_the_dark.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "trigger": "confluence:shimmer_transmutation"
+        }
+    }
+}

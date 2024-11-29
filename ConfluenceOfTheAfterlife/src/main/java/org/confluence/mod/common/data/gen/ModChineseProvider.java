@@ -6,7 +6,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import top.theillusivec4.curios.common.capability.CurioItemHandler;
 
 public class ModChineseProvider extends LanguageProvider {
     public ModChineseProvider(PackOutput output) {
@@ -32,6 +31,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("creativetab.confluence.accessories", "汇流来世 | 配饰");
         add("creativetab.confluence.mechanical", "汇流来世 | 器械");
         add("creativetab.confluence.developer", "汇流来世 | 开发者物品");
+
+        add("chat.type.advancement.achievement", "%s达成了成就%s");
 
         add("item.confluence.meteorite_ingot.tooltip", "摸起来是温的");
 

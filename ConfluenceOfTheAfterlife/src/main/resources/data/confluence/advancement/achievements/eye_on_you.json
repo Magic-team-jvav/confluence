@@ -1,0 +1,39 @@
+{
+    "display": {
+        "icon": {
+            "id": "confluence:suspicious_looking_eye"
+        },
+        "title": {
+            "translate": "achievements.confluence.eye_on_you.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.eye_on_you.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "confluence:cthulhu_eye": {
+            "trigger": "minecraft:player_killed_entity",
+            "conditions": {
+                "entity": [
+                    {
+                        "condition": "minecraft:entity_properties",
+                        "entity": "this",
+                        "predicate": {
+                            "type": "confluence:cthulhu_eye"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        [
+            "confluence:cthulhu_eye"
+        ]
+    ]
+}

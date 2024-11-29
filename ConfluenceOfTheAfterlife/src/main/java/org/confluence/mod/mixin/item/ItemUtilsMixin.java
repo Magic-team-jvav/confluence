@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.inventory;
+package org.confluence.mod.mixin.item;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;

@@ -7,6 +7,7 @@
     "mixins": [
         "LootModifierManagerMixin",
         "RecipeManagerMixin",
+        "ServerAdvancementManagerMixin",
         "VillagerTrades$EmeraldsForVillagerTypeItemMixin",
         "accessor.ChestBlockEntityAccessor",
         "accessor.EntityAccessor",
@@ -25,16 +26,18 @@
         "entity.VillagerMixin",
         "integration.terra_curio.BaseSpeedBootsMixin",
         "integration.terra_curio.StarClockEntityMixin",
-        "inventory.ItemUtilsMixin",
         "item.BowItemMixin",
         "item.FishingRodItemMixin",
         "item.HoneyBottleItemMixin",
+        "item.ItemUtilsMixin",
         "item.ProjectileWeaponItemMixin",
         "level.ImposterProtoChunkMixin",
         "level.ServerLevelMixin",
         "level.WorldGenRegionMixin"
     ],
     "client": [
+        "client.AdvancementWidgetMixin",
+        "client.ClientAdvancementsMixin",
         "client.DeathScreenMixin",
         "client.GuiMixin",
         "client.ItemRendererMixin",

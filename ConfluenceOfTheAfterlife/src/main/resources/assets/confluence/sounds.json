@@ -153,5 +153,10 @@
         "sounds": [
             "confluence:decoupling"
         ]
+    },
+    "achievements": {
+        "sounds": [
+            "confluence:achievements"
+        ]
     }
 }

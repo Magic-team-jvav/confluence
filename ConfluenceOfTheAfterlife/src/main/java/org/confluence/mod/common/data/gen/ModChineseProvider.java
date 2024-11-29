@@ -699,7 +699,7 @@ public class ModChineseProvider extends LanguageProvider {
 //        add(ModBlocks.OCULAR_BLOCKS.get(), "血肉眼球块");
         add(ModBlocks.SWORD_IN_STONE.get(), "石中剑");
         add(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE.get(), "深板岩压力板");
-        add(NatureBlocks.STONY_LOGS.get(), "石质原木");
+        add(NatureBlocks.STONY_LOG.get(), "石质原木");
         add(NatureBlocks.AMBER_BRANCHES.get(), "琥珀石枝杈");
         add(NatureBlocks.RUBY_BRANCHES.get(), "红玉石枝杈");
         add(NatureBlocks.TOPAZ_BRANCHES.get(), "黄玉石枝杈");

@@ -22,9 +22,9 @@ public final class WeatherHandler {
             float windSpeedX = InformationHandler.getWindSpeedX();
             float windSpeedZ = InformationHandler.getWindSpeedZ();
             RandomSource random = player.getRandom();
-            double x = player.getX() + ModUtils.nextFloat(random, -10, 10) - windSpeedX * 10;
-            double y = player.getY() + ModUtils.nextFloat(random, -5, 5);
-            double z = player.getZ() + ModUtils.nextFloat(random, -10, 10) - windSpeedZ * 10;
+            double x = player.getX() + ModUtils.nextDouble(random, -10.0, 10.0) - windSpeedX * 10.0;
+            double y = player.getY() + ModUtils.nextDouble(random, -5.0, 5.0);
+            double z = player.getZ() + ModUtils.nextDouble(random, -10.0, 10.0) - windSpeedZ * 10.0;
             Particle particle = minecraft.particleEngine.createParticle(WIND, x, y, z, 0.0, 0.0, 0.0);
             if (particle != null) particle.setParticleSpeed(windSpeedX, 0.0, windSpeedZ);
         }

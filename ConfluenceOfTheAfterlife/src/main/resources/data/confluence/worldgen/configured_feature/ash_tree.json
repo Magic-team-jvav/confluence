@@ -1,0 +1,41 @@
+{
+  "type": "tree",
+  "config": {
+    "ignore_vines": true,
+    "force_dirt": false,
+    "trunk_provider": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "confluence:ash_log"
+      }
+    },
+    "foliage_provider": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "confluence:ash_branches"
+      }
+    },
+    "dirt_provider": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "confluence:ash_block"
+      }
+    },
+    "minimum_size": {
+      "type": "two_layers_feature_size"
+    },
+    "trunk_placer": {
+      "base_height": 6,
+      "height_rand_a": 1,
+      "height_rand_b": 2,
+      "type": "straight_trunk_placer"
+    },
+    "foliage_placer": {
+      "radius": 2,
+      "offset": 0,
+      "type": "fancy_foliage_placer",
+      "height": 5
+    },
+    "decorators": []
+  }
+}

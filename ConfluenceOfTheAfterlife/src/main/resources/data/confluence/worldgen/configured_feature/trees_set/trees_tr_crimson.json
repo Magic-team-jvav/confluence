@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "confluence:tr_crimson_tree_checked_0",
+    "features": [
+      {
+        "chance": 0.5,
+        "feature": "confluence:tr_crimson_tree_checked_1"
+      }
+    ]
+  }
+}

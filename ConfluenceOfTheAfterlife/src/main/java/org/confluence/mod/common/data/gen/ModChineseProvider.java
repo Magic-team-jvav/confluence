@@ -1201,7 +1201,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.GLOWING_MUSHROOM.get(), "发光蘑菇");
         add(NatureBlocks.LIFE_MUSHROOM.get(), "生命蘑菇");
         add(NatureBlocks.JUNGLE_SPORE.get(), "丛林孢子");
-        add(NatureBlocks.JUNGLE_SPORE.get(), "丛林孢子");
         //add(NatureBlocks.JUNGLE_ROSE.get(), "丛林玫瑰");
         add(NatureBlocks.CORRUPT_GRASS.get(), "腐化草");
         add(NatureBlocks.TR_CRIMSON_GRASS.get(), "猩红草");

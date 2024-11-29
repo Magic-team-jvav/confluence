@@ -82,6 +82,8 @@ public class OreBlocks {
 
     public static final DeferredBlock<Block> STURDY_FOSSIL_BLOCK = copyBlockRegister("sturdy_fossil_block", Blocks.DIAMOND_BLOCK);
 
+    public static final DeferredBlock<Block> TR_EMERALD_ORE = copyBlockRegister("tr_emerald_ore", Blocks.EMERALD_ORE);
+    public static final DeferredBlock<Block> DEEPSLATE_TR_EMERALD_ORE = copyBlockRegister("deepslate_tr_emerald_ore", Blocks.EMERALD_ORE);
     public static final DeferredBlock<Block> SANCTIFICATION_EMERALD_ORE = copyBlockRegister("sanctification_emerald_ore", Blocks.EMERALD_ORE);
     public static final DeferredBlock<Block> CORRUPTION_EMERALD_ORE = copyBlockRegister("corruption_emerald_ore", Blocks.EMERALD_ORE);
     public static final DeferredBlock<Block> FLESHIFICATION_EMERALD_ORE = copyBlockRegister("fleshification_emerald_ore", Blocks.EMERALD_ORE);

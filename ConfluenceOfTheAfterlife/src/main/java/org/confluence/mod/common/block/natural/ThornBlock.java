@@ -90,7 +90,7 @@ public class ThornBlock extends PipeBlock {
 
     @Override
     public void randomTick(@NotNull BlockState pState, @NotNull ServerLevel pLevel, @NotNull BlockPos pPos, @NotNull RandomSource pRandom) {
-        if(pRandom.nextInt(10) != 0) return;
+        if(this == NatureBlocks.PLANTERA_THORN.get() || pRandom.nextInt(30) != 0) return;
         Direction dir = Direction.getRandom(pRandom);
         BlockPos targetPos = pPos.relative(dir);
         if (!pLevel.getBlockState(targetPos).isAir() || checkBorder(pLevel, targetPos, dir)) return;

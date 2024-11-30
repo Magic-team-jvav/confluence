@@ -34,6 +34,8 @@ import org.confluence.terraentity.entity.monster.prefab.LandMonsterPrefab;
 import org.confluence.terraentity.entity.monster.slime.BaseSlime;
 import org.confluence.terraentity.entity.monster.slime.BlackSlime;
 import org.confluence.terraentity.entity.monster.slime.HoneySlime;
+import org.confluence.terraentity.entity.proj.BaseProj;
+import org.confluence.terraentity.entity.proj.ThrowableProj;
 
 import java.util.function.Supplier;
 
@@ -104,8 +106,19 @@ public final class TEEntities {
 
 
 
+    // tip 弹幕
+    public static final DeferredHolder<EntityType<?>, EntityType<ThrowableProj>> CABBAGE_PROJ = registerProj("cabbage_proj",(e,l)->
+            new ThrowableProj(e,l, null),0.5F,0.5F);
 
 
+
+
+    public static <T extends BaseProj> DeferredHolder<EntityType<?>, EntityType<T>> registerProj(String name, EntityType.EntityFactory<T> entityFactory,float w,float h) {
+        return ENTITIES.register(name, () -> EntityType.Builder.of(entityFactory , MobCategory.MISC).clientTrackingRange(10).sized(w,h).build("rhyme:entity.proj."+name));
+    }
+    public static <T extends BaseProj> DeferredHolder<EntityType<?>, EntityType<T>> registerProj(String name, EntityType.EntityFactory<T> entityFactory) {
+        return registerProj(name,entityFactory,1,1);
+    }
 
     // tip 渲染器
     @OnlyIn(Dist.CLIENT)

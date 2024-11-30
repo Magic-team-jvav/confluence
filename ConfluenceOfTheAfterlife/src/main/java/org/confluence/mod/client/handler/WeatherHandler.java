@@ -58,12 +58,13 @@ public final class WeatherHandler {
         ParticleOptions particleOptions = data.get(blockState.getBlock());
         if (particleOptions == null) return;
 
-        BlockPos relative = blockPos.relative(windDirection);
+        Direction opposite = windDirection.getOpposite();
+        BlockPos relative = blockPos.relative(opposite);
         BlockState relativeState = level.getBlockState(relative);
-        if (!relativeState.isAir() && Block.isFaceFull(relativeState.getCollisionShape(level, relative), windDirection.getOpposite())) return;
-        relative = blockPos.relative(windDirection.getOpposite());
+        if (!relativeState.isAir() && relativeState.isSuffocating(level, relative)) return;
+        relative = blockPos.relative(windDirection);
         relativeState = level.getBlockState(relative);
-        if (!relativeState.isAir() && Block.isShapeFullBlock(relativeState.getCollisionShape(level, relative))) return;
+        if (!relativeState.isAir() && Block.isFaceFull(relativeState.getCollisionShape(level, relative), opposite)) return;
 
         Vec3 vec3 = Vec3.atCenterOf(blockPos);
         int i = windDirection.getStepX();
@@ -80,7 +81,7 @@ public final class WeatherHandler {
 
         BlockPos relative = blockPos.above();
         BlockState aboveState = level.getBlockState(relative);
-        if (!aboveState.isAir() && Block.isFaceFull(aboveState.getCollisionShape(level, relative), Direction.DOWN)) return;
+        if (!aboveState.isAir() && aboveState.isSuffocating(level, relative)) return;
 
         Vec3 vec3 = Vec3.atCenterOf(blockPos);
         double x = vec3.x + Mth.nextDouble(random, -0.5, 0.5);

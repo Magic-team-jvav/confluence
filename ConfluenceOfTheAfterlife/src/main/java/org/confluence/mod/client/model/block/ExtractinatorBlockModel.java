@@ -8,7 +8,7 @@ import software.bernie.geckolib.model.GeoModel;
 public class ExtractinatorBlockModel extends GeoModel<ExtractinatorBlock.Entity> {
     public static final ResourceLocation MODEL = Confluence.asResource("geo/block/extractinator.geo.json");
     public static final ResourceLocation TEXTURE = Confluence.asResource("textures/block/extractinator.png");
-    public static final ResourceLocation ANIMATIONS = Confluence.asResource("animations/block/extractinator.animation.json");
+    public static final ResourceLocation ANIMATION = Confluence.asResource("animations/block/extractinator.animation.json");
 
     @Override
     public ResourceLocation getModelResource(ExtractinatorBlock.Entity animatable) {
@@ -22,7 +22,7 @@ public class ExtractinatorBlockModel extends GeoModel<ExtractinatorBlock.Entity>
 
     @Override
     public ResourceLocation getAnimationResource(ExtractinatorBlock.Entity animatable) {
-        return ANIMATIONS;
+        return ANIMATION;
     }
 
 }

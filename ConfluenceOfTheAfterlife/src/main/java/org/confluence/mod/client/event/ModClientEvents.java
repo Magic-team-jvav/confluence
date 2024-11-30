@@ -59,10 +59,8 @@ import org.confluence.mod.client.renderer.entity.fishing.GlowingFishingHookRende
 import org.confluence.mod.client.renderer.entity.fishing.HotlineFishingHookRenderer;
 import org.confluence.mod.client.renderer.entity.hook.*;
 import org.confluence.mod.client.renderer.entity.projectile.*;
+import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
-import org.confluence.mod.common.block.functional.crafting.ExtractinatorBlock;
-import org.confluence.mod.common.block.functional.crafting.SkyMillBlock;
-import org.confluence.mod.common.block.natural.LifeCrystalBlock;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModMenus;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -297,39 +295,14 @@ public final class ModClientEvents {
                 RenderSystem.setShaderFogEnd(10.0F);
             }
         }, ModFluids.SHIMMER.type());
-        event.registerItem(new IClientItemExtensions() {
-            private GeoItemRenderer<LifeCrystalBlock.Item> renderer;
-
-            @Override
-            public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                if (renderer == null) {
-                    this.renderer = new GeoItemRenderer<>(new GeoModel<>() {
-                        @Override
-                        public ResourceLocation getModelResource(LifeCrystalBlock.Item animatable) {
-                            return LifeCrystalBlockModel.MODEL;
-                        }
-
-                        @Override
-                        public ResourceLocation getTextureResource(LifeCrystalBlock.Item animatable) {
-                            return LifeCrystalBlockModel.TEXTURE;
-                        }
-
-                        @Override
-                        public ResourceLocation getAnimationResource(LifeCrystalBlock.Item animatable) {
-                            return null;
-                        }
-                    });
-                }
-                return renderer;
-            }
-        }, NatureBlocks.LIFE_CRYSTAL_BLOCK.asItem());
+        event.registerItem(new SimpleGeoItemRenderer<>(LifeCrystalBlockModel.MODEL, LifeCrystalBlockModel.TEXTURE, null), NatureBlocks.LIFE_CRYSTAL_BLOCK.asItem());
         event.registerItem(new IClientItemExtensions() {
             private GeoItemRenderer<AltarBlock.Item> renderer;
 
             @Override
             public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
                 if (renderer == null) {
-                    renderer = new GeoItemRenderer<>(new GeoModel<>() {
+                    this.renderer = new GeoItemRenderer<>(new GeoModel<>() {
                         @Override
                         public ResourceLocation getModelResource(AltarBlock.Item animatable) {
                             return AltarBlockModel.MODELS[animatable.getVariant().getId()];
@@ -342,64 +315,14 @@ public final class ModClientEvents {
 
                         @Override
                         public ResourceLocation getAnimationResource(AltarBlock.Item animatable) {
-                            return null;
+                            return AltarBlockModel.ANIMATIONS[animatable.getVariant().getId()];
                         }
                     });
                 }
                 return renderer;
             }
         }, FunctionalBlocks.DEMON_ALTAR.asItem(), FunctionalBlocks.CRIMSON_ALTAR.asItem());
-        event.registerItem(new IClientItemExtensions() {
-            private GeoItemRenderer<SkyMillBlock.Item> renderer;
-
-            @Override
-            public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                if (renderer == null) {
-                    this.renderer = new GeoItemRenderer<>(new GeoModel<>() {
-                        @Override
-                        public ResourceLocation getModelResource(SkyMillBlock.Item animatable) {
-                            return SkyMillBlockModel.MODEL;
-                        }
-
-                        @Override
-                        public ResourceLocation getTextureResource(SkyMillBlock.Item animatable) {
-                            return SkyMillBlockModel.TEXTURE;
-                        }
-
-                        @Override
-                        public ResourceLocation getAnimationResource(SkyMillBlock.Item animatable) {
-                            return SkyMillBlockModel.ANIMATIONS;
-                        }
-                    });
-                }
-                return renderer;
-            }
-        }, FunctionalBlocks.SKY_MILL.asItem());
-        event.registerItem(new IClientItemExtensions() {
-            private GeoItemRenderer<ExtractinatorBlock.Item> renderer;
-
-            @Override
-            public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                if (renderer == null) {
-                    this.renderer = new GeoItemRenderer<>(new GeoModel<>() {
-                        @Override
-                        public ResourceLocation getModelResource(ExtractinatorBlock.Item animatable) {
-                            return ExtractinatorBlockModel.MODEL;
-                        }
-
-                        @Override
-                        public ResourceLocation getTextureResource(ExtractinatorBlock.Item animatable) {
-                            return ExtractinatorBlockModel.TEXTURE;
-                        }
-
-                        @Override
-                        public ResourceLocation getAnimationResource(ExtractinatorBlock.Item animatable) {
-                            return null;
-                        }
-                    });
-                }
-                return renderer;
-            }
-        }, FunctionalBlocks.EXTRACTINATOR.asItem());
+        event.registerItem(new SimpleGeoItemRenderer<>(SkyMillBlockModel.MODEL, SkyMillBlockModel.TEXTURE, SkyMillBlockModel.ANIMATION), FunctionalBlocks.SKY_MILL.asItem());
+        event.registerItem(new SimpleGeoItemRenderer<>(ExtractinatorBlockModel.MODEL, ExtractinatorBlockModel.TEXTURE, ExtractinatorBlockModel.ANIMATION), FunctionalBlocks.EXTRACTINATOR.asItem());
     }
 }

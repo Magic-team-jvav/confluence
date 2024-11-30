@@ -8,7 +8,7 @@ import software.bernie.geckolib.model.GeoModel;
 public class SkyMillBlockModel extends GeoModel<SkyMillBlock.Entity> {
     public static final ResourceLocation MODEL = Confluence.asResource("geo/block/sky_mill.geo.json");
     public static final ResourceLocation TEXTURE = Confluence.asResource("textures/block/sky_mill.png");
-    public static final ResourceLocation ANIMATIONS = Confluence.asResource("animations/block/sky_mill.animation.json");
+    public static final ResourceLocation ANIMATION = Confluence.asResource("animations/block/sky_mill.animation.json");
 
     @Override
     public ResourceLocation getModelResource(SkyMillBlock.Entity animatable) {
@@ -22,7 +22,7 @@ public class SkyMillBlockModel extends GeoModel<SkyMillBlock.Entity> {
 
     @Override
     public ResourceLocation getAnimationResource(SkyMillBlock.Entity animatable) {
-        return ANIMATIONS;
+        return ANIMATION;
     }
 
 }

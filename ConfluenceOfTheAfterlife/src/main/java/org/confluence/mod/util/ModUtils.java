@@ -453,6 +453,6 @@ public final class ModUtils {
     public static @Nullable CompoundTag getItemStackNbt(ItemStack itemStack) {
         NbtComponent component = itemStack.get(TCDataComponentTypes.NBT);
         if (component == null) return null;
-        return
+        return component.nbt();
     }
 }

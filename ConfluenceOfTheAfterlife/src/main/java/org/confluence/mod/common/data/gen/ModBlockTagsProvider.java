@@ -22,7 +22,6 @@ import java.util.concurrent.CompletableFuture;
 import static org.confluence.mod.Confluence.MODID;
 import static org.confluence.mod.common.init.block.ModBlocks.*;
 
-@SuppressWarnings("unchecked")
 public class ModBlockTagsProvider extends BlockTagsProvider {
     public ModBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, MODID, existingFileHelper);
@@ -31,7 +30,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
         LogBlockSet.acceptTags(this);
-        tag(BlockTags.ANVIL).add(FunctionalBlocks.LEAD_ANVIL.get());
+        tag(BlockTags.ANVIL).add(
+                FunctionalBlocks.LEAD_ANVIL.get(),
+                FunctionalBlocks.CHIPPED_LEAD_ANVIL.get(),
+                FunctionalBlocks.DAMAGED_LEAD_ANVIL.get()
+        );
         tag(ModTags.Blocks.VINES).add(
                 Blocks.VINE,
                 Blocks.WEEPING_VINES,

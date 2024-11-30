@@ -14,6 +14,9 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.item.ItemPropertyFunction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
@@ -68,7 +71,9 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.ColoredItem;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.color.IntegerRGB;
+import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import software.bernie.geckolib.model.GeoModel;
@@ -106,6 +111,23 @@ public final class ModClientEvents {
             ArrowInBowHud.initAdaptionMap();
             AchievementToast.registerAll();
             WeatherHandler.initialize();
+
+            ResourceLocation enable = Confluence.asResource("enable");
+            ItemPropertyFunction enableFunction = (itemStack, level, living, speed) -> {
+                CompoundTag tag = ModUtils.getItemStackNbt(itemStack);
+                if (tag == null) return 0;
+                return tag.getBoolean(IFunctionCouldEnable.DISABLE) ? 0 : 1;
+            };
+            ItemProperties.register(AccessoryItems.SPECTRE_GOGGLES.get(), enable, enableFunction);
+            ItemProperties.register(AccessoryItems.MECHANICAL_LENS.get(), enable, enableFunction);
+            ResourceLocation variant = Confluence.asResource("variant");
+            ItemPropertyFunction variantFunction = (itemStack, level, living, speed) -> {
+                CompoundTag tag = ModUtils.getItemStackNbt(itemStack);
+                if (tag == null) return 0;
+                return tag.getInt("VariantId");
+            };
+            ItemProperties.register(FunctionalBlocks.BASE_CHEST_BLOCK.get().asItem(), variant, variantFunction);
+            ItemProperties.register(FunctionalBlocks.DEATH_CHEST_BLOCK.get().asItem(), variant, variantFunction);
 
             ItemBlockRenderTypes.setRenderLayer(NatureBlocks.RED_ICE.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(NatureBlocks.PURPLE_ICE.get(), RenderType.translucent());

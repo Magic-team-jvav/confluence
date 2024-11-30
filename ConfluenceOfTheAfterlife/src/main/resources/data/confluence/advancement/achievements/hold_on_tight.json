@@ -20,7 +20,7 @@
             "trigger": "terra_curio:curios_equipped",
             "conditions": {
                 "item": {
-                    "tag": "curios:hook"
+                    "items": "#curios:hook"
                 }
             }
         }

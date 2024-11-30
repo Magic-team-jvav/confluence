@@ -5,6 +5,7 @@ import com.mojang.datafixers.util.Function4;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -28,8 +29,11 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.terra_curio.common.component.NbtComponent;
+import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terraentity.entity.ai.Boss;
 import org.confluence.terraentity.utils.TEUtils;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
 import javax.imageio.ImageIO;
@@ -439,5 +443,16 @@ public final class ModUtils {
             return player.getRandom().nextInt(CommonConfigs.DEFAULT_RESPAWN_TIME_MIN.get(),
                     CommonConfigs.DEFAULT_RESPAWN_TIME_MAX.get());
         }
+    }
+
+    /**
+     * 仅获取
+     *
+     * @see org.confluence.terra_curio.util.TCUtils#getItemStackNbt(ItemStack) 获取或创建
+     */
+    public static @Nullable CompoundTag getItemStackNbt(ItemStack itemStack) {
+        NbtComponent component = itemStack.get(TCDataComponentTypes.NBT);
+        if (component == null) return null;
+        return
     }
 }

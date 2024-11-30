@@ -27,6 +27,7 @@ public final class ClientPacketHandler {
         }
     });
     private static float fishingPower = 0.0F;
+    private static boolean echoVisible = false;
 
     public static int getCurrentMana() {
         return currentMana;
@@ -56,6 +57,10 @@ public final class ClientPacketHandler {
         return starPhases;
     }
 
+    public static boolean isEchoVisible() {
+        return echoVisible;
+    }
+
     public static void handleMana(ManaPacketS2C packet, Player player) {
         maxMana = packet.maxMana();
         currentMana = packet.currentMana();
@@ -75,5 +80,9 @@ public final class ClientPacketHandler {
     public static void handleStarPhases(Either<Int2ObjectMap<StarPhase>, Int2ObjectMap.Entry<StarPhase>> packet) {
         packet.ifLeft(list -> starPhases = list);
         packet.ifRight(triple -> starPhases.put(triple.getIntKey(), triple.getValue()));
+    }
+
+    public static void handleEcho(boolean visible) {
+        echoVisible = visible;
     }
 }

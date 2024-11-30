@@ -8,6 +8,7 @@ import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.terra_curio.common.item.MagicMirror;
 
 import java.util.function.Supplier;
 
@@ -30,4 +31,5 @@ public class ToolItems {
     public static final Supplier<WireCutterItem> WIRE_CUTTER = ITEMS.register("wire_cutter", WireCutterItem::new);
 
     public static final Supplier<EncumberingStoneItem> ENCUMBERING_STONE = ITEMS.register("encumbering_stone", EncumberingStoneItem::new);
+    public static final Supplier<MagicMirror> ICE_MIRROR = ITEMS.register("ice_mirror", () -> new MagicMirror(ModRarity.BLUE));
 }

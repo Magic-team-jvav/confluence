@@ -25,10 +25,10 @@ public class AchievementToast implements Toast {
     private static final Component DISPLAY = Component.translatable("achievements.toast.complete");
     private static final Hashtable<ResourceLocation, AchievementToast> ACHIEVEMENTS = new Hashtable<>();
     private final ResourceLocation icon;
-    private final AchievementDisplay display;
+    private final Display display;
     public boolean playedSound;
 
-    public AchievementToast(ResourceLocation icon, AchievementDisplay display) {
+    public AchievementToast(ResourceLocation icon, Display display) {
         this.icon = icon;
         this.display = display;
         this.playedSound = false;
@@ -112,7 +112,7 @@ public class AchievementToast implements Toast {
     public static void registerToast(String namespace, String path) {
         registerToast(ResourceLocation.fromNamespaceAndPath(namespace, "achievements/" + path), new AchievementToast(
                 ResourceLocation.fromNamespaceAndPath(namespace, "textures/achievement/" + path + ".png"),
-                new AchievementDisplay(AdvancementType.CHALLENGE,
+                new Display(AdvancementType.CHALLENGE,
                         Component.translatable("achievements." + namespace + "." + path + ".title"),
                         Component.translatable("achievements." + namespace + "." + path + ".description")
                 )));
@@ -264,4 +264,6 @@ public class AchievementToast implements Toast {
         AchievementToast.registerToast("and_good_riddance");
         AchievementToast.registerToast("to_infinity_and_beyond");
     }
+
+    public record Display(AdvancementType type, Component title, Component description) {}
 }

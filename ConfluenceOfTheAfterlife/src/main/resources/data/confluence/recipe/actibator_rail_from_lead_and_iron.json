@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "key": {
+        "#": {
+            "item": "minecraft:redstone_torch"
+        },
+        "S": {
+            "item": "minecraft:stick"
+        },
+        "X": {
+            "tag": "confluence:lead_and_iron"
+        }
+    },
+    "pattern": [
+        "XSX",
+        "X#X",
+        "XSX"
+    ],
+    "result": {
+        "count": 6,
+        "id": "minecraft:activator_rail"
+    },
+    "show_notification": true
+}

@@ -1,0 +1,10 @@
+{
+    "type": "minecraft:stonecutting",
+    "ingredient": {
+        "item":"confluence:tr_obsidian_bricks"
+    },
+    "result": {
+        "id": "confluence:tr_obsidian_beam"
+    },
+    "count": 1
+}

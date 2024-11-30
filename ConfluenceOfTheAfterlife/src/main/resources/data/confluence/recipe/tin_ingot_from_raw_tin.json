@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "confluence:raw_tin"
+        },
+        {
+            "item": "confluence:raw_tin"
+        },
+        {
+            "item": "confluence:raw_tin"
+        }
+    ],
+    "result": {
+        "id": "confluence:tin_ingot",
+        "count": 1
+    }
+}

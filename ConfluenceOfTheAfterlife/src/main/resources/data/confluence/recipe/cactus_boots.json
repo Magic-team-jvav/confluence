@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "# #",
+        "# #"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:cactus"
+        }
+    },
+    "result": {
+        "id": "confluence:cactus_boots",
+        "count": 1
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "#g#",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:cobblestone"
+        },
+        "g": {
+            "item": "confluence:raw_hellstone"
+        }
+    },
+    "result": {
+        "id": "confluence:tr_lava_bricks",
+        "count": 1
+    }
+}

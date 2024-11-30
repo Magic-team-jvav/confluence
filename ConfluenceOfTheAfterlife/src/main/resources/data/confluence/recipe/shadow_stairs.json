@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#  ",
+        "## ",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:shadow_planks"
+        }
+    },
+    "result": {
+        "id": "confluence:shadow_stairs",
+        "count": 4
+    }
+}

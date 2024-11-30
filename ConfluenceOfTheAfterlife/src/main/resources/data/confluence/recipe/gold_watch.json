@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " # ",
+        "cRc",
+        " c "
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:chain"
+        },
+        "c": {
+            "item": "minecraft:gold_ingot"
+        },
+        "R": {
+            "item": "minecraft:redstone"
+        }
+    },
+    "result": {
+        "id": "terra_curio:gold_watch",
+        "count": 1
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "confluence:stony_logs"
+        }
+    ],
+    "result": {
+        "id": "minecraft:cobblestone",
+        "count": 2
+    }
+}

@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.terraentity.init.TEEntities;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -73,11 +75,15 @@ public class BloodySpore extends Creeper implements GeoEntity {
             this.dead = true;
             this.level().explode(this, this.getX(), this.getY(), this.getZ(), 4.2F * $$0, Level.ExplosionInteraction.NONE);
             int number = (random.nextInt(2, 4)) * $$0;
+            float f = this.random.nextFloat()*2;
             for (int i = 0; i < number; i++){
                 //summon
-                BloodCrawler crawler = new BloodCrawler(TEEntities.BLOOD_CRAWLER.get(), level());
-                crawler.setPos(this.getX(), this.getY(), this.getZ());
-                level().addFreshEntity(crawler);
+                Entity summon = TEEntities.BLOOD_TUMORS.get().create(level());
+                summon.setPos(this.getX(), this.getY(), this.getZ());
+
+                Vec3 dir = new Vec3(Math.sin((f*+i*1)*3.14159)*0.3,random.nextDouble()*0.5+0.2f,Math.cos((f*+i*1)*3.14159)*0.3);
+                summon.addDeltaMovement(dir);
+                level().addFreshEntity(summon);
             }
             this.discard();
         }

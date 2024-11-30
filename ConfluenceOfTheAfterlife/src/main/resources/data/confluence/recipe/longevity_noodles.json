@@ -1,0 +1,29 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#B",
+        "WW",
+        "P/"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:egg"
+        },
+        "B": {
+            "item": "minecraft:beetroot"
+        },
+        "W": {
+            "item": "minecraft:wheat"
+        },
+        "P": {
+            "item": "minecraft:bowl"
+        },
+        "/": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "id": "confluence:longevity_noodles",
+        "count": 1
+    }
+}

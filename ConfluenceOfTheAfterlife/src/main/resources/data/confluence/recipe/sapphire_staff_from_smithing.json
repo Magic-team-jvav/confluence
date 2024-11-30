@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:smithing_transform",
+    "template": {
+        "item": "confluence:silver_ingot"
+    },
+    "base": {
+        "item": "confluence:silver_ingot"
+    },
+    "addition": {
+        "item": "confluence:big_sapphire_block"
+    },
+    "result": {
+        "id": "confluence:sapphire_staff"
+    }
+}

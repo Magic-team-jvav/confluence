@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:torch"
+        },
+        {
+            "item": "minecraft:torch"
+        },
+        {
+            "item": "minecraft:torch"
+        },
+        {
+            "item": "confluence:pixie_dust"
+        }
+    ],
+    "result": {
+        "id": "confluence:hallowed_torch",
+        "count": 3
+    }
+}

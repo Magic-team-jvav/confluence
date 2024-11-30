@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:smithing_transform",
+    "template": {
+        "item": "confluence:platinum_ingot"
+    },
+    "base": {
+        "item": "confluence:platinum_ingot"
+    },
+    "addition": {
+        "item": "minecraft:diamond_block"
+    },
+    "result": {
+        "id": "confluence:diamond_staff"
+    }
+}

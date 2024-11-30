@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "key": {
+        "#": {
+            "tag": "confluence:tr_planks"
+        },
+        "-": {
+            "item": "minecraft:stone_slab"
+        },
+        "I": {
+            "item": "minecraft:stick"
+        }
+    },
+    "pattern": [
+        "I-I",
+        "# #"
+    ],
+    "result": {
+        "id": "minecraft:grindstone"
+    },
+    "show_notification": true
+}

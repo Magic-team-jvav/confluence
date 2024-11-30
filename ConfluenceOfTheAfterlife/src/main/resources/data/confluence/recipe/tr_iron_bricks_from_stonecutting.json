@@ -1,0 +1,10 @@
+{
+    "type": "minecraft:stonecutting",
+    "ingredient": {
+        "item":"minecraft:iron_block"
+    },
+    "result": {
+        "id": "confluence:tr_iron_bricks"
+    },
+    "count": 9
+}

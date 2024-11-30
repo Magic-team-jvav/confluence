@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "E"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:pink_gel"
+        },
+        "E": {
+            "item": "confluence:bomb"
+        }
+    },
+    "result": {
+        "id": "confluence:bouncy_bomb",
+        "count": 1
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " # ",
+        "cRc",
+        " c "
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:chain"
+        },
+        "c": {
+            "item": "confluence:platinum_ingot"
+        },
+        "R": {
+            "item": "minecraft:redstone"
+        }
+    },
+    "result": {
+        "id": "confluence:platinum_watch",
+        "count": 1
+    }
+}

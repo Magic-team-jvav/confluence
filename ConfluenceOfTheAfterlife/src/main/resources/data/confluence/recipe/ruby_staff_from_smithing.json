@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:smithing_transform",
+    "template": {
+        "item": "minecraft:gold_ingot"
+    },
+    "base": {
+        "item": "minecraft:gold_ingot"
+    },
+    "addition": {
+        "item": "confluence:big_ruby_block"
+    },
+    "result": {
+        "id": "confluence:ruby_staff"
+    }
+}

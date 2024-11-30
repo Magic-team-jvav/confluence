@@ -84,11 +84,11 @@ public record StarPhasesPacketS2C(Either<Int2ObjectMap<StarPhase>, Int2ObjectMap
         }
     }
 
-    public static void sendToPlayer(ServerPlayer serverPlayer) {
-        PacketDistributor.sendToPlayer(serverPlayer, new StarPhasesPacketS2C(Either.left(ConfluenceData.get(serverPlayer.serverLevel()).getStarPhases())));
+    public static void sendToClient(ServerPlayer serverPlayer, Int2ObjectMap<StarPhase> starPhases) {
+        PacketDistributor.sendToPlayer(serverPlayer, new StarPhasesPacketS2C(Either.left(starPhases)));
     }
 
-    public static void sendToPlayer(ServerPlayer serverPlayer, int index, int timeOffset, float radius, float angle) {
+    public static void sendToClient(ServerPlayer serverPlayer, int index, int timeOffset, float radius, float angle) {
         PacketDistributor.sendToPlayer(serverPlayer, new StarPhasesPacketS2C(Either.right(new AbstractInt2ObjectMap.BasicEntry<>(index, new StarPhase(timeOffset, radius, angle)))));
     }
 }

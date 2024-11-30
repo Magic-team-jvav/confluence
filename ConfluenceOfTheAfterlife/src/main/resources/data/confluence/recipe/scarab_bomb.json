@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "E"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:sturdy_fossil"
+        },
+        "E": {
+            "item": "confluence:bomb"
+        }
+    },
+    "result": {
+        "id": "confluence:scarab_bomb",
+        "count": 1
+    }
+}

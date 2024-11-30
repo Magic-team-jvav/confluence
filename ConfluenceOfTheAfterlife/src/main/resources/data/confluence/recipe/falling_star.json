@@ -1,0 +1,24 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "confluence:star_petals"
+        },
+        {
+            "item": "confluence:star_petals"
+        },
+        {
+            "item": "confluence:star_petals"
+        },
+        {
+            "item": "confluence:star_petals"
+        },
+        {
+            "item": "confluence:star_petals"
+        }
+    ],
+    "result": {
+        "id": "confluence:falling_star",
+        "count": 1
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#/#",
+        "#/#"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:stick"
+        },
+        "/": {
+            "item": "confluence:shadow_planks"
+        }
+    },
+    "result": {
+        "id": "confluence:shadow_fence_gate",
+        "count": 1
+    }
+}

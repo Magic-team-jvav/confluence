@@ -6,12 +6,15 @@
     "refmap": "confluence.refmap.json",
     "mixins": [
         "LootModifierManagerMixin",
+        "RecipeManagerMixin",
+        "ServerAdvancementManagerMixin",
         "VillagerTrades$EmeraldsForVillagerTypeItemMixin",
         "accessor.ChestBlockEntityAccessor",
         "accessor.EntityAccessor",
         "accessor.FishingHookAccessor",
         "accessor.LanguageProviderAccessor",
         "accessor.LootParamsAccessor",
+        "block.AnvilBlockMixin",
         "block.BaseContainerBlockEntityMixin",
         "block.BlockBehaviour$BlockStateBaseMixin",
         "entity.AbstractArrowMixin",
@@ -20,23 +23,25 @@
         "entity.FishingHookMixin",
         "entity.ItemEntityMixin",
         "entity.LivingEntityMixin",
+        "entity.ServerPlayerMixin",
         "entity.VillagerMixin",
         "integration.terra_curio.BaseSpeedBootsMixin",
         "integration.terra_curio.StarClockEntityMixin",
-        "inventory.DataComponentsMixin",
-        "inventory.InventoryMixin",
-        "inventory.ItemStackMixin",
-        "inventory.ItemUtilsMixin",
-        "inventory.SlotMixin",
         "item.BowItemMixin",
         "item.FishingRodItemMixin",
         "item.HoneyBottleItemMixin",
+        "item.ItemUtilsMixin",
         "item.ProjectileWeaponItemMixin",
         "level.ImposterProtoChunkMixin",
         "level.ServerLevelMixin",
         "level.WorldGenRegionMixin"
     ],
     "client": [
+        "client.AdvancementWidgetMixin",
+        "client.BlockModelShaperMixin",
+        "client.ClientAdvancementsMixin",
+        "client.ClientLevelMixin",
+        "client.DeathScreenMixin",
         "client.GuiMixin",
         "client.ItemRendererMixin",
         "client.PauseScreenMixin",
@@ -45,5 +50,5 @@
     ],
     "injectors": {
         "defaultRequire": 1
-    }
+  }
 }

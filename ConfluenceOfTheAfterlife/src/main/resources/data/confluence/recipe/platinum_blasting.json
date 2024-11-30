@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:blasting",
+    "ingredient": {
+        "item": "confluence:raw_platinum"
+    },
+    "result": {
+        "id": "confluence:platinum_ingot"
+    },
+    "experience": 0.4,
+    "cookingtime": 100,
+    "group": "misc"
+}

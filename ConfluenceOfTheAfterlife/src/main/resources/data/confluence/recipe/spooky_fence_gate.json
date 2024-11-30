@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#/#",
+        "#/#"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:stick"
+        },
+        "/": {
+            "item": "confluence:spooky_planks"
+        }
+    },
+    "result": {
+        "id": "confluence:spooky_fence_gate",
+        "count": 1
+    }
+}

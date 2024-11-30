@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " g",
+        "gS",
+        " g"
+    ],
+    "key": {
+        "g": {
+            "item": "confluence:lead_ingot"
+        },
+        "S": {
+            "item": "minecraft:string"
+        }
+    },
+    "result": {
+        "id": "confluence:lead_short_bow",
+        "count": 1
+    }
+}

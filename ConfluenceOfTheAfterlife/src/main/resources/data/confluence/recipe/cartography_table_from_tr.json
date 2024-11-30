@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "key": {
+        "#": {
+            "tag": "confluence:tr_planks"
+        },
+        "@": {
+            "item": "minecraft:paper"
+        }
+    },
+    "pattern": [
+        "@@",
+        "##",
+        "##"
+    ],
+    "result": {
+        "id": "minecraft:cartography_table"
+    },
+    "show_notification": true
+}

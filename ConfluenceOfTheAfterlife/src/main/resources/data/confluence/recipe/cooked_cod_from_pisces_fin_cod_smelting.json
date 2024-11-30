@@ -1,0 +1,11 @@
+{
+    "type": "minecraft:smelting",
+    "ingredient": {
+        "item": "confluence:pisces_fin_cod"
+    },
+    "result": {
+        "id": "minecraft:cooked_cod"
+    },
+    "experience": 0.1,
+    "cookingtime": 200
+}

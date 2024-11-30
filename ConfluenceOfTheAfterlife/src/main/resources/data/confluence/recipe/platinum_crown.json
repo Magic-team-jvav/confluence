@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "gGg",
+        "ggg"
+    ],
+    "key": {
+        "g": {
+            "item": "confluence:platinum_ingot"
+        },
+        "G": {
+            "item": "confluence:ruby"
+        }
+    },
+    "result": {
+        "id": "confluence:platinum_crown",
+        "count": 1
+    }
+}

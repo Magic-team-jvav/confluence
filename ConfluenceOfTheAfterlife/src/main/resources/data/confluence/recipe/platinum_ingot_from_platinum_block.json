@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:platinum_block"
+        }
+    },
+    "result": {
+        "id": "confluence:platinum_ingot",
+        "count": 9
+    }
+}

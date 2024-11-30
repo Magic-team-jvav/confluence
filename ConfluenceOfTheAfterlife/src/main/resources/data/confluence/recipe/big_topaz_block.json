@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "###",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:topaz"
+        }
+    },
+    "result": {
+        "id": "confluence:big_topaz_block",
+        "count": 1
+    }
+}

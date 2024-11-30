@@ -1,0 +1,17 @@
+{
+    "type": "confluence:altar",
+    "result": {
+        "id": "confluence:flaming_arrow",
+        "count": 25
+    },
+    "ingredients": [
+        {
+            "item": "minecraft:torch",
+            "count": 1
+        },
+        {
+            "item": "minecraft:arrow",
+            "count": 25
+        }
+    ]
+}

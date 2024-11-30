@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "  /",
+        " /S",
+        "/ S"
+    ],
+    "key": {
+        "/": {
+            "tag": "confluence:lead_and_iron"
+        },
+        "S": {
+            "item": "minecraft:string"
+        }
+    },
+    "result": {
+        "id": "confluence:reinforced_fishing_pole",
+        "count": 1
+    }
+}

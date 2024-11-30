@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:raw_lead_block"
+        }
+    },
+    "result": {
+        "id": "confluence:raw_lead",
+        "count": 9
+    }
+}

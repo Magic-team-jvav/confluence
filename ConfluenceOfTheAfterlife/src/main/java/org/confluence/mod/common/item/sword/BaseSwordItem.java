@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.ItemAbility;
@@ -24,7 +25,7 @@ import org.confluence.mod.common.item.sword.stagedy.EffectStrategy;
 import org.confluence.mod.common.item.sword.stagedy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
 import org.confluence.mod.common.item.sword.stagedy.SwordPrefabs;
-import org.confluence.mod.common.item.sword.stagedy.projectile.AbstractProjContainer;
+import org.confluence.mod.common.item.sword.stagedy.projectile.IProjContainer;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 
 public class BaseSwordItem extends SwordItem {
@@ -65,6 +67,7 @@ public class BaseSwordItem extends SwordItem {
         super(tier, new Item.Properties()
                 .durability(tier.getUses())
                 .component(TCDataComponentTypes.MOD_RARITY, rarity)
+                .component(DataComponents.UNBREAKABLE,new Unbreakable(modifier.unbreakable))
                 .component(DataComponents.ATTRIBUTE_MODIFIERS,
                         modifier.attributeModifiersBuilder
                                 .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, rawDamage + tier.getAttackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
@@ -80,13 +83,19 @@ public class BaseSwordItem extends SwordItem {
     public static class ModifierBuilder {
         public float damage;
         public float speed;
-        public AbstractProjContainer proj;
+        public Supplier<? extends IProjContainer>  proj;
         public List<BiConsumer<LivingEntity,LivingEntity>> onHitEffects = new ArrayList<>();
         public QuaConsumer<ItemStack,Level,Entity,Boolean> inventoryTick;
         public ItemAttributeModifiers.Builder attributeModifiersBuilder = ItemAttributeModifiers.builder();
         private int modifyCount = 0;
         public boolean canPerformSweep = true;
         private float sweepRange = 1.0F;
+        private boolean unbreakable = false;
+
+        public ModifierBuilder setUnbreakable(){
+            this.unbreakable = true;
+            return this;
+        }
 
         /**添加击中效果
          * @see EffectStrategy
@@ -105,7 +114,7 @@ public class BaseSwordItem extends SwordItem {
         /**设置弹幕
          * @see ProjectileStrategy
          * */
-        public ModifierBuilder setProj(AbstractProjContainer proj){
+        public ModifierBuilder setProj(Supplier<? extends IProjContainer>  proj){
             this.proj = proj;
             return this;
         }

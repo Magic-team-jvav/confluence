@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "#/#",
+        " / "
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:silver_ingot"
+        },
+        "/": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "id": "confluence:silver_hammer",
+        "count": 1
+    }
+}

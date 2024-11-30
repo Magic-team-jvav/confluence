@@ -12,31 +12,13 @@ import org.confluence.mod.common.init.ModEntities;
 import org.jetbrains.annotations.NotNull;
 
 public class StarFuryProjectile extends SwordProjectile {
-    @Override
-    protected int getBaseDamage() {
-        return 10;
-    }
-
-    @Override
-    protected float getBaseKnockBack() {
-        return 1;
-    }
-
     public int hitCount = 2;//可穿透两个目标
-
 
     public StarFuryProjectile(EntityType<? extends SwordProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
-    public StarFuryProjectile(Player owner) {
-        super(ModEntities.STAR_FURY_PROJECTILE.get(),owner.level());
-        this.setOwner(owner);
-    }
-
-
-
-    @Override//添加减速药水效果
+    @Override
     protected void onHitEntity(@NotNull EntityHitResult pResult) {
         super.onHitEntity(pResult);
         if(!this.level().isClientSide()) {
@@ -54,8 +36,5 @@ public class StarFuryProjectile extends SwordProjectile {
         if(!this.level().isClientSide())
             discard();
     }
-
-
-
 
 }

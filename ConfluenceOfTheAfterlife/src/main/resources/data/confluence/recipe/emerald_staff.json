@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:smithing_transform",
+    "template": {
+        "item": "confluence:tungsten_ingot"
+    },
+    "base": {
+        "item": "confluence:tungsten_ingot"
+    },
+    "addition": {
+        "item": "confluence:big_tr_emerald_block"
+    },
+    "result": {
+        "id": "confluence:emerald_staff"
+    }
+}

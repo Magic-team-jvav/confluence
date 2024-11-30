@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:smithing_transform",
+    "template": {
+        "item": "minecraft:copper_ingot"
+    },
+    "base": {
+        "item": "minecraft:copper_ingot"
+    },
+    "addition": {
+        "item": "confluence:big_tr_amethyst_block"
+    },
+    "result": {
+        "id": "confluence:amethyst_staff"
+    }
+}

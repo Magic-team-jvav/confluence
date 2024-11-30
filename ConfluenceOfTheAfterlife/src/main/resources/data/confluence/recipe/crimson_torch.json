@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:torch"
+        },
+        {
+            "item": "minecraft:torch"
+        },
+        {
+            "item": "minecraft:torch"
+        },
+        {
+            "item": "confluence:vertebra"
+        }
+    ],
+    "result": {
+        "id": "confluence:crimson_torch",
+        "count": 3
+    }
+}

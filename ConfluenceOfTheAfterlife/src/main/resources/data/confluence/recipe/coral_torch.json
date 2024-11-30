@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:torch"
+        },
+        {
+            "item": "minecraft:torch"
+        },
+        {
+            "item": "minecraft:torch"
+        },
+        {
+            "tag": "confluence:coral"
+        }
+    ],
+    "result": {
+        "id": "confluence:coral_torch",
+        "count": 3
+    }
+}

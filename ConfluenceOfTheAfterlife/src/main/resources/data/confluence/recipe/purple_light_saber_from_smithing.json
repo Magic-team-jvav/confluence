@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:smithing_transform",
+    "template": {
+        "item": "confluence:meteorite_ingot"
+    },
+    "base": {
+        "item": "confluence:meteorite_ingot"
+    },
+    "addition": {
+        "item": "confluence:big_tr_amethyst_block"
+    },
+    "result": {
+        "id": "confluence:purple_light_saber"
+    }
+}

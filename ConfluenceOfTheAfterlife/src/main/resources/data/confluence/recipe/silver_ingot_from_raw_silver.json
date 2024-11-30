@@ -1,0 +1,24 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "confluence:raw_silver"
+        },
+        {
+            "item": "confluence:raw_silver"
+        },
+        {
+            "item": "confluence:raw_silver"
+        },
+        {
+            "item": "confluence:raw_silver"
+        },
+        {
+            "item": "confluence:raw_silver"
+        }
+    ],
+    "result": {
+        "id": "confluence:silver_ingot",
+        "count": 1
+    }
+}

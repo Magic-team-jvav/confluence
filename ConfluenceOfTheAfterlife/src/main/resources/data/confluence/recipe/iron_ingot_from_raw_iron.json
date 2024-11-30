@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:raw_iron"
+        },
+        {
+            "item": "minecraft:raw_iron"
+        },
+        {
+            "item": "minecraft:raw_iron"
+        },
+        {
+            "item": "minecraft:raw_iron"
+        }
+    ],
+    "result": {
+        "id": "minecraft:iron_ingot",
+        "count": 1
+    }
+}

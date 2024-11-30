@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:torch"
+        },
+        {
+            "item": "minecraft:torch"
+        },
+        {
+            "item": "minecraft:torch"
+        },
+        {
+            "item": "confluence:jungle_spore"
+        }
+    ],
+    "result": {
+        "id": "confluence:jungle_torch",
+        "count": 3
+    }
+}

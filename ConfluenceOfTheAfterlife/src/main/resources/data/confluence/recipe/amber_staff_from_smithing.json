@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:smithing_transform",
+    "template": {
+        "item": "confluence:sturdy_fossil"
+    },
+    "base": {
+        "item": "confluence:sturdy_fossil"
+    },
+    "addition": {
+        "item": "confluence:big_amber_block"
+    },
+    "result": {
+        "id": "confluence:amber_staff"
+    }
+}

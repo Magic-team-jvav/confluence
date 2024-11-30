@@ -1,0 +1,16 @@
+{
+    "type": "confluence:sky_mill",
+    "result": {
+        "id": "confluence:sun_plate",
+        "count": 25
+    },
+    "ingredients": [
+        {
+            "item": "minecraft:cobblestone",
+            "count": 25
+        },
+        {
+            "item": "confluence:falling_star"
+        }
+    ]
+}

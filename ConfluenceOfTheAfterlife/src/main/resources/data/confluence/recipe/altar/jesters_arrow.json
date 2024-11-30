@@ -1,0 +1,17 @@
+{
+    "type": "confluence:altar",
+    "result": {
+        "id": "confluence:jesters_arrow",
+        "count": 25
+    },
+    "ingredients": [
+        {
+            "item": "confluence:falling_star",
+            "count": 1
+        },
+        {
+            "item": "minecraft:arrow",
+            "count": 25
+        }
+    ]
+}

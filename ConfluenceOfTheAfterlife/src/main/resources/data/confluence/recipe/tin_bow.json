@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "equipment",
+    "key": {
+        "#": {
+            "item": "confluence:tin_ingot"
+        },
+        "X": {
+            "item": "minecraft:string"
+        }
+    },
+    "pattern": [
+        " #X",
+        "# X",
+        " #X"
+    ],
+    "result": {
+        "id": "confluence:tin_bow"
+    }
+}

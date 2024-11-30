@@ -38,12 +38,18 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> FISHING_LAVA = register("gameplay/fishing/lava");
     public static final ResourceKey<LootTable> FISH = register("gameplay/fishing");
 
+    public static final ResourceKey<LootTable> EXTRACT_DESERT_FOSSIL = register("gameplay/extract/with_desert_fossil");
+    public static final ResourceKey<LootTable> EXTRACT_GRAVEL = register("gameplay/extract/with_gravel");
+    public static final ResourceKey<LootTable> EXTRACT_JUNK = register("gameplay/extract/with_junk");
+    public static final ResourceKey<LootTable> EXTRACT_SLUSH = register("gameplay/extract/with_slush");
+    public static final ResourceKey<LootTable> EXTRACT_MARINE_GRAVEL = register("gameplay/extract/with_marine_gravel");
+
 
     public static ResourceKey<LootTable> register(String name) {
         return ResourceKey.create(Registries.LOOT_TABLE, Confluence.asResource(name));
     }
 
-    public static ResourceKey<LootTable> registerOrGet(ResourceLocation location) {
+    public static ResourceKey<LootTable> getOrCreate(ResourceLocation location) {
         return ResourceKey.create(Registries.LOOT_TABLE, location);
     }
 }

@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "E"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:gel"
+        },
+        "E": {
+            "item": "confluence:bomb"
+        }
+    },
+    "result": {
+        "id": "confluence:sticky_bomb",
+        "count": 1
+    }
+}

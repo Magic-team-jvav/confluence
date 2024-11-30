@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#"
+    ],
+    "key": {
+        "#": {
+            "item":"confluence:tr_oak_planks"
+        }
+    },
+    "result": {
+        "id": "confluence:tr_oak_beam",
+        "count": 1
+    }
+}

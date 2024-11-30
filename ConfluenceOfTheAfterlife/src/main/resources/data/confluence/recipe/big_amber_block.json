@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "###",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:amber"
+        }
+    },
+    "result": {
+        "id": "confluence:big_amber_block",
+        "count": 1
+    }
+}

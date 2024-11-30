@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:smelting",
+    "ingredient": {
+        "item": "confluence:raw_tr_crimson"
+    },
+    "result": {
+        "id": "confluence:tr_crimson_ingot"
+    },
+    "experience": 0.5,
+    "cookingtime": 200,
+    "group": "misc"
+}

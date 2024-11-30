@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:blasting",
+    "ingredient": {
+        "item": "confluence:raw_tungsten"
+    },
+    "result": {
+        "id": "confluence:tungsten_ingot"
+    },
+    "experience": 0.3,
+    "cookingtime": 100,
+    "group": "misc"
+}

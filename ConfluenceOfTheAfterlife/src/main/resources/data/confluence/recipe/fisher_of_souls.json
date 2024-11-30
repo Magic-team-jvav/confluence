@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "  /",
+        " /S",
+        "/ S"
+    ],
+    "key": {
+        "/": {
+            "item": "confluence:ebony_ingot"
+        },
+        "S": {
+            "item": "minecraft:string"
+        }
+    },
+    "result": {
+        "id": "confluence:fisher_of_souls",
+        "count": 1
+    }
+}

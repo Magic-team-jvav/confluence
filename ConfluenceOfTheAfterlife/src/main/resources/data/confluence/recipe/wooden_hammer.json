@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "#/#",
+        " / "
+    ],
+    "key": {
+        "#": {
+            "tag": "confluence:tr_planks"
+        },
+        "/": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "id": "confluence:wooden_hammer",
+        "count": 1
+    }
+}

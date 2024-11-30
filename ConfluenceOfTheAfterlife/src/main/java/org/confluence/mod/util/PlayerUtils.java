@@ -9,7 +9,6 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.api.event.GetCustomDiggingPowerEvent;
 import org.confluence.mod.common.attachment.ManaStorage;
@@ -76,15 +75,11 @@ public final class PlayerUtils {
         if (manaStorage.receiveMana(sup)) syncMana2Client(serverPlayer, manaStorage);
     }
 
-    public static boolean isServerNotFake(Player player) {
-        return player instanceof ServerPlayer && !(player instanceof FakePlayer);
-    }
-
     public static void syncSavedData(ServerPlayer serverPlayer) {
         ConfluenceData data = ConfluenceData.get(serverPlayer.serverLevel());
-        PacketDistributor.sendToPlayer(serverPlayer, new WindSpeedPacketS2C(data.getWindSpeedX(), data.getWindSpeedZ()));
-        PacketDistributor.sendToPlayer(serverPlayer, new GamePhasePacketS2C(data.getGamePhase()));
-        StarPhasesPacketS2C.sendToAll(serverPlayer.serverLevel());
+        WindSpeedPacketS2C.sendToClient(serverPlayer, data.getWindSpeedX(), data.getWindSpeedZ());
+        GamePhasePacketS2C.sendToClient(serverPlayer, data.getGamePhase());
+        StarPhasesPacketS2C.sendToClient(serverPlayer, data.getStarPhases());
     }
 
     public static float getFishingPower(ServerPlayer player) {
@@ -113,7 +108,8 @@ public final class PlayerUtils {
         int max = 0;
         ItemStack ret = ItemStack.EMPTY;
         for (ItemStack itemStack : player.getInventory().items) {
-            if (!itemStack.isEmpty() && itemStack.getItem() instanceof PickaxeItem pickaxeItem) {
+            if (itemStack.isEmpty()) continue;
+            if (itemStack.getItem() instanceof PickaxeItem pickaxeItem) {
                 Tier tier = pickaxeItem.getTier();
                 if (tier instanceof ModTiers.PoweredTier poweredTier) {
                     if (poweredTier.getPower() > max) {

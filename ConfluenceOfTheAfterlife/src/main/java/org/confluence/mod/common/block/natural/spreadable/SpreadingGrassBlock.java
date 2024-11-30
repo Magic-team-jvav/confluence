@@ -26,7 +26,7 @@ public class SpreadingGrassBlock extends SpreadingBlock {
                 case CORRUPT -> NatureBlocks.CORRUPTION_THORN.get();
                 default -> null;
             };
-            if (thorn != null && randomSource.nextInt(10) == 0
+            if (thorn != null && randomSource.nextInt(50) == 0
                 && serverLevel.getBlockState(above).isAir()
                 && serverLevel.getBlockState(above.east()).isAir()
                 && serverLevel.getBlockState(above.west()).isAir()

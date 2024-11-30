@@ -11,13 +11,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
-import org.confluence.mod.common.entity.projectile.StarFuryProjectile;
-import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.ModEntities;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StarFuryProjContainer implements AbstractProjContainer {
+public class StarFuryProjContainer extends AbstractProjContainer {
     protected float maxAngle = 30;//索敌最大角度
     protected float range = 30;//索敌范围
     protected float predict = 10;//预判量
@@ -33,33 +32,26 @@ public class StarFuryProjContainer implements AbstractProjContainer {
     };
 
     protected void init(){};
+
     public StarFuryProjContainer(){
         init();
     }
-    @Override
-    public int getCooldown() {
-        return 10;
+    public StarFuryProjContainer(float damage,float knockBack,int cd,float v,SoundEvent sound){
+        super(damage,knockBack,cd,v,sound);
+        init();
     }
 
-    @Override
-    public float getBaseVelocity() {
-        return 1.5f;
-    }
-
-    @Override
-    public SoundEvent getSound() {
-        return ModSoundEvents.STAR.get();
-    }
 
     @Override
     public Projectile getProjectile(Player player, ItemStack weapon) {
-        return new StarFuryProjectile(player);
+        Projectile proj = ModEntities.STAR_FURY_PROJECTILE.get().create(player.level()).addKnockBack(knockBack).addAttackDamage(damage);
+        proj.setOwner(player);
+        return proj;
     }
 
     @Override
     public void genProjectile(Player owner, ItemStack weapon) {
         owner.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), getSound(), SoundSource.AMBIENT, 1.0F, 1.0F);
-
         Vec3 eye = owner.getEyePosition();
         LivingEntity target = getTargets(eye,eye.add(owner.getForward().normalize().scale(range)),owner.level(), owner);
         Vec3 waveTarget;
@@ -84,17 +76,6 @@ public class StarFuryProjContainer implements AbstractProjContainer {
         proj.setPos(waveTarget.add(Math.random() * getOffsetH() - getOffsetH(), getOffsetV() ,Math.random() * getOffsetH() - getOffsetH()));
         proj.shoot(waveTarget.x - proj.getX(),waveTarget.y- proj.getY(),waveTarget.z - proj.getZ(),getBaseVelocity(),actualInaccuracy);
         owner.level().addFreshEntity(proj);
-    }
-
-
-    @Override
-    public float getVelocity(LivingEntity living) {
-        return 0;
-    }
-
-    @Override
-    public int getAttackSpeed(LivingEntity living) {
-        return 0;
     }
 
 

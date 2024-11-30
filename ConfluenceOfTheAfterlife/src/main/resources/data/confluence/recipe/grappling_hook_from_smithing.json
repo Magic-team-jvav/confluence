@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:smithing_transform",
+    "template": {
+        "item": "minecraft:chain"
+    },
+    "base": {
+        "item": "minecraft:chain"
+    },
+    "addition": {
+        "item": "confluence:hook"
+    },
+    "result": {
+        "id": "confluence:grappling_hook"
+    }
+}

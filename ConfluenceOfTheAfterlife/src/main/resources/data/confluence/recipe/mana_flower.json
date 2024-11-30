@@ -1,0 +1,14 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "confluence:natures_gift"
+        },
+        {
+            "item": "confluence:mana_potion"
+        }
+    ],
+    "result": {
+        "id": "confluence:mana_flower"
+    }
+}

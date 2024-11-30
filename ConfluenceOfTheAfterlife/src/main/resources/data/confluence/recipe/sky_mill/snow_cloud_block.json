@@ -1,0 +1,14 @@
+{
+    "type": "confluence:sky_mill",
+    "result": {
+        "id": "confluence:snow_cloud_block",
+        "count": 1
+    },
+    "ingredients": [
+        {
+            "item": "confluence:rain_cloud_block",
+            "count": 1
+        }
+
+    ]
+}

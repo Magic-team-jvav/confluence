@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:blasting",
+    "ingredient": {
+        "item": "confluence:raw_ebony"
+    },
+    "result": {
+        "id": "confluence:ebony_ingot"
+    },
+    "experience": 0.4,
+    "cookingtime": 100,
+    "group": "misc"
+}

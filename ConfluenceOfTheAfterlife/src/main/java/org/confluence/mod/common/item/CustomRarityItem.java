@@ -39,6 +39,10 @@ public class CustomRarityItem extends Item {
 
     @Override
     public @NotNull MutableComponent getName(@NotNull ItemStack pStack) {
-        return Component.translatable(getDescriptionId()).withStyle(style -> style.withColor(pStack.get(TCDataComponentTypes.MOD_RARITY).getColor()));
+        return withRarity(pStack, Component.translatable(getDescriptionId(pStack)));
+    }
+
+    protected MutableComponent withRarity(@NotNull ItemStack pStack, MutableComponent component) {
+        return component.withStyle(style -> style.withColor(pStack.get(TCDataComponentTypes.MOD_RARITY).getColor()));
     }
 }

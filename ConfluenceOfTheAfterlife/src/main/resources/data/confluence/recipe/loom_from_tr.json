@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "key": {
+        "#": {
+            "tag": "confluence:tr_planks"
+        },
+        "@": {
+            "item": "minecraft:string"
+        }
+    },
+    "pattern": [
+        "@@",
+        "##"
+    ],
+    "result": {
+        "id": "minecraft:loom"
+    },
+    "show_notification": true
+}

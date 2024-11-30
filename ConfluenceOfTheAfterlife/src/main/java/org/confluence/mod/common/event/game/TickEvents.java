@@ -11,6 +11,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
+import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.util.PlayerUtils;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
@@ -26,8 +27,9 @@ public final class TickEvents {
     @SubscribeEvent
     public static void playerTick$Post(PlayerTickEvent.Post event) {
         Player player = event.getEntity();
-        if (PlayerUtils.isServerNotFake(player)) {
-            PlayerUtils.regenerateMana((ServerPlayer) player);
+        if (player instanceof ServerPlayer serverPlayer) {
+            PlayerUtils.regenerateMana(serverPlayer);
+            ((IServerPlayer) serverPlayer).confluence$setCouldPickupItem(true);
         }
     }
 }

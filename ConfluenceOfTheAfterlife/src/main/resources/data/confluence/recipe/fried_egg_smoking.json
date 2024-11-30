@@ -1,0 +1,11 @@
+{
+    "type": "minecraft:smoking",
+    "ingredient": {
+        "item": "minecraft:egg"
+    },
+    "result": {
+        "id": "confluence:fried_egg"
+    },
+    "experience": 0.1,
+    "cookingtime": 100
+}

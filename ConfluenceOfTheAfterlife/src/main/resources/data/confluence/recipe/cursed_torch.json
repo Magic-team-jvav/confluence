@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:torch"
+        },
+        {
+            "item": "minecraft:torch"
+        },
+        {
+            "item": "minecraft:torch"
+        },
+        {
+            "item": "confluence:cursed_flame"
+        }
+    ],
+    "result": {
+        "id": "confluence:cursed_torch",
+        "count": 3
+    }
+}

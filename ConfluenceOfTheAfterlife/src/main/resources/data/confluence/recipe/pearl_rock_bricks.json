@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "##",
+        "##"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:pearl_stone"
+        }
+    },
+    "result": {
+        "id": "confluence:pearl_rock_bricks",
+        "count": 4
+    }
+}

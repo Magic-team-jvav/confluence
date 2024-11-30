@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:palm_wood"
+        }
+    },
+    "result": {
+        "id": "confluence:palm_planks",
+        "count": 4
+    }
+}

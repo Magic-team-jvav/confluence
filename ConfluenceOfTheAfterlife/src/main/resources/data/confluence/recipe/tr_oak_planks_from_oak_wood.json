@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:oak_wood"
+        },
+        {
+            "item": "minecraft:oak_wood"
+        },
+        {
+            "item": "minecraft:oak_wood"
+        }
+    ],
+    "result": {
+        "id": "confluence:tr_oak_planks",
+        "count": 12
+    }
+}

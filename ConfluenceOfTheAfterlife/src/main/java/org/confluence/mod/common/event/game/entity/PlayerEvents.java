@@ -1,6 +1,9 @@
 package org.confluence.mod.common.event.game.entity;
 
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -20,7 +23,9 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.*;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.advancement.ModAchievements;
 import org.confluence.mod.common.attachment.EverBeneficial;
+import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.effect.harmful.CursedEffect;
 import org.confluence.mod.common.effect.harmful.SilencedEffect;
 import org.confluence.mod.common.effect.harmful.StonedEffect;
@@ -34,6 +39,9 @@ import org.confluence.mod.common.item.common.BaseMinecartItem;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.mixed.IAbstractMinecart;
 import org.confluence.mod.mixed.IFishingHook;
+import org.confluence.mod.mixed.IServerPlayer;
+import org.confluence.mod.network.s2c.EchoVisibilityPacketS2C;
+import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
@@ -48,11 +56,19 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void playerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         Player player = event.getEntity();
-        if (PlayerUtils.isServerNotFake(player)) {
-            ServerPlayer serverPlayer = (ServerPlayer) player;
+        if (player instanceof ServerPlayer serverPlayer) {
             PlayerUtils.syncMana2Client(serverPlayer);
             PlayerUtils.syncSavedData(serverPlayer);
+            FishingPowerInfoPacketS2C.sendToClient(serverPlayer);
+            EchoVisibilityPacketS2C.sendToClient(serverPlayer);
         }
+    }
+
+    @SubscribeEvent
+    public static void leftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+        Level level = event.getLevel();
+        BlockPos pos = event.getPos();
+        AltarBlock.onLeftClick(level.getBlockState(pos), level, pos, event.getEntity());
     }
 
     @SubscribeEvent
@@ -123,9 +139,9 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void attackEntity(AttackEntityEvent event) {
         Player player = event.getEntity();
-        if (PlayerUtils.isServerNotFake(player)) {
+        if (player instanceof ServerPlayer serverPlayer) {
             Entity target = event.getTarget();
-            AccessoryItems.applyLuckyCoin(player, target);
+            AccessoryItems.applyLuckyCoin(serverPlayer, target);
         }
     }
 
@@ -206,6 +222,23 @@ public final class PlayerEvents {
                 power = ModTiers.getPowerForVanillaTiers(tiers);
             }
             event.setCanHarvest(ModTiers.isCorrectToolForDrops(power, itemStack, event.getTargetBlock()));
+        }
+    }
+
+    @SubscribeEvent
+    public static void itemPickup(ItemEntityPickupEvent.Pre event) {
+        if (event.getPlayer() instanceof ServerPlayer serverPlayer) {
+            if (!((IServerPlayer) serverPlayer).confluence$isCouldPickupItem()) {
+                event.setCanPickup(TriState.FALSE);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void advancementEarn(AdvancementEvent.AdvancementEarnEvent event) {
+        AdvancementHolder advancement = event.getAdvancement();
+        if (event.getEntity() instanceof ServerPlayer player && ModAchievements.DISPLAY_OFFSET.containsKey(advancement.id())) {
+            player.server.getPlayerList().broadcastSystemMessage(Component.translatable("chat.type.advancement.achievement", player.getDisplayName(), Advancement.name(advancement)), false);
         }
     }
 }

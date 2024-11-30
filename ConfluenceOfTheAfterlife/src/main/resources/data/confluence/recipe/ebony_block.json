@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "###",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:ebony_ingot"
+        }
+    },
+    "result": {
+        "id": "confluence:ebony_block",
+        "count": 1
+    }
+}

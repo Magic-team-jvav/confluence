@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "confluence:lead_block"
+    },
+    "i": {
+      "tag": "confluence:lead_and_iron"
+    }
+  },
+  "pattern": [
+    "III",
+    " i ",
+    "iii"
+  ],
+  "result": {
+    "id": "minecraft:anvil"
+  },
+  "show_notification": true
+}

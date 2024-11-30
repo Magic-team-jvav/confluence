@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:smithing_transform",
+    "template": {
+        "item": "minecraft:golden_sword"
+    },
+    "base": {
+        "item": "minecraft:gold_ingot"
+    },
+    "addition": {
+        "item": "confluence:ruby"
+    },
+    "result": {
+        "id": "confluence:golden_board_sword"
+    }
+}

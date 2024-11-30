@@ -41,6 +41,7 @@ public final class ModSoundEvents {
     public static final Supplier<SoundEvent> TERRA_OPERATION = register("terra_operation"); // 操作音效
     public static final Supplier<SoundEvent> USE_MOUNTS = register("use_mounts"); // 召唤坐骑
     public static final Supplier<SoundEvent> DECOUPLING = register("decoupling"); // 脱钩
+    public static final Supplier<SoundEvent> ACHIEVEMENTS = register("achievements"); // 成就音效
 
     private static Supplier<SoundEvent> register(String name) {
         return SOUND_EVENT.register(name, () -> SoundEvent.createVariableRangeEvent(Confluence.asResource(name)));

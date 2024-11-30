@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:raw_ebony_block"
+        }
+    },
+    "result": {
+        "id": "confluence:raw_ebony",
+        "count": 9
+    }
+}

@@ -22,6 +22,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -138,12 +139,13 @@ public class AbstractMonster extends Monster implements GeoEntity {
     public void tick(){
         super.tick();
 
+        if(builder!=null && builder.ticker!=null) builder.ticker.accept(this);
 
         if(!level().isClientSide && --attackInternal<0 && builder.attachAttack){
             var entities = level().getEntities(this, this.getBoundingBox());
             if (!entities.isEmpty()) {
                 for (var e : entities) {
-                    if (e instanceof LivingEntity living && canAttack(living)){
+                    if (e instanceof LivingEntity living && canAttack(living) && !(e instanceof Monster)){
                         attackInternal = _attackInternal;
                         e.hurt(this.damageSources().generic(),(float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue());
                     }
@@ -155,9 +157,8 @@ public class AbstractMonster extends Monster implements GeoEntity {
 
 
     public boolean canAttack(LivingEntity entity) {
-        return attackInternal < 0 &&
-                (entity instanceof Player && !entity.isInvulnerable() && !((Player) entity).isCreative()||
-                        getTarget() != null && getTarget().is(entity) && entity != this &&!(entity instanceof AbstractTerraBossBase));
+        return attackInternal < 0 && entity.canBeSeenAsEnemy() &&
+                        entity != this &&!(entity instanceof AbstractTerraBossBase);
     }
 
 
@@ -184,6 +185,7 @@ public class AbstractMonster extends Monster implements GeoEntity {
         public Supplier<SoundEvent> deathSound;
         public Supplier<SoundEvent> ambientSound;
         public Supplier<SoundEvent> hurtSound;
+        public Consumer<AbstractMonster> ticker;
 
         public BiConsumer<AnimatableManager.ControllerRegistrar,AbstractMonster> controller;
         public List<BiConsumer<GoalSelector,AbstractMonster>> goals = new ArrayList<>();
@@ -287,6 +289,10 @@ public class AbstractMonster extends Monster implements GeoEntity {
         }
         public Builder setStepHeight(float stepHeight) {
             this.STEP_HEIGHT = stepHeight;
+            return this;
+        }
+        public Builder setTicker(Consumer<AbstractMonster> ticker) {
+            this.ticker = ticker;
             return this;
         }
     }

@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:blasting",
+    "ingredient": {
+        "item": "confluence:raw_tr_crimson"
+    },
+    "result": {
+        "id": "confluence:tr_crimson_ingot"
+    },
+    "experience": 0.4,
+    "cookingtime": 100,
+    "group": "misc"
+}

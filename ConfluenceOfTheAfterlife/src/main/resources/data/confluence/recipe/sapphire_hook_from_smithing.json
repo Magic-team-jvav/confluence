@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:smithing_transform",
+    "template": {
+        "item": "confluence:sapphire_chain"
+    },
+    "base": {
+        "item": "confluence:sapphire_chain"
+    },
+    "addition": {
+        "item": "confluence:big_sapphire_block"
+    },
+    "result": {
+        "id": "confluence:sapphire_hook"
+    }
+}

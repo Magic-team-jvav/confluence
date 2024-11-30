@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:smithing_transform",
+    "template": {
+        "item": "confluence:topaz_chain"
+    },
+    "base": {
+        "item": "confluence:topaz_chain"
+    },
+    "addition": {
+        "item": "confluence:big_topaz_block"
+    },
+    "result": {
+        "id": "confluence:topaz_hook"
+    }
+}

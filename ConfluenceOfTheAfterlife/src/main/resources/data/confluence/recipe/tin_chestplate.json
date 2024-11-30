@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "# #",
+        "###",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:tin_ingot"
+        }
+    },
+    "result": {
+        "id": "confluence:tin_chestplate",
+        "count": 1
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "#g#",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:sugar"
+        },
+        "g": {
+            "item": "minecraft:red_dye"
+        }
+    },
+    "result": {
+        "id": "confluence:red_candy_block",
+        "count": 1
+    }
+}

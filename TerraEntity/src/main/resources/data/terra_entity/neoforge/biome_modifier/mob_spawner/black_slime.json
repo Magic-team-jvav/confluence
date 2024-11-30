@@ -1,0 +1,10 @@
+{
+    "type": "neoforge:add_spawns",
+    "biomes": "#c:is_overworld",
+    "spawners": {
+        "type": "terra_entity:black_slime",
+        "weight": 120,
+        "minCount": 1,
+        "maxCount": 3
+    }
+}

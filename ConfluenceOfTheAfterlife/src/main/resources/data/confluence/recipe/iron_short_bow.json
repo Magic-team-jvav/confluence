@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " g",
+        "gS",
+        " g"
+    ],
+    "key": {
+        "g": {
+            "item": "minecraft:iron_ingot"
+        },
+        "S": {
+            "item": "minecraft:string"
+        }
+    },
+    "result": {
+        "id": "confluence:iron_short_bow",
+        "count": 1
+    }
+}

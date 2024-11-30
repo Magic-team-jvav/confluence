@@ -26,6 +26,8 @@ public class Confluence {
         ClientConfigs.register(container);
         ModBlocks.register(eventBus);
         ModItems.register(eventBus);
+        ModVillagers.register(eventBus);
+        ModRecipes.register(eventBus);
         ModFluids.initialize();
         ModTriggers.TYPES.register(eventBus);
         ModTabs.TABS.register(eventBus);
@@ -37,11 +39,11 @@ public class Confluence {
         ModFeatures.FEATURES.register(eventBus);
         ModJukeboxSongs.SONGS.register(eventBus);
         ModAttributes.ATTRIBUTES.register(eventBus);
-        ModVillagers.register(eventBus);
+        ModMenus.TYPES.register(eventBus);
     }
 
     public static void registerGameRules() {
-        SPREADABLE_CHANCE = GameRules.register("confluenceSpreadableChance", GameRules.Category.MISC, GameRules.IntegerValue.create(10));
+        SPREADABLE_CHANCE = GameRules.register("confluenceSpreadableChance", GameRules.Category.MISC, GameRules.IntegerValue.create(100));
     }
 
     public static ResourceLocation asResource(String path) {

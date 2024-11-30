@@ -1,0 +1,16 @@
+{
+    "type": "confluence:altar",
+    "result": {
+        "id": "confluence:slime_crown"
+    },
+    "ingredients": [
+        {
+            "item": "confluence:gel",
+            "count": 20
+        },
+        {
+            "item": "confluence:gold_crown",
+            "count": 1
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "# #"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:platinum_ingot"
+        }
+    },
+    "result": {
+        "id": "confluence:platinum_helmet",
+        "count": 1
+    }
+}

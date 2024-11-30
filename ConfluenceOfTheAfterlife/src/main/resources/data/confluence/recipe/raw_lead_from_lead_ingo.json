@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "confluence:raw_lead"
+        },
+        {
+            "item": "confluence:raw_lead"
+        },
+        {
+            "item": "confluence:raw_lead"
+        },
+        {
+            "item": "confluence:raw_lead"
+        }
+    ],
+    "result": {
+        "id": "confluence:lead_ingot",
+        "count": 1
+    }
+}

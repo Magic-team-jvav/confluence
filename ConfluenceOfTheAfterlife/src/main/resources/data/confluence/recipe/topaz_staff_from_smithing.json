@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:smithing_transform",
+    "template": {
+        "item": "confluence:tin_ingot"
+    },
+    "base": {
+        "item": "confluence:tin_ingot"
+    },
+    "addition": {
+        "item": "confluence:big_topaz_block"
+    },
+    "result": {
+        "id": "confluence:topaz_staff"
+    }
+}

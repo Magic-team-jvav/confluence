@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:big_tr_amethyst_block"
+        }
+    },
+    "result": {
+        "id": "confluence:tr_amethyst",
+        "count": 9
+    }
+}

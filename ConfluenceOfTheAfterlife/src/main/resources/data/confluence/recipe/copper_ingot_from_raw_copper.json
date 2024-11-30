@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:raw_copper"
+        },
+        {
+            "item": "minecraft:raw_copper"
+        },
+        {
+            "item": "minecraft:raw_copper"
+        }
+    ],
+    "result": {
+        "id": "minecraft:copper_ingot",
+        "count": 1
+    }
+}

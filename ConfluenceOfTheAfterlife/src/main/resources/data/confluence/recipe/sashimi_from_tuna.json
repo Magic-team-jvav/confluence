@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "confluence:tuna"
+        },
+        {
+            "item": "confluence:tuna"
+        }
+    ],
+    "result": {
+        "id": "confluence:sashimi",
+        "count": 1
+    }
+}

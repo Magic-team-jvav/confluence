@@ -1,0 +1,24 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "confluence:falling_star"
+        },
+        {
+            "item": "confluence:falling_star"
+        },
+        {
+            "item": "confluence:falling_star"
+        },
+        {
+            "item": "confluence:falling_star"
+        },
+        {
+            "item": "confluence:falling_star"
+        }
+    ],
+    "result": {
+        "id": "confluence:mana_star",
+        "count": 1
+    }
+}

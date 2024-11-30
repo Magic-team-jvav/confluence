@@ -3,7 +3,7 @@ package org.confluence.mod.common.item.sword.stagedy;
 
 import net.minecraft.world.entity.LivingEntity;
 import org.confluence.mod.common.item.sword.BaseSwordItem.ModifierBuilder;
-import org.confluence.mod.common.item.sword.stagedy.projectile.AbstractProjContainer;
+import org.confluence.mod.common.item.sword.stagedy.projectile.IProjContainer;
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -29,7 +29,7 @@ public class SwordPrefabs {
     public static final Supplier<ModifierBuilder>  NORMAL_SWORD = ()->BOARD_SWORD.apply(1.5f);
 
     /** 弹幕剑*/
-    public static final Function<AbstractProjContainer,ModifierBuilder> PROJ_SWORD = (strategy)->new ModifierBuilder()
+    public static final Function<Supplier<? extends IProjContainer> ,ModifierBuilder> PROJ_SWORD = (strategy)->new ModifierBuilder()
             .setProj(strategy);
 
     /** 效果剑*/

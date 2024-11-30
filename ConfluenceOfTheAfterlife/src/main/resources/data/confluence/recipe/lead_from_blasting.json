@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:blasting",
+    "ingredient": {
+        "item": "confluence:raw_lead"
+    },
+    "result": {
+        "id": "confluence:lead_ingot"
+    },
+    "experience": 0.1,
+    "cookingtime": 100,
+    "group": "misc"
+}

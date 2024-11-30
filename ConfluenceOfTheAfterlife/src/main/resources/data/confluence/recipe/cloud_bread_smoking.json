@@ -1,0 +1,11 @@
+{
+    "type": "minecraft:smoking",
+    "ingredient": {
+        "item": "confluence:cloud_dough"
+    },
+    "result": {
+        "id": "confluence:cloud_bread"
+    },
+    "experience": 0.1,
+    "cookingtime": 100
+}

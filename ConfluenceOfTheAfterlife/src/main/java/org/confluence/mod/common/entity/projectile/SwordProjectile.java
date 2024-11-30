@@ -12,59 +12,71 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * 基础属性如伤害、击退、初始位置由弹幕容器设置，弹幕实体只定义运动、伤害公式、碰撞检测
+ */
 public abstract class SwordProjectile extends AbstractHurtingProjectile {
-    private static final int TIME_EXISTENCE = 40;
+    protected static final int TIME_EXISTENCE = 40;
     protected float attackDamage = 0.0F;
+    protected float baseAttackDamage = 0;
     protected float criticalChance = 0.0F;
     protected float knockBack = 0.0F;
+    protected float baseKnockBack = 0.0F;
 
     public SwordProjectile(EntityType<? extends SwordProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
     }
 
-    public SwordProjectile(EntityType<? extends SwordProjectile> entityType, Level level, LivingEntity living) {
-        this(entityType, level);
-        setOwner(living);
-        setPos(living.getX(), living.getEyeY() - 0.1, living.getZ());
-        AttributeInstance attributeInstance = living.getAttribute(Attributes.ATTACK_KNOCKBACK);
-        if (attributeInstance != null) {
-            this.knockBack = (float) attributeInstance.getValue();
-        }
-        attributeInstance = living.getAttribute(TCAttributes.getRangedDamage());
-        if (attributeInstance != null) {
-            this.attackDamage = (float) attributeInstance.getValue();
-        }
-        if (TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE)) return;
-        attributeInstance = living.getAttribute(TCAttributes.CRIT_CHANCE);
-        if (attributeInstance != null) {
-            this.criticalChance = (float) attributeInstance.getValue();
-        }
+    protected float getBaseDamage(){
+        return baseAttackDamage;
     }
 
+    protected  float getBaseKnockBack(){
+        return baseKnockBack;
+    }
 
-    protected abstract int getBaseDamage();
+    public SwordProjectile addAttackDamage(float attackDamage) {
+        this.baseAttackDamage += attackDamage;
+        return this;
+    }
 
-    protected abstract float getBaseKnockBack();
+    public SwordProjectile addKnockBack(float knockBack) {
+        this.baseKnockBack += knockBack;
+        return this;
+    }
+
+    public void onAddedToLevel(){
+        super.onAddedToLevel();
+        var owner1 = getOwner();
+        if(owner1 instanceof   LivingEntity owner){
+            AttributeInstance attributeInstance = owner.getAttribute(Attributes.ATTACK_KNOCKBACK);
+
+            if (attributeInstance != null) {
+                this.knockBack += (float) attributeInstance.getValue();
+            }
+            attributeInstance = owner.getAttribute(TCAttributes.getRangedDamage());
+            if (attributeInstance != null) {
+                this.attackDamage += (float) attributeInstance.getValue();
+            }
+            if (TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE)) return;
+            attributeInstance = owner.getAttribute(TCAttributes.CRIT_CHANCE);
+            if (attributeInstance != null) {
+                this.criticalChance = (float) attributeInstance.getValue();
+            }
+        }
+    }
 
     @Override
     public void tick() {
         super.tick();
         checkCollision();
-        Vec3 vec3 = getDeltaMovement();
-        double offX = getX() + vec3.x;
-        double offY = getY() + vec3.y;
-        double offZ = getZ() + vec3.z;
-        setDeltaMovement(vec3.scale(0.93));
-        setPos(offX, offY, offZ);
-        if (tickCount >= TIME_EXISTENCE) discard();
     }
 
-    private void checkCollision() {
+    protected void checkCollision() {
         HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, entity -> entity != getOwner());
         if (hitResult.getType() == HitResult.Type.ENTITY) {
             onHitEntity((EntityHitResult) hitResult);
@@ -77,8 +89,8 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile {
     protected void onHitEntity(@NotNull EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
         if (!level().isClientSide) {
-            float damage = getBaseDamage() * (1.0F + attackDamage);
-            if (random.nextFloat() < criticalChance) damage *= 1.5F;
+            float damage = getBaseDamage() * (attackDamage);
+             if (random.nextFloat() < criticalChance) damage *= 1.5F;
             if (entity.hurt(damageSources().mobProjectile(this, (LivingEntity) getOwner()), damage)) {
                 float attackKnockBack = getBaseKnockBack() + knockBack;
                 ModUtils.knockBackA2B(this, entity, attackKnockBack * 0.5, 0.2);

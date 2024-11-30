@@ -25,7 +25,7 @@ public class SwordShootingPacketC2S implements CustomPacketPayload {
             ItemStack mainHandItem = player.getMainHandItem();
             if (mainHandItem.getItem() instanceof BaseSwordItem item) {
                 if(item.modifier.proj!=null){
-                    item.modifier.proj.genProjectile(player,mainHandItem);
+                    item.modifier.proj.get().genProjectile(player,mainHandItem);
                 }
             }
         });

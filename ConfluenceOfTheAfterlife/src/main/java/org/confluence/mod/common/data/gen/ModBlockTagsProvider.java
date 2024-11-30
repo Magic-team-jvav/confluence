@@ -31,6 +31,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
         LogBlockSet.acceptTags(this);
+        tag(BlockTags.ANVIL).add(FunctionalBlocks.LEAD_ANVIL.get());
         tag(ModTags.Blocks.VINES).add(
                 Blocks.VINE,
                 Blocks.WEEPING_VINES,

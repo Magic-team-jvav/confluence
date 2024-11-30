@@ -49,6 +49,7 @@ public record EchoVisibilityPacketS2C(boolean visible) implements CustomPacketPa
                     if (component == null) return false;
                     return component.contains(AccessoryItems.SPECTRE$GOGGLES);
                 });
+        serverPlayer.getPersistentData().putBoolean("confluence:hasEchoVisibility", b);
         PacketDistributor.sendToPlayer(serverPlayer, new EchoVisibilityPacketS2C(b));
     }
 }

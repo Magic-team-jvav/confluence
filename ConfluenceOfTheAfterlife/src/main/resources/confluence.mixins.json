@@ -14,9 +14,9 @@
         "accessor.FishingHookAccessor",
         "accessor.LanguageProviderAccessor",
         "accessor.LootParamsAccessor",
+        "block.AnvilBlockMixin",
         "block.BaseContainerBlockEntityMixin",
         "block.BlockBehaviour$BlockStateBaseMixin",
-        "client.AnvilMenuMixin",
         "entity.AbstractArrowMixin",
         "entity.AbstractMinecartMixin",
         "entity.EntityMixin",
@@ -38,6 +38,7 @@
     ],
     "client": [
         "client.AdvancementWidgetMixin",
+        "client.BlockModelShaperMixin",
         "client.ClientAdvancementsMixin",
         "client.ClientLevelMixin",
         "client.DeathScreenMixin",

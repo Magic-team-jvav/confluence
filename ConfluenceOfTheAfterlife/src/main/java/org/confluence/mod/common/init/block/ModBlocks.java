@@ -17,7 +17,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
 import org.confluence.mod.common.block.common.HoneyCauldronBlock;
-import org.confluence.mod.common.block.common.ModAnvilBlock;
 import org.confluence.mod.common.block.natural.*;
 import org.confluence.mod.common.block.natural.herbs.*;
 import org.confluence.mod.common.fluid.EmptyPickupLiquidBlock;
@@ -61,8 +60,6 @@ public final class ModBlocks {
     public static final DeferredBlock<DeathWeed> DEATHWEED = registerWithoutItem("deathweed", DeathWeed::new);//死亡草
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BaseHerbBlock.Entity>> HERBS_ENTITY = BLOCK_ENTITIES.register("herbs_entity", () -> BlockEntityType.Builder.of(BaseHerbBlock.Entity::new,
             WATERLEAF.get(), FLAMEFLOWERS.get(), MOONSHINE_GRASS.get(), SHINE_ROOT.get(), SHIVERINGTHORNS.get(), SUNFLOWERS.get(), DEATHWEED.get()).build(null));
-
-    public static final DeferredBlock<ModAnvilBlock> LEAD_ANVIL = registerWithItem("lead_anvil", ModAnvilBlock::new);
 
     public static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> block) {
         return registerWithItem(id, block, new Item.Properties());

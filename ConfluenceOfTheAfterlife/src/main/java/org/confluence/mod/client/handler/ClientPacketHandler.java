@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Either;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -13,6 +14,7 @@ import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.network.s2c.GamePhasePacketS2C;
 import org.confluence.mod.network.s2c.ManaPacketS2C;
+import org.confluence.phase_journey.mixed.ILevelRenderer;
 
 import static org.confluence.mod.common.data.saved.ConfluenceData.STAR_PHASES_SIZE;
 
@@ -57,7 +59,7 @@ public final class ClientPacketHandler {
         return starPhases;
     }
 
-    public static boolean isEchoVisible() {
+    public static boolean hasEchoVisible() {
         return echoVisible;
     }
 
@@ -83,6 +85,9 @@ public final class ClientPacketHandler {
     }
 
     public static void handleEcho(boolean visible) {
-        echoVisible = visible;
+        if (echoVisible != visible) {
+            ((ILevelRenderer) Minecraft.getInstance().levelRenderer).phase_journey$rebuildAllChunks();
+            echoVisible = visible;
+        }
     }
 }

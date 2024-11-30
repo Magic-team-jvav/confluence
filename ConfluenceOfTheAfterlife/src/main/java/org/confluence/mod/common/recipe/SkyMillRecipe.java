@@ -1,0 +1,101 @@
+package org.confluence.mod.common.recipe;
+
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import org.confluence.mod.common.init.ModRecipes;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
+import org.confluence.terra_curio.common.recipe.AmountIngredient;
+import org.jetbrains.annotations.NotNull;
+
+public class SkyMillRecipe extends AbstractAmountRecipe {
+    public SkyMillRecipe(ItemStack pResult, NonNullList<Ingredient> pIngredients) {
+        super(pResult, pIngredients);
+    }
+
+    @Override
+    protected int maxIngredientSize() {
+        return 3;
+    }
+
+    @Override
+    public @NotNull String getGroup() {
+        return "sky_mill";
+    }
+
+    @Override
+    public @NotNull ItemStack getToastSymbol() {
+        return new ItemStack(FunctionalBlocks.SKY_MILL.get().asItem());
+    }
+
+    @Override
+    public @NotNull RecipeSerializer<?> getSerializer() {
+        return ModRecipes.SKY_MILL_SERIALIZER.get();
+    }
+
+    @Override
+    public @NotNull RecipeType<?> getType() {
+        return ModRecipes.SKY_MILL_TYPE.get();
+    }
+
+    public static class Serializer extends AbstractAmountRecipe.Serializer<SkyMillRecipe> {
+        public static final MapCodec<SkyMillRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
+                Ingredient.CODEC_NONEMPTY.listOf().fieldOf("ingredients").flatXmap(list -> {
+                    Ingredient[] ingredients = list.toArray(Ingredient[]::new);
+                    if (ingredients.length == 0) {
+                        return DataResult.error(() -> "No ingredients for workshop recipe");
+                    } else {
+                        return ingredients.length > 12 ? DataResult.error(() -> "Too many ingredients for workshop recipe. The maximum is: 12") : DataResult.success(NonNullList.of(AmountIngredient.EMPTY, ingredients));
+                    }
+                }, DataResult::success).forGetter(recipe -> recipe.ingredients)
+        ).apply(instance, SkyMillRecipe::new));
+        public static final StreamCodec<RegistryFriendlyByteBuf, SkyMillRecipe> STREAM_CODEC = StreamCodec.of(SkyMillRecipe.Serializer::toNetwork, SkyMillRecipe.Serializer::fromNetwork);
+
+        @Override
+        protected SkyMillRecipe newInstance(ItemStack pResult, NonNullList<Ingredient> pIngredients) {
+            return new SkyMillRecipe(pResult, pIngredients);
+        }
+
+        @Override
+        public @NotNull MapCodec<SkyMillRecipe> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public @NotNull StreamCodec<RegistryFriendlyByteBuf, SkyMillRecipe> streamCodec() {
+            return STREAM_CODEC;
+        }
+
+        private static SkyMillRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
+            int size = buffer.readVarInt();
+            NonNullList<Ingredient> nonnulllist = NonNullList.withSize(size, AmountIngredient.EMPTY);
+            nonnulllist.replaceAll(ignore -> Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
+            ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
+            return new SkyMillRecipe(itemstack, nonnulllist);
+        }
+
+        private static void toNetwork(RegistryFriendlyByteBuf buffer, SkyMillRecipe recipe) {
+            buffer.writeVarInt(recipe.ingredients.size());
+            for (Ingredient ingredient : recipe.ingredients) {
+                Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
+            }
+            ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
+        }
+    }
+
+    public static class Type implements RecipeType<SkyMillRecipe> {
+        @Override
+        public String toString() {
+            return "confluence:sky_mill_type";
+        }
+    }
+}

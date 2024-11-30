@@ -34,7 +34,7 @@ public class WeatherVaneBlock extends Block implements EntityBlock {
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
-        return ModUtils.getTicker(blockEntityType, FunctionalBlocks.WEATHER_VANE_ENTITY.get(), Entity::tick);
+        return level.isClientSide ? ModUtils.getTicker(blockEntityType, FunctionalBlocks.WEATHER_VANE_ENTITY.get(), Entity::clientTick) : null;
     }
 
     public static class Entity extends BlockEntity {
@@ -51,45 +51,43 @@ public class WeatherVaneBlock extends Block implements EntityBlock {
             super(FunctionalBlocks.WEATHER_VANE_ENTITY.get(), pos, blockState);
         }
 
-        public static void tick(Level level, BlockPos blockPos, BlockState blockState, Entity entity) {
-            if (level.isClientSide) {
-                float windSpeedX = InformationHandler.getWindSpeedX();
-                float windSpeedZ = InformationHandler.getWindSpeedZ();
-                if (entity.lastWindSpeed.x != windSpeedX || entity.lastWindSpeed.y != windSpeedZ) {
-                    entity.lastWindSpeed.set(windSpeedX, windSpeedZ);
-                    float target = Mth.HALF_PI - (float) Mth.atan2(windSpeedZ, windSpeedX);
-                    if (target > entity.targetRotation) {
-                        entity.shakeTime = Mth.abs((int) ((entity.targetRotation - target) * 10));
-                    } else {
-                        entity.shakeTime = Mth.abs((int) ((target - entity.targetRotation) * 10));
-                    }
-                    entity.targetRotation = target;
+        public static void clientTick(Level level, BlockPos blockPos, BlockState blockState, Entity entity) {
+            float windSpeedX = InformationHandler.getWindSpeedX();
+            float windSpeedZ = InformationHandler.getWindSpeedZ();
+            if (entity.lastWindSpeed.x != windSpeedX || entity.lastWindSpeed.y != windSpeedZ) {
+                entity.lastWindSpeed.set(windSpeedX, windSpeedZ);
+                float target = Mth.HALF_PI - (float) Mth.atan2(windSpeedZ, windSpeedX);
+                if (target > entity.targetRotation) {
+                    entity.shakeTime = Mth.abs((int) ((entity.targetRotation - target) * 10));
+                } else {
+                    entity.shakeTime = Mth.abs((int) ((target - entity.targetRotation) * 10));
                 }
-                if (entity.rotation == entity.targetRotation) {
-                    if (entity.shakeTime > 0) {
-                        entity.shakeO = entity.shake;
-                        entity.shake = Mth.sin((level.getGameTime() % 360L) * Mth.DEG_TO_RAD * 30) * (entity.shakeTime * INACCURACY);
-                        entity.shakeTime--;
+                entity.targetRotation = target;
+            }
+            if (entity.rotation == entity.targetRotation) {
+                if (entity.shakeTime > 0) {
+                    entity.shakeO = entity.shake;
+                    entity.shake = Mth.sin((level.getGameTime() % 360L) * Mth.DEG_TO_RAD * 30) * (entity.shakeTime * INACCURACY);
+                    entity.shakeTime--;
+                } else {
+                    entity.shake = 0.0F;
+                    entity.shakeO = 0.0F;
+                }
+            } else {
+                entity.rotationO = entity.rotation;
+                entity.shakeO = entity.shake;
+                float delta = entity.targetRotation - entity.rotation;
+                if (Mth.abs(delta) > Mth.PI * 0.05F) {
+                    if (entity.targetRotation > entity.rotation) {
+                        entity.shake = delta * 0.2F;
+                        entity.rotation += entity.shake;
                     } else {
-                        entity.shake = 0.0F;
-                        entity.shakeO = 0.0F;
+                        entity.shake = (entity.rotation - entity.targetRotation) * 0.2F;
+                        entity.rotation -= entity.shake;
                     }
                 } else {
-                    entity.rotationO = entity.rotation;
-                    entity.shakeO = entity.shake;
-                    float delta = entity.targetRotation - entity.rotation;
-                    if (Mth.abs(delta) > Mth.PI * 0.05F) {
-                        if (entity.targetRotation > entity.rotation) {
-                            entity.shake = delta * 0.2F;
-                            entity.rotation += entity.shake;
-                        } else {
-                            entity.shake = (entity.rotation - entity.targetRotation) * 0.2F;
-                            entity.rotation -= entity.shake;
-                        }
-                    } else {
-                        entity.rotationO = entity.targetRotation;
-                        entity.rotation = entity.targetRotation;
-                    }
+                    entity.rotationO = entity.targetRotation;
+                    entity.rotation = entity.targetRotation;
                 }
             }
         }

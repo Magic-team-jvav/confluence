@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -39,5 +40,9 @@ public record GamePhasePacketS2C(GamePhase gamePhase) implements CustomPacketPay
         if (ServerLifecycleHooks.getCurrentServer() != null) {
             PacketDistributor.sendToAllPlayers(new GamePhasePacketS2C(gamePhase));
         }
+    }
+
+    public static void sendToClient(ServerPlayer serverPlayer, GamePhase gamePhase) {
+        PacketDistributor.sendToPlayer(serverPlayer, new GamePhasePacketS2C(gamePhase));
     }
 }

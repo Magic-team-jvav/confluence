@@ -35,6 +35,7 @@ import org.confluence.mod.client.gui.hud.HealthHudLayer;
 import org.confluence.mod.client.gui.hud.ManaHudLayer;
 import org.confluence.mod.client.gui.screens.GroupWikiScreen;
 import org.confluence.mod.client.gui.screens.ObjectWikiScreen;
+import org.confluence.mod.client.handler.WeatherHandler;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.model.entity.FallingStarRenderer;
 import org.confluence.mod.client.model.entity.bomb.*;
@@ -103,6 +104,7 @@ public final class ModClientEvents {
             FishingPoleItems.registerCast();
             ArrowInBowHud.initAdaptionMap();
             AchievementToast.registerAll();
+            WeatherHandler.initialize();
 
             ItemBlockRenderTypes.setRenderLayer(NatureBlocks.RED_ICE.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(NatureBlocks.PURPLE_ICE.get(), RenderType.translucent());
@@ -217,7 +219,7 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(FunctionalBlocks.MECHANICAL_BLOCK_ENTITY.get(), MechanicalBlockRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.BASE_CHEST_BLOCK_ENTITY.get(), BaseChestBlockRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.DEATH_CHEST_BLOCK_ENTITY.get(), DeathChestBlockRenderer::new);
-        event.registerBlockEntityRenderer(FunctionalBlocks.WEATHER_VANE_ENTITY.get(), WeatherVaneBlockRenderer::new);
+        event.registerBlockEntityRenderer(FunctionalBlocks.WEATHER_VANE_ENTITY.get(), context -> new WeatherVaneBlockRenderer());
         event.registerBlockEntityRenderer(NatureBlocks.LIFE_CRYSTAL_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new LifeCrystalBlockModel()));
     }
 

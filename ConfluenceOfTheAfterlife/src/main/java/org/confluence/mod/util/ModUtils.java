@@ -43,24 +43,7 @@ import java.util.List;
 import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
 
 public final class ModUtils {
-    public static final Direction[] DIRECTIONS = Direction.values();
     public static final Direction[] HORIZONTAL = new Direction[]{Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH};
-
-    public static float nextFloat(RandomSource randomSource, float origin, float bound) {
-        if (origin >= bound) {
-            throw new IllegalArgumentException("bound - origin is non positive");
-        } else {
-            return origin + randomSource.nextFloat() * (bound - origin);
-        }
-    }
-
-    public static double nextDouble(RandomSource randomSource, double origin, double bound) {
-        if (origin >= bound) {
-            throw new IllegalArgumentException("bound - origin is non positive");
-        } else {
-            return origin + randomSource.nextDouble() * (bound - origin);
-        }
-    }
 
     public static void createItemEntity(ItemStack itemStack, double x, double y, double z, Level level) {
         createItemEntity(itemStack, x, y, z, level, 40);

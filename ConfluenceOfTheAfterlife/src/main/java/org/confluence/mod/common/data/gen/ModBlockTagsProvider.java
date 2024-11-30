@@ -131,30 +131,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.ASH_GRASS_BLOCK.get(),
                 NatureBlocks.MUSHROOM_GRASS_BLOCK.get()
         );
-        tag(BlockTags.PLANKS).add(
-                NatureBlocks.EBONY_LOG_BLOCKS.getPlanks().get(),
-                NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks().get(),
-                NatureBlocks.PEARL_LOG_BLOCKS.getPlanks().get(),
-                NatureBlocks.PALM_LOG_BLOCKS.getPlanks().get(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getPlanks().get(),
-                NatureBlocks.ASH_LOG_BLOCKS.getPlanks().get()
-        );
-        tag(BlockTags.LOGS).add(
-                NatureBlocks.EBONY_LOG_BLOCKS.getLog().get(),
-                NatureBlocks.SHADOW_LOG_BLOCKS.getLog().get(),
-                NatureBlocks.PEARL_LOG_BLOCKS.getLog().get(),
-                NatureBlocks.PALM_LOG_BLOCKS.getLog().get(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getLog().get(),
-                NatureBlocks.ASH_LOG_BLOCKS.getLog().get()
-        );
-        tag(BlockTags.FENCES).add(
-                NatureBlocks.EBONY_LOG_BLOCKS.getFence().get(),
-                NatureBlocks.SHADOW_LOG_BLOCKS.getFence().get(),
-                NatureBlocks.PEARL_LOG_BLOCKS.getFence().get(),
-                NatureBlocks.PALM_LOG_BLOCKS.getFence().get(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getFence().get(),
-                NatureBlocks.ASH_LOG_BLOCKS.getFence().get()
-        );
         tag(BlockTags.SAND).add(
                 NatureBlocks.TR_CRIMSON_SAND.get(),
                 NatureBlocks.EBONY_SAND.get(),

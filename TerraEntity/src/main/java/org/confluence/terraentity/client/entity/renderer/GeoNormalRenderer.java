@@ -6,12 +6,10 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import org.confluence.terraentity.client.entity.model.GeoNormalModel;
-import org.confluence.terraentity.entity.boss.CthulhuEye;
 import org.confluence.terraentity.entity.monster.AbstractMonster;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class GeoNormalRenderer<T extends AbstractMonster> extends GeoEntityRenderer<T> {

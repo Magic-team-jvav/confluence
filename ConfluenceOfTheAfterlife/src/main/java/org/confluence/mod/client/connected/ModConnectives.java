@@ -8,7 +8,8 @@ import net.neoforged.bus.api.IEventBus;
 import org.confluence.mod.client.connected.behaviour.ConnectedTextureBehaviour;
 import org.confluence.mod.client.connected.behaviour.EncasedCTBehaviour;
 import org.confluence.mod.client.connected.behaviour.SimpleCTBehaviour;
-import org.confluence.mod.client.connected.randomize.RandomizeCTModel;
+import org.confluence.mod.client.connected.custom.RandomizeCTModel;
+import org.confluence.mod.client.connected.custom.WeightedCTModel;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -25,8 +26,7 @@ public final class ModConnectives {
         modEventBus.addListener(StitchedSprite::onTextureStitchPost);
         MODEL_SWAPPER.registerListeners(modEventBus);
 
-        // registerCasingConnectivity是用来注册机壳的
-        registerRandom(FunctionalBlocks.ANDESITE_CASING.get(), () -> new EncasedCTBehaviour(AllSpriteShifts.ANDESITE_CASING), 2);
+        registerRandomize(FunctionalBlocks.ANDESITE_CASING.get(), () -> new EncasedCTBehaviour(AllSpriteShifts.ANDESITE_CASING), 2);
         registerCasingConnectivity(FunctionalBlocks.ANDESITE_CASING.get(), (block, cc) -> cc.makeCasing(block, AllSpriteShifts.ANDESITE_CASING));
 
         register(NatureBlocks.THIN_ICE_BLOCK.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.THIN_ICE_BLOCK));
@@ -50,15 +50,45 @@ public final class ModConnectives {
         register(DecorativeBlocks.PINK_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.PINK_PURE_GLASS));
     }
 
+    /**
+     * 目前仅用来注册机壳
+     *
+     * @param entry    注册连接材质的方块
+     * @param consumer 所注册的连接行为
+     */
     private static <T extends Block> void registerCasingConnectivity(T entry, BiConsumer<T, CasingConnectivity> consumer) {
         consumer.accept(entry, CASING_CONNECTIVITY);
     }
 
+    /**
+     * 注册常规连接材质
+     *
+     * @param entry            注册连接材质的方块
+     * @param behaviorSupplier 所注册的连接行为
+     */
     private static void register(Block entry, Supplier<ConnectedTextureBehaviour> behaviorSupplier) {
         MODEL_SWAPPER.getCustomBlockModels().register(BuiltInRegistries.BLOCK.getKey(entry), model -> new CTModel(model, behaviorSupplier.get()));
     }
 
-    private static void registerRandom(Block entry, Supplier<ConnectedTextureBehaviour> behaviorSupplier, int width) {
+    /**
+     * 注册随机连接材质
+     *
+     * @param entry            注册连接材质的方块
+     * @param behaviorSupplier 所注册的连接行为
+     * @param width            可选的数量，即贴图的宽高比。如256x128的贴图是2
+     */
+    private static void registerRandomize(Block entry, Supplier<ConnectedTextureBehaviour> behaviorSupplier, int width) {
         MODEL_SWAPPER.getCustomBlockModels().register(BuiltInRegistries.BLOCK.getKey(entry), model -> new RandomizeCTModel(model, behaviorSupplier.get(), width));
+    }
+
+    /**
+     * 注册权重连接材质
+     *
+     * @param entry            注册连接材质的方块
+     * @param behaviorSupplier 所注册的连接行为
+     * @param weights          一个权重数组
+     */
+    private static void registerWeighted(Block entry, Supplier<ConnectedTextureBehaviour> behaviorSupplier, int... weights) {
+        MODEL_SWAPPER.getCustomBlockModels().register(BuiltInRegistries.BLOCK.getKey(entry), model -> new WeightedCTModel(model, behaviorSupplier.get(), weights));
     }
 }

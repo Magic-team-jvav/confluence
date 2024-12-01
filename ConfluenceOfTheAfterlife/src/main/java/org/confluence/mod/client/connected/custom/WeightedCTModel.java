@@ -1,4 +1,4 @@
-package org.confluence.mod.client.connected.randomize;
+package org.confluence.mod.client.connected.custom;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -16,12 +16,24 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RandomizeCTModel extends CTModel {
+public class WeightedCTModel extends CTModel {
+    private final int[] weights;
+    private final int totalWeight;
     private final int width;
 
-    public RandomizeCTModel(BakedModel originalModel, ConnectedTextureBehaviour behaviour, int width) {
+    public WeightedCTModel(BakedModel originalModel, ConnectedTextureBehaviour behaviour, int[] weights) {
         super(originalModel, behaviour);
-        this.width = width;
+        this.weights = weights;
+        long total = 0L;
+        for (int weight : weights) {
+            total += weight;
+        }
+        if (total > 2147483647L) {
+            throw new IllegalArgumentException("Sum of weights must be <= 2147483647");
+        } else {
+            this.totalWeight = (int) total;
+        }
+        this.width = weights.length;
     }
 
     @Override
@@ -29,7 +41,8 @@ public class RandomizeCTModel extends CTModel {
         List<BakedQuad> quads = originalModel.getQuads(state, side, rand, extraData, renderType);
         CTData data = extraData.get(CT_PROPERTY);
         if (data == null) return quads;
-        int selected = rand.nextInt(width);
+        int selected = getRandomSelection(rand);
+        if (selected == -1) return quads;
         quads = new ArrayList<>(quads);
 
         for (int i = 0; i < quads.size(); i++) {
@@ -59,5 +72,16 @@ public class RandomizeCTModel extends CTModel {
         }
 
         return quads;
+    }
+
+    private int getRandomSelection(RandomSource random) {
+        int weightedIndex = random.nextInt(totalWeight);
+        for (int i = 0; i < width; i++) {
+            weightedIndex -= weights[i];
+            if (weightedIndex < 0) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

@@ -25,7 +25,7 @@ import org.confluence.mod.common.item.sword.stagedy.EffectStrategy;
 import org.confluence.mod.common.item.sword.stagedy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
 import org.confluence.mod.common.item.sword.stagedy.SwordPrefabs;
-import org.confluence.mod.common.item.sword.stagedy.projectile.AbstractProjContainer;
+import org.confluence.mod.common.item.sword.stagedy.projectile.IProjContainer;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.jetbrains.annotations.NotNull;
@@ -33,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 
 public class BaseSwordItem extends SwordItem {
@@ -82,7 +83,7 @@ public class BaseSwordItem extends SwordItem {
     public static class ModifierBuilder {
         public float damage;
         public float speed;
-        public AbstractProjContainer proj;
+        public Supplier<? extends IProjContainer>  proj;
         public List<BiConsumer<LivingEntity,LivingEntity>> onHitEffects = new ArrayList<>();
         public QuaConsumer<ItemStack,Level,Entity,Boolean> inventoryTick;
         public ItemAttributeModifiers.Builder attributeModifiersBuilder = ItemAttributeModifiers.builder();
@@ -113,7 +114,7 @@ public class BaseSwordItem extends SwordItem {
         /**设置弹幕
          * @see ProjectileStrategy
          * */
-        public ModifierBuilder setProj(AbstractProjContainer proj){
+        public ModifierBuilder setProj(Supplier<? extends IProjContainer>  proj){
             this.proj = proj;
             return this;
         }

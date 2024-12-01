@@ -2,17 +2,20 @@ package org.confluence.mod.common.item.sword.stagedy;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Item;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
-import org.confluence.mod.common.item.sword.stagedy.projectile.AbstractProjContainer;
-import org.confluence.mod.common.item.sword.stagedy.projectile.EnchantedSwordProjContainer;
-import org.confluence.mod.common.item.sword.stagedy.projectile.IceSwordProjContainer;
-import org.confluence.mod.common.item.sword.stagedy.projectile.StarFuryProjContainer;
+import org.confluence.mod.common.item.sword.stagedy.projectile.*;
 import org.confluence.mod.network.c2s.SwordShootingPacketC2S;
+import org.confluence.terraentity.init.TESounds;
+
+import java.util.function.Supplier;
 
 /**
  * 这里是定义弹幕策略类工厂，方便给类似的弹幕逻辑修改参数
@@ -21,17 +24,17 @@ import org.confluence.mod.network.c2s.SwordShootingPacketC2S;
 public class ProjectileStrategy {
 
 
-    public static final AbstractProjContainer ICE_PROJ = new IceSwordProjContainer();
+    public static final Supplier<AbstractProjContainer> ICE_PROJ = ()-> new ForwardProjContainer(ModEntities.ICE_BLADE_SWORD_PROJECTILE.get(),10,1,10,1.5f);
 
-    public static final AbstractProjContainer STAR_FURY_PROJ = new StarFuryProjContainer();
+    public static final Supplier<AbstractProjContainer> STAR_FURY_PROJ = ()-> new StarFuryProjContainer(10,1,10,1.5f, ModSoundEvents.STAR.get());
 
-    public static final AbstractProjContainer ENCHANTED_SWORD_PROJ = new EnchantedSwordProjContainer();
-
-
+    public static final Supplier<AbstractProjContainer> ENCHANTED_SWORD_PROJ = ()->new ForwardProjContainer(ModEntities.ENCHANTED_SWORD_PROJECTILE.get(),9,1,10,2.5f, TESounds.REGULAR_STAFF_SHOOT_2.get());
 
 
 
-    public static final AbstractProjContainer UNDEFINED_PROJ = ICE_PROJ;
+
+
+    public static final Supplier<AbstractProjContainer> UNDEFINED_PROJ = ()->ICE_PROJ.get().setDamage(1);
 
     @OnlyIn(Dist.CLIENT)
     public static void handle(Minecraft minecraft, LocalPlayer player) {
@@ -41,7 +44,7 @@ public class ProjectileStrategy {
             && sword.modifier.proj!= null
         ) {
             PacketDistributor.sendToServer((new SwordShootingPacketC2S()));
-            player.getCooldowns().addCooldown(sword,sword.modifier.proj.getAttackSpeed(player));
+            player.getCooldowns().addCooldown(sword,sword.modifier.proj.get().getAttackSpeed(player));
             player.swing(InteractionHand.MAIN_HAND);
         }
     }

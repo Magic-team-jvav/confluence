@@ -1,35 +1,66 @@
 package org.confluence.mod.common.item.sword.stagedy.projectile;
 
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.ItemStack;
 
 /**
- * 这个文件夹定义弹幕的大体释放逻辑，参数可以在strategy调整
- * @author coffee
+ * 弹幕容器定义弹幕类别、弹幕的基本属性和生成位置
  */
-public interface  AbstractProjContainer { // 剑气
+public abstract class AbstractProjContainer implements IProjContainer {
+    public float damage;
+    public float knockBack;
+    public int cd;
+    public float v;
+    public SoundEvent sound;
 
-    int getCooldown();
-
-    float getBaseVelocity();
-
-    SoundEvent getSound();
-
-    Projectile getProjectile(Player player, ItemStack weapon);
-
-    void genProjectile(Player owner, ItemStack weapon);
-
-    float getVelocity(LivingEntity living);
-
-    default int getAttackSpeed(LivingEntity living){
-        int cooldown = getCooldown();
-        AttributeInstance attributeInstance = living.getAttribute(Attributes.ATTACK_SPEED);
-        if (attributeInstance != null) return Math.max(cooldown - (int) (attributeInstance.getValue() / 3.0), 0);
-        return cooldown;
+    // 用于特定伤害判断逻辑
+    public AbstractProjContainer(){
+        this(0,0,0,0,null);
     }
+
+    public AbstractProjContainer(float damage,float knockBack,float cd,float v){
+        this(damage,knockBack,cd,v,null);
+    }
+    public AbstractProjContainer(float damage,float knockBack,float cd,float v,SoundEvent sound){
+        this.damage = damage;
+        this.knockBack = knockBack;
+        this.cd = (int) cd;
+        this.v = v;
+        this.sound = sound;
+    }
+
+    public int getCooldown(){
+        return cd;
+    }
+    public float getDamage(){
+        return damage;
+    }
+
+    public float getBaseVelocity(){
+        return v;
+    }
+
+    public SoundEvent getSound(){
+        return sound;
+    }
+
+    public AbstractProjContainer setDamage(float damage){
+        this.damage = damage;
+        return this;
+    }
+
+    public AbstractProjContainer setCooldown(int cd){
+        this.cd = cd;
+        return this;
+    }
+
+    public AbstractProjContainer setVelocity(float v){
+        this.v = v;
+        return this;
+    }
+
+    public AbstractProjContainer setSound(SoundEvent sound){
+        this.sound = sound;
+        return this;
+    }
+
 }

@@ -23,7 +23,7 @@ import org.confluence.mod.common.init.ModAttachments;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.sword.stagedy.EffectStrategy;
 import org.confluence.mod.common.item.sword.stagedy.InventoryTickStrategy;
-import org.confluence.mod.common.item.sword.stagedy.projectile.AbstractProjContainer;
+import org.confluence.mod.common.item.sword.stagedy.projectile.IProjContainer;
 import org.confluence.mod.common.item.sword.stagedy.projectile.BoomerangProjContainer;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
@@ -130,7 +130,7 @@ public class Boomerang extends Item {
 
 //调参后这是木回旋镖的数值
 
-        private AbstractProjContainer proj;
+        private IProjContainer proj;
         public List<BiConsumer<LivingEntity, LivingEntity>> onHitEffects = new ArrayList<>();
         public BaseSwordItem.QuaConsumer<ItemStack, Level, Entity, Boolean> inventoryTick;
         public ItemAttributeModifiers.Builder attributeModifiersBuilder = ItemAttributeModifiers.builder();

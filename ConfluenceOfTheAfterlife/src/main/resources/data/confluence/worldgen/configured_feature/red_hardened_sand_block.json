@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:ore",
+  "config": {
+    "size": 64,
+    "discard_chance_on_air_exposure": 0,
+    "targets": [
+      {
+        "target": {
+          "predicate_type": "tag_match",
+          "tag": "base_stone_overworld"
+        },
+        "state": {
+          "Name": "confluence:red_hardened_sand_block"
+        }
+      },
+      {
+        "target": {
+          "predicate_type": "tag_match",
+          "tag": "deepslate_ore_replaceables"
+        },
+        "state": {
+          "Name": "confluence:red_hardened_sand_block"
+        }
+      }
+    ]
+  }
+}

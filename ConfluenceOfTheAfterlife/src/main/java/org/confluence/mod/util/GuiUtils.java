@@ -10,9 +10,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.Optional;
 
+@OnlyIn(Dist.CLIENT)
 public class GuiUtils {
     public static void drawImage(ResourceLocation loc, GuiGraphics g, int x, int y,
                                  int wid, int hig, int imWid, int imHig){

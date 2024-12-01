@@ -30,7 +30,7 @@ import static org.confluence.mod.common.init.block.ModBlocks.BLOCK_ENTITIES;
 
 public class FunctionalBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
-    private static final DeferredRegister.Blocks HIDDEN = DeferredRegister.createBlocks(Confluence.MODID);
+    public static final DeferredRegister.Blocks HIDDEN = DeferredRegister.createBlocks(Confluence.MODID);
     public static List<Supplier<? extends Block>> MECHANICAL_BLOCKS = new ArrayList<>();
 
     public static final DeferredBlock<ExtractinatorBlock> EXTRACTINATOR = registerWithItem("extractinator", () -> new ExtractinatorBlock(BlockBehaviour.Properties.of().strength(2.2F, 5.0F)), ExtractinatorBlock.Item::new);

@@ -33,9 +33,9 @@ public class DataGenerator {
         ModBlockTagsProvider blockTagsProvider = new ModBlockTagsProvider(output, lookup, helper);
         generator.addProvider(server, blockTagsProvider);
         generator.addProvider(server, new ModItemTagsProvider(output, lookup, blockTagsProvider.contentsGetter(), helper));
-//        generator.addProvider(server, new ModLootTableProvider(output));
-//        generator.addProvider(server, new ModDamageTypeTagsProvider(output, lookup, helper));
-//        generator.addProvider(server, new ModPoiTypeTagsProvider(output, lookup, helper));
+        generator.addProvider(server, new ModLootTableProvider(output, lookup));
+        generator.addProvider(server, new ModDamageTypeTagsProvider(output, lookup, helper));
+        generator.addProvider(server, new ModPoiTypeTagsProvider(output, lookup, helper));
 
         PROVIDERS = generator.getProvidersView();
 

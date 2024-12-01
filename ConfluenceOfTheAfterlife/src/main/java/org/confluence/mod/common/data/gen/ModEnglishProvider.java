@@ -97,8 +97,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("painting.confluence.xuanyu_1725.author", "BiliBili_轩宇1725");
         add("painting.confluence.shadow_end.title", "SHADOW_END");
         add("painting.confluence.shadow_end.author", "BiliBili_影末子");
-        add("painting.confluence.kl_jiana.title", "KL_JIANA");
-        add("painting.confluence.kl_jiana.author", "BiliBili_KL_JIANA");
+        add("painting.confluence.kl_jiana.title", "Kaleb Langley");
+        add("painting.confluence.kl_jiana.author", "BiliBili_KalebLangley");
         add("painting.confluence.hunao.title", "HUNAO");
         add("painting.confluence.hunao.author", "BiliBili_小胡闹鸭");
         add("painting.confluence.sihuai_2412.title", "SIHUAI_2412");

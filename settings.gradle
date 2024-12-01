@@ -15,7 +15,7 @@ include ":ConfluenceOfTheAfterlife"
 
 var projectName = ["TerraEntity","MineTeam","EquipmentBenediction",
                    "TerraCurio","ParticleStorm","HeavenDestinyMoment","PhaseJourney",
-                    "ExtraWorldInvaded","TerraMoment"
+                    "ExtraWorldInvaded","TerraMoment","TerraGuns"
 ]
 projectName.forEach {name -> include ":" + name}
 

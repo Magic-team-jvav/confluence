@@ -48,6 +48,7 @@ import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUT
 
 public final class ModUtils {
     public static final Direction[] HORIZONTAL = new Direction[]{Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH};
+    public static final Direction[] DIRECTIONS = Direction.values();
 
     public static void createItemEntity(ItemStack itemStack, double x, double y, double z, Level level) {
         createItemEntity(itemStack, x, y, z, level, 40);

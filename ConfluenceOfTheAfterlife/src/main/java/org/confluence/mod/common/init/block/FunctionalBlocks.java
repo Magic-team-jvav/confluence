@@ -33,6 +33,8 @@ public class FunctionalBlocks {
     public static final DeferredRegister.Blocks HIDDEN = DeferredRegister.createBlocks(Confluence.MODID);
     public static List<Supplier<? extends Block>> MECHANICAL_BLOCKS = new ArrayList<>();
 
+    public static final Supplier<Block> ANDESITE_CASING = registerWithItemButHidden("andesite_casing", () -> new Block(BlockBehaviour.Properties.of()));
+
     public static final DeferredBlock<ExtractinatorBlock> EXTRACTINATOR = registerWithItem("extractinator", () -> new ExtractinatorBlock(BlockBehaviour.Properties.of().strength(2.2F, 5.0F)), ExtractinatorBlock.Item::new);
     public static final Supplier<BlockEntityType<ExtractinatorBlock.Entity>> EXTRACTINATOR_ENTITY = BLOCK_ENTITIES.register("extractinator_entity", () -> BlockEntityType.Builder.of(ExtractinatorBlock.Entity::new, EXTRACTINATOR.get()).build(null));
     public static final DeferredBlock<AltarBlock> DEMON_ALTAR = registerWithItem("demon_altar", () -> new AltarBlock(BlockBehaviour.Properties.of().strength(3.0F, 18000.0F), AltarBlock.Variant.DEMON), AltarBlock.Item::new);

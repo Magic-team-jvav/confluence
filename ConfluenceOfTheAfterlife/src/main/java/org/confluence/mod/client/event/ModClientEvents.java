@@ -20,7 +20,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
@@ -33,6 +35,7 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.connected.ModConnectives;
 import org.confluence.mod.client.gui.AchievementToast;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.client.gui.hud.HealthHudLayer;
@@ -141,6 +144,11 @@ public final class ModClientEvents {
             ItemBlockRenderTypes.setRenderLayer(ModFluids.SHIMMER.flowing().get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModFluids.HONEY.fluid().get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModFluids.HONEY.flowing().get(), RenderType.translucent());
+
+            ModList.get().getModContainerById(Confluence.MODID).ifPresent(container -> {
+                IEventBus eventBus = container.getEventBus();
+                if (eventBus != null) ModConnectives.register(eventBus);
+            });
 
             GroupWikiScreen.putWikiType("item",
                     List.of(AccessoryItems.ITEMS, ArrowItems.ITEMS, AxeItems.ITEMS, BaitItems.ITEMS, BowItems.ITEMS, FishingPoleItems.ITEMS,

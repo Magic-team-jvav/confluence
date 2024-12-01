@@ -43,8 +43,6 @@ import static org.confluence.mod.common.init.block.OreBlocks.*;
 import static org.confluence.mod.common.init.item.ConsumableItems.LIFE_CRYSTAL;
 import static org.confluence.mod.common.init.item.MaterialItems.*;
 
-;
-
 public class ModLootTableProvider extends LootTableProvider {
     public ModLootTableProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
         super(output, Set.of(), List.of(
@@ -270,15 +268,15 @@ public class ModLootTableProvider extends LootTableProvider {
                 if (logBlocks.getStrippedLog() != null) dropSelf(logBlocks.getStrippedLog().get());
                 if (logBlocks.getWood() != null) dropSelf(logBlocks.getWood().get());
                 if (logBlocks.getStrippedWood() != null) dropSelf(logBlocks.getStrippedWood().get());
-                dropSelf(logBlocks.getButton().get());
-                dropSelf(logBlocks.getFence().get());
-                dropSelf(logBlocks.getFenceGate().get());
-                dropSelf(logBlocks.getPressurePlate().get());
-                add(logBlocks.getSlab().get(), this::createSlabItemTable);
-                dropSelf(logBlocks.getStairs().get());
-                dropSelf(logBlocks.getSign().get());
-                dropSelf(logBlocks.getTrapdoor().get());
-                add(logBlocks.getDoor().get(), this::createDoorTable);
+                if (logBlocks.getButton() != null) dropSelf(logBlocks.getButton().get());
+                if (logBlocks.getFence() != null) dropSelf(logBlocks.getFence().get());
+                if (logBlocks.getFenceGate() != null) dropSelf(logBlocks.getFenceGate().get());
+                if (logBlocks.getPressurePlate() != null) dropSelf(logBlocks.getPressurePlate().get());
+                if (logBlocks.getSlab() != null) add(logBlocks.getSlab().get(), this::createSlabItemTable);
+                if (logBlocks.getStairs() != null) dropSelf(logBlocks.getStairs().get());
+                if (logBlocks.getSign() != null) dropSelf(logBlocks.getSign().get());
+                if (logBlocks.getTrapdoor() != null) dropSelf(logBlocks.getTrapdoor().get());
+                if (logBlocks.getDoor() != null) add(logBlocks.getDoor().get(), this::createDoorTable);
             }
 
             BoxBlocks.BLOCKS.getEntries().forEach(block -> dropSelf(block.get()));

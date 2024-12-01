@@ -1,7 +1,6 @@
 package org.confluence.mod.common.data.gen;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -9,13 +8,10 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.confluence.mod.Confluence;
 
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class DataGenerator {
-    public static Map<String, DataProvider> PROVIDERS = null;
-
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
         net.minecraft.data.DataGenerator generator = event.getGenerator();
@@ -36,8 +32,5 @@ public class DataGenerator {
         generator.addProvider(server, new ModLootTableProvider(output, lookup));
         generator.addProvider(server, new ModDamageTypeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModPoiTypeTagsProvider(output, lookup, helper));
-
-        PROVIDERS = generator.getProvidersView();
-
     }
 }

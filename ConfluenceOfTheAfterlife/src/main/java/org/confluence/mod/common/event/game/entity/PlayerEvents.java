@@ -46,8 +46,6 @@ import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
 
-import java.util.Optional;
-
 import static org.confluence.mod.api.event.MinecartAbilityEvent.DismountOnMinecart;
 import static org.confluence.mod.api.event.MinecartAbilityEvent.RightClickRailBlock;
 
@@ -79,9 +77,9 @@ public final class PlayerEvents {
         BlockPos blockPos = event.getPos();
         BlockState blockState = level.getBlockState(blockPos);
         if (blockState.getBlock() instanceof BaseRailBlock railBlock) {
-            Optional<ItemStack> optionalItemStack = CuriosUtils.getSlot(player, "minecart", 0);
+            ItemStack optionalItemStack = CuriosUtils.getSlot(player, "minecart", 0);
             player.swing(InteractionHand.MAIN_HAND, true);
-            ItemStack itemStack = optionalItemStack.orElse(ItemStack.EMPTY);
+            ItemStack itemStack = optionalItemStack == null ? ItemStack.EMPTY : optionalItemStack;
             RightClickRailBlock e = NeoForge.EVENT_BUS.post(new RightClickRailBlock(player, itemStack, blockState, railBlock, blockPos));
             if (e.isCanceled()) return;
             AbstractMinecart minecart = e.getMinecart();

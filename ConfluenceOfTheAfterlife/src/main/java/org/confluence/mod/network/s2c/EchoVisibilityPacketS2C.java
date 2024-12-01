@@ -13,6 +13,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.terra_curio.common.component.AccessoriesComponent;
+import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +48,7 @@ public record EchoVisibilityPacketS2C(boolean visible) implements CustomPacketPa
                 CuriosUtils.hasCurio(serverPlayer, (Predicate<ItemStack>) itemStack -> {
                     AccessoriesComponent component = TCUtils.getAccessoriesComponent(itemStack);
                     if (component == null) return false;
-                    return component.contains(AccessoryItems.SPECTRE$GOGGLES);
+                    return component.contains(AccessoryItems.SPECTRE$GOGGLES) && itemStack.getItem() instanceof IFunctionCouldEnable func && func.isEnabled(itemStack, null);
                 });
         serverPlayer.getPersistentData().putBoolean("confluence:hasEchoVisibility", b);
         PacketDistributor.sendToPlayer(serverPlayer, new EchoVisibilityPacketS2C(b));

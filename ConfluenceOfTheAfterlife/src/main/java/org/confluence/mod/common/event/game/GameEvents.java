@@ -3,6 +3,7 @@ package org.confluence.mod.common.event.game;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -23,6 +24,7 @@ import org.confluence.mod.network.s2c.EchoVisibilityPacketS2C;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
 import org.confluence.terra_curio.api.event.RangePickupItemEvent;
+import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.confluence.terra_curio.util.TCUtils;
 
 import java.util.Collections;
@@ -34,6 +36,15 @@ public final class GameEvents {
         ItemStack onSlot = event.getCarriedItem();
         ItemStack carried = event.getStackedOnItem(); // 非常奇怪,但事实如此
         Item item = onSlot.getItem();
+        if (event.getClickAction() == ClickAction.SECONDARY) {
+            if (carried.isEmpty() && item instanceof IFunctionCouldEnable couldEnable) {
+                if (event.getPlayer() instanceof ServerPlayer serverPlayer) { // 需要注意创造模式物品栏是仅客户端的，所以创造模式无法正常使用
+                    couldEnable.cycleEnable(onSlot);
+                    EchoVisibilityPacketS2C.sendToClient(serverPlayer);
+                }
+                event.setCanceled(true);
+            }
+        }
         if (ItemStack.isSameItem(onSlot, carried)) {
             if (item instanceof ColoredItem) {
                 ColoredItem.setColor(carried, ColoredItem.getColor(onSlot));

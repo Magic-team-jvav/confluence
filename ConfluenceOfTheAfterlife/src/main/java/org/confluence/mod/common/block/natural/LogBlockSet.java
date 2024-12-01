@@ -369,7 +369,7 @@ public class LogBlockSet {
 
         public Builder strippedLog(Function<BlockBehaviour.Properties, ? extends RotatedPillarBlock> function) {
             if (LOG == null) log(function);
-            this.STRIPPED_LOG = registerWithItem(id + "_stripped_log", () -> function.apply(BlockBehaviour.Properties.ofFullCopy(LOG.get())));
+            this.STRIPPED_LOG = registerWithItem("stripped_" + id + "_log", () -> function.apply(BlockBehaviour.Properties.ofFullCopy(LOG.get())));
             STRIP_TABLE.put(LOG, STRIPPED_LOG);
             return this;
         }
@@ -388,7 +388,7 @@ public class LogBlockSet {
 
         public Builder strippedWood(Function<BlockBehaviour.Properties, ? extends RotatedPillarBlock> function) {
             if (WOOD == null) wood(function);
-            this.STRIPPED_WOOD = registerWithItem(id + "_stripped_wood", () -> function.apply(BlockBehaviour.Properties.ofFullCopy(WOOD.get())));
+            this.STRIPPED_WOOD = registerWithItem("stripped_" + id + "_wood", () -> function.apply(BlockBehaviour.Properties.ofFullCopy(WOOD.get())));
             STRIP_TABLE.put(WOOD, STRIPPED_WOOD);
             return this;
         }

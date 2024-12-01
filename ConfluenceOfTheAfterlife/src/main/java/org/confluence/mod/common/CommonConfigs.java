@@ -17,9 +17,9 @@ public final class CommonConfigs {
 
     public static void register(ModContainer container) {
         ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
-        DROP_MONEY = BUILDER
-                .comment("Determines if entity drops money after death")
-                .define("dropsMoney", true);
+        DROP_MONEY = BUILDER.comment(
+                "Determines if entity drops money after death"
+        ).define("dropsMoney", true);
         DEFAULT_RESPAWN_TIME_MIN = BUILDER.comment(
                 "The min value of the default respawn time"
         ).defineInRange("defaultRespawnTimeMin", 3, 0, Integer.MAX_VALUE);

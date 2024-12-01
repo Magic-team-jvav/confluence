@@ -14,13 +14,14 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
 import org.confluence.mod.client.connected.behaviour.ConnectedTextureBehaviour;
 import org.confluence.mod.util.ModUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class CTModel extends BakedModelWrapperWithData {
-	private static final ModelProperty<CTData> CT_PROPERTY = new ModelProperty<>();
+	protected static final ModelProperty<CTData> CT_PROPERTY = new ModelProperty<>();
 	protected final ConnectedTextureBehaviour behaviour;
 
 	public CTModel(BakedModel originalModel, ConnectedTextureBehaviour behaviour) {
@@ -49,12 +50,10 @@ public class CTModel extends BakedModelWrapperWithData {
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(BlockState state, Direction side, RandomSource rand, ModelData extraData, RenderType renderType) {
+	public @NotNull List<BakedQuad> getQuads(BlockState state, Direction side, RandomSource rand, ModelData extraData, RenderType renderType) {
 		List<BakedQuad> quads = super.getQuads(state, side, rand, extraData, renderType);
-		if (!extraData.has(CT_PROPERTY))
-			return quads;
-
 		CTData data = extraData.get(CT_PROPERTY);
+		if (data == null) return quads;
 		quads = new ArrayList<>(quads);
 
 		for (int i = 0; i < quads.size(); i++) {

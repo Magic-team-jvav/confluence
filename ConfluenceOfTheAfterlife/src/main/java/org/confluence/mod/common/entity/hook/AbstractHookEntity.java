@@ -24,7 +24,6 @@ import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
 import java.util.function.IntFunction;
 
 public abstract class AbstractHookEntity extends Projectile {
@@ -99,8 +98,8 @@ public abstract class AbstractHookEntity extends Projectile {
             }
         }
         if (!level().isClientSide) {
-            Optional<ItemStack> hook = CuriosUtils.getSlot((LivingEntity) owner, "hook", 0);
-            if (hook.isEmpty()) {
+            ItemStack hook = CuriosUtils.getSlot((LivingEntity) owner, "hook", 0);
+            if (hook == null) {
                 discard();
             } else if (hookState != HookState.POP && distanceToSqr(owner) > hookRangeSqr) {
                 setHookState(HookState.POP);
@@ -116,7 +115,7 @@ public abstract class AbstractHookEntity extends Projectile {
                     setPos(getX() + motion.x, getY() + motion.y, getZ() + motion.z);
                 }
                 onHitBlock(hitResult);
-                onHooked(hitResult, hook.get());
+                onHooked(hitResult, hook);
             } else if (hookState == HookState.HOOKED && hookedPos != null && level().getBlockState(hookedPos).canBeReplaced()) {
                 setHookState(HookState.POP);
             }

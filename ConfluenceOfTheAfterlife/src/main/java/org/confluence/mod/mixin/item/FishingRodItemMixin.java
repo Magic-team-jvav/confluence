@@ -15,8 +15,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-import java.util.Optional;
-
 @Mixin(FishingRodItem.class)
 public abstract class FishingRodItemMixin {
     @ModifyArg(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z"))
@@ -24,14 +22,14 @@ public abstract class FishingRodItemMixin {
         if (!(entity instanceof FishingHook fishingHook)) return entity;
         Player playerOwner = fishingHook.getPlayerOwner();
         if (playerOwner == null) return entity;
-        Optional<FishingBobber> curio = CuriosUtils.findCurio(playerOwner, FishingBobber.class);
-        if (curio.isPresent()) {
+        FishingBobber curio = CuriosUtils.findCurio(playerOwner, FishingBobber.class);
+        if (curio != null) {
             fishingHook = new CurioFishingHook(
                     playerOwner,
-                fishingHook.level(),
-                ((FishingHookAccessor) fishingHook).getLuck(),
-                ((FishingHookAccessor) fishingHook).getLureSpeed(),
-                curio.get().variant
+                    fishingHook.level(),
+                    ((FishingHookAccessor) fishingHook).getLuck(),
+                    ((FishingHookAccessor) fishingHook).getLureSpeed(),
+                    curio.variant
             );
         }
         if (TCUtils.hasAccessoriesType(playerOwner, AccessoryItems.LAVAPROOF$FISHING$HOOK)) {

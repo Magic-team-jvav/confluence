@@ -20,14 +20,15 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
+import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.FishingPoleItems;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.common.item.accessory.FishingBobber;
 import org.confluence.mod.mixed.IFishingHook;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.util.CuriosUtils;
+import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Optional;
 
 public abstract class AbstractFishingPole extends CustomRarityItem {
     protected static final ImmutableMultimap<Attribute, AttributeModifier> EMPTY = ImmutableMultimap.of();
@@ -63,21 +64,21 @@ public abstract class AbstractFishingPole extends CustomRarityItem {
                 int luckBonus = EnchantmentHelper.getFishingLuckBonus(serverLevel, itemstack, pPlayer);
                 int speedBonus = (int) (EnchantmentHelper.getFishingTimeReduction(serverLevel, itemstack, pPlayer) * 20.0F);
                 FishingHook fishingHook;
-                Optional<FishingBobber> curio = CuriosUtils.findCurio(pPlayer, FishingBobber.class);
-                if (curio.isEmpty()) {
+                FishingBobber curio = CuriosUtils.findCurio(pPlayer, FishingBobber.class);
+                if (curio == null) {
                     fishingHook = getHook(itemstack, pPlayer, pLevel, luckBonus, speedBonus);
                 } else {
-                    fishingHook = new CurioFishingHook(pPlayer, pLevel, luckBonus, speedBonus, curio.get().variant);
-                } // todo
-//                if (CuriosUtils.noSameCurio(pPlayer, ILavaproofFishingHook.class)) {
-//                    if (this == FishingPoleItems.HOTLINE_FISHING_HOOK.getPrefab()) {
-//                        ((IFishingHook) fishingHook).confluence$setIsLavaHook();
-//                    }
-//                    pLevel.addFreshEntity(fishingHook);
-//                } else {
+                    fishingHook = new CurioFishingHook(pPlayer, pLevel, luckBonus, speedBonus, curio.variant);
+                }
+                if (TCUtils.hasAccessoriesType(pPlayer, AccessoryItems.LAVAPROOF$FISHING$HOOK)) {
                     ((IFishingHook) fishingHook).confluence$setIsLavaHook();
                     pLevel.addFreshEntity(fishingHook);
-//                }
+                } else {
+                    if (this == FishingPoleItems.HOTLINE_FISHING_HOOK.get()) {
+                        ((IFishingHook) fishingHook).confluence$setIsLavaHook();
+                    }
+                    pLevel.addFreshEntity(fishingHook);
+                }
             }
             pPlayer.awardStat(Stats.ITEM_USED.get(this));
             pPlayer.gameEvent(GameEvent.ITEM_INTERACT_START);

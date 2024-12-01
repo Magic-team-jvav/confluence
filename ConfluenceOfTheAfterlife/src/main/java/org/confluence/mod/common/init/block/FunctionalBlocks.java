@@ -20,7 +20,6 @@ import org.confluence.mod.common.block.functional.crafting.ExtractinatorBlock;
 import org.confluence.mod.common.block.functional.crafting.SkyMillBlock;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.mixin.block.AnvilBlockMixin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +43,7 @@ public class FunctionalBlocks {
     public static final Supplier<WeatherVaneBlock> WEATHER_VANE = registerWithItem("weather_vane", () -> new WeatherVaneBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)));
     public static final Supplier<BlockEntityType<WeatherVaneBlock.Entity>> WEATHER_VANE_ENTITY = BLOCK_ENTITIES.register("weather_vane_entity", () -> BlockEntityType.Builder.of(WeatherVaneBlock.Entity::new, WEATHER_VANE.get()).build(null));
     /**
-     * @see AnvilBlockMixin
+     * @see org.confluence.mod.mixin.block.AnvilBlockMixin
      */
     public static final Supplier<AnvilBlock> LEAD_ANVIL = registerWithItem("lead_anvil", () -> new AnvilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL)));
     public static final Supplier<AnvilBlock> CHIPPED_LEAD_ANVIL = registerWithItem("chipped_lead_anvil", () -> new AnvilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHIPPED_ANVIL)));

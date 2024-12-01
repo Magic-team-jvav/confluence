@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "confluence:silver_hammer"
+            "id": "confluence:copper_hammer"
         },
         "title": {
             "translate": "achievements.confluence.hammer_time.title"

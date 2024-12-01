@@ -29,7 +29,7 @@ public final class EntityEvents {
             MinecartAbilityEvent.DismountOnMinecart e = NeoForge.EVENT_BUS.post(new MinecartAbilityEvent.DismountOnMinecart(player, minecart));
             ItemStack itemStack = e.getMinecartItem();
             if (e.isCanceled() || itemStack == null) return;
-            if (CuriosUtils.getSlot(player, "minecart", 0).isEmpty()) {
+            if (CuriosUtils.getSlot(player, "minecart", 0) == null) {
                 CuriosApi.getCuriosInventory(player).ifPresent(inv -> inv.setEquippedCurio("minecart", 0, itemStack));
             } else {
                 player.addItem(itemStack);

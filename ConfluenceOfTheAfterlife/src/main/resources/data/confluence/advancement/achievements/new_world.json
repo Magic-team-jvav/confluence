@@ -11,7 +11,7 @@
             "translate": "achievements.confluence.new_world.description"
         },
         "frame": "challenge",
-        "show_toast": false,
+        "show_toast": true,
         "announce_to_chat": false,
         "hidden": false
     },

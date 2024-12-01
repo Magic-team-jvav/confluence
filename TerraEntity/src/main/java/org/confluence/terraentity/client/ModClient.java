@@ -1,15 +1,29 @@
 package org.confluence.terraentity.client;
 
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.world.entity.EntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import org.confluence.terraentity.TerraEntity;
+import org.confluence.terraentity.client.entity.model.CabbageProjModel;
 import org.confluence.terraentity.client.entity.model.CrownOfKingSlimeModel;
 import org.confluence.terraentity.client.entity.renderer.CrownOfKingSlimeModelRenderer;
+import org.confluence.terraentity.client.entity.renderer.ProjRenderer;
+import org.confluence.terraentity.entity.proj.BaseProj;
 import org.confluence.terraentity.init.TEEntities;
 
+import java.lang.reflect.Field;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import static org.confluence.terraentity.init.TEEntities.CABBAGE_PROJ;
 import static org.confluence.terraentity.init.TEEntities.CROWN_OF_KING_SLIME_MODEL;
 
 
@@ -38,13 +52,17 @@ public final class ModClient {
 
     @SubscribeEvent
     public static void registerEntityLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(CrownOfKingSlimeModel.LAYER_LOCATION, CrownOfKingSlimeModel::createBodyLayer);
+//        event.registerLayerDefinition(CrownOfKingSlimeModel.LAYER_LOCATION, CrownOfKingSlimeModel::createBodyLayer);
+        registerModel(event, CrownOfKingSlimeModel.class);
+        registerModel(event, CabbageProjModel.class);
 
     }
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(CROWN_OF_KING_SLIME_MODEL.get(), CrownOfKingSlimeModelRenderer::new);
+
+        registerProj(event,CABBAGE_PROJ.get(),c->new CabbageProjModel<>(c.bakeLayer(CabbageProjModel.LAYER_LOCATION)));
 
         TEEntities.registerRenderers(event);
     }
@@ -74,4 +92,36 @@ public final class ModClient {
 //    }
 
 
+    public static ModelLayerLocation getModelDefine(Class<? extends Model> clz){
+        Field field2;
+        try{
+            field2  = clz.getDeclaredField("LAYER_LOCATION");
+        }catch (Exception e){ throw new RuntimeException();}
+        field2.setAccessible(true);
+
+        try{
+            return (ModelLayerLocation) field2.get(null);
+        }catch (Exception e){ throw new RuntimeException();}
+
+    }
+
+    public static Supplier<LayerDefinition> getLayerDefinition(Class<? extends Model> clz){
+        return  ()-> {
+            try {
+                return (LayerDefinition) clz.getMethod("createBodyLayer").invoke(null);
+            } catch (Exception e) {throw new RuntimeException(e);}
+        };
+    }
+
+    public static void registerModel(EntityRenderersEvent.RegisterLayerDefinitions evt, Class<? extends Model> clz){
+        evt.registerLayerDefinition(getModelDefine(clz), getLayerDefinition(clz));
+    }
+
+    public static <T extends BaseProj>void registerProj(EntityRenderersEvent.RegisterRenderers event, EntityType<T> entityType, Function<EntityRendererProvider.Context, EntityModel<T>> model){
+        event.registerEntityRenderer(entityType, (dispatcher)-> new ProjRenderer<>(dispatcher, model.apply(dispatcher),1,0));
+    }
+
+    public static <T extends BaseProj>void registerProj(EntityRenderersEvent.RegisterRenderers event, EntityType<T> entityType, Function<EntityRendererProvider.Context, EntityModel<T>> model, float size, float offsetY){
+        event.registerEntityRenderer(entityType, (dispatcher)-> new ProjRenderer<>(dispatcher, model.apply(dispatcher),size,offsetY));
+    }
 }

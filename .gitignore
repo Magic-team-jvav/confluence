@@ -36,6 +36,7 @@ HeavenDestinyMoment/run
 PhaseJourney/run
 TerraMoment/run
 ExtraWorldInvaded/run
+TerraGuns/run
 
 TerraEntity/build
 MineTeam/build
@@ -46,3 +47,4 @@ HeavenDestinyMoment/build
 PhaseJourney/build
 TerraMoment/build
 ExtraWorldInvaded/build
+TerraGuns/build

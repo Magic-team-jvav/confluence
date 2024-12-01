@@ -14,28 +14,37 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.item.ItemPropertyFunction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.connected.ModConnectives;
 import org.confluence.mod.client.gui.AchievementToast;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.client.gui.hud.HealthHudLayer;
 import org.confluence.mod.client.gui.hud.ManaHudLayer;
 import org.confluence.mod.client.gui.screens.GroupWikiScreen;
 import org.confluence.mod.client.gui.screens.ObjectWikiScreen;
-import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
+import org.confluence.mod.client.gui.screens.SkyMillScreen;
+import org.confluence.mod.client.handler.WeatherHandler;
+import org.confluence.mod.client.model.block.*;
 import org.confluence.mod.client.model.entity.FallingStarRenderer;
 import org.confluence.mod.client.model.entity.bomb.*;
 import org.confluence.mod.client.model.entity.fishing.BaseFishingHookModel;
@@ -48,10 +57,7 @@ import org.confluence.mod.client.model.entity.hook.WebSlingerModel;
 import org.confluence.mod.client.model.entity.projectile.BoulderModel;
 import org.confluence.mod.client.model.entity.projectile.EnchantedSwordProjectileModel;
 import org.confluence.mod.client.model.entity.projectile.IceBladeSwordProjectileModel;
-import org.confluence.mod.client.renderer.block.BaseChestBlockRenderer;
-import org.confluence.mod.client.renderer.block.DeathChestBlockRenderer;
-import org.confluence.mod.client.renderer.block.MechanicalBlockRenderer;
-import org.confluence.mod.client.renderer.block.WeatherVaneBlockRenderer;
+import org.confluence.mod.client.renderer.block.*;
 import org.confluence.mod.client.renderer.entity.bomb.*;
 import org.confluence.mod.client.renderer.entity.fishing.BaseFishingHookRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.BloodyFishingHookRenderer;
@@ -59,14 +65,18 @@ import org.confluence.mod.client.renderer.entity.fishing.GlowingFishingHookRende
 import org.confluence.mod.client.renderer.entity.fishing.HotlineFishingHookRenderer;
 import org.confluence.mod.client.renderer.entity.hook.*;
 import org.confluence.mod.client.renderer.entity.projectile.*;
-import org.confluence.mod.common.block.natural.LifeCrystalBlock;
+import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
+import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.init.ModFluids;
+import org.confluence.mod.common.init.ModMenus;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.ColoredItem;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.color.IntegerRGB;
+import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import software.bernie.geckolib.model.GeoModel;
@@ -103,6 +113,24 @@ public final class ModClientEvents {
             FishingPoleItems.registerCast();
             ArrowInBowHud.initAdaptionMap();
             AchievementToast.registerAll();
+            WeatherHandler.initialize();
+
+            ResourceLocation enable = Confluence.asResource("enable");
+            ItemPropertyFunction enableFunction = (itemStack, level, living, speed) -> {
+                CompoundTag tag = ModUtils.getItemStackNbt(itemStack);
+                if (tag == null) return 0;
+                return tag.getBoolean(IFunctionCouldEnable.DISABLE) ? 0 : 1;
+            };
+            ItemProperties.register(AccessoryItems.SPECTRE_GOGGLES.get(), enable, enableFunction);
+            ItemProperties.register(AccessoryItems.MECHANICAL_LENS.get(), enable, enableFunction);
+            ResourceLocation variant = Confluence.asResource("variant");
+            ItemPropertyFunction variantFunction = (itemStack, level, living, speed) -> {
+                CompoundTag tag = ModUtils.getItemStackNbt(itemStack);
+                if (tag == null) return 0;
+                return tag.getInt("VariantId");
+            };
+            ItemProperties.register(FunctionalBlocks.BASE_CHEST_BLOCK.get().asItem(), variant, variantFunction);
+            ItemProperties.register(FunctionalBlocks.DEATH_CHEST_BLOCK.get().asItem(), variant, variantFunction);
 
             ItemBlockRenderTypes.setRenderLayer(NatureBlocks.RED_ICE.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(NatureBlocks.PURPLE_ICE.get(), RenderType.translucent());
@@ -117,6 +145,11 @@ public final class ModClientEvents {
             ItemBlockRenderTypes.setRenderLayer(ModFluids.HONEY.fluid().get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(ModFluids.HONEY.flowing().get(), RenderType.translucent());
 
+            ModList.get().getModContainerById(Confluence.MODID).ifPresent(container -> {
+                IEventBus eventBus = container.getEventBus();
+                if (eventBus != null) ModConnectives.register(eventBus);
+            });
+
             GroupWikiScreen.putWikiType("item",
                     List.of(AccessoryItems.ITEMS, ArrowItems.ITEMS, AxeItems.ITEMS, BaitItems.ITEMS, BowItems.ITEMS, FishingPoleItems.ITEMS,
                             FoodItems.ITEMS, MaterialItems.ITEMS, ModItems.ITEMS, QuestedFishes.ITEMS, SwordItems.ITEMS, PotionItems.ITEMS),
@@ -124,6 +157,11 @@ public final class ModClientEvents {
                             "food", "material", "misc", "quested_fish", "sword", "terra_potion"));
             ObjectWikiScreen.putDescription("confluence:copper_short_sword", Component.translatable("wiki.confluence.copper_short_sword"));
         });
+    }
+
+    @SubscribeEvent
+    public static void registerMenuScreens(RegisterMenuScreensEvent event) {
+        event.register(ModMenus.SKY_MILL.get(), SkyMillScreen::new);
     }
 
     @SubscribeEvent
@@ -163,6 +201,8 @@ public final class ModClientEvents {
         event.registerLayerDefinition(WebSlingerModel.LAYER_LOCATION, WebSlingerModel::createBodyLayer);
         event.registerLayerDefinition(SkeletronHandModel.LAYER_LOCATION, SkeletronHandModel::createBodyLayer);
         /* todo 静止钩 */
+
+        event.registerLayerDefinition(WeatherVaneBlockModel.LAYER_LOCATION, WeatherVaneBlockModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -211,9 +251,9 @@ public final class ModClientEvents {
         event.registerEntityRenderer(DIGGING_MOLECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
 
         event.registerBlockEntityRenderer(ModBlocks.SIGN_BLOCK_ENTITY.get(), SignRenderer::new);
-        //event.registerBlockEntityRenderer(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), AltarBlockRenderer::new);
-        //event.registerBlockEntityRenderer(FunctionalBlocks.SKY_MILL_ENTITY.get(), SkyMillBlockRenderer::new);
-        //event.registerBlockEntityRenderer(FunctionalBlocks.EXTRACTINATOR_ENTITY.get(), ExtractinatorBlockRenderer::new);
+        event.registerBlockEntityRenderer(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new AltarBlockModel()));
+        event.registerBlockEntityRenderer(FunctionalBlocks.SKY_MILL_ENTITY.get(), context -> new SkyMillBlockRenderer());
+        event.registerBlockEntityRenderer(FunctionalBlocks.EXTRACTINATOR_ENTITY.get(), context -> new ExtractinatorBlockRenderer());
         event.registerBlockEntityRenderer(FunctionalBlocks.MECHANICAL_BLOCK_ENTITY.get(), MechanicalBlockRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.BASE_CHEST_BLOCK_ENTITY.get(), BaseChestBlockRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.DEATH_CHEST_BLOCK_ENTITY.get(), DeathChestBlockRenderer::new);
@@ -285,31 +325,34 @@ public final class ModClientEvents {
                 RenderSystem.setShaderFogEnd(10.0F);
             }
         }, ModFluids.SHIMMER.type());
+        event.registerItem(new SimpleGeoItemRenderer<>(LifeCrystalBlockModel.MODEL, LifeCrystalBlockModel.TEXTURE, null), NatureBlocks.LIFE_CRYSTAL_BLOCK.asItem());
         event.registerItem(new IClientItemExtensions() {
-            private GeoItemRenderer<LifeCrystalBlock.Item> renderer;
+            private GeoItemRenderer<AltarBlock.Item> renderer;
 
             @Override
             public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
                 if (renderer == null) {
                     this.renderer = new GeoItemRenderer<>(new GeoModel<>() {
                         @Override
-                        public ResourceLocation getModelResource(LifeCrystalBlock.Item animatable) {
-                            return LifeCrystalBlockModel.MODEL;
+                        public ResourceLocation getModelResource(AltarBlock.Item animatable) {
+                            return AltarBlockModel.MODELS[animatable.getVariant().getId()];
                         }
 
                         @Override
-                        public ResourceLocation getTextureResource(LifeCrystalBlock.Item animatable) {
-                            return LifeCrystalBlockModel.TEXTURE;
+                        public ResourceLocation getTextureResource(AltarBlock.Item animatable) {
+                            return AltarBlockModel.TEXTURES[animatable.getVariant().getId()];
                         }
 
                         @Override
-                        public ResourceLocation getAnimationResource(LifeCrystalBlock.Item animatable) {
-                            return null;
+                        public ResourceLocation getAnimationResource(AltarBlock.Item animatable) {
+                            return AltarBlockModel.ANIMATIONS[animatable.getVariant().getId()];
                         }
                     });
                 }
                 return renderer;
             }
-        }, NatureBlocks.LIFE_CRYSTAL_BLOCK.asItem());
+        }, FunctionalBlocks.DEMON_ALTAR.asItem(), FunctionalBlocks.CRIMSON_ALTAR.asItem());
+        event.registerItem(new SimpleGeoItemRenderer<>(SkyMillBlockModel.MODEL, SkyMillBlockModel.TEXTURE, SkyMillBlockModel.ANIMATION), FunctionalBlocks.SKY_MILL.asItem());
+        event.registerItem(new SimpleGeoItemRenderer<>(ExtractinatorBlockModel.MODEL, ExtractinatorBlockModel.TEXTURE, ExtractinatorBlockModel.ANIMATION), FunctionalBlocks.EXTRACTINATOR.asItem());
     }
 }

@@ -30,3 +30,7 @@
 	path = ExtraWorldInvaded
 	url = https://github.com/XiaoHuNao/ExtraWorldInvaded
 	branch = neoforge-dev/1.21.1
+[submodule "TerraGuns"]
+	path = TerraGuns
+	url = https://github.com/XiaoHuNao/TerraGuns
+	branch = Neo/1.21.1-dev

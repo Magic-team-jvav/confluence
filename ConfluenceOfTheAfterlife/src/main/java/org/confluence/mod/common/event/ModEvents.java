@@ -30,11 +30,7 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.network.c2s.HookThrowingPacketC2S;
 import org.confluence.mod.network.c2s.SwordShootingPacketC2S;
-import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
-import org.confluence.mod.network.s2c.GamePhasePacketS2C;
-import org.confluence.mod.network.s2c.ManaPacketS2C;
-import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
-import org.confluence.phase_journey.PhaseJourney;
+import org.confluence.mod.network.s2c.*;
 import org.confluence.phase_journey.api.PhaseJourneyEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -92,6 +88,7 @@ public final class ModEvents {
         registrar.playToClient(GamePhasePacketS2C.TYPE, GamePhasePacketS2C.STREAM_CODEC, GamePhasePacketS2C::handle);
         registrar.playToClient(FishingPowerInfoPacketS2C.TYPE, FishingPowerInfoPacketS2C.STREAM_CODEC, FishingPowerInfoPacketS2C::handle);
         registrar.playToClient(StarPhasesPacketS2C.TYPE, StarPhasesPacketS2C.STREAM_CODEC, StarPhasesPacketS2C::handle);
+        registrar.playToClient(EchoVisibilityPacketS2C.TYPE, EchoVisibilityPacketS2C.STREAM_CODEC, EchoVisibilityPacketS2C::handle);
 
         registrar.playToServer(SwordShootingPacketC2S.TYPE, SwordShootingPacketC2S.STREAM_CODEC, SwordShootingPacketC2S::receive);
         registrar.playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle);
@@ -108,6 +105,7 @@ public final class ModEvents {
         event.register(AccessoryItems.HIGH$TEST$FISHING$LINE);
         event.register(AccessoryItems.TACKLE$BOX);
         event.register(AccessoryItems.LAVAPROOF$FISHING$HOOK);
+        event.register(AccessoryItems.SPECTRE$GOGGLES);
     }
 
     @SubscribeEvent
@@ -135,19 +133,22 @@ public final class ModEvents {
         }
     }
 
+    /**
+     * @see org.confluence.mod.common.data.saved.ConfluenceData#increaseRevealStep
+     */
     @SubscribeEvent
     public static void phaseJourney$Register(PhaseJourneyEvent.Register event) {
         int step = 0;
         for (int state = 0; state < 3; state++) {
-            event.phaseRegister(PhaseJourney.asResource("reveal_step_" + (step++)), context -> {
+            event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
                 context.blockReplacement(OreBlocks.DEEPSLATE_COBALT_ORE.get(), Blocks.DEEPSLATE);
                 context.blockReplacement(OreBlocks.DEEPSLATE_PALLADIUM_ORE.get(), Blocks.DEEPSLATE);
             });
-            event.phaseRegister(PhaseJourney.asResource("reveal_step_" + (step++)), context -> {
+            event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
                 context.blockReplacement(OreBlocks.DEEPSLATE_MITHRIL_ORE.get(), Blocks.DEEPSLATE);
                 context.blockReplacement(OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get(), Blocks.DEEPSLATE);
             });
-            event.phaseRegister(PhaseJourney.asResource("reveal_step_" + (step++)), context -> {
+            event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
                 context.blockReplacement(OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get(), Blocks.DEEPSLATE);
                 context.blockReplacement(OreBlocks.DEEPSLATE_TITANIUM_ORE.get(), Blocks.DEEPSLATE);
             });

@@ -14,7 +14,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.client.handler.HookThrowingHandler;
-import org.confluence.mod.client.handler.WeatherHandler;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
 import org.confluence.terra_curio.api.event.PerformJumpingEvent;
@@ -29,7 +28,6 @@ public final class GameClientEvents {
 
         ProjectileStrategy.handle(minecraft, player);
         HookThrowingHandler.handle(player);
-        WeatherHandler.handleWind(minecraft, player);
     }
 
     @SubscribeEvent

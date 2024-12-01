@@ -20,6 +20,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.accessory.FishingBobber;
 import org.confluence.mod.common.item.accessory.MechanicalLens;
 import org.confluence.mod.common.item.accessory.PickupRangeAbilityValue;
+import org.confluence.mod.common.item.accessory.SpectreGoggles;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.api.primitive.FloatValue;
 import org.confluence.terra_curio.api.primitive.IntegerValue;
@@ -57,6 +58,7 @@ public class AccessoryItems {
     public static final ValueType<Unit, UnitValue> HIGH$TEST$FISHING$LINE = ValueType.ofUnit("high_test_fishing_line");
     public static final ValueType<Unit, UnitValue> TACKLE$BOX = ValueType.ofUnit("tackle_box");
     public static final ValueType<Unit, UnitValue> LAVAPROOF$FISHING$HOOK = ValueType.ofUnit("lavaproof_fishing_hook");
+    public static final ValueType<Unit, UnitValue> SPECTRE$GOGGLES = ValueType.ofUnit("spectre_goggles");
 
     public static final ValueType<Float, FloatValue> MANA$USE$REDUCE = ValueType.ofFloat("mana_use_reduce", FloatValue.ADDITION_WITHIN_0_TO_1, 0.0F);
     public static final ValueType<Float, FloatValue> REDUCE$HEALING$COOLDOWN = ValueType.ofFloat("reduce_healing_cooldown", FloatValue.ADDITION_WITHIN_0_TO_1, 0.0F);
@@ -123,9 +125,9 @@ public class AccessoryItems {
             GREEDY_RING = registerCurio("greedy_ring", builder -> builder.rarity(LIGHT_PURPLE)
                     .accessories(units(LUCKY$COIN), of(COIN$PICKUP$RANGE, new Tuple<>(14.67F, 0)), of(SPECIAL$PRICE, 1))
                     .attribute(Attributes.LUCK, 0.05, ADD_VALUE)), // 贪婪戒指
-            GUIDE_TO_PLANT_FIBER_CORDAGE = registerCurio("guide_to_plant_fiber_cordage", builder -> builder.accessories(units(SHEARS$DIG))); // 植物纤维绳索宝典
+            GUIDE_TO_PLANT_FIBER_CORDAGE = registerCurio("guide_to_plant_fiber_cordage", builder -> builder.accessories(units(SHEARS$DIG))), // 植物纤维绳索宝典
     /* 收音机 */
-    //SPECTRE_GOGGLES("spectre_goggles", SpectreGoggles::new), // 幽灵护目镜
+    SPECTRE_GOGGLES = registerDirectly("spectre_goggles", name -> new SpectreGoggles(BaseCurioItem.builder(name).rarity(ModRarity.PINK).accessories(units(SPECTRE$GOGGLES)))); // 幽灵护目镜
     /* 炫彩斗篷 */
 
     public static final Supplier<BaseCurioItem> SUMMONER_EMBLEM = registerCurio("summoner_emblem", builder -> builder.rarity(LIGHT_RED).attribute(ModAttributes.SUMMON_DAMAGE, 0.15, ADD_MULTIPLIED_TOTAL)), // 召唤师徽章

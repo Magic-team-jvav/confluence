@@ -19,6 +19,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.common.ColoredItem;
+import org.confluence.mod.network.s2c.EchoVisibilityPacketS2C;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
 import org.confluence.terra_curio.api.event.RangePickupItemEvent;
@@ -88,6 +89,7 @@ public final class GameEvents {
         living.getData(ModAttachments.MANA_STORAGE).flushAbility(living);
         if (living instanceof ServerPlayer serverPlayer) {
             FishingPowerInfoPacketS2C.sendToClient(serverPlayer);
+            EchoVisibilityPacketS2C.sendToClient(serverPlayer);
         }
     }
 

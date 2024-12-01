@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -345,15 +346,15 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         } else if (y <= 240.0) {
             ratio = 0.5F;
         } else if (random < 0.05F) {
-            ratio = ModUtils.nextFloat(level.random, 1.5F, 2.0F);
+            ratio = Mth.nextFloat(level.random, 1.5F, 2.0F);
         } else if (random < 0.0625F) {
-            ratio = ModUtils.nextFloat(level.random, 1.4F, 1.8F);
+            ratio = Mth.nextFloat(level.random, 1.4F, 1.8F);
         } else if (random < 0.0833F) {
-            ratio = ModUtils.nextFloat(level.random, 1.2F, 1.4F);
+            ratio = Mth.nextFloat(level.random, 1.2F, 1.4F);
         } else if (random < 0.125F) {
-            ratio = ModUtils.nextFloat(level.random, 1.1F, 1.2F);
+            ratio = Mth.nextFloat(level.random, 1.1F, 1.2F);
         } else if (random < 0.25F) {
-            ratio = ModUtils.nextFloat(level.random, 1.05F, 1.1F);
+            ratio = Mth.nextFloat(level.random, 1.05F, 1.1F);
         }
         // 专家模式增益
         // 击败增益

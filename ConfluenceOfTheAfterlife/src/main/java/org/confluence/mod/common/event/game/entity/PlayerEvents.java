@@ -25,6 +25,7 @@ import net.neoforged.neoforge.event.entity.player.*;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.advancement.ModAchievements;
 import org.confluence.mod.common.attachment.EverBeneficial;
+import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.effect.harmful.CursedEffect;
 import org.confluence.mod.common.effect.harmful.SilencedEffect;
 import org.confluence.mod.common.effect.harmful.StonedEffect;
@@ -39,11 +40,11 @@ import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.mixed.IAbstractMinecart;
 import org.confluence.mod.mixed.IFishingHook;
 import org.confluence.mod.mixed.IServerPlayer;
+import org.confluence.mod.network.s2c.EchoVisibilityPacketS2C;
+import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
-
-import java.util.Optional;
 
 import static org.confluence.mod.api.event.MinecartAbilityEvent.DismountOnMinecart;
 import static org.confluence.mod.api.event.MinecartAbilityEvent.RightClickRailBlock;
@@ -56,7 +57,16 @@ public final class PlayerEvents {
         if (player instanceof ServerPlayer serverPlayer) {
             PlayerUtils.syncMana2Client(serverPlayer);
             PlayerUtils.syncSavedData(serverPlayer);
+            FishingPowerInfoPacketS2C.sendToClient(serverPlayer);
+            EchoVisibilityPacketS2C.sendToClient(serverPlayer);
         }
+    }
+
+    @SubscribeEvent
+    public static void leftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+        Level level = event.getLevel();
+        BlockPos pos = event.getPos();
+        AltarBlock.onLeftClick(level.getBlockState(pos), level, pos, event.getEntity());
     }
 
     @SubscribeEvent
@@ -67,9 +77,9 @@ public final class PlayerEvents {
         BlockPos blockPos = event.getPos();
         BlockState blockState = level.getBlockState(blockPos);
         if (blockState.getBlock() instanceof BaseRailBlock railBlock) {
-            Optional<ItemStack> optionalItemStack = CuriosUtils.getSlot(player, "minecart", 0);
+            ItemStack optionalItemStack = CuriosUtils.getSlot(player, "minecart", 0);
             player.swing(InteractionHand.MAIN_HAND, true);
-            ItemStack itemStack = optionalItemStack.orElse(ItemStack.EMPTY);
+            ItemStack itemStack = optionalItemStack == null ? ItemStack.EMPTY : optionalItemStack;
             RightClickRailBlock e = NeoForge.EVENT_BUS.post(new RightClickRailBlock(player, itemStack, blockState, railBlock, blockPos));
             if (e.isCanceled()) return;
             AbstractMinecart minecart = e.getMinecart();

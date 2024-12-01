@@ -77,9 +77,9 @@ public final class PlayerUtils {
 
     public static void syncSavedData(ServerPlayer serverPlayer) {
         ConfluenceData data = ConfluenceData.get(serverPlayer.serverLevel());
-        PacketDistributor.sendToPlayer(serverPlayer, new WindSpeedPacketS2C(data.getWindSpeedX(), data.getWindSpeedZ()));
-        PacketDistributor.sendToPlayer(serverPlayer, new GamePhasePacketS2C(data.getGamePhase()));
-        StarPhasesPacketS2C.sendToAll(serverPlayer.serverLevel());
+        WindSpeedPacketS2C.sendToClient(serverPlayer, data.getWindSpeedX(), data.getWindSpeedZ());
+        GamePhasePacketS2C.sendToClient(serverPlayer, data.getGamePhase());
+        StarPhasesPacketS2C.sendToClient(serverPlayer, data.getStarPhases());
     }
 
     public static float getFishingPower(ServerPlayer player) {

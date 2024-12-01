@@ -11,6 +11,7 @@ import net.minecraft.world.level.saveddata.SavedData;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.network.s2c.GamePhasePacketS2C;
 import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
+import org.confluence.phase_journey.common.util.PhaseUtils;
 import org.confluence.terra_curio.network.s2c.WindSpeedPacketS2C;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,6 +22,7 @@ public class ConfluenceData extends SavedData {
     private float windSpeedX;
     private float windSpeedZ;
     private final Int2ObjectMap<StarPhase> starPhases;
+    private int revealStep;
 
     ConfluenceData() {
         this.gamePhase = GamePhase.BEFORE_SKELETRON;
@@ -30,6 +32,7 @@ public class ConfluenceData extends SavedData {
         for (int i = 0; i < STAR_PHASES_SIZE; i++) {
             starPhases.put(i, StarPhase.DEFAULT);
         }
+        this.revealStep = -1;
     }
 
     ConfluenceData(CompoundTag nbt, HolderLookup.@NotNull Provider registries) {
@@ -42,6 +45,7 @@ public class ConfluenceData extends SavedData {
             CompoundTag phase = (CompoundTag) tag;
             starPhases.put(phase.getInt("index"), new StarPhase(phase));
         }
+        this.revealStep = nbt.getInt("revealStep");
     }
 
     public static ConfluenceData get(ServerLevel serverLevel) {
@@ -61,6 +65,7 @@ public class ConfluenceData extends SavedData {
             listTag.add(tag);
         }
         nbt.put("starPhases", listTag);
+        nbt.putInt("revealStep", revealStep);
         return nbt;
     }
 
@@ -112,5 +117,20 @@ public class ConfluenceData extends SavedData {
 
     public Int2ObjectMap<StarPhase> getStarPhases() {
         return starPhases;
+    }
+
+    public boolean increaseRevealStep(ServerLevel serverLevel) {
+        if (revealStep < 9) {
+            serverLevel.players().forEach(serverPlayer -> {
+                PhaseUtils.achievePhase(serverPlayer, Confluence.asResource("reveal_step_" + this.revealStep++), true);
+            });
+            setDirty();
+            return true;
+        }
+        return false;
+    }
+
+    public int getRevealStep() {
+        return revealStep;
     }
 }

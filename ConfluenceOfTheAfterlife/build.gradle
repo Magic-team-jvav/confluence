@@ -3,7 +3,7 @@ plugins {
 }
 var projectName = ["TerraEntity","MineTeam","EquipmentBenediction",
                    "TerraCurio","ParticleStorm","HeavenDestinyMoment","PhaseJourney",
-                   "ExtraWorldInvaded","TerraMoment"
+                   "ExtraWorldInvaded","TerraMoment","TerraGuns"
 ]
 
 
@@ -95,7 +95,7 @@ dependencies {
     projectName.forEach {name -> implementation jarJar(project(":" + name))}
 
 
-    implementation jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: "[${registrate_version},)")
+    //implementation jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: "[${registrate_version},)")
     implementation jarJar(group: 'software.bernie.geckolib', name: "geckolib-neoforge-${minecraft_version}", version: "[${geckolib_version},)")
 
     implementation "curse.maven:adorned-1036809:5740650"

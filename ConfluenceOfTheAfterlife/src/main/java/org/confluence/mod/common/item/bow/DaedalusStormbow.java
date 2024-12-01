@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.common.item.sword.stagedy.projectile.AbstractProjContainer;
+import org.confluence.mod.common.item.sword.stagedy.projectile.IProjContainer;
 import org.confluence.mod.common.item.sword.stagedy.projectile.StarFuryProjContainer;
 import org.confluence.terra_curio.common.component.ModRarity;
 
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class DaedalusStormbow extends TerraBowItem {
 
-    private AbstractProjContainer container = new StarFuryProjContainer() {
+    private IProjContainer container = new StarFuryProjContainer() {
         @Override
         protected float getOffsetV(){//随机高度
             return super.getOffsetV() + (float) ((Math.random()*2-1) * 5);

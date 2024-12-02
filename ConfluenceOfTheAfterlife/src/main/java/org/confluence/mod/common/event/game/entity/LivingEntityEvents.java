@@ -1,16 +1,25 @@
 package org.confluence.mod.common.event.game.entity;
 
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.*;
@@ -25,8 +34,10 @@ import org.confluence.mod.common.init.ModAttachments;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
+import org.confluence.mod.common.particle.options.DamageIndicatorOptions;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
+import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_curio.util.TCUtils;
@@ -65,6 +76,16 @@ public final class LivingEntityEvents {
         } else if (living.getData(ModAttachments.EVER_BENEFICIAL).isVitalCrystalUsed()) {
             event.setAmount(event.getAmount() * 1.2F);
         }
+
+        // 治疗数字显示
+        if (!(living.level() instanceof ServerLevel level)) return;
+        AABB bb = living.getBoundingBoxForCulling();
+        Vec3 pos = living.position();
+        float amount = Math.round(event.getAmount() * 10) / 10f;
+        int intAmount = (int) amount;
+        String text = amount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(amount);
+        MutableComponent component = Component.literal(text).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD);
+        level.sendParticles(new DamageIndicatorOptions(component, false), pos.x, bb.maxY, pos.z, 1, 0.1, 0.1, 0.1, 0);
     }
 
     @SubscribeEvent
@@ -87,19 +108,38 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void livingDamage$Pre(LivingDamageEvent.Pre event) {
-        LivingEntity living = event.getEntity();
-        if (living.level().isClientSide) return;
+        LivingEntity damagingEntity = event.getEntity();
+        if (!(damagingEntity.level() instanceof ServerLevel level)) return;
         DamageSource damageSource = event.getSource();
         if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) return;
 
         float amount = event.getNewDamage();
+        Entity causer = damageSource.getEntity();
 
-        ThornsEffect.apply(living, damageSource.getEntity(), amount);
-
-        amount = ArcheryEffect.apply(living, damageSource, amount);
+        ThornsEffect.apply(damagingEntity, causer, amount);
+        amount = ArcheryEffect.apply(damagingEntity, damageSource, amount);
         amount = ManaSicknessEffect.apply(damageSource, amount);
-        //amount = BreathingReed.consumer(living, damageSource, amount);
+        //amount = BreathingReed.consumer(damagingEntity, damageSource, amount);
 
+        // 暴击判定和伤害显示
+        boolean crit = false;
+        if (!TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE) && causer instanceof Player player) {
+            double chance = player.getAttributeValue(TCAttributes.CRIT_CHANCE);
+            if (damagingEntity.level().random.nextFloat() < chance) {
+                amount *= 2;
+                player.crit(damagingEntity);
+                crit = true;
+            }
+            if (damageSource.getDirectEntity() instanceof AbstractArrow arrow) {
+                crit |= arrow.isCritArrow();
+            }
+        }
+        float roundedAmount = Math.round(amount * 10) / 10f;
+        int intAmount = (int) roundedAmount;
+        String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
+        Vec3 pos = damagingEntity.position();
+        MutableComponent component = Component.literal(text).withStyle(crit ? ChatFormatting.DARK_RED : ChatFormatting.GOLD, ChatFormatting.BOLD);
+        level.sendParticles(new DamageIndicatorOptions(component, crit), pos.x, damagingEntity.getBoundingBoxForCulling().maxY, pos.z, 1, 0.1, 0.1, 0.1, 0);
         event.setNewDamage(amount);
     }
 

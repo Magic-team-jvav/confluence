@@ -47,6 +47,7 @@
         "client.ItemRendererMixin",
         "client.PauseScreenMixin",
         "client.TitleScreenMixin",
+        "client.accessor.FontAccessor",
         "integration.terra_curio.InformationHandlerMixin"
     ],
     "injectors": {

@@ -13,6 +13,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import org.confluence.mod.common.block.functional.AbstractMechanicalBlock;
+import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 
 import java.util.Optional;

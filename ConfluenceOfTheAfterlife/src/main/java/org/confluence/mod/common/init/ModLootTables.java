@@ -2,7 +2,6 @@ package org.confluence.mod.common.init;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.LootTable;
 import org.confluence.mod.Confluence;
 
@@ -47,9 +46,5 @@ public final class ModLootTables {
 
     public static ResourceKey<LootTable> register(String name) {
         return ResourceKey.create(Registries.LOOT_TABLE, Confluence.asResource(name));
-    }
-
-    public static ResourceKey<LootTable> getOrCreate(ResourceLocation location) {
-        return ResourceKey.create(Registries.LOOT_TABLE, location);
     }
 }

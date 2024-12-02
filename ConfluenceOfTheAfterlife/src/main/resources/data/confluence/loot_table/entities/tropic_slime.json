@@ -1,0 +1,50 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "confluence:gameplay/slime_carry",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:tropical_fish",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 13
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            },
+            {
+              "function": "set_nbt",
+              "tag": "{color: 7585012}"
+            }
+          ],
+          "name": "confluence:gel",
+          "weight": 1
+        }
+      ]
+    }
+  ],
+  "random_sequence": "confluence:entity/tropic_slime"
+}

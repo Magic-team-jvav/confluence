@@ -1,0 +1,56 @@
+package org.confluence.mod.common.component.prefix;
+
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.StringRepresentable;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.Locale;
+
+import static org.confluence.mod.common.component.prefix.ModPrefix.*;
+
+public enum PrefixType implements StringRepresentable {
+    UNIVERSAL(Universal.VALUES.toArray(ModPrefix[]::new)),
+    MELEE(Common.VALUES, Melee.VALUES),
+    RANGED(Common.VALUES, Ranged.VALUES),
+    MAGIC(Common.VALUES, Magic.VALUES),
+    ACCESSORY(Accessory.VALUES.toArray(ModPrefix[]::new)),
+    UNKNOWN(new ModPrefix[]{});
+
+    public static final Codec<PrefixType> CODEC = StringRepresentable.fromEnum(PrefixType::values);
+    public static final StreamCodec<ByteBuf, PrefixType> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.STRING_UTF8, PrefixType::name, PrefixType::valueOf);
+
+    private ModPrefix[] available;
+
+    PrefixType(ModPrefix[] available) {
+        this.available = available;
+    }
+
+    @SafeVarargs
+    PrefixType(List<? extends ModPrefix>... prefixes) {
+        this.available = Lists.newArrayList(Iterables.concat(prefixes)).toArray(ModPrefix[]::new);
+    }
+
+    public ModPrefix[] getAvailable() {
+        return available;
+    }
+
+    public ModPrefix randomPrefix(RandomSource random) {
+        return available[random.nextInt(available.length)];
+    }
+
+    public void updatePrefix(ModPrefix[] prefixes) {
+        this.available = prefixes;
+    }
+
+    @Override
+    public @NotNull String getSerializedName() {
+        return name().toLowerCase(Locale.ROOT);
+    }
+}

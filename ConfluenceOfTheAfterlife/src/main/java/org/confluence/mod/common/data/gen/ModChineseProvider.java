@@ -172,6 +172,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("achievements.confluence.eye_on_you.title", "盯着你");
         add("achievements.confluence.eye_on_you.description", "打败克苏鲁之眼，它是只在夜间出没的危险眼球怪。");
 
+        add("prefix.confluence.tooltip.plus", "+%s%% %s");
+        add("prefix.confluence.tooltip.take", "-%s%% %s");
+        add("prefix.confluence.tooltip.add", "+%s %s");
+        add("prefix.confluence.tooltip.mana_cost", "魔力消耗");
+        add("prefix.confluence.tooltip.additional_mana", "额外魔力");
         add("prefix.confluence.hard", "坚硬");
         add("prefix.confluence.guarding", "守护");
         add("prefix.confluence.armored", "装甲");
@@ -685,10 +690,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.THIN_ICE_BLOCK.get(), "薄冰块");
         add(ModBlocks.CRISPY_HONEY_BLOCK.get(), "松脆蜂蜜块");
         add(NatureBlocks.LIFE_CRYSTAL_BLOCK.get(), "生命水晶");
-//        add(ModBlocks.CRIMSON_ALTAR.get(), "猩红祭坛");
-//        add(ModBlocks.DEMON_ALTAR.get(), "恶魔祭坛");
-//        add(ModBlocks.EXTRACTINATOR.get(), "提炼机");
-//        add(ModBlocks.FLOATING_WHEAT_BALE.get(), "飘飘麦捆");
+        add(FunctionalBlocks.CRIMSON_ALTAR.get(), "猩红祭坛");
+        add(FunctionalBlocks.DEMON_ALTAR.get(), "恶魔祭坛");
+        add(FunctionalBlocks.EXTRACTINATOR.get(), "提炼机");
+        add(FunctionalBlocks.WEATHER_VANE.get(), "风向标");
+        add(DecorativeBlocks.FLOATING_WHEAT_BALE.get(), "飘飘麦捆");
         add(FunctionalBlocks.BASE_CHEST_BLOCK.get(), "箱子");
         add(NatureBlocks.JUNGLE_HIVE_BLOCK.get(), "丛林蜂巢");
         add(NatureBlocks.THIN_HONEY_BLOCK.get(), "稀薄蜂蜜块");

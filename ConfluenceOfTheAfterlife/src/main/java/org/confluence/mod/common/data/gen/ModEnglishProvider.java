@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.gen;
 
+import com.google.common.collect.Iterables;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -14,6 +15,8 @@ import org.confluence.mod.mixin.accessor.LanguageProviderAccessor;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static org.confluence.mod.common.component.prefix.ModPrefix.*;
 
 public class ModEnglishProvider extends LanguageProvider {
     public ModEnglishProvider(PackOutput output) {
@@ -154,6 +157,20 @@ public class ModEnglishProvider extends LanguageProvider {
         add("achievements.confluence.eye_on_you.title", "Eye on You");
         add("achievements.confluence.eye_on_you.description", "“Defeat the Eye of Cthulhu, an ocular menace who only appears at night.");
 
+        add("prefix.confluence.tooltip.plus", "+%s%% %s");
+        add("prefix.confluence.tooltip.take", "-%s%% %s");
+        add("prefix.confluence.tooltip.add", "+%s %s");
+        add("prefix.confluence.tooltip.mana_cost", "Mana Cost");
+        add("prefix.confluence.tooltip.additional_mana", "Additional Mana");
+        add("prefix.confluence.quick", "Quick");
+        add("prefix.confluence.hasty", "Hasty");
+        add("prefix.confluence.deadly", "Deadly");
+        Iterables.concat(Universal.VALUES, Common.VALUES, Melee.VALUES, Ranged.VALUES, Magic.VALUES, Accessory.VALUES).forEach(prefix -> {
+            String name = prefix.name();
+            if ("quick".equals(name) || "deadly".equals(name) || "hasty".equals(name)) return;
+            add("prefix.confluence." + name, toTitleCase(name));
+        });
+
         add("fluid_type.confluence.shimmer", "Shimmer");
         add("fluid_type.confluence.honey", "Honey");
 
@@ -239,7 +256,6 @@ public class ModEnglishProvider extends LanguageProvider {
                 
                 Its best boomerangModifier is Legendary.""");
 
-        //ModBlocks.BLOCKS.getEntries().forEach(block -> add(block.get(), toTitleCase(block.getId().getPath())));
         BoxBlocks.BLOCKS.getEntries().forEach(block -> add(block.get(), toTitleCase(block.getId().getPath())));
         DecorativeBlocks.BLOCKS.getEntries().forEach(block -> add(block.get(), toTitleCase(block.getId().getPath())));
         OreBlocks.BLOCKS.getEntries().forEach(block -> add(block.get(), toTitleCase(block.getId().getPath())));

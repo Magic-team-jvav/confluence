@@ -1,0 +1,251 @@
+{
+  "type": "minecraft:gift",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:swiftness_potion",
+          "weight": 24
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:iron_skin_potion",
+          "weight": 24
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:heart",
+          "weight": 42
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:mining_potion",
+          "weight": 24
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:recall_potion",
+          "weight": 24
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:invisibility_potion",
+          "weight": 24
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:torch",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 3,
+                "max": 8
+              }
+            }
+          ],
+          "weight":42
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:bomb",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ],
+          "weight":42
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:raw_copper",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ],
+          "weight":21
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:raw_iron",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ],
+          "weight":21
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:raw_gold",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ],
+          "weight":21
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:raw_tin",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ],
+          "weight":21
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:raw_lead",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ],
+          "weight":21
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:raw_silver",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ],
+          "weight":21
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:raw_tungsten",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ],
+          "weight":21
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:raw_platinum",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ],
+          "weight":21
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:golden_coin",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 1,
+                "max": 1
+              }
+            }
+          ],
+          "weight":56
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:silver_coin",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 3,
+                "max": 6
+              }
+            }
+          ],
+          "weight":56
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:copper_coin",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 6,
+                "max": 12
+              }
+            }
+          ],
+          "weight":56
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:scaffolding",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 2,
+                "max": 6
+              }
+            }
+          ],
+          "weight":42
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}

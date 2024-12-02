@@ -1,0 +1,81 @@
+{
+  "type": "minecraft:gift",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:green_candy_block",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 10,
+                "max": 29
+              }
+            }
+          ],
+          "weight": 1680
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:red_candy_block",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 10,
+                "max": 29
+              }
+            }
+          ],
+          "weight": 1680
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:sugar_cookie",
+          "weight": 360
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:gingerbread_cookie",
+          "weight": 360
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:christmas_pudding",
+          "weight": 360
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:hand_warmer",
+          "weight": 63
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:candy_cane_sword",
+          "weight": 63
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:coal",
+          "weight": 333
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:candy_cane_pickaxe",
+          "weight": 63
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:candy_cane_hook",
+          "weight": 63
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}

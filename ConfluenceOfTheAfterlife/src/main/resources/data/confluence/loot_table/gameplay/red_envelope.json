@@ -1,0 +1,56 @@
+{
+  "type": "minecraft:gift",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:copper_coin",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 8,
+                "max": 8
+              }
+            }
+          ],
+          "weight": 999
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:silver_coin",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 8,
+                "max": 8
+              }
+            }
+          ],
+          "weight": 99
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:golden_coin",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 8,
+                "max": 8
+              }
+            }
+          ],
+          "weight": 9
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}

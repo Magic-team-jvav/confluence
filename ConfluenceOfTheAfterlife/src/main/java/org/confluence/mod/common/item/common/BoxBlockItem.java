@@ -1,6 +1,6 @@
 package org.confluence.mod.common.item.common;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -19,13 +19,12 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
-import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.util.PlayerUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class BoxBlockItem extends BlockItem {
-    public BoxBlockItem(Block block, ResourceLocation lootTable) {
+    public BoxBlockItem(Block block, ResourceKey<LootTable> lootTable) {
         super(block, new Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(lootTable)));
     }
 
@@ -39,7 +38,7 @@ public class BoxBlockItem extends BlockItem {
                     .withParameter(LootContextParams.THIS_ENTITY, player)
                     .withLuck(fishingPower + player.getLuck())
                     .create(LootContextParamSets.GIFT);
-            LootTable loottable = serverLevel.getServer().reloadableRegistries().getLootTable(ModLootTables.getOrCreate(itemStack.get(ModDataComponentTypes.LOOT).lootTable()));
+            LootTable loottable = serverLevel.getServer().reloadableRegistries().getLootTable(itemStack.get(ModDataComponentTypes.LOOT).lootTable());
             for (ItemStack loot : loottable.getRandomItems(lootparams)) {
                 if (!player.addItem(loot)) player.drop(loot, false, false);
             }

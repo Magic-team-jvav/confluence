@@ -25,6 +25,7 @@
         "entity.LivingEntityMixin",
         "entity.ServerPlayerMixin",
         "entity.VillagerMixin",
+        "integration.terra_curio.AccessoriesAttachmentMixin",
         "integration.terra_curio.BaseSpeedBootsMixin",
         "integration.terra_curio.StarClockEntityMixin",
         "item.BowItemMixin",

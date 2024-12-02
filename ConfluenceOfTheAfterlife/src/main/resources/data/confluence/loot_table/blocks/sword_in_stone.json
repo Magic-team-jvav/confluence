@@ -1,0 +1,63 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "confluence:sword_in_stone",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "sword_type": "terragrim"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:terragrim"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "confluence:sword_in_stone",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "sword_type": "enchanted_sword"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:enchanted_sword"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "confluence:sword_in_stone",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "sword_type": "rotten_sword"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:wooden_sword"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "confluence:blocks/sword_in_stone"
+}

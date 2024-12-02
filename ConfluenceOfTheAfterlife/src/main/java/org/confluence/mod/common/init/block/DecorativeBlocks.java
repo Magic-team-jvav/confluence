@@ -8,10 +8,13 @@ import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.natural.CloudBlock;
 import org.confluence.mod.common.init.item.ModItems;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static org.confluence.mod.common.init.block.ModBlocks.registerWithItem;
 
 public class DecorativeBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
@@ -98,6 +101,7 @@ public class DecorativeBlocks {
     public static final Supplier<Block> AETHERIUM_BRICK = copyBlockRegister("aetherium_brick", Blocks.STONE_BRICKS); 
     public static final Supplier<Block> CRYSTAL_BLOCK = copyBlockRegister("crystal_block", Blocks.AMETHYST_BLOCK); 
     public static final Supplier<Block> RAINBOW_BRICK = copyBlockRegister("rainbow_brick", Blocks.STONE_BRICKS);
+    public static final DeferredBlock<CloudBlock> FLOATING_WHEAT_BALE = registerWithItem("floating_wheat_bale", CloudBlock::new);
     // 大宝石块
     public static final Supplier<Block> BIG_RUBY_BLOCK = copyBlockRegister("big_ruby_block", Blocks.DIAMOND_BLOCK);
     public static final Supplier<Block> BIG_AMBER_BLOCK = copyBlockRegister("big_amber_block", Blocks.DIAMOND_BLOCK);

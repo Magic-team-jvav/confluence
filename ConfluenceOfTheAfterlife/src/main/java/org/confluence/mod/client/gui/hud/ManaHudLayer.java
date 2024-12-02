@@ -7,8 +7,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.gui.GuiHelper;
 import org.confluence.mod.client.handler.ClientPacketHandler;
+import org.confluence.mod.util.GuiUtils;
 
 public class ManaHudLayer implements LayeredDraw.Layer {
     public static final ResourceLocation STAR_SINGLE = Confluence.asResource("textures/gui/hud/star_single.png");
@@ -20,8 +20,8 @@ public class ManaHudLayer implements LayeredDraw.Layer {
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.options.hideGui || !GuiHelper.shouldDrawSurvivalElements(minecraft)) return;
-        GuiHelper.setupOverlayRenderState(true, false);
+        if (minecraft.options.hideGui || !GuiUtils.shouldDrawSurvivalElements(minecraft)) return;
+        GuiUtils.setupOverlayRenderState(true, false);
         minecraft.getProfiler().push("mana");
 
         int screenWidth = guiGraphics.guiWidth();

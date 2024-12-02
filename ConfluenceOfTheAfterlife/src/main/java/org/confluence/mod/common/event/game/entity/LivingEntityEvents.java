@@ -4,10 +4,12 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -25,6 +27,7 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -126,6 +129,18 @@ public final class LivingEntityEvents {
         MobEffectInstance effectInstance = event.getEffectInstance();
         if (effectInstance != null) {
             LoveEffect.onAdd(effectInstance.getEffect(), event.getEntity(), event.getEffectSource());
+        }
+    }
+
+    @SubscribeEvent
+    public static void livingEquipmentChange(LivingEquipmentChangeEvent event) {
+        if (event.getSlot() != EquipmentSlot.MAINHAND) return;
+        LivingEntity living = event.getEntity();
+        if (!living.level().isClientSide) {
+            ItemStack to = event.getTo();
+            if (PrefixUtils.canInit(to)) {
+                PrefixUtils.initPrefix(living.getRandom(), to);
+            }
         }
     }
 }

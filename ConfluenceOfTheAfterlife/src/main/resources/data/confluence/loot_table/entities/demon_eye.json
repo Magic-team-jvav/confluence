@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:lens",
+          "weight": 33
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 67
+        }
+      ]
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:black_lens",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 99
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "confluence:entity/demon_eye"
+}

@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
@@ -32,6 +33,7 @@ public class PalmTreeFeature extends Feature<PalmTreeFeature.Config> {
         List<Integer> leavesListY = new ArrayList<>(Arrays.asList(1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0));
         List<Integer> leavesListZ = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0, 3, 1, -3, -1, 1, -1, 1, -1, 1, -1, 2, -2, 0, 0, 0, 0, 4, -4, 0, 0, 2, -2, 0, 0, 2, -2, 2, -2));
         List<Integer> leavesListT = new ArrayList<>(Arrays.asList(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3));
+        List<Integer> leavesListD = new ArrayList<>(Arrays.asList(1, 3, 1, 3, 1, 3, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2));
         int treeX;
         int treeZ;
         int bl = facingF ? 1 : -1;
@@ -87,11 +89,11 @@ public class PalmTreeFeature extends Feature<PalmTreeFeature.Config> {
                 treeX = (int) (Math.sqrt(height)) * bl;
             }
             leavesBlockPos = new BlockPos(leavesBlockPos.getX() - treeX, leavesBlockPos.getY() + height - 1, leavesBlockPos.getZ() - treeZ);
-            for (int i = 0; i < leavesListT.size(); i++) {
+            for (int i = 0; i < leavesListX.size(); i++) {
                 BlockPos leavesBlockPosPlace = new BlockPos(leavesBlockPos.getX() + leavesListX.get(i), leavesBlockPos.getY() + leavesListY.get(i), leavesBlockPos.getZ() + leavesListZ.get(i));
                 BlockState leavesPos = level.getBlockState(leavesBlockPosPlace);
                 if (leavesPos.isAir()) {
-                    worldGenRegion.confluence$setBlock(leavesBlockPosPlace, leavesBlocks.get(leavesListT.get(i) - 1), 2);
+                    worldGenRegion.confluence$setBlock(leavesBlockPosPlace, leavesBlocks.get(leavesListT.get(i) - 1).setValue(BlockStateProperties.DISTANCE, leavesListD.get(i)), 2);
                 }
             }
 

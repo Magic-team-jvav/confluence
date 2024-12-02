@@ -4,7 +4,7 @@
     "hive_block": {
       "type": "simple_state_provider",
       "state": {
-        "Name": "minecraft:honeycomb_block"
+        "Name": "confluence:jungle_hive_block"
       }
     },
     "honey": {
@@ -13,7 +13,13 @@
         "Name": "confluence:honey"
       }
     },
-    "radius": 30,
-    "y_to_honey": -20
+    "honey_block": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "minecraft:honey_block"
+      }
+    },
+    "radius": 25,
+    "y_to_honey": -10
   }
 }

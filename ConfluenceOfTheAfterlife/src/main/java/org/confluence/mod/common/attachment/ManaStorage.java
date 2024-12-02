@@ -3,11 +3,11 @@ package org.confluence.mod.common.attachment;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
+import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -124,9 +124,11 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
         return false;
     }
 
-    public void flushAbility(LivingEntity living) {
-        this.fastManaRegeneration = TCUtils.hasAccessoriesType(living, AccessoryItems.FAST$MANA$GENERATION);
-        this.additionalMana = TCUtils.getAccessoriesValue(living, AccessoryItems.ADDITIONAL$MANA);
+    public void flushAbility(ServerPlayer serverPlayer) {
+        this.fastManaRegeneration = TCUtils.hasAccessoriesType(serverPlayer, AccessoryItems.FAST$MANA$GENERATION);
+        this.additionalMana = TCUtils.getAccessoriesValue(serverPlayer, AccessoryItems.ADDITIONAL$MANA);
+        freshMaxMana();
+        PlayerUtils.syncMana2Client(serverPlayer, this);
     }
 
     public boolean isFastManaRegeneration() {

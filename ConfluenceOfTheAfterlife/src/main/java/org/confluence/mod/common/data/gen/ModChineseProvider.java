@@ -172,6 +172,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("achievements.confluence.eye_on_you.title", "盯着你");
         add("achievements.confluence.eye_on_you.description", "打败克苏鲁之眼，它是只在夜间出没的危险眼球怪。");
 
+        add("prefix.confluence.tooltip.plus", "+%s%% %s");
+        add("prefix.confluence.tooltip.take", "-%s%% %s");
+        add("prefix.confluence.tooltip.add", "+%s %s");
+        add("prefix.confluence.tooltip.mana_cost", "魔力消耗");
+        add("prefix.confluence.tooltip.additional_mana", "额外魔力");
         add("prefix.confluence.hard", "坚硬");
         add("prefix.confluence.guarding", "守护");
         add("prefix.confluence.armored", "装甲");

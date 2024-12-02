@@ -19,7 +19,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import java.util.Optional;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiUtils {
+public final class GuiUtils {
     public static void drawImage(ResourceLocation loc, GuiGraphics g, int x, int y, int wid, int hig, int imWid, int imHig) {
         g.blit(loc, x, y, 0, 0, wid, hig, imWid, imHig);
     }

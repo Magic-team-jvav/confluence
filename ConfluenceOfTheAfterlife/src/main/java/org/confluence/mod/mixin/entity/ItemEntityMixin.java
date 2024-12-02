@@ -12,6 +12,7 @@ import org.confluence.mod.common.advancement.ModTriggers;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.mixed.IEntity;
 import org.confluence.mod.mixed.IItemEntity;
+import org.confluence.mod.util.PrefixUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -62,7 +63,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
                     confluence$setup(self, post.getCoolDown(), post.getSpeedY());
                 } else {
                     for (ItemStack target : targets) {
-                        //if (PrefixProvider.canInit(target)) PrefixProvider.unknown(target); todo 词缀
+                        if (PrefixUtils.canInit(target)) PrefixUtils.unknown(target);
                         ItemEntity itemEntity = new ItemEntity(level, self.getX(), self.getY(), self.getZ(), target);
                         confluence$setup(itemEntity, post.getCoolDown(), post.getSpeedY());
                         level.addFreshEntity(itemEntity);

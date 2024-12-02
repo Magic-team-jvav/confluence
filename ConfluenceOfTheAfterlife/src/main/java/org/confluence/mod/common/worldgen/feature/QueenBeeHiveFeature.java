@@ -79,9 +79,8 @@ public class QueenBeeHiveFeature extends Feature<QueenBeeHiveFeature.Config> {
         int radius = config.radius;
         int y_to_honey = config.y_to_honey;
         int interRadius = radius / 2;
-        double r1 = pContext.random().nextInt(360);
-        double r2 = ((double) pContext.random().nextInt(30) + 165 + r1) / 180 * Math.PI;
-        r1 = r1 / 180 * Math.PI;
+        double r1 = ((double) pContext.random().nextInt(360) / 180) * Math.PI;
+        double r2 = ((double) pContext.random().nextInt(30) + 165) / 180 * Math.PI + r1;
 
         BlockPos hight1 = new BlockPos((int) (radius * Math.sin(r1)), hiveBlockPos.getY(), (int) (radius * Math.cos(r1)));
         BlockPos hight2 = new BlockPos((int) (radius * Math.sin(r2)), hiveBlockPos.getY(), (int) (radius * Math.cos(r2)));

@@ -1,10 +1,10 @@
 {
-    "type": "confluence:simple_modifier",
+    "type": "neoforge:add_table",
     "conditions": [
         {
             "condition": "neoforge:loot_table_id",
             "loot_table_id": "minecraft:entities/skeleton"
         }
     ],
-    "with": "confluence:with/entities/skeleton"
+    "table": "confluence:with/entities/skeleton"
 }

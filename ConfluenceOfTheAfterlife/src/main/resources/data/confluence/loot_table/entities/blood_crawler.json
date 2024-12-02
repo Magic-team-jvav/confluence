@@ -48,5 +48,5 @@
       ]
     }
   ],
-  "random_sequence": "confluence:entity/blood_crawler"
+  "random_sequence": "terra_entity:entity/blood_crawler"
 }

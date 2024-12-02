@@ -21,7 +21,7 @@
             "entries": [
                 {
                     "type": "minecraft:item",
-                    "name": "confluence:shackle"
+                    "name": "terra_curio:shackle"
                 }
             ],
             "conditions": [

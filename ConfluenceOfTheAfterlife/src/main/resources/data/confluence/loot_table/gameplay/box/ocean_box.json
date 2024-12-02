@@ -6,28 +6,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:flipper",
+          "name": "terra_curio:flipper",
           "weight": 2250
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:water_walking_boots",
+          "name": "terra_curio:water_walking_boots",
           "weight": 1000
-        }
-      ],
-      "rolls": 1
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "confluence:fledgling_wings",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:empty",
-          "weight": 39
         }
       ],
       "rolls": 1

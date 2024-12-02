@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:blizzard_in_a_bottle",
+          "name": "terra_curio:blizzard_in_a_bottle",
           "weight": 1
         },
         {
@@ -16,7 +16,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:flurry_boots",
+          "name": "terra_curio:flurry_boots",
           "weight": 1
         },
         {
@@ -26,23 +26,8 @@
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:ice_skates",
+          "name": "terra_curio:ice_skates",
           "weight": 1
-        }
-      ],
-      "rolls": 1
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "confluence:fledgling_wings",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:empty",
-          "weight": 39
         }
       ],
       "rolls": 1

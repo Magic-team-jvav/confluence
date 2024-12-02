@@ -6,12 +6,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:sailfish_boots",
+          "name": "terra_curio:sailfish_boots",
           "weight": 250
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:tsunami_in_a_bottle",
+          "name": "terra_curio:tsunami_in_a_bottle",
           "weight": 244
         },
         {
@@ -31,22 +31,22 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:aglet",
+          "name": "terra_curio:aglet",
           "weight": 1
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:radar",
+          "name": "terra_curio:radar",
           "weight": 1
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:climbing_claws",
+          "name": "terra_curio:climbing_claws",
           "weight": 1
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:step_stool",
+          "name": "terra_curio:step_stool",
           "weight": 1
         },
         {

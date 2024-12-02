@@ -79,6 +79,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("death.attack.falling_star", "%1$s 得到了流星的回应");
         add("death.attack.boulder", "%1$s 被巨石均匀地涂抹在地上");
+        add("death.attack.thron", "%1$s 发现自己成了刺猬");
 
         add("biome.confluence.the_corruption", "腐化之地");
         add("biome.confluence.the_corruption_desert", "腐化沙漠");

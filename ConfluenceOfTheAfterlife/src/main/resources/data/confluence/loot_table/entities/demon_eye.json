@@ -31,5 +31,5 @@
       "rolls": 1
     }
   ],
-  "random_sequence": "confluence:entity/demon_eye"
+  "random_sequence": "terra_entity:entity/demon_eye"
 }

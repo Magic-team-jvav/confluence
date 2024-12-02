@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:lucky_horseshoe",
+          "name": "terra_curio:lucky_horseshoe",
           "weight": 1
         },
         {
@@ -16,12 +16,12 @@
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:shiny_red_balloon",
+          "name": "terra_curio:shiny_red_balloon",
           "weight": 1
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:celestial_magnet",
+          "name": "terra_curio:celestial_magnet",
           "weight": 1
         }
       ],
@@ -32,7 +32,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:fledgling_wings",
+          "name": "terra_curio:fledgling_wings",
           "weight": 1
         },
         {

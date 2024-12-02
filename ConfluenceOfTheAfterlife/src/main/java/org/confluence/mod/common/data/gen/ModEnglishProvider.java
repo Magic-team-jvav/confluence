@@ -77,6 +77,7 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add("death.attack.falling_star", "%1$s got a response from a meteor");
         add("death.attack.boulder", "%1$s  is crushed by boulder");
+        add("death.attack.thron", "%1$s  discovered that he had become a hedgehog.");
 
         add("painting.confluence.magic_harp.title", "MAGIC_HARP");
         add("painting.confluence.magic_harp.author", "BiliBili_魔法竖琴waaa，看上去傻傻的...");

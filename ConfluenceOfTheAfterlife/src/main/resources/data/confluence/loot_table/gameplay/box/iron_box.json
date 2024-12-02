@@ -6,12 +6,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:sailfish_boots",
+          "name": "terra_curio:sailfish_boots",
           "weight": 426
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:tsunami_in_a_bottle",
+          "name": "terra_curio:tsunami_in_a_bottle",
           "weight": 404
         },
         {

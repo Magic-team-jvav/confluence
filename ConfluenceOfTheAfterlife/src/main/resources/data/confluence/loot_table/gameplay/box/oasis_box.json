@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:dunerider_boots",
+          "name": "terra_curio:dunerider_boots",
           "weight": 1
         },
         {
@@ -32,7 +32,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:sandstorm_in_a_bottle",
+          "name": "terra_curio:sandstorm_in_a_bottle",
           "weight": 1
         },
         {
@@ -88,21 +88,6 @@
         {
           "type": "minecraft:empty",
           "weight": 75
-        }
-      ],
-      "rolls": 1
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "confluence:fledgling_wings",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:empty",
-          "weight": 39
         }
       ],
       "rolls": 1

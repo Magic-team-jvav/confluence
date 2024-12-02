@@ -236,12 +236,12 @@
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:frog_leg",
+          "name": "terra_curio:frog_leg",
           "weight":67
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:balloon_pufferfish",
+          "name": "terra_curio:balloon_pufferfish",
           "weight":134
         },
         {

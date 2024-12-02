@@ -1,0 +1,67 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "confluence:block/tundra/tundra_pot_0",
+		"1": "confluence:block/tundra/tundra_pot_top_0",
+		"2": "confluence:block/tundra/tundra_pot_bottom_0",
+		"3": "confluence:block/tundra/tundra_pot_ice_0",
+		"4": "confluence:block/tundra/tundra_pot_ice_top_0",
+		"5": "confluence:block/tundra/tundra_pot_ice_bottom_0",
+		"particle": "confluence:block/tundra/tundra_pot_0"
+	},
+	"elements": [
+		{
+			"from": [3, 0, 3],
+			"to": [13, 13, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [3, 0, 3]},
+			"faces": {
+				"north": {"uv": [3, 3, 13, 16], "texture": "#0"},
+				"east": {"uv": [3, 3, 13, 16], "texture": "#0"},
+				"south": {"uv": [3, 3, 13, 16], "texture": "#0"},
+				"west": {"uv": [3, 3, 13, 16], "texture": "#0"},
+				"up": {"uv": [3, 3, 13, 13], "texture": "#1"},
+				"down": {"uv": [3, 3, 13, 13], "texture": "#2"}
+			}
+		},
+		{
+			"from": [2, 1, 2],
+			"to": [14, 10, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [3, 0, 3]},
+			"faces": {
+				"north": {"uv": [2, 6, 14, 15], "texture": "#0"},
+				"east": {"uv": [2, 6, 14, 15], "texture": "#0"},
+				"south": {"uv": [2, 6, 14, 15], "texture": "#0"},
+				"west": {"uv": [2, 6, 14, 15], "texture": "#0"},
+				"up": {"uv": [2, 2, 14, 14], "texture": "#1"},
+				"down": {"uv": [2, 2, 14, 14], "texture": "#2"}
+			}
+		},
+		{
+			"from": [2, 12, 2],
+			"to": [14, 14, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [3, 11, 3]},
+			"faces": {
+				"north": {"uv": [2, 2, 14, 4], "texture": "#0"},
+				"east": {"uv": [2, 2, 14, 4], "texture": "#0"},
+				"south": {"uv": [2, 2, 14, 4], "texture": "#0"},
+				"west": {"uv": [2, 2, 14, 4], "texture": "#0"},
+				"up": {"uv": [2, 2, 14, 14], "texture": "#1"},
+				"down": {"uv": [2, 2, 14, 14], "texture": "#2"}
+			}
+		},
+		{
+			"from": [1.96875, -0.03125, 1.96875],
+			"to": [14.03125, 14.03125, 14.03125],
+			"rotation": {"angle": 0, "axis": "y", "origin": [3, 11, 3]},
+			"faces": {
+				"north": {"uv": [2, 2, 14, 16], "texture": "#3"},
+				"east": {"uv": [2, 2, 14, 16], "texture": "#3"},
+				"south": {"uv": [2, 2, 14, 16], "texture": "#3"},
+				"west": {"uv": [2, 2, 14, 16], "texture": "#3"},
+				"up": {"uv": [2, 2, 14, 14], "texture": "#4"},
+				"down": {"uv": [2, 2, 14, 14], "texture": "#5"}
+			}
+		}
+	],
+  "render_type": "cutout_mipped"
+}

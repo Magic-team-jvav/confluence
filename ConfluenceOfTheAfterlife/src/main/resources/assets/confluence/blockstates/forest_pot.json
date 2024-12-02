@@ -1,0 +1,18 @@
+{
+	"variants": {
+		"": [
+			{
+				"model": "confluence:block/pot/forest/forest_pot_0"
+			},
+			{
+				"model": "confluence:block/pot/forest/forest_pot_1"
+			},
+			{
+				"model": "confluence:block/pot/forest/forest_pot_2"
+			},
+			{
+				"model": "confluence:block/pot/forest/forest_pot_3"
+			}
+		]
+	}
+}

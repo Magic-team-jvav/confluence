@@ -2,7 +2,7 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
         {
-            "item": "confluence:stony_logs"
+            "item": "confluence:stony_log"
         }
     ],
     "result": {

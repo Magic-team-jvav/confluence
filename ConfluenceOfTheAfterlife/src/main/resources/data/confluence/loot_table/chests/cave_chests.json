@@ -6,27 +6,27 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:band_of_regeneration",
+          "name": "terra_curio:band_of_regeneration",
           "weight": 9
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:magic_mirror",
+          "name": "terra_curio:magic_mirror",
           "weight": 9
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:cloud_in_a_bottle",
+          "name": "terra_curio:cloud_in_a_bottle",
           "weight": 9
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:shoe_spikes",
+          "name": "terra_curio:shoe_spikes",
           "weight": 9
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:hermes_boots",
+          "name": "terra_curio:hermes_boots",
           "weight": 9
         },
         {
@@ -36,7 +36,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:lava_charm",
+          "name": "terra_curio:lava_charm",
           "weight": 1
         }
       ],

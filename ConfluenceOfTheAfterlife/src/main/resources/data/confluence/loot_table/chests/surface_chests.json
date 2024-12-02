@@ -31,12 +31,12 @@
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:aglet",
+          "name": "terra_curio:aglet",
           "weight": 1
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:climbing_claws",
+          "name": "terra_curio:climbing_claws",
           "weight": 1
         },
         {
@@ -46,12 +46,12 @@
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:radar",
+          "name": "terra_curio:radar",
           "weight": 1
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:step_stool",
+          "name": "terra_curio:step_stool",
           "weight": 1
         }
       ],

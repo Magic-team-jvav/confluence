@@ -10,8 +10,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModAttachments;
-import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.mixin.accessor.LivingEntityAccessor;
 import org.jetbrains.annotations.NotNull;
@@ -24,9 +22,6 @@ public class BaseMinecartEntity extends Minecart {
     public static final double MECHANICAL_CART_MAX_SPEED = 1.23;
     public static final double MECHANICAL_CART_ACCELERATION = 2.5;
     public static final double MECHANICAL_CART_DRAG_AIR = 0.99;
-    public static final Abilities<BaseMinecartEntity> WOODEN = new Abilities<>(ModEntities.WOODEN_MINECART, () -> Items.AIR, 0.308F, 0.16, 0.94);
-    public static final Abilities<MechanicalCartEntity> MECHANICAL = new Abilities<>(ModEntities.MECHANICAL_CART, MinecartItems.MECHANICAL_CART, (float) MECHANICAL_CART_MAX_SPEED, MECHANICAL_CART_ACCELERATION, MECHANICAL_CART_DRAG_AIR);
-    public static final Abilities<DiggingMolecartEntity> MOLECART = new Abilities<>(ModEntities.DIGGING_MOLECART, MinecartItems.DIGGING_MOLECART, 0.185F, 0.15, 0.93);
 
     protected Supplier<? extends Item> dropItem = () -> Items.AIR; // both
     protected float maxSpeed = 0.0F; // both

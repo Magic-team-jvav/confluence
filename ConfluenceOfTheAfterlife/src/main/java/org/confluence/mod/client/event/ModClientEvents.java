@@ -247,7 +247,11 @@ public final class ModClientEvents {
         /* todo 静止钩 */
 
         event.registerEntityRenderer(WOODEN_MINECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART)); // todo 模型
+        event.registerEntityRenderer(GENERIC_MINECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
         event.registerEntityRenderer(MECHANICAL_CART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
+        event.registerEntityRenderer(MINECARP.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
+        event.registerEntityRenderer(DEMONIC_HELLCART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
+        event.registerEntityRenderer(MEOWMERE_MINECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
         event.registerEntityRenderer(DIGGING_MOLECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
 
         event.registerBlockEntityRenderer(ModBlocks.SIGN_BLOCK_ENTITY.get(), SignRenderer::new);

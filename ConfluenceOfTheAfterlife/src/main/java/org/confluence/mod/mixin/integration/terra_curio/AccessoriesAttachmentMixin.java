@@ -1,7 +1,6 @@
 package org.confluence.mod.mixin.integration.terra_curio;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.init.item.AccessoryItems;
@@ -11,7 +10,6 @@ import org.confluence.terra_curio.api.primitive.IntegerValue;
 import org.confluence.terra_curio.api.primitive.PrimitiveValue;
 import org.confluence.terra_curio.api.primitive.ValueType;
 import org.confluence.terra_curio.common.attachment.AccessoriesAttachment;
-import org.confluence.terra_curio.common.component.AccessoriesComponent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,7 +28,7 @@ public abstract class AccessoriesAttachmentMixin {
     protected abstract <T, V extends PrimitiveValue<T>> void combineValue(ValueType<T, V> type, V value);
 
     @Inject(method = "lambda$flushAbility$4", at = @At(value = "INVOKE", target = "Lorg/confluence/terra_curio/util/TCUtils;forConfluence$Inject()V"), locals = LocalCapture.CAPTURE_FAILSOFT)
-    private void additionalMana(LivingEntity living, ICuriosItemHandler handler, CallbackInfo ci, Iterator var3, ICurioStacksHandler curioStacksHandler, IDynamicStackHandler stackHandler, int i, ItemStack stack, AccessoriesComponent component, Item item) {
+    private void additionalMana(LivingEntity living, ICuriosItemHandler handler, CallbackInfo ci, Iterator var3, ICurioStacksHandler curioStacksHandler, IDynamicStackHandler stackHandler, int i, ItemStack stack) {
         PrefixComponent prefix = PrefixUtils.getPrefix(stack);
         if (prefix == null) return;
         combineValue(AccessoryItems.ADDITIONAL$MANA, new IntegerValue(prefix.additionalMana()));

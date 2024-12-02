@@ -1,0 +1,51 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:spicy_pepper",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 199
+        }
+      ],
+      "rolls": 1
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:pomegranate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 199
+        }
+      ],
+      "rolls": 1
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:tr_amethyst_sapling",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 19
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "confluence:blocks/ash_branches"
+}

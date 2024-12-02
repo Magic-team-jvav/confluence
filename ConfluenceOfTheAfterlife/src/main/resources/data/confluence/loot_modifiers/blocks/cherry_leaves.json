@@ -1,0 +1,10 @@
+{
+    "type": "confluence:simple_modifier",
+    "conditions": [
+        {
+            "condition": "forge:loot_table_id",
+            "loot_table_id": "minecraft:blocks/cherry_leaves"
+        }
+    ],
+    "with": "confluence:with/blocks/cherry_leaves"
+}

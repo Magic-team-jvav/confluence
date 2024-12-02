@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:royal_gel",
+          "weight": 1
+        }
+      ]
+    }
+  ],
+  "random_sequence": "confluence:entity/king_slime"
+}

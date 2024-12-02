@@ -87,7 +87,7 @@ public class PalmTreeFeature extends Feature<PalmTreeFeature.Config> {
                 treeX = (int) (Math.sqrt(height)) * bl;
             }
             leavesBlockPos = new BlockPos(leavesBlockPos.getX() - treeX, leavesBlockPos.getY() + height - 1, leavesBlockPos.getZ() - treeZ);
-            for (int i = 0; i < 40; i++) {
+            for (int i = 0; i < leavesListT.size(); i++) {
                 BlockPos leavesBlockPosPlace = new BlockPos(leavesBlockPos.getX() + leavesListX.get(i), leavesBlockPos.getY() + leavesListY.get(i), leavesBlockPos.getZ() + leavesListZ.get(i));
                 BlockState leavesPos = level.getBlockState(leavesBlockPosPlace);
                 if (leavesPos.isAir()) {

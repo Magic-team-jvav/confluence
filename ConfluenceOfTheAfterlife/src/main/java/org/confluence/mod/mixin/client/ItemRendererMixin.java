@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -32,7 +33,7 @@ public abstract class ItemRendererMixin {
     @Inject(method = "renderStatic(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/level/Level;III)V", at = @At(value = "TAIL"))
     private void renderStaticMixin(LivingEntity entity, ItemStack itemStack, ItemDisplayContext diplayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, Level level, int combinedLight, int combinedOverlay, int seed, CallbackInfo ci) {
         ItemStack bow = minecraft.player.getItemInHand(InteractionHand.MAIN_HAND);
-        if (minecraft.player.isUsingItem() &&
+        if (minecraft.player.isUsingItem() && entity == minecraft.player &&
                 bow.getItem() instanceof TerraBowItem) {
             float charge = minecraft.player.getTicksUsingItem() / 20.0f;
             if(charge < 0.1f) return;

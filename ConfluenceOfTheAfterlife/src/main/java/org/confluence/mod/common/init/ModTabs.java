@@ -72,6 +72,7 @@ public final class ModTabs {
                         output.accept(TCItems.DIVING_HELMET.get());
                         AxeItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                         PickaxeItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                        PickaxeAxeItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                         HammerItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                         HookItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                         MinecartItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));

@@ -43,6 +43,6 @@ public class CustomRarityItem extends Item {
     }
 
     protected MutableComponent withRarity(@NotNull ItemStack pStack, MutableComponent component) {
-        return component.withStyle(style -> style.withColor(pStack.get(TCDataComponentTypes.MOD_RARITY).getColor()));
+        return component.withColor(pStack.get(TCDataComponentTypes.MOD_RARITY).getColor());
     }
 }

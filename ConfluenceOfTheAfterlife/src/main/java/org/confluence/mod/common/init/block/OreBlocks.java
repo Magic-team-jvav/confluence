@@ -9,6 +9,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.HellStoneBlock;
 import org.confluence.mod.common.block.natural.MeteoriteOre;
+import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.init.item.ModItems;
 
 import java.util.function.Supplier;
@@ -168,27 +169,27 @@ public class OreBlocks {
     public static final DeferredBlock<Block> CORRUPTION_REDSTONE_ORE = simpleBlockRegister("corruption_redstone_ore", () -> new RedStoneOreBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_REDSTONE_ORE)));
     public static final DeferredBlock<Block> FLESHIFICATION_REDSTONE_ORE = simpleBlockRegister("fleshification_redstone_ore", () -> new RedStoneOreBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_REDSTONE_ORE)));
 
-    public static final DeferredBlock<Block> DEEPSLATE_COBALT_ORE = simpleBlockRegister("deepslate_cobalt_ore", BlockBehaviour.Properties.of().requiresCorrectToolForDrops());
+    public static final DeferredBlock<Block> DEEPSLATE_COBALT_ORE = simpleBlockRegister("deepslate_cobalt_ore", () -> new StepRevealingBlock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops()));
     public static final DeferredBlock<Block> RAW_COBALT_BLOCK = simpleBlockRegister("raw_cobalt_block");
     public static final DeferredBlock<Block> COBALT_BLOCK = simpleBlockRegister("cobalt_block");
 
-    public static final DeferredBlock<Block> DEEPSLATE_PALLADIUM_ORE = simpleBlockRegister("deepslate_palladium_ore", BlockBehaviour.Properties.of().requiresCorrectToolForDrops());
+    public static final DeferredBlock<Block> DEEPSLATE_PALLADIUM_ORE = simpleBlockRegister("deepslate_palladium_ore", () -> new StepRevealingBlock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops()));
     public static final DeferredBlock<Block> RAW_PALLADIUM_BLOCK = simpleBlockRegister("raw_palladium_block");
     public static final DeferredBlock<Block> PALLADIUM_BLOCK = simpleBlockRegister("palladium_block");
 
-    public static final DeferredBlock<Block> DEEPSLATE_MITHRIL_ORE = simpleBlockRegister("deepslate_mithril_ore", BlockBehaviour.Properties.of().requiresCorrectToolForDrops());
+    public static final DeferredBlock<Block> DEEPSLATE_MITHRIL_ORE = simpleBlockRegister("deepslate_mithril_ore", () -> new StepRevealingBlock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops()));
     public static final DeferredBlock<Block> RAW_MITHRIL_BLOCK = simpleBlockRegister("raw_mithril_block");
     public static final DeferredBlock<Block> MITHRIL_BLOCK = simpleBlockRegister("mithril_block");
 
-    public static final DeferredBlock<Block> DEEPSLATE_ORICHALCUM_ORE = simpleBlockRegister("deepslate_orichalcum_ore", BlockBehaviour.Properties.of().requiresCorrectToolForDrops());
+    public static final DeferredBlock<Block> DEEPSLATE_ORICHALCUM_ORE = simpleBlockRegister("deepslate_orichalcum_ore", () -> new StepRevealingBlock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops()));
     public static final DeferredBlock<Block> RAW_ORICHALCUM_BLOCK = simpleBlockRegister("raw_orichalcum_block");
     public static final DeferredBlock<Block> ORICHALCUM_BLOCK = simpleBlockRegister("orichalcum_block");
 
-    public static final DeferredBlock<Block> DEEPSLATE_ADAMANTITE_ORE = simpleBlockRegister("deepslate_adamantite_ore", BlockBehaviour.Properties.of().requiresCorrectToolForDrops());
+    public static final DeferredBlock<Block> DEEPSLATE_ADAMANTITE_ORE = simpleBlockRegister("deepslate_adamantite_ore", () -> new StepRevealingBlock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops()));
     public static final DeferredBlock<Block> RAW_ADAMANTITE_BLOCK = simpleBlockRegister("raw_adamantite_block");
     public static final DeferredBlock<Block> ADAMANTITE_BLOCK = simpleBlockRegister("adamantite_block");
 
-    public static final DeferredBlock<Block> DEEPSLATE_TITANIUM_ORE = simpleBlockRegister("deepslate_titanium_ore", BlockBehaviour.Properties.of().requiresCorrectToolForDrops());
+    public static final DeferredBlock<Block> DEEPSLATE_TITANIUM_ORE = simpleBlockRegister("deepslate_titanium_ore", () -> new StepRevealingBlock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops()));
     public static final DeferredBlock<Block> RAW_TITANIUM_BLOCK = simpleBlockRegister("raw_titanium_block");
     public static final DeferredBlock<Block> TITANIUM_BLOCK = simpleBlockRegister("titanium_block");
 

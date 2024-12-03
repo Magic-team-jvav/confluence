@@ -24,12 +24,13 @@ public final class ModTags {
         public static final TagKey<Block> NEEDS_7_LEVEL = register("needs_7_level");
         public static final TagKey<Block> NEEDS_8_LEVEL = register("needs_8_level");
         public static final TagKey<Block> NEEDS_9_LEVEL = register("needs_9_level");
+        public static final TagKey<Block> UNBREAKABLE = register("unbreakable"); // 用于锯刃镐及以上
         public static final TagKey<Block> TORCH = register("torch");
-        public static final TagKey<Block> HARDCORE = register("hardcore");
-        public static final TagKey<Block> POTS_SURVIVE = register("pots_survive");
+        public static final TagKey<Block> HARDMODE = register("hardmode");
         public static final TagKey<Block> COIN_PILE = register("coin_pile");
         public static final TagKey<Block> EASY_CRASH = register("easy_crash");
         public static final TagKey<Block> VINES = register("vines");
+        public static final TagKey<Block> MINEABLE_WITH_PICKAXE_AXE = register("mineable_with_pickaxe_axe");
 
         private static TagKey<Block> register(String id) {
             return BlockTags.create(Confluence.asResource(id));
@@ -43,7 +44,7 @@ public final class ModTags {
         public static final TagKey<Item> PROVIDE_LIFE = register("provide_life");
         public static final TagKey<Item> COIN = register("coin");
         public static final TagKey<Item> TORCH = register("torch"); // todo
-        public static final TagKey<Item> HARDCORE = register("hardcore"); // todo
+        public static final TagKey<Item> HARDMODE = register("hardmode"); // todo
         public static final TagKey<Item> BOTTOMLESS = register("bottomless");
         public static final TagKey<Item> FRUIT = register("fruit");
         public static final TagKey<Item> DESERT_FOSSIL = register("desert_fossil");
@@ -57,6 +58,10 @@ public final class ModTags {
         public static final TagKey<Item> HAMMER = register("hammer");
         public static final TagKey<Item> MANA_WEAPON = register("mana_weapon");
         public static final TagKey<Item> PREFIX_UNIVERSAL_ONLY = register("prefix_universal_only");
+        public static final TagKey<Item> HARDMODE_ORES = register("hardmode_ores");
+        public static final TagKey<Item> WINGS = register("wings");
+        public static final TagKey<Item> BOSS_SUMMING = register("boss_summing");
+
 
         private static TagKey<Item> curios(String id) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath("curios", id));
@@ -67,9 +72,17 @@ public final class ModTags {
         }
     }
 
+    public static class Biomes {
+        public static final TagKey<Biome> SPREADING = register("spreading");
+        public static final TagKey<Biome> THE_CORRUPTION = register("the_corruption");
+
+        private static TagKey<Biome> register(String id) {
+            return TagKey.create(Registries.BIOME, Confluence.asResource(id));
+        }
+    }
+
     public static final TagKey<Fluid> FISHING_ABLE = FluidTags.create(Confluence.asResource("fishing_able"));
     public static final TagKey<Fluid> NOT_LAVA = FluidTags.create(Confluence.asResource("not_lava"));
 
     public static final TagKey<DamageType> HARMFUL_EFFECT = TagKey.create(Registries.DAMAGE_TYPE, Confluence.asResource("harmful_effect"));
-    public static final TagKey<Biome> SPREADING = TagKey.create(Registries.BIOME, Confluence.asResource("spreading"));
 }

@@ -4,6 +4,7 @@ import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -20,6 +21,7 @@ import org.confluence.mod.common.advancement.ModAchievements;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
 import org.confluence.mod.common.block.common.HoneyCauldronBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
+import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.fluid.FluidBuilder;
 import org.confluence.mod.common.init.ModFluids;
@@ -138,19 +140,21 @@ public final class ModEvents {
      */
     @SubscribeEvent
     public static void phaseJourney$Register(PhaseJourneyEvent.Register event) {
+        BlockState target = Blocks.DEEPSLATE.defaultBlockState();
         int step = 0;
         for (int state = 0; state < 3; state++) {
+            int finalState = state;
             event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
-                context.blockReplacement(OreBlocks.DEEPSLATE_COBALT_ORE.get(), Blocks.DEEPSLATE);
-                context.blockReplacement(OreBlocks.DEEPSLATE_PALLADIUM_ORE.get(), Blocks.DEEPSLATE);
+                context.blockReplacement(OreBlocks.DEEPSLATE_COBALT_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), target);
+                context.blockReplacement(OreBlocks.DEEPSLATE_PALLADIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), target);
             });
             event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
-                context.blockReplacement(OreBlocks.DEEPSLATE_MITHRIL_ORE.get(), Blocks.DEEPSLATE);
-                context.blockReplacement(OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get(), Blocks.DEEPSLATE);
+                context.blockReplacement(OreBlocks.DEEPSLATE_MITHRIL_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), target);
+                context.blockReplacement(OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), target);
             });
             event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
-                context.blockReplacement(OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get(), Blocks.DEEPSLATE);
-                context.blockReplacement(OreBlocks.DEEPSLATE_TITANIUM_ORE.get(), Blocks.DEEPSLATE);
+                context.blockReplacement(OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), target);
+                context.blockReplacement(OreBlocks.DEEPSLATE_TITANIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), target);
             });
         }
     }

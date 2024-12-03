@@ -117,7 +117,7 @@ public final class ModClientEvents {
             ResourceLocation enable = Confluence.asResource("enable");
             ItemPropertyFunction enableFunction = (itemStack, level, living, speed) -> {
                 CompoundTag tag = ModUtils.getItemStackNbt(itemStack);
-                if (tag == null) return 0;
+                if (tag == null) return 1;
                 return tag.getBoolean(IFunctionCouldEnable.DISABLE) ? 0 : 1;
             };
             ItemProperties.register(AccessoryItems.SPECTRE_GOGGLES.get(), enable, enableFunction);

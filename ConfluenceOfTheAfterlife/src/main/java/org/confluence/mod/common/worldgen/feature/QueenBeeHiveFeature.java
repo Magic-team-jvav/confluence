@@ -13,45 +13,44 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import org.confluence.mod.mixed.IWorldGenRegion;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class QueenBeeHiveFeature extends Feature<QueenBeeHiveFeature.Config> {
+    private static final int[] LOCATE_X_1 = new int[]{2, 2, 2, -2, -2, -2, 1, 1, 0, 0, -1, -1};
+    private static final int[] LOCATE_Z_1 = new int[]{1, 0, -1, 1, 0, -1, 2, -2, 2, -2, 2, -2};
+    private static final int[] LOCATE_X_2 = new int[]{2, 2, 2, -2, -2, -2, 1, 1, 0, 0, -1, -1, 1, 1, 1, 0, 0, 0, -1, -1, -1};
+    private static final int[] LOCATE_Z_2 = new int[]{1, 0, -1, 1, 0, -1, 2, -2, 2, -2, 2, -2, 1, 0, -1, 1, 0, -1, 1, 0, -1};
+    private static final int[] LOCATE_X_3 = new int[]{1, 1, 1, 0, 0, 0, -1, -1, -1};
+    private static final int[] LOCATE_Z_3 = new int[]{1, 0, -1, 1, 0, -1, 1, 0, -1};
 
     private static void placeBlock(IWorldGenRegion worldGenRegion, BlockPos hivePos, int yLow, BlockState hiveBlockState, BlockState honeyState, BlockState honeyBlockState, WorldGenLevel level, FeaturePlaceContext<Config> pContext) {
         for (int y = hivePos.getY(); y > yLow; y--) {
-            List<Integer> locateX1 = new ArrayList<>(Arrays.asList(2, 2, 2, -2, -2, -2, 1, 1, 0, 0, -1, -1));
-            List<Integer> locateZ1 = new ArrayList<>(Arrays.asList(1, 0, -1, 1, 0, -1, 2, -2, 2, -2, 2, -2));
-            List<Integer> locateX2 = new ArrayList<>(Arrays.asList(2, 2, 2, -2, -2, -2, 1, 1, 0, 0, -1, -1, 1, 1, 1, 0, 0, 0, -1, -1, -1));
-            List<Integer> locateZ2 = new ArrayList<>(Arrays.asList(1, 0, -1, 1, 0, -1, 2, -2, 2, -2, 2, -2, 1, 0, -1, 1, 0, -1, 1, 0, -1));
-            List<Integer> locateX3 = new ArrayList<>(Arrays.asList(1, 1, 1, 0, 0, 0, -1, -1, -1));
-            List<Integer> locateZ3 = new ArrayList<>(Arrays.asList(1, 0, -1, 1, 0, -1, 1, 0, -1));
             if (y == hivePos.getY()) {
                 int type = pContext.random().nextInt(30);
-                for (int i = 0; i < 12; i++) {
-                    BlockPos newPos = new BlockPos(hivePos.getX() + locateX1.get(i), y, hivePos.getZ() + locateZ1.get(i));
+                for (int i = 0; i < LOCATE_X_1.length; i++) {
+                    BlockPos newPos = new BlockPos(hivePos.getX() + LOCATE_X_1[i], y, hivePos.getZ() + LOCATE_Z_1[i]);
                     if ((level.getBlockState(newPos) == Blocks.STRUCTURE_VOID.defaultBlockState() || level.getBlockState(newPos) == honeyState)) {
                         worldGenRegion.confluence$setBlock(newPos, hiveBlockState, 2);
                     }
                 }
                 if (type == 1) {
-                    for (int i = 0; i < 9; i++) {
-                        BlockPos newPos = new BlockPos(hivePos.getX() + locateX3.get(i), y, hivePos.getZ() + locateZ3.get(i));
+                    for (int i = 0; i < LOCATE_X_3.length; i++) {
+                        BlockPos newPos = new BlockPos(hivePos.getX() + LOCATE_X_3[i], y, hivePos.getZ() + LOCATE_Z_3[i]);
                         if ((level.getBlockState(newPos) == Blocks.STRUCTURE_VOID.defaultBlockState() || level.getBlockState(newPos) == honeyState)) {
                             worldGenRegion.confluence$setBlock(newPos, honeyBlockState, 2);
                         }
                     }
                 } else if (type == 2) {
-                    for (int i = 0; i < 9; i++) {
-                        BlockPos newPos = new BlockPos(hivePos.getX() + locateX3.get(i), y, hivePos.getZ() + locateZ3.get(i));
+                    for (int i = 0; i < LOCATE_X_3.length; i++) {
+                        BlockPos newPos = new BlockPos(hivePos.getX() + LOCATE_X_3[i], y, hivePos.getZ() + LOCATE_Z_3[i]);
                         if ((level.getBlockState(newPos) == Blocks.STRUCTURE_VOID.defaultBlockState() || level.getBlockState(newPos) == honeyState)) {
                             worldGenRegion.confluence$setBlock(newPos, honeyState, 2);
                         }
                     }
                 }
             } else {
-                for (int i = 0; i < 21; i++) {
-                    BlockPos newPos = new BlockPos(hivePos.getX() + locateX2.get(i), y, hivePos.getZ() + locateZ2.get(i));
+                for (int i = 0; i < LOCATE_X_2.length; i++) {
+                    BlockPos newPos = new BlockPos(hivePos.getX() + LOCATE_X_2[i], y, hivePos.getZ() + LOCATE_Z_2[i]);
                     if ((level.getBlockState(newPos) == Blocks.STRUCTURE_VOID.defaultBlockState() || level.getBlockState(newPos) == honeyState)) {
                         worldGenRegion.confluence$setBlock(newPos, hiveBlockState, 2);
                     }
@@ -96,13 +95,13 @@ public class QueenBeeHiveFeature extends Feature<QueenBeeHiveFeature.Config> {
                 }
             }
         }
-        for (int list = 0; list < listOfS.size(); list++) {
+        for (BlockPos listOf : listOfS) {
             for (int xPos = -interRadius - 1; xPos <= interRadius; xPos++) {
                 for (int yPos = -interRadius - 1; yPos <= interRadius; yPos++) {
                     for (int zPos = -interRadius - 1; zPos <= interRadius; zPos++) {
                         float distance = (float) Math.sqrt(xPos * xPos + yPos * yPos + zPos * zPos);
                         if (distance <= interRadius) {
-                            BlockPos newPos = new BlockPos(xPos + listOfS.get(list).getX(), yPos + listOfS.get(list).getY(), zPos + listOfS.get(list).getZ());
+                            BlockPos newPos = new BlockPos(xPos + listOf.getX(), yPos + listOf.getY(), zPos + listOf.getZ());
                             if (distance >= interRadius - 3) {
                                 worldGenRegion.confluence$setBlock(newPos, hiveBlockState, 2);
                             }
@@ -111,13 +110,13 @@ public class QueenBeeHiveFeature extends Feature<QueenBeeHiveFeature.Config> {
                 }
             }
         }
-        for (int list = 0; list < listOfS.size(); list++) {
+        for (BlockPos listOf : listOfS) {
             for (int xPos = -interRadius - 1; xPos <= interRadius; xPos++) {
                 for (int yPos = -interRadius - 1; yPos <= interRadius; yPos++) {
                     for (int zPos = -interRadius - 1; zPos <= interRadius; zPos++) {
                         float distance = (float) Math.sqrt(xPos * xPos + yPos * yPos + zPos * zPos);
                         if (distance <= interRadius) {
-                            BlockPos newPos = new BlockPos(xPos + listOfS.get(list).getX(), yPos + listOfS.get(list).getY(), zPos + listOfS.get(list).getZ());
+                            BlockPos newPos = new BlockPos(xPos + listOf.getX(), yPos + listOf.getY(), zPos + listOf.getZ());
                             if (distance < interRadius - 3 && newPos.getY() <= hiveBlockPos.getY() + y_to_honey) {
                                 worldGenRegion.confluence$setBlock(newPos, honeyState, 2);
                             }

@@ -126,9 +126,12 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
 
     public void flushAbility(ServerPlayer serverPlayer) {
         this.fastManaRegeneration = TCUtils.hasAccessoriesType(serverPlayer, AccessoryItems.FAST$MANA$GENERATION);
-        this.additionalMana = TCUtils.getAccessoriesValue(serverPlayer, AccessoryItems.ADDITIONAL$MANA);
-        freshMaxMana();
-        PlayerUtils.syncMana2Client(serverPlayer, this);
+        int value = TCUtils.getAccessoriesValue(serverPlayer, AccessoryItems.ADDITIONAL$MANA);
+        if (value != additionalMana) {
+            this.additionalMana = value;
+            freshMaxMana();
+            PlayerUtils.syncMana2Client(serverPlayer, this);
+        }
     }
 
     public boolean isFastManaRegeneration() {

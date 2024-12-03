@@ -162,11 +162,11 @@ public abstract class ShimmerItemTransmutationEvent extends Event {
                         List<ItemStack> results = new ArrayList<>();
                         for (Ingredient ingredient : recipe.getIngredients()) {
                             ItemStack[] itemStacks = ingredient.getItems();
-                            if (itemStacks.length == 0 || Arrays.stream(itemStacks).allMatch(itemStack -> itemStack.is(ModTags.Items.HARDCORE))) {
+                            if (itemStacks.length == 0 || Arrays.stream(itemStacks).allMatch(itemStack -> itemStack.is(ModTags.Items.HARDMODE))) {
                                 continue;
                             }
                             ItemStack input = itemStacks[source.level().random.nextInt(itemStacks.length)];
-                            while (!isHardCore && input.is(ModTags.Items.HARDCORE)) {
+                            while (!isHardCore && input.is(ModTags.Items.HARDMODE)) {
                                 input = itemStacks[source.level().random.nextInt(itemStacks.length)];
                             }
                             ItemStack result = input.copy();

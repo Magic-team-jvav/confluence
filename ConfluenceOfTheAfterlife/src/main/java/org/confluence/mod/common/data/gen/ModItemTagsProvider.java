@@ -76,6 +76,19 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.COIN).add(ModItems.COPPER_COIN.get(), ModItems.SILVER_COIN.get(), ModItems.GOLDEN_COIN.get(), ModItems.PLATINUM_COIN.get());
         tag(TETags.Items.HONEY_TRANSLATION_BUCKET).add(ToolItems.HONEY_BUCKET.get());
         tag(TETags.Items.HONEY_TRANSLATION_NOT_CONSUMED).add(ToolItems.BOTTOMLESS_HONEY_BUCKET.get());
+        tag(ModTags.Items.HARDMODE_ORES).add(
+                MaterialItems.RAW_COBALT.get(),
+                MaterialItems.RAW_PALLADIUM.get(),
+                MaterialItems.RAW_MITHRIL.get(),
+                MaterialItems.RAW_ORICHALCUM.get(),
+                MaterialItems.RAW_ADAMANTITE.get(),
+                MaterialItems.RAW_TITANIUM.get()
+        );
+        tag(ModTags.Items.WINGS).add(AccessoryItems.FLEDGLING_WINGS.get());
+        tag(ModTags.Items.BOSS_SUMMING).add(
+                ConsumableItems.SUSPICIOUS_LOOKING_EYE.get(),
+                ConsumableItems.SLIME_CROWN.get()
+        );
 
         AccessoryItems.acceptTag(tag(TCTags.ACCESSORY));
     }

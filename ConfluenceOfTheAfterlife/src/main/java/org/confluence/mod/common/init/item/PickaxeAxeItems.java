@@ -1,0 +1,33 @@
+package org.confluence.mod.common.init.item;
+
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModTiers;
+import org.confluence.mod.common.item.pickaxe_axe.DraxItem;
+import org.confluence.mod.common.item.pickaxe_axe.PickaxeAxeItem;
+import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.terra_curio.common.init.TCAttributes;
+
+import java.util.Map;
+import java.util.function.Supplier;
+
+public class PickaxeAxeItems {
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
+
+    public static final Supplier<DraxItem> DRAX = ITEMS.registerItem("drax", properties -> new DraxItem(ModTiers.HALLOWED, 35, 4, ModRarity.LIGHT_RED, Map.of(
+            Attributes.ATTACK_KNOCKBACK, new AttributeModifier(ModItems.BASE_ATTACK_KNOCKBACK_ID, -0.25, AttributeModifier.Operation.ADD_VALUE),
+            TCAttributes.getCriticalChance(), new AttributeModifier(ModItems.BASE_CRITICAL_CHANCE_ID, 0.04, AttributeModifier.Operation.ADD_VALUE),
+            Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(ModItems.BASE_BLOCK_INTERACTION_RANGE_ID, -1.0, AttributeModifier.Operation.ADD_VALUE)
+    )));
+    public static final Supplier<PickaxeAxeItem> PICKAXE_AXE = ITEMS.registerItem("pickaxe_axe", properties -> new PickaxeAxeItem(ModTiers.HALLOWED, 35, 7, ModRarity.LIGHT_RED, Map.of(
+            Attributes.ATTACK_KNOCKBACK, new AttributeModifier(ModItems.BASE_ATTACK_KNOCKBACK_ID, -0.25, AttributeModifier.Operation.ADD_VALUE),
+            TCAttributes.getCriticalChance(), new AttributeModifier(ModItems.BASE_CRITICAL_CHANCE_ID, 0.04, AttributeModifier.Operation.ADD_VALUE)
+    )));
+    public static final Supplier<PickaxeAxeItem> PICKSAW = ITEMS.registerItem("picksaw", properties -> new PickaxeAxeItem(ModTiers.LIHZAHRD, 34, 6, ModRarity.LIME, Map.of(
+            Attributes.ATTACK_KNOCKBACK, new AttributeModifier(ModItems.BASE_ATTACK_KNOCKBACK_ID, 0.5, AttributeModifier.Operation.ADD_VALUE),
+            TCAttributes.getCriticalChance(), new AttributeModifier(ModItems.BASE_CRITICAL_CHANCE_ID, 0.04, AttributeModifier.Operation.ADD_VALUE),
+            Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(ModItems.BASE_BLOCK_INTERACTION_RANGE_ID, 1.0, AttributeModifier.Operation.ADD_VALUE)
+    )));
+}

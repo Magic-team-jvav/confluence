@@ -1,11 +1,13 @@
 package org.confluence.mod.common.worldgen.feature;
 
+import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -15,25 +17,26 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import org.confluence.mod.mixed.IWorldGenRegion;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class PalmTreeFeature extends Feature<PalmTreeFeature.Config> {
+
+    public static final int[] LEAVES_LIST_X = new int[]{0, 3, 1, -3, -1, 0, 0, 0, 0, 1, 1, -1, -1, 0, 0, 0, 0, 1, -1, 2, -2, 0, 0, 4, -4, 0, 0, 2, -2, 2, 2, -2, -2};
+    public static final int[] LEAVES_LIST_Y = new int[]{1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0};
+    public static final int[] LEAVES_LIST_Z = new int[]{0, 0, 0, 0, 0, 3, 1, -3, -1, 1, -1, 1, -1, 1, -1, 2, -2, 0, 0, 0, 0, 4, -4, 0, 0, 2, -2, 0, 0, 2, -2, 2, -2};
+    public static final int[] LEAVES_LIST_T = new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3};
+    public static final int[] LEAVES_LIST_D = new int[]{1, 3, 1, 3, 1, 3, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2};
+
     public PalmTreeFeature(Codec<Config> pCodec) {
         super(pCodec);
     }
 
     @Override
     public boolean place(FeaturePlaceContext<Config> pContext) {
-        int height = 7 + pContext.random().nextInt(3);
-        boolean facingT = pContext.random().nextBoolean();
-        boolean facingF = pContext.random().nextBoolean();
-        List<Integer> leavesListX = new ArrayList<>(Arrays.asList(0, 3, 1, -3, -1, 0, 0, 0, 0, 1, 1, -1, -1, 0, 0, 0, 0, 1, -1, 2, -2, 0, 0, 4, -4, 0, 0, 2, -2, 2, 2, -2, -2));
-        List<Integer> leavesListY = new ArrayList<>(Arrays.asList(1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0));
-        List<Integer> leavesListZ = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0, 3, 1, -3, -1, 1, -1, 1, -1, 1, -1, 2, -2, 0, 0, 0, 0, 4, -4, 0, 0, 2, -2, 0, 0, 2, -2, 2, -2));
-        List<Integer> leavesListT = new ArrayList<>(Arrays.asList(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3));
-        List<Integer> leavesListD = new ArrayList<>(Arrays.asList(1, 3, 1, 3, 1, 3, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2));
+        RandomSource random = pContext.random();
+        int height = 7 + random.nextInt(3);
+        boolean facingT = random.nextBoolean();
+        boolean facingF = random.nextBoolean();
         int treeX;
         int treeZ;
         int bl = facingF ? 1 : -1;
@@ -42,11 +45,11 @@ public class PalmTreeFeature extends Feature<PalmTreeFeature.Config> {
         IWorldGenRegion worldGenRegion = (IWorldGenRegion) level;
         BlockPos trunkBlockPos = pContext.origin();
         BlockPos leavesBlockPos = pContext.origin();
-        BlockState trunkBlockState = config.trunk().getState(pContext.random(), trunkBlockPos);
-        BlockState leavesBlockState1 = config.leaves1().getState(pContext.random(), leavesBlockPos);
-        BlockState leavesBlockState2 = config.leaves2().getState(pContext.random(), leavesBlockPos);
-        BlockState leavesBlockState3 = config.leaves3().getState(pContext.random(), leavesBlockPos);
-        List<BlockState> leavesBlocks = new ArrayList<>(Arrays.asList(leavesBlockState1, leavesBlockState2, leavesBlockState3));
+        BlockState trunkBlockState = config.trunk().getState(random, trunkBlockPos);
+        BlockState leavesBlockState1 = config.leaves1().getState(random, leavesBlockPos);
+        BlockState leavesBlockState2 = config.leaves2().getState(random, leavesBlockPos);
+        BlockState leavesBlockState3 = config.leaves3().getState(random, leavesBlockPos);
+        List<BlockState> leavesBlocks = Lists.newArrayList(leavesBlockState1, leavesBlockState2, leavesBlockState3);
 
         boolean placed = true;
 
@@ -89,11 +92,11 @@ public class PalmTreeFeature extends Feature<PalmTreeFeature.Config> {
                 treeX = (int) (Math.sqrt(height)) * bl;
             }
             leavesBlockPos = new BlockPos(leavesBlockPos.getX() - treeX, leavesBlockPos.getY() + height - 1, leavesBlockPos.getZ() - treeZ);
-            for (int i = 0; i < leavesListX.size(); i++) {
-                BlockPos leavesBlockPosPlace = new BlockPos(leavesBlockPos.getX() + leavesListX.get(i), leavesBlockPos.getY() + leavesListY.get(i), leavesBlockPos.getZ() + leavesListZ.get(i));
+            for (int i = 0; i < LEAVES_LIST_X.length; i++) {
+                BlockPos leavesBlockPosPlace = leavesBlockPos.offset(LEAVES_LIST_X[i], LEAVES_LIST_Y[i], LEAVES_LIST_Z[i]);
                 BlockState leavesPos = level.getBlockState(leavesBlockPosPlace);
                 if (leavesPos.isAir()) {
-                    worldGenRegion.confluence$setBlock(leavesBlockPosPlace, leavesBlocks.get(leavesListT.get(i) - 1).setValue(BlockStateProperties.DISTANCE, leavesListD.get(i)), 2);
+                    worldGenRegion.confluence$setBlock(leavesBlockPosPlace, leavesBlocks.get(LEAVES_LIST_T[i] - 1).setValue(BlockStateProperties.DISTANCE, LEAVES_LIST_D[i]), 2);
                 }
             }
 

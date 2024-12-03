@@ -16,7 +16,7 @@
     },
     "parent": "confluence:achievements/new_world",
     "criteria": {
-        "obtain_molten_pickaxe": {
+        "requirement": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [

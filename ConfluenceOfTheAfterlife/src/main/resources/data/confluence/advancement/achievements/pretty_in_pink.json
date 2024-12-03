@@ -16,7 +16,7 @@
     },
     "parent": "confluence:achievements/new_world",
     "criteria": {
-        "confluence:pink_slime": {
+        "requirement": {
             "trigger": "minecraft:player_killed_entity",
             "conditions": {
                 "entity": [

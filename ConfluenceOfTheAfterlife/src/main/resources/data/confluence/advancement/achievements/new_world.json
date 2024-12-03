@@ -16,7 +16,7 @@
         "hidden": false
     },
     "criteria": {
-        "start": {
+        "requirement": {
             "trigger": "minecraft:location",
             "conditions": {
                 "player":{

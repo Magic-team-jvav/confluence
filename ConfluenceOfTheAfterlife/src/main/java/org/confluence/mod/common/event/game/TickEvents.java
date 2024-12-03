@@ -1,5 +1,6 @@
 package org.confluence.mod.common.event.game;
 
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -30,6 +31,19 @@ public final class TickEvents {
         if (player instanceof ServerPlayer serverPlayer) {
             PlayerUtils.regenerateMana(serverPlayer);
             ((IServerPlayer) serverPlayer).confluence$setCouldPickupItem(true);
+            Level level = serverPlayer.level();
+            long firstNight = serverPlayer.getPersistentData().getLong("confluence:you_can_do_it");
+            if (firstNight != -1L) {
+                if (firstNight == 0L && level.isNight()) {
+                    serverPlayer.getPersistentData().putLong("confluence:you_can_do_it", level.getDayTime());
+                } else if (firstNight != 0L && level.getDayTime() - firstNight > 12000L) {
+                    AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource("achievements/you_can_do_it"));
+                    if (advancement != null) {
+                        serverPlayer.getAdvancements().award(advancement, "never");
+                    }
+                    serverPlayer.getPersistentData().putLong("confluence:you_can_do_it", -1L);
+                }
+            }
         }
     }
 }

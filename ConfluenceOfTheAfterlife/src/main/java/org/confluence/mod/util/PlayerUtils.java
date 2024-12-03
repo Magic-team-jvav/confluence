@@ -1,5 +1,7 @@
 package org.confluence.mod.util;
 
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.player.Player;
@@ -10,6 +12,7 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.GetCustomDiggingPowerEvent;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.data.saved.ConfluenceData;
@@ -133,5 +136,17 @@ public final class PlayerUtils {
             }
         }
         return new Tuple<>(ret, max);
+    }
+
+    public static void awardAchievement(ServerPlayer serverPlayer, String path) {
+        CompoundTag data = serverPlayer.getPersistentData();
+        String key = Confluence.MODID + ":" + path;
+        if (!data.getBoolean(key)) {
+            AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource("achievements/" + path));
+            if (advancement != null) {
+                serverPlayer.getAdvancements().award(advancement, "never");
+            }
+            data.putBoolean(key, true);
+        }
     }
 }

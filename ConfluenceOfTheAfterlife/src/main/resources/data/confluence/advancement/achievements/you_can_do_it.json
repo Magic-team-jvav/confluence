@@ -1,0 +1,23 @@
+{
+    "display": {
+        "icon": {
+            "id": "minecraft:red_bed"
+        },
+        "title": {
+            "translate": "achievements.confluence.you_can_do_it.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.you_can_do_it.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "never": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

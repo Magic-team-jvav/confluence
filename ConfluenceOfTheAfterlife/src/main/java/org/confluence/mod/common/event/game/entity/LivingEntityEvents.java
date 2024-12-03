@@ -35,6 +35,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.particle.options.DamageIndicatorOptions;
+import org.confluence.mod.mixed.IDamageSource;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
@@ -130,10 +131,11 @@ public final class LivingEntityEvents {
                 player.crit(damagingEntity);
                 crit = true;
             }
-            if (damageSource.getDirectEntity() instanceof AbstractArrow arrow) {
-                crit |= arrow.isCritArrow();
-            }
         }
+        if (damageSource.getDirectEntity() instanceof AbstractArrow arrow) {
+            crit |= arrow.isCritArrow();
+        }
+        crit |= ((IDamageSource) damageSource).confluence$isCritical();
         float roundedAmount = Math.round(amount * 10) / 10f;
         int intAmount = (int) roundedAmount;
         String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);

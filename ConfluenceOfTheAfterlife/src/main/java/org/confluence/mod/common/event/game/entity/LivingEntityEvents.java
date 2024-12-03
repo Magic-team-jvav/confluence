@@ -1,9 +1,9 @@
 package org.confluence.mod.common.event.game.entity;
 
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -25,6 +25,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.*;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.block.functional.DartTrapBlock;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
 import org.confluence.mod.common.effect.beneficial.LuckEffect;
 import org.confluence.mod.common.effect.beneficial.ThornsEffect;
@@ -38,8 +39,8 @@ import org.confluence.mod.common.particle.options.DamageIndicatorOptions;
 import org.confluence.mod.mixed.IDamageSource;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.mod.util.PrefixUtils;
+import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -73,7 +74,7 @@ public final class LivingEntityEvents {
         LivingEntity living = event.getEntity();
         if (living.level().isClientSide) return;
         if (living.hasEffect(ModEffects.FROST_BURN)) {
-            event.setCanceled(true); // todo 免疫
+            event.setCanceled(true); // todo 有些怪物对其免疫
         } else if (living.getData(ModAttachments.EVER_BENEFICIAL).isVitalCrystalUsed()) {
             event.setAmount(event.getAmount() * 1.2F);
         }
@@ -149,11 +150,21 @@ public final class LivingEntityEvents {
     public static void livingDamage$Post(LivingDamageEvent.Post event) {
         DamageSource damageSource = event.getSource();
         LivingEntity damageEntity = event.getEntity();
-        if (damageSource.getEntity() instanceof LivingEntity livingEntity) {
+        Entity sourceEntity = damageSource.getEntity();
+        if (sourceEntity instanceof LivingEntity livingEntity) {
             if (livingEntity.getItemInHand(event.getEntity().getUsedItemHand()).getItem() instanceof BaseSwordItem sword) {
                 if (sword.modifier != null) {
                     sword.modifier.onHitEffects.forEach(effect -> effect.accept(livingEntity, damageEntity));
                 }
+            }
+        }
+        if (damageEntity instanceof ServerPlayer serverPlayer) {
+            if (damageEntity.isAlive()) {
+                if (damageEntity.getHealth() / damageEntity.getMaxHealth() < 0.1F) {
+                    PlayerUtils.awardAchievement(serverPlayer, "lucky_break");
+                }
+            } else if (sourceEntity != null && DartTrapBlock.NAME.equals(sourceEntity.getCustomName())) {
+                PlayerUtils.awardAchievement(serverPlayer, "watch_your_step");
             }
         }
     }

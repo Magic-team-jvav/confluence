@@ -16,7 +16,7 @@
     },
     "parent": "confluence:achievements/new_world",
     "criteria": {
-        "obtain_hardmode_ores": {
+        "requirement": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [

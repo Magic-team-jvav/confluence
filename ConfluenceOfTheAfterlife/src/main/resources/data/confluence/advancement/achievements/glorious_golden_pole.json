@@ -1,13 +1,13 @@
 {
     "display": {
         "icon": {
-            "id": "confluence:raw_mithril"
+            "id": "confluence:golden_fishing_rod"
         },
         "title": {
-            "translate": "achievements.confluence.extra_shiny.title"
+            "translate": "achievements.confluence.glorious_golden_pole.title"
         },
         "description": {
-            "translate": "achievements.confluence.extra_shiny.description"
+            "translate": "achievements.confluence.glorious_golden_pole.description"
         },
         "frame": "challenge",
         "show_toast": true,
@@ -21,7 +21,7 @@
             "conditions": {
                 "items": [
                     {
-                        "items": "#confluence:hardmode_ores"
+                        "items": "confluence:golden_fishing_rod"
                     }
                 ]
             }

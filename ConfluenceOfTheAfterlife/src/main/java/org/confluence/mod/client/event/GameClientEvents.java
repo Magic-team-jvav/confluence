@@ -3,6 +3,7 @@ package org.confluence.mod.client.event;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -22,6 +23,7 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
+import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PerformJumpingEvent;
 
@@ -48,8 +50,9 @@ public final class GameClientEvents {
         LocalPlayer localPlayer = minecraft.player;
         if (localPlayer == null) return;
         if (event.isUseItem() || event.isAttack() || event.isPickBlock()) {
-            if (localPlayer.hasEffect(ModEffects.STONED) || localPlayer.hasEffect(ModEffects.CURSED)) {
+            if (!((ILocalPlayer) localPlayer).confluence$isCanMove() || localPlayer.hasEffect(ModEffects.CURSED)) {
                 event.setCanceled(true);
+                event.setSwingHand(false);
             }
         }
     }
@@ -112,6 +115,19 @@ public final class GameClientEvents {
                         Component.translatable("prefix.confluence.tooltip.additional_mana")
                 ).withStyle(ChatFormatting.BLUE));
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void movementInputUpdate(MovementInputUpdateEvent event) {
+        LocalPlayer player = (LocalPlayer) event.getEntity();
+        boolean b = player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN);
+        ((ILocalPlayer) player).confluence$setCanMove(!b);
+        if (!player.getAbilities().instabuild && (b || player.hasEffect(ModEffects.SHIMMER))) {
+            Input input = event.getInput();
+            input.jumping = false;
+            input.forwardImpulse = 0.0F;
+            input.leftImpulse = 0.0F;
         }
     }
 }

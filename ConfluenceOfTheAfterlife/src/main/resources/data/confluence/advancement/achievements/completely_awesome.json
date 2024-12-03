@@ -1,13 +1,13 @@
 {
     "display": {
         "icon": {
-            "id": "confluence:raw_mithril"
+            "id": "terra_guns:mini_shark"
         },
         "title": {
-            "translate": "achievements.confluence.extra_shiny.title"
+            "translate": "achievements.confluence.completely_awesome.title"
         },
         "description": {
-            "translate": "achievements.confluence.extra_shiny.description"
+            "translate": "achievements.confluence.completely_awesome.description"
         },
         "frame": "challenge",
         "show_toast": true,
@@ -21,7 +21,7 @@
             "conditions": {
                 "items": [
                     {
-                        "items": "#confluence:hardmode_ores"
+                        "items": "terra_guns:mini_shark"
                     }
                 ]
             }

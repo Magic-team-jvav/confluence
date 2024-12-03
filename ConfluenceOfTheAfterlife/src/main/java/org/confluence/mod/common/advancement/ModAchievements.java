@@ -43,9 +43,9 @@ public final class ModAchievements {
         /* Dye Hard (3, 2) */
         /* Sick Throw (4, 2) */
         /* The Cavalry (0, 3) */
-        /* Completely Awesome (1, 3) */
+        offset("completely_awesome", 1, 3);
         /* Prismancer (2, 3) */
-        /* Glorious Golden Pole (3, 3) */
+        offset("glorious_golden_pole", 3, 3);
         /* Matching Attire (4, 3) */
         /* Infinity +1 Sword (0, 4) */
         offset("boots_of_the_hero", 1, 4);
@@ -67,7 +67,7 @@ public final class ModAchievements {
         offset("begone_evil", 10, 1);
         offset("extra_shiny", 6, 2);
         offset("photosynthesis", 7, 2);
-        /* Get a Life (8, 2) */
+        offset("get_a_life", 8, 2);
         /* Robbing the Grave (9, 2) */
         /* Big Booty (10, 2) */
         /* Bloodbath (6, 3) */
@@ -75,11 +75,11 @@ public final class ModAchievements {
         /* Sticky Situation (8, 3) */
         /* Jeepers Creepers (9, 3) */
         /* Funkytown (10, 3) */
-        /* Into Orbit (6, 4) */
-        /* Rock Bottom (7, 4) */
+        offset("into_orbit", 6, 4);
+        offset("rock_bottom", 7, 4);
         /* It Can Talk (8, 4) */
-        /* Watch Your Step (9, 4) */
-        /* You Can Do It (10, 4) */
+        offset("watch_your_step", 9, 4);
+        offset("you_can_do_it", 10, 4);
         /* Quiet Neighborhood (6.5, 5) */
         /* Hey Listen (7.5, 5) */
         /* A Rare Realm (8.5, 5) */
@@ -126,19 +126,19 @@ public final class ModAchievements {
         /* Not the Bees! 7, 7 */
         /* Mecha Mayhem 8, 7 */
         /* Gelatin World Tour 9, 7 */
-        /* Bulldozer 10, 7 */
-        /* Lucky Break 6, 8 */
+        offset("bulldozer", 10, 7);
+        offset("lucky_break", 6, 8);
         /* Throwing Lines 7, 8 */
         /* The Frequent Flyer 8, 8 */
         /* Rainbows and Unicorns 9, 8 */
         /* You and What Army? 10, 8 */
-        /* Marathon Medalist 6, 9 */
+        offset("marathon_medalist", 6, 9);
         /* Servant-in-Training 7, 9 */
         /* Good Little Slave 8, 9 */
         /* Trout Monkey 9, 9 */
         /* Fast and Fishious 10, 9 */
         /* Supreme Helper Minion! 6, 10 */
-        /* Topped Off 7, 10 */
+        offset("topped_off", 7, 10);
         /* Slayer of Worlds 8, 10 */
         /* A Rather Blustery Day 9, 10 */
         /* Hot Reels! 10, 10 */

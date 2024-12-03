@@ -1,13 +1,13 @@
 {
     "display": {
         "icon": {
-            "id": "confluence:raw_mithril"
+            "id": "confluence:life_fruit"
         },
         "title": {
-            "translate": "achievements.confluence.extra_shiny.title"
+            "translate": "achievements.confluence.get_a_life.title"
         },
         "description": {
-            "translate": "achievements.confluence.extra_shiny.description"
+            "translate": "achievements.confluence.get_a_life.description"
         },
         "frame": "challenge",
         "show_toast": true,
@@ -17,13 +17,11 @@
     "parent": "confluence:achievements/new_world",
     "criteria": {
         "requirement": {
-            "trigger": "minecraft:inventory_changed",
+            "trigger": "minecraft:consume_item",
             "conditions": {
-                "items": [
-                    {
-                        "items": "#confluence:hardmode_ores"
-                    }
-                ]
+                "item": {
+                    "items": "confluence:life_fruit"
+                }
             }
         }
     }

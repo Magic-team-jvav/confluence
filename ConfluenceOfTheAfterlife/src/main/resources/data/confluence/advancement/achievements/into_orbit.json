@@ -1,13 +1,13 @@
 {
     "display": {
         "icon": {
-            "id": "minecraft:wither_skeleton_skull"
+            "id": "minecraft:chorus_flower"
         },
         "title": {
-            "translate": "achievements.confluence.its_getting_hot_in_here.title"
+            "translate": "achievements.confluence.into_orbit.title"
         },
         "description": {
-            "translate": "achievements.confluence.its_getting_hot_in_here.description"
+            "translate": "achievements.confluence.into_orbit.description"
         },
         "frame": "challenge",
         "show_toast": true,
@@ -23,11 +23,10 @@
                     "location": {
                         "position": {
                             "y": {
-                                "min": 0,
-                                "max": 36
+                                "min": 256
                             }
                         },
-                        "dimension": "minecraft:the_nether"
+                        "dimension": "minecraft:the_end"
                     }
                 }
             }

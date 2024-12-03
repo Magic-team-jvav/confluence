@@ -116,12 +116,16 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
     }
 
     public boolean addStar() {
-        if (stars < 10) {
+        if (!isStarMaximum()) {
             this.stars++;
             freshMaxMana();
             return true;
         }
         return false;
+    }
+
+    public boolean isStarMaximum() {
+        return stars >= 10;
     }
 
     public void flushAbility(ServerPlayer serverPlayer) {

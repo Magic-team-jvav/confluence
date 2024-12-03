@@ -1,13 +1,13 @@
 {
     "display": {
         "icon": {
-            "id": "minecraft:wither_skeleton_skull"
+            "id": "minecraft:bedrock"
         },
         "title": {
-            "translate": "achievements.confluence.its_getting_hot_in_here.title"
+            "translate": "achievements.confluence.rock_bottom.title"
         },
         "description": {
-            "translate": "achievements.confluence.its_getting_hot_in_here.description"
+            "translate": "achievements.confluence.rock_bottom.description"
         },
         "frame": "challenge",
         "show_toast": true,
@@ -24,7 +24,7 @@
                         "position": {
                             "y": {
                                 "min": 0,
-                                "max": 36
+                                "max": 5
                             }
                         },
                         "dimension": "minecraft:the_nether"

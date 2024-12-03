@@ -43,8 +43,8 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, AcidVenomEffect> ACID_VENOM = EFFECTS.register("acid_venom", AcidVenomEffect::new);
     public static final DeferredHolder<MobEffect, FrostburnEffect> FROST_BURN = EFFECTS.register("frost_burn", FrostburnEffect::new);
     public static final DeferredHolder<MobEffect, CursedInfernoEffect> CURSED_INFERNO = EFFECTS.register("cursed_inferno", CursedInfernoEffect::new);
-    public static final DeferredHolder<MobEffect, SilencedEffect> SILENCED = EFFECTS.register("silenced", SilencedEffect::new);
-    public static final DeferredHolder<MobEffect, CursedEffect> CURSED = EFFECTS.register("cursed", CursedEffect::new);
+    public static final DeferredHolder<MobEffect, PublicMobEffect> SILENCED = EFFECTS.register("silenced", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0xFFFAFA));
+    public static final DeferredHolder<MobEffect, PublicMobEffect> CURSED = EFFECTS.register("cursed", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x4F4F4F));
     public static final DeferredHolder<MobEffect, WitheredArmorEffect> WITHERED_ARMOR = EFFECTS.register("withered_armor", WitheredArmorEffect::new);
     public static final DeferredHolder<MobEffect, IchorEffect> ICHOR = EFFECTS.register("ichor", IchorEffect::new);
     public static final DeferredHolder<MobEffect, PotionSicknessEffect> POTION_SICKNESS = EFFECTS.register("potion_sickness", PotionSicknessEffect::new);
@@ -54,4 +54,5 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, TentacleSpikesEffect> TENTACLE_SPIKES = EFFECTS.register("tentacle_spikes", TentacleSpikesEffect::new);
     public static final DeferredHolder<MobEffect, LoveEffect> LOVE = EFFECTS.register("love", LoveEffect::new);
     public static final DeferredHolder<MobEffect, ShimmerEffect> SHIMMER = EFFECTS.register("shimmer", ShimmerEffect::new);
+    public static final DeferredHolder<MobEffect, PublicMobEffect> FROZEN = EFFECTS.register("frozen", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x66CCFF));
 }

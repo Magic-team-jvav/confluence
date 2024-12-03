@@ -1,5 +1,11 @@
 {
     "values": {
+        "terra_curio:hand_warmer": {
+            "terra_curio:frozen_immune": {},
+            "terra_curio:effect_immunities": [
+                "confluence:frozen"
+            ]
+        },
         "terra_curio:ice_skates": {
             "terra_curio:ice_safe": {}
         },
@@ -28,6 +34,8 @@
             ]
         },
         "terra_curio:ankh_shield": {
+            "terra_curio:frozen_immune": {},
+            "terra_curio:fire_immune": {},
             "terra_curio:effect_immunities": [
                 "minecraft:poison",
                 "minecraft:blindness",

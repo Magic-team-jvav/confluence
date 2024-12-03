@@ -16,7 +16,7 @@
     },
     "parent": "confluence:achievements/new_world",
     "criteria": {
-        "open_death_chest": {
+        "requirement": {
             "trigger": "minecraft:default_block_use",
             "conditions": {
                 "location": [

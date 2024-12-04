@@ -1,4 +1,4 @@
-// 1.21.1	2024-11-18T13:04:13.6987945	Item Models: terra_entity
+// 1.21.1	2024-12-04T01:44:11.2329846	Item Models: terra_entity
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/terra_entity/models/item/black_slime_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/terra_entity/models/item/bloody_spore_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/terra_entity/models/item/blood_crawler_spawn_egg.json
@@ -6,6 +6,7 @@
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/terra_entity/models/item/crimson_kemera_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/terra_entity/models/item/crimson_slime_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/terra_entity/models/item/cthulhu_eye_spawn_egg.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/terra_entity/models/item/debug_item.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/terra_entity/models/item/decayeder_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/terra_entity/models/item/demon_eye_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/terra_entity/models/item/desert_slime_spawn_egg.json

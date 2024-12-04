@@ -552,6 +552,22 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.getFenceGate().get(), "猴面包木栅栏门");
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.getPressurePlate().get(), "猴面包木压力板");
 
+        add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getButton().get(), "黄柳木按钮");
+        add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().get(), "黄柳木板");
+        add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().get(), "黄柳木原木");
+        add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedLog().get(), "黄柳去皮原木");
+        add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedWood().get(), "黄柳去皮木");
+        add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getDoor().get(), "黄柳木门");
+        add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getTrapdoor().get(), "黄柳木活板门");
+        add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getSign().get(), "黄柳木告示牌");
+        add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStairs().get(), "黄柳木楼梯");
+        add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getSlab().get(), "黄柳木台阶");
+        add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getWood().get(), "黄柳木");
+        add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get(), "黄柳木树叶");
+        add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getFence().get(), "黄柳木栅栏");
+        add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getFenceGate().get(), "黄柳木栅栏门");
+        add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPressurePlate().get(), "黄柳木压力板");
+
         add(NatureBlocks.ASH_LOG_BLOCKS.getButton().get(), "白蜡木按钮");
         add(NatureBlocks.ASH_LOG_BLOCKS.getPlanks().get(), "白蜡木板");
         add(NatureBlocks.ASH_LOG_BLOCKS.getLog().get(), "白蜡木原木");
@@ -568,12 +584,21 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.ASH_LOG_BLOCKS.getFenceGate().get(), "白蜡木栅栏门");
         add(NatureBlocks.ASH_LOG_BLOCKS.getPressurePlate().get(), "白蜡木压力板");
 
-/*
-        add(LIFE_LOG.get(), "生命原木");
-        add(LIFE_LEAVES.get(), "生命木树叶");
-        add(LIFE_PLANKS.get(), "生命木板");
-        */
-
+        add(NatureBlocks.LIFE_LOG_BLOCKS.getButton().get(), "生命木按钮");
+        add(NatureBlocks.LIFE_LOG_BLOCKS.getPlanks().get(), "生命木板");
+        add(NatureBlocks.LIFE_LOG_BLOCKS.getLog().get(), "生命木原木");
+        add(NatureBlocks.LIFE_LOG_BLOCKS.getStrippedLog().get(), "生命去皮原木");
+        add(NatureBlocks.LIFE_LOG_BLOCKS.getStrippedWood().get(), "生命去皮木");
+        add(NatureBlocks.LIFE_LOG_BLOCKS.getDoor().get(), "生命木门");
+        add(NatureBlocks.LIFE_LOG_BLOCKS.getTrapdoor().get(), "生命木活板门");
+        add(NatureBlocks.LIFE_LOG_BLOCKS.getSign().get(), "生命木告示牌");
+        add(NatureBlocks.LIFE_LOG_BLOCKS.getStairs().get(), "生命木楼梯");
+        add(NatureBlocks.LIFE_LOG_BLOCKS.getSlab().get(), "生命木台阶");
+        add(NatureBlocks.LIFE_LOG_BLOCKS.getWood().get(), "生命木");
+        add(NatureBlocks.LIFE_LOG_BLOCKS.getLeaves().get(), "生命木树叶");
+        add(NatureBlocks.LIFE_LOG_BLOCKS.getFence().get(), "生命木栅栏");
+        add(NatureBlocks.LIFE_LOG_BLOCKS.getFenceGate().get(), "生命木栅栏门");
+        add(NatureBlocks.LIFE_LOG_BLOCKS.getPressurePlate().get(), "生命木压力板");
 
         add(NatureBlocks.DESERT_FOSSIL.get(), "沙漠化石");
         add(NatureBlocks.HARDENED_SAND_BLOCK.get(), "硬化沙块");

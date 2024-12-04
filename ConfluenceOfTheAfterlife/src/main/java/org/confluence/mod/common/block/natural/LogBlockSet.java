@@ -501,6 +501,9 @@ public class LogBlockSet {
         PEARL("pearl"),
         SHADOW("shadow"),
         PALM("palm"),
+        BAOBAB("baobab"),
+        YELLOW_WILLOW("yellow_willow"),
+        LIFE("life"),
         ASH("ash"),
         SPOOKY("spooky");
 

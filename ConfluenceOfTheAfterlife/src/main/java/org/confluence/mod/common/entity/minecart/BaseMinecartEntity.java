@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.minecart;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.vehicle.Minecart;
@@ -11,6 +12,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModAttachments;
 import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.mixin.accessor.LivingEntityAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -64,12 +66,17 @@ public class BaseMinecartEntity extends Minecart {
                 double sx = bx ? movement.x : 0.0;
                 double sz = bz ? movement.z : 0.0;
                 AABB aabb = getBoundingBox().move(sx, 0.0, sz).inflate(Math.abs(sx), 0.0, Math.abs(sz));
-                List<Entity> list = this.level().getEntities(this, aabb, entity -> !hasPassenger(entity) && EntitySelector.pushableBy(this).test(entity));
+                List<Entity> list = level().getEntities(this, aabb, entity -> !hasPassenger(entity) && EntitySelector.pushableBy(this).test(entity));
                 if (!list.isEmpty()) {
+                    boolean killed = false;
                     for (Entity entity : list) {
                         double distance = movement.horizontalDistance();
                         entity.hurt(damageSources().flyIntoWall(), (float) distance * 5.0F);
                         ModUtils.knockBackA2B(this, entity, distance * 0.5, 0.2);
+                        if (!entity.isAlive()) killed = true;
+                    }
+                    if (killed && driver instanceof ServerPlayer serverPlayer) {
+                        PlayerUtils.awardAchievement(serverPlayer, "vehicular_manslaughter");
                     }
                 }
             }

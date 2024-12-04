@@ -73,7 +73,7 @@ public final class ModTags {
     }
 
     public static class Biomes {
-        public static final TagKey<Biome> SPREADING = register("spreading");
+        public static final TagKey<Biome> SPREADABLE = register("spreadable");
         public static final TagKey<Biome> THE_CORRUPTION = register("the_corruption");
 
         private static TagKey<Biome> register(String id) {

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.event.game.entity;
 
+import com.google.common.collect.Streams;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -187,9 +188,16 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void livingEquipmentChange(LivingEquipmentChangeEvent event) {
-        if (event.getSlot() != EquipmentSlot.MAINHAND) return;
         LivingEntity living = event.getEntity();
-        if (!living.level().isClientSide) {
+        if (living.level().isClientSide) return;
+
+        if (event.getSlot().getType() == EquipmentSlot.Type.HUMANOID_ARMOR && living instanceof ServerPlayer serverPlayer) {
+            if (Streams.stream(serverPlayer.getArmorSlots()).noneMatch(ItemStack::isEmpty)) {
+                PlayerUtils.awardAchievement(serverPlayer, "matching_attire");
+            }
+        }
+
+        if (event.getSlot() == EquipmentSlot.MAINHAND) {
             ItemStack to = event.getTo();
             if (PrefixUtils.canInit(to)) {
                 PrefixUtils.initPrefix(living.getRandom(), to);

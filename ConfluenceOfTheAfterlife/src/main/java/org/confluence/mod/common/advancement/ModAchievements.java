@@ -46,7 +46,7 @@ public final class ModAchievements {
         offset("completely_awesome", 1, 3);
         /* Prismancer (2, 3) */
         offset("glorious_golden_pole", 3, 3);
-        /* Matching Attire (4, 3) */
+        offset("matching_attire", 4, 3);
         /* Infinity +1 Sword (0, 4) */
         offset("boots_of_the_hero", 1, 4);
         /* Feast of Midas (2, 4) */
@@ -107,7 +107,7 @@ public final class ModAchievements {
         /* Tin-Foil Hatter 2, 9 */
         /* Baleful Harvest 3, 9 */
         /* Ice Scream 4, 9 */
-        /* Vehicular Manslaughter 0, 10 */
+        offset("vehicular_manslaughter", 0, 10);
         /* There are Some Who Call Him... 1, 10 */
         /* Deceiver of Fools 2, 10 */
         /* Til Death... 3, 10 */
@@ -141,13 +141,13 @@ public final class ModAchievements {
         offset("topped_off", 7, 10);
         /* Slayer of Worlds 8, 10 */
         /* A Rather Blustery Day 9, 10 */
-        /* Hot Reels! 10, 10 */
+        offset("hot_reels", 10, 10);
         /* Heliophobia 6, 11 */
         /* Leading Landlord 7, 11 */
         /* Feeling Petty 8, 11 */
         /* Jolly Jamboree 9, 11 */
         offset("dead_men_tell_no_tales", 10, 11);
-        /* Unusual Survival Strategies 6.5, 12 */
+        offset("unusual_survival_strategies", 6.5F, 12);
         /* The Great Slime Mitosis 7.5, 12 */
         /* And Good Riddance! 8.5, 12 */
         /* To Infinity... and Beyond! 9.5, 12 */

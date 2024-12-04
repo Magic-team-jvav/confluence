@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.RandomSource;
@@ -24,6 +25,7 @@ import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.mixed.IBaseContainerBlockEntity;
 import org.confluence.mod.util.ModUtils;
 
 import java.util.Optional;
@@ -51,6 +53,7 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
             INetworkEntity chest = ModFeatures.getNetworkEntity(level, chestPos);
             if (chest != null && chest.getSelf() instanceof BaseChestBlock.Entity entity) {
                 entity.variant = BaseChestBlock.Variant.UNLOCKED_GOLDEN;
+                ((IBaseContainerBlockEntity) entity).confluence$setCustomName(Component.translatable("block.confluence.base_chest_block." + entity.variant.getSerializedName()));
                 boolean b = placeDartTraps(config, level, chestPos, chest);
                 boolean b1 = placeBoulders(config, random, level, chestPos, chest);
                 boolean b2 = placeTNTs(config, random, level, chestPos, chest);
@@ -155,7 +158,8 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
         return succeed;
     }
 
-    public record Config(int maxDartDistance, BlockState boulder, int boulderAmount, int maxBoulderHeight, int tntAmount, int maxSearchDown, ResourceKey<LootTable> lootTable) implements FeatureConfiguration {
+    public record Config(int maxDartDistance, BlockState boulder, int boulderAmount, int maxBoulderHeight, int tntAmount, int maxSearchDown,
+                         ResourceKey<LootTable> lootTable) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_dart_distance", 32).forGetter(Config::maxDartDistance),
                 BlockState.CODEC.fieldOf("boulder").orElseGet(() -> FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState()).forGetter(Config::boulder),

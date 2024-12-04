@@ -567,6 +567,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getFence().get(), "黄柳木栅栏");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getFenceGate().get(), "黄柳木栅栏门");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPressurePlate().get(), "黄柳木压力板");
+        add(NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get(), "黄柳垂叶");
 
         add(NatureBlocks.ASH_LOG_BLOCKS.getButton().get(), "白蜡木按钮");
         add(NatureBlocks.ASH_LOG_BLOCKS.getPlanks().get(), "白蜡木板");

@@ -1,14 +1,18 @@
 package org.confluence.mod.client.event;
 
+import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Either;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -18,14 +22,17 @@ import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
+import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.client.handler.HookThrowingHandler;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
+import org.confluence.mod.common.data.saved.StarPhase;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PerformJumpingEvent;
+import org.joml.Vector3f;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +41,9 @@ import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUT
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT, modid = Confluence.MODID)
 public final class GameClientEvents {
+
+    public static final Vector3f STAR_DIR = new Vector3f(0.0F, 0.0F, -1.0F);
+
     @SubscribeEvent
     public static void clientTick$Post(ClientTickEvent.Post event) {
         Minecraft minecraft = Minecraft.getInstance();
@@ -128,6 +138,25 @@ public final class GameClientEvents {
             input.jumping = false;
             input.forwardImpulse = 0.0F;
             input.leftImpulse = 0.0F;
+        }
+    }
+
+    @SubscribeEvent
+    public static void renderLevelStage(RenderLevelStageEvent event) {
+        if (true) return; // todo 等牢枕，去掉这一行就能润
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
+            ClientLevel level = Minecraft.getInstance().level;
+            if (level == null || level.dimension() != Level.OVERWORLD) return;
+            for (Int2ObjectMap.Entry<StarPhase> entry : ClientPacketHandler.getStarPhases().int2ObjectEntrySet()) {
+                StarPhase phase = entry.getValue(); // 星象
+                long gameTime = level.getGameTime(); // 游戏时间
+                BufferBuilder bufferbuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
+                /**
+                 * todo 写在这，只需照抄下方链接的第667到第673行
+                 * @see net.minecraft.client.renderer.LevelRenderer#drawStars(com.mojang.blaze3d.vertex.Tesselator)
+                 */
+                BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
+            }
         }
     }
 }

@@ -15,6 +15,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.NotNull;
@@ -84,7 +85,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.RAW_ADAMANTITE.get(),
                 MaterialItems.RAW_TITANIUM.get()
         );
-        tag(ModTags.Items.WINGS).add(AccessoryItems.FLEDGLING_WINGS.get());
+        tag(ModTags.Items.WINGS).add(
+                AccessoryItems.FLEDGLING_WINGS.get(),
+                TCItems.CELESTIAL_STARBOARD.get()
+        );
         tag(ModTags.Items.BOSS_SUMMING).add(
                 ConsumableItems.SUSPICIOUS_LOOKING_EYE.get(),
                 ConsumableItems.SLIME_CROWN.get()

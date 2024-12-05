@@ -719,7 +719,18 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.CRIMSON_ALTAR.get(), "猩红祭坛");
         add(FunctionalBlocks.DEMON_ALTAR.get(), "恶魔祭坛");
         add(FunctionalBlocks.EXTRACTINATOR.get(), "提炼机");
+        add(FunctionalBlocks.SKY_MILL.get(), "天磨");
         add(FunctionalBlocks.WEATHER_VANE.get(), "风向标");
+        add(FunctionalBlocks.LEAD_ANVIL.get(), "铅砧");
+        add(FunctionalBlocks.CHIPPED_LEAD_ANVIL.get(), "开裂的铅砧");
+        add(FunctionalBlocks.DAMAGED_LEAD_ANVIL.get(), "损坏的铅砧");
+        add(FunctionalBlocks.SHIMMER_TRAP.get(), "微光陷阱");
+        add(FunctionalBlocks.GRAVITATION_TRAP.get(), "重力陷阱");
+        add(FunctionalBlocks.PNEUMATIC_TRAP.get(), "气压陷阱");
+        add(FunctionalBlocks.SPIKE.get(), "尖刺");
+        add(FunctionalBlocks.PLAYER_PRESSURE_PLATE.get(), "玩家压力板");
+        add(FunctionalBlocks.GEYSER_BLOCK.get(), "喷泉");
+        add(FunctionalBlocks.DETONATOR.get(), "引爆器");
         add(DecorativeBlocks.FLOATING_WHEAT_BALE.get(), "飘飘麦捆");
         add(FunctionalBlocks.BASE_CHEST_BLOCK.get(), "箱子");
         add(NatureBlocks.JUNGLE_HIVE_BLOCK.get(), "丛林蜂巢");
@@ -913,6 +924,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.PINK_GEL.get(), "粉凝胶");
         add(MaterialItems.STURDY_FOSSIL.get(), "坚固化石");
         add(ModItems.EMERALD_COIN.get(), "绿宝石币");
+        add(ModItems.DEAD_MANS_SWEATER.get(), "死人毛衣");
 
 
         add(SwordItems.COPPER_SHORT_SWORD.get(), "铜短剑");
@@ -985,6 +997,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(PickaxeItems.TUNGSTEN_PICKAXE.get(), "钨镐");
         add(PickaxeItems.GOLDEN_PICKAXE.get(), "金镐");
         add(PickaxeItems.PLATINUM_PICKAXE.get(), "铂金镐");
+        add(PickaxeItems.MOLTEN_PICKAXE.get(), "熔岩镐");
+        add(PickaxeAxeItems.PICKSAW.get(), "锯刃镐");
+        add(PickaxeAxeItems.DRAX.get(), "斧钻");
+        add(PickaxeAxeItems.PICKAXE_AXE.get(), "镐斧");
 
         /* Hammers */
         add(HammerItems.WOODEN_HAMMER.get(), "木锤");
@@ -1041,8 +1057,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.GOLDEN_KEY.get(), "金钥匙");
         add(ToolItems.SHADOW_KEY.get(), "暗影钥匙");
         add(ToolItems.ENCUMBERING_STONE.get(), "负重石");
-//        add(ModItems.SUSPICIOUS_LOOKING_EYE.get(), "可疑眼球");
-//        add(ModItems.SLIME_CROWN.get(), "史莱姆皇冠");
+        add(ConsumableItems.SUSPICIOUS_LOOKING_EYE.get(), "可疑眼球");
+        add(ConsumableItems.SLIME_CROWN.get(), "史莱姆皇冠");
 //        add(ModItems.MAGIC_CONCH.get(), "魔法海螺");
 //        add(ModItems.DEMON_CONCH.get(), "恶魔海螺");
 //        add(ModItems.SKY_MILL.get(), "天磨");
@@ -1070,7 +1086,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.SWITCH.get(), "开关");
         add(FunctionalBlocks.SIGNAL_ADAPTER.get(), "信号适配器");
         add(ToolItems.WIRE_CUTTER.get(), "钢丝钳");
-        add(FunctionalBlocks.DART_TRAP.get(), "毒镖机关");
+        add(FunctionalBlocks.DART_TRAP.get(), "毒镖陷阱");
         add(FunctionalBlocks.TIMERS_BLOCK_1_1.get(), "1秒计时器");
         add(FunctionalBlocks.TIMERS_BLOCK_3_1.get(), "3秒计时器");
         add(FunctionalBlocks.TIMERS_BLOCK_5_1.get(), "5秒计时器");

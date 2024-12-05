@@ -567,7 +567,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getFence().get(), "黄柳木栅栏");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getFenceGate().get(), "黄柳木栅栏门");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPressurePlate().get(), "黄柳木压力板");
-        add(NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get(), "黄柳垂叶");
 
         add(NatureBlocks.ASH_LOG_BLOCKS.getButton().get(), "白蜡木按钮");
         add(NatureBlocks.ASH_LOG_BLOCKS.getPlanks().get(), "白蜡木板");
@@ -1239,6 +1238,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.TR_CRIMSON_GRASS.get(), "猩红草");
         add(NatureBlocks.HALLOW_GRASS.get(), "神圣草");
         add(NatureBlocks.NATURES_GIFT.get(), "大自然的恩赐");
+
+        //藤蔓
+        add(NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get(), "黄柳垂叶");
+        add(NatureBlocks.GLOWING_MUSHROOM_VINE.get(), "发光蘑菇藤");
 
         // 法杖
         /*

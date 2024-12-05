@@ -1,11 +1,11 @@
 package org.confluence.mod.common.block.natural;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -22,17 +22,18 @@ import java.util.Arrays;
 
 public class BaseDroopingPlantsBlock extends GrowingPlantHeadBlock {
     public static final MapCodec<BaseDroopingPlantsBlock> CODEC = RecordCodecBuilder.mapCodec(
-        builder -> builder.group(propertiesCodec(),
-                BuiltInRegistries.BLOCK.byNameCodec().listOf().fieldOf("block").forGetter(baseDroopingPlantsBlock ->
-                    Arrays.asList(baseDroopingPlantsBlock.block)))
-            .apply(builder, (prop, block) -> new BaseDroopingPlantsBlock(block.toArray(new Block[0])))
+        builder -> builder.group(Codec.BOOL.fieldOf("isNaturalGrowth").forGetter(baseDroopingPlantsBlock -> baseDroopingPlantsBlock.isNaturalGrowth),
+                BuiltInRegistries.BLOCK.byNameCodec().listOf().fieldOf("attachedBlock").forGetter(baseDroopingPlantsBlock -> Arrays.asList(baseDroopingPlantsBlock.block))).
+            apply(builder, (isNaturalGrowth, attachedBlock) -> new BaseDroopingPlantsBlock(isNaturalGrowth, attachedBlock.toArray(new Block[0])))
     );
     protected static final VoxelShape SHAPE = Block.box(4.0, 9.0, 4.0, 12.0, 16.0, 12.0);
     private final Block[] block;
+    private final boolean isNaturalGrowth;
 
-    public BaseDroopingPlantsBlock(Block... attachedBlock) {
+    public BaseDroopingPlantsBlock(boolean isNaturalGrowth, Block... attachedBlock) {
         super(BlockBehaviour.Properties.of().noCollission().instabreak().sound(SoundType.WEEPING_VINES).pushReaction(PushReaction.DESTROY), Direction.DOWN, SHAPE, false, 0.1);
         this.block = attachedBlock;
+        this.isNaturalGrowth = isNaturalGrowth;
     }
 
     @NotNull
@@ -57,11 +58,8 @@ public class BaseDroopingPlantsBlock extends GrowingPlantHeadBlock {
     }
 
     @Override
-    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {}
-
-    @Override
     public boolean isRandomlyTicking(BlockState state) {
-        return false;
+        return isNaturalGrowth;
     }
 
     @Override

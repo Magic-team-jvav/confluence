@@ -45,7 +45,7 @@ public class Network {
 
     public boolean calculateSignal() {
         this.signal = nodes.stream().anyMatch(node -> {
-            BlockState blockState = node.getEntity().getSelf().getBlockState();
+            BlockState blockState = node.getState();
             return blockState.hasProperty(StateProperties.SIGNAL) && blockState.getValue(StateProperties.SIGNAL);
         });
         return signal;

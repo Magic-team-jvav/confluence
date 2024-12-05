@@ -74,7 +74,7 @@ public final class LivingEntityEvents {
     public static void livingHeal(LivingHealEvent event) {
         LivingEntity living = event.getEntity();
         if (living.level().isClientSide) return;
-        if (living.hasEffect(ModEffects.FROST_BURN)) {
+        if (living.hasEffect(ModEffects.FROST_BURN) || living.hasEffect(ModEffects.BLEEDING)) {
             event.setCanceled(true); // todo 有些怪物对其免疫
         } else if (living.getData(ModAttachments.EVER_BENEFICIAL).isVitalCrystalUsed()) {
             event.setAmount(event.getAmount() * 1.2F);

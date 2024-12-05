@@ -67,14 +67,14 @@ public abstract class AbstractMechanicalBlock extends Block implements EntityBlo
         }
 
         @Override
-        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
             super.loadAdditional(tag, registries);
             deserializePoses(tag, "connectedPoses", connectedPoses);
             deserializePoses(tag, "relativePoses", relativePoses);
         }
 
         @Override
-        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
             super.saveAdditional(tag, registries);
             serializePoses(tag, "connectedPoses", connectedPoses);
             serializePoses(tag, "relativePoses", relativePoses);
@@ -86,7 +86,7 @@ public abstract class AbstractMechanicalBlock extends Block implements EntityBlo
         }
 
         @Override
-        public @NotNull CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        public @NotNull CompoundTag getUpdateTag(HolderLookup.@NotNull Provider registries) {
             return serializePoses(super.getUpdateTag(registries), "connectedPoses", connectedPoses);
         }
 

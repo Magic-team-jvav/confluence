@@ -31,6 +31,7 @@ public final class ModTags {
         public static final TagKey<Block> EASY_CRASH = register("easy_crash");
         public static final TagKey<Block> VINES = register("vines");
         public static final TagKey<Block> MINEABLE_WITH_PICKAXE_AXE = register("mineable_with_pickaxe_axe");
+        public static final TagKey<Block> DROOPING_VINE_CAN_SURVIVE = register("drooping_vine_can_survive");
 
         private static TagKey<Block> register(String id) {
             return BlockTags.create(Confluence.asResource(id));

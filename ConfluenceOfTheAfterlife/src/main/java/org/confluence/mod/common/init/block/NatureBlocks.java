@@ -2,6 +2,7 @@ package org.confluence.mod.common.init.block;
 
 import com.mojang.datafixers.DSL;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.*;
@@ -172,8 +173,13 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> ASH_BRANCHES = registerWithItem("ash_branches", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_PLANKS)));
 
     //藤蔓方块
-    public static final DeferredBlock<Block> YELLOW_WILLOW_DROOPING_LEAVES = registerWithItem("yellow_willow_drooping_leaves", () -> new BaseDroopingPlantsBlock(14 ,false, YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get()));
-    public static final DeferredBlock<Block> GLOWING_MUSHROOM_VINE = registerWithItem("glowing_mushroom_vine", () -> new BaseDroopingPlantsBlock(6, true, MUSHROOM_GRASS_BLOCK.get(), Blocks.MUD));
+    public static final DeferredBlock<Block> YELLOW_WILLOW_DROOPING_LEAVES = registerWithItem("yellow_willow_drooping_leaves", () -> new BaseDroopingPlantsBlock(14 ,false));
+    public static final DeferredBlock<Block> GLOWING_MUSHROOM_DROOPING_VINE = registerWithItem("glowing_mushroom_vine", () -> new BaseDroopingPlantsBlock(6, true));
+    public static final DeferredBlock<Block> FOREST_DROOPING_VINE = registerWithItem("forest_drooping_vine", () -> new BaseDroopingPlantsBlock(10, true));
+    public static final DeferredBlock<Block> JUNGLE_DROOPING_VINE = registerWithItem("jungle_drooping_vine", () -> new BaseDroopingPlantsBlock(10, true));
+    public static final DeferredBlock<Block> CORRUPT_DROOPING_VINE = registerWithItem("corrupt_drooping_vine", () -> new BaseDroopingPlantsBlock(10, true));
+    public static final DeferredBlock<Block> TR_CRIMSON_DROOPING_VINE = registerWithItem("tr_crimson_drooping_vine", () -> new BaseDroopingPlantsBlock(10, true));
+    public static final DeferredBlock<Block> HALLOW_DROOPING_VINE = registerWithItem("hallow_drooping_vine", () -> new BaseDroopingPlantsBlock(10, true));
 
     private static <B extends Block> DeferredBlock<B> registerWithoutItem(String id, Supplier<B> block) {
         return BLOCKS.register(id, block);

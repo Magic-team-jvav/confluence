@@ -23,8 +23,8 @@ import java.util.Arrays;
 public class BaseDroopingPlantsBlock extends GrowingPlantHeadBlock {
     public static final MapCodec<BaseDroopingPlantsBlock> CODEC = RecordCodecBuilder.mapCodec(
         builder -> builder.group(
-            Codec.INT.fieldOf("shapeType").forGetter(baseDroopingPlantsBlock -> baseDroopingPlantsBlock.shapeType),
-            Codec.BOOL.fieldOf("isNaturalGrowth").forGetter(baseDroopingPlantsBlock -> baseDroopingPlantsBlock.isNaturalGrowth),
+                Codec.INT.fieldOf("shapeType").forGetter(baseDroopingPlantsBlock -> baseDroopingPlantsBlock.shapeType),
+                Codec.BOOL.fieldOf("isNaturalGrowth").forGetter(baseDroopingPlantsBlock -> baseDroopingPlantsBlock.isNaturalGrowth),
                 BuiltInRegistries.BLOCK.byNameCodec().listOf().fieldOf("attachedBlock").forGetter(baseDroopingPlantsBlock -> Arrays.asList(baseDroopingPlantsBlock.block))).
             apply(builder, (shape, isNaturalGrowth, attachedBlock) -> new BaseDroopingPlantsBlock(shape, isNaturalGrowth, attachedBlock.toArray(new Block[0])))
     );

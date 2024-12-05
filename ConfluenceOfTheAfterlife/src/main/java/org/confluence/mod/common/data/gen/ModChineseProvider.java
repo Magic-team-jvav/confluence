@@ -1096,6 +1096,28 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(MinecartItems.MECHANICAL_CART.get(), "机械矿车");
         add(MinecartItems.DIGGING_MOLECART.get(), "挖掘鼹鼠矿车");
+        add(MinecartItems.DESERT_MINECART.get(), "沙漠矿车");
+        add(MinecartItems.MINECARP.get(), "鲤鱼矿车");
+        add(MinecartItems.BEE_MINECART.get(), "蜜蜂矿车");
+        add(MinecartItems.LADYBUG_MINECART.get(), "瓢虫矿车");
+        add(MinecartItems.PIGRON_MINECART.get(), "猪龙矿车");
+        add(MinecartItems.SUNFLOWER_MINECART.get(), "向日葵矿车");
+        add(MinecartItems.DEMONIC_HELLCART.get(), "恶魔地狱矿车");
+        add(MinecartItems.AMETHYST_MINECART.get(), "紫晶矿车");
+        add(MinecartItems.TOPAZ_MINECART.get(), "黄玉矿车");
+        add(MinecartItems.SAPPHIRE_MINECART.get(), "蓝玉矿车");
+        add(MinecartItems.EMERALD_MINECART.get(), "翡翠矿车");
+        add(MinecartItems.RUBY_MINECART.get(), "红玉矿车");
+        add(MinecartItems.DIAMOND_MINECART.get(), "钻石矿车");
+        add(MinecartItems.AMBER_MINECART.get(), "琥珀矿车");
+        add(MinecartItems.BEETLE_MINECART.get(), "甲虫矿车");
+        add(MinecartItems.MEOWMERE_MINECART.get(), "彩虹猫矿车");
+        add(MinecartItems.PARTY_WAGON.get(), "派对矿车");
+        add(MinecartItems.THE_DUTCHMAN.get(), "荷兰人矿车");
+        add(MinecartItems.STEAMPUNK_MINECART.get(), "蒸汽朋克矿车");
+        add(MinecartItems.COFFIN_MINECART.get(), "棺材矿车");
+        add(MinecartItems.FART_KART.get(), "放屁车");
+        add(MinecartItems.TERRA_FART_KART.get(), "泰拉放屁车");
 
 
         add(FishingPoleItems.HOTLINE_FISHING_HOOK.get(), "熔线钓竿");

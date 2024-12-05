@@ -7,42 +7,39 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.GrowingPlantHeadBlock;
 import net.minecraft.world.level.block.NetherVines;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
 public class BaseDroopingPlantsBlock extends GrowingPlantHeadBlock {
     public static final MapCodec<BaseDroopingPlantsBlock> CODEC = RecordCodecBuilder.mapCodec(
         builder -> builder.group(
-                Codec.INT.fieldOf("shapeType").forGetter(baseDroopingPlantsBlock -> baseDroopingPlantsBlock.shapeType),
+                Codec.INT.fieldOf("side").forGetter(baseDroopingPlantsBlock -> baseDroopingPlantsBlock.side),
                 Codec.BOOL.fieldOf("isNaturalGrowth").forGetter(baseDroopingPlantsBlock -> baseDroopingPlantsBlock.isNaturalGrowth),
                 BuiltInRegistries.BLOCK.byNameCodec().listOf().fieldOf("attachedBlock").forGetter(baseDroopingPlantsBlock -> Arrays.asList(baseDroopingPlantsBlock.block))).
             apply(builder, (shape, isNaturalGrowth, attachedBlock) -> new BaseDroopingPlantsBlock(shape, isNaturalGrowth, attachedBlock.toArray(new Block[0])))
     );
-    protected static final VoxelShape SMALL_SHAPE = Block.box(4.0, 9.0, 4.0, 12.0, 16.0, 12.0);
-    protected static final VoxelShape MIDDLE_SHAPE = Block.box(4.0, 9.0, 4.0, 12.0, 16.0, 12.0);
-    protected static final VoxelShape BIG_SHAPE = Block.box(4.0, 9.0, 4.0, 12.0, 16.0, 12.0);
+    protected static VoxelShape SHAPE;
     private final Block[] block;
     private final boolean isNaturalGrowth;
-    private final int shapeType;
+    private final int side;
 
-    public BaseDroopingPlantsBlock(int shapeType, boolean isNaturalGrowth, Block... attachedBlock) {
-        super(BlockBehaviour.Properties.of().noCollission().instabreak().sound(SoundType.WEEPING_VINES).pushReaction(PushReaction.DESTROY), Direction.DOWN, getShape(shapeType), false, 0.1);
+    public BaseDroopingPlantsBlock(int side, boolean isNaturalGrowth, Block... attachedBlock) {
+        super(Properties.of().noCollission().instabreak().sound(SoundType.WEEPING_VINES).pushReaction(PushReaction.DESTROY), Direction.DOWN, SHAPE, false, 0.1);
         this.block = attachedBlock;
         this.isNaturalGrowth = isNaturalGrowth;
-        this.shapeType = shapeType;
+        this.side = side;
     }
 
-    @NotNull
     @Override
     protected MapCodec<BaseDroopingPlantsBlock> codec() {
         return CODEC;
@@ -63,23 +60,24 @@ public class BaseDroopingPlantsBlock extends GrowingPlantHeadBlock {
         return NetherVines.isValidGrowthState(state);
     }
 
+
     @Override
     public boolean isRandomlyTicking(BlockState state) {
         return isNaturalGrowth;
     }
 
     @Override
-    public boolean canSurvive(@NotNull BlockState blockstate, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState blockstate, LevelReader level, BlockPos pos) {
         BlockPos blockpos = pos.above();
         BlockState state = level.getBlockState(blockpos);
         return state.is(this) || Arrays.asList(block).contains(state.getBlock());
     }
 
-    private static VoxelShape getShape(int shapeType) {
-        return switch (shapeType) {
-            case 2 -> MIDDLE_SHAPE;
-            case 3 -> BIG_SHAPE;
-            default -> SMALL_SHAPE;
-        };
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        double halfSide = (16 - side) / 2.0;
+        double height = state.getValue(AGE) == 0 ? 0 : 16 - side;
+
+        return SHAPE = Block.box(halfSide, height, halfSide, 16 - halfSide, 16, 16 - halfSide);
     }
 }

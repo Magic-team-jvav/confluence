@@ -266,6 +266,21 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(ModTags.Blocks.NEEDS_9_LEVEL).add(DecorativeBlocks.LIHZAHRD_BRICKS.get());
 
         tag(ModTags.Blocks.MINEABLE_WITH_PICKAXE_AXE).addTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.MINEABLE_WITH_AXE);
+        tag(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE).add(
+            NatureBlocks.MUSHROOM_GRASS_BLOCK.get(),
+            NatureBlocks.HALLOW_GRASS_BLOCK.get(),
+            NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(),
+            NatureBlocks.CORRUPT_GRASS_BLOCK.get(),
+            Blocks.MUD,
+            Blocks.DIRT,
+            Blocks.GRASS_BLOCK,
+            Blocks.DIRT_PATH,
+            Blocks.COARSE_DIRT,
+            Blocks.PODZOL,
+            Blocks.ROOTED_DIRT,
+            Blocks.MUDDY_MANGROVE_ROOTS
+        );
+        tag(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE).addTag(BlockTags.LEAVES);
     }
 
     @Override

@@ -2,6 +2,7 @@ package org.confluence.mod.common.event.game.entity;
 
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -45,6 +46,7 @@ public final class EntityEvents {
     public static void entityInvulnerabilityCheck(EntityInvulnerabilityCheckEvent event) {
         if (event.isInvulnerable() || !(event.getEntity() instanceof LivingEntity living)) return;
         DamageSource damageSource = event.getSource();
+        if (damageSource.is(DamageTypes.GENERIC_KILL)) return;
 
         if (damageSource.is(ModDamageTypes.BOULDER) && living.getType().is(Tags.EntityTypes.BOSSES)) {
             event.setInvulnerable(true);

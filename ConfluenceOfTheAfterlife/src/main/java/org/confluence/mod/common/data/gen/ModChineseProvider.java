@@ -567,7 +567,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getFence().get(), "黄柳木栅栏");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getFenceGate().get(), "黄柳木栅栏门");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPressurePlate().get(), "黄柳木压力板");
-        add(NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get(), "黄柳垂叶");
 
         add(NatureBlocks.ASH_LOG_BLOCKS.getButton().get(), "白蜡木按钮");
         add(NatureBlocks.ASH_LOG_BLOCKS.getPlanks().get(), "白蜡木板");
@@ -720,7 +719,18 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.CRIMSON_ALTAR.get(), "猩红祭坛");
         add(FunctionalBlocks.DEMON_ALTAR.get(), "恶魔祭坛");
         add(FunctionalBlocks.EXTRACTINATOR.get(), "提炼机");
+        add(FunctionalBlocks.SKY_MILL.get(), "天磨");
         add(FunctionalBlocks.WEATHER_VANE.get(), "风向标");
+        add(FunctionalBlocks.LEAD_ANVIL.get(), "铅砧");
+        add(FunctionalBlocks.CHIPPED_LEAD_ANVIL.get(), "开裂的铅砧");
+        add(FunctionalBlocks.DAMAGED_LEAD_ANVIL.get(), "损坏的铅砧");
+        add(FunctionalBlocks.SHIMMER_TRAP.get(), "微光陷阱");
+        add(FunctionalBlocks.GRAVITATION_TRAP.get(), "重力陷阱");
+        add(FunctionalBlocks.PNEUMATIC_TRAP.get(), "气压陷阱");
+        add(FunctionalBlocks.SPIKE.get(), "尖刺");
+        add(FunctionalBlocks.PLAYER_PRESSURE_PLATE.get(), "玩家压力板");
+        add(FunctionalBlocks.GEYSER_BLOCK.get(), "喷泉");
+        add(FunctionalBlocks.DETONATOR.get(), "引爆器");
         add(DecorativeBlocks.FLOATING_WHEAT_BALE.get(), "飘飘麦捆");
         add(FunctionalBlocks.BASE_CHEST_BLOCK.get(), "箱子");
         add(NatureBlocks.JUNGLE_HIVE_BLOCK.get(), "丛林蜂巢");
@@ -914,6 +924,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.PINK_GEL.get(), "粉凝胶");
         add(MaterialItems.STURDY_FOSSIL.get(), "坚固化石");
         add(ModItems.EMERALD_COIN.get(), "绿宝石币");
+        add(ModItems.DEAD_MANS_SWEATER.get(), "死人毛衣");
 
 
         add(SwordItems.COPPER_SHORT_SWORD.get(), "铜短剑");
@@ -986,6 +997,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(PickaxeItems.TUNGSTEN_PICKAXE.get(), "钨镐");
         add(PickaxeItems.GOLDEN_PICKAXE.get(), "金镐");
         add(PickaxeItems.PLATINUM_PICKAXE.get(), "铂金镐");
+        add(PickaxeItems.MOLTEN_PICKAXE.get(), "熔岩镐");
+        add(PickaxeAxeItems.PICKSAW.get(), "锯刃镐");
+        add(PickaxeAxeItems.DRAX.get(), "斧钻");
+        add(PickaxeAxeItems.PICKAXE_AXE.get(), "镐斧");
 
         /* Hammers */
         add(HammerItems.WOODEN_HAMMER.get(), "木锤");
@@ -1042,8 +1057,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.GOLDEN_KEY.get(), "金钥匙");
         add(ToolItems.SHADOW_KEY.get(), "暗影钥匙");
         add(ToolItems.ENCUMBERING_STONE.get(), "负重石");
-//        add(ModItems.SUSPICIOUS_LOOKING_EYE.get(), "可疑眼球");
-//        add(ModItems.SLIME_CROWN.get(), "史莱姆皇冠");
+        add(ConsumableItems.SUSPICIOUS_LOOKING_EYE.get(), "可疑眼球");
+        add(ConsumableItems.SLIME_CROWN.get(), "史莱姆皇冠");
 //        add(ModItems.MAGIC_CONCH.get(), "魔法海螺");
 //        add(ModItems.DEMON_CONCH.get(), "恶魔海螺");
 //        add(ModItems.SKY_MILL.get(), "天磨");
@@ -1071,7 +1086,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.SWITCH.get(), "开关");
         add(FunctionalBlocks.SIGNAL_ADAPTER.get(), "信号适配器");
         add(ToolItems.WIRE_CUTTER.get(), "钢丝钳");
-        add(FunctionalBlocks.DART_TRAP.get(), "毒镖机关");
+        add(FunctionalBlocks.DART_TRAP.get(), "毒镖陷阱");
         add(FunctionalBlocks.TIMERS_BLOCK_1_1.get(), "1秒计时器");
         add(FunctionalBlocks.TIMERS_BLOCK_3_1.get(), "3秒计时器");
         add(FunctionalBlocks.TIMERS_BLOCK_5_1.get(), "5秒计时器");
@@ -1081,6 +1096,28 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(MinecartItems.MECHANICAL_CART.get(), "机械矿车");
         add(MinecartItems.DIGGING_MOLECART.get(), "挖掘鼹鼠矿车");
+        add(MinecartItems.DESERT_MINECART.get(), "沙漠矿车");
+        add(MinecartItems.MINECARP.get(), "鲤鱼矿车");
+        add(MinecartItems.BEE_MINECART.get(), "蜜蜂矿车");
+        add(MinecartItems.LADYBUG_MINECART.get(), "瓢虫矿车");
+        add(MinecartItems.PIGRON_MINECART.get(), "猪龙矿车");
+        add(MinecartItems.SUNFLOWER_MINECART.get(), "向日葵矿车");
+        add(MinecartItems.DEMONIC_HELLCART.get(), "恶魔地狱矿车");
+        add(MinecartItems.AMETHYST_MINECART.get(), "紫晶矿车");
+        add(MinecartItems.TOPAZ_MINECART.get(), "黄玉矿车");
+        add(MinecartItems.SAPPHIRE_MINECART.get(), "蓝玉矿车");
+        add(MinecartItems.EMERALD_MINECART.get(), "翡翠矿车");
+        add(MinecartItems.RUBY_MINECART.get(), "红玉矿车");
+        add(MinecartItems.DIAMOND_MINECART.get(), "钻石矿车");
+        add(MinecartItems.AMBER_MINECART.get(), "琥珀矿车");
+        add(MinecartItems.BEETLE_MINECART.get(), "甲虫矿车");
+        add(MinecartItems.MEOWMERE_MINECART.get(), "彩虹猫矿车");
+        add(MinecartItems.PARTY_WAGON.get(), "派对矿车");
+        add(MinecartItems.THE_DUTCHMAN.get(), "荷兰人矿车");
+        add(MinecartItems.STEAMPUNK_MINECART.get(), "蒸汽朋克矿车");
+        add(MinecartItems.COFFIN_MINECART.get(), "棺材矿车");
+        add(MinecartItems.FART_KART.get(), "放屁车");
+        add(MinecartItems.TERRA_FART_KART.get(), "泰拉放屁车");
 
 
         add(FishingPoleItems.HOTLINE_FISHING_HOOK.get(), "熔线钓竿");
@@ -1239,6 +1276,15 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.TR_CRIMSON_GRASS.get(), "猩红草");
         add(NatureBlocks.HALLOW_GRASS.get(), "神圣草");
         add(NatureBlocks.NATURES_GIFT.get(), "大自然的恩赐");
+
+        //藤蔓
+        add(NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get(), "黄柳垂叶");
+        add(NatureBlocks.GLOWING_MUSHROOM_DROOPING_VINE.get(), "发光蘑菇垂藤");
+        add(NatureBlocks.FOREST_DROOPING_VINE.get(), "森林垂藤");
+        add(NatureBlocks.JUNGLE_DROOPING_VINE.get(), "丛林垂藤");
+        add(NatureBlocks.CORRUPT_DROOPING_VINE.get(), "腐化垂藤");
+        add(NatureBlocks.TR_CRIMSON_DROOPING_VINE.get(), "猩红垂藤");
+        add(NatureBlocks.HALLOW_DROOPING_VINE.get(), "神圣垂藤");
 
         // 法杖
         /*

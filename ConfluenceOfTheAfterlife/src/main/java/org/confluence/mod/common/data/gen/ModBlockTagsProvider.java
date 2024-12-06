@@ -267,7 +267,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
         tag(ModTags.Blocks.MINEABLE_WITH_PICKAXE_AXE).addTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.MINEABLE_WITH_AXE);
         tag(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE).add(
-            NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get(),
             NatureBlocks.MUSHROOM_GRASS_BLOCK.get(),
             NatureBlocks.HALLOW_GRASS_BLOCK.get(),
             NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(),

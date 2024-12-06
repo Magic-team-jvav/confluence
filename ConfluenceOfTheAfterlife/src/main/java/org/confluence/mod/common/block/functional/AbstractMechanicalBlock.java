@@ -21,7 +21,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
-@SuppressWarnings("deprecation")
 public abstract class AbstractMechanicalBlock extends Block implements EntityBlock, INetworkBlock {
     public AbstractMechanicalBlock(Properties pProperties) {
         super(pProperties);

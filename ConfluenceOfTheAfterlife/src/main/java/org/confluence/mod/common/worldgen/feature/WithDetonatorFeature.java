@@ -63,8 +63,8 @@ public class WithDetonatorFeature extends Feature<WithDetonatorFeature.Config> {
         int dx = (random.nextInt(bound) + bound - 2) * Mth.sign(i);
         int dz = (random.nextInt(bound) + bound - 2) * Mth.sign(k);
         BlockPos.MutableBlockPos mutable = center.mutable().move(dx, 0, dz);
-        for (int dy = 0; dy < bound && level.getBlockState(mutable).isAir(); dy++) {
-            mutable.move(0, -dy, 0);
+        for (int dy = 0; dy < bound && ModFeatures.isPosAir(level, mutable); dy++) {
+            mutable.move(0, -1, 0);
         }
         return mutable;
     }

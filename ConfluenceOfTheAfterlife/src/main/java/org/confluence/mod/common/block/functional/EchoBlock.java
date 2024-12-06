@@ -15,7 +15,7 @@ import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.block.StateProperties;
 import org.jetbrains.annotations.NotNull;
 
-public class EchoBlock extends HalfTransparentBlock {
+public class EchoBlock extends HalfTransparentBlock implements ISimulatorBlock {
     public EchoBlock() {
         super(Properties.of().isSuffocating((blockState, blockGetter, blockPos) -> false).noOcclusion());
         registerDefaultState(stateDefinition.any().setValue(StateProperties.VISIBLE, false));
@@ -51,5 +51,13 @@ public class EchoBlock extends HalfTransparentBlock {
 
     public float getShadeBrightness(@NotNull BlockState blockState, @NotNull BlockGetter blockGetter, @NotNull BlockPos blockPos) {
         return 1.0F;
+    }
+
+    @Override
+    public BlockState getSimulatedBlock(boolean isClient) {
+        if (isClient) {
+            return defaultBlockState().setValue(StateProperties.VISIBLE, ClientPacketHandler.hasEchoVisible());
+        }
+        return defaultBlockState();
     }
 }

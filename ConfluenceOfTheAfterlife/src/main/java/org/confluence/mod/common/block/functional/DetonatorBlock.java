@@ -44,6 +44,13 @@ public class DetonatorBlock extends AbstractMechanicalBlock {
     }
 
     @Override
+    public void neighborChanged(@NotNull BlockState pState, Level pLevel, @NotNull BlockPos pPos, @NotNull Block pNeighborBlock, @NotNull BlockPos pNeighborPos, boolean pMovedByPiston) {
+        if (!pLevel.isClientSide && pLevel.hasNeighborSignal(pPos)) {
+            execute(pState, (ServerLevel) pLevel, pPos, true);
+        }
+    }
+
+    @Override
     public void fallOn(@NotNull Level level, @NotNull BlockState state, @NotNull BlockPos pos, net.minecraft.world.entity.@NotNull Entity entity, float fallDistance) {
         super.fallOn(level, state, pos, entity, fallDistance);
         if (fallDistance > 2.0F && !state.getValue(StateProperties.DRIVE) && entity instanceof ServerPlayer serverPlayer) {

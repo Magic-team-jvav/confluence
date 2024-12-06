@@ -12,27 +12,27 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.mod.common.block.StateProperties;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
 public class FragileBlock extends Block implements ISimulatorBlock {
-    public static final BooleanProperty IS_SUPPORTING = BooleanProperty.create("is_supporting");
     private final Supplier<BlockState> simulatorBlock;
 
     public FragileBlock(Properties pProperties, Supplier<BlockState> simulatorBlock) {
         super(pProperties);
         this.simulatorBlock = simulatorBlock;
-        registerDefaultState(stateDefinition.any().setValue(IS_SUPPORTING, true).setValue(BlockStateProperties.FACING, Direction.UP));
+        registerDefaultState(stateDefinition.any().setValue(StateProperties.IS_SUPPORTING, true).setValue(BlockStateProperties.FACING, Direction.UP));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(IS_SUPPORTING, BlockStateProperties.FACING);
+        builder.add(StateProperties.IS_SUPPORTING, BlockStateProperties.FACING);
     }
 
     @Override
@@ -45,8 +45,8 @@ public class FragileBlock extends Block implements ISimulatorBlock {
         Level level = context.getLevel();
         BlockState blockState = level.getBlockState(context.getClickedPos().relative(context.getClickedFace().getOpposite()));
         BlockState state = defaultBlockState();
-        if (blockState.getBlock() instanceof FragileBlock) {
-            state = state.setValue(IS_SUPPORTING, false);
+        if (blockState.hasProperty(StateProperties.IS_SUPPORTING)) {
+            state = state.setValue(StateProperties.IS_SUPPORTING, false);
         }
         return state.setValue(BlockStateProperties.FACING, context.getClickedFace().getOpposite());
     }
@@ -58,9 +58,9 @@ public class FragileBlock extends Block implements ISimulatorBlock {
 
     @Override
     protected @NotNull BlockState updateShape(@NotNull BlockState state, @NotNull Direction direction, @NotNull BlockState neighborState, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos neighborPos) {
-        if (!level.isClientSide() && !state.getValue(IS_SUPPORTING)) {
+        if (!level.isClientSide() && !state.getValue(StateProperties.IS_SUPPORTING)) {
             BlockState blockState = level.getBlockState(pos.relative(state.getValue(BlockStateProperties.FACING)));
-            if (!(blockState.getBlock() instanceof FragileBlock)) {
+            if (!blockState.hasProperty(StateProperties.IS_SUPPORTING)) {
                 level.scheduleTick(pos, this, 1);
             }
         }
@@ -70,5 +70,10 @@ public class FragileBlock extends Block implements ISimulatorBlock {
     @Override
     protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
         return simulatorBlock.get().getShape(level, pos, context);
+    }
+
+    @Override
+    public @Nullable PushReaction getPistonPushReaction(@NotNull BlockState state) {
+        return PushReaction.DESTROY;
     }
 }

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.common;
 
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -95,11 +96,17 @@ public class EverBeneficialItem extends CustomRarityItem {
         }
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (player instanceof ServerPlayer serverPlayer) {
-            EverBeneficial everBeneficial = player.getData(ModAttachments.EVER_BENEFICIAL);
-            if (beneficial.pre.apply(everBeneficial)) {
-                beneficial.post.accept(beneficial.id, serverPlayer, everBeneficial, false);
+            EverBeneficial data = player.getData(ModAttachments.EVER_BENEFICIAL);
+            if (beneficial.pre.apply(data)) {
+                beneficial.post.accept(beneficial.id, serverPlayer, data, false);
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
                 itemStack.shrink(1);
+            }
+            if (player.getData(ModAttachments.MANA_STORAGE).isStarMaximum() && data.isLifeCrystalsMaximum() && data.isLifeFruitsMaximum()) {
+                AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource("achievements/topped_off"));
+                if (advancement != null) {
+                    serverPlayer.getAdvancements().award(advancement, "never");
+                }
             }
         }
         return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide);

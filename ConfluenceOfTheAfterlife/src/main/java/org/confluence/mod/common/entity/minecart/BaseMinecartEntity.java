@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.minecart;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.vehicle.Minecart;
@@ -10,9 +11,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModAttachments;
-import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.mixin.accessor.LivingEntityAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,9 +24,6 @@ public class BaseMinecartEntity extends Minecart {
     public static final double MECHANICAL_CART_MAX_SPEED = 1.23;
     public static final double MECHANICAL_CART_ACCELERATION = 2.5;
     public static final double MECHANICAL_CART_DRAG_AIR = 0.99;
-    public static final Abilities<BaseMinecartEntity> WOODEN = new Abilities<>(ModEntities.WOODEN_MINECART, () -> Items.AIR, 0.308F, 0.16, 0.94);
-    public static final Abilities<MechanicalCartEntity> MECHANICAL = new Abilities<>(ModEntities.MECHANICAL_CART, MinecartItems.MECHANICAL_CART, (float) MECHANICAL_CART_MAX_SPEED, MECHANICAL_CART_ACCELERATION, MECHANICAL_CART_DRAG_AIR);
-    public static final Abilities<DiggingMolecartEntity> MOLECART = new Abilities<>(ModEntities.DIGGING_MOLECART, MinecartItems.DIGGING_MOLECART, 0.185F, 0.15, 0.93);
 
     protected Supplier<? extends Item> dropItem = () -> Items.AIR; // both
     protected float maxSpeed = 0.0F; // both
@@ -69,12 +66,17 @@ public class BaseMinecartEntity extends Minecart {
                 double sx = bx ? movement.x : 0.0;
                 double sz = bz ? movement.z : 0.0;
                 AABB aabb = getBoundingBox().move(sx, 0.0, sz).inflate(Math.abs(sx), 0.0, Math.abs(sz));
-                List<Entity> list = this.level().getEntities(this, aabb, entity -> !hasPassenger(entity) && EntitySelector.pushableBy(this).test(entity));
+                List<Entity> list = level().getEntities(this, aabb, entity -> !hasPassenger(entity) && EntitySelector.pushableBy(this).test(entity));
                 if (!list.isEmpty()) {
+                    boolean killed = false;
                     for (Entity entity : list) {
                         double distance = movement.horizontalDistance();
                         entity.hurt(damageSources().flyIntoWall(), (float) distance * 5.0F);
                         ModUtils.knockBackA2B(this, entity, distance * 0.5, 0.2);
+                        if (!entity.isAlive()) killed = true;
+                    }
+                    if (killed && driver instanceof ServerPlayer serverPlayer) {
+                        PlayerUtils.awardAchievement(serverPlayer, "vehicular_manslaughter");
                     }
                 }
             }

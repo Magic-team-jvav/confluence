@@ -1,0 +1,28 @@
+{
+    "display": {
+        "icon": {
+            "id": "confluence:life_fruit"
+        },
+        "title": {
+            "translate": "achievements.confluence.get_a_life.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.get_a_life.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "trigger": "minecraft:consume_item",
+            "conditions": {
+                "item": {
+                    "items": "confluence:life_fruit"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "display": {
+        "icon": {
+            "id": "confluence:hotline_fishing_hook"
+        },
+        "title": {
+            "translate": "achievements.confluence.hot_reels.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.hot_reels.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "never": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

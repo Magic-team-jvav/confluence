@@ -1,7 +1,12 @@
 {
     "display": {
         "icon": {
-            "id": "confluence:base_chest_block"
+            "id": "confluence:base_chest_block",
+            "components": {
+                "terra_curio:nbt": {
+                    "VariantId": 1
+                }
+            }
         },
         "title": {
             "translate": "achievements.confluence.i_am_loot.title"

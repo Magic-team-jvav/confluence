@@ -9,6 +9,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -29,6 +30,7 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.fishing.IBait;
 import org.confluence.mod.mixed.IFishingHook;
 import org.confluence.mod.mixin.accessor.LootParamsAccessor;
+import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.mixed.SelfGetter;
 import org.confluence.terra_curio.util.TCUtils;
 import org.spongepowered.asm.mixin.Final;
@@ -56,6 +58,8 @@ public abstract class FishingHookMixin implements IFishingHook, SelfGetter<Fishi
     private int luck;
     @Unique
     private ItemStack confluence$bait = null;
+    @Unique
+    private boolean confluence$achievement = false;
 
     @Unique
     @Override
@@ -79,6 +83,14 @@ public abstract class FishingHookMixin implements IFishingHook, SelfGetter<Fishi
     private TagKey<Fluid> isLavaTag(TagKey<Fluid> pTag) {
         if (confluence$isLavaHook()) return ModTags.FISHING_ABLE;
         return ModTags.NOT_LAVA;
+    }
+
+    @Inject(method = "tick", at = @At("TAIL"))
+    private void achievement(CallbackInfo ci) {
+        if (!confluence$achievement && confluence$isLavaHook() && confluence$isInLava() && getPlayerOwner() instanceof ServerPlayer serverPlayer) {
+            PlayerUtils.awardAchievement(serverPlayer, "hot_reels");
+            this.confluence$achievement = true;
+        }
     }
 
     @WrapOperation(method = "catchingFish", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/world/level/block/Block;)Z"))

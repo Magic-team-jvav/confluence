@@ -26,15 +26,10 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.advancement.ModAchievements;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
-import org.confluence.mod.common.effect.harmful.CursedEffect;
-import org.confluence.mod.common.effect.harmful.SilencedEffect;
-import org.confluence.mod.common.effect.harmful.StonedEffect;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
-import org.confluence.mod.common.init.ModAttachments;
-import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.ModTiers;
+import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.mixed.IAbstractMinecart;
@@ -129,9 +124,16 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void rightClickItem(PlayerInteractEvent.RightClickItem event) {
         Player player = event.getEntity();
-        SilencedEffect.onRightClick(player, event);
-        CursedEffect.onRightClick(player, event::setCanceled);
-        StonedEffect.onRightClick(player, event::setCanceled);
+        if (!player.isSpectator()) {
+            ItemStack itemStack = event.getItemStack();
+            if (itemStack.is(ModTags.Items.MANA_WEAPON)) {
+                event.setCanceled(true);
+            } else if (!itemStack.isEmpty()) {
+                if(player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN) || player.hasEffect(ModEffects.CURSED)){
+                    event.setCanceled(true);
+                }
+            }
+        }
     }
 
     @SubscribeEvent
@@ -157,7 +159,7 @@ public final class PlayerEvents {
         ItemStack minecartItem = event.getMinecartItem();
 
         if (minecartItem == ItemStack.EMPTY) {
-            BaseMinecartEntity baseMinecart = new BaseMinecartEntity(level, x, y, z, BaseMinecartEntity.WOODEN);
+            BaseMinecartEntity baseMinecart = new BaseMinecartEntity(level, x, y, z, MinecartItems.Types.WOODEN);
             event.setMinecart(baseMinecart);
         } else if (minecartItem.getItem() == Items.MINECART) {
             event.setMinecart(new Minecart(level, x, y, z));

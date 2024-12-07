@@ -22,10 +22,7 @@ import org.confluence.mod.common.item.accessory.MechanicalLens;
 import org.confluence.mod.common.item.accessory.PickupRangeAbilityValue;
 import org.confluence.mod.common.item.accessory.SpectreGoggles;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.terra_curio.api.primitive.FloatValue;
-import org.confluence.terra_curio.api.primitive.IntegerValue;
-import org.confluence.terra_curio.api.primitive.UnitValue;
-import org.confluence.terra_curio.api.primitive.ValueType;
+import org.confluence.terra_curio.api.primitive.*;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -139,6 +136,8 @@ public class AccessoryItems {
             NECROMANTIC_SCROLL = registerCurio("necromantic_scroll", builder -> builder.rarity(YELLOW).attribute(ModAttributes.MINION_CAPACITY, 1.0, ADD_VALUE).attribute(ModAttributes.SUMMON_DAMAGE, 0.1, ADD_MULTIPLIED_TOTAL)), // 死灵卷轴
             PAPYRUS_SCARAB = registerCurio("papyrus_scarab", builder -> builder.rarity(YELLOW).attribute(ModAttributes.MINION_CAPACITY, 1.0, ADD_VALUE).attribute(ModAttributes.SUMMON_DAMAGE, 0.15, ADD_MULTIPLIED_TOTAL).attribute(ModAttributes.SUMMON_KNOCKBACK, 2.0, ADD_VALUE)), // 甲虫莎草纸
             PYGMY_NECKLACE = registerCurio("pygmy_necklace", builder -> builder.rarity(LIME).attribute(ModAttributes.MINION_CAPACITY, 1.0, ADD_VALUE)); // 矮人项链
+
+    public static final Supplier<BaseCurioItem> FLEDGLING_WINGS = registerCurio("fledgling_wings", builder -> builder.rarity(WHITE).accessories(of(TCItems.MAY$FLY, new MayFlyAbilityValue.Storage(0.3F, 36, true, false))));
 
     private static Supplier<BaseCurioItem> registerCurio(String name, Consumer<BaseCurioItem.Builder> consumer) {
         return ITEMS.register(name, () -> {

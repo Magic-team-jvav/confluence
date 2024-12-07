@@ -26,7 +26,7 @@ public class DiggingMolecartEntity extends BaseMinecartEntity {
         super(entityType, level);
     }
 
-    public DiggingMolecartEntity(Level level, double x, double y, double z, Abilities<DiggingMolecartEntity> abilities) {
+    public DiggingMolecartEntity(Level level, double x, double y, double z, Abilities<? extends DiggingMolecartEntity> abilities) {
         super(level, x, y, z, abilities);
     }
 

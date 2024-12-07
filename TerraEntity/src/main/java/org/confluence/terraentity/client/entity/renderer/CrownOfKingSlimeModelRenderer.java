@@ -42,6 +42,7 @@ public class CrownOfKingSlimeModelRenderer extends EntityRenderer<CrownOfKingSli
         pPoseStack.mulPose(Axis.YN.rotation(Mth.lerp(pPartialTick, pEntity.rotateO1, pEntity.rotate1)));
         pPoseStack.translate(0.0F, 1.9375F + pEntity.height, 0.0F);
         pPoseStack.mulPose(FLIP_Y);
+        pPoseStack.mulPose(FLIP_Y);
         model.renderToBuffer(pPoseStack, pBuffer.getBuffer(CrownOfKingSlimeModel.RENDER_TYPE), pPackedLight, OverlayTexture.NO_OVERLAY);
         pPoseStack.popPose();
     }

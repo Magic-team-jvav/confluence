@@ -1,0 +1,46 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:topaz",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 1,
+                "max": 1
+              }
+            }
+          ],
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 59
+        }
+      ],
+      "rolls": 1
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:topaz_sapling",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 59
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "confluence:blocks/topaz_branches"
+}

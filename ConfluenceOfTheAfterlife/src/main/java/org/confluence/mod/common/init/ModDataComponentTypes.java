@@ -6,6 +6,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.component.SingleBooleanComponent;
+import org.confluence.mod.common.component.prefix.PrefixComponent;
 
 import java.util.function.Supplier;
 
@@ -20,4 +21,7 @@ public final class ModDataComponentTypes {
             "boomerang_ready", builder -> builder.persistent(SingleBooleanComponent.CODEC).networkSynchronized(SingleBooleanComponent.STREAM_CODEC)
     );
 
+    public static final Supplier<DataComponentType<PrefixComponent>> PREFIX = DATA_COMPONENT_TYPE.registerComponentType(
+            "prefix", builder -> builder.persistent(PrefixComponent.CODEC) // 不能使用networkSynchronized
+    );
 }

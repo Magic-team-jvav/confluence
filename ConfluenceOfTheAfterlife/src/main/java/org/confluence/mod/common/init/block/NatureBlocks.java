@@ -16,7 +16,7 @@ import org.confluence.mod.common.block.natural.MushroomBlock;
 import org.confluence.mod.common.block.natural.*;
 import org.confluence.mod.common.block.natural.sapling.*;
 import org.confluence.mod.common.block.natural.spreadable.*;
-import org.confluence.mod.common.init.ModTreeGrowers;
+import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.item.ModItems;
 
 import java.util.function.Function;
@@ -28,14 +28,14 @@ public class NatureBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
 
     // 非环境树苗
-    public static final DeferredBlock<Block> RUBY_SAPLING = registerWithItem("ruby_sapling", () -> new StoneSaplingBlock(ModTreeGrowers.RUBY_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
-    public static final DeferredBlock<Block> AMBER_SAPLING = registerWithItem("amber_sapling", () -> new StoneSaplingBlock(ModTreeGrowers.AMBER_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
-    public static final DeferredBlock<Block> TOPAZ_SAPLING = registerWithItem("topaz_sapling", () -> new StoneSaplingBlock(ModTreeGrowers.TOPAZ_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
-    public static final DeferredBlock<Block> EMERALD_SAPLING = registerWithItem("emerald_sapling", () -> new StoneSaplingBlock(ModTreeGrowers.EMERALD_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
-    public static final DeferredBlock<Block> DIAMOND_SAPLING = registerWithItem("diamond_sapling", () -> new StoneSaplingBlock(ModTreeGrowers.DIAMOND_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
-    public static final DeferredBlock<Block> SAPPHIRE_SAPLING = registerWithItem("sapphire_sapling", () -> new StoneSaplingBlock(ModTreeGrowers.SAPPHIRE_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
-    public static final DeferredBlock<Block> TR_AMETHYST_SAPLING = registerWithItem("tr_amethyst_sapling", () -> new StoneSaplingBlock(ModTreeGrowers.TR_AMETHYST_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
-    public static final DeferredBlock<Block> LIVING_SAPLING = registerWithItem("living_sapling", () -> new LivingSaplingBlock(ModTreeGrowers.LIVING_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
+    public static final DeferredBlock<Block> RUBY_SAPLING = registerWithItem("ruby_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.RUBY_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
+    public static final DeferredBlock<Block> AMBER_SAPLING = registerWithItem("amber_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.AMBER_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
+    public static final DeferredBlock<Block> TOPAZ_SAPLING = registerWithItem("topaz_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.TOPAZ_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
+    public static final DeferredBlock<Block> EMERALD_SAPLING = registerWithItem("emerald_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.EMERALD_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
+    public static final DeferredBlock<Block> DIAMOND_SAPLING = registerWithItem("diamond_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.DIAMOND_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
+    public static final DeferredBlock<Block> SAPPHIRE_SAPLING = registerWithItem("sapphire_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.SAPPHIRE_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
+    public static final DeferredBlock<Block> TR_AMETHYST_SAPLING = registerWithItem("tr_amethyst_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.TR_AMETHYST_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
+    public static final DeferredBlock<Block> LIVING_SAPLING = registerWithItem("living_sapling", () -> new LivingSaplingBlock(ModFeatures.TreeGrowers.LIVING_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
 
     // 流体接触块
     public static final DeferredBlock<Block> THIN_HONEY_BLOCK = registerWithItem("thin_honey_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.HONEY_BLOCK)));
@@ -59,7 +59,7 @@ public class NatureBlocks {
 
     // 腐化
     public static final DeferredBlock<Block> CORRUPT_GRASS_BLOCK = registerWithItem("corrupt_grass_block", () -> new SpreadingGrassBlock(ISpreadable.Type.CORRUPT, BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)));
-    public static final DeferredBlock<Block> EBONY_SAPLING = registerWithItem("ebony_sapling", () -> new BaseSaplingBlock(ModTreeGrowers.EBONY_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING), CORRUPT_GRASS_BLOCK.get()));
+    public static final DeferredBlock<Block> EBONY_SAPLING = registerWithItem("ebony_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.EBONY_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING), CORRUPT_GRASS_BLOCK.get()));
     public static final LogBlockSet EBONY_LOG_BLOCKS = LogBlockSet.builder("ebony", true).createDefault(EBONY, true).build();
     public static final DeferredBlock<Block> EBONY_STONE = registerWithItem("ebony_stone", () -> new SpreadingBlock(ISpreadable.Type.CORRUPT, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));
     public static final DeferredBlock<Block> EBONY_COBBLESTONE = registerWithItem("ebony_cobblestone", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE)));
@@ -76,7 +76,7 @@ public class NatureBlocks {
     // 神圣
     public static final DeferredBlock<Block> HALLOW_GRASS_BLOCK = registerWithItem("hallow_grass_block", () -> new SpreadingGrassBlock(ISpreadable.Type.HALLOW, BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)));
     public static final DeferredBlock<Block> HALLOW_GRASS = registerWithItem("hallow_grass", () -> new BasePlantBlock(HALLOW_GRASS_BLOCK.get()));//神圣草
-    public static final DeferredBlock<Block> PEARL_SAPLING = registerWithItem("pearl_sapling", () -> new BaseSaplingBlock(ModTreeGrowers.PEARL_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING), HALLOW_GRASS_BLOCK.get()));
+    public static final DeferredBlock<Block> PEARL_SAPLING = registerWithItem("pearl_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.PEARL_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING), HALLOW_GRASS_BLOCK.get()));
     public static final LogBlockSet PEARL_LOG_BLOCKS = LogBlockSet.builder("pearl", true).createDefault(PEARL, true).build();
     public static final DeferredBlock<Block> PEARL_STONE = registerWithItem("pearl_stone", () -> new SpreadingBlock(ISpreadable.Type.HALLOW, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));
     public static final DeferredBlock<Block> PEARL_COBBLESTONE = registerWithItem("pearl_cobblestone", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE)));
@@ -90,7 +90,7 @@ public class NatureBlocks {
 
     // 猩红
     public static final DeferredBlock<Block> TR_CRIMSON_GRASS_BLOCK = registerWithItem("tr_crimson_grass_block", () -> new SpreadingGrassBlock(ISpreadable.Type.CRIMSON, BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)));
-    public static final DeferredBlock<Block> SHADOW_SAPLING = registerWithItem("shadow_sapling", () -> new BaseSaplingBlock(ModTreeGrowers.SHADOW_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING), TR_CRIMSON_GRASS_BLOCK.get()));
+    public static final DeferredBlock<Block> SHADOW_SAPLING = registerWithItem("shadow_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.SHADOW_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING), TR_CRIMSON_GRASS_BLOCK.get()));
     public static final LogBlockSet SHADOW_LOG_BLOCKS = LogBlockSet.builder("shadow", true).createDefault(SHADOW, true).build();
     public static final DeferredBlock<Block> TR_CRIMSON_STONE = registerWithItem("tr_crimson_stone", () -> new SpreadingBlock(ISpreadable.Type.CRIMSON, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));
     public static final DeferredBlock<Block> TR_CRIMSON_COBBLESTONE = registerWithItem("tr_crimson_cobblestone", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE)));
@@ -106,11 +106,10 @@ public class NatureBlocks {
 
     // 蘑菇地
     public static final DeferredBlock<MushroomGrassBlock> MUSHROOM_GRASS_BLOCK = registerWithItem("mushroom_grass_block", MushroomGrassBlock::new);
-    // TODO: 发光蘑菇可以长在天花板上，可以长很长；天花板上的属于藤蔓，还没做
     public static final DeferredBlock<Block> GLOWING_MUSHROOM = registerWithoutItem("glowing_mushroom", () -> new MushroomBlock(MUSHROOM_GRASS_BLOCK.get()));//发光蘑菇
 
     // 沙漠
-    public static final DeferredBlock<Block> PALM_SAPLING = registerWithItem("palm_sapling", () -> new PalmSaplingBlock(ModTreeGrowers.PALM_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
+    public static final DeferredBlock<Block> PALM_SAPLING = registerWithItem("palm_sapling", () -> new PalmSaplingBlock(ModFeatures.TreeGrowers.PALM_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
     public static final LogBlockSet PALM_LOG_BLOCKS = LogBlockSet.builder("palm", true)
             .log(RotatedPillarBlock::new)
             .strippedLog(RotatedPillarBlock::new)
@@ -128,13 +127,16 @@ public class NatureBlocks {
             .door(properties -> new DoorBlock(PALM.SET, properties)).build();
 
     // 萨瓦纳草原
-    public static final LogBlockSet BAOBAB_LOG_BLOCKS = LogBlockSet.builder("baobab", true).createDefault(SHADOW, true).build();
+    public static final LogBlockSet BAOBAB_LOG_BLOCKS = LogBlockSet.builder("baobab", true).createDefault(BAOBAB, true).build();
 
+    // 黄柳
+    public static final LogBlockSet YELLOW_WILLOW_LOG_BLOCKS = LogBlockSet.builder("yellow_willow", true).createDefault(YELLOW_WILLOW, true).build();
     // 万圣节
     public static final LogBlockSet SPOOKY_LOG_BLOCKS = LogBlockSet.builder("spooky", true).createDefault(SPOOKY, false).build();
-
+    // 生命树
+    public static final LogBlockSet LIFE_LOG_BLOCKS = LogBlockSet.builder("life", true).createDefault(LIFE, true).build();
     // 灰烬
-    public static final DeferredBlock<Block> ASH_SAPLING = registerWithItem("ash_sapling", () -> new AshSaplingBlock(ModTreeGrowers.ASH_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
+    public static final DeferredBlock<Block> ASH_SAPLING = registerWithItem("ash_sapling", () -> new AshSaplingBlock(ModFeatures.TreeGrowers.ASH_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
     public static final LogBlockSet ASH_LOG_BLOCKS = LogBlockSet.builder("ash", false).createDefault(ASH, true).build();
     public static final DeferredBlock<Block> ASH_BLOCK = registerWithItem("ash_block", AshBlock::new);
     public static final DeferredBlock<Block> ASH_GRASS_BLOCK = registerWithItem("ash_grass_block", AshGrassBlock::new);
@@ -167,6 +169,15 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> SAPPHIRE_BRANCHES = registerWithItem("sapphire_branches", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_PLANKS)));
     public static final DeferredBlock<Block> TR_AMETHYST_BRANCHES = registerWithItem("tr_amethyst_branches", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_PLANKS)));
     public static final DeferredBlock<Block> ASH_BRANCHES = registerWithItem("ash_branches", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.ACACIA_PLANKS)));
+
+    //藤蔓方块
+    public static final DeferredBlock<Block> YELLOW_WILLOW_DROOPING_LEAVES = registerWithItem("yellow_willow_drooping_leaves", () -> new BaseDroopingPlantsHeadBlock(14 ,false, false, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get()));
+    public static final DeferredBlock<Block> GLOWING_MUSHROOM_DROOPING_VINE = registerWithItem("glowing_mushroom_vine", () -> new BaseDroopingPlantsHeadBlock(6, true, true));
+    public static final DeferredBlock<Block> FOREST_DROOPING_VINE = registerWithItem("forest_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
+    public static final DeferredBlock<Block> JUNGLE_DROOPING_VINE = registerWithItem("jungle_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
+    public static final DeferredBlock<Block> CORRUPT_DROOPING_VINE = registerWithItem("corrupt_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
+    public static final DeferredBlock<Block> TR_CRIMSON_DROOPING_VINE = registerWithItem("tr_crimson_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
+    public static final DeferredBlock<Block> HALLOW_DROOPING_VINE = registerWithItem("hallow_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
 
     private static <B extends Block> DeferredBlock<B> registerWithoutItem(String id, Supplier<B> block) {
         return BLOCKS.register(id, block);

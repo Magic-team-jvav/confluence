@@ -34,6 +34,8 @@ import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.block.functional.network.Network;
 import org.confluence.mod.common.block.functional.network.NetworkNode;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.mixin.accessor.ChestBlockEntityAccessor;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.NotNull;
@@ -42,10 +44,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("deprecation")
 public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
     public DeathChestBlock() {
-        super(Properties.ofFullCopy(Blocks.TRAPPED_CHEST), FunctionalBlocks.DEATH_CHEST_BLOCK_ENTITY::get);
+        super(Properties.ofFullCopy(Blocks.TRAPPED_CHEST).explosionResistance(ModBlocks.getObsidianBasedExplosionResistance(0.0F)), FunctionalBlocks.DEATH_CHEST_BLOCK_ENTITY::get);
     }
 
     public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
@@ -143,6 +144,19 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
         }
 
         @Override
+        public void unpackLootTable(@Nullable Player player) {
+            if (getLootTable() != null) {
+                for (int i = 0; i < getContainerSize(); i++) {
+                    if (getItems().get(i).isEmpty()) {
+                        getItems().set(i, ModItems.DEAD_MANS_SWEATER.get().getDefaultInstance());
+                        break;
+                    }
+                }
+            }
+            super.unpackLootTable(player);
+        }
+
+        @Override
         public void startOpen(@NotNull Player pPlayer) {
             super.startOpen(pPlayer);
             if (((ChestBlockEntityAccessor) this).getOpenersCounter().getOpenerCount() == 1) {
@@ -171,10 +185,10 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
         }
 
         @Override
-        public void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.Provider registryLookup) {
-            super.loadAdditional(nbt, registryLookup);
-            deserializePoses(nbt, "connectedPoses", connectedPoses);
-            deserializePoses(nbt, "relativePoses", relativePoses);
+        public void loadAdditional(@NotNull CompoundTag tag, HolderLookup.Provider registryLookup) {
+            super.loadAdditional(tag, registryLookup);
+            deserializePoses(tag, "connectedPoses", connectedPoses);
+            deserializePoses(tag, "relativePoses", relativePoses);
         }
 
         @Override

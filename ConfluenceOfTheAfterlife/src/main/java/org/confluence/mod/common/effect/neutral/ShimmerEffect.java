@@ -20,6 +20,7 @@ public class ShimmerEffect extends MobEffect {
     public boolean applyEffectTick(@NotNull LivingEntity living, int pAmplifier) {
         Level level = living.level();
         if (level.isClientSide) return true;
+        if (living.position().y < level.getMinBuildHeight() + 5) return false;
         if (level.getFluidState(living.getOnPos()).getType().getFluidType() != ModFluids.SHIMMER.type().get()) {
             living.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 2, 1, false, false, false));
         }

@@ -7,4 +7,5 @@ public class StateProperties {
     public static final BooleanProperty VISIBLE = BooleanProperty.create("visible");
     public static final BooleanProperty REVERSE = BooleanProperty.create("reverse");
     public static final BooleanProperty DRIVE = BooleanProperty.create("drive");
+    public static final BooleanProperty IS_SUPPORTING = BooleanProperty.create("is_supporting");
 }

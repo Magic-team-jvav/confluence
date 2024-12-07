@@ -3,6 +3,7 @@ package org.confluence.mod.common.block.functional.crafting;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -11,6 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Containers;
@@ -33,6 +35,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -56,7 +59,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.List;
 import java.util.function.IntFunction;
 
-@SuppressWarnings("deprecation")
 public class AltarBlock extends BaseEntityBlock {
     public static final MapCodec<AltarBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             propertiesCodec(),
@@ -87,7 +89,7 @@ public class AltarBlock extends BaseEntityBlock {
 
     @Override
     public float getDestroyProgress(@NotNull BlockState pState, @NotNull Player pPlayer, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos) {
-        return pPlayer.getMainHandItem().is(HammerItems.PWNHAMMER.get()) ? super.getDestroyProgress(pState, pPlayer, pLevel, pPos) : 0.0F;
+        return pPlayer.getMainHandItem().is(HammerItems.PWNHAMMER) ? super.getDestroyProgress(pState, pPlayer, pLevel, pPos) : 0.0F;
     }
 
     @Override
@@ -98,12 +100,19 @@ public class AltarBlock extends BaseEntityBlock {
     @Override
     public void playerDestroy(@NotNull Level pLevel, @NotNull Player pPlayer, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable BlockEntity pBlockEntity, @NotNull ItemStack pTool) {
         super.playerDestroy(pLevel, pPlayer, pPos, pState, pBlockEntity, pTool);
-        if (pLevel instanceof ServerLevel serverLevel) {
+        if (pPlayer instanceof ServerPlayer serverPlayer) {
+            ServerLevel serverLevel = serverPlayer.serverLevel();
             ConfluenceData data = ConfluenceData.get(serverLevel);
             if (data.increaseRevealStep(serverLevel)) {
                 serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable(
                         "event.confluence.reveal_step" + data.getRevealStep()
                 ), false);
+            }
+            if (serverPlayer.getMainHandItem().is(HammerItems.PWNHAMMER)) {
+                AdvancementHolder holder = serverLevel.getServer().getAdvancements().get(Confluence.asResource("achievements/begone_evil"));
+                if (holder != null) {
+                    serverPlayer.getAdvancements().award(holder, "never");
+                }
             }
         }
     }

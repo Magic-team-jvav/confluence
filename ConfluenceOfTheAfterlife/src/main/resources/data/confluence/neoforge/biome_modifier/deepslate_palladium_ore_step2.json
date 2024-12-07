@@ -1,0 +1,8 @@
+{
+    "type": "neoforge:add_features",
+    "biomes": {
+        "type": "neoforge:any"
+    },
+    "features": "confluence:deepslate_palladium_ore_step2",
+    "step": "surface_structures"
+}

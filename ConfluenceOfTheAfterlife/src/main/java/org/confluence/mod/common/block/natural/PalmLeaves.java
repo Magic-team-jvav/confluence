@@ -57,6 +57,17 @@ public class PalmLeaves extends LeavesBlock {
     }
 
     @Override
+    protected void randomTick(@NotNull BlockState state, ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+        level.scheduleTick(pos, this, 2);
+        super.randomTick(state, level, pos, random);
+    }
+
+    @Override
+    protected boolean isRandomlyTicking(@NotNull BlockState state) {
+        return !state.getValue(PERSISTENT);
+    }
+
+    @Override
     protected void tick(@NotNull BlockState state, ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         level.setBlock(pos, updateDistance(state, level, pos), Block.UPDATE_ALL);
     }

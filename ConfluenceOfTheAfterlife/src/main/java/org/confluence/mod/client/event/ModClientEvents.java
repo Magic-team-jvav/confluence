@@ -25,10 +25,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
-import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
@@ -69,11 +66,13 @@ import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModMenus;
+import org.confluence.mod.common.init.ModParticles;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.ColoredItem;
+import org.confluence.mod.common.particle.DamageIndicatorParticle;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.color.IntegerRGB;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
@@ -118,7 +117,7 @@ public final class ModClientEvents {
             ResourceLocation enable = Confluence.asResource("enable");
             ItemPropertyFunction enableFunction = (itemStack, level, living, speed) -> {
                 CompoundTag tag = ModUtils.getItemStackNbt(itemStack);
-                if (tag == null) return 0;
+                if (tag == null) return 1;
                 return tag.getBoolean(IFunctionCouldEnable.DISABLE) ? 0 : 1;
             };
             ItemProperties.register(AccessoryItems.SPECTRE_GOGGLES.get(), enable, enableFunction);
@@ -247,7 +246,11 @@ public final class ModClientEvents {
         /* todo 静止钩 */
 
         event.registerEntityRenderer(WOODEN_MINECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART)); // todo 模型
+        event.registerEntityRenderer(GENERIC_MINECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
         event.registerEntityRenderer(MECHANICAL_CART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
+        event.registerEntityRenderer(MINECARP.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
+        event.registerEntityRenderer(DEMONIC_HELLCART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
+        event.registerEntityRenderer(MEOWMERE_MINECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
         event.registerEntityRenderer(DIGGING_MOLECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
 
         event.registerBlockEntityRenderer(ModBlocks.SIGN_BLOCK_ENTITY.get(), SignRenderer::new);
@@ -354,5 +357,10 @@ public final class ModClientEvents {
         }, FunctionalBlocks.DEMON_ALTAR.asItem(), FunctionalBlocks.CRIMSON_ALTAR.asItem());
         event.registerItem(new SimpleGeoItemRenderer<>(SkyMillBlockModel.MODEL, SkyMillBlockModel.TEXTURE, SkyMillBlockModel.ANIMATION), FunctionalBlocks.SKY_MILL.asItem());
         event.registerItem(new SimpleGeoItemRenderer<>(ExtractinatorBlockModel.MODEL, ExtractinatorBlockModel.TEXTURE, ExtractinatorBlockModel.ANIMATION), FunctionalBlocks.EXTRACTINATOR.asItem());
+    }
+
+    @SubscribeEvent
+    public static void registerParticles(RegisterParticleProvidersEvent event) {
+        event.registerSpecial(ModParticles.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
     }
 }

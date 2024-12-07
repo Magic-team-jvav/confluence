@@ -8,7 +8,7 @@ public class MechanicalCartEntity extends BaseMinecartEntity {
         super(entityType, level);
     }
 
-    public MechanicalCartEntity(Level level, double x, double y, double z, Abilities<MechanicalCartEntity> abilities) {
+    public MechanicalCartEntity(Level level, double x, double y, double z, Abilities<? extends MechanicalCartEntity> abilities) {
         super(level, x, y, z, abilities);
     }
 

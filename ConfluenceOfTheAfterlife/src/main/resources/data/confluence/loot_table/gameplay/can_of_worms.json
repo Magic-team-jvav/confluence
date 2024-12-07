@@ -1,0 +1,66 @@
+{
+  "type": "minecraft:gift",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:worm",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 5,
+                "max": 8
+              }
+            }
+          ],
+          "weight": 1
+        }
+      ],
+      "rolls": 1
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:enchanted_nightcrawler",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ],
+          "weight": 3
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 7
+        }
+      ],
+      "rolls": 1
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:gold_warm",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 19
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}

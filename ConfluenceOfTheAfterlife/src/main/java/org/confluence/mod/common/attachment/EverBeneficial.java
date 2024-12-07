@@ -30,7 +30,7 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
     }
 
     public boolean increaseCrystals() {
-        if (lifeCrystals < 15) {
+        if (!isLifeCrystalsMaximum()) {
             this.lifeCrystals++;
             return true;
         }
@@ -41,8 +41,12 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
         return lifeCrystals;
     }
 
+    public boolean isLifeCrystalsMaximum() {
+        return lifeCrystals >= 15;
+    }
+
     public boolean increaseFruits() {
-        if (lifeFruits < 20) {
+        if (!isLifeFruitsMaximum()) {
             this.lifeFruits++;
             return true;
         }
@@ -51,6 +55,10 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
 
     public int getUsedLifeFruits() {
         return lifeFruits;
+    }
+
+    public boolean isLifeFruitsMaximum() {
+        return lifeFruits >= 20;
     }
 
     public boolean setVitalCrystalUsed() {

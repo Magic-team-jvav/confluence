@@ -19,7 +19,7 @@ public class CTSpriteShiftEntry extends SpriteShiftEntry {
      * @see TextureAtlasSprite#getU(float)
      */
     public float getTargetU(float localU, int index) {
-        float uOffset = (index % type.getSheetSize());
+        float uOffset = (float) (index % type.getSheetSize());
         return getTarget().getU((getUnInterpolatedU(getOriginal(), localU) + uOffset) / ((float) type.getSheetSize()));
     }
 
@@ -28,7 +28,15 @@ public class CTSpriteShiftEntry extends SpriteShiftEntry {
      * @see TextureAtlasSprite#getV(float)
      */
     public float getTargetV(float localV, int index) {
-        float vOffset = (index / type.getSheetSize());
+        float vOffset = (float) (index / type.getSheetSize());
         return getTarget().getV((getUnInterpolatedV(getOriginal(), localV) + vOffset) / ((float) type.getSheetSize()));
+    }
+
+    // Confluence Custom Start
+    public float getSelectedTargetU(float localU, int index, int selected, int width) {
+        int sheetSize = type.getSheetSize();
+        int total = sheetSize * width;
+        float uOffset = (index % sheetSize) + (total - sheetSize) * selected;
+        return getTarget().getU((getUnInterpolatedU(getOriginal(), localU) + uOffset) / total);
     }
 }

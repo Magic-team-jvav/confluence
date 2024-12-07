@@ -3,7 +3,6 @@ package org.confluence.mod.common.init;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
@@ -12,9 +11,7 @@ import org.confluence.mod.common.entity.fishing.BloodyFishingHook;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.entity.fishing.HotlineFishingHook;
 import org.confluence.mod.common.entity.hook.*;
-import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
-import org.confluence.mod.common.entity.minecart.DiggingMolecartEntity;
-import org.confluence.mod.common.entity.minecart.MechanicalCartEntity;
+import org.confluence.mod.common.entity.minecart.*;
 import org.confluence.mod.common.entity.projectile.*;
 import org.confluence.mod.common.entity.projectile.bombs.*;
 
@@ -62,7 +59,11 @@ public final class ModEntities {
     /* todo 静止钩 */
 
     public static final Supplier<EntityType<BaseMinecartEntity>> WOODEN_MINECART = registerMinecart("wooden_minecart", BaseMinecartEntity::new);
+    public static final Supplier<EntityType<GenericMinecartEntity>> GENERIC_MINECART = registerMinecart("generic_minecart", GenericMinecartEntity::new);
     public static final Supplier<EntityType<MechanicalCartEntity>> MECHANICAL_CART = registerMinecart("mechanical_cart", MechanicalCartEntity::new);
+    public static final Supplier<EntityType<MinecarpEntity>> MINECARP = registerMinecart("minecarp", MinecarpEntity::new);
+    public static final Supplier<EntityType<DemonicHellcartEntity>> DEMONIC_HELLCART = registerMinecart("demonic_hellcart", DemonicHellcartEntity::new);
+    public static final Supplier<EntityType<MeowmereMinecartEntity>> MEOWMERE_MINECART = registerMinecart("meowmere_minecart", MeowmereMinecartEntity::new);
     public static final Supplier<EntityType<DiggingMolecartEntity>> DIGGING_MOLECART = registerMinecart("digging_molecart", DiggingMolecartEntity::new);
 
     private static <E extends BaseMinecartEntity> Supplier<EntityType<E>> registerMinecart(String id, EntityType.EntityFactory<E> factory) {

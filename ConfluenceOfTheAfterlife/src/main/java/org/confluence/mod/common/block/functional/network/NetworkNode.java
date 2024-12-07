@@ -3,6 +3,8 @@ package org.confluence.mod.common.block.functional.network;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import org.confluence.mod.common.block.StateProperties;
 
 public class NetworkNode {
     private final int id;
@@ -55,7 +57,25 @@ public class NetworkNode {
         return blockEntity.getSelf().getBlockPos();
     }
 
+    public BlockState getState() {
+        return blockEntity.getSelf().getBlockState();
+    }
+
     public INetworkEntity getEntity() {
         return blockEntity;
+    }
+
+    public boolean hasSignal() {
+        return networks.values().stream().anyMatch(Network::hasSignal);
+    }
+
+    /**
+     * @param blockPos 不检测的方块坐标
+     */
+    public boolean hasSignal(BlockPos blockPos) {
+        return networks.values().stream().flatMap(network -> network.getNodes().stream()).anyMatch(networkNode -> {
+            BlockState blockState = networkNode.getState();
+            return !networkNode.getPos().equals(blockPos) && blockState.hasProperty(StateProperties.SIGNAL) && blockState.getValue(StateProperties.SIGNAL);
+        });
     }
 }

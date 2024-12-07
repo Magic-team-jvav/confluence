@@ -43,7 +43,7 @@ public class AchievementToast implements Toast {
     public @NotNull Visibility render(@NotNull GuiGraphics pGuiGraphics, @NotNull ToastComponent pToastComponent, long pTimeSinceLastVisible) {
         Font font = pToastComponent.getMinecraft().font;
         pGuiGraphics.pose().pushPose();
-        pGuiGraphics.pose().translate(0.0F, 80.0F, 0.0F);
+        pGuiGraphics.pose().translate(0.0F, pGuiGraphics.guiHeight() - height(), 0.0F);
         pGuiGraphics.blit(TEXTURE, 0, 0, 0, 0, width(), height(), 160, 64);
         renderTitle(pGuiGraphics, pTimeSinceLastVisible, font);
         renderDescription(pGuiGraphics, font);
@@ -251,7 +251,6 @@ public class AchievementToast implements Toast {
         AchievementToast.registerToast("supreme_helper_minion");
         AchievementToast.registerToast("topped_off");
         AchievementToast.registerToast("slayer_of_worlds");
-        AchievementToast.registerToast("marathon_medalist");
         AchievementToast.registerToast("a_rather_blustery_day");
         AchievementToast.registerToast("hot_reels");
         AchievementToast.registerToast("heliophobia");

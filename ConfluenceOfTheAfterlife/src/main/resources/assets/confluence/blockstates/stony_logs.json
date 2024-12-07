@@ -1,15 +1,15 @@
 {
   "variants": {
     "axis=x": {
-      "model": "confluence:block/stony_logs_horizontal",
+      "model": "confluence:block/stony_log_horizontal",
       "x": 90,
       "y": 90
     },
     "axis=y": {
-      "model": "confluence:block/stony_logs"
+      "model": "confluence:block/stony_log"
     },
     "axis=z": {
-      "model": "confluence:block/stony_logs_horizontal",
+      "model": "confluence:block/stony_log_horizontal",
       "x": 90
     }
   }

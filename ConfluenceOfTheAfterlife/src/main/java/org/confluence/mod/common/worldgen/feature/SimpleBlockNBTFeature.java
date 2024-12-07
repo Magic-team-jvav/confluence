@@ -11,6 +11,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.mixed.IWorldGenRegion;
 
 public class SimpleBlockNBTFeature extends Feature<SimpleBlockNBTFeature.Config> {

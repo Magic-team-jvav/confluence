@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tiers;
@@ -22,7 +23,7 @@ public class HammerItems {
     public static final DeferredItem<HammerItem> PLATINUM_HAMMER = ITEMS.register("platinum_hammer", () -> new HammerItem(ModTiers.PLATINUM, 5, 1));
     public static final DeferredItem<HammerItem> EBONY_HAMMER = ITEMS.register("ebony_hammer", () -> new HammerItem(ModTiers.EBONY, 6, 1));
     public static final DeferredItem<HammerItem> TR_CRIMSON_HAMMER = ITEMS.register("tr_crimson_hammer", () -> new HammerItem(ModTiers.TR_CRIMSON, 6, 1));
-    public static final DeferredItem<HammerItem> PWNHAMMER = ITEMS.register("pwnhammer", () -> new HammerItem(ModTiers.HALLOWED, 7, 1));
+    public static final DeferredItem<HammerItem> PWNHAMMER = ITEMS.register("pwnhammer", () -> new HammerItem(ModTiers.HALLOWED, 7, 1, new Item.Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE)));
 
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
         ITEMS.getEntries().forEach(item -> tag.add(item.get()));

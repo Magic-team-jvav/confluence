@@ -1,7 +1,10 @@
 package org.confluence.mod.common.event.game;
 
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -10,6 +13,7 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.PathService;
+import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.util.PlayerUtils;
@@ -22,6 +26,13 @@ public final class TickEvents {
         PathService.INSTANCE.pathFindingTick();
         if (serverLevel.dimension() != Level.OVERWORLD) return;
         FallingStarItemEntity.summon(serverLevel);
+
+        if (serverLevel.getDayTime() % 24000L == 0L) {
+            RandomSource random = serverLevel.random;
+            float factorX = Mth.nextFloat(random, -1.0F, 1.0F);
+            float factorZ = Mth.nextFloat(random, -1.0F, 1.0F);
+            ConfluenceData.get(serverLevel).setWindSpeed(factorX, factorZ);
+        }
     }
 
     @SubscribeEvent
@@ -30,6 +41,22 @@ public final class TickEvents {
         if (player instanceof ServerPlayer serverPlayer) {
             PlayerUtils.regenerateMana(serverPlayer);
             ((IServerPlayer) serverPlayer).confluence$setCouldPickupItem(true);
+
+            Level level = serverPlayer.level();
+            if (level.getDayTime() % 1200L == 0L) {
+                long firstNight = serverPlayer.getPersistentData().getLong("confluence:you_can_do_it");
+                if (firstNight != -1L) {
+                    if (firstNight == 0L && level.isNight()) {
+                        serverPlayer.getPersistentData().putLong("confluence:you_can_do_it", level.getDayTime());
+                    } else if (firstNight != 0L && level.getDayTime() - firstNight > 12000L) {
+                        AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource("achievements/you_can_do_it"));
+                        if (advancement != null) {
+                            serverPlayer.getAdvancements().award(advancement, "never");
+                        }
+                        serverPlayer.getPersistentData().putLong("confluence:you_can_do_it", -1L);
+                    }
+                }
+            }
         }
     }
 }

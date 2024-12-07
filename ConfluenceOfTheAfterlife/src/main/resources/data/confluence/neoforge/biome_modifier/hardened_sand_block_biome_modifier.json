@@ -1,0 +1,8 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:desert"
+  ],
+  "features": "confluence:hardened_sand_block",
+  "step": "surface_structures"
+}

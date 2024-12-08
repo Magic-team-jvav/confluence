@@ -1,7 +1,9 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
@@ -125,6 +127,9 @@ public class SwordItems {
     public static DeferredItem<SwordItem> register(String name, Tier tier, int rawDamage, float rawSpeed ,ModRarity rarity, BaseSwordItem.ModifierBuilder modifierBuilder) {
         if(tier == ModTiers.TITANIUM) modifierBuilder.setUnbreakable();
         return register(name, () -> new BaseSwordItem(tier, rarity, rawDamage, rawSpeed, modifierBuilder));
+    }
+    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
+        ITEMS.getEntries().forEach(sword -> tag.add(sword.get()));
     }
 
 }

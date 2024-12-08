@@ -73,6 +73,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         ArrowItems.acceptTag(tag(ItemTags.ARROWS));
         HammerItems.acceptTag(tag(ModTags.Items.HAMMER));
         AxeItems.acceptTag(tag(ItemTags.AXES));
+        SwordItems.acceptTag(tag(Tags.Items.MELEE_WEAPON_TOOLS));
         copy(BlockTags.RAILS, ItemTags.RAILS);
         tag(ModTags.Items.COIN).add(ModItems.COPPER_COIN.get(), ModItems.SILVER_COIN.get(), ModItems.GOLDEN_COIN.get(), ModItems.PLATINUM_COIN.get());
         tag(TETags.Items.HONEY_TRANSLATION_BUCKET).add(ToolItems.HONEY_BUCKET.get());

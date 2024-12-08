@@ -729,7 +729,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.PNEUMATIC_TRAP.get(), "气压陷阱");
         add(FunctionalBlocks.SPIKE.get(), "尖刺");
         add(FunctionalBlocks.PLAYER_PRESSURE_PLATE.get(), "玩家压力板");
-        add(FunctionalBlocks.GEYSER_BLOCK.get(), "喷泉");
+        add(FunctionalBlocks.GEYSER_BLOCK.get(), "热喷泉");
+        add(FunctionalBlocks.FRAGILE_SANDSTONE.get(), "易碎砂岩");
+        add(FunctionalBlocks.MECHANICAL_FRAGILE_SANDSTONE.get(), "机械易碎砂岩");
         add(FunctionalBlocks.DETONATOR.get(), "引爆器");
         add(DecorativeBlocks.FLOATING_WHEAT_BALE.get(), "飘飘麦捆");
         add(FunctionalBlocks.BASE_CHEST_BLOCK.get(), "箱子");

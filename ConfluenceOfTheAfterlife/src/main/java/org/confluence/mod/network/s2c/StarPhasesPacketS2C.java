@@ -14,7 +14,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.handler.ClientPacketHandler;
+import org.confluence.mod.client.handler.StarPhaseHandler;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.StarPhase;
 import org.jetbrains.annotations.NotNull;
@@ -64,7 +64,7 @@ public record StarPhasesPacketS2C(Either<Int2ObjectMap<StarPhase>, Int2ObjectMap
     public void handle(IPayloadContext context) {
         context.enqueueWork(() -> {
             if (context.player().isLocalPlayer()) {
-                ClientPacketHandler.handleStarPhases(starPhases);
+                StarPhaseHandler.handleStarPhases(starPhases);
             }
         }).exceptionally(e -> {
             context.disconnect(Component.translatable("neoforge.network.invalid_flow", e.getMessage()));

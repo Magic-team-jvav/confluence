@@ -12,6 +12,11 @@ import org.confluence.terra_curio.common.component.ModRarity;
 public class MaterialItems{
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
+    // todo 投刀，手里剑占位符
+    public static final DeferredItem<Item> THROWING_KNIVES = register("throwing_knives");
+    public static final DeferredItem<Item> SHURIKEN = register("shuriken");
+
+
     public static final DeferredItem<Item> GEL = register("gel", ModRarity.WHITE);
     public static final DeferredItem<Item> PINK_GEL = register("pink_gel", ModRarity.PINK);
 

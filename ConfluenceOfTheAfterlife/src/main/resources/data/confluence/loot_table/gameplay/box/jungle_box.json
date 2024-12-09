@@ -23,13 +23,7 @@
           "type": "minecraft:item",
           "name": "confluence:fiberglass_fishing_pole",
           "weight": 19
-        },
-        {
-          "type": "minecraft:item",
-          "name": "confluence:boomstick",
-          "weight": 19
         }
-
       ],
       "rolls": 1
     },

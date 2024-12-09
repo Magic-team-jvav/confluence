@@ -8,11 +8,6 @@
           "type": "minecraft:item",
           "name": "terra_curio:band_of_starpower",
           "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "confluence:musket",
-          "weight": 1
         }
       ],
       "rolls": 1

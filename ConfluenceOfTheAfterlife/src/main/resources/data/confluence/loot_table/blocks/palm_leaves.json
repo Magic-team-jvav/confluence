@@ -13,7 +13,7 @@
                 {
                   "condition": "minecraft:location_check",
                   "predicate": {
-                    "biome": "minecraft:beach"
+                    "biomes": "minecraft:beach"
                   }
                 }
               ]
@@ -41,7 +41,7 @@
                 {
                   "condition": "minecraft:location_check",
                   "predicate": {
-                    "biome": "minecraft:beach"
+                    "biomes": "minecraft:beach"
                   }
                 }
               ]

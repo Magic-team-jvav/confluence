@@ -1020,8 +1020,8 @@ public class ModChineseProvider extends LanguageProvider {
 
 
         // 杂项
-//        add(ModItems.ICE_MIRROR.get(), "冰雪镜");
-//        add(ModItems.CLAM.get(), "牡蛎");
+        add(ToolItems.ICE_MIRROR.get(), "冰雪镜");
+
 
         add(ModItems.COPPER_COIN.get(), "铜币");
         add(ModItems.SILVER_COIN.get(), "银币");
@@ -1047,11 +1047,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.AEGIS_APPLE.get(), "神盾果");
         add(ConsumableItems.AMBROSIA.get(), "仙馔密酒");
         add(ConsumableItems.GUMMY_WORM.get(), "黏性蠕虫");
-//        add(ModItems.ModBlocks.CHRISTMAS_GIFT.get(), "圣诞礼物");
-//        add(ModItems.RED_ENVELOPE.get(), "红包");
-//        add(ModItems.CAN_OF_WORMS.get(), "蠕虫罐头");
-//        add(ModItems.HERB_BAG.get(), "草药袋");
-//        add(ModItems.WHOOPIE_CUSHION.get(), "整蛊坐垫");
+        add(ConsumableItems.CLAM.get(), "牡蛎");
+        add(ConsumableItems.CHRISTMAS_GIFT.get(), "圣诞礼物");
+        add(ConsumableItems.RED_ENVELOPE.get(), "红包");
+        add(ConsumableItems.CAN_OF_WORMS.get(), "蠕虫罐头");
+        add(ConsumableItems.HERB_BAG.get(), "草药袋");
+//    add(ConsumableItems.WHOOPIE_CUSHION.get(), "整蛊坐垫");
         add(ToolItems.RED_WRENCH.get(), "红扳手");
         add(ToolItems.BLUE_WRENCH.get(), "蓝扳手");
         add(ToolItems.GREEN_WRENCH.get(), "绿扳手");
@@ -1063,7 +1064,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.SLIME_CROWN.get(), "史莱姆皇冠");
 //        add(ModItems.MAGIC_CONCH.get(), "魔法海螺");
 //        add(ModItems.DEMON_CONCH.get(), "恶魔海螺");
-//        add(ModItems.SKY_MILL.get(), "天磨");
 //        add(ModItems.ALCHEMY_TABLE_BLOCK.get(), "炼药桌");
         add(FunctionalBlocks.STONE_PRESSURE_PLATE.get(), "石质压力板");
 

@@ -178,6 +178,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("achievements.confluence.completely_awesome.description", "Obtain a minishark.");
         add("achievements.confluence.bulldozer.title", "Bulldozer ");
         add("achievements.confluence.bulldozer.description", "Destroy a total of 10,000 blocks.");
+        add("achievements.confluence.begone_evil.title", "Begone, Evil! ");
+        add("achievements.confluence.begone_evil.description", "Smash a demon or crimson altar with a powerful, holy hammer.");
+
 
         add("achievements.confluence.ooo_shinny.title", "Ooo! Shiny!");
         add("achievements.confluence.ooo_shinny.description", "Mine your first nugget of ore with a pickaxe.");

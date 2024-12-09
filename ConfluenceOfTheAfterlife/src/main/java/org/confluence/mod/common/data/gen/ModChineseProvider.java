@@ -193,7 +193,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("achievements.confluence.completely_awesome.description", "获得一把迷你鲨。");
         add("achievements.confluence.bulldozer.title", "推土机");
         add("achievements.confluence.bulldozer.description", "共破坏10,000个方块。");
-
+        add("achievements.confluence.begone_evil.title", "滚开，恶魔！");
+        add("achievements.confluence.begone_evil.description", "用强大而神圣的锤子砸碎恶魔或猩红祭坛。");
 
         add("achievements.confluence.ooo_shinny.title", "哦！亮闪闪！");
         add("achievements.confluence.ooo_shinny.description", "用镐开采第一块矿石。");

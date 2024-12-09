@@ -26,11 +26,6 @@
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:blowpipe",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
           "name": "terra_curio:aglet",
           "weight": 1
         },

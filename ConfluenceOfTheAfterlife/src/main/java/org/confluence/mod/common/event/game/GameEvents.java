@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -44,9 +45,11 @@ public final class GameEvents {
         ItemStack onSlot = event.getCarriedItem();
         ItemStack carried = event.getStackedOnItem(); // 非常奇怪,但事实如此
         Item item = onSlot.getItem();
-        if (event.getClickAction() == ClickAction.SECONDARY) {
-            if (carried.isEmpty() && item instanceof IFunctionCouldEnable couldEnable) {
-                if (event.getPlayer() instanceof ServerPlayer serverPlayer) { // 需要注意创造模式物品栏是仅客户端的，所以创造模式无法正常使用
+        if (event.getClickAction() == ClickAction.SECONDARY && carried.isEmpty()) {
+            // 需要注意创造模式物品栏是仅客户端的，所以创造模式无法正常使用
+            Player player = event.getPlayer();
+            if (item instanceof IFunctionCouldEnable couldEnable) {
+                if (player instanceof ServerPlayer serverPlayer) {
                     couldEnable.cycleEnable(onSlot);
                     EchoVisibilityPacketS2C.sendToClient(serverPlayer);
                 }

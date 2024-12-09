@@ -33,7 +33,7 @@ public class CrownOfKingSlimeModelRenderer extends EntityRenderer<CrownOfKingSli
     public void render(@NotNull CrownOfKingSlimeModelEntity pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
         pPoseStack.pushPose();
         pPoseStack.mulPose(Axis.YP.rotation(Mth.lerp(pPartialTick, pEntity.rotateO2, pEntity.rotate2)));
-        pPoseStack.translate(0.0F, 0.0F, pEntity.radius);
+        pPoseStack.translate(0.0F, -0.5F, pEntity.radius);
         pPoseStack.mulPose(pEntity.quaternionf.rotationXYZ(
                 Mth.lerp(pPartialTick, pEntity.rotO.x, pEntity.rot.x),
                 Mth.lerp(pPartialTick, pEntity.rotO.y, pEntity.rot.y),
@@ -41,7 +41,6 @@ public class CrownOfKingSlimeModelRenderer extends EntityRenderer<CrownOfKingSli
         ));
         pPoseStack.mulPose(Axis.YN.rotation(Mth.lerp(pPartialTick, pEntity.rotateO1, pEntity.rotate1)));
         pPoseStack.translate(0.0F, 1.9375F + pEntity.height, 0.0F);
-        pPoseStack.mulPose(FLIP_Y);
         pPoseStack.mulPose(FLIP_Y);
         model.renderToBuffer(pPoseStack, pBuffer.getBuffer(CrownOfKingSlimeModel.RENDER_TYPE), pPackedLight, OverlayTexture.NO_OVERLAY);
         pPoseStack.popPose();

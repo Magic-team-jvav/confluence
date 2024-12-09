@@ -126,8 +126,10 @@ public class KingSlime extends Slime implements DeathAnimOptions, IBossFSM, Boss
             boss.setHorizontalSpeed(Vec3.ZERO);
             // 更新BOSS大小
             int maxSize = boss.getMaxSize();
-            boss.setSize( Mth.clamp(1, boss.getMaxSize() *
-                    (SHRINK_ENLARGE_DURATION - boss.indexAI) / SHRINK_ENLARGE_DURATION, maxSize), false );
+            int s = Mth.clamp(1, boss.getMaxSize() *
+                    (SHRINK_ENLARGE_DURATION - boss.indexAI) / SHRINK_ENLARGE_DURATION, maxSize);
+
+            boss.setSize( s, false );
             if (boss.indexAI >= SHRINK_ENLARGE_DURATION) {
                 // BOSS脱战
                 if (boss.shouldDisappear) {
@@ -159,6 +161,7 @@ public class KingSlime extends Slime implements DeathAnimOptions, IBossFSM, Boss
             boss.setHorizontalSpeed(Vec3.ZERO);
             // 更新BOSS大小
             int maxSize = boss.getMaxSize();
+
             boss.setSize( Mth.clamp(1, boss.getMaxSize() *
                     boss.indexAI / SHRINK_ENLARGE_DURATION, maxSize), false );
             if (boss.indexAI >= SHRINK_ENLARGE_DURATION) {
@@ -364,9 +367,9 @@ public class KingSlime extends Slime implements DeathAnimOptions, IBossFSM, Boss
         int i = Mth.clamp(pSize, 1, 127);
         entityData.set(ID_SIZE, i);
         reapplyPosition();
+
         refreshDimensions();
         getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.1F * i);
-
         this.xpReward = i;
     }
 

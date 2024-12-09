@@ -28,7 +28,7 @@ public class EvaporativeCloudBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
-        return new EvaporativeCloudBlockEntity(pPos, pState);
+        return new Entity(pPos, pState);
     }
 
     public void fallOn(@NotNull Level level, @NotNull BlockState state, @NotNull BlockPos pos, net.minecraft.world.entity.Entity entity, float fallDistance) {
@@ -46,8 +46,8 @@ public class EvaporativeCloudBlock extends BaseEntityBlock {
         });
     }
 
-    public static class EvaporativeCloudBlockEntity extends BlockEntity {
-        public EvaporativeCloudBlockEntity(BlockPos pos, BlockState state) {
+    public static class Entity extends BlockEntity {
+        public Entity(BlockPos pos, BlockState state) {
             super(NatureBlocks.EVAPORATIVE_CLOUD_BLOCK_ENTITY.get(), pos, state);
         }
     }

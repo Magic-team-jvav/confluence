@@ -29,24 +29,24 @@ public class BoomerangItems {
     public static DeferredItem<Boomerang> WOOD_BOOMERANG = register("wood_boomerang",3,640,ModRarity.BLUE,
             new Boomerang.BoomerangModifier()
     );
-    public static DeferredItem<Boomerang> ENCHANTED_BOOMERANG = register("enchanted_boomerang",4.4f,3,ModRarity.BLUE,
+    public static DeferredItem<Boomerang> ENCHANTED_BOOMERANG = register("enchanted_boomerang",4.4f,9999,ModRarity.BLUE,
             NORMAL_BOOMERANG_MODIFIER.apply(15,1.55f,1.55f)
 
     );
-    public static DeferredItem<Boomerang> SHROOMERANG = register("shroomerang",4.4f,3,ModRarity.BLUE,
+    public static DeferredItem<Boomerang> SHROOMERANG = register("shroomerang",4.4f,9999,ModRarity.BLUE,
             NORMAL_BOOMERANG_MODIFIER.apply(15,1.55f,1.55f)
     );
-    public static DeferredItem<Boomerang> ICE_BOOMERANG = register("ice_boomerang",5.5f,1,ModRarity.BLUE,
+    public static DeferredItem<Boomerang> ICE_BOOMERANG = register("ice_boomerang",5.5f,9999,ModRarity.BLUE,
             NORMAL_BOOMERANG_MODIFIER.apply(16,1.6f,1.6f)
                     .addOnHitEffect(TIME_POSSIBILITY_EFFECT.apply(ModEffects.FROST_BURN,3 * 20,0.5F))
     );   //50% 的几率造成 3 秒的霜冻。
 
-    public static DeferredItem<Boomerang> TRIMARANG = register("trimarang",5.5f,1,ModRarity.ORANGE,
+    public static DeferredItem<Boomerang> TRIMARANG = register("trimarang",5.5f,9999,ModRarity.ORANGE,
             MULTI_BOOMERANG_MODIFIER.apply(10,3,
                     NORMAL_BOOMERANG_MODIFIER.apply(17,1.85f,1.85f))
     );   // 使用三次
 
-    public static DeferredItem<Boomerang> FLAMARANG = register("flamarang",12.5f,1,ModRarity.ORANGE,
+    public static DeferredItem<Boomerang> FLAMARANG = register("flamarang",12.5f,9999,ModRarity.ORANGE,
             NORMAL_BOOMERANG_MODIFIER.apply(18,1.85f,1.85f)
                     .addOnHitEffect(SET_FIRE.apply(5 * 20,0.5f))
     );   //50% 的几率造成 5 秒的火焰。

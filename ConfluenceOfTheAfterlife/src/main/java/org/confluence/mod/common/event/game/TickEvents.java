@@ -1,5 +1,7 @@
 package org.confluence.mod.common.event.game;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -9,13 +11,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
+import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IServerPlayer;
+import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.PlayerUtils;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
@@ -55,6 +60,22 @@ public final class TickEvents {
                         }
                         serverPlayer.getPersistentData().putLong("confluence:you_can_do_it", -1L);
                     }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void postEntityTick(EntityTickEvent.Post event){
+        if(event.getEntity() instanceof ILivingEntity living){
+            Object2IntMap<Immunity> invTicks = living.confluence$getImmunityTicks();
+            for(ObjectIterator<Object2IntMap.Entry<Immunity>> iterator = invTicks.object2IntEntrySet().iterator(); iterator.hasNext(); ){
+                Object2IntMap.Entry<Immunity> entry = iterator.next();
+                int remain = entry.getIntValue() - 1;
+                if (remain <= 0) {
+                    iterator.remove();
+                } else {
+                    entry.setValue(remain);
                 }
             }
         }

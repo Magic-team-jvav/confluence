@@ -1,10 +1,11 @@
 package org.confluence.mod.common.event.game.entity;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerLevel;
 import com.google.common.collect.Streams;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -38,10 +39,13 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.particle.options.DamageIndicatorOptions;
 import org.confluence.mod.mixed.IDamageSource;
+import org.confluence.mod.mixed.ILivingEntity;
+import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
+import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -107,6 +111,10 @@ public final class LivingEntityEvents {
                 }
             }
         }
+        event.getEntity().invulnerableTime = 0;
+        if(((ILivingEntity) event.getEntity()).confluence$getImmunityTicks().containsKey(ModUtils.getImmunityCause(event.getSource()))){
+            event.setCanceled(true);
+        }
     }
 
     @SubscribeEvent
@@ -150,23 +158,31 @@ public final class LivingEntityEvents {
     @SubscribeEvent
     public static void livingDamage$Post(LivingDamageEvent.Post event) {
         DamageSource damageSource = event.getSource();
-        LivingEntity damageEntity = event.getEntity();
+        LivingEntity damagingEntity = event.getEntity();
         Entity sourceEntity = damageSource.getEntity();
         if (sourceEntity instanceof LivingEntity livingEntity) {
             if (livingEntity.getItemInHand(event.getEntity().getUsedItemHand()).getItem() instanceof BaseSwordItem sword) {
                 if (sword.modifier != null) {
-                    sword.modifier.onHitEffects.forEach(effect -> effect.accept(livingEntity, damageEntity));
+                    sword.modifier.onHitEffects.forEach(effect -> effect.accept(livingEntity, damagingEntity));
                 }
             }
         }
-        if (damageEntity instanceof ServerPlayer serverPlayer) {
-            if (damageEntity.isAlive()) {
-                if (damageEntity.getHealth() / damageEntity.getMaxHealth() < 0.1F) {
+        if (damagingEntity instanceof ServerPlayer serverPlayer) {
+            if (damagingEntity.isAlive()) {
+                if (damagingEntity.getHealth() / damagingEntity.getMaxHealth() < 0.1F) {
                     PlayerUtils.awardAchievement(serverPlayer, "lucky_break");
                 }
             } else if (sourceEntity != null && DartTrapBlock.NAME.equals(sourceEntity.getCustomName())) {
                 PlayerUtils.awardAchievement(serverPlayer, "watch_your_step");
             }
+        }
+
+        Object2IntMap<Immunity> invTicks = ((ILivingEntity) damagingEntity).confluence$getImmunityTicks();
+        Immunity cause=ModUtils.getImmunityCause(damageSource);
+        float invulnerableTicksMultiplier = TCUtils.getAccessoriesValue(damagingEntity, TCItems.INVULNERABLE$TICKS$MULTIPLIER);
+        int time = cause.confluence$getImmunityDuration(damagingEntity.level().registryAccess());
+        if(time != 0){
+            invTicks.put(cause, (int) (time*invulnerableTicksMultiplier));
         }
     }
 

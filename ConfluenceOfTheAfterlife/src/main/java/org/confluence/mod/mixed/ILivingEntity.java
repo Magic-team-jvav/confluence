@@ -8,6 +8,4 @@ public interface ILivingEntity {
     boolean confluence$isBreakEasyCrashBlock();
 
     Object2IntMap<Immunity> confluence$getImmunityTicks();
-
-    int c$getInvulnerableTime(int constant);
 }

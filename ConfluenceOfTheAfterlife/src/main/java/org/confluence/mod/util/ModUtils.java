@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
@@ -29,6 +30,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.mixed.Immunity;
 import org.confluence.terra_curio.common.component.NbtComponent;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terraentity.entity.ai.Boss;
@@ -455,5 +457,21 @@ public final class ModUtils {
         NbtComponent component = itemStack.get(TCDataComponentTypes.NBT);
         if (component == null) return null;
         return component.nbt();
+    }
+
+    public static Immunity getImmunityCause(DamageSource damageSource){
+        Entity directEntity = damageSource.getDirectEntity();
+        Immunity.Types type;
+        Immunity cause;
+        if(directEntity != null){
+            type = ((Immunity) directEntity).confluence$getImmunityType();
+            cause = switch(type){
+                case STATIC -> (Immunity) directEntity.getType();
+                case LOCAL -> (Immunity) directEntity;
+            };
+        }else{
+            cause = (Immunity) (Object) damageSource.type();
+        }
+        return cause;
     }
 }

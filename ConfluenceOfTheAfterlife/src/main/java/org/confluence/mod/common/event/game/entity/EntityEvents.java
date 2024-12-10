@@ -49,11 +49,11 @@ public final class EntityEvents {
         if (damageSource.is(DamageTypes.GENERIC_KILL)) return;
 
         if (damageSource.is(ModDamageTypes.BOULDER) && living.getType().is(Tags.EntityTypes.BOSSES)) {
-            event.setInvulnerable(true);
+            event.setInvulnerable(true); // boss 免疫巨石
         } else if ((damageSource.getEntity() == null || !damageSource.getEntity().getType().is(Tags.EntityTypes.BOSSES)) && living.hasEffect(ModEffects.SHIMMER)) {
-            event.setInvulnerable(true);
+            event.setInvulnerable(true); // 微光状态时免疫小怪和环境伤害
         } else if (damageSource.is(DamageTypeTags.IS_FIRE) && living.hasEffect(ModEffects.OBSIDIAN_SKIN)) {
-            event.setInvulnerable(true);
+            event.setInvulnerable(true); // 喝黑曜石皮免疫火系
         }
     }
 }

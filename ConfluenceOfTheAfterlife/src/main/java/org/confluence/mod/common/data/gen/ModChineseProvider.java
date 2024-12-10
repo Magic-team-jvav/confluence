@@ -40,32 +40,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("generator.confluence.corruption", "腐化之地");
         add("generator.confluence.tr_crimson", "猩红之地");
 
-        add("bossevent.confluence.boss_generate", "%s已经苏醒！");
-        add("bossevent.confluence.boss_death", "%s已被击败！");
-        add("bossevent.confluence.cthulhu_eye.leave", "克苏鲁之眼离开了！");
-
-        add("entity.confluence.ice_slime", "冰冻史莱姆");
-        add("entity.confluence.blue_slime", "蓝色史莱姆");
-        add("entity.confluence.red_slime", "红色史莱姆");
-        add("entity.confluence.purple_slime", "紫色史莱姆");
-        add("entity.confluence.jungle_slime", "丛林史莱姆");
-        add("entity.confluence.pink_slime", "粉色史莱姆");
-        add("entity.confluence.yellow_slime", "黄色史莱姆");
-        add("entity.confluence.honey_slime", "蜂蜜史莱姆");
-        add("entity.confluence.crimson_slime", "猩红史莱姆");
-        add("entity.confluence.corrupted_slime", "腐化史莱姆");
-        add("entity.confluence.desert_slime", "沙漠史莱姆");
-        add("entity.confluence.tropic_slime", "热带史莱姆");
-        add("entity.confluence.green_slime", "绿色史莱姆");
-        add("entity.confluence.black_slime", "史莱姆之母");
-        add("entity.confluence.lava_slime", "岩浆史莱姆");
-        add("entity.confluence.demon_eye", "恶魔眼");
-        add("entity.confluence.blood_crawler", "血爬虫");
-        add("entity.confluence.bloody_spore", "血腥芽孢");
-
-        add("entity.confluence.king_slime", "史莱姆王");
-        add("entity.confluence.cthulhu_eye", "克苏鲁之眼");
-
         add("info.confluence.bait", "鱼饵力: %s%%");
         add("info.confluence.network", "#%s 信号: %s");
         add("info.confluence.potion_mana", "药水魔力: %s");
@@ -314,10 +288,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("fluid_type.confluence.honey", "蜂蜜");
 
         add("title.confluence.shimmer_transmutation", "微光嬗变");
-        add("title.confluence.altar", "献祭");
+        add("condition.confluence.shimmer_transmutation", "需要的游戏阶段: %s");
+        add("title.confluence.altar", "祭坛");
         add("title.confluence.sky_mill", "天域工艺");
         add("container.confluence.sky_mill", "天域工艺");
-        add("condition.confluence.shimmer_transmutation", "需要的游戏阶段: %s");
 
         add("info.confluence.weather_radio.clear", "天气: 晴天, 风速: %s");
         add("info.confluence.weather_radio.cloudy", "天气: 阴天, 风速: %s");

@@ -123,6 +123,7 @@ public final class ModFluids {
         addItem(HIGH_TEST_FISHING_LINE.get(), ANGLER_EARRING.get());
         addItem(ANGLER_EARRING.get(), TACKLE_BOX.get());
         addItem(TACKLE_BOX.get(), HIGH_TEST_FISHING_LINE.get());
+        addItem(STAR_CLOAK.get(), CHROMATIC_CLOAK.get());
         // todo 火把转化
         // todo 匣子转化
         // 宝石转化

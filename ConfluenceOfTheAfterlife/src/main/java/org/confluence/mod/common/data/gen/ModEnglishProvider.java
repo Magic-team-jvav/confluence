@@ -229,6 +229,9 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add("title.confluence.shimmer_transmutation", "Shimmer Transmutation");
         add("condition.confluence.shimmer_transmutation", "Required game phase: %s");
+        add("title.confluence.altar", "Altar");
+        add("title.confluence.sky_mill", "Sky Mill");
+        add("container.confluence.sky_mill", "Sky Mill");
 
         add("block.confluence.timers_block_1_1", "1 Second Timer");
         add("block.confluence.timers_block_3_1", "3 Second Timer");

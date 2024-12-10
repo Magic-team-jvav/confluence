@@ -20,6 +20,7 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.terra_curio.common.init.TCEffects;
+import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.mixed.SelfGetter;
 import org.confluence.terra_curio.util.TCUtils;
 import org.spongepowered.asm.mixin.Mixin;
@@ -81,13 +82,15 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
         LivingEntity self = self();
         FluidType fluidType = self.getBlockStateOn().getFluidState().getType().getFluidType();
         if (fluidType == ModFluids.HONEY.type().get()) {
-            if (!self.level().isClientSide && self instanceof Animal || self instanceof ServerPlayer) {
+            if ((!self.level().isClientSide && self instanceof Animal) || self instanceof ServerPlayer) {
                 self.addEffect(new MobEffectInstance(TCEffects.HONEY, 600));
             }
             par1 = par1.scale(0.6);
         } else if (fluidType == ModFluids.SHIMMER.type().get()) {
             if (!self.level().isClientSide && self.getEyeInFluidType() == ModFluids.SHIMMER.type().get() && !self.hasEffect(ModEffects.SHIMMER)) {
-                self.addEffect(new MobEffectInstance(ModEffects.SHIMMER, MobEffectInstance.INFINITE_DURATION));
+                if (self.isCrouching() || !TCUtils.getAccessoriesValue(self, TCItems.EFFECT$IMMUNITIES).contains(ModEffects.SHIMMER)) {
+                    self.addEffect(new MobEffectInstance(ModEffects.SHIMMER, MobEffectInstance.INFINITE_DURATION));
+                }
             }
             par1 = par1.add(0.0, -0.003, 0.0);
         }

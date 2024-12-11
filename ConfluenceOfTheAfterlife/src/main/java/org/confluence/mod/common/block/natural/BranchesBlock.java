@@ -72,7 +72,7 @@ public class BranchesBlock extends PipeBlock {
         int value = state.getValue(DISTANCE);
         for (Direction direction : ModUtils.DIRECTIONS) {
             if (direction == Direction.UP) continue;
-            int distanceAt = getDistanceAt(level.getBlockState(pos.relative(direction)));
+            int distanceAt = getDistanceAt(level.getBlockState(pos.relative(direction)), direction);
             if (distanceAt < value) {
                 i = Math.min(i, distanceAt + 1);
                 if (i == 1) break;
@@ -81,8 +81,8 @@ public class BranchesBlock extends PipeBlock {
         return state.setValue(DISTANCE, i);
     }
 
-    private int getDistanceAt(BlockState neighbor) {
-        if (neighbor.is(attachable) || neighbor.is(supporting)) {
+    private int getDistanceAt(BlockState neighbor, Direction direction) {
+        if (neighbor.is(attachable) || (direction == Direction.DOWN && neighbor.is(supporting))) {
             return 0;
         } else {
             return neighbor.hasProperty(DISTANCE) ? neighbor.getValue(DISTANCE) : DECAY_DISTANCE;
@@ -116,9 +116,8 @@ public class BranchesBlock extends PipeBlock {
         }
         int value = state.getValue(DISTANCE);
         for (Direction direction : ModUtils.HORIZONTAL) {
-            BlockPos posAtSide = pos.relative(direction);
-            BlockState stateAtSide = level.getBlockState(posAtSide);
-            int distanceAt = getDistanceAt(stateAtSide);
+            BlockState stateAtSide = level.getBlockState(pos.relative(direction));
+            int distanceAt = getDistanceAt(stateAtSide, direction);
             if (distanceAt < value || stateAtSide.is(supporting)) {
                 return true;
             }

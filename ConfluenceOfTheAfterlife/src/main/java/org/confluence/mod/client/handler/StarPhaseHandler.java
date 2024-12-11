@@ -1,6 +1,5 @@
 package org.confluence.mod.client.handler;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Either;
@@ -46,7 +45,6 @@ public final class StarPhaseHandler {
             Tesselator instance = Tesselator.getInstance();
             PoseStack poseStack = new PoseStack();
             poseStack.mulPose(event.getModelViewMatrix());
-            RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
             long gameTime = level.getGameTime(); // 游戏时间
             for (int i = 0; i < STAR_PHASES_SIZE; i++) {
@@ -69,6 +67,7 @@ public final class StarPhaseHandler {
                 BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
                 poseStack.popPose();
             }
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
 

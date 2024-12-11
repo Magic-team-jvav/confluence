@@ -35,7 +35,7 @@ public class BranchesBlock extends PipeBlock {
     private final TagKey<Block> supporting;
 
     public BranchesBlock(TagKey<Block> attachable, TagKey<Block> supporting) {
-        super(0.3125f, Properties.of().instabreak().sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).randomTicks());
+        super(0.1875F, Properties.of().instabreak().sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).randomTicks());
         registerDefaultState(stateDefinition.any()
                 .setValue(DISTANCE, DECAY_DISTANCE)
                 .setValue(NORTH, false)
@@ -96,7 +96,7 @@ public class BranchesBlock extends PipeBlock {
             level.scheduleTick(currentPos, this, 1);
             return super.updateShape(newState, facing, facingState, level, currentPos, facingPos);
         } else {
-            boolean flag = facingState.is(this) || facingState.is(attachable) || facing == Direction.DOWN && facingState.is(supporting);
+            boolean flag = facingState.is(this) || facingState.is(attachable) || (facing == Direction.DOWN && facingState.is(supporting));
             return newState.setValue(PROPERTY_BY_DIRECTION.get(facing), flag);
         }
     }
@@ -115,10 +115,11 @@ public class BranchesBlock extends PipeBlock {
             return true;
         }
         int value = state.getValue(DISTANCE);
+        if (value == 1) return true;
         for (Direction direction : ModUtils.HORIZONTAL) {
             BlockState stateAtSide = level.getBlockState(pos.relative(direction));
             int distanceAt = getDistanceAt(stateAtSide, direction);
-            if (distanceAt < value || stateAtSide.is(supporting)) {
+            if (distanceAt < value || stateAtSide.is(attachable)) {
                 return true;
             }
         }

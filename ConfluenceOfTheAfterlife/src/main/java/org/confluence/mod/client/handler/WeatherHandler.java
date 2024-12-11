@@ -81,7 +81,7 @@ public final class WeatherHandler {
 
         BlockPos relative = blockPos.above();
         BlockState aboveState = level.getBlockState(relative);
-        if (!aboveState.isAir() && aboveState.isSuffocating(level, relative)) return;
+        if (!aboveState.isAir() && aboveState.getFluidState().isEmpty() && aboveState.isSuffocating(level, relative)) return;
 
         Vec3 vec3 = Vec3.atCenterOf(blockPos);
         double x = vec3.x + Mth.nextDouble(random, -0.5, 0.5);

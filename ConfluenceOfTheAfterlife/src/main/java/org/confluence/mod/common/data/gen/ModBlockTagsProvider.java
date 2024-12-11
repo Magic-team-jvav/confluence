@@ -13,7 +13,6 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -31,6 +30,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
         LogBlockSet.acceptTags(this);
+        tag(ModTags.Blocks.JEWELLERY_BRANCHES_ATTACHABLE).add(NatureBlocks.STONY_LOG.get());
+        tag(ModTags.Blocks.ASH_LOG_BRANCHES_ATTACHABLE).add(NatureBlocks.ASH_LOG_BLOCKS.getLog().get());
         tag(BlockTags.ANVIL).add(
                 FunctionalBlocks.LEAD_ANVIL.get(),
                 FunctionalBlocks.CHIPPED_LEAD_ANVIL.get(),
@@ -268,18 +269,18 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
         tag(ModTags.Blocks.MINEABLE_WITH_PICKAXE_AXE).addTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.MINEABLE_WITH_AXE);
         tag(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE).add(
-            NatureBlocks.MUSHROOM_GRASS_BLOCK.get(),
-            NatureBlocks.HALLOW_GRASS_BLOCK.get(),
-            NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(),
-            NatureBlocks.CORRUPT_GRASS_BLOCK.get(),
-            Blocks.MUD,
-            Blocks.DIRT,
-            Blocks.GRASS_BLOCK,
-            Blocks.DIRT_PATH,
-            Blocks.COARSE_DIRT,
-            Blocks.PODZOL,
-            Blocks.ROOTED_DIRT,
-            Blocks.MUDDY_MANGROVE_ROOTS
+                NatureBlocks.MUSHROOM_GRASS_BLOCK.get(),
+                NatureBlocks.HALLOW_GRASS_BLOCK.get(),
+                NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(),
+                NatureBlocks.CORRUPT_GRASS_BLOCK.get(),
+                Blocks.MUD,
+                Blocks.DIRT,
+                Blocks.GRASS_BLOCK,
+                Blocks.DIRT_PATH,
+                Blocks.COARSE_DIRT,
+                Blocks.PODZOL,
+                Blocks.ROOTED_DIRT,
+                Blocks.MUDDY_MANGROVE_ROOTS
         );
         tag(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE).addTag(BlockTags.LEAVES);
         tag(ModTags.Blocks.COIN_PILE).add(COPPER_COIN_PILE.get(), SILVER_COIN_PILE.get(), GOLDEN_COIN_PILE.get(), PLATINUM_COIN_PILE.get(), EMERALD_COIN_PILE.get());

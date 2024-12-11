@@ -4,99 +4,122 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class BranchesBlock extends PipeBlock {
-    public static final MapCodec<BranchesBlock> CODEC = RecordCodecBuilder.mapCodec(
-        builder -> builder.group(BuiltInRegistries.BLOCK.byNameCodec().fieldOf("ground").forGetter(branchesBlock -> branchesBlock.ground)).
-            apply(builder, BranchesBlock::new)
-    );
-    private final Block ground;
+    public static final MapCodec<BranchesBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            TagKey.codec(Registries.BLOCK).fieldOf("attachable").forGetter(block -> block.attachable),
+            TagKey.codec(Registries.BLOCK).fieldOf("supporting").forGetter(block -> block.supporting)
+    ).apply(instance, BranchesBlock::new));
+    public static final int DECAY_DISTANCE = 12;
+    public static final IntegerProperty DISTANCE = IntegerProperty.create("distance", 1, DECAY_DISTANCE);
 
-    public BranchesBlock(Block GroundBlocks) {
+    private final TagKey<Block> attachable;
+    private final TagKey<Block> supporting;
+
+    public BranchesBlock(TagKey<Block> attachable, TagKey<Block> supporting) {
         super(0.3125f, Properties.of().instabreak().sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).randomTicks());
-        this.registerDefaultState(this.stateDefinition.any()
-            .setValue(NORTH, false)
-            .setValue(EAST, false)
-            .setValue(SOUTH, false)
-            .setValue(WEST, false)
-            .setValue(UP, false)
-            .setValue(DOWN, false));
-        this.ground = GroundBlocks;
+        registerDefaultState(stateDefinition.any()
+                .setValue(DISTANCE, DECAY_DISTANCE)
+                .setValue(NORTH, false)
+                .setValue(EAST, false)
+                .setValue(SOUTH, false)
+                .setValue(WEST, false)
+                .setValue(UP, false)
+                .setValue(DOWN, false));
+        this.attachable = attachable;
+        this.supporting = supporting;
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
+        Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
-        BlockGetter level = context.getLevel();
-        Direction placedOn = context.getClickedFace().getOpposite();
-        BlockState state = this.defaultBlockState().setValue(PROPERTY_BY_DIRECTION.get(placedOn), true);
-        for (Direction direction : Direction.values()) {
-            BlockPos adjacentPos = pos.relative(direction);
-            BlockState adjacentState = level.getBlockState(adjacentPos);
-            if (adjacentState.is(this)) {
-                boolean adjacentDown = adjacentState.getValue(DOWN);
-                if (direction == Direction.UP || direction == Direction.DOWN || !state.getValue(DOWN) || !adjacentDown) {
-                    state = state.setValue(PROPERTY_BY_DIRECTION.get(direction), true);
-                }
-            } else if (adjacentState.is(ground) && (direction == Direction.UP || direction == Direction.DOWN)) {
-                state = state.setValue(PROPERTY_BY_DIRECTION.get(direction), true);
-            }
-        }
-        return state;
+        BlockState state = defaultBlockState();
+        BlockState blockstate = level.getBlockState(pos.below());
+        BlockState blockstate1 = level.getBlockState(pos.above());
+        BlockState blockstate2 = level.getBlockState(pos.north());
+        BlockState blockstate3 = level.getBlockState(pos.east());
+        BlockState blockstate4 = level.getBlockState(pos.south());
+        BlockState blockstate5 = level.getBlockState(pos.west());
+        return updateDistance(state.trySetValue(DOWN, blockstate.is(this) || blockstate.is(attachable) || blockstate.is(supporting))
+                .trySetValue(UP, blockstate1.is(this) || blockstate1.is(attachable))
+                .trySetValue(NORTH, blockstate2.is(this) || blockstate2.is(attachable))
+                .trySetValue(EAST, blockstate3.is(this) || blockstate3.is(attachable))
+                .trySetValue(SOUTH, blockstate4.is(this) || blockstate4.is(attachable))
+                .trySetValue(WEST, blockstate5.is(this) || blockstate5.is(attachable)), level, pos);
     }
 
-    @Override
-    public BlockState updateShape(BlockState state, @NotNull Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor level, @NotNull BlockPos currentPos, @NotNull BlockPos facingPos) {
-        if (!state.canSurvive(level, currentPos)) {
-            level.scheduleTick(currentPos, this, 1);
-            return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+    private BlockState updateDistance(BlockState state, LevelAccessor level, BlockPos pos) {
+        int i = DECAY_DISTANCE;
+        int value = state.getValue(DISTANCE);
+        for (Direction direction : ModUtils.DIRECTIONS) {
+            if (direction == Direction.UP) continue;
+            int distanceAt = getDistanceAt(level.getBlockState(pos.relative(direction)));
+            if (distanceAt < value) {
+                i = Math.min(i, distanceAt + 1);
+                if (i == 1) break;
+            }
+        }
+        return state.setValue(DISTANCE, i);
+    }
+
+    private int getDistanceAt(BlockState neighbor) {
+        if (neighbor.is(attachable) || neighbor.is(supporting)) {
+            return 0;
         } else {
-            boolean isConnected = facingState.is(this) || facingState.is(ground);
-            if (facing == Direction.UP || facing == Direction.DOWN || !state.getValue(DOWN) || (facingState.is(this) && !facingState.getValue(DOWN))) {
-                state = state.setValue(PROPERTY_BY_DIRECTION.get(facing), isConnected);
-            } else {
-                state = state.setValue(PROPERTY_BY_DIRECTION.get(facing), false);
-            }
-            return state;
+            return neighbor.hasProperty(DISTANCE) ? neighbor.getValue(DISTANCE) : DECAY_DISTANCE;
         }
     }
 
     @Override
-    public void tick(BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
-        if (!state.canSurvive(level, pos)) {
+    protected @NotNull BlockState updateShape(@NotNull BlockState state, @NotNull Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor level, @NotNull BlockPos currentPos, @NotNull BlockPos facingPos) {
+        BlockState newState = updateDistance(state, level, currentPos);
+        if (!newState.canSurvive(level, currentPos)) {
+            level.scheduleTick(currentPos, this, 1);
+            return super.updateShape(newState, facing, facingState, level, currentPos, facingPos);
+        } else {
+            boolean flag = facingState.is(this) || facingState.is(attachable) || facing == Direction.DOWN && facingState.is(supporting);
+            return newState.setValue(PROPERTY_BY_DIRECTION.get(facing), flag);
+        }
+    }
+
+    @Override
+    protected void tick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+        if (state.getValue(DISTANCE) == DECAY_DISTANCE && !state.canSurvive(level, pos)) {
             level.destroyBlock(pos, true);
-            dropResources(state, level, pos);
         }
     }
 
     @Override
-    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
-        BlockState stateBelow = pLevel.getBlockState(pPos.below());
-        if (stateBelow.is(this) || stateBelow.is(ground)) {
+    protected boolean canSurvive(@NotNull BlockState state, LevelReader level, BlockPos pos) {
+        BlockState stateBelow = level.getBlockState(pos.below());
+        if (stateBelow.is(this) || stateBelow.is(supporting)) {
             return true;
         }
-        for (Direction direction : Direction.Plane.HORIZONTAL) {
-            BlockPos posAtSide = pPos.relative(direction);
-            BlockState stateAtSide = pLevel.getBlockState(posAtSide);
-            if (stateAtSide.is(this) || stateAtSide.is(ground)) {
+        int value = state.getValue(DISTANCE);
+        for (Direction direction : ModUtils.HORIZONTAL) {
+            BlockPos posAtSide = pos.relative(direction);
+            BlockState stateAtSide = level.getBlockState(posAtSide);
+            int distanceAt = getDistanceAt(stateAtSide);
+            if (distanceAt < value || stateAtSide.is(supporting)) {
                 return true;
             }
         }
@@ -105,11 +128,16 @@ public class BranchesBlock extends PipeBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN);
+        builder.add(DISTANCE, NORTH, EAST, SOUTH, WEST, UP, DOWN);
     }
 
     @Override
-    protected MapCodec<BranchesBlock> codec() {
+    protected boolean isPathfindable(@NotNull BlockState state, @NotNull PathComputationType pathComputationType) {
+        return false;
+    }
+
+    @Override
+    protected @NotNull MapCodec<BranchesBlock> codec() {
         return CODEC;
     }
 }

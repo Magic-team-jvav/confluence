@@ -36,7 +36,7 @@ public class PalmLeaves extends LeavesBlock {
     public PalmLeaves(Properties properties) {
         super(properties);
         registerDefaultState(stateDefinition.any()
-                .setValue(DISTANCE, 7)
+                .setValue(DISTANCE, DECAY_DISTANCE)
                 .setValue(PERSISTENT, false)
                 .setValue(WATERLOGGED, false)
                 .setValue(TYPE, SlabType.BOTTOM));

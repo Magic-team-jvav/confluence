@@ -16,6 +16,11 @@
         },
         {
           "type": "minecraft:item",
+          "name": "confluence:ice_boomerang",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
           "name": "terra_curio:flurry_boots",
           "weight": 1
         },

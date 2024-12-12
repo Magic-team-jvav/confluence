@@ -1057,7 +1057,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.BLOOD_BUTCHERER.get(), "血腥屠刀");
         add(SwordItems.KATANA.get(), "武士刀");
         add(SwordItems.TENTACLE_MACE.get(), "触手钉锤");
-        add(SwordItems.ICE_BLADE.get(), "冰雪剑");
+        add(SwordItems.ICE_BLADE.get(), "冰雪刃");
         add(SwordItems.EXOTIC_SCIMITAR.get(), "异域弯刀");
         add(SwordItems.FAKE_SWORD.get(), "假剑");
         add(SwordItems.VOLCANO.get(), "火山");

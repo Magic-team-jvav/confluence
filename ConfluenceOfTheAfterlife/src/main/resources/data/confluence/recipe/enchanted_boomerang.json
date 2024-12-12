@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "confluence:falling_star"
+        },
+        {
+            "item": "confluence:wood_boomerang"
+        }
+    ],
+    "result": {
+        "id": "confluence:enchanted_boomerang",
+        "count": 1
+    }
+}

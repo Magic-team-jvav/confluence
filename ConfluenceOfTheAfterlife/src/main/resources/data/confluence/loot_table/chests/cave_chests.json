@@ -127,7 +127,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:arrow",
+          "name": "confluence:flaming_arrow",
           "functions": [
             {
               "function": "set_count",
@@ -167,12 +167,38 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:suspicious_looking_eye",
+          "name": "confluence:jesters_arrow",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 20,
+                "max": 35
+              }
+            }
+          ],
           "weight": 1
         },
         {
           "type": "minecraft:empty",
           "weight": 4
+        }
+      ],
+      "rolls": 1
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:suspicious_looking_eye",
+          "weight": 1
+        },
+
+        {
+          "type": "minecraft:empty",
+          "weight": 3
         }
       ],
       "rolls": 1

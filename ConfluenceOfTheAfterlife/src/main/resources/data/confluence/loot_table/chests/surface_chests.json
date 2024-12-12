@@ -26,6 +26,11 @@
         },
         {
           "type": "minecraft:item",
+          "name": "confluence:wood_boomerang",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
           "name": "terra_curio:aglet",
           "weight": 1
         },
@@ -36,7 +41,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:wond_of_sparking",
+          "name": "confluence:wood_boomerang",
           "weight": 1
         },
         {

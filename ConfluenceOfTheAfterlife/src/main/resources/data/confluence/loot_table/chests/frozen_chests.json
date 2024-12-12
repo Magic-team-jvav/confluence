@@ -1,0 +1,59 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:ice_boomerang",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:ice_blade",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "name": "terra_curio:ice_skates",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "name": "terra_curio:blizzard_in_a_bottle",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "name": "terra_curio:flurry_boots",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:extractinator",
+          "weight": 5
+        }
+      ],
+      "rolls": 20
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:ice_mirror",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 4
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "confluence:chests/frozen_chests",
+  "values": [
+  ]
+}

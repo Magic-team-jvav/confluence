@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "confluence:enchanted_boomerang"
+        },
+        {
+            "item": "confluence:shroomerang"
+        },
+        {
+            "item": "confluence:ice_boomerang"
+        }
+    ],
+    "result": {
+        "id": "confluence:trimarang",
+        "count": 1
+    }
+}

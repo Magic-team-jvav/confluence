@@ -58,6 +58,7 @@ public final class ModItems {
         HammerItems.ITEMS.register(eventBus);
         HookItems.ITEMS.register(eventBus);
         IconItems.ITEMS.register(eventBus);
+        ManaStaffItems.ITEMS.register(eventBus);
         MaterialItems.ITEMS.register(eventBus);
         MinecartItems.ITEMS.register(eventBus);
         PickaxeAxeItems.ITEMS.register(eventBus);

@@ -80,6 +80,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheld.add(createDir(HammerItems.ITEMS, "hammer/"));
         handheld.add(createDir(BoomerangItems.ITEMS, "boomerang/"));
         handheld.add(createDir(PickaxeItems.ITEMS, "pickaxe/"));
+        handheld.add(createDir(ManaStaffItems.ITEMS, "mana_staff/"));
 
         genModels(handheld, "item/handheld", true);
 

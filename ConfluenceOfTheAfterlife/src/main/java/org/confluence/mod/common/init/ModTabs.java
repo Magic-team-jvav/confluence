@@ -99,7 +99,7 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.MAGIC_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.mages"))
                     .displayItems((parameters, output) -> {
-
+                        ManaStaffItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                     }).build());
     // 召唤武器
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SUMMONERS = TABS.register("summoners",

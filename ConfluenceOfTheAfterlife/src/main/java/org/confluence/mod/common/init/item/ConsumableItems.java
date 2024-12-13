@@ -5,11 +5,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.bombs.*;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.item.common.BombItem;
-import org.confluence.mod.common.item.common.BossSummingItem;
-import org.confluence.mod.common.item.common.EverBeneficialItem;
-import org.confluence.mod.common.item.common.RightClickLootItem;
+import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.mana.ArcaneCrystalItem;
 import org.confluence.mod.common.item.mana.ManaStarItem;
 import org.confluence.terra_curio.common.component.ModRarity;
@@ -37,6 +33,9 @@ public class ConsumableItems {
     public static final Supplier<BombItem> STICKY_BOMB = ITEMS.register("sticky_bomb", () -> new BombItem(StickyBombEntity::new));
     public static final Supplier<BombItem> BOMB_FISH = ITEMS.register("bomb_fish", () -> new BombItem(BombFishEntity::new));
     public static final Supplier<BombItem> SCARAB_BOMB = ITEMS.register("scarab_bomb", () -> new BombItem(ScarabBombEntity::new));
+
+    public static final Supplier<ShurikenItem> SHURIKEN = ITEMS.register("shuriken", ShurikenItem::new);
+    public static final Supplier<ThrowingKnivesItem> THROWING_KNIVES = ITEMS.register("throwing_knives", ThrowingKnivesItem::new);
 
     public static final Supplier<RightClickLootItem> CLAM = ITEMS.register("clam", () -> new RightClickLootItem(ModRarity.BLUE, ModLootTables.CLAM));
     public static final Supplier<RightClickLootItem> HERB_BAG = ITEMS.register("herb_bag", () -> new RightClickLootItem(ModRarity.BLUE, ModLootTables.HERB_BAG));

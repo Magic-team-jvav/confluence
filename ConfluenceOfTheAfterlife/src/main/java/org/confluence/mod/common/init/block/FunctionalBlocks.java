@@ -31,7 +31,7 @@ import static org.confluence.mod.common.init.block.ModBlocks.BLOCK_ENTITIES;
 public class FunctionalBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
     public static final DeferredRegister.Blocks HIDDEN = DeferredRegister.createBlocks(Confluence.MODID);
-    public static List<Supplier<? extends Block>> MECHANICAL_BLOCKS = new ArrayList<>();
+    private static List<Supplier<? extends Block>> MECHANICAL_BLOCKS = new ArrayList<>();
 
     public static final Supplier<Block> ANDESITE_CASING = registerWithItemButHidden("andesite_casing", () -> new Block(BlockBehaviour.Properties.of()));
 
@@ -80,7 +80,11 @@ public class FunctionalBlocks {
     public static final Supplier<DetonatorBlock> DETONATOR = registerWithEntity("detonator", () -> new DetonatorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_TRAPDOOR)));
     public static final Supplier<MechanicalFragileBlock> MECHANICAL_FRAGILE_SANDSTONE = registerWithEntity("mechanical_fragile_sandstone", () -> new MechanicalFragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE), Blocks.SANDSTONE::defaultBlockState));
 
-    public static final Supplier<BlockEntityType<AbstractMechanicalBlock.Entity>> MECHANICAL_BLOCK_ENTITY = BLOCK_ENTITIES.register("mechanical_block_entity", () -> BlockEntityType.Builder.of(AbstractMechanicalBlock.Entity::new, MECHANICAL_BLOCKS.stream().map(Supplier::get).toArray(Block[]::new)).build(null));
+    public static final Supplier<BlockEntityType<AbstractMechanicalBlock.Entity>> MECHANICAL_BLOCK_ENTITY = BLOCK_ENTITIES.register("mechanical_block_entity", () -> {
+        Block[] validBlocks = MECHANICAL_BLOCKS.stream().map(Supplier::get).toArray(Block[]::new);
+        MECHANICAL_BLOCKS = null;
+        return BlockEntityType.Builder.of(AbstractMechanicalBlock.Entity::new, validBlocks).build(null);
+    });
 
     private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> block) {
         DeferredBlock<B> object = BLOCKS.register(id, block);

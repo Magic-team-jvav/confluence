@@ -13,7 +13,7 @@ public class ManaStaffItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
     public static final Supplier<ManaStaffItem> WAND_OF_SPARKING = ITEMS.register("wand_of_sparking", () -> new ManaStaffItem(ModRarity.BLUE, BaseManaStaffProjectileEntity.Spark::new, 2, 7.0F, 26)),
-            WAND_OF_FROSTING = ITEMS.register("wand_of_frosting", () -> new ManaStaffItem(ModRarity.BLUE, (player, level) -> new BaseManaStaffProjectileEntity(player, level, Variant.FROST), 2, 7.0F, 26)),
+            WAND_OF_FROSTING = ITEMS.register("wand_of_frosting", () -> new ManaStaffItem(ModRarity.BLUE, BaseManaStaffProjectileEntity.Frost::new, 2, 7.0F, 26)),
             RUBY_STAFF = ITEMS.register("ruby_staff", () -> new ManaStaffItem(ModRarity.BLUE, (player, level) -> new BaseManaStaffProjectileEntity(player, level, Variant.RUBY), 7, 9.0F, 28)),
             AMBER_STAFF = ITEMS.register("amber_staff", () -> new ManaStaffItem(ModRarity.BLUE, (player, level) -> new BaseManaStaffProjectileEntity(player, level, Variant.AMBER), 7, 9.0F, 28)),
             TOPAZ_STAFF = ITEMS.register("topaz_staff", () -> new ManaStaffItem(ModRarity.BLUE, (player, level) -> new BaseManaStaffProjectileEntity(player, level, Variant.TOPAZ), 5, 6.5F, 36)),

@@ -9,12 +9,8 @@ import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.common.item.common.MushroomItem;
 import org.confluence.terra_curio.common.component.ModRarity;
 
-public class MaterialItems{
+public class MaterialItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
-
-    // todo 投刀，手里剑占位符
-    public static final DeferredItem<Item> THROWING_KNIVES = register("throwing_knives");
-    public static final DeferredItem<Item> SHURIKEN = register("shuriken");
 
 
     public static final DeferredItem<Item> GEL = register("gel", ModRarity.WHITE);
@@ -113,9 +109,10 @@ public class MaterialItems{
         return ITEMS.register(id, () -> new Item(new Item.Properties()));
 
     }
+
     public static DeferredItem<Item> register(String id, ModRarity rarity) {
         return ITEMS.register(id, () -> new CustomRarityItem(rarity));
     }
 
-    public static void init(){}
+    public static void init() {}
 }

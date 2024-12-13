@@ -26,7 +26,6 @@ import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.fluid.FluidBuilder;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModFluids;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
@@ -60,7 +59,6 @@ public final class ModEvents {
     @SubscribeEvent
     public static void loadComplete(FMLLoadCompleteEvent event) {
         event.enqueueWork(() -> {
-            FunctionalBlocks.MECHANICAL_BLOCKS = null; // 销毁
             LogBlockSet.wrapStrip();
             ISpreadable.Type.buildMap();
             CauldronInteraction.INTERACTIONS.values().forEach(map -> {

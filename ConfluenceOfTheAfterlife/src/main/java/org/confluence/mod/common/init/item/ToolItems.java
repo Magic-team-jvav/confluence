@@ -32,4 +32,6 @@ public class ToolItems {
 
     public static final Supplier<EncumberingStoneItem> ENCUMBERING_STONE = ITEMS.register("encumbering_stone", EncumberingStoneItem::new);
     public static final Supplier<MagicMirror> ICE_MIRROR = ITEMS.register("ice_mirror", () -> new MagicMirror(ModRarity.BLUE));
+    public static final Supplier<MagicConch> MAGIC_CONCH = ITEMS.register("magic_conch", () -> new MagicConch(new Item.Properties().stacksTo(1), ModRarity.BLUE));
+    public static final Supplier<DemonConch> DEMON_CONCH = ITEMS.register("demon_ocnch", DemonConch::new);
 }

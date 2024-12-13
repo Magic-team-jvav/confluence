@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.PathComputationType;
@@ -52,19 +53,20 @@ public class BranchesBlock extends PipeBlock {
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
-        BlockState state = defaultBlockState();
-        BlockState blockstate = level.getBlockState(pos.below());
-        BlockState blockstate1 = level.getBlockState(pos.above());
-        BlockState blockstate2 = level.getBlockState(pos.north());
-        BlockState blockstate3 = level.getBlockState(pos.east());
-        BlockState blockstate4 = level.getBlockState(pos.south());
-        BlockState blockstate5 = level.getBlockState(pos.west());
-        return updateDistance(state.trySetValue(DOWN, blockstate.is(this) || blockstate.is(attachable) || blockstate.is(supporting))
-                .trySetValue(UP, blockstate1.is(this) || blockstate1.is(attachable))
-                .trySetValue(NORTH, blockstate2.is(this) || blockstate2.is(attachable))
-                .trySetValue(EAST, blockstate3.is(this) || blockstate3.is(attachable))
-                .trySetValue(SOUTH, blockstate4.is(this) || blockstate4.is(attachable))
-                .trySetValue(WEST, blockstate5.is(this) || blockstate5.is(attachable)), level, pos);
+        BlockState dest = defaultBlockState();
+        BlockState belowState = level.getBlockState(pos.below());
+        boolean belowIsThis = belowState.is(this);
+        for (Direction direction : ModUtils.DIRECTIONS) {
+            BlockPos relative = pos.relative(direction);
+            BlockState relativeState = level.getBlockState(relative);
+            boolean shouldConnect = relativeState.is(this) || relativeState.is(attachable) || (direction == Direction.DOWN && relativeState.is(supporting));
+            BlockState relativeBelowState = level.getBlockState(relative.below());
+            shouldConnect &= !relativeBelowState.is(this) || !relativeBelowState.getValue(PROPERTY_BY_DIRECTION.get(direction.getOpposite()));
+            BooleanProperty dirProp = PROPERTY_BY_DIRECTION.get(direction);
+            if (belowIsThis) shouldConnect &= belowState.getValue(dirProp);
+            dest = dest.trySetValue(dirProp, shouldConnect);
+        }
+        return updateDistance(dest, level, pos);
     }
 
     private BlockState updateDistance(BlockState state, LevelAccessor level, BlockPos pos) {
@@ -95,10 +97,11 @@ public class BranchesBlock extends PipeBlock {
         if (!newState.canSurvive(level, currentPos)) {
             level.scheduleTick(currentPos, this, 1);
             return super.updateShape(newState, facing, facingState, level, currentPos, facingPos);
-        } else {
+        } else if (facing.getAxis().isVertical() || !level.getBlockState(facingPos.below()).is(this)) {
             boolean flag = facingState.is(this) || facingState.is(attachable) || (facing == Direction.DOWN && facingState.is(supporting));
             return newState.setValue(PROPERTY_BY_DIRECTION.get(facing), flag);
         }
+        return newState;
     }
 
     @Override

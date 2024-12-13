@@ -15,6 +15,7 @@
         "accessor.FishingHookAccessor",
         "accessor.LanguageProviderAccessor",
         "accessor.LootParamsAccessor",
+        "accessor.MultiNoiseBiomeSourceAccessor",
         "block.AnvilBlockMixin",
         "block.BaseContainerBlockEntityMixin",
         "block.BlockBehaviour$BlockStateBaseMixin",

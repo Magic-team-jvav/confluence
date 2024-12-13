@@ -24,6 +24,7 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.fluid.FluidBuilder;
+import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -52,6 +53,7 @@ public final class ModEvents {
             ModFluids.registerInteraction();
             ModFluids.registerShimmerTransform();
             ModAchievements.initialize();
+            ModBiomes.registerRegionAndSurface();
         });
     }
 

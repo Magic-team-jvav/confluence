@@ -1383,17 +1383,17 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.HALLOW_DROOPING_VINE.get(), "神圣垂藤");
 
         // 法杖
+
+        add(ManaStaffItems.RUBY_STAFF.get(), "红玉法杖");
+        add(ManaStaffItems.AMBER_STAFF.get(), "琥珀法杖");
+        add(ManaStaffItems.TOPAZ_STAFF.get(), "黄玉法杖");
+        add(ManaStaffItems.EMERALD_STAFF.get(), "翡翠法杖");
+        add(ManaStaffItems.SAPPHIRE_STAFF.get(), "蓝玉法杖");
+        add(ManaStaffItems.DIAMOND_STAFF.get(), "钻石法杖");
+        add(ManaStaffItems.AMETHYST_STAFF.get(), "紫晶法杖");
+        add(ManaStaffItems.WAND_OF_SPARKING.get(), "火花魔棒");
+        add(ManaStaffItems.WAND_OF_FROSTING.get(), "霜冻魔棒");
         /*
-        add(ManaWeapons.RUBY_STAFF.get(), "红玉法杖");
-        add(ManaWeapons.AMBER_STAFF.get(), "琥珀法杖");
-        add(ManaWeapons.TOPAZ_STAFF.get(), "黄玉法杖");
-        add(ManaWeapons.EMERALD_STAFF.get(), "翡翠法杖");
-        add(ManaWeapons.SAPPHIRE_STAFF.get(), "蓝玉法杖");
-        add(ManaWeapons.DIAMOND_STAFF.get(), "钻石法杖");
-        add(ManaWeapons.AMETHYST_STAFF.get(), "紫晶法杖");
-        add(ManaWeapons.AQUA_SCEPTER.get(), "海蓝权杖");
-        add(ManaWeapons.WOND_OF_SPARKING.get(), "火花魔棒");
-        add(ManaWeapons.WOND_OF_FROSTING.get(), "霜冻魔棒");
         add(ManaWeapons.THUNDER_ZAPPER.get(), "雷霆法杖");
         add(ManaWeapons.VILETHORN.get(), "魔刺");
         add(ManaWeapons.WEATHER_PAIN.get(), "天候棒");

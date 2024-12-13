@@ -55,7 +55,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:floating_wheat",
+          "name": "confluence:floating_wheat_heads",
           "functions": [
             {
               "function": "set_count",

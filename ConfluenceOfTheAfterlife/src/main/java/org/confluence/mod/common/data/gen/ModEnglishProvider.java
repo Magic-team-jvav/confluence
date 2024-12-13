@@ -68,6 +68,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("info.confluence.respawn_time", "Respawn Time: ");
         add("info.confluence.second", "s");
 
+        add("selectoins.confluence.position", "Respond to the call of the sea");
+
         add("key.confluence.hook", "Throwing Hook");
 
         add("curios.identifier.hook", "Hook");

@@ -55,6 +55,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("death.attack.boulder", "%1$s 被巨石均匀地涂抹在地上");
         add("death.attack.thron", "%1$s 发现自己成了刺猬");
 
+        add("selectoins.confluence.position", "回应海的召唤");
+
 
         add("tooltip.item.confluence.adhesive_bandage.0", "对流血免疫");
         add("tooltip.item.confluence.medicated_bandage.0", "对中毒和流血免疫");
@@ -996,6 +998,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.TR_AMETHYST.get(), "异域紫晶石");
         add(MaterialItems.FALLING_STAR.get(), "坠落之星");
         add(MaterialItems.STAR_PETALS.get(), "星辰花瓣");
+        add(MaterialItems.FLOATING_WHEAT_HEADS.get(), "飘飘麦");
         add(MaterialItems.WEAVING_CLOUD_COTTON.get(), "织云棉");
         add(MaterialItems.CARRION.get(), "腐肉");
         add(MaterialItems.VERTEBRA.get(), "椎骨");
@@ -1121,8 +1124,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.SILVER_COIN.get(), "银币");
         add(ModItems.GOLDEN_COIN.get(), "金币");
         add(ModItems.PLATINUM_COIN.get(), "铂金币");
-//        add(ModItems.SHURIKEN.get(), "手里剑");
-//        add(ModItems.THROWING_KNIVES.get(), "投刀");
+        add(ConsumableItems.SHURIKEN.get(), "手里剑");
+        add(ConsumableItems.THROWING_KNIVES.get(), "投刀");
+        add(ToolItems.MAGIC_CONCH.get(), "魔法海螺");
+        add(ToolItems.DEMON_CONCH.get(), "恶魔海螺");
         add(ToolItems.HONEY_BUCKET.get(), "蜂蜜桶");
         add(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get(), "无底微光桶");
         add(ToolItems.BOTTOMLESS_WATER_BUCKET.get(), "无底水桶");
@@ -1330,7 +1335,6 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(NatureBlocks.STELLAR_BLOSSOM.get(), "星辰花");
         add(NatureBlocks.CLOUDWEAVER.get(), "云织草");
-        add(NatureBlocks.FLOATING_WHEAT.get(), "飘飘麦");
         add(FoodItems.WATERLEAF_SEED.get(), "幌菊种子");
         add(FoodItems.FLAMEFLOWERS_SEED.get(), "火焰花种子");
         add(FoodItems.MOONSHINE_GRASS_SEED.get(), "月光草种子");

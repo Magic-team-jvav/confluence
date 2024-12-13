@@ -37,7 +37,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("item.confluence.meteorite_ingot.tooltip", "摸起来是温的");
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
-        add("generator.confluence.corruption", "腐化之地");
+        add("generator.confluence.the_corruption", "腐化之地");
         add("generator.confluence.tr_crimson", "猩红之地");
 
         add("info.confluence.bait", "鱼饵力: %s%%");

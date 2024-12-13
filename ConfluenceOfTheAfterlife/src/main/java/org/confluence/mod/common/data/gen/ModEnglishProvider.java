@@ -338,7 +338,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("container.confluence.workshop", "Workshop");
         add("title.confluence.workshop", "Workshop");
 
-        add("generator.confluence.corruption", "The Corruption");
+        add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
+        add("generator.confluence.the_corruption", "The Corruption");
         add("generator.confluence.tr_crimson", "The Crimson");
 
         add("title.confluence.wiki", "Confluence Wiki");

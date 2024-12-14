@@ -92,10 +92,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DecorativeBlocks.TR_GRANITE_COLUMN.get(),
                 DecorativeBlocks.MARBLE_COLUMN.get(),
                 DecorativeBlocks.CHISELED_TR_OBSIDIAN_BRICKS.get(),
-                DecorativeBlocks.CRYSTAL_BLOCK.get(),
-                DecorativeBlocks.BLUE_BRICK.get(),
-                DecorativeBlocks.GREEN_BRICK.get(),
-                DecorativeBlocks.PINK_BRICK.get(),
+                DecorativeBlocks.CRYSTAL_BLOCKS.get(),
+                DecorativeBlocks.BLUE_BRICKS.get(),
+                DecorativeBlocks.GREEN_BRICKS.get(),
+                DecorativeBlocks.PINK_BRICKS.get(),
                 DecorativeBlocks.RUBY_CHAIN.get(),
                 DecorativeBlocks.AMBER_CHAIN.get(),
                 DecorativeBlocks.TOPAZ_CHAIN.get(),
@@ -193,10 +193,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DecorativeBlocks.TR_GRANITE_COLUMN.get(),
                 DecorativeBlocks.MARBLE_COLUMN.get(),
                 DecorativeBlocks.CHISELED_TR_OBSIDIAN_BRICKS.get(),
-                DecorativeBlocks.CRYSTAL_BLOCK.get(),
-                DecorativeBlocks.BLUE_BRICK.get(),
-                DecorativeBlocks.GREEN_BRICK.get(),
-                DecorativeBlocks.PINK_BRICK.get(),
+                DecorativeBlocks.CRYSTAL_BLOCKS.get(),
+                DecorativeBlocks.BLUE_BRICKS.get(),
+                DecorativeBlocks.GREEN_BRICKS.get(),
+                DecorativeBlocks.PINK_BRICKS.get(),
                 DecorativeBlocks.RUBY_CHAIN.get(),
                 DecorativeBlocks.AMBER_CHAIN.get(),
                 DecorativeBlocks.TOPAZ_CHAIN.get(),
@@ -253,9 +253,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.TR_CRIMSON_SANDSTONE.get(),
                 NatureBlocks.PEARL_STONE.get(),
                 NatureBlocks.PEARL_SANDSTONE.get(),
-                DecorativeBlocks.BLUE_BRICK.get(),
-                DecorativeBlocks.PINK_BRICK.get(),
-                DecorativeBlocks.GREEN_BRICK.get()
+                DecorativeBlocks.BLUE_BRICKS.get(),
+                DecorativeBlocks.PINK_BRICKS.get(),
+                DecorativeBlocks.GREEN_BRICKS.get()
         );
         tag(ModTags.Blocks.NEEDS_1_LEVEL).addTags(ModTags.Blocks.NEEDS_2_LEVEL, ModTags.Blocks.NEEDS_3_LEVEL, ModTags.Blocks.NEEDS_4_LEVEL, ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
         tag(ModTags.Blocks.NEEDS_2_LEVEL).addTags(ModTags.Blocks.NEEDS_3_LEVEL, ModTags.Blocks.NEEDS_4_LEVEL, ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);

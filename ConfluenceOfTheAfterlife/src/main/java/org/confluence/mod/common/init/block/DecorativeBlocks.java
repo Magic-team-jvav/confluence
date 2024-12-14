@@ -25,7 +25,8 @@ public class DecorativeBlocks {
     public static final Supplier<Block> TR_NORTHLAND_BEAM = copyBlockRegister("tr_northland_beam", Blocks.OAK_PLANKS);
     public static final Supplier<Block> TR_NORTHLAND_PLANKS = copyBlockRegister("tr_northland_planks", Blocks.OAK_PLANKS);
     public static final Supplier<Block> WOOD_STONE_SLATTED_BLOCKS = copyBlockRegister("wood_stone_slatted_blocks", Blocks.OAK_PLANKS);
-    public static final Supplier<Block> ICE_BRICKS = copyBlockRegister("ice_bricks", Blocks.BLUE_ICE);
+    public static final Supplier<Block> BLUE_ICE_BRICKS = copyBlockRegister("blue_ice_bricks", Blocks.BLUE_ICE);
+    public static final Supplier<Block> PACKED_ICE_BRICKS = copyBlockRegister("packed_ice_bricks", Blocks.PACKED_ICE);
     public static final Supplier<Block> SNOW_BRICKS = copyBlockRegister("snow_bricks", Blocks.STONE_BRICKS);
     public static final Supplier<Block> TR_STONE_BRICKS = copyBlockRegister("tr_stone_bricks", Blocks.STONE_BRICKS);
 
@@ -94,12 +95,15 @@ public class DecorativeBlocks {
 
 
     public static final Supplier<Block> CHISELED_TR_OBSIDIAN_BRICKS = copyBlockRegister("chiseled_tr_obsidian_bricks", Blocks.STONE_BRICKS);
-    public static final Supplier<Block> BLUE_BRICK = copyBlockRegister("blue_brick", Blocks.STONE_BRICKS);
-    public static final Supplier<Block> GREEN_BRICK = copyBlockRegister("green_brick", Blocks.STONE_BRICKS);
-    public static final Supplier<Block> PINK_BRICK = copyBlockRegister("pink_brick", Blocks.STONE_BRICKS);
-    public static final Supplier<Block> AETHERIUM_BRICK = copyBlockRegister("aetherium_brick", Blocks.STONE_BRICKS);
-    public static final Supplier<Block> CRYSTAL_BLOCK = copyBlockRegister("crystal_block", Blocks.AMETHYST_BLOCK);
-    public static final Supplier<Block> RAINBOW_BRICK = copyBlockRegister("rainbow_brick", Blocks.STONE_BRICKS);
+    public static final Supplier<Block> BLUE_BRICKS = copyBlockRegister("blue_bricks", Blocks.STONE_BRICKS);
+    public static final Supplier<Block> GREEN_BRICKS = copyBlockRegister("green_bricks", Blocks.STONE_BRICKS);
+    public static final Supplier<Block> PINK_BRICKS = copyBlockRegister("pink_bricks", Blocks.STONE_BRICKS);
+    public static final Supplier<Block> CHISELED_BLUE_BRICKS = copyBlockRegister("chiseled_blue_bricks", Blocks.STONE_BRICKS);
+    public static final Supplier<Block> CHISELED_GREEN_BRICKS = copyBlockRegister("chiseled_green_bricks", Blocks.STONE_BRICKS);
+    public static final Supplier<Block> CHISELED_PINK_BRICKS = copyBlockRegister("chiseled_pink_bricks", Blocks.STONE_BRICKS);
+    public static final Supplier<Block> AETHERIUM_BRICKS = copyBlockRegister("aetherium_bricks", Blocks.STONE_BRICKS);
+    public static final Supplier<Block> CRYSTAL_BLOCKS = copyBlockRegister("crystal_blocks", Blocks.AMETHYST_BLOCK);
+    public static final Supplier<Block> RAINBOW_BRICKS = copyBlockRegister("rainbow_bricks", Blocks.STONE_BRICKS);
     public static final Supplier<CloudBlock> FLOATING_WHEAT_BALE = registerWithItem("floating_wheat_bale", CloudBlock::new);
     // 大宝石块
     public static final Supplier<Block> BIG_RUBY_BLOCK = copyBlockRegister("big_ruby_block", Blocks.DIAMOND_BLOCK);

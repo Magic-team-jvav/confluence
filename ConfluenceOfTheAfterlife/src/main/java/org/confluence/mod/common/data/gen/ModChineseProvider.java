@@ -55,7 +55,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("death.attack.boulder", "%1$s 被巨石均匀地涂抹在地上");
         add("death.attack.thron", "%1$s 发现自己成了刺猬");
 
-        add("selectoins.confluence.position", "回应海的召唤");
+        add("selections.confluence.magic_conch", "回应海的召唤%s");
+        add("selections.confluence.demon_conch", "回应熔岩的召唤%s");
 
 
         add("tooltip.item.confluence.adhesive_bandage.0", "对流血免疫");

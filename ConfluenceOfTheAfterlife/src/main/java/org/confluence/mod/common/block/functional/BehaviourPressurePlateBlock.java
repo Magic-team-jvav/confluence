@@ -1,7 +1,12 @@
 package org.confluence.mod.common.block.functional;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -14,6 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.jetbrains.annotations.NotNull;
@@ -22,17 +28,12 @@ import org.jetbrains.annotations.Nullable;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWERED;
 
 public class BehaviourPressurePlateBlock extends BasePressurePlateBlock implements EntityBlock, INetworkBlock {
-    public static final Behaviour PLAYER = new Behaviour() {
-        @Override
-        protected int getSignalStrength(Level level, BlockPos blockPos) {
-            for (Player player : level.players()) {
-                if (TOUCH_AABB.contains(player.getX(), player.getY(), player.getZ())) {
-                    return 15;
-                }
-            }
-            return 0;
-        }
-    };
+    public static final MapCodec<BehaviourPressurePlateBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            Behaviour.CODEC.fieldOf("behaviour").forGetter(block -> block.behaviour),
+            propertiesCodec(),
+            BlockSetType.CODEC.fieldOf("block_set_type").forGetter(block -> block.type)
+    ).apply(instance, BehaviourPressurePlateBlock::new));
+
     private final Behaviour behaviour;
 
     public BehaviourPressurePlateBlock(Behaviour behaviour, Properties pProperties, BlockSetType pType) {
@@ -58,12 +59,12 @@ public class BehaviourPressurePlateBlock extends BasePressurePlateBlock implemen
     }
 
     @Override
-    protected MapCodec<? extends BasePressurePlateBlock> codec() {
-        return null;
+    protected @NotNull MapCodec<BehaviourPressurePlateBlock> codec() {
+        return CODEC;
     }
 
     @Override
-    public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
+    public void tick(@NotNull BlockState pState, @NotNull ServerLevel pLevel, @NotNull BlockPos pPos, @NotNull RandomSource pRandom) {
         int i = getSignalForState(pState);
         int j = getSignalStrength(pLevel, pPos);
         if (i > 0 && i != j) {
@@ -73,7 +74,7 @@ public class BehaviourPressurePlateBlock extends BasePressurePlateBlock implemen
     }
 
     @Override
-    public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
+    public void entityInside(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull Entity pEntity) {
         super.entityInside(pState, pLevel, pPos, pEntity);
         if (pLevel instanceof ServerLevel serverLevel) {
             int i = getSignalForState(pState);
@@ -108,7 +109,28 @@ public class BehaviourPressurePlateBlock extends BasePressurePlateBlock implemen
         return behaviour.setSignalForState(blockState, i);
     }
 
+    @SuppressWarnings("unused")
     public static abstract class Behaviour {
+        private static final BiMap<ResourceLocation, Behaviour> MAP = HashBiMap.create();
+        public static final Behaviour PLAYER = register(Confluence.asResource("player"), new Behaviour() {
+            @Override
+            protected int getSignalStrength(Level level, BlockPos blockPos) {
+                net.minecraft.world.phys.AABB aabb = TOUCH_AABB.move(blockPos);
+                for (Player player : level.players()) {
+                    if (aabb.contains(player.position())) {
+                        return 15;
+                    }
+                }
+                return 0;
+            }
+        });
+        public static final Codec<Behaviour> CODEC = ResourceLocation.CODEC.xmap(MAP::get, MAP.inverse()::get);
+
+        public static Behaviour register(ResourceLocation id, Behaviour behaviour) {
+            MAP.put(id, behaviour);
+            return behaviour;
+        }
+
         public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {}
 
         public void onUnExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {}

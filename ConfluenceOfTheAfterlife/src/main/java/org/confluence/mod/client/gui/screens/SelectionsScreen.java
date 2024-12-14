@@ -36,7 +36,7 @@ public class SelectionsScreen extends Screen {
     protected void init() {
         this.buttonWidth = 200;
         this.buttonHeight = 20;
-        this.top = (height - selections.length * buttonHeight) / 2;
+        this.top = (height - ((selections.length - 1) * (buttonHeight + INTERVAL) + buttonHeight)) / 2;
         this.left = (width - buttonWidth) / 2;
 
         int localTop = top;

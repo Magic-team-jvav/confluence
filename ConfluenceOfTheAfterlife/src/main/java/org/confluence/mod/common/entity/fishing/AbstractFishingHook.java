@@ -6,6 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.mixed.IFishingHook;
 
 public abstract class AbstractFishingHook extends FishingHook {
     public AbstractFishingHook(EntityType<? extends FishingHook> pEntityType, Level pLevel) {
@@ -36,5 +37,10 @@ public abstract class AbstractFishingHook extends FishingHook {
         setXRot((float) (Mth.atan2(vec3.y, vec3.horizontalDistance()) * Mth.DEG_TO_RAD));
         this.yRotO = getYRot();
         this.xRotO = getXRot();
+    }
+
+    @Override
+    public boolean fireImmune() {
+        return super.fireImmune() || ((IFishingHook) this).confluence$isLavaHook();
     }
 }

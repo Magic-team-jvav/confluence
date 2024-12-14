@@ -4,7 +4,7 @@
         "tag": "confluence:iron_ore_smelting"
     },
     "result": {
-        "id": "minecraft:iron"
+        "id": "minecraft:iron_ingot"
     },
     "experience": 0.5,
     "cookingtime": 200,

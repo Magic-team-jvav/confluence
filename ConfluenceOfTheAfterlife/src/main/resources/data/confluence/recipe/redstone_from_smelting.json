@@ -4,7 +4,7 @@
         "tag": "confluence:redstone_ore_smelting"
     },
     "result": {
-        "id": "minecraft:redstone_dust"
+        "id": "minecraft:redstone"
     },
     "experience": 0.5,
     "cookingtime": 200,

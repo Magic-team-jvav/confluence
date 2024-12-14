@@ -41,6 +41,7 @@ public class Confluence {
         ModMenus.TYPES.register(eventBus);
         ModParticles.PARTICLES.register(eventBus);
         ModWorldGens.GENERATORS.register(eventBus);
+        ModPaintings.VARIANTS.register(eventBus);
     }
 
     public static void registerGameRules() {

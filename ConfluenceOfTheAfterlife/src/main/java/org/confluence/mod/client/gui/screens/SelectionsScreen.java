@@ -18,7 +18,7 @@ public class SelectionsScreen extends Screen {
             ResourceLocation.withDefaultNamespace("widget/button_disabled"),
             ResourceLocation.withDefaultNamespace("widget/button_highlighted")
     );
-    public static final int INTERVAL = 8;
+    private static final int INTERVAL = 8;
     private final Component[] selections;
     private final boolean[] enables;
     private int buttonWidth;

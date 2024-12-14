@@ -70,8 +70,8 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
                 Optional<BlockPos> pos1 = NbtUtils.readBlockPos(tag, "pos1");
                 Optional<BlockPos> pos2 = NbtUtils.readBlockPos(tag, "pos2");
                 OpenSelectionsScreenPacketS2C.sendToClient(serverPlayer, new Component[]{
-                        Component.translatable("selectoins.confluence.position", pos1.map(Vec3i::toShortString).orElse("unknown")),
-                        Component.translatable("selectoins.confluence.position", pos2.map(Vec3i::toShortString).orElse("unknown"))
+                        getMessage(pos1),
+                        getMessage(pos2)
                 }, new boolean[]{
                         pos1.isPresent(),
                         pos2.isPresent()
@@ -79,6 +79,10 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
             }
         }
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);
+    }
+
+    protected Component getMessage(Optional<BlockPos> pos) {
+        return Component.translatable("selections.confluence.magic_conch", pos.map(Vec3i::toShortString).orElse("unknown"));
     }
 
     protected boolean checkAvailable(UseOnContext pContext) {

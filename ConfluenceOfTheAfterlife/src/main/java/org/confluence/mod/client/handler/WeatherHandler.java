@@ -3,6 +3,7 @@ package org.confluence.mod.client.handler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -11,14 +12,13 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
@@ -85,15 +85,14 @@ public final class WeatherHandler {
         }
     }
 
-    public static void initialize(@Nullable Player player) {
+    public static void initialize(@Nullable LocalPlayer player) {
         if (player == null) {
             BLOCK_PARTICLES.clear();
             FLUID_PARTICLES.clear();
         } else {
-            LevelStem overworld = player.registryAccess().registryOrThrow(Registries.LEVEL_STEM).getOrThrow(LevelStem.OVERWORLD);
-            for (Holder<Biome> biome : overworld.generator().getBiomeSource().possibleBiomes()) {
+            for (Holder<Biome> biome : player.registryAccess().registryOrThrow(Registries.BIOME).asHolderIdMap()) {
                 ResourceKey<Biome> key = biome.getKey();
-                if (key == null) continue;
+                if (key == null || !biome.is(BiomeTags.IS_OVERWORLD)) continue;
                 registerBlockParticle(key, map -> {
                     defaultLeavesParticles(map);
                 });

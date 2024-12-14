@@ -89,7 +89,6 @@ public class MaterialItems {
     public static final DeferredItem<Item> BLACK_PEARL = register("black_pearl");
     public static final DeferredItem<Item> PINK_PEARL = register("pink_pearl");
 
-    public static final DeferredItem<Item> WHOOPIE_CUSHION = register("whoopie_cushion");
     // 草药
     public static final DeferredItem<Item> WATERLEAF = ITEMS.registerSimpleItem("waterleaf");
     public static final DeferredItem<Item> FLAMEFLOWERS = ITEMS.registerSimpleItem("flameflowers", new Item.Properties().fireResistant());

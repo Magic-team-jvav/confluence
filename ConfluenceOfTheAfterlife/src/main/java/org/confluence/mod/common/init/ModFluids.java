@@ -18,10 +18,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.fluid.FluidTriple;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.init.item.BaitItems;
-import org.confluence.mod.common.init.item.ConsumableItems;
-import org.confluence.mod.common.init.item.MaterialItems;
-import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.init.item.*;
 
 import static org.confluence.mod.api.event.ShimmerEntityTransmutationEvent.addEntity;
 import static org.confluence.mod.api.event.ShimmerItemTransmutationEvent.addItem;
@@ -172,7 +169,7 @@ public final class ModFluids {
         addItem(Items.WATER_BUCKET, Items.LAVA_BUCKET);
         addItem(Items.LAVA_BUCKET, ToolItems.HONEY_BUCKET.get());
         addItem(ToolItems.HONEY_BUCKET.get(), Items.WATER_BUCKET);
-//        addItem(ModItems.WHOOPIE_CUSHION.get(), Swords.ZOMBIE_ARM.get());
+        addItem(ModItems.WHOOPIE_CUSHION.get(), SwordItems.ZOMBIE_ARM.get());
 
         addItem(ConsumableItems.LIFE_CRYSTAL.get(), ConsumableItems.VITAL_CRYSTAL.get());
         addItem(ConsumableItems.MANA_STAR.get(), ConsumableItems.ARCANE_CRYSTAL.get());

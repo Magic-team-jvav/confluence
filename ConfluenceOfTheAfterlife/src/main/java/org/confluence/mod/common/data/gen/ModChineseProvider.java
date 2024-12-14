@@ -520,6 +520,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(OreBlocks.SANCTIFICATION_LAPIS_ORE.get(), "珍珠石青金石矿石");
         add(OreBlocks.CORRUPTION_LAPIS_ORE.get(), "腐化青金石矿石");
         add(OreBlocks.FLESHIFICATION_LAPIS_ORE.get(), "血化青金石矿石");
+        add(OreBlocks.OPAL_ORE.get(), "蛋白石矿石");
         add(OreBlocks.METEORITE_ORE.get(), "陨石矿石");
         add(OreBlocks.RAW_METEORITE_BLOCK.get(), "粗陨石块");
         add(OreBlocks.METEORITE_BLOCK.get(), "陨石块");

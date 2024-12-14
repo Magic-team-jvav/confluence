@@ -155,9 +155,10 @@ public class OreBlocks {
 
     public static final DeferredBlock<Block> SPECTRE_BLOCK = copyBlockRegister("spectre_block", Blocks.IRON_BLOCK);
 
-    public static final DeferredBlock<Block> RAW_LUMINITE_BLOCK = copyBlockRegister("raw_luminite_block", Blocks.IRON_BLOCK);
-    public static final DeferredBlock<Block> LUMINITE_BLOCK = copyBlockRegister("luminite_block", Blocks.RAW_IRON_BLOCK);
+    public static final DeferredBlock<Block> RAW_LUMINITE_BLOCK = copyBlockRegister("raw_luminite_block", Blocks.RAW_IRON_BLOCK);
+    public static final DeferredBlock<Block> LUMINITE_BLOCK = copyBlockRegister("luminite_block", Blocks.IRON_BLOCK);
 
+    public static final DeferredBlock<Block> OPAL_ORE = copyBlockRegister("opal_ore", Blocks.IRON_ORE);
 
     public static final DeferredBlock<Block> HELLSTONE = simpleBlockRegister("hellstone", HellStoneBlock::new);
     public static final DeferredBlock<Block> ASH_HELLSTONE = simpleBlockRegister("ash_hellstone", HellStoneBlock::new);

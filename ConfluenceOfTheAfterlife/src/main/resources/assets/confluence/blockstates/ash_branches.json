@@ -68,10 +68,24 @@
                 "up": "false",
                 "down": "false"
             },
-            "apply": {
-                "model": "confluence:block/ash_branches_end",
-                "uvlock": true
-            }
+            "apply": [
+                {
+                    "model": "confluence:block/ash_branches_end",
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_1",
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_2",
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_3",
+                    "uvlock": false
+                }
+            ]
         },
         {
             "when": {
@@ -82,11 +96,28 @@
                 "up": "false",
                 "down": "false"
             },
-            "apply": {
-                "model": "confluence:block/ash_branches_end",
-                "y": 90,
-                "uvlock": true
-            }
+            "apply": [
+                {
+                    "model": "confluence:block/ash_branches_end",
+                    "y": 90,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_1",
+                    "y": 90,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_2",
+                    "y": 90,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_3",
+                    "y": 90,
+                    "uvlock": false
+                }
+            ]
         },
         {
             "when": {
@@ -97,11 +128,28 @@
                 "up": "false",
                 "down": "false"
             },
-            "apply": {
-                "model": "confluence:block/ash_branches_end",
-                "y": 180,
-                "uvlock": true
-            }
+            "apply": [
+                {
+                    "model": "confluence:block/ash_branches_end",
+                    "y": 180,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_1",
+                    "y": 180,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_2",
+                    "y": 180,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_3",
+                    "y": 180,
+                    "uvlock": false
+                }
+            ]
         },
         {
             "when": {
@@ -112,11 +160,28 @@
                 "up": "false",
                 "down": "false"
             },
-            "apply": {
-                "model": "confluence:block/ash_branches_end",
-                "y": 270,
-                "uvlock": true
-            }
+            "apply": [
+                {
+                    "model": "confluence:block/ash_branches_end",
+                    "y": 270,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_1",
+                    "y": 270,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_2",
+                    "y": 270,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_3",
+                    "y": 270,
+                    "uvlock": false
+                }
+            ]
         },
         {
             "when": {
@@ -127,11 +192,100 @@
                 "west": "false",
                 "down": "false"
             },
-            "apply": {
-                "model": "confluence:block/ash_branches_end",
-                "x": 270,
-                "uvlock": true
-            }
+            "apply": [
+                {
+                    "model": "confluence:block/ash_branches_end",
+                    "x": 270,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_1",
+                    "x": 270,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_2",
+                    "x": 270,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_3",
+                    "x": 270,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end",
+                    "y": 90,
+                    "x": 270,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_1",
+                    "y": 90,
+                    "x": 270,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_2",
+                    "y": 90,
+                    "x": 270,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_3",
+                    "y": 90,
+                    "x": 270,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end",
+                    "y": 180,
+                    "x": 270,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_1",
+                    "y": 180,
+                    "x": 270,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_2",
+                    "y": 180,
+                    "x": 270,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_3",
+                    "y": 180,
+                    "x": 270,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end",
+                    "y": 270,
+                    "x": 270,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_1",
+                    "y": 270,
+                    "x": 270,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_2",
+                    "y": 270,
+                    "x": 270,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_3",
+                    "y": 270,
+                    "x": 270,
+                    "uvlock": false
+                }
+            ]
         },
         {
             "when": {
@@ -142,11 +296,100 @@
                 "west": "false",
                 "up": "false"
             },
-            "apply": {
-                "model": "confluence:block/ash_branches_end",
-                "x": 90,
-                "uvlock": true
-            }
+            "apply": [
+                {
+                    "model": "confluence:block/ash_branches_end",
+                    "x": 90,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_1",
+                    "x": 90,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_2",
+                    "x": 90,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_3",
+                    "x": 90,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end",
+                    "y": 90,
+                    "x": 90,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_1",
+                    "y": 90,
+                    "x": 90,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_2",
+                    "y": 90,
+                    "x": 90,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_3",
+                    "y": 90,
+                    "x": 90,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end",
+                    "y": 180,
+                    "x": 90,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_1",
+                    "y": 180,
+                    "x": 90,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_2",
+                    "y": 180,
+                    "x": 90,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_3",
+                    "y": 180,
+                    "x": 90,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end",
+                    "y": 270,
+                    "x": 90,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_1",
+                    "y": 270,
+                    "x": 90,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_2",
+                    "y": 270,
+                    "x": 90,
+                    "uvlock": false
+                },
+                {
+                    "model": "confluence:block/ash_branches_end_3",
+                    "y": 270,
+                    "x": 90,
+                    "uvlock": false
+                }
+            ]
         },
         {
             "apply": {

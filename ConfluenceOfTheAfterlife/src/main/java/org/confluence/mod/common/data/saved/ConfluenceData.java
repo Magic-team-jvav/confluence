@@ -17,8 +17,11 @@ import org.confluence.phase_journey.common.util.PhaseUtils;
 import org.confluence.terra_curio.network.s2c.WindSpeedPacketS2C;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ConfluenceData extends SavedData {
-    public static final int STAR_PHASES_SIZE = 11;
+    public static final int STAR_PHASES_SIZE = 10;
 
     private boolean initialized;
     private GamePhase gamePhase;
@@ -58,6 +61,21 @@ public class ConfluenceData extends SavedData {
         if (!data.initialized) {
             RandomSource random = new LegacyRandomSource(serverLevel.getSeed());
             // 在这初始化星象
+            List<Float> raList = new ArrayList<>();
+            int wEarth = 3 + random.nextInt(3);
+            float up = (float) Math.pow(5.0D, 1.0D / (wEarth - 1));
+            float low = (float) Math.pow(9.0D, 1.0D / (10 - wEarth));
+            float q = 1.2F + random.nextFloat() * ((Math.min(up, low)) - 1.2F);
+            for (int i = 0; i < STAR_PHASES_SIZE; i++) {
+                float Q = (float) ((i < wEarth - 1) ? (1.0F / Math.pow(q, wEarth - 1 - i)) : q * Math.pow(q, i + 2 - wEarth));
+                float ra = 100.0F * Q;
+                ra += random.nextFloat() * (ra / 10) * (random.nextBoolean() ? 1 : -1);
+                ra = Math.min(900.0F, ra);
+                raList.add(random.nextInt(raList.size() + 1), ra);
+            }
+            for (int i = 0; i < STAR_PHASES_SIZE; i++) {
+                data.starPhases.put(i, new StarPhase(180 - random.nextInt(361), raList.get(i), 20.0F - random.nextFloat() * 40.0F));
+            }
             data.initialized = true;
             data.setDirty();
         }

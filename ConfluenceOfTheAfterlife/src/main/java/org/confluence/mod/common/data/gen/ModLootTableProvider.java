@@ -87,6 +87,7 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(CHLOROPHYTE_BLOCK.get());
             dropSelf(RAW_CHLOROPHYTE_BLOCK.get());
             dropSelf(LUMINITE_BLOCK.get());
+            dropSelf(OPAL_ORE.get());
             dropSelf(RAW_LUMINITE_BLOCK.get());
             dropSelf(HELLSTONE_BLOCK.get());
             dropSelf(RAW_HELLSTONE_BLOCK.get());

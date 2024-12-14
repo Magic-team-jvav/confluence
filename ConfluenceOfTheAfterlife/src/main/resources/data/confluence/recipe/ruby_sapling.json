@@ -9,7 +9,6 @@
         }
     ],
     "result": {
-        "id": "confluence:ruby_sapling",
-        "count": 1
+        "id": "confluence:ruby_sapling"
     }
 }

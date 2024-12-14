@@ -13,7 +13,6 @@
         }
     },
     "result": {
-        "id": "confluence:bouncy_bomb",
-        "count": 1
+        "id": "confluence:bouncy_bomb"
     }
 }

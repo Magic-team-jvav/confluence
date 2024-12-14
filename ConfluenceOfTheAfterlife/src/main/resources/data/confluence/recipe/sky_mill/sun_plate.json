@@ -6,7 +6,10 @@
     },
     "ingredients": [
         {
-            "item": "minecraft:cobblestone",
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "minecraft:cobblestone"
+            },
             "count": 25
         },
         {

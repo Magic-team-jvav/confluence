@@ -6,8 +6,7 @@
     },
     "ingredients": [
         {
-            "item": "confluence:sun_plate",
-            "count": 1
+            "item": "confluence:sun_plate"
         }
     ]
 }

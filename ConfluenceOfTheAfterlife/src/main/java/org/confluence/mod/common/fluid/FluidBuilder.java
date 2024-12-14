@@ -9,7 +9,7 @@ import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.RegisterEvent;
-import org.confluence.terra_curio.TerraCurio;
+import org.confluence.mod.Confluence;
 
 import java.util.Hashtable;
 import java.util.function.Consumer;
@@ -25,7 +25,7 @@ public class FluidBuilder {
     FluidBuilder(ResourceLocation location) {
         this.type = DeferredHolder.create(NeoForgeRegistries.Keys.FLUID_TYPES.location(), location);
         this.fluid = DeferredHolder.create(Registries.FLUID, location);
-        this.flowing = DeferredHolder.create(Registries.FLUID, TerraCurio.asResource("flowing_" + location.getPath()));
+        this.flowing = DeferredHolder.create(Registries.FLUID, Confluence.asResource("flowing_" + location.getPath()));
     }
 
     public FluidBuilder typeProperties(Consumer<FluidType.Properties> consumer) {

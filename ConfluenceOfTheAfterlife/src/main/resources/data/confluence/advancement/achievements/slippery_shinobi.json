@@ -24,7 +24,7 @@
                         "condition": "minecraft:entity_properties",
                         "entity": "this",
                         "predicate": {
-                            "type": "confluence:king_slime"
+                            "type": "terra_entity:king_slime"
                         }
                     }
                 ]

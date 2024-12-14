@@ -60,6 +60,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         customModels.add(createDir(ArrowItems.ITEMS, "arrow/"));
         customModels.add(createDir(BaitItems.ITEMS, "bait/"));
         customModels.add(createDir(ConsumableItems.ITEMS, "consumable/"));
+        customModels.add(createDir(CosmeticItems.ITEMS, "cosmetic/"));
         customModels.add(createDir(FoodItems.ITEMS, "food/", "seed/"));
         customModels.add(createDir(HookItems.ITEMS, "hook/"));
         customModels.add(createDir(IconItems.ITEMS, "icon/"));

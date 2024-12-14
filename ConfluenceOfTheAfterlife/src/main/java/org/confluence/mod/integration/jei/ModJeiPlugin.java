@@ -19,7 +19,6 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.terra_curio.integration.jei.JeiBackGround;
-import org.confluence.terra_curio.integration.jei.WorkshopCategory;
 import org.jetbrains.annotations.NotNull;
 
 @JeiPlugin
@@ -41,7 +40,6 @@ public class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(new ShimmerItemTransmutationCategory(jeiHelpers));
         registration.addRecipeCategories(new SkyMillCategory(jeiHelpers));
         registration.addRecipeCategories(new AltarCategory(jeiHelpers));
-        registration.addRecipeCategories(new WorkshopCategory(jeiHelpers));
     }
 
     @Override

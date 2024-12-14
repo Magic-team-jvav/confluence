@@ -94,6 +94,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ConsumableItems.SUSPICIOUS_LOOKING_EYE.get(),
                 ConsumableItems.SLIME_CROWN.get()
         );
+        tag(ModTags.Items.INGOTS_TIN).add(MaterialItems.TIN_INGOT.get());
+        tag(ModTags.Items.INGOTS_SILVER).add(MaterialItems.SILVER_INGOT.get());
+        tag(ModTags.Items.INGOTS_TUNGSTEN).add(MaterialItems.TUNGSTEN_INGOT.get());
+        tag(ModTags.Items.INGOTS_PLATINUM).add(MaterialItems.PLATINUM_INGOT.get());
 
         AccessoryItems.acceptTag(tag(TCTags.ACCESSORY));
     }

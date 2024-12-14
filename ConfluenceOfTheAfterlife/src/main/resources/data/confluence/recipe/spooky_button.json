@@ -9,7 +9,6 @@
         }
     },
     "result": {
-        "id": "confluence:spooky_button",
-        "count": 1
+        "id": "confluence:spooky_button"
     }
 }

@@ -13,7 +13,6 @@
         }
     },
     "result": {
-        "id": "confluence:scarab_bomb",
-        "count": 1
+        "id": "confluence:scarab_bomb"
     }
 }

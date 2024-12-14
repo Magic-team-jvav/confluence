@@ -5,7 +5,10 @@
     },
     "ingredients": [
         {
-            "item": "confluence:lens",
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:lens"
+            },
             "count": 6
         }
     ]

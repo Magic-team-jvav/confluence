@@ -7,11 +7,13 @@
     "ingredients": [
         {
             "item": "confluence:falling_star",
-            "count": 1
         },
         {
-            "item": "minecraft:arrow",
-            "count": 25
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "minecraft:arrow"
+            },
+            "count": 20
         }
     ]
 }

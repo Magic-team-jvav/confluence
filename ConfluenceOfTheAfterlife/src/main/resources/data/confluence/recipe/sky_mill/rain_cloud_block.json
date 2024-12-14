@@ -1,14 +1,11 @@
 {
     "type": "confluence:sky_mill",
     "result": {
-        "id": "confluence:rain_cloud_block",
-        "count": 1
+        "id": "confluence:rain_cloud_block"
     },
     "ingredients": [
         {
-            "item": "confluence:cloud_block",
-            "count": 1
+            "item": "confluence:cloud_block"
         }
-
     ]
 }

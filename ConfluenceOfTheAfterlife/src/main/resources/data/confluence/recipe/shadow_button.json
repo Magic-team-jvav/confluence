@@ -9,7 +9,6 @@
         }
     },
     "result": {
-        "id": "confluence:shadow_button",
-        "count": 1
+        "id": "confluence:shadow_button"
     }
 }

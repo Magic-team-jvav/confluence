@@ -6,12 +6,14 @@
     },
     "ingredients": [
         {
-            "item": "minecraft:torch",
-            "count": 1
+            "item": "minecraft:torch"
         },
         {
-            "item": "minecraft:arrow",
-            "count": 25
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "minecraft:arrow"
+            },
+            "count": 20
         }
     ]
 }

@@ -5,12 +5,14 @@
     },
     "ingredients": [
         {
-            "item": "confluence:gel",
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:gel"
+            },
             "count": 20
         },
         {
-            "item": "confluence:platinum_crown",
-            "count": 1
+            "item": "confluence:platinum_crown"
         }
     ]
 }

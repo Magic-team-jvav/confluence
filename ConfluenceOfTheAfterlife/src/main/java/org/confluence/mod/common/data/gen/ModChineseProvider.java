@@ -1102,7 +1102,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(PickaxeAxeItems.DRAX.get(), "斧钻");
         add(PickaxeAxeItems.PICKAXE_AXE.get(), "镐斧");
 
-        /* Hammers */
+        // Hammers
         add(HammerItems.WOODEN_HAMMER.get(), "木锤");
         add(HammerItems.COPPER_HAMMER.get(), "铜锤");
         add(HammerItems.TIN_HAMMER.get(), "锡锤");
@@ -1162,10 +1162,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.ENCUMBERING_STONE.get(), "负重石");
         add(ConsumableItems.SUSPICIOUS_LOOKING_EYE.get(), "可疑眼球");
         add(ConsumableItems.SLIME_CROWN.get(), "史莱姆皇冠");
-//        add(ModItems.MAGIC_CONCH.get(), "魔法海螺");
-//        add(ModItems.DEMON_CONCH.get(), "恶魔海螺");
-//        add(ModItems.ALCHEMY_TABLE_BLOCK.get(), "炼药桌");
-        add(FunctionalBlocks.STONE_PRESSURE_PLATE.get(), "石质压力板");
+        add(FunctionalBlocks.STONE_PRESSURE_PLATE.get(), "石质=头压力板");
 
         // 杂项
         add(ConsumableItems.BOMB.get(), "炸弹");

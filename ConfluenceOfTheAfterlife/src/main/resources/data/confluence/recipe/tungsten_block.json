@@ -11,7 +11,6 @@
         }
     },
     "result": {
-        "id": "confluence:tungsten_block",
-        "count": 1
+        "id": "confluence:tungsten_block"
     }
 }

@@ -11,7 +11,6 @@
         }
     },
     "result": {
-        "id": "confluence:amber_chain",
-        "count": 1
+        "id": "confluence:amber_chain"
     }
 }

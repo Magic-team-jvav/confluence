@@ -1,7 +1,7 @@
 {
     "type": "minecraft:blasting",
     "ingredient": {
-        "item": "confluence:raw_tin"
+        "tag": "confluence:tin_ore_smelting"
     },
     "result": {
         "id": "confluence:tin_ingot"

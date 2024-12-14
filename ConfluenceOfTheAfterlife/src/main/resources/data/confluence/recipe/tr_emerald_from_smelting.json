@@ -1,12 +1,12 @@
 {
     "type": "minecraft:smelting",
     "ingredient": {
-        "tag": "confluence:tungsten_ore_smelting"
+        "tag": "confluence:tr_emerald_ore_smelting"
     },
     "result": {
-        "id": "confluence:tungsten_ingot"
+        "id": "confluence:tr_emerald"
     },
-    "experience": 0.3,
+    "experience": 0.5,
     "cookingtime": 200,
     "group": "misc"
 }

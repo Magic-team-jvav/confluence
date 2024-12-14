@@ -14,6 +14,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
@@ -68,6 +69,71 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.PLUM.get(), FoodItems.GRAPE.get(), FoodItems.SPICY_PEPPER.get(),
                 FoodItems.STAR_FRUIT.get(), FoodItems.POMEGRANATE.get(), FoodItems.RAMBUTAN.get(),
                 FoodItems.BLOOD_ORANGE.get(), FoodItems.ELDERBERRY.get(), FoodItems.BLACKCURRANT.get()
+        );
+        tag(ModTags.Items.COAL_ORE_SMELTING).add(
+                OreBlocks.SANCTIFICATION_COAL_ORE.asItem(),OreBlocks.CORRUPTION_COAL_ORE.asItem(),OreBlocks.FLESHIFICATION_COAL_ORE.get().asItem()
+                );
+        tag(ModTags.Items.IRON_ORE_SMELTING).add(
+                OreBlocks.SANCTIFICATION_IRON_ORE.asItem(),OreBlocks.CORRUPTION_IRON_ORE.asItem(),OreBlocks.FLESHIFICATION_IRON_ORE.get().asItem()
+        );
+        tag(ModTags.Items.TIN_ORE_SMELTING).add(
+                OreBlocks.TIN_ORE.asItem(),OreBlocks.DEEPSLATE_TIN_ORE.asItem(),OreBlocks.SANCTIFICATION_TIN_ORE.asItem(),OreBlocks.CORRUPTION_TIN_ORE.asItem(),OreBlocks.FLESHIFICATION_TIN_ORE.get().asItem(),
+                MaterialItems.RAW_TIN.get()
+        );
+        tag(ModTags.Items.COPPER_ORE_SMELTING).add(
+                OreBlocks.SANCTIFICATION_COPPER_ORE.asItem(),OreBlocks.CORRUPTION_COPPER_ORE.asItem(),OreBlocks.FLESHIFICATION_COPPER_ORE.get().asItem()
+        );
+        tag(ModTags.Items.LEAD_ORE_SMELTING).add(
+                OreBlocks.LEAD_ORE.asItem(),OreBlocks.DEEPSLATE_LEAD_ORE.asItem(),OreBlocks.SANCTIFICATION_LEAD_ORE.asItem(),OreBlocks.CORRUPTION_LEAD_ORE.asItem(),OreBlocks.FLESHIFICATION_LEAD_ORE.get().asItem(),
+                MaterialItems.RAW_LEAD.get()
+        );
+        tag(ModTags.Items.SILVER_ORE_SMELTING).add(
+                OreBlocks.SILVER_ORE.asItem(),OreBlocks.DEEPSLATE_SILVER_ORE.asItem(),OreBlocks.SANCTIFICATION_SILVER_ORE.asItem(),OreBlocks.CORRUPTION_SILVER_ORE.asItem(),OreBlocks.FLESHIFICATION_SILVER_ORE.get().asItem(),
+                MaterialItems.RAW_SILVER.get()
+        );
+        tag(ModTags.Items.TUNGSTEN_ORE_SMELTING).add(
+                OreBlocks.TUNGSTEN_ORE.asItem(),OreBlocks.DEEPSLATE_TUNGSTEN_ORE.asItem(),OreBlocks.SANCTIFICATION_TUNGSTEN_ORE.asItem(),OreBlocks.CORRUPTION_TUNGSTEN_ORE.asItem(),OreBlocks.FLESHIFICATION_TUNGSTEN_ORE.get().asItem(),
+                MaterialItems.RAW_TUNGSTEN.get()
+        );
+        tag(ModTags.Items.GOLD_ORE_SMELTING).add(
+                OreBlocks.SANCTIFICATION_GOLD_ORE.asItem(),OreBlocks.CORRUPTION_GOLD_ORE.asItem(),OreBlocks.FLESHIFICATION_GOLD_ORE.get().asItem()
+        );
+        tag(ModTags.Items.PLATINUM_ORE_SMELTING).add(
+                OreBlocks.PLATINUM_ORE.asItem(), OreBlocks.DEEPSLATE_PLATINUM_ORE.asItem(),OreBlocks.SANCTIFICATION_PLATINUM_ORE.asItem(),OreBlocks.CORRUPTION_PLATINUM_ORE.asItem(),OreBlocks.FLESHIFICATION_PLATINUM_ORE.get().asItem(),
+                MaterialItems.RAW_PLATINUM.get()
+        );
+        tag(ModTags.Items.EBONY_ORE_SMELTING).add(
+                OreBlocks.EBONY_ORE.asItem(),OreBlocks.DEEPSLATE_EBONY_ORE.asItem(),OreBlocks.SANCTIFICATION_EBONY_ORE.asItem(),OreBlocks.CORRUPTION_EBONY_ORE.asItem(),OreBlocks.FLESHIFICATION_EBONY_ORE.get().asItem(),
+                MaterialItems.RAW_EBONY.get()
+        );
+        tag(ModTags.Items.TR_CRIMSON_ORE_SMELTING).add(
+                OreBlocks.TR_CRIMSON_ORE.asItem(),OreBlocks.DEEPSLATE_TR_CRIMSON_ORE.asItem(),OreBlocks.SANCTIFICATION_TR_CRIMSON_ORE.asItem(),OreBlocks.CORRUPTION_TR_CRIMSON_ORE.asItem(),OreBlocks.FLESHIFICATION_TR_CRIMSON_ORE.get().asItem(),
+                MaterialItems.RAW_TR_CRIMSON.get()
+
+        );
+        tag(ModTags.Items.RUBY_ORE_SMELTING).add(
+                OreBlocks.RUBY_ORE.asItem(),OreBlocks.DEEPSLATE_RUBY_ORE.asItem(),OreBlocks.SANCTIFICATION_RUBY_ORE.asItem(),OreBlocks.CORRUPTION_RUBY_ORE.asItem(),OreBlocks.FLESHIFICATION_RUBY_ORE.get().asItem()
+        );
+        tag(ModTags.Items.AMBER_ORE_SMELTING).add(
+                OreBlocks.AMBER_ORE.asItem(),OreBlocks.DEEPSLATE_AMBER_ORE.asItem(),OreBlocks.SANCTIFICATION_AMBER_ORE.asItem(),OreBlocks.CORRUPTION_AMBER_ORE.asItem(),OreBlocks.FLESHIFICATION_AMBER_ORE.get().asItem()
+        );
+        tag(ModTags.Items.TOPAZ_ORE_SMELTING).add(
+                OreBlocks.TOPAZ_ORE.asItem(),OreBlocks.DEEPSLATE_TOPAZ_ORE.asItem(),OreBlocks.SANCTIFICATION_TOPAZ_ORE.asItem(),OreBlocks.CORRUPTION_TOPAZ_ORE.asItem(),OreBlocks.FLESHIFICATION_TOPAZ_ORE.get().asItem()
+        );
+        tag(ModTags.Items.TR_EMERALD_ORE_SMELTING).add(
+                OreBlocks.TR_EMERALD_ORE.asItem(),OreBlocks.DEEPSLATE_RUBY_ORE.asItem(),OreBlocks.SANCTIFICATION_RUBY_ORE.asItem(),OreBlocks.CORRUPTION_RUBY_ORE.asItem(),OreBlocks.FLESHIFICATION_RUBY_ORE.get().asItem()
+        );
+        tag(ModTags.Items.DIAMOND_ORE_SMELTING).add(
+                OreBlocks.SANCTIFICATION_DIAMOND_ORE.asItem(),OreBlocks.CORRUPTION_DIAMOND_ORE.asItem(),OreBlocks.FLESHIFICATION_DIAMOND_ORE.get().asItem()
+        );
+        tag(ModTags.Items.SAPPHIRE_ORE_SMELTING).add(
+                OreBlocks.SAPPHIRE_ORE.asItem(),OreBlocks.DEEPSLATE_SAPPHIRE_ORE.asItem(),OreBlocks.SANCTIFICATION_SAPPHIRE_ORE.asItem(),OreBlocks.CORRUPTION_SAPPHIRE_ORE.asItem(),OreBlocks.FLESHIFICATION_SAPPHIRE_ORE.get().asItem()
+        );
+        tag(ModTags.Items.TR_AMETHYST_ORE_SMELTING).add(
+                OreBlocks.TR_AMETHYST_ORE.asItem(),OreBlocks.DEEPSLATE_TR_AMETHYST_ORE.asItem(),OreBlocks.SANCTIFICATION_TR_AMETHYST_ORE.asItem(),OreBlocks.CORRUPTION_TR_AMETHYST_ORE.asItem(),OreBlocks.FLESHIFICATION_TR_AMETHYST_ORE.get().asItem()
+        );
+        tag(ModTags.Items.REDSTONE_ORE_SMELTING).add(
+                OreBlocks.SANCTIFICATION_REDSTONE_ORE.asItem(),OreBlocks.CORRUPTION_REDSTONE_ORE.asItem(),OreBlocks.FLESHIFICATION_REDSTONE_ORE.get().asItem()
         );
         BowItems.acceptTag(tag(Tags.Items.TOOLS_BOW));
         ArrowItems.acceptTag(tag(ItemTags.ARROWS));

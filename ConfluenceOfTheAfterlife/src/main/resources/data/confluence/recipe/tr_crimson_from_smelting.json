@@ -1,7 +1,7 @@
 {
     "type": "minecraft:smelting",
     "ingredient": {
-        "item": "confluence:raw_tr_crimson"
+        "tag": "confluence:tr_crimson_ore_smelting"
     },
     "result": {
         "id": "confluence:tr_crimson_ingot"

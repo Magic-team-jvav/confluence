@@ -1,7 +1,7 @@
 {
     "type": "minecraft:smelting",
     "ingredient": {
-        "item": "confluence:raw_platinum"
+        "tag": "confluence:platinum_ore_smelting"
     },
     "result": {
         "id": "confluence:platinum_ingot"

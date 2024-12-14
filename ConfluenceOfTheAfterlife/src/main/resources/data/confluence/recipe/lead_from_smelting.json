@@ -1,7 +1,7 @@
 {
     "type": "minecraft:smelting",
     "ingredient": {
-        "item": "confluence:raw_lead"
+        "tag": "confluence:lead_ore_smelting"
     },
     "result": {
         "id": "confluence:lead_ingot"

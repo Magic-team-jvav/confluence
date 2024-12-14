@@ -1,10 +1,10 @@
 {
     "type": "minecraft:blasting",
     "ingredient": {
-        "item": "confluence:raw_platinum"
+        "tag": "confluence:tr_emerald_ore_smelting"
     },
     "result": {
-        "id": "confluence:platinum_ingot"
+        "id": "confluence:tr_emerald"
     },
     "experience": 0.4,
     "cookingtime": 100,

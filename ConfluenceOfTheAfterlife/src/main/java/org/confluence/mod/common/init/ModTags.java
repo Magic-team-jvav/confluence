@@ -70,6 +70,25 @@ public final class ModTags {
         public static final TagKey<Item> HARDMODE_ORES = register("hardmode_ores");
         public static final TagKey<Item> WINGS = register("wings");
         public static final TagKey<Item> BOSS_SUMMING = register("boss_summing");
+        public static final TagKey<Item> COAL_ORE_SMELTING = register("coal_ore_smelting");
+        public static final TagKey<Item> IRON_ORE_SMELTING = register("iron_ore_smelting");
+        public static final TagKey<Item> TIN_ORE_SMELTING = register("tin_ore_smelting");
+        public static final TagKey<Item> COPPER_ORE_SMELTING = register("copper_ore_smelting");
+        public static final TagKey<Item> LEAD_ORE_SMELTING = register("lead_ore_smelting");
+        public static final TagKey<Item> SILVER_ORE_SMELTING = register("silver_ore_smelting");
+        public static final TagKey<Item> TUNGSTEN_ORE_SMELTING = register("tungsten_ore_smelting");
+        public static final TagKey<Item> GOLD_ORE_SMELTING = register("gold_ore_smelting");
+        public static final TagKey<Item> PLATINUM_ORE_SMELTING = register("platinum_ore_smelting");
+        public static final TagKey<Item> EBONY_ORE_SMELTING = register("ebony_ore_smelting");
+        public static final TagKey<Item> TR_CRIMSON_ORE_SMELTING = register("tr_crimson_ore_smelting");
+        public static final TagKey<Item> RUBY_ORE_SMELTING = register("ruby_ore_smelting");
+        public static final TagKey<Item> TOPAZ_ORE_SMELTING = register("topaz_ore_smelting");
+        public static final TagKey<Item> AMBER_ORE_SMELTING = register("amber_ore_smelting");
+        public static final TagKey<Item> TR_EMERALD_ORE_SMELTING = register("tr_emerald_ore_smelting");
+        public static final TagKey<Item> DIAMOND_ORE_SMELTING = register("diamond_ore_smelting");
+        public static final TagKey<Item> SAPPHIRE_ORE_SMELTING = register("sapphire_ore_smelting");
+        public static final TagKey<Item> TR_AMETHYST_ORE_SMELTING = register("tr_amethyst_ore_smelting");
+        public static final TagKey<Item> REDSTONE_ORE_SMELTING = register("redstone_ore_smelting");
 
 
         private static TagKey<Item> curios(String id) {

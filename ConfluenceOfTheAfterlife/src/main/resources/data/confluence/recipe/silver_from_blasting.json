@@ -1,7 +1,7 @@
 {
     "type": "minecraft:blasting",
     "ingredient": {
-        "item": "confluence:raw_silver"
+        "tag": "confluence:silver_ore_smelting"
     },
     "result": {
         "id": "confluence:silver_ingot"

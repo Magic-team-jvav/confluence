@@ -93,7 +93,7 @@ public class AltarBlock extends BaseEntityBlock {
     }
 
     @Override
-    public @Nullable PushReaction getPistonPushReaction(BlockState state) {
+    public @Nullable PushReaction getPistonPushReaction(@NotNull BlockState state) {
         return PushReaction.BLOCK;
     }
 
@@ -118,7 +118,7 @@ public class AltarBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
+    public void onRemove(@NotNull BlockState pState, Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pNewState, boolean pMovedByPiston) {
         if (pLevel.getBlockEntity(pPos) instanceof Entity entity) {
             Containers.dropContents(pLevel, pPos, entity.itemHandler);
             pLevel.removeBlockEntity(pPos);
@@ -126,7 +126,7 @@ public class AltarBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    protected @NotNull ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof Entity entity) { // 放/取物品
             if (player.isCrouching()) { // 取物品
                 player.addItem(entity.takeItem(-1));
@@ -229,14 +229,14 @@ public class AltarBlock extends BaseEntityBlock {
         }
 
         @Override
-        public void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.Provider registries) {
+        public void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider registries) {
             super.loadAdditional(nbt, registries);
             variant = Variant.byId(nbt.getInt("variant"));
             itemHandler.deserializeNBT(registries, nbt.getCompound("inventory"));
         }
 
         @Override
-        protected void saveAdditional(@NotNull CompoundTag nbt, HolderLookup.Provider registries) {
+        protected void saveAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider registries) {
             super.saveAdditional(nbt, registries);
             nbt.putInt("variant", variant.id);
             nbt.put("inventory", itemHandler.serializeNBT(registries));
@@ -248,7 +248,7 @@ public class AltarBlock extends BaseEntityBlock {
         }
 
         @Override
-        public @NotNull CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        public @NotNull CompoundTag getUpdateTag(HolderLookup.@NotNull Provider registries) {
             CompoundTag nbt = new CompoundTag();
             nbt.putInt("variant", variant.id);
             nbt.put("inventory", itemHandler.serializeNBT(registries));
@@ -278,20 +278,16 @@ public class AltarBlock extends BaseEntityBlock {
         private void playAnimation(ServerLevel level, BlockPos pos) {
             triggerAnim("controller", "crafting");
             switch (variant) {
-                case DEMON -> {
-                    level.sendParticles(ParticleTypes.SOUL,
-                            pos.getX() + 0.5F,
-                            pos.getY() + 0.75F,
-                            pos.getZ() + 0.5F,
-                            20, 0.0F, 0.0F, 0.0F, 0.02F);
-                }
-                case CRIMSON -> {
-                    level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.REDSTONE_BLOCK.defaultBlockState()),
-                            pos.getX() + 0.5F,
-                            pos.getY() + 0.75F,
-                            pos.getZ() + 0.5F,
-                            500, 0F, 0.0625F, 0F, 0.25F);
-                }
+                case DEMON -> level.sendParticles(ParticleTypes.SOUL,
+                        pos.getX() + 0.5F,
+                        pos.getY() + 0.75F,
+                        pos.getZ() + 0.5F,
+                        20, 0.0F, 0.0F, 0.0F, 0.02F);
+                case CRIMSON -> level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.REDSTONE_BLOCK.defaultBlockState()),
+                        pos.getX() + 0.5F,
+                        pos.getY() + 0.75F,
+                        pos.getZ() + 0.5F,
+                        500, 0F, 0.0625F, 0F, 0.25F);
             }
         }
     }

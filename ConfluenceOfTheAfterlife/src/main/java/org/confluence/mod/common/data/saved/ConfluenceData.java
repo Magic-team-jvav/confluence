@@ -7,6 +7,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.network.s2c.GamePhasePacketS2C;
@@ -18,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 public class ConfluenceData extends SavedData {
     public static final int STAR_PHASES_SIZE = 11;
 
+    private boolean initialized;
     private GamePhase gamePhase;
     private float windSpeedX;
     private float windSpeedZ;
@@ -25,6 +28,7 @@ public class ConfluenceData extends SavedData {
     private int revealStep;
 
     ConfluenceData() {
+        this.initialized = false;
         this.gamePhase = GamePhase.BEFORE_SKELETRON;
         this.windSpeedX = 0.0F;
         this.windSpeedZ = 0.0F;
@@ -36,6 +40,7 @@ public class ConfluenceData extends SavedData {
     }
 
     ConfluenceData(CompoundTag nbt, HolderLookup.@NotNull Provider registries) {
+        this.initialized = nbt.getBoolean("initialized");
         this.gamePhase = GamePhase.getById(nbt.getInt("gamePhase"));
         this.windSpeedX = nbt.getFloat("windSpeedX");
         this.windSpeedZ = nbt.getFloat("windSpeedZ");
@@ -49,11 +54,19 @@ public class ConfluenceData extends SavedData {
     }
 
     public static ConfluenceData get(ServerLevel serverLevel) {
-        return serverLevel.getDataStorage().computeIfAbsent(new Factory<>(ConfluenceData::new, ConfluenceData::new), Confluence.MODID);
+        ConfluenceData data = serverLevel.getDataStorage().computeIfAbsent(new Factory<>(ConfluenceData::new, ConfluenceData::new), Confluence.MODID);
+        if (!data.initialized) {
+            RandomSource random = new LegacyRandomSource(serverLevel.getSeed());
+            // 在这初始化星象
+            data.initialized = true;
+            data.setDirty();
+        }
+        return data;
     }
 
     @Override
     public @NotNull CompoundTag save(CompoundTag nbt, HolderLookup.@NotNull Provider registries) {
+        nbt.putBoolean("initialized", initialized);
         nbt.putInt("gamePhase", gamePhase.ordinal());
         nbt.putFloat("windSpeedX", windSpeedX);
         nbt.putFloat("windSpeedZ", windSpeedZ);

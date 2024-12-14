@@ -41,7 +41,6 @@ import org.confluence.mod.client.gui.hud.ManaHudLayer;
 import org.confluence.mod.client.gui.screens.GroupWikiScreen;
 import org.confluence.mod.client.gui.screens.ObjectWikiScreen;
 import org.confluence.mod.client.gui.screens.SkyMillScreen;
-import org.confluence.mod.client.handler.WeatherHandler;
 import org.confluence.mod.client.model.block.*;
 import org.confluence.mod.client.model.entity.FallingStarRenderer;
 import org.confluence.mod.client.model.entity.bomb.*;
@@ -112,7 +111,6 @@ public final class ModClientEvents {
             FishingPoleItems.registerCast();
             ArrowInBowHud.initAdaptionMap();
             AchievementToast.registerAll();
-            WeatherHandler.initialize();
 
             ResourceLocation enable = Confluence.asResource("enable");
             ItemPropertyFunction enableFunction = (itemStack, level, living, speed) -> {

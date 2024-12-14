@@ -19,6 +19,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.client.handler.HookThrowingHandler;
+import org.confluence.mod.client.handler.WeatherHandler;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.ModEffects;
@@ -38,6 +39,9 @@ public final class GameClientEvents {
     public static void clientTick$Post(ClientTickEvent.Post event) {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
+
+        WeatherHandler.initialize(player);
+
         if (player == null) return;
 
         ProjectileStrategy.handle(minecraft, player);

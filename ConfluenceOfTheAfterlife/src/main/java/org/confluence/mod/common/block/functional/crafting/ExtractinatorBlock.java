@@ -78,7 +78,7 @@ public class ExtractinatorBlock extends HorizontalDirectionalBlock implements En
     }
 
     @Override
-    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
+    public void setPlacedBy(Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
         if (!pLevel.isClientSide) {
             BlockPos relativePos = pPos.relative(getConnectedDirection(pState));
             pLevel.setBlockAndUpdate(relativePos, defaultBlockState().setValue(PART, ExtractinatorPart.RIGHT).setValue(FACING, pState.getValue(FACING)));
@@ -110,7 +110,7 @@ public class ExtractinatorBlock extends HorizontalDirectionalBlock implements En
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
+    public void onRemove(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pNewState, boolean pMovedByPiston) {
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
         pLevel.setBlockAndUpdate(pPos.relative(getConnectedDirection(pState)), Blocks.AIR.defaultBlockState());
     }
@@ -132,7 +132,7 @@ public class ExtractinatorBlock extends HorizontalDirectionalBlock implements En
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    protected @NotNull ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
         if (level instanceof ServerLevel serverLevel) {
             ItemStack item = player.getItemInHand(hand);
             ResourceKey<LootTable> path;

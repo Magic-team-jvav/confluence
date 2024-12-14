@@ -3,31 +3,30 @@ package org.confluence.mod.client.handler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
-import net.minecraft.core.particles.DustColorTransitionOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.terra_curio.client.handler.InformationHandler;
-import org.joml.Vector3f;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Hashtable;
 import java.util.Map;
@@ -37,24 +36,10 @@ import java.util.function.Consumer;
 public final class WeatherHandler {
     private static final Map<ResourceLocation, Map<Block, ParticleOptions>> BLOCK_PARTICLES = new Hashtable<>();
     private static final Map<ResourceLocation, Map<FluidType, ParticleOptions>> FLUID_PARTICLES = new Hashtable<>();
-    private static final ParticleOptions WIND = new DustColorTransitionOptions(new Vector3f(0.8F), new Vector3f(1.0F), 1.0F);
     public static Direction windDirection = null;
 
-    public static void handleWind(Minecraft minecraft, LocalPlayer player) {
-        if (ClientConfigs.showWindParticles) {
-            float windSpeedX = InformationHandler.getWindSpeedX();
-            float windSpeedZ = InformationHandler.getWindSpeedZ();
-            if (windSpeedX == 0.0F && windSpeedZ == 0.0F) return;
-            RandomSource random = player.getRandom();
-            double x = player.getX() + Mth.nextDouble(random, -10.0, 10.0) - windSpeedX * 10.0;
-            double y = player.getY() + Mth.nextDouble(random, -5.0, 5.0);
-            double z = player.getZ() + Mth.nextDouble(random, -10.0, 10.0) - windSpeedZ * 10.0;
-            Particle particle = minecraft.particleEngine.createParticle(WIND, x, y, z, 0.0, 0.0, 0.0);
-            if (particle != null) particle.setParticleSpeed(windSpeedX, 0.0, windSpeedZ);
-        }
-    }
-
     public static void handleBlock(ClientLevel level, RandomSource random, BlockState blockState, BlockPos.MutableBlockPos blockPos, Map<Block, ParticleOptions> data) {
+        if (!ClientConfigs.showWindParticles) return;
         ParticleOptions particleOptions = data.get(blockState.getBlock());
         if (particleOptions == null) return;
 
@@ -76,6 +61,7 @@ public final class WeatherHandler {
     }
 
     public static void handleFluid(ClientLevel level, RandomSource random, FluidState fluidState, BlockPos.MutableBlockPos blockPos, Map<FluidType, ParticleOptions> data) {
+        if (!ClientConfigs.showWindParticles) return;
         ParticleOptions particleOptions = data.get(fluidState.getType().getFluidType());
         if (particleOptions == null) return;
 
@@ -99,13 +85,20 @@ public final class WeatherHandler {
         }
     }
 
-    public static void initialize() {
-        registerBlockParticle(Biomes.PLAINS, map -> {
-            defaultLeavesParticles(map);
-        });
-        registerFluidParticle(Biomes.PLAINS, map -> {
-            map.put(NeoForgeMod.WATER_TYPE.value(), ParticleTypes.END_ROD);
-        });
+    public static void initialize(@Nullable Player player) {
+        if (player == null) {
+            BLOCK_PARTICLES.clear();
+            FLUID_PARTICLES.clear();
+        } else {
+            LevelStem overworld = player.registryAccess().registryOrThrow(Registries.LEVEL_STEM).getOrThrow(LevelStem.OVERWORLD);
+            for (Holder<Biome> biome : overworld.generator().getBiomeSource().possibleBiomes()) {
+                ResourceKey<Biome> key = biome.getKey();
+                if (key == null) continue;
+                registerBlockParticle(key, map -> {
+                    defaultLeavesParticles(map);
+                });
+            }
+        }
     }
 
     public static void defaultLeavesParticles(Map<Block, ParticleOptions> map) {

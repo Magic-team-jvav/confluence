@@ -70,6 +70,7 @@ public class MaterialItems {
     public static final DeferredItem<Item> VERTEBRA = register("vertebra");
     public static final DeferredItem<Item> BLOOD_CLOT_POWDER = register("blood_clot_powder");
     public static final DeferredItem<Item> BLACK_INK = register("black_ink");
+    public static final DeferredItem<Item> LEAD_NUGGET = register("lead_nugget");
     public static final DeferredItem<Item> PURPLE_MUCUS = register("purple_mucus");
     public static final DeferredItem<Item> SHARK_FIN = register("shark_fin");
     public static final DeferredItem<Item> ANTLION_MANDIBLE = register("antlion_mandible");
@@ -77,6 +78,12 @@ public class MaterialItems {
     public static final DeferredItem<Item> LENS = register("lens");
     public static final DeferredItem<Item> BLACK_LENS = register("black_lens");
     public static final DeferredItem<Item> STURDY_FOSSIL = register("sturdy_fossil");
+    public static final DeferredItem<Item> OPALS = register("opals");
+    public static final DeferredItem<Item> SEA_FOAM_STONE = register("sea_foam_stone");
+    public static final DeferredItem<Item> GEMSTONE = register("gemstone");
+    public static final DeferredItem<Item> LUSH_ROOTS = register("lush_roots");
+    public static final DeferredItem<Item> FROST_MARROW = register("frost_marrow");
+    public static final DeferredItem<Item> COLD_CRYSTAL = register("cold_crystal");
     public static final DeferredItem<Item> SHADOW_SCALE = register("shadow_scale");
     public static final DeferredItem<Item> TISSUE_SAMPLE = register("tissue_sample");
 

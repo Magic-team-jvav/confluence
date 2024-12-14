@@ -1028,6 +1028,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.GEL.get(), "凝胶");
         add(MaterialItems.PINK_GEL.get(), "粉凝胶");
         add(MaterialItems.STURDY_FOSSIL.get(), "坚固化石");
+        add(MaterialItems.OPALS.get(), "蛋白石");
+        add(MaterialItems.SEA_FOAM_STONE.get(), "海沫石");
+        add(MaterialItems.GEMSTONE.get(), "凝逸晶石");
+        add(MaterialItems.LUSH_ROOTS.get(), "泽根");
+        add(MaterialItems.FROST_MARROW.get(), "霜髓");
+        add(MaterialItems.COLD_CRYSTAL.get(), "寒晶石");
+        add(MaterialItems.LEAD_NUGGET.get(), "铅粒");
         add(ModItems.EMERALD_COIN.get(), "绿宝石币");
         add(ModItems.DEAD_MANS_SWEATER.get(), "死人毛衣");
 
@@ -1533,11 +1540,23 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.FOSSIL_HELMET.get(), "化石头盔");
         add(ArmorItems.FOSSIL_CHESTPLATE.get(), "化石胸甲");
         add(ArmorItems.FOSSIL_LEGGINGS.get(), "化石护腿");
-        add(ArmorItems.FOSSIL_BOOTS.get(), "化石靴子");
+        add(ArmorItems.FOSSIL_BOOTS.get(), "化石靴");
         add(ArmorItems.NINJA_HELMET.get(), "忍者头盔");
         add(ArmorItems.NINJA_CHESTPLATE.get(), "忍者胸甲");
         add(ArmorItems.NINJA_LEGGINGS.get(), "忍者护腿");
-        add(ArmorItems.NINJA_BOOTS.get(), "忍者靴子");
+        add(ArmorItems.NINJA_BOOTS.get(), "忍者靴");
+        add(ArmorItems.GEMSTONE_HELMET.get(), "凝逸头盔");
+        add(ArmorItems.GEMSTONE_CHESTPLATE.get(), "凝逸胸甲");
+        add(ArmorItems.GEMSTONE_LEGGINGS.get(), "凝逸护腿");
+        add(ArmorItems.GEMSTONE_BOOTS.get(), "凝逸靴");
+        add(ArmorItems.COLD_CRYSTAL_HELMET.get(), "寒晶头盔");
+        add(ArmorItems.COLD_CRYSTAL_CHESTPLATE.get(), "寒晶胸甲");
+        add(ArmorItems.COLD_CRYSTAL_LEGGINGS.get(), "寒晶护腿");
+        add(ArmorItems.COLD_CRYSTAL_BOOTS.get(), "寒晶靴");
+        add(ArmorItems.SEA_FOAM_STONE_HELMET.get(), "渊鳞头盔");
+        add(ArmorItems.SEA_FOAM_STONE_CHESTPLATE.get(), "渊鳞胸甲");
+        add(ArmorItems.SEA_FOAM_STONE_LEGGINGS.get(), "渊鳞护腿");
+        add(ArmorItems.SEA_FOAM_STONE_BOOTS.get(), "渊鳞靴");
         // 鱼
         add(FoodItems.SEA_BASS.get(), "鲈鱼");
         add(FoodItems.ATLANTIC_COD.get(), "大西洋鳕鱼");

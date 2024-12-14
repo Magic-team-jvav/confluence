@@ -191,4 +191,34 @@ public class ModArmorMaterials {
         15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.BLACK_INK),
         List.of(new ArmorMaterial.Layer(Confluence.asResource("ninja"))), 0.0F, 0.0F
     ));
+    public static final Holder<ArmorMaterial> GEMSTONE_ARMOR_MATERIALS = ARMOR_MATERIALS.register("gemstone_armor_materials", () -> new ArmorMaterial(
+            Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+                map.put(ArmorItem.Type.HELMET, 2);
+                map.put(ArmorItem.Type.CHESTPLATE, 6);
+                map.put(ArmorItem.Type.LEGGINGS, 6);
+                map.put(ArmorItem.Type.BOOTS, 2);
+            }),
+            15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.GEMSTONE),
+            List.of(new ArmorMaterial.Layer(Confluence.asResource("gemstone"))), 0.0F, 0.0F
+    ));
+    public static final Holder<ArmorMaterial> COLD_CRYSTAL_ARMOR_MATERIALS = ARMOR_MATERIALS.register("cold_crystal_armor_materials", () -> new ArmorMaterial(
+            Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+                map.put(ArmorItem.Type.HELMET, 2);
+                map.put(ArmorItem.Type.CHESTPLATE, 6);
+                map.put(ArmorItem.Type.LEGGINGS, 6);
+                map.put(ArmorItem.Type.BOOTS, 2);
+            }),
+            15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.COLD_CRYSTAL),
+            List.of(new ArmorMaterial.Layer(Confluence.asResource("cold_crystal"))), 0.0F, 0.0F
+    ));
+    public static final Holder<ArmorMaterial> SEA_FOAM_STONE_ARMOR_MATERIALS = ARMOR_MATERIALS.register("sea_foam_stone_armor_materials", () -> new ArmorMaterial(
+            Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+                map.put(ArmorItem.Type.HELMET, 2);
+                map.put(ArmorItem.Type.CHESTPLATE, 6);
+                map.put(ArmorItem.Type.LEGGINGS, 6);
+                map.put(ArmorItem.Type.BOOTS, 2);
+            }),
+            15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.COLD_CRYSTAL),
+            List.of(new ArmorMaterial.Layer(Confluence.asResource("sea_foam_stone"))), 0.0F, 0.0F
+    ));
 }

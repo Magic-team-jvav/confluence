@@ -31,23 +31,24 @@ public final class ModConnectives {
 
         register(NatureBlocks.THIN_ICE_BLOCK.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.THIN_ICE_BLOCK));
         register(DecorativeBlocks.SUN_PLATE.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.SUN_PLATE));
-        register(DecorativeBlocks.PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.PURE_GLASS));
-        register(DecorativeBlocks.WHITE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.WHITE_PURE_GLASS));
-        register(DecorativeBlocks.LIGHT_GRAY_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.LIGHT_GRAY_PURE_GLASS));
-        register(DecorativeBlocks.GRAY_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.GRAY_PURE_GLASS));
-        register(DecorativeBlocks.BLACK_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.BLACK_PURE_GLASS));
-        register(DecorativeBlocks.BROWN_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.BROWN_PURE_GLASS));
-        register(DecorativeBlocks.RED_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.RED_PURE_GLASS));
-        register(DecorativeBlocks.ORANGE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.ORANGE_PURE_GLASS));
-        register(DecorativeBlocks.YELLOW_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.YELLOW_PURE_GLASS));
-        register(DecorativeBlocks.LIME_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.LIME_PURE_GLASS));
-        register(DecorativeBlocks.GREEN_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.GREEN_PURE_GLASS));
-        register(DecorativeBlocks.CYAN_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.CYAN_PURE_GLASS));
-        register(DecorativeBlocks.LIGHT_BLUE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.LIGHT_BLUE_PURE_GLASS));
-        register(DecorativeBlocks.BLUE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.BLUE_PURE_GLASS));
-        register(DecorativeBlocks.PURPLE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.PURPLE_PURE_GLASS));
-        register(DecorativeBlocks.MAGENTA_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.MAGENTA_PURE_GLASS));
-        register(DecorativeBlocks.PINK_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.PINK_PURE_GLASS));
+
+        registerWeighted(DecorativeBlocks.WHITE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.WHITE_PURE_GLASS), 1, 5);
+        registerWeighted(DecorativeBlocks.LIGHT_GRAY_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.LIGHT_GRAY_PURE_GLASS), 1, 5);
+        registerWeighted(DecorativeBlocks.GRAY_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.GRAY_PURE_GLASS), 1, 5);
+        registerWeighted(DecorativeBlocks.BLACK_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.BLACK_PURE_GLASS), 1, 5);
+        registerWeighted(DecorativeBlocks.BROWN_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.BROWN_PURE_GLASS), 1, 5);
+        registerWeighted(DecorativeBlocks.RED_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.RED_PURE_GLASS), 1, 5);
+        registerWeighted(DecorativeBlocks.ORANGE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.ORANGE_PURE_GLASS), 1, 5);
+        registerWeighted(DecorativeBlocks.YELLOW_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.YELLOW_PURE_GLASS), 1, 5);
+        registerWeighted(DecorativeBlocks.LIME_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.LIME_PURE_GLASS), 1, 5);
+        registerWeighted(DecorativeBlocks.GREEN_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.GREEN_PURE_GLASS), 1, 5);
+        registerWeighted(DecorativeBlocks.CYAN_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.CYAN_PURE_GLASS), 1, 5);
+        registerWeighted(DecorativeBlocks.LIGHT_BLUE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.LIGHT_BLUE_PURE_GLASS), 1, 5);
+        registerWeighted(DecorativeBlocks.BLUE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.BLUE_PURE_GLASS), 1, 5);
+        registerWeighted(DecorativeBlocks.PURPLE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.PURPLE_PURE_GLASS), 1, 5);
+        registerWeighted(DecorativeBlocks.MAGENTA_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.MAGENTA_PURE_GLASS), 1, 5);
+        registerWeighted(DecorativeBlocks.PINK_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.PINK_PURE_GLASS), 1, 5);
+        registerWeighted(DecorativeBlocks.PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.PURE_GLASS), 1, 5);
     }
 
     /**

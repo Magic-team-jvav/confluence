@@ -7,14 +7,13 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.effect.MobEffect;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.particle.options.DamageIndicatorOptions;
 import org.jetbrains.annotations.NotNull;
 
-public class ModParticles {
+public final class ModParticles {
     public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, Confluence.MODID);
 
     public static final DeferredHolder<ParticleType<?>, ParticleType<DamageIndicatorOptions>> DAMAGE_INDICATOR = register("damage_indicator", true, DamageIndicatorOptions.CODEC, DamageIndicatorOptions.STREAM_CODEC);

@@ -107,8 +107,8 @@ public final class PlayerEvents {
     public static void itemFished(ItemFishedEvent event) {
         Player player = event.getEntity();
         Level level = player.level();
-        if (TCUtils.hasAccessoriesType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && level.random.nextFloat() < 0.1429F) {
-            level.playSound(null, player.getOnPos().above(), ModSoundEvents.DECOUPLING.get(), SoundSource.PLAYERS);
+        if (!TCUtils.hasAccessoriesType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && level.random.nextFloat() < 0.1429F) {
+            level.playSound(null, player.blockPosition(), ModSoundEvents.DECOUPLING.get(), SoundSource.PLAYERS);
             event.setCanceled(true);
             return;
         }
@@ -116,7 +116,7 @@ public final class PlayerEvents {
         ItemStack bait = fishingHook.confluence$getBait();
         if (bait == null) return;
         float factor = TCUtils.hasAccessoriesType(player, AccessoryItems.TACKLE$BOX) ? 1.0F : 2.0F;
-        if (player.getRandom().nextFloat() < 1.0F / (factor + fishingHook.confluence$getBonus() / 6.0F)) {
+        if (level.random.nextFloat() < 1.0F / (factor + fishingHook.confluence$getBonus() / 6.0F)) {
             bait.shrink(1);
         }
     }
@@ -129,7 +129,7 @@ public final class PlayerEvents {
             if (itemStack.is(ModTags.Items.MANA_WEAPON)) {
                 event.setCanceled(true);
             } else if (!itemStack.isEmpty()) {
-                if(player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN) || player.hasEffect(ModEffects.CURSED)){
+                if (player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN) || player.hasEffect(ModEffects.CURSED)) {
                     event.setCanceled(true);
                 }
             }

@@ -12,12 +12,11 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.MaterialItems;
-import org.confluence.mod.common.init.item.ModItems;
 
 import java.util.EnumMap;
 import java.util.List;
 
-public class ModArmorMaterials {
+public final class ModArmorMaterials {
     public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = DeferredRegister.create(BuiltInRegistries.ARMOR_MATERIAL, Confluence.MODID);
 
     public static final Holder<ArmorMaterial> CACTUS_ARMOR_MATERIALS = ARMOR_MATERIALS.register("cactus_armor_materials", () -> new ArmorMaterial(

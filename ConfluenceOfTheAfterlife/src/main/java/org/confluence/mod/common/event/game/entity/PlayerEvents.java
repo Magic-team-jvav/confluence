@@ -236,8 +236,9 @@ public final class PlayerEvents {
                     ItemStack itemStack = event.getItemEntity().getItem();
                     Item gel = MaterialItems.GEL.get();
                     if (itemStack.is(gel)) {
+                        int defaultMaxStackSize = gel.getDefaultMaxStackSize();
                         for (ItemStack stack : serverPlayer.getInventory().items) {
-                            if (!stack.isEmpty() && stack.is(gel) && stack.getCount() + itemStack.getCount() <= gel.getDefaultMaxStackSize()) {
+                            if (!stack.isEmpty() && stack.is(gel) && stack.getCount() + itemStack.getCount() <= defaultMaxStackSize) {
                                 ColoredItem.setColor(itemStack, ColoredItem.getColor(stack));
                                 break;
                             }

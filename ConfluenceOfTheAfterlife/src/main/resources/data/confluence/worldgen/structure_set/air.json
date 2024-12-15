@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:concentric_rings",
+    "salt": 11231243,
+    "distance": 1,
+    "count": 5,
+    "spread": 40,
+    "preferred_biomes": "#confluence:has_structure/air"
+  },
+  "structures": [{
+    "structure": "confluence:air",
+    "weight": 1
+  }]
+}

@@ -1,0 +1,17 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 12312312,
+    "separation": 30,
+    "spacing": 50,
+    "spread_type": "triangular",
+    "exclusion_zone": {
+      "chunk_count": 16,
+      "other_set": "confluence:air"
+    }
+  },
+  "structures": [{
+    "structure": "confluence:shimmer_lake",
+    "weight": 1
+  }]
+}

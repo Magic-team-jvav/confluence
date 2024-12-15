@@ -1,0 +1,72 @@
+{
+  "processors": [
+    {
+      "processor_type": "minecraft:rule",
+      "rules": [
+        {
+          "location_predicate": {
+            "predicate_type": "always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "random_block_match",
+            "block": "minecraft:diamond_block",
+            "probability": 0.3
+          },
+          "output_state": {
+            "Name": "minecraft:stone"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:diamond_block"
+          },
+          "output_state": {
+            "Name": "minecraft:air"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "random_block_match",
+            "block": "minecraft:emerald_block",
+            "probability": 0.05
+          },
+          "output_state": {
+            "Name": "confluence:aetherium_block"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "random_block_match",
+            "block": "minecraft:emerald_block",
+            "probability": 0.3
+          },
+          "output_state": {
+            "Name": "minecraft:stone"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:emerald_block"
+          },
+          "output_state": {
+            "Name": "confluence:shimmer"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "fallback": "confluence:sky_village/cloud",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "confluence:sky_village/library_cloud",
+        "processors": "minecraft:empty"
+      }
+    }
+  ]
+}

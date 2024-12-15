@@ -1,0 +1,125 @@
+{
+  "processors": [
+    {
+      "processor_type": "minecraft:rule",
+      "rules": [
+        {
+          "location_predicate": {
+            "predicate_type": "always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "random_block_match",
+            "block": "minecraft:iron_block",
+            "probability": 0.05
+          },
+          "output_state": {
+            "Name": "minecraft:flowering_azalea"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "random_block_match",
+            "block": "minecraft:iron_block",
+            "probability": 0.05
+          },
+          "output_state": {
+            "Name": "minecraft:azalea"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "random_block_match",
+            "block": "minecraft:iron_block",
+            "probability": 0.3
+          },
+          "output_state": {
+            "Name": "minecraft:fern"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "random_block_match",
+            "block": "minecraft:iron_block",
+            "probability": 0.3
+          },
+          "output_state": {
+            "Name": "minecraft:short_grass"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "random_block_match",
+            "block": "minecraft:iron_block",
+            "probability": 0.05
+          },
+          "output_state": {
+            "Name": "minecraft:dandelion"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "random_block_match",
+            "block": "minecraft:iron_block",
+            "probability": 0.05
+          },
+          "output_state": {
+            "Name": "minecraft:poppy"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "random_block_match",
+            "block": "minecraft:iron_block",
+            "probability": 0.05
+          },
+          "output_state": {
+            "Name": "minecraft:allium"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "random_block_match",
+            "block": "minecraft:iron_block",
+            "probability": 0.05
+          },
+          "output_state": {
+            "Name": "minecraft:azure_bluet"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:iron_block"
+          },
+          "output_state": {
+            "Name": "minecraft:air"
+          }
+        }
+      ]
+    }
+  ]
+}

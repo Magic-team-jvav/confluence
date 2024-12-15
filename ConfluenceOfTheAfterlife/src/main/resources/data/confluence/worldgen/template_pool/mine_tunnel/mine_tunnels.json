@@ -1,0 +1,59 @@
+{
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 25,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "confluence:mine_tunnels/mine_tunnels_straight",
+        "processors": "confluence:mine_tunnel"
+      }
+    },
+    {
+      "weight": 25,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "confluence:mine_tunnels/mine_tunnels_up",
+        "processors": "confluence:mine_tunnel"
+      }
+    },
+    {
+      "weight": 25,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "confluence:mine_tunnels/mine_tunnels_down",
+        "processors": "confluence:mine_tunnel"
+      }
+    },
+    {
+      "weight": 25,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "confluence:mine_tunnels/mine_tunnels_bifurcate",
+        "processors": "confluence:mine_tunnel"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "confluence:mine_tunnels/mine_tunnels_tnt",
+        "processors": "confluence:mine_tunnel_1"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "confluence:mine_tunnels/mine_tunnels_lava",
+        "processors": "confluence:mine_tunnel_1"
+      }
+    }
+  ]
+}

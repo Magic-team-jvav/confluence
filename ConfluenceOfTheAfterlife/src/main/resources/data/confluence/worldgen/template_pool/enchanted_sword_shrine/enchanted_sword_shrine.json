@@ -1,0 +1,14 @@
+{
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "confluence:enchanted_sword_shrine/enchanted_sword_shrine",
+        "processors": "confluence:enchanted_sword_shrine"
+      }
+    }
+  ]
+}

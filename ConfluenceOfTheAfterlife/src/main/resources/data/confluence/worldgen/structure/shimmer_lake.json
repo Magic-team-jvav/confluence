@@ -1,0 +1,22 @@
+{
+  "biomes": "#confluence:has_structure/shimmer_lake",
+  "adapt_noise": false,
+  "spawn_overrides": {},
+  "type": "minecraft:jigsaw",
+  "start_pool": "confluence:shimmer_lake/main",
+  "size": 7,
+  "step": "underground_structures",
+  "start_height": {
+    "type": "uniform",
+    "min_inclusive": {
+      "absolute": 0
+    },
+    "max_inclusive": {
+      "absolute": -56
+    }
+  },
+  "max_distance_from_center": 128,
+  "terrain_adaptation": "none",
+  "use_expansion_hack": false,
+  "liquid_settings": "ignore_waterlogging"
+}

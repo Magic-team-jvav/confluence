@@ -19,6 +19,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.client.handler.HookThrowingHandler;
+import org.confluence.mod.client.handler.MeteoriteLandingHandler;
 import org.confluence.mod.client.handler.WeatherHandler;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
@@ -132,6 +133,13 @@ public final class GameClientEvents {
             input.jumping = false;
             input.forwardImpulse = 0.0F;
             input.leftImpulse = 0.0F;
+        }
+    }
+
+    @SubscribeEvent
+    public static void renderLevelStage(RenderLevelStageEvent event) {
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
+            MeteoriteLandingHandler.render(event);
         }
     }
 }

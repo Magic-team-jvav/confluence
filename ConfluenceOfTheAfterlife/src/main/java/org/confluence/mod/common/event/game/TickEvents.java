@@ -66,10 +66,11 @@ public final class TickEvents {
     }
 
     @SubscribeEvent
-    public static void postEntityTick(EntityTickEvent.Post event){
-        if(event.getEntity() instanceof ILivingEntity living){
+    public static void entityTick$Post(EntityTickEvent.Post event) {
+        if (event.getEntity() instanceof ILivingEntity living) {
             Object2IntMap<Immunity> invTicks = living.confluence$getImmunityTicks();
-            for(ObjectIterator<Object2IntMap.Entry<Immunity>> iterator = invTicks.object2IntEntrySet().iterator(); iterator.hasNext(); ){
+            ObjectIterator<Object2IntMap.Entry<Immunity>> iterator = invTicks.object2IntEntrySet().iterator();
+            while (iterator.hasNext()) {
                 Object2IntMap.Entry<Immunity> entry = iterator.next();
                 int remain = entry.getIntValue() - 1;
                 if (remain <= 0) {

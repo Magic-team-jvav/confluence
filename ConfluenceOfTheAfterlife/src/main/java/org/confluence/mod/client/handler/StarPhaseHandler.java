@@ -19,10 +19,8 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.StarPhase;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.confluence.mod.common.data.saved.ConfluenceData.STAR_PHASES_SIZE;
@@ -30,7 +28,16 @@ import static org.confluence.mod.common.data.saved.ConfluenceData.STAR_PHASES_SI
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT, modid = Confluence.MODID)
 public final class StarPhaseHandler {
     private static final ResourceLocation[] TEXTURES = Util.make(new ResourceLocation[STAR_PHASES_SIZE], textures -> {
-        Arrays.fill(textures, Confluence.asResource("textures/stars/star_0_half_life.png"));
+        textures[0] = Confluence.asResource("textures/stars/star_0_half_life.png");
+        textures[1] = Confluence.asResource("textures/stars/star_1_warcraft.png");
+        textures[2] = Confluence.asResource("textures/stars/star_2_pvz.png");
+        textures[3] = Confluence.asResource("textures/stars/star_3_ut.png");
+        textures[4] = Confluence.asResource("textures/stars/star_4_tetris.png");
+        textures[5] = Confluence.asResource("textures/stars/star_5_stardew_valley.png");
+        textures[6] = Confluence.asResource("textures/stars/star_6_dont_starve.png");
+        textures[7] = Confluence.asResource("textures/stars/star_7_isaac.png");
+        textures[8] = Confluence.asResource("textures/stars/star_8_super_mario.png");
+        textures[9] = Confluence.asResource("textures/stars/star_9_pokemon.png");
     });
     private static final List<StarPhase> STAR_PHASES = Util.make(new ArrayList<>(), map -> {
         for (int i = 0; i < STAR_PHASES_SIZE; i++) {
@@ -44,58 +51,55 @@ public final class StarPhaseHandler {
             Minecraft minecraft = Minecraft.getInstance();
             ClientLevel level = minecraft.level;
             if (level == null || level.dimension() != Level.OVERWORLD) return;
-
             Tesselator instance = Tesselator.getInstance();
             PoseStack poseStack = new PoseStack();
             poseStack.mulPose(event.getModelViewMatrix());
+
             float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
-            long gameTime = level.getGameTime(); // 游戏时间
-            float dayTime = level.getTimeOfDay(partialTick); // 游戏时间
+            float gameTime = (level.getGameTime() % 24000L) + partialTick;
+            float dayTime = level.getTimeOfDay(partialTick);
+            float rDay = dayTime * Mth.TWO_PI + Mth.HALF_PI; // (dayTime * 360 + 90) * Mth.DEG_TO_RAD
+            float alpha = 1.0F - level.getRainLevel(partialTick);
+            float v1 = gameTime * 0.001F; // gameTime / 1000
+            float v2 = gameTime * 0.004166667F; // gameTime / 240
             float earthRa = 100.0F;
             float earthT = 400.0F;
+            float invEarthT = 1.0F / earthT;
+            float invSqrt = Mth.invSqrt(earthRa * earthRa * earthRa * invEarthT) * Mth.DEG_TO_RAD;
+
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
+            RenderSystem.setShader(GameRenderer::getPositionTexShader);
             for (int i = 0; i < STAR_PHASES_SIZE; i++) {
-                StarPhase phase = STAR_PHASES.get(i); // 星象
+                StarPhase phase = STAR_PHASES.get(i);
                 float sizeSet = 1.0F;
-                float size = sizeSet * (phase.radius() * 0.001F + phase.timeOffset() * 0.0001F + 0.07F / phase.radius()); // 你要算的大小
-                float alpha = 1.0F - level.getRainLevel(partialTick);
-                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
+                float timeOffset = phase.timeOffset();
+                float radius = phase.radius();
+                float size = sizeSet * (radius * 0.001F + timeOffset * 0.0001F + 0.07F / radius);
                 poseStack.pushPose();
 
                 // poseStack变换在这
-                TEXTURES[1] = Confluence.asResource("textures/stars/star_1_warcraft.png");
-                TEXTURES[2] = Confluence.asResource("textures/stars/star_2_pvz.png");
-                TEXTURES[3] = Confluence.asResource("textures/stars/star_3_ut.png");
-                TEXTURES[4] = Confluence.asResource("textures/stars/star_4_tetris.png");
-                TEXTURES[5] = Confluence.asResource("textures/stars/star_5_stardew_valley.png");
-                TEXTURES[6] = Confluence.asResource("textures/stars/star_6_dont_starve.png");
-                TEXTURES[7] = Confluence.asResource("textures/stars/star_7_isaac.png");
-                TEXTURES[8] = Confluence.asResource("textures/stars/star_8_super_mario.png");
-                TEXTURES[9] = Confluence.asResource("textures/stars/star_9_pokemon.png");
-                double time = 1.0D;
-                double angle = phase.angle() * Mth.DEG_TO_RAD;
-                float R = phase.radius();
-                double earthR = time * gameTime / 240.0D / Math.sqrt(Math.pow(earthRa, 3) / earthT) * Mth.DEG_TO_RAD;
-                Vector3f earthPos = new Vector3f(0.0F, 0.0F, earthRa);
-                double starR = (time * gameTime / 240.0D / Math.sqrt(Math.pow(R, 3) / earthT) + phase.timeOffset()) * Mth.DEG_TO_RAD - earthR;
-                double a = Math.sin(starR + earthR) * angle;
-                double cos = Math.cos(a);
-                Vector3f starPos = new Vector3f(R * (float) cos * (float) Math.sin(starR), R * (float) (Math.sin(starR + earthR) * Math.sin(angle)), R * (float) Math.cos(a) * (float) Math.cos(starR));
+                float time = 1.0F;
+                float angle = phase.angle() * Mth.DEG_TO_RAD;
+                float v = time * v2;
+                float earthR = v * invSqrt;
 
-                float starX = starPos.x - earthPos.x;
-                float starY = starPos.z - earthPos.z;
-                float starZ = starPos.y - earthPos.y;
+                float starR = (v / Mth.sqrt(radius * radius * radius * invEarthT) + timeOffset) * Mth.DEG_TO_RAD - earthR;
+                float sin = Mth.sin(starR + earthR);
+                float cos = radius * Mth.cos(sin * angle);
 
-                float dis = (float) Math.sqrt(starX * starX + starY * starY);
+                float starX = cos * Mth.sin(starR);
+                float starY = cos * Mth.cos(starR) - earthRa;
+                float starZ = radius * sin * Mth.sin(angle);
 
-                float rDay = (dayTime * 360 + 90) * Mth.DEG_TO_RAD;
+                float dis = Mth.sqrt(starX * starX + starY * starY);
 
-                poseStack.mulPose(Axis.ZP.rotation((float) (Math.atan2(starY, starX) - 0 * Mth.DEG_TO_RAD)));
-                poseStack.mulPose(Axis.ZP.rotation(rDay));
-                poseStack.mulPose(Axis.XP.rotation((float) (Math.atan2(starZ, dis) - 0 * Mth.DEG_TO_RAD)));
-                poseStack.mulPose(Axis.YP.rotation((float) gameTime / 1000 + (float) phase.timeOffset()));
+                poseStack.mulPose(Axis.ZP
+                        .rotation((float) Mth.atan2(starY, starX))
+                        .rotateZ(rDay)
+                        .rotateX((float) Mth.atan2(starZ, dis))
+                        .rotateY(v1 + timeOffset));
 
                 Matrix4f matrix4f = poseStack.last().pose();
-                RenderSystem.setShader(GameRenderer::getPositionTexShader);
                 RenderSystem.setShaderTexture(0, TEXTURES[i]);
                 BufferBuilder bufferBuilder = instance.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
                 bufferBuilder.addVertex(matrix4f, -size, dis, -size).setUv(0.0F, 1.0F);

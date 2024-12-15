@@ -130,7 +130,7 @@ public class SwordItems {
     }
 
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
-        ITEMS.getEntries().forEach(sword -> tag.add(sword.get()));
+        ITEMS.getEntries().forEach(item -> tag.add(item.get()));
     }
 
 }

@@ -1110,7 +1110,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(PickaxeItems.PLATINUM_PICKAXE.get(), "铂金镐");
         add(PickaxeItems.MOLTEN_PICKAXE.get(), "熔岩镐");
         add(PickaxeAxeItems.PICKSAW.get(), "锯刃镐");
-        add(PickaxeAxeItems.DRAX.get(), "斧钻");
+        add(DrillItems.DRAX.get(), "斧钻");
         add(PickaxeAxeItems.PICKAXE_AXE.get(), "镐斧");
 
         // Hammers

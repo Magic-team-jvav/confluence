@@ -25,6 +25,6 @@ public class ManaStaffItems {
             DIAMOND_STAFF = ITEMS.register("diamond_staff", () -> new ManaStaffItem(ModRarity.BLUE, (player, level) -> new BaseManaStaffProjectileEntity(player, level, Variant.DIAMOND), 8, 9.5F, 26));
 
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
-        ITEMS.getEntries().forEach(sword -> tag.add(sword.get()));
+        ITEMS.getEntries().forEach(item -> tag.add(item.get()));
     }
 }

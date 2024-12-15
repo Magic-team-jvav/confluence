@@ -28,6 +28,6 @@ public class PickaxeItems {
             MOLTEN_PICKAXE = ITEMS.register("molten_pickaxe", () -> new BasePickaxeItem(ModTiers.HELLSTONE, 12, 1, ModRarity.ORANGE));
 
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
-        ITEMS.getEntries().forEach(sword -> tag.add(sword.get()));
+        ITEMS.getEntries().forEach(item -> tag.add(item.get()));
     }
 }

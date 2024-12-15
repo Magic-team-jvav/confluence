@@ -139,7 +139,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         BowItems.acceptTag(tag(Tags.Items.TOOLS_BOW));
         ArrowItems.acceptTag(tag(ItemTags.ARROWS));
         HammerItems.acceptTag(tag(ModTags.Items.HAMMER));
-        AxeItems.acceptTag(tag(ItemTags.AXES));
+        IntrinsicTagAppender<Item> pickaxes = tag(ItemTags.PICKAXES);
+        PickaxeItems.acceptTag(pickaxes);
+        PickaxeAxeItems.acceptTag(pickaxes);
+        IntrinsicTagAppender<Item> axes = tag(ItemTags.AXES);
+        AxeItems.acceptTag(axes);
+        PickaxeAxeItems.acceptTag(axes);
 
         SwordItems.acceptTag(tag(Tags.Items.MELEE_WEAPON_TOOLS));
         ManaStaffItems.acceptTag(tag(ModTags.Items.MANA_WEAPON));
@@ -149,6 +154,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         PickaxeAxeItems.acceptTag(mining_tool_tools);
         AxeItems.acceptTag(mining_tool_tools);
         HammerItems.acceptTag(mining_tool_tools);
+        DrillItems.acceptTag(mining_tool_tools);
+        DrillItems.acceptTag(tag(ModTags.Items.PREFIX_UNIVERSAL_ONLY));
 
         copy(BlockTags.RAILS, ItemTags.RAILS);
         tag(ModTags.Items.COIN).add(ModItems.COPPER_COIN.get(), ModItems.SILVER_COIN.get(), ModItems.GOLDEN_COIN.get(), ModItems.PLATINUM_COIN.get());

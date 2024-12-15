@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.pickaxe_axe;
+package org.confluence.mod.common.item.drill;
 
 import net.minecraft.core.Holder;
 import net.minecraft.world.InteractionHand;
@@ -7,6 +7,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
+import org.confluence.mod.common.item.pickaxe_axe.PickaxeAxeItem;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.jetbrains.annotations.NotNull;
 

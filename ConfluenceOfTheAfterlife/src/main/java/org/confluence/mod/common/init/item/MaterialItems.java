@@ -1,19 +1,28 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.CustomRarityItem;
+import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.common.item.common.MushroomItem;
 import org.confluence.terra_curio.common.component.ModRarity;
+import org.jetbrains.annotations.NotNull;
 
 public class MaterialItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
-
-    public static final DeferredItem<Item> GEL = register("gel", ModRarity.WHITE);
+    public static final DeferredItem<Item> GEL = ITEMS.register("gel", () -> new ColoredItem(ModRarity.WHITE){
+        @Override
+        public @NotNull ItemStack getDefaultInstance() {
+            ItemStack itemStack = new ItemStack(GEL.get());
+            setColor(itemStack, 0xFF66CCFF);
+            return itemStack;
+        }
+    });
     public static final DeferredItem<Item> PINK_GEL = register("pink_gel", ModRarity.PINK);
 
     public static final DeferredItem<Item> RAW_TIN = register("raw_tin");

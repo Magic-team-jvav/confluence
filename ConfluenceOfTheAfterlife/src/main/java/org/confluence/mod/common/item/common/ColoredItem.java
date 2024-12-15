@@ -1,19 +1,15 @@
 package org.confluence.mod.common.item.common;
 
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
+import org.confluence.mod.common.item.CustomRarityItem;
+import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.component.NbtComponent;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_curio.util.TCUtils;
 
-public class ColoredItem extends Item {
-    public ColoredItem(Properties pProperties) {
-        super(pProperties);
-    }
-
-    public ColoredItem(Rarity rarity) {
-        this(new Properties().rarity(rarity));
+public class ColoredItem extends CustomRarityItem {
+    public ColoredItem(ModRarity rarity) {
+        super(rarity);
     }
 
     public static void setColor(ItemStack itemStack, int rgb) {

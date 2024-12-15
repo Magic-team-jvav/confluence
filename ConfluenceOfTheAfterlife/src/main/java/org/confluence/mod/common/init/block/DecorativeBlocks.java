@@ -10,6 +10,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.CloudBlock;
+import org.confluence.mod.common.block.palettes.ConnectedGlassBlock;
 import org.confluence.mod.common.init.item.ModItems;
 
 import java.util.function.Function;
@@ -17,7 +18,6 @@ import java.util.function.Supplier;
 
 public class DecorativeBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
-
 
     //TODO 暂未注册BeamLikeBlock
     public static final Supplier<Block> TR_OAK_BEAM = copyBlockRegister("tr_oak_beam", Blocks.OAK_PLANKS);
@@ -30,23 +30,23 @@ public class DecorativeBlocks {
     public static final Supplier<Block> SNOW_BRICKS = copyBlockRegister("snow_bricks", Blocks.STONE_BRICKS);
     public static final Supplier<Block> TR_STONE_BRICKS = copyBlockRegister("tr_stone_bricks", Blocks.STONE_BRICKS);
 
-    public static final Supplier<Block> PURE_GLASS = copyBlockRegister("pure_glass", Blocks.GLASS);
-    public static final Supplier<Block> WHITE_PURE_GLASS = copyBlockRegister("white_pure_glass", Blocks.GLASS);
-    public static final Supplier<Block> LIGHT_GRAY_PURE_GLASS = copyBlockRegister("light_gray_pure_glass", Blocks.GLASS);
-    public static final Supplier<Block> GRAY_PURE_GLASS = copyBlockRegister("gray_pure_glass", Blocks.GLASS);
-    public static final Supplier<Block> BLACK_PURE_GLASS = copyBlockRegister("black_pure_glass", Blocks.GLASS);
-    public static final Supplier<Block> BROWN_PURE_GLASS = copyBlockRegister("brown_pure_glass", Blocks.GLASS);
-    public static final Supplier<Block> RED_PURE_GLASS = copyBlockRegister("red_pure_glass", Blocks.GLASS);
-    public static final Supplier<Block> ORANGE_PURE_GLASS = copyBlockRegister("orange_pure_glass", Blocks.GLASS);
-    public static final Supplier<Block> YELLOW_PURE_GLASS = copyBlockRegister("yellow_pure_glass", Blocks.GLASS);
-    public static final Supplier<Block> LIME_PURE_GLASS = copyBlockRegister("lime_pure_glass", Blocks.GLASS);
-    public static final Supplier<Block> GREEN_PURE_GLASS = copyBlockRegister("green_pure_glass", Blocks.GLASS);
-    public static final Supplier<Block> CYAN_PURE_GLASS = copyBlockRegister("cyan_pure_glass", Blocks.GLASS);
-    public static final Supplier<Block> LIGHT_BLUE_PURE_GLASS = copyBlockRegister("light_blue_pure_glass", Blocks.GLASS);
-    public static final Supplier<Block> BLUE_PURE_GLASS = copyBlockRegister("blue_pure_glass", Blocks.GLASS);
-    public static final Supplier<Block> PURPLE_PURE_GLASS = copyBlockRegister("purple_pure_glass", Blocks.GLASS);
-    public static final Supplier<Block> MAGENTA_PURE_GLASS = copyBlockRegister("magenta_pure_glass", Blocks.GLASS);
-    public static final Supplier<Block> PINK_PURE_GLASS = copyBlockRegister("pink_pure_glass", Blocks.GLASS);
+    public static final Supplier<Block> PURE_GLASS = registerWithItem("pure_glass", () -> new ConnectedGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS)));
+    public static final Supplier<Block> WHITE_PURE_GLASS = registerWithItem("white_pure_glass", () -> new ConnectedGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_STAINED_GLASS)));
+    public static final Supplier<Block> LIGHT_GRAY_PURE_GLASS = registerWithItem("light_gray_pure_glass", () -> new ConnectedGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIGHT_GRAY_STAINED_GLASS)));
+    public static final Supplier<Block> GRAY_PURE_GLASS = registerWithItem("gray_pure_glass", () -> new ConnectedGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GRAY_STAINED_GLASS)));
+    public static final Supplier<Block> BLACK_PURE_GLASS = registerWithItem("black_pure_glass", () -> new ConnectedGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLACK_STAINED_GLASS)));
+    public static final Supplier<Block> BROWN_PURE_GLASS = registerWithItem("brown_pure_glass", () -> new ConnectedGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_STAINED_GLASS)));
+    public static final Supplier<Block> RED_PURE_GLASS = registerWithItem("red_pure_glass", () -> new ConnectedGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_STAINED_GLASS)));
+    public static final Supplier<Block> ORANGE_PURE_GLASS = registerWithItem("orange_pure_glass", () -> new ConnectedGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ORANGE_STAINED_GLASS)));
+    public static final Supplier<Block> YELLOW_PURE_GLASS = registerWithItem("yellow_pure_glass", () -> new ConnectedGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.YELLOW_STAINED_GLASS)));
+    public static final Supplier<Block> LIME_PURE_GLASS = registerWithItem("lime_pure_glass", () -> new ConnectedGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIME_STAINED_GLASS)));
+    public static final Supplier<Block> GREEN_PURE_GLASS = registerWithItem("green_pure_glass", () -> new ConnectedGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GREEN_STAINED_GLASS)));
+    public static final Supplier<Block> CYAN_PURE_GLASS = registerWithItem("cyan_pure_glass", () -> new ConnectedGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CYAN_STAINED_GLASS)));
+    public static final Supplier<Block> LIGHT_BLUE_PURE_GLASS = registerWithItem("light_blue_pure_glass", () -> new ConnectedGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LIGHT_BLUE_STAINED_GLASS)));
+    public static final Supplier<Block> BLUE_PURE_GLASS = registerWithItem("blue_pure_glass", () -> new ConnectedGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_STAINED_GLASS)));
+    public static final Supplier<Block> PURPLE_PURE_GLASS = registerWithItem("purple_pure_glass", () -> new ConnectedGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PURPLE_STAINED_GLASS)));
+    public static final Supplier<Block> MAGENTA_PURE_GLASS = registerWithItem("magenta_pure_glass", () -> new ConnectedGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MAGENTA_STAINED_GLASS)));
+    public static final Supplier<Block> PINK_PURE_GLASS = registerWithItem("pink_pure_glass", () -> new ConnectedGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_STAINED_GLASS)));
 
 
     public static final Supplier<Block> TR_COPPER_BRICKS = copyBlockRegister("tr_copper_bricks", Blocks.COPPER_BLOCK);

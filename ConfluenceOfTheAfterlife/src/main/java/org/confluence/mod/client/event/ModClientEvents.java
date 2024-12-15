@@ -1,34 +1,16 @@
 package org.confluence.mod.client.event;
 
-import com.mojang.blaze3d.shaders.FogShape;
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.Camera;
-import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.client.renderer.FogRenderer;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.client.renderer.item.ItemPropertyFunction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.confluence.mod.Confluence;
@@ -62,7 +44,6 @@ import org.confluence.mod.client.renderer.entity.fishing.HotlineFishingHookRende
 import org.confluence.mod.client.renderer.entity.hook.*;
 import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
-import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModMenus;
 import org.confluence.mod.common.init.ModParticles;
@@ -70,39 +51,15 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.common.particle.DamageIndicatorParticle;
-import org.confluence.mod.util.ModUtils;
-import org.confluence.mod.util.color.IntegerRGB;
-import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
-import org.jetbrains.annotations.NotNull;
-import org.joml.Vector3f;
-import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
-import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 import java.util.List;
 
 import static org.confluence.mod.common.init.ModEntities.*;
 
-@SuppressWarnings("deprecation")
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT, modid = Confluence.MODID)
 public final class ModClientEvents {
-    private static final BlockColor HALLOW_LEAVES_COLOR = (blockState, getter, pos, tint) -> {
-        if (pos == null) return -1;
-        IntegerRGB x = hallowMixture(Math.abs(pos.getX()) % 12);
-        IntegerRGB y = hallowMixture(Math.abs(pos.getY()) % 12);
-        IntegerRGB z = hallowMixture(Math.abs(pos.getZ()) % 12);
-        return x.mixture(y, 0.5F).mixture(z, 0.5F).get();
-    };
-    private static final ItemColor SIMPLE = (pStack, pTintIndex) -> ColoredItem.getColor(pStack);
-
-    private static IntegerRGB hallowMixture(int m) {
-        if (m <= 4) return IntegerRGB.HALLOW_A.mixture(IntegerRGB.HALLOW_B, m * 0.25F);
-        if (m <= 8) return IntegerRGB.HALLOW_B.mixture(IntegerRGB.HALLOW_C, (m - 4) * 0.25F);
-        return IntegerRGB.HALLOW_C.mixture(IntegerRGB.HALLOW_A, (m - 8) * 0.25F);
-    }
-
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
@@ -112,40 +69,9 @@ public final class ModClientEvents {
             ArrowInBowHud.initAdaptionMap();
             AchievementToast.registerAll();
 
-            ResourceLocation enable = Confluence.asResource("enable");
-            ItemPropertyFunction enableFunction = (itemStack, level, living, speed) -> {
-                CompoundTag tag = ModUtils.getItemStackNbt(itemStack);
-                if (tag == null) return 1;
-                return tag.getBoolean(IFunctionCouldEnable.DISABLE) ? 0 : 1;
-            };
-            ItemProperties.register(AccessoryItems.SPECTRE_GOGGLES.get(), enable, enableFunction);
-            ItemProperties.register(AccessoryItems.MECHANICAL_LENS.get(), enable, enableFunction);
-            ResourceLocation variant = Confluence.asResource("variant");
-            ItemPropertyFunction variantFunction = (itemStack, level, living, speed) -> {
-                CompoundTag tag = ModUtils.getItemStackNbt(itemStack);
-                if (tag == null) return 0;
-                return tag.getInt("VariantId");
-            };
-            ItemProperties.register(FunctionalBlocks.BASE_CHEST_BLOCK.get().asItem(), variant, variantFunction);
-            ItemProperties.register(FunctionalBlocks.DEATH_CHEST_BLOCK.get().asItem(), variant, variantFunction);
-
-            ItemBlockRenderTypes.setRenderLayer(NatureBlocks.RED_ICE.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(NatureBlocks.PURPLE_ICE.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(NatureBlocks.PINK_ICE.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(NatureBlocks.THIN_ICE_BLOCK.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(NatureBlocks.EBONY_LOG_BLOCKS.getDoor().get(), RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(NatureBlocks.EBONY_LOG_BLOCKS.getTrapdoor().get(), RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(NatureBlocks.PALM_LOG_BLOCKS.getDoor().get(), RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.EVER_POWERED_RAIL.get(), RenderType.cutout());
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.SHIMMER.fluid().get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.SHIMMER.flowing().get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.HONEY.fluid().get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(ModFluids.HONEY.flowing().get(), RenderType.translucent());
-
-            ModList.get().getModContainerById(Confluence.MODID).ifPresent(container -> {
-                IEventBus eventBus = container.getEventBus();
-                if (eventBus != null) ModConnectives.register(eventBus);
-            });
+            ModClientSetups.registerItemProperties();
+            ModClientSetups.setRenderLayers();
+            ModClientSetups.eventBus(ModConnectives::register);
 
             GroupWikiScreen.putWikiType("item",
                     List.of(AccessoryItems.ITEMS, ArrowItems.ITEMS, AxeItems.ITEMS, BaitItems.ITEMS, BowItems.ITEMS, FishingPoleItems.ITEMS,
@@ -276,96 +202,22 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
-        event.register(HALLOW_LEAVES_COLOR, NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().get());
-        event.register(HALLOW_LEAVES_COLOR, NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().get());
+        event.register(ModClientSetups.HALLOW_LEAVES_COLOR, NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().get());
+        event.register(ModClientSetups.HALLOW_LEAVES_COLOR, NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().get());
     }
 
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
-        event.register(SIMPLE, MaterialItems.GEL.get());
+        event.register(ModClientSetups.SIMPLE, MaterialItems.GEL.get());
     }
 
     @SubscribeEvent
     public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
-        event.registerFluidType(new IClientFluidTypeExtensions() {
-            private static final ResourceLocation STILL = Confluence.asResource("block/fluid/honey_still");
-            private static final ResourceLocation FLOWING = Confluence.asResource("block/fluid/honey_flowing");
-            private static final Vector3f FOG_COLOR = new Vector3f(1.0F, 1.0F, 0.0F);
+        event.registerFluidType(ModClientSetups.HONEY_CLIENT_EXTENSIONS, ModFluids.HONEY.type());
+        event.registerFluidType(ModClientSetups.SHIMMER_CLIENT_EXTENSIONS, ModFluids.SHIMMER.type());
 
-            @Override
-            public @NotNull ResourceLocation getStillTexture() {
-                return STILL;
-            }
-
-            @Override
-            public @NotNull ResourceLocation getFlowingTexture() {
-                return FLOWING;
-            }
-
-            @Override
-            public @NotNull Vector3f modifyFogColor(@NotNull Camera camera, float partialTick, @NotNull ClientLevel level, int renderDistance, float darkenWorldAmount, @NotNull Vector3f fluidFogColor) {
-                return FOG_COLOR;
-            }
-
-            @Override
-            public void modifyFogRender(@NotNull Camera camera, FogRenderer.@NotNull FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, @NotNull FogShape shape) {
-                RenderSystem.setShaderFogStart(0.125F);
-                RenderSystem.setShaderFogEnd(5.0F);
-            }
-        }, ModFluids.HONEY.type());
-        event.registerFluidType(new IClientFluidTypeExtensions() {
-            private static final ResourceLocation STILL = Confluence.asResource("block/fluid/shimmer_still");
-            private static final ResourceLocation FLOWING = Confluence.asResource("block/fluid/shimmer_flowing");
-            private static final Vector3f FOG_COLOR = new Vector3f(1.0F, 0.5882F, 1.0F);
-
-            @Override
-            public @NotNull ResourceLocation getStillTexture() {
-                return STILL;
-            }
-
-            @Override
-            public @NotNull ResourceLocation getFlowingTexture() {
-                return FLOWING;
-            }
-
-            @Override
-            public @NotNull Vector3f modifyFogColor(@NotNull Camera camera, float partialTick, @NotNull ClientLevel level, int renderDistance, float darkenWorldAmount, @NotNull Vector3f fluidFogColor) {
-                return FOG_COLOR;
-            }
-
-            @Override
-            public void modifyFogRender(@NotNull Camera camera, FogRenderer.@NotNull FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, @NotNull FogShape shape) {
-                RenderSystem.setShaderFogStart(0.125F);
-                RenderSystem.setShaderFogEnd(10.0F);
-            }
-        }, ModFluids.SHIMMER.type());
+        event.registerItem(ModClientSetups.ALTAR_CLIENT_EXTENSIONS, FunctionalBlocks.DEMON_ALTAR.asItem(), FunctionalBlocks.CRIMSON_ALTAR.asItem());
         event.registerItem(new SimpleGeoItemRenderer<>(LifeCrystalBlockModel.MODEL, LifeCrystalBlockModel.TEXTURE, null), NatureBlocks.LIFE_CRYSTAL_BLOCK.asItem());
-        event.registerItem(new IClientItemExtensions() {
-            private GeoItemRenderer<AltarBlock.Item> renderer;
-
-            @Override
-            public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                if (renderer == null) {
-                    this.renderer = new GeoItemRenderer<>(new GeoModel<>() {
-                        @Override
-                        public ResourceLocation getModelResource(AltarBlock.Item animatable) {
-                            return AltarBlockModel.MODELS[animatable.getVariant().getId()];
-                        }
-
-                        @Override
-                        public ResourceLocation getTextureResource(AltarBlock.Item animatable) {
-                            return AltarBlockModel.TEXTURES[animatable.getVariant().getId()];
-                        }
-
-                        @Override
-                        public ResourceLocation getAnimationResource(AltarBlock.Item animatable) {
-                            return AltarBlockModel.ANIMATIONS[animatable.getVariant().getId()];
-                        }
-                    });
-                }
-                return renderer;
-            }
-        }, FunctionalBlocks.DEMON_ALTAR.asItem(), FunctionalBlocks.CRIMSON_ALTAR.asItem());
         event.registerItem(new SimpleGeoItemRenderer<>(SkyMillBlockModel.MODEL, SkyMillBlockModel.TEXTURE, SkyMillBlockModel.ANIMATION), FunctionalBlocks.SKY_MILL.asItem());
         event.registerItem(new SimpleGeoItemRenderer<>(ExtractinatorBlockModel.MODEL, ExtractinatorBlockModel.TEXTURE, ExtractinatorBlockModel.ANIMATION), FunctionalBlocks.EXTRACTINATOR.asItem());
     }

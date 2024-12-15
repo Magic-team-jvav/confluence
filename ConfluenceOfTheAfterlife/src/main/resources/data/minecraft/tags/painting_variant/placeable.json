@@ -1,10 +1,9 @@
 {
   "replace": false,
   "values": [
-    "confluence:westernat",
     "confluence:magic_harp",
-    "confluence:cooobrid",
     "confluence:westernat",
+    "confluence:cooobrid",
     "confluence:nakinosi",
     "confluence:maker",
     "confluence:a_pigeon_delight",

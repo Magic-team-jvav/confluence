@@ -2,8 +2,6 @@ package org.confluence.mod.common.block.functional;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -52,16 +50,11 @@ public class FragileBlock extends Block implements ISimulatorBlock {
     }
 
     @Override
-    protected void tick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
-        level.removeBlock(pos, false);
-    }
-
-    @Override
     protected @NotNull BlockState updateShape(@NotNull BlockState state, @NotNull Direction direction, @NotNull BlockState neighborState, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos neighborPos) {
         if (!level.isClientSide() && !state.getValue(StateProperties.IS_SUPPORTING)) {
             BlockState blockState = level.getBlockState(pos.relative(state.getValue(BlockStateProperties.FACING)));
             if (!blockState.hasProperty(StateProperties.IS_SUPPORTING)) {
-                level.scheduleTick(pos, this, 1);
+                level.destroyBlock(pos, false);
             }
         }
         return state;

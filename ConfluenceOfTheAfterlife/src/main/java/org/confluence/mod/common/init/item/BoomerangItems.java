@@ -1,5 +1,7 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.apache.commons.lang3.function.TriFunction;
@@ -69,5 +71,7 @@ public class BoomerangItems {
         return ITEMS.register(name, () -> new Boomerang(damage,durability,rarity, boomerangModifier));
     }
 
-
+    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
+        ITEMS.getEntries().forEach(item -> tag.add(item.get()));
+    }
 }

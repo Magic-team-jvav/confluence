@@ -6,19 +6,25 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "confluence:gameplay/fishing/junk",
+          "value": "confluence:gameplay/fishing/junk",
           "quality": -2,
           "weight": 5
         },
         {
           "type": "minecraft:loot_table",
-          "name": "confluence:gameplay/fishing/treasure",
+          "value": "confluence:gameplay/fishing/treasure",
           "quality": 2,
-          "weight": 10
+          "weight": 5
         },
         {
           "type": "minecraft:loot_table",
-          "name": "confluence:gameplay/fishing/fish",
+          "value": "confluence:gameplay/fishing/box",
+          "quality": 2,
+          "weight": 5
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": "confluence:gameplay/fishing/fish",
           "quality": -1,
           "weight": 85
         }

@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "confluence:gameplay/slime_carry",
+          "value": "confluence:gameplay/slime_carry",
           "weight": 1
         },
         {
@@ -31,8 +31,10 @@
               "function": "minecraft:set_count"
             },
             {
-              "function": "set_nbt",
-              "tag": "{color: 14468506}"
+              "function": "minecraft:set_components",
+              "components": {
+                "terra_curio:nbt": "{color:-2727}"
+              }
             }
           ],
           "name": "confluence:gel",

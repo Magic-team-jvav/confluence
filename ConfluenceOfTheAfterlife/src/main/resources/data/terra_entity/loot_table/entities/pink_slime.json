@@ -44,7 +44,7 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "confluence:gameplay/slime_carry",
+          "value": "confluence:gameplay/slime_carry",
           "weight": 1
         },
         {

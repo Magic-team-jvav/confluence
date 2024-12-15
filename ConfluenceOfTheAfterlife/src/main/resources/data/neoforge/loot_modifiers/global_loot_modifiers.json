@@ -11,10 +11,14 @@
         "confluence:entities/skeleton",
         "confluence:entities/bat",
         "confluence:entities/zombie",
+        "confluence:entities/wither_skeleton",
+        "confluence:entities/elder_guardian",
         "confluence:chests/shipwreck_supply",
         "confluence:chests/shipwreck_treasure",
         "confluence:chests/underwater_ruin_small",
         "confluence:chests/underwater_ruin_big",
+        "confluence:chests/stronghold_corridor",
+        "confluence:chests/stronghold_crossing",
         "confluence:chests/desert_pyramid",
         "confluence:chests/jungle_temple"
     ]

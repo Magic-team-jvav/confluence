@@ -135,11 +135,21 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.REDSTONE_ORE_SMELTING).add(
                 OreBlocks.SANCTIFICATION_REDSTONE_ORE.asItem(),OreBlocks.CORRUPTION_REDSTONE_ORE.asItem(),OreBlocks.FLESHIFICATION_REDSTONE_ORE.get().asItem()
         );
+
         BowItems.acceptTag(tag(Tags.Items.TOOLS_BOW));
         ArrowItems.acceptTag(tag(ItemTags.ARROWS));
         HammerItems.acceptTag(tag(ModTags.Items.HAMMER));
         AxeItems.acceptTag(tag(ItemTags.AXES));
+
         SwordItems.acceptTag(tag(Tags.Items.MELEE_WEAPON_TOOLS));
+        ManaStaffItems.acceptTag(tag(ModTags.Items.MANA_WEAPON));
+        BowItems.acceptTag(tag(Tags.Items.RANGED_WEAPON_TOOLS));
+        IntrinsicTagAppender<Item> mining_tool_tools = tag(Tags.Items.MINING_TOOL_TOOLS);
+        PickaxeItems.acceptTag(mining_tool_tools);
+        PickaxeAxeItems.acceptTag(mining_tool_tools);
+        AxeItems.acceptTag(mining_tool_tools);
+        HammerItems.acceptTag(mining_tool_tools);
+
         copy(BlockTags.RAILS, ItemTags.RAILS);
         tag(ModTags.Items.COIN).add(ModItems.COPPER_COIN.get(), ModItems.SILVER_COIN.get(), ModItems.GOLDEN_COIN.get(), ModItems.PLATINUM_COIN.get());
         tag(TETags.Items.HONEY_TRANSLATION_BUCKET).add(ToolItems.HONEY_BUCKET.get());

@@ -1,5 +1,7 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.BaseManaStaffProjectileEntity;
@@ -21,4 +23,8 @@ public class ManaStaffItems {
             SAPPHIRE_STAFF = ITEMS.register("sapphire_staff", () -> new ManaStaffItem(ModRarity.BLUE, (player, level) -> new BaseManaStaffProjectileEntity(player, level, Variant.SAPPHIRE), 6, 7.5F, 34)),
             AMETHYST_STAFF = ITEMS.register("amethyst_staff", () -> new ManaStaffItem(ModRarity.BLUE, (player, level) -> new BaseManaStaffProjectileEntity(player, level, Variant.AMETHYST), 5, 6.0F, 37)),
             DIAMOND_STAFF = ITEMS.register("diamond_staff", () -> new ManaStaffItem(ModRarity.BLUE, (player, level) -> new BaseManaStaffProjectileEntity(player, level, Variant.DIAMOND), 8, 9.5F, 26));
+
+    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
+        ITEMS.getEntries().forEach(sword -> tag.add(sword.get()));
+    }
 }

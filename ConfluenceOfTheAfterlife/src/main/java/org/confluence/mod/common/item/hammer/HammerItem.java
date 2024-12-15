@@ -22,8 +22,7 @@ public class HammerItem extends DiggerItem {
     }
 
     public HammerItem(Tier tier, float rawDamage, float rawSpeed, Properties properties) {
-        super(tier, BlockTags.WALLS, properties
-            .component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4)));
+        super(tier, BlockTags.WALLS, properties.component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4)));
     }
 
     @Override
@@ -53,9 +52,9 @@ public class HammerItem extends DiggerItem {
     public static int iteForBlocks(Level level, Player player, @NotNull BlockPos pos, boolean xOff, boolean yOff, boolean zOff, float speedOff) {
         Stream<BlockPos> posStream = BlockPos.betweenClosedStream(pos.offset(xOff ? 1 : 0, yOff ? 1 : 0, zOff ? 1 : 0), pos.offset(xOff ? -1 : 0, yOff ? -1 : 0, zOff ? -1 : 0));
         return (int) posStream.filter(pos1 -> !pos1.equals(pos))
-            .map(pos1 -> applyBlockDestroy(level, pos1, player, speedOff))
-            .filter(destroyed -> destroyed)
-            .count();
+                .map(pos1 -> applyBlockDestroy(level, pos1, player, speedOff))
+                .filter(destroyed -> destroyed)
+                .count();
     }
 
     /**
@@ -79,7 +78,7 @@ public class HammerItem extends DiggerItem {
     }
 
     @Override
-    public boolean canDisableShield(ItemStack stack, ItemStack shield, LivingEntity entity, LivingEntity attacker) {
+    public boolean canDisableShield(@NotNull ItemStack stack, @NotNull ItemStack shield, @NotNull LivingEntity entity, @NotNull LivingEntity attacker) {
         return true;
     }
 }

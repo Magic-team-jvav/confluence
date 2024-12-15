@@ -128,6 +128,7 @@ public class SwordItems {
         if(tier == ModTiers.TITANIUM) modifierBuilder.setUnbreakable();
         return register(name, () -> new BaseSwordItem(tier, rarity, rawDamage, rawSpeed, modifierBuilder));
     }
+
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
         ITEMS.getEntries().forEach(sword -> tag.add(sword.get()));
     }

@@ -159,14 +159,15 @@ tasks.register("genVoilaRun") {
     def runConfig =
             """
 <component name="ProjectRunConfigurationManager">
-    <configuration default="false" name="Confluence" type="Application" factoryName="Application" nameIsGenerated="false">
+    <configuration default="false" name="Confluence" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="false">
         <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+        <option name="SPRING_BOOT_MAIN_CLASS" value="net.neoforged.devlaunch.Main" />
         <module name="${moduleName}" />
         <option name="VM_PARAMETERS" value="@${vmArgs} -Dfml.modFolders=${modId}%%${classesDir};${modId}%%${resDir} -cp &quot;${runtimeClasspath.asPath};${ideaRt}&quot;" />
         <option name="PROGRAM_PARAMETERS" value="@${programParam}" />
         <option name="WORKING_DIRECTORY" value="${workingDir}" />
         <method v="2">
-            <option name="Gradle.BeforeRunTask" enabled="true" tasks="jar" externalProjectPath="\$PROJECT_DIR\$" vmOptions="" scriptParameters="" />
+            <option name="Make" enabled="true" />
         </method>
     </configuration>
 </component>

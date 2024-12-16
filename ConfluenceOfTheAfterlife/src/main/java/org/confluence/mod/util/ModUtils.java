@@ -31,8 +31,11 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.mixed.Immunity;
+import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.common.component.NbtComponent;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
+import org.confluence.terra_guns.TerraGuns;
+import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.entity.ai.Boss;
 import org.confluence.terraentity.utils.TEUtils;
 import org.jetbrains.annotations.Nullable;
@@ -45,12 +48,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
 
 public final class ModUtils {
     public static final Direction[] HORIZONTAL = new Direction[]{Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH};
     public static final Direction[] DIRECTIONS = Direction.values();
+    private static final Set<String> CONFLUENCE_NAMESPACES = Set.of(Confluence.MODID, TerraCurio.MODID, TerraEntity.MODID, TerraGuns.MODID);
 
     public static void createItemEntity(ItemStack itemStack, double x, double y, double z, Level level) {
         createItemEntity(itemStack, x, y, z, level, 40);
@@ -459,19 +464,21 @@ public final class ModUtils {
         return component.nbt();
     }
 
+    @Nullable
     public static Immunity getImmunityCause(DamageSource damageSource){
-        Entity directEntity = damageSource.getDirectEntity();
-        Immunity.Types type;
-        Immunity cause;
-        if(directEntity != null){
-            type = ((Immunity) directEntity).confluence$getImmunityType();
-            cause = switch(type){
-                case STATIC -> (Immunity) directEntity.getType();
-                case LOCAL -> (Immunity) directEntity;
+        ItemStack weaponItemStack = damageSource.getWeaponItem();
+        if(weaponItemStack != null && weaponItemStack.getItem() instanceof Immunity im){
+            return switch(im.confluence$getImmunityType()){
+                case STATIC -> im;
+                case LOCAL -> (Immunity) (Object) weaponItemStack;
             };
-        }else{
-            cause = (Immunity) (Object) damageSource.type();
         }
-        return cause;
+        // TODO: 打表
+        return null;
+    }
+
+    public static boolean isDamageFromConfluenceWeapon(DamageSource source){
+        ItemStack weaponItem = source.getWeaponItem();
+        return weaponItem != null && weaponItem.getItem() instanceof Immunity; // TODO: 打表
     }
 }

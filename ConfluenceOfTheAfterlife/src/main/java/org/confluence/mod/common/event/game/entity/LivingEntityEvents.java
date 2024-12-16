@@ -45,7 +45,6 @@ import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
-import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -102,8 +101,8 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void livingIncomingDamage(LivingIncomingDamageEvent event) {
+        DamageSource damageSource = event.getSource();
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-            DamageSource damageSource = event.getSource();
             float amount = event.getAmount();
             if (TCUtils.hasAccessoriesType(serverPlayer, AccessoryItems.HURT$GET$MANA)) {
                 if (!damageSource.is(DamageTypes.DROWN) && !damageSource.is(TCTags.HARMFUL_EFFECT)) {
@@ -111,9 +110,11 @@ public final class LivingEntityEvents {
                 }
             }
         }
-        event.getEntity().invulnerableTime = 0;
         if(((ILivingEntity) event.getEntity()).confluence$getImmunityTicks().containsKey(ModUtils.getImmunityCause(event.getSource()))){
             event.setCanceled(true);
+        }
+        if(ModUtils.isDamageFromConfluenceWeapon(damageSource)){
+            event.getContainer().setPostAttackInvulnerabilityTicks(event.getEntity().invulnerableTime);
         }
     }
 
@@ -177,12 +178,14 @@ public final class LivingEntityEvents {
             }
         }
 
-        Object2IntMap<Immunity> invTicks = ((ILivingEntity) damagingEntity).confluence$getImmunityTicks();
-        Immunity cause=ModUtils.getImmunityCause(damageSource);
-        float invulnerableTicksMultiplier = TCUtils.getAccessoriesValue(damagingEntity, TCItems.INVULNERABLE$TICKS$MULTIPLIER);
-        int time = cause.confluence$getImmunityDuration(damagingEntity.level().registryAccess());
-        if(time != 0){
-            invTicks.put(cause, (int) (time*invulnerableTicksMultiplier));
+        Immunity cause = ModUtils.getImmunityCause(damageSource);
+        if(cause != null){
+            Object2IntMap<Immunity> invTicks = ((ILivingEntity) damagingEntity).confluence$getImmunityTicks();
+            int time = cause.confluence$getImmunityDuration();
+            if(time != 0){
+                invTicks.put(cause, time);
+            }
+
         }
     }
 

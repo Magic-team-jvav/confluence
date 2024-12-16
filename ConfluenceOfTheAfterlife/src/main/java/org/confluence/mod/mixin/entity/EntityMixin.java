@@ -14,7 +14,6 @@ import org.confluence.mod.api.event.ShimmerEntityTransmutationEvent;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.mixed.IEntity;
-import org.confluence.mod.mixed.Immunity;
 import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -24,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Entity.class)
-public abstract class EntityMixin implements IEntity, Immunity, SelfGetter<Entity> {
+public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
     @Unique
     private static final Vec3 ANTI_GRAVITY = new Vec3(0.0, -5.0E-4F, 0.0);
 
@@ -74,11 +73,6 @@ public abstract class EntityMixin implements IEntity, Immunity, SelfGetter<Entit
     @Override
     public void confluence$setOriginalNoGravity(boolean bool) {
         this.confluence$transformData = bool ? NO_GRAVITY : HAS_GRAVITY;
-    }
-
-    @Override
-    public Types confluence$getImmunityType(){
-        return Types.LOCAL;
     }
 
     @Override

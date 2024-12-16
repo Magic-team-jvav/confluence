@@ -67,13 +67,13 @@ public final class TickEvents {
 
     @SubscribeEvent
     public static void entityTick$Post(EntityTickEvent.Post event) {
+        // 实体身上的无敌帧每刻-1
         if (event.getEntity() instanceof ILivingEntity living) {
             Object2IntMap<Immunity> invTicks = living.confluence$getImmunityTicks();
-            ObjectIterator<Object2IntMap.Entry<Immunity>> iterator = invTicks.object2IntEntrySet().iterator();
-            while (iterator.hasNext()) {
+            for(ObjectIterator<Object2IntMap.Entry<Immunity>> iterator = invTicks.object2IntEntrySet().iterator(); iterator.hasNext(); ){
                 Object2IntMap.Entry<Immunity> entry = iterator.next();
                 int remain = entry.getIntValue() - 1;
-                if (remain <= 0) {
+                if (remain < 0) {
                     iterator.remove();
                 } else {
                     entry.setValue(remain);

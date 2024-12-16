@@ -12,9 +12,6 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.StarPhase;
@@ -25,7 +22,6 @@ import java.util.List;
 
 import static org.confluence.mod.common.data.saved.ConfluenceData.STAR_PHASES_SIZE;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT, modid = Confluence.MODID)
 public final class StarPhaseHandler {
     private static final ResourceLocation[] TEXTURES = Util.make(new ResourceLocation[STAR_PHASES_SIZE], textures -> {
         textures[0] = Confluence.asResource("textures/stars/star_0_half_life.png");
@@ -45,72 +41,69 @@ public final class StarPhaseHandler {
         }
     });
 
-    @SubscribeEvent
-    public static void renderLevelStage(RenderLevelStageEvent event) {
-        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
-            Minecraft minecraft = Minecraft.getInstance();
-            ClientLevel level = minecraft.level;
-            if (level == null || level.dimension() != Level.OVERWORLD) return;
-            Tesselator instance = Tesselator.getInstance();
-            PoseStack poseStack = new PoseStack();
-            poseStack.mulPose(event.getModelViewMatrix());
+    public static void render(RenderLevelStageEvent event) {
+        Minecraft minecraft = Minecraft.getInstance();
+        ClientLevel level = minecraft.level;
+        if (level == null || level.dimension() != Level.OVERWORLD) return;
+        Tesselator tesselator = Tesselator.getInstance();
+        PoseStack poseStack = new PoseStack();
+        poseStack.mulPose(event.getModelViewMatrix());
 
-            float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
-            float gameTime = (level.getGameTime() % 24000L) + partialTick;
-            float dayTime = level.getTimeOfDay(partialTick);
-            float rDay = dayTime * Mth.TWO_PI + Mth.HALF_PI; // (dayTime * 360 + 90) * Mth.DEG_TO_RAD
-            float alpha = 1.0F - level.getRainLevel(partialTick);
-            float v1 = gameTime * 0.001F; // gameTime / 1000
-            float v2 = gameTime * 0.004166667F; // gameTime / 240
-            float earthRa = 100.0F;
-            float earthT = 400.0F;
-            float invEarthT = 1.0F / earthT;
-            float invSqrt = Mth.invSqrt(earthRa * earthRa * earthRa * invEarthT) * Mth.DEG_TO_RAD;
+        float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
+        float gameTime = (level.getGameTime() % 24000L) + partialTick;
+        float dayTime = level.getTimeOfDay(partialTick);
+        float rDay = dayTime * Mth.TWO_PI + Mth.HALF_PI; // (dayTime * 360 + 90) * Mth.DEG_TO_RAD
+        float alpha = 1.0F - level.getRainLevel(partialTick);
+        float v1 = gameTime * 0.001F; // gameTime / 1000
+        float v2 = gameTime * 0.004166667F; // gameTime / 240
+        float earthRa = 100.0F;
+        float earthT = 400.0F;
+        float invEarthT = 1.0F / earthT;
+        float invSqrt = Mth.invSqrt(earthRa * earthRa * earthRa * invEarthT) * Mth.DEG_TO_RAD;
 
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            for (int i = 0; i < STAR_PHASES_SIZE; i++) {
-                StarPhase phase = STAR_PHASES.get(i);
-                float sizeSet = 1.0F;
-                float timeOffset = phase.timeOffset();
-                float radius = phase.radius();
-                float size = sizeSet * (radius * 0.001F + timeOffset * 0.0001F + 0.07F / radius);
-                poseStack.pushPose();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        for (int i = 0; i < STAR_PHASES_SIZE; i++) {
+            StarPhase phase = STAR_PHASES.get(i);
+            float sizeSet = 1.0F;
+            float timeOffset = phase.timeOffset();
+            float radius = phase.radius();
+            float size = sizeSet * (radius * 0.001F + timeOffset * 0.0001F + 0.07F / radius);
+            poseStack.pushPose();
 
-                // poseStack变换在这
-                float time = 1.0F;
-                float angle = phase.angle() * Mth.DEG_TO_RAD;
-                float v = time * v2;
-                float earthR = v * invSqrt;
+            // poseStack变换在这
+            float time = 1.0F;
+            float angle = phase.angle() * Mth.DEG_TO_RAD;
+            float v = time * v2;
+            float earthR = v * invSqrt;
 
-                float starR = (v / Mth.sqrt(radius * radius * radius * invEarthT) + timeOffset) * Mth.DEG_TO_RAD - earthR;
-                float sin = Mth.sin(starR + earthR);
-                float cos = radius * Mth.cos(sin * angle);
+            float starR = (v / Mth.sqrt(radius * radius * radius * invEarthT) + timeOffset) * Mth.DEG_TO_RAD - earthR;
+            float sin = Mth.sin(starR + earthR);
+            float cos = radius * Mth.cos(sin * angle);
 
-                float starX = cos * Mth.sin(starR);
-                float starY = cos * Mth.cos(starR) - earthRa;
-                float starZ = radius * sin * Mth.sin(angle);
+            float starX = cos * Mth.sin(starR);
+            float starY = cos * Mth.cos(starR) - earthRa;
+            float starZ = radius * sin * Mth.sin(angle);
 
-                float dis = Mth.sqrt(starX * starX + starY * starY);
+            float dis = Mth.sqrt(starX * starX + starY * starY);
 
-                poseStack.mulPose(Axis.ZP
-                        .rotation((float) Mth.atan2(starY, starX))
-                        .rotateZ(rDay)
-                        .rotateX((float) Mth.atan2(starZ, dis))
-                        .rotateY(v1 + timeOffset));
+            poseStack.mulPose(Axis.ZP
+                    .rotation((float) Mth.atan2(starY, starX))
+                    .rotateZ(rDay)
+                    .rotateX((float) Mth.atan2(starZ, dis))
+                    .rotateY(v1 + timeOffset));
 
-                Matrix4f matrix4f = poseStack.last().pose();
-                RenderSystem.setShaderTexture(0, TEXTURES[i]);
-                BufferBuilder bufferBuilder = instance.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-                bufferBuilder.addVertex(matrix4f, -size, dis, -size).setUv(0.0F, 1.0F);
-                bufferBuilder.addVertex(matrix4f, size, dis, -size).setUv(1.0F, 1.0F);
-                bufferBuilder.addVertex(matrix4f, size, dis, size).setUv(1.0F, 0.0F);
-                bufferBuilder.addVertex(matrix4f, -size, dis, size).setUv(0.0F, 0.0F);
-                BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
-                poseStack.popPose();
-            }
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            Matrix4f matrix4f = poseStack.last().pose();
+            RenderSystem.setShaderTexture(0, TEXTURES[i]);
+            BufferBuilder bufferBuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+            bufferBuilder.addVertex(matrix4f, -size, dis, -size).setUv(0.0F, 1.0F);
+            bufferBuilder.addVertex(matrix4f, size, dis, -size).setUv(1.0F, 1.0F);
+            bufferBuilder.addVertex(matrix4f, size, dis, size).setUv(1.0F, 0.0F);
+            bufferBuilder.addVertex(matrix4f, -size, dis, size).setUv(0.0F, 0.0F);
+            BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
+            poseStack.popPose();
         }
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     public static void handleStarPhases(Either<Int2ObjectMap<StarPhase>, Int2ObjectMap.Entry<StarPhase>> packet) {

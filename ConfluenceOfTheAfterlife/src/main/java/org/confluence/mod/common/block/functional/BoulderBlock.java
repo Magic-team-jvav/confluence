@@ -19,14 +19,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
 
-
 public class BoulderBlock extends AbstractMechanicalBlock {
     public BoulderBlock() {
         super(Properties.of());
     }
 
     @Override
-    public boolean canHarvestBlock(BlockState state, BlockGetter level, BlockPos pos, Player player) {
+    public boolean canHarvestBlock(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull Player player) {
         return true;
     }
 
@@ -41,7 +40,7 @@ public class BoulderBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, @Nullable Direction direction) {
+    public boolean canConnectRedstone(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @Nullable Direction direction) {
         return true;
     }
 

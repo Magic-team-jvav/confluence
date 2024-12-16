@@ -39,7 +39,7 @@ public class TimersBlock extends AbstractMechanicalBlock {
 
     @Override
     public @NotNull InteractionResult useWithoutItem(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull Player pPlayer, @NotNull BlockHitResult pHit) {
-        if (cannotInteractWith(pPlayer.getMainHandItem().getItem())) return InteractionResult.PASS;
+        if (skipInteraction(pPlayer.getMainHandItem())) return InteractionResult.PASS;
         if (!pLevel.isClientSide && pPlayer.isCrouching()) {
             pState = pState.cycle(DRIVE);
             if (!pState.getValue(DRIVE)) { // 使网络收到负脉冲

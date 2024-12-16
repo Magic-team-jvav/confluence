@@ -15,7 +15,7 @@ public class ModChineseProvider extends LanguageProvider {
     @Override
     protected void addTranslations() {
 
-        add("config.jade.plugin_confluence.jade_mechanical_component", "机械信息");
+        add("config.jade.plugin_confluence.jade_network_component", "机械信息");
 
         add("creativetab.confluence.building_blocks", "汇流来世 | 建筑方块");
         add("creativetab.confluence.natural_blocks", "汇流来世 | 自然方块");

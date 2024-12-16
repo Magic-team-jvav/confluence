@@ -3,6 +3,7 @@ package org.confluence.mod.api.event;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -26,8 +27,8 @@ import java.util.List;
  * This event is Server side only.
  */
 public abstract class ShimmerItemTransmutationEvent extends Event {
-    public static final ArrayList<Ingredient> BLACK_LIST = new ArrayList<>();
-    public static final ArrayList<ItemTransmutation> ITEM_TRANSMUTATION = new ArrayList<>();
+    public static final List<Ingredient> BLACK_LIST = new ArrayList<>();
+    public static final List<ItemTransmutation> ITEM_TRANSMUTATION = new ArrayList<>();
     protected final ItemEntity source;
     protected int coolDown;
     protected int shrink = 0;
@@ -136,11 +137,12 @@ public abstract class ShimmerItemTransmutationEvent extends Event {
                         List<ItemStack> results = new ArrayList<>();
                         for (ItemStack result : transmutation.target) {
                             int count = result.getCount() * times;
-                            while (count > 64) {
+                            int maxStackSize = result.getMaxStackSize();
+                            while (count > maxStackSize) {
                                 ItemStack copy = result.copy();
-                                copy.setCount(64);
+                                copy.setCount(maxStackSize);
                                 results.add(copy);
-                                count -= 64;
+                                count -= maxStackSize;
                             }
                             result.setCount(count);
                             results.add(result);
@@ -153,6 +155,7 @@ public abstract class ShimmerItemTransmutationEvent extends Event {
                 if (sourceItem.getDamageValue() != 0) return null;
                 RegistryAccess registryAccess = source.level().registryAccess();
                 boolean isHardCore = data.isHardcore();
+                RandomSource random = source.level().random;
                 for (RecipeHolder<?> recipeHolder : ((ServerLevel) source.level()).getServer().getRecipeManager().getRecipes()) {
                     Recipe<?> recipe = recipeHolder.value();
                     if (recipe.isSpecial() || recipe.isIncomplete() || recipe instanceof AbstractCookingRecipe) continue;
@@ -165,18 +168,19 @@ public abstract class ShimmerItemTransmutationEvent extends Event {
                             if (itemStacks.length == 0 || Arrays.stream(itemStacks).allMatch(itemStack -> itemStack.is(ModTags.Items.HARDMODE))) {
                                 continue;
                             }
-                            ItemStack input = itemStacks[source.level().random.nextInt(itemStacks.length)];
+                            ItemStack input = itemStacks[random.nextInt(itemStacks.length)];
                             while (!isHardCore && input.is(ModTags.Items.HARDMODE)) {
-                                input = itemStacks[source.level().random.nextInt(itemStacks.length)];
+                                input = itemStacks[random.nextInt(itemStacks.length)];
                             }
                             ItemStack result = input.copy();
                             if (result.getItem().hasCraftingRemainingItem(result)) continue;
                             int count = result.getCount() * times;
-                            while (count > 64) {
+                            int maxStackSize = result.getMaxStackSize();
+                            while (count > maxStackSize) {
                                 ItemStack copy = result.copy();
-                                copy.setCount(64);
+                                copy.setCount(maxStackSize);
                                 results.add(copy);
-                                count -= 64;
+                                count -= maxStackSize;
                             }
                             result.setCount(count);
                             results.add(result);

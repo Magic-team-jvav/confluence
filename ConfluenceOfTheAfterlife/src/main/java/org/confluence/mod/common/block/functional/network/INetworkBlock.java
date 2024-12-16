@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.item.common.WireCutterItem;
@@ -52,19 +53,19 @@ public interface INetworkBlock {
         if (pLevel.getBlockEntity(pPos) instanceof INetworkEntity entity) {
             if (color == -1) { // 激活所有网络
                 entity.getOrCreateNetworkNode().getNetworks().values().stream()
-                    .filter(network -> hasSignal != network.hasSignal()) // 只处理不同的信号
-                    .peek(network -> network.setSignal(hasSignal))
-                    .flatMap(network -> network.getNodes().stream().map(networkNode -> new Tuple<>(network.getColor(), networkNode.getEntity())))
-                    .collect(Collectors.toSet())
-                    .forEach(tuple -> internalExecute(pLevel, pPos, tuple.getA(), hasSignal, tuple.getB()));
+                        .filter(network -> hasSignal != network.hasSignal()) // 只处理不同的信号
+                        .peek(network -> network.setSignal(hasSignal))
+                        .flatMap(network -> network.getNodes().stream().map(networkNode -> new Tuple<>(network.getColor(), networkNode.getEntity())))
+                        .collect(Collectors.toSet())
+                        .forEach(tuple -> internalExecute(pLevel, pPos, tuple.getA(), hasSignal, tuple.getB()));
             } else {
                 Network network = entity.getOrCreateNetworkNode().getNetwork(color);
                 if (network != null && hasSignal != network.hasSignal()) { // 同样只处理不同的信号
                     network.setSignal(hasSignal);
                     network.getNodes().stream()
-                        .map(NetworkNode::getEntity)
-                        .collect(Collectors.toSet())
-                        .forEach(entity1 -> internalExecute(pLevel, pPos, color, hasSignal, entity1));
+                            .map(NetworkNode::getEntity)
+                            .collect(Collectors.toSet())
+                            .forEach(entity1 -> internalExecute(pLevel, pPos, color, hasSignal, entity1));
                 }
             }
             if (hasSignal) {
@@ -104,7 +105,8 @@ public interface INetworkBlock {
      */
     default void onUnExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {}
 
-    default boolean cannotInteractWith(Item item) {
+    default boolean skipInteraction(ItemStack itemStack) {
+        Item item = itemStack.getItem();
         return item instanceof WrenchItem || item instanceof WireCutterItem;
     }
 }

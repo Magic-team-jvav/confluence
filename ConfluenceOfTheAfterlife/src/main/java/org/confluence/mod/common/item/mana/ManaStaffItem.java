@@ -33,7 +33,6 @@ public class ManaStaffItem extends CustomRarityItem {
 
     /**
      * @param rawVelocity 换算前的射弹速度
-     * @param cooldown 换算前的冷却时间
      */
     public ManaStaffItem(ModRarity rarity, BulletFactory factory, int manaCost, float rawVelocity, int cooldown) {
         this(new Properties().stacksTo(1), rarity, factory, manaCost, rawVelocity / 8.0F, cooldown);

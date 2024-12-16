@@ -10,7 +10,7 @@ import org.confluence.mod.Confluence;
 import java.util.function.Supplier;
 
 public final class ModSoundEvents {
-    public static final DeferredRegister<SoundEvent> SOUND_EVENT = DeferredRegister.create(Registries.SOUND_EVENT, Confluence.MODID);
+    public static final DeferredRegister<SoundEvent> EVENTS = DeferredRegister.create(Registries.SOUND_EVENT, Confluence.MODID);
 
     public static final Supplier<SoundEvent> TRANSMISSION = register("transmission");
     public static final Supplier<SoundEvent> WAVING = register("waving");
@@ -44,7 +44,7 @@ public final class ModSoundEvents {
     public static final Supplier<SoundEvent> ACHIEVEMENTS = register("achievements"); // 成就音效
 
     private static Supplier<SoundEvent> register(String name) {
-        return SOUND_EVENT.register(name, () -> SoundEvent.createVariableRangeEvent(Confluence.asResource(name)));
+        return EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(Confluence.asResource(name)));
     }
 
     public static class Types {

@@ -29,7 +29,7 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 @SuppressWarnings("deprecation")
 public class DartTrapBlock extends AbstractMechanicalBlock {
     public static final ItemStack PICKUP_ITEM_STACK = Items.SPECTRAL_ARROW.getDefaultInstance();
-    public static final MutableComponent NAME = Component.translatable("entity.terra_curio.dart");
+    public static final MutableComponent NAME = Component.translatable("entity.confluence.dart");
 
     public DartTrapBlock() {
         super(Properties.ofFullCopy(Blocks.DISPENSER));

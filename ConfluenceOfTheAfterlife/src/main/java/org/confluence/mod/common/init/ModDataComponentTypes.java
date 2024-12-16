@@ -11,17 +11,17 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import java.util.function.Supplier;
 
 public final class ModDataComponentTypes {
-    public static final DeferredRegister.DataComponents DATA_COMPONENT_TYPE = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, Confluence.MODID);
+    public static final DeferredRegister.DataComponents TYPES = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, Confluence.MODID);
 
-    public static final Supplier<DataComponentType<LootComponent>> LOOT = DATA_COMPONENT_TYPE.registerComponentType(
+    public static final Supplier<DataComponentType<LootComponent>> LOOT = TYPES.registerComponentType(
             "loot", builder -> builder.persistent(LootComponent.CODEC).networkSynchronized(LootComponent.STREAM_CODEC)
     );
 
-    public static final Supplier<DataComponentType<SingleBooleanComponent>> BOOMERANG_READY = DATA_COMPONENT_TYPE.registerComponentType(
+    public static final Supplier<DataComponentType<SingleBooleanComponent>> BOOMERANG_READY = TYPES.registerComponentType(
             "boomerang_ready", builder -> builder.persistent(SingleBooleanComponent.CODEC).networkSynchronized(SingleBooleanComponent.STREAM_CODEC)
     );
 
-    public static final Supplier<DataComponentType<PrefixComponent>> PREFIX = DATA_COMPONENT_TYPE.registerComponentType(
+    public static final Supplier<DataComponentType<PrefixComponent>> PREFIX = TYPES.registerComponentType(
             "prefix", builder -> builder.persistent(PrefixComponent.CODEC) // 不能使用networkSynchronized
     );
 }

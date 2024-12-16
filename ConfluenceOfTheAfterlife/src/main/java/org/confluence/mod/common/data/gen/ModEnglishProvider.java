@@ -32,7 +32,7 @@ public class ModEnglishProvider extends LanguageProvider {
     @Override
     protected void addTranslations() {
 
-        add("config.jade.plugin_confluence.jade_mechanical_component", "Mechanical Info");
+        add("config.jade.plugin_confluence.jade_network_component", "Mechanical Info");
 
         add("creativetab.confluence.building_blocks", "Confluence | Buildings");
         add("creativetab.confluence.natural_blocks", "Confluence | Naturals");

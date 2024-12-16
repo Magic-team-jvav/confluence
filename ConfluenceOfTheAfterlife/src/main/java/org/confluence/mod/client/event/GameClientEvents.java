@@ -20,6 +20,7 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.client.handler.HookThrowingHandler;
 import org.confluence.mod.client.handler.MeteoriteLandingHandler;
+import org.confluence.mod.client.handler.StarPhaseHandler;
 import org.confluence.mod.client.handler.WeatherHandler;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
@@ -139,6 +140,7 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void renderLevelStage(RenderLevelStageEvent event) {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
+            StarPhaseHandler.render(event);
             MeteoriteLandingHandler.render(event);
         }
     }

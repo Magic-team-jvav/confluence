@@ -7,7 +7,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.advancement.ModTriggers;
+import org.confluence.mod.common.advancement.ModCriterionTriggers;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
@@ -28,11 +28,11 @@ public class Confluence {
         ModVillagers.register(eventBus);
         ModRecipes.register(eventBus);
         ModFluids.initialize();
-        ModTriggers.TYPES.register(eventBus);
+        ModCriterionTriggers.TRIGGERS.register(eventBus);
         ModTabs.TABS.register(eventBus);
         ModEntities.ENTITIES.register(eventBus);
-        ModDataComponentTypes.DATA_COMPONENT_TYPE.register(eventBus);
-        ModSoundEvents.SOUND_EVENT.register(eventBus);
+        ModDataComponentTypes.TYPES.register(eventBus);
+        ModSoundEvents.EVENTS.register(eventBus);
         ModAttachments.TYPES.register(eventBus);
         ModEffects.EFFECTS.register(eventBus);
         ModFeatures.FEATURES.register(eventBus);
@@ -41,7 +41,7 @@ public class Confluence {
         ModMenus.TYPES.register(eventBus);
         ModParticles.PARTICLES.register(eventBus);
         ModWorldGens.GENERATORS.register(eventBus);
-        ModPaintings.VARIANTS.register(eventBus);
+        ModPaintingVariants.VARIANTS.register(eventBus);
     }
 
     public static void registerGameRules() {

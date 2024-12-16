@@ -7,7 +7,7 @@ import org.confluence.mod.Confluence;
 
 import java.util.function.Supplier;
 
-public final class ModPaintings {
+public final class ModPaintingVariants {
     public static final DeferredRegister<PaintingVariant> VARIANTS = DeferredRegister.create(Registries.PAINTING_VARIANT, Confluence.MODID);
 
     public static final Supplier<PaintingVariant> MAGIC_HARP = register("magic_harp");

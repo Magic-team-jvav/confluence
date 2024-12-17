@@ -7,6 +7,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.confluence.mod.common.block.natural.LogBlockSet;
@@ -16,6 +17,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.confluence.mod.common.init.block.OreBlocks;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -284,6 +286,61 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         );
         tag(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE).addTag(BlockTags.LEAVES);
         tag(ModTags.Blocks.COIN_PILE).add(COPPER_COIN_PILE.get(), SILVER_COIN_PILE.get(), GOLDEN_COIN_PILE.get(), PLATINUM_COIN_PILE.get(), EMERALD_COIN_PILE.get());
+        tag(BlockTags.NEEDS_DIAMOND_TOOL).add(
+            OreBlocks.EBONY_ORE.get(),
+            OreBlocks.DEEPSLATE_EBONY_ORE.get(),
+            OreBlocks.SANCTIFICATION_EBONY_ORE.get(),
+            OreBlocks.CORRUPTION_EBONY_ORE.get(),
+            OreBlocks.FLESHIFICATION_EBONY_ORE.get(),
+            OreBlocks.EBONY_BLOCK.get(),
+            OreBlocks.RAW_EBONY_BLOCK.get(),
+            OreBlocks.DEEPSLATE_TR_CRIMSON_ORE.get(),
+            OreBlocks.SANCTIFICATION_TR_CRIMSON_ORE.get(),
+            OreBlocks.CORRUPTION_TR_CRIMSON_ORE.get(),
+            OreBlocks.FLESHIFICATION_TR_CRIMSON_ORE.get(),
+            OreBlocks.RAW_TR_CRIMSON_BLOCK.get(),
+            OreBlocks.TR_CRIMSON_BLOCK.get()
+        );
+        tag(ModTags.Blocks.NEEDS_4_LEVEL).add(
+            OreBlocks.HELLSTONE.get(),
+            OreBlocks.ASH_HELLSTONE.get(),
+            OreBlocks.RAW_HELLSTONE_BLOCK.get(),
+            OreBlocks.HELLSTONE_BLOCK.get()
+        );
+        tag(ModTags.Blocks.NEEDS_5_LEVEL).add(
+            OreBlocks.DEEPSLATE_COBALT_ORE.get(),
+            OreBlocks.RAW_COBALT_BLOCK.get(),
+            OreBlocks.COBALT_BLOCK.get(),
+            OreBlocks.DEEPSLATE_PALLADIUM_ORE.get(),
+            OreBlocks.RAW_PALLADIUM_BLOCK.get(),
+            OreBlocks.PALLADIUM_BLOCK.get()
+        );
+        tag(ModTags.Blocks.NEEDS_6_LEVEL).add(
+            OreBlocks.DEEPSLATE_MITHRIL_ORE.get(),
+            OreBlocks.RAW_MITHRIL_BLOCK.get(),
+            OreBlocks.MITHRIL_BLOCK.get(),
+            OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get(),
+            OreBlocks.RAW_ORICHALCUM_BLOCK.get(),
+            OreBlocks.ORICHALCUM_BLOCK.get()
+        );
+        tag(ModTags.Blocks.NEEDS_7_LEVEL).add(
+            OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get(),
+            OreBlocks.RAW_ADAMANTITE_BLOCK.get(),
+            OreBlocks.ADAMANTITE_BLOCK.get(),
+            OreBlocks.DEEPSLATE_TITANIUM_ORE.get(),
+            OreBlocks.RAW_TITANIUM_BLOCK.get(),
+            OreBlocks.TITANIUM_BLOCK.get()
+        );
+        tag(ModTags.Blocks.NEEDS_8_LEVEL).add(OreBlocks.HALLOWED_BLOCK.get());
+        tag(ModTags.Blocks.NEEDS_9_LEVEL).add(
+            OreBlocks.CHLOROPHYTE_ORE.get(),
+            OreBlocks.RAW_CHLOROPHYTE_BLOCK.get(),
+            OreBlocks.CHLOROPHYTE_BLOCK.get(),
+            OreBlocks.SHROOMITE_BLOCK.get(),
+            OreBlocks.SPECTRE_BLOCK.get(),
+            OreBlocks.RAW_LUMINITE_BLOCK.get(),
+            OreBlocks.LUMINITE_BLOCK.get()
+        );
     }
 
     @Override

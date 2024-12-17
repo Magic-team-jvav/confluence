@@ -1,8 +1,8 @@
 {
     "type": "neoforge:add_spawns",
-    "biomes":"#c:is_overworld",
+    "biomes":"confluence:tr_crimson",
     "spawners": {
-        "type": "terra_entity:blood_crawler",
+        "type": "terra_entity:bloody_spore",
         "weight": 60,
         "minCount": 1,
         "maxCount": 1

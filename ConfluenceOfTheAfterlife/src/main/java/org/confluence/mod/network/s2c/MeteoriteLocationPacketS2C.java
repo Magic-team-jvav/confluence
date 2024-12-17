@@ -6,6 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -28,8 +29,9 @@ public record MeteoriteLocationPacketS2C(BlockPos location, int tickUntilLanding
 
     public void handle(IPayloadContext context) {
         context.enqueueWork(() -> {
-            if (context.player().isLocalPlayer()) {
-                MeteoriteLandingHandler.handleMeteorite(this);
+            Player player = context.player();
+            if (player.isLocalPlayer()) {
+                MeteoriteLandingHandler.handlePacket(this, player);
             }
         }).exceptionally(e -> {
             context.disconnect(Component.translatable("neoforge.network.invalid_flow", e.getMessage()));

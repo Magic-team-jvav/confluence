@@ -17,6 +17,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IServerPlayer;
@@ -31,6 +32,7 @@ public final class TickEvents {
         PathService.INSTANCE.pathFindingTick();
         if (serverLevel.dimension() != Level.OVERWORLD) return;
         FallingStarItemEntity.summon(serverLevel);
+        MeteoriteTracker.INSTANCE.tick(serverLevel);
 
         if (serverLevel.getDayTime() % 24000L == 0L) {
             RandomSource random = serverLevel.random;

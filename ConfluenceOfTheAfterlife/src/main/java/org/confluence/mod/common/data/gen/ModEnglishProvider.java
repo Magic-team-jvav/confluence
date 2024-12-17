@@ -329,6 +329,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("resourcepack.ter_armor", "Mainstream Terraria Armor Textures");
 
         add("event.confluence.blood_moon", "The Blood Moon is rising...");
+        add("event.confluence.meteorite", "A meteorite has landed!");
 
         add("attribute.name.player.minion_capacity", "Minion Capacity");
         add("attribute.name.player.sentry_capacity", "Sentry Capacity");

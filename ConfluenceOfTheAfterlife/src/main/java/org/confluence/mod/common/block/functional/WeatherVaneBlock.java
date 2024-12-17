@@ -13,9 +13,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.mod.client.handler.WeatherHandler;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.terra_curio.client.handler.InformationHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
@@ -62,8 +62,8 @@ public class WeatherVaneBlock extends Block implements EntityBlock {
         }
 
         public static void clientTick(Level level, BlockPos blockPos, BlockState blockState, Entity entity) {
-            float windSpeedX = InformationHandler.getWindSpeedX();
-            float windSpeedZ = InformationHandler.getWindSpeedZ();
+            float windSpeedX = WeatherHandler.getWindSpeedX();
+            float windSpeedZ = WeatherHandler.getWindSpeedZ();
             if (entity.lastWindSpeed.x != windSpeedX || entity.lastWindSpeed.y != windSpeedZ) {
                 entity.lastWindSpeed.set(windSpeedX, windSpeedZ);
                 float target = Mth.HALF_PI - (float) Mth.atan2(windSpeedZ, windSpeedX);

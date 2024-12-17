@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 
 import static org.confluence.mod.Confluence.MODID;
 
-public final class ModWorldGens {
+public final class ModChunkGenerators {
     public static final DeferredRegister<MapCodec<? extends ChunkGenerator>> GENERATORS = DeferredRegister.create(BuiltInRegistries.CHUNK_GENERATOR, MODID);
 
     public static final ResourceKey<WorldPreset> THE_CORRUPTION = ResourceKey.create(Registries.WORLD_PRESET, Confluence.asResource("the_corruption"));

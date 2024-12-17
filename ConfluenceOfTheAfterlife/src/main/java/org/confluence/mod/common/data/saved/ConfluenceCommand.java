@@ -5,6 +5,8 @@ import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.server.command.EnumArgument;
 
@@ -65,6 +67,12 @@ public class ConfluenceCommand {
                             return 1;
                         }))))
                 )
+                .then(Commands.literal("meteorite").then(Commands.argument("location", BlockPosArgument.blockPos()).then(Commands.argument("tickUntilLanding", IntegerArgumentType.integer(0)).executes(context -> {
+                    BlockPos location = BlockPosArgument.getBlockPos(context, "location");
+                    int tickUntilLanding = IntegerArgumentType.getInteger(context, "tickUntilLanding");
+                    ConfluenceData.get(context.getSource().getLevel()).setMeteorite(location, tickUntilLanding);
+                    return 1;
+                }))))
         );
     }
 }

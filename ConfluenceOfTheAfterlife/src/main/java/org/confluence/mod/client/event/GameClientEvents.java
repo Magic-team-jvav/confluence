@@ -46,6 +46,7 @@ public final class GameClientEvents {
 
         if (player == null) return;
 
+        MeteoriteLandingHandler.handle(minecraft, player);
         ProjectileStrategy.handle(minecraft, player);
         HookThrowingHandler.handle(player);
     }

@@ -2,20 +2,24 @@ package org.confluence.mod.common.data.saved;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.network.s2c.GamePhasePacketS2C;
+import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
 import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
+import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
 import org.confluence.phase_journey.common.util.PhaseUtils;
-import org.confluence.terra_curio.network.s2c.WindSpeedPacketS2C;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,28 +29,28 @@ public class ConfluenceData extends SavedData {
 
     private boolean initialized;
     private GamePhase gamePhase;
-    private float windSpeedX;
-    private float windSpeedZ;
+    private Vector3f windSpeed;
     private final Int2ObjectMap<StarPhase> starPhases;
     private int revealStep;
+    private MeteoriteTracker meteoriteTracker;
 
     ConfluenceData() {
         this.initialized = false;
         this.gamePhase = GamePhase.BEFORE_SKELETRON;
-        this.windSpeedX = 0.0F;
-        this.windSpeedZ = 0.0F;
+        this.windSpeed = new Vector3f();
         this.starPhases = new Int2ObjectArrayMap<>();
         for (int i = 0; i < STAR_PHASES_SIZE; i++) {
             starPhases.put(i, StarPhase.DEFAULT);
         }
         this.revealStep = -1;
+        this.meteoriteTracker = MeteoriteTracker.INSTANCE;
     }
 
     ConfluenceData(CompoundTag nbt, HolderLookup.@NotNull Provider registries) {
         this.initialized = nbt.getBoolean("initialized");
         this.gamePhase = GamePhase.getById(nbt.getInt("gamePhase"));
-        this.windSpeedX = nbt.getFloat("windSpeedX");
-        this.windSpeedZ = nbt.getFloat("windSpeedZ");
+        this.windSpeed.x = nbt.getFloat("windSpeedX");
+        this.windSpeed.z = nbt.getFloat("windSpeedZ");
         ListTag listTag = nbt.getList("starPhases", Tag.TAG_COMPOUND);
         this.starPhases = new Int2ObjectArrayMap<>();
         for (Tag tag : listTag) {
@@ -54,22 +58,22 @@ public class ConfluenceData extends SavedData {
             starPhases.put(phase.getInt("index"), new StarPhase(phase));
         }
         this.revealStep = nbt.getInt("revealStep");
+        this.meteoriteTracker.deserialize(nbt);
     }
 
     public static ConfluenceData get(ServerLevel serverLevel) {
         ConfluenceData data = serverLevel.getDataStorage().computeIfAbsent(new Factory<>(ConfluenceData::new, ConfluenceData::new), Confluence.MODID);
         if (!data.initialized) {
             RandomSource random = new LegacyRandomSource(serverLevel.getSeed());
-            // 在这初始化星象
             List<Float> raList = new ArrayList<>();
             int wEarth = 3 + random.nextInt(3);
-            float up = (float) Math.pow(5.0D, 1.0D / (wEarth - 1));
-            float low = (float) Math.pow(9.0D, 1.0D / (10 - wEarth));
-            float q = 1.2F + random.nextFloat() * ((Math.min(up, low)) - 1.2F);
+            float up = (float) Math.pow(5.0, 1.0 / (wEarth - 1));
+            float low = (float) Math.pow(9.0, 1.0 / (10 - wEarth));
+            float q = Mth.nextFloat(random, 1.2F, Math.min(up, low));
             for (int i = 0; i < STAR_PHASES_SIZE; i++) {
                 float Q = (float) ((i < wEarth - 1) ? (1.0F / Math.pow(q, wEarth - 1 - i)) : q * Math.pow(q, i + 2 - wEarth));
                 float ra = 100.0F * Q;
-                ra += random.nextFloat() * (ra / 10) * (random.nextBoolean() ? 1 : -1);
+                ra += random.nextFloat() * (ra * 0.1F) * (random.nextBoolean() ? 1 : -1);
                 ra = Math.min(900.0F, ra);
                 raList.add(random.nextInt(raList.size() + 1), ra);
             }
@@ -86,8 +90,8 @@ public class ConfluenceData extends SavedData {
     public @NotNull CompoundTag save(CompoundTag nbt, HolderLookup.@NotNull Provider registries) {
         nbt.putBoolean("initialized", initialized);
         nbt.putInt("gamePhase", gamePhase.ordinal());
-        nbt.putFloat("windSpeedX", windSpeedX);
-        nbt.putFloat("windSpeedZ", windSpeedZ);
+        nbt.putFloat("windSpeedX", windSpeed.x);
+        nbt.putFloat("windSpeedZ", windSpeed.z);
         ListTag listTag = new ListTag();
         for (int i = 0; i < STAR_PHASES_SIZE; i++) {
             CompoundTag tag = new CompoundTag();
@@ -97,6 +101,7 @@ public class ConfluenceData extends SavedData {
         }
         nbt.put("starPhases", listTag);
         nbt.putInt("revealStep", revealStep);
+        meteoriteTracker.serialize(nbt);
         return nbt;
     }
 
@@ -119,18 +124,18 @@ public class ConfluenceData extends SavedData {
     }
 
     public void setWindSpeed(float x, float z) {
-        this.windSpeedX = x;
-        this.windSpeedZ = z;
+        this.windSpeed.x = x;
+        this.windSpeed.z = z;
         WindSpeedPacketS2C.sendToAll(x, z);
         setDirty();
     }
 
     public float getWindSpeedX() {
-        return windSpeedX;
+        return windSpeed.x;
     }
 
     public float getWindSpeedZ() {
-        return windSpeedZ;
+        return windSpeed.z;
     }
 
     public boolean setStarPhase(int index, int timeOffset, float radius, float angle) {
@@ -163,5 +168,12 @@ public class ConfluenceData extends SavedData {
 
     public int getRevealStep() {
         return revealStep;
+    }
+
+    public void setMeteorite(BlockPos location, int tickUntilLanding) {
+        this.meteoriteTracker.location = location;
+        this.meteoriteTracker.tickUntilLanding = tickUntilLanding;
+        MeteoriteLocationPacketS2C.sendToAll(location, tickUntilLanding);
+        setDirty();
     }
 }

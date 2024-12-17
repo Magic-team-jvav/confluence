@@ -391,6 +391,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("resourcepack.ter_armor", "主流：泰拉盔甲样式材质");
 
         add("event.confluence.blood_moon", "血月正在升起...");
+        add("event.confluence.meteorite", "陨石已落地！");
 
         add("attribute.name.player.minion_capacity", "仆从容量");
         add("attribute.name.player.sentry_capacity", "哨兵容量");

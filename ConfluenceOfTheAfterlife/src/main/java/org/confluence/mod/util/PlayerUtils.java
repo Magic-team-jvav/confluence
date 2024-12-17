@@ -23,7 +23,7 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.network.s2c.GamePhasePacketS2C;
 import org.confluence.mod.network.s2c.ManaPacketS2C;
 import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
-import org.confluence.terra_curio.network.s2c.WindSpeedPacketS2C;
+import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
 
 import java.util.function.IntSupplier;

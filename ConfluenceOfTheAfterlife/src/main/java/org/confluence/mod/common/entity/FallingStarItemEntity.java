@@ -68,7 +68,7 @@ public class FallingStarItemEntity extends ItemEntity {
     }
 
     public static void summon(ServerLevel serverLevel) {
-        if (serverLevel.dimension().equals(Level.OVERWORLD) && serverLevel.getDayTime() % 24000 > 12000 && serverLevel.getGameTime() % 600 == 0) {
+        if (serverLevel.getDayTime() % 24000 > 12000 && serverLevel.getGameTime() % 600 == 0) {
             RandomSource random = serverLevel.random;
             for (ServerPlayer serverPlayer : serverLevel.players()) {
                 int offsetX = (random.nextBoolean() ? 1 : -1) * random.nextInt(2);

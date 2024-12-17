@@ -25,8 +25,9 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.mod.client.ClientConfigs;
-import org.confluence.terra_curio.client.handler.InformationHandler;
+import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2f;
 
 import java.util.Hashtable;
 import java.util.Map;
@@ -36,7 +37,9 @@ import java.util.function.Consumer;
 public final class WeatherHandler {
     private static final Map<ResourceLocation, Map<Block, ParticleOptions>> BLOCK_PARTICLES = new Hashtable<>();
     private static final Map<ResourceLocation, Map<FluidType, ParticleOptions>> FLUID_PARTICLES = new Hashtable<>();
+    public static final Vector2f WIND_SPEED = new Vector2f();
     public static Direction windDirection = null;
+    public static String windSpeedInfo = "0.00";
 
     public static void handleBlock(ClientLevel level, RandomSource random, BlockState blockState, BlockPos.MutableBlockPos blockPos, Map<Block, ParticleOptions> data) {
         if (!ClientConfigs.showWindParticles) return;
@@ -79,8 +82,8 @@ public final class WeatherHandler {
     private static void spawnParticle(ParticleOptions particleOptions, double x, double y, double z) {
         Particle particle = Minecraft.getInstance().particleEngine.createParticle(particleOptions, x, y, z, 0.0, 0.0, 0.0);
         if (particle != null) {
-            float windSpeedX = InformationHandler.getWindSpeedX();
-            float windSpeedZ = InformationHandler.getWindSpeedZ();
+            float windSpeedX = getWindSpeedX();
+            float windSpeedZ = getWindSpeedZ();
             particle.setParticleSpeed(windSpeedX * 0.01, 0.0, windSpeedZ * 0.01);
         }
     }
@@ -129,5 +132,19 @@ public final class WeatherHandler {
     public static Map<FluidType, ParticleOptions> getFluidParticles(Holder<Biome> biome) {
         ResourceKey<Biome> key = biome.getKey();
         return key == null ? null : FLUID_PARTICLES.get(key.location());
+    }
+
+    public static void handleWindSpeed(WindSpeedPacketS2C packet) {
+        WIND_SPEED.set(packet.x(), packet.z());
+        windSpeedInfo = "%.2f".formatted(WIND_SPEED.length());
+        windDirection = Direction.getNearest(packet.x(), 0.0F, packet.z());
+    }
+
+    public static float getWindSpeedX() {
+        return WIND_SPEED.x;
+    }
+
+    public static float getWindSpeedZ() {
+        return WIND_SPEED.y;
     }
 }

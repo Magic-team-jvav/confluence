@@ -216,6 +216,15 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             NatureBlocks.EBONY_HARDENED_SAND_BLOCK.get(),
             NatureBlocks.TR_CRIMSON_HARDENED_SAND_BLOCK.get(),
             NatureBlocks.PEARL_HARDENED_SAND_BLOCK.get(),
+            NatureBlocks.EBONY_STONE.get(),
+            NatureBlocks.EBONY_SANDSTONE.get(),
+            NatureBlocks.TR_CRIMSON_STONE.get(),
+            NatureBlocks.TR_CRIMSON_SANDSTONE.get(),
+            NatureBlocks.PEARL_STONE.get(),
+            NatureBlocks.PEARL_SANDSTONE.get(),
+            DecorativeBlocks.BLUE_BRICKS.get(),
+            DecorativeBlocks.PINK_BRICKS.get(),
+            DecorativeBlocks.GREEN_BRICKS.get(),
             NatureBlocks.DESERT_FOSSIL.get(),
             FunctionalBlocks.EXTRACTINATOR.get(),
             FunctionalBlocks.DART_TRAP.get(),
@@ -242,10 +251,105 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             NatureBlocks.TR_CRIMSON_SAND_LAYER_BLOCK.get(),
             NatureBlocks.ASH_BLOCK.get()
         );
-        tag(ModTags.Blocks.NEEDS_3_LEVEL).add(
-            NatureBlocks.DESERT_FOSSIL.get()
+        // 1，铁铅铜锡金
+        tag(ModTags.Blocks.NEEDS_1_LEVEL).add(
+                OreBlocks.RAW_TIN_BLOCK.get(),
+                OreBlocks.DEEPSLATE_TIN_ORE.get(),
+                OreBlocks.SANCTIFICATION_TIN_ORE.get(),
+                OreBlocks.CORRUPTION_TIN_ORE.get(),
+                OreBlocks.FLESHIFICATION_TIN_ORE.get(),
+                OreBlocks.TIN_BLOCK.get(),
+                OreBlocks.TIN_ORE.get(),
+                OreBlocks.SANCTIFICATION_COPPER_ORE.get(),
+                OreBlocks.CORRUPTION_COPPER_ORE.get(),
+                OreBlocks.FLESHIFICATION_COPPER_ORE.get(),
+                OreBlocks.SANCTIFICATION_IRON_ORE.get(),
+                OreBlocks.CORRUPTION_IRON_ORE.get(),
+                OreBlocks.FLESHIFICATION_IRON_ORE.get(),
+                OreBlocks.RAW_LEAD_BLOCK.get(),
+                OreBlocks.DEEPSLATE_LEAD_ORE.get(),
+                OreBlocks.SANCTIFICATION_LEAD_ORE.get(),
+                OreBlocks.CORRUPTION_LEAD_ORE.get(),
+                OreBlocks.FLESHIFICATION_LEAD_ORE.get(),
+                OreBlocks.LEAD_BLOCK.get(),
+                OreBlocks.LEAD_ORE.get()
         );
+        // 2,银钨，宝石
+        tag(ModTags.Blocks.NEEDS_2_LEVEL).add(
+                OreBlocks.RAW_SILVER_BLOCK.get(),
+                OreBlocks.DEEPSLATE_SILVER_ORE.get(),
+                OreBlocks.SANCTIFICATION_SILVER_ORE.get(),
+                OreBlocks.CORRUPTION_SILVER_ORE.get(),
+                OreBlocks.FLESHIFICATION_SILVER_ORE.get(),
+                OreBlocks.SILVER_BLOCK.get(),
+                OreBlocks.SILVER_ORE.get(),
+                OreBlocks.RAW_TUNGSTEN_BLOCK.get(),
+                OreBlocks.DEEPSLATE_TUNGSTEN_ORE.get(),
+                OreBlocks.SANCTIFICATION_TUNGSTEN_ORE.get(),
+                OreBlocks.CORRUPTION_TUNGSTEN_ORE.get(),
+                OreBlocks.FLESHIFICATION_TUNGSTEN_ORE.get(),
+                OreBlocks.TUNGSTEN_BLOCK.get(),
+                OreBlocks.TUNGSTEN_ORE.get(),
+                OreBlocks.SANCTIFICATION_DIAMOND_ORE.get(),
+                OreBlocks.CORRUPTION_DIAMOND_ORE.get(),
+                OreBlocks.FLESHIFICATION_DIAMOND_ORE.get(),
+                OreBlocks.SANCTIFICATION_RUBY_ORE.get(),
+                OreBlocks.CORRUPTION_RUBY_ORE.get(),
+                OreBlocks.FLESHIFICATION_RUBY_ORE.get(),
+                OreBlocks.RUBY_ORE.get(),
+                OreBlocks.SANCTIFICATION_AMBER_ORE.get(),
+                OreBlocks.CORRUPTION_AMBER_ORE.get(),
+                OreBlocks.FLESHIFICATION_AMBER_ORE.get(),
+                OreBlocks.AMBER_ORE.get(),
+                OreBlocks.SANCTIFICATION_TOPAZ_ORE.get(),
+                OreBlocks.CORRUPTION_TOPAZ_ORE.get(),
+                OreBlocks.FLESHIFICATION_TOPAZ_ORE.get(),
+                OreBlocks.TOPAZ_ORE.get(),
+                OreBlocks.SANCTIFICATION_EMERALD_ORE.get(),
+                OreBlocks.CORRUPTION_EMERALD_ORE.get(),
+                OreBlocks.FLESHIFICATION_EMERALD_ORE.get(),
+                OreBlocks.TR_EMERALD_ORE.get(),
+                OreBlocks.SANCTIFICATION_SAPPHIRE_ORE.get(),
+                OreBlocks.CORRUPTION_SAPPHIRE_ORE.get(),
+                OreBlocks.FLESHIFICATION_SAPPHIRE_ORE.get(),
+                OreBlocks.SAPPHIRE_ORE.get(),
+                OreBlocks.SANCTIFICATION_TR_AMETHYST_ORE.get(),
+                OreBlocks.CORRUPTION_TR_AMETHYST_ORE.get(),
+                OreBlocks.FLESHIFICATION_TR_AMETHYST_ORE.get(),
+                OreBlocks.TR_AMETHYST_ORE.get()
+        );
+        // 3,铂金
+        tag(ModTags.Blocks.NEEDS_3_LEVEL).add(
+                OreBlocks.RAW_PLATINUM_BLOCK.get(),
+                OreBlocks.DEEPSLATE_PLATINUM_ORE.get(),
+                OreBlocks.SANCTIFICATION_PLATINUM_ORE.get(),
+                OreBlocks.CORRUPTION_PLATINUM_ORE.get(),
+                OreBlocks.FLESHIFICATION_PLATINUM_ORE.get(),
+                OreBlocks.PLATINUM_BLOCK.get(),
+                OreBlocks.PLATINUM_ORE.get(),
+                NatureBlocks.DESERT_FOSSIL.get()
+        );
+        // 4,邪恶矿,陨石
         tag(ModTags.Blocks.NEEDS_4_LEVEL).add(
+                OreBlocks.EBONY_ORE.get(),
+                OreBlocks.DEEPSLATE_EBONY_ORE.get(),
+                OreBlocks.SANCTIFICATION_EBONY_ORE.get(),
+                OreBlocks.CORRUPTION_EBONY_ORE.get(),
+                OreBlocks.FLESHIFICATION_EBONY_ORE.get(),
+                OreBlocks.EBONY_BLOCK.get(),
+                OreBlocks.RAW_EBONY_BLOCK.get(),
+                OreBlocks.DEEPSLATE_TR_CRIMSON_ORE.get(),
+                OreBlocks.SANCTIFICATION_TR_CRIMSON_ORE.get(),
+                OreBlocks.CORRUPTION_TR_CRIMSON_ORE.get(),
+                OreBlocks.FLESHIFICATION_TR_CRIMSON_ORE.get(),
+                OreBlocks.RAW_TR_CRIMSON_BLOCK.get(),
+                OreBlocks.TR_CRIMSON_BLOCK.get(),
+                OreBlocks.TR_CRIMSON_ORE.get(),
+                OreBlocks.METEORITE_ORE.get(),
+                OreBlocks.METEORITE_BLOCK.get()
+        );
+        // 5，狱石，邪恶石头
+        tag(ModTags.Blocks.NEEDS_5_LEVEL).add(
             NatureBlocks.EBONY_HARDENED_SAND_BLOCK.get(),
             NatureBlocks.TR_CRIMSON_HARDENED_SAND_BLOCK.get(),
             NatureBlocks.PEARL_HARDENED_SAND_BLOCK.get(),
@@ -257,7 +361,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             NatureBlocks.PEARL_SANDSTONE.get(),
             DecorativeBlocks.BLUE_BRICKS.get(),
             DecorativeBlocks.PINK_BRICKS.get(),
-            DecorativeBlocks.GREEN_BRICKS.get()
+            DecorativeBlocks.GREEN_BRICKS.get(),
+            OreBlocks.HELLSTONE.get(),
+            OreBlocks.HELLSTONE_BLOCK.get(),
+            OreBlocks.RAW_HELLSTONE_BLOCK.get(),
+            OreBlocks.ASH_HELLSTONE.get()
         );
         tag(ModTags.Blocks.NEEDS_1_LEVEL).addTags(ModTags.Blocks.NEEDS_2_LEVEL, ModTags.Blocks.NEEDS_3_LEVEL, ModTags.Blocks.NEEDS_4_LEVEL, ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
         tag(ModTags.Blocks.NEEDS_2_LEVEL).addTags(ModTags.Blocks.NEEDS_3_LEVEL, ModTags.Blocks.NEEDS_4_LEVEL, ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
@@ -282,31 +390,15 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             Blocks.COARSE_DIRT,
             Blocks.PODZOL,
             Blocks.ROOTED_DIRT,
-            Blocks.MUDDY_MANGROVE_ROOTS
-        );
-        tag(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE).addTag(BlockTags.LEAVES);
-        tag(ModTags.Blocks.COIN_PILE).add(COPPER_COIN_PILE.get(), SILVER_COIN_PILE.get(), GOLDEN_COIN_PILE.get(), PLATINUM_COIN_PILE.get(), EMERALD_COIN_PILE.get());
-        tag(BlockTags.NEEDS_DIAMOND_TOOL).add(
-            OreBlocks.EBONY_ORE.get(),
-            OreBlocks.DEEPSLATE_EBONY_ORE.get(),
-            OreBlocks.SANCTIFICATION_EBONY_ORE.get(),
-            OreBlocks.CORRUPTION_EBONY_ORE.get(),
-            OreBlocks.FLESHIFICATION_EBONY_ORE.get(),
-            OreBlocks.EBONY_BLOCK.get(),
-            OreBlocks.RAW_EBONY_BLOCK.get(),
-            OreBlocks.DEEPSLATE_TR_CRIMSON_ORE.get(),
-            OreBlocks.SANCTIFICATION_TR_CRIMSON_ORE.get(),
-            OreBlocks.CORRUPTION_TR_CRIMSON_ORE.get(),
-            OreBlocks.FLESHIFICATION_TR_CRIMSON_ORE.get(),
-            OreBlocks.RAW_TR_CRIMSON_BLOCK.get(),
-            OreBlocks.TR_CRIMSON_BLOCK.get()
-        );
-        tag(ModTags.Blocks.NEEDS_4_LEVEL).add(
+            Blocks.MUDDY_MANGROVE_ROOTS,
             OreBlocks.HELLSTONE.get(),
             OreBlocks.ASH_HELLSTONE.get(),
             OreBlocks.RAW_HELLSTONE_BLOCK.get(),
             OreBlocks.HELLSTONE_BLOCK.get()
         );
+        tag(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE).addTag(BlockTags.LEAVES);
+        tag(ModTags.Blocks.COIN_PILE).add(COPPER_COIN_PILE.get(), SILVER_COIN_PILE.get(), GOLDEN_COIN_PILE.get(), PLATINUM_COIN_PILE.get(), EMERALD_COIN_PILE.get());
+
         tag(ModTags.Blocks.NEEDS_5_LEVEL).add(
             OreBlocks.DEEPSLATE_COBALT_ORE.get(),
             OreBlocks.RAW_COBALT_BLOCK.get(),

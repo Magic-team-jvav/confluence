@@ -29,8 +29,8 @@ public final class ModTiers {
     public static final Tier SILVER = new PoweredTier(51, ModTags.Blocks.NEEDS_4_LEVEL, 304, 6, 2, 14, () -> Ingredient.of(MaterialItems.SILVER_INGOT.get()));
     public static final Tier TUNGSTEN = new PoweredTier(52, ModTags.Blocks.NEEDS_4_LEVEL, 648, 8, 2, 18, () -> Ingredient.of(MaterialItems.TUNGSTEN_INGOT.get()));
     public static final Tier GOLD = new PoweredTier(61, ModTags.Blocks.NEEDS_5_LEVEL, 1600, 8, 3, 22, () -> Ingredient.of(Items.GOLD_INGOT));
-    public static final Tier CANDY = new PoweredTier(63, ModTags.Blocks.NEEDS_5_LEVEL, 4000, 6, 2, 14, () -> Ingredient.of(Items.SUGAR)); // 糖(圣诞限定）
-    public static final Tier FOSSIL = new PoweredTier(65, ModTags.Blocks.NEEDS_5_LEVEL, 1200, 8, 3, 22, () -> Ingredient.of(MaterialItems.STURDY_FOSSIL.get()));
+    public static final Tier CANDY = new PoweredTier(61, ModTags.Blocks.NEEDS_5_LEVEL, 4000, 6, 2, 14, () -> Ingredient.of(Items.SUGAR)); // 糖(圣诞限定）
+    public static final Tier FOSSIL = new PoweredTier(61, ModTags.Blocks.NEEDS_5_LEVEL, 1200, 8, 3, 22, () -> Ingredient.of(MaterialItems.STURDY_FOSSIL.get()));
     // 骨镐 55 4
     public static final Tier PLATINUM = new PoweredTier(68, ModTags.Blocks.NEEDS_5_LEVEL, 1661, 8, 3, 22, () -> Ingredient.of(MaterialItems.PLATINUM_INGOT.get()));
     // 掠夺鲨 59 4
@@ -68,32 +68,32 @@ public final class ModTiers {
     /**
      * 镐力 ======================= 等级 <p>
      * 全都能挖，比如丛林蜥蜴砖 <p>
-     * 201 ======================= 9 <p>
+     * 201 ======================= 10 <p>
      * 200 神圣 <p>
-     * 191 ======================= 8 <p>
+     * 191 ======================= 9 <p>
      * 190 钛金 <p>
      * 180 精金 <p>
-     * 166 ======================= 7 <p>
+     * 166 ======================= 8 <p>
      * 165 山铜 <p>
      * 150 秘银 <p>
      * 130 钯金 <p>
      * 110 钴 <p>
-     * 101 ======================= 6 <p>
+     * 101 ======================= 7 <p>
      * 100 狱石、下界合金 <p>
+     * 101 ======================= 6 <p>
      * 85 钻石 <p>
+     * 73 猩红 <p>
+     * 71 腐化 <p>
      * 71 ======================= 5 <p>
-     * 70 猩红 <p>
-     * 65 腐化 <p>
+     * 68 铂金、骨镐、掠夺鲨 <p>
+     * 61 金（升级）、糖棒、化石 <p>
      * 60 ======================= 4 <p>
-     * 59 铂金、骨镐、掠夺鲨 <p>
-     * 55 金（升级）、糖棒、化石 <p>
+     * 52 钨 <p>
+     * 51 银 <p>
      * 51 ======================= 3 <p>
-     * 50 钨 <p>
-     * 47 （银）  （其他宝石）
-     * 46 ======================= 2 <p>
-     * 45 银 <p>
      * 43 铅 <p>
      * 40 铁 <p>
+     * 40 ======================= 2 <p>
      * 39 金（原版） <p>
      * 38 石 <p>
      * 35 木、铜、锡 <p>

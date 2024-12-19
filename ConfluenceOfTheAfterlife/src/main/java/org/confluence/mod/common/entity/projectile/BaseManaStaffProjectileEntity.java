@@ -177,15 +177,15 @@ public class BaseManaStaffProjectileEntity extends Projectile {
     public record Variant(int id, String name, float damage, double gravity, float knockBack, float criticalChance, ResourceLocation particleId) implements StringRepresentable {
         public static final List<Variant> VALUES = new ArrayList<>();
 
-        public static final Variant AMETHYST = register("amethyst", 3.0F, -1.0, 3.25F, 0.04F, Confluence.asResource("amethyst_projectile")),
-                TOPAZ = register("topaz", 3.2F, -1.0, 3.5F, 0.04F, Confluence.asResource("topaz_projectile")),
-                SAPPHIRE = register("sapphire", 3.6F, -1.0, 4.0F, 0.04F, Confluence.asResource("sapphire_projectile")),
-                EMERALD = register("emerald", 3.8F, -1.0, 4.25F, 0.04F, Confluence.asResource("emerald_projectile")),
-                RUBY = register("ruby", 4.2F, -1.0, 4.75F, 0.04F, Confluence.asResource("ruby_projectile")),
-                AMBER = register("amber", 4.2F, -1.0, 4.75F, 0.04F, Confluence.asResource("amber_projectile")),
-                DIAMOND = register("diamond", 4.6F, -1.0, 5.5F, 0.04F, Confluence.asResource("diamond_projectile")),
-                FROST = register("frost", 5.0F, 0.04, 0.0F, 0.14F, Confluence.asResource("frost_projectile")),
-                SPARK = register("spark", 1.3F, 0.2, 0.0F, 0.14F, Confluence.asResource("spark_projectile"));
+        public static final Variant AMETHYST = register("amethyst", 6.0F, -1.0, 3.25F, 0.04F, Confluence.asResource("amethyst_projectile")),
+                TOPAZ = register("topaz", 6.4F, -1.0, 3.5F, 0.04F, Confluence.asResource("topaz_projectile")),
+                SAPPHIRE = register("sapphire", 7.2F, -1.0, 4.0F, 0.04F, Confluence.asResource("sapphire_projectile")),
+                EMERALD = register("emerald", 7.6F, -1.0, 4.25F, 0.04F, Confluence.asResource("emerald_projectile")),
+                RUBY = register("ruby", 8.4F, -1.0, 4.75F, 0.04F, Confluence.asResource("ruby_projectile")),
+                AMBER = register("amber", 8.4F, -1.0, 4.75F, 0.04F, Confluence.asResource("amber_projectile")),
+                DIAMOND = register("diamond", 9.2F, -1.0, 5.5F, 0.04F, Confluence.asResource("diamond_projectile")),
+                FROST = register("frost", 3.0F, 0.04, 0.0F, 0.14F, Confluence.asResource("frost_projectile")),
+                SPARK = register("spark", 2.6F, 0.2, 0.0F, 0.14F, Confluence.asResource("spark_projectile"));
 
         public static final Codec<Variant> CODEC = StringRepresentable.fromValues(() -> VALUES.toArray(Variant[]::new));
 

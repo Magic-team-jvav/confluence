@@ -129,7 +129,7 @@ public final class PlayerEvents {
         Player player = event.getEntity();
         if (!player.isSpectator()) {
             ItemStack itemStack = event.getItemStack();
-            if (itemStack.is(ModTags.Items.MANA_WEAPON)) {
+            if (itemStack.is(ModTags.Items.MANA_WEAPON) && player.hasEffect(ModEffects.SILENCED)) {
                 event.setCanceled(true);
             } else if (!itemStack.isEmpty()) {
                 if (player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN) || player.hasEffect(ModEffects.CURSED)) {

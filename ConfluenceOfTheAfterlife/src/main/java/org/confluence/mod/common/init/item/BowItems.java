@@ -51,7 +51,7 @@ public class BowItems {
 
 
     // 代达罗斯风暴弓
-    public static final DeferredItem<TerraBowItem> DAEDALUS_STORM_BOW = register("daedalus_storm_bow", ()->new DaedalusStormbow(1.5F, 2000, ModRarity.PURPLE));
+    public static final DeferredItem<TerraBowItem> DAEDALUS_STORM_BOW = register("daedalus_storm_bow", ()->new DaedalusStormbow(10F, 2000, ModRarity.PURPLE));
 
 
     public static final DeferredItem<TerraBowItem> DEVELOPER_BOW = register("developer_bow", () -> new TerraBowItem(1F, 1536, ModRarity.MASTER,

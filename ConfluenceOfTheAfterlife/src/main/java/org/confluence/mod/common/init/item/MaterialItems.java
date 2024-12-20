@@ -87,11 +87,11 @@ public class MaterialItems {
     public static final DeferredItem<Item> LENS = register("lens");
     public static final DeferredItem<Item> BLACK_LENS = register("black_lens");
     public static final DeferredItem<Item> STURDY_FOSSIL = register("sturdy_fossil");
-    public static final DeferredItem<Item> OPALS = register("opals");
-    public static final DeferredItem<Item> SEA_FOAM_STONE = register("sea_foam_stone");
-    public static final DeferredItem<Item> GEMSTONE = register("gemstone");
-    public static final DeferredItem<Item> LUSH_ROOTS = register("lush_roots");
-    public static final DeferredItem<Item> FROST_MARROW = register("frost_marrow");
+    public static final DeferredItem<Item> OPAL = register("opal");
+    public static final DeferredItem<Item> HEIM = register("heim");
+    public static final DeferredItem<Item> GELSTONE = register("gelstone");
+    public static final DeferredItem<Item> SPORE_ROOT = register("spore_root");
+    public static final DeferredItem<Item> WINTER_MARROW = register("winter_marrow");
     public static final DeferredItem<Item> COLD_CRYSTAL = register("cold_crystal");
     public static final DeferredItem<Item> SHADOW_SCALE = register("shadow_scale");
     public static final DeferredItem<Item> TISSUE_SAMPLE = register("tissue_sample");

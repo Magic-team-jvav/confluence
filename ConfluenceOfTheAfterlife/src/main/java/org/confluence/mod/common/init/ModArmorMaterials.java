@@ -197,7 +197,7 @@ public final class ModArmorMaterials {
                 map.put(ArmorItem.Type.LEGGINGS, 6);
                 map.put(ArmorItem.Type.BOOTS, 2);
             }),
-            15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.GEMSTONE),
+            15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.GELSTONE),
             List.of(new ArmorMaterial.Layer(Confluence.asResource("gemstone"))), 0.0F, 0.0F
     ));
     public static final Holder<ArmorMaterial> COLD_CRYSTAL_ARMOR_MATERIALS = ARMOR_MATERIALS.register("cold_crystal_armor_materials", () -> new ArmorMaterial(
@@ -210,7 +210,7 @@ public final class ModArmorMaterials {
             15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.COLD_CRYSTAL),
             List.of(new ArmorMaterial.Layer(Confluence.asResource("cold_crystal"))), 0.0F, 0.0F
     ));
-    public static final Holder<ArmorMaterial> SEA_FOAM_STONE_ARMOR_MATERIALS = ARMOR_MATERIALS.register("sea_foam_stone_armor_materials", () -> new ArmorMaterial(
+    public static final Holder<ArmorMaterial> HEIM_ARMOR_MATERIALS = ARMOR_MATERIALS.register("sea_foam_stone_armor_materials", () -> new ArmorMaterial(
             Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
                 map.put(ArmorItem.Type.HELMET, 2);
                 map.put(ArmorItem.Type.CHESTPLATE, 6);

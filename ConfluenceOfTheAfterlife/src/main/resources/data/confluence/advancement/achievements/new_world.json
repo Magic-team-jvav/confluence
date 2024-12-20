@@ -26,10 +26,5 @@
                 }
             }
         }
-    },
-    "rewards": {
-        "loot": [
-            "confluence:gameplay/start_advancements"
-        ]
     }
 }

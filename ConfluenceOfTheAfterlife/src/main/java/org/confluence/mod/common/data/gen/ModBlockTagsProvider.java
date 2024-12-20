@@ -186,7 +186,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.TR_CRIMSON_SAND_LAYER_BLOCK.get(),
                 NatureBlocks.ASH_BLOCK.get()
         );
-        // 1，铁铅铜锡金
         tag(ModTags.Blocks.NEEDS_1_LEVEL).add(
                 OreBlocks.RAW_TIN_BLOCK.get(),
                 OreBlocks.DEEPSLATE_TIN_ORE.get(),
@@ -207,10 +206,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OreBlocks.CORRUPTION_LEAD_ORE.get(),
                 OreBlocks.FLESHIFICATION_LEAD_ORE.get(),
                 OreBlocks.LEAD_BLOCK.get(),
-                OreBlocks.LEAD_ORE.get()
-        );
-        // 2,银钨，宝石
-        tag(ModTags.Blocks.NEEDS_2_LEVEL).add(
+                OreBlocks.LEAD_ORE.get(),
                 OreBlocks.RAW_SILVER_BLOCK.get(),
                 OreBlocks.DEEPSLATE_SILVER_ORE.get(),
                 OreBlocks.SANCTIFICATION_SILVER_ORE.get(),
@@ -315,10 +311,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 FunctionalBlocks.TIMERS_BLOCK_3_1.get(),
                 FunctionalBlocks.TIMERS_BLOCK_5_1.get(),
                 FunctionalBlocks.TIMERS_BLOCK_1_2.get(),
-                FunctionalBlocks.TIMERS_BLOCK_1_4.get()
-        );
-        // 3,铂金
-        tag(ModTags.Blocks.NEEDS_3_LEVEL).add(
+                FunctionalBlocks.TIMERS_BLOCK_1_4.get(),
                 OreBlocks.RAW_PLATINUM_BLOCK.get(),
                 OreBlocks.DEEPSLATE_PLATINUM_ORE.get(),
                 OreBlocks.SANCTIFICATION_PLATINUM_ORE.get(),
@@ -328,8 +321,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OreBlocks.PLATINUM_ORE.get(),
                 NatureBlocks.DESERT_FOSSIL.get()
         );
-        // 4,邪恶矿,陨石
-        tag(ModTags.Blocks.NEEDS_4_LEVEL).add(
+        tag(ModTags.Blocks.NEEDS_2_LEVEL).add(
+                OreBlocks.METEORITE_ORE.get(),
+                OreBlocks.METEORITE_BLOCK.get(),
+                OreBlocks.RAW_METEORITE_BLOCK.get()
+        );
+        tag(ModTags.Blocks.NEEDS_3_LEVEL).add(
                 OreBlocks.EBONY_ORE.get(),
                 OreBlocks.DEEPSLATE_EBONY_ORE.get(),
                 OreBlocks.SANCTIFICATION_EBONY_ORE.get(),
@@ -343,12 +340,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OreBlocks.FLESHIFICATION_TR_CRIMSON_ORE.get(),
                 OreBlocks.RAW_TR_CRIMSON_BLOCK.get(),
                 OreBlocks.TR_CRIMSON_BLOCK.get(),
-                OreBlocks.TR_CRIMSON_ORE.get(),
-                OreBlocks.METEORITE_ORE.get(),
-                OreBlocks.METEORITE_BLOCK.get()
+                OreBlocks.TR_CRIMSON_ORE.get()
         );
-        // 5，狱石，邪恶石头
-        tag(ModTags.Blocks.NEEDS_5_LEVEL).add(
+        tag(ModTags.Blocks.NEEDS_4_LEVEL).add(
                 NatureBlocks.EBONY_HARDENED_SAND_BLOCK.get(),
                 NatureBlocks.TR_CRIMSON_HARDENED_SAND_BLOCK.get(),
                 NatureBlocks.PEARL_HARDENED_SAND_BLOCK.get(),

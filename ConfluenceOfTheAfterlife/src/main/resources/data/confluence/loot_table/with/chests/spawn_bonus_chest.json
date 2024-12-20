@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:gift",
+  "type": "minecraft:chest",
   "pools": [
     {
       "bonus_rolls": 0.0,
@@ -34,6 +34,5 @@
       ],
       "rolls": 1
     }
-  ],
-  "random_sequence": "minecraft:gameplay/start"
+  ]
 }

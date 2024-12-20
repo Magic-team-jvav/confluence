@@ -50,16 +50,20 @@ public class MusicBoxItem extends BlockItem implements ICurioItem, IFunctionCoul
         Level level = slotContext.entity().level();
         if (level.isClientSide && isEnabled(stack, null)) {
             MusicManager musicManager = Minecraft.getInstance().getMusicManager();
+            IMusicManager manager = (IMusicManager) musicManager;
             if (music == null) {
-                SoundInstance currentMusic = ((IMusicManager) musicManager).confluence$getCurrentMusic();
+                SoundInstance currentMusic = manager.confluence$getCurrentMusic();
                 if (currentMusic != null && level.random.nextInt(540) == 0) {
                     MusicBoxItem item = SOUND_ID_2_ITEM.get(currentMusic.getLocation());
                     if (item == null) return;
                     // todo 成功音效
                     ReplaceMusicBoxItemPacketC2S.sendToServer(slotContext.index(), item);
                 }
-            } else if (!musicManager.isPlayingMusic(music)) {
-                musicManager.startPlaying(music);
+            } else {
+                if (!musicManager.isPlayingMusic(music)) {
+                    musicManager.startPlaying(music);
+                }
+                manager.confluence$setMusicBoxOccupied(IMusicManager.State.ACCESSORY);
             }
         }
     }

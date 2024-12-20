@@ -27,6 +27,7 @@ import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
 import org.confluence.mod.mixed.ILocalPlayer;
+import org.confluence.mod.mixed.IMusicManager;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PerformJumpingEvent;
 
@@ -43,6 +44,7 @@ public final class GameClientEvents {
         LocalPlayer player = minecraft.player;
 
         WeatherHandler.initialize(player);
+        IMusicManager.reset(minecraft.getMusicManager());
 
         if (player == null) return;
 

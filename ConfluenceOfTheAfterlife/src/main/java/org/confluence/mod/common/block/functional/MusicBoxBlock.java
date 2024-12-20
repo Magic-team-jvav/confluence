@@ -111,30 +111,32 @@ public class MusicBoxBlock extends AbstractMechanicalBlock {
         private static void clientTick(Level level, BlockPos pos, BlockState state, Entity entity) {
             Music music = entity.music;
             if (music == null || !state.getValue(StateProperties.DRIVE)) return;
-            LocalPlayer player = Minecraft.getInstance().player;
             MusicManager musicManager = Minecraft.getInstance().getMusicManager();
             IMusicManager manager = (IMusicManager) musicManager;
+            if (manager.confluence$getMusicBoxOccupied().isAccessory()) return;
+            LocalPlayer player = Minecraft.getInstance().player;
             if (player == null) {
                 musicManager.stopPlaying(music);
-                manager.confluence$setMusicBoxOccupied(false);
+                manager.confluence$setMusicBoxOccupied(IMusicManager.State.NONE);
             } else {
-                Vec3 center = entity.getBlockPos().getCenter();
-                double maxRangeSqr = Mth.square(music.getEvent().value().getRange(1.0F));
-                double dx = center.x - player.getX();
-                double dy = center.y - player.getY();
-                double dz = center.z - player.getZ();
-                boolean playingMusic = musicManager.isPlayingMusic(music);
-                boolean withinRange = dx * dx + dy * dy + dz * dz <= maxRangeSqr;
-                if (manager.confluence$isMusicBoxOccupied()) {
-                    if (playingMusic && !withinRange) {
-                        musicManager.stopPlaying(music);
-                        manager.confluence$setMusicBoxOccupied(false);
+                if (manager.confluence$getMusicBoxOccupied().isNone()) {
+                    if (!musicManager.isPlayingMusic(music) && withinRange(entity.getBlockPos().getCenter(), player.position(), music)) {
+                        musicManager.startPlaying(music);
+                        manager.confluence$setMusicBoxOccupied(IMusicManager.State.BLOCK);
                     }
-                } else if (!playingMusic && withinRange) {
-                    musicManager.startPlaying(music);
-                    manager.confluence$setMusicBoxOccupied(true);
+                } else if (musicManager.isPlayingMusic(music) && !withinRange(entity.getBlockPos().getCenter(), player.position(), music)) {
+                    musicManager.stopPlaying(music);
+                    manager.confluence$setMusicBoxOccupied(IMusicManager.State.NONE);
                 }
             }
+        }
+
+        private static boolean withinRange(Vec3 block, Vec3 player, Music music) {
+            double maxRangeSqr = Mth.square(music.getEvent().value().getRange(1.0F));
+            double dx = block.x - player.x;
+            double dy = block.y - player.y;
+            double dz = block.z - player.z;
+            return dx * dx + dy * dy + dz * dz <= maxRangeSqr;
         }
     }
 }

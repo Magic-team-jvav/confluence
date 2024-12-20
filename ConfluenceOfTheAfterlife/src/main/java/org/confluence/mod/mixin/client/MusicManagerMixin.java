@@ -15,7 +15,7 @@ public abstract class MusicManagerMixin implements IMusicManager {
     @Nullable
     private SoundInstance currentMusic;
     @Unique
-    private boolean confluence$musicBoxOccupied = false;
+    private State confluence$musicBoxOccupied = State.NONE;
 
     @Override
     public @Nullable SoundInstance confluence$getCurrentMusic() {
@@ -23,12 +23,12 @@ public abstract class MusicManagerMixin implements IMusicManager {
     }
 
     @Override
-    public void confluence$setMusicBoxOccupied(boolean occupied) {
+    public void confluence$setMusicBoxOccupied(State occupied) {
         this.confluence$musicBoxOccupied = occupied;
     }
 
     @Override
-    public boolean confluence$isMusicBoxOccupied() {
+    public State confluence$getMusicBoxOccupied() {
         return confluence$musicBoxOccupied;
     }
 }

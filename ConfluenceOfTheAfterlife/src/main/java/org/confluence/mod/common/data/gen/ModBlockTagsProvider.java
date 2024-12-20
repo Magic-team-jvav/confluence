@@ -24,6 +24,7 @@ import java.util.concurrent.CompletableFuture;
 import static org.confluence.mod.Confluence.MODID;
 import static org.confluence.mod.common.init.block.ModBlocks.*;
 
+@SuppressWarnings("all")
 public class ModBlockTagsProvider extends BlockTagsProvider {
     public ModBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, MODID, existingFileHelper);

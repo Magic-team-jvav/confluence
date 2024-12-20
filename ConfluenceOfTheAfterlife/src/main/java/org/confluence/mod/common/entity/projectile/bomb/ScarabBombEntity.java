@@ -60,6 +60,7 @@ public class ScarabBombEntity extends StickyBombEntity {
 
     @Override
     protected void explodeFunction() {
+        if (!(level() instanceof ServerLevel serverLevel)) return;
         Vec3 blastPos = getEyePosition();
         Vec3 step = facingDir.normalize().scale(-3);
         float upperLimit = ModBlocks.getObsidianBasedExplosionResistance(100);
@@ -74,16 +75,14 @@ public class ScarabBombEntity extends StickyBombEntity {
                     if (blockState.getExplosionResistance(level(), blockPos, explosion) < upperLimit) {
                         level().getProfiler().push("explosion_blocks");
                         if (blockState.canDropFromExplosion(level(), blockPos, explosion)) {
-                            if (level() instanceof ServerLevel serverLevel) {
-                                BlockEntity blockentity = blockState.hasBlockEntity() ? level().getBlockEntity(blockPos) : null;
-                                LootParams.Builder lootparams$builder = new LootParams.Builder(serverLevel)
-                                        .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(blockPos))
-                                        .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
-                                        .withOptionalParameter(LootContextParams.BLOCK_ENTITY, blockentity)
-                                        .withOptionalParameter(LootContextParams.THIS_ENTITY, this);
-                                blockState.spawnAfterBreak(serverLevel, blockPos, ItemStack.EMPTY, getOwner() instanceof Player);
-                                blockState.getDrops(lootparams$builder).forEach((itemStack) -> addBlockDrops(objectArrayList, itemStack, blockPos));
-                            }
+                            BlockEntity blockentity = blockState.hasBlockEntity() ? level().getBlockEntity(blockPos) : null;
+                            LootParams.Builder lootparams$builder = new LootParams.Builder(serverLevel)
+                                    .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(blockPos))
+                                    .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
+                                    .withOptionalParameter(LootContextParams.BLOCK_ENTITY, blockentity)
+                                    .withOptionalParameter(LootContextParams.THIS_ENTITY, this);
+                            blockState.spawnAfterBreak(serverLevel, blockPos, ItemStack.EMPTY, getOwner() instanceof Player);
+                            blockState.getDrops(lootparams$builder).forEach((itemStack) -> addBlockDrops(objectArrayList, itemStack, blockPos));
                         }
                         blockState.onBlockExploded(level(), blockPos, explosion);
                         level().getProfiler().pop();

@@ -40,7 +40,7 @@ import static org.confluence.mod.common.init.block.ModBlocks.registerWithItem;
 import static org.confluence.mod.common.init.block.ModBlocks.registerWithoutItem;
 
 public class LogBlockSet {
-    private static final Map<Supplier<? extends Block>, Supplier<? extends Block>> STRIP_TABLE = new Hashtable<>();
+    private static Map<Supplier<? extends Block>, Supplier<? extends Block>> STRIP_TABLE = new Hashtable<>();
     public static final Map<Block, Block> WRAPPED_STRIP_TABLE = new Hashtable<>();
     public static final List<LogBlockSet> LOG_BLOCK_SETS = new ArrayList<>();
     private static SignBlock[] SIGN_BLOCKS;
@@ -289,7 +289,7 @@ public class LogBlockSet {
 
     public static void wrapStrip() {
         STRIP_TABLE.forEach((s1, s2) -> WRAPPED_STRIP_TABLE.put(s1.get(), s2.get()));
-        STRIP_TABLE.clear();
+        STRIP_TABLE = null;
     }
 
     public static SignBlock[] getSignBlocks() {

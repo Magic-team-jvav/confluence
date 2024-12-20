@@ -13,7 +13,6 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModAttachments;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terra_curio.mixin.accessor.LivingEntityAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,7 +28,6 @@ public class BaseMinecartEntity extends Minecart {
     protected float maxSpeed = 0.0F; // both
     protected double acceleration = 0.0; // both
     protected @Nullable LivingEntity driver; // server
-    protected boolean jumping = false; // server
 
     public BaseMinecartEntity(EntityType<? extends BaseMinecartEntity> entityType, Level level) {
         super(entityType, level);
@@ -52,13 +50,6 @@ public class BaseMinecartEntity extends Minecart {
         super.tick();
         if (!level().isClientSide) {
             this.driver = getFirstPassenger() instanceof LivingEntity living ? living : null;
-            if (!jumping && isOnRails() && driver != null && ((LivingEntityAccessor) driver).getJumping()) {
-                setPos(getX(), getY() + 5.0, getZ());
-                this.jumping = true;
-            }
-            if (level().getGameTime() % 30 == 0) {
-                this.jumping = false;
-            }
             Vec3 movement = getDeltaMovement();
             boolean bx = Math.abs(movement.x) > 0.1;
             boolean bz = Math.abs(movement.z) > 0.1;

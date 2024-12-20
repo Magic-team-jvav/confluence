@@ -94,11 +94,12 @@ public final class ModBlocks {
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
         BLOCK_ENTITIES.register(eventBus);
-        OreBlocks.BLOCKS.register(eventBus);
-        DecorativeBlocks.BLOCKS.register(eventBus);
         BoxBlocks.BLOCKS.register(eventBus);
+        DecorativeBlocks.BLOCKS.register(eventBus);
         FunctionalBlocks.register(eventBus);
+        MusicBoxBlocks.BLOCKS.register(eventBus);
         NatureBlocks.BLOCKS.register(eventBus);
+        OreBlocks.BLOCKS.register(eventBus);
         PotBlocks.BLOCKS.register(eventBus);
     }
 }

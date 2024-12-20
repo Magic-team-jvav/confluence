@@ -52,6 +52,7 @@
         "client.ItemRendererMixin",
         "client.LocalPlayerMixin",
         "client.MouseHandlerMixin",
+        "client.MusicManagerMixin",
         "client.PauseScreenMixin",
         "client.TitleScreenMixin",
         "client.ToastComponent$ToastInstanceMixin",

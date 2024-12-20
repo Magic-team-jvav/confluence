@@ -13,7 +13,7 @@ import org.confluence.mod.common.entity.fishing.HotlineFishingHook;
 import org.confluence.mod.common.entity.hook.*;
 import org.confluence.mod.common.entity.minecart.*;
 import org.confluence.mod.common.entity.projectile.*;
-import org.confluence.mod.common.entity.projectile.bombs.*;
+import org.confluence.mod.common.entity.projectile.bomb.*;
 
 import java.util.function.Supplier;
 

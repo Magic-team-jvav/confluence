@@ -1,4 +1,4 @@
-package org.confluence.mod.client.renderer.entity.bomb;
+package org.confluence.mod.client.renderer.entity.projectile.bomb;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import org.confluence.mod.common.entity.projectile.bombs.BaseBombEntity;
+import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class BombEntityRenderer<E extends BaseBombEntity> extends EntityRenderer<E> {

@@ -2,7 +2,7 @@ package org.confluence.mod.common.init.item;
 
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.projectile.bombs.*;
+import org.confluence.mod.common.entity.projectile.bomb.*;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.common.*;

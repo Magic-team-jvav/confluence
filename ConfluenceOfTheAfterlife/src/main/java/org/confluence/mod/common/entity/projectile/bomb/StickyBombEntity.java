@@ -1,4 +1,4 @@
-package org.confluence.mod.common.entity.projectile.bombs;
+package org.confluence.mod.common.entity.projectile.bomb;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
@@ -12,7 +12,7 @@ import org.confluence.mod.common.init.item.ConsumableItems;
 import org.jetbrains.annotations.NotNull;
 
 public class StickyBombEntity extends BaseBombEntity {
-    private BlockPos stickBlock = null;
+    protected BlockPos stickBlock = null;
 
     public StickyBombEntity(EntityType<? extends StickyBombEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);

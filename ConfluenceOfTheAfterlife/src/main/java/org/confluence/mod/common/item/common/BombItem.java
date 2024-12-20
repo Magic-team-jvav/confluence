@@ -8,7 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.common.entity.projectile.bombs.BaseBombEntity;
+import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.jetbrains.annotations.NotNull;
 
 public class BombItem extends Item {

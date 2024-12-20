@@ -8,7 +8,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.projectile.bombs.BombFishEntity;
+import org.confluence.mod.common.entity.projectile.bomb.BombFishEntity;
 import org.jetbrains.annotations.NotNull;
 
 public class BombFishEntityModel extends EntityModel<BombFishEntity> {

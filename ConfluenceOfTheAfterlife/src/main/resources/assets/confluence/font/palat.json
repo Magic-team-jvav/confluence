@@ -1,0 +1,16 @@
+{
+    "providers": [
+        {
+            "type": "reference",
+            "id": "minecraft:include/space"
+        },
+        {
+            "type": "bitmap",
+            "file": "confluence:font/palat.png",
+            "ascent": 7,
+            "chars": [
+                "abcdefghijklmnopqrstuvwxyz,.'\u0000"
+            ]
+        }
+    ]
+}

@@ -40,7 +40,7 @@ public class MusicBoxBlock extends AbstractMechanicalBlock {
     public MusicBoxBlock(Supplier<MusicBoxItem> musicBoxItem) {
         super(BlockBehaviour.Properties.ofFullCopy(Blocks.JUKEBOX));
         this.musicBoxItem = musicBoxItem;
-        registerDefaultState(stateDefinition.any().setValue(StateProperties.DRIVE, false));
+        registerDefaultState(stateDefinition.any().setValue(StateProperties.DRIVE, true));
     }
 
     @Override

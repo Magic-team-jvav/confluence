@@ -21,6 +21,7 @@ import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.client.gui.hud.HealthHudLayer;
 import org.confluence.mod.client.gui.hud.ManaHudLayer;
 import org.confluence.mod.client.gui.screens.GroupWikiScreen;
+import org.confluence.mod.client.gui.screens.HeavyWorkBenchScreen;
 import org.confluence.mod.client.gui.screens.ObjectWikiScreen;
 import org.confluence.mod.client.gui.screens.SkyMillScreen;
 import org.confluence.mod.client.model.block.*;
@@ -92,6 +93,7 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenuTypes.SKY_MILL.get(), SkyMillScreen::new);
+        event.register(ModMenuTypes.HEAVY_WORK_BENCH.get(), HeavyWorkBenchScreen::new);
     }
 
     @SubscribeEvent

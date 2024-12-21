@@ -33,7 +33,7 @@ public class SkyMillRecipe extends AbstractAmountRecipe {
 
     @Override
     public @NotNull ItemStack getToastSymbol() {
-        return new ItemStack(FunctionalBlocks.SKY_MILL.get().asItem());
+        return FunctionalBlocks.SKY_MILL.toStack();
     }
 
     @Override
@@ -46,7 +46,7 @@ public class SkyMillRecipe extends AbstractAmountRecipe {
         return ModRecipes.SKY_MILL_TYPE.get();
     }
 
-    public static class Serializer extends AbstractAmountRecipe.Serializer<SkyMillRecipe> {
+    public static class Serializer implements RecipeSerializer<SkyMillRecipe> {
         public static final MapCodec<SkyMillRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
                 Ingredient.CODEC_NONEMPTY.listOf().fieldOf("ingredients").flatXmap(list -> {
@@ -54,16 +54,11 @@ public class SkyMillRecipe extends AbstractAmountRecipe {
                     if (ingredients.length == 0) {
                         return DataResult.error(() -> "No ingredients for workshop recipe");
                     } else {
-                        return ingredients.length > 12 ? DataResult.error(() -> "Too many ingredients for workshop recipe. The maximum is: 12") : DataResult.success(NonNullList.of(AmountIngredient.EMPTY, ingredients));
+                        return DataResult.success(NonNullList.of(AmountIngredient.EMPTY, ingredients));
                     }
                 }, DataResult::success).forGetter(recipe -> recipe.ingredients)
         ).apply(instance, SkyMillRecipe::new));
         public static final StreamCodec<RegistryFriendlyByteBuf, SkyMillRecipe> STREAM_CODEC = StreamCodec.of(SkyMillRecipe.Serializer::toNetwork, SkyMillRecipe.Serializer::fromNetwork);
-
-        @Override
-        protected SkyMillRecipe newInstance(ItemStack pResult, NonNullList<Ingredient> pIngredients) {
-            return new SkyMillRecipe(pResult, pIngredients);
-        }
 
         @Override
         public @NotNull MapCodec<SkyMillRecipe> codec() {
@@ -89,13 +84,6 @@ public class SkyMillRecipe extends AbstractAmountRecipe {
                 Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
             }
             ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
-        }
-    }
-
-    public static class Type implements RecipeType<SkyMillRecipe> {
-        @Override
-        public String toString() {
-            return "confluence:sky_mill_type";
         }
     }
 }

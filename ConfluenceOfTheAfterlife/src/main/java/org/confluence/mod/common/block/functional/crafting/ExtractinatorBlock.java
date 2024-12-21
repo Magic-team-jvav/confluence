@@ -49,7 +49,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class ExtractinatorBlock extends HorizontalDirectionalBlock implements EntityBlock {
     public static final MapCodec<ExtractinatorBlock> CODEC = simpleCodec(ExtractinatorBlock::new);
-    public static final EnumProperty<ExtractinatorPart> PART = EnumProperty.create("part", ExtractinatorPart.class);
+    public static final EnumProperty<Part> PART = EnumProperty.create("part", Part.class);
     private static final VoxelShape BASE_SHAPE_SOUTH = box(3.0, 0.0, 3.0, 16.0, 16.0, 13.0);
     private static final VoxelShape BASE_SHAPE_WEST = box(3.0, 0.0, 3.0, 13.0, 16.0, 16.0);
     private static final VoxelShape BASE_SHAPE_NORTH = box(0.0, 0.0, 3.0, 13.0, 16.0, 13.0);
@@ -63,7 +63,7 @@ public class ExtractinatorBlock extends HorizontalDirectionalBlock implements En
 
     public ExtractinatorBlock(Properties pProperties) {
         super(pProperties);
-        registerDefaultState(stateDefinition.any().setValue(PART, ExtractinatorPart.BASE).setValue(FACING, Direction.NORTH));
+        registerDefaultState(stateDefinition.any().setValue(PART, Part.BASE).setValue(FACING, Direction.NORTH));
     }
 
     @Override
@@ -74,14 +74,14 @@ public class ExtractinatorBlock extends HorizontalDirectionalBlock implements En
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
         int index = pState.getValue(FACING).get2DDataValue();
-        return pState.getValue(PART) == ExtractinatorPart.BASE ? BASE_SHAPES[index] : RIGHT_SHAPES[index];
+        return pState.getValue(PART) == Part.BASE ? BASE_SHAPES[index] : RIGHT_SHAPES[index];
     }
 
     @Override
     public void setPlacedBy(Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
         if (!pLevel.isClientSide) {
             BlockPos relativePos = pPos.relative(getConnectedDirection(pState));
-            pLevel.setBlockAndUpdate(relativePos, defaultBlockState().setValue(PART, ExtractinatorPart.RIGHT).setValue(FACING, pState.getValue(FACING)));
+            pLevel.setBlockAndUpdate(relativePos, defaultBlockState().setValue(PART, Part.RIGHT).setValue(FACING, pState.getValue(FACING)));
         }
     }
 
@@ -217,13 +217,13 @@ public class ExtractinatorBlock extends HorizontalDirectionalBlock implements En
         }
     }
 
-    public enum ExtractinatorPart implements StringRepresentable {
+    public enum Part implements StringRepresentable {
         BASE("base"),
         RIGHT("right");
 
         private final String name;
 
-        ExtractinatorPart(String pName) {
+        Part(String pName) {
             this.name = pName;
         }
 

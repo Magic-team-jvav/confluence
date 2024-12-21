@@ -43,10 +43,10 @@ public class AltarRecipe extends AbstractAmountRecipe {
 
     @Override
     public @NotNull ItemStack getToastSymbol() {
-        return new ItemStack(FunctionalBlocks.DEMON_ALTAR.get());
+        return FunctionalBlocks.DEMON_ALTAR.get().asItem().getDefaultInstance();
     }
 
-    public static class Serializer extends AbstractAmountRecipe.Serializer<AltarRecipe> {
+    public static class Serializer implements RecipeSerializer<AltarRecipe> {
         public static final MapCodec<AltarRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
                 Ingredient.CODEC_NONEMPTY.listOf().fieldOf("ingredients").flatXmap(list -> {
@@ -54,16 +54,11 @@ public class AltarRecipe extends AbstractAmountRecipe {
                     if (ingredients.length == 0) {
                         return DataResult.error(() -> "No ingredients for workshop recipe");
                     } else {
-                        return ingredients.length > 12 ? DataResult.error(() -> "Too many ingredients for workshop recipe. The maximum is: 12") : DataResult.success(NonNullList.of(AmountIngredient.EMPTY, ingredients));
+                        return DataResult.success(NonNullList.of(AmountIngredient.EMPTY, ingredients));
                     }
                 }, DataResult::success).forGetter(recipe -> recipe.ingredients)
         ).apply(instance, AltarRecipe::new));
         public static final StreamCodec<RegistryFriendlyByteBuf, AltarRecipe> STREAM_CODEC = StreamCodec.of(AltarRecipe.Serializer::toNetwork, AltarRecipe.Serializer::fromNetwork);
-
-        @Override
-        protected AltarRecipe newInstance(ItemStack pResult, NonNullList<Ingredient> pIngredients) {
-            return new AltarRecipe(pResult, pIngredients);
-        }
 
         @Override
         public @NotNull MapCodec<AltarRecipe> codec() {
@@ -89,13 +84,6 @@ public class AltarRecipe extends AbstractAmountRecipe {
                 Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
             }
             ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
-        }
-    }
-
-    public static class Type implements RecipeType<AltarRecipe> {
-        @Override
-        public String toString() {
-            return "confluence:altar_type";
         }
     }
 }

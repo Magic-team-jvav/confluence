@@ -30,4 +30,8 @@ public abstract class SecretSeed {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         return server != null && match(server);
     }
+
+    public boolean match(long secretFlag) {
+        return (secretFlag & flag) == flag;
+    }
 }

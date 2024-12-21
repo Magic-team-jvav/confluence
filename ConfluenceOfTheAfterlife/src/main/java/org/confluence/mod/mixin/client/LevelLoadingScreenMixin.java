@@ -34,7 +34,8 @@ public abstract class LevelLoadingScreenMixin implements ILevelLoadingScreen {
     }
 
     @Inject(method = "getFormattedProgress", at = @At("HEAD"), cancellable = true)
-    private void ssk(CallbackInfoReturnable<Component> cir) {
+    private void secretMessage(CallbackInfoReturnable<Component> cir) {
+        if (confluence$secretFlag == 0L) return;
         int progress = progressListener.getProgress();
         if ((confluence$secretFlag & DW_MASK) == DW_MASK) {
             if (progress >= 50) {

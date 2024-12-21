@@ -17,10 +17,8 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.init.ModAttributes;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.item.accessory.FishingBobber;
-import org.confluence.mod.common.item.accessory.MechanicalLens;
-import org.confluence.mod.common.item.accessory.PickupRangeAbilityValue;
-import org.confluence.mod.common.item.accessory.SpectreGoggles;
+import org.confluence.mod.common.init.block.MusicBoxBlocks;
+import org.confluence.mod.common.item.accessory.*;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.api.primitive.*;
 import org.confluence.terra_curio.common.init.TCAttributes;
@@ -124,7 +122,7 @@ public class AccessoryItems {
             GUIDE_TO_PLANT_FIBER_CORDAGE = registerCurio("guide_to_plant_fiber_cordage", builder -> builder.accessories(units(SHEARS$DIG))), // 植物纤维绳索宝典
     /* 收音机 */
     SPECTRE_GOGGLES = registerDirectly("spectre_goggles", name -> new SpectreGoggles(BaseCurioItem.builder(name).rarity(PINK).accessories(units(SPECTRE$GOGGLES)))), // 幽灵护目镜
-    CHROMATIC_CLOAK = registerCurio("chromatic_cloak", builder -> builder.rarity(PINK).accessories(of(TCItems.EFFECT$IMMUNITIES, Set.of(ModEffects.SHIMMER)))); // 炫彩斗篷
+            CHROMATIC_CLOAK = registerCurio("chromatic_cloak", builder -> builder.rarity(PINK).accessories(of(TCItems.EFFECT$IMMUNITIES, Set.of(ModEffects.SHIMMER)))); // 炫彩斗篷
 
     public static final Supplier<BaseCurioItem> SUMMONER_EMBLEM = registerCurio("summoner_emblem", builder -> builder.rarity(LIGHT_RED).attribute(ModAttributes.SUMMON_DAMAGE, 0.15, ADD_MULTIPLIED_TOTAL)), // 召唤师徽章
             APPRENTICES_SCARF = registerCurio("apprentices_scarf", builder -> builder.rarity(PINK).attribute(ModAttributes.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(ModAttributes.SUMMON_DAMAGE, 0.1, ADD_MULTIPLIED_TOTAL)), // 学徒围巾
@@ -138,6 +136,8 @@ public class AccessoryItems {
 
     public static final Supplier<BaseCurioItem> FLEDGLING_WINGS = registerCurio("fledgling_wings", builder -> builder.rarity(WHITE).accessories(of(TCItems.MAY$FLY, new MayFlyAbilityValue.Storage(0.3F, 36, true, false))));
 
+    public static final Supplier<MusicBoxItem> MUSIC_BOX = ITEMS.register("music_box", () -> new MusicBoxItem(null, MusicBoxBlocks.MUSIC_BOX.get()));
+
     private static Supplier<BaseCurioItem> registerCurio(String name, Consumer<BaseCurioItem.Builder> consumer) {
         return ITEMS.register(name, () -> {
             BaseCurioItem.Builder builder = BaseCurioItem.builder(name);
@@ -146,7 +146,7 @@ public class AccessoryItems {
         });
     }
 
-    private static Supplier<BaseCurioItem> registerDirectly(String name, Function<String, BaseCurioItem> function) {
+    private static <I extends BaseCurioItem> Supplier<I> registerDirectly(String name, Function<String, I> function) {
         return ITEMS.register(name, () -> function.apply(name));
     }
 

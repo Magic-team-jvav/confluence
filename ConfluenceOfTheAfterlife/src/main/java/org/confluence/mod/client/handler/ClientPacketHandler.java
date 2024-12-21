@@ -6,9 +6,11 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.worldgen.secret_seed.SecretSeed;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.network.s2c.GamePhasePacketS2C;
 import org.confluence.mod.network.s2c.ManaPacketS2C;
+import org.confluence.mod.network.s2c.SecretFlagSyncPacketS2C;
 import org.confluence.phase_journey.mixed.ILevelRenderer;
 
 @OnlyIn(Dist.CLIENT)
@@ -18,6 +20,7 @@ public final class ClientPacketHandler {
     private static GamePhase gamePhase = GamePhase.BEFORE_SKELETRON;
     private static float fishingPower = 0.0F;
     private static boolean echoVisible = false;
+    private static long secretFlag = 0L;
 
     public static int getCurrentMana() {
         return currentMana;
@@ -47,6 +50,10 @@ public final class ClientPacketHandler {
         return echoVisible;
     }
 
+    public static boolean isSecretSeed(SecretSeed secretSeed) {
+        return secretSeed.match(secretFlag);
+    }
+
     public static void handleMana(ManaPacketS2C packet, Player player) {
         maxMana = packet.maxMana();
         currentMana = packet.currentMana();
@@ -68,5 +75,9 @@ public final class ClientPacketHandler {
             ((ILevelRenderer) Minecraft.getInstance().levelRenderer).phase_journey$rebuildAllChunks();
             echoVisible = visible;
         }
+    }
+
+    public static void handleSecretFlag(SecretFlagSyncPacketS2C packet) {
+        secretFlag = packet.flag();
     }
 }

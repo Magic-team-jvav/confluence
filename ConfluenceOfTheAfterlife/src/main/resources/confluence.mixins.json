@@ -40,7 +40,8 @@
         "item.ProjectileWeaponItemMixin",
         "level.ImposterProtoChunkMixin",
         "level.ServerLevelMixin",
-        "level.WorldGenRegionMixin"
+        "level.WorldGenRegionMixin",
+        "level.WorldOptionsMixin"
     ],
     "client": [
         "client.AdvancementWidgetMixin",
@@ -50,11 +51,15 @@
         "client.DeathScreenMixin",
         "client.GuiMixin",
         "client.ItemRendererMixin",
+        "client.LevelLoadingScreenMixin",
         "client.LocalPlayerMixin",
+        "client.MinecraftMixin",
         "client.MouseHandlerMixin",
+        "client.MusicManagerMixin",
         "client.PauseScreenMixin",
         "client.TitleScreenMixin",
         "client.ToastComponent$ToastInstanceMixin",
+        "client.WorldCreationUiStateMixin",
         "client.accessor.FontAccessor",
         "integration.terra_curio.InformationHandlerMixin"
     ],

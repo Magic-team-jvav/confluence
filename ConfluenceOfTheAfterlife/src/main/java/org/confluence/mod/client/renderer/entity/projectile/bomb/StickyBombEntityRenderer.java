@@ -1,11 +1,11 @@
-package org.confluence.mod.client.renderer.entity.bomb;
+package org.confluence.mod.client.renderer.entity.projectile.bomb;
 
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.bomb.StickyBombEntityModel;
-import org.confluence.mod.common.entity.projectile.bombs.StickyBombEntity;
+import org.confluence.mod.common.entity.projectile.bomb.StickyBombEntity;
 import org.jetbrains.annotations.NotNull;
 
 public class StickyBombEntityRenderer extends BombEntityRenderer<StickyBombEntity> {

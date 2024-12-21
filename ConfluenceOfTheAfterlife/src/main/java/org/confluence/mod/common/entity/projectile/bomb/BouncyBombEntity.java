@@ -1,4 +1,4 @@
-package org.confluence.mod.common.entity.projectile.bombs;
+package org.confluence.mod.common.entity.projectile.bomb;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;

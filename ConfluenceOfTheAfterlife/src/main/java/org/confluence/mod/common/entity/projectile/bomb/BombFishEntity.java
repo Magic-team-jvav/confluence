@@ -1,4 +1,4 @@
-package org.confluence.mod.common.entity.projectile.bombs;
+package org.confluence.mod.common.entity.projectile.bomb;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;

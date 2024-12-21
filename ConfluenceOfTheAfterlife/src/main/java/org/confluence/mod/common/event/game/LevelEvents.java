@@ -17,7 +17,7 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
-import org.confluence.mod.common.entity.projectile.bombs.ScarabBombEntity;
+import org.confluence.mod.common.entity.projectile.bomb.ScarabBombEntity;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.terra_curio.util.TCUtils;

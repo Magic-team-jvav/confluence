@@ -1,9 +1,14 @@
-package org.confluence.mod.common.entity.projectile.bombs;
+package org.confluence.mod.common.entity.projectile.bomb;
 
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -22,11 +27,13 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ConsumableItems;
-import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ScarabBombEntity extends StickyBombEntity {
+    private static final EntityDataAccessor<Integer> DATA_OWNER_ID = SynchedEntityData.defineId(ScarabBombEntity.class, EntityDataSerializers.INT);
     private Vec3 facingDir = new Vec3(0, -1, 0);
+    private Entity owner;
 
     public ScarabBombEntity(EntityType<? extends ScarabBombEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -46,9 +53,16 @@ public class ScarabBombEntity extends StickyBombEntity {
     }
 
     @Override
+    protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_OWNER_ID, -1);
+    }
+
+    @Override
     protected void explodeFunction() {
+        if (!(level() instanceof ServerLevel serverLevel)) return;
         Vec3 blastPos = getEyePosition();
-        Vec3 step = facingDir.normalize().scale(3);
+        Vec3 step = facingDir.normalize().scale(-3);
         float upperLimit = ModBlocks.getObsidianBasedExplosionResistance(100);
         ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList = new ObjectArrayList<>();
         for (int i = 0; i < 13; i++) {
@@ -61,16 +75,14 @@ public class ScarabBombEntity extends StickyBombEntity {
                     if (blockState.getExplosionResistance(level(), blockPos, explosion) < upperLimit) {
                         level().getProfiler().push("explosion_blocks");
                         if (blockState.canDropFromExplosion(level(), blockPos, explosion)) {
-                            if (level() instanceof ServerLevel serverLevel) {
-                                BlockEntity blockentity = blockState.hasBlockEntity() ? level().getBlockEntity(blockPos) : null;
-                                LootParams.Builder lootparams$builder = new LootParams.Builder(serverLevel)
-                                        .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(blockPos))
-                                        .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
-                                        .withOptionalParameter(LootContextParams.BLOCK_ENTITY, blockentity)
-                                        .withOptionalParameter(LootContextParams.THIS_ENTITY, this);
-                                blockState.spawnAfterBreak(serverLevel, blockPos, ItemStack.EMPTY, getOwner() instanceof Player);
-                                blockState.getDrops(lootparams$builder).forEach((itemStack) -> addBlockDrops(objectArrayList, itemStack, blockPos));
-                            }
+                            BlockEntity blockentity = blockState.hasBlockEntity() ? level().getBlockEntity(blockPos) : null;
+                            LootParams.Builder lootparams$builder = new LootParams.Builder(serverLevel)
+                                    .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(blockPos))
+                                    .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
+                                    .withOptionalParameter(LootContextParams.BLOCK_ENTITY, blockentity)
+                                    .withOptionalParameter(LootContextParams.THIS_ENTITY, this);
+                            blockState.spawnAfterBreak(serverLevel, blockPos, ItemStack.EMPTY, getOwner() instanceof Player);
+                            blockState.getDrops(lootparams$builder).forEach((itemStack) -> addBlockDrops(objectArrayList, itemStack, blockPos));
                         }
                         blockState.onBlockExploded(level(), blockPos, explosion);
                         level().getProfiler().pop();
@@ -101,20 +113,33 @@ public class ScarabBombEntity extends StickyBombEntity {
     @Override
     public void tick() {
         super.tick();
-        if (getOwner() != null) {
-            this.facingDir = getEyePosition().subtract(getOwner().getEyePosition());
-            float[] yawPitch = ModUtils.dirToRot(facingDir);
-            // 将Yaw和Pitch调整至45的倍数（还原原作.jpg）
-            for (int i = 0; i < 2; i++) {
-                // 先+360防止取余运算对负数犯病
-                yawPitch[i] += 360f;
-                float remainder = yawPitch[i] % 45f;
-                yawPitch[i] -= remainder;
-                if (remainder > 22.5f)
-                    yawPitch[i] += 45f;
-            }
-            this.facingDir = ModUtils.rotToDir(yawPitch[0], yawPitch[1]);
+        if (getOwner() != null && stickBlock != null) {
+            this.facingDir = getOwner().getEyePosition().subtract(position());
+            Vec3 vec3 = facingDir.normalize();
+            float f = (float) vec3.horizontalDistance();
+            setYRot(90 - (float) Math.atan2(vec3.z, vec3.x) * Mth.RAD_TO_DEG);
+            this.rotate = (float) Math.atan2(f, vec3.y);
         }
-        ModUtils.updateEntityRotation(this, facingDir);
+    }
+
+    @Override
+    public void setOwner(Entity owner) {
+        super.setOwner(owner);
+        entityData.set(DATA_OWNER_ID, owner.getId());
+    }
+
+    @Override
+    public @Nullable Entity getOwner() {
+        if (owner == null) {
+            if (level().isClientSide) {
+                int id = entityData.get(DATA_OWNER_ID);
+                if (id != -1) {
+                    this.owner = level().getEntity(id);
+                }
+            } else {
+                this.owner = super.getOwner();
+            }
+        }
+        return owner;
     }
 }

@@ -1,11 +1,11 @@
-package org.confluence.mod.client.renderer.entity.bomb;
+package org.confluence.mod.client.renderer.entity.projectile.bomb;
 
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.bomb.ScarabBombEntityModel;
-import org.confluence.mod.common.entity.projectile.bombs.ScarabBombEntity;
+import org.confluence.mod.common.entity.projectile.bomb.ScarabBombEntity;
 import org.jetbrains.annotations.NotNull;
 
 public class ScarabBombEntityRenderer extends BombEntityRenderer<ScarabBombEntity> {

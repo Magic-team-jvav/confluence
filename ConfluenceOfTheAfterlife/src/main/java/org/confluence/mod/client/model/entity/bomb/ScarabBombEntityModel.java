@@ -8,7 +8,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.projectile.bombs.ScarabBombEntity;
+import org.confluence.mod.common.entity.projectile.bomb.ScarabBombEntity;
 
 public class ScarabBombEntityModel extends EntityModel<ScarabBombEntity> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("scarab_bomb_entity"), "main");

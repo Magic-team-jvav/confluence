@@ -1,11 +1,11 @@
-package org.confluence.mod.client.renderer.entity.bomb;
+package org.confluence.mod.client.renderer.entity.projectile.bomb;
 
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.bomb.BombFishEntityModel;
-import org.confluence.mod.common.entity.projectile.bombs.BombFishEntity;
+import org.confluence.mod.common.entity.projectile.bomb.BombFishEntity;
 import org.jetbrains.annotations.NotNull;
 
 public class BombFishEntityRenderer extends BombEntityRenderer<BombFishEntity> {

@@ -101,7 +101,7 @@ public class ArmorItems {
     public static final Supplier<ArmorItem> GELSTONE_HELMET = registerNormalArmor("gelstone_helmet", "gelstone_armor", ModArmorMaterials.GEMSTONE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 200);
     public static final Supplier<ArmorItem> GELSTONE_CHESTPLATE = registerNormalArmor("gelstone_chestplate", "gelstone_armor", ModArmorMaterials.GEMSTONE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 270);
     public static final Supplier<ArmorItem> GELSTONE_LEGGINGS = registerNormalArmor("gelstone_leggings", "gelstone_armor", ModArmorMaterials.GEMSTONE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 250);
-    public static final Supplier<ArmorItem> GELSTONE_BOOTS = registerNormalArmor("gelstone__boots", "gelstone_armor", ModArmorMaterials.GEMSTONE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 200);
+    public static final Supplier<ArmorItem> GELSTONE_BOOTS = registerNormalArmor("gelstone_boots", "gelstone_armor", ModArmorMaterials.GEMSTONE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 200);
 
     public static final Supplier<ArmorItem> COLD_CRYSTAL_HELMET = registerNormalArmor("cold_crystal_helmet", "cold_crystal_armor", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 200);
     public static final Supplier<ArmorItem> COLD_CRYSTAL_CHESTPLATE = registerNormalArmor("cold_crystal_chestplate", "cold_crystal_armor", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 270);

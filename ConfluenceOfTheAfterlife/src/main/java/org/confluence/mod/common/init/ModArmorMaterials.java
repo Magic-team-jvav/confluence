@@ -217,7 +217,7 @@ public final class ModArmorMaterials {
                 map.put(ArmorItem.Type.LEGGINGS, 6);
                 map.put(ArmorItem.Type.BOOTS, 2);
             }),
-            15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.COLD_CRYSTAL),
+            15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.HEIM),
             List.of(new ArmorMaterial.Layer(Confluence.asResource("sea_foam_stone"))), 0.0F, 0.0F
     ));
 }

@@ -40,6 +40,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("generator.confluence.the_corruption", "腐化之地");
         add("generator.confluence.tr_crimson", "猩红之地");
 
+        add("worldgen.confluence.placing_traps", "正在放置机关");
+        add("worldgen.confluence.generating_bees", "正在生成蜜蜂");
+        add("worldgen.confluence.generating_wavy_caves", "正在生成皱曲洞穴");
+        add("worldgen.confluence.not_placing_traps", "不在放置机关");
+
         add("info.confluence.bait", "鱼饵力: %s%%");
         add("info.confluence.network", "#%s 信号: %s");
         add("info.confluence.potion_mana", "药水魔力: %s");

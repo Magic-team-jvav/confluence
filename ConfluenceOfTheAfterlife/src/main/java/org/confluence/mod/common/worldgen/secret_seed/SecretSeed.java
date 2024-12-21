@@ -1,0 +1,33 @@
+package org.confluence.mod.common.worldgen.secret_seed;
+
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.mod.mixed.IWorldOptions;
+
+public abstract class SecretSeed {
+    private final long flag;
+
+    SecretSeed(long flag) {
+        this.flag = flag;
+    }
+
+    public abstract boolean match(String seed);
+
+    public long getFlag() {
+        return flag;
+    }
+
+    public boolean match(MinecraftServer server) {
+        return (((IWorldOptions) server.getWorldData().worldGenOptions()).confluence$getSecretFlag() & flag) == flag;
+    }
+
+    public boolean match(ServerLevel serverLevel) {
+        return match(serverLevel.getServer());
+    }
+
+    public boolean match() {
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        return server != null && match(server);
+    }
+}

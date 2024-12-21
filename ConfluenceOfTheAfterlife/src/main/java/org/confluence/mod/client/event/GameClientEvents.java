@@ -44,7 +44,7 @@ public final class GameClientEvents {
         LocalPlayer player = minecraft.player;
 
         WeatherHandler.initialize(player);
-        IMusicManager.reset(minecraft.getMusicManager());
+        IMusicManager.reset(minecraft.getMusicManager()); // 1st
 
         if (player == null) return;
 

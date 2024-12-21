@@ -45,8 +45,8 @@ import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
 import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.init.ModFluids;
-import org.confluence.mod.common.init.ModMenus;
-import org.confluence.mod.common.init.ModParticles;
+import org.confluence.mod.common.init.ModMenuTypes;
+import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -91,7 +91,7 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
-        event.register(ModMenus.SKY_MILL.get(), SkyMillScreen::new);
+        event.register(ModMenuTypes.SKY_MILL.get(), SkyMillScreen::new);
     }
 
     @SubscribeEvent
@@ -224,6 +224,6 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerParticles(RegisterParticleProvidersEvent event) {
-        event.registerSpecial(ModParticles.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
+        event.registerSpecial(ModParticleTypes.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
     }
 }

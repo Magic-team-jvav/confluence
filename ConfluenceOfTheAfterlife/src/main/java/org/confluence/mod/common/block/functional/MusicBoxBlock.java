@@ -122,7 +122,7 @@ public class MusicBoxBlock extends AbstractMechanicalBlock {
                 if (manager.confluence$getMusicBoxOccupied().isNone()) {
                     if (!musicManager.isPlayingMusic(music) && withinRange(entity.getBlockPos().getCenter(), player.position(), music)) {
                         musicManager.startPlaying(music);
-                        manager.confluence$setMusicBoxOccupied(IMusicManager.State.BLOCK);
+                        manager.confluence$setMusicBoxOccupied(IMusicManager.State.BLOCK); // 3rd
                     }
                 } else if (musicManager.isPlayingMusic(music) && !withinRange(entity.getBlockPos().getCenter(), player.position(), music)) {
                     musicManager.stopPlaying(music);

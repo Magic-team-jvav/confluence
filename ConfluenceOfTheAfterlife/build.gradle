@@ -120,7 +120,7 @@ dependencies {
     implementation jarJar(group: 'software.bernie.geckolib', name: "geckolib-neoforge-${minecraft_version}", version: "[${geckolib_version},)")
 
     implementation "curse.maven:adorned-1036809:5740650"
-    implementation 'com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version
+    implementation jarJar('com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version)
 
     compileOnly "curse.maven:jade-324717:5639932"
     runtimeOnly "curse.maven:jade-324717:5639932"

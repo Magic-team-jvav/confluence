@@ -25,7 +25,6 @@ public abstract class WorldCreationUiStateMixin {
     @WrapOperation(method = "lambda$setSeed$2", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/levelgen/WorldOptions;withSeed(Ljava/util/OptionalLong;)Lnet/minecraft/world/level/levelgen/WorldOptions;"))
     private WorldOptions checkSecretSeed(WorldOptions instance, OptionalLong seed, Operation<WorldOptions> original) {
         String s = getSeed().trim().toLowerCase(Locale.ROOT);
-        ;
         for (SecretSeed secretSeed : ModSecretSeeds.VALUES) {
             if (secretSeed.match(s)) {
                 ((IWorldOptions) instance).confluence$withSecretFlag(secretSeed.getFlag());

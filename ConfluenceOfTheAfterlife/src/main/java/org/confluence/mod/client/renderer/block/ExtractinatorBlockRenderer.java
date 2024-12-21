@@ -18,7 +18,7 @@ public class ExtractinatorBlockRenderer extends GeoBlockRenderer<ExtractinatorBl
 
     @Override
     public void defaultRender(PoseStack poseStack, ExtractinatorBlock.Entity animatable, MultiBufferSource bufferSource, @Nullable RenderType renderType, @Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {
-        if (animatable.getBlockState().getValue(ExtractinatorBlock.PART) == ExtractinatorBlock.ExtractinatorPart.BASE) {
+        if (animatable.getBlockState().getValue(ExtractinatorBlock.PART) == ExtractinatorBlock.Part.BASE) {
             super.defaultRender(poseStack, animatable, bufferSource, renderType, buffer, yaw, partialTick, packedLight);
         }
     }

@@ -38,7 +38,7 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBlock { // todo
+public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBlock {
     public static final MapCodec<SkyMillBlock> CODEC = simpleCodec(SkyMillBlock::new);
     private static final Component CONTAINER_TITLE = Component.translatable("container.confluence.sky_mill");
 

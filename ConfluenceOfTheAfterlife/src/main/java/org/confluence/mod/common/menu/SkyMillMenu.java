@@ -22,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class SkyMillMenu extends AbstractContainerMenu {
-
     private static final int INV_SLOT_START = 4;
     private static final int INV_SLOT_END = 31;
     private static final int USE_ROW_SLOT_START = 31;
@@ -143,10 +142,6 @@ public class SkyMillMenu extends AbstractContainerMenu {
             result.setItem(0, ItemStack.EMPTY);
         }
         broadcastChanges();
-    }
-
-    public @NotNull MenuType<SkyMillMenu> getType() {
-        return ModMenuTypes.SKY_MILL.get();
     }
 
     public void registerUpdateListener(Runnable pListener) {

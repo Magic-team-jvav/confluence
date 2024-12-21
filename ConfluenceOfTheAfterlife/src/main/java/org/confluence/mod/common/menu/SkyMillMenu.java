@@ -1,8 +1,8 @@
 package org.confluence.mod.common.menu;
 
 import com.google.common.collect.Lists;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -10,81 +10,53 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
-import net.minecraft.world.level.Level;
-import org.confluence.mod.common.init.ModMenus;
+import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.recipe.RecipeInputContainer;
 import org.confluence.mod.common.recipe.SkyMillRecipe;
+import org.confluence.terra_curio.common.menu.AmountResultSlot;
+import org.confluence.terra_curio.common.menu.RecipeInputContainer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class SkyMillMenu extends AbstractContainerMenu {
-    public static final int INPUT_SLOT_1 = 0;
-    public static final int INPUT_SLOT_2 = 1;
-    public static final int INPUT_SLOT_3 = 2;
-    public static final int RESULT_SLOT = 3;
-    private static final int INV_SLOT_START = 2;
-    private static final int INV_SLOT_END = 29;
-    private static final int USE_ROW_SLOT_START = 29;
-    private static final int USE_ROW_SLOT_END = 38;
+
+    private static final int INV_SLOT_START = 4;
+    private static final int INV_SLOT_END = 31;
+    private static final int USE_ROW_SLOT_START = 31;
+    private static final int USE_ROW_SLOT_END = 40;
     private final ContainerLevelAccess access;
-    private final DataSlot selectedRecipeIndex = DataSlot.standalone();
-    private final Level level;
-    private List<RecipeHolder<SkyMillRecipe>> recipes = Lists.newArrayList();
-    private ItemStack input = ItemStack.EMPTY;
-    long lastSoundTime;
-    final Slot inputSlot;
-    final Slot resultSlot;
-    Runnable slotUpdateListener = () -> {};
-    public final RecipeInputContainer container = new RecipeInputContainer(3) {
+    private final Player player;
+    private Runnable slotUpdateListener = () -> {};
+    public final RecipeInputContainer input = new RecipeInputContainer(this, 3) {
         public void setChanged() {
             super.setChanged();
-            SkyMillMenu.this.slotsChanged(this);
             SkyMillMenu.this.slotUpdateListener.run();
         }
     };
-    private final ResultContainer resultContainer = new ResultContainer();
+    private final ResultContainer result = new ResultContainer();
+    private final DataSlot selectedRecipeIndex = DataSlot.standalone();
+    private List<RecipeHolder<SkyMillRecipe>> recipes = Lists.newArrayList();
 
     public SkyMillMenu(int pContainerId, Inventory inventory) {
         this(pContainerId, inventory, ContainerLevelAccess.NULL);
     }
 
     public SkyMillMenu(int pContainerId, Inventory pPlayerInventory, final ContainerLevelAccess pAccess) {
-        super(ModMenus.SKY_MILL.get(), pContainerId);
+        super(ModMenuTypes.SKY_MILL.get(), pContainerId);
         this.access = pAccess;
-        this.level = pPlayerInventory.player.level();
-        this.inputSlot = addSlot(new Slot(container, INPUT_SLOT_1, 20, 33));
-        this.resultSlot = addSlot(new Slot(resultContainer, RESULT_SLOT, 143, 33) {
-            public boolean mayPlace(@NotNull ItemStack pStack) {
-                return false;
-            }
-
-            public void onTake(@NotNull Player pPlayer, @NotNull ItemStack pStack) {
-                pStack.onCraftedBy(pPlayer.level(), pPlayer, pStack.getCount());
-                SkyMillMenu.this.resultContainer.awardUsedRecipes(pPlayer, getRelevantItems());
-                ItemStack itemstack = SkyMillMenu.this.inputSlot.remove(1);
-                if (!itemstack.isEmpty()) {
-                    SkyMillMenu.this.setupResultSlot();
-                }
-
-                pAccess.execute((level, blockPos) -> {
-                    long l = level.getGameTime();
-                    if (SkyMillMenu.this.lastSoundTime != l) {
-                        level.playSound(null, blockPos, SoundEvents.UI_STONECUTTER_TAKE_RESULT, SoundSource.BLOCKS, 1.0F, 1.0F);
-                        SkyMillMenu.this.lastSoundTime = l;
-                    }
-                });
-                super.onTake(pPlayer, pStack);
-            }
-
-            private List<ItemStack> getRelevantItems() {
-                return List.of(SkyMillMenu.this.inputSlot.getItem());
+        this.player = pPlayerInventory.player;
+        addSlot(new AmountResultSlot(input, result, 0, 35, 14) {
+            @Override
+            protected void updateMenu() {
+                SkyMillMenu.this.setupResultSlot();
             }
         });
+        addSlot(new Slot(input, 0, 35, 57));
+        addSlot(new Slot(input, 1, 16, 38));
+        addSlot(new Slot(input, 2, 54, 38));
 
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
@@ -117,7 +89,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
     }
 
     public boolean hasInputItem() {
-        return inputSlot.hasItem() && !recipes.isEmpty();
+        return input.isEmpty() && !recipes.isEmpty();
     }
 
     public boolean clickMenuButton(@NotNull Player pPlayer, int pId) {
@@ -125,7 +97,6 @@ public class SkyMillMenu extends AbstractContainerMenu {
             selectedRecipeIndex.set(pId);
             setupResultSlot();
         }
-
         return true;
     }
 
@@ -134,52 +105,48 @@ public class SkyMillMenu extends AbstractContainerMenu {
     }
 
     public void slotsChanged(@NotNull Container pInventory) {
-        ItemStack itemstack = inputSlot.getItem();
-        if (!itemstack.is(input.getItem())) {
-            input = itemstack.copy();
-            setupRecipeList(new RecipeInput() {
-                @Override
-                public @NotNull ItemStack getItem(int index) {
-                    return pInventory.getItem(index);
+        this.recipes = player.level().getRecipeManager().getRecipesFor(ModRecipes.SKY_MILL_TYPE.get(), input, player.level());
+        if (selectedRecipeIndex.get() >= recipes.size()) selectedRecipeIndex.set(recipes.size() - 1);
+        access.execute((level, pos) -> {
+            if (player instanceof ServerPlayer serverPlayer) {
+                ItemStack itemStack = ItemStack.EMPTY;
+                if (!recipes.isEmpty()) {
+                    if (selectedRecipeIndex.get() == -1) selectedRecipeIndex.set(0);
+                    SkyMillRecipe recipe = recipes.get(selectedRecipeIndex.get()).value();
+                    itemStack = recipe.getResultItem(null).copy();
+                    setCurrentRecipe(recipe);
                 }
-
-                @Override
-                public int size() {
-                    return 3;
-                }
-            }, itemstack);
-        }
+                result.setItem(0, itemStack);
+                setRemoteSlot(0, itemStack);
+                serverPlayer.connection.send(new ClientboundContainerSetSlotPacket(containerId, incrementStateId(), 0, itemStack));
+            }
+        });
     }
 
-    private void setupRecipeList(RecipeInput pContainer, ItemStack pStack) {
-        recipes.clear();
-        selectedRecipeIndex.set(-1);
-        resultSlot.set(ItemStack.EMPTY);
-        if (!pStack.isEmpty()) {
-            this.recipes = level.getRecipeManager().getRecipesFor(ModRecipes.SKY_MILL_TYPE.get(), pContainer, level);
+    private void setCurrentRecipe(SkyMillRecipe recipe) {
+        if (getSlot(0) instanceof AmountResultSlot amountResultSlot) {
+            amountResultSlot.setCurrentRecipe(recipe);
         }
-
     }
 
     private void setupResultSlot() {
         if (!recipes.isEmpty() && isValidRecipeIndex(selectedRecipeIndex.get())) {
-            RecipeHolder<SkyMillRecipe> skyMillRecipe = recipes.get(selectedRecipeIndex.get());
-            ItemStack itemstack = skyMillRecipe.value().assemble(container, level.registryAccess());
-            if (itemstack.isItemEnabled(level.enabledFeatures())) {
-                resultContainer.setRecipeUsed(skyMillRecipe);
-                resultSlot.set(itemstack);
+            SkyMillRecipe recipe = recipes.get(selectedRecipeIndex.get()).value();
+            ItemStack itemStack = recipe.getResultItem(null).copy();
+            if (itemStack.isItemEnabled(player.level().enabledFeatures())) {
+                result.setItem(0, itemStack);
+                setCurrentRecipe(recipe);
             } else {
-                resultSlot.set(ItemStack.EMPTY);
+                result.setItem(0, ItemStack.EMPTY);
             }
         } else {
-            resultSlot.set(ItemStack.EMPTY);
+            result.setItem(0, ItemStack.EMPTY);
         }
-
         broadcastChanges();
     }
 
     public @NotNull MenuType<SkyMillMenu> getType() {
-        return ModMenus.SKY_MILL.get();
+        return ModMenuTypes.SKY_MILL.get();
     }
 
     public void registerUpdateListener(Runnable pListener) {
@@ -187,7 +154,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
     }
 
     public boolean canTakeItemForPickAll(@NotNull ItemStack pStack, Slot pSlot) {
-        return pSlot.container != resultContainer && super.canTakeItemForPickAll(pStack, pSlot);
+        return pSlot.container != result && super.canTakeItemForPickAll(pStack, pSlot);
     }
 
     public @NotNull ItemStack quickMoveStack(@NotNull Player pPlayer, int pIndex) {
@@ -197,26 +164,26 @@ public class SkyMillMenu extends AbstractContainerMenu {
             ItemStack itemstack1 = slot.getItem();
             Item item = itemstack1.getItem();
             itemstack = itemstack1.copy();
-            if (pIndex == 1) {
+            if (pIndex == 0) {
                 item.onCraftedBy(itemstack1, pPlayer.level(), pPlayer);
-                if (!moveItemStackTo(itemstack1, INV_SLOT_START, 38, true)) {
+                if (!moveItemStackTo(itemstack1, INV_SLOT_START, INV_SLOT_END, true)) {
                     return ItemStack.EMPTY;
                 }
 
                 slot.onQuickCraft(itemstack1, itemstack);
-            } else if (pIndex == 0) {
-                if (!moveItemStackTo(itemstack1, INV_SLOT_START, 38, false)) {
+            } else if (pIndex <= 3) {
+                if (!moveItemStackTo(itemstack1, INV_SLOT_START, INV_SLOT_END, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (level.getRecipeManager().getRecipeFor(ModRecipes.SKY_MILL_TYPE.get(), new SingleRecipeInput(itemstack1), level).isPresent()) {
-                if (!moveItemStackTo(itemstack1, 0, 1, false)) {
+            } else if (player.level().getRecipeManager().getRecipeFor(ModRecipes.SKY_MILL_TYPE.get(), new SingleRecipeInput(itemstack1), player.level()).isPresent()) {
+                if (!moveItemStackTo(itemstack1, 1, 4, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (pIndex >= INV_SLOT_START && pIndex < INV_SLOT_END) {
+            } else if (pIndex < INV_SLOT_END) {
                 if (!moveItemStackTo(itemstack1, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (pIndex >= USE_ROW_SLOT_START && pIndex < USE_ROW_SLOT_END && !moveItemStackTo(itemstack1, INV_SLOT_START, INV_SLOT_END, false)) {
+            } else if (pIndex < USE_ROW_SLOT_END && !moveItemStackTo(itemstack1, INV_SLOT_START, INV_SLOT_END, false)) {
                 return ItemStack.EMPTY;
             }
 
@@ -238,7 +205,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
 
     public void removed(@NotNull Player pPlayer) {
         super.removed(pPlayer);
-        resultContainer.removeItemNoUpdate(1);
-        access.execute((level, blockPos) -> clearContainer(pPlayer, container));
+        result.removeItemNoUpdate(1);
+        access.execute((level, blockPos) -> clearContainer(pPlayer, input));
     }
 }

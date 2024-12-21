@@ -63,7 +63,7 @@ public class MusicBoxItem extends BlockItem implements ICurioItem, IFunctionCoul
                 if (!musicManager.isPlayingMusic(music)) {
                     musicManager.startPlaying(music);
                 }
-                manager.confluence$setMusicBoxOccupied(IMusicManager.State.ACCESSORY);
+                manager.confluence$setMusicBoxOccupied(IMusicManager.State.ACCESSORY); // 2nd
             }
         }
     }

@@ -120,14 +120,19 @@ dependencies {
     implementation jarJar(group: 'software.bernie.geckolib', name: "geckolib-neoforge-${minecraft_version}", version: "[${geckolib_version},)")
 
     implementation "curse.maven:adorned-1036809:5740650"
-    implementation 'com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version
+    implementation jarJar('com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version)
 
     compileOnly "curse.maven:jade-324717:5639932"
     runtimeOnly "curse.maven:jade-324717:5639932"
 
-    compileOnly("mezz.jei:jei-1.21-common-api:${jei_version}")
+    compileOnly "mezz.jei:jei-1.21-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-1.21-neoforge-api:${jei_version}"
     runtimeOnly "mezz.jei:jei-1.21-neoforge:${jei_version}"
+
+    compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE:api"
+    runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
+
+    runtimeOnly "curse.maven:worldedit-225608:5830452"
 }
 
 tasks.withType(ProcessResources).configureEach {

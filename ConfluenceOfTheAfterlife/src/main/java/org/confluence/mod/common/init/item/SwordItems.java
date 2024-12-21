@@ -40,20 +40,20 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> PLATINUM_SHORT_SWORD = register("platinum_short_sword", Tiers.DIAMOND, 3, -1, SHORT_SWORD.get());
     // 初始速度4，攻击2
 
-    public static final DeferredItem<SwordItem> BREATHING_REED = register("breathing_reed", ModTiers.COPPER, 0, -2.4F, SHORT_SWORD.get());
+    public static final DeferredItem<SwordItem> BREATHING_REED = register("breathing_reed", ModTiers.TITANIUM, 0, -2.4F, SHORT_SWORD.get());
     public static final DeferredItem<SwordItem> UMBRELLA = register("umbrella", ModTiers.TITANIUM, 0, -2.4F,ModRarity.BLUE, UMBRELLA_SWORD.get());
     public static final DeferredItem<SwordItem> TRAGIC_UMBRELLA = register("tragic_umbrella", ModTiers.TITANIUM, 0, -2.4F,ModRarity.BLUE, UMBRELLA_SWORD.get());
 
 
     //普通宽剑 默认横扫*1.5
-    public static final DeferredItem<SwordItem> CACTUS_SWORD = register("cactus_sword", ModTiers.CACTUS, 1, -2.4F,NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> COPPER_BOARD_SWORD = register("copper_board_sword", ModTiers.COPPER, 1, -2.4F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> TIN_BOARD_SWORD = register("tin_board_sword", ModTiers.TIN, 1, -2.4F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> CACTUS_SWORD = register("cactus_sword", ModTiers.CACTUS, 2, -2.4F,NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> COPPER_BOARD_SWORD = register("copper_board_sword", ModTiers.COPPER, 2, -2.4F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> TIN_BOARD_SWORD = register("tin_board_sword", ModTiers.TIN, 2, -2.4F, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> LEAD_BOARD_SWORD = register("lead_board_sword", ModTiers.LEAD, 2, -2.4F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> SILVER_BOARD_SWORD = register("silver_board_sword", ModTiers.SILVER, 3, -2.4F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> TUNGSTEN_BOARD_SWORD = register("tungsten_board_sword", ModTiers.TUNGSTEN, 4, -2.4F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> GOLDEN_BOARD_SWORD = register("golden_board_sword", ModTiers.GOLD, 5, -2.4F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> PLATINUM_BOARD_SWORD = register("platinum_board_sword", Tiers.DIAMOND, 6, -2.4F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> SILVER_BOARD_SWORD = register("silver_board_sword", ModTiers.SILVER, 2, -2.4F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> TUNGSTEN_BOARD_SWORD = register("tungsten_board_sword", ModTiers.TUNGSTEN, 2, -2.4F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> GOLDEN_BOARD_SWORD = register("golden_board_sword", ModTiers.GOLD, 2, -2.4F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> PLATINUM_BOARD_SWORD = register("platinum_board_sword", ModTiers.PLATINUM, 3, -2.4F, NORMAL_SWORD.get());
 
     //tip 注册剑的特殊功能只需修改最后一个参数即可，只需要把 NORMAL_SWORD替换成prefab的其他预制效果，还可以追加效果
     public static final DeferredItem<SwordItem> FAKE_SWORD = register("fake_sword",ModTiers.CANDY, 0, -2.4F, ModRarity.GRAY, NORMAL_SWORD.get());

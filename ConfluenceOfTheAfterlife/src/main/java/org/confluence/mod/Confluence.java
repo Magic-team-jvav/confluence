@@ -38,8 +38,8 @@ public class Confluence {
         ModFeatures.FEATURES.register(eventBus);
         ModJukeboxSongs.SONGS.register(eventBus);
         ModAttributes.ATTRIBUTES.register(eventBus);
-        ModMenus.TYPES.register(eventBus);
-        ModParticles.PARTICLES.register(eventBus);
+        ModMenuTypes.TYPES.register(eventBus);
+        ModParticleTypes.TYPES.register(eventBus);
         ModChunkGenerators.GENERATORS.register(eventBus);
         ModPaintingVariants.VARIANTS.register(eventBus);
     }

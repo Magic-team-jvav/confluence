@@ -26,7 +26,7 @@ public class SkyMillScreen extends AbstractContainerScreen<SkyMillMenu> {
     private static final int RECIPES_IMAGE_SIZE_WIDTH = 16;
     private static final int RECIPES_IMAGE_SIZE_HEIGHT = 18;
     private static final int SCROLLER_FULL_HEIGHT = 54;
-    private static final int RECIPES_X = 52;
+    private static final int RECIPES_X = 87;
     private static final int RECIPES_Y = 14;
     private float scrollOffs;
     private boolean scrolling;
@@ -50,7 +50,7 @@ public class SkyMillScreen extends AbstractContainerScreen<SkyMillMenu> {
     protected void renderBg(@NotNull GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
         pGuiGraphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight);
         int k = (int) (41.0F * scrollOffs);
-        pGuiGraphics.blit(BACKGROUND, leftPos + 119, topPos + SCROLLER_HEIGHT + k, 176 + (isScrollBarActive() ? 0 : SCROLLER_WIDTH), 0, 12, SCROLLER_HEIGHT);
+        pGuiGraphics.blit(BACKGROUND, leftPos + 154, topPos + SCROLLER_HEIGHT + k, 176 + (isScrollBarActive() ? 0 : SCROLLER_WIDTH), 0, 12, SCROLLER_HEIGHT);
         int l = leftPos + RECIPES_X;
         int i1 = topPos + RECIPES_Y;
         int j1 = startIndex + SCROLLER_WIDTH;

@@ -17,9 +17,9 @@ public class ExquisitelyStuffedEffect extends MobEffect {   //吃得好/很满�
     public ExquisitelyStuffedEffect() {
         super(MobEffectCategory.BENEFICIAL, 0xFFFF00);
         addAttributeModifier(Attributes.MOVEMENT_SPEED, ID, ADD_VALUE, v -> switch (v) {
-            case 2 -> 0.15;
-            case 3 -> 0.2;
-            default -> 0.1;
+            case 2 -> 0.04;
+            case 3 -> 0.06;
+            default -> 0.02;
         });
         addAttributeModifier(Attributes.ARMOR, ID, ADD_VALUE, v -> switch (v) {
             case 2 -> 2;

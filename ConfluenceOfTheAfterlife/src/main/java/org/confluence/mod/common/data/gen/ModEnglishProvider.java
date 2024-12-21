@@ -58,6 +58,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("bossevent.confluence.boss_death", "The %s been defeated!");
         add("bossevent.confluence.cthulhu_eye.leave", "The CthulhuEye leaved!");
 
+        add("worldgen.confluence.placing_traps", "Placing Traps");
+        add("worldgen.confluence.generating_bees", "Generating bees");
+        add("worldgen.confluence.generating_wavy_caves", "Generating wavy caves");
+        add("worldgen.confluence.not_placing_traps", "Not placing traps");
+
         add("info.confluence.weather_radio.clear", "Weather: Clear, Wind Speed: %s");
         add("info.confluence.weather_radio.cloudy", "Weather: Cloudy, Wind Speed: %s");
         add("info.confluence.weather_radio.rain", "Weather: Rain, Wind Speed: %s");

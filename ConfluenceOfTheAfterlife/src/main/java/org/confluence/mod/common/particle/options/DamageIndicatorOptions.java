@@ -10,7 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import org.confluence.mod.common.init.ModParticles;
+import org.confluence.mod.common.init.ModParticleTypes;
 import org.jetbrains.annotations.NotNull;
 
 // 除了显示数字还能显示“美味...” “致命失误！”
@@ -18,7 +18,7 @@ public record DamageIndicatorOptions(Component text, boolean big) implements Par
     @Override
     @NotNull
     public ParticleType<?> getType(){
-        return ModParticles.DAMAGE_INDICATOR.get();
+        return ModParticleTypes.DAMAGE_INDICATOR.get();
     }
 
     public static final MapCodec<DamageIndicatorOptions> CODEC = RecordCodecBuilder.mapCodec(

@@ -1,18 +1,14 @@
 package org.confluence.mod.common.item.potion;
 
 import net.minecraft.core.Holder;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-
-import java.util.List;
 
 public class EffectPotionItem extends AbstractPotionItem {
     public final Holder<MobEffect> mobEffect;
@@ -45,10 +41,5 @@ public class EffectPotionItem extends AbstractPotionItem {
     @Override
     protected void apply(ItemStack itemStack, Level level, LivingEntity living) {
         living.addEffect(new MobEffectInstance(mobEffect, duration, amplifier));
-    }
-
-    @Override
-    public void appendHoverText(ItemStack pStack, TooltipContext context, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        pTooltipComponents.add(Component.translatable("info.confluence.potion_mana", mobEffect.value().getColor()));
     }
 }

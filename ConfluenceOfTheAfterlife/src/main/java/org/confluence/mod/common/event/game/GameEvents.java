@@ -14,6 +14,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.ItemStackedOnOtherEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
@@ -25,6 +26,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.common.ColoredItem;
+import org.confluence.mod.common.item.potion.AbstractPotionItem;
 import org.confluence.mod.network.s2c.EchoVisibilityPacketS2C;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.util.PrefixUtils;
@@ -130,5 +132,10 @@ public final class GameEvents {
                 event.addModifier(attribute, new AttributeModifier(modifier.id().withSuffix(suffix), modifier.amount(), modifier.operation()));
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void registerBrewingRecipes(RegisterBrewingRecipesEvent event) {
+        AbstractPotionItem.registerRecipes(event.getBuilder()::addRecipe);
     }
 }

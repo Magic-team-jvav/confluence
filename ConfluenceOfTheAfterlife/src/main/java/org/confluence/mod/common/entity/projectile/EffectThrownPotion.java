@@ -39,7 +39,7 @@ public class EffectThrownPotion extends ThrowableItemProjectile {
 
     @Override
     protected @NotNull EffectThrowablePotionItem getDefaultItem() {
-        return PotionItems.LOVE_POTION.get();
+        return (EffectThrowablePotionItem) PotionItems.LOVE_POTION.get();
     }
 
     @Override

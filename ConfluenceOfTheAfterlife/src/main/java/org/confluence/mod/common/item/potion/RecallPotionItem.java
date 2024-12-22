@@ -19,7 +19,7 @@ public class RecallPotionItem extends AbstractPotionItem {
     }
 
     @Override
-    public int getUseDuration(@NotNull ItemStack itemStack,LivingEntity livingEntity) {
+    public int getUseDuration(@NotNull ItemStack itemStack, @NotNull LivingEntity livingEntity) {
         return 4;
     }
 

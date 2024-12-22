@@ -27,7 +27,7 @@ public class PotionItems {
     public static final DeferredItem<AbstractPotionItem> INVISIBILITY_POTION = ITEMS.register("invisibility_potion", () -> new EffectPotionItem(MobEffects.INVISIBILITY, 3600));
     public static final DeferredItem<AbstractPotionItem> IRON_SKIN_POTION = ITEMS.register("iron_skin_potion", () -> new EffectPotionItem(ModEffects.IRON_SKIN, 9600));
     public static final DeferredItem<AbstractPotionItem> LIFEFORCE_POTION = ITEMS.register("lifeforce_potion", () -> new EffectPotionItem(ModEffects.LIFE_FORCE, 9600));
-    public static final DeferredItem<EffectThrowablePotionItem> LOVE_POTION = ITEMS.register("love_potion", () -> new EffectThrowablePotionItem(ModEffects.LOVE, 600));
+    public static final DeferredItem<AbstractPotionItem> LOVE_POTION = ITEMS.register("love_potion", () -> new EffectThrowablePotionItem(ModEffects.LOVE, 600));
     public static final DeferredItem<AbstractPotionItem> LUCK_POTION = ITEMS.register("luck_potion", () -> new EffectPotionItem(ModEffects.LUCK_EFFECT, 6000));
     public static final DeferredItem<AbstractPotionItem> LESSER_LUCK_POTION = ITEMS.register("lesser_luck_potion", () -> new EffectPotionItem(ModEffects.LUCK_EFFECT, 6000, 1));
     public static final DeferredItem<AbstractPotionItem> GREATER_LUCK_POTION = ITEMS.register("greater_luck_potion", () -> new EffectPotionItem(ModEffects.LUCK_EFFECT, 6000, 2));
@@ -55,4 +55,6 @@ public class PotionItems {
     public static final DeferredItem<AbstractPotionItem> GREATER_MANA_POTION = ITEMS.register("greater_mana_potion", () -> new ManaPotionItem(200, Rarity.RARE));
     public static final DeferredItem<AbstractPotionItem> SUPER_MANA_POTION = ITEMS.register("super_mana_potion", () -> new ManaPotionItem(300, Rarity.EPIC));
     public static final DeferredItem<AbstractPotionItem> RANDOM_TELEPORT_POTION = ITEMS.register("random_teleport_potion", RandomTeleportPotionItem::new);
+
+    public static final DeferredItem<AbstractPotionItem> CHAOS_POTION = ITEMS.register("chaos_potion", ChaosPotionItem::new);
 }

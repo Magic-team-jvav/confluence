@@ -31,6 +31,7 @@ import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.accessory.MusicBoxItem;
+import org.confluence.mod.common.item.potion.AbstractPotionItem;
 import org.confluence.mod.network.c2s.ApplySelectionPacketC2S;
 import org.confluence.mod.network.c2s.HookThrowingPacketC2S;
 import org.confluence.mod.network.c2s.ReplaceMusicBoxItemPacketC2S;
@@ -65,6 +66,7 @@ public final class ModEvents {
             LogBlockSet.wrapStrip();
             ISpreadable.Type.buildMap();
             MusicBoxItem.initialize();
+            AbstractPotionItem.initialize();
             CauldronInteraction.INTERACTIONS.values().forEach(map -> {
                 Map<Item, CauldronInteraction> interactionMap = map.map();
                 interactionMap.put(ToolItems.BOTTOMLESS_WATER_BUCKET.get(), CauldronInteraction.FILL_WATER);

@@ -1,0 +1,21 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        " ## ",
+        "#  #",
+        "#  #",
+        " ## "
+    ],
+    "key": {
+        "#": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "minecraft:cobblestone"
+            },
+            "count": 6
+        }
+    },
+    "result": {
+        "id": "confluence:normal_boulder"
+    }
+}

@@ -34,20 +34,22 @@ public class HeavyWorkBenchScreen extends AbstractContainerScreen<HeavyWorkBench
     public void render(@NotNull GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
+        menu.resultSlot.isActive = true;
         if (menu.getRecipesAmount() > 1) {
             if (isOverUpButton(pMouseX - leftPos, pMouseY - topPos)) {
                 if (upItem == null) this.upItem = menu.getUpResult();
-                pGuiGraphics.renderFakeItem(upItem, leftPos + 125, topPos + 35);
+                pGuiGraphics.renderFakeItem(upItem, leftPos + 132, topPos + 36);
                 this.downItem = null;
+                menu.resultSlot.isActive = false;
             } else if (isOverDownButton(pMouseX - leftPos, pMouseY - topPos)) {
                 if (downItem == null) this.downItem = menu.getDownResult();
-                pGuiGraphics.renderFakeItem(downItem, leftPos + 125, topPos + 35);
+                pGuiGraphics.renderFakeItem(downItem, leftPos + 132, topPos + 36);
                 this.upItem = null;
+                menu.resultSlot.isActive = false;
             }
-            String text = menu.getRecipesAmount() == 0 ? "0/0" : menu.getCurrentIndex() + 1 + "/" + menu.getRecipesAmount();
+            String text = menu.getCurrentIndex() + 1 + "/" + menu.getRecipesAmount();
             pGuiGraphics.drawString(font, text, leftPos + 154, topPos + 37 + (16 - font.lineHeight) / 2, 4210752, false);
         } else {
-            pGuiGraphics.renderFakeItem(menu.getSlot(0).getItem(), leftPos + 125, topPos + 35);
             this.upItem = null;
             this.downItem = null;
         }
@@ -56,40 +58,48 @@ public class HeavyWorkBenchScreen extends AbstractContainerScreen<HeavyWorkBench
     @Override
     protected void renderBg(@NotNull GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
         pGuiGraphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-        if (upButtonClicked) {
-            pGuiGraphics.blit(BACKGROUND, leftPos + 128, topPos + 25, 177, 0, 10, 7);
-        } else if (downButtonClicked) {
-            pGuiGraphics.blit(BACKGROUND, leftPos + 128, topPos + 54, 177, 8, 10, 7);
+        if (menu.getRecipesAmount() > 1) {
+            if (upButtonClicked) {
+                pGuiGraphics.blit(BACKGROUND, leftPos + 135, topPos + 21, 188, 1, 10, 7);
+            } else {
+                pGuiGraphics.blit(BACKGROUND, leftPos + 135, topPos + 20, 177, 0, 10, 8);
+            }
+            if (downButtonClicked) {
+                pGuiGraphics.blit(BACKGROUND, leftPos + 135, topPos + 61, 188, 10, 10, 7);
+            } else {
+                pGuiGraphics.blit(BACKGROUND, leftPos + 135, topPos + 60, 177, 9, 10, 8);
+            }
         }
     }
 
     @Override
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-        if (isOverUpButton((int) pMouseX - leftPos, (int) pMouseY - topPos)) {
-            int upIndex = menu.getUpIndex();
-            if (menu.clickMenuButton(minecraft.player, upIndex)) {
-                minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-                minecraft.gameMode.handleInventoryButtonClick((this.menu).containerId, upIndex);
-                this.upButtonClicked = true;
-                this.downButtonClicked = false;
-                this.upItem = null;
-                return true;
+        if (menu.getRecipesAmount() > 1) {
+            if (isOverUpButton((int) pMouseX - leftPos, (int) pMouseY - topPos)) {
+                int upIndex = menu.getUpIndex();
+                if (menu.clickMenuButton(minecraft.player, upIndex)) {
+                    minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                    minecraft.gameMode.handleInventoryButtonClick((this.menu).containerId, upIndex);
+                    this.upButtonClicked = true;
+                    this.downButtonClicked = false;
+                    this.upItem = null;
+                    return true;
+                }
+                return false;
+            } else if (isOverDownButton((int) pMouseX - leftPos, (int) pMouseY - topPos)) {
+                int downIndex = menu.getDownIndex();
+                if (menu.clickMenuButton(minecraft.player, downIndex)) {
+                    minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+                    minecraft.gameMode.handleInventoryButtonClick((this.menu).containerId, downIndex);
+                    this.upButtonClicked = false;
+                    this.downButtonClicked = true;
+                    this.downItem = null;
+                    return true;
+                }
+                return false;
             }
-            return false;
-        } else if (isOverDownButton((int) pMouseX - leftPos, (int) pMouseY - topPos)) {
-            int downIndex = menu.getDownIndex();
-            if (menu.clickMenuButton(minecraft.player, downIndex)) {
-                minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-                minecraft.gameMode.handleInventoryButtonClick((this.menu).containerId, downIndex);
-                this.upButtonClicked = false;
-                this.downButtonClicked = true;
-                this.downItem = null;
-                return true;
-            }
-            return false;
-        } else {
-            return super.mouseClicked(pMouseX, pMouseY, pButton);
         }
+        return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
 
     @Override
@@ -100,10 +110,10 @@ public class HeavyWorkBenchScreen extends AbstractContainerScreen<HeavyWorkBench
     }
 
     private static boolean isOverUpButton(int x, int y) {
-        return x >= 128 && x <= 138 && y >= 25 && y <= 32;
+        return x >= 135 && x <= 145 && y >= 20 && y <= 28;
     }
 
     private static boolean isOverDownButton(int x, int y) {
-        return x >= 128 && x <= 138 && y >= 54 && y <= 61;
+        return x >= 135 && x <= 145 && y >= 60 && y <= 68;
     }
 }

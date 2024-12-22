@@ -367,8 +367,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.shimmer_transmutation", "微光嬗变");
         add("condition.confluence.shimmer_transmutation", "需要的游戏阶段: %s");
         add("title.confluence.altar", "祭坛");
-        add("title.confluence.sky_mill", "天域工艺");
-        add("container.confluence.sky_mill", "天域工艺");
+        add("title.confluence.sky_mill", "天磨");
+        add("container.confluence.sky_mill", "天磨");
 
         add("info.confluence.weather_radio.clear", "天气: 晴天, 风速: %s");
         add("info.confluence.weather_radio.cloudy", "天气: 阴天, 风速: %s");
@@ -506,9 +506,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(OreBlocks.FLESHIFICATION_AMBER_ORE.get(), "血化琥珀矿石");
         add(OreBlocks.DEEPSLATE_AMBER_ORE.get(), "深层琥珀矿石");
         add(OreBlocks.TR_EMERALD_ORE.get(), "翡翠矿石");
-        add(OreBlocks.SANCTIFICATION_EMERALD_ORE.get(), "圣化翡翠矿石");
-        add(OreBlocks.CORRUPTION_EMERALD_ORE.get(), "腐化翡翠矿石");
-        add(OreBlocks.FLESHIFICATION_EMERALD_ORE.get(), "血化翡翠矿石");
+        add(OreBlocks.SANCTIFICATION_TR_EMERALD_ORE.get(), "圣化翡翠矿石");
+        add(OreBlocks.CORRUPTION_TR_EMERALD_ORE.get(), "腐化翡翠矿石");
+        add(OreBlocks.FLESHIFICATION_TR_EMERALD_ORE.get(), "血化翡翠矿石");
         add(OreBlocks.DEEPSLATE_TR_EMERALD_ORE.get(), "深层翡翠矿石");
         add(OreBlocks.TR_AMETHYST_ORE.get(), "异域紫晶矿石");
         add(OreBlocks.SANCTIFICATION_TR_AMETHYST_ORE.get(), "圣化异域紫晶矿石");
@@ -523,10 +523,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(OreBlocks.SANCTIFICATION_DIAMOND_ORE.get(), "圣化钻石矿石");
         add(OreBlocks.CORRUPTION_DIAMOND_ORE.get(), "腐化钻石矿石");
         add(OreBlocks.FLESHIFICATION_DIAMOND_ORE.get(), "血化钻石矿石");
+        add(OreBlocks.SANCTIFICATION_EMERALD_ORE.get(), "圣化绿宝石矿石");
+        add(OreBlocks.CORRUPTION_EMERALD_ORE.get(), "腐化绿宝石矿石");
+        add(OreBlocks.FLESHIFICATION_EMERALD_ORE.get(), "血化绿宝石矿石");
         add(OreBlocks.SANCTIFICATION_LAPIS_ORE.get(), "珍珠石青金石矿石");
         add(OreBlocks.CORRUPTION_LAPIS_ORE.get(), "腐化青金石矿石");
         add(OreBlocks.FLESHIFICATION_LAPIS_ORE.get(), "血化青金石矿石");
-        add(OreBlocks.OPAL_ORE.get(), "蛋白石矿石");
+        add(OreBlocks.OPAL_ORE.get(), "欧泊矿石");
         add(OreBlocks.METEORITE_ORE.get(), "陨石矿石");
         add(OreBlocks.RAW_METEORITE_BLOCK.get(), "粗陨石块");
         add(OreBlocks.METEORITE_BLOCK.get(), "陨石块");
@@ -1034,9 +1037,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.GEL.get(), "凝胶");
         add(MaterialItems.PINK_GEL.get(), "粉凝胶");
         add(MaterialItems.STURDY_FOSSIL.get(), "坚固化石");
-        add(MaterialItems.OPAL.get(), "蛋白石");
+        add(MaterialItems.OPAL.get(), "欧泊");
         add(MaterialItems.HEIM.get(), "海沫");
-        add(MaterialItems.GELSTONE.get(), "胶石");
+        add(MaterialItems.GELSTONE.get(), "黏晶");
         add(MaterialItems.SPORE_ROOT.get(), "孢根");
         add(MaterialItems.WINTER_MARROW.get(), "霜髓");
         add(MaterialItems.COLD_CRYSTAL.get(), "寒晶");

@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.gui.screens.MainWikiScreen;
+import org.confluence.mod.client.gui.wiki.MainWikiScreen;
 import org.confluence.mod.util.GuiUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

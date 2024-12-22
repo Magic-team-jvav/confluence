@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * @see org.confluence.mod.client.gui.screens.SelectionsScreen
+ * @see org.confluence.mod.client.gui.wiki.SelectionsScreen
  * @see org.confluence.mod.network.s2c.OpenSelectionsScreenPacketS2C
  */
 public record ApplySelectionPacketC2S(byte selected) implements CustomPacketPayload {

@@ -9,6 +9,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.recipe.AltarRecipe;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
+import org.confluence.mod.common.recipe.HellforgeRecipe;
 import org.confluence.mod.common.recipe.SkyMillRecipe;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
 
@@ -24,6 +25,8 @@ public final class ModRecipes {
     public static final Supplier<RecipeSerializer<?>> SKY_MILL_SERIALIZER = SERIALIZERS.register("sky_mill", SkyMillRecipe.Serializer::new);
     public static final Supplier<RecipeType<HeavyWorkBenchRecipe>> HEAVY_WORK_BENCH_TYPE = registerType("heavy_work_bench");
     public static final Supplier<RecipeSerializer<?>> HEAVY_WORK_BENCH_SERIALIZER = SERIALIZERS.register("heavy_work_bench", HeavyWorkBenchRecipe.Serializer::new);
+    public static final Supplier<RecipeType<HellforgeRecipe>> HELLFORGE_TYPE = registerType("hellforge");
+    public static final Supplier<RecipeSerializer<?>> HELLFORGE_SERIALIZER = SERIALIZERS.register("hellforge", HellforgeRecipe.Serializer::new);
 
     private static <R extends AbstractAmountRecipe> Supplier<RecipeType<R>> registerType(String id) {
         return TYPES.register(id + "_type", () -> new RecipeType<>() {

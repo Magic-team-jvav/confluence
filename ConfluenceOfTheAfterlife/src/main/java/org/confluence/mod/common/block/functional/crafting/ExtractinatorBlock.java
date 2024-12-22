@@ -8,7 +8,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,7 +21,6 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -30,6 +28,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -49,7 +48,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class ExtractinatorBlock extends HorizontalDirectionalBlock implements EntityBlock {
     public static final MapCodec<ExtractinatorBlock> CODEC = simpleCodec(ExtractinatorBlock::new);
-    public static final EnumProperty<Part> PART = EnumProperty.create("part", Part.class);
     private static final VoxelShape BASE_SHAPE_SOUTH = box(3.0, 0.0, 3.0, 16.0, 16.0, 13.0);
     private static final VoxelShape BASE_SHAPE_WEST = box(3.0, 0.0, 3.0, 13.0, 16.0, 16.0);
     private static final VoxelShape BASE_SHAPE_NORTH = box(0.0, 0.0, 3.0, 13.0, 16.0, 13.0);
@@ -63,7 +61,7 @@ public class ExtractinatorBlock extends HorizontalDirectionalBlock implements En
 
     public ExtractinatorBlock(Properties pProperties) {
         super(pProperties);
-        registerDefaultState(stateDefinition.any().setValue(PART, Part.BASE).setValue(FACING, Direction.NORTH));
+        registerDefaultState(stateDefinition.any().setValue(StateProperties.HORIZONTAL_TWO_PART, StateProperties.HorizontalTwoPart.BASE).setValue(FACING, Direction.NORTH));
     }
 
     @Override
@@ -74,50 +72,34 @@ public class ExtractinatorBlock extends HorizontalDirectionalBlock implements En
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
         int index = pState.getValue(FACING).get2DDataValue();
-        return pState.getValue(PART) == Part.BASE ? BASE_SHAPES[index] : RIGHT_SHAPES[index];
+        return pState.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase() ? BASE_SHAPES[index] : RIGHT_SHAPES[index];
     }
 
     @Override
     public void setPlacedBy(Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
         if (!pLevel.isClientSide) {
-            BlockPos relativePos = pPos.relative(getConnectedDirection(pState));
-            pLevel.setBlockAndUpdate(relativePos, defaultBlockState().setValue(PART, Part.RIGHT).setValue(FACING, pState.getValue(FACING)));
+            BlockPos relativePos = pPos.relative(StateProperties.HorizontalTwoPart.getConnectedDirection(pState));
+            pLevel.setBlockAndUpdate(relativePos, defaultBlockState().setValue(StateProperties.HORIZONTAL_TWO_PART, StateProperties.HorizontalTwoPart.RIGHT).setValue(FACING, pState.getValue(FACING)));
         }
-    }
-
-    /**
-     * 获取与该方块相连的多方块的相对方向
-     * <p>
-     * 注：是以玩家视角看向的相对方向
-     *
-     * @param blockState 该方块的方块状态
-     * @return 相对方向
-     */
-    public static Direction getConnectedDirection(BlockState blockState) {
-        Direction facing = blockState.getValue(FACING);
-        return switch (blockState.getValue(PART)) {
-            case BASE -> facing.getCounterClockWise(); // 获取其相对右边
-            case RIGHT -> facing.getClockWise(); // 获取其相对左边
-        };
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         Level level = pContext.getLevel();
         BlockState blockState = defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite());
-        BlockPos relativePos = pContext.getClickedPos().relative(getConnectedDirection(blockState));
+        BlockPos relativePos = pContext.getClickedPos().relative(StateProperties.HorizontalTwoPart.getConnectedDirection(blockState));
         return level.getBlockState(relativePos).canBeReplaced(pContext) && level.getWorldBorder().isWithinBounds(relativePos) ? blockState : null;
     }
 
     @Override
     public void onRemove(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pNewState, boolean pMovedByPiston) {
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
-        pLevel.setBlockAndUpdate(pPos.relative(getConnectedDirection(pState)), Blocks.AIR.defaultBlockState());
+        pLevel.setBlockAndUpdate(pPos.relative(StateProperties.HorizontalTwoPart.getConnectedDirection(pState)), Blocks.AIR.defaultBlockState());
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(PART, FACING);
+        pBuilder.add(StateProperties.HORIZONTAL_TWO_PART, FACING);
     }
 
     @Nullable
@@ -214,25 +196,6 @@ public class ExtractinatorBlock extends HorizontalDirectionalBlock implements En
         @Override
         public AnimatableInstanceCache getAnimatableInstanceCache() {
             return CACHE;
-        }
-    }
-
-    public enum Part implements StringRepresentable {
-        BASE("base"),
-        RIGHT("right");
-
-        private final String name;
-
-        Part(String pName) {
-            this.name = pName;
-        }
-
-        public String toString() {
-            return name;
-        }
-
-        public @NotNull String getSerializedName() {
-            return name;
         }
     }
 }

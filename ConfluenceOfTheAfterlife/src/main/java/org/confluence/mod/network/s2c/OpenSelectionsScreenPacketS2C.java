@@ -9,7 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.gui.screens.SelectionsScreen;
+import org.confluence.mod.client.gui.wiki.SelectionsScreen;
 import org.jetbrains.annotations.NotNull;
 
 /**

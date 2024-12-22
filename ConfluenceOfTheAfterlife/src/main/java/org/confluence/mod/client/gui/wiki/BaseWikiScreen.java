@@ -1,4 +1,4 @@
-package org.confluence.mod.client.gui.screens;
+package org.confluence.mod.client.gui.wiki;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;

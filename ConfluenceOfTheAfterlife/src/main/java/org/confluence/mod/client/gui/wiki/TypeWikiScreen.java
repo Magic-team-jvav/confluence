@@ -1,4 +1,4 @@
-package org.confluence.mod.client.gui.screens;
+package org.confluence.mod.client.gui.wiki;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -11,7 +11,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.util.GuiUtils;
 
-public class TypeWikiScreen extends BaseWikiScreen{
+public class TypeWikiScreen extends BaseWikiScreen {
 
     private GroupWikiScreen wiki;
     private DeferredRegister<?> reg;

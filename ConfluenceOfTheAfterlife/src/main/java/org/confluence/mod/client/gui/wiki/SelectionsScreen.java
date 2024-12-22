@@ -1,4 +1,4 @@
-package org.confluence.mod.client.gui.screens;
+package org.confluence.mod.client.gui.wiki;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

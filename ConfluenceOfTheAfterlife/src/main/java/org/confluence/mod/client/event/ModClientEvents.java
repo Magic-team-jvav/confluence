@@ -17,13 +17,14 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.connected.ModConnectives;
 import org.confluence.mod.client.gui.AchievementToast;
+import org.confluence.mod.client.gui.container.HeavyWorkBenchScreen;
+import org.confluence.mod.client.gui.container.HellforgeScreen;
+import org.confluence.mod.client.gui.container.SkyMillScreen;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.client.gui.hud.HealthHudLayer;
 import org.confluence.mod.client.gui.hud.ManaHudLayer;
-import org.confluence.mod.client.gui.screens.GroupWikiScreen;
-import org.confluence.mod.client.gui.screens.HeavyWorkBenchScreen;
-import org.confluence.mod.client.gui.screens.ObjectWikiScreen;
-import org.confluence.mod.client.gui.screens.SkyMillScreen;
+import org.confluence.mod.client.gui.wiki.GroupWikiScreen;
+import org.confluence.mod.client.gui.wiki.ObjectWikiScreen;
 import org.confluence.mod.client.model.block.*;
 import org.confluence.mod.client.model.entity.FallingStarRenderer;
 import org.confluence.mod.client.model.entity.bomb.*;
@@ -94,6 +95,7 @@ public final class ModClientEvents {
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenuTypes.SKY_MILL.get(), SkyMillScreen::new);
         event.register(ModMenuTypes.HEAVY_WORK_BENCH.get(), HeavyWorkBenchScreen::new);
+        event.register(ModMenuTypes.HELLFORGE.get(), HellforgeScreen::new);
     }
 
     @SubscribeEvent

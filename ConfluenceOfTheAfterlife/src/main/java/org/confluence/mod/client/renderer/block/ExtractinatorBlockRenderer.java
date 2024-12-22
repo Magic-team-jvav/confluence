@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.phys.AABB;
 import org.confluence.mod.client.model.block.ExtractinatorBlockModel;
+import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.block.functional.crafting.ExtractinatorBlock;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,7 +19,7 @@ public class ExtractinatorBlockRenderer extends GeoBlockRenderer<ExtractinatorBl
 
     @Override
     public void defaultRender(PoseStack poseStack, ExtractinatorBlock.Entity animatable, MultiBufferSource bufferSource, @Nullable RenderType renderType, @Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {
-        if (animatable.getBlockState().getValue(ExtractinatorBlock.PART) == ExtractinatorBlock.Part.BASE) {
+        if (animatable.getBlockState().getValue(StateProperties.HORIZONTAL_TWO_PART).isBase()) {
             super.defaultRender(poseStack, animatable, bufferSource, renderType, buffer, yaw, partialTick, packedLight);
         }
     }

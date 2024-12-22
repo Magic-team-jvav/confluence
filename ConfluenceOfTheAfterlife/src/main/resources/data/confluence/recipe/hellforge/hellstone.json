@@ -1,0 +1,18 @@
+{
+    "type": "confluence:hellforge",
+    "ingredients": [
+        {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:raw_hellstone"
+            },
+            "count": 3
+        },
+        {
+            "item": "minecraft:obsidian"
+        }
+    ],
+    "result": {
+        "id": "confluence:hellstone_ingot"
+    }
+}

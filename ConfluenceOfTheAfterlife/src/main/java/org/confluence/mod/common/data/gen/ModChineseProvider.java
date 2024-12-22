@@ -506,9 +506,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(OreBlocks.FLESHIFICATION_AMBER_ORE.get(), "血化琥珀矿石");
         add(OreBlocks.DEEPSLATE_AMBER_ORE.get(), "深层琥珀矿石");
         add(OreBlocks.TR_EMERALD_ORE.get(), "翡翠矿石");
-        add(OreBlocks.SANCTIFICATION_EMERALD_ORE.get(), "圣化翡翠矿石");
-        add(OreBlocks.CORRUPTION_EMERALD_ORE.get(), "腐化翡翠矿石");
-        add(OreBlocks.FLESHIFICATION_EMERALD_ORE.get(), "血化翡翠矿石");
+        add(OreBlocks.SANCTIFICATION_TR_EMERALD_ORE.get(), "圣化翡翠矿石");
+        add(OreBlocks.CORRUPTION_TR_EMERALD_ORE.get(), "腐化翡翠矿石");
+        add(OreBlocks.FLESHIFICATION_TR_EMERALD_ORE.get(), "血化翡翠矿石");
         add(OreBlocks.DEEPSLATE_TR_EMERALD_ORE.get(), "深层翡翠矿石");
         add(OreBlocks.TR_AMETHYST_ORE.get(), "异域紫晶矿石");
         add(OreBlocks.SANCTIFICATION_TR_AMETHYST_ORE.get(), "圣化异域紫晶矿石");
@@ -523,6 +523,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(OreBlocks.SANCTIFICATION_DIAMOND_ORE.get(), "圣化钻石矿石");
         add(OreBlocks.CORRUPTION_DIAMOND_ORE.get(), "腐化钻石矿石");
         add(OreBlocks.FLESHIFICATION_DIAMOND_ORE.get(), "血化钻石矿石");
+        add(OreBlocks.SANCTIFICATION_EMERALD_ORE.get(), "圣化绿宝石矿石");
+        add(OreBlocks.CORRUPTION_EMERALD_ORE.get(), "腐化绿宝石矿石");
+        add(OreBlocks.FLESHIFICATION_EMERALD_ORE.get(), "血化绿宝石矿石");
         add(OreBlocks.SANCTIFICATION_LAPIS_ORE.get(), "珍珠石青金石矿石");
         add(OreBlocks.CORRUPTION_LAPIS_ORE.get(), "腐化青金石矿石");
         add(OreBlocks.FLESHIFICATION_LAPIS_ORE.get(), "血化青金石矿石");

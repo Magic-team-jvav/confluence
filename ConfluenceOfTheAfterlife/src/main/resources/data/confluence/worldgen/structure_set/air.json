@@ -3,7 +3,7 @@
     "type": "minecraft:concentric_rings",
     "salt": 11231243,
     "distance": 1,
-    "count": 5,
+    "count": 10,
     "spread": 40,
     "preferred_biomes": "#confluence:has_structure/air"
   },

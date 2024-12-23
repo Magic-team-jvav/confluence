@@ -16,7 +16,6 @@
         "accessor.LanguageProviderAccessor",
         "accessor.LootParamsAccessor",
         "accessor.MultiNoiseBiomeSourceAccessor",
-        "accessor.ShapedRecipePatternAccessor",
         "block.AnvilBlockMixin",
         "block.BaseContainerBlockEntityMixin",
         "block.BlockBehaviour$BlockStateBaseMixin",

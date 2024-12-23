@@ -1,10 +1,9 @@
 {
     "type": "confluence:heavy_work_bench",
     "pattern": [
-        " ## ",
-        "####",
-        "####",
-        " ## "
+        " # ",
+        "###",
+        " # "
     ],
     "key": {
         "#": {

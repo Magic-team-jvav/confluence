@@ -5,20 +5,20 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeInput;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.ShapedRecipePattern;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
 import org.jetbrains.annotations.NotNull;
 
-public class HeavyWorkBenchRecipe extends AbstractAmountRecipe {
-    public final AmountShapedRecipePattern pattern;
+import java.util.ArrayList;
+import java.util.List;
 
-    protected HeavyWorkBenchRecipe(ItemStack pResult, AmountShapedRecipePattern pattern) {
+public class HeavyWorkBenchRecipe extends AbstractAmountRecipe {
+    public final ShapedRecipePattern pattern;
+
+    protected HeavyWorkBenchRecipe(ItemStack pResult, ShapedRecipePattern pattern) {
         super(pResult, pattern.ingredients());
         this.pattern = pattern;
     }
@@ -29,8 +29,13 @@ public class HeavyWorkBenchRecipe extends AbstractAmountRecipe {
     }
 
     @Override
-    public boolean matches(@NotNull RecipeInput pContainer, @NotNull Level pLevel) {
-        return pattern.matches(pContainer, 4, 4);
+    public boolean matches(@NotNull RecipeInput input, @NotNull Level pLevel) {
+        List<ItemStack> itemStacks = new ArrayList<>();
+        for (int i = 0; i < input.size(); i++) {
+            ItemStack itemStack = input.getItem(i);
+            itemStacks.add(itemStack);
+        }
+        return pattern.matches(CraftingInput.of(4, 4, itemStacks));
     }
 
     @Override
@@ -61,7 +66,7 @@ public class HeavyWorkBenchRecipe extends AbstractAmountRecipe {
     public static class Serializer implements RecipeSerializer<HeavyWorkBenchRecipe> {
         public static final MapCodec<HeavyWorkBenchRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                AmountShapedRecipePattern.MAP_CODEC.forGetter(recipe -> recipe.pattern)
+                ShapedRecipePattern.MAP_CODEC.forGetter(recipe -> recipe.pattern)
         ).apply(instance, HeavyWorkBenchRecipe::new));
         public static final StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> STREAM_CODEC = StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
 
@@ -77,7 +82,7 @@ public class HeavyWorkBenchRecipe extends AbstractAmountRecipe {
 
         private static HeavyWorkBenchRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
             ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
-            AmountShapedRecipePattern shapedrecipepattern = AmountShapedRecipePattern.STREAM_CODEC.decode(buffer);
+            ShapedRecipePattern shapedrecipepattern = ShapedRecipePattern.STREAM_CODEC.decode(buffer);
             return new HeavyWorkBenchRecipe(itemstack, shapedrecipepattern);
         }
 

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.potion;
 
-import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntArrays;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -151,12 +150,11 @@ public abstract class AbstractPotionItem extends Item {
 
     public static void addMaterials(ItemStack potion, Item... materials) {
         TCUtils.updateItemStackNbt(potion, tag -> {
-            IntArrayList list = new IntArrayList(tag.getIntArray("confluence:potion_materials"));
+            int[] ids = tag.getIntArray("confluence:potion_materials");
             for (Item material : materials) {
                 int id = MATERIAL_ID_MAP.getOrDefault(material, -1);
-                if (id != -1) list.add(id);
+                if (id != -1) ids = append(ids, id);
             }
-            int[] ids = list.elements();
             Arrays.sort(ids);
             tag.putIntArray("confluence:potion_materials", ids);
         });

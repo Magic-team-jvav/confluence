@@ -11,6 +11,7 @@ import org.confluence.mod.common.effect.beneficial.*;
 import org.confluence.mod.common.effect.harmful.*;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
 import org.confluence.mod.common.effect.neutral.ShimmerEffect;
+import org.mesdag.particlestorm.api.MolangParticleMobEffect;
 
 public final class ModEffects {
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(BuiltInRegistries.MOB_EFFECT, Confluence.MODID);
@@ -55,4 +56,5 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, LoveEffect> LOVE = EFFECTS.register("love", LoveEffect::new);
     public static final DeferredHolder<MobEffect, ShimmerEffect> SHIMMER = EFFECTS.register("shimmer", ShimmerEffect::new);
     public static final DeferredHolder<MobEffect, PublicMobEffect> FROZEN = EFFECTS.register("frozen", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x66CCFF));
+    public static final DeferredHolder<MobEffect, MolangParticleMobEffect> STINKY = EFFECTS.register("stinky", () -> new MolangParticleMobEffect(MobEffectCategory.HARMFUL, 0x99FF00, Confluence.asResource("stinky")));
 }

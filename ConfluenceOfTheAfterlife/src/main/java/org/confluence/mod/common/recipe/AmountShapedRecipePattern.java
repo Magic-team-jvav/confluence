@@ -26,16 +26,16 @@ public class AmountShapedRecipePattern extends ShapedRecipePattern {
     public boolean matches(RecipeInput input, int width, int height) {
         if (input.size() == ingredients().size()) {
             if (width == width() && height == height()) {
-                if (!((ShapedRecipePatternAccessor) this).getSymmetrical() && matches(input, true)) {
+                if (!((ShapedRecipePatternAccessor) this).getSymmetrical() && matches(input, true, width)) {
                     return true;
                 }
-                return matches(input, false);
+                return matches(input, false, width);
             }
         }
         return false;
     }
 
-    private boolean matches(RecipeInput input, boolean symmetrical) {
+    private boolean matches(RecipeInput input, boolean symmetrical, int width) {
         for (int i = 0; i < height(); i++) {
             for (int j = 0; j < width(); j++) {
                 Ingredient ingredient;
@@ -44,7 +44,7 @@ public class AmountShapedRecipePattern extends ShapedRecipePattern {
                 } else {
                     ingredient = ingredients().get(j + i * width());
                 }
-                ItemStack itemstack = getItem(input, j, i);
+                ItemStack itemstack = getItem(input, j, i, width);
                 if (!ingredient.test(itemstack)) {
                     return false;
                 }
@@ -53,7 +53,7 @@ public class AmountShapedRecipePattern extends ShapedRecipePattern {
         return true;
     }
 
-    private static ItemStack getItem(RecipeInput input, int row, int column) {
-        return input.getItem(row + column * 4);
+    private static ItemStack getItem(RecipeInput input, int row, int column, int width) {
+        return input.getItem(row + column * width);
     }
 }

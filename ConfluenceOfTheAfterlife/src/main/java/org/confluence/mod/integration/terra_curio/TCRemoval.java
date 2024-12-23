@@ -15,5 +15,6 @@ public final class TCRemoval {
         list.add(TerraCurio.asResource("ice_skates"));
         list.add(TerraCurio.asResource("rocket_boots"));
         list.add(TerraCurio.asResource("stopwatch"));
+        list.add(TerraCurio.asResource("avenger_emblem"));
     });
 }

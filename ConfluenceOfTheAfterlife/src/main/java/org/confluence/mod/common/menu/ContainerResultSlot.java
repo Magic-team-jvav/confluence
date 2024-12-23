@@ -27,7 +27,7 @@ public class ContainerResultSlot extends Slot {
     @Override
     public void onTake(@NotNull Player pPlayer, @NotNull ItemStack pStack) {
         if (recipe != null) {
-            AbstractAmountRecipe.extractIngredients(container, recipe.getIngredients());
+            AbstractAmountRecipe.extractContainer(container, recipe.getIngredients());
             container.setChanged();
             updateMenu();
         }

@@ -320,8 +320,10 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
             getItems().set(index, stack);
             stack.limitSize(getMaxStackSize(stack));
             if (index < 4 && !flag) {
-                this.cookingTotalTime = getTotalCookTime(level, this);
-                this.cookingProgress = 0;
+                if (!isLit()) {
+                    this.cookingTotalTime = getTotalCookTime(level, this);
+                    this.cookingProgress = 0;
+                }
                 setChanged();
             } else if (index == FUEL_SLOT) {
                 this.useFuel = stack.isEmpty() ? 0 : 1;
@@ -395,7 +397,7 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
                         inventory.set(FUEL_SLOT, Items.WATER_BUCKET.getDefaultInstance());
                     }
                 }
-                ItemStack neoResult = recipe.value().assemble(new ArrayRecipeInput(furnace.inputs), registryAccess);
+                ItemStack neoResult = recipe.value().assembleAndExtract(new ArrayRecipeInput(furnace.inputs), registryAccess);
                 ItemStack oldResult = inventory.get(RESULT_SLOT);
                 if (oldResult.isEmpty()) {
                     inventory.set(RESULT_SLOT, neoResult.copy());

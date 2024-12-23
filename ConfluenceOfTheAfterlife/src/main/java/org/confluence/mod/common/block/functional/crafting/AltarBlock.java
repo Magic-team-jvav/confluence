@@ -146,7 +146,7 @@ public class AltarBlock extends BaseEntityBlock {
                 while (!(recipes = recipeManager.getRecipesFor(ModRecipes.ALTAR_TYPE.get(), entity.itemHandler, pLevel)).isEmpty()) {
                     crafted = true;
                     AltarRecipe recipe = recipes.getFirst().value(); // 先只取第一个合成表
-                    ItemStack result = recipe.assemble(entity.itemHandler, pLevel);
+                    ItemStack result = recipe.assembleAndExtract(entity.itemHandler, pLevel.registryAccess());
                     ModUtils.createItemEntity(result, pPos.getX() + 0.5, pPos.getY() + 0.75, pPos.getZ() + 0.5, pLevel, 0);
                 }
                 if (crafted) entity.playAnimation(serverLevel, pPos);
@@ -154,7 +154,7 @@ public class AltarBlock extends BaseEntityBlock {
                 List<RecipeHolder<AltarRecipe>> recipes = recipeManager.getRecipesFor(ModRecipes.ALTAR_TYPE.get(), entity.itemHandler, pLevel); // todo 多态合成
                 if (recipes.isEmpty()) return;
                 AltarRecipe recipe = recipes.getFirst().value(); // 先只取第一个合成表
-                ItemStack result = recipe.assemble(entity.itemHandler, pLevel);
+                ItemStack result = recipe.assembleAndExtract(entity.itemHandler, pLevel.registryAccess());
                 ModUtils.createItemEntity(result, pPos.getX() + 0.5, pPos.getY() + 0.75, pPos.getZ() + 0.5, pLevel, 0);
                 entity.playAnimation(serverLevel, pPos);
             }

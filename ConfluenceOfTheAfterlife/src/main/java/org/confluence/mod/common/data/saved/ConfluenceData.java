@@ -27,23 +27,17 @@ import java.util.List;
 public class ConfluenceData extends SavedData {
     public static final int STAR_PHASES_SIZE = 10;
 
-    private boolean initialized;
-    private GamePhase gamePhase;
-    private Vector3f windSpeed;
-    private final Int2ObjectMap<StarPhase> starPhases;
-    private int revealStep;
-    private MeteoriteTracker meteoriteTracker;
+    private boolean initialized = false;
+    private GamePhase gamePhase = GamePhase.BEFORE_SKELETRON;
+    private final Vector3f windSpeed = new Vector3f();
+    private final Int2ObjectMap<StarPhase> starPhases = new Int2ObjectArrayMap<>();
+    private int revealStep = -1;
+    private final MeteoriteTracker meteoriteTracker = MeteoriteTracker.INSTANCE;
 
     ConfluenceData() {
-        this.initialized = false;
-        this.gamePhase = GamePhase.BEFORE_SKELETRON;
-        this.windSpeed = new Vector3f();
-        this.starPhases = new Int2ObjectArrayMap<>();
         for (int i = 0; i < STAR_PHASES_SIZE; i++) {
             starPhases.put(i, StarPhase.DEFAULT);
         }
-        this.revealStep = -1;
-        this.meteoriteTracker = MeteoriteTracker.INSTANCE;
     }
 
     ConfluenceData(CompoundTag nbt, HolderLookup.@NotNull Provider registries) {
@@ -52,7 +46,6 @@ public class ConfluenceData extends SavedData {
         this.windSpeed.x = nbt.getFloat("windSpeedX");
         this.windSpeed.z = nbt.getFloat("windSpeedZ");
         ListTag listTag = nbt.getList("starPhases", Tag.TAG_COMPOUND);
-        this.starPhases = new Int2ObjectArrayMap<>();
         for (Tag tag : listTag) {
             CompoundTag phase = (CompoundTag) tag;
             starPhases.put(phase.getInt("index"), new StarPhase(phase));

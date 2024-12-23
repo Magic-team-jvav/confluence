@@ -14,6 +14,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 import org.confluence.terra_curio.common.menu.AmountResultSlot;
 import org.confluence.terra_curio.common.menu.RecipeInputContainer;
+import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -46,6 +47,15 @@ public class HeavyWorkBenchMenu extends AbstractContainerMenu {
             @Override
             protected void updateMenu() {
                 HeavyWorkBenchMenu.this.setupResultSlot();
+            }
+
+            @Override
+            public void onTake(@NotNull Player pPlayer, @NotNull ItemStack pStack) {
+                if (recipe != null) {
+                    AbstractAmountRecipe.extractInput(input, recipe.getIngredients());
+                    input.setChanged();
+                    updateMenu();
+                }
             }
         };
         addSlot(resultSlot);

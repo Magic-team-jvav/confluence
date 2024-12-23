@@ -380,7 +380,7 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
 
         private static boolean canHellforgeBurn(RegistryAccess registryAccess, RecipeHolder<HellforgeRecipe> recipe, NonNullList<ItemStack> inventory, int maxStackSize, HellforgeBlock.Entity furnace) {
             ItemStack[] inputs = furnace.inputs;
-            if (Arrays.stream(inputs).anyMatch(itemStack -> !itemStack.isEmpty())) {
+            if ((!recipe.value().isRequiresFuel() || furnace.useFuel()) && Arrays.stream(inputs).anyMatch(itemStack -> !itemStack.isEmpty())) {
                 ItemStack neoResult = recipe.value().getResultItem(registryAccess);
                 return canResultInsert(inventory, maxStackSize, neoResult);
             } else {

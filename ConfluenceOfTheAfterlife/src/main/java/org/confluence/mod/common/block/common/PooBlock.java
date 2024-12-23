@@ -19,10 +19,10 @@ public class PooBlock extends Block {
 
     @Override
     public void stepOn(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Entity entity) {
-        if (entity instanceof LivingEntity living) {
+        if (entity instanceof LivingEntity living && !living.hasEffect(ModEffects.STINKY)) {
             living.addEffect(new MobEffectInstance(ModEffects.STINKY, 60));
+            level.playSound(null, pos, SoundEvents.BELL_BLOCK, SoundSource.BLOCKS);
         }
-        level.playSound(null, pos, SoundEvents.BELL_BLOCK, SoundSource.BLOCKS);
     }
 
     @Override

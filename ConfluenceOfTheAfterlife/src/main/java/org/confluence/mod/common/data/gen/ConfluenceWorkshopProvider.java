@@ -8,8 +8,9 @@ public class ConfluenceWorkshopProvider extends WorkshopRecipeProvider {
         super(output);
 
     }
+
     @Override
-    protected void run(){
+    protected void run() {
         // example
 //        gen(SwordItems.BONE_SWORD)
 //                .add(Items.DIRT, 5).build();

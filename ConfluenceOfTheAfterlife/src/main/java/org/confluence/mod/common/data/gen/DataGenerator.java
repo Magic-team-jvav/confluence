@@ -7,6 +7,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.confluence.mod.Confluence;
+import org.confluence.terra_curio.common.data.gen.WorkshopRecipeProvider;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -32,5 +33,7 @@ public class DataGenerator {
         generator.addProvider(server, new ModLootTableProvider(output, lookup));
         generator.addProvider(server, new ModDamageTypeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModPoiTypeTagsProvider(output, lookup, helper));
+
+        generator.addProvider(server, new ConfluenceWorkshopProvider(output));
     }
 }

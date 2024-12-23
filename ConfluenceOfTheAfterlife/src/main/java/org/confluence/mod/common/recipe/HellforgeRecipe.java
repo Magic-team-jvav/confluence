@@ -20,21 +20,25 @@ import org.jetbrains.annotations.NotNull;
 public class HellforgeRecipe extends AbstractAmountRecipe {
     protected final float experience;
     protected final int cookingTime;
-    protected final int residualCookingtime;
+    protected final boolean requiresFuel;
 
-    public HellforgeRecipe(ItemStack pResult, NonNullList<Ingredient> pIngredients, float experience, int cookingTime, int residualCookingtime) {
+    public HellforgeRecipe(ItemStack pResult, NonNullList<Ingredient> pIngredients, float experience, int cookingTime, boolean requiresFuel) {
         super(pResult, pIngredients);
         this.experience = experience;
         this.cookingTime = cookingTime;
-        this.residualCookingtime = residualCookingtime;
+        this.requiresFuel = requiresFuel;
     }
 
     public float getExperience() {
-        return this.experience;
+        return experience;
     }
 
     public int getCookingTime() {
-        return this.cookingTime;
+        return cookingTime;
+    }
+
+    public boolean isRequiresFuel() {
+        return requiresFuel;
     }
 
     @Override
@@ -75,7 +79,7 @@ public class HellforgeRecipe extends AbstractAmountRecipe {
                 }, DataResult::success).forGetter(recipe -> recipe.ingredients),
                 Codec.FLOAT.lenientOptionalFieldOf("experience", 0.0F).forGetter(recipe -> recipe.experience),
                 Codec.INT.lenientOptionalFieldOf("cookingtime", 100).forGetter(recipe -> recipe.cookingTime),
-                Codec.INT.lenientOptionalFieldOf("residual_cookingtime", 800).forGetter(recipe -> recipe.residualCookingtime)
+                Codec.BOOL.lenientOptionalFieldOf("requires_fuel", false).forGetter(recipe -> recipe.requiresFuel)
         ).apply(instance, HellforgeRecipe::new));
         public static final StreamCodec<RegistryFriendlyByteBuf, HellforgeRecipe> STREAM_CODEC = StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
 
@@ -94,7 +98,7 @@ public class HellforgeRecipe extends AbstractAmountRecipe {
             NonNullList<Ingredient> nonnulllist = NonNullList.withSize(size, AmountIngredient.EMPTY);
             nonnulllist.replaceAll(ignore -> Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
             ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
-            return new HellforgeRecipe(itemstack, nonnulllist, buffer.readFloat(), buffer.readVarInt(), buffer.readVarInt());
+            return new HellforgeRecipe(itemstack, nonnulllist, buffer.readFloat(), buffer.readVarInt(), buffer.readBoolean());
         }
 
         private static void toNetwork(RegistryFriendlyByteBuf buffer, HellforgeRecipe recipe) {
@@ -105,7 +109,7 @@ public class HellforgeRecipe extends AbstractAmountRecipe {
             ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
             buffer.writeFloat(recipe.experience);
             buffer.writeVarInt(recipe.cookingTime);
-            buffer.writeVarInt(recipe.residualCookingtime);
+            buffer.writeBoolean(recipe.requiresFuel);
         }
     }
 }

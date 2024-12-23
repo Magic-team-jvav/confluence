@@ -308,6 +308,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.altar", "Altar");
         add("title.confluence.sky_mill", "Sky Mill");
         add("container.confluence.sky_mill", "Sky Mill");
+        add("title.confluence.heavy_work_bench", "Heavy Work Bench");
+        add("container.confluence.heavy_work_bench", "Heavy Work Bench");
+        add("title.confluence.hellforge", "Hell_forge");
+        add("container.confluence.hellforge", "Hell_forge");
+
 
         add("block.confluence.timers_block_1_1", "1 Second Timer");
         add("block.confluence.timers_block_3_1", "3 Second Timer");

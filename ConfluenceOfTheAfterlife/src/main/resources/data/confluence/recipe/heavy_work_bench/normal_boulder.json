@@ -2,17 +2,17 @@
     "type": "confluence:heavy_work_bench",
     "pattern": [
         " ## ",
-        "#  #",
-        "#  #",
+        "####",
+        "####",
         " ## "
     ],
     "key": {
         "#": {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "item": "minecraft:cobblestone"
+                "tag": "minecraft:stone_crafting_materials"
             },
-            "count": 6
+            "count": 2
         }
     },
     "result": {

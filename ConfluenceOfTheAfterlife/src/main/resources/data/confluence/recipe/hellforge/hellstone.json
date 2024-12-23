@@ -14,5 +14,6 @@
     ],
     "result": {
         "id": "confluence:hellstone_ingot"
-    }
+    },
+    "requires_fuel": true
 }

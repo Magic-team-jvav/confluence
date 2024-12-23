@@ -33,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 
@@ -64,10 +65,9 @@ public class BaseSwordItem extends SwordItem {
      * @see SwordPrefabs 预制体和半预制体
      * */
     public BaseSwordItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, ModifierBuilder modifier) {
-        super(tier, new Item.Properties()
+        super(tier, modifier.properties
                 .durability(tier.getUses())
                 .component(TCDataComponentTypes.MOD_RARITY, rarity)
-                .component(DataComponents.UNBREAKABLE,new Unbreakable(modifier.unbreakable))
                 .component(DataComponents.ATTRIBUTE_MODIFIERS,
                         modifier.attributeModifiersBuilder
                                 .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, rawDamage + tier.getAttackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
@@ -91,6 +91,7 @@ public class BaseSwordItem extends SwordItem {
         public boolean canPerformSweep = true;
         private float sweepRange = 1.0F;
         private boolean unbreakable = false;
+        private Item.Properties properties = new Item.Properties();
 
         public ModifierBuilder setUnbreakable(){
             this.unbreakable = true;
@@ -136,6 +137,11 @@ public class BaseSwordItem extends SwordItem {
          * */
         public ModifierBuilder setInventoryTick(QuaConsumer<ItemStack,Level,Entity,Boolean> inventoryTick){
             this.inventoryTick = inventoryTick;
+            return this;
+        }
+
+        public ModifierBuilder modifyProperties(Function<Item.Properties,Item.Properties> modifier){
+            this.properties = modifier.apply(this.properties);
             return this;
         }
 

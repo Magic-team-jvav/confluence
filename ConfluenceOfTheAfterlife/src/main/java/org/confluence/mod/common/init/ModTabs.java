@@ -60,6 +60,7 @@ public final class ModTabs {
                         output.accept(ConsumableItems.LIFE_CRYSTAL.get());
                         output.accept(ConsumableItems.LIFE_FRUIT.get());
                         MaterialItems.ITEMS.getEntries().forEach(item -> output.accept(item.get().getDefaultInstance()));
+                        output.accept(ModBlocks.POO.get());
                     }).build());
     // 工具
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TOOLS = TABS.register("tools",

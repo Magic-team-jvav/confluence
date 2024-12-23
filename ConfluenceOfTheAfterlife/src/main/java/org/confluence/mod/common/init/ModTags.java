@@ -56,6 +56,7 @@ public final class ModTags {
         public static final TagKey<Item> HARDMODE = register("hardmode"); // todo
         public static final TagKey<Item> BOTTOMLESS = register("bottomless");
         public static final TagKey<Item> FRUIT = register("fruit");
+        public static final TagKey<Item> SAPLING = register("sapling");
         public static final TagKey<Item> DESERT_FOSSIL = register("desert_fossil");
         public static final TagKey<Item> GRAVEL = register("gravel");
         public static final TagKey<Item> JUNK = register("junk");
@@ -63,6 +64,8 @@ public final class ModTags {
         public static final TagKey<Item> MARINE_GRAVEL = register("marine_gravel");
         public static final TagKey<Item> CORAL = register("coral");
         public static final TagKey<Item> TR_PLANKS = register("tr_planks");
+        public static final TagKey<Item> WOODEN_COMBUSTIBLES = register("wooden_combustibles");  // 可燃木材系列
+        public static final TagKey<Item> COMPOST = register("compost");  // 堆肥
         public static final TagKey<Item> LEAD_AND_IRON = register("lead_and_iron");
         public static final TagKey<Item> HAMMER = register("hammer");
         public static final TagKey<Item> MANA_WEAPON = register("mana_weapon");

@@ -102,7 +102,7 @@ public class OreBlocks {
     public static final DeferredBlock<Block> FLESHIFICATION_RUBY_ORE = copyBlockRegister("fleshification_ruby_ore", Blocks.IRON_ORE);
 
     public static final DeferredBlock<Block> AMBER_ORE = copyBlockRegister("amber_ore", Blocks.IRON_ORE);
-    public static final DeferredBlock<Block> DEEPSLATE_AMBER_ORE = copyBlockRegister("deepslate_amber_ore", Blocks.IRON_ORE);
+    public static final DeferredBlock<Block> RED_SAND_AMBER_ORE = copyBlockRegister("red_sand_amber_ore", Blocks.IRON_ORE);
     public static final DeferredBlock<Block> SANCTIFICATION_AMBER_ORE = copyBlockRegister("sanctification_amber_ore", Blocks.IRON_ORE);
     public static final DeferredBlock<Block> CORRUPTION_AMBER_ORE = copyBlockRegister("corruption_amber_ore", Blocks.IRON_ORE);
     public static final DeferredBlock<Block> FLESHIFICATION_AMBER_ORE = copyBlockRegister("fleshification_amber_ore", Blocks.IRON_ORE);
@@ -167,6 +167,7 @@ public class OreBlocks {
     public static final DeferredBlock<Block> LUMINITE_BLOCK = copyBlockRegister("luminite_block", Blocks.IRON_BLOCK);
 
     public static final DeferredBlock<Block> OPAL_ORE = copyBlockRegister("opal_ore", Blocks.IRON_ORE);
+    public static final DeferredBlock<Block> GELSTONE_ORE = copyBlockRegister("gelstone_ore", Blocks.IRON_ORE);
 
     public static final DeferredBlock<Block> HELLSTONE = simpleBlockRegister("hellstone", HellStoneBlock::new);
     public static final DeferredBlock<Block> ASH_HELLSTONE = simpleBlockRegister("ash_hellstone", HellStoneBlock::new);

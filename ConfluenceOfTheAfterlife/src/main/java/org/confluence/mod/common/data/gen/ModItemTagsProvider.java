@@ -13,6 +13,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.*;
@@ -51,6 +52,193 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getPlanks().asItem(), Blocks.OAK_PLANKS.asItem(), Blocks.SPRUCE_PLANKS.asItem(),
                 Blocks.ACACIA_PLANKS.asItem(), Blocks.DARK_OAK_PLANKS.asItem(), Blocks.JUNGLE_PLANKS.asItem(), Blocks.MANGROVE_PLANKS.asItem(), Blocks.CHERRY_PLANKS.asItem(), Blocks.BAMBOO_PLANKS.asItem(), Blocks.CRIMSON_PLANKS.asItem(),
                 Blocks.BIRCH_PLANKS.asItem(), Blocks.WARPED_PLANKS.asItem());
+
+        // 可烧的木材
+        tag(ModTags.Items.WOODEN_COMBUSTIBLES).add(
+                // 乌木
+                NatureBlocks.EBONY_LOG_BLOCKS.getPlanks().asItem(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getStrippedWood().asItem(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getDoor().asItem(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getSign().asItem(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getStairs().asItem(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getSlab().asItem(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getTrapdoor().asItem(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getPressurePlate().asItem(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getLeaves().asItem(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getFence().asItem(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getFenceGate().asItem(),
+
+                // 珍珠木
+                NatureBlocks.PEARL_LOG_BLOCKS.getButton().asItem(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getPlanks().asItem(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getStrippedWood().asItem(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getDoor().asItem(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getSign().asItem(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getStairs().asItem(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getSlab().asItem(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getTrapdoor().asItem(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getPressurePlate().asItem(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().asItem(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getFence().asItem(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getFenceGate().asItem(),
+
+                // 暗影木
+                NatureBlocks.SHADOW_LOG_BLOCKS.getButton().asItem(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks().asItem(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedWood().asItem(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getDoor().asItem(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getTrapdoor().asItem(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getSign().asItem(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getStairs().asItem(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getSlab().asItem(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getFence().asItem(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getFenceGate().asItem(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getPressurePlate().asItem(),
+
+                // 沙漠风情木
+                NatureBlocks.PALM_LOG_BLOCKS.getButton().asItem(),
+                NatureBlocks.PALM_LOG_BLOCKS.getPlanks().asItem(),
+                NatureBlocks.PALM_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.PALM_LOG_BLOCKS.getDoor().asItem(),
+                NatureBlocks.PALM_LOG_BLOCKS.getTrapdoor().asItem(),
+                NatureBlocks.PALM_LOG_BLOCKS.getSign().asItem(),
+                NatureBlocks.PALM_LOG_BLOCKS.getStairs().asItem(),
+                NatureBlocks.PALM_LOG_BLOCKS.getSlab().asItem(),
+                NatureBlocks.PALM_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.PALM_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.PALM_LOG_BLOCKS.getStrippedWood().asItem(),
+                NatureBlocks.PALM_LOG_BLOCKS.getFence().asItem(),
+                NatureBlocks.PALM_LOG_BLOCKS.getFenceGate().asItem(),
+                NatureBlocks.PALM_LOG_BLOCKS.getPressurePlate().asItem(),
+
+                // 猴面包木
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getButton().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedWood().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getDoor().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getTrapdoor().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getSign().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getStairs().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getSlab().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getFence().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getFenceGate().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getPressurePlate().asItem(),
+
+                // 黄柳木
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getButton().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedWood().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getDoor().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getTrapdoor().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getSign().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStairs().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getSlab().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getFence().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getFenceGate().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPressurePlate().asItem(),
+
+                // 生命木
+                NatureBlocks.LIFE_LOG_BLOCKS.getButton().asItem(),
+                NatureBlocks.LIFE_LOG_BLOCKS.getPlanks().asItem(),
+                NatureBlocks.LIFE_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.LIFE_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.LIFE_LOG_BLOCKS.getStrippedWood().asItem(),
+                NatureBlocks.LIFE_LOG_BLOCKS.getDoor().asItem(),
+                NatureBlocks.LIFE_LOG_BLOCKS.getTrapdoor().asItem(),
+                NatureBlocks.LIFE_LOG_BLOCKS.getSign().asItem(),
+                NatureBlocks.LIFE_LOG_BLOCKS.getStairs().asItem(),
+                NatureBlocks.LIFE_LOG_BLOCKS.getSlab().asItem(),
+                NatureBlocks.LIFE_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.LIFE_LOG_BLOCKS.getFence().asItem(),
+                NatureBlocks.LIFE_LOG_BLOCKS.getFenceGate().asItem(),
+                NatureBlocks.LIFE_LOG_BLOCKS.getPressurePlate().asItem()
+        );
+        tag(ModTags.Items.SAPLING).add(
+                NatureBlocks.SHADOW_SAPLING.get().asItem(),
+                NatureBlocks.EBONY_SAPLING.get().asItem(),
+                NatureBlocks.PALM_SAPLING.get().asItem(),
+                NatureBlocks.PEARL_SAPLING.get().asItem(),
+                NatureBlocks.RUBY_SAPLING.get().asItem(),
+                NatureBlocks.AMBER_SAPLING.get().asItem(),
+                NatureBlocks.TOPAZ_SAPLING.get().asItem(),
+                NatureBlocks.EMERALD_SAPLING.get().asItem(),
+                NatureBlocks.DIAMOND_SAPLING.get().asItem(),
+                NatureBlocks.SAPPHIRE_SAPLING.get().asItem(),
+                NatureBlocks.TR_AMETHYST_SAPLING.get().asItem(),
+                NatureBlocks.ASH_SAPLING.get().asItem(),
+                NatureBlocks.LIVING_SAPLING.get().asItem()
+        );
+
+        // 堆肥
+        tag(ModTags.Items.COMPOST).add(
+                FoodItems.STELLAR_BLOSSOM_SEED.get(),
+                FoodItems.CLOUDWEAVER_SEED.get(),
+                FoodItems.FLOATING_WHEAT_SEED.get(),
+                FoodItems.WATERLEAF_SEED.get(),
+                FoodItems.FLAMEFLOWERS_SEED.get(),
+                FoodItems.MOONSHINE_GRASS_SEED.get(),
+                FoodItems.SHINE_ROOT_SEED.get(),
+                FoodItems.SHIVERINGTHORNS_SEED.get(),
+                FoodItems.SUNFLOWERS_SEED.get(),
+                FoodItems.DEATHWEED_SEED.get(),
+
+                MaterialItems.WATERLEAF.get(),
+                MaterialItems.FLAMEFLOWERS.get(),
+                MaterialItems.MOONSHINE_GRASS.get(),
+                MaterialItems.SHINE_ROOT.get(),
+                MaterialItems.SHIVERINGTHORNS.get(),
+                MaterialItems.SUNFLOWERS.get(),
+                MaterialItems.DEATHWEED.get(),
+
+                MaterialItems.STAR_PETALS.get(),
+                MaterialItems.FLOATING_WHEAT_HEADS.get(),
+                MaterialItems.WEAVING_CLOUD_COTTON.get(),
+                MaterialItems.CARRION.get(),
+                MaterialItems.VERTEBRA.get(),
+
+                NatureBlocks.EBONY_LOG_BLOCKS.getLeaves().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().asItem(),
+                NatureBlocks.LIFE_LOG_BLOCKS.getLeaves().asItem(),
+                NatureBlocks.PALM_LOG_BLOCKS.getLeaves().asItem(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getLeaves().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLeaves().asItem(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().asItem(),
+
+
+                NatureBlocks.TR_CRIMSON_MUSHROOM.get().asItem(),
+                NatureBlocks.EBONY_MUSHROOM.get().asItem(),
+                NatureBlocks.GLOWING_MUSHROOM.get().asItem(),
+                NatureBlocks.LIFE_MUSHROOM.get().asItem(),
+                NatureBlocks.JUNGLE_SPORE.get().asItem(),
+                NatureBlocks.JUNGLE_ROSE.get().asItem(),
+                NatureBlocks.CORRUPT_GRASS.get().asItem(),
+                NatureBlocks.TR_CRIMSON_GRASS.get().asItem(),
+                NatureBlocks.HALLOW_GRASS.get().asItem(),
+                NatureBlocks.NATURES_GIFT.get().asItem(),
+                NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get().asItem(),
+                NatureBlocks.GLOWING_MUSHROOM_DROOPING_VINE.get().asItem(),
+                NatureBlocks.FOREST_DROOPING_VINE.get().asItem(),
+                NatureBlocks.JUNGLE_DROOPING_VINE.get().asItem(),
+                NatureBlocks.CORRUPT_DROOPING_VINE.get().asItem(),
+                NatureBlocks.TR_CRIMSON_DROOPING_VINE.get().asItem(),
+                NatureBlocks.HALLOW_DROOPING_VINE.get().asItem()
+        );
+
         tag(ModTags.Items.LEAD_AND_IRON).add(Items.IRON_INGOT, MaterialItems.LEAD_INGOT.get());
         IntrinsicTagAppender<Item> torch = tag(ModTags.Items.TORCH);
         torch.add(Items.TORCH, Items.SOUL_TORCH);

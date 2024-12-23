@@ -19,6 +19,7 @@ import org.confluence.mod.common.init.item.ModItems;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+
 public class DecorativeBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
 

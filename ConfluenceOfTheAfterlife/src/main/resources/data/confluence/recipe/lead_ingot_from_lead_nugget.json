@@ -1,16 +1,16 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        "# #",
+        "###",
         "###",
         "###"
     ],
     "key": {
         "#": {
-            "item": "confluence:sturdy_fossil"
+            "item": "confluence:lead_nugget"
         }
     },
     "result": {
-        "id": "confluence:fossil_chestplate"
+        "id": "confluence:lead_ingot"
     }
 }

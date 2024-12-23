@@ -1,0 +1,28 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        " ###",
+        "  /#",
+        " / #",
+        "/   "
+    ],
+    "key": {
+        "#": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:sturdy_fossil"
+            },
+            "count": 1
+        },
+        "/": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "minecraft:stick"
+            },
+            "count": 1
+        }
+    },
+    "result": {
+        "id": "confluence:fossil_pickaxe"
+    }
+}

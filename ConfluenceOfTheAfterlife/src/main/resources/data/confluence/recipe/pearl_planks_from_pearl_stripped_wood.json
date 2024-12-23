@@ -11,5 +11,6 @@
     "result": {
         "id": "confluence:pearl_planks",
         "count": 4
-    }
+    },
+    "group": "planks"
 }

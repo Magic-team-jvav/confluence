@@ -834,6 +834,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.EXTRACTINATOR.get(), "提炼机");
         add(FunctionalBlocks.SKY_MILL.get(), "天磨");
         add(FunctionalBlocks.HEAVY_WORK_BENCH.get(), "重型工作台");
+        add(FunctionalBlocks.HELLFORGE.get(), "地狱熔炉");
         add(FunctionalBlocks.WEATHER_VANE.get(), "风向标");
         add(FunctionalBlocks.LEAD_ANVIL.get(), "铅砧");
         add(FunctionalBlocks.CHIPPED_LEAD_ANVIL.get(), "开裂的铅砧");

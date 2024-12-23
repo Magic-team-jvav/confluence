@@ -171,6 +171,7 @@ public class OreBlocks {
 
     public static final DeferredBlock<Block> HELLSTONE = simpleBlockRegister("hellstone", HellStoneBlock::new);
     public static final DeferredBlock<Block> ASH_HELLSTONE = simpleBlockRegister("ash_hellstone", HellStoneBlock::new);
+    public static final DeferredBlock<Block> HELLSTONE_BRICKS = simpleBlockRegister("hellstone_bricks",HellStoneBlock::new);
     public static final DeferredBlock<Block> RAW_HELLSTONE_BLOCK = simpleBlockRegister("raw_hellstone_block", BlockBehaviour.Properties.of().requiresCorrectToolForDrops());
     public static final DeferredBlock<Block> HELLSTONE_BLOCK = simpleBlockRegister("hellstone_block", BlockBehaviour.Properties.of().requiresCorrectToolForDrops());
 

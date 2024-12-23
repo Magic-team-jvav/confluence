@@ -1,0 +1,28 @@
+{
+    "type": "minecraft:heavy_work_bench",
+    "pattern": [
+        "#",
+        "O"
+    ],
+    "key": {
+        "#": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "minecraft:torch"
+            },
+            "count": 1
+        },
+        "O": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "minecraft:arrow"
+            },
+            "count": 25
+        }
+    },
+    "result": {
+        "id": "confluence:flaming_arrow",
+        "count": 25
+    },
+    "group": "misc"
+}

@@ -14,5 +14,6 @@
     },
     "result": {
         "id": "confluence:spooky_fence_gate"
-    }
+    },
+    "group": "wooden_fence_gate"
 }

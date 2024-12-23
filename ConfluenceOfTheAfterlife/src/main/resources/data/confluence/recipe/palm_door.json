@@ -13,5 +13,6 @@
     "result": {
         "id": "confluence:palm_door",
         "count": 3
-    }
+    },
+    "group": "wooden_door"
 }

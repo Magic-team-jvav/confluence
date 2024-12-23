@@ -87,7 +87,6 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(CHLOROPHYTE_BLOCK.get());
             dropSelf(RAW_CHLOROPHYTE_BLOCK.get());
             dropSelf(LUMINITE_BLOCK.get());
-            dropSelf(OPAL_ORE.get());
             dropSelf(RAW_LUMINITE_BLOCK.get());
             dropSelf(HELLSTONE_BLOCK.get());
             dropSelf(RAW_HELLSTONE_BLOCK.get());
@@ -160,7 +159,7 @@ public class ModLootTableProvider extends LootTableProvider {
             add(SANCTIFICATION_AMBER_ORE.get(), block -> createOreDrop(block, AMBER.get()));
             add(CORRUPTION_AMBER_ORE.get(), block -> createOreDrop(block, AMBER.get()));
             add(FLESHIFICATION_AMBER_ORE.get(), block -> createOreDrop(block, AMBER.get()));
-            add(DEEPSLATE_AMBER_ORE.get(), block -> createOreDrop(block, AMBER.get()));
+            add(RED_SAND_AMBER_ORE.get(), block -> createOreDrop(block, AMBER.get()));
             add(TOPAZ_ORE.get(), block -> createOreDrop(block, TOPAZ.get()));
             add(SANCTIFICATION_TOPAZ_ORE.get(), block -> createOreDrop(block, TOPAZ.get()));
             add(CORRUPTION_TOPAZ_ORE.get(), block -> createOreDrop(block, TOPAZ.get()));
@@ -221,6 +220,8 @@ public class ModLootTableProvider extends LootTableProvider {
             dropOther(TR_CRIMSON_STONE.get(), TR_CRIMSON_COBBLESTONE.get());
             dropOther(EBONY_STONE.get(), EBONY_COBBLESTONE.get());
             dropOther(PEARL_STONE.get(), PEARL_COBBLESTONE.get());
+            dropOther(OPAL_ORE.get(),OPAL.get());
+            dropOther(GELSTONE_ORE.get(),GELSTONE.get());
             dropSelf(EBONY_LOG_BLOCKS.getLog().get());
             dropSelf(SHADOW_LOG_BLOCKS.getLog().get());
             dropSelf(PEARL_LOG_BLOCKS.getLog().get());
@@ -261,8 +262,6 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(SAPPHIRE_CHAIN.get());
             dropSelf(DIAMOND_CHAIN.get());
             dropSelf(AMETHYST_CHAIN.get());
-            dropSelf(SILK_CHAIN.get());
-            dropSelf(BONE_CHAIN.get());
 
             for (LogBlockSet logBlocks : LogBlockSet.LOG_BLOCK_SETS) {
                 dropSelf(logBlocks.getPlanks().get());

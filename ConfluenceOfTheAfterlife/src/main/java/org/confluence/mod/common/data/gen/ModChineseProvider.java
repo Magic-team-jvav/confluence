@@ -369,6 +369,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.altar", "祭坛");
         add("title.confluence.sky_mill", "天磨");
         add("container.confluence.sky_mill", "天磨");
+        add("title.confluence.heavy_work_bench", "重型工作台");
+        add("container.confluence.heavy_work_bench", "重型工作台");
+        add("title.confluence.hellforge", "地狱熔炉");
+        add("container.confluence.hellforge", "地狱熔炉");
 
         add("info.confluence.weather_radio.clear", "天气: 晴天, 风速: %s");
         add("info.confluence.weather_radio.cloudy", "天气: 阴天, 风速: %s");
@@ -504,7 +508,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(OreBlocks.SANCTIFICATION_AMBER_ORE.get(), "圣化琥珀矿石");
         add(OreBlocks.CORRUPTION_AMBER_ORE.get(), "腐化琥珀矿石");
         add(OreBlocks.FLESHIFICATION_AMBER_ORE.get(), "血化琥珀矿石");
-        add(OreBlocks.DEEPSLATE_AMBER_ORE.get(), "深层琥珀矿石");
+        add(OreBlocks.RED_SAND_AMBER_ORE.get(), "红沙琥珀矿石");
         add(OreBlocks.TR_EMERALD_ORE.get(), "翡翠矿石");
         add(OreBlocks.SANCTIFICATION_TR_EMERALD_ORE.get(), "圣化翡翠矿石");
         add(OreBlocks.CORRUPTION_TR_EMERALD_ORE.get(), "腐化翡翠矿石");
@@ -530,6 +534,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(OreBlocks.CORRUPTION_LAPIS_ORE.get(), "腐化青金石矿石");
         add(OreBlocks.FLESHIFICATION_LAPIS_ORE.get(), "血化青金石矿石");
         add(OreBlocks.OPAL_ORE.get(), "欧泊矿石");
+        add(OreBlocks.GELSTONE_ORE.get(), "黏晶矿石");
         add(OreBlocks.METEORITE_ORE.get(), "陨石矿石");
         add(OreBlocks.RAW_METEORITE_BLOCK.get(), "粗陨石块");
         add(OreBlocks.METEORITE_BLOCK.get(), "陨石块");
@@ -828,6 +833,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.DEMON_ALTAR.get(), "恶魔祭坛");
         add(FunctionalBlocks.EXTRACTINATOR.get(), "提炼机");
         add(FunctionalBlocks.SKY_MILL.get(), "天磨");
+        add(FunctionalBlocks.HEAVY_WORK_BENCH.get(), "重型工作台");
         add(FunctionalBlocks.WEATHER_VANE.get(), "风向标");
         add(FunctionalBlocks.LEAD_ANVIL.get(), "铅砧");
         add(FunctionalBlocks.CHIPPED_LEAD_ANVIL.get(), "开裂的铅砧");
@@ -1117,6 +1123,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(PickaxeItems.TUNGSTEN_PICKAXE.get(), "钨镐");
         add(PickaxeItems.GOLDEN_PICKAXE.get(), "金镐");
         add(PickaxeItems.PLATINUM_PICKAXE.get(), "铂金镐");
+        add(PickaxeItems.NIGHTMARE_PICKAXE.get(), "恶魔镐");
+        add(PickaxeItems.DEATHBRINGER_PICKAXE.get(), "死亡使者镐");
         add(PickaxeItems.MOLTEN_PICKAXE.get(), "熔岩镐");
         add(PickaxeAxeItems.PICKSAW.get(), "锯刃镐");
         add(DrillItems.DRAX.get(), "斧钻");

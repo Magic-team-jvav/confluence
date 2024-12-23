@@ -10,7 +10,6 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +29,6 @@ public class HellforgeMenu extends AbstractContainerMenu {
     private static final int INV_SLOT_END = 33;
     private static final int USE_ROW_SLOT_START = 33;
     private static final int USE_ROW_SLOT_END = 42;
-    private final Player player;
     private final Container forgeContainer;
     private final ContainerData forgeData;
 
@@ -42,7 +40,6 @@ public class HellforgeMenu extends AbstractContainerMenu {
         super(ModMenuTypes.HELLFORGE.get(), pContainerId);
         checkContainerSize(forgeContainer, SLOT_COUNT);
         checkContainerDataCount(forgeData, DATA_COUNT);
-        this.player = pPlayerInventory.player;
         this.forgeContainer = forgeContainer;
         this.forgeData = forgeData;
 
@@ -50,7 +47,7 @@ public class HellforgeMenu extends AbstractContainerMenu {
         addSlot(new Slot(forgeContainer, INPUT_SLOT_2, 65, 20));
         addSlot(new Slot(forgeContainer, INPUT_SLOT_3, 47, 38));
         addSlot(new Slot(forgeContainer, INPUT_SLOT_4, 65, 38));
-        addSlot(new ForgeFuelSlot(ModRecipes.HELLFORGE_TYPE.get(), forgeContainer, FUEL_SLOT, 15, 52));
+        addSlot(new ForgeFuelSlot(ModRecipes.HELLFORGE_TYPE.get(), forgeContainer, FUEL_SLOT, 16, 52));
         addSlot(new ContainerResultSlot(forgeContainer, RESULT_SLOT, 128, 35));
 
         for (int k = 0; k < 3; k++) {
@@ -84,19 +81,18 @@ public class HellforgeMenu extends AbstractContainerMenu {
 
                 slot.onQuickCraft(itemstack1, itemstack);
             } else if (index > FUEL_SLOT) {
-                if (canSmelt(itemstack1)) {
-                    if (!moveItemStackTo(itemstack1, INPUT_SLOT_1, INPUT_SLOT_3, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (isFuel(itemstack1)) {
+                if (isFuel(itemstack1)) {
                     if (!moveItemStackTo(itemstack1, FUEL_SLOT, RESULT_SLOT, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (index < INV_SLOT_END) {
-                    if (!moveItemStackTo(itemstack1, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)) {
+                } else if (!moveItemStackTo(itemstack1, INPUT_SLOT_1, FUEL_SLOT, false)) {
+                    if (index < INV_SLOT_END) {
+                        if (!moveItemStackTo(itemstack1, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)) {
+                            return ItemStack.EMPTY;
+                        }
+                    } else if (index < USE_ROW_SLOT_END && !moveItemStackTo(itemstack1, INV_SLOT_START, INV_SLOT_END, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (index < USE_ROW_SLOT_END && !moveItemStackTo(itemstack1, INV_SLOT_START, INV_SLOT_END, false)) {
                     return ItemStack.EMPTY;
                 }
             } else if (!moveItemStackTo(itemstack1, INV_SLOT_START, USE_ROW_SLOT_END, false)) {
@@ -117,10 +113,6 @@ public class HellforgeMenu extends AbstractContainerMenu {
         }
 
         return itemstack;
-    }
-
-    protected boolean canSmelt(ItemStack stack) {
-        return player.level().getRecipeManager().getRecipeFor(ModRecipes.HELLFORGE_TYPE.get(), new SingleRecipeInput(stack), player.level()).isPresent();
     }
 
     protected boolean isFuel(ItemStack stack) {
@@ -144,9 +136,5 @@ public class HellforgeMenu extends AbstractContainerMenu {
 
     public boolean isLit() {
         return forgeData.get(DATA_LIT_TIME) > 0;
-    }
-
-    public boolean hasFuel() {
-        return forgeData.get(4) != 0;
     }
 }

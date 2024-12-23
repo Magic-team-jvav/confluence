@@ -1,6 +1,7 @@
 package org.confluence.mod.common.item.potion;
 
 import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntArrays;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.brewing.IBrewingRecipe;
 import org.confluence.mod.common.init.item.MaterialItems;
@@ -104,8 +106,7 @@ public abstract class AbstractPotionItem extends Item {
         consumer.accept(new IBrewingRecipe() {
             @Override
             public boolean isInput(@NotNull ItemStack input) {
-                return input.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).potion().isEmpty() ||
-                        input.getItem() instanceof AbstractPotionItem;
+                return input.is(PotionItems.CHAOS_POTION) || (input.is(Items.POTION) && input.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).is(Potions.WATER));
             }
 
             @Override
@@ -115,16 +116,20 @@ public abstract class AbstractPotionItem extends Item {
 
             @Override
             public @NotNull ItemStack getOutput(@NotNull ItemStack input, @NotNull ItemStack ingredient) {
+                if (!isIngredient(ingredient) || !isInput(input)) return ItemStack.EMPTY;
                 int addition = MATERIAL_ID_MAP.getOrDefault(ingredient.getItem(), -1);
-                if (addition == -1) return input;
-                IntArrayList list = new IntArrayList(getMaterials(input));
-                list.add(addition);
-                int[] materials = list.elements();
-                Arrays.sort(materials);
+                if (addition == -1) return ItemStack.EMPTY;
+                int[] materials = append(getMaterials(input), addition);
+                int length = materials.length;
+                boolean isorted = true;
                 outer:
                 for (Map.Entry<int[], ItemStack> entry : MATERIAL_TO_RESULT.entrySet()) {
                     int[] ids = entry.getKey();
-                    if (ids.length != materials.length) continue;
+                    if (ids.length != length) continue;
+                    if (isorted) {
+                        Arrays.sort(materials);
+                        isorted = false;
+                    }
                     for (int i = 0; i < ids.length; i++) {
                         if (ids[i] != materials[i]) continue outer;
                     }
@@ -135,6 +140,13 @@ public abstract class AbstractPotionItem extends Item {
                 return stack;
             }
         });
+    }
+
+    private static int[] append(int[] a, int addition) {
+        int length = a.length;
+        int[] materials = IntArrays.forceCapacity(a, length + 1, length);
+        materials[length] = addition;
+        return materials;
     }
 
     public static void addMaterials(ItemStack potion, Item... materials) {

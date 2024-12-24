@@ -52,7 +52,7 @@ public class HeavyWorkBenchMenu extends AbstractContainerMenu {
             @Override
             public void onTake(@NotNull Player pPlayer, @NotNull ItemStack pStack) {
                 if (recipe != null) {
-                    AbstractAmountRecipe.extractInput(input, recipe.getIngredients());
+                    AbstractAmountRecipe.extractInput(input, recipe.getIngredients(), true);
                     input.setChanged();
                     updateMenu();
                 }

@@ -2,6 +2,7 @@ package org.confluence.mod.common.recipe;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
@@ -36,6 +37,12 @@ public class HeavyWorkBenchRecipe extends AbstractAmountRecipe {
             itemStacks.add(itemStack);
         }
         return pattern.matches(CraftingInput.of(4, 4, itemStacks));
+    }
+
+    @Override
+    public ItemStack assembleAndExtract(RecipeInput input, HolderLookup.Provider registries) {
+        extractInput(input, ingredients, true);
+        return assemble(input, registries);
     }
 
     @Override

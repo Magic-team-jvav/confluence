@@ -1,0 +1,19 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        "# #",
+        "# #"
+    ],
+    "key": {
+        "#": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:spore_root"
+            },
+            "count": 2
+        }
+    },
+    "result": {
+        "id": "confluence:fossil_boots"
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        "# #",
+        "#a#",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:spore_root"
+            },
+            "count": 2
+        },
+        "a": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:gelstone"
+            },
+            "count": 2
+        }
+    },
+    "result": {
+        "id": "confluence:fossil_chestplate"
+    }
+}

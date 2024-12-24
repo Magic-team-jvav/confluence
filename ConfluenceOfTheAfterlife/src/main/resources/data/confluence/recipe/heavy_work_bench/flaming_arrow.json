@@ -1,16 +1,12 @@
 {
-    "type": "minecraft:heavy_work_bench",
+    "type": "confluence:heavy_work_bench",
     "pattern": [
         "#",
         "O"
     ],
     "key": {
         "#": {
-            "type": "terra_curio:amount_ingredient",
-            "ingredient": {
                 "item": "minecraft:torch"
-            },
-            "count": 1
         },
         "O": {
             "type": "terra_curio:amount_ingredient",

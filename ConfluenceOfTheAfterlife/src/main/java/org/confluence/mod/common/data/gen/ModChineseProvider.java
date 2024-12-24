@@ -1574,6 +1574,15 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.HEIM_CHESTPLATE.get(), "渊鳞胸甲");
         add(ArmorItems.HEIM_LEGGINGS.get(), "渊鳞护腿");
         add(ArmorItems.HEIM_BOOTS.get(), "渊鳞靴");
+        add(ArmorItems.SHADOW_HELMET.get(), "暗影头盔");
+        add(ArmorItems.SHADOW_CHESTPLATE.get(), "暗影胸甲");
+        add(ArmorItems.SHADOW_LEGGINGS.get(), "暗影护腿");
+        add(ArmorItems.SHADOW_BOOTS.get(), "暗影靴");
+        add(ArmorItems.CRIMSON_HELMET.get(), "猩红头盔");
+        add(ArmorItems.CRIMSON_CHESTPLATE.get(), "猩红胸甲");
+        add(ArmorItems.CRIMSON_LEGGINGS.get(), "猩红护腿");
+        add(ArmorItems.CRIMSON_BOOTS.get(), "猩红靴");
+
         // 鱼
         add(FoodItems.SEA_BASS.get(), "鲈鱼");
         add(FoodItems.ATLANTIC_COD.get(), "大西洋鳕鱼");

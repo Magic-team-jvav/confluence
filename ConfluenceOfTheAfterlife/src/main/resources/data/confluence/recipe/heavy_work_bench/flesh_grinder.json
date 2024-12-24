@@ -1,26 +1,31 @@
 {
     "type": "confluence:heavy_work_bench",
     "pattern": [
-        "#a#",
-        "# #"
+        "cac",
+        "c/c ",
+        " /  ",
+        " /  "
     ],
     "key": {
-        "#": {
+        "c": {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "item": "confluence:spore_root"
+                "item": "confluence:tr_crimson_ingot"
             },
-            "count": 2
+            "count": 3
         },
         "a": {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "item": "confluence:gelstone"
+                "item": "confluence:tissue_sample"
             },
-            "count": 2
+            "count": 4
+        },
+        "/": {
+            "item": "confluence:vertebra"
         }
     },
     "result": {
-        "id": "confluence:gelstone_helmet"
+        "id": "confluence:flesh_grinder"
     }
 }

@@ -237,7 +237,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.TR_CRIMSON_DROOPING_VINE.get().asItem(),
                 NatureBlocks.HALLOW_DROOPING_VINE.get().asItem()
         );
-
+        tag(ModTags.Items.EBONY_AND_CRIMSON_INGOT).add(MaterialItems.EBONY_INGOT.get(), MaterialItems.TR_CRIMSON_INGOT.get());
         tag(ModTags.Items.LEAD_AND_IRON).add(Items.IRON_INGOT, MaterialItems.LEAD_INGOT.get());
         IntrinsicTagAppender<Item> torch = tag(ModTags.Items.TORCH);
         torch.add(Items.TORCH, Items.SOUL_TORCH);

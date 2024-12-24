@@ -67,6 +67,7 @@ public final class ModTags {
         public static final TagKey<Item> WOODEN_COMBUSTIBLES = register("wooden_combustibles");  // 可燃木材系列
         public static final TagKey<Item> COMPOST = register("compost");  // 堆肥
         public static final TagKey<Item> LEAD_AND_IRON = register("lead_and_iron");
+        public static final TagKey<Item> EBONY_AND_CRIMSON_INGOT = register("ebony_and_crimson_ingot");
         public static final TagKey<Item> HAMMER = register("hammer");
         public static final TagKey<Item> MANA_WEAPON = register("mana_weapon");
         public static final TagKey<Item> PREFIX_UNIVERSAL_ONLY = register("prefix_universal_only");

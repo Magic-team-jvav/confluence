@@ -1,26 +1,31 @@
 {
     "type": "confluence:heavy_work_bench",
     "pattern": [
-        "#a#",
-        "# #"
+        "a  a",
+        " cc ",
+        "c//c",
+        "cccc"
     ],
     "key": {
-        "#": {
+        "a": {
+                "tag": "confluence:ebony_and_crimson_ingot"
+        },
+        "c": {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "item": "confluence:spore_root"
+                "tag": "confluence:ebony_and_crimson_ingot"
             },
             "count": 2
         },
-        "a": {
+        "/": {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "item": "confluence:gelstone"
+                "item": "confluence:topaz"
             },
             "count": 2
         }
     },
     "result": {
-        "id": "confluence:gelstone_helmet"
+        "id": "terra_curio:magiluminescence"
     }
 }

@@ -1025,6 +1025,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.CARRION.get(), "腐肉");
         add(MaterialItems.VERTEBRA.get(), "椎骨");
         add(MaterialItems.BLOOD_CLOT_POWDER.get(), "血凝粉末");
+        add(MaterialItems.ROTTEN_BONE.get(), "腐蚀残骨");
         add(MaterialItems.LENS.get(), "晶状体");
         add(MaterialItems.BLACK_LENS.get(), "黑晶状体");
         add(MaterialItems.CRYSTAL_SHARDS_ITEM.get(), "水晶碎块");
@@ -1110,8 +1111,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(AxeItems.TUNGSTEN_AXE.get(), "钨斧");
         add(AxeItems.GOLDEN_AXE.get(), "金斧");
         add(AxeItems.PLATINUM_AXE.get(), "铂金斧");
-        add(AxeItems.EBONY_AXE.get(), "暗夜战斧");
-        add(AxeItems.TR_CRIMSON_AXE.get(), "嗜血狂斧");
+        add(AxeItems.WAR_AXE_OF_THE_NIGHT.get(), "暗夜战斧");
+        add(AxeItems.BLOOD_LUST_CLUSTER.get(), "嗜血狂斧");
 
 
         add(PickaxeItems.COPPER_PICKAXE.get(), "铜镐");
@@ -1140,8 +1141,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(HammerItems.TUNGSTEN_HAMMER.get(), "钨锤");
         add(HammerItems.GOLDEN_HAMMER.get(), "金锤");
         add(HammerItems.PLATINUM_HAMMER.get(), "铂金锤");
-        add(HammerItems.EBONY_HAMMER.get(), "魔锤");
-        add(HammerItems.TR_CRIMSON_HAMMER.get(), "血肉锤");
+        add(HammerItems.THE_BREAKER.get(), "魔锤");
+        add(HammerItems.FLESH_GRINDER.get(), "血肉锤");
         add(HammerItems.PWNHAMMER.get(), "神锤");
         /* HammerAxes */
 

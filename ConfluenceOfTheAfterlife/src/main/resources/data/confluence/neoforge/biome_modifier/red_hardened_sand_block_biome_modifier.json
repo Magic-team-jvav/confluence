@@ -1,9 +1,0 @@
-{
-  "type": "neoforge:add_features",
-  "biomes": [
-    "minecraft:badlands",
-    "minecraft:wooded_badlands"
-  ],
-  "features": "confluence:red_hardened_sand_block",
-  "step": "surface_structures"
-}

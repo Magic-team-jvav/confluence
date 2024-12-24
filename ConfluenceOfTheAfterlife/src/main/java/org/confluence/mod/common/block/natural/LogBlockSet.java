@@ -503,7 +503,7 @@ public class LogBlockSet {
         PALM("palm"),
         BAOBAB("baobab"),
         YELLOW_WILLOW("yellow_willow"),
-        LIFE("life"),
+        LIVING("living"),
         ASH("ash"),
         SPOOKY("spooky");
 

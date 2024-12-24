@@ -4,13 +4,13 @@
         "trunk_block": {
             "type": "simple_state_provider",
             "state": {
-                "Name": "minecraft:oak_wood"
+                "Name": "confluence:living_wood"
             }
         },
         "leaves_block": {
             "type": "simple_state_provider",
             "state": {
-                "Name": "minecraft:oak_leaves",
+                "Name": "confluence:living_leaves",
                 "Properties": {
                     "persistent": "true"
                 }

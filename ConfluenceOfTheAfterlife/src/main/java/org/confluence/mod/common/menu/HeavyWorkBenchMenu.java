@@ -39,7 +39,7 @@ public class HeavyWorkBenchMenu extends AbstractContainerMenu {
         this(pContainerId, inventory, ContainerLevelAccess.NULL);
     }
 
-    public HeavyWorkBenchMenu(int pContainerId, Inventory pPlayerInventory, final ContainerLevelAccess pAccess) {
+    public HeavyWorkBenchMenu(int pContainerId, Inventory pPlayerInventory, ContainerLevelAccess pAccess) {
         super(ModMenuTypes.HEAVY_WORK_BENCH.get(), pContainerId);
         this.player = pPlayerInventory.player;
         this.access = pAccess;

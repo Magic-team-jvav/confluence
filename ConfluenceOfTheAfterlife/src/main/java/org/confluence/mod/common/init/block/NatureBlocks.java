@@ -16,6 +16,8 @@ import org.confluence.mod.common.block.natural.MushroomBlock;
 import org.confluence.mod.common.block.natural.*;
 import org.confluence.mod.common.block.natural.sapling.*;
 import org.confluence.mod.common.block.natural.spreadable.*;
+import org.confluence.mod.common.block.natural.transparent.TransparentLeavesBlock;
+import org.confluence.mod.common.block.natural.transparent.TransparentRotatedPillarBlock;
 import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ModItems;
@@ -135,7 +137,21 @@ public class NatureBlocks {
     // 万圣节
     public static final LogBlockSet SPOOKY_LOG_BLOCKS = LogBlockSet.builder("spooky", true).createDefault(SPOOKY, false).build();
     // 生命树
-    public static final LogBlockSet LIFE_LOG_BLOCKS = LogBlockSet.builder("life", true).createDefault(LIFE, true).build();
+    public static final LogBlockSet LIVING_LOG_BLOCKS = LogBlockSet.builder("living", true)
+            .log(properties -> new TransparentRotatedPillarBlock(properties.noOcclusion()))
+            .strippedLog(properties -> new TransparentRotatedPillarBlock(properties.noOcclusion()))
+            .wood(properties -> new TransparentRotatedPillarBlock(properties.noOcclusion()))
+            .strippedWood(properties -> new TransparentRotatedPillarBlock(properties.noOcclusion()))
+            .leaves(properties -> new TransparentLeavesBlock(properties.noOcclusion()))
+            .button(properties -> new ButtonBlock(LIVING.SET, 30, properties))
+            .fence(FenceBlock::new)
+            .fenceGate(properties -> new FenceGateBlock(LIVING.TYPE, properties))
+            .pressurePlate(properties -> new PressurePlateBlock(LIVING.SET, properties))
+            .slab(SlabBlock::new)
+            .stair(StairBlock::new)
+            .sign(properties -> new LogBlockSet.ModStandingSignBlock(LIVING.TYPE, properties), properties -> new LogBlockSet.ModWallSignBlock(LIVING.TYPE, properties), SignItem::new)
+            .trapdoor(properties -> new TrapDoorBlock(LIVING.SET, properties))
+            .door(properties -> new DoorBlock(LIVING.SET, properties)).build();
     // 灰烬
     public static final DeferredBlock<Block> ASH_SAPLING = registerWithItem("ash_sapling", () -> new AshSaplingBlock(ModFeatures.TreeGrowers.ASH_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
     public static final LogBlockSet ASH_LOG_BLOCKS = LogBlockSet.builder("ash", false).createDefault(ASH, true).build();
@@ -149,7 +165,7 @@ public class NatureBlocks {
     public static final DeferredBlock<JungleSporeBlock> JUNGLE_SPORE = registerWithoutItem("jungle_spore", JungleSporeBlock::new);
     public static final DeferredBlock<Block> NATURES_GIFT = registerWithoutItem("natures_gift", NaturesGiftBlock::new);
     public static final DeferredBlock<Block> JUNGLE_HIVE_BLOCK = registerWithItem("jungle_hive_block", JungleHiveBlock::new);
-    public static final DeferredBlock<Block> JUNGLE_ROSE = registerWithItem("jungle_rose", ()->new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION)));
+    public static final DeferredBlock<Block> JUNGLE_ROSE = registerWithItem("jungle_rose", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION)));
 
     // 空岛
     public static final DeferredBlock<CloudBlock> CLOUD_BLOCK = registerWithItem("cloud_block", CloudBlock::new);
@@ -172,7 +188,7 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> ASH_BRANCHES = registerWithItem("ash_branches", () -> new BranchesBlock(ModTags.Blocks.ASH_LOG_BRANCHES_ATTACHABLE, ModTags.Blocks.ASH_LOG_BRANCHES_ATTACHABLE));
 
     //藤蔓方块
-    public static final DeferredBlock<Block> YELLOW_WILLOW_DROOPING_LEAVES = registerWithItem("yellow_willow_drooping_leaves", () -> new BaseDroopingPlantsHeadBlock(14 ,false, false, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get()));
+    public static final DeferredBlock<Block> YELLOW_WILLOW_DROOPING_LEAVES = registerWithItem("yellow_willow_drooping_leaves", () -> new BaseDroopingPlantsHeadBlock(14, false, false, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get()));
     public static final DeferredBlock<Block> GLOWING_MUSHROOM_DROOPING_VINE = registerWithItem("glowing_mushroom_vine", () -> new BaseDroopingPlantsHeadBlock(6, true, true));
     public static final DeferredBlock<Block> FOREST_DROOPING_VINE = registerWithItem("forest_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
     public static final DeferredBlock<Block> JUNGLE_DROOPING_VINE = registerWithItem("jungle_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));

@@ -13,7 +13,6 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.*;
@@ -153,20 +152,20 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPressurePlate().asItem(),
 
                 // 生命木
-                NatureBlocks.LIFE_LOG_BLOCKS.getButton().asItem(),
-                NatureBlocks.LIFE_LOG_BLOCKS.getPlanks().asItem(),
-                NatureBlocks.LIFE_LOG_BLOCKS.getLog().asItem(),
-                NatureBlocks.LIFE_LOG_BLOCKS.getStrippedLog().asItem(),
-                NatureBlocks.LIFE_LOG_BLOCKS.getStrippedWood().asItem(),
-                NatureBlocks.LIFE_LOG_BLOCKS.getDoor().asItem(),
-                NatureBlocks.LIFE_LOG_BLOCKS.getTrapdoor().asItem(),
-                NatureBlocks.LIFE_LOG_BLOCKS.getSign().asItem(),
-                NatureBlocks.LIFE_LOG_BLOCKS.getStairs().asItem(),
-                NatureBlocks.LIFE_LOG_BLOCKS.getSlab().asItem(),
-                NatureBlocks.LIFE_LOG_BLOCKS.getWood().asItem(),
-                NatureBlocks.LIFE_LOG_BLOCKS.getFence().asItem(),
-                NatureBlocks.LIFE_LOG_BLOCKS.getFenceGate().asItem(),
-                NatureBlocks.LIFE_LOG_BLOCKS.getPressurePlate().asItem()
+                NatureBlocks.LIVING_LOG_BLOCKS.getButton().asItem(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().asItem(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getStrippedWood().asItem(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getDoor().asItem(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getTrapdoor().asItem(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getSign().asItem(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getStairs().asItem(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getSlab().asItem(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getFence().asItem(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getFenceGate().asItem(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getPressurePlate().asItem()
         );
         tag(ModTags.Items.SAPLING).add(
                 NatureBlocks.SHADOW_SAPLING.get().asItem(),
@@ -213,7 +212,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
                 NatureBlocks.EBONY_LOG_BLOCKS.getLeaves().asItem(),
                 NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().asItem(),
-                NatureBlocks.LIFE_LOG_BLOCKS.getLeaves().asItem(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getLeaves().asItem(),
                 NatureBlocks.PALM_LOG_BLOCKS.getLeaves().asItem(),
                 NatureBlocks.SHADOW_LOG_BLOCKS.getLeaves().asItem(),
                 NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLeaves().asItem(),

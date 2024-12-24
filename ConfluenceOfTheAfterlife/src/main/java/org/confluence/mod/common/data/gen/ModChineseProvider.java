@@ -696,21 +696,21 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.ASH_LOG_BLOCKS.getFenceGate().get(), "白蜡木栅栏门");
         add(NatureBlocks.ASH_LOG_BLOCKS.getPressurePlate().get(), "白蜡木压力板");
 
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getButton().get(), "生命木按钮");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getPlanks().get(), "生命木板");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getLog().get(), "生命木原木");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getStrippedLog().get(), "生命去皮原木");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getStrippedWood().get(), "生命去皮木");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getDoor().get(), "生命木门");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getTrapdoor().get(), "生命木活板门");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getSign().get(), "生命木告示牌");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getStairs().get(), "生命木楼梯");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getSlab().get(), "生命木台阶");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getWood().get(), "生命木");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getLeaves().get(), "生命木树叶");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getFence().get(), "生命木栅栏");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getFenceGate().get(), "生命木栅栏门");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getPressurePlate().get(), "生命木压力板");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getButton().get(), "生命木按钮");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().get(), "生命木板");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getLog().get(), "生命木原木");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getStrippedLog().get(), "生命去皮原木");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getStrippedWood().get(), "生命去皮木");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getDoor().get(), "生命木门");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getTrapdoor().get(), "生命木活板门");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getSign().get(), "生命木告示牌");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getStairs().get(), "生命木楼梯");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getSlab().get(), "生命木台阶");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getWood().get(), "生命木");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getLeaves().get(), "生命木树叶");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getFence().get(), "生命木栅栏");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getFenceGate().get(), "生命木栅栏门");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getPressurePlate().get(), "生命木压力板");
 
         add(NatureBlocks.DESERT_FOSSIL.get(), "沙漠化石");
         add(NatureBlocks.HARDENED_SAND_BLOCK.get(), "硬化沙块");

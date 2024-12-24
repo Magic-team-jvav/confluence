@@ -16,6 +16,7 @@ import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -35,6 +36,7 @@ import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
 import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
+import org.confluence.mod.common.menu.FletchingMenu;
 import org.confluence.mod.mixed.IAbstractMinecart;
 import org.confluence.mod.mixed.IFishingHook;
 import org.confluence.mod.mixed.IServerPlayer;
@@ -74,6 +76,7 @@ public final class PlayerEvents {
         if (!(level instanceof ServerLevel) || player.isCrouching() || event.getItemStack().is(ModTags.Items.MINECART)) return;
         BlockPos blockPos = event.getPos();
         BlockState blockState = level.getBlockState(blockPos);
+
         if (blockState.getBlock() instanceof BaseRailBlock railBlock) {
             ItemStack optionalItemStack = CuriosUtils.getSlot(player, "minecart", 0);
             player.swing(InteractionHand.MAIN_HAND, true);
@@ -87,6 +90,10 @@ public final class PlayerEvents {
                 player.startRiding(minecart, true);
             }
             event.setCanceled(true);
+        }
+
+        if (CommonConfigs.FLETCHING_MENU.get() && blockState.is(Blocks.FLETCHING_TABLE)) {
+            player.openMenu(new FletchingMenu.Provider(level, blockPos));
         }
     }
 

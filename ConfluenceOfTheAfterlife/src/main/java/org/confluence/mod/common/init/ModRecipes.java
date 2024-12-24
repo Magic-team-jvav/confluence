@@ -1,17 +1,14 @@
 package org.confluence.mod.common.init;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.recipe.AltarRecipe;
-import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
-import org.confluence.mod.common.recipe.HellforgeRecipe;
-import org.confluence.mod.common.recipe.SkyMillRecipe;
-import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
+import org.confluence.mod.common.recipe.*;
 
 import java.util.function.Supplier;
 
@@ -27,8 +24,10 @@ public final class ModRecipes {
     public static final Supplier<RecipeSerializer<?>> HEAVY_WORK_BENCH_SERIALIZER = SERIALIZERS.register("heavy_work_bench", HeavyWorkBenchRecipe.Serializer::new);
     public static final Supplier<RecipeType<HellforgeRecipe>> HELLFORGE_TYPE = registerType("hellforge");
     public static final Supplier<RecipeSerializer<?>> HELLFORGE_SERIALIZER = SERIALIZERS.register("hellforge", HellforgeRecipe.Serializer::new);
+    public static final Supplier<RecipeType<FletchingTableRecipe>> FLETCHING_TABLE_TYPE = registerType("fletching_table");
+    public static final Supplier<RecipeSerializer<?>> FLETCHING_TABLE_SERIALIZER = SERIALIZERS.register("fletching_table", FletchingTableRecipe.Serializer::new);
 
-    private static <R extends AbstractAmountRecipe> Supplier<RecipeType<R>> registerType(String id) {
+    private static <R extends Recipe<?>> Supplier<RecipeType<R>> registerType(String id) {
         return TYPES.register(id + "_type", () -> new RecipeType<>() {
             @Override
             public String toString() {

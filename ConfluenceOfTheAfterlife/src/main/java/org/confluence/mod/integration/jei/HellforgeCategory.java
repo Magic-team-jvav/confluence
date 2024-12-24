@@ -1,0 +1,84 @@
+package org.confluence.mod.integration.jei;
+
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.helpers.IJeiHelpers;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.crafting.Ingredient;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.client.gui.container.HellforgeScreen;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.recipe.HellforgeRecipe;
+import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.terra_curio.integration.jei.JeiBackGround;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
+
+public class HellforgeCategory implements IRecipeCategory<HellforgeRecipe> {
+    public static final RecipeType<HellforgeRecipe> TYPE = RecipeType.create(Confluence.MODID, "hellforge", HellforgeRecipe.class);
+    private static final Component TITLE = Component.translatable("title.confluence.hellforge");
+    private static final IDrawable BACKGROUND = new JeiBackGround(112, 48, Confluence.asResource("textures/gui/hellforge.png"));
+    private final IDrawable icon;
+
+    public HellforgeCategory(IJeiHelpers jeiHelpers) {
+        this.icon = jeiHelpers.getGuiHelper().createDrawableItemStack(FunctionalBlocks.HELLFORGE.toStack());
+    }
+
+    @Override
+    public @NotNull RecipeType<HellforgeRecipe> getRecipeType() {
+        return TYPE;
+    }
+
+    @Override
+    public @NotNull Component getTitle() {
+        return TITLE;
+    }
+
+    @Override
+    public @NotNull IDrawable getBackground() {
+        return BACKGROUND;
+    }
+
+    @Override
+    public @Nullable IDrawable getIcon() {
+        return icon;
+    }
+
+    @Override
+    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull HellforgeRecipe recipe, @NotNull IFocusGroup focuses) {
+        NonNullList<Ingredient> ingredients = recipe.ingredients;
+        int i = 0;
+        int j = 0;
+        for (Ingredient ingredient : ingredients) {
+            addInput(builder, 4 + i * 18, 7 + j * 18, ingredient);
+            if (i == 1) {
+                j++;
+                i = 0;
+            } else {
+                i++;
+            }
+        }
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 85, 16).addItemStack(recipe.getResultItem(null));
+    }
+
+    @Override
+    public void draw(@NotNull HellforgeRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        if (recipe.isRequiresFuel()) {
+            guiGraphics.blit(HellforgeScreen.SUPER_LIT_PROGRESS, 54, 25, 0, 0, 14, 14, 14, 14);
+            if (mouseX >= 54 && mouseX <= 68 && mouseY >= 25 && mouseY <= 39) {
+                Component text = Component.translatable("condition.confluence.requires_fuel").withColor(ModRarity.CYAN.getColor());
+                guiGraphics.renderTooltip(Minecraft.getInstance().font, text, (int) mouseX, (int) mouseY);
+            }
+        }
+    }
+}

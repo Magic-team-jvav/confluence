@@ -310,8 +310,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("container.confluence.sky_mill", "Sky Mill");
         add("title.confluence.heavy_work_bench", "Heavy Work Bench");
         add("container.confluence.heavy_work_bench", "Heavy Work Bench");
-        add("title.confluence.hellforge", "Hell_forge");
-        add("container.confluence.hellforge", "Hell_forge");
+        add("title.confluence.hellforge", "Hell Forge");
+        add("container.confluence.hellforge", "Hell Forge");
+        add("condition.confluence.requires_fuel", "Requires Fuel");
+        add("container.confluence.fletching_table", "Fletching Table");
 
 
         add("block.confluence.timers_block_1_1", "1 Second Timer");

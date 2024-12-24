@@ -36,7 +36,7 @@ import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
 import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
-import org.confluence.mod.common.menu.FletchingMenu;
+import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.mixed.IAbstractMinecart;
 import org.confluence.mod.mixed.IFishingHook;
 import org.confluence.mod.mixed.IServerPlayer;
@@ -93,7 +93,8 @@ public final class PlayerEvents {
         }
 
         if (CommonConfigs.FLETCHING_MENU.get() && blockState.is(Blocks.FLETCHING_TABLE)) {
-            player.openMenu(new FletchingMenu.Provider(level, blockPos));
+            player.openMenu(new FletchingTableMenu.Provider(level, blockPos));
+            event.setCanceled(true);
         }
     }
 

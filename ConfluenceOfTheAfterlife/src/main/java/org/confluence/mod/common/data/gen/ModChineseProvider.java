@@ -373,6 +373,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("container.confluence.heavy_work_bench", "重型工作台");
         add("title.confluence.hellforge", "地狱熔炉");
         add("container.confluence.hellforge", "地狱熔炉");
+        add("condition.confluence.requires_fuel", "需要燃料");
+        add("container.confluence.fletching_table", "制箭台");
 
         add("info.confluence.weather_radio.clear", "天气: 晴天, 风速: %s");
         add("info.confluence.weather_radio.cloudy", "天气: 阴天, 风速: %s");

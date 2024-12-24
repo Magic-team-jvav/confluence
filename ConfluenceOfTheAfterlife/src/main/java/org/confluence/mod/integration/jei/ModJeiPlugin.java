@@ -10,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import org.confluence.mod.Confluence;
@@ -22,12 +21,12 @@ import org.confluence.terra_curio.integration.jei.JeiBackGround;
 import org.jetbrains.annotations.NotNull;
 
 @JeiPlugin
-public class ModJeiPlugin implements IModPlugin {
+public final class ModJeiPlugin implements IModPlugin {
     public static final ResourceLocation UID = Confluence.asResource("jei_plugin");
     public static final ResourceLocation ARROW_DOWN = Confluence.asResource("textures/gui/arrow_down.png");
     public static final ResourceLocation ARROW_RIGHT = Confluence.asResource("textures/gui/arrow_right.png");
-    public static final JeiBackGround FULL_BACKGROUND = new JeiBackGround(128, 128);
-    public static final JeiBackGround QUARTER_BACKGROUND = new JeiBackGround(128, 32);
+    public static final JeiBackGround FULL_BACKGROUND = new JeiBackGround(128, 128, null);
+    public static final JeiBackGround QUARTER_BACKGROUND = new JeiBackGround(128, 32, null);
 
     @Override
     public @NotNull ResourceLocation getPluginUid() {
@@ -40,6 +39,7 @@ public class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(new ShimmerItemTransmutationCategory(jeiHelpers));
         registration.addRecipeCategories(new SkyMillCategory(jeiHelpers));
         registration.addRecipeCategories(new AltarCategory(jeiHelpers));
+        registration.addRecipeCategories(new HellforgeCategory(jeiHelpers));
     }
 
     @Override
@@ -50,14 +50,16 @@ public class ModJeiPlugin implements IModPlugin {
         RecipeManager recipeManager = level.getRecipeManager();
         registration.addRecipes(SkyMillCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.SKY_MILL_TYPE.get()).stream().map(RecipeHolder::value).toList());
         registration.addRecipes(AltarCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.ALTAR_TYPE.get()).stream().map(RecipeHolder::value).toList());
+        registration.addRecipes(HellforgeCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HELLFORGE_TYPE.get()).stream().map(RecipeHolder::value).toList());
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get()), ShimmerItemTransmutationCategory.TYPE);
-        registration.addRecipeCatalyst(new ItemStack(FunctionalBlocks.SKY_MILL.get()), SkyMillCategory.TYPE);
-        registration.addRecipeCatalyst(new ItemStack(FunctionalBlocks.DEMON_ALTAR.get()), AltarCategory.TYPE);
-        registration.addRecipeCatalyst(new ItemStack(FunctionalBlocks.CRIMSON_ALTAR.get()), AltarCategory.TYPE);
+        registration.addRecipeCatalyst(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get().getDefaultInstance(), ShimmerItemTransmutationCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.SKY_MILL.toStack(), SkyMillCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.DEMON_ALTAR.toStack(), AltarCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.CRIMSON_ALTAR.toStack(), AltarCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.HELLFORGE.toStack(), HellforgeCategory.TYPE);
     }
 
     public static void drawArrowDown(GuiGraphics guiGraphics, int x, int y, boolean usable) {

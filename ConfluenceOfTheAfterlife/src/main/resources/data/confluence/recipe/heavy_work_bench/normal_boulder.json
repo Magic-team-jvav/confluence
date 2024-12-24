@@ -8,11 +8,7 @@
     ],
     "key": {
         "#": {
-            "type": "terra_curio:amount_ingredient",
-            "ingredient": {
-                "item": "minecraft:cobblestone"
-            },
-            "count": 1
+            "item": "minecraft:cobblestone"
         }
     },
     "result": {

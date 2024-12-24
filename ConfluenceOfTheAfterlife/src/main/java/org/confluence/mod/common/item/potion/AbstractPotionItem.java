@@ -88,6 +88,36 @@ public abstract class AbstractPotionItem extends Item {
         registerMaterial(MaterialItems.SUNFLOWERS.get());
         registerMaterial(MaterialItems.DEATHWEED.get());
         registerMaterial(MaterialItems.LENS.get());
+        registerMaterial(Items.COBWEB);
+        registerMaterial(FoodItems.ARMORED_CAVE_FISH.get());
+        registerMaterial(Items.FEATHER);
+        registerMaterial(ModBlocks.CRISPY_HONEY_BLOCK.get().asItem());
+        registerMaterial(Items.FIRE_CORAL);
+        registerMaterial(BaitItems.LADYBUG.get());
+        registerMaterial(FoodItems.FLASHFIN_KOI.get());
+        registerMaterial(FoodItems.OBSIDIAN_FISH.get());
+        registerMaterial(FoodItems.COLORFUL_MINERAL_FISH.get());
+        registerMaterial(FoodItems.SCARLET_TIGER_FISH.get());
+        registerMaterial(MaterialItems.ANTLION_MANDIBLE.get());
+        registerMaterial(MaterialItems.PINK_PEARL.get());
+        registerMaterial(MaterialItems.BLACK_PEARL.get());
+        registerMaterial(MaterialItems.PEARL.get());
+        registerMaterial(MaterialItems.SHARK_FIN.get());
+        registerMaterial(MaterialItems.RAW_LEAD.get());
+        registerMaterial(Items.OBSIDIAN);
+        registerMaterial(Items.RAW_IRON);
+        registerMaterial(Items.RAW_GOLD);
+        registerMaterial(Items.BONE);
+        registerMaterial(Items.CACTUS);
+        registerMaterial(FoodItems.PRINCESS_FISH.get());
+        registerMaterial(FoodItems.BLOODY_PIRANHAS.get());
+        registerMaterial(MaterialItems.RAW_PLATINUM.get());
+        registerMaterial(MaterialItems.LIFE_MUSHROOM.get());
+        registerMaterial(FoodItems.CHAOS_FISH.get());
+        registerMaterial(FoodItems.MIRROR_FISH.get());
+        registerMaterial(FoodItems.EBONY_KOI.get());
+        registerMaterial(NatureBlocks.GLOWING_MUSHROOM.get().asItem());
+
 
         // 箭术
         registerMix(new Item[]{

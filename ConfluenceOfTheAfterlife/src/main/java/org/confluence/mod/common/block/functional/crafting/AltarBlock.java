@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +16,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -168,14 +170,14 @@ public class AltarBlock extends BaseEntityBlock {
     }
 
     public static class Entity extends BlockEntity implements GeoBlockEntity {
+        public static final int CONTAINER_SIZE = 6;
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
+        private final ItemStackContainer itemHandler; // 5 Inputs and 1 Output.
         private Variant variant;
-
-        private final ItemStackContainer itemHandler; //5 Inputs and 1 Output.
 
         public Entity(BlockPos pPos, BlockState pBlockState) {
             super(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), pPos, pBlockState);
-            this.itemHandler = new ItemStackContainer(this, 6);
+            this.itemHandler = new ItemStackContainer(this, CONTAINER_SIZE);
             SingletonGeoAnimatable.registerSyncedAnimatable(this);
         }
 
@@ -232,14 +234,15 @@ public class AltarBlock extends BaseEntityBlock {
         public void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider registries) {
             super.loadAdditional(nbt, registries);
             variant = Variant.byId(nbt.getInt("variant"));
-            itemHandler.deserializeNBT(registries, nbt.getCompound("inventory"));
+            itemHandler.setItems(NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY));
+            ContainerHelper.loadAllItems(nbt, itemHandler.getItems(), registries);
         }
 
         @Override
         protected void saveAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider registries) {
             super.saveAdditional(nbt, registries);
             nbt.putInt("variant", variant.id);
-            nbt.put("inventory", itemHandler.serializeNBT(registries));
+            ContainerHelper.saveAllItems(nbt, itemHandler.getItems(), registries);
         }
 
         @Override
@@ -251,7 +254,7 @@ public class AltarBlock extends BaseEntityBlock {
         public @NotNull CompoundTag getUpdateTag(HolderLookup.@NotNull Provider registries) {
             CompoundTag nbt = new CompoundTag();
             nbt.putInt("variant", variant.id);
-            nbt.put("inventory", itemHandler.serializeNBT(registries));
+            ContainerHelper.saveAllItems(nbt, itemHandler.getItems(), registries);
             return nbt;
         }
 

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.recipe;
 
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -14,6 +15,14 @@ public class ItemStackContainer extends ItemStackHandler implements Container, R
     public ItemStackContainer(BlockEntity blockEntity, int size) {
         super(size);
         this.blockEntity = blockEntity;
+    }
+
+    public NonNullList<ItemStack> getItems() {
+        return stacks;
+    }
+
+    public void setItems(NonNullList<ItemStack> items) {
+        this.stacks = items;
     }
 
     @Override

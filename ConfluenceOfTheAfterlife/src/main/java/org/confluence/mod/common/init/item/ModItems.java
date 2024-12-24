@@ -43,6 +43,7 @@ public final class ModItems {
     public static final Supplier<Item> DEAD_MANS_SWEATER = ITEMS.registerItem("dead_mans_seater", properties -> new CustomRarityItem(properties.stacksTo(1), ModRarity.GREEN)); // todo 模型
     public static final Supplier<Item> WHOOPIE_CUSHION = ITEMS.registerSimpleItem("whoopie_cushion", new Item.Properties().stacksTo(1));
 
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
         BLOCK_ITEMS.register(eventBus);
@@ -70,5 +71,6 @@ public final class ModItems {
         QuestedFishes.ITEMS.register(eventBus);
         SwordItems.ITEMS.register(eventBus);
         ToolItems.ITEMS.register(eventBus);
+        NoTabItems.ITEMS.register(eventBus);
     }
 }

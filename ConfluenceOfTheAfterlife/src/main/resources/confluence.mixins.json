@@ -56,8 +56,6 @@
         "client.MinecraftMixin",
         "client.MouseHandlerMixin",
         "client.MusicManagerMixin",
-        "client.PauseScreenMixin",
-        "client.TitleScreenMixin",
         "client.ToastComponent$ToastInstanceMixin",
         "client.WorldCreationUiStateMixin",
         "client.accessor.FontAccessor",

@@ -31,7 +31,7 @@ import java.util.List;
 public class FletchingTableMenu extends AbstractContainerMenu {
     private final ContainerLevelAccess access;
     private final Player player;
-    private final FletchingTableRecipeInput input = new FletchingTableRecipeInput(this);
+    public final FletchingTableRecipeInput input = new FletchingTableRecipeInput(this);
     private final ResultContainer result = new ResultContainer();
 
     public FletchingTableMenu(int pContainerId, Inventory inventory) {

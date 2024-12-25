@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/freeze_box"
+    "all": "confluence:block/oasis_crate"
   }
 }

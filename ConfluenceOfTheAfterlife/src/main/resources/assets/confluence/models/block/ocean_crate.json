@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/tr_crimson_box"
+    "all": "confluence:block/ocean_crate"
   }
 }

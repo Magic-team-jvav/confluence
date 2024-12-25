@@ -279,7 +279,7 @@ public class ModLootTableProvider extends LootTableProvider {
                 if (logBlocks.getDoor() != null) add(logBlocks.getDoor().get(), this::createDoorTable);
             }
 
-            BoxBlocks.BLOCKS.getEntries().forEach(block -> dropSelf(block.get()));
+            CrateBlocks.BLOCKS.getEntries().forEach(block -> dropSelf(block.get()));
 
             // 草药
             addHerbDrop(ModBlocks.WATERLEAF.get(), MaterialItems.WATERLEAF.get(), FoodItems.WATERLEAF_SEED.get());
@@ -303,7 +303,7 @@ public class ModLootTableProvider extends LootTableProvider {
                     getIterableFromRegister(ModBlocks.BLOCKS),
                     getIterableFromRegister(OreBlocks.BLOCKS),
                     getIterableFromRegister(DecorativeBlocks.BLOCKS),
-                    getIterableFromRegister(BoxBlocks.BLOCKS),
+                    getIterableFromRegister(CrateBlocks.BLOCKS),
                     getIterableFromRegister(FunctionalBlocks.BLOCKS),
                     getIterableFromRegister(FunctionalBlocks.HIDDEN),
                     getIterableFromRegister(NatureBlocks.BLOCKS),

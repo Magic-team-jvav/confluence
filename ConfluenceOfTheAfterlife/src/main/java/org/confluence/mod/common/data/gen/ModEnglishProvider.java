@@ -6,7 +6,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.block.BoxBlocks;
+import org.confluence.mod.common.init.block.CrateBlocks;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.*;
@@ -397,7 +397,7 @@ public class ModEnglishProvider extends LanguageProvider {
                 
                 Its best boomerangModifier is Legendary.""");
 
-        BoxBlocks.BLOCKS.getEntries().forEach(block -> add(block.get(), toTitleCase(block.getId().getPath())));
+        CrateBlocks.BLOCKS.getEntries().forEach(block -> add(block.get(), toTitleCase(block.getId().getPath())));
         DecorativeBlocks.BLOCKS.getEntries().forEach(block -> add(block.get(), toTitleCase(block.getId().getPath())));
         OreBlocks.BLOCKS.getEntries().forEach(block -> add(block.get(), toTitleCase(block.getId().getPath())));
 

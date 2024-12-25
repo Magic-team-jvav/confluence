@@ -117,6 +117,7 @@ public abstract class AbstractPotionItem extends Item {
         registerMaterial(FoodItems.MIRROR_FISH.get());
         registerMaterial(FoodItems.EBONY_KOI.get());
         registerMaterial(NatureBlocks.GLOWING_MUSHROOM.get().asItem());
+        registerMaterial(MaterialItems.GEL.get());
 
 
         // 箭术
@@ -320,6 +321,14 @@ public abstract class AbstractPotionItem extends Item {
                 FoodItems.CHAOS_FISH.get(),
                 MaterialItems.FLAMEFLOWERS.get()
         }, PotionItems.RANDOM_TELEPORT_POTION.toStack());
+
+
+        // 弱效治疗
+        registerMix(new Item[]{
+                MaterialItems.LIFE_MUSHROOM.get(),
+                MaterialItems.GEL.get()
+        }, PotionItems.LESSER_HEALING_POTION.toStack());
+
     }
 
     private static void registerMaterial(Item material) {

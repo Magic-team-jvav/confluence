@@ -20,6 +20,7 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.AlchemyTableRecipe;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
+import org.confluence.terra_curio.common.recipe.AmountIngredient;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -185,7 +186,7 @@ public class AlchemyTableMenu extends AbstractContainerMenu {
                     input.setItem(back.getA(), back.getB());
                 }
                 if (random.nextFloat() < 1.0F - CHANCE) { // 66.67%概率消耗
-                    input.removeItem(0, 1);
+                    input.removeItem(0, AmountIngredient.getAmount(recipe.getBase()));
                 }
                 input.setChanged();
             }

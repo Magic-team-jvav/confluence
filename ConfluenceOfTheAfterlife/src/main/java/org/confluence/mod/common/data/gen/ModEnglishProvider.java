@@ -313,7 +313,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.hellforge", "Hell Forge");
         add("container.confluence.hellforge", "Hell Forge");
         add("container.confluence.alchemy_table", "Alchemy Table");
-        add("container.confluence.alchemy_table", "Alchemy Table");
+        add("title.confluence.alchemy_table", "Alchemy Table");
         add("condition.confluence.requires_fuel", "Requires Fuel");
         add("container.confluence.fletching_table", "Fletching Table");
 

@@ -10,5 +10,6 @@
     },
     "result": {
         "id": "confluence:palm_button"
-    }
+    },
+    "group": "wooden_button"
 }

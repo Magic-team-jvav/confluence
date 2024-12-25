@@ -22,11 +22,11 @@ import org.confluence.mod.common.data.saved.ConfluenceCommand;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.effect.beneficial.HeartReachEffect;
 import org.confluence.mod.common.init.ModAttachments;
+import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.common.ColoredItem;
-import org.confluence.mod.common.item.potion.AbstractPotionItem;
 import org.confluence.mod.network.s2c.EchoVisibilityPacketS2C;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.util.PrefixUtils;
@@ -136,6 +136,6 @@ public final class GameEvents {
 
     @SubscribeEvent
     public static void registerBrewingRecipes(RegisterBrewingRecipesEvent event) {
-        AbstractPotionItem.registerRecipes(event.getBuilder()::addRecipe);
+        ModRecipes.Brewing.registerRecipes(event.getBuilder()::addRecipe);
     }
 }

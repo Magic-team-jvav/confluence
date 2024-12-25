@@ -10,7 +10,6 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -91,6 +90,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
         return input.isEmpty() && !recipes.isEmpty();
     }
 
+    @Override
     public boolean clickMenuButton(@NotNull Player pPlayer, int pId) {
         if (isValidRecipeIndex(pId)) {
             selectedRecipeIndex.set(pId);
@@ -103,6 +103,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
         return pRecipeIndex >= 0 && pRecipeIndex < recipes.size();
     }
 
+    @Override
     public void slotsChanged(@NotNull Container pInventory) {
         this.recipes = player.level().getRecipeManager().getRecipesFor(ModRecipes.SKY_MILL_TYPE.get(), input, player.level());
         if (selectedRecipeIndex.get() >= recipes.size()) selectedRecipeIndex.set(recipes.size() - 1);
@@ -148,10 +149,12 @@ public class SkyMillMenu extends AbstractContainerMenu {
         this.slotUpdateListener = pListener;
     }
 
+    @Override
     public boolean canTakeItemForPickAll(@NotNull ItemStack pStack, Slot pSlot) {
         return pSlot.container != result && super.canTakeItemForPickAll(pStack, pSlot);
     }
 
+    @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player pPlayer, int pIndex) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = slots.get(pIndex);
@@ -161,25 +164,24 @@ public class SkyMillMenu extends AbstractContainerMenu {
             itemstack = itemstack1.copy();
             if (pIndex == 0) {
                 item.onCraftedBy(itemstack1, pPlayer.level(), pPlayer);
-                if (!moveItemStackTo(itemstack1, INV_SLOT_START, INV_SLOT_END, true)) {
+                if (!moveItemStackTo(itemstack1, INV_SLOT_START, USE_ROW_SLOT_END, true)) {
                     return ItemStack.EMPTY;
                 }
-
                 slot.onQuickCraft(itemstack1, itemstack);
-            } else if (pIndex <= 3) {
-                if (!moveItemStackTo(itemstack1, INV_SLOT_START, INV_SLOT_END, false)) {
+            } else if (pIndex < 4) {
+                if (!moveItemStackTo(itemstack1, INV_SLOT_START, USE_ROW_SLOT_END, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (player.level().getRecipeManager().getRecipeFor(ModRecipes.SKY_MILL_TYPE.get(), new SingleRecipeInput(itemstack1), player.level()).isPresent()) {
+            } else {
                 if (!moveItemStackTo(itemstack1, 1, 4, false)) {
                     return ItemStack.EMPTY;
-                }
-            } else if (pIndex < INV_SLOT_END) {
-                if (!moveItemStackTo(itemstack1, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)) {
+                } else if (pIndex < INV_SLOT_END) {
+                    if (!moveItemStackTo(itemstack1, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (pIndex < USE_ROW_SLOT_END && !moveItemStackTo(itemstack1, INV_SLOT_START, INV_SLOT_END, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (pIndex < USE_ROW_SLOT_END && !moveItemStackTo(itemstack1, INV_SLOT_START, INV_SLOT_END, false)) {
-                return ItemStack.EMPTY;
             }
 
             if (itemstack1.isEmpty()) {
@@ -198,9 +200,10 @@ public class SkyMillMenu extends AbstractContainerMenu {
         return itemstack;
     }
 
+    @Override
     public void removed(@NotNull Player pPlayer) {
         super.removed(pPlayer);
-        result.removeItemNoUpdate(1);
+        result.removeItemNoUpdate(0);
         access.execute((level, blockPos) -> clearContainer(pPlayer, input));
     }
 }

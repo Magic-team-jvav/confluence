@@ -12,5 +12,6 @@
     "result": {
         "id": "confluence:spooky_trapdoor",
         "count": 2
-    }
+    },
+    "group": "wooden_trapdoor"
 }

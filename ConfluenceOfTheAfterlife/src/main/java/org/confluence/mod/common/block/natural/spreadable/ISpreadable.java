@@ -158,8 +158,8 @@ public interface ISpreadable {
                 NatureBlocks.RED_ICE, NatureBlocks.PINK_ICE,
                 NatureBlocks.RED_PACKED_ICE, NatureBlocks.PINK_PACKED_ICE,
                 // 蘑菇
-                NatureBlocks.TR_CRIMSON_MUSHROOM, NatureBlocks.LIFE_MUSHROOM,
-                NatureBlocks.EBONY_MUSHROOM, NatureBlocks.LIFE_MUSHROOM,
+                NatureBlocks.VICIOUS_MUSHROOM, NatureBlocks.LIFE_MUSHROOM,
+                NatureBlocks.VILE_MUSHROOM, NatureBlocks.LIFE_MUSHROOM,
                 //矿物
                 getSupplier(REDSTONE_ORE), OreBlocks.SANCTIFICATION_REDSTONE_ORE,
                 getSupplier(COAL_ORE), OreBlocks.SANCTIFICATION_COAL_ORE,
@@ -197,11 +197,11 @@ public interface ISpreadable {
                 OreBlocks.FLESHIFICATION_GOLD_ORE, OreBlocks.SANCTIFICATION_GOLD_ORE,
                 OreBlocks.FLESHIFICATION_DIAMOND_ORE, OreBlocks.SANCTIFICATION_DIAMOND_ORE,
                 OreBlocks.FLESHIFICATION_REDSTONE_ORE, OreBlocks.SANCTIFICATION_REDSTONE_ORE,
-                OreBlocks.EBONY_ORE, OreBlocks.SANCTIFICATION_EBONY_ORE,
+                OreBlocks.DEMONITE_ORE, OreBlocks.SANCTIFICATION_DEMONITE_ORE,
                 OreBlocks.TR_CRIMSON_ORE, OreBlocks.SANCTIFICATION_TR_CRIMSON_ORE,
-                OreBlocks.FLESHIFICATION_EBONY_ORE, OreBlocks.FLESHIFICATION_EBONY_ORE,
+                OreBlocks.FLESHIFICATION_DEMONITE_ORE, OreBlocks.FLESHIFICATION_DEMONITE_ORE,
                 OreBlocks.FLESHIFICATION_TR_CRIMSON_ORE, OreBlocks.SANCTIFICATION_TR_CRIMSON_ORE,
-                OreBlocks.CORRUPTION_EBONY_ORE, OreBlocks.FLESHIFICATION_EBONY_ORE,
+                OreBlocks.CORRUPTION_DEMONITE_ORE, OreBlocks.FLESHIFICATION_DEMONITE_ORE,
                 OreBlocks.CORRUPTION_TR_CRIMSON_ORE, OreBlocks.SANCTIFICATION_TR_CRIMSON_ORE,
                 // 植物
                 NatureBlocks.CORRUPT_GRASS, NatureBlocks.HALLOW_GRASS,
@@ -291,11 +291,11 @@ public interface ISpreadable {
                 OreBlocks.SILVER_ORE, OreBlocks.FLESHIFICATION_SILVER_ORE,
                 OreBlocks.TUNGSTEN_ORE, OreBlocks.FLESHIFICATION_TUNGSTEN_ORE,
                 OreBlocks.PLATINUM_ORE, OreBlocks.FLESHIFICATION_PLATINUM_ORE,
-                OreBlocks.EBONY_ORE, OreBlocks.FLESHIFICATION_EBONY_ORE,
+                OreBlocks.DEMONITE_ORE, OreBlocks.FLESHIFICATION_DEMONITE_ORE,
                 OreBlocks.TR_CRIMSON_ORE, OreBlocks.FLESHIFICATION_TR_CRIMSON_ORE,
 
                 // 蘑菇
-                NatureBlocks.LIFE_MUSHROOM, NatureBlocks.TR_CRIMSON_MUSHROOM
+                NatureBlocks.LIFE_MUSHROOM, NatureBlocks.VICIOUS_MUSHROOM
         ),
 
 
@@ -382,7 +382,7 @@ public interface ISpreadable {
                 OreBlocks.SILVER_ORE, OreBlocks.CORRUPTION_SILVER_ORE,
                 OreBlocks.TUNGSTEN_ORE, OreBlocks.CORRUPTION_TUNGSTEN_ORE,
                 OreBlocks.PLATINUM_ORE, OreBlocks.CORRUPTION_PLATINUM_ORE,
-                OreBlocks.EBONY_ORE, OreBlocks.CORRUPTION_EBONY_ORE,
+                OreBlocks.DEMONITE_ORE, OreBlocks.CORRUPTION_DEMONITE_ORE,
                 OreBlocks.TR_CRIMSON_ORE, OreBlocks.CORRUPTION_TR_CRIMSON_ORE,
 
                 OreBlocks.SANCTIFICATION_TIN_ORE, OreBlocks.CORRUPTION_TIN_ORE,
@@ -413,7 +413,7 @@ public interface ISpreadable {
                 NatureBlocks.PINK_PACKED_ICE, NatureBlocks.PURPLE_PACKED_ICE,
 
                 // 蘑菇
-                NatureBlocks.LIFE_MUSHROOM, NatureBlocks.EBONY_MUSHROOM,
+                NatureBlocks.LIFE_MUSHROOM, NatureBlocks.VILE_MUSHROOM,
 
                 // 植物
                 NatureBlocks.HALLOW_GRASS, NatureBlocks.CORRUPT_GRASS,
@@ -430,8 +430,8 @@ public interface ISpreadable {
         PURE(
                 NatureBlocks.ASH_BLOCK, NatureBlocks.ASH_GRASS_BLOCK,
                 getSupplier(MUD), NatureBlocks.MUSHROOM_GRASS_BLOCK,
-                NatureBlocks.TR_CRIMSON_MUSHROOM, NatureBlocks.LIFE_MUSHROOM,
-                NatureBlocks.EBONY_MUSHROOM, NatureBlocks.LIFE_MUSHROOM,
+                NatureBlocks.VICIOUS_MUSHROOM, NatureBlocks.LIFE_MUSHROOM,
+                NatureBlocks.VILE_MUSHROOM, NatureBlocks.LIFE_MUSHROOM,
                 NatureBlocks.CORRUPT_GRASS, getSupplier(SHORT_GRASS),
                 NatureBlocks.TR_CRIMSON_GRASS, getSupplier(SHORT_GRASS),
                 NatureBlocks.HALLOW_GRASS, getSupplier(SHORT_GRASS),

@@ -135,14 +135,14 @@ public class OreBlocks {
     public static final DeferredBlock<Block> CORRUPTION_LAPIS_ORE = copyBlockRegister("corruption_lapis_ore", Blocks.LAPIS_ORE);
     public static final DeferredBlock<Block> FLESHIFICATION_LAPIS_ORE = copyBlockRegister("fleshification_lapis_ore", Blocks.LAPIS_ORE);
 
-    public static final DeferredBlock<Block> EBONY_ORE = copyBlockRegister("ebony_ore", Blocks.IRON_ORE);
-    public static final DeferredBlock<Block> DEEPSLATE_EBONY_ORE = copyBlockRegister("deepslate_ebony_ore", Blocks.DEEPSLATE_IRON_ORE);
-    public static final DeferredBlock<Block> SANCTIFICATION_EBONY_ORE = copyBlockRegister("sanctification_ebony_ore", Blocks.IRON_ORE);
-    public static final DeferredBlock<Block> CORRUPTION_EBONY_ORE = copyBlockRegister("corruption_ebony_ore", Blocks.IRON_ORE);
-    public static final DeferredBlock<Block> FLESHIFICATION_EBONY_ORE = copyBlockRegister("fleshification_ebony_ore", Blocks.IRON_ORE);
+    public static final DeferredBlock<Block> DEMONITE_ORE = copyBlockRegister("demonite_ore", Blocks.IRON_ORE);
+    public static final DeferredBlock<Block> DEEPSLATE_DEMONITE_ORE = copyBlockRegister("deepslate_demonite_ore", Blocks.DEEPSLATE_IRON_ORE);
+    public static final DeferredBlock<Block> SANCTIFICATION_DEMONITE_ORE = copyBlockRegister("sanctification_demonite_ore", Blocks.IRON_ORE);
+    public static final DeferredBlock<Block> CORRUPTION_DEMONITE_ORE = copyBlockRegister("corruption_demonite_ore", Blocks.IRON_ORE);
+    public static final DeferredBlock<Block> FLESHIFICATION_DEMONITE_ORE = copyBlockRegister("fleshification_demonite_ore", Blocks.IRON_ORE);
 
-    public static final DeferredBlock<Block> EBONY_BLOCK = copyBlockRegister("ebony_block", Blocks.RAW_IRON_BLOCK);
-    public static final DeferredBlock<Block> RAW_EBONY_BLOCK = copyBlockRegister("raw_ebony_block", Blocks.IRON_BLOCK);
+    public static final DeferredBlock<Block> DEMONITE_BLOCK = copyBlockRegister("demonite_block", Blocks.RAW_IRON_BLOCK);
+    public static final DeferredBlock<Block> RAW_DEMONITE_BLOCK = copyBlockRegister("raw_demonite_block", Blocks.IRON_BLOCK);
 
     public static final DeferredBlock<Block> TR_CRIMSON_ORE = copyBlockRegister("tr_crimson_ore", Blocks.IRON_ORE);
     public static final DeferredBlock<Block> DEEPSLATE_TR_CRIMSON_ORE = copyBlockRegister("deepslate_tr_crimson_ore", Blocks.DEEPSLATE_IRON_ORE);
@@ -171,6 +171,7 @@ public class OreBlocks {
 
     public static final DeferredBlock<Block> HELLSTONE = simpleBlockRegister("hellstone", HellStoneBlock::new);
     public static final DeferredBlock<Block> ASH_HELLSTONE = simpleBlockRegister("ash_hellstone", HellStoneBlock::new);
+    public static final DeferredBlock<Block> HELLSTONE_BRICKS = simpleBlockRegister("hellstone_bricks",HellStoneBlock::new);
     public static final DeferredBlock<Block> RAW_HELLSTONE_BLOCK = simpleBlockRegister("raw_hellstone_block", BlockBehaviour.Properties.of().requiresCorrectToolForDrops());
     public static final DeferredBlock<Block> HELLSTONE_BLOCK = simpleBlockRegister("hellstone_block", BlockBehaviour.Properties.of().requiresCorrectToolForDrops());
 

@@ -13,5 +13,6 @@
     "result": {
         "id": "confluence:pearl_stairs",
         "count": 4
-    }
+    },
+    "group": "wooden_stairs"
 }

@@ -11,7 +11,6 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -26,7 +25,7 @@ public class AltarCategory implements IRecipeCategory<AltarRecipe> {
     private final IDrawable icon;
 
     public AltarCategory(IJeiHelpers jeiHelpers) {
-        this.icon = jeiHelpers.getGuiHelper().createDrawableItemStack(new ItemStack(FunctionalBlocks.DEMON_ALTAR.get()));
+        this.icon = jeiHelpers.getGuiHelper().createDrawableItemStack(FunctionalBlocks.DEMON_ALTAR.toStack());
     }
 
     @Override

@@ -68,8 +68,8 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(RAW_TUNGSTEN_BLOCK.get());
             dropSelf(PLATINUM_BLOCK.get());
             dropSelf(RAW_PLATINUM_BLOCK.get());
-            dropSelf(EBONY_BLOCK.get());
-            dropSelf(RAW_EBONY_BLOCK.get());
+            dropSelf(DEMONITE_BLOCK.get());
+            dropSelf(RAW_DEMONITE_BLOCK.get());
             dropSelf(TR_CRIMSON_BLOCK.get());
             dropSelf(RAW_TR_CRIMSON_BLOCK.get());
             dropSelf(COBALT_BLOCK.get());
@@ -188,11 +188,11 @@ public class ModLootTableProvider extends LootTableProvider {
             add(FLESHIFICATION_DIAMOND_ORE.get(), block -> createOreDrop(block, Items.DIAMOND));
 
             add(METEORITE_ORE.get(), block -> createOreDrop(block, RAW_METEORITE.get()));
-            add(EBONY_ORE.get(), block -> createOreDrop(block, RAW_EBONY.get()));
-            add(DEEPSLATE_EBONY_ORE.get(), block -> createOreDrop(block, RAW_EBONY.get()));
-            add(SANCTIFICATION_EBONY_ORE.get(), block -> createOreDrop(block, RAW_EBONY.get()));
-            add(CORRUPTION_EBONY_ORE.get(), block -> createOreDrop(block, RAW_EBONY.get()));
-            add(FLESHIFICATION_EBONY_ORE.get(), block -> createOreDrop(block, RAW_EBONY.get()));
+            add(DEMONITE_ORE.get(), block -> createOreDrop(block, RAW_DEMONITE.get()));
+            add(DEEPSLATE_DEMONITE_ORE.get(), block -> createOreDrop(block, RAW_DEMONITE.get()));
+            add(SANCTIFICATION_DEMONITE_ORE.get(), block -> createOreDrop(block, RAW_DEMONITE.get()));
+            add(CORRUPTION_DEMONITE_ORE.get(), block -> createOreDrop(block, RAW_DEMONITE.get()));
+            add(FLESHIFICATION_DEMONITE_ORE.get(), block -> createOreDrop(block, RAW_DEMONITE.get()));
             add(TR_CRIMSON_ORE.get(), block -> createOreDrop(block, RAW_TR_CRIMSON.get()));
             add(DEEPSLATE_TR_CRIMSON_ORE.get(), block -> createOreDrop(block, RAW_TR_CRIMSON.get()));
             add(DEEPSLATE_COBALT_ORE.get(), block -> createOreDrop(block, RAW_COBALT.get()));
@@ -279,19 +279,19 @@ public class ModLootTableProvider extends LootTableProvider {
                 if (logBlocks.getDoor() != null) add(logBlocks.getDoor().get(), this::createDoorTable);
             }
 
-            BoxBlocks.BLOCKS.getEntries().forEach(block -> dropSelf(block.get()));
+            CrateBlocks.BLOCKS.getEntries().forEach(block -> dropSelf(block.get()));
 
             // 草药
             addHerbDrop(ModBlocks.WATERLEAF.get(), MaterialItems.WATERLEAF.get(), FoodItems.WATERLEAF_SEED.get());
-            addHerbDrop(ModBlocks.FLAMEFLOWERS.get(), MaterialItems.FLAMEFLOWERS.get(), FoodItems.FLAMEFLOWERS_SEED.get());
-            addHerbDrop(ModBlocks.MOONSHINE_GRASS.get(), MaterialItems.MOONSHINE_GRASS.get(), FoodItems.MOONSHINE_GRASS_SEED.get());
-            addHerbDrop(ModBlocks.SHINE_ROOT.get(), MaterialItems.SHINE_ROOT.get(), FoodItems.SHINE_ROOT_SEED.get());
-            addHerbDrop(ModBlocks.SHIVERINGTHORNS.get(), MaterialItems.SHIVERINGTHORNS.get(), FoodItems.SHIVERINGTHORNS_SEED.get());
-            addHerbDrop(ModBlocks.SUNFLOWERS.get(), MaterialItems.SUNFLOWERS.get(), FoodItems.SUNFLOWERS_SEED.get());
+            addHerbDrop(ModBlocks.FIREBLOSSOM.get(), MaterialItems.FIREBLOSSOM.get(), FoodItems.FIREBLOSSOM_SEED.get());
+            addHerbDrop(ModBlocks.MOONGLOW.get(), MaterialItems.MOONGLOW.get(), FoodItems.MOONGLOW_SEED.get());
+            addHerbDrop(ModBlocks.BLINKROOT.get(), MaterialItems.BLINKROOT.get(), FoodItems.BLINKROOT_SEED.get());
+            addHerbDrop(ModBlocks.SHIVERTHORN.get(), MaterialItems.SHIVERTHORN.get(), FoodItems.SHIVERTHORN_SEED.get());
+            addHerbDrop(ModBlocks.DAYBLOOM.get(), MaterialItems.DAYBLOOM.get(), FoodItems.DAYBLOOM_SEED.get());
             addHerbDrop(ModBlocks.DEATHWEED.get(), MaterialItems.DEATHWEED.get(), FoodItems.DEATHWEED_SEED.get());
 
-            dropOther(NatureBlocks.TR_CRIMSON_MUSHROOM.get(), MaterialItems.TR_CRIMSON_MUSHROOM.get());
-            dropOther(NatureBlocks.EBONY_MUSHROOM.get(), MaterialItems.EBONY_MUSHROOM.get());
+            dropOther(NatureBlocks.VICIOUS_MUSHROOM.get(), MaterialItems.VICIOUS_MUSHROOM.get());
+            dropOther(NatureBlocks.VILE_MUSHROOM.get(), MaterialItems.VILE_MUSHROOM.get());
             dropOther(NatureBlocks.GLOWING_MUSHROOM.get(), MaterialItems.GLOWING_MUSHROOM.get()); // TODO: 掉落概率不是100%；掉落蘑菇草种子
             dropOther(NatureBlocks.LIFE_MUSHROOM.get(), MaterialItems.LIFE_MUSHROOM.get());
             add(NatureBlocks.JUNGLE_SPORE.get(), LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.JUNGLE_SPORE.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))));
@@ -303,7 +303,7 @@ public class ModLootTableProvider extends LootTableProvider {
                     getIterableFromRegister(ModBlocks.BLOCKS),
                     getIterableFromRegister(OreBlocks.BLOCKS),
                     getIterableFromRegister(DecorativeBlocks.BLOCKS),
-                    getIterableFromRegister(BoxBlocks.BLOCKS),
+                    getIterableFromRegister(CrateBlocks.BLOCKS),
                     getIterableFromRegister(FunctionalBlocks.BLOCKS),
                     getIterableFromRegister(FunctionalBlocks.HIDDEN),
                     getIterableFromRegister(NatureBlocks.BLOCKS),

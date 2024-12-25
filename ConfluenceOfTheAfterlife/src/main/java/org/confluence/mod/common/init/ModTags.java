@@ -67,6 +67,7 @@ public final class ModTags {
         public static final TagKey<Item> WOODEN_COMBUSTIBLES = register("wooden_combustibles");  // 可燃木材系列
         public static final TagKey<Item> COMPOST = register("compost");  // 堆肥
         public static final TagKey<Item> LEAD_AND_IRON = register("lead_and_iron");
+        public static final TagKey<Item> DEMONITE_AND_CRIMSON_INGOT = register("demonite_and_crimson_ingot");
         public static final TagKey<Item> HAMMER = register("hammer");
         public static final TagKey<Item> MANA_WEAPON = register("mana_weapon");
         public static final TagKey<Item> PREFIX_UNIVERSAL_ONLY = register("prefix_universal_only");
@@ -82,7 +83,7 @@ public final class ModTags {
         public static final TagKey<Item> TUNGSTEN_ORE_SMELTING = register("tungsten_ore_smelting");
         public static final TagKey<Item> GOLD_ORE_SMELTING = register("gold_ore_smelting");
         public static final TagKey<Item> PLATINUM_ORE_SMELTING = register("platinum_ore_smelting");
-        public static final TagKey<Item> EBONY_ORE_SMELTING = register("ebony_ore_smelting");
+        public static final TagKey<Item> DEMONITE_ORE_SMELTING = register("demonite_ore_smelting");
         public static final TagKey<Item> TR_CRIMSON_ORE_SMELTING = register("tr_crimson_ore_smelting");
         public static final TagKey<Item> RUBY_ORE_SMELTING = register("ruby_ore_smelting");
         public static final TagKey<Item> TOPAZ_ORE_SMELTING = register("topaz_ore_smelting");

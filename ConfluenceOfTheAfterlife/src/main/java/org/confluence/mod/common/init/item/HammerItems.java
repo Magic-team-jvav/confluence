@@ -21,8 +21,8 @@ public class HammerItems {
     public static final DeferredItem<HammerItem> TUNGSTEN_HAMMER = ITEMS.register("tungsten_hammer", () -> new HammerItem(ModTiers.TUNGSTEN, 4, 1));
     public static final DeferredItem<HammerItem> GOLDEN_HAMMER = ITEMS.register("golden_hammer", () -> new HammerItem(ModTiers.GOLD, 5, 1));
     public static final DeferredItem<HammerItem> PLATINUM_HAMMER = ITEMS.register("platinum_hammer", () -> new HammerItem(ModTiers.PLATINUM, 5, 1));
-    public static final DeferredItem<HammerItem> EBONY_HAMMER = ITEMS.register("ebony_hammer", () -> new HammerItem(ModTiers.EBONY, 6, 1));
-    public static final DeferredItem<HammerItem> TR_CRIMSON_HAMMER = ITEMS.register("tr_crimson_hammer", () -> new HammerItem(ModTiers.TR_CRIMSON, 6, 1));
+    public static final DeferredItem<HammerItem> THE_BREAKER = ITEMS.register("the_breaker", () -> new HammerItem(ModTiers.DEMONITE, 6, 1));
+    public static final DeferredItem<HammerItem> FLESH_GRINDER = ITEMS.register("flesh_grinder", () -> new HammerItem(ModTiers.TR_CRIMSON, 6, 1));
     public static final DeferredItem<HammerItem> PWNHAMMER = ITEMS.register("pwnhammer", () -> new HammerItem(ModTiers.HALLOWED, 7, 1, new Item.Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE)));
 
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {

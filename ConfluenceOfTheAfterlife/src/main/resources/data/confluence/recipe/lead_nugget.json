@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:lead_ingot"
+        }
+    },
+    "result": {
+        "id": "confluence:lead_nugget",
+        "count": 9
+    }
+}

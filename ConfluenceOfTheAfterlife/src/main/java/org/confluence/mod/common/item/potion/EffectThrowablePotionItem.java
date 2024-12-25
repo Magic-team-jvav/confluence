@@ -19,19 +19,19 @@ public class EffectThrowablePotionItem extends EffectPotionItem {
         super(properties, mobEffect, duration, amplifier);
     }
 
-    public EffectThrowablePotionItem(Rarity rarity,   Holder<MobEffect> mobEffect, int duration) {
+    public EffectThrowablePotionItem(Rarity rarity, Holder<MobEffect> mobEffect, int duration) {
         super(rarity, mobEffect, duration);
     }
 
-    public EffectThrowablePotionItem(Rarity rarity,   Holder<MobEffect> mobEffect, int duration, int amplifier) {
+    public EffectThrowablePotionItem(Rarity rarity, Holder<MobEffect> mobEffect, int duration, int amplifier) {
         super(rarity, mobEffect, duration, amplifier);
     }
 
-    public EffectThrowablePotionItem(  Holder<MobEffect> mobEffect, int duration) {
+    public EffectThrowablePotionItem(Holder<MobEffect> mobEffect, int duration) {
         super(mobEffect, duration);
     }
 
-    public EffectThrowablePotionItem(  Holder<MobEffect> mobEffect, int duration, int amplifier) {
+    public EffectThrowablePotionItem(Holder<MobEffect> mobEffect, int duration, int amplifier) {
         super(mobEffect, duration, amplifier);
     }
 

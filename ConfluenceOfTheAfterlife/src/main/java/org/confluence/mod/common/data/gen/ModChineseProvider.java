@@ -373,6 +373,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("container.confluence.heavy_work_bench", "重型工作台");
         add("title.confluence.hellforge", "地狱熔炉");
         add("container.confluence.hellforge", "地狱熔炉");
+        add("condition.confluence.requires_fuel", "需要燃料");
+        add("container.confluence.fletching_table", "制箭台");
 
         add("info.confluence.weather_radio.clear", "天气: 晴天, 风速: %s");
         add("info.confluence.weather_radio.cloudy", "天气: 阴天, 风速: %s");
@@ -539,13 +541,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(OreBlocks.RAW_METEORITE_BLOCK.get(), "粗陨石块");
         add(OreBlocks.METEORITE_BLOCK.get(), "陨石块");
         add(OreBlocks.STURDY_FOSSIL_BLOCK.get(), "坚固化石块");
-        add(OreBlocks.EBONY_ORE.get(), "魔矿石");
-        add(OreBlocks.SANCTIFICATION_EBONY_ORE.get(), "圣化魔矿石");
-        add(OreBlocks.CORRUPTION_EBONY_ORE.get(), "腐化魔矿石");
-        add(OreBlocks.FLESHIFICATION_EBONY_ORE.get(), "血化魔矿石");
-        add(OreBlocks.DEEPSLATE_EBONY_ORE.get(), "深层魔矿石");
-        add(OreBlocks.EBONY_BLOCK.get(), "魔矿块");
-        add(OreBlocks.RAW_EBONY_BLOCK.get(), "魔原矿块");
+        add(OreBlocks.DEMONITE_ORE.get(), "魔矿石");
+        add(OreBlocks.SANCTIFICATION_DEMONITE_ORE.get(), "圣化魔矿石");
+        add(OreBlocks.CORRUPTION_DEMONITE_ORE.get(), "腐化魔矿石");
+        add(OreBlocks.FLESHIFICATION_DEMONITE_ORE.get(), "血化魔矿石");
+        add(OreBlocks.DEEPSLATE_DEMONITE_ORE.get(), "深层魔矿石");
+        add(OreBlocks.DEMONITE_BLOCK.get(), "魔矿块");
+        add(OreBlocks.RAW_DEMONITE_BLOCK.get(), "魔原矿块");
         add(OreBlocks.TR_CRIMSON_ORE.get(), "猩红矿石");
         add(OreBlocks.SANCTIFICATION_TR_CRIMSON_ORE.get(), "圣化猩红矿石");
         add(OreBlocks.CORRUPTION_TR_CRIMSON_ORE.get(), "腐化猩红矿石");
@@ -696,21 +698,21 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.ASH_LOG_BLOCKS.getFenceGate().get(), "白蜡木栅栏门");
         add(NatureBlocks.ASH_LOG_BLOCKS.getPressurePlate().get(), "白蜡木压力板");
 
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getButton().get(), "生命木按钮");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getPlanks().get(), "生命木板");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getLog().get(), "生命木原木");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getStrippedLog().get(), "生命去皮原木");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getStrippedWood().get(), "生命去皮木");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getDoor().get(), "生命木门");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getTrapdoor().get(), "生命木活板门");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getSign().get(), "生命木告示牌");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getStairs().get(), "生命木楼梯");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getSlab().get(), "生命木台阶");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getWood().get(), "生命木");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getLeaves().get(), "生命木树叶");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getFence().get(), "生命木栅栏");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getFenceGate().get(), "生命木栅栏门");
-        add(NatureBlocks.LIFE_LOG_BLOCKS.getPressurePlate().get(), "生命木压力板");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getButton().get(), "生命木按钮");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().get(), "生命木板");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getLog().get(), "生命木原木");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getStrippedLog().get(), "生命去皮原木");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getStrippedWood().get(), "生命去皮木");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getDoor().get(), "生命木门");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getTrapdoor().get(), "生命木活板门");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getSign().get(), "生命木告示牌");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getStairs().get(), "生命木楼梯");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getSlab().get(), "生命木台阶");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getWood().get(), "生命木");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getLeaves().get(), "生命木树叶");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getFence().get(), "生命木栅栏");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getFenceGate().get(), "生命木栅栏门");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getPressurePlate().get(), "生命木压力板");
 
         add(NatureBlocks.DESERT_FOSSIL.get(), "沙漠化石");
         add(NatureBlocks.HARDENED_SAND_BLOCK.get(), "硬化沙块");
@@ -766,7 +768,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.TR_GOLD_BRICKS.get(), "金砖块");
         add(DecorativeBlocks.TR_IRON_BRICKS.get(), "铁砖块");
         add(DecorativeBlocks.TR_STONE_BRICKS.get(), "异域石砖");
-        add(DecorativeBlocks.EBONY_ORE_BRICKS.get(), "魔矿砖");
+        add(DecorativeBlocks.DEMONITE_ORE_BRICKS.get(), "魔矿砖");
         add(DecorativeBlocks.EBONY_ROCK_BRICKS.get(), "黑檀石砖");
         add(DecorativeBlocks.BLUE_GEL_BLOCK.get(), "凝胶块");
         add(DecorativeBlocks.GREEN_CANDY_BLOCK.get(), "绿色糖块");
@@ -834,6 +836,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.EXTRACTINATOR.get(), "提炼机");
         add(FunctionalBlocks.SKY_MILL.get(), "天磨");
         add(FunctionalBlocks.HEAVY_WORK_BENCH.get(), "重型工作台");
+        add(FunctionalBlocks.HELLFORGE.get(), "地狱熔炉");
         add(FunctionalBlocks.WEATHER_VANE.get(), "风向标");
         add(FunctionalBlocks.LEAD_ANVIL.get(), "铅砧");
         add(FunctionalBlocks.CHIPPED_LEAD_ANVIL.get(), "开裂的铅砧");
@@ -879,12 +882,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.AETHERIUM_BLOCK.get(), "以太块");
         add(DecorativeBlocks.AETHERIUM_BRICKS.get(), "以太砖");
         add(NatureBlocks.DARK_AETHERIUM_BLOCK.get(), "黯淡以太块");
-        add(DecorativeBlocks.ANCIENT_COPPER_BRICKS.get(),"古代铜砖");
-        add(DecorativeBlocks.ANCIENT_TIN_BRICKS.get(),"古代锡砖");
-        add(DecorativeBlocks.ANCIENT_IRON_BRICKS.get(),"古代铁砖");
-        add(DecorativeBlocks.ANCIENT_LEAD_BRICKS.get(),"古代铅砖");
-        add(DecorativeBlocks.ANCIENT_TUNGSTEN_BRICKS.get(),"古代钨砖");
-        add(DecorativeBlocks.ANCIENT_PLATINUM_BRICKS.get(),"古代铂金砖");
 /*
         add(Torches.RED_TORCH.item.get(), "红火把");
         add(Torches.ORANGE_TORCH.item.get(), "橙火把");
@@ -925,32 +922,32 @@ public class ModChineseProvider extends LanguageProvider {
         add(PotBlocks.UNDERWORLD_POT.get(), "炎烬罐子");
         add(PotBlocks.LIHZAHRD_POT.get(), "神庙罐子");
 
-        add(BoxBlocks.WOODEN_BOX.get(), "木匣");
-        add(BoxBlocks.IRON_BOX.get(), "铁匣");
-        add(BoxBlocks.GOLDEN_BOX.get(), "金匣");
-        add(BoxBlocks.JUNGLE_BOX.get(), "丛林匣");
-        add(BoxBlocks.SKY_BOX.get(), "天空匣");
-        add(BoxBlocks.CORRUPT_BOX.get(), "腐化匣");
-        add(BoxBlocks.TR_CRIMSON_BOX.get(), "猩红匣");
-        add(BoxBlocks.SACRED_BOX.get(), "神圣匣");
-        add(BoxBlocks.DUNGEON_BOX.get(), "地牢匣");
-        add(BoxBlocks.FREEZE_BOX.get(), "冰冻匣");
-        add(BoxBlocks.OASIS_BOX.get(), "绿洲匣");
-        add(BoxBlocks.OBSIDIAN_BOX.get(), "黑曜石匣");
-        add(BoxBlocks.OCEAN_BOX.get(), "海洋匣");
-        add(BoxBlocks.PEARLWOOD_BOX.get(), "珍珠木匣");
-        add(BoxBlocks.MITHRIL_BOX.get(), "秘银匣");
-        add(BoxBlocks.TITANIUM_BOX.get(), "钛金匣");
-        add(BoxBlocks.THORNS_BOX.get(), "荆棘匣");
-        add(BoxBlocks.SPACE_BOX.get(), "太空匣");
-        add(BoxBlocks.DEFACED_BOX.get(), "污损匣");
-        add(BoxBlocks.BLOOD_BOX.get(), "血匣");
-        add(BoxBlocks.PROVIDENTIAL_BOX.get(), "天赐匣");
-        add(BoxBlocks.FENCING_BOX.get(), "围栏匣");
-        add(BoxBlocks.CONIFEROUS_WOOD_BOX.get(), "针叶木匣");
-        add(BoxBlocks.ILLUSION_BOX.get(), "幻象匣");
-        add(BoxBlocks.HELL_STONE_BOX.get(), "狱石匣");
-        add(BoxBlocks.BEACH_BOX.get(), "海滩匣");
+        add(CrateBlocks.WOODEN_CRATE.get(), "木匣");
+        add(CrateBlocks.IRON_CRATE.get(), "铁匣");
+        add(CrateBlocks.GOLDEN_CRATE.get(), "金匣");
+        add(CrateBlocks.JUNGLE_CRATE.get(), "丛林匣");
+        add(CrateBlocks.SKY_CRATE.get(), "天空匣");
+        add(CrateBlocks.CORRUPT_CRATE.get(), "腐化匣");
+        add(CrateBlocks.TR_CRIMSON_CRATE.get(), "猩红匣");
+        add(CrateBlocks.SACRED_CRATE.get(), "神圣匣");
+        add(CrateBlocks.DUNGEON_CRATE.get(), "地牢匣");
+        add(CrateBlocks.FREEZE_CRATE.get(), "冰冻匣");
+        add(CrateBlocks.OASIS_CRATE.get(), "绿洲匣");
+        add(CrateBlocks.OBSIDIAN_CRATE.get(), "黑曜石匣");
+        add(CrateBlocks.OCEAN_CRATE.get(), "海洋匣");
+        add(CrateBlocks.PEARLWOOD_CRATE.get(), "珍珠木匣");
+        add(CrateBlocks.MITHRIL_CRATE.get(), "秘银匣");
+        add(CrateBlocks.TITANIUM_CRATE.get(), "钛金匣");
+        add(CrateBlocks.THORNS_CRATE.get(), "荆棘匣");
+        add(CrateBlocks.SPACE_CRATE.get(), "太空匣");
+        add(CrateBlocks.DEFACED_CRATE.get(), "污损匣");
+        add(CrateBlocks.BLOOD_CRATE.get(), "血匣");
+        add(CrateBlocks.PROVIDENTIAL_CRATE.get(), "天赐匣");
+        add(CrateBlocks.FENCING_CRATE.get(), "围栏匣");
+        add(CrateBlocks.CONIFEROUS_WOOD_CRATE.get(), "针叶木匣");
+        add(CrateBlocks.ILLUSION_CRATE.get(), "幻象匣");
+        add(CrateBlocks.HELL_STONE_CRATE.get(), "狱石匣");
+        add(CrateBlocks.BEACH_CRATE.get(), "海滩匣");
 
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getPlanks().get(), "阴森木板");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getPressurePlate().get(), "阴森木压力板");
@@ -986,8 +983,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.PLATINUM_INGOT.get(), "铂金锭");
         add(MaterialItems.RAW_METEORITE.get(), "陨铁原矿");
         add(MaterialItems.METEORITE_INGOT.get(), "陨铁锭");
-        add(MaterialItems.RAW_EBONY.get(), "粗魔矿");
-        add(MaterialItems.EBONY_INGOT.get(), "魔矿锭");
+        add(MaterialItems.RAW_DEMONITE.get(), "粗魔矿");
+        add(MaterialItems.DEMONITE_INGOT.get(), "魔矿锭");
         add(MaterialItems.RAW_TR_CRIMSON.get(), "粗猩红矿");
         add(MaterialItems.TR_CRIMSON_INGOT.get(), "猩红矿锭");
         add(MaterialItems.RAW_HELLSTONE.get(), "狱石矿");
@@ -1024,6 +1021,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.CARRION.get(), "腐肉");
         add(MaterialItems.VERTEBRA.get(), "椎骨");
         add(MaterialItems.BLOOD_CLOT_POWDER.get(), "血凝粉末");
+        add(MaterialItems.ROTTEN_BONE.get(), "腐蚀残骨");
         add(MaterialItems.LENS.get(), "晶状体");
         add(MaterialItems.BLACK_LENS.get(), "黑晶状体");
         add(MaterialItems.CRYSTAL_SHARDS_ITEM.get(), "水晶碎块");
@@ -1109,8 +1107,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(AxeItems.TUNGSTEN_AXE.get(), "钨斧");
         add(AxeItems.GOLDEN_AXE.get(), "金斧");
         add(AxeItems.PLATINUM_AXE.get(), "铂金斧");
-        add(AxeItems.EBONY_AXE.get(), "暗夜战斧");
-        add(AxeItems.TR_CRIMSON_AXE.get(), "嗜血狂斧");
+        add(AxeItems.WAR_AXE_OF_THE_NIGHT.get(), "暗夜战斧");
+        add(AxeItems.BLOOD_LUST_CLUSTER.get(), "嗜血狂斧");
 
 
         add(PickaxeItems.COPPER_PICKAXE.get(), "铜镐");
@@ -1139,14 +1137,15 @@ public class ModChineseProvider extends LanguageProvider {
         add(HammerItems.TUNGSTEN_HAMMER.get(), "钨锤");
         add(HammerItems.GOLDEN_HAMMER.get(), "金锤");
         add(HammerItems.PLATINUM_HAMMER.get(), "铂金锤");
-        add(HammerItems.EBONY_HAMMER.get(), "魔锤");
-        add(HammerItems.TR_CRIMSON_HAMMER.get(), "血肉锤");
+        add(HammerItems.THE_BREAKER.get(), "魔锤");
+        add(HammerItems.FLESH_GRINDER.get(), "血肉锤");
         add(HammerItems.PWNHAMMER.get(), "神锤");
         /* HammerAxes */
 
 
         // 杂项
         add(ToolItems.ICE_MIRROR.get(), "冰雪镜");
+        add(NoTabItems.COLLECTED_BOOK_ITEM.get(), "藏书");
 
 
         add(ModItems.COPPER_COIN.get(), "铜币");
@@ -1345,28 +1344,28 @@ public class ModChineseProvider extends LanguageProvider {
 
         // 植物
         add(ModBlocks.WATERLEAF.get(), "幌菊");
-        add(ModBlocks.FLAMEFLOWERS.get(), "火焰花");
-        add(ModBlocks.MOONSHINE_GRASS.get(), "月光草");
-        add(ModBlocks.SHINE_ROOT.get(), "闪耀根");
-        add(ModBlocks.SHIVERINGTHORNS.get(), "寒颤棘");
-        add(ModBlocks.SUNFLOWERS.get(), "太阳花");
+        add(ModBlocks.FIREBLOSSOM.get(), "火焰花");
+        add(ModBlocks.MOONGLOW.get(), "月光草");
+        add(ModBlocks.BLINKROOT.get(), "闪耀根");
+        add(ModBlocks.SHIVERTHORN.get(), "寒颤棘");
+        add(ModBlocks.DAYBLOOM.get(), "太阳花");
         add(ModBlocks.DEATHWEED.get(), "死亡草");
         add(MaterialItems.WATERLEAF.get(), "幌菊");
-        add(MaterialItems.FLAMEFLOWERS.get(), "火焰花");
-        add(MaterialItems.MOONSHINE_GRASS.get(), "月光草");
-        add(MaterialItems.SHINE_ROOT.get(), "闪耀根");
-        add(MaterialItems.SHIVERINGTHORNS.get(), "寒颤棘");
-        add(MaterialItems.SUNFLOWERS.get(), "太阳花");
+        add(MaterialItems.FIREBLOSSOM.get(), "火焰花");
+        add(MaterialItems.MOONGLOW.get(), "月光草");
+        add(MaterialItems.BLINKROOT.get(), "闪耀根");
+        add(MaterialItems.SHIVERTHORN.get(), "寒颤棘");
+        add(MaterialItems.DAYBLOOM.get(), "太阳花");
         add(MaterialItems.DEATHWEED.get(), "死亡草");
 
         add(NatureBlocks.STELLAR_BLOSSOM.get(), "星辰花");
         add(NatureBlocks.CLOUDWEAVER.get(), "云织草");
         add(FoodItems.WATERLEAF_SEED.get(), "幌菊种子");
-        add(FoodItems.FLAMEFLOWERS_SEED.get(), "火焰花种子");
-        add(FoodItems.MOONSHINE_GRASS_SEED.get(), "月光草种子");
-        add(FoodItems.SHINE_ROOT_SEED.get(), "闪耀根种子");
-        add(FoodItems.SHIVERINGTHORNS_SEED.get(), "寒颤棘种子");
-        add(FoodItems.SUNFLOWERS_SEED.get(), "太阳花种子");
+        add(FoodItems.FIREBLOSSOM_SEED.get(), "火焰花种子");
+        add(FoodItems.MOONGLOW_SEED.get(), "月光草种子");
+        add(FoodItems.BLINKROOT_SEED.get(), "闪耀根种子");
+        add(FoodItems.SHIVERTHORN_SEED.get(), "寒颤棘种子");
+        add(FoodItems.DAYBLOOM_SEED.get(), "太阳花种子");
         add(FoodItems.DEATHWEED_SEED.get(), "死亡草种子");
 
 
@@ -1392,8 +1391,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.LIVING_SAPLING.get(), "生命树树苗");
 
 
-        add(NatureBlocks.TR_CRIMSON_MUSHROOM.get(), "毒蘑菇");
-        add(NatureBlocks.EBONY_MUSHROOM.get(), "魔菇");
+        add(NatureBlocks.VICIOUS_MUSHROOM.get(), "毒蘑菇");
+        add(NatureBlocks.VILE_MUSHROOM.get(), "魔菇");
         add(NatureBlocks.GLOWING_MUSHROOM.get(), "发光蘑菇");
         add(NatureBlocks.LIFE_MUSHROOM.get(), "生命蘑菇");
         add(NatureBlocks.JUNGLE_SPORE.get(), "丛林孢子");
@@ -1573,6 +1572,15 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.HEIM_CHESTPLATE.get(), "渊鳞胸甲");
         add(ArmorItems.HEIM_LEGGINGS.get(), "渊鳞护腿");
         add(ArmorItems.HEIM_BOOTS.get(), "渊鳞靴");
+        add(ArmorItems.SHADOW_HELMET.get(), "暗影头盔");
+        add(ArmorItems.SHADOW_CHESTPLATE.get(), "暗影胸甲");
+        add(ArmorItems.SHADOW_LEGGINGS.get(), "暗影护腿");
+        add(ArmorItems.SHADOW_BOOTS.get(), "暗影靴");
+        add(ArmorItems.CRIMSON_HELMET.get(), "猩红头盔");
+        add(ArmorItems.CRIMSON_CHESTPLATE.get(), "猩红胸甲");
+        add(ArmorItems.CRIMSON_LEGGINGS.get(), "猩红护腿");
+        add(ArmorItems.CRIMSON_BOOTS.get(), "猩红靴");
+
         // 鱼
         add(FoodItems.SEA_BASS.get(), "鲈鱼");
         add(FoodItems.ATLANTIC_COD.get(), "大西洋鳕鱼");

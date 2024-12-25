@@ -1,0 +1,8 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": {
+    "type": "neoforge:any"
+  },
+  "features": "confluence:vicious_mushroom",
+  "step": "vegetal_decoration"
+}

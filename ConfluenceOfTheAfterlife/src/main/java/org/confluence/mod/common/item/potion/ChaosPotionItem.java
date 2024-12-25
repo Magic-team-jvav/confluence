@@ -20,6 +20,7 @@ public class ChaosPotionItem extends AbstractPotionItem {
 
     @Override
     protected void apply(ItemStack itemStack, Level level, LivingEntity living) {
+        if (level.isClientSide) return;
         Set<Map.Entry<ResourceKey<MobEffect>, MobEffect>> entries = BuiltInRegistries.MOB_EFFECT.entrySet();
         RandomSource random = level.random;
         int index = random.nextInt(entries.size());

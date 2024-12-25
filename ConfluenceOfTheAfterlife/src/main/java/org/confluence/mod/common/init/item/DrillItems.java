@@ -14,7 +14,7 @@ import org.confluence.terra_curio.common.init.TCAttributes;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public final class DrillItems {
+public class DrillItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
     public static final Supplier<DraxItem> DRAX = ITEMS.registerItem("drax", properties -> new DraxItem(ModTiers.HALLOWED, 35, 4, ModRarity.LIGHT_RED, Map.of(

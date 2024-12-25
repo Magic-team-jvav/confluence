@@ -35,7 +35,7 @@ public final class ModTiers {
     public static final Tier PLATINUM = new PoweredTier(59, ModTags.Blocks.NEEDS_4_LEVEL, 1661, 8, 3, 22, () -> Ingredient.of(MaterialItems.PLATINUM_INGOT.get()));
     // 掠夺鲨 59 4
 
-    public static final Tier EBONY = new PoweredTier(65, ModTags.Blocks.NEEDS_5_LEVEL, 10000, 10, 4, 24, () -> Ingredient.of(MaterialItems.EBONY_INGOT.get()));
+    public static final Tier DEMONITE = new PoweredTier(65, ModTags.Blocks.NEEDS_5_LEVEL, 10000, 10, 4, 24, () -> Ingredient.of(MaterialItems.DEMONITE_INGOT.get()));
     public static final Tier TR_CRIMSON = new PoweredTier(70, ModTags.Blocks.NEEDS_5_LEVEL, 10000, 11, 4, 25, () -> Ingredient.of(MaterialItems.TR_CRIMSON_INGOT.get()));
     public static final Tier HELLSTONE = new PoweredTier(100, ModTags.Blocks.NEEDS_6_LEVEL, 10000, 14, 6, 27, () -> Ingredient.of(MaterialItems.HELLSTONE_INGOT.get()));
     public static final Tier COBALT = new PoweredTier(110, ModTags.Blocks.NEEDS_7_LEVEL, 10000, 4, 1, 5, () -> Ingredient.of(MaterialItems.COBALT_INGOT.get()));

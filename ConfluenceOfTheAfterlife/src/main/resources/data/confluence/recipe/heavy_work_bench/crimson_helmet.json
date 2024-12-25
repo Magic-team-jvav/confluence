@@ -1,0 +1,26 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        "#a#",
+        "a a"
+    ],
+    "key": {
+        "#": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:tr_crimson_ingot"
+            },
+            "count": 6
+        },
+        "a": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:tissue_sample"
+            },
+            "count": 3
+        }
+    },
+    "result": {
+        "id": "confluence:crimson_helmet"
+    }
+}

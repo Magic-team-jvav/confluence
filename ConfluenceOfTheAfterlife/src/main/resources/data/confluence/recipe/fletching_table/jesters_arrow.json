@@ -1,0 +1,17 @@
+{
+    "type": "confluence:fletching_table",
+    "body": {
+        "type": "terra_curio:amount_ingredient",
+        "ingredient": {
+            "item": "minecraft:arrow"
+        },
+        "count": 10
+    },
+    "head": {
+        "item": "confluence:falling_star"
+    },
+    "result": {
+        "id": "confluence:jesters_arrow",
+        "count": 10
+    }
+}

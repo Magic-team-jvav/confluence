@@ -5,11 +5,11 @@
     ],
     "key": {
         "#": {
-            "item": "confluence:ebony_block"
+            "item": "confluence:demonite_block"
         }
     },
     "result": {
-        "id": "confluence:ebony_ingot",
+        "id": "confluence:demonite_ingot",
         "count": 9
     }
 }

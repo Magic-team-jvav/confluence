@@ -1,8 +1,0 @@
-{
-  "parent": "block/cross",
-  "textures": {
-    "cross": "confluence:block/moonshine_grass_stage2",
-    "particle": "confluence:block/moonshine_grass_stage2"
-  },
-  "render_type": "cutout"
-}

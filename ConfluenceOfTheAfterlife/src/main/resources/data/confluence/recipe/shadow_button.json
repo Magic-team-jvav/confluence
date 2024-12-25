@@ -10,5 +10,6 @@
     },
     "result": {
         "id": "confluence:shadow_button"
-    }
+    },
+    "group": "wooden_button"
 }

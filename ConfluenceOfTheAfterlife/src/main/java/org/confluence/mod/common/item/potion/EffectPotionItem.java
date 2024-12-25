@@ -40,6 +40,7 @@ public class EffectPotionItem extends AbstractPotionItem {
 
     @Override
     protected void apply(ItemStack itemStack, Level level, LivingEntity living) {
+        if (level.isClientSide) return;
         living.addEffect(new MobEffectInstance(mobEffect, duration, amplifier));
     }
 }

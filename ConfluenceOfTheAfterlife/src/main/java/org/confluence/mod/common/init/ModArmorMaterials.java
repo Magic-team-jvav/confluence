@@ -178,46 +178,66 @@ public final class ModArmorMaterials {
             map.put(ArmorItem.Type.BOOTS, 2);
         }),
         15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.STURDY_FOSSIL),
-        List.of(new ArmorMaterial.Layer(Confluence.asResource("fossil"))), 0.0F, 0.0F
+        List.of(new ArmorMaterial.Layer(Confluence.asResource("fossil"))), 1.0F, 0.0F
     ));
     public static final Holder<ArmorMaterial> NINJA_ARMOR_MATERIALS = ARMOR_MATERIALS.register("ninja_armor_materials", () -> new ArmorMaterial(
         Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
             map.put(ArmorItem.Type.HELMET, 2);
             map.put(ArmorItem.Type.CHESTPLATE, 5);
-            map.put(ArmorItem.Type.LEGGINGS, 6);
+            map.put(ArmorItem.Type.LEGGINGS, 5);
             map.put(ArmorItem.Type.BOOTS, 2);
         }),
         15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.BLACK_INK),
-        List.of(new ArmorMaterial.Layer(Confluence.asResource("ninja"))), 0.0F, 0.0F
+        List.of(new ArmorMaterial.Layer(Confluence.asResource("ninja"))), 1.0F, 0.0F
     ));
     public static final Holder<ArmorMaterial> GEMSTONE_ARMOR_MATERIALS = ARMOR_MATERIALS.register("gemstone_armor_materials", () -> new ArmorMaterial(
             Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
                 map.put(ArmorItem.Type.HELMET, 2);
-                map.put(ArmorItem.Type.CHESTPLATE, 6);
-                map.put(ArmorItem.Type.LEGGINGS, 6);
+                map.put(ArmorItem.Type.CHESTPLATE, 4);
+                map.put(ArmorItem.Type.LEGGINGS, 4);
                 map.put(ArmorItem.Type.BOOTS, 2);
             }),
             15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.GELSTONE),
-            List.of(new ArmorMaterial.Layer(Confluence.asResource("gemstone"))), 0.0F, 0.0F
+            List.of(new ArmorMaterial.Layer(Confluence.asResource("gemstone"))), 2.0F, 0.0F
     ));
     public static final Holder<ArmorMaterial> COLD_CRYSTAL_ARMOR_MATERIALS = ARMOR_MATERIALS.register("cold_crystal_armor_materials", () -> new ArmorMaterial(
             Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
                 map.put(ArmorItem.Type.HELMET, 2);
-                map.put(ArmorItem.Type.CHESTPLATE, 6);
-                map.put(ArmorItem.Type.LEGGINGS, 6);
+                map.put(ArmorItem.Type.CHESTPLATE, 5);
+                map.put(ArmorItem.Type.LEGGINGS, 5);
                 map.put(ArmorItem.Type.BOOTS, 2);
             }),
             15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.COLD_CRYSTAL),
-            List.of(new ArmorMaterial.Layer(Confluence.asResource("cold_crystal"))), 0.0F, 0.0F
+            List.of(new ArmorMaterial.Layer(Confluence.asResource("cold_crystal"))), 2.0F, 0.0F
     ));
-    public static final Holder<ArmorMaterial> HEIM_ARMOR_MATERIALS = ARMOR_MATERIALS.register("sea_foam_stone_armor_materials", () -> new ArmorMaterial(
+    public static final Holder<ArmorMaterial> HEIM_ARMOR_MATERIALS = ARMOR_MATERIALS.register("heim_armor_materials", () -> new ArmorMaterial(
             Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-                map.put(ArmorItem.Type.HELMET, 2);
-                map.put(ArmorItem.Type.CHESTPLATE, 6);
+                map.put(ArmorItem.Type.HELMET, 3);
+                map.put(ArmorItem.Type.CHESTPLATE, 5);
                 map.put(ArmorItem.Type.LEGGINGS, 6);
-                map.put(ArmorItem.Type.BOOTS, 2);
+                map.put(ArmorItem.Type.BOOTS, 3);
             }),
             15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.HEIM),
-            List.of(new ArmorMaterial.Layer(Confluence.asResource("sea_foam_stone"))), 0.0F, 0.0F
+            List.of(new ArmorMaterial.Layer(Confluence.asResource("heim"))), 2.0F, 0.0F
+    ));
+    public static final Holder<ArmorMaterial> SHADOW_ARMOR_MATERIALS = ARMOR_MATERIALS.register("shadow_armor_materials", () -> new ArmorMaterial(
+            Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+                map.put(ArmorItem.Type.HELMET, 3);
+                map.put(ArmorItem.Type.CHESTPLATE, 6);
+                map.put(ArmorItem.Type.LEGGINGS, 7);
+                map.put(ArmorItem.Type.BOOTS, 3);
+            }),
+            15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.DEMONITE_INGOT),
+            List.of(new ArmorMaterial.Layer(Confluence.asResource("shadow"))), 2.0F, 0.0F
+    ));
+    public static final Holder<ArmorMaterial> CRIMSON_ARMOR_MATERIALS = ARMOR_MATERIALS.register("crimson_armor_materials", () -> new ArmorMaterial(
+            Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+                map.put(ArmorItem.Type.HELMET, 3);
+                map.put(ArmorItem.Type.CHESTPLATE, 7);
+                map.put(ArmorItem.Type.LEGGINGS, 6);
+                map.put(ArmorItem.Type.BOOTS, 3);
+            }),
+            15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.TR_CRIMSON_INGOT),
+            List.of(new ArmorMaterial.Layer(Confluence.asResource("crimson"))), 2.0F, 0.0F
     ));
 }

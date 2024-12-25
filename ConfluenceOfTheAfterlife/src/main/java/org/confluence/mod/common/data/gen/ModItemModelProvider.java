@@ -42,11 +42,11 @@ public class ModItemModelProvider extends ItemModelProvider {
 //        dispatcher.put(SwordItems.LIGHTS_BANE, image24x);
 
 
-        dispatcher.put(AxeItems.EBONY_AXE, image24x);
-        dispatcher.put(AxeItems.TR_CRIMSON_AXE, image24x);
+        dispatcher.put(AxeItems.WAR_AXE_OF_THE_NIGHT, image24x);
+        dispatcher.put(AxeItems.BLOOD_LUST_CLUSTER, image24x);
 
-        dispatcher.put(HammerItems.EBONY_HAMMER, image24x);
-        dispatcher.put(HammerItems.TR_CRIMSON_HAMMER, image24x);
+        dispatcher.put(HammerItems.THE_BREAKER, image24x);
+        dispatcher.put(HammerItems.FLESH_GRINDER, image24x);
     }
 
     @Override

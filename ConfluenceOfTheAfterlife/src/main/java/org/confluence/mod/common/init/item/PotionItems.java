@@ -55,6 +55,8 @@ public class PotionItems {
     public static final DeferredItem<AbstractPotionItem> GREATER_MANA_POTION = ITEMS.register("greater_mana_potion", () -> new ManaPotionItem(200, Rarity.RARE));
     public static final DeferredItem<AbstractPotionItem> SUPER_MANA_POTION = ITEMS.register("super_mana_potion", () -> new ManaPotionItem(300, Rarity.EPIC));
     public static final DeferredItem<AbstractPotionItem> RANDOM_TELEPORT_POTION = ITEMS.register("random_teleport_potion", RandomTeleportPotionItem::new);
+    public static final DeferredItem<AbstractPotionItem> CRATE_POTION = ITEMS.register("crate_potion", () -> new EffectPotionItem(ModEffects.CRATE, 4800));
+    public static final DeferredItem<AbstractPotionItem> STINK_POTION = ITEMS.register("stink_potion", () -> new EffectThrowablePotionItem(ModEffects.STINKY, 600));
 
     public static final DeferredItem<AbstractPotionItem> CHAOS_POTION = ITEMS.register("chaos_potion", ChaosPotionItem::new);
 }

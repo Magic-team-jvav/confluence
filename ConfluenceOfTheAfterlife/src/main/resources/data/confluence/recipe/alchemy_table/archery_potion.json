@@ -1,0 +1,17 @@
+{
+    "type": "confluence:alchemy_table",
+    "base": {
+        "item": "minecraft:potion"
+    },
+    "ingredients": [
+        {
+            "item": "confluence:lens"
+        },
+        {
+            "item": "confluence:daybloom"
+        }
+    ],
+    "result": {
+        "id": "confluence:archery_potion"
+    }
+}

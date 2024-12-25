@@ -13,7 +13,7 @@ public class ShiveringThorn extends BaseHerbBlock {
 
     @Override
     protected @NotNull ItemLike getBaseSeedId(){
-        return FoodItems.SHIVERINGTHORNS_SEED.get();
+        return FoodItems.SHIVERTHORN_SEED.get();
     }
 
     @Override

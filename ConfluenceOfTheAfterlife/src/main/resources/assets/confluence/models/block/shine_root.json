@@ -1,8 +1,0 @@
-{
-  "parent": "block/cross",
-  "textures": {
-    "cross": "confluence:block/shine_root",
-    "particle": "confluence:block/shine_root"
-  },
-  "render_type": "cutout"
-}

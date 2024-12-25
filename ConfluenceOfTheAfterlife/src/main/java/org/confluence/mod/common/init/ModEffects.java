@@ -57,4 +57,5 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, ShimmerEffect> SHIMMER = EFFECTS.register("shimmer", ShimmerEffect::new);
     public static final DeferredHolder<MobEffect, PublicMobEffect> FROZEN = EFFECTS.register("frozen", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x66CCFF));
     public static final DeferredHolder<MobEffect, MolangParticleMobEffect> STINKY = EFFECTS.register("stinky", () -> new MolangParticleMobEffect(MobEffectCategory.HARMFUL, 0x99FF00, Confluence.asResource("stinky")));
+    public static final DeferredHolder<MobEffect, PublicMobEffect> CRATE = EFFECTS.register("crate", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xD88B3F));
 }

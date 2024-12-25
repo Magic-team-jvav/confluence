@@ -48,7 +48,7 @@ public final class ModTabs {
                         ConsumableItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                         BaitItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                         QuestedFishes.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        BoxBlocks.BLOCKS.getEntries().forEach(item -> output.accept(item.get()));
+                        CrateBlocks.BLOCKS.getEntries().forEach(item -> output.accept(item.get()));
                     }).build()
     );
     // 材料

@@ -7,10 +7,10 @@
     ],
     "key": {
         "#": {
-            "item": "confluence:ebony_ingot"
+            "item": "confluence:demonite_ingot"
         }
     },
     "result": {
-        "id": "confluence:ebony_block"
+        "id": "confluence:demonite_block"
     }
 }

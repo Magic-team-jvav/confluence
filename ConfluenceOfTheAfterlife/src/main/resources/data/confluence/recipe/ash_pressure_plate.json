@@ -10,5 +10,6 @@
     },
     "result": {
         "id": "confluence:ash_pressure_plate"
-    }
+    },
+    "group": "wooden_pressure_plate"
 }

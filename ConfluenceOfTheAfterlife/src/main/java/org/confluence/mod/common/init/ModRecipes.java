@@ -51,6 +51,8 @@ public final class ModRecipes {
     public static final Supplier<RecipeSerializer<?>> HELLFORGE_SERIALIZER = SERIALIZERS.register("hellforge", HellforgeRecipe.Serializer::new);
     public static final Supplier<RecipeType<FletchingTableRecipe>> FLETCHING_TABLE_TYPE = registerType("fletching_table");
     public static final Supplier<RecipeSerializer<?>> FLETCHING_TABLE_SERIALIZER = SERIALIZERS.register("fletching_table", FletchingTableRecipe.Serializer::new);
+    public static final Supplier<RecipeType<AlchemyTableRecipe>> ALCHEMY_TABLE_TYPE = registerType("alchemy_table");
+    public static final Supplier<RecipeSerializer<?>> ALCHEMY_TABLE_SERIALIZER = SERIALIZERS.register("alchemy_table", AlchemyTableRecipe.Serializer::new);
 
     private static <R extends Recipe<?>> Supplier<RecipeType<R>> registerType(String id) {
         return TYPES.register(id + "_type", () -> new RecipeType<>() {

@@ -1,12 +1,9 @@
 package org.confluence.mod.common.menu;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
-import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -16,36 +13,46 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
-import org.confluence.mod.common.recipe.FletchingTableRecipe;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.recipe.AlchemyTableRecipe;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
+import org.confluence.terra_curio.common.recipe.AmountIngredient;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class FletchingTableMenu extends AbstractContainerMenu {
+public class AlchemyTableMenu extends AbstractContainerMenu {
+    public static final int[][] CORD = {
+            {39, 17},
+            {121, 17},
+            {39, 37},
+            {121, 37},
+            {39, 57},
+            {121, 57}
+    };
     private final ContainerLevelAccess access;
     private final Player player;
-    public final FletchingTableRecipe.Input input = new FletchingTableRecipe.Input(this);
-    private final ResultContainer result = new ResultContainer();
+    public final AlchemyTableRecipe.Input input = new AlchemyTableRecipe.Input(this);
+    public final ResultContainer result = new ResultContainer();
 
-    public FletchingTableMenu(int pContainerId, Inventory inventory) {
+    public AlchemyTableMenu(int pContainerId, Inventory inventory) {
         this(pContainerId, inventory, ContainerLevelAccess.NULL);
     }
 
-    public FletchingTableMenu(int pContainerId, Inventory pPlayerInventory, ContainerLevelAccess pAccess) {
-        super(ModMenuTypes.FLETCHING_TABLE.get(), pContainerId);
+    public AlchemyTableMenu(int pContainerId, Inventory pPlayerInventory, ContainerLevelAccess pAccess) {
+        super(ModMenuTypes.ALCHEMY_TABLE.get(), pContainerId);
         this.player = pPlayerInventory.player;
         this.access = pAccess;
 
-        addSlot(new ResultSlot(input, result, 0, 124, 35));
-        addSlot(new Slot(input, 0, 30, 53));
-        addSlot(new Slot(input, 1, 48, 35));
-        addSlot(new Slot(input, 2, 66, 17));
+        addSlot(new ResultSlot(input, result, 0, 80, 62));
+        addSlot(new Slot(input, 0, 80, 17)); // 基底药水
+        for (int i = 1; i < 7; i++) {
+            int[] cord = CORD[i - 1];
+            addSlot(new Slot(input, i, cord[0], cord[1]));
+        }
 
         for (int k = 0; k < 3; k++) {
             for (int l = 0; l < 9; l++) {
@@ -61,10 +68,10 @@ public class FletchingTableMenu extends AbstractContainerMenu {
     public void slotsChanged(@NotNull Container pInventory) {
         access.execute((level, pos) -> {
             if (player instanceof ServerPlayer serverPlayer) {
-                List<RecipeHolder<FletchingTableRecipe>> recipes = player.level().getRecipeManager().getRecipesFor(ModRecipes.FLETCHING_TABLE_TYPE.get(), input, player.level());
+                List<RecipeHolder<AlchemyTableRecipe>> recipes = player.level().getRecipeManager().getRecipesFor(ModRecipes.ALCHEMY_TABLE_TYPE.get(), input, player.level());
                 ItemStack itemStack = ItemStack.EMPTY;
                 if (!recipes.isEmpty()) {
-                    FletchingTableRecipe recipe = recipes.getFirst().value();
+                    AlchemyTableRecipe recipe = recipes.getFirst().value();
                     itemStack = recipe.getResultItem(null).copy();
                     setCurrentRecipe(recipe);
                 }
@@ -75,7 +82,7 @@ public class FletchingTableMenu extends AbstractContainerMenu {
         });
     }
 
-    private void setCurrentRecipe(FletchingTableRecipe recipe) {
+    private void setCurrentRecipe(AlchemyTableRecipe recipe) {
         if (getSlot(0) instanceof ResultSlot amountResultSlot) {
             amountResultSlot.setCurrentRecipe(recipe);
         }
@@ -91,24 +98,20 @@ public class FletchingTableMenu extends AbstractContainerMenu {
             itemstack = itemstack1.copy();
             if (index == 0) {
                 item.onCraftedBy(itemstack1, player.level(), player);
-                if (!moveItemStackTo(itemstack1, 4, 40, true)) {
+                if (!moveItemStackTo(itemstack1, 8, 44, true)) {
                     return ItemStack.EMPTY;
                 }
                 slot.onQuickCraft(itemstack1, itemstack);
-            } else if (index < 4) {
-                if (!moveItemStackTo(itemstack1, 4, 40, false)) {
+            } else if (index < 8) {
+                if (!moveItemStackTo(itemstack1, 8, 44, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (itemstack1.is(ItemTags.ARROWS)) {
-                if (!moveItemStackTo(itemstack1, 2, 3, false)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (!moveItemStackTo(itemstack1, 1, 4, false)) {
-                if (index < 31) {
-                    if (!moveItemStackTo(itemstack1, 31, 40, false)) {
+            } else if (!moveItemStackTo(itemstack1, 1, 8, false)) {
+                if (index < 35) {
+                    if (!moveItemStackTo(itemstack1, 35, 44, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (index < 40 && !moveItemStackTo(itemstack1, 4, 31, false)) {
+                } else if (index < 44 && !moveItemStackTo(itemstack1, 8, 35, false)) {
                     return ItemStack.EMPTY;
                 }
             }
@@ -131,46 +134,29 @@ public class FletchingTableMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(@NotNull Player player) {
-        return stillValid(access, player, Blocks.FLETCHING_TABLE);
+        return stillValid(access, player, FunctionalBlocks.ALCHEMY_TABLE.get());
     }
 
     @Override
     public void removed(@NotNull Player pPlayer) {
         super.removed(pPlayer);
         result.removeItemNoUpdate(0);
-        access.execute((level, blockPos) -> clearContainer(pPlayer, input));
-    }
-
-    public static class Provider implements MenuProvider {
-        private final Level level;
-        private final BlockPos pos;
-
-        public Provider(Level level, BlockPos pos) {
-            this.level = level;
-            this.pos = pos;
-        }
-
-        @Override
-        public @NotNull Component getDisplayName() {
-            return Component.translatable("container.confluence.fletching_table");
-        }
-
-        @Override
-        public @Nullable AbstractContainerMenu createMenu(int containerId, @NotNull Inventory inventory, @NotNull Player player) {
-            return new FletchingTableMenu(containerId, inventory, ContainerLevelAccess.create(level, pos));
-        }
+        access.execute((level, blockPos) -> {
+            clearContainer(pPlayer, input);
+            clearContainer(pPlayer, input.getMaterials());
+        });
     }
 
     private static class ResultSlot extends Slot {
-        protected final FletchingTableRecipe.Input input;
-        protected @Nullable FletchingTableRecipe recipe;
+        protected final AlchemyTableRecipe.Input input;
+        protected @Nullable AlchemyTableRecipe recipe;
 
-        public ResultSlot(FletchingTableRecipe.Input input, Container result, int pSlot, int pX, int pY) {
+        public ResultSlot(AlchemyTableRecipe.Input input, Container result, int pSlot, int pX, int pY) {
             super(result, pSlot, pX, pY);
             this.input = input;
         }
 
-        public void setCurrentRecipe(@Nullable FletchingTableRecipe recipe) {
+        public void setCurrentRecipe(@Nullable AlchemyTableRecipe recipe) {
             this.recipe = recipe;
         }
 
@@ -182,7 +168,9 @@ public class FletchingTableMenu extends AbstractContainerMenu {
         @Override
         public void onTake(@NotNull Player pPlayer, @NotNull ItemStack pStack) {
             if (recipe != null) {
-                AbstractAmountRecipe.extractInput(input, recipe.getIngredients(), false);
+                SimpleContainer materials = input.getMaterials();
+                AbstractAmountRecipe.consumeIngredients(materials.getContainerSize(), materials::getItem, recipe.getIngredients(), false);
+                input.removeItem(0, recipe.getBase().getCustomIngredient() instanceof AmountIngredient ai ? ai.amount() : 1);
                 input.setChanged();
             }
         }

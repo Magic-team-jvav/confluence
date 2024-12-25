@@ -6,17 +6,16 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.ModRecipes;
+import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class FletchingTableRecipe implements Recipe<FletchingTableRecipeInput> {
+public class FletchingTableRecipe implements Recipe<FletchingTableRecipe.Input> {
     private final ItemStack result;
     private final Ingredient tail;
     private final Ingredient body;
@@ -30,17 +29,13 @@ public class FletchingTableRecipe implements Recipe<FletchingTableRecipeInput> {
     }
 
     @Override
-    public boolean matches(@NotNull FletchingTableRecipeInput input, @NotNull Level level) {
+    public boolean matches(@NotNull Input input, @NotNull Level level) {
         return tail.test(input.getTail()) && body.test(input.getBody()) && head.test(input.getHead());
     }
 
     @Override
     public @NotNull NonNullList<Ingredient> getIngredients() {
         return NonNullList.of(tail, body, head);
-    }
-
-    public ItemStack getResult() {
-        return result;
     }
 
     public Ingredient getTail() {
@@ -56,7 +51,7 @@ public class FletchingTableRecipe implements Recipe<FletchingTableRecipeInput> {
     }
 
     @Override
-    public @NotNull ItemStack assemble(@NotNull FletchingTableRecipeInput input, HolderLookup.@NotNull Provider registries) {
+    public @NotNull ItemStack assemble(@NotNull Input input, HolderLookup.@NotNull Provider registries) {
         return result.copy();
     }
 
@@ -112,6 +107,50 @@ public class FletchingTableRecipe implements Recipe<FletchingTableRecipeInput> {
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.tail);
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.body);
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.head);
+        }
+    }
+
+    public static class Input extends SimpleContainer implements RecipeInput {
+        private final FletchingTableMenu menu;
+
+        public Input(FletchingTableMenu menu) {
+            super(3);
+            this.menu = menu;
+        }
+
+        public void setTail(ItemStack tail) {
+            setItem(0, tail);
+        }
+
+        public ItemStack getTail() {
+            return getItem(0);
+        }
+
+        public void setBody(ItemStack body) {
+            setItem(1, body);
+        }
+
+        public ItemStack getBody() {
+            return getItem(1);
+        }
+
+        public void setHead(ItemStack head) {
+            setItem(2, head);
+        }
+
+        public ItemStack getHead() {
+            return getItem(2);
+        }
+
+        @Override
+        public void setChanged() {
+            super.setChanged();
+            menu.slotsChanged(this);
+        }
+
+        @Override
+        public int size() {
+            return getContainerSize();
         }
     }
 }

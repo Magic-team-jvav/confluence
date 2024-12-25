@@ -1,0 +1,187 @@
+package org.confluence.mod.common.recipe;
+
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.level.Level;
+import org.confluence.mod.common.init.ModRecipes;
+import org.confluence.mod.common.menu.AlchemyTableMenu;
+import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
+import org.confluence.terra_curio.common.recipe.AmountIngredient;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
+    private final ItemStack result;
+    private final Ingredient base;
+    private final NonNullList<Ingredient> ingredients;
+
+    protected AlchemyTableRecipe(ItemStack result, Ingredient base, NonNullList<Ingredient> ingredients) {
+        if (ingredients.size() > 6) {
+            throw new RuntimeException("Too many ingredients for '" + getGroup() + "' recipe. The maximum is: 6");
+        }
+        this.result = result;
+        this.base = base;
+        this.ingredients = ingredients;
+    }
+
+    public Ingredient getBase() {
+        return base;
+    }
+
+    @Override
+    public @NotNull NonNullList<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    @Override
+    public boolean matches(@NotNull Input input, @NotNull Level level) {
+        return base.test(input.getItem(0)) && AbstractAmountRecipe.matches(input.materials.getContainerSize(), input.materials::getItem, ingredients);
+    }
+
+    @Override
+    public @NotNull ItemStack assemble(@NotNull Input input, HolderLookup.@NotNull Provider registries) {
+        return getResultItem(null).copy();
+    }
+
+    @Override
+    public boolean canCraftInDimensions(int width, int height) {
+        return true;
+    }
+
+    @Override
+    public @NotNull ItemStack getResultItem(@Nullable HolderLookup.Provider registries) {
+        return result;
+    }
+
+    @Override
+    public @NotNull RecipeSerializer<?> getSerializer() {
+        return ModRecipes.ALCHEMY_TABLE_SERIALIZER.get();
+    }
+
+    @Override
+    public @NotNull RecipeType<?> getType() {
+        return ModRecipes.ALCHEMY_TABLE_TYPE.get();
+    }
+
+    public static class Serializer implements RecipeSerializer<AlchemyTableRecipe> {
+        public static final MapCodec<AlchemyTableRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
+                Ingredient.CODEC_NONEMPTY.fieldOf("base").forGetter(recipe -> recipe.base),
+                Ingredient.CODEC_NONEMPTY.listOf().fieldOf("ingredients").flatXmap(list -> {
+                    Ingredient[] ingredients = list.toArray(Ingredient[]::new);
+                    if (ingredients.length == 0) {
+                        return DataResult.error(() -> "No ingredients for workshop recipe");
+                    } else {
+                        return DataResult.success(NonNullList.of(AmountIngredient.EMPTY, ingredients));
+                    }
+                }, DataResult::success).forGetter(recipe -> recipe.ingredients)
+        ).apply(instance, AlchemyTableRecipe::new));
+        public static final StreamCodec<RegistryFriendlyByteBuf, AlchemyTableRecipe> STREAM_CODEC = StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
+
+        @Override
+        public @NotNull MapCodec<AlchemyTableRecipe> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public @NotNull StreamCodec<RegistryFriendlyByteBuf, AlchemyTableRecipe> streamCodec() {
+            return STREAM_CODEC;
+        }
+
+        private static AlchemyTableRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
+            int size = buffer.readVarInt();
+            NonNullList<Ingredient> nonnulllist = NonNullList.withSize(size, AmountIngredient.EMPTY);
+            nonnulllist.replaceAll(ignore -> Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
+            ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
+            Ingredient input = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+            return new AlchemyTableRecipe(itemstack, input, nonnulllist);
+        }
+
+        private static void toNetwork(RegistryFriendlyByteBuf buffer, AlchemyTableRecipe recipe) {
+            buffer.writeVarInt(recipe.ingredients.size());
+            for (Ingredient ingredient : recipe.ingredients) {
+                Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
+            }
+            ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
+            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.base);
+        }
+    }
+
+    public static class Input extends SimpleContainer implements RecipeInput {
+        private final AlchemyTableMenu menu;
+        private final SimpleContainer materials = new SimpleContainer(6);
+
+        public Input(AlchemyTableMenu menu) {
+            super(1);
+            this.menu = menu;
+        }
+
+        public SimpleContainer getMaterials() {
+            return materials;
+        }
+
+        @Override
+        public void setItem(int index, @NotNull ItemStack stack) {
+            if (index == 0) {
+                super.setItem(0, stack);
+            } else {
+                materials.setItem(index - 1, stack);
+            }
+        }
+
+        @Override
+        public @NotNull ItemStack getItem(int index) {
+            if (index == 0) {
+                return super.getItem(0);
+            }
+            return materials.getItem(index - 1);
+        }
+
+        @Override
+        public @NotNull ItemStack removeItem(int index, int count) {
+            if (index == 0) {
+                return super.removeItem(0, count);
+            }
+            return materials.removeItem(index - 1, count);
+        }
+
+        @Override
+        public @NotNull ItemStack removeItemNoUpdate(int index) {
+            if (index == 0) {
+                return super.removeItemNoUpdate(0);
+            }
+            return materials.removeItemNoUpdate(index - 1);
+        }
+
+        @Override
+        public void clearContent() {
+            super.clearContent();
+            materials.clearContent();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return super.isEmpty() && materials.isEmpty();
+        }
+
+        @Override
+        public void setChanged() {
+            super.setChanged();
+            materials.setChanged();
+            menu.slotsChanged(this);
+        }
+
+        @Override
+        public int size() {
+            return getContainerSize();
+        }
+    }
+}

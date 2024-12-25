@@ -16,10 +16,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.connected.ModConnectives;
 import org.confluence.mod.client.gui.AchievementToast;
-import org.confluence.mod.client.gui.container.FletchingTableScreen;
-import org.confluence.mod.client.gui.container.HeavyWorkBenchScreen;
-import org.confluence.mod.client.gui.container.HellforgeScreen;
-import org.confluence.mod.client.gui.container.SkyMillScreen;
+import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.client.gui.hud.HealthHudLayer;
 import org.confluence.mod.client.gui.hud.ManaHudLayer;
@@ -87,7 +84,8 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.SKY_MILL.get(), SkyMillScreen::new);
         event.register(ModMenuTypes.HEAVY_WORK_BENCH.get(), HeavyWorkBenchScreen::new);
         event.register(ModMenuTypes.HELLFORGE.get(), HellforgeScreen::new);
-        event.register(ModMenuTypes.FLETCHING.get(), FletchingTableScreen::new);
+        event.register(ModMenuTypes.FLETCHING_TABLE.get(), FletchingTableScreen::new);
+        event.register(ModMenuTypes.ALCHEMY_TABLE.get(), AlchemyTableScreen::new);
     }
 
     @SubscribeEvent

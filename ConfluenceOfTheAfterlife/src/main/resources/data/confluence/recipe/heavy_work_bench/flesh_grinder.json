@@ -2,9 +2,9 @@
     "type": "confluence:heavy_work_bench",
     "pattern": [
         "cac",
-        "c/c ",
-        " /  ",
-        " /  "
+        "c/c",
+        " / ",
+        " / "
     ],
     "key": {
         "c": {

@@ -1,14 +1,17 @@
 package org.confluence.mod.mixin.entity;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
@@ -23,6 +26,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -187,5 +193,22 @@ public abstract class FishingHookMixin implements IFishingHook, SelfGetter<Fishi
     @Unique
     private boolean confluence$isInLava() {
         return self().getInBlockState().getFluidState().is(FluidTags.LAVA);
+    }
+
+    @ModifyExpressionValue(method = "retrieve",at= @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItems(Lnet/minecraft/world/level/storage/loot/LootParams;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;"))
+    private ObjectArrayList<ItemStack> addCrate(ObjectArrayList<ItemStack> original) {
+        if (getPlayerOwner() instanceof ServerPlayer serverPlayer) {
+            float chance = serverPlayer.hasEffect(ModEffects.CRATE) ? 0.25F : 0.1F;
+            ServerLevel level = serverPlayer.serverLevel();
+            if (level.random.nextFloat() < chance) {
+                LootParams lootparams = new LootParams.Builder(level)
+                        .withParameter(LootContextParams.ORIGIN, self().position())
+                        .withParameter(LootContextParams.THIS_ENTITY, self())
+                        .create(LootContextParamSets.GIFT);
+                LootTable loottable = level.getServer().reloadableRegistries().getLootTable(ModLootTables.CRATE);
+                original.addAll(loottable.getRandomItems(lootparams));
+            }
+        }
+        return original;
     }
 }

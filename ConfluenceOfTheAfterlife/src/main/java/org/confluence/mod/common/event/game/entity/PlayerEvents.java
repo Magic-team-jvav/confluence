@@ -118,17 +118,20 @@ public final class PlayerEvents {
     public static void itemFished(ItemFishedEvent event) {
         Player player = event.getEntity();
         Level level = player.level();
+
         if (!TCUtils.hasAccessoriesType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && level.random.nextFloat() < 0.1429F) {
             level.playSound(null, player.blockPosition(), ModSoundEvents.DECOUPLING.get(), SoundSource.PLAYERS);
             event.setCanceled(true);
             return;
         }
+
         IFishingHook fishingHook = (IFishingHook) event.getHookEntity();
         ItemStack bait = fishingHook.confluence$getBait();
-        if (bait == null) return;
-        float factor = TCUtils.hasAccessoriesType(player, AccessoryItems.TACKLE$BOX) ? 1.0F : 2.0F;
-        if (level.random.nextFloat() < 1.0F / (factor + fishingHook.confluence$getBonus() / 6.0F)) {
-            bait.shrink(1);
+        if (bait != null) {
+            float factor = TCUtils.hasAccessoriesType(player, AccessoryItems.TACKLE$BOX) ? 1.0F : 2.0F;
+            if (level.random.nextFloat() < 1.0F / (factor + fishingHook.confluence$getBonus() / 6.0F)) {
+                bait.shrink(1);
+            }
         }
     }
 

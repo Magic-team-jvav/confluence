@@ -42,6 +42,7 @@ public final class ModLootTables {
 
     public static final ResourceKey<LootTable> FISHING_LAVA = register("gameplay/fishing/lava");
     public static final ResourceKey<LootTable> FISH = register("gameplay/fishing");
+    public static final ResourceKey<LootTable> CRATE = register("gameplay/crate");
 
     public static final ResourceKey<LootTable> EXTRACT_DESERT_FOSSIL = register("gameplay/extract/with_desert_fossil");
     public static final ResourceKey<LootTable> EXTRACT_GRAVEL = register("gameplay/extract/with_gravel");

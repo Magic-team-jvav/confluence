@@ -283,10 +283,10 @@ public class ModLootTableProvider extends LootTableProvider {
 
             // 草药
             addHerbDrop(ModBlocks.WATERLEAF.get(), MaterialItems.WATERLEAF.get(), FoodItems.WATERLEAF_SEED.get());
-            addHerbDrop(ModBlocks.FLAMEFLOWERS.get(), MaterialItems.FLAMEFLOWERS.get(), FoodItems.FLAMEFLOWERS_SEED.get());
-            addHerbDrop(ModBlocks.MOONSHINE_GRASS.get(), MaterialItems.MOONSHINE_GRASS.get(), FoodItems.MOONSHINE_GRASS_SEED.get());
-            addHerbDrop(ModBlocks.SHINE_ROOT.get(), MaterialItems.SHINE_ROOT.get(), FoodItems.SHINE_ROOT_SEED.get());
-            addHerbDrop(ModBlocks.SHIVERINGTHORNS.get(), MaterialItems.SHIVERINGTHORNS.get(), FoodItems.SHIVERINGTHORNS_SEED.get());
+            addHerbDrop(ModBlocks.FIREBLOSSOM.get(), MaterialItems.FIREBLOSSOM.get(), FoodItems.FIREBLOSSOM_SEED.get());
+            addHerbDrop(ModBlocks.MOONGLOW.get(), MaterialItems.MOONGLOW.get(), FoodItems.MOONGLOW_SEED.get());
+            addHerbDrop(ModBlocks.BLINKROOT.get(), MaterialItems.BLINKROOT.get(), FoodItems.BLINKROOT_SEED.get());
+            addHerbDrop(ModBlocks.SHIVERTHORN.get(), MaterialItems.SHIVERTHORN.get(), FoodItems.SHIVERTHORN_SEED.get());
             addHerbDrop(ModBlocks.DAYBLOOM.get(), MaterialItems.DAYBLOOM.get(), FoodItems.DAYBLOOM_SEED.get());
             addHerbDrop(ModBlocks.DEATHWEED.get(), MaterialItems.DEATHWEED.get(), FoodItems.DEATHWEED_SEED.get());
 

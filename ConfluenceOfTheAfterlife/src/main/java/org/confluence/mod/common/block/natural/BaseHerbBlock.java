@@ -55,13 +55,13 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
         if (herbGroundMap == null) {
             herbGroundMap = new ImmutableMap.Builder<DeferredBlock<? extends Block>, Set<Block>>()
                     .put(ModBlocks.DAYBLOOM, Set.of(Blocks.GRASS_BLOCK, NatureBlocks.HALLOW_GRASS_BLOCK.get()))
-                    .put(ModBlocks.MOONSHINE_GRASS, Set.of(Blocks.GRASS_BLOCK, Blocks.MOSS_BLOCK))
+                    .put(ModBlocks.MOONGLOW, Set.of(Blocks.GRASS_BLOCK, Blocks.MOSS_BLOCK))
                     .put(NatureBlocks.STELLAR_BLOSSOM, Set.of(NatureBlocks.CLOUD_BLOCK.get(), NatureBlocks.RAIN_CLOUD_BLOCK.get()))
-                    .put(ModBlocks.SHIVERINGTHORNS, Set.of(Blocks.GRASS_BLOCK, Blocks.ICE, NatureBlocks.RED_ICE.get(), NatureBlocks.RED_PACKED_ICE.get(), NatureBlocks.PINK_PACKED_ICE.get(), NatureBlocks.PINK_ICE.get(), NatureBlocks.PURPLE_ICE.get(), NatureBlocks.PURPLE_PACKED_ICE.get()))
-                    .put(ModBlocks.SHINE_ROOT, Set.of(Blocks.DIRT, Blocks.MUD, Blocks.STONE, Blocks.DEEPSLATE))
+                    .put(ModBlocks.SHIVERTHORN, Set.of(Blocks.GRASS_BLOCK, Blocks.ICE, NatureBlocks.RED_ICE.get(), NatureBlocks.RED_PACKED_ICE.get(), NatureBlocks.PINK_PACKED_ICE.get(), NatureBlocks.PINK_ICE.get(), NatureBlocks.PURPLE_ICE.get(), NatureBlocks.PURPLE_PACKED_ICE.get()))
+                    .put(ModBlocks.BLINKROOT, Set.of(Blocks.DIRT, Blocks.MUD, Blocks.STONE, Blocks.DEEPSLATE))
                     .put(ModBlocks.DEATHWEED, Set.of(NatureBlocks.CORRUPT_GRASS_BLOCK.get(), NatureBlocks.EBONY_STONE.get(), NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(), NatureBlocks.TR_CRIMSON_STONE.get()))
                     .put(ModBlocks.WATERLEAF, Set.of(Blocks.SAND, Blocks.RED_SAND, NatureBlocks.PEARL_SAND.get()))
-                    .put(ModBlocks.FLAMEFLOWERS, Set.of(NatureBlocks.ASH_BLOCK.get(), NatureBlocks.ASH_GRASS_BLOCK.get()))
+                    .put(ModBlocks.FIREBLOSSOM, Set.of(NatureBlocks.ASH_BLOCK.get(), NatureBlocks.ASH_GRASS_BLOCK.get()))
                     .build();
         }
         Set<Block> blocks = herbGroundMap.get(DeferredBlock.createBlock(BuiltInRegistries.BLOCK.getKey(this)));

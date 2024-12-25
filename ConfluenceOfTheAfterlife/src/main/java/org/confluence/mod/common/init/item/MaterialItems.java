@@ -108,10 +108,10 @@ public class MaterialItems {
 
     // 草药
     public static final DeferredItem<Item> WATERLEAF = ITEMS.registerSimpleItem("waterleaf");
-    public static final DeferredItem<Item> FLAMEFLOWERS = ITEMS.registerSimpleItem("flameflowers", new Item.Properties().fireResistant());
-    public static final DeferredItem<Item> MOONSHINE_GRASS = ITEMS.registerSimpleItem("moonshine_grass");
-    public static final DeferredItem<Item> SHINE_ROOT = ITEMS.registerSimpleItem("shine_root");
-    public static final DeferredItem<Item> SHIVERINGTHORNS = ITEMS.registerSimpleItem("shiveringthorns");
+    public static final DeferredItem<Item> FIREBLOSSOM = ITEMS.registerSimpleItem("fireblossom", new Item.Properties().fireResistant());
+    public static final DeferredItem<Item> MOONGLOW = ITEMS.registerSimpleItem("moonglow");
+    public static final DeferredItem<Item> BLINKROOT = ITEMS.registerSimpleItem("blinkroot");
+    public static final DeferredItem<Item> SHIVERTHORN = ITEMS.registerSimpleItem("shiverthorn");
     public static final DeferredItem<Item> DAYBLOOM = ITEMS.registerSimpleItem("daybloom");
     public static final DeferredItem<Item> DEATHWEED = ITEMS.registerSimpleItem("deathweed");
     // 蘑菇

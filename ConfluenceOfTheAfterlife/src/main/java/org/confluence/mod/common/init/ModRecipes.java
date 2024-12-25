@@ -75,10 +75,10 @@ public final class ModRecipes {
 
         public static void initialize() {
             registerMaterial(MaterialItems.WATERLEAF.get());
-            registerMaterial(MaterialItems.FLAMEFLOWERS.get());
-            registerMaterial(MaterialItems.MOONSHINE_GRASS.get());
-            registerMaterial(MaterialItems.SHINE_ROOT.get());
-            registerMaterial(MaterialItems.SHIVERINGTHORNS.get());
+            registerMaterial(MaterialItems.FIREBLOSSOM.get());
+            registerMaterial(MaterialItems.MOONGLOW.get());
+            registerMaterial(MaterialItems.BLINKROOT.get());
+            registerMaterial(MaterialItems.SHIVERTHORN.get());
             registerMaterial(MaterialItems.DAYBLOOM.get());
             registerMaterial(MaterialItems.DEATHWEED.get());
             registerMaterial(MaterialItems.LENS.get());
@@ -121,24 +121,24 @@ public final class ModRecipes {
             }, PotionItems.ARCHERY_POTION.toStack());
             // 建造者
             registerMix(new Item[]{
-                    MaterialItems.SHINE_ROOT.get(),
-                    MaterialItems.SHIVERINGTHORNS.get(),
-                    MaterialItems.MOONSHINE_GRASS.get()
+                    MaterialItems.BLINKROOT.get(),
+                    MaterialItems.SHIVERTHORN.get(),
+                    MaterialItems.MOONGLOW.get()
             }, PotionItems.BUILDER_POTION.toStack());
             // 危险感
             registerMix(new Item[]{
-                    MaterialItems.SHIVERINGTHORNS.get(),
+                    MaterialItems.SHIVERTHORN.get(),
                     Items.COBWEB
             }, PotionItems.DANGERSENSE_POTION.toStack());
             // 耐力
             registerMix(new Item[]{
                     FoodItems.ARMORED_CAVE_FISH.get(),
-                    MaterialItems.SHINE_ROOT.get()
+                    MaterialItems.BLINKROOT.get()
             }, PotionItems.ENDURANCE_POTION.toStack());
             // 羽落
             registerMix(new Item[]{
                     MaterialItems.DAYBLOOM.get(),
-                    MaterialItems.SHINE_ROOT.get(),
+                    MaterialItems.BLINKROOT.get(),
                     Items.FEATHER
             }, PotionItems.FEATHERFALL_POTION.toStack());
             // 钓鱼
@@ -148,7 +148,7 @@ public final class ModRecipes {
             }, PotionItems.FISHING_POTION.toStack());
             // 脚蹼
             registerMix(new Item[]{
-                    MaterialItems.SHIVERINGTHORNS.get(),
+                    MaterialItems.SHIVERTHORN.get(),
                     MaterialItems.WATERLEAF.get(),
             }, PotionItems.FLIPPER_POTION.toStack());
             // 鱼腮
@@ -158,9 +158,9 @@ public final class ModRecipes {
             }, PotionItems.GILLS_POTION.toStack());
             // 重力
             registerMix(new Item[]{
-                    MaterialItems.FLAMEFLOWERS.get(),
+                    MaterialItems.FIREBLOSSOM.get(),
                     MaterialItems.DEATHWEED.get(),
-                    MaterialItems.SHINE_ROOT.get(),
+                    MaterialItems.BLINKROOT.get(),
                     Items.FEATHER
             }, PotionItems.GRAVITATION_POTION.toStack());
             // 强效幸运
@@ -189,7 +189,7 @@ public final class ModRecipes {
             // 狩猎
             registerMix(new Item[]{
                     MaterialItems.DAYBLOOM.get(),
-                    MaterialItems.SHINE_ROOT.get(),
+                    MaterialItems.BLINKROOT.get(),
                     MaterialItems.SHARK_FIN.get()
             }, PotionItems.HUNTER_POTION.toStack());
             // 狱火
@@ -197,7 +197,7 @@ public final class ModRecipes {
                     FoodItems.FLASHFIN_KOI.get(),
                     FoodItems.OBSIDIAN_FISH.get(),
                     FoodItems.OBSIDIAN_FISH.get(),
-                    MaterialItems.FLAMEFLOWERS.get(),
+                    MaterialItems.FIREBLOSSOM.get(),
             }, PotionItems.INFERNO_POTION.toStack());
             // 铁皮
             registerMix(new Item[]{
@@ -211,40 +211,40 @@ public final class ModRecipes {
             // 生命力
             registerMix(new Item[]{
                     FoodItems.COLORFUL_MINERAL_FISH.get(),
-                    MaterialItems.MOONSHINE_GRASS.get(),
-                    MaterialItems.SHIVERINGTHORNS.get(),
+                    MaterialItems.MOONGLOW.get(),
+                    MaterialItems.SHIVERTHORN.get(),
                     MaterialItems.WATERLEAF.get()
             }, PotionItems.LIFEFORCE_POTION.toStack());
             // 爱情
             registerMix(new Item[]{
                     FoodItems.PRINCESS_FISH.get(),
-                    MaterialItems.SHIVERINGTHORNS.get(),
+                    MaterialItems.SHIVERTHORN.get(),
             }, PotionItems.LOVE_POTION.toStack());
             // 魔能
             registerMix(new Item[]{
-                    MaterialItems.MOONSHINE_GRASS.get(),
+                    MaterialItems.MOONGLOW.get(),
                     MaterialItems.DEATHWEED.get(),
                     MaterialItems.FALLING_STAR.get()
             }, PotionItems.MAGIC_POWER_POTION.toStack());
             // 魔力回复
             registerMix(new Item[]{
-                    MaterialItems.MOONSHINE_GRASS.get(),
+                    MaterialItems.MOONGLOW.get(),
                     MaterialItems.DAYBLOOM.get(),
                     MaterialItems.FALLING_STAR.get()
             }, PotionItems.MANA_REGENERATION_POTION.toStack());
             // 挖矿
             registerMix(new Item[]{
                     MaterialItems.ANTLION_MANDIBLE.get(),
-                    MaterialItems.SHINE_ROOT.get()
+                    MaterialItems.BLINKROOT.get()
             }, PotionItems.MINING_POTION.toStack());
             // 夜猫子
             registerMix(new Item[]{
                     MaterialItems.DAYBLOOM.get(),
-                    MaterialItems.SHINE_ROOT.get()
+                    MaterialItems.BLINKROOT.get()
             }, PotionItems.NIGHT_OWL_POTION.toStack());
             // 黑曜石皮
             registerMix(new Item[]{
-                    MaterialItems.FLAMEFLOWERS.get(),
+                    MaterialItems.FIREBLOSSOM.get(),
                     MaterialItems.WATERLEAF.get(),
                     Items.OBSIDIAN
             }, PotionItems.OBSIDIAN_SKIN_POTION.toStack());
@@ -265,18 +265,18 @@ public final class ModRecipes {
             }, PotionItems.SHINE_POTION.toStack());
             // 洞探
             registerMix(new Item[]{
-                    MaterialItems.SHINE_ROOT.get(),
-                    MaterialItems.MOONSHINE_GRASS.get(),
+                    MaterialItems.BLINKROOT.get(),
+                    MaterialItems.MOONGLOW.get(),
                     MaterialItems.RAW_PLATINUM.get()
             }, PotionItems.SPELUNKER_POTION.toStack());
             registerMix(new Item[]{
-                    MaterialItems.SHINE_ROOT.get(),
-                    MaterialItems.MOONSHINE_GRASS.get(),
+                    MaterialItems.BLINKROOT.get(),
+                    MaterialItems.MOONGLOW.get(),
                     Items.RAW_GOLD
             }, PotionItems.SPELUNKER_POTION.toStack());
             // 敏捷
             registerMix(new Item[]{
-                    MaterialItems.SHINE_ROOT.get(),
+                    MaterialItems.BLINKROOT.get(),
                     Items.CACTUS
             }, PotionItems.SWIFTNESS_POTION.toStack());
             // 荆棘
@@ -288,7 +288,7 @@ public final class ModRecipes {
             registerMix(new Item[]{
                     Items.BONE,
                     MaterialItems.DEATHWEED.get(),
-                    MaterialItems.SHIVERINGTHORNS.get()
+                    MaterialItems.SHIVERTHORN.get()
             }, PotionItems.TITAN_POTION.toStack());
             // 水上漂
             registerMix(new Item[]{
@@ -308,12 +308,12 @@ public final class ModRecipes {
             // 虫洞
             registerMix(new Item[]{
                     FoodItems.MIRROR_FISH.get(),
-                    MaterialItems.SHINE_ROOT.get()
+                    MaterialItems.BLINKROOT.get()
             }, PotionItems.INVISIBILITY_POTION.toStack());
             // 传送
             registerMix(new Item[]{
                     FoodItems.CHAOS_FISH.get(),
-                    MaterialItems.FLAMEFLOWERS.get()
+                    MaterialItems.FIREBLOSSOM.get()
             }, PotionItems.RANDOM_TELEPORT_POTION.toStack());
             // 臭味
             registerMix(new Item[]{

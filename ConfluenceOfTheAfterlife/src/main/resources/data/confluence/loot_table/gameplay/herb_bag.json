@@ -56,7 +56,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:flameflowers_seed",
+          "name": "confluence:fireblossom_seed",
           "functions": [
             {
               "function": "set_count",
@@ -81,7 +81,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:flameflowers",
+          "name": "confluence:fireblossom",
           "functions": [
             {
               "function": "set_count",
@@ -106,7 +106,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:moonshine_grass_seed",
+          "name": "confluence:moonglow_seed",
           "functions": [
             {
               "function": "set_count",
@@ -131,7 +131,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:moonshine_grass",
+          "name": "confluence:moonglow",
           "functions": [
             {
               "function": "set_count",
@@ -156,7 +156,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:shine_root_seed",
+          "name": "confluence:blinkroot_seed",
           "functions": [
             {
               "function": "set_count",
@@ -181,7 +181,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:shine_root",
+          "name": "confluence:blinkroot",
           "functions": [
             {
               "function": "set_count",
@@ -206,7 +206,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:shiveringthorns_seed",
+          "name": "confluence:shiverthorn_seed",
           "functions": [
             {
               "function": "set_count",
@@ -231,7 +231,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:shiveringthorns",
+          "name": "confluence:shiverthorn",
           "functions": [
             {
               "function": "set_count",

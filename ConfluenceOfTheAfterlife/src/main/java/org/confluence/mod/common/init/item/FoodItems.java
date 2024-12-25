@@ -156,7 +156,7 @@ public class FoodItems {
     public static final Supplier<Item> MOONSHINE_GRASS_SEED = ITEMS.register("moonshine_grass_seed", () -> new HerbSeedItem(ModBlocks.MOONSHINE_GRASS.get()));
     public static final Supplier<Item> SHINE_ROOT_SEED = ITEMS.register("shine_root_seed", () -> new HerbSeedItem(ModBlocks.SHINE_ROOT.get()));
     public static final Supplier<Item> SHIVERINGTHORNS_SEED = ITEMS.register("shiveringthorns_seed", () -> new HerbSeedItem(ModBlocks.SHIVERINGTHORNS.get()));
-    public static final Supplier<Item> SUNFLOWERS_SEED = ITEMS.register("sunflowers_seed", () -> new HerbSeedItem(ModBlocks.SUNFLOWERS.get()));
+    public static final Supplier<Item> DAYBLOOM_SEED = ITEMS.register("daybloom_seed", () -> new HerbSeedItem(ModBlocks.DAYBLOOM.get()));
     public static final Supplier<Item> DEATHWEED_SEED = ITEMS.register("deathweed_seed", () -> new HerbSeedItem(ModBlocks.DEATHWEED.get()));
 
     public static DeferredItem<BaseFoodItem> registerFood(String name, Consumer<BaseFoodItem.Builder> consumer) {

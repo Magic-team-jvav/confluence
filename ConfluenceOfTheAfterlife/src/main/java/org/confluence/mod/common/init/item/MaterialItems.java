@@ -112,7 +112,7 @@ public class MaterialItems {
     public static final DeferredItem<Item> MOONSHINE_GRASS = ITEMS.registerSimpleItem("moonshine_grass");
     public static final DeferredItem<Item> SHINE_ROOT = ITEMS.registerSimpleItem("shine_root");
     public static final DeferredItem<Item> SHIVERINGTHORNS = ITEMS.registerSimpleItem("shiveringthorns");
-    public static final DeferredItem<Item> SUNFLOWERS = ITEMS.registerSimpleItem("sunflowers");
+    public static final DeferredItem<Item> DAYBLOOM = ITEMS.registerSimpleItem("daybloom");
     public static final DeferredItem<Item> DEATHWEED = ITEMS.registerSimpleItem("deathweed");
     // 蘑菇
     public static final DeferredItem<Item> TR_CRIMSON_MUSHROOM = ITEMS.register("tr_crimson_mushroom", () -> new MushroomItem(NatureBlocks.TR_CRIMSON_MUSHROOM.get(), 0.0F));

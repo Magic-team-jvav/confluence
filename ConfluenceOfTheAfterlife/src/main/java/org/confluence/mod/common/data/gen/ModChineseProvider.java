@@ -1354,14 +1354,14 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModBlocks.MOONSHINE_GRASS.get(), "月光草");
         add(ModBlocks.SHINE_ROOT.get(), "闪耀根");
         add(ModBlocks.SHIVERINGTHORNS.get(), "寒颤棘");
-        add(ModBlocks.SUNFLOWERS.get(), "太阳花");
+        add(ModBlocks.DAYBLOOM.get(), "太阳花");
         add(ModBlocks.DEATHWEED.get(), "死亡草");
         add(MaterialItems.WATERLEAF.get(), "幌菊");
         add(MaterialItems.FLAMEFLOWERS.get(), "火焰花");
         add(MaterialItems.MOONSHINE_GRASS.get(), "月光草");
         add(MaterialItems.SHINE_ROOT.get(), "闪耀根");
         add(MaterialItems.SHIVERINGTHORNS.get(), "寒颤棘");
-        add(MaterialItems.SUNFLOWERS.get(), "太阳花");
+        add(MaterialItems.DAYBLOOM.get(), "太阳花");
         add(MaterialItems.DEATHWEED.get(), "死亡草");
 
         add(NatureBlocks.STELLAR_BLOSSOM.get(), "星辰花");
@@ -1371,7 +1371,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.MOONSHINE_GRASS_SEED.get(), "月光草种子");
         add(FoodItems.SHINE_ROOT_SEED.get(), "闪耀根种子");
         add(FoodItems.SHIVERINGTHORNS_SEED.get(), "寒颤棘种子");
-        add(FoodItems.SUNFLOWERS_SEED.get(), "太阳花种子");
+        add(FoodItems.DAYBLOOM_SEED.get(), "太阳花种子");
         add(FoodItems.DEATHWEED_SEED.get(), "死亡草种子");
 
 

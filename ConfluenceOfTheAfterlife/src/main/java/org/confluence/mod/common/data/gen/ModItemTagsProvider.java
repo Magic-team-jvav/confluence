@@ -193,7 +193,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.MOONSHINE_GRASS_SEED.get(),
                 FoodItems.SHINE_ROOT_SEED.get(),
                 FoodItems.SHIVERINGTHORNS_SEED.get(),
-                FoodItems.SUNFLOWERS_SEED.get(),
+                FoodItems.DAYBLOOM_SEED.get(),
                 FoodItems.DEATHWEED_SEED.get(),
 
                 MaterialItems.WATERLEAF.get(),
@@ -201,7 +201,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.MOONSHINE_GRASS.get(),
                 MaterialItems.SHINE_ROOT.get(),
                 MaterialItems.SHIVERINGTHORNS.get(),
-                MaterialItems.SUNFLOWERS.get(),
+                MaterialItems.DAYBLOOM.get(),
                 MaterialItems.DEATHWEED.get(),
 
                 MaterialItems.STAR_PETALS.get(),

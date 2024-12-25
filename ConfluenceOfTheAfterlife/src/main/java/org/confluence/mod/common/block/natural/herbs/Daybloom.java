@@ -7,10 +7,10 @@ import org.confluence.mod.common.block.natural.BaseHerbBlock;
 import org.confluence.mod.common.init.item.FoodItems;
 import org.jetbrains.annotations.NotNull;
 
-public class SunFlower extends BaseHerbBlock {
+public class Daybloom extends BaseHerbBlock {
 	@Override
 	protected @NotNull ItemLike getBaseSeedId(){
-		return FoodItems.SUNFLOWERS_SEED.get();
+		return FoodItems.DAYBLOOM_SEED.get();
 	}
 
 	@Override

@@ -2,6 +2,8 @@ package org.confluence.mod.common.menu;
 
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,10 +20,10 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.AlchemyTableRecipe;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
-import org.confluence.terra_curio.common.recipe.AmountIngredient;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AlchemyTableMenu extends AbstractContainerMenu {
@@ -148,6 +150,7 @@ public class AlchemyTableMenu extends AbstractContainerMenu {
     }
 
     private static class ResultSlot extends Slot {
+        private static final float CHANCE = 1.0F / 3.0F;
         protected final AlchemyTableRecipe.Input input;
         protected @Nullable AlchemyTableRecipe recipe;
 
@@ -168,9 +171,22 @@ public class AlchemyTableMenu extends AbstractContainerMenu {
         @Override
         public void onTake(@NotNull Player pPlayer, @NotNull ItemStack pStack) {
             if (recipe != null) {
+                RandomSource random = pPlayer.getRandom();
                 SimpleContainer materials = input.getMaterials();
-                AbstractAmountRecipe.consumeIngredients(materials.getContainerSize(), materials::getItem, recipe.getIngredients(), false);
-                input.removeItem(0, recipe.getBase().getCustomIngredient() instanceof AmountIngredient ai ? ai.amount() : 1);
+                int size = materials.getContainerSize();
+                ArrayList<Tuple<Integer, ItemStack>> itemStacks = new ArrayList<>();
+                for (int i = 0; i < size; i++) {
+                    if (random.nextFloat() < CHANCE) { // 33.33%概率返还
+                        itemStacks.add(new Tuple<>(i + 1, materials.getItem(i).copy()));
+                    }
+                }
+                AbstractAmountRecipe.consumeIngredients(size, materials::getItem, recipe.getIngredients(), false);
+                for (Tuple<Integer, ItemStack> back : itemStacks) {
+                    input.setItem(back.getA(), back.getB());
+                }
+                if (random.nextFloat() < 1.0F - CHANCE) { // 66.67%概率消耗
+                    input.removeItem(0, 1);
+                }
                 input.setChanged();
             }
         }

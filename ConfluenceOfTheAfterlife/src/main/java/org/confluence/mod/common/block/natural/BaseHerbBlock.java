@@ -54,7 +54,7 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
     public boolean mayPlaceOn(@NotNull BlockState groundState, @NotNull BlockGetter worldIn, @NotNull BlockPos pos){
         if (herbGroundMap == null) {
             herbGroundMap = new ImmutableMap.Builder<DeferredBlock<? extends Block>, Set<Block>>()
-                    .put(ModBlocks.SUNFLOWERS, Set.of(Blocks.GRASS_BLOCK, NatureBlocks.HALLOW_GRASS_BLOCK.get()))
+                    .put(ModBlocks.DAYBLOOM, Set.of(Blocks.GRASS_BLOCK, NatureBlocks.HALLOW_GRASS_BLOCK.get()))
                     .put(ModBlocks.MOONSHINE_GRASS, Set.of(Blocks.GRASS_BLOCK, Blocks.MOSS_BLOCK))
                     .put(NatureBlocks.STELLAR_BLOSSOM, Set.of(NatureBlocks.CLOUD_BLOCK.get(), NatureBlocks.RAIN_CLOUD_BLOCK.get()))
                     .put(ModBlocks.SHIVERINGTHORNS, Set.of(Blocks.GRASS_BLOCK, Blocks.ICE, NatureBlocks.RED_ICE.get(), NatureBlocks.RED_PACKED_ICE.get(), NatureBlocks.PINK_PACKED_ICE.get(), NatureBlocks.PINK_ICE.get(), NatureBlocks.PURPLE_ICE.get(), NatureBlocks.PURPLE_PACKED_ICE.get()))

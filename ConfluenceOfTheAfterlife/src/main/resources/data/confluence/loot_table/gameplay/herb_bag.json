@@ -256,7 +256,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:sunflowers_seed",
+          "name": "confluence:daybloom_seed",
           "functions": [
             {
               "function": "set_count",
@@ -281,7 +281,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:sunflowers",
+          "name": "confluence:daybloom",
           "functions": [
             {
               "function": "set_count",

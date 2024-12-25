@@ -287,7 +287,7 @@ public class ModLootTableProvider extends LootTableProvider {
             addHerbDrop(ModBlocks.MOONSHINE_GRASS.get(), MaterialItems.MOONSHINE_GRASS.get(), FoodItems.MOONSHINE_GRASS_SEED.get());
             addHerbDrop(ModBlocks.SHINE_ROOT.get(), MaterialItems.SHINE_ROOT.get(), FoodItems.SHINE_ROOT_SEED.get());
             addHerbDrop(ModBlocks.SHIVERINGTHORNS.get(), MaterialItems.SHIVERINGTHORNS.get(), FoodItems.SHIVERINGTHORNS_SEED.get());
-            addHerbDrop(ModBlocks.SUNFLOWERS.get(), MaterialItems.SUNFLOWERS.get(), FoodItems.SUNFLOWERS_SEED.get());
+            addHerbDrop(ModBlocks.DAYBLOOM.get(), MaterialItems.DAYBLOOM.get(), FoodItems.DAYBLOOM_SEED.get());
             addHerbDrop(ModBlocks.DEATHWEED.get(), MaterialItems.DEATHWEED.get(), FoodItems.DEATHWEED_SEED.get());
 
             dropOther(NatureBlocks.TR_CRIMSON_MUSHROOM.get(), MaterialItems.TR_CRIMSON_MUSHROOM.get());

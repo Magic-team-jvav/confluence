@@ -373,6 +373,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("container.confluence.heavy_work_bench", "重型工作台");
         add("title.confluence.hellforge", "地狱熔炉");
         add("container.confluence.hellforge", "地狱熔炉");
+        add("container.confluence.alchemy_table", "炼药桌");
+        add("title.confluence.alchemy_table", "炼药桌");
         add("condition.confluence.requires_fuel", "需要燃料");
         add("container.confluence.fletching_table", "制箭台");
 
@@ -824,6 +826,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.WOOD_STONE_SLATTED_BLOCKS.get(), "木石板条块");
 
 
+        add(ModBlocks.POO.get(), "臭臭");
+
+
         add(NatureBlocks.CLOUD_BLOCK.get(), "云块");
         add(NatureBlocks.EVAPORATIVE_CLOUD_BLOCK.get(), "蒸发云块");
         add(NatureBlocks.RAIN_CLOUD_BLOCK.get(), "雨云块");
@@ -837,6 +842,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.SKY_MILL.get(), "天磨");
         add(FunctionalBlocks.HEAVY_WORK_BENCH.get(), "重型工作台");
         add(FunctionalBlocks.HELLFORGE.get(), "地狱熔炉");
+        add(FunctionalBlocks.ALCHEMY_TABLE.get(), "炼药桌");
         add(FunctionalBlocks.WEATHER_VANE.get(), "风向标");
         add(FunctionalBlocks.LEAD_ANVIL.get(), "铅砧");
         add(FunctionalBlocks.CHIPPED_LEAD_ANVIL.get(), "开裂的铅砧");
@@ -1357,6 +1363,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SHIVERTHORN.get(), "寒颤棘");
         add(MaterialItems.DAYBLOOM.get(), "太阳花");
         add(MaterialItems.DEATHWEED.get(), "死亡草");
+        add(MaterialItems.JUNGLE_SPORE.get(), "丛林孢子");
 
         add(NatureBlocks.STELLAR_BLOSSOM.get(), "星辰花");
         add(NatureBlocks.CLOUDWEAVER.get(), "云织草");
@@ -1580,6 +1587,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.CRIMSON_CHESTPLATE.get(), "猩红胸甲");
         add(ArmorItems.CRIMSON_LEGGINGS.get(), "猩红护腿");
         add(ArmorItems.CRIMSON_BOOTS.get(), "猩红靴");
+        add(CosmeticItems.GOLD_CROWN.get(), "金冠");
+        add(CosmeticItems.PLATINUM_CROWN.get(), "铂金冠");
 
         // 鱼
         add(FoodItems.SEA_BASS.get(), "鲈鱼");
@@ -1787,6 +1796,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(PotionItems.SPELUNKER_POTION.get(), "洞穴探险药水");
         add(PotionItems.DANGERSENSE_POTION.get(), "危险感药水");
         add(PotionItems.HUNTER_POTION.get(), "狩猎药水");
+        add(PotionItems.CRATE_POTION.get(), "宝匣药水");
+        add(PotionItems.CHAOS_POTION.get(), "混沌药水");
+        add(PotionItems.STINK_POTION.get(), "臭味药水");
 
         // 饰品
         add(AccessoryItems.ADHESIVE_BANDAGE.get(), "粘性绷带");
@@ -1865,6 +1877,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.TENTACLE_SPIKES.get(), "触手钉刺");
         add(ModEffects.BROKEN_ARMOR.get(), "破损盔甲");
         add(ModEffects.STONED.get(), "石化");
+        add(ModEffects.CRATE.get(), "宝匣");
 
         // 雕像
 //        add(STATUE_A.get(), "A雕像");

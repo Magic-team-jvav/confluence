@@ -3,6 +3,6 @@
   "biomes": {
     "type": "neoforge:any"
   },
-  "features": "confluence:ebony_ore_generates",
-  "step": "surface_structures"
+  "features": "confluence:vicious_mushroom",
+  "step": "vegetal_decoration"
 }

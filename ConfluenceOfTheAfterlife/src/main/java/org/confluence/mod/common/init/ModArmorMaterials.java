@@ -227,7 +227,7 @@ public final class ModArmorMaterials {
                 map.put(ArmorItem.Type.LEGGINGS, 7);
                 map.put(ArmorItem.Type.BOOTS, 3);
             }),
-            15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.EBONY_INGOT),
+            15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.DEMONITE_INGOT),
             List.of(new ArmorMaterial.Layer(Confluence.asResource("shadow"))), 2.0F, 0.0F
     ));
     public static final Holder<ArmorMaterial> CRIMSON_ARMOR_MATERIALS = ARMOR_MATERIALS.register("crimson_armor_materials", () -> new ArmorMaterial(

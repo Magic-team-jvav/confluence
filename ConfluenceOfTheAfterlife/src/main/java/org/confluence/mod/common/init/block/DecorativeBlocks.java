@@ -1,7 +1,6 @@
 package org.confluence.mod.common.init.block;
 
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChainBlock;
@@ -54,26 +53,18 @@ public class DecorativeBlocks {
 
 
     public static final Supplier<Block> TR_COPPER_BRICKS = copyBlockRegister("tr_copper_bricks", Blocks.COPPER_BLOCK);
-    public static final Supplier<Block> ANCIENT_COPPER_BRICKS = copyBlockRegister("ancient_copper_bricks", Blocks.COPPER_BLOCK);
     public static final Supplier<Block> TR_COPPER_PLATE = copyBlockRegister("tr_copper_plate", Blocks.COPPER_BLOCK);
     public static final Supplier<Block> TIN_BRICKS = copyBlockRegister("tin_bricks", Blocks.COPPER_BLOCK);
-    public static final Supplier<Block> ANCIENT_TIN_BRICKS = copyBlockRegister("ancient_tin_bricks", Blocks.COPPER_BLOCK);
     public static final Supplier<Block> TIN_PLATE = copyBlockRegister("tin_plate", Blocks.COPPER_BLOCK);
     public static final Supplier<Block> TR_IRON_BRICKS = copyBlockRegister("tr_iron_bricks", Blocks.IRON_BLOCK);
-    public static final Supplier<Block> ANCIENT_IRON_BRICKS = copyBlockRegister("ancient_iron_bricks", Blocks.IRON_BLOCK);
 //    public static final Supplier<Block> TR_IRON_PLATE = copyBlockRegister("tr_iron_plate", () -> new  BeamLikeBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK);
 
     public static final Supplier<Block> LEAD_BRICKS = copyBlockRegister("lead_bricks", Blocks.IRON_BLOCK);
-    public static final Supplier<Block> ANCIENT_LEAD_BRICKS = copyBlockRegister("ancient_lead_bricks", Blocks.IRON_BLOCK);
     public static final Supplier<Block> SILVER_BRICKS = copyBlockRegister("silver_bricks", Blocks.IRON_BLOCK);
-    public static final Supplier<Block> ANCIENT_SILVER_BRICKS = copyBlockRegister("ancient_silver_bricks", Blocks.IRON_BLOCK);
     public static final Supplier<Block> TUNGSTEN_BRICKS = copyBlockRegister("tungsten_bricks", Blocks.IRON_BLOCK);
-    public static final Supplier<Block> ANCIENT_TUNGSTEN_BRICKS = copyBlockRegister("ancient_tungsten_bricks", Blocks.IRON_BLOCK);
     public static final Supplier<Block> TR_GOLD_BRICKS = copyBlockRegister("tr_gold_bricks", Blocks.IRON_BLOCK);
-    public static final Supplier<Block> ANCIENT_GOLD_BRICKS = copyBlockRegister("ancient_gold_bricks", Blocks.IRON_BLOCK);
     public static final Supplier<Block> PLATINUM_BRICKS = copyBlockRegister("platinum_bricks", Blocks.IRON_BLOCK);
-    public static final Supplier<Block> ANCIENT_PLATINUM_BRICKS = copyBlockRegister("ancient_platinum_bricks", Blocks.IRON_BLOCK);
-    public static final Supplier<Block> EBONY_ORE_BRICKS = copyBlockRegister("ebony_ore_bricks", Blocks.IRON_BLOCK);
+    public static final Supplier<Block> DEMONITE_ORE_BRICKS = copyBlockRegister("demonite_ore_bricks", Blocks.IRON_BLOCK);
     public static final Supplier<Block> EBONY_ROCK_BRICKS = copyBlockRegister("ebony_rock_bricks", Blocks.IRON_BLOCK);
     public static final Supplier<Block> METEORITE_BRICKS = copyBlockRegister("meteorite_bricks", Blocks.IRON_BLOCK);
     public static final Supplier<Block> TR_CRIMSON_ORE_BRICKS = copyBlockRegister("tr_crimson_ore_bricks", Blocks.IRON_BLOCK);

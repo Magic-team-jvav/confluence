@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/ebony_ore"
+    "all": "confluence:block/deepslate_demonite_ore"
   }
 }

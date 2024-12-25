@@ -9,7 +9,7 @@
         "#": {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "item": "confluence:ebony_ingot"
+                "item": "confluence:demonite_ingot"
             },
             "count": 3
         },

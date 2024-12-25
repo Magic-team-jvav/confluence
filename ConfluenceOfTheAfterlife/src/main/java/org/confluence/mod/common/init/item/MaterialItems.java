@@ -37,8 +37,8 @@ public class MaterialItems {
     public static final DeferredItem<Item> PLATINUM_INGOT = register("platinum_ingot", ModRarity.BLUE);
     public static final DeferredItem<Item> RAW_METEORITE = register("raw_meteorite", ModRarity.BLUE);
     public static final DeferredItem<Item> METEORITE_INGOT = register("meteorite_ingot", ModRarity.BLUE);
-    public static final DeferredItem<Item> RAW_EBONY = register("raw_ebony", ModRarity.BLUE);
-    public static final DeferredItem<Item> EBONY_INGOT = register("ebony_ingot", ModRarity.BLUE);
+    public static final DeferredItem<Item> RAW_DEMONITE = register("raw_demonite", ModRarity.BLUE);
+    public static final DeferredItem<Item> DEMONITE_INGOT = register("demonite_ingot", ModRarity.BLUE);
     public static final DeferredItem<Item> RAW_TR_CRIMSON = register("raw_tr_crimson", ModRarity.BLUE);
     public static final DeferredItem<Item> TR_CRIMSON_INGOT = register("tr_crimson_ingot", ModRarity.BLUE);
     public static final DeferredItem<Item> HELLSTONE_INGOT = register("hellstone_ingot", ModRarity.ORANGE);
@@ -115,8 +115,8 @@ public class MaterialItems {
     public static final DeferredItem<Item> DAYBLOOM = ITEMS.registerSimpleItem("daybloom");
     public static final DeferredItem<Item> DEATHWEED = ITEMS.registerSimpleItem("deathweed");
     // 蘑菇
-    public static final DeferredItem<Item> TR_CRIMSON_MUSHROOM = ITEMS.register("tr_crimson_mushroom", () -> new MushroomItem(NatureBlocks.TR_CRIMSON_MUSHROOM.get(), 0.0F));
-    public static final DeferredItem<Item> EBONY_MUSHROOM = ITEMS.register("ebony_mushroom", () -> new MushroomItem(NatureBlocks.EBONY_MUSHROOM.get(), 0.0F));
+    public static final DeferredItem<Item> VICIOUS_MUSHROOM = ITEMS.register("vicious_mushroom", () -> new MushroomItem(NatureBlocks.VICIOUS_MUSHROOM.get(), 0.0F));
+    public static final DeferredItem<Item> VILE_MUSHROOM = ITEMS.register("vile_mushroom", () -> new MushroomItem(NatureBlocks.VILE_MUSHROOM.get(), 0.0F));
     // TODO: 发光蘑菇可以放置，但此蘑菇非彼蘑菇
     public static final DeferredItem<Item> GLOWING_MUSHROOM = ITEMS.register("glowing_mushroom", () -> new MushroomItem(NatureBlocks.GLOWING_MUSHROOM.get(), 0.0F));
     public static final DeferredItem<Item> LIFE_MUSHROOM = ITEMS.register("life_mushroom", () -> new MushroomItem(NatureBlocks.LIFE_MUSHROOM.get(), 6.0F));

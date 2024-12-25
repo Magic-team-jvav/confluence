@@ -3,6 +3,6 @@
   "biomes": {
     "type": "neoforge:any"
   },
-  "features": "confluence:tr_crimson_mushroom",
-  "step": "vegetal_decoration"
+  "features": "confluence:demonite_ore_generates",
+  "step": "surface_structures"
 }

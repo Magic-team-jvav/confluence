@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/corruption_ebony_ore"
+    "all": "confluence:block/fleshification_demonite_ore"
   }
 }

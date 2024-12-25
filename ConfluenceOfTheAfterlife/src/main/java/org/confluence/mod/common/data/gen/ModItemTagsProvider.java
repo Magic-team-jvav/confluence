@@ -219,8 +219,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().asItem(),
 
 
-                NatureBlocks.TR_CRIMSON_MUSHROOM.get().asItem(),
-                NatureBlocks.EBONY_MUSHROOM.get().asItem(),
+                NatureBlocks.VICIOUS_MUSHROOM.get().asItem(),
+                NatureBlocks.VILE_MUSHROOM.get().asItem(),
                 NatureBlocks.GLOWING_MUSHROOM.get().asItem(),
                 NatureBlocks.LIFE_MUSHROOM.get().asItem(),
                 NatureBlocks.JUNGLE_SPORE.get().asItem(),
@@ -237,7 +237,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.TR_CRIMSON_DROOPING_VINE.get().asItem(),
                 NatureBlocks.HALLOW_DROOPING_VINE.get().asItem()
         );
-        tag(ModTags.Items.EBONY_AND_CRIMSON_INGOT).add(MaterialItems.EBONY_INGOT.get(), MaterialItems.TR_CRIMSON_INGOT.get());
+        tag(ModTags.Items.DEMONITE_AND_CRIMSON_INGOT).add(MaterialItems.DEMONITE_INGOT.get(), MaterialItems.TR_CRIMSON_INGOT.get());
         tag(ModTags.Items.LEAD_AND_IRON).add(Items.IRON_INGOT, MaterialItems.LEAD_INGOT.get());
         IntrinsicTagAppender<Item> torch = tag(ModTags.Items.TORCH);
         torch.add(Items.TORCH, Items.SOUL_TORCH);
@@ -289,9 +289,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 OreBlocks.PLATINUM_ORE.asItem(), OreBlocks.DEEPSLATE_PLATINUM_ORE.asItem(), OreBlocks.SANCTIFICATION_PLATINUM_ORE.asItem(), OreBlocks.CORRUPTION_PLATINUM_ORE.asItem(), OreBlocks.FLESHIFICATION_PLATINUM_ORE.get().asItem(),
                 MaterialItems.RAW_PLATINUM.get()
         );
-        tag(ModTags.Items.EBONY_ORE_SMELTING).add(
-                OreBlocks.EBONY_ORE.asItem(), OreBlocks.DEEPSLATE_EBONY_ORE.asItem(), OreBlocks.SANCTIFICATION_EBONY_ORE.asItem(), OreBlocks.CORRUPTION_EBONY_ORE.asItem(), OreBlocks.FLESHIFICATION_EBONY_ORE.get().asItem(),
-                MaterialItems.RAW_EBONY.get()
+        tag(ModTags.Items.DEMONITE_ORE_SMELTING).add(
+                OreBlocks.DEMONITE_ORE.asItem(), OreBlocks.DEEPSLATE_DEMONITE_ORE.asItem(), OreBlocks.SANCTIFICATION_DEMONITE_ORE.asItem(), OreBlocks.CORRUPTION_DEMONITE_ORE.asItem(), OreBlocks.FLESHIFICATION_DEMONITE_ORE.get().asItem(),
+                MaterialItems.RAW_DEMONITE.get()
         );
         tag(ModTags.Items.TR_CRIMSON_ORE_SMELTING).add(
                 OreBlocks.TR_CRIMSON_ORE.asItem(), OreBlocks.DEEPSLATE_TR_CRIMSON_ORE.asItem(), OreBlocks.SANCTIFICATION_TR_CRIMSON_ORE.asItem(), OreBlocks.CORRUPTION_TR_CRIMSON_ORE.asItem(), OreBlocks.FLESHIFICATION_TR_CRIMSON_ORE.get().asItem(),

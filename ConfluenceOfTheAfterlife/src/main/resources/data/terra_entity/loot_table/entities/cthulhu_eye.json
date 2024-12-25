@@ -36,7 +36,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:ebony_ingot",
+          "name": "confluence:demonite_ingot",
           "functions": [
             {
               "function": "set_count",

@@ -541,13 +541,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(OreBlocks.RAW_METEORITE_BLOCK.get(), "粗陨石块");
         add(OreBlocks.METEORITE_BLOCK.get(), "陨石块");
         add(OreBlocks.STURDY_FOSSIL_BLOCK.get(), "坚固化石块");
-        add(OreBlocks.EBONY_ORE.get(), "魔矿石");
-        add(OreBlocks.SANCTIFICATION_EBONY_ORE.get(), "圣化魔矿石");
-        add(OreBlocks.CORRUPTION_EBONY_ORE.get(), "腐化魔矿石");
-        add(OreBlocks.FLESHIFICATION_EBONY_ORE.get(), "血化魔矿石");
-        add(OreBlocks.DEEPSLATE_EBONY_ORE.get(), "深层魔矿石");
-        add(OreBlocks.EBONY_BLOCK.get(), "魔矿块");
-        add(OreBlocks.RAW_EBONY_BLOCK.get(), "魔原矿块");
+        add(OreBlocks.DEMONITE_ORE.get(), "魔矿石");
+        add(OreBlocks.SANCTIFICATION_DEMONITE_ORE.get(), "圣化魔矿石");
+        add(OreBlocks.CORRUPTION_DEMONITE_ORE.get(), "腐化魔矿石");
+        add(OreBlocks.FLESHIFICATION_DEMONITE_ORE.get(), "血化魔矿石");
+        add(OreBlocks.DEEPSLATE_DEMONITE_ORE.get(), "深层魔矿石");
+        add(OreBlocks.DEMONITE_BLOCK.get(), "魔矿块");
+        add(OreBlocks.RAW_DEMONITE_BLOCK.get(), "魔原矿块");
         add(OreBlocks.TR_CRIMSON_ORE.get(), "猩红矿石");
         add(OreBlocks.SANCTIFICATION_TR_CRIMSON_ORE.get(), "圣化猩红矿石");
         add(OreBlocks.CORRUPTION_TR_CRIMSON_ORE.get(), "腐化猩红矿石");
@@ -768,7 +768,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.TR_GOLD_BRICKS.get(), "金砖块");
         add(DecorativeBlocks.TR_IRON_BRICKS.get(), "铁砖块");
         add(DecorativeBlocks.TR_STONE_BRICKS.get(), "异域石砖");
-        add(DecorativeBlocks.EBONY_ORE_BRICKS.get(), "魔矿砖");
+        add(DecorativeBlocks.DEMONITE_ORE_BRICKS.get(), "魔矿砖");
         add(DecorativeBlocks.EBONY_ROCK_BRICKS.get(), "黑檀石砖");
         add(DecorativeBlocks.BLUE_GEL_BLOCK.get(), "凝胶块");
         add(DecorativeBlocks.GREEN_CANDY_BLOCK.get(), "绿色糖块");
@@ -989,8 +989,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.PLATINUM_INGOT.get(), "铂金锭");
         add(MaterialItems.RAW_METEORITE.get(), "陨铁原矿");
         add(MaterialItems.METEORITE_INGOT.get(), "陨铁锭");
-        add(MaterialItems.RAW_EBONY.get(), "粗魔矿");
-        add(MaterialItems.EBONY_INGOT.get(), "魔矿锭");
+        add(MaterialItems.RAW_DEMONITE.get(), "粗魔矿");
+        add(MaterialItems.DEMONITE_INGOT.get(), "魔矿锭");
         add(MaterialItems.RAW_TR_CRIMSON.get(), "粗猩红矿");
         add(MaterialItems.TR_CRIMSON_INGOT.get(), "猩红矿锭");
         add(MaterialItems.RAW_HELLSTONE.get(), "狱石矿");
@@ -1397,8 +1397,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.LIVING_SAPLING.get(), "生命树树苗");
 
 
-        add(NatureBlocks.TR_CRIMSON_MUSHROOM.get(), "毒蘑菇");
-        add(NatureBlocks.EBONY_MUSHROOM.get(), "魔菇");
+        add(NatureBlocks.VICIOUS_MUSHROOM.get(), "毒蘑菇");
+        add(NatureBlocks.VILE_MUSHROOM.get(), "魔菇");
         add(NatureBlocks.GLOWING_MUSHROOM.get(), "发光蘑菇");
         add(NatureBlocks.LIFE_MUSHROOM.get(), "生命蘑菇");
         add(NatureBlocks.JUNGLE_SPORE.get(), "丛林孢子");

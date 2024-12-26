@@ -1,12 +1,12 @@
 {
     "type": "confluence:sky_mill",
-    "result": {
-        "id": "confluence:disc_block",
-        "count": 4
-    },
     "ingredients": [
         {
             "item": "confluence:sun_plate"
         }
-    ]
+    ],
+    "result": {
+        "id": "confluence:disc_block",
+        "count": 4
+    }
 }

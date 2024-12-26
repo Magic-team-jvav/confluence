@@ -8,6 +8,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -18,6 +19,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class EnvironmentLevelAccess implements ContainerLevelAccess {
     protected @Nullable Level level;
@@ -62,8 +65,23 @@ public class EnvironmentLevelAccess implements ContainerLevelAccess {
         return level == null || pos == null ? Optional.empty() : Optional.of(level.getBiome(pos));
     }
 
-    public Iterable<BlockPos> searchBlockPos(int inflate) {
+    public boolean isBiome(Function<Holder<Biome>, Boolean> predicate) {
+        return getBiome().map(predicate).orElse(false);
+    }
+
+    public Iterable<BlockPos> searchBox(int inflate) {
         return level == null || pos == null ? List.of() : BlockPos.betweenClosed(pos.offset(-inflate, -inflate, -inflate), pos.offset(inflate, inflate, inflate));
+    }
+
+    public boolean anyMatch(Predicate<BlockState> predicate, int inflate) {
+        if (level != null) {
+            for (BlockPos blockPos : searchBox(inflate)) {
+                if (predicate.test(level.getBlockState(blockPos))) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override

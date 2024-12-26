@@ -24,7 +24,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.menu.SkyMillMenu;
@@ -147,7 +149,15 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
 
         @Override
         public <R extends Recipe<?>> boolean matches(R recipe) {
-            return !recipe.getResultItem(null).is(NatureBlocks.SNOW_CLOUD_BLOCK.asItem()) || getBiome().map(holder -> holder.is(Tags.Biomes.IS_COLD_OVERWORLD)).orElse(false);
+            ItemStack resultItem = recipe.getResultItem(null);
+            if (resultItem.is(NatureBlocks.SNOW_CLOUD_BLOCK.asItem())) {
+                return isBiome(holder -> holder.is(Tags.Biomes.IS_COLD_OVERWORLD));
+            }
+            if (resultItem.is(NatureBlocks.RAIN_CLOUD_BLOCK.asItem())) {
+                FluidType water = NeoForgeMod.WATER_TYPE.value();
+                return anyMatch(blockState -> blockState.getFluidState().getType().getFluidType() == water, 2);
+            }
+            return false;
         }
     }
 }

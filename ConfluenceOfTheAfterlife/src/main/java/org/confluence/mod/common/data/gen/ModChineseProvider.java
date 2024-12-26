@@ -39,6 +39,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("generator.confluence.the_corruption", "腐化之地");
         add("generator.confluence.tr_crimson", "猩红之地");
 
+
+        add("item.confluence.afterlife_notes", "来世手记");
+
+        add("text.confluence.afterlife_notes", "  冒险者，新的天地充满了无尽的挑战与机遇，这本手记将帮助你了解这个世界的奥秘，指引你面对怪物和困境，只有不断探索，你才能发现更多的力量与宝藏，你的旅途才刚刚开始。                              —— 向导");
+
         add("worldgen.confluence.placing_traps", "正在放置机关");
         add("worldgen.confluence.generating_bees", "正在生成蜜蜂");
         add("worldgen.confluence.generating_wavy_caves", "正在生成皱曲洞穴");

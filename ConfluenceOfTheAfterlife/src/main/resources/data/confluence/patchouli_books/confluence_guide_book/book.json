@@ -1,0 +1,9 @@
+{
+    "name": "item.confluence.afterlife_notes",
+    "landing_text": "text.confluence.afterlife_notes",
+    "version": 1,
+    "creative_tab": "confluence:developer",
+    "use_resource_pack": true,
+    "model": "confluence:afterlife_notes",
+    "custom_book_item": "confluence:afterlife_notes"
+}

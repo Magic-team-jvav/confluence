@@ -57,6 +57,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("bossevent.confluence.boss_death", "The %s been defeated!");
         add("bossevent.confluence.cthulhu_eye.leave", "The CthulhuEye leaved!");
 
+        add("item.confluence.afterlife_notes", "Afterlife Notes");
+        add("text.confluence.afterlife_notes", "Adventurer, this world is full of challenges and opportunities. Use this journal to uncover its secrets and face its trials. Keep exploring to find power and treasure. Your journey has just begun.                  — The Guide");
+
         add("worldgen.confluence.placing_traps", "Placing Traps");
         add("worldgen.confluence.generating_bees", "Generating bees");
         add("worldgen.confluence.generating_wavy_caves", "Generating wavy caves");

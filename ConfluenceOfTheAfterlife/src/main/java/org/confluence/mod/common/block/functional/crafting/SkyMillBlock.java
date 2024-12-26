@@ -7,10 +7,10 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -24,8 +24,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.menu.SkyMillMenu;
+import org.confluence.mod.common.recipe.EnvironmentLevelAccess;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.jetbrains.annotations.NotNull;
@@ -85,7 +88,7 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
 
     @Override
     public @Nullable MenuProvider getMenuProvider(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos) {
-        return new SimpleMenuProvider((pContainerId, pPlayerInventory, pPlayer) -> new SkyMillMenu(pContainerId, pPlayerInventory, ContainerLevelAccess.create(pLevel, pPos)), CONTAINER_TITLE);
+        return new SimpleMenuProvider((pContainerId, pPlayerInventory, pPlayer) -> new SkyMillMenu(pContainerId, pPlayerInventory, new LevelAccess(pLevel, pPos)), CONTAINER_TITLE);
     }
 
     @Override
@@ -132,6 +135,19 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
         @Override
         public AnimatableInstanceCache getAnimatableInstanceCache() {
             return CACHE;
+        }
+    }
+
+    public static class LevelAccess extends EnvironmentLevelAccess {
+        public LevelAccess(Level level, BlockPos pos) {
+            super(level, pos);
+            this.level = level;
+            this.pos = pos;
+        }
+
+        @Override
+        public <R extends Recipe<?>> boolean matches(R recipe) {
+            return !recipe.getResultItem(null).is(NatureBlocks.SNOW_CLOUD_BLOCK.asItem()) || getBiome().map(holder -> holder.is(Tags.Biomes.IS_COLD_OVERWORLD)).orElse(false);
         }
     }
 }

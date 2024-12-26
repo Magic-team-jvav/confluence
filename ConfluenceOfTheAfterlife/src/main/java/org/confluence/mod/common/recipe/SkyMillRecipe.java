@@ -8,8 +8,10 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
@@ -19,6 +21,14 @@ import org.jetbrains.annotations.NotNull;
 public class SkyMillRecipe extends AbstractAmountRecipe {
     public SkyMillRecipe(ItemStack pResult, NonNullList<Ingredient> pIngredients) {
         super(pResult, pIngredients);
+    }
+
+    @Override
+    public boolean matches(@NotNull RecipeInput input, @NotNull Level pLevel) {
+        if (input instanceof EnvironmentRecipeInput recipeInput) {
+            return recipeInput.getAccess().matches(this) && super.matches(input, pLevel);
+        }
+        return super.matches(input, pLevel);
     }
 
     @Override

@@ -10,10 +10,11 @@ import org.confluence.terraentity.entity.util.DeathAnimOptions;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /** @author voila */
-public class DeathAnimUtils {
+public final class DeathAnimUtils {
     public static final Map<EntityType<? extends LivingEntity>, DeathAnimOptions> options = new HashMap<>();
 
 //    static{

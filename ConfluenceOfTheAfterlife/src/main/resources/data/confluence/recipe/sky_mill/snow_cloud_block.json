@@ -1,11 +1,11 @@
 {
     "type": "confluence:sky_mill",
-    "result": {
-        "id": "confluence:snow_cloud_block"
-    },
     "ingredients": [
         {
-            "item": "confluence:rain_cloud_block"
+            "item": "confluence:cloud_block"
         }
-    ]
+    ],
+    "result": {
+        "id": "confluence:snow_cloud_block"
+    }
 }

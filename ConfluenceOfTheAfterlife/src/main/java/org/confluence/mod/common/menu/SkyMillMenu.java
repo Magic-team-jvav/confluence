@@ -6,13 +6,18 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.DataSlot;
+import net.minecraft.world.inventory.ResultContainer;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import org.confluence.mod.common.block.functional.crafting.SkyMillBlock;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.recipe.EnvironmentRecipeInput;
 import org.confluence.mod.common.recipe.SkyMillRecipe;
 import org.confluence.terra_curio.common.menu.AmountResultSlot;
 import org.confluence.terra_curio.common.menu.RecipeInputContainer;
@@ -25,27 +30,29 @@ public class SkyMillMenu extends AbstractContainerMenu {
     private static final int INV_SLOT_END = 31;
     private static final int USE_ROW_SLOT_START = 31;
     private static final int USE_ROW_SLOT_END = 40;
-    private final ContainerLevelAccess access;
+    private final SkyMillBlock.LevelAccess access;
     private final Player player;
     private Runnable slotUpdateListener = () -> {};
-    public final RecipeInputContainer input = new RecipeInputContainer(this, 3) {
-        public void setChanged() {
-            super.setChanged();
-            SkyMillMenu.this.slotUpdateListener.run();
-        }
-    };
+    public final RecipeInputContainer input;
     private final ResultContainer result = new ResultContainer();
     private final DataSlot selectedRecipeIndex = DataSlot.standalone();
     private List<RecipeHolder<SkyMillRecipe>> recipes = Lists.newArrayList();
 
     public SkyMillMenu(int pContainerId, Inventory inventory) {
-        this(pContainerId, inventory, ContainerLevelAccess.NULL);
+        this(pContainerId, inventory, new SkyMillBlock.LevelAccess(null, null));
     }
 
-    public SkyMillMenu(int pContainerId, Inventory pPlayerInventory, final ContainerLevelAccess pAccess) {
+    public SkyMillMenu(int pContainerId, Inventory inventory, SkyMillBlock.LevelAccess pAccess) {
         super(ModMenuTypes.SKY_MILL.get(), pContainerId);
         this.access = pAccess;
-        this.player = pPlayerInventory.player;
+        this.player = inventory.player;
+        access.initializeIfNeeded(player);
+        this.input = new EnvironmentRecipeInput(this, 3, access) {
+            public void setChanged() {
+                super.setChanged();
+                SkyMillMenu.this.slotUpdateListener.run();
+            }
+        };
         addSlot(new AmountResultSlot(input, result, 0, 35, 14) {
             @Override
             protected void updateMenu() {
@@ -58,12 +65,12 @@ public class SkyMillMenu extends AbstractContainerMenu {
 
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
-                addSlot(new Slot(pPlayerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+                addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
             }
         }
 
         for (int k = 0; k < 9; ++k) {
-            addSlot(new Slot(pPlayerInventory, k, 8 + k * 18, 142));
+            addSlot(new Slot(inventory, k, 8 + k * 18, 142));
         }
 
         addDataSlot(selectedRecipeIndex);
@@ -87,7 +94,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
     }
 
     public boolean hasInputItem() {
-        return input.isEmpty() && !recipes.isEmpty();
+        return !input.isEmpty() && !recipes.isEmpty();
     }
 
     @Override

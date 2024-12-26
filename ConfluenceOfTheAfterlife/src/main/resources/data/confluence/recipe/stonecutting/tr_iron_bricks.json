@@ -4,7 +4,7 @@
         "item":"minecraft:iron_block"
     },
     "result": {
-        "id": "confluence:tr_iron_bricks"
-    },
-    "count": 9
+        "id": "confluence:tr_iron_bricks",
+        "count": 9
+    }
 }

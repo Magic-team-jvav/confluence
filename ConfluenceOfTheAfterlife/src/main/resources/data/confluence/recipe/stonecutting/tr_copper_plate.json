@@ -4,7 +4,7 @@
         "item":"minecraft:copper_block"
     },
     "result": {
-        "id": "confluence:tr_copper_plate"
-    },
-    "count": 4
+        "id": "confluence:tr_copper_plate",
+        "count": 4
+    }
 }

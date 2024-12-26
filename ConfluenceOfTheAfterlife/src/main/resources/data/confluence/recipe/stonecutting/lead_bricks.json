@@ -4,7 +4,7 @@
         "item":"confluence:lead_block"
     },
     "result": {
-        "id": "confluence:lead_bricks"
-    },
-    "count": 9
+        "id": "confluence:lead_bricks",
+        "count": 9
+    }
 }

@@ -198,7 +198,7 @@ public final class ModArmorMaterials {
                 map.put(ArmorItem.Type.BOOTS, 2);
             }),
             15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.SPORE_ROOT),
-            List.of(new ArmorMaterial.Layer(Confluence.asResource("gemstone"))), 2.0F, 0.0F
+            List.of(new ArmorMaterial.Layer(Confluence.asResource("spore_root"))), 2.0F, 0.0F
     ));
     public static final Holder<ArmorMaterial> COLD_CRYSTAL_ARMOR_MATERIALS = ARMOR_MATERIALS.register("cold_crystal_armor_materials", () -> new ArmorMaterial(
             Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {

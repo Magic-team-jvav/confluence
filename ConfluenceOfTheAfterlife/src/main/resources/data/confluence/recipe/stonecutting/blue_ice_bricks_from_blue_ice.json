@@ -3,8 +3,8 @@
     "ingredient": {
         "item": "minecraft:blue_ice"
     },
-    "result":  {
-    "id":"confluence:blue_ice_bricks",
-    "count": 4
+    "result": {
+        "id": "confluence:blue_ice_bricks",
+        "count": 4
     }
 }

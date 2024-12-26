@@ -41,6 +41,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(new AltarCategory(jeiHelpers));
         registration.addRecipeCategories(new HellforgeCategory(jeiHelpers));
         registration.addRecipeCategories(new HeavyWorkBenchCategory(jeiHelpers));
+        registration.addRecipeCategories(new AlchemyTableCategory(jeiHelpers));
     }
 
     @Override
@@ -53,6 +54,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipes(AltarCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.ALTAR_TYPE.get()).stream().map(RecipeHolder::value).toList());
         registration.addRecipes(HellforgeCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HELLFORGE_TYPE.get()).stream().map(RecipeHolder::value).toList());
         registration.addRecipes(HeavyWorkBenchCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HEAVY_WORK_BENCH_TYPE.get()).stream().map(RecipeHolder::value).toList());
+        registration.addRecipes(AlchemyTableCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.ALCHEMY_TABLE_TYPE.get()).stream().map(RecipeHolder::value).toList());
     }
 
     @Override
@@ -63,6 +65,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(FunctionalBlocks.CRIMSON_ALTAR.toStack(), AltarCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.HELLFORGE.toStack(), HellforgeCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.HEAVY_WORK_BENCH.toStack(), HeavyWorkBenchCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.ALCHEMY_TABLE.toStack(), AlchemyTableCategory.TYPE);
     }
 
     public static void drawArrowDown(GuiGraphics guiGraphics, int x, int y, boolean usable) {

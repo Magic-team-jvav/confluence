@@ -1,7 +1,7 @@
 {
     "type": "confluence:alchemy_table",
     "base": {
-        "item": "minecraft:potion"
+        "item": "confluence:bottled_water"
     },
     "ingredients": [
         {

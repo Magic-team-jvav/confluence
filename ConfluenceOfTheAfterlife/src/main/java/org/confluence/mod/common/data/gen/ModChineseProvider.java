@@ -1751,8 +1751,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.COOKED_FLUTTERING_LAMB_CHOPS.get(), "熟飘飘羊排");
         add(FoodItems.BAOBAB_FRUIT.get(), "猴面包果");
         add(FoodItems.COOKED_BAOBA_FRUIT.get(), "烤猴面包果");
-        // 药水
 
+        // 药水
+        add(PotionItems.BOTTLE.get(), "玻璃瓶");
+        add(PotionItems.BOTTLED_WATER.get(), "瓶装水");
         add(PotionItems.LESSER_HEALING_POTION.get(), "弱效治疗药水");
         add(PotionItems.HEALING_POTION.get(), "治疗药水");
         add(PotionItems.GREATER_HEALING_POTION.get(), "强效治疗药水");

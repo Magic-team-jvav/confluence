@@ -1,0 +1,67 @@
+package org.confluence.mod.integration.jei;
+
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.helpers.IJeiHelpers;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.crafting.Ingredient;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.recipe.AlchemyTableRecipe;
+import org.confluence.terra_curio.integration.jei.JeiBackGround;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
+
+public class AlchemyTableCategory implements IRecipeCategory<AlchemyTableRecipe> {
+    public static final RecipeType<AlchemyTableRecipe> TYPE = RecipeType.create(Confluence.MODID, "alchemy_table", AlchemyTableRecipe.class);
+    private static final Component TITLE = Component.translatable("title.confluence.alchemy_table");
+    private static final IDrawable BACKGROUND = new JeiBackGround(112, 64, Confluence.asResource("textures/gui/alchemy_table.png"));
+    private final IDrawable icon;
+
+    public AlchemyTableCategory(IJeiHelpers jeiHelpers) {
+        this.icon = jeiHelpers.getGuiHelper().createDrawableItemStack(FunctionalBlocks.ALCHEMY_TABLE.toStack());
+    }
+
+    @Override
+    public @NotNull RecipeType<AlchemyTableRecipe> getRecipeType() {
+        return TYPE;
+    }
+
+    @Override
+    public @NotNull Component getTitle() {
+        return TITLE;
+    }
+
+    @Override
+    public @NotNull IDrawable getBackground() {
+        return BACKGROUND;
+    }
+
+    @Override
+    public @Nullable IDrawable getIcon() {
+        return icon;
+    }
+
+    @Override
+    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull AlchemyTableRecipe recipe, @NotNull IFocusGroup focuses) {
+        int y = 1;
+        int i = 0;
+        for (Ingredient ingredient : recipe.getIngredients()) {
+            if (i % 2 == 0) {
+                addInput(builder, 7, y, ingredient);
+            } else {
+                addInput(builder, 89, y, ingredient);
+                y += 20;
+            }
+            i++;
+        }
+        addInput(builder, 48, 1, recipe.getBase());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 48, 46).addItemStack(recipe.getResultItem(null));
+    }
+}

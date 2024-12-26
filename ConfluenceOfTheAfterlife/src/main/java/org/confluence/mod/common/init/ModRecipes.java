@@ -5,14 +5,11 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -337,7 +334,7 @@ public final class ModRecipes {
             consumer.accept(new IBrewingRecipe() {
                 @Override
                 public boolean isInput(@NotNull ItemStack input) {
-                    return input.is(PotionItems.CHAOS_POTION) || (input.is(Items.POTION) && input.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).is(Potions.WATER));
+                    return input.is(PotionItems.CHAOS_POTION) || input.is(PotionItems.BOTTLED_WATER);
                 }
 
                 @Override
@@ -380,7 +377,7 @@ public final class ModRecipes {
             consumer.accept(new IBrewingRecipe() {
                 @Override
                 public boolean isInput(@NotNull ItemStack input) {
-                    return input.is(Items.GLASS_BOTTLE);
+                    return input.is(PotionItems.BOTTLE);
                 }
 
                 @Override

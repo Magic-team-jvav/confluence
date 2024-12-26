@@ -4,8 +4,12 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import org.confluence.mod.common.init.item.PotionItems;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractPotionItem extends Item {
@@ -36,10 +40,10 @@ public abstract class AbstractPotionItem extends Item {
             itemStack.shrink(1); // 创造模式不消耗
         }
         if (itemStack.isEmpty()) {
-            return new ItemStack(Items.GLASS_BOTTLE);
+            return PotionItems.BOTTLE.toStack();
         } else {
             if (living instanceof Player player && !player.getAbilities().instabuild) {
-                ItemStack itemstack = new ItemStack(Items.GLASS_BOTTLE);
+                ItemStack itemstack = PotionItems.BOTTLE.toStack();
                 if (!player.getInventory().add(itemstack)) {
                     player.drop(itemstack, false);
                 }

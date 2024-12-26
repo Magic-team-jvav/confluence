@@ -1,7 +1,11 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
@@ -12,6 +16,11 @@ import org.confluence.terra_curio.common.init.TCEffects;
 public class PotionItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
+    public static final DeferredItem<BottleItem> BOTTLE = ITEMS.register("bottle", BottleItem::new);
+    public static final DeferredItem<AbstractPotionItem> BOTTLED_WATER = ITEMS.register("bottled_water", () -> new AbstractPotionItem(new Item.Properties().stacksTo(16)) {
+        @Override
+        protected void apply(ItemStack itemStack, Level level, LivingEntity living) {}
+    });
     public static final DeferredItem<AbstractPotionItem> ARCHERY_POTION = ITEMS.register("archery_potion", () -> new EffectPotionItem(ModEffects.ARCHERY, 9600));
     public static final DeferredItem<AbstractPotionItem> BUILDER_POTION = ITEMS.register("builder_potion", () -> new EffectPotionItem(ModEffects.BUILDER, 54000));
     public static final DeferredItem<AbstractPotionItem> DANGERSENSE_POTION = ITEMS.register("dangersense_potion", () -> new EffectPotionItem(ModEffects.DANGER_SENSE, 4800));
@@ -22,7 +31,7 @@ public class PotionItems {
     public static final DeferredItem<AbstractPotionItem> GILLS_POTION = ITEMS.register("gills_potion", () -> new EffectPotionItem(MobEffects.WATER_BREATHING, 4800));
     public static final DeferredItem<AbstractPotionItem> GRAVITATION_POTION = ITEMS.register("gravitation_potion", () -> new EffectPotionItem(TCEffects.GRAVITATION, 3600));
     public static final DeferredItem<AbstractPotionItem> HEART_REACH_POTION = ITEMS.register("heart_reach_potion", () -> new EffectPotionItem(ModEffects.HEART_REACH, 9600));
-    public static final DeferredItem<AbstractPotionItem> HUNTER_POTION = ITEMS.register("hunter_potion", ()->new EffectPotionItem(ModEffects.HUNTER, 9600));
+    public static final DeferredItem<AbstractPotionItem> HUNTER_POTION = ITEMS.register("hunter_potion", () -> new EffectPotionItem(ModEffects.HUNTER, 9600));
     public static final DeferredItem<AbstractPotionItem> INFERNO_POTION = ITEMS.register("inferno_potion", () -> new EffectPotionItem(ModEffects.INFERNO, 4800));
     public static final DeferredItem<AbstractPotionItem> INVISIBILITY_POTION = ITEMS.register("invisibility_potion", () -> new EffectPotionItem(MobEffects.INVISIBILITY, 3600));
     public static final DeferredItem<AbstractPotionItem> IRON_SKIN_POTION = ITEMS.register("iron_skin_potion", () -> new EffectPotionItem(ModEffects.IRON_SKIN, 9600));
@@ -40,8 +49,8 @@ public class PotionItems {
     public static final DeferredItem<AbstractPotionItem> RECALL_POTION = ITEMS.register("recall_potion", RecallPotionItem::new);
     public static final DeferredItem<AbstractPotionItem> REGENERATION_POTION = ITEMS.register("regeneration_potion", () -> new EffectPotionItem(MobEffects.REGENERATION, 9600));
     public static final DeferredItem<AbstractPotionItem> SHINE_POTION = ITEMS.register("shine_potion", () -> new EffectPotionItem(ModEffects.SHINE, 12000));
-    public static final DeferredItem<AbstractPotionItem> SPELUNKER_POTION = ITEMS.register("spelunker_potion", ()->new EffectPotionItem(ModEffects.SPELUNKER, 6000));
-    public static final DeferredItem<AbstractPotionItem> SWIFTNESS_POTION = ITEMS.register("swiftness_potion", () -> new EffectPotionItem( MobEffects.MOVEMENT_SPEED, 9600));
+    public static final DeferredItem<AbstractPotionItem> SPELUNKER_POTION = ITEMS.register("spelunker_potion", () -> new EffectPotionItem(ModEffects.SPELUNKER, 6000));
+    public static final DeferredItem<AbstractPotionItem> SWIFTNESS_POTION = ITEMS.register("swiftness_potion", () -> new EffectPotionItem(MobEffects.MOVEMENT_SPEED, 9600));
     public static final DeferredItem<AbstractPotionItem> THORNS_POTION = ITEMS.register("thorns_potion", () -> new EffectPotionItem(ModEffects.THORNS, 9600));
     public static final DeferredItem<AbstractPotionItem> TITAN_POTION = ITEMS.register("titan_potion", () -> new EffectPotionItem(ModEffects.TITAN, 9600));
     public static final DeferredItem<AbstractPotionItem> WATER_WALKING_POTION = ITEMS.register("water_walking_potion", () -> new EffectPotionItem(ModEffects.WATER_WALKING, 12000));

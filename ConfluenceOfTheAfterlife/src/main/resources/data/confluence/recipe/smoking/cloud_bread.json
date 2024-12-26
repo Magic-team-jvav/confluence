@@ -1,10 +1,10 @@
 {
     "type": "minecraft:smoking",
     "ingredient": {
-        "item": "confluence:sea_bass"
+        "item": "confluence:cloud_dough"
     },
     "result": {
-        "id": "minecraft:cooked_cod"
+        "id": "confluence:cloud_bread"
     },
     "experience": 0.1,
     "cookingtime": 100

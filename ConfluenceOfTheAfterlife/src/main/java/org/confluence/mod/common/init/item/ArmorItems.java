@@ -98,10 +98,10 @@ public class ArmorItems {
     public static final Supplier<ArmorItem> FOSSIL_LEGGINGS = registerNormalArmor("fossil_leggings", "fossil_armor", ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 250);
     public static final Supplier<ArmorItem> FOSSIL_BOOTS = registerNormalArmor("fossil_boots", "fossil_armor", ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 200);
 
-    public static final Supplier<ArmorItem> GELSTONE_HELMET = registerNormalArmor("gelstone_helmet", "gelstone_armor", ModArmorMaterials.GEMSTONE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 200);
-    public static final Supplier<ArmorItem> GELSTONE_CHESTPLATE = registerNormalArmor("gelstone_chestplate", "gelstone_armor", ModArmorMaterials.GEMSTONE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 270);
-    public static final Supplier<ArmorItem> GELSTONE_LEGGINGS = registerNormalArmor("gelstone_leggings", "gelstone_armor", ModArmorMaterials.GEMSTONE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 250);
-    public static final Supplier<ArmorItem> GELSTONE_BOOTS = registerNormalArmor("gelstone_boots", "gelstone_armor", ModArmorMaterials.GEMSTONE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 200);
+    public static final Supplier<ArmorItem> SPORE_ROOT_HELMET = registerNormalArmor("spore_root_helmet", "spore_root_armor", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 200);
+    public static final Supplier<ArmorItem> SPORE_ROOT_CHESTPLATE = registerNormalArmor("spore_root_chestplate", "spore_root_armor", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 270);
+    public static final Supplier<ArmorItem> SPORE_ROOT_LEGGINGS = registerNormalArmor("spore_root_leggings", "spore_root_armor", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 250);
+    public static final Supplier<ArmorItem> SPORE_ROOT_BOOTS = registerNormalArmor("spore_root_boots", "spore_root_armor", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 200);
 
     public static final Supplier<ArmorItem> COLD_CRYSTAL_HELMET = registerNormalArmor("cold_crystal_helmet", "cold_crystal_armor", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 200);
     public static final Supplier<ArmorItem> COLD_CRYSTAL_CHESTPLATE = registerNormalArmor("cold_crystal_chestplate", "cold_crystal_armor", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 270);

@@ -13,6 +13,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.ICancellableEvent;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.init.ModTags;
@@ -152,6 +153,9 @@ public abstract class ShimmerItemTransmutationEvent extends Event {
                         return targets;
                     }
                 }
+
+                if (!CommonConfigs.SHIMMER_DECOMPOSE.get()) return targets;
+
                 if (sourceItem.getDamageValue() != 0) return null;
                 RegistryAccess registryAccess = source.level().registryAccess();
                 boolean isHardCore = data.isHardcore();

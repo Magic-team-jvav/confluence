@@ -12,8 +12,10 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.block.Blocks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
@@ -42,6 +44,9 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(new HellforgeCategory(jeiHelpers));
         registration.addRecipeCategories(new HeavyWorkBenchCategory(jeiHelpers));
         registration.addRecipeCategories(new AlchemyTableCategory(jeiHelpers));
+        if (CommonConfigs.FLETCHING_MENU.get()) {
+            registration.addRecipeCategories(new FletchingTableCategory(jeiHelpers));
+        }
     }
 
     @Override
@@ -55,6 +60,9 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipes(HellforgeCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HELLFORGE_TYPE.get()).stream().map(RecipeHolder::value).toList());
         registration.addRecipes(HeavyWorkBenchCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HEAVY_WORK_BENCH_TYPE.get()).stream().map(RecipeHolder::value).toList());
         registration.addRecipes(AlchemyTableCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.ALCHEMY_TABLE_TYPE.get()).stream().map(RecipeHolder::value).toList());
+        if (CommonConfigs.FLETCHING_MENU.get()) {
+            registration.addRecipes(FletchingTableCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.FLETCHING_TABLE_TYPE.get()).stream().map(RecipeHolder::value).toList());
+        }
     }
 
     @Override
@@ -66,6 +74,9 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(FunctionalBlocks.HELLFORGE.toStack(), HellforgeCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.HEAVY_WORK_BENCH.toStack(), HeavyWorkBenchCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.ALCHEMY_TABLE.toStack(), AlchemyTableCategory.TYPE);
+        if (CommonConfigs.FLETCHING_MENU.get()) {
+            registration.addRecipeCatalyst(Blocks.FLETCHING_TABLE.asItem().getDefaultInstance(), FletchingTableCategory.TYPE);
+        }
     }
 
     public static void drawArrowDown(GuiGraphics guiGraphics, int x, int y, boolean usable) {

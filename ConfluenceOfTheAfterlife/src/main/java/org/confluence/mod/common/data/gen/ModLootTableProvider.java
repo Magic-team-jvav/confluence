@@ -220,8 +220,8 @@ public class ModLootTableProvider extends LootTableProvider {
             dropOther(TR_CRIMSON_STONE.get(), TR_CRIMSON_COBBLESTONE.get());
             dropOther(EBONY_STONE.get(), EBONY_COBBLESTONE.get());
             dropOther(PEARL_STONE.get(), PEARL_COBBLESTONE.get());
-            dropOther(OPAL_ORE.get(),OPAL.get());
-            dropOther(GELSTONE_ORE.get(),GELSTONE.get());
+            dropOther(OPAL_ORE.get(), OPAL.get());
+            dropOther(GELSTONE_ORE.get(), GELSTONE.get());
             dropSelf(EBONY_LOG_BLOCKS.getLog().get());
             dropSelf(SHADOW_LOG_BLOCKS.getLog().get());
             dropSelf(PEARL_LOG_BLOCKS.getLog().get());

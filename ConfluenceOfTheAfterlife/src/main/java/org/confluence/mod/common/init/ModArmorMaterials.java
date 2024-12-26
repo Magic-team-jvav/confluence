@@ -190,14 +190,14 @@ public final class ModArmorMaterials {
         15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.BLACK_INK),
         List.of(new ArmorMaterial.Layer(Confluence.asResource("ninja"))), 1.0F, 0.0F
     ));
-    public static final Holder<ArmorMaterial> GEMSTONE_ARMOR_MATERIALS = ARMOR_MATERIALS.register("gemstone_armor_materials", () -> new ArmorMaterial(
+    public static final Holder<ArmorMaterial> SPORE_ROOT_ARMOR_MATERIALS = ARMOR_MATERIALS.register("gemstone_armor_materials", () -> new ArmorMaterial(
             Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
                 map.put(ArmorItem.Type.HELMET, 2);
                 map.put(ArmorItem.Type.CHESTPLATE, 4);
                 map.put(ArmorItem.Type.LEGGINGS, 4);
                 map.put(ArmorItem.Type.BOOTS, 2);
             }),
-            15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.GELSTONE),
+            15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.SPORE_ROOT),
             List.of(new ArmorMaterial.Layer(Confluence.asResource("gemstone"))), 2.0F, 0.0F
     ));
     public static final Holder<ArmorMaterial> COLD_CRYSTAL_ARMOR_MATERIALS = ARMOR_MATERIALS.register("cold_crystal_armor_materials", () -> new ArmorMaterial(

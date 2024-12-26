@@ -16,12 +16,12 @@
         "a": {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "item": "confluence:gelstone"
+                "item": "confluence:spore_root"
             },
             "count": 2
         }
     },
     "result": {
-        "id": "confluence:gelstone_chestplate"
+        "id": "confluence:spore_root_chestplate"
     }
 }

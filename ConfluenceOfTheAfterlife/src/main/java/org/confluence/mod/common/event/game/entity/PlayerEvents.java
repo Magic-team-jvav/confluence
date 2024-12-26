@@ -73,11 +73,11 @@ public final class PlayerEvents {
     public static void rightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         Player player = event.getEntity();
         Level level = event.getLevel();
-        if (!(level instanceof ServerLevel) || player.isCrouching() || event.getItemStack().is(ModTags.Items.MINECART)) return;
+        if (player.isCrouching()) return;
         BlockPos blockPos = event.getPos();
         BlockState blockState = level.getBlockState(blockPos);
 
-        if (blockState.getBlock() instanceof BaseRailBlock railBlock) {
+        if (!level.isClientSide && !event.getItemStack().is(ModTags.Items.MINECART) && blockState.getBlock() instanceof BaseRailBlock railBlock) {
             ItemStack optionalItemStack = CuriosUtils.getSlot(player, "minecart", 0);
             player.swing(InteractionHand.MAIN_HAND, true);
             ItemStack itemStack = optionalItemStack == null ? ItemStack.EMPTY : optionalItemStack;
@@ -93,7 +93,10 @@ public final class PlayerEvents {
         }
 
         if (CommonConfigs.FLETCHING_MENU.get() && blockState.is(Blocks.FLETCHING_TABLE)) {
-            player.openMenu(new FletchingTableMenu.Provider(level, blockPos));
+            if (!level.isClientSide) {
+                player.swing(InteractionHand.MAIN_HAND, true);
+                player.openMenu(new FletchingTableMenu.Provider(level, blockPos));
+            }
             event.setCanceled(true);
         }
     }

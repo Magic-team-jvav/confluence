@@ -1567,10 +1567,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.NINJA_CHESTPLATE.get(), "忍者胸甲");
         add(ArmorItems.NINJA_LEGGINGS.get(), "忍者护腿");
         add(ArmorItems.NINJA_BOOTS.get(), "忍者靴");
-        add(ArmorItems.GELSTONE_HELMET.get(), "孢根头盔");
-        add(ArmorItems.GELSTONE_CHESTPLATE.get(), "孢根胸甲");
-        add(ArmorItems.GELSTONE_LEGGINGS.get(), "孢根护腿");
-        add(ArmorItems.GELSTONE_BOOTS.get(), "孢根靴");
+        add(ArmorItems.SPORE_ROOT_HELMET.get(), "孢根头盔");
+        add(ArmorItems.SPORE_ROOT_CHESTPLATE.get(), "孢根胸甲");
+        add(ArmorItems.SPORE_ROOT_LEGGINGS.get(), "孢根护腿");
+        add(ArmorItems.SPORE_ROOT_BOOTS.get(), "孢根靴");
         add(ArmorItems.COLD_CRYSTAL_HELMET.get(), "寒晶头盔");
         add(ArmorItems.COLD_CRYSTAL_CHESTPLATE.get(), "寒晶胸甲");
         add(ArmorItems.COLD_CRYSTAL_LEGGINGS.get(), "寒晶护腿");

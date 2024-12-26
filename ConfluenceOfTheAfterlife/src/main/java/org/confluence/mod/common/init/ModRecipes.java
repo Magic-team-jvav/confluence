@@ -109,6 +109,7 @@ public final class ModRecipes {
             registerMaterial(FoodItems.EBONY_KOI.get());
             registerMaterial(NatureBlocks.GLOWING_MUSHROOM.get().asItem());
             registerMaterial(FoodItems.STINKY_FISH.get());
+            registerMaterial(MaterialItems.AMBER.get());
 
 
             // 箭术
@@ -317,6 +318,13 @@ public final class ModRecipes {
                     FoodItems.STINKY_FISH.get(),
                     MaterialItems.DEATHWEED.get()
             }, PotionItems.STINK_POTION.toStack());
+            // 宝匣
+            registerMix(new Item[]{
+                    MaterialItems.AMBER.get(),
+                    MaterialItems.MOONGLOW.get(),
+                    MaterialItems.SHIVERTHORN.get(),
+                    MaterialItems.WATERLEAF.get()
+            }, PotionItems.CRATE_POTION.toStack());
         }
 
         private static void registerMaterial(Item material) {

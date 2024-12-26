@@ -1026,7 +1026,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.STAR_PETALS.get(), "星辰花瓣");
         add(MaterialItems.FLOATING_WHEAT_HEADS.get(), "飘飘麦");
         add(MaterialItems.WEAVING_CLOUD_COTTON.get(), "织云棉");
-        add(MaterialItems.CARRION.get(), "腐肉");
+        add(MaterialItems.ROTTEN_CHUNK.get(), "腐肉");
         add(MaterialItems.VERTEBRA.get(), "椎骨");
         add(MaterialItems.BLOOD_CLOT_POWDER.get(), "血凝粉末");
         add(MaterialItems.ROTTEN_BONE.get(), "腐蚀残骨");

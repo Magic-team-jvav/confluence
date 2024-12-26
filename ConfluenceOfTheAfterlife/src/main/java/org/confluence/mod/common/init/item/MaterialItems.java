@@ -75,7 +75,7 @@ public class MaterialItems {
     public static final DeferredItem<Item> FLOATING_WHEAT_HEADS = register("floating_wheat_heads");
     public static final DeferredItem<Item> FALLING_STAR = register("falling_star");
     public static final DeferredItem<Item> WEAVING_CLOUD_COTTON = register("weaving_cloud_cotton");
-    public static final DeferredItem<Item> CARRION = register("carrion");
+    public static final DeferredItem<Item> ROTTEN_CHUNK = register("rotten_chunk");
     public static final DeferredItem<Item> VERTEBRA = register("vertebra");
     public static final DeferredItem<Item> BLOOD_CLOT_POWDER = register("blood_clot_powder");
     public static final DeferredItem<Item> ROTTEN_BONE = register("rotten_bone");

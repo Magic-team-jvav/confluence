@@ -207,7 +207,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.STAR_PETALS.get(),
                 MaterialItems.FLOATING_WHEAT_HEADS.get(),
                 MaterialItems.WEAVING_CLOUD_COTTON.get(),
-                MaterialItems.CARRION.get(),
+                MaterialItems.ROTTEN_CHUNK.get(),
                 MaterialItems.VERTEBRA.get(),
 
                 NatureBlocks.EBONY_LOG_BLOCKS.getLeaves().asItem(),

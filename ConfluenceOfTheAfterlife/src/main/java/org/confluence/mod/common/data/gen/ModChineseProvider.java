@@ -14,7 +14,6 @@ public class ModChineseProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-
         add("config.jade.plugin_confluence.jade_network_component", "机械信息");
 
         add("creativetab.confluence.building_blocks", "汇流来世 | 建筑方块");
@@ -47,7 +46,6 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("info.confluence.bait", "鱼饵力: %s%%");
         add("info.confluence.network", "#%s 信号: %s");
-        add("info.confluence.potion_mana", "药水魔力: %s");
         add("info.confluence.respawn_time", "复活剩余时间: ");
         add("info.confluence.second", "秒");
 
@@ -60,8 +58,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("death.attack.boulder", "%1$s 被巨石均匀地涂抹在地上");
         add("death.attack.thron", "%1$s 发现自己成了刺猬");
 
-        add("selections.confluence.magic_conch", "回应海的召唤%s");
-        add("selections.confluence.demon_conch", "回应熔岩的召唤%s");
+        add("selections.confluence.magic_conch", "回应海的召唤[%s]");
+        add("selections.confluence.demon_conch", "回应熔岩的召唤[%s]");
 
 
         add("tooltip.item.confluence.adhesive_bandage.0", "对流血免疫");
@@ -400,8 +398,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("block.confluence.white_plastic_chair", "大排档凳子");
 
         add("resourcepack.terraria_art", "泰拉艺术");
-        add("resourcepack.mainstream_connected_ores", "主流：连接矿石材质");
-        add("resourcepack.ter_armor", "主流：泰拉盔甲样式材质");
+        add("resourcepack.terraria_armor", "泰拉盔甲样式材质");
 
         add("event.confluence.blood_moon", "血月正在升起...");
         add("event.confluence.meteorite", "陨石已落地！");

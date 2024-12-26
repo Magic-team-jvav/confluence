@@ -1,11 +1,18 @@
 package org.confluence.mod.common.event;
 
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.packs.PackLocationInfo;
+import net.minecraft.server.packs.PackSelectionConfig;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
@@ -15,6 +22,7 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.RegisterEvent;
+import net.neoforged.neoforgespi.locating.IModFile;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.advancement.ModAchievements;
@@ -37,12 +45,14 @@ import org.confluence.mod.network.c2s.HookThrowingPacketC2S;
 import org.confluence.mod.network.c2s.ReplaceMusicBoxItemPacketC2S;
 import org.confluence.mod.network.c2s.SwordShootingPacketC2S;
 import org.confluence.mod.network.s2c.*;
+import org.confluence.mod.util.ConfluenceResources;
 import org.confluence.phase_journey.api.PhaseJourneyEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 
 import java.util.Map;
+import java.util.Optional;
 
 import static org.confluence.mod.Confluence.MODID;
 
@@ -81,7 +91,18 @@ public final class ModEvents {
 
     @SubscribeEvent
     public static void addPackFinders(AddPackFindersEvent event) {
-
+        if (event.getPackType() == PackType.CLIENT_RESOURCES) {
+            IModFile modFile = ModList.get().getModFileById(MODID).getFile();
+            event.addRepositorySource(consumer -> {
+                Pack pack = Pack.readMetaAndCreate(
+                        new PackLocationInfo("confluence:terraria_art", Component.translatable("resourcepack.terraria_art"), PackSource.BUILT_IN, Optional.empty()),
+                        new ConfluenceResources(modFile, "resourcepacks/terraria_art"),
+                        PackType.CLIENT_RESOURCES,
+                        new PackSelectionConfig(false, Pack.Position.TOP, false)
+                );
+                if (pack != null) consumer.accept(pack);
+            });
+        }
     }
 
     @SubscribeEvent

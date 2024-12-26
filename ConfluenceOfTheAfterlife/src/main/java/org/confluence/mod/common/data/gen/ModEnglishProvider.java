@@ -31,7 +31,6 @@ public class ModEnglishProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-
         add("config.jade.plugin_confluence.jade_network_component", "Mechanical Info");
 
         add("creativetab.confluence.building_blocks", "Confluence | Buildings");
@@ -73,19 +72,17 @@ public class ModEnglishProvider extends LanguageProvider {
         add("info.confluence.respawn_time", "Respawn Time: ");
         add("info.confluence.second", "s");
 
-        add("selections.confluence.magic_conch", "Respond to the call of the sea%s");
-        add("selections.confluence.demon_conch", "Respond to the call of the lava%s");
-
         add("key.confluence.hook", "Throwing Hook");
 
         add("curios.identifier.hook", "Hook");
-
-        add("item.confluence.vanilla_potion", "Potion");
-        add("item.confluence.magic_conch.pos", "Pos: [%s, %s, %s]");
+        add("curios.identifier.minecart", "Minecart");
 
         add("death.attack.falling_star", "%1$s got a response from a meteor");
         add("death.attack.boulder", "%1$s  is crushed by boulder");
         add("death.attack.thron", "%1$s  discovered that he had become a hedgehog.");
+
+        add("selections.confluence.magic_conch", "Responding to the call of The Ocean [%s]");
+        add("selections.confluence.demon_conch", "Responding to the call of The Lava [%s]");
 
         add("tooltip.item.confluence.adhesive_bandage.0", "Immune to bleeding");
         add("tooltip.item.confluence.medicated_bandage.0", "Immune to poison and bleeding");
@@ -339,8 +336,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("block.confluence.base_chest_block.death_skyware", "§rDeath Skyware Chest");
 
         add("resourcepack.terraria_art", "Terraria Art");
-        add("resourcepack.mainstream_connected_ores", "Mainstream Connected Ores");
-        add("resourcepack.ter_armor", "Mainstream Terraria Armor Textures");
+        add("resourcepack.terraria_armor", "Terraria-Like Armor");
 
         add("event.confluence.blood_moon", "The Blood Moon is rising...");
         add("event.confluence.meteorite", "A meteorite has landed!");

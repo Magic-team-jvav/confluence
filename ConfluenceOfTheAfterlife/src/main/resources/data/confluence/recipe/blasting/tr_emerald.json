@@ -1,10 +1,10 @@
 {
     "type": "minecraft:blasting",
     "ingredient": {
-        "tag": "confluence:coal_ore_smelting"
+        "tag": "confluence:tr_emerald_ore_smelting"
     },
     "result": {
-        "id": "minecraft:coal"
+        "id": "confluence:tr_emerald"
     },
     "experience": 0.4,
     "cookingtime": 100,

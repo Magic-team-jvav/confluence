@@ -1,12 +1,12 @@
 {
     "type": "minecraft:blasting",
     "ingredient": {
-        "tag": "confluence:sapphire_ore_smelting"
+        "tag": "confluence:lead_ore_smelting"
     },
     "result": {
-        "id": "confluence:sapphire"
+        "id": "confluence:lead_ingot"
     },
-    "experience": 0.4,
+    "experience": 0.1,
     "cookingtime": 100,
     "group": "misc"
 }

@@ -1,10 +1,10 @@
 {
     "type": "minecraft:blasting",
     "ingredient": {
-        "tag": "confluence:iron_ore_smelting"
+        "tag": "confluence:copper_ore_smelting"
     },
     "result": {
-        "id": "minecraft:iron_ingot"
+        "id": "minecraft:copper_ingot"
     },
     "experience": 0.4,
     "cookingtime": 100,

@@ -1,10 +1,10 @@
 {
     "type": "minecraft:blasting",
     "ingredient": {
-        "tag": "confluence:platinum_ore_smelting"
+        "tag": "confluence:ruby_ore_smelting"
     },
     "result": {
-        "id": "confluence:platinum_ingot"
+        "id": "confluence:ruby"
     },
     "experience": 0.4,
     "cookingtime": 100,

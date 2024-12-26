@@ -26,11 +26,11 @@
 	path = TerraMoment
 	url = https://github.com/XiaoHuNao/TerraMoment
 	branch = neoforge-dev/1.21.1
-[submodule "ExtraWorldInvaded"]
-	path = ExtraWorldInvaded
-	url = https://github.com/XiaoHuNao/ExtraWorldInvaded
-	branch = neoforge-dev/1.21.1
 [submodule "TerraGuns"]
 	path = TerraGuns
 	url = https://github.com/XiaoHuNao/TerraGuns
+	branch = neoforge-dev/1.21.1
+[submodule "IsekaiInvaded"]
+	path = IsekaiInvaded
+	url = https://github.com/XiaoHuNao/IsekaiInvaded
 	branch = neoforge-dev/1.21.1

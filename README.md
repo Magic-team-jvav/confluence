@@ -10,7 +10,7 @@
 | [HeavenDestinyMoment](HeavenDestinyMoment)           | 提供各类事件机制API   | 是                     |
 | [PhaseJourney](PhaseJourney)                         | 提供各类阶游戏段机制API | 是                     |
 | [TerraMoment](TerraMoment)                           | 泰拉事件          | 依赖HeavenDestinyMoment |
-| [ExtraWorldInvaded](ExtraWorldInvaded)               | 多维度入侵事件       | 依赖HeavenDestinyMoment |
+| [IsekaiInvaded](IsekaiInvaded)               | 多维度入侵事件       | 依赖HeavenDestinyMoment |
 
 ## 构建项目
 

@@ -39,6 +39,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("generator.confluence.the_corruption", "腐化之地");
         add("generator.confluence.tr_crimson", "猩红之地");
 
+
+        add("item.confluence.afterlife_notes", "来世手记");
+
+        add("text.confluence.afterlife_notes", "  冒险者，新的天地充满了无尽的挑战与机遇，这本手记将帮助你了解这个世界的奥秘，指引你面对怪物和困境，只有不断探索，你才能发现更多的力量与宝藏，你的旅途才刚刚开始。                              —— 向导");
+
         add("worldgen.confluence.placing_traps", "正在放置机关");
         add("worldgen.confluence.generating_bees", "正在生成蜜蜂");
         add("worldgen.confluence.generating_wavy_caves", "正在生成皱曲洞穴");
@@ -1021,7 +1026,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.STAR_PETALS.get(), "星辰花瓣");
         add(MaterialItems.FLOATING_WHEAT_HEADS.get(), "飘飘麦");
         add(MaterialItems.WEAVING_CLOUD_COTTON.get(), "织云棉");
-        add(MaterialItems.CARRION.get(), "腐肉");
+        add(MaterialItems.ROTTEN_CHUNK.get(), "腐肉");
         add(MaterialItems.VERTEBRA.get(), "椎骨");
         add(MaterialItems.BLOOD_CLOT_POWDER.get(), "血凝粉末");
         add(MaterialItems.ROTTEN_BONE.get(), "腐蚀残骨");

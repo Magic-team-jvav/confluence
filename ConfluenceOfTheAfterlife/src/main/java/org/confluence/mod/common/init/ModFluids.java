@@ -16,6 +16,7 @@ import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.FluidInteractionRegistry;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.fluid.FluidTriple;
+import org.confluence.mod.common.init.block.CrateBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
@@ -122,7 +123,21 @@ public final class ModFluids {
         addItem(TACKLE_BOX.get(), HIGH_TEST_FISHING_LINE.get());
         addItem(STAR_CLOAK.get(), CHROMATIC_CLOAK.get());
         // todo 火把转化
-        // todo 匣子转化
+        // 匣子转化
+        addItem(CrateBlocks.PEARLWOOD_CRATE.get().asItem(), CrateBlocks.WOODEN_CRATE.get().asItem());
+        addItem(CrateBlocks.MITHRIL_CRATE.get().asItem(), CrateBlocks.IRON_CRATE.get().asItem());
+        addItem(CrateBlocks.TITANIUM_CRATE.get().asItem(), CrateBlocks.GOLDEN_CRATE.get().asItem());
+        addItem(CrateBlocks.THORNS_CRATE.get().asItem(), CrateBlocks.JUNGLE_CRATE.get().asItem());
+        addItem(CrateBlocks.SPACE_CRATE.get().asItem(), CrateBlocks.SKY_CRATE.get().asItem());
+        addItem(CrateBlocks.DEFACED_CRATE.get().asItem(), CrateBlocks.CORRUPT_CRATE.get().asItem());
+        addItem(CrateBlocks.BLOOD_CRATE.get().asItem(), CrateBlocks.TR_CRIMSON_CRATE.get().asItem());
+        addItem(CrateBlocks.PROVIDENTIAL_CRATE.get().asItem(), CrateBlocks.SACRED_CRATE.get().asItem());
+        addItem(CrateBlocks.FENCING_CRATE.get().asItem(), CrateBlocks.DUNGEON_CRATE.get().asItem());
+        addItem(CrateBlocks.CONIFEROUS_WOOD_CRATE.get().asItem(), CrateBlocks.FREEZE_CRATE.get().asItem());
+        addItem(CrateBlocks.ILLUSION_CRATE.get().asItem(), CrateBlocks.OASIS_CRATE.get().asItem());
+        addItem(CrateBlocks.HELL_STONE_CRATE.get().asItem(), CrateBlocks.OBSIDIAN_CRATE.get().asItem());
+        addItem(CrateBlocks.BEACH_CRATE.get().asItem(), CrateBlocks.OCEAN_CRATE.get().asItem());
+
         // 宝石转化
         addItem(MaterialItems.TOPAZ.get(), MaterialItems.TR_AMETHYST.get());
         addItem(MaterialItems.SAPPHIRE.get(), MaterialItems.TOPAZ.get());

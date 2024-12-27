@@ -102,9 +102,17 @@ public final class ModEvents {
                 );
                 if (pack != null) consumer.accept(pack);
             });
+            event.addRepositorySource(consumer -> {
+                Pack pack = Pack.readMetaAndCreate(
+                        new PackLocationInfo("confluence:terraria_armor", Component.translatable("resourcepack.terraria_armor"), PackSource.BUILT_IN, Optional.empty()),
+                        new ConfluenceResources(modFile, "resourcepacks/terraria_armor"),
+                        PackType.CLIENT_RESOURCES,
+                        new PackSelectionConfig(false, Pack.Position.TOP, false)
+                );
+                if (pack != null) consumer.accept(pack);
+            });
         }
     }
-
     @SubscribeEvent
     public static void register(RegisterEvent event) {
         FluidBuilder.register(event);

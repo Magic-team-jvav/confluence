@@ -1,0 +1,23 @@
+{
+    "type": "confluence:alchemy_table",
+    "base": {
+        "item": "confluence:bottled_water"
+    },
+    "ingredients": [
+        {
+            "item": "confluence:fireblossom"
+        },
+        {
+            "item": "confluence:deathweed"
+        },
+        {
+            "item": "confluence:blinkroot"
+        },
+        {
+            "item": "minecraft:feather"
+        }
+    ],
+    "result": {
+        "id": "confluence:gravitation_potion"
+    }
+}

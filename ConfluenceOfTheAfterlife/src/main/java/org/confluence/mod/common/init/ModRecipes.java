@@ -178,7 +178,7 @@ public final class ModRecipes {
                     MaterialItems.WATERLEAF.get(),
                     BaitItems.LADYBUG.get(),
                     MaterialItems.PEARL.get()
-            }, PotionItems.GREATER_LUCK_POTION.toStack());
+            }, PotionItems.LESSER_LUCK_POTION.toStack());
             // 拾心
             registerMix(new Item[]{
                     FoodItems.SCARLET_TIGER_FISH.get(),

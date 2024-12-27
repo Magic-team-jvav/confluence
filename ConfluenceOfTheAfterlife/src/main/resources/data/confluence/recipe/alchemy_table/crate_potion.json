@@ -1,0 +1,23 @@
+{
+    "type": "confluence:alchemy_table",
+    "base": {
+        "item": "confluence:bottled_water"
+    },
+    "ingredients": [
+        {
+            "item": "confluence:amber"
+        },
+        {
+            "item": "confluence:moonglow"
+        },
+        {
+            "item": "confluence:shiverthorn"
+        },
+        {
+            "item": "confluence:waterleaf"
+        }
+    ],
+    "result": {
+        "id": "confluence:crate_potion"
+    }
+}

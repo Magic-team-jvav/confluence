@@ -1,0 +1,17 @@
+{
+    "type": "confluence:alchemy_table",
+    "base": {
+        "item": "confluence:bottled_water"
+    },
+    "ingredients": [
+        {
+            "item": "confluence:blinkroot"
+        },
+        {
+            "item": "minecraft:cactus"
+        }
+    ],
+    "result": {
+        "id": "confluence:thorns_potion"
+    }
+}

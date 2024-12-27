@@ -1,0 +1,17 @@
+{
+    "type": "confluence:alchemy_table",
+    "base": {
+        "item": "confluence:bottled_water"
+    },
+    "ingredients": [
+        {
+            "item": "confluence:waterleaf"
+        },
+        {
+            "item": "minecraft:fire_coral"
+        }
+    ],
+    "result": {
+        "id": "confluence:gills_potion"
+    }
+}

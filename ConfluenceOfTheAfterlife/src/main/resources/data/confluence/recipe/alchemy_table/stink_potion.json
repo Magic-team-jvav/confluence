@@ -1,0 +1,17 @@
+{
+    "type": "confluence:alchemy_table",
+    "base": {
+        "item": "confluence:bottled_water"
+    },
+    "ingredients": [
+        {
+            "item": "confluence:stinky_fish"
+        },
+        {
+            "item": "confluence:deathweed"
+        }
+    ],
+    "result": {
+        "id": "confluence:stink_potion"
+    }
+}

@@ -1197,7 +1197,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.ENCUMBERING_STONE.get(), "负重石");
         add(ConsumableItems.SUSPICIOUS_LOOKING_EYE.get(), "可疑眼球");
         add(ConsumableItems.SLIME_CROWN.get(), "史莱姆皇冠");
-        add(FunctionalBlocks.STONE_PRESSURE_PLATE.get(), "石质=头压力板");
+        add(FunctionalBlocks.STONE_PRESSURE_PLATE.get(), "石质压力板");
 
         // 杂项
         add(ConsumableItems.BOMB.get(), "炸弹");

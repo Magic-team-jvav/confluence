@@ -1,0 +1,17 @@
+{
+    "type": "confluence:alchemy_table",
+    "base": {
+        "item": "confluence:bottled_water"
+    },
+    "ingredients": [
+        {
+            "item": "confluence:armored_cave_fish"
+        },
+        {
+            "item": "confluence:blinkroot"
+        }
+    ],
+    "result": {
+        "id": "confluence:endurance_potion"
+    }
+}

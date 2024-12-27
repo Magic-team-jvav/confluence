@@ -1,0 +1,24 @@
+{
+    "type": "confluence:alchemy_table",
+    "base": {
+        "item": "confluence:bottled_water"
+    },
+    "ingredients": [
+        {
+            "item": "confluence:flashfin_koi"
+        },
+        {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:obsidian_fish"
+            },
+            "count": 2
+        },
+        {
+            "item": "confluence:fireblossom"
+        }
+    ],
+    "result": {
+        "id": "confluence:inferno_potion"
+    }
+}

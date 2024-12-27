@@ -53,7 +53,7 @@ public class AlchemyTableBlock extends HorizontalDirectionalBlock {
 
     public AlchemyTableBlock(Properties properties) {
         super(properties);
-        registerDefaultState(stateDefinition.any().setValue(StateProperties.FOUR_PART, StateProperties.VerticalFourPart.BASE).setValue(FACING, Direction.NORTH));
+        registerDefaultState(stateDefinition.any().setValue(StateProperties.VERTICAL_FOUR_PART, StateProperties.VerticalFourPart.BASE).setValue(FACING, Direction.NORTH));
     }
 
     @Override
@@ -63,7 +63,7 @@ public class AlchemyTableBlock extends HorizontalDirectionalBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(StateProperties.FOUR_PART, FACING);
+        builder.add(StateProperties.VERTICAL_FOUR_PART, FACING);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class AlchemyTableBlock extends HorizontalDirectionalBlock {
     @Override
     public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
         int index = pState.getValue(FACING).get2DDataValue();
-        return switch (pState.getValue(StateProperties.FOUR_PART)) {
+        return switch (pState.getValue(StateProperties.VERTICAL_FOUR_PART)) {
             case BASE -> BASE_SHAPES[index];
             case RIGHT -> RIGHT_SHAPES[index];
             case UP -> UP_SHAPES[index];
@@ -96,9 +96,9 @@ public class AlchemyTableBlock extends HorizontalDirectionalBlock {
     public void setPlacedBy(Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
         if (!pLevel.isClientSide) {
             BlockPos relativePos = pPos.relative(StateProperties.VerticalFourPart.getConnectedDirection(pState));
-            pLevel.setBlockAndUpdate(relativePos, defaultBlockState().setValue(StateProperties.FOUR_PART, StateProperties.VerticalFourPart.RIGHT).setValue(FACING, pState.getValue(FACING)));
-            pLevel.setBlockAndUpdate(pPos.above(), defaultBlockState().setValue(StateProperties.FOUR_PART, StateProperties.VerticalFourPart.UP).setValue(FACING, pState.getValue(FACING)));
-            pLevel.setBlockAndUpdate(relativePos.above(), defaultBlockState().setValue(StateProperties.FOUR_PART, StateProperties.VerticalFourPart.RIGHT_UP).setValue(FACING, pState.getValue(FACING)));
+            pLevel.setBlockAndUpdate(relativePos, defaultBlockState().setValue(StateProperties.VERTICAL_FOUR_PART, StateProperties.VerticalFourPart.RIGHT).setValue(FACING, pState.getValue(FACING)));
+            pLevel.setBlockAndUpdate(pPos.above(), defaultBlockState().setValue(StateProperties.VERTICAL_FOUR_PART, StateProperties.VerticalFourPart.UP).setValue(FACING, pState.getValue(FACING)));
+            pLevel.setBlockAndUpdate(relativePos.above(), defaultBlockState().setValue(StateProperties.VERTICAL_FOUR_PART, StateProperties.VerticalFourPart.RIGHT_UP).setValue(FACING, pState.getValue(FACING)));
         }
     }
 
@@ -122,7 +122,7 @@ public class AlchemyTableBlock extends HorizontalDirectionalBlock {
         BlockState air = Blocks.AIR.defaultBlockState();
         BlockPos relative = pPos.relative(StateProperties.VerticalFourPart.getConnectedDirection(pState));
         pLevel.setBlockAndUpdate(relative, air);
-        if (pState.getValue(StateProperties.FOUR_PART).isUpper()) {
+        if (pState.getValue(StateProperties.VERTICAL_FOUR_PART).isUpper()) {
             pLevel.setBlockAndUpdate(pPos.below(), air);
             pLevel.setBlockAndUpdate(relative.below(), air);
         } else {

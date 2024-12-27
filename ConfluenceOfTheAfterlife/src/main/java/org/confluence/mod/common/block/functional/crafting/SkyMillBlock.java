@@ -149,7 +149,8 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
 
         @Override
         public <R extends Recipe<?>> boolean matches(R recipe) {
-            ItemStack resultItem = recipe.getResultItem(null);
+            if (level == null) return false;
+            ItemStack resultItem = recipe.getResultItem(level.registryAccess());
             if (resultItem.is(NatureBlocks.SNOW_CLOUD_BLOCK.asItem())) {
                 return isBiome(holder -> holder.is(Tags.Biomes.IS_COLD_OVERWORLD));
             }
@@ -157,7 +158,7 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
                 FluidType water = NeoForgeMod.WATER_TYPE.value();
                 return anyMatch(blockState -> blockState.getFluidState().getType().getFluidType() == water, 2);
             }
-            return false;
+            return true;
         }
     }
 }

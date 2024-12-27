@@ -32,6 +32,8 @@
         "entity.VillagerMixin",
         "integration.terra_curio.AccessoriesAttachmentMixin",
         "integration.terra_curio.StarClockEntityMixin",
+        "integration.terra_curio.WorkshopBlockMixin",
+        "integration.terra_curio.WorkshopMenuMixin",
         "item.BowItemMixin",
         "item.FishingRodItemMixin",
         "item.HoneyBottleItemMixin",

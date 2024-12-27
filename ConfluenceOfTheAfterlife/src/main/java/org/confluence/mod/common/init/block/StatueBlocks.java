@@ -53,7 +53,7 @@ public class StatueBlocks {
     public static final Supplier<StatueBlock> Y_STATUE = register("y_statue");
     public static final Supplier<StatueBlock> Z_STATUE = register("z_statue");
 
-    public static final Supplier<BehaviourStatueBlock> ARMED_ZOMBIE_STATUE = registerBehaviour("armed_zombie_statue", new BehaviourStatueBlock.SummonBehaviour((level, pos) -> {
+    public static final Supplier<BehaviourStatueBlock> ARMED_ZOMBIE_STATUE = registerBehaviour("armed_zombie_statue", new BehaviourStatueBlock.SummonBehaviour(false, (level, pos) -> {
         Zombie zombie = new Zombie(level);
         zombie.setPos(pos);
         zombie.setItemInHand(InteractionHand.MAIN_HAND, SwordItems.ZOMBIE_ARM.toStack());

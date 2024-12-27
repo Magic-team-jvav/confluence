@@ -1,11 +1,11 @@
 package org.confluence.mod.common.event.game.entity;
 
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.server.level.ServerLevel;
 import com.google.common.collect.Streams;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -221,6 +221,13 @@ public final class LivingEntityEvents {
             if (PrefixUtils.canInit(to)) {
                 PrefixUtils.initPrefix(living.getRandom(), to);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void livingDrops(LivingDropsEvent event) {
+        if (event.getEntity().getTags().contains(ModUtils.NO_DROPS_TAG)) {
+            event.setCanceled(true);
         }
     }
 }

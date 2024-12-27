@@ -137,9 +137,11 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
     }
 
     public static class SummonBehaviour extends Behaviour {
+        private final boolean noDrops;
         private final BiFunction<Level, Vec3, net.minecraft.world.entity.Entity> factory;
 
-        public SummonBehaviour(BiFunction<Level, Vec3, net.minecraft.world.entity.Entity> factory) {
+        public SummonBehaviour(boolean noDrops, BiFunction<Level, Vec3, net.minecraft.world.entity.Entity> factory) {
+            this.noDrops = noDrops;
             this.factory = factory;
         }
 
@@ -155,6 +157,9 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
                 BlockPos relative = pPos.relative(Util.getRandom(ModUtils.HORIZONTAL, pLevel.random));
                 net.minecraft.world.entity.Entity entity = factory.apply(pLevel, relative.getCenter());
                 pLevel.addFreshEntity(entity);
+                if (noDrops) {
+                    entity.addTag(ModUtils.NO_DROPS_TAG);
+                }
                 entities.add(entity.getUUID());
                 pLevel.setBlockAndUpdate(pPos, pState.setValue(StateProperties.DRIVE, true));
                 pLevel.scheduleTick(pPos, pState.getBlock(), 20);

@@ -55,6 +55,7 @@ import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUT
 public final class ModUtils {
     public static final Direction[] HORIZONTAL = new Direction[]{Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH};
     public static final Direction[] DIRECTIONS = Direction.values();
+    public static final String NO_DROPS_TAG = "confluence:no_drops";
     private static final Set<String> CONFLUENCE_NAMESPACES = Set.of(Confluence.MODID, TerraCurio.MODID, TerraEntity.MODID, TerraGuns.MODID);
 
     public static void createItemEntity(ItemStack itemStack, double x, double y, double z, Level level) {

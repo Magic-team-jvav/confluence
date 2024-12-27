@@ -9,10 +9,13 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.Vec3;
@@ -46,6 +49,11 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(StateProperties.DRIVE);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+        return behaviour.getStateForPlacement(pContext, super.getStateForPlacement(pContext));
     }
 
     @Override
@@ -84,16 +92,17 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
 
     @Override
     public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
-        return new Entity(pos, state);
+        return behaviour.newBlockEntity(pos, state);
     }
 
     @Override
-    protected void tick(BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
-        if (state.getValue(StateProperties.DRIVE)) {
-            BlockState state1 = state.setValue(StateProperties.DRIVE, false);
-            level.setBlockAndUpdate(pos, state1);
-            level.setBlockAndUpdate(pos.relative(StateProperties.VerticalTwoPart.getConnectedDirection(state)), state1);
-        }
+    protected void tick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+        behaviour.tick(state, level, pos, random);
+    }
+
+    @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        return state.getValue(StateProperties.VERTICAL_TWO_PART).isBase() ? ModUtils.getTicker(blockEntityType, StatueBlocks.BLOCK_ENTITY.get(), behaviour::entityTick) : null;
     }
 
     public static class Entity extends AbstractMechanicalBlock.Entity {
@@ -131,9 +140,27 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
     }
 
     public static class Behaviour {
+        public @Nullable Entity newBlockEntity(BlockPos pos, BlockState state) {
+            return new Entity(pos, state);
+        }
+
         public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {}
 
         public void onUnExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {}
+
+        public void tick(BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+            if (state.getValue(StateProperties.DRIVE)) {
+                BlockState state1 = state.setValue(StateProperties.DRIVE, false);
+                level.setBlockAndUpdate(pos, state1);
+                level.setBlockAndUpdate(pos.relative(StateProperties.VerticalTwoPart.getConnectedDirection(state)), state1);
+            }
+        }
+
+        public void entityTick(Level level, BlockPos pos, BlockState blockState, Entity entity) {}
+
+        public BlockState getStateForPlacement(BlockPlaceContext pContext, BlockState original) {
+            return original;
+        }
     }
 
     public static class SummonBehaviour extends Behaviour {

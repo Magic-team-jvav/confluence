@@ -1,17 +1,28 @@
 package org.confluence.mod.common.init.block;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.block.common.StatueBlock;
 import org.confluence.mod.common.block.functional.BehaviourStatueBlock;
+import org.confluence.mod.common.block.functional.network.INetworkEntity;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.SwordItems;
 
@@ -59,6 +70,31 @@ public class StatueBlocks {
         zombie.setItemInHand(InteractionHand.MAIN_HAND, SwordItems.ZOMBIE_ARM.toStack());
         return zombie;
     }));
+    public static final Supplier<BehaviourStatueBlock> BAST_STATUE = registerBehaviour("bast_statue", new BehaviourStatueBlock.Behaviour() {
+        @Override
+        public void entityTick(Level level, BlockPos pos, BlockState blockState, BehaviourStatueBlock.Entity entity) {
+            if (!level.isClientSide && level.getGameTime() % 400 == 0 && blockState.getValue(StateProperties.DRIVE)) {
+                Vec3 center = pos.getCenter();
+                for (Player player : level.players()) {
+                    if (player.distanceToSqr(center) < 1024.0 && !player.hasEffect(ModEffects.THE_BAST_DEFENSE)) {
+                        player.addEffect(new MobEffectInstance(ModEffects.THE_BAST_DEFENSE, 420));
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
+            if (pState.getValue(StateProperties.VERTICAL_TWO_PART).isBase()) {
+                pLevel.setBlockAndUpdate(pPos, pState.cycle(StateProperties.DRIVE));
+            }
+        }
+
+        @Override
+        public BlockState getStateForPlacement(BlockPlaceContext pContext, BlockState original) {
+            return original.setValue(StateProperties.DRIVE, true);
+        }
+    });
 
     public static final Supplier<BlockEntityType<BehaviourStatueBlock.Entity>> BLOCK_ENTITY = BLOCK_ENTITIES.register("behaviour_statue_entity", () -> {
         BehaviourStatueBlock[] validBlocks = BEHAVIOUR_STATUES.stream().map(Supplier::get).toArray(BehaviourStatueBlock[]::new);

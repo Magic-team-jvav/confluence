@@ -17,7 +17,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.mixed.IWorldGenRegion;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -47,9 +46,8 @@ public class WithDetonatorFeature extends Feature<WithDetonatorFeature.Config> {
         carveRoom(bound, level, center);
 
         BlockPos detonatorPos = placeDetonator(random, bound, i, k, center, level);
-        IWorldGenRegion region = (IWorldGenRegion) level;
-        region.confluence$setBlock(detonatorPos, FunctionalBlocks.DETONATOR.get().defaultBlockState(), 3);
-        region.confluence$setBlock(origin, FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get().defaultBlockState(), 3);
+        level.setBlock(detonatorPos, FunctionalBlocks.DETONATOR.get().defaultBlockState(), 3);
+        level.setBlock(origin, FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get().defaultBlockState(), 3);
 
         INetworkEntity tnt = ModFeatures.getNetworkEntity(level, origin);
         INetworkEntity detonator = ModFeatures.getNetworkEntity(level, detonatorPos);

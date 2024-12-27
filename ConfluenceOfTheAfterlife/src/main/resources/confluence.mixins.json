@@ -34,6 +34,7 @@
         "integration.terra_curio.StarClockEntityMixin",
         "integration.terra_curio.WorkshopBlockMixin",
         "integration.terra_curio.WorkshopMenuMixin",
+        "integration.terra_curio.WorkshopRecipeMixin",
         "item.BowItemMixin",
         "item.FishingRodItemMixin",
         "item.HoneyBottleItemMixin",
@@ -41,9 +42,6 @@
         "item.ItemUtilsMixin",
         "item.PotionItemMixin",
         "item.ProjectileWeaponItemMixin",
-        "level.ImposterProtoChunkMixin",
-        "level.ServerLevelMixin",
-        "level.WorldGenRegionMixin",
         "level.WorldOptionsMixin"
     ],
     "client": [

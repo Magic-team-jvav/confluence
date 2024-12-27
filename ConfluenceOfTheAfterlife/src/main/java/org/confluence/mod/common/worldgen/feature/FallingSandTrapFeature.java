@@ -18,7 +18,6 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.mixed.IWorldGenRegion;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -41,18 +40,17 @@ public class FallingSandTrapFeature extends Feature<FallingSandTrapFeature.Confi
 
             int radius = config.radius;
             int ceiling = range.ceiling();
-            IWorldGenRegion region = (IWorldGenRegion) level;
 
             int width = radius * 2 + 1;
             BlockState fragile = FunctionalBlocks.MECHANICAL_FRAGILE_SANDSTONE.get().defaultBlockState();
             BlockPos.MutableBlockPos mutable = origin.mutable().setY(ceiling).move(-radius, 0, -radius);
             BlockPos supportingPos = mutable.immutable();
-            region.confluence$setBlock(supportingPos, fragile, Block.UPDATE_ALL);
+            level.setBlock(supportingPos, fragile, Block.UPDATE_ALL);
             INetworkEntity fragileEntity = ModFeatures.getNetworkEntity(level, supportingPos);
             if (fragileEntity == null) return false;
             BlockPos.MutableBlockPos mutable1 = mutable.immutable().mutable();
             for (int z = 1; z < width; z++) {
-                region.confluence$setBlock(mutable1.move(0, 0, 1), fragile, Block.UPDATE_ALL);
+                level.setBlock(mutable1.move(0, 0, 1), fragile, Block.UPDATE_ALL);
                 INetworkEntity fragileEntity1 = ModFeatures.getNetworkEntity(level, mutable1);
                 if (fragileEntity1 != null) {
                     fragileEntity1.connectTo(0xFFFF00, supportingPos, fragileEntity);
@@ -60,14 +58,14 @@ public class FallingSandTrapFeature extends Feature<FallingSandTrapFeature.Confi
             }
 
             for (int x = 1; x < width; x++) {
-                region.confluence$setBlock(mutable.move(1, 0, 0), fragile, Block.UPDATE_ALL);
+                level.setBlock(mutable.move(1, 0, 0), fragile, Block.UPDATE_ALL);
                 INetworkEntity fragileEntity1 = ModFeatures.getNetworkEntity(level, mutable);
                 if (fragileEntity1 != null) {
                     fragileEntity1.connectTo(0xFFFF00, supportingPos, fragileEntity);
                 }
                 mutable1 = mutable.immutable().mutable();
                 for (int z = 1; z < width; z++) {
-                    region.confluence$setBlock(mutable1.move(0, 0, 1), fragile, Block.UPDATE_ALL);
+                    level.setBlock(mutable1.move(0, 0, 1), fragile, Block.UPDATE_ALL);
                     fragileEntity1 = ModFeatures.getNetworkEntity(level, mutable1);
                     if (fragileEntity1 != null) {
                         fragileEntity1.connectTo(0xFFFF00, supportingPos, fragileEntity);
@@ -81,7 +79,7 @@ public class FallingSandTrapFeature extends Feature<FallingSandTrapFeature.Confi
             }
 
             BlockPos platePos = supportPos.above();
-            region.confluence$setBlock(platePos, ModFeatures.getPressurePlate(level, supportPos), Block.UPDATE_ALL);
+            level.setBlock(platePos, ModFeatures.getPressurePlate(level, supportPos), Block.UPDATE_ALL);
             INetworkEntity plateEntity = ModFeatures.getNetworkEntity(level, platePos);
             if (plateEntity != null) {
                 fragileEntity.connectTo(0xFFFF00, platePos, plateEntity);

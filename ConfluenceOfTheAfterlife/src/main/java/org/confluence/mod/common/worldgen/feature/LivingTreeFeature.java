@@ -11,7 +11,6 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import org.confluence.mod.mixed.IWorldGenRegion;
 import org.confluence.mod.util.ModUtils;
 import org.joml.Vector3d;
 
@@ -24,7 +23,6 @@ public class LivingTreeFeature extends Feature<LivingTreeFeature.Config> {
     }
 
     private static void placeBlock(List<Vector3d> posListToPlace, double rMax, double rMin, BlockState blockStateToPlace, WorldGenLevel level, double rPer, double placePer, boolean repAir, FeaturePlaceContext<Config> context) {
-        IWorldGenRegion worldGenRegion = (IWorldGenRegion) level;
         RandomSource random = context.random();
         int rCheck = (int) (rMax + 2.0);
 
@@ -45,7 +43,7 @@ public class LivingTreeFeature extends Feature<LivingTreeFeature.Config> {
                                 for (int trunkBlockPosXli = trunkBlockPosX2; trunkBlockPosXli <= trunkBlockPosX1; trunkBlockPosXli++) {
                                     BlockPos trunkBlockPosPlace = new BlockPos(trunkBlockPosXli, trunkBlockPosY, trunkBlockPosZ);
                                     if (((double) random.nextInt(10001) / 10000) <= placePer && (level.getBlockState(trunkBlockPosPlace).isAir() || repAir) && !(level.getBlockState(trunkBlockPosPlace) == blockStateToPlace)) {
-                                        worldGenRegion.confluence$setBlock(trunkBlockPosPlace, blockStateToPlace, 2);
+                                        level.setBlock(trunkBlockPosPlace, blockStateToPlace, 2);
                                     }
                                 }
                             }
@@ -95,7 +93,6 @@ public class LivingTreeFeature extends Feature<LivingTreeFeature.Config> {
     }
 
     private static void placeRoot(BlockPos blockPos, FeaturePlaceContext<Config> context, double rWoodMax, double rWoodMin, double rAirMax, double rAirMin, BlockState blockStateForWood, BlockState blockStateForAir, WorldGenLevel level) {
-        IWorldGenRegion worldGenRegion = (IWorldGenRegion) level;
         int rCheck = (int) rWoodMax + 2;
         int lengthWood = 40 + context.random().nextInt(20);
         int lengthAir = 5 + lengthWood;
@@ -109,11 +106,11 @@ public class LivingTreeFeature extends Feature<LivingTreeFeature.Config> {
                     if (xToPlace != xToPlace2) {
                         for (int xPlaceLi = xToPlace2; xPlaceLi <= xToPlace; xPlaceLi++) {
                             BlockPos posToPlaceWood = new BlockPos(blockPos.getX() + xPlaceLi, blockPos.getY() - 1 - yToPlace, blockPos.getZ() + zToPlace);
-                            worldGenRegion.confluence$setBlock(posToPlaceWood, blockStateForWood, 2);
+                            level.setBlock(posToPlaceWood, blockStateForWood, 2);
                         }
                     } else {
                         BlockPos posToPlaceAir = new BlockPos(blockPos.getX() + xToPlace, blockPos.getY() - 1 - yToPlace, blockPos.getZ() + zToPlace);
-                        worldGenRegion.confluence$setBlock(posToPlaceAir, blockStateForWood, 2);
+                        level.setBlock(posToPlaceAir, blockStateForWood, 2);
                     }
                 }
             }
@@ -128,11 +125,11 @@ public class LivingTreeFeature extends Feature<LivingTreeFeature.Config> {
                     if (xToPlace != xToPlace2) {
                         for (int xPlaceLi = xToPlace2; xPlaceLi <= xToPlace; xPlaceLi++) {
                             BlockPos posToPlaceAir = new BlockPos(blockPos.getX() + xPlaceLi, blockPos.getY() - 1 - yToPlace, blockPos.getZ() + zToPlace);
-                            worldGenRegion.confluence$setBlock(posToPlaceAir, blockStateForAir, 2);
+                            level.setBlock(posToPlaceAir, blockStateForAir, 2);
                         }
                     } else {
                         BlockPos posToPlaceAir = new BlockPos(blockPos.getX() + xToPlace, blockPos.getY() - 1 - yToPlace, blockPos.getZ() + zToPlace);
-                        worldGenRegion.confluence$setBlock(posToPlaceAir, blockStateForAir, 2);
+                        level.setBlock(posToPlaceAir, blockStateForAir, 2);
                     }
                 }
             }
@@ -145,7 +142,6 @@ public class LivingTreeFeature extends Feature<LivingTreeFeature.Config> {
         int bl = random.nextBoolean() ? 1 : -1;
         Config config = pContext.config();
         WorldGenLevel level = pContext.level();
-        IWorldGenRegion worldGenRegion = (IWorldGenRegion) level;
         BlockPos trunkBlockPos = pContext.origin();
         BlockPos leavesBlockPos = pContext.origin();
         BlockState trunkBlockState = config.trunk().getState(random, trunkBlockPos);
@@ -236,11 +232,11 @@ public class LivingTreeFeature extends Feature<LivingTreeFeature.Config> {
                             if (trunkBlockPosX1 == trunkBlockPosX2) {
                                 trunkBlockPosX = trunkBlockPosX1;
                                 BlockPos trunkBlockPosPlace = new BlockPos(trunkBlockPosX, trunkBlockPosY, trunkBlockPosZ);
-                                worldGenRegion.confluence$setBlock(trunkBlockPosPlace, trunkBlockState, 2);
+                                level.setBlock(trunkBlockPosPlace, trunkBlockState, 2);
                             } else {
                                 for (int trunkBlockPosXli = trunkBlockPosX2; trunkBlockPosXli <= trunkBlockPosX1; trunkBlockPosXli++) {
                                     BlockPos trunkBlockPosPlace = new BlockPos(trunkBlockPosXli, trunkBlockPosY, trunkBlockPosZ);
-                                    worldGenRegion.confluence$setBlock(trunkBlockPosPlace, Blocks.AIR.defaultBlockState(), 2);
+                                    level.setBlock(trunkBlockPosPlace, Blocks.AIR.defaultBlockState(), 2);
                                 }
                             }
                         }
@@ -254,10 +250,10 @@ public class LivingTreeFeature extends Feature<LivingTreeFeature.Config> {
             //BlockPos trunkBlockPosPlace3 = new BlockPos(trunkBlockPos.getX(), trunkBlockPos.getY() + 3, trunkBlockPos.getZ() + 3);
             //BlockPos trunkBlockPosPlace4 = new BlockPos(trunkBlockPos.getX(), trunkBlockPos.getY() + 3, trunkBlockPos.getZ() - 3);
 
-            //worldGenRegion.confluence$setBlock(trunkBlockPosPlace1, Blocks.WALL_TORCH.defaultBlockState().setValue(DirectionalBlock.FACING, Direction.EAST), 2);
-            //worldGenRegion.confluence$setBlock(trunkBlockPosPlace2, Blocks.WALL_TORCH.defaultBlockState().setValue(DirectionalBlock.FACING, Direction.WEST), 2);
-            //worldGenRegion.confluence$setBlock(trunkBlockPosPlace3, Blocks.WALL_TORCH.defaultBlockState().setValue(DirectionalBlock.FACING, Direction.SOUTH), 2);
-            //worldGenRegion.confluence$setBlock(trunkBlockPosPlace4, Blocks.WALL_TORCH.defaultBlockState().setValue(DirectionalBlock.FACING, Direction.NORTH), 2);
+            //level.setBlock(trunkBlockPosPlace1, Blocks.WALL_TORCH.defaultBlockState().setValue(DirectionalBlock.FACING, Direction.EAST), 2);
+            //level.setBlock(trunkBlockPosPlace2, Blocks.WALL_TORCH.defaultBlockState().setValue(DirectionalBlock.FACING, Direction.WEST), 2);
+            //level.setBlock(trunkBlockPosPlace3, Blocks.WALL_TORCH.defaultBlockState().setValue(DirectionalBlock.FACING, Direction.SOUTH), 2);
+            //level.setBlock(trunkBlockPosPlace4, Blocks.WALL_TORCH.defaultBlockState().setValue(DirectionalBlock.FACING, Direction.NORTH), 2);
 
             return true;
         }

@@ -12,7 +12,6 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import org.confluence.mod.common.init.ModFeatures;
-import org.confluence.mod.mixed.IWorldGenRegion;
 
 public class SimpleBlockNBTFeature extends Feature<SimpleBlockNBTFeature.Config> {
     public SimpleBlockNBTFeature(Codec<Config> pCodec) {
@@ -26,7 +25,7 @@ public class SimpleBlockNBTFeature extends Feature<SimpleBlockNBTFeature.Config>
         BlockPos blockPos = pContext.origin();
         BlockState blockState = config.toPlace().getState(pContext.random(), blockPos);
         if (blockState.canSurvive(level, blockPos)) {
-            ((IWorldGenRegion) level).confluence$setBlock(blockPos, blockState, 2);
+            level.setBlock(blockPos, blockState, 3);
             BlockEntity blockEntity = ModFeatures.getBlockEntity(level, blockPos);
             if (blockEntity != null) blockEntity.loadWithComponents(config.nbt, level.registryAccess());
             return true;

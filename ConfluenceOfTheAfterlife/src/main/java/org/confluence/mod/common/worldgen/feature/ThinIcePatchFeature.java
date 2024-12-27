@@ -15,7 +15,6 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.mixed.IWorldGenRegion;
 
 import java.util.HashSet;
 import java.util.function.Predicate;
@@ -50,7 +49,6 @@ public class ThinIcePatchFeature extends Feature<ThinIcePatchFeature.Config> {
     }
 
     private boolean carvePatch(Config config, WorldGenLevel level, BlockPos.MutableBlockPos mutablePos, int minY) {
-        IWorldGenRegion worldGenRegion = (IWorldGenRegion) level;
         int radiusSqr = config.radius * config.radius;
         int ox = mutablePos.getX();
         int oy = mutablePos.getY();
@@ -77,8 +75,8 @@ public class ThinIcePatchFeature extends Feature<ThinIcePatchFeature.Config> {
         if ((air.size() + ice.size()) / (config.maxDepth * config.radius * config.radius * Mth.PI) > config.successRatio) {
             BlockState airState = Blocks.AIR.defaultBlockState();
             BlockState iceState = NatureBlocks.THIN_ICE_BLOCK.get().defaultBlockState();
-            air.forEach(blockPos -> worldGenRegion.confluence$setBlock(blockPos, airState, 2));
-            ice.forEach(blockPos -> worldGenRegion.confluence$setBlock(blockPos, iceState, 2));
+            air.forEach(blockPos -> level.setBlock(blockPos, airState, 3));
+            ice.forEach(blockPos -> level.setBlock(blockPos, iceState, 3));
             return true;
         }
         return false;

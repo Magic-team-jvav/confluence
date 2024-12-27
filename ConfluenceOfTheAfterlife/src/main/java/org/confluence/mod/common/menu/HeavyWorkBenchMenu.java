@@ -5,12 +5,17 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.DataSlot;
+import net.minecraft.world.inventory.ResultContainer;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import org.confluence.mod.common.block.functional.crafting.HeavyWorkBenchBlock;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.recipe.EnvironmentRecipeInput;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 import org.confluence.terra_curio.common.menu.AmountResultSlot;
 import org.confluence.terra_curio.common.menu.RecipeInputContainer;
@@ -28,21 +33,22 @@ public class HeavyWorkBenchMenu extends AbstractContainerMenu {
     public static final int USE_ROW_SLOT_START = 44;
     public static final int USE_ROW_SLOT_END = 53;
     public final ToggleAmountResultSlot resultSlot;
-    private final ContainerLevelAccess access;
+    private final HeavyWorkBenchBlock.LevelAccess access;
     private final Player player;
-    private final RecipeInputContainer input = new RecipeInputContainer(this, 16);
+    private final RecipeInputContainer input;
     private final ResultContainer result = new ResultContainer();
     private final DataSlot selectedRecipeIndex = DataSlot.standalone();
     private List<RecipeHolder<HeavyWorkBenchRecipe>> recipes = new ArrayList<>();
 
     public HeavyWorkBenchMenu(int pContainerId, Inventory inventory) {
-        this(pContainerId, inventory, ContainerLevelAccess.NULL);
+        this(pContainerId, inventory, new HeavyWorkBenchBlock.LevelAccess(null, null));
     }
 
-    public HeavyWorkBenchMenu(int pContainerId, Inventory pPlayerInventory, ContainerLevelAccess pAccess) {
+    public HeavyWorkBenchMenu(int pContainerId, Inventory pPlayerInventory, HeavyWorkBenchBlock.LevelAccess pAccess) {
         super(ModMenuTypes.HEAVY_WORK_BENCH.get(), pContainerId);
         this.player = pPlayerInventory.player;
         this.access = pAccess;
+        this.input = new EnvironmentRecipeInput(this, 16, access);
         this.resultSlot = new ToggleAmountResultSlot(input, result, 0, 132, 36) {
             @Override
             protected void updateMenu() {

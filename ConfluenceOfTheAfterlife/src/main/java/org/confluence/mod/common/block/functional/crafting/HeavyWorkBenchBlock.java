@@ -9,9 +9,9 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -23,7 +23,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.block.StateProperties;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.menu.HeavyWorkBenchMenu;
+import org.confluence.mod.common.recipe.EnvironmentLevelAccess;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -78,7 +80,7 @@ public class HeavyWorkBenchBlock extends HorizontalDirectionalBlock {
 
     @Override
     public @Nullable MenuProvider getMenuProvider(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos) {
-        return new SimpleMenuProvider((pContainerId, pPlayerInventory, pPlayer) -> new HeavyWorkBenchMenu(pContainerId, pPlayerInventory, ContainerLevelAccess.create(pLevel, pPos)), CONTAINER_TITLE);
+        return new SimpleMenuProvider((pContainerId, pPlayerInventory, pPlayer) -> new HeavyWorkBenchMenu(pContainerId, pPlayerInventory, new HeavyWorkBenchBlock.LevelAccess(pLevel, pPos)), CONTAINER_TITLE);
     }
 
     @Override
@@ -128,6 +130,22 @@ public class HeavyWorkBenchBlock extends HorizontalDirectionalBlock {
         } else {
             pLevel.setBlockAndUpdate(pPos.above(), air);
             pLevel.setBlockAndUpdate(relative.above(), air);
+        }
+    }
+
+    public static class LevelAccess extends EnvironmentLevelAccess {
+        public LevelAccess(@Nullable Level level, @Nullable BlockPos pos) {
+            super(level, pos);
+        }
+
+        @Override
+        public <R extends Recipe<?>> boolean matches(R recipe) {
+            if (level == null) return false;
+            ItemStack resultItem = recipe.getResultItem(level.registryAccess());
+            if (resultItem.is(NatureBlocks.THIN_ICE_BLOCK.asItem())) {
+                return false; // todo 灵雾
+            }
+            return true;
         }
     }
 }

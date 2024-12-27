@@ -1,0 +1,14 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "confluence:mana_star"
+        },
+        {
+            "item": "terra_curio:panic_necklace"
+        }
+    ],
+    "result": {
+        "id": "confluence:band_of_starpower"
+    }
+}

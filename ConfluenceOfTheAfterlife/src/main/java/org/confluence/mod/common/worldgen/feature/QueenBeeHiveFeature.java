@@ -10,7 +10,6 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import org.confluence.mod.mixed.IWorldGenRegion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,28 +22,28 @@ public class QueenBeeHiveFeature extends Feature<QueenBeeHiveFeature.Config> {
     private static final int[] LOCATE_X_3 = new int[]{1, 1, 1, 0, 0, 0, -1, -1, -1};
     private static final int[] LOCATE_Z_3 = new int[]{1, 0, -1, 1, 0, -1, 1, 0, -1};
 
-    private static void placeBlock(IWorldGenRegion worldGenRegion, BlockPos hivePos, int yLow, BlockState hiveBlockState, BlockState honeyState, BlockState honeyBlockState, WorldGenLevel level, FeaturePlaceContext<Config> pContext) {
+    private static void placeBlock(BlockPos hivePos, int yLow, BlockState hiveBlockState, BlockState honeyState, BlockState honeyBlockState, WorldGenLevel level, FeaturePlaceContext<Config> pContext) {
         for (int y = hivePos.getY(); y > yLow; y--) {
             if (y == hivePos.getY()) {
                 int type = pContext.random().nextInt(30);
                 for (int i = 0; i < LOCATE_X_1.length; i++) {
                     BlockPos newPos = new BlockPos(hivePos.getX() + LOCATE_X_1[i], y, hivePos.getZ() + LOCATE_Z_1[i]);
                     if ((level.getBlockState(newPos) == Blocks.STRUCTURE_VOID.defaultBlockState() || level.getBlockState(newPos) == honeyState)) {
-                        worldGenRegion.confluence$setBlock(newPos, hiveBlockState, 2);
+                        level.setBlock(newPos, hiveBlockState, 3);
                     }
                 }
                 if (type == 1) {
                     for (int i = 0; i < LOCATE_X_3.length; i++) {
                         BlockPos newPos = new BlockPos(hivePos.getX() + LOCATE_X_3[i], y, hivePos.getZ() + LOCATE_Z_3[i]);
                         if ((level.getBlockState(newPos) == Blocks.STRUCTURE_VOID.defaultBlockState() || level.getBlockState(newPos) == honeyState)) {
-                            worldGenRegion.confluence$setBlock(newPos, honeyBlockState, 2);
+                            level.setBlock(newPos, honeyBlockState, 3);
                         }
                     }
                 } else if (type == 2) {
                     for (int i = 0; i < LOCATE_X_3.length; i++) {
                         BlockPos newPos = new BlockPos(hivePos.getX() + LOCATE_X_3[i], y, hivePos.getZ() + LOCATE_Z_3[i]);
                         if ((level.getBlockState(newPos) == Blocks.STRUCTURE_VOID.defaultBlockState() || level.getBlockState(newPos) == honeyState)) {
-                            worldGenRegion.confluence$setBlock(newPos, honeyState, 2);
+                            level.setBlock(newPos, honeyState, 3);
                         }
                     }
                 }
@@ -52,7 +51,7 @@ public class QueenBeeHiveFeature extends Feature<QueenBeeHiveFeature.Config> {
                 for (int i = 0; i < LOCATE_X_2.length; i++) {
                     BlockPos newPos = new BlockPos(hivePos.getX() + LOCATE_X_2[i], y, hivePos.getZ() + LOCATE_Z_2[i]);
                     if ((level.getBlockState(newPos) == Blocks.STRUCTURE_VOID.defaultBlockState() || level.getBlockState(newPos) == honeyState)) {
-                        worldGenRegion.confluence$setBlock(newPos, hiveBlockState, 2);
+                        level.setBlock(newPos, hiveBlockState, 3);
                     }
                 }
             }
@@ -67,7 +66,6 @@ public class QueenBeeHiveFeature extends Feature<QueenBeeHiveFeature.Config> {
     public boolean place(FeaturePlaceContext<Config> pContext) {
         Config config = pContext.config();
         WorldGenLevel level = pContext.level();
-        IWorldGenRegion worldGenRegion = (IWorldGenRegion) level;
         BlockPos hiveBlockPos = pContext.origin();
         BlockState honeyState = config.honey().getState(pContext.random(), hiveBlockPos);
         BlockState honeyBlockState = config.honey_block().getState(pContext.random(), hiveBlockPos);
@@ -103,7 +101,7 @@ public class QueenBeeHiveFeature extends Feature<QueenBeeHiveFeature.Config> {
                         if (distance <= interRadius) {
                             BlockPos newPos = new BlockPos(xPos + listOf.getX(), yPos + listOf.getY(), zPos + listOf.getZ());
                             if (distance >= interRadius - 3) {
-                                worldGenRegion.confluence$setBlock(newPos, hiveBlockState, 2);
+                                level.setBlock(newPos, hiveBlockState, 3);
                             }
                         }
                     }
@@ -118,10 +116,10 @@ public class QueenBeeHiveFeature extends Feature<QueenBeeHiveFeature.Config> {
                         if (distance <= interRadius) {
                             BlockPos newPos = new BlockPos(xPos + listOf.getX(), yPos + listOf.getY(), zPos + listOf.getZ());
                             if (distance < interRadius - 3 && newPos.getY() <= hiveBlockPos.getY() + y_to_honey) {
-                                worldGenRegion.confluence$setBlock(newPos, honeyState, 2);
+                                level.setBlock(newPos, honeyState, 3);
                             }
                             if (distance < interRadius - 3 && newPos.getY() > hiveBlockPos.getY() + y_to_honey) {
-                                worldGenRegion.confluence$setBlock(newPos, Blocks.STRUCTURE_VOID.defaultBlockState(), 2);
+                                level.setBlock(newPos, Blocks.STRUCTURE_VOID.defaultBlockState(), 3);
                             }
                         }
                     }
@@ -136,7 +134,7 @@ public class QueenBeeHiveFeature extends Feature<QueenBeeHiveFeature.Config> {
                     double uDis1 = (Math.sqrt(Math.abs(dis1)) * dis1 / Math.abs(dis1) + 1) * radius * 0.4;
                     double uDis2 = (Math.sqrt(Math.abs(dis2)) * dis2 / Math.abs(dis2) + 1) * radius * 0.4;
                     BlockPos newPos = new BlockPos(xPos + hiveBlockPos.getX(), hiveBlockPos.getY() - interRadius + (int) uDis1 + (int) uDis2 + pContext.random().nextInt(2), zPos + hiveBlockPos.getZ());
-                    placeBlock(worldGenRegion, newPos, hiveBlockPos.getY() - radius, hiveBlockState, honeyState, honeyBlockState, level, pContext);
+                    placeBlock(newPos, hiveBlockPos.getY() - radius, hiveBlockState, honeyState, honeyBlockState, level, pContext);
                 }
             }
         }
@@ -145,7 +143,7 @@ public class QueenBeeHiveFeature extends Feature<QueenBeeHiveFeature.Config> {
                 for (int zPos = -radius - 1; zPos <= radius; zPos++) {
                     BlockPos newPos = new BlockPos(xPos + hiveBlockPos.getX(), yPos + hiveBlockPos.getY(), zPos + hiveBlockPos.getZ());
                     if (level.getBlockState(newPos) == Blocks.STRUCTURE_VOID.defaultBlockState()) {
-                        worldGenRegion.confluence$setBlock(newPos, Blocks.AIR.defaultBlockState(), 2);
+                        level.setBlock(newPos, Blocks.AIR.defaultBlockState(), 3);
                     }
                 }
             }

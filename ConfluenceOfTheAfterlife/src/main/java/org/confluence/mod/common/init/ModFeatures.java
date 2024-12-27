@@ -19,7 +19,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.worldgen.feature.*;
-import org.confluence.mod.mixed.IWorldGenRegion;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -86,7 +85,7 @@ public final class ModFeatures {
 
     public static boolean safeSetBlock(WorldGenLevel level, BlockPos pos, BlockState state, Predicate<BlockState> oldState) {
         if (oldState.test(level.getBlockState(pos))) {
-            return ((IWorldGenRegion) level).confluence$setBlock(pos, state, 3);
+            return level.setBlock(pos, state, 3);
         }
         return false;
     }

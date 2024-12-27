@@ -15,7 +15,6 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import org.confluence.mod.mixed.IWorldGenRegion;
 
 import java.util.List;
 
@@ -42,7 +41,6 @@ public class PalmTreeFeature extends Feature<PalmTreeFeature.Config> {
         int bl = facingF ? 1 : -1;
         Config config = pContext.config();
         WorldGenLevel level = pContext.level();
-        IWorldGenRegion worldGenRegion = (IWorldGenRegion) level;
         BlockPos trunkBlockPos = pContext.origin();
         BlockPos leavesBlockPos = pContext.origin();
         BlockState trunkBlockState = config.trunk().getState(random, trunkBlockPos);
@@ -81,7 +79,7 @@ public class PalmTreeFeature extends Feature<PalmTreeFeature.Config> {
                     treeX = (int) v;
                 }
                 BlockPos trunkBlockPosPlace = new BlockPos(trunkBlockPos.getX() + treeX, trunkBlockPos.getY() + treeY - 1, trunkBlockPos.getZ() + treeZ);
-                worldGenRegion.confluence$setBlock(trunkBlockPosPlace, trunkBlockState, 2);
+                level.setBlock(trunkBlockPosPlace, trunkBlockState, 3);
             }
             treeX = 0;
             treeZ = 0;
@@ -96,7 +94,7 @@ public class PalmTreeFeature extends Feature<PalmTreeFeature.Config> {
                 BlockPos leavesBlockPosPlace = leavesBlockPos.offset(LEAVES_LIST_X[i], LEAVES_LIST_Y[i], LEAVES_LIST_Z[i]);
                 BlockState leavesPos = level.getBlockState(leavesBlockPosPlace);
                 if (leavesPos.isAir()) {
-                    worldGenRegion.confluence$setBlock(leavesBlockPosPlace, leavesBlocks.get(LEAVES_LIST_T[i] - 1).setValue(BlockStateProperties.DISTANCE, LEAVES_LIST_D[i]), 2);
+                    level.setBlock(leavesBlockPosPlace, leavesBlocks.get(LEAVES_LIST_T[i] - 1).setValue(BlockStateProperties.DISTANCE, LEAVES_LIST_D[i]), 3);
                 }
             }
 

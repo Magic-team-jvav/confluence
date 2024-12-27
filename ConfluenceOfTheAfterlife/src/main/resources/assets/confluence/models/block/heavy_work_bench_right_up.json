@@ -1,0 +1,31 @@
+{
+	"credit": "Made with Blockbench",
+	"render_type": "cutout",
+	"texture_size": [128, 128],
+	"textures": {
+		"0": "confluence:block/heavy_work_bench",
+		"particle": "confluence:block/heavy_work_bench"
+	},
+	"elements": [
+		{
+			"from": [1, 0, 14],
+			"to": [16, 13, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [16, 0, 4]},
+			"faces": {
+				"north": {"uv": [0, 4, 1.875, 5.625], "texture": "#0"},
+				"south": {"uv": [4, 0, 5.875, 1.625], "texture": "#0"},
+				"west": {"uv": [6.25, 7.875, 6.5, 9.5], "texture": "#0"},
+				"up": {"uv": [7.625, 7.625, 5.75, 7.375], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "group",
+			"origin": [0, 16, 4],
+			"color": 0,
+			"nbt": "{}",
+			"children": [0]
+		}
+	]
+}

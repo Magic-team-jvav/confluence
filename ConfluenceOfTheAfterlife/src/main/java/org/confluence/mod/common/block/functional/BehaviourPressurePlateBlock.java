@@ -33,6 +33,18 @@ public class BehaviourPressurePlateBlock extends BasePressurePlateBlock implemen
             propertiesCodec(),
             BlockSetType.CODEC.fieldOf("block_set_type").forGetter(block -> block.type)
     ).apply(instance, BehaviourPressurePlateBlock::new));
+    public static final Behaviour PLAYER = Behaviour.register(Confluence.asResource("player"), new Behaviour() {
+        @Override
+        protected int getSignalStrength(Level level, BlockPos blockPos) {
+            net.minecraft.world.phys.AABB aabb = TOUCH_AABB.move(blockPos);
+            for (Player player : level.players()) {
+                if (aabb.contains(player.position())) {
+                    return 15;
+                }
+            }
+            return 0;
+        }
+    });
 
     private final Behaviour behaviour;
 
@@ -110,20 +122,8 @@ public class BehaviourPressurePlateBlock extends BasePressurePlateBlock implemen
     }
 
     @SuppressWarnings("unused")
-    public static abstract class Behaviour {
+    public abstract static class Behaviour {
         private static final BiMap<ResourceLocation, Behaviour> MAP = HashBiMap.create();
-        public static final Behaviour PLAYER = register(Confluence.asResource("player"), new Behaviour() {
-            @Override
-            protected int getSignalStrength(Level level, BlockPos blockPos) {
-                net.minecraft.world.phys.AABB aabb = TOUCH_AABB.move(blockPos);
-                for (Player player : level.players()) {
-                    if (aabb.contains(player.position())) {
-                        return 15;
-                    }
-                }
-                return 0;
-            }
-        });
         public static final Codec<Behaviour> CODEC = ResourceLocation.CODEC.xmap(MAP::get, MAP.inverse()::get);
 
         public static Behaviour register(ResourceLocation id, Behaviour behaviour) {
@@ -136,11 +136,11 @@ public class BehaviourPressurePlateBlock extends BasePressurePlateBlock implemen
         public void onUnExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {}
 
         protected int getSignalForState(BlockState blockState) {
-            return blockState.getValue(POWERED) ? 15 : 0;
+            return blockState.hasProperty(POWERED) && blockState.getValue(POWERED) ? 15 : 0;
         }
 
         protected BlockState setSignalForState(BlockState blockState, int strength) {
-            return blockState.setValue(POWERED, strength > 0);
+            return blockState.trySetValue(POWERED, strength > 0);
         }
 
         protected abstract int getSignalStrength(Level level, BlockPos blockPos);

@@ -10,7 +10,6 @@ import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.block.common.StatueBlock;
 import org.confluence.mod.common.block.natural.CloudBlock;
 import org.confluence.mod.common.block.palettes.ConnectedGlassBlock;
 import org.confluence.mod.common.block.palettes.ConnectedStainedGlassBlock;
@@ -121,8 +120,6 @@ public class DecorativeBlocks {
     public static final Supplier<ChainBlock> AMETHYST_CHAIN = copyBlockRegister("amethyst_chain", Blocks.CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.COLOR_PURPLE)));
     public static final Supplier<ChainBlock> SILK_CHAIN = copyBlockRegister("silk_chain", Blocks.CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final Supplier<ChainBlock> BONE_CHAIN = copyBlockRegister("bone_chain", Blocks.CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.TERRACOTTA_WHITE)));
-
-    public static final Supplier<StatueBlock> A_STATUE = copyBlockRegister("a_statue", Blocks.STONE_BRICKS, StatueBlock::new);
 
     // 丛林蜥蜴砖
     public static final Supplier<Block> LIHZAHRD_BRICKS = registerWithItem("lihzahrd_bricks", () -> new Block(BlockBehaviour.Properties.of()

@@ -104,5 +104,6 @@ public final class ModBlocks {
         NatureBlocks.BLOCKS.register(eventBus);
         OreBlocks.BLOCKS.register(eventBus);
         PotBlocks.BLOCKS.register(eventBus);
+        StatueBlocks.BLOCKS.register(eventBus);
     }
 }

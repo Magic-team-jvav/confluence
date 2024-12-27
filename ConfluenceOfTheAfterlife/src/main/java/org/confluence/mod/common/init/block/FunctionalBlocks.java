@@ -30,7 +30,7 @@ import static org.confluence.mod.common.init.block.ModBlocks.BLOCK_ENTITIES;
 public class FunctionalBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
     public static final DeferredRegister.Blocks HIDDEN = DeferredRegister.createBlocks(Confluence.MODID);
-    private static List<Supplier<? extends Block>> MECHANICAL_BLOCKS = new ArrayList<>();
+    static List<Supplier<? extends Block>> MECHANICAL_BLOCKS = new ArrayList<>();
 
     public static final Supplier<Block> ANDESITE_CASING = registerWithItemButHidden("andesite_casing", () -> new Block(BlockBehaviour.Properties.of()));
 
@@ -66,7 +66,7 @@ public class FunctionalBlocks {
     public static final Supplier<SpikeBlock> SPIKE = registerWithItem("spike", () -> new SpikeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)));
     public static final Supplier<FragileBlock> FRAGILE_SANDSTONE = registerWithItem("fragile_sandstone", () -> new FragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE), Blocks.SANDSTONE::defaultBlockState));
 
-    public static final Supplier<BehaviourPressurePlateBlock> PLAYER_PRESSURE_PLATE = registerWithEntity("player_pressure_plate", () -> new BehaviourPressurePlateBlock(BehaviourPressurePlateBlock.Behaviour.PLAYER, BlockBehaviour.Properties.ofFullCopy(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE), BlockSetType.IRON));
+    public static final Supplier<BehaviourPressurePlateBlock> PLAYER_PRESSURE_PLATE = registerWithEntity("player_pressure_plate", () -> new BehaviourPressurePlateBlock(BehaviourPressurePlateBlock.PLAYER, BlockBehaviour.Properties.ofFullCopy(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE), BlockSetType.IRON));
     public static final Supplier<SignalPressurePlateBlock> STONE_PRESSURE_PLATE = registerWithEntity("stone_pressure_plate", () -> new SignalPressurePlateBlock(BlockSetType.STONE, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_PRESSURE_PLATE)));
     public static final Supplier<SignalPressurePlateBlock> DEEPSLATE_PRESSURE_PLATE = registerWithEntity("deepslate_pressure_plate", () -> new SignalPressurePlateBlock(BlockSetType.STONE, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_PRESSURE_PLATE).mapColor(MapColor.DEEPSLATE).strength(0.1F)));
     public static final Supplier<InstantExplosionBlock> INSTANTANEOUS_EXPLOSION_TNT = registerWithEntity("instantaneous_explosion_tnt", InstantExplosionBlock::new);
@@ -101,7 +101,7 @@ public class FunctionalBlocks {
         return object;
     }
 
-    private static <B extends Block & EntityBlock & INetworkBlock> Supplier<B> registerWithEntity(String id, Supplier<B> supplier) {
+    static <B extends Block & EntityBlock & INetworkBlock> Supplier<B> registerWithEntity(String id, Supplier<B> supplier) {
         DeferredBlock<B> holder = registerWithItem(id, supplier);
         MECHANICAL_BLOCKS.add(holder);
         return holder;

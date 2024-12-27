@@ -25,6 +25,7 @@ public final class ModTabs {
                     .displayItems((parameters, output) -> {
                         LogBlockSet.acceptBuilding(output);
                         DecorativeBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
+                        StatueBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
                     }).build()
     );
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> NATURAL_BLOCKS = TABS.register("natural_blocks",

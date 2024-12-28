@@ -190,6 +190,10 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
             this(noDrops, 10, factory, afterSummon);
         }
 
+        public SummonBehaviour(boolean noDrops, int cooldown, BiFunction<Level, Vec3, E> factory) {
+            this(noDrops, cooldown, factory, entity -> {});
+        }
+
         public SummonBehaviour(boolean noDrops, int cooldown, BiFunction<Level, Vec3, E> factory, Consumer<E> afterSummon) {
             this.noDrops = noDrops;
             this.cooldown = cooldown;

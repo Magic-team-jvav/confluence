@@ -176,17 +176,17 @@ public class StatueBlocks {
 
     // King Statue
     // Queen Statue
-    public static final Supplier<BehaviourStatueBlock> BOMB_STATUE = registerBehaviour("bomb_statue", new BehaviourStatueBlock.SummonBehaviour<>(false, (level, pos) -> {
+    public static final Supplier<BehaviourStatueBlock> BOMB_STATUE = registerBehaviour("bomb_statue", new BehaviourStatueBlock.SummonBehaviour<>(false, 200, (level, pos) -> {
         ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, ConsumableItems.BOMB.get().getDefaultInstance());
         itemEntity.setPickUpDelay(0);
         return itemEntity;
     }));
-    public static final Supplier<BehaviourStatueBlock> HEART_STATUE = registerBehaviour("heart_statue", new BehaviourStatueBlock.SummonBehaviour<>(false, (level, pos) -> {
+    public static final Supplier<BehaviourStatueBlock> HEART_STATUE = registerBehaviour("heart_statue", new BehaviourStatueBlock.SummonBehaviour<>(false, 200, (level, pos) -> {
         ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, ModItems.HEART.get().getDefaultInstance());
         itemEntity.setPickUpDelay(0);
         return itemEntity;
     }));
-    public static final Supplier<BehaviourStatueBlock> STAR_STATUE = registerBehaviour("star_statue", new BehaviourStatueBlock.SummonBehaviour<>(false, (level, pos) -> {
+    public static final Supplier<BehaviourStatueBlock> STAR_STATUE = registerBehaviour("star_statue", new BehaviourStatueBlock.SummonBehaviour<>(false, 200, (level, pos) -> {
         ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, ModItems.STAR.get().getDefaultInstance());
         itemEntity.setPickUpDelay(0);
         return itemEntity;

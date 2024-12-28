@@ -12,13 +12,17 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 public class FallingStarItemEntity extends ItemEntity {
     private boolean wasOnGround;
+    private ParticleEmitter emitter;
 
     public FallingStarItemEntity(EntityType<FallingStarItemEntity> entityType, Level level) {
         super(entityType, level);
@@ -36,6 +40,11 @@ public class FallingStarItemEntity extends ItemEntity {
 
     @Override
     public void tick() {
+        if (level().isClientSide && emitter == null) {
+            this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("falling_star"));
+            emitter.attached = this;
+            PSGameClient.LOADER.addEmitter(emitter, false);
+        }
         if (level().getDayTime() % 24000 < 12000) {
             discard();
         } else {

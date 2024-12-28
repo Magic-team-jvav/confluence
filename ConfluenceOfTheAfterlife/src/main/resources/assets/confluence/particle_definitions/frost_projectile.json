@@ -5,7 +5,7 @@
             "identifier": "confluence:frost_projectile",
             "basic_render_parameters": {
                 "material": "particles_add",
-                "texture": "minecraft:glow"
+                "texture": "confluence:frost_projectile"
             }
         },
         "curves": {

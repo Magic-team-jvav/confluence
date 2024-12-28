@@ -54,9 +54,9 @@ public final class ModItems {
         BaitItems.ITEMS.register(eventBus);
         BoomerangItems.ITEMS.register(eventBus);
         BowItems.ITEMS.register(eventBus);
-        DrillItems.ITEMS.register(eventBus);
         ConsumableItems.ITEMS.register(eventBus);
         CosmeticItems.ITEMS.register(eventBus);
+        DrillItems.ITEMS.register(eventBus);
         FishingPoleItems.ITEMS.register(eventBus);
         FoodItems.ITEMS.register(eventBus);
         HammerItems.ITEMS.register(eventBus);
@@ -65,12 +65,12 @@ public final class ModItems {
         ManaStaffItems.ITEMS.register(eventBus);
         MaterialItems.ITEMS.register(eventBus);
         MinecartItems.ITEMS.register(eventBus);
+        NoTabItems.ITEMS.register(eventBus);
         PickaxeAxeItems.ITEMS.register(eventBus);
         PickaxeItems.ITEMS.register(eventBus);
         PotionItems.ITEMS.register(eventBus);
         QuestedFishes.ITEMS.register(eventBus);
         SwordItems.ITEMS.register(eventBus);
         ToolItems.ITEMS.register(eventBus);
-        NoTabItems.ITEMS.register(eventBus);
     }
 }

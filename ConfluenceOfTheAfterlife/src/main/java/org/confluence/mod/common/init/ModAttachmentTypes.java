@@ -10,7 +10,7 @@ import org.confluence.mod.common.attachment.WeaponStorage;
 
 import java.util.function.Supplier;
 
-public final class ModAttachments {
+public final class ModAttachmentTypes {
     public static final DeferredRegister<AttachmentType<?>> TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, Confluence.MODID);
 
     public static final Supplier<AttachmentType<ManaStorage>> MANA_STORAGE = TYPES.register("mana", () -> AttachmentType.serializable(ManaStorage::new).copyOnDeath().build());

@@ -107,7 +107,7 @@ public final class PlayerEvents {
         ItemStack itemStack = itemEntity.getItem();
         Player player = event.getPlayer();
         if (itemStack.is(ModTags.Items.PROVIDE_MANA)) {
-            player.getData(ModAttachments.MANA_STORAGE).receiveMana(() -> itemStack.getCount() * 100);
+            player.getData(ModAttachmentTypes.MANA_STORAGE).receiveMana(() -> itemStack.getCount() * 100);
             itemEntity.discard();
             event.setCanPickup(TriState.FALSE);
         } else if (itemStack.is(ModTags.Items.PROVIDE_LIFE)) {
@@ -206,7 +206,7 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void respawn(PlayerEvent.PlayerRespawnEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
-        EverBeneficial everBeneficial = serverPlayer.getData(ModAttachments.EVER_BENEFICIAL);
+        EverBeneficial everBeneficial = serverPlayer.getData(ModAttachmentTypes.EVER_BENEFICIAL);
         if (everBeneficial.getUsedLifeCrystals() > 0) {
             EverBeneficialItem.LIFE_CRYSTAL.post().accept(EverBeneficialItem.LIFE_CRYSTAL.id(), serverPlayer, everBeneficial, true);
         }

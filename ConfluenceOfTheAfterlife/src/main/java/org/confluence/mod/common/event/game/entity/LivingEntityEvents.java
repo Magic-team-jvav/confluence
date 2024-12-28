@@ -33,7 +33,7 @@ import org.confluence.mod.common.effect.beneficial.LuckEffect;
 import org.confluence.mod.common.effect.beneficial.ThornsEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
-import org.confluence.mod.common.init.ModAttachments;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
@@ -79,7 +79,7 @@ public final class LivingEntityEvents {
         if (living.level().isClientSide) return;
         if (living.hasEffect(ModEffects.FROST_BURN) || living.hasEffect(ModEffects.BLEEDING)) {
             event.setCanceled(true); // todo 有些怪物对其免疫
-        } else if (living.getData(ModAttachments.EVER_BENEFICIAL).isVitalCrystalUsed()) {
+        } else if (living.getData(ModAttachmentTypes.EVER_BENEFICIAL).isVitalCrystalUsed()) {
             event.setAmount(event.getAmount() * 1.2F);
         }
 

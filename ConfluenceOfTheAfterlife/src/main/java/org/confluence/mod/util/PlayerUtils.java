@@ -16,7 +16,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.GetCustomDiggingPowerEvent;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.init.ModAttachments;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.init.item.AccessoryItems;
@@ -34,11 +34,11 @@ public final class PlayerUtils {
     }
 
     public static void syncMana2Client(ServerPlayer serverPlayer) {
-        syncMana2Client(serverPlayer, serverPlayer.getData(ModAttachments.MANA_STORAGE));
+        syncMana2Client(serverPlayer, serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE));
     }
 
     public static void regenerateMana(ServerPlayer serverPlayer) {
-        ManaStorage manaStorage = serverPlayer.getData(ModAttachments.MANA_STORAGE);
+        ManaStorage manaStorage = serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE);
 
         int delay = manaStorage.getRegenerateDelay();
         boolean notMove = Math.abs(serverPlayer.xCloak - serverPlayer.xCloakO) < 1.0E-7;
@@ -64,7 +64,7 @@ public final class PlayerUtils {
     public static boolean extractMana(ServerPlayer serverPlayer, IntSupplier sup) {
         if (serverPlayer.gameMode.isCreative()) return true;
         boolean success = false;
-        ManaStorage manaStorage = serverPlayer.getData(ModAttachments.MANA_STORAGE);
+        ManaStorage manaStorage = serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE);
         if (manaStorage.extractMana(sup, serverPlayer)) {
             success = true;
             manaStorage.setRegenerateDelay((int) Math.ceil(0.7F * ((1 - (float) manaStorage.getCurrentMana() / manaStorage.getMaxMana()) * 240 + 45)));
@@ -74,7 +74,7 @@ public final class PlayerUtils {
     }
 
     public static void receiveMana(ServerPlayer serverPlayer, IntSupplier sup) {
-        ManaStorage manaStorage = serverPlayer.getData(ModAttachments.MANA_STORAGE);
+        ManaStorage manaStorage = serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE);
         if (manaStorage.receiveMana(sup)) syncMana2Client(serverPlayer, manaStorage);
     }
 
@@ -87,7 +87,7 @@ public final class PlayerUtils {
 
     public static float getFishingPower(ServerPlayer player) {
         float base = TCUtils.getAccessoriesValue(player, AccessoryItems.FISHING$POWER);
-        if (player.getData(ModAttachments.EVER_BENEFICIAL).isGummyWormUsed()) base += 3.0F;
+        if (player.getData(ModAttachmentTypes.EVER_BENEFICIAL).isGummyWormUsed()) base += 3.0F;
         Level level = player.level();
         long dayTime = level.dayTime() % 24000; // [0, 23999]
         if (level.isRaining()) base *= 1.1F;

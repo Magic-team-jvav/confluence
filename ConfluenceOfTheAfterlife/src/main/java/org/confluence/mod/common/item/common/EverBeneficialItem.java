@@ -17,7 +17,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.EverBeneficial;
-import org.confluence.mod.common.init.ModAttachments;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.terra_curio.common.component.ModRarity;
@@ -96,13 +96,13 @@ public class EverBeneficialItem extends CustomRarityItem {
         }
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (player instanceof ServerPlayer serverPlayer) {
-            EverBeneficial data = player.getData(ModAttachments.EVER_BENEFICIAL);
+            EverBeneficial data = player.getData(ModAttachmentTypes.EVER_BENEFICIAL);
             if (beneficial.pre.apply(data)) {
                 beneficial.post.accept(beneficial.id, serverPlayer, data, false);
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
                 itemStack.shrink(1);
             }
-            if (player.getData(ModAttachments.MANA_STORAGE).isStarMaximum() && data.isLifeCrystalsMaximum() && data.isLifeFruitsMaximum()) {
+            if (player.getData(ModAttachmentTypes.MANA_STORAGE).isStarMaximum() && data.isLifeCrystalsMaximum() && data.isLifeFruitsMaximum()) {
                 AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource("achievements/topped_off"));
                 if (advancement != null) {
                     serverPlayer.getAdvancements().award(advancement, "never");

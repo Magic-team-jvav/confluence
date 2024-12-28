@@ -21,7 +21,7 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.saved.ConfluenceCommand;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.effect.beneficial.HeartReachEffect;
-import org.confluence.mod.common.init.ModAttachments;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
@@ -110,7 +110,7 @@ public final class GameEvents {
     @SubscribeEvent
     public static void afterAccessoryAbilitiesFlushed(AfterAccessoryAbilitiesFlushedEvent event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-            serverPlayer.getData(ModAttachments.MANA_STORAGE).flushAbility(serverPlayer);
+            serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).flushAbility(serverPlayer);
             FishingPowerInfoPacketS2C.sendToClient(serverPlayer);
             EchoVisibilityPacketS2C.sendToClient(serverPlayer);
         }

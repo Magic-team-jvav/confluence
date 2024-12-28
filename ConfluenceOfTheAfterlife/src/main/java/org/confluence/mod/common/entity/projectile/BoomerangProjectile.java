@@ -17,7 +17,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.component.SingleBooleanComponent;
-import org.confluence.mod.common.init.ModAttachments;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.sword.Boomerang;
 import org.confluence.mod.common.item.sword.Boomerang.BoomerangModifier;
@@ -170,7 +170,7 @@ public class BoomerangProjectile extends AbstractHurtingProjectile {
     public void onRemovedFromLevel(){
         if(!weapon.isEmpty() && !level().isClientSide) {
             Boomerang.setBacked(weapon, SingleBooleanComponent.TRUE);
-            Integer count = getOwner().getData(ModAttachments.WEAPON_STORAGE).boomerangCounter.compute(weapon.getItem(), (k, c) -> c != null && c > 0? c - 1 : 0);
+            Integer count = getOwner().getData(ModAttachmentTypes.WEAPON_STORAGE).boomerangCounter.compute(weapon.getItem(), (k, c) -> c != null && c > 0? c - 1 : 0);
 
             //  提前部署
             if(getOwner() instanceof Player player &&

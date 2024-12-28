@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.attachment.ManaStorage;
-import org.confluence.mod.common.init.ModAttachments;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +26,7 @@ public class ArcaneCrystalItem extends CustomRarityItem {
         }
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (player instanceof ServerPlayer serverPlayer) {
-            ManaStorage manaStorage = player.getData(ModAttachments.MANA_STORAGE);
+            ManaStorage manaStorage = player.getData(ModAttachmentTypes.MANA_STORAGE);
             if (manaStorage.setArcaneCrystalUsed()) {
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
                 itemStack.shrink(1);

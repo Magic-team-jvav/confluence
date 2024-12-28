@@ -19,12 +19,12 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SingleBooleanComponent;
-import org.confluence.mod.common.init.ModAttachments;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.sword.stagedy.EffectStrategy;
 import org.confluence.mod.common.item.sword.stagedy.InventoryTickStrategy;
-import org.confluence.mod.common.item.sword.stagedy.projectile.IProjContainer;
 import org.confluence.mod.common.item.sword.stagedy.projectile.BoomerangProjContainer;
+import org.confluence.mod.common.item.sword.stagedy.projectile.IProjContainer;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.jetbrains.annotations.NotNull;
@@ -92,7 +92,7 @@ public class Boomerang extends Item {
         if(usedHand == InteractionHand.OFF_HAND) stack.hurtAndBreak(1, player, EquipmentSlot.OFFHAND);
         else stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
         if(boomerangModifier.shouldApplyCd ) {
-            var map = player.getData(ModAttachments.WEAPON_STORAGE).boomerangCounter;
+            var map = player.getData(ModAttachmentTypes.WEAPON_STORAGE).boomerangCounter;
             Integer count = map.compute(this, (k, v) -> v == null? 1 : v + 1);
             if(count < boomerangModifier.maxCount) player.getCooldowns().addCooldown(this, boomerangModifier.cd);
             else player.getCooldowns().addCooldown(this, 100); //最大等待时间

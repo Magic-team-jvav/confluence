@@ -1,17 +1,20 @@
 package org.confluence.mod.common.init.block;
 
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RedStoneOreBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.HellStoneBlock;
 import org.confluence.mod.common.block.natural.MeteoriteOre;
+import org.confluence.mod.common.block.natural.ModBrushableBlock;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.data.gen.ModBlockTagsProvider;
 import org.confluence.mod.common.init.item.ModItems;
@@ -19,7 +22,6 @@ import org.confluence.mod.common.init.item.ModItems;
 import java.util.function.Supplier;
 
 public class OreBlocks {
-    //TODO 未附带Tag标记
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
 
 
@@ -166,12 +168,12 @@ public class OreBlocks {
     public static final DeferredBlock<Block> RAW_LUMINITE_BLOCK = copyBlockRegister("raw_luminite_block", Blocks.RAW_IRON_BLOCK);
     public static final DeferredBlock<Block> LUMINITE_BLOCK = copyBlockRegister("luminite_block", Blocks.IRON_BLOCK);
 
-    public static final DeferredBlock<Block> OPAL_ORE = copyBlockRegister("opal_ore", Blocks.IRON_ORE);
+    public static final Supplier<Block> OPAL_ORE = simpleBlockRegister("opal_ore", () -> new ModBrushableBlock(NatureBlocks.DIATOMACEOUS.get(), SoundEvents.BRUSH_SAND, SoundEvents.BRUSH_SAND_COMPLETED, BlockBehaviour.Properties.of().strength(3.0F, 3.0F).pushReaction(PushReaction.BLOCK)));
     public static final DeferredBlock<Block> GELSTONE_ORE = copyBlockRegister("gelstone_ore", Blocks.IRON_ORE);
 
     public static final DeferredBlock<Block> HELLSTONE = simpleBlockRegister("hellstone", HellStoneBlock::new);
     public static final DeferredBlock<Block> ASH_HELLSTONE = simpleBlockRegister("ash_hellstone", HellStoneBlock::new);
-    public static final DeferredBlock<Block> HELLSTONE_BRICKS = simpleBlockRegister("hellstone_bricks",HellStoneBlock::new);
+    public static final DeferredBlock<Block> HELLSTONE_BRICKS = simpleBlockRegister("hellstone_bricks", HellStoneBlock::new);
     public static final DeferredBlock<Block> RAW_HELLSTONE_BLOCK = simpleBlockRegister("raw_hellstone_block", BlockBehaviour.Properties.of().requiresCorrectToolForDrops());
     public static final DeferredBlock<Block> HELLSTONE_BLOCK = simpleBlockRegister("hellstone_block", BlockBehaviour.Properties.of().requiresCorrectToolForDrops());
 

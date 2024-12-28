@@ -5,6 +5,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BrushableBlock;
 import net.minecraft.world.level.block.RedStoneOreBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.PushReaction;
@@ -14,7 +15,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.HellStoneBlock;
 import org.confluence.mod.common.block.natural.MeteoriteOre;
-import org.confluence.mod.common.block.natural.ModBrushableBlock;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.data.gen.ModBlockTagsProvider;
 import org.confluence.mod.common.init.item.ModItems;
@@ -168,7 +168,7 @@ public class OreBlocks {
     public static final DeferredBlock<Block> RAW_LUMINITE_BLOCK = copyBlockRegister("raw_luminite_block", Blocks.RAW_IRON_BLOCK);
     public static final DeferredBlock<Block> LUMINITE_BLOCK = copyBlockRegister("luminite_block", Blocks.IRON_BLOCK);
 
-    public static final Supplier<Block> OPAL_ORE = simpleBlockRegister("opal_ore", () -> new ModBrushableBlock(NatureBlocks.DIATOMACEOUS.get(), SoundEvents.BRUSH_SAND, SoundEvents.BRUSH_SAND_COMPLETED, BlockBehaviour.Properties.of().strength(3.0F, 3.0F).pushReaction(PushReaction.BLOCK)));
+    public static final Supplier<Block> OPAL_ORE = simpleBlockRegister("opal_ore", () -> new BrushableBlock(NatureBlocks.DIATOMACEOUS.get(), SoundEvents.BRUSH_SAND, SoundEvents.BRUSH_SAND_COMPLETED, BlockBehaviour.Properties.of().strength(3.0F, 3.0F).pushReaction(PushReaction.BLOCK)));
     public static final DeferredBlock<Block> GELSTONE_ORE = copyBlockRegister("gelstone_ore", Blocks.IRON_ORE);
 
     public static final DeferredBlock<Block> HELLSTONE = simpleBlockRegister("hellstone", HellStoneBlock::new);

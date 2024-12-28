@@ -117,8 +117,6 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
     }
 
     public static class Entity extends AbstractMechanicalBlock.Entity {
-        private final List<UUID> entities = new ArrayList<>();
-
         public Entity(BlockPos pPos, BlockState pBlockState) {
             super(StatueBlocks.BLOCK_ENTITY.get(), pPos, pBlockState);
         }
@@ -126,20 +124,14 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
         @Override
         protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
             super.saveAdditional(tag, registries);
-            ListTag listTag = new ListTag();
-            for (UUID entity : entities) {
-                listTag.add(NbtUtils.createUUID(entity));
-            }
-            tag.put("entities", listTag);
+            ((BehaviourStatueBlock) getBlockState().getBlock()).behaviour.saveAdditional(tag, registries);
         }
 
         @Override
         protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
             super.loadAdditional(tag, registries);
-            entities.clear();
-            for (Tag entity : tag.getList("entities", Tag.TAG_INT_ARRAY)) {
-                entities.add(NbtUtils.loadUUID(entity));
-            }
+            ((BehaviourStatueBlock) getBlockState().getBlock()).behaviour.loadAdditional(tag, registries);
+
         }
 
         @Override
@@ -176,20 +168,31 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
         public @Nullable VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
             return null;
         }
+
+        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {}
+
+        protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.Provider registries) {}
     }
 
     public static class SummonBehaviour<E extends net.minecraft.world.entity.Entity> extends Behaviour {
+        private final List<UUID> entities = new ArrayList<>();
+
         private final boolean noDrops;
+        private final int cooldown;
         private final BiFunction<Level, Vec3, E> factory;
-        private Consumer<E> afterSummon = entity -> {};
+        private final Consumer<E> afterSummon;
 
         public SummonBehaviour(boolean noDrops, BiFunction<Level, Vec3, E> factory) {
-            this.noDrops = noDrops;
-            this.factory = factory;
+            this(noDrops, 10, factory, entity -> {});
         }
 
         public SummonBehaviour(boolean noDrops, BiFunction<Level, Vec3, E> factory, Consumer<E> afterSummon) {
+            this(noDrops, 10, factory, afterSummon);
+        }
+
+        public SummonBehaviour(boolean noDrops, int cooldown, BiFunction<Level, Vec3, E> factory, Consumer<E> afterSummon) {
             this.noDrops = noDrops;
+            this.cooldown = cooldown;
             this.factory = factory;
             this.afterSummon = afterSummon;
         }
@@ -197,7 +200,6 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
         @Override
         public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
             if (!pState.getValue(StateProperties.DRIVE) && pState.getValue(StateProperties.VERTICAL_TWO_PART).isBase()) {
-                List<UUID> entities = ((Entity) pEntity.getSelf()).entities;
                 entities.removeIf(entity -> {
                     net.minecraft.world.entity.Entity entity1 = pLevel.getEntity(entity);
                     return entity1 == null || entity1.isRemoved();
@@ -212,7 +214,25 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
                 }
                 entities.add(entity.getUUID());
                 pLevel.setBlockAndUpdate(pPos, pState.setValue(StateProperties.DRIVE, true));
-                pLevel.scheduleTick(pPos, pState.getBlock(), 20);
+                pLevel.scheduleTick(pPos, pState.getBlock(), cooldown);
+                pEntity.getSelf().setChanged();
+            }
+        }
+
+        @Override
+        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+            ListTag listTag = new ListTag();
+            for (UUID entity : entities) {
+                listTag.add(NbtUtils.createUUID(entity));
+            }
+            tag.put("entities", listTag);
+        }
+
+        @Override
+        protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.Provider registries) {
+            entities.clear();
+            for (Tag entity : tag.getList("entities", Tag.TAG_INT_ARRAY)) {
+                entities.add(NbtUtils.loadUUID(entity));
             }
         }
     }

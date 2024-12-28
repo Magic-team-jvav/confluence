@@ -4,7 +4,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
@@ -26,11 +28,18 @@ import org.confluence.mod.common.block.common.StatueBlock;
 import org.confluence.mod.common.block.functional.BehaviourStatueBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.SwordItems;
+import org.confluence.terraentity.entity.monster.AbstractMonster;
+import org.confluence.terraentity.entity.monster.demoneye.DemonEye;
+import org.confluence.terraentity.entity.monster.prefab.FlyMonsterPrefab;
+import org.confluence.terraentity.entity.monster.slime.BaseSlime;
+import org.confluence.terraentity.init.TEEntities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static org.confluence.mod.common.init.block.ModBlocks.BLOCK_ENTITIES;
@@ -66,6 +75,43 @@ public class StatueBlocks {
     public static final Supplier<StatueBlock> X_STATUE = register("x_statue");
     public static final Supplier<StatueBlock> Y_STATUE = register("y_statue");
     public static final Supplier<StatueBlock> Z_STATUE = register("z_statue");
+    public static final Supplier<StatueBlock> N0_STATUE = register("n0_statue");
+    public static final Supplier<StatueBlock> N1_STATUE = register("n1_statue");
+    public static final Supplier<StatueBlock> N2_STATUE = register("n2_statue");
+    public static final Supplier<StatueBlock> N3_STATUE = register("n3_statue");
+    public static final Supplier<StatueBlock> N4_STATUE = register("n4_statue");
+    public static final Supplier<StatueBlock> N5_STATUE = register("n5_statue");
+    public static final Supplier<StatueBlock> N6_STATUE = register("n6_statue");
+    public static final Supplier<StatueBlock> N7_STATUE = register("n7_statue");
+    public static final Supplier<StatueBlock> N8_STATUE = register("n8_statue");
+    public static final Supplier<StatueBlock> N9_STATUE = register("n9_statue");
+
+
+    public static final Supplier<StatueBlock> ANVIL_STATUE = register("anvil_statue");
+    public static final Supplier<StatueBlock> ARMOR_STATUE = register("armor_statue");
+    public static final Supplier<StatueBlock> AXE_STATUE = register("axe_statue");
+    public static final Supplier<StatueBlock> BOOMERANG_STATUE = register("boomerang_statue");
+    public static final Supplier<StatueBlock> BOOT_STATUE = register("boot_statue");
+    public static final Supplier<StatueBlock> BOW_STATUE = register("bow_statue");
+    public static final Supplier<StatueBlock> CROSS_STATUE = register("cross_statue");
+    public static final Supplier<StatueBlock> GARGOYLE_STATUE = register("gargoyle_statue");
+    public static final Supplier<StatueBlock> GLOOM_STATUE = register("gloom_statue");
+    public static final Supplier<StatueBlock> HAMMER_STATUE = register("hammer_statue");
+    public static final Supplier<StatueBlock> PICKAXE_STATUE = register("pickaxe_statue");
+    public static final Supplier<StatueBlock> PILLAR_STATUE = register("pillar_statue");
+    public static final Supplier<StatueBlock> POT_STATUE = register("pot_statue");
+    public static final Supplier<StatueBlock> POTION_STATUE = register("potion_statue");
+    public static final Supplier<StatueBlock> REAPER_STATUE = register("reaper_statue");
+    public static final Supplier<StatueBlock> SHIELD_STATUE = register("shield_statue");
+    public static final Supplier<StatueBlock> SPEAR_STATUE = register("spear_statue");
+    public static final Supplier<StatueBlock> SUNFLOWER_STATUE = register("sunflower_statue");
+    public static final Supplier<StatueBlock> SWORD_STATUE = register("sword_statue");
+    public static final Supplier<StatueBlock> TREE_STATUE = register("tree_statue");
+    public static final Supplier<StatueBlock> WOMEN_STATUE = register("women_statue");
+    public static final Supplier<StatueBlock> LIHZAHRD_STATUE = register("lihzahrd_statue");
+    public static final Supplier<StatueBlock> LIHZAHRD_GUARDIAN_STATUE = register("lihzahrd_guardian_statue");
+    public static final Supplier<StatueBlock> LIHZAHRD_WATCHER_STATUE = register("lihzahrd_watcher_statue");
+
 
     public static final Supplier<BehaviourStatueBlock> ARMED_ZOMBIE_STATUE = registerBehaviour("armed_zombie_statue", new BehaviourStatueBlock.SummonBehaviour<>(false, (level, pos) -> {
         Zombie zombie = new Zombie(level);
@@ -73,11 +119,80 @@ public class StatueBlocks {
         zombie.setItemInHand(InteractionHand.MAIN_HAND, SwordItems.ZOMBIE_ARM.toStack());
         return zombie;
     }));
-    public static final Supplier<BehaviourStatueBlock> BONE_SKELETON_STATUE = registerBehaviour("bone_skeleton_statue", new BehaviourStatueBlock.SummonBehaviour<>(true, (level, pos) -> {
+    // Bat Statue
+    // Blood Zombie Statue
+    public static final Supplier<BehaviourStatueBlock> BONE_SKELETON_STATUE = registerSimpleSummon("bone_skeleton_statue", true, level -> new Skeleton(EntityType.SKELETON, level));
+    // Chest Statue
+    public static final Supplier<BehaviourStatueBlock> CORRUPT_STATUE = registerSimpleSummon("corrupt_statue", true, level -> new AbstractMonster(TEEntities.EATER_OF_SOULS.get(), level, FlyMonsterPrefab.EATER_OF_SOULS_BUILDER.get()));
+    // Crab Statue
+    public static final Supplier<BehaviourStatueBlock> DRIPPLER_STATUE = registerSimpleSummon("drippler_statue", true, level -> new AbstractMonster(TEEntities.DRIPPLER.get(), level, FlyMonsterPrefab.DRIPPLER_BUILDER.get()));
+    public static final Supplier<BehaviourStatueBlock> EYEBALL_STATUE = registerSimpleSummon("eyeball_statue", true, level -> new DemonEye(TEEntities.DEMON_EYE.get(), level));
+    // Goblin Statue
+    // Granite Golem Statue
+    // Harpy Statue
+    // Hoplite Statue
+    // Hornet Statue
+    // Imp Statue
+    // Jellyfish Statue
+    // Medusa Statue
+    // Pigron Statue
+    // Piranha Statue
+    // Shark Statue
+    public static final Supplier<BehaviourStatueBlock> SKELETON_STATUE = registerBehaviour("skeleton_statue", new BehaviourStatueBlock.SummonBehaviour<>(true, (level, pos) -> {
         Skeleton skeleton = new Skeleton(EntityType.SKELETON, level);
         skeleton.setPos(pos);
         return skeleton;
     }, entity -> entity.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY)));
+    public static final Supplier<BehaviourStatueBlock> SLIME_STATUE = registerSimpleSummon("slime_statue", false, level -> new BaseSlime(TEEntities.BLUE_SLIME.get(), level, 0x73BCF4, 2));
+    // Undead Viking Statue
+    // Unicorn Statue
+    // Wall Creeper Statue
+    // Wraith Statue
+
+
+    // Bird Statue
+    // Buggy Statue
+    // Bunny Statue
+    // Butterfly Statue
+    // Cockatiel Statue
+    // Dragonfly Statue
+    // Duck Statue
+    // Firefly Statue
+    // Fish Statue
+    // Frog Statue
+    // Grasshopper Statue
+    // Macaw Statue
+    // Mouse Statue
+    // Owl Statue
+    // Penguin Statue
+    // Scorpion Statue
+    // Seagull Statue
+    // Snail Statue
+    // Squirrel Statue
+    // Toucan Statue
+    // Turtle Statue
+    // Worm Statue
+
+
+    // King Statue
+    // Queen Statue
+    public static final Supplier<BehaviourStatueBlock> BOMB_STATUE = registerBehaviour("bomb_statue", new BehaviourStatueBlock.SummonBehaviour<>(false, (level, pos) -> {
+        ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, ConsumableItems.BOMB.get().getDefaultInstance());
+        itemEntity.setPickUpDelay(0);
+        return itemEntity;
+    }));
+    public static final Supplier<BehaviourStatueBlock> HEART_STATUE = registerBehaviour("heart_statue", new BehaviourStatueBlock.SummonBehaviour<>(false, (level, pos) -> {
+        ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, ModItems.HEART.get().getDefaultInstance());
+        itemEntity.setPickUpDelay(0);
+        return itemEntity;
+    }));
+    public static final Supplier<BehaviourStatueBlock> STAR_STATUE = registerBehaviour("star_statue", new BehaviourStatueBlock.SummonBehaviour<>(false, (level, pos) -> {
+        ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, ModItems.STAR.get().getDefaultInstance());
+        itemEntity.setPickUpDelay(0);
+        return itemEntity;
+    }));
+    // Mushroom Statue
+    // Boulder Statue
     public static final Supplier<BehaviourStatueBlock> BAST_STATUE = registerBehaviour("bast_statue", new BehaviourStatueBlock.Behaviour() {
         @Override
         public void entityTick(Level level, BlockPos pos, BlockState blockState, BehaviourStatueBlock.Entity entity) {
@@ -103,6 +218,7 @@ public class StatueBlocks {
             return original.setValue(StateProperties.DRIVE, true);
         }
     });
+    // Angel Statue
 
     public static final Supplier<BlockEntityType<BehaviourStatueBlock.Entity>> BLOCK_ENTITY = BLOCK_ENTITIES.register("behaviour_statue_entity", () -> {
         BehaviourStatueBlock[] validBlocks = BEHAVIOUR_STATUES.stream().map(Supplier::get).toArray(BehaviourStatueBlock[]::new);
@@ -118,6 +234,17 @@ public class StatueBlocks {
 
     private static Supplier<BehaviourStatueBlock> registerBehaviour(String id, BehaviourStatueBlock.Behaviour behaviour) {
         DeferredBlock<BehaviourStatueBlock> block = BLOCKS.register(id, () -> new BehaviourStatueBlock(behaviour, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS)));
+        ModItems.BLOCK_ITEMS.registerSimpleBlockItem(block, new Item.Properties());
+        BEHAVIOUR_STATUES.add(block);
+        return block;
+    }
+
+    private static Supplier<BehaviourStatueBlock> registerSimpleSummon(String id, boolean noDrops, Function<Level, Entity> factory) {
+        DeferredBlock<BehaviourStatueBlock> block = BLOCKS.register(id, () -> new BehaviourStatueBlock(new BehaviourStatueBlock.SummonBehaviour<>(noDrops, (level, pos) -> {
+            Entity entity = factory.apply(level);
+            entity.setPos(pos);
+            return entity;
+        }), BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS)));
         ModItems.BLOCK_ITEMS.registerSimpleBlockItem(block, new Item.Properties());
         BEHAVIOUR_STATUES.add(block);
         return block;

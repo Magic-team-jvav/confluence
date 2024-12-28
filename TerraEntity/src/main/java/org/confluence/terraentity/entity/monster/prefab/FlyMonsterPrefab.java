@@ -1,5 +1,6 @@
 package org.confluence.terraentity.entity.monster.prefab;
 
+import com.google.common.base.Suppliers;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import org.confluence.terraentity.entity.ai.goal.DashGoal;
 import org.confluence.terraentity.entity.ai.goal.LookForwardWanderFlyGoal;
@@ -31,24 +32,24 @@ public class FlyMonsterPrefab extends AbstractPrefab {
                     })
             ;
 
-    public static Supplier<AbstractMonster.Builder> EATER_OF_SOULS_BUILDER =
-            ()->new FlyMonsterPrefab(20,2,11,30,0.5f,0.1f).getPrefab()
+    public static final Supplier<AbstractMonster.Builder> EATER_OF_SOULS_BUILDER =
+            Suppliers.memoize(()->new FlyMonsterPrefab(20,2,11,30,0.5f,0.1f).getPrefab()
                     .setHurtSound(TESounds.ROUTINE_HURT)
                     .setDeathSound(TESounds.ROUTINE_DEATH)
                     .addGoal((g,e)->{
                         g.addGoal(0, new DashGoal(e,0.98f,0.4f,15));
 
-                    })
+                    }))
             ;
 
-    public static Supplier<AbstractMonster.Builder> DRIPPLER_BUILDER  =
-            ()->new FlyMonsterPrefab(26,3,14,30,0.5f,0.2f).getPrefab()
+    public static final Supplier<AbstractMonster.Builder> DRIPPLER_BUILDER  =
+            Suppliers.memoize(()->new FlyMonsterPrefab(26,3,14,30,0.5f,0.2f).getPrefab()
                 .setHurtSound(TESounds.DRIPPLER_HURT)
                 .setDeathSound(TESounds.DRIPPLER_DEATH)
                 .addGoal((g,e)->{
                     g.addGoal(0, new DashGoal(e,0.8f,0.2f,10));
 
-                })
+                }))
             ;
 
     public static Supplier<AbstractMonster.Builder> FLYING_FISH_BUILDER  =

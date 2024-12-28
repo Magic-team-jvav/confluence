@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "confluence:block/pink_brick"
+      "model": "confluence:block/pink_bricks"
     }
   }
 }

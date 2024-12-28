@@ -62,7 +62,7 @@ public final class ModTags {
         public static final TagKey<Item> JUNK = register("junk");
         public static final TagKey<Item> SLUSH = register("slush");
         public static final TagKey<Item> MARINE_GRAVEL = register("marine_gravel");
-        public static final TagKey<Item> CORAL = register("coral");
+        public static final TagKey<Item> CORALS = register("corals");
         public static final TagKey<Item> TR_PLANKS = register("tr_planks");
         public static final TagKey<Item> WOODEN_COMBUSTIBLES = register("wooden_combustibles");  // 可燃木材系列
         public static final TagKey<Item> COMPOST = register("compost");  // 堆肥

@@ -8,10 +8,10 @@
     ],
     "key": {
         "c": {
-                "item": "confluence:demonite_ingot"
+            "item": "confluence:demonite_ingot"
         },
         "/": {
-                "item": "confluence:rotten_bone"
+            "item": "confluence:rotten_bone"
         }
     },
     "result": {

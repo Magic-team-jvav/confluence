@@ -8,7 +8,7 @@
             "item": "confluence:waterleaf"
         },
         {
-            "item": "minecraft:fire_coral"
+            "tag": "confluence:corals"
         }
     ],
     "result": {

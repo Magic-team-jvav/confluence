@@ -8,12 +8,12 @@
     ],
     "key": {
         "a": {
-                "tag": "confluence:ebony_and_crimson_ingot"
+            "tag": "confluence:demonite_and_crimson_ingot"
         },
         "c": {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "tag": "confluence:ebony_and_crimson_ingot"
+                "tag": "confluence:demonite_and_crimson_ingot"
             },
             "count": 2
         },

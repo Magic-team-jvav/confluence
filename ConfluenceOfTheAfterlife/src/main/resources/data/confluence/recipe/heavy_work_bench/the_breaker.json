@@ -17,9 +17,9 @@
         "a": {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-            "item": "confluence:shadow_scale"
-        },
-        "count": 2
+                "item": "confluence:shadow_scale"
+            },
+            "count": 2
         },
         "/": {
             "item": "confluence:rotten_bone"

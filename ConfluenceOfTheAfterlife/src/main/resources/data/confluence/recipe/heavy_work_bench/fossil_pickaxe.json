@@ -8,10 +8,10 @@
     ],
     "key": {
         "#": {
-                "item": "confluence:sturdy_fossil"
+            "item": "confluence:sturdy_fossil"
         },
         "/": {
-                "item": "minecraft:stick"
+            "item": "minecraft:stick"
         }
     },
     "result": {

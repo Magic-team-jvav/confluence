@@ -10,6 +10,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -19,6 +20,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.block.common.StatueBlock;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
@@ -36,6 +39,7 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("unused")
 public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, EntityBlock {
     private final Behaviour behaviour;
 
@@ -54,6 +58,12 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         return behaviour.getStateForPlacement(pContext, super.getStateForPlacement(pContext));
+    }
+
+    @Override
+    public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+        VoxelShape shape = behaviour.getShape(pState, pLevel, pPos, pContext);
+        return shape == null ? super.getShape(pState, pLevel, pPos, pContext) : shape;
     }
 
     @Override
@@ -101,7 +111,7 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
     }
 
     @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
         return state.getValue(StateProperties.VERTICAL_TWO_PART).isBase() ? ModUtils.getTicker(blockEntityType, StatueBlocks.BLOCK_ENTITY.get(), behaviour::entityTick) : null;
     }
 
@@ -160,6 +170,10 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
 
         public BlockState getStateForPlacement(BlockPlaceContext pContext, BlockState original) {
             return original;
+        }
+
+        public @Nullable VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+            return null;
         }
     }
 

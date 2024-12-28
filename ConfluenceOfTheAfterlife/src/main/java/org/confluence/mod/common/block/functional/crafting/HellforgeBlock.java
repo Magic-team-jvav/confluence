@@ -224,10 +224,7 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
             boolean update = false;
             if (blockEntity.isLit()) {
                 blockEntity.litTime--;
-                if (!blockEntity.isLit()) {
-                    blockEntity.cookingTotalTime = getTotalCookTime(level, blockEntity);
-                    blockEntity.cookingProgress = 0;
-                }
+                resetCookTime(blockEntity);
             }
 
             ItemStack[] inputs = blockEntity.getInputs();
@@ -252,6 +249,7 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
                 }
             }
 
+            boolean blastingMatched = false;
             if (hasInput && !hellforgeMatched) {
                 for (ItemStack input : list) {
                     RecipeHolder<BlastingRecipe> recipeholder = blockEntity.blasting.getRecipeFor(new SingleRecipeInput(input), level).orElse(null);
@@ -265,9 +263,14 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
                                 update = true;
                             }
                         }
+                        blastingMatched = true;
                         break;
                     }
                 }
+            }
+
+            if (!blastingMatched && !hellforgeMatched) {
+                blockEntity.cookingProgress = 0;
             }
 
             if (isLit != blockEntity.isLit()) {
@@ -320,18 +323,21 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
             getItems().set(index, stack);
             stack.limitSize(getMaxStackSize(stack));
             if (index < 4 && !flag) {
-                if (!isLit()) {
-                    this.cookingTotalTime = getTotalCookTime(level, this);
-                    this.cookingProgress = 0;
-                }
+                resetCookTime(this);
                 setChanged();
             } else if (index == FUEL_SLOT) {
                 this.useFuel = stack.isEmpty() ? 0 : 1;
-                if (!isLit()) {
-                    this.cookingTotalTime = getTotalCookTime(level, this);
-                    this.cookingProgress = 0;
-                }
+                resetCookTime(this);
                 setChanged();
+            }
+        }
+
+        private static void resetCookTime(Entity entity) {
+            if (!entity.isLit()) {
+                entity.cookingTotalTime = getTotalCookTime(entity.level, entity);
+                if (entity.items.get(FUEL_SLOT).isEmpty()) {
+                    entity.cookingProgress = 0;
+                }
             }
         }
 
@@ -382,7 +388,7 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
 
         private static boolean canHellforgeBurn(RegistryAccess registryAccess, RecipeHolder<HellforgeRecipe> recipe, NonNullList<ItemStack> inventory, int maxStackSize, HellforgeBlock.Entity furnace) {
             ItemStack[] inputs = furnace.inputs;
-            if ((!recipe.value().isRequiresFuel() || furnace.useFuel()) && Arrays.stream(inputs).anyMatch(itemStack -> !itemStack.isEmpty())) {
+            if ((!recipe.value().isRequiresFuel() || (furnace.useFuel() || !furnace.getItem(FUEL_SLOT).isEmpty())) && Arrays.stream(inputs).anyMatch(itemStack -> !itemStack.isEmpty())) {
                 ItemStack neoResult = recipe.value().getResultItem(registryAccess);
                 return canResultInsert(inventory, maxStackSize, neoResult);
             } else {

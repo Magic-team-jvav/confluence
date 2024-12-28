@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
@@ -177,13 +178,20 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
         }
     }
 
-    public static class SummonBehaviour extends Behaviour {
+    public static class SummonBehaviour<E extends net.minecraft.world.entity.Entity> extends Behaviour {
         private final boolean noDrops;
-        private final BiFunction<Level, Vec3, net.minecraft.world.entity.Entity> factory;
+        private final BiFunction<Level, Vec3, E> factory;
+        private Consumer<E> afterSummon = entity -> {};
 
-        public SummonBehaviour(boolean noDrops, BiFunction<Level, Vec3, net.minecraft.world.entity.Entity> factory) {
+        public SummonBehaviour(boolean noDrops, BiFunction<Level, Vec3, E> factory) {
             this.noDrops = noDrops;
             this.factory = factory;
+        }
+
+        public SummonBehaviour(boolean noDrops, BiFunction<Level, Vec3, E> factory, Consumer<E> afterSummon) {
+            this.noDrops = noDrops;
+            this.factory = factory;
+            this.afterSummon = afterSummon;
         }
 
         @Override
@@ -196,8 +204,9 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
                 });
                 if (entities.size() >= 3) return;
                 BlockPos relative = pPos.relative(Util.getRandom(ModUtils.HORIZONTAL, pLevel.random));
-                net.minecraft.world.entity.Entity entity = factory.apply(pLevel, relative.getCenter());
+                E entity = factory.apply(pLevel, relative.getCenter());
                 pLevel.addFreshEntity(entity);
+                afterSummon.accept(entity);
                 if (noDrops) {
                     entity.addTag(ModUtils.NO_DROPS_TAG);
                 }

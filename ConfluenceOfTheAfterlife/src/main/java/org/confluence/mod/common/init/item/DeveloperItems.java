@@ -6,7 +6,7 @@ import org.confluence.mod.common.item.common.CollectedBookItem;
 
 import java.util.function.Supplier;
 
-public class NoTabItems {
+public class DeveloperItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
     public static final Supplier<CollectedBookItem> COLLECTED_BOOK_ITEM = ITEMS.registerItem("collected_book_item", CollectedBookItem::new);

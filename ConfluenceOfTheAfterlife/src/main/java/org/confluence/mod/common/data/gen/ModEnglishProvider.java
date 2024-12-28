@@ -2,18 +2,19 @@ package org.confluence.mod.common.data.gen;
 
 import com.google.common.collect.Iterables;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.block.CrateBlocks;
-import org.confluence.mod.common.init.block.DecorativeBlocks;
-import org.confluence.mod.common.init.block.OreBlocks;
+import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.mixin.accessor.LanguageProviderAccessor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
-import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static org.confluence.mod.common.component.prefix.ModPrefix.*;
@@ -351,6 +352,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("attribute.name.player.whip_range", "Whip Range");
 
         add("entity.minecraft.villager.confluence.sky_miller", "Sky Miller");
+        add("entity.minecraft.villager.confluence.banker", "Banker");
 
         add("container.confluence.workshop", "Workshop");
         add("title.confluence.workshop", "Workshop");
@@ -359,65 +361,76 @@ public class ModEnglishProvider extends LanguageProvider {
         add("generator.confluence.the_corruption", "The Corruption");
         add("generator.confluence.tr_crimson", "The Crimson");
 
-        add("title.confluence.wiki", "Confluence Wiki");
-        add("wiki.confluence.back", "Return");
-        add("title.confluence.group", "Group Wiki");
-        add("wiki.confluence.item", "Items");
-        add("wiki.confluence.type_accessories", "Accessories");
-        add("wiki.confluence.type_arrow", "Arrows");
-        add("wiki.confluence.type_axe", "Axes");
-        add("wiki.confluence.type_bait", "Baits");
-        add("wiki.confluence.type_bow", "Bows");
-        add("wiki.confluence.type_fishing_pole", "Fishing Poles");
-        add("wiki.confluence.type_food", "Foods");
-        add("wiki.confluence.type_material", "Materials");
-        add("wiki.confluence.type_misc", "Misc");
-        add("wiki.confluence.type_quested_fish", "Quested Fish");
-        add("wiki.confluence.type_sword", "Swords");
-        add("wiki.confluence.type_terra_potion", "Terra Potions");
-        add("wiki.confluence.setDamage", "Attack Damage: ");
-        add("wiki.confluence.use", "Durability: ");
-        add("wiki.confluence.speed", "Use Speed: ");
-        add("wiki.confluence.enchantment", "Enchantment Level: ");
-        add("wiki.confluence.ingredient", "Repair Ingredient: ");
-        add("wiki.confluence.power", "Pickaxe Power: ");
-        add("wiki.confluence.nutrition", "Nutrition: ");
-        add("wiki.confluence.saturation", "Saturation: ");
+        add("biome.confluence.ash_forest", "Ash Forest");
+        add("biome.confluence.ash_wasteland", "Ash Wasteland");
+        add("biome.confluence.glowing_mushroom", "Glowing Mushroom");
+        add("biome.confluence.the_corruption", "The Corruption");
+        add("biome.confluence.the_corruption_desert", "The Corruption Desert");
+        add("biome.confluence.the_corruption_tundra", "The Corruption Tundra");
+        add("biome.confluence.the_hallow", "The Hallow");
+        add("biome.confluence.the_hallow_desert", "The Hallow Desert");
+        add("biome.confluence.the_hallow_tundra", "The Hallow Tundra");
+        add("biome.confluence.tr_crimson", "Tr Crimson");
+        add("biome.confluence.tr_crimson_desert", "Tr Crimson Desert");
+        add("biome.confluence.tr_crimson_tundra", "Tr Crimson Tundra");
 
-        add("wiki.confluence.copper_short_sword", """
-                The Copper Shortsword is an early-game metal shortsword.
-                Its alternate ore counterpart is the Tin Shortsword.
-                
-                Like all shortswords, the Copper Shortsword has a very limited range
-                and attacks with a stabbing motion at any direction / horizontally
-                in front of the player, instead of an arc.
-                
-                This makes it almost useless against flying or jumping enemies,
-                although its high attack rate makes it
-                somewhat effective against weaker fighter type enemies.
-                
-                Its best boomerangModifier is Legendary.""");
+        Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), toTitleCase(block.getId().getPath()));
+        CrateBlocks.BLOCKS.getEntries().forEach(blockAction);
+        DecorativeBlocks.BLOCKS.getEntries().forEach(blockAction);
+        FunctionalBlocks.BLOCKS.getEntries().forEach(blockAction);
+        ModBlocks.BLOCKS.getEntries().forEach(blockAction);
+        MusicBoxBlocks.BLOCKS.getEntries().forEach(blockAction);
+        NatureBlocks.BLOCKS.getEntries().forEach(blockAction);
+        OreBlocks.BLOCKS.getEntries().forEach(blockAction);
+        PotBlocks.BLOCKS.getEntries().forEach(blockAction);
+        StatueBlocks.BLOCKS.getEntries().forEach(blockAction);
 
-        CrateBlocks.BLOCKS.getEntries().forEach(block -> add(block.get(), toTitleCase(block.getId().getPath())));
-        DecorativeBlocks.BLOCKS.getEntries().forEach(block -> add(block.get(), toTitleCase(block.getId().getPath())));
-        OreBlocks.BLOCKS.getEntries().forEach(block -> add(block.get(), toTitleCase(block.getId().getPath())));
-
-        ModItems.ITEMS.getEntries().forEach(item -> {
-            Item item1 = item.get();
-            if (item1 instanceof BlockItem) return;
-            add(item1, toTitleCase(item.getId().getPath()));
-        });
-        Map<String, String> data = ((LanguageProviderAccessor) this).getData();
+        Consumer<DeferredHolder<Item, ? extends Item>> itemAction = item -> add(item.get(), toTitleCase(item.getId().getPath()));
         add(AccessoryItems.PHILOSOPHERS_STONE.get(), "Philosopher's Stone");
-        AccessoryItems.ITEMS.getEntries().forEach(accessory -> {
-            Item item = accessory.get();
-            String descriptionId = item.getDescriptionId();
-            if (data.containsKey(descriptionId)) return;
-            add(descriptionId, toTitleCase(accessory.getId().getPath()));
-        });
-        SwordItems.ITEMS.getEntries().forEach(sword -> add(sword.get(), toTitleCase(sword.getId().getPath())));
-        ArrowItems.ITEMS.getEntries().forEach(arrow -> add(arrow.get(), toTitleCase(arrow.getId().getPath())));
-        BowItems.ITEMS.getEntries().forEach(bow -> add(bow.get(), toTitleCase(bow.getId().getPath())));
-        PotionItems.ITEMS.getEntries().forEach(potion -> add(potion.get(), toTitleCase(potion.getId().getPath())));
+        AccessoryItems.ITEMS.getEntries().forEach(itemAction);
+        ArmorItems.ITEMS.getEntries().forEach(itemAction);
+        ArrowItems.ITEMS.getEntries().forEach(itemAction);
+        AxeItems.ITEMS.getEntries().forEach(itemAction);
+        BaitItems.ITEMS.getEntries().forEach(itemAction);
+        BoomerangItems.ITEMS.getEntries().forEach(itemAction);
+        BowItems.ITEMS.getEntries().forEach(itemAction);
+        ConsumableItems.ITEMS.getEntries().forEach(itemAction);
+        CosmeticItems.ITEMS.getEntries().forEach(itemAction);
+        DrillItems.ITEMS.getEntries().forEach(itemAction);
+        FishingPoleItems.ITEMS.getEntries().forEach(itemAction);
+        FoodItems.ITEMS.getEntries().forEach(itemAction);
+        HammerItems.ITEMS.getEntries().forEach(itemAction);
+        HookItems.ITEMS.getEntries().forEach(itemAction);
+        IconItems.ITEMS.getEntries().forEach(itemAction);
+        ManaStaffItems.ITEMS.getEntries().forEach(itemAction);
+        MaterialItems.ITEMS.getEntries().forEach(itemAction);
+        MinecartItems.ITEMS.getEntries().forEach(itemAction);
+        ModItems.ITEMS.getEntries().forEach(itemAction);
+        ModItems.BLOCK_ITEMS.getEntries().forEach(itemAction);
+        DeveloperItems.ITEMS.getEntries().forEach(itemAction);
+        PickaxeAxeItems.ITEMS.getEntries().forEach(itemAction);
+        PickaxeItems.ITEMS.getEntries().forEach(itemAction);
+        PotionItems.ITEMS.getEntries().forEach(itemAction);
+        QuestedFishes.ITEMS.getEntries().forEach(itemAction);
+        SwordItems.ITEMS.getEntries().forEach(itemAction);
+        ToolItems.ITEMS.getEntries().forEach(itemAction);
+
+        ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), toTitleCase(effect.getId().getPath())));
+    }
+
+    @Override
+    public void add(Block key, @NotNull String name) {
+        String descriptionId = key.getDescriptionId();
+        if (!((LanguageProviderAccessor) this).getData().containsKey(descriptionId)) {
+            super.add(descriptionId, name);
+        }
+    }
+
+    @Override
+    public void add(Item key, @NotNull String name) {
+        String descriptionId = key.getDescriptionId();
+        if (!((LanguageProviderAccessor) this).getData().containsKey(descriptionId)) {
+            super.add(descriptionId, name);
+        }
     }
 }

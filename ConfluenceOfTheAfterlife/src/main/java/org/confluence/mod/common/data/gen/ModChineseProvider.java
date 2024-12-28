@@ -27,7 +27,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("creativetab.confluence.misc", "汇流来世 | 杂项");
         add("creativetab.confluence.food_and_potions", "汇流来世 | 食物与药水");
         add("creativetab.confluence.armors", "汇流来世 | 盔甲");
-        add("creativetab.confluence.accessories", "汇流来世 | 配饰");
         add("creativetab.confluence.mechanical", "汇流来世 | 器械");
         add("creativetab.confluence.developer", "汇流来世 | 开发者物品");
 
@@ -351,7 +350,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("prefix.confluence.powerful", "强大");
         add("prefix.confluence.frenzying", "暴怒");
         add("prefix.confluence.mythic", "神秘");
-        add("prefix.confluence.adeptl", "精巧");
+        add("prefix.confluence.adept", "精巧");
         add("prefix.confluence.masterful", "精湛");
         add("prefix.confluence.inept", "笨拙");
         add("prefix.confluence.ignorant", "无知");
@@ -400,7 +399,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("block.confluence.base_chest_block.unlocked_water", "§r水中箱");
         add("block.confluence.base_chest_block.death_water", "§r死人水中箱");
         add("block.confluence.base_chest_block.unlocked_skyware", "§r天域箱");
-        add("block.confluence.white_plastic_chair", "大排档凳子");
 
         add("resourcepack.terraria_art", "泰拉艺术");
         add("resourcepack.terraria_armor", "泰拉盔甲样式材质");
@@ -416,41 +414,6 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("entity.minecraft.villager.confluence.sky_miller", "天师");
         add("entity.minecraft.villager.confluence.banker", "银行家");
-
-        add("title.confluence.wiki", "汇流来世Wiki");
-        add("wiki.confluence.back", "返回上级菜单");
-        add("title.confluence.group", "组Wiki");
-        add("wiki.confluence.item", "物品");
-        add("wiki.confluence.type_accessories", "饰品");
-        add("wiki.confluence.type_arrow", "箭矢");
-        add("wiki.confluence.type_axe", "斧");
-        add("wiki.confluence.type_bait", "鱼饵");
-        add("wiki.confluence.type_bow", "弓");
-        add("wiki.confluence.type_fishing_pole", "鱼竿");
-        add("wiki.confluence.type_food", "食物");
-        add("wiki.confluence.type_material", "材料");
-        add("wiki.confluence.type_misc", "杂项");
-        add("wiki.confluence.type_quested_fish", "任务鱼");
-        add("wiki.confluence.type_sword", "剑");
-        add("wiki.confluence.type_terra_potion", "药水");
-        add("wiki.confluence.setDamage", "攻击伤害：");
-        add("wiki.confluence.use", "耐久：");
-        add("wiki.confluence.speed", "使用速度：");
-        add("wiki.confluence.enchantment", "附魔等级：");
-        add("wiki.confluence.ingredient", "修复材料：");
-        add("wiki.confluence.power", "稿力：");
-        add("wiki.confluence.nutrition", "饱食度：");
-        add("wiki.confluence.saturation", "饱和度：");
-
-        add("wiki.confluence.copper_short_sword", """
-                铜短剑是游戏早期的金属短剑。其代用矿石对应物是锡短剑。
-                
-                和所有短剑一样，铜短剑的攻击范围非常有限，
-                且以向任意方向 / 水平地向玩家前方刺击而非弧线挥击的方式攻击，
-                这使其在对付飞行或跳跃敌怪时几乎毫无用处，
-                不过它的高攻击速率使其在对付较弱的战士类敌怪时还能派的上点用场。
-                
-                其最佳修饰语是传奇。""");
 
         //region blocks
         add(OreBlocks.SANCTIFICATION_COAL_ORE.get(), "圣化煤矿石");
@@ -1153,7 +1116,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         // 杂项
         add(ToolItems.ICE_MIRROR.get(), "冰雪镜");
-        add(NoTabItems.COLLECTED_BOOK_ITEM.get(), "藏书");
+        add(DeveloperItems.COLLECTED_BOOK_ITEM.get(), "藏书");
 
 
         add(ModItems.COPPER_COIN.get(), "铜币");

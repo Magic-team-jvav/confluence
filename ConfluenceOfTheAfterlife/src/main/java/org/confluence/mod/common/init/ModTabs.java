@@ -116,7 +116,7 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.DEVELOPER_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.developer"))
                     .displayItems((parameters, output) -> {
-
+                        DeveloperItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                     }).build());
     // 食物与药水
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FOOD_AND_POTIONS = TABS.register("food_and_potions",

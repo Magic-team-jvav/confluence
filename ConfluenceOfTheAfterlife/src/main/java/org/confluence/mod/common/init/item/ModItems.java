@@ -65,7 +65,7 @@ public final class ModItems {
         ManaStaffItems.ITEMS.register(eventBus);
         MaterialItems.ITEMS.register(eventBus);
         MinecartItems.ITEMS.register(eventBus);
-        NoTabItems.ITEMS.register(eventBus);
+        DeveloperItems.ITEMS.register(eventBus);
         PickaxeAxeItems.ITEMS.register(eventBus);
         PickaxeItems.ITEMS.register(eventBus);
         PotionItems.ITEMS.register(eventBus);

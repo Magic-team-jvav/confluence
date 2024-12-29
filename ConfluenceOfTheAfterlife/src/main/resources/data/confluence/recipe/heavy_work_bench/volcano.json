@@ -1,0 +1,31 @@
+{
+  "type": "confluence:heavy_work_bench",
+  "pattern": [
+    "   a",
+    " aa ",
+    "baa ",
+    "cb  "
+  ],
+  "key": {
+    "a": {
+      "type": "terra_curio:amount_ingredient",
+      "ingredient": {
+        "item": "confluence:hellstone_ingot"
+      },
+      "count": 4
+    },
+    "b": {
+      "item": "minecraft:netherite_scrap"
+    },
+    "c": {
+      "type": "terra_curio:amount_ingredient",
+      "ingredient": {
+        "item": "minecraft:blaze_rod"
+      },
+      "count": 2
+    }
+  },
+  "result": {
+    "id": "confluence:volcano"
+  }
+}

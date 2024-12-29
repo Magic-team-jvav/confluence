@@ -16,7 +16,7 @@
         "a": {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "item": "confluence:spore_root"
+                "item": "confluence:gelstone"
             },
             "count": 2
         }

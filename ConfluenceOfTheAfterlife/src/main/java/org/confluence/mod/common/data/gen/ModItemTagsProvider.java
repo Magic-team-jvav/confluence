@@ -51,6 +51,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getPlanks().asItem(), Blocks.OAK_PLANKS.asItem(), Blocks.SPRUCE_PLANKS.asItem(),
                 Blocks.ACACIA_PLANKS.asItem(), Blocks.DARK_OAK_PLANKS.asItem(), Blocks.JUNGLE_PLANKS.asItem(), Blocks.MANGROVE_PLANKS.asItem(), Blocks.CHERRY_PLANKS.asItem(), Blocks.BAMBOO_PLANKS.asItem(), Blocks.CRIMSON_PLANKS.asItem(),
                 Blocks.BIRCH_PLANKS.asItem(), Blocks.WARPED_PLANKS.asItem());
+        tag(ModTags.Items.EVIL_MATERIAL).add(
+               MaterialItems.TR_CRIMSON_INGOT.get(),
+               MaterialItems.DEMONITE_INGOT.get(),
+               MaterialItems.WORM_TOOTH.get(),
+               MaterialItems.VERTEBRA.get(),
+               MaterialItems.BLOOD_CLOT_POWDER.get(),
+               MaterialItems.ROTTEN_BONE.get()
+        );
 
         // 可烧的木材
         tag(ModTags.Items.WOODEN_COMBUSTIBLES).add(

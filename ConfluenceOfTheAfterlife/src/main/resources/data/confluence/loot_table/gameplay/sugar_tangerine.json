@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:gift",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:peeled_sugar_tangerine",
+          "weight": 1
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}

@@ -89,6 +89,7 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> BLOOD_ORANGE = registerNormalFood("blood_orange", FoodType.LOW);
     public static final DeferredItem<BaseFoodItem> ELDERBERRY = registerNormalFood("elderberry", FoodType.LOW);
     public static final DeferredItem<BaseFoodItem> BLACKCURRANT = registerNormalFood("blackcurrant", FoodType.LOW);
+    public static final DeferredItem<BaseFoodItem> PEELED_SUGAR_TANGERINE = registerNormalFood("peeled_sugar_tangerine", FoodType.LOW);
     //饮料
     public static final DeferredItem<BaseFoodItem> FRUIT_JUICE = registerContainerFood("fruit_juice", FoodType.MEDIUM, GLASS_BOTTLE, 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //混合果汁
     public static final DeferredItem<BaseFoodItem> APPLE_JUICE = registerContainerFood("apple_juice", FoodType.MEDIUM, GLASS_BOTTLE, 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK);

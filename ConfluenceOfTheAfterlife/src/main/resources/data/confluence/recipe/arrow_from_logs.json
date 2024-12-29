@@ -2,7 +2,8 @@
     "type": "minecraft:crafting_shaped",
     "pattern": [
         "#",
-        "O"
+        "O",
+        "a"
     ],
     "key": {
         "#": {
@@ -10,11 +11,13 @@
         },
         "O": {
             "tag": "minecraft:logs"
+        },
+        "a": {
+            "tag": "minecraft:wool"
         }
     },
     "result": {
         "id": "minecraft:arrow",
-        "count": 25
-    },
-    "group": "misc"
+        "count": 12
+    }
 }

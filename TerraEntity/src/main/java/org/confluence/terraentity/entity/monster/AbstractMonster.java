@@ -1,5 +1,8 @@
 package org.confluence.terraentity.entity.monster;
 
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -30,10 +33,13 @@ public class AbstractMonster extends Monster implements GeoEntity {
     private int attackInternal = 0;
     private int _attackInternal = 20;
     public Builder builder;
+    public LivingEntity clientTarget;
+    public static final EntityDataAccessor<Integer> DATA_CLIENT_TARGET_DATA = SynchedEntityData.defineId(AbstractMonster.class, EntityDataSerializers.INT);
+
     public AbstractMonster(EntityType<? extends Monster> type, Level level,Builder builder) {
         super(type, level);
         this.builder = builder;
-        if (level != null && !level.isClientSide)
+        if (!level.isClientSide)
             this.registerGoals();
         this.navigation = createNavigation(level);
         this.setDiscardFriction(builder.noFriction);
@@ -54,6 +60,27 @@ public class AbstractMonster extends Monster implements GeoEntity {
 
     }
 
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_CLIENT_TARGET_DATA, 0);
+    }
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
+        if (DATA_CLIENT_TARGET_DATA.equals(key)) {
+            int id = entityData.get(DATA_CLIENT_TARGET_DATA);
+            if (id == 0) {
+                this.clientTarget = null;
+                return;
+            }
+            var entity = level().getEntity(id);
+            if (entity instanceof LivingEntity living)
+                this.clientTarget = living;
+        }
+
+    }
+    @Override
     protected void registerGoals() {
         if(builder!= null) builder.goals.forEach(g->g.accept(goalSelector,this));
         if(builder!= null) builder.targets.forEach(t->t.accept(targetSelector,this));
@@ -140,7 +167,12 @@ public class AbstractMonster extends Monster implements GeoEntity {
         super.tick();
 
         if(builder!=null && builder.ticker!=null) builder.ticker.accept(this);
-
+        if(!level().isClientSide){
+            if(getTarget() != clientTarget){
+                clientTarget = getTarget();
+                entityData.set(DATA_CLIENT_TARGET_DATA, clientTarget == null? 0 : clientTarget.getId());
+            }
+        }
         if(!level().isClientSide && --attackInternal<0 && builder.attachAttack){
             var entities = level().getEntities(this, this.getBoundingBox());
             if (!entities.isEmpty()) {

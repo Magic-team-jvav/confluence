@@ -23,6 +23,7 @@ public class HeavyWorkBenchRecipe extends AbstractAmountRecipe {
         super(pResult, pattern.ingredients());
         this.pattern = pattern;
     }
+
     public static HeavyWorkBenchRecipe of(ShapedRecipePattern pattern, ItemStack result) {
         return new HeavyWorkBenchRecipe(result, pattern);
     }

@@ -48,6 +48,7 @@
         "client.AdvancementWidgetMixin",
         "client.BlockModelShaperMixin",
         "client.ClientAdvancementsMixin",
+        "client.ClientEntityMixin",
         "client.ClientLevelMixin",
         "client.DeathScreenMixin",
         "client.GuiMixin",

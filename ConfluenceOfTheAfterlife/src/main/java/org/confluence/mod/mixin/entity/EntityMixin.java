@@ -1,21 +1,16 @@
 package org.confluence.mod.mixin.entity;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.mod.api.event.ShimmerEntityTransmutationEvent;
-import org.confluence.mod.client.effect.GlowingHelper;
-import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.mixed.IEntity;
@@ -26,9 +21,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
@@ -156,43 +148,5 @@ public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
         Vec3 motion = entity.getDeltaMovement();
         entity.setDeltaMovement(motion.x, y, motion.z);
         entity.setGlowingTag(true);
-    }
-
-    @Inject(method = "getTeamColor", at = @At("HEAD"), cancellable = true)
-    public void getTeamColor(CallbackInfoReturnable<Integer> cir){
-        if(Minecraft.getInstance().player !=null && Minecraft.getInstance().player.hasEffect(ModEffects.HUNTER)){
-            GlowingHelper helper = GlowingHelper.getHunterHelper();
-            AtomicInteger color = new AtomicInteger();
-            //自定义狩猎药水表
-            try{
-                helper.colorMap.forEach((k,v)->{
-                    if(k.isAssignableFrom(self().getClass())) {
-                        color.set(v.color().getRGB());
-                        throw new RuntimeException("break");
-                    }
-                });
-            }catch (RuntimeException e){
-                cir.setReturnValue(color.get());
-                return;
-            }
-
-            //敌人
-            if(self() instanceof Enemy){
-                cir.setReturnValue(helper.enemyColor.getRGB());
-                return;
-            }
-
-            //中立生物
-            if(self() instanceof NeutralMob){
-                /*todo 添加愤怒颜色
-                if((self() instanceof EnderMan) && ((EnderMan) self()).isCreepy()){
-                        cir.setReturnValue(helper.angerColor.getRGB());
-                        return;
-                }*/
-                cir.setReturnValue(helper.neutralColor.getRGB());
-                return;
-            }
-            cir.setReturnValue(helper.defaultColor.getRGB());
-        }
     }
 }

@@ -25,6 +25,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.common.init.ModParticleTypes;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
@@ -92,28 +94,41 @@ public final class WeatherHandler {
         if (player == null) {
             BLOCK_PARTICLES.clear();
             FLUID_PARTICLES.clear();
-        } else {
+        } else if (BLOCK_PARTICLES.isEmpty()) {
             for (Holder<Biome> biome : player.registryAccess().registryOrThrow(Registries.BIOME).asHolderIdMap()) {
                 ResourceKey<Biome> key = biome.getKey();
                 if (key == null || !biome.is(BiomeTags.IS_OVERWORLD)) continue;
                 registerBlockParticle(key, map -> {
-                    defaultLeavesParticles(map);
+                    leavesParticles(map);
+                    sandParticles(map);
+                    snowParticles(map);
                 });
             }
         }
     }
 
-    public static void defaultLeavesParticles(Map<Block, ParticleOptions> map) {
-        map.put(Blocks.OAK_LEAVES, ParticleTypes.CHERRY_LEAVES);
-        map.put(Blocks.SPRUCE_LEAVES, ParticleTypes.CHERRY_LEAVES);
-        map.put(Blocks.BIRCH_LEAVES, ParticleTypes.CHERRY_LEAVES);
-        map.put(Blocks.JUNGLE_LEAVES, ParticleTypes.CHERRY_LEAVES);
-        map.put(Blocks.ACACIA_LEAVES, ParticleTypes.CHERRY_LEAVES);
+    public static void leavesParticles(Map<Block, ParticleOptions> map) {
+        map.put(Blocks.OAK_LEAVES, ModParticleTypes.LEAVES.get());
+        map.put(Blocks.SPRUCE_LEAVES, ModParticleTypes.LEAVES.get());
+        map.put(Blocks.BIRCH_LEAVES, ModParticleTypes.LEAVES.get());
+        map.put(Blocks.JUNGLE_LEAVES, ModParticleTypes.LEAVES.get());
+        map.put(Blocks.ACACIA_LEAVES, ModParticleTypes.LEAVES.get());
         map.put(Blocks.CHERRY_LEAVES, ParticleTypes.CHERRY_LEAVES);
-        map.put(Blocks.DARK_OAK_LEAVES, ParticleTypes.CHERRY_LEAVES);
-        map.put(Blocks.MANGROVE_LEAVES, ParticleTypes.CHERRY_LEAVES);
-        map.put(Blocks.AZALEA_LEAVES, ParticleTypes.CHERRY_LEAVES);
-        map.put(Blocks.FLOWERING_AZALEA_LEAVES, ParticleTypes.CHERRY_LEAVES);
+        map.put(Blocks.DARK_OAK_LEAVES, ModParticleTypes.LEAVES.get());
+        map.put(Blocks.MANGROVE_LEAVES, ModParticleTypes.LEAVES.get());
+        map.put(Blocks.AZALEA_LEAVES, ModParticleTypes.LEAVES.get());
+        map.put(Blocks.FLOWERING_AZALEA_LEAVES, ModParticleTypes.LEAVES.get());
+        map.put(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get(), ModParticleTypes.LEAVES.get());
+    }
+
+    public static void sandParticles(Map<Block, ParticleOptions> map) {
+        map.put(Blocks.RED_SAND, ModParticleTypes.RED_SAND.get());
+        map.put(Blocks.SAND, ModParticleTypes.SAND.get());
+    }
+
+    public static void snowParticles(Map<Block, ParticleOptions> map) {
+        map.put(Blocks.SNOW_BLOCK, ModParticleTypes.SNOW.get());
+        map.put(Blocks.POWDER_SNOW, ModParticleTypes.SNOW.get());
     }
 
     private static void registerBlockParticle(ResourceKey<Biome> biome, Consumer<Map<Block, ParticleOptions>> consumer) {

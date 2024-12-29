@@ -1,4 +1,4 @@
-package org.confluence.mod.common.particle;
+package org.confluence.mod.client.particle;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.particle.options.DamageIndicatorOptions;
+import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.mixin.client.accessor.FontAccessor;
 import org.confluence.mod.util.DeathAnimUtils;
 import org.jetbrains.annotations.NotNull;

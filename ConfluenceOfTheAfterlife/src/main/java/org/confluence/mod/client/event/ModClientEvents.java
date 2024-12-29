@@ -31,6 +31,9 @@ import org.confluence.mod.client.model.entity.hook.BaseHookModel;
 import org.confluence.mod.client.model.entity.hook.SkeletronHandModel;
 import org.confluence.mod.client.model.entity.hook.WebSlingerModel;
 import org.confluence.mod.client.model.entity.projectile.*;
+import org.confluence.mod.client.particle.BiomeColorParticle;
+import org.confluence.mod.client.particle.DamageIndicatorParticle;
+import org.confluence.mod.client.particle.SimpleTextureSheetParticle;
 import org.confluence.mod.client.renderer.block.*;
 import org.confluence.mod.client.renderer.entity.EmptyEntityRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.BaseFishingHookRenderer;
@@ -51,7 +54,6 @@ import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.mod.common.init.item.BowItems;
 import org.confluence.mod.common.init.item.FishingPoleItems;
 import org.confluence.mod.common.init.item.MaterialItems;
-import org.confluence.mod.common.particle.DamageIndicatorParticle;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import static org.confluence.mod.common.init.ModEntities.*;
@@ -220,5 +222,10 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerParticles(RegisterParticleProvidersEvent event) {
         event.registerSpecial(ModParticleTypes.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
+        event.registerSpriteSet(ModParticleTypes.LEAVES.get(), BiomeColorParticle.Provider::new);
+        event.registerSpriteSet(ModParticleTypes.RED_SAND.get(), SimpleTextureSheetParticle.Provider::new);
+        event.registerSpriteSet(ModParticleTypes.SAND.get(), SimpleTextureSheetParticle.Provider::new);
+        event.registerSpriteSet(ModParticleTypes.SNOW.get(), SimpleTextureSheetParticle.Provider::new);
+        event.registerSpriteSet(ModParticleTypes.YELLOW_WILLOW.get(), SimpleTextureSheetParticle.Provider::new);
     }
 }

@@ -5,6 +5,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.crafting.SkyMillBlock;
 import software.bernie.geckolib.model.GeoModel;
 
+@SuppressWarnings("removal")
 public class SkyMillBlockModel extends GeoModel<SkyMillBlock.Entity> {
     public static final ResourceLocation MODEL = Confluence.asResource("geo/block/sky_mill.geo.json");
     public static final ResourceLocation TEXTURE = Confluence.asResource("textures/block/sky_mill.png");

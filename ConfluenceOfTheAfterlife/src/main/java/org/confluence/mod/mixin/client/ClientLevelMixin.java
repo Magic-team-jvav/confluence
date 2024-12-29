@@ -10,6 +10,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.mod.client.handler.WeatherHandler;
@@ -28,7 +29,9 @@ import java.util.Map;
 @Mixin(ClientLevel.class)
 public abstract class ClientLevelMixin implements LevelReader, SelfGetter<ClientLevel> {
     @Unique
-    private Map<Block, ParticleOptions> confluence$blockParticles;
+    private static final RandomSource confluence$random = new LegacyRandomSource(1234567890L);
+    @Unique
+    private Map<Block, WeatherHandler.Context> confluence$blockParticles;
     @Unique
     private Map<FluidType, ParticleOptions> confluence$fluidParticles;
 
@@ -49,14 +52,14 @@ public abstract class ClientLevelMixin implements LevelReader, SelfGetter<Client
         if (WeatherHandler.windDirection == null) return;
         int r = -1;
         if (confluence$blockParticles != null) {
-            r = random.nextInt(10);
+            r = confluence$random.nextInt(10);
             if (r == 0) {
-                WeatherHandler.handleBlock(self(), random, blockstate, blockPos, confluence$blockParticles);
+                WeatherHandler.handleBlock(self(), confluence$random, blockstate, blockPos, confluence$blockParticles);
             }
         }
         if (confluence$fluidParticles != null && !fluidstate.isEmpty()) {
-            if (r == 0 || random.nextInt(10) == 0) {
-                WeatherHandler.handleFluid(self(), random, fluidstate, blockPos, confluence$fluidParticles);
+            if (r == 0 || confluence$random.nextInt(10) == 0) {
+                WeatherHandler.handleFluid(self(), confluence$random, fluidstate, blockPos, confluence$fluidParticles);
             }
         }
     }

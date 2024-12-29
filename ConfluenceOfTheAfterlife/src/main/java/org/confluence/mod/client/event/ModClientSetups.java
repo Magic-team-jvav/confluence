@@ -98,6 +98,7 @@ public final class ModClientSetups {
     static final IClientItemExtensions ALTAR_CLIENT_EXTENSIONS = new IClientItemExtensions() {
         private GeoItemRenderer<AltarBlock.Item> renderer;
 
+        @SuppressWarnings("removal")
         @Override
         public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
             if (renderer == null) {

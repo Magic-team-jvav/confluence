@@ -1,5 +1,6 @@
 package org.confluence.mod.client.effect;
 
+import net.minecraft.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Slime;
@@ -7,14 +8,22 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.common.entity.projectile.BoulderEntity;
 
-
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 @OnlyIn(Dist.CLIENT)
 public class GlowingHelper {
+    public static final GlowingHelper INSTANCE = Util.make(new GlowingHelper(), helper -> {
+        //狩猎药水实体   表优先于中立生物和敌人
+
+        helper.addHunter(Slime.class,Color.MAGENTA,true);//EXAMPLE:史莱姆持续显示紫色，覆盖enemy的orange
+        helper.addHunter(Animal.class,Color.green,false);//动物
+
+        //危险感知实体
+        helper.addDanger(BoulderEntity.class,Color.red,true);//巨石
+    });
 
 
 /** 狩猎药水发光 **/
@@ -29,26 +38,10 @@ public class GlowingHelper {
 
     public Color enemyColor = Color.orange;//敌人颜色
 
-    public static GlowingHelper getHunterHelper(){
-        if(hunterHelper==null){ //上面覆盖下面
-            hunterHelper = new GlowingHelper();
-            //狩猎药水实体   表优先于中立生物和敌人
-
-            hunterHelper.addHunter(Slime.class,Color.MAGENTA,true);//EXAMPLE:史莱姆持续显示紫色，覆盖enemy的orange
-            hunterHelper.addHunter(Animal.class,Color.green,false);//动物
-
-            //危险感知实体
-            hunterHelper.addDanger(BoulderEntity.class,Color.red,true);//巨石
-
-        }
-        return hunterHelper;
-    }
 
 
 
 
-
-    private static GlowingHelper hunterHelper;
     public  Map<Class<? extends Entity>,Tuple> colorMap = new LinkedHashMap<>();//优先颜色类型表
 
     public record Tuple(Color color, boolean alwaysShow){ }
@@ -56,12 +49,12 @@ public class GlowingHelper {
     public List<Class<? extends Entity>> hunterCatalog = new ArrayList<>();
     public List<Class<? extends Entity>> dangerCatalog = new ArrayList<>();
     public void addHunter(Class<?extends Entity> clazz, Color color,boolean alwaysShow){
-        hunterHelper.hunterCatalog.add(clazz);
-        hunterHelper.colorMap.put(clazz, new Tuple(color,alwaysShow) );
+        hunterCatalog.add(clazz);
+        colorMap.put(clazz, new Tuple(color,alwaysShow) );
     }
     public void addDanger(Class<?extends Entity> clazz, Color color,boolean alwaysShow){
-        hunterHelper.dangerCatalog.add(clazz);
-        hunterHelper.colorMap.put(clazz, new Tuple(color,alwaysShow) );
+        dangerCatalog.add(clazz);
+        colorMap.put(clazz, new Tuple(color,alwaysShow) );
     }
 
 

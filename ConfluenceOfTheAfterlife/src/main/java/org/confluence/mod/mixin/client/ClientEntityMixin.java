@@ -17,7 +17,7 @@ public abstract class ClientEntityMixin implements SelfGetter<Entity> {
     @Inject(method = "getTeamColor", at = @At("HEAD"), cancellable = true)
     public void getTeamColor(CallbackInfoReturnable<Integer> cir) {
         if (Minecraft.getInstance().player != null && Minecraft.getInstance().player.hasEffect(ModEffects.HUNTER)) {
-            GlowingHelper helper = GlowingHelper.getHunterHelper();
+            GlowingHelper helper = GlowingHelper.INSTANCE;
             //自定义狩猎药水表
             for (var entry : helper.colorMap.entrySet()) {
                 if (entry.getKey().isAssignableFrom(self().getClass())) {

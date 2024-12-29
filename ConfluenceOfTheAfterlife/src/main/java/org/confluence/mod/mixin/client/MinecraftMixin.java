@@ -34,7 +34,7 @@ public abstract class MinecraftMixin {
     @Inject(method = "shouldEntityAppearGlowing", at = @At(value = "HEAD"), cancellable = true)
     public void changeGlowOutline(Entity entity, CallbackInfoReturnable<Boolean> cir) {
         if (Minecraft.getInstance().player != null) {
-            GlowingHelper helper = GlowingHelper.getHunterHelper();
+            GlowingHelper helper = GlowingHelper.INSTANCE;
             //狩猎药水
             if (Minecraft.getInstance().player.hasEffect(ModEffects.HUNTER)) {
 

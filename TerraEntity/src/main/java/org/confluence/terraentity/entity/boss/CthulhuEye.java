@@ -50,11 +50,9 @@ public class CthulhuEye extends AbstractTerraBossBase implements GeoEntity, Boss
 
 
     public CthulhuEye(EntityType<CthulhuEye> entityType, Level level) {
-        super(entityType, level);
+        super(entityType, level,MAX_HEALTHS);
         //初始属性
-        int size = level().players().size();
-        getAttribute(Attributes.MAX_HEALTH).setBaseValue(MAX_HEALTHS * size);
-        setHealth(MAX_HEALTHS* size);
+
         getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(DAMAGE);
         
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
@@ -278,12 +276,5 @@ public class CthulhuEye extends AbstractTerraBossBase implements GeoEntity, Boss
             skills.forceStartIndex(4); // 强制执行技能序列
         }
         return super.hurt(pSource, pAmount);
-    }
-
-    // 同步旋转
-    @Override
-    public void tick() {
-        super.tick();
-
     }
 }

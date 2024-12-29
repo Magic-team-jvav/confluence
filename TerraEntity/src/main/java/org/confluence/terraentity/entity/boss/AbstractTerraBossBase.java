@@ -33,6 +33,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.entity.ai.BossSkill;
 import org.confluence.terraentity.entity.ai.CircleBossSkills;
+import org.confluence.terraentity.entity.ai.goal.LookForwardWanderFlyGoal;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -57,15 +58,15 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
     public float explosionResistance = 0.5f;
     public int attackInternal = 20;
     private int _attackInternal = 20;
-
+    protected boolean dirty = true;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     protected ServerBossEvent bossEvent = (ServerBossEvent) new ServerBossEvent(getDisplayName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS).setDarkenScreen(true);
-
-    public AbstractTerraBossBase(EntityType<? extends Monster> type, Level level) {
+    private final float baseHealth;
+    public AbstractTerraBossBase(EntityType<? extends Monster> type, Level level, float health) {
         super(type, level);
         this.moveControl = new FlyingMoveControl(this, 10, false);
         setNoGravity(true);
-
+        this.baseHealth = health;
     }
 
     public abstract void addSkills();
@@ -74,12 +75,19 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
         return getMultiple(level(), attribute);
     }
 
+    public void firstSpawn(){};
+    @Override
     public void onAddedToLevel(){
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.baseHealth);
         float multiplier = getAttributeMultiplier(Attributes.MAX_HEALTH);
-        this.getAttribute(Attributes.MAX_HEALTH).addTransientModifier(new AttributeModifier(TerraEntity.space("difficulty_modifier_max_health"), multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-        this.setHealth(this.getMaxHealth());
+        int size = level().players().size();
+        if(dirty){
+            this.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(TerraEntity.space("difficulty_modifier_max_health"), multiplier*size - 1, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+            this.setHealth(this.getMaxHealth());
+            firstSpawn();
+        }
+        this.dirty = false;
         this.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(new AttributeModifier(TerraEntity.space("difficulty_modifier_attack_damage"), multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-
         super.onAddedToLevel();
         this.addSkills();
     }
@@ -102,6 +110,9 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, false));
+
+        this.goalSelector.addGoal(10, new LookForwardWanderFlyGoal(this,1));
+
     }
 
     // 技能动画
@@ -110,18 +121,21 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
     // 动画数据同步
     private int lastAnimIndex = -1;
     public static final EntityDataAccessor<Integer> DATA_SKILL_INDEX = SynchedEntityData.defineId(AbstractTerraBossBase.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> DATA_SKILL_TICK = SynchedEntityData.defineId(AbstractTerraBossBase.class, EntityDataSerializers.INT);
+//    public static final EntityDataAccessor<Integer> DATA_SKILL_TICK = SynchedEntityData.defineId(AbstractTerraBossBase.class, EntityDataSerializers.INT);
 
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_SKILL_INDEX, 0);
-        builder.define(DATA_SKILL_TICK, 0);
+//        builder.define(DATA_SKILL_TICK, 0);
     }
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
+        if (key == DATA_SKILL_INDEX) {
+            skills.index = this.entityData.get(DATA_SKILL_INDEX);
+        }
     }
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
@@ -163,15 +177,15 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
     @Override
     public void tick() {
         // 动画同步
-        skills.tick();
-        if (level().isClientSide) {
-            skills.index = this.entityData.get(DATA_SKILL_INDEX);
-            skills.tick = this.entityData.get(DATA_SKILL_TICK);
-        } else {
-
-            this.entityData.set(DATA_SKILL_INDEX, skills.index);
-            this.entityData.set(DATA_SKILL_TICK, skills.tick);
-        }
+        if (!level().isClientSide) skills.tick();
+//        if (level().isClientSide) {
+//            skills.index = this.entityData.get(DATA_SKILL_INDEX);
+//            skills.tick = this.entityData.get(DATA_SKILL_TICK);
+//        } else {
+//
+//            this.entityData.set(DATA_SKILL_INDEX, skills.index);
+//            this.entityData.set(DATA_SKILL_TICK, skills.tick);
+//        }
 
         collisionHurt();
         super.tick();
@@ -310,13 +324,19 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
     }
 
 
-
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("dirty", dirty);
+    }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag pCompound) {
-        super.readAdditionalSaveData(pCompound);
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
         if (hasCustomName()) {
             bossEvent.setName(getDisplayName());
+        }
+        if (tag.contains("dirty")) {
+            dirty = false;
         }
     }
 

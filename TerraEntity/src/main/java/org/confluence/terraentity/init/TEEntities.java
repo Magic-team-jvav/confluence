@@ -3,6 +3,7 @@ package org.confluence.terraentity.init;
 import net.minecraft.client.renderer.entity.SkeletonRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -18,11 +19,11 @@ import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.confluence.terraentity.client.boss.renderer.CthulhuEyeRenderer;
+import org.confluence.terraentity.client.boss.model.GeoBossModel;
+import org.confluence.terraentity.client.boss.renderer.GeoBossRenderer;
+import org.confluence.terraentity.client.boss.renderer.EaterOfWorldSegmentRenderer;
 import org.confluence.terraentity.client.entity.renderer.*;
-import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
-import org.confluence.terraentity.entity.boss.CthulhuEye;
-import org.confluence.terraentity.entity.boss.KingSlime;
+import org.confluence.terraentity.entity.boss.*;
 import org.confluence.terraentity.entity.model.CrownOfKingSlimeModelEntity;
 import org.confluence.terraentity.entity.monster.AbstractMonster;
 import org.confluence.terraentity.entity.monster.BloodCrawler;
@@ -102,10 +103,14 @@ public final class TEEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<KingSlime>> KING_SLIME = ENTITIES.register("king_slime", () -> EntityType.Builder.<KingSlime>of(KingSlime::new, MobCategory.MONSTER).sized(0.6f, 0.6f).clientTrackingRange(10).build(Key("king_slime")));
     public static final DeferredHolder<EntityType<?>, EntityType<CrownOfKingSlimeModelEntity>> CROWN_OF_KING_SLIME_MODEL = ENTITIES.register("crown_of_king_slime_model", () -> EntityType.Builder.<CrownOfKingSlimeModelEntity>of(CrownOfKingSlimeModelEntity::new, MobCategory.MISC).sized(0.0F, 0.0F).clientTrackingRange(10).build(Key("crown_of_king_slime_model")));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<CthulhuEye>> CTHULHU_EYE = ENTITIES.register("cthulhu_eye", () -> EntityType.Builder.<CthulhuEye>of(CthulhuEye::new, MobCategory.MONSTER).sized(2.04F, 2.04F).clientTrackingRange(200).setTrackingRange(200).build(Key("cthulhu_eye")));
+    public static final DeferredHolder<EntityType<?>, EntityType<CthulhuEye>> CTHULHU_EYE = registerEntity("cthulhu_eye", CthulhuEye::new, 2.04F, 2.04F);
+    public static final DeferredHolder<EntityType<?>, EntityType<EaterOfWorldSegment>> EATER_OF_WORLD_SEGMENT = registerEntity("eater_of_world_segment", EaterOfWorldSegment::new, 1F, 1F);
+    public static final DeferredHolder<EntityType<?>, EntityType<EaterOfWorld>> EATER_OF_WORLD = registerEntity("eater_of_world", EaterOfWorld::new, 1F, 1F);
 
 
-
+    public static <T extends Mob> DeferredHolder<EntityType<?>,EntityType<T>> registerEntity(String name, EntityType.EntityFactory<T> entityFactory, float width, float height){
+        return ENTITIES.register(name, () -> EntityType.Builder.of(entityFactory, MobCategory.MONSTER).sized(width, height).clientTrackingRange(10).build(Key(name)));
+    }
 
     // tip 弹幕
     public static final DeferredHolder<EntityType<?>, EntityType<ThrowableProj>> CABBAGE_PROJ = registerProj("cabbage_proj",(e,l)->
@@ -162,7 +167,11 @@ public final class TEEntities {
 
         // boss
         event.registerEntityRenderer(KING_SLIME.get(), KingSlimeRenderer::new);
-        event.registerEntityRenderer(CTHULHU_EYE.get(), CthulhuEyeRenderer::new);
+        event.registerEntityRenderer(CTHULHU_EYE.get(), c->new GeoBossRenderer<>(c,new GeoBossModel<>("eye_of_cthulhu")));
+        event.registerEntityRenderer(EATER_OF_WORLD_SEGMENT.get(), EaterOfWorldSegmentRenderer::new);
+        event.registerEntityRenderer(EATER_OF_WORLD.get(), c->new GeoBossRenderer<>(c,new GeoBossModel<>("eater_of_world")));
+
+
 
     }
 
@@ -214,6 +223,8 @@ public final class TEEntities {
 
         event.put(KING_SLIME.get(), KingSlime.createSlimeAttributes().build());
         event.put(CTHULHU_EYE.get(), AbstractTerraBossBase.createAttributes().build());
+        event.put(EATER_OF_WORLD_SEGMENT.get(), AbstractTerraBossBase.createAttributes().build());
+        event.put(EATER_OF_WORLD.get(), AbstractTerraBossBase.createAttributes().build());
 
 
     }

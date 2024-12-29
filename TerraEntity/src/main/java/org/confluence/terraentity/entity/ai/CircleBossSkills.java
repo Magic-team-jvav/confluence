@@ -1,6 +1,7 @@
 package org.confluence.terraentity.entity.ai;
 
 import net.minecraft.world.entity.Mob;
+import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
 import software.bernie.geckolib.animation.RawAnimation;
 
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class CircleBossSkills<T extends Mob> {
 
         //初次进入状态
         if(bossSkills.get(index).stateInit!=null) bossSkills.get(index).stateInit.accept(owner);
+        owner.getEntityData().set(AbstractTerraBossBase.DATA_SKILL_INDEX, index);
     }
     /** 强制跳转状态 **/
     public void forceStartIndex(int index){

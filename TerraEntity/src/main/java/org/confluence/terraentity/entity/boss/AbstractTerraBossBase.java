@@ -33,7 +33,6 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.entity.ai.BossSkill;
 import org.confluence.terraentity.entity.ai.CircleBossSkills;
-import org.confluence.terraentity.entity.ai.goal.LookForwardWanderFlyGoal;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -52,7 +51,6 @@ import static org.confluence.terraentity.utils.TEUtils.getMultiple;
 
 @SuppressWarnings("all")
 public abstract class AbstractTerraBossBase extends Monster implements GeoEntity {
-
 
     public float ironGlomResistance = 0.4f;
     public float explosionResistance = 0.5f;
@@ -86,7 +84,6 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
             this.setHealth(this.getMaxHealth());
             firstSpawn();
         }
-        this.dirty = false;
         this.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(new AttributeModifier(TerraEntity.space("difficulty_modifier_attack_damage"), multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         super.onAddedToLevel();
         this.addSkills();
@@ -111,7 +108,7 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, false));
 
-        this.goalSelector.addGoal(10, new LookForwardWanderFlyGoal(this,1));
+//        this.goalSelector.addGoal(10, new LookForwardWanderFlyGoal(this,1));
 
     }
 
@@ -123,7 +120,9 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
     public static final EntityDataAccessor<Integer> DATA_SKILL_INDEX = SynchedEntityData.defineId(AbstractTerraBossBase.class, EntityDataSerializers.INT);
 //    public static final EntityDataAccessor<Integer> DATA_SKILL_TICK = SynchedEntityData.defineId(AbstractTerraBossBase.class, EntityDataSerializers.INT);
 
-
+    protected void setAttactDamage(float damage){
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(damage);
+    }
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
@@ -326,7 +325,7 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
 
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putBoolean("dirty", dirty);
+        compound.putBoolean("dirty", false);
     }
 
     @Override

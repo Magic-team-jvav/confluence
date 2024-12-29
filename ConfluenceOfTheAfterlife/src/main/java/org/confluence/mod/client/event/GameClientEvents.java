@@ -17,6 +17,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.client.handler.HookThrowingHandler;
 import org.confluence.mod.client.handler.MeteoriteLandingHandler;
@@ -142,6 +143,7 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void renderLevelStage(RenderLevelStageEvent event) {
+        SpelunkerHelper.renderLevel(event);
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
             StarPhaseHandler.render(event);
             MeteoriteLandingHandler.render(event);

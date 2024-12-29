@@ -16,6 +16,8 @@ public final class ModKeyBindings {
     @SubscribeEvent
     public static void keyBinding(RegisterKeyMappingsEvent event) {
         event.register(HOOK.get());
+        event.register(SHOW_DETAIL_SPECULAR.get());
+
     }
 
     public static final Lazy<KeyMapping> HOOK = Lazy.of(() -> new KeyMapping(
@@ -24,5 +26,13 @@ public final class ModKeyBindings {
         InputConstants.Type.KEYSYM,
         GLFW.GLFW_KEY_F,
         "key.categories.gameplay"
+    ));
+
+    public static final Lazy<KeyMapping> SHOW_DETAIL_SPECULAR = Lazy.of(() -> new KeyMapping(
+            "key.confluence.specular_detail",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_TAB,
+            "key.categories.gameplay"
     ));
 }

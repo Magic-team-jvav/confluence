@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.gen;
+package org.confluence.mod.common.data.gen.recipe;
 
 import net.minecraft.data.PackOutput;
 import org.confluence.terra_curio.common.data.gen.WorkshopRecipeProvider;

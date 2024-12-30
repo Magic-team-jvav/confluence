@@ -1,0 +1,79 @@
+package org.confluence.mod.common.block.functional;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.StateProperties;
+import org.confluence.mod.common.block.functional.network.INetworkBlock;
+import org.confluence.mod.common.block.functional.network.INetworkEntity;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.util.ModUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
+
+public class SillyBalloonMachineBlock extends Block implements EntityBlock, INetworkBlock {
+    public SillyBalloonMachineBlock(Properties properties) {
+        super(properties);
+        registerDefaultState(stateDefinition.any().setValue(StateProperties.DRIVE, true));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(StateProperties.DRIVE);
+    }
+
+    @Override
+    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
+        pLevel.setBlockAndUpdate(pPos, pState.cycle(StateProperties.DRIVE));
+    }
+
+    @Override
+    public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
+        return new Entity(pos, state);
+    }
+
+    @Override
+    protected void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState newState, boolean movedByPiston) {
+        onNodeRemove(state, level, pos, newState);
+        super.onRemove(state, level, pos, newState, movedByPiston);
+    }
+
+    @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
+        return level.isClientSide ? ModUtils.getTicker(blockEntityType, FunctionalBlocks.SILLY_BALLOON_MACHINE_ENTITY.get(), Entity::clientTick) : null;
+    }
+
+    public static class Entity extends AbstractMechanicalBlock.Entity {
+        private ParticleEmitter emitter;
+
+        public Entity(BlockPos pPos, BlockState pBlockState) {
+            super(FunctionalBlocks.SILLY_BALLOON_MACHINE_ENTITY.get(), pPos, pBlockState);
+        }
+
+        public static void clientTick(Level level, BlockPos blockPos, BlockState blockState, Entity blockEntity) {
+            if (blockEntity.emitter == null) {
+                blockEntity.emitter = new ParticleEmitter(level, blockPos.getCenter(), Confluence.asResource("balloon"));
+                PSGameClient.LOADER.addEmitter(blockEntity.emitter, false);
+            }
+            blockEntity.emitter.active = blockState.getValue(StateProperties.DRIVE);
+        }
+
+        @Override
+        public void setRemoved() {
+            if (level != null && level.isClientSide && emitter != null) {
+                PSGameClient.LOADER.removeEmitter(emitter.id, false);
+            }
+            super.setRemoved();
+        }
+    }
+}

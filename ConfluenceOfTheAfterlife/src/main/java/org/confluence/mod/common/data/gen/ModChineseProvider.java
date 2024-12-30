@@ -1074,6 +1074,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.VERTEBRA.get(), "椎骨");
         add(MaterialItems.BLOOD_CLOT_POWDER.get(), "血凝粉末");
         add(MaterialItems.ROTTEN_BONE.get(), "腐蚀残骨");
+        add(MaterialItems.VILE_POWDER.get(), "魔粉");
+        add(MaterialItems.VICIOUS_POWDER.get(), "毒粉");
+        add(MaterialItems.PURIFICATION_POWDER.get(), "净化粉");
         add(MaterialItems.FILAMENTOUS_FIN.get(), "羽状鳍");
         add(MaterialItems.LENS.get(), "晶状体");
         add(MaterialItems.BLACK_LENS.get(), "黑晶状体");
@@ -1244,6 +1247,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.ENCUMBERING_STONE.get(), "负重石");
         add(ConsumableItems.SUSPICIOUS_LOOKING_EYE.get(), "可疑眼球");
         add(ConsumableItems.SLIME_CROWN.get(), "史莱姆皇冠");
+        add(ConsumableItems.WORM_FOOD.get(), "蠕虫诱饵");
         add(FunctionalBlocks.STONE_PRESSURE_PLATE.get(), "石质压力板");
 
         // 杂项

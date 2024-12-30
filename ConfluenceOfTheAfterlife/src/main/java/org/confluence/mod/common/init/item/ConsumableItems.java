@@ -5,11 +5,13 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.bomb.*;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.mana.ArcaneCrystalItem;
 import org.confluence.mod.common.item.mana.ManaStarItem;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terraentity.entity.boss.CthulhuEye;
+import org.confluence.terraentity.entity.boss.EaterOfWorld;
 import org.confluence.terraentity.entity.boss.KingSlime;
 
 import java.util.function.Supplier;
@@ -47,6 +49,7 @@ public class ConsumableItems {
 
     public static final Supplier<BossSummingItem> SUSPICIOUS_LOOKING_EYE = ITEMS.register("suspicious_looking_eye", () -> new BossSummingItem(player -> player.level().isNight(), CthulhuEye::new));
     public static final Supplier<BossSummingItem> SLIME_CROWN = ITEMS.register("slime_crown", () -> new BossSummingItem(player -> true,KingSlime::new));
+    public static final Supplier<BossSummingItem> WORM_FOOD = ITEMS.register("worm_food", () -> new BossSummingItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CORRUPTION), KingSlime::new));
     // public static final Supplier<BossSummingItem> SLIME_CROWN = ITEMS.register("slime_crown", () -> new BossSummingItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CORRUPTION), KingSlime::new));
 
 }

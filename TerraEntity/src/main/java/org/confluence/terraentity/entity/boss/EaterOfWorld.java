@@ -44,6 +44,8 @@ public class EaterOfWorld extends AbstractTerraBossBase {
     //public List<AbstractTerraBossBase>segments = new ArrayList<>();
     public List<AbstractTerraBossBase>baseSegments = new ArrayList<>();
     public List<Float>baseSegmentsHealth = new ArrayList<>();
+
+
     public enum WonderType {UP,DOWN}
     private WonderType wanderType = WonderType.DOWN;
     public static final EntityDataAccessor<Integer> DATA_SEG_COUNT = SynchedEntityData.defineId(EaterOfWorld.class, EntityDataSerializers.INT);

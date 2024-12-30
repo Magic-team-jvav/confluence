@@ -1,0 +1,21 @@
+{
+	"type": "confluence:heavy_work_bench",
+	"pattern": [
+		" ## ",
+		" ## ",
+		" ## ",
+		"####"
+	],
+	"key": {
+		"#": {
+			"type": "terra_curio:amount_ingredient",
+			"ingredient": {
+				"tag": "minecraft:stone_crafting_materials"
+			},
+			"count": 5
+		}
+	},
+	"result": {
+		"id": "confluence:b_statue"
+	}
+}

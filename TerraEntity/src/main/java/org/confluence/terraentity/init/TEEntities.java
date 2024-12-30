@@ -105,7 +105,7 @@ public final class TEEntities {
 
     public static final DeferredHolder<EntityType<?>, EntityType<CthulhuEye>> CTHULHU_EYE = registerEntity("cthulhu_eye", CthulhuEye::new, 2.04F, 2.04F);
     public static final DeferredHolder<EntityType<?>, EntityType<EaterOfWorldSegment>> EATER_OF_WORLD_SEGMENT = registerEntity("eater_of_world_segment", EaterOfWorldSegment::new, 1F, 1F);
-    public static final DeferredHolder<EntityType<?>, EntityType<EaterOfWorld>> EATER_OF_WORLD = registerEntity("eater_of_world", EaterOfWorld::new, 1F, 1F);
+    public static final DeferredHolder<EntityType<?>, EntityType<EaterOfWorld>> EATER_OF_WORLD = registerEntity("eater_of_world", EaterOfWorld::new, 1.5F, 1F);
 
 
     public static <T extends Mob> DeferredHolder<EntityType<?>,EntityType<T>> registerEntity(String name, EntityType.EntityFactory<T> entityFactory, float width, float height){

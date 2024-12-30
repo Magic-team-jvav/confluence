@@ -72,6 +72,7 @@ public class BloodCrawler extends Spider implements GeoEntity {
 
         return true;
     }
+
     @Override
     protected SoundEvent getDeathSound() {
         return TESounds.BLOOD_CRAWLER_DEATH.get();

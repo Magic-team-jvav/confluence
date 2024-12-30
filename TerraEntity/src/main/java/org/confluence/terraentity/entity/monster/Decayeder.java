@@ -18,7 +18,6 @@ public class Decayeder extends Skeleton {
                 .add(Attributes.MAX_HEALTH, 10)
                 .add(Attributes.ATTACK_DAMAGE, 6);
     }
-
     @Override
     protected boolean isSunBurnTick() {
         return false;

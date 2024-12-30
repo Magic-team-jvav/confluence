@@ -1,9 +1,9 @@
 {
     "type": "neoforge:add_spawns",
-    "biomes":"confluence:tr_crimson",
+    "biomes":"confluence:the_corruption",
     "spawners": {
-        "type": "terra_entity:crimson_kemera",
-        "weight": 60,
+        "type": "terra_entity:decayeder",
+        "weight": 30,
         "minCount": 1,
         "maxCount": 1
     }

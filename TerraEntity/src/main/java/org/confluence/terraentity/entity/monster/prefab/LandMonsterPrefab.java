@@ -62,7 +62,7 @@ public class LandMonsterPrefab extends AbstractPrefab {
 
     public static Supplier<AbstractMonster.Builder> BLOOD_ZOMBIE_BUILDER =
             ()->new LandMonsterPrefab(39,2,10,60,0.5f,0.1f).getPrefab()
-                    .setMovementSpeed(0.20f)
+                    .setMovementSpeed(0.12f)
                     .addTarget((t,e)-> {
                         t.addGoal(1,new AccelerateOnSeeingGoal(e,0.55f));
                         t.addGoal(2, new NearestAttackableTargetGoal<>(e, Player.class,false, LivingEntity::canBeSeenAsEnemy));

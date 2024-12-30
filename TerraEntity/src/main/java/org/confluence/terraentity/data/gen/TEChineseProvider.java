@@ -34,6 +34,7 @@ public class TEChineseProvider extends LanguageProvider {
         add("entity.terra_entity.demon_eye", "恶魔眼");
         add("entity.terra_entity.flying_fish", "飞鱼");
         add("entity.terra_entity.drippler", "滴滴怪");
+        add("entity.terra_entity.blood_zombie", "血腥僵尸");
         add("entity.terra_entity.blood_crawler", "血爬虫");
         add("entity.terra_entity.bloody_spore", "血腥芽孢");
         add("entity.terra_entity.face_monster", "脸怪");
@@ -44,6 +45,7 @@ public class TEChineseProvider extends LanguageProvider {
 
         add("entity.terra_entity.king_slime", "史莱姆王");
         add("entity.terra_entity.cthulhu_eye", "克苏鲁之眼");
+        add("entity.terra_entity.eater_of_world", "世界吞噬怪");
 
         add("effect.terra_entity.demonic_thoughts", "邪念");
         // 刷怪蛋
@@ -66,6 +68,7 @@ public class TEChineseProvider extends LanguageProvider {
         add(TEItems.DEMON_EYE_SPAWN_EGG.get(), "恶魔眼刷怪蛋");
         add(TEItems.FLYING_FISH_SPAWN_EGG.get(), "飞鱼刷怪蛋");
         add(TEItems.DRIPPLER_SPAWN_EGG.get(), "滴滴怪刷怪蛋");
+        add(TEItems.BLOOD_ZOMBIE_SPAWN_EGG.get(), "血腥僵尸刷怪蛋");
 
         add(TEItems.BLOOD_CRAWLER_SPAWN_EGG.get(), "血爬虫刷怪蛋");
         add(TEItems.BLOODY_SPORE_SPAWN_EGG.get(), "血腥芽孢刷怪蛋");
@@ -77,6 +80,7 @@ public class TEChineseProvider extends LanguageProvider {
 
         add(TEItems.KING_SLIME_SPAWN_EGG.get(), "史莱姆王刷怪蛋");
         add(TEItems.CTHULHU_EYE_SPAWN_EGG.get(), "克苏鲁之眼刷怪蛋");
+        add(TEItems.EATER_OF_WORLD_SPAWN_EGG.get(), "世界吞噬怪刷怪蛋");
 
         add("message.terraentity.boss_spawn", "%s已苏醒！");
         add("message.terraentity.boss_leave", "%s已被打败！");

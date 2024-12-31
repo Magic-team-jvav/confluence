@@ -30,7 +30,8 @@
 				"west": {"uv": [8, 0, 16, 16], "texture": "#0"},
 				"up": {"uv": [8, 0, 16, 16], "texture": "#0"},
 				"down": {"uv": [8, 0, 16, 16], "texture": "#0"}
-			}
+			},
+			"shade": false
 		}
 	],
 	"display": {

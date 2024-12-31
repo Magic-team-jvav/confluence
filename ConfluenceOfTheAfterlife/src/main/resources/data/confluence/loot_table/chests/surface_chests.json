@@ -402,7 +402,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:glass_bottle",
+          "name": "confluence:bottle",
           "functions": [
             {
               "function": "set_count",

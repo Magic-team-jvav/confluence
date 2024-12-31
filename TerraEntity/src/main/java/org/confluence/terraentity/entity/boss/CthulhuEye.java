@@ -266,6 +266,10 @@ public class CthulhuEye extends AbstractTerraBossBase implements GeoEntity, Boss
     protected SoundEvent getHurtSound(DamageSource damageSource) {return TESounds.ROUTINE_HURT.get();}
 
     @Override
+    protected SoundEvent getDeathSound() {
+        return TESounds.ROUTINE_DEATH.get();
+    }
+    @Override
     public boolean isNoGravity(){ return true; }
 
     // 转换阶段

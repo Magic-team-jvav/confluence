@@ -5,6 +5,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
@@ -12,6 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.terraentity.entity.ai.BossSkill;
 import org.confluence.terraentity.init.TEEntities;
+import org.confluence.terraentity.init.TESounds;
 import org.confluence.terraentity.utils.TEUtils;
 
 
@@ -408,6 +411,13 @@ public class EaterOfWorld extends AbstractTerraBossBase {
         this.bossEvent.removePlayer(player);
     }
 
+    @Override // 受伤音效
+    protected SoundEvent getHurtSound(DamageSource damageSource) {return TESounds.ROUTINE_HURT.get();}
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return TESounds.ROUTINE_DEATH.get();
+    }
     public void removeBossEvent(){
         this.bossEvent.removeAllPlayers();
     }

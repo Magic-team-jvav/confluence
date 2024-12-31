@@ -4,11 +4,14 @@ package org.confluence.terraentity.entity.boss;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.terraentity.init.TEEntities;
+import org.confluence.terraentity.init.TESounds;
 
 
 public class EaterOfWorldSegment extends AbstractTerraBossBase {
@@ -88,6 +91,13 @@ public class EaterOfWorldSegment extends AbstractTerraBossBase {
                 if(discardTimer>20f) discard();
             }
         }
+    }
+    @Override // 受伤音效
+    protected SoundEvent getHurtSound(DamageSource damageSource) {return TESounds.ROUTINE_HURT.get();}
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return TESounds.ROUTINE_DEATH.get();
     }
 
     public boolean shouldShowBossBar(){return false;};

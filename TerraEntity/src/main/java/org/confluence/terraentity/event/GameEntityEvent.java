@@ -49,7 +49,7 @@ public class GameEntityEvent {
                 level.addFreshEntity(slime);
             }
         }
-        if (event.getEntity() instanceof Boss boss){
+        if (event.getEntity() instanceof Boss boss && !level.isClientSide){
             if (boss.shouldShowMessage()){
                 Component mes;
                 FloatRGB color;
@@ -88,7 +88,7 @@ public class GameEntityEvent {
     @SubscribeEvent
     public static void entityDeathLevel(LivingDeathEvent event) {
         Level level = event.getEntity().level();
-        if (event.getEntity() instanceof Boss boss){
+        if (event.getEntity() instanceof Boss boss && !level.isClientSide){
             if (boss.shouldShowMessage()){
                 Component mes;
                 FloatRGB color;

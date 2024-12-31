@@ -46,6 +46,7 @@ public class TEChineseProvider extends LanguageProvider {
         add("entity.terra_entity.king_slime", "史莱姆王");
         add("entity.terra_entity.cthulhu_eye", "克苏鲁之眼");
         add("entity.terra_entity.eater_of_world", "世界吞噬怪");
+        add("entity.terra_entity.eater_of_world_segment", "世界吞噬怪体节");
 
         add("effect.terra_entity.demonic_thoughts", "邪念");
         // 刷怪蛋

@@ -3,6 +3,11 @@ package org.confluence.mod.client.event;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.ImageButton;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
@@ -29,6 +34,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.mixed.IMusicManager;
+import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PerformJumpingEvent;
 
@@ -147,6 +153,15 @@ public final class GameClientEvents {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
             StarPhaseHandler.render(event);
             MeteoriteLandingHandler.render(event);
+        }
+    }
+
+    @SubscribeEvent
+    public static void screen$Init$Post(ScreenEvent.Init.Post event) {
+        Screen screen = event.getScreen();
+        if (screen instanceof InventoryScreen || screen instanceof CreativeModeInventoryScreen) {
+            EffectRenderingInventoryScreen<?> screen1 = (EffectRenderingInventoryScreen<?>) screen;
+            event.addListener(new ImageButton(screen1.getGuiLeft() - 16, screen1.getGuiTop() + 44, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.EXTRA_INVENTORY)));
         }
     }
 }

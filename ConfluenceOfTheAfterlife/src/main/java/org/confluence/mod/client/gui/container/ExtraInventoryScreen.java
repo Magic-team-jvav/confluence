@@ -1,0 +1,128 @@
+package org.confluence.mod.client.gui.container;
+
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.player.Inventory;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.menu.ExtraInventoryMenu;
+import org.confluence.mod.common.menu.IToggleSlot;
+import org.confluence.terra_curio.TerraCurio;
+import org.jetbrains.annotations.NotNull;
+
+import static net.minecraft.client.gui.screens.inventory.InventoryScreen.renderEntityInInventoryFollowsMouse;
+import static org.confluence.mod.common.attachment.ExtraInventory.*;
+
+public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventoryMenu> {
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/extra_inventory.png");
+    private static final ResourceLocation ACCESSORY = TerraCurio.asResource("textures/slot/accessory.png");
+
+    private boolean buttonPressed = false;
+    private float xMouse;
+    private float yMouse;
+
+    public ExtraInventoryScreen(ExtraInventoryMenu menu, Inventory playerInventory, Component title) {
+        super(menu, playerInventory, title);
+    }
+
+    @Override
+    public void render(@NotNull GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+        super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
+        renderTooltip(pGuiGraphics, pMouseX, pMouseY);
+        this.xMouse = (float) pMouseX;
+        this.yMouse = (float) pMouseY;
+    }
+
+    @Override
+    protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {}
+
+    @Override
+    protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
+        guiGraphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        ExtraInventory extraInventory = menu.getExtraInventory();
+        int containerSize = extraInventory.getContainerSize();
+        int sizeAccessoryDye = extraInventory.getSizeAccessoryDye();
+        int size = containerSize - sizeAccessoryDye;
+        for (int i = 0; i < size; i++) {
+            if (menu.getSlot(i).hasItem()) continue;
+            if (i < COINS_START) {
+                renderVanityArmor(guiGraphics, i);
+            } else if (i < AMMO_START) {
+                guiGraphics.blit(BACKGROUND, leftPos + 81, topPos + (i - COINS_START) * 18 + 8, 177, 153, 16, 16);
+            } else if (i < EQUIPMENT_START) {
+                guiGraphics.blit(BACKGROUND, leftPos + 99, topPos + (i - AMMO_START) * 18 + 8, 177, 136, 16, 16);
+            } else if (i < DYE_START) {
+                renderEquipment(guiGraphics, i - EQUIPMENT_START);
+            } else {
+                int j = i - DYE_START;
+                if (j < SIZE_VANITY_ARMOR) {
+                    renderVanityArmor(guiGraphics, j);
+                } else {
+                    renderEquipment(guiGraphics, j - SIZE_VANITY_ARMOR);
+                }
+            }
+        }
+        if (sizeAccessoryDye > 0) {
+            int x = leftPos - 33;
+            int y = topPos + 7;
+            guiGraphics.blit(BACKGROUND, x, topPos, 224, 0, 32, 7);
+            for (int i = 0; i < sizeAccessoryDye; i++) {
+                guiGraphics.blit(BACKGROUND, x, y, 224, 8, 32, 18);
+                if (buttonPressed ? menu.getSlot(SIZE_EXCEPT_ACCESSORY_DYE + i).getItem().isEmpty() : menu.getSlot(containerSize + i).getItem().isEmpty()) {
+                    guiGraphics.blit(ACCESSORY, x + 8, y, 0, 0, 16, 16, 16, 16);
+                }
+                y += 18;
+            }
+            guiGraphics.blit(BACKGROUND, x, y, 224, 27, 32, 7);
+        }
+        if (buttonPressed) {
+            guiGraphics.blit(BACKGROUND, leftPos + 147, topPos + 33, 194, 0, 18, 20);
+        }
+        renderEntityInInventoryFollowsMouse(guiGraphics, leftPos + 26, topPos + 8, leftPos + 75, topPos + 78, 30, 0.0625F, xMouse, yMouse, minecraft.player);
+    }
+
+    private void renderEquipment(GuiGraphics guiGraphics, int i) {
+        int v = switch (i) {
+            case 1 -> 102;
+            case 2 -> 119;
+            case 3 -> 68;
+            default -> 85;
+        };
+        guiGraphics.blit(BACKGROUND, leftPos + 121, topPos + i * 18 + 8, 177, v, 16, 16);
+    }
+
+    private void renderVanityArmor(GuiGraphics guiGraphics, int i) {
+        int v = switch (i) {
+            case 1 -> 17;
+            case 2 -> 34;
+            case 3 -> 51;
+            default -> 0;
+        };
+        guiGraphics.blit(BACKGROUND, leftPos + 8, topPos + i * 18 + 8, 177, v, 16, 16);
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (mouseX >= leftPos + 147 && mouseX <= leftPos + 165 && mouseY >= topPos + 33 && mouseY <= topPos + 53) {
+            this.buttonPressed = !buttonPressed;
+            toggleAllSlot();
+            minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, buttonPressed ? 1.0F : 0.8F));
+            return true;
+        }
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    private void toggleAllSlot() {
+        ExtraInventory extraInventory = menu.getExtraInventory();
+        int size = extraInventory.getContainerSize() + extraInventory.getSizeAccessoryDye();
+        for (int i = 0; i < size; i++) {
+            if (menu.getSlot(i) instanceof IToggleSlot toggleSlot) {
+                toggleSlot.setEnable(!toggleSlot.isEnabled());
+            }
+        }
+    }
+}

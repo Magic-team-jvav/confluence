@@ -1,14 +1,13 @@
 package org.confluence.mod.common.menu;
 
 import net.minecraft.world.Container;
-import org.confluence.terra_curio.common.menu.AmountResultSlot;
-import org.confluence.terra_curio.common.menu.RecipeInputContainer;
+import net.minecraft.world.inventory.Slot;
 
-public class ToggleAmountResultSlot extends AmountResultSlot implements IToggleSlot {
+public class ToggleSlot extends Slot implements IToggleSlot {
     public boolean isActive = true;
 
-    public ToggleAmountResultSlot(RecipeInputContainer input, Container result, int pSlot, int pX, int pY) {
-        super(input, result, pSlot, pX, pY);
+    public ToggleSlot(Container container, int slot, int x, int y)  {
+        super(container, slot, x, y);
     }
 
     @Override

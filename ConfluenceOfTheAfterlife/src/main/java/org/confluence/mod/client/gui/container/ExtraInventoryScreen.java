@@ -1,18 +1,25 @@
 package org.confluence.mod.client.gui.container;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.menu.ExtraInventoryMenu;
 import org.confluence.mod.common.menu.IToggleSlot;
 import org.confluence.terra_curio.TerraCurio;
 import org.jetbrains.annotations.NotNull;
+import top.theillusivec4.curios.common.network.client.CPacketOpenVanilla;
 
 import static net.minecraft.client.gui.screens.inventory.InventoryScreen.renderEntityInInventoryFollowsMouse;
 import static org.confluence.mod.common.attachment.ExtraInventory.*;
@@ -48,7 +55,8 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         int sizeAccessoryDye = extraInventory.getSizeAccessoryDye();
         int size = containerSize - sizeAccessoryDye;
         for (int i = 0; i < size; i++) {
-            if (menu.getSlot(i).hasItem()) continue;
+            Slot slot = menu.getSlot(i);
+            if (!slot.isActive() || slot.hasItem()) continue;
             if (i < COINS_START) {
                 renderVanityArmor(guiGraphics, i);
             } else if (i < AMMO_START) {
@@ -124,5 +132,19 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
                 toggleSlot.setEnable(!toggleSlot.isEnabled());
             }
         }
+    }
+
+    @Override
+    public void onClose() {
+        super.onClose();
+        Minecraft minecraft = Minecraft.getInstance();
+        LocalPlayer player = minecraft.player;
+        if (player == null) return;
+        ItemStack stack = player.containerMenu.getCarried();
+        player.containerMenu.setCarried(ItemStack.EMPTY);
+        InventoryScreen inventory = new InventoryScreen(player);
+        minecraft.setScreen(inventory);
+        player.containerMenu.setCarried(stack);
+        PacketDistributor.sendToServer(new CPacketOpenVanilla(stack));
     }
 }

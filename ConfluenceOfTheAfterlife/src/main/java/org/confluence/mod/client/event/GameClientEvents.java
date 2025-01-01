@@ -161,7 +161,14 @@ public final class GameClientEvents {
         Screen screen = event.getScreen();
         if (screen instanceof InventoryScreen || screen instanceof CreativeModeInventoryScreen) {
             EffectRenderingInventoryScreen<?> screen1 = (EffectRenderingInventoryScreen<?>) screen;
-            event.addListener(new ImageButton(screen1.getGuiLeft() - 16, screen1.getGuiTop() + 44, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.EXTRA_INVENTORY)));
+            event.addListener(new ImageButton(screen1.getGuiLeft() - 16, screen1.getGuiTop() + 44, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
+                Minecraft minecraft = Minecraft.getInstance();
+                LocalPlayer player = minecraft.player;
+                if (player == null) return;
+                ItemStack stack = player.containerMenu.getCarried();
+                player.containerMenu.setCarried(ItemStack.EMPTY);
+                OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.EXTRA_INVENTORY, stack);
+            }));
         }
     }
 }

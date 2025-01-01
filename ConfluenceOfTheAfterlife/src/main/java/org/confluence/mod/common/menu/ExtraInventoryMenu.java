@@ -23,7 +23,8 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
 
     public ExtraInventoryMenu(int containerId, Inventory inventory) {
         super(ModMenuTypes.EXTRA_INVENTORY.get(), containerId);
-        this.extraInventory = inventory.player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+        Player player = inventory.player;
+        this.extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
         for (int i = 0; i < extraInventory.getContainerSize(); i++) {
             if (i < COINS_START) {
                 addSlot(new ToggleSlot(extraInventory, i, 8, i * 18 + 8) { // vanity armor
@@ -70,7 +71,7 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                 addSlot(getDyeSlot(i));
             }
         }
-        CuriosApi.getCuriosInventory(inventory.player).ifPresent(handler -> {
+        CuriosApi.getCuriosInventory(player).ifPresent(handler -> {
             ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);
             if (accessory != null) {
                 ToggleCurioSlot.WrappedContainer container = new ToggleCurioSlot.WrappedContainer(accessory);

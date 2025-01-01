@@ -78,9 +78,6 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add("key.confluence.hook", "Throwing Hook");
 
-        add("curios.identifier.hook", "Hook");
-        add("curios.identifier.minecart", "Minecart");
-
         add("death.attack.falling_star", "%1$s got a response from a meteor");
         add("death.attack.boulder", "%1$s  is crushed by boulder");
         add("death.attack.thron", "%1$s  discovered that he had become a hedgehog.");
@@ -396,7 +393,7 @@ public class ModEnglishProvider extends LanguageProvider {
         BoomerangItems.ITEMS.getEntries().forEach(itemAction);
         BowItems.ITEMS.getEntries().forEach(itemAction);
         ConsumableItems.ITEMS.getEntries().forEach(itemAction);
-        CosmeticItems.ITEMS.getEntries().forEach(itemAction);
+        VanityArmorItems.ITEMS.getEntries().forEach(itemAction);
         DrillItems.ITEMS.getEntries().forEach(itemAction);
         FishingPoleItems.ITEMS.getEntries().forEach(itemAction);
         FoodItems.ITEMS.getEntries().forEach(itemAction);

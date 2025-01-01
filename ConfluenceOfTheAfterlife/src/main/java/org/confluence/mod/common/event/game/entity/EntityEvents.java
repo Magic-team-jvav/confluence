@@ -17,13 +17,14 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
+import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.mixin.accessor.EntityAccessor;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
-import org.confluence.terra_curio.util.CuriosUtils;
-import top.theillusivec4.curios.api.CuriosApi;
+
+import static org.confluence.mod.common.attachment.ExtraInventory.EQUIPMENT_START;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class EntityEvents {
@@ -34,8 +35,9 @@ public final class EntityEvents {
             MinecartAbilityEvent.DismountOnMinecart e = NeoForge.EVENT_BUS.post(new MinecartAbilityEvent.DismountOnMinecart(player, minecart));
             ItemStack itemStack = e.getMinecartItem();
             if (e.isCanceled() || itemStack == null) return;
-            if (CuriosUtils.getSlot(player, "minecart", 0) == null) {
-                CuriosApi.getCuriosInventory(player).ifPresent(inv -> inv.setEquippedCurio("minecart", 0, itemStack));
+            ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+            if (extraInventory.getMinecart().isEmpty()) {
+                extraInventory.setItem(EQUIPMENT_START + 2, itemStack);
             } else {
                 player.addItem(itemStack);
             }

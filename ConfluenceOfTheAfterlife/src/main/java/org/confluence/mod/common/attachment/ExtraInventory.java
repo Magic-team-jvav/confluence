@@ -183,6 +183,7 @@ public class ExtraInventory extends ItemStackHandler implements Container {
     @Override
     public void setItem(int slot, @NotNull ItemStack stack) {
         stacks.set(slot, stack);
+        setChanged();
     }
 
     @Override

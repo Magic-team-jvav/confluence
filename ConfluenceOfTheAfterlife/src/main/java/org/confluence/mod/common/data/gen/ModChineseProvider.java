@@ -55,9 +55,6 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("key.confluence.hook", "使用钩爪");
 
-        add("curios.identifier.hook", "钩爪");
-        add("curios.identifier.minecart", "矿车");
-
         add("death.attack.falling_star", "%1$s 得到了流星的回应");
         add("death.attack.boulder", "%1$s 被巨石均匀地涂抹在地上");
         add("death.attack.thron", "%1$s 发现自己成了刺猬");
@@ -1640,8 +1637,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.CRIMSON_CHESTPLATE.get(), "猩红胸甲");
         add(ArmorItems.CRIMSON_LEGGINGS.get(), "猩红护腿");
         add(ArmorItems.CRIMSON_BOOTS.get(), "猩红靴");
-        add(CosmeticItems.GOLD_CROWN.get(), "金冠");
-        add(CosmeticItems.PLATINUM_CROWN.get(), "铂金冠");
+        add(VanityArmorItems.GOLD_CROWN.get(), "金冠");
+        add(VanityArmorItems.PLATINUM_CROWN.get(), "铂金冠");
 
         // 鱼
         add(FoodItems.SEA_BASS.get(), "鲈鱼");

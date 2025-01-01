@@ -133,7 +133,7 @@ public final class ModTabs {
                     .displayItems((parameters, output) -> {
                         output.accept(TCItems.DIVING_HELMET.get());
                         ArmorItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        CosmeticItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                        VanityArmorItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                     }).build());
     // 器械
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MECHANICAL = TABS.register("mechanical",

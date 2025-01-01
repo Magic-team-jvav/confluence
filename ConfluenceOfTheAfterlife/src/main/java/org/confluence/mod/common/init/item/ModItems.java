@@ -55,7 +55,7 @@ public final class ModItems {
         BoomerangItems.ITEMS.register(eventBus);
         BowItems.ITEMS.register(eventBus);
         ConsumableItems.ITEMS.register(eventBus);
-        CosmeticItems.ITEMS.register(eventBus);
+        VanityArmorItems.ITEMS.register(eventBus);
         DrillItems.ITEMS.register(eventBus);
         FishingPoleItems.ITEMS.register(eventBus);
         FoodItems.ITEMS.register(eventBus);

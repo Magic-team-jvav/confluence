@@ -46,11 +46,16 @@ public final class ModTags {
         public static final TagKey<Item> INGOTS_TUNGSTEN = neoforgeTag("ingots/tungsten");
         public static final TagKey<Item> INGOTS_PLATINUM = neoforgeTag("ingots/platinum");
 
-        public static final TagKey<Item> HOOK = register("hook");
+        public static final TagKey<Item> COINS = register("coins");
+        public static final TagKey<Item> AMMO = register("ammo");
+        public static final TagKey<Item> PET = register("pet");
+        public static final TagKey<Item> LIGHT_PET = register("light_pet");
         public static final TagKey<Item> MINECART = register("minecart");
+        public static final TagKey<Item> HOOK = register("hook");
+        public static final TagKey<Item> DYE = register("dye");
+
         public static final TagKey<Item> PROVIDE_MANA = register("provide_mana");
         public static final TagKey<Item> PROVIDE_LIFE = register("provide_life");
-        public static final TagKey<Item> COIN = register("coin");
         public static final TagKey<Item> TORCH = register("torch"); // todo
         public static final TagKey<Item> HARDMODE = register("hardmode"); // todo
         public static final TagKey<Item> BOTTOMLESS = register("bottomless");

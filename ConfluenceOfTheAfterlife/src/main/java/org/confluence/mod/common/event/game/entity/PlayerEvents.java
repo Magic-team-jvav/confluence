@@ -27,6 +27,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.advancement.ModAchievements;
 import org.confluence.mod.common.attachment.EverBeneficial;
+import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.*;
@@ -44,11 +45,11 @@ import org.confluence.mod.network.s2c.EchoVisibilityPacketS2C;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
 
 import static org.confluence.mod.api.event.MinecartAbilityEvent.DismountOnMinecart;
 import static org.confluence.mod.api.event.MinecartAbilityEvent.RightClickRailBlock;
+import static org.confluence.mod.common.attachment.ExtraInventory.EQUIPMENT_START;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class PlayerEvents {
@@ -79,14 +80,14 @@ public final class PlayerEvents {
         BlockState blockState = level.getBlockState(blockPos);
 
         if (!level.isClientSide && !event.getItemStack().is(ModTags.Items.MINECART) && blockState.getBlock() instanceof BaseRailBlock railBlock) {
-            ItemStack optionalItemStack = CuriosUtils.getSlot(player, "minecart", 0);
             player.swing(InteractionHand.MAIN_HAND, true);
-            ItemStack itemStack = optionalItemStack == null ? ItemStack.EMPTY : optionalItemStack;
+            ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+            ItemStack itemStack = extraInventory.getMinecart();
             RightClickRailBlock e = NeoForge.EVENT_BUS.post(new RightClickRailBlock(player, itemStack, blockState, railBlock, blockPos));
             if (e.isCanceled()) return;
             AbstractMinecart minecart = e.getMinecart();
             if (minecart != null) {
-                itemStack.shrink(1);
+                extraInventory.setItem(EQUIPMENT_START + 2, ItemStack.EMPTY);
                 level.addFreshEntity(minecart);
                 player.startRiding(minecart, true);
             }

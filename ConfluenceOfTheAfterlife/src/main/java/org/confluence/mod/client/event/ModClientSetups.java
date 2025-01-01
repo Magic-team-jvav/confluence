@@ -3,6 +3,7 @@ package org.confluence.mod.client.event;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.gui.components.WidgetSprites;
@@ -13,6 +14,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -24,6 +26,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtension
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.block.AltarBlockModel;
+import org.confluence.mod.client.textures.GraySpritesUploader;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
@@ -44,6 +47,7 @@ import java.util.function.Consumer;
 
 @SuppressWarnings("deprecation")
 public final class ModClientSetups {
+    private static GraySpritesUploader graySpritesUploader;
     static final WidgetSprites EXTRA_INVENTORY_BUTTON = new WidgetSprites(Confluence.asResource("widget/extra_inventory_button"), Confluence.asResource("widget/extra_inventory_button_highlighted"));
     static final IClientFluidTypeExtensions HONEY_CLIENT_EXTENSIONS = new IClientFluidTypeExtensions() {
         private static final ResourceLocation STILL = Confluence.asResource("block/fluid/honey_still");
@@ -201,5 +205,13 @@ public final class ModClientSetups {
             IEventBus eventBus = container.getEventBus();
             if (eventBus != null) consumer.accept(eventBus);
         });
+    }
+
+    public static GraySpritesUploader getGraySpritesUploader() {
+        if (graySpritesUploader == null) {
+            TextureManager textureManager = Minecraft.getInstance().getTextureManager();
+            graySpritesUploader = new GraySpritesUploader(textureManager);
+        }
+        return graySpritesUploader;
     }
 }

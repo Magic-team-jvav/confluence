@@ -230,4 +230,9 @@ public final class ModClientEvents {
         event.registerSpriteSet(ModParticleTypes.SNOW.get(), SimpleTextureSheetParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.YELLOW_WILLOW.get(), SimpleTextureSheetParticle.Provider::new);
     }
+
+    @SubscribeEvent
+    public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
+        event.registerReloadListener(ModClientSetups.getGraySpritesUploader());
+    }
 }

@@ -52,6 +52,7 @@
         "client.ClientLevelMixin",
         "client.DeathScreenMixin",
         "client.GuiMixin",
+        "client.HumanoidArmorLayerMixin",
         "client.ItemRendererMixin",
         "client.LevelLoadingScreenMixin",
         "client.LocalPlayerMixin",
@@ -61,9 +62,10 @@
         "client.ToastComponent$ToastInstanceMixin",
         "client.WorldCreationUiStateMixin",
         "client.accessor.FontAccessor",
+        "integration.geckolib.InternalUtilMixin",
         "integration.terra_curio.InformationHandlerMixin"
     ],
     "injectors": {
         "defaultRequire": 1
-  }
+    }
 }

@@ -41,14 +41,13 @@ public final class ModTags {
     }
 
     public static class Items {
-        public static final TagKey<Item> HOOK = curios("hook");
-        public static final TagKey<Item> MINECART = curios("minecart");
-
         public static final TagKey<Item> INGOTS_TIN = neoforgeTag("ingots/tin");
         public static final TagKey<Item> INGOTS_SILVER = neoforgeTag("ingots/silver");
         public static final TagKey<Item> INGOTS_TUNGSTEN = neoforgeTag("ingots/tungsten");
         public static final TagKey<Item> INGOTS_PLATINUM = neoforgeTag("ingots/platinum");
 
+        public static final TagKey<Item> HOOK = register("hook");
+        public static final TagKey<Item> MINECART = register("minecart");
         public static final TagKey<Item> PROVIDE_MANA = register("provide_mana");
         public static final TagKey<Item> PROVIDE_LIFE = register("provide_life");
         public static final TagKey<Item> COIN = register("coin");

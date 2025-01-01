@@ -46,7 +46,9 @@ public class Confluence {
     }
 
     public static void registerGameRules() {
-        SPREADABLE_CHANCE = GameRules.register("confluenceSpreadableChance", GameRules.Category.MISC, GameRules.IntegerValue.create(100));
+        if (SPREADABLE_CHANCE == null) {
+            SPREADABLE_CHANCE = GameRules.register("confluenceSpreadableChance", GameRules.Category.MISC, GameRules.IntegerValue.create(100));
+        }
     }
 
     public static ResourceLocation asResource(String path) {

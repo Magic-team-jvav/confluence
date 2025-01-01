@@ -10,7 +10,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -20,8 +19,8 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.item.hook.BaseHookItem;
-import org.confluence.terra_curio.util.CuriosUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.IntFunction;
@@ -98,10 +97,8 @@ public abstract class AbstractHookEntity extends Projectile {
             }
         }
         if (!level().isClientSide) {
-            ItemStack hook = CuriosUtils.getSlot((LivingEntity) owner, "hook", 0);
-            if (hook == null) {
-                discard();
-            } else if (hookState != HookState.POP && distanceToSqr(owner) > hookRangeSqr) {
+            ItemStack hook = owner.getData(ModAttachmentTypes.EXTRA_INVENTORY).getHook();
+            if (hookState != HookState.POP && distanceToSqr(owner) > hookRangeSqr) {
                 setHookState(HookState.POP);
             } else if (hookState == HookState.PUSH) {
                 Vec3 pos = position();

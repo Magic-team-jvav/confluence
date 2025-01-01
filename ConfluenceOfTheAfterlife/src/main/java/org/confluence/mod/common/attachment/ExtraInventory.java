@@ -6,8 +6,12 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemStackHandler;
-import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
+import org.confluence.mod.common.item.hook.BaseHookItem;
+import org.confluence.mod.network.s2c.ExtraInventoryStackPacketS2C;
+import org.confluence.terra_curio.TerraCurio;
 import org.jetbrains.annotations.NotNull;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 public class ExtraInventory extends ItemStackHandler implements Container {
     public static final int SIZE_VANITY_ARMOR = 4;
@@ -24,10 +28,14 @@ public class ExtraInventory extends ItemStackHandler implements Container {
     public static final int DYE_START = EQUIPMENT_START + SIZE_EQUIPMENT;
 
     private int sizeAccessoryDye = 0;
-    private ServerPlayer serverPlayer;
+    private transient boolean initialized = false;
+    private transient ServerPlayer serverPlayer;
+    private transient NonNullList<ItemStack> previousStacks;
+    private transient boolean dirty;
 
     public ExtraInventory() {
         super(SIZE_EXCEPT_ACCESSORY_DYE);
+        this.previousStacks = NonNullList.withSize(SIZE_EXCEPT_ACCESSORY_DYE, ItemStack.EMPTY);
     }
 
     public void setAccessoryDyes(int size) {
@@ -37,10 +45,6 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         }
         this.stacks = itemStacks;
         this.sizeAccessoryDye = size;
-    }
-
-    public void setServerPlayer(ServerPlayer serverPlayer) {
-        this.serverPlayer = serverPlayer;
     }
 
     public int getSizeAccessoryDye() {
@@ -110,8 +114,39 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         }
     }
 
-    @Override
-    public void setSize(int size) {}
+    public void sync(ServerPlayer serverPlayer) {
+        this.serverPlayer = serverPlayer;
+        initialize();
+        if (dirty) {
+            for (int i = 0; i < getContainerSize(); i++) {
+                ItemStack itemStack = getItem(i);
+                ItemStack previous = previousStacks.get(i);
+                if (!ItemStack.matches(itemStack, previous)) {
+                    ExtraInventoryStackPacketS2C.sendToPlayersTrackingEntityAndSelf(serverPlayer, serverPlayer, sizeAccessoryDye, i, itemStack);
+                    if (previous.getItem() instanceof BaseHookItem hookItem) {
+                        hookItem.onUnequip(serverPlayer, itemStack, previous);
+                    }
+                    previousStacks.set(i, itemStack.copy());
+                }
+            }
+            this.dirty = false;
+        }
+    }
+
+    private void initialize() {
+        if (!initialized) {
+            int accessoryDye = CuriosApi.getCuriosInventory(serverPlayer).map(handler -> {
+                ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);
+                return accessory == null ? 0 : accessory.getSlots();
+            }).orElse(0);
+            setAccessoryDyes(accessoryDye);
+            this.previousStacks = NonNullList.withSize(getContainerSize() + accessoryDye, ItemStack.EMPTY);
+            for (int i = 0; i < stacks.size(); i++) {
+                previousStacks.set(i, stacks.get(i).copy());
+            }
+            this.initialized = true;
+        }
+    }
 
     @Override
     public int getContainerSize() {
@@ -152,9 +187,7 @@ public class ExtraInventory extends ItemStackHandler implements Container {
 
     @Override
     public void setChanged() {
-        if (serverPlayer != null) {
-            ExtraInventorySyncPacketS2C.sendToPlayersTrackingEntityAndSelf(serverPlayer, serverPlayer, this);
-        }
+        this.dirty = true;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.menu;
 
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -12,10 +11,7 @@ import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.terra_curio.TerraCurio;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
-
-import java.util.Optional;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.*;
 
@@ -25,16 +21,6 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
     public ExtraInventoryMenu(int containerId, Inventory inventory) {
         super(ModMenuTypes.EXTRA_INVENTORY.get(), containerId);
         this.extraInventory = inventory.player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
-        Optional<ICuriosItemHandler> curiosInventory = CuriosApi.getCuriosInventory(inventory.player);
-        int sizeAccessoryDye = curiosInventory.map(handler -> {
-            ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);
-            return accessory == null ? 0 : accessory.getSlots();
-        }).orElse(0);
-        extraInventory.setAccessoryDyes(sizeAccessoryDye);
-        if (inventory.player instanceof ServerPlayer serverPlayer) {
-            extraInventory.setServerPlayer(serverPlayer);
-        }
-
         for (int i = 0; i < extraInventory.getContainerSize(); i++) {
             if (i < COINS_START) {
                 addSlot(new ToggleSlot(extraInventory, i, 8, i * 18 + 8));
@@ -58,7 +44,7 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                 addSlot(slot);
             }
         }
-        curiosInventory.ifPresent(handler -> {
+        CuriosApi.getCuriosInventory(inventory.player).ifPresent(handler -> {
             ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);
             if (accessory != null) {
                 ToggleCurioSlot.WrappedContainer container = new ToggleCurioSlot.WrappedContainer(accessory);

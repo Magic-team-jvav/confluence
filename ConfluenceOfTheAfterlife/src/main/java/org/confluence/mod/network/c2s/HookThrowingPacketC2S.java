@@ -15,9 +15,10 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.item.hook.BaseHookItem;
-import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,16 +40,17 @@ public record HookThrowingPacketC2S(boolean throwing, int id) implements CustomP
             if (!(context.player() instanceof ServerPlayer player)) return;
             ServerLevel level = player.serverLevel();
             if (throwing) {
-                ItemStack itemStack = CuriosUtils.getSlot(player, "hook", 0);
-                if (itemStack == null) return;
+                ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+                ItemStack itemStack = extraInventory.getHook();
                 if (!(itemStack.getItem() instanceof BaseHookItem item)) return;
-                if (item.canHook(level, itemStack)) {
+                if (item.canHook(level, extraInventory, itemStack)) {
                     ListTag listTag = TCUtils.getItemStackNbt(itemStack).getList("hooks", Tag.TAG_COMPOUND);
                     BaseHookItem.HookType hookType = item.getHookType();
                     if (hookType == BaseHookItem.HookType.SINGLE) {
                         TCUtils.updateItemStackNbt(itemStack, nbt -> {
                             BaseHookItem.removeAll(listTag, level);
                             nbt.put("hooks", listTag);
+                            extraInventory.setChanged();
                         });
                     } else if (hookType == BaseHookItem.HookType.SIMULTANEOUS && listTag.size() == item.getHookAmount()) {
                         AbstractHookEntity hookEntity = BaseHookItem.getHookEntity(listTag.getFirst(), level);
@@ -57,6 +59,7 @@ public record HookThrowingPacketC2S(boolean throwing, int id) implements CustomP
                             TCUtils.updateItemStackNbt(itemStack, nbt -> {
                                 listTag.removeFirst();
                                 nbt.put("hooks", listTag);
+                                extraInventory.setChanged();
                             });
                         }
                     }
@@ -69,6 +72,7 @@ public record HookThrowingPacketC2S(boolean throwing, int id) implements CustomP
                         tag.putInt("id", hook.getId());
                         listTag.add(tag);
                         nbt.put("hooks", listTag);
+                        extraInventory.setChanged();
                     });
                 }
             } else {

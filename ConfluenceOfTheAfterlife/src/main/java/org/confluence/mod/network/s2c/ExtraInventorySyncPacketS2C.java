@@ -15,10 +15,7 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModAttachmentTypes;
-import org.confluence.terra_curio.TerraCurio;
 import org.jetbrains.annotations.NotNull;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,24 +73,19 @@ public record ExtraInventorySyncPacketS2C(int entityId, List<Tuple<Integer, Item
 
     public static void sendToClient(ServerPlayer serverPlayer, ServerPlayer player, ExtraInventory extraInventory) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
-            List<Tuple<Integer, ItemStack>> list = serialize(player, extraInventory);
+            List<Tuple<Integer, ItemStack>> list = serialize(extraInventory);
             PacketDistributor.sendToPlayer(serverPlayer, new ExtraInventorySyncPacketS2C(player.getId(), list));
         }
     }
 
     public static void sendToPlayersTrackingEntityAndSelf(ServerPlayer serverPlayer, ServerPlayer player, ExtraInventory extraInventory) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
-            List<Tuple<Integer, ItemStack>> list = serialize(player, extraInventory);
+            List<Tuple<Integer, ItemStack>> list = serialize(extraInventory);
             PacketDistributor.sendToPlayersTrackingEntityAndSelf(serverPlayer, new ExtraInventorySyncPacketS2C(player.getId(), list));
         }
     }
 
-    private static @NotNull List<Tuple<Integer, ItemStack>> serialize(ServerPlayer player, ExtraInventory extraInventory) {
-        extraInventory.setAccessoryDyes(CuriosApi.getCuriosInventory(player).map(handler -> {
-            ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);
-            return accessory == null ? 0 : accessory.getSlots();
-        }).orElse(0));
-        extraInventory.setServerPlayer(player);
+    private static @NotNull List<Tuple<Integer, ItemStack>> serialize(ExtraInventory extraInventory) {
         List<Tuple<Integer, ItemStack>> list = new ArrayList<>();
         for (int i = DYE_START; i < extraInventory.getContainerSize(); i++) {
             list.add(new Tuple<>(i, extraInventory.getItem(i)));

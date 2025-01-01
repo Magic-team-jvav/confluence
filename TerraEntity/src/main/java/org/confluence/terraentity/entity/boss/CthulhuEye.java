@@ -37,7 +37,7 @@ public class CthulhuEye extends AbstractTerraBossBase implements GeoEntity, Boss
     public int stage = 1; //阶段
 
     //定义技能参数
-    private int summonCDAll = 15; //仆从召唤cd
+    private int summonCDAll = 20; //仆从召唤cd
     private int summonCD = summonCDAll;
 
     private final int stage2_dashCount_base = -5 + 3;

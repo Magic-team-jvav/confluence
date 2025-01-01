@@ -77,7 +77,7 @@ public class EaterOfWorld extends AbstractTerraBossBase {
         baseSegmentsHealth.add(this.getMaxHealth());
         for(int i=1;i<=segmentCount;i++){
             EaterOfWorldSegment newSegment = new EaterOfWorldSegment(this,level());
-            newSegment.setPos(position().add(dir.scale(i*0.1)));
+            newSegment.setPos(position().add(dir.scale(i*0.3)));
             newSegment.setLastSegment(Objects.requireNonNullElse(temp, this));
             temp = newSegment;
             baseSegments.add(newSegment);
@@ -211,16 +211,7 @@ public class EaterOfWorld extends AbstractTerraBossBase {
 
             //没有目标禁止行为
             target = getTarget();
-
-            //TODO 无目标消失
-
-            if(target==null){
-                discardTick++;
-                if(discardTick>100){
-                    this.discard();
-                }
-                return;
-            }
+            if(target==null) return;
 
             if(!firstWander){
                 skills.forceStartIndex(2);

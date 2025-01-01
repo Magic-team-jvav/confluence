@@ -6,6 +6,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.confluence.terraentity.init.*;
 import org.slf4j.Logger;
 
@@ -23,6 +26,10 @@ public class TerraEntity {
         TEItems.SPAWN_EGGS.register(modEventBus);
         TEItems.TABS.register(modEventBus);
         TEEffects.EFFECTS.register(modEventBus);
+
+        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+
     }
 
     public static ResourceLocation asResource(String path) {

@@ -64,6 +64,8 @@
   "item.terra_entity.tropic_slime_spawn_egg": "Tropic Slime Spawn Egg",
   "item.terra_entity.yellow_slime_spawn_egg": "Yellow Slime Spawn Egg",
   "itemGroup.terraentity.title": "tab.terraentity.name",
+  "message.terraentity.boss_discard": "Has Been Discarded！",
   "message.terraentity.boss_leave": "%s Have Been Defeated!",
-  "message.terraentity.boss_spawn": "%s Has Awoken!"
+  "message.terraentity.boss_spawn": "%s Has Awoken!",
+  "terra_entity.configuration.boss_clear_when_no_target": "Clear Boss When No Target"
 }

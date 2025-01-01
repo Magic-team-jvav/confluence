@@ -18,7 +18,6 @@ public class EaterOfWorldSegment extends AbstractTerraBossBase {
     private static final float MAX_HEALTHS = 50f;
     private static final float DAMAGE = 4f;//接触伤害
 
-    float discardTimer = 0f;
     public float segmentInternal = 1f;
     public EaterOfWorld head;
     public AbstractTerraBossBase lastSegment;
@@ -86,10 +85,6 @@ public class EaterOfWorldSegment extends AbstractTerraBossBase {
         if(!level().isClientSide) {
             if (lastSegment != null && lastSegment.isAlive())
                 this.setPos(getNextPos());
-            if(head==null || !head.isAlive()){
-                discardTimer += 1f;
-                if(discardTimer>20f) discard();
-            }
         }
     }
     @Override // 受伤音效

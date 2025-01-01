@@ -85,6 +85,12 @@ public class TEChineseProvider extends LanguageProvider {
 
         add("message.terraentity.boss_spawn", "%s已苏醒！");
         add("message.terraentity.boss_leave", "%s已被打败！");
+        add("message.terraentity.boss_discard", "已离开！");
+
+
+        // config
+        add("terra_entity.configuration.boss_clear_when_no_target", "丢失目标时清除BOSS");
+
 
     }
 }

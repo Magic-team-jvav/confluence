@@ -33,6 +33,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.entity.ai.BossSkill;
 import org.confluence.terraentity.entity.ai.CircleBossSkills;
+import org.confluence.terraentity.entity.ai.goal.LookForwardWanderFlyGoal;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -46,6 +47,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Predicate;
 
+import static org.confluence.terraentity.Config.BOSS_CLEAR_WHEN_NO_TARGET;
 import static org.confluence.terraentity.utils.TEUtils.getMultiple;
 
 
@@ -65,6 +67,8 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
         this.moveControl = new FlyingMoveControl(this, 10, false);
         setNoGravity(true);
         this.baseHealth = health;
+        var a = bossEvent.getOverlay();
+
     }
 
     public abstract void addSkills();
@@ -108,7 +112,8 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, false));
 
-//        this.goalSelector.addGoal(10, new LookForwardWanderFlyGoal(this,1));
+        if(!BOSS_CLEAR_WHEN_NO_TARGET.get() && !(this instanceof EaterOfWorldSegment))
+            this.goalSelector.addGoal(10, new LookForwardWanderFlyGoal(this,0.3f));
 
     }
 
@@ -173,10 +178,25 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
         //skillMap.put(bossSkill.skill,anim);
     }
 
+    LivingEntity target;
+    int discardTick = 0;
     @Override
     public void tick() {
-        // 动画同步
-        if (!level().isClientSide) skills.tick();
+        super.tick();
+        if (!level().isClientSide){
+            //没有目标禁止行为
+            target = getTarget();
+            if(target==null){
+                discardTick++;
+                if(discardTick>100 && BOSS_CLEAR_WHEN_NO_TARGET.get()){
+                    this.bossEvent.getPlayers().forEach(p->p.sendSystemMessage(this.getDisplayName().copy().append(Component.translatable("message.terraentity.boss_discard"))));
+                    this.discard();
+                }
+                return;
+            }
+            discardTick = 0;
+            skills.tick();
+        }
 //        if (level().isClientSide) {
 //            skills.index = this.entityData.get(DATA_SKILL_INDEX);
 //            skills.tick = this.entityData.get(DATA_SKILL_TICK);
@@ -187,7 +207,7 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
 //        }
 
         collisionHurt();
-        super.tick();
+
         attackInternal--;
         this.setDeltaMovement(getDeltaMovement().scale(0.95));//空气阻力
     }
@@ -253,7 +273,13 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
 
     public boolean canAttack(Entity entity) {
         return attackInternal < 0 &&
-                (entity instanceof Player || getTarget() != null && getTarget().is(entity) && entity != this &&!(entity instanceof AbstractTerraBossBase));
+                (
+                        entity instanceof Player ||
+                                getTarget() != null && getTarget().is(entity)
+                                        && entity != this
+                                        &&!(entity instanceof AbstractTerraBossBase)
+                                        && entity instanceof LivingEntity living && living.canBeSeenAsEnemy()
+                );
     }
 
     // boss条

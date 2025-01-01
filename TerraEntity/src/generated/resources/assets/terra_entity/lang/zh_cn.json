@@ -58,6 +58,8 @@
   "item.terra_entity.tropic_slime_spawn_egg": "热带史莱姆刷怪蛋",
   "item.terra_entity.yellow_slime_spawn_egg": "黄色史莱姆刷怪蛋",
   "itemGroup.terraentity.title": "泰拉生物",
+  "message.terraentity.boss_discard": "已离开！",
   "message.terraentity.boss_leave": "%s已被打败！",
-  "message.terraentity.boss_spawn": "%s已苏醒！"
+  "message.terraentity.boss_spawn": "%s已苏醒！",
+  "terra_entity.configuration.boss_clear_when_no_target": "丢失目标时清除BOSS"
 }

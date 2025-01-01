@@ -20,9 +20,10 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
     private ItemStack wrapItem(LivingEntity instance, EquipmentSlot slot, Operation<ItemStack> original) {
         if (AbstractClientPlayer.class.isAssignableFrom(instance.getClass())) {
             int index = getSlotIndex(slot);
-            if (index == -1) return original.call(instance, slot);
-            ItemStack vanityArmor = instance.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmor(index);
-            return vanityArmor.isEmpty() ? original.call(instance, slot) : vanityArmor;
+            if (index != -1) {
+                ItemStack vanityArmor = instance.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmor(index);
+                if (!vanityArmor.isEmpty()) return vanityArmor;
+            }
         }
         return original.call(instance, slot);
     }

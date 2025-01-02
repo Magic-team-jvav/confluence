@@ -24,6 +24,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.*;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.GetCustomDiggingPowerEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.advancement.ModAchievements;
 import org.confluence.mod.common.attachment.EverBeneficial;
@@ -240,6 +241,7 @@ public final class PlayerEvents {
             } else if (tier instanceof Tiers tiers) {
                 power = ModTiers.getPowerForVanillaTiers(tiers);
             }
+            power = NeoForge.EVENT_BUS.post(new GetCustomDiggingPowerEvent(itemStack, power)).getPower();
             event.setCanHarvest(ModTiers.isCorrectToolForDrops(power, itemStack, event.getTargetBlock()));
         }
     }

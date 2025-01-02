@@ -5,10 +5,11 @@ import net.neoforged.bus.api.Event;
 
 public class GetCustomDiggingPowerEvent extends Event {
     private final ItemStack itemStack;
-    private int power = -1;
+    private int power;
 
-    public GetCustomDiggingPowerEvent(ItemStack itemStack) {
+    public GetCustomDiggingPowerEvent(ItemStack itemStack, int power) {
         this.itemStack = itemStack;
+        this.power = power;
     }
 
     public ItemStack getItemStack() {

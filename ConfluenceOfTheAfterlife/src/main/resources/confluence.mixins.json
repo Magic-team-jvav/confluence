@@ -30,6 +30,7 @@
         "entity.PlayerMixin",
         "entity.ServerPlayerMixin",
         "entity.VillagerMixin",
+        "integration.adorned.CuriosServerPayloadHandlerMixin",
         "integration.terra_curio.AccessoriesAttachmentMixin",
         "integration.terra_curio.StarClockEntityMixin",
         "integration.terra_curio.WorkshopBlockMixin",

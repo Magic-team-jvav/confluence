@@ -65,8 +65,8 @@ public class WeatherVaneBlock extends Block implements EntityBlock {
             float windSpeedX = WeatherHandler.getWindSpeedX();
             float windSpeedZ = WeatherHandler.getWindSpeedZ();
             if (entity.lastWindSpeed.x != windSpeedX || entity.lastWindSpeed.y != windSpeedZ) {
-                entity.lastWindSpeed.set(windSpeedX, windSpeedZ);
-                float target = Mth.HALF_PI - (float) Mth.atan2(windSpeedZ, windSpeedX);
+                entity.lastWindSpeed.set(windSpeedX, windSpeedZ).normalize();
+                float target = Mth.HALF_PI - (float) Mth.atan2(entity.lastWindSpeed.y, entity.lastWindSpeed.x);
                 if (target > entity.targetRotation) {
                     entity.shakeTime = Mth.abs((int) ((entity.targetRotation - target) * 10));
                 } else {

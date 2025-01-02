@@ -4,7 +4,6 @@ import com.mojang.datafixers.util.Either;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.ints.AbstractInt2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -19,17 +18,19 @@ import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.StarPhase;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Map;
+
 import static org.confluence.mod.common.data.saved.ConfluenceData.STAR_PHASES_SIZE;
 
-public record StarPhasesPacketS2C(Either<Int2ObjectMap<StarPhase>, Int2ObjectMap.Entry<StarPhase>> starPhases) implements CustomPacketPayload {
+public record StarPhasesPacketS2C(Either<Map<Integer, StarPhase>, Map.Entry<Integer, StarPhase>> starPhases) implements CustomPacketPayload {
     public static final Type<StarPhasesPacketS2C> TYPE = new Type<>(Confluence.asResource("star_phases"));
     public static final StreamCodec<ByteBuf, StarPhasesPacketS2C> STREAM_CODEC = StreamCodec.composite(
             new StreamCodec<>() {
-                public @NotNull Either<Int2ObjectMap<StarPhase>, Int2ObjectMap.Entry<StarPhase>> decode(@NotNull ByteBuf buffer) {
+                public @NotNull Either<Map<Integer, StarPhase>, Map.Entry<Integer, StarPhase>> decode(@NotNull ByteBuf buffer) {
                     boolean isLeft = buffer.readBoolean();
                     if (isLeft) {
                         int length = buffer.readInt();
-                        Int2ObjectMap<StarPhase> map = new Int2ObjectArrayMap<>();
+                        Map<Integer, StarPhase> map = new Int2ObjectArrayMap<>();
                         for (int i = 0; i < length; i++) {
                             map.put(i, new StarPhase(buffer));
                         }
@@ -38,7 +39,7 @@ public record StarPhasesPacketS2C(Either<Int2ObjectMap<StarPhase>, Int2ObjectMap
                     return Either.right(new AbstractInt2ObjectMap.BasicEntry<>(buffer.readInt(), new StarPhase(buffer)));
                 }
 
-                public void encode(@NotNull ByteBuf buffer, @NotNull Either<Int2ObjectMap<StarPhase>, Int2ObjectMap.Entry<StarPhase>> value) {
+                public void encode(@NotNull ByteBuf buffer, @NotNull Either<Map<Integer, StarPhase>, Map.Entry<Integer, StarPhase>> value) {
                     value.ifLeft(map -> {
                         buffer.writeBoolean(true);
                         buffer.writeInt(STAR_PHASES_SIZE);
@@ -48,7 +49,7 @@ public record StarPhasesPacketS2C(Either<Int2ObjectMap<StarPhase>, Int2ObjectMap
                     });
                     value.ifRight(entry -> {
                         buffer.writeBoolean(false);
-                        buffer.writeInt(entry.getIntKey());
+                        buffer.writeInt(entry.getKey());
                         entry.getValue().writeTo(buffer);
                     });
                 }
@@ -84,7 +85,7 @@ public record StarPhasesPacketS2C(Either<Int2ObjectMap<StarPhase>, Int2ObjectMap
         }
     }
 
-    public static void sendToClient(ServerPlayer serverPlayer, Int2ObjectMap<StarPhase> starPhases) {
+    public static void sendToClient(ServerPlayer serverPlayer, Map<Integer, StarPhase> starPhases) {
         PacketDistributor.sendToPlayer(serverPlayer, new StarPhasesPacketS2C(Either.left(starPhases)));
     }
 

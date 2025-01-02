@@ -49,4 +49,7 @@ public class CustomBlockModels {
 		});
 	}
 
+	public boolean containsBlock(Block block) {
+		return finalModelFuncs.containsKey(block);
+	}
 }

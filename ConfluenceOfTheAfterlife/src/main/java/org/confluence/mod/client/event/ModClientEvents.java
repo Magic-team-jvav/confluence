@@ -4,6 +4,12 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -14,7 +20,9 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.connected.CustomBlockModels;
 import org.confluence.mod.client.connected.ModConnectives;
+import org.confluence.mod.client.connected.ModelSwapper;
 import org.confluence.mod.client.gui.AchievementToast;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
@@ -44,6 +52,8 @@ import org.confluence.mod.client.renderer.entity.hook.*;
 import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
 import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
+import org.confluence.mod.client.textures.GrayBlockModelSwapper;
+import org.confluence.mod.client.textures.GraySpriteShifterEntry;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModParticleTypes;
@@ -55,6 +65,8 @@ import org.confluence.mod.common.init.item.BowItems;
 import org.confluence.mod.common.init.item.FishingPoleItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
+
+import java.util.Map;
 
 import static org.confluence.mod.common.init.ModEntities.*;
 
@@ -232,7 +244,32 @@ public final class ModClientEvents {
     }
 
     @SubscribeEvent
-    public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
-        event.registerReloadListener(ModClientSetups.getGraySpritesUploader());
+    public static void textureAtlasStitched(TextureAtlasStitchedEvent event) {
+        TextureAtlas atlas = event.getAtlas();
+        if (atlas.location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+            for (Map.Entry<ResourceLocation, TextureAtlasSprite> entry : atlas.getTextures().entrySet()) {
+                ResourceLocation key = entry.getKey();
+                if (!key.getPath().endsWith(".gray")) {
+                    ResourceLocation gray = key.withSuffix(".gray");
+                    TextureAtlasSprite target = atlas.getSprite(gray);
+                    GraySpriteShifterEntry.ALL.put(key, new GraySpriteShifterEntry(entry.getValue(), target));
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void model$ModifyBakingResult(ModelEvent.ModifyBakingResult event) {
+        Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
+        CustomBlockModels customBlockModels = ModConnectives.MODEL_SWAPPER.getCustomBlockModels();
+        BuiltInRegistries.BLOCK.stream().forEach(block -> {
+            if (customBlockModels.containsBlock(block)) return;
+            for (ModelResourceLocation modelLocation : ModelSwapper.getAllBlockStateModelLocations(block)) {
+                BakedModel bakedModel = modelRegistry.get(modelLocation);
+                if (bakedModel != null) {
+                    modelRegistry.put(modelLocation, new GrayBlockModelSwapper(bakedModel));
+                }
+            }
+        });
     }
 }

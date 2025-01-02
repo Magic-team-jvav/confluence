@@ -28,6 +28,7 @@ import org.confluence.mod.client.handler.HookThrowingHandler;
 import org.confluence.mod.client.handler.MeteoriteLandingHandler;
 import org.confluence.mod.client.handler.StarPhaseHandler;
 import org.confluence.mod.client.handler.WeatherHandler;
+import org.confluence.mod.client.textures.LocalData;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.ModEffects;
@@ -53,7 +54,10 @@ public final class GameClientEvents {
         WeatherHandler.initialize(player);
         IMusicManager.reset(minecraft.getMusicManager()); // 1st
 
-        if (player == null) return;
+        if (player == null) {
+            LocalData.clear();
+            return;
+        }
 
         MeteoriteLandingHandler.handle(minecraft, player);
         ProjectileStrategy.handle(minecraft, player);

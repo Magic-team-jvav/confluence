@@ -115,8 +115,7 @@ public class ExtraInventory extends ItemStackHandler implements Container {
     }
 
     public void sync(ServerPlayer serverPlayer) {
-        this.serverPlayer = serverPlayer;
-        initialize();
+        initialize(serverPlayer);
         if (dirty) {
             for (int i = 0; i < getContainerSize(); i++) {
                 ItemStack itemStack = getItem(i);
@@ -133,7 +132,8 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         }
     }
 
-    private void initialize() {
+    public void initialize(ServerPlayer serverPlayer) {
+        this.serverPlayer = serverPlayer;
         if (!initialized) {
             int accessoryDye = CuriosApi.getCuriosInventory(serverPlayer).map(handler -> {
                 ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);

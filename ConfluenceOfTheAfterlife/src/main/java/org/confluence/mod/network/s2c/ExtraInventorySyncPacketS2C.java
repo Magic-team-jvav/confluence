@@ -73,6 +73,7 @@ public record ExtraInventorySyncPacketS2C(int entityId, List<Tuple<Integer, Item
 
     public static void sendToClient(ServerPlayer serverPlayer, ServerPlayer player, ExtraInventory extraInventory) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
+            extraInventory.initialize(serverPlayer);
             List<Tuple<Integer, ItemStack>> list = serialize(extraInventory);
             PacketDistributor.sendToPlayer(serverPlayer, new ExtraInventorySyncPacketS2C(player.getId(), list));
         }
@@ -80,6 +81,7 @@ public record ExtraInventorySyncPacketS2C(int entityId, List<Tuple<Integer, Item
 
     public static void sendToPlayersTrackingEntityAndSelf(ServerPlayer serverPlayer, ServerPlayer player, ExtraInventory extraInventory) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
+            extraInventory.initialize(serverPlayer);
             List<Tuple<Integer, ItemStack>> list = serialize(extraInventory);
             PacketDistributor.sendToPlayersTrackingEntityAndSelf(serverPlayer, new ExtraInventorySyncPacketS2C(player.getId(), list));
         }

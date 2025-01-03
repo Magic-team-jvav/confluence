@@ -150,6 +150,7 @@ public final class ModEvents {
         event.register(AccessoryItems.TACKLE$BOX);
         event.register(AccessoryItems.LAVAPROOF$FISHING$HOOK);
         event.register(AccessoryItems.SPECTRE$GOGGLES);
+        event.register(AccessoryItems.PAINT$SPRAYER);
     }
 
     @SubscribeEvent

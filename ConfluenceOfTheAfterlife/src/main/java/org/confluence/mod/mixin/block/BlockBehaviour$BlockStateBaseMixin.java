@@ -42,7 +42,7 @@ public abstract class BlockBehaviour$BlockStateBaseMixin {
 
     @Inject(method = "onRemove", at = @At("HEAD"))
     private void removeData(Level level, BlockPos pos, BlockState newState, boolean movedByPiston, CallbackInfo ci) {
-        if (getBlock() != newState.getBlock() && level instanceof ServerLevel serverLevel) {
+        if (!level.isClientSide && getBlock() != newState.getBlock() && level instanceof ServerLevel serverLevel) {
             Map<ChunkPos, BrushData> dataMap = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap();
             if (!dataMap.isEmpty()) {
                 BrushData data = dataMap.get(new ChunkPos(pos));

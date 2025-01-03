@@ -20,6 +20,7 @@
         "block.AnvilBlockMixin",
         "block.BaseContainerBlockEntityMixin",
         "block.BlockBehaviour$BlockStateBaseMixin",
+        "block.BlockMixin",
         "entity.AbstractArrowMixin",
         "entity.AbstractMinecartMixin",
         "entity.DamageSourceMixin",

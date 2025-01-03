@@ -1934,14 +1934,15 @@ public class ModChineseProvider extends LanguageProvider {
         add(PaintItems.DEEP_BLUE_PAINT.get(), "深蓝漆");
         add(PaintItems.PURPLE_PAINT.get(), "紫漆");
         add(PaintItems.DEEP_PURPLE_PAINT.get(), "深紫漆");
-        add(PaintItems.VIOLET_PAINT.get(), "蓝紫漆");
-        add(PaintItems.DEEP_VIOLET_PAINT.get(), "深蓝紫漆");
+        add(PaintItems.VIOLET_PAINT.get(), "紫罗兰漆");
+        add(PaintItems.DEEP_VIOLET_PAINT.get(), "深紫罗兰漆");
         add(PaintItems.PINK_PAINT.get(), "粉漆");
         add(PaintItems.DEEP_PINK_PAINT.get(), "深粉漆");
         add(PaintItems.BLACK_PAINT.get(), "黑漆");
         add(PaintItems.GRAY_PAINT.get(), "灰漆");
         add(PaintItems.WHITE_PAINT.get(), "白漆");
         add(PaintItems.BROWN_PAINT.get(), "棕漆");
+        add(PaintItems.SHADOW_PAINT.get(), "暗影漆");
         // 药水效果
         add(ModEffects.MANA_SICKNESS.get(), "魔力病");
         add(ModEffects.SHINE.get(), "发光");

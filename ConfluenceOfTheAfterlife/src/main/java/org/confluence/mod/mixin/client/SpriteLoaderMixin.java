@@ -66,12 +66,14 @@ public abstract class SpriteLoaderMixin {
                 average[index] = a << 8 | avg;
             }
         }
-        float x = 128.0F / (u - d);
+        boolean cl = 94.72F < (u - d);
+        float x = cl ? 94.72F / (u - d) : 1.0F;
+        int y = cl ? 0 : (int) (94.72F - (u - d));
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 int color = average[j + i * width];
                 int avg = color & 255;
-                avg = (int) ((avg - d) * x) + 72;
+                avg = (int) ((avg - d) * x) + 105 + y;
                 int a = color >> 8 & 255;
                 image.setPixelRGBA(j, i, a << 24 | avg << 16 | avg << 8 | avg);
             }

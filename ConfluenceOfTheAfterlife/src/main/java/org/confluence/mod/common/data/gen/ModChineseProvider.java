@@ -1909,6 +1909,39 @@ public class ModChineseProvider extends LanguageProvider {
         add(AccessoryItems.FLEDGLING_WINGS.get(), "雏翼");
         add(AccessoryItems.CHROMATIC_CLOAK.get(), "炫彩斗篷");
         add(AccessoryItems.MUSIC_BOX.get(), "八音盒");
+
+        // 染料
+        add(PaintItems.PAINTBRUSH.get(), "漆刷");
+        add(PaintItems.PAINT_ROLLER.get(), "油漆滚刷");
+        add(PaintItems.PAINT_SCRAPER.get(), "漆铲");
+        add(PaintItems.RED_PAINT.get(), "红漆");
+        add(PaintItems.DEEP_RED_PAINT.get(), "深红漆");
+        add(PaintItems.ORANGE_PAINT.get(), "橙漆");
+        add(PaintItems.DEEP_ORANGE_PAINT.get(), "深橙漆");
+        add(PaintItems.YELLOW_PAINT.get(), "黄漆");
+        add(PaintItems.DEEP_YELLOW_PAINT.get(), "深黄漆");
+        add(PaintItems.LIME_PAINT.get(), "橙绿漆");
+        add(PaintItems.DEEP_LIME_PAINT.get(), "深橙绿漆");
+        add(PaintItems.GREEN_PAINT.get(), "绿漆");
+        add(PaintItems.DEEP_GREEN_PAINT.get(), "深绿漆");
+        add(PaintItems.TEAL_PAINT.get(), "青绿漆");
+        add(PaintItems.DEEP_TEAL_PAINT.get(), "深青绿漆");
+        add(PaintItems.CYAN_PAINT.get(), "青漆");
+        add(PaintItems.DEEP_CYAN_PAINT.get(), "深青漆");
+        add(PaintItems.SKY_BLUE_PAINT.get(), "天蓝漆");
+        add(PaintItems.DEEP_SKY_BLUE_PAINT.get(), "深天蓝漆");
+        add(PaintItems.BLUE_PAINT.get(), "蓝漆");
+        add(PaintItems.DEEP_BLUE_PAINT.get(), "深蓝漆");
+        add(PaintItems.PURPLE_PAINT.get(), "紫漆");
+        add(PaintItems.DEEP_PURPLE_PAINT.get(), "深紫漆");
+        add(PaintItems.VIOLET_PAINT.get(), "蓝紫漆");
+        add(PaintItems.DEEP_VIOLET_PAINT.get(), "深蓝紫漆");
+        add(PaintItems.PINK_PAINT.get(), "粉漆");
+        add(PaintItems.DEEP_PINK_PAINT.get(), "深粉漆");
+        add(PaintItems.BLACK_PAINT.get(), "黑漆");
+        add(PaintItems.GRAY_PAINT.get(), "灰漆");
+        add(PaintItems.WHITE_PAINT.get(), "白漆");
+        add(PaintItems.BROWN_PAINT.get(), "棕漆");
         // 药水效果
         add(ModEffects.MANA_SICKNESS.get(), "魔力病");
         add(ModEffects.SHINE.get(), "发光");

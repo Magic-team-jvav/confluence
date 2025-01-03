@@ -2,7 +2,6 @@ package org.confluence.mod.common.item.paint;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -23,17 +22,13 @@ public class PaintRollerItem extends Item {
             ServerLevel serverLevel = serverPlayer.serverLevel();
             BlockPos clickedPos = pContext.getClickedPos();
             Direction clickedFace = pContext.getClickedFace();
-            if (serverLevel.getBlockState(clickedPos).isFaceSturdy(serverLevel, clickedPos, clickedFace)) {
-                int color = PaintItem.getColor(pContext.getPlayer());
-                if (color != -1) {
-                    BrushingColorPacketS2C.sendToPlayersTrackingChunk(
-                            serverLevel, clickedPos,
-                            BrushData.Facing.fromDirection(clickedFace),
-                            color, true
-                    );
-                }
-            } else {
-                serverPlayer.sendSystemMessage(Component.translatable("item.confluence.paint_roller.failed"));
+            int color = PaintItem.getColor(pContext.getPlayer());
+            if (color != -1) {
+                BrushingColorPacketS2C.sendToPlayersTrackingChunk(
+                        serverLevel, clickedPos,
+                        BrushData.Facing.fromDirection(clickedFace),
+                        color, true
+                );
             }
         }
         return InteractionResult.SUCCESS;

@@ -28,10 +28,12 @@ public abstract class SpriteLoaderMixin {
         if (location.equals(TextureAtlas.LOCATION_BLOCKS)) {
             List<SpriteContents> neoContents = Lists.newArrayList(contents);
             for (SpriteContents content : contents) {
+                ResourceLocation name = content.name();
+                if (name.getPath().startsWith("item/")) continue;
                 NativeImage neoImage = confluence$copyWithGray(content.getOriginalImage());
                 if (((NativeImageAccessor) (Object) neoImage).getPixels() == 0L) continue;
                 SpriteContents neoContent = new SpriteContents(
-                        content.name().withSuffix(".gray"),
+                        name.withSuffix(".gray"),
                         new FrameSize(content.width(), content.height()),
                         neoImage,
                         content.metadata());

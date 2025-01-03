@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.texture.SpriteLoader;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.metadata.animation.FrameSize;
 import net.minecraft.resources.ResourceLocation;
-import org.confluence.mod.mixin.client.accessor.NativeImageAccessor;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -31,7 +30,6 @@ public abstract class SpriteLoaderMixin {
                 ResourceLocation name = content.name();
                 if (name.getPath().startsWith("item/")) continue;
                 NativeImage neoImage = confluence$copyWithGray(content.getOriginalImage());
-                if (((NativeImageAccessor) (Object) neoImage).getPixels() == 0L) continue;
                 SpriteContents neoContent = new SpriteContents(
                         name.withSuffix(".gray"),
                         new FrameSize(content.width(), content.height()),

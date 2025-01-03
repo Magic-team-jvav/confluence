@@ -50,14 +50,34 @@ public abstract class SpriteLoaderMixin {
         int height = original.getHeight();
         NativeImage image = new NativeImage(original.format(), width, height, false);
         image.copyFrom(original);
-        image.applyToAllPixels(color -> {
-            int a = color >>> 24;
-            int b = color >> 16 & 255;
-            int g = color >> 8 & 255;
-            int r = color & 255;
-            int avg = (r + g + b) / 6 + 127;
-            return a << 24 | avg << 16 | avg << 8 | avg;
-        });
+        int[] pixels = original.getPixelsRGBA();
+        int[] average = new int[pixels.length];
+        int u = 0;
+        int d = 255;
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                int index = j + i * width;
+                int color = pixels[index];
+                int a = color >>> 24;
+                int b = color >> 16 & 255;
+                int g = color >> 8 & 255;
+                int r = color & 255;
+                int avg = (int) (r * 0.3F + g * 0.59F + b * 0.11F);
+                if (avg > u) u = avg;
+                if (avg < d) d = avg;
+                average[index] = a << 8 | avg;
+            }
+        }
+        float x = 128.0F / (u - d);
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                int color = average[j + i * width];
+                int avg = color & 255;
+                avg = (int) ((avg - d) * x) + 72;
+                int a = color >> 8 & 255;
+                image.setPixelRGBA(j, i, a << 24 | avg << 16 | avg << 8 | avg);
+            }
+        }
         return image;
     }
 }

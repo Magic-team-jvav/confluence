@@ -64,6 +64,19 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
         sendToPlayersTrackingChunk(level, new ChunkPos(pos), new BrushData(pos, facing, color), save);
     }
 
+    public static void remove(ServerLevel level, BlockPos pos, BrushData.Facing facing) {
+        if (ServerLifecycleHooks.getCurrentServer() != null) {
+            BrushData brushData = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap().get(new ChunkPos(pos));
+            if (brushData != null) {
+                BrushData.Entry entry = brushData.colors().get(pos);
+                if (entry != null) {
+                    entry.map().remove(facing);
+                    PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(new BrushData(pos, facing, -1)));
+                }
+            }
+        }
+    }
+
     public static void remove(ServerLevel level, BlockPos pos) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
             BrushData brushData = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap().get(new ChunkPos(pos));

@@ -12,15 +12,15 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
 import org.confluence.mod.client.connected.BakedModelWrapperWithData;
 import org.confluence.mod.client.connected.BakedQuadHelper;
-import org.confluence.mod.common.data.saved.BrushData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class GrayBlockModelSwapper extends BakedModelWrapperWithData {
-    protected static final ModelProperty<BrushData.Facing> COLOR_PROPERTY = new ModelProperty<>();
+    protected static final ModelProperty<Set<Direction>> COLOR_PROPERTY = new ModelProperty<>();
 
     public GrayBlockModelSwapper(BakedModel originalModel) {
         super(originalModel);
@@ -28,8 +28,9 @@ public class GrayBlockModelSwapper extends BakedModelWrapperWithData {
 
     @Override
     protected ModelData.Builder gatherModelData(ModelData.Builder builder, BlockAndTintGetter world, BlockPos pos, BlockState state, ModelData blockEntityData) {
-        if (LocalBrushData.hasColor(pos)) {
-            return builder.with(COLOR_PROPERTY, BrushData.Facing.ALL);
+        Set<Direction> dirs = LocalBrushData.getDirs(pos);
+        if (dirs != null) {
+            return builder.with(COLOR_PROPERTY, dirs);
         }
         return builder;
     }
@@ -37,8 +38,10 @@ public class GrayBlockModelSwapper extends BakedModelWrapperWithData {
     @Override
     public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData extraData, @Nullable RenderType renderType) {
         List<BakedQuad> quads = super.getQuads(state, side, rand, extraData, renderType);
-        if (!extraData.has(COLOR_PROPERTY)) return quads;
+        Set<Direction> dirs = extraData.get(COLOR_PROPERTY);
+        if (dirs == null || !dirs.contains(side)) return quads;
         quads = new ArrayList<>(quads);
+
         for (int i = 0; i < quads.size(); i++) {
             BakedQuad quad = quads.get(i);
             GraySpriteShifterEntry entry = GraySpriteShifterEntry.ALL.get(quad.getSprite().contents().name());

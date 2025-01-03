@@ -1,22 +1,19 @@
 package org.confluence.mod.common.item.paint;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
-public class PaintScraperItem extends Item {
-    public PaintScraperItem() {
+public class PaintRollerItem extends Item {
+    public PaintRollerItem() {
         super(new Properties().stacksTo(1));
     }
 
@@ -25,17 +22,20 @@ public class PaintScraperItem extends Item {
         if (pContext.getPlayer() instanceof ServerPlayer serverPlayer) {
             ServerLevel serverLevel = serverPlayer.serverLevel();
             BlockPos clickedPos = pContext.getClickedPos();
-            if (serverPlayer.isCrouching()) {
-                BrushingColorPacketS2C.remove(serverLevel, clickedPos, BrushData.Facing.fromDirection(pContext.getClickedFace()));
+            Direction clickedFace = pContext.getClickedFace();
+            if (serverLevel.getBlockState(clickedPos).isFaceSturdy(serverLevel, clickedPos, clickedFace)) {
+                int color = PaintItem.getColor(pContext.getPlayer());
+                if (color != -1) {
+                    BrushingColorPacketS2C.sendToPlayersTrackingChunk(
+                            serverLevel, clickedPos,
+                            BrushData.Facing.fromDirection(clickedFace),
+                            color, true
+                    );
+                }
             } else {
-                BrushingColorPacketS2C.remove(serverLevel, clickedPos);
+                serverPlayer.sendSystemMessage(Component.translatable("item.confluence.paint_roller.failed"));
             }
         }
         return InteractionResult.SUCCESS;
-    }
-
-    @Override
-    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("tooltip.item.confluence.paint_scraper"));
     }
 }

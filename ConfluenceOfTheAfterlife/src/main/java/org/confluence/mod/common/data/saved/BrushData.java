@@ -97,5 +97,17 @@ public record BrushData(Map<BlockPos, Entry> colors) {
         public @NotNull String getSerializedName() {
             return name().toLowerCase(Locale.ROOT);
         }
+
+        public static Facing fromDirection(@Nullable Direction dir) {
+            return switch (dir) {
+                case null -> ALL;
+                case DOWN -> DOWN;
+                case UP -> UP;
+                case NORTH -> NORTH;
+                case SOUTH -> SOUTH;
+                case WEST -> WEST;
+                case EAST -> EAST;
+            };
+        }
     }
 }

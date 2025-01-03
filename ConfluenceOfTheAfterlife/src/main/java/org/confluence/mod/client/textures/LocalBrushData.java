@@ -3,11 +3,13 @@ package org.confluence.mod.client.textures;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
+import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
@@ -17,26 +19,27 @@ import java.util.Set;
 
 @OnlyIn(Dist.CLIENT)
 public final class LocalBrushData {
-    private static final Hashtable<BlockPos, Object2IntOpenHashMap<BrushData.Facing>> DATA = new Hashtable<>();
+    private static final Hashtable<BlockPos, Object2IntOpenHashMap<Direction>> DATA = new Hashtable<>();
 
     public static void putData(BlockPos pos, BrushData.Facing facing, int color) {
-        DATA.computeIfAbsent(pos, pos1 -> new Object2IntOpenHashMap<>()).put(facing, color);
+        Object2IntOpenHashMap<Direction> map = DATA.computeIfAbsent(pos, pos1 -> new Object2IntOpenHashMap<>());
+        if (facing == BrushData.Facing.ALL) {
+            for (Direction dir : ModUtils.DIRECTIONS) {
+                map.put(dir, color);
+            }
+        } else {
+            map.put(facing.dir, color);
+        }
     }
 
-    public static @Nullable Object2IntOpenHashMap<BrushData.Facing> get(BlockPos pos) {
-        return DATA.get(pos);
+    public static @Nullable Set<Direction> getDirs(BlockPos pos) {
+        Object2IntOpenHashMap<Direction> map = DATA.get(pos);
+        return map == null ? null : map.keySet();
     }
 
-    public static int getColor(BlockPos pos, Integer tint) {
-        Object2IntOpenHashMap<BrushData.Facing> map = DATA.get(pos);
-        if (map == null) return -1;
-        return map.getOrDefault(tint, -1);
-    }
-
-    public static int getColor(BlockPos pos) {
-        Object2IntOpenHashMap<BrushData.Facing> map = DATA.get(pos);
-        if (map == null) return -1;
-        return map.getOrDefault(BrushData.Facing.ALL, -2);
+    public static int getColor(BlockPos pos, Direction facing) {
+        Object2IntOpenHashMap<Direction> map = DATA.get(pos);
+        return map == null ? -1 : map.getOrDefault(facing, -1);
     }
 
     public static boolean hasColor(BlockPos pos) {
@@ -48,8 +51,15 @@ public final class LocalBrushData {
     }
 
     public static void removeData(BlockPos pos, BrushData.Facing facing) {
-        Object2IntOpenHashMap<BrushData.Facing> map = DATA.get(pos);
-        if (map != null) map.removeInt(facing);
+        Object2IntOpenHashMap<Direction> map = DATA.get(pos);
+        if (map == null) return;
+        if (facing == BrushData.Facing.ALL) {
+            for (Direction dir : ModUtils.DIRECTIONS) {
+                map.removeInt(dir);
+            }
+        } else {
+            map.removeInt(facing.dir);
+        }
     }
 
     public static void clear() {

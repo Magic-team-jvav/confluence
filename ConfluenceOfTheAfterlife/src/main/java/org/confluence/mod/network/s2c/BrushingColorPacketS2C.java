@@ -12,7 +12,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.textures.LocalData;
+import org.confluence.mod.client.textures.LocalBrushData;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.jetbrains.annotations.NotNull;
@@ -43,7 +43,7 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
     public void handle(IPayloadContext context) {
         context.enqueueWork(() -> {
             if (context.player().isLocalPlayer()) {
-                LocalData.handlePacket(this);
+                LocalBrushData.handlePacket(this);
             }
         }).exceptionally(e -> {
             context.disconnect(Component.translatable("neoforge.network.invalid_flow", e.getMessage()));
@@ -61,13 +61,17 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
         PacketDistributor.sendToPlayersTrackingChunk(level, chunkPos, new BrushingColorPacketS2C(data));
     }
 
-    public static void sendToPlayersTrackingChunk(ServerLevel level, ChunkPos chunkPos, BlockPos pos, Integer tint, int color, boolean save) {
-        sendToPlayersTrackingChunk(level, chunkPos, new BrushData(pos, tint, color), save);
+    public static void sendToPlayersTrackingChunk(ServerLevel level, ChunkPos chunkPos, BlockPos pos, BrushData.Facing facing, int color, boolean save) {
+        sendToPlayersTrackingChunk(level, chunkPos, new BrushData(pos, facing, color), save);
     }
 
-    public static void remove(BlockPos pos) {
+    public static void remove(ServerLevel level, BlockPos pos) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
-            PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(new BrushData(Collections.singletonList(new BrushData.Entry(pos, Map.of())))));
+            BrushData brushData = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap().get(new ChunkPos(pos));
+            if (brushData != null) {
+                brushData.removeEntry(pos);
+                PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(new BrushData(Collections.singletonList(new BrushData.Entry(pos, Map.of())))));
+            }
         }
     }
 

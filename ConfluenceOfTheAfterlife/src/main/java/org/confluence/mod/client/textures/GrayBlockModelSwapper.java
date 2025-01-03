@@ -6,13 +6,13 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.Unit;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
 import org.confluence.mod.client.connected.BakedModelWrapperWithData;
 import org.confluence.mod.client.connected.BakedQuadHelper;
+import org.confluence.mod.common.data.saved.BrushData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GrayBlockModelSwapper extends BakedModelWrapperWithData {
-    protected static final ModelProperty<Unit> COLOR_PROPERTY = new ModelProperty<>();
+    protected static final ModelProperty<BrushData.Facing> COLOR_PROPERTY = new ModelProperty<>();
 
     public GrayBlockModelSwapper(BakedModel originalModel) {
         super(originalModel);
@@ -28,8 +28,8 @@ public class GrayBlockModelSwapper extends BakedModelWrapperWithData {
 
     @Override
     protected ModelData.Builder gatherModelData(ModelData.Builder builder, BlockAndTintGetter world, BlockPos pos, BlockState state, ModelData blockEntityData) {
-        if (LocalData.hasColor(pos)) {
-            return builder.with(COLOR_PROPERTY, Unit.INSTANCE);
+        if (LocalBrushData.hasColor(pos)) {
+            return builder.with(COLOR_PROPERTY, BrushData.Facing.ALL);
         }
         return builder;
     }

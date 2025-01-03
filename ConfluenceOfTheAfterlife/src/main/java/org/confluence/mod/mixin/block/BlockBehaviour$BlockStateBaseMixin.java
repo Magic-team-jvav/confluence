@@ -1,6 +1,7 @@
 package org.confluence.mod.mixin.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ChunkPos;
@@ -36,13 +37,13 @@ public abstract class BlockBehaviour$BlockStateBaseMixin {
 
     @Inject(method = "onRemove", at = @At("HEAD"))
     private void removeData(Level level, BlockPos pos, BlockState newState, boolean movedByPiston, CallbackInfo ci) {
-        if (!level.isClientSide) {
+        if (level instanceof ServerLevel serverLevel) {
             Map<ChunkPos, BrushData> dataMap = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap();
             if (!dataMap.isEmpty()) {
                 BrushData data = dataMap.get(new ChunkPos(pos));
                 boolean removed = data != null && data.removeEntry(pos);
                 if (removed) {
-                    BrushingColorPacketS2C.remove(pos);
+                    BrushingColorPacketS2C.remove(serverLevel, pos);
                 }
             }
         }

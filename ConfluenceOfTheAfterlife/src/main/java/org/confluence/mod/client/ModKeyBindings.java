@@ -17,15 +17,14 @@ public final class ModKeyBindings {
     public static void keyBinding(RegisterKeyMappingsEvent event) {
         event.register(HOOK.get());
         event.register(SHOW_DETAIL_SPECULAR.get());
-
     }
 
     public static final Lazy<KeyMapping> HOOK = Lazy.of(() -> new KeyMapping(
-        "key.confluence.hook",
-        KeyConflictContext.IN_GAME,
-        InputConstants.Type.KEYSYM,
-        GLFW.GLFW_KEY_F,
-        "key.categories.gameplay"
+            "key.confluence.hook",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_F,
+            "key.categories.gameplay"
     ));
 
     public static final Lazy<KeyMapping> SHOW_DETAIL_SPECULAR = Lazy.of(() -> new KeyMapping(

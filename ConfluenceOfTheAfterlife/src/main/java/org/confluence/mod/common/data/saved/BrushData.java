@@ -5,8 +5,12 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.StringRepresentable;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -20,8 +24,8 @@ public record BrushData(List<Entry> colors) {
         this(new ArrayList<>());
     }
 
-    public BrushData(BlockPos pos, Integer tint, int color) {
-        this(Lists.newArrayList(new BrushData.Entry(pos, new Hashtable<>(Map.of(tint.toString(), color)))));
+    public BrushData(BlockPos pos, BrushData.Facing facing, int color) {
+        this(Lists.newArrayList(new BrushData.Entry(pos, new Hashtable<>(Map.of(facing, color)))));
     }
 
     public boolean putEntry(Entry entry) {
@@ -38,17 +42,17 @@ public record BrushData(List<Entry> colors) {
         return false;
     }
 
-    public boolean putData(BlockPos pos, Integer tint, int color) {
+    public boolean putData(BlockPos pos, BrushData.Facing facing, int color) {
         boolean put = false;
         for (Entry entry : colors) {
             if (entry.pos.equals(pos)) {
-                entry.map.put(tint.toString(), color);
+                entry.map.put(facing, color);
                 put = true;
             }
         }
         if (!put) {
-            Hashtable<String, Integer> map = new Hashtable<>();
-            map.put(tint.toString(), color);
+            Hashtable<Facing, Integer> map = new Hashtable<>();
+            map.put(facing, color);
             return colors.add(new Entry(pos, map));
         }
         return false;
@@ -85,10 +89,32 @@ public record BrushData(List<Entry> colors) {
         return false;
     }
 
-    public record Entry(BlockPos pos, Map<String, Integer> map) {
+    public record Entry(BlockPos pos, Map<Facing, Integer> map) {
         public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockPos.CODEC.fieldOf("pos").forGetter(Entry::pos),
-                Codec.unboundedMap(Codec.STRING, Codec.INT).fieldOf("color").forGetter(Entry::map)
+                Codec.unboundedMap(Facing.CODEC, Codec.INT).fieldOf("color").forGetter(Entry::map)
         ).apply(instance, (pos1, stringIntegerMap) -> new Entry(pos1, new Hashtable<>(stringIntegerMap))));
+    }
+
+    public enum Facing implements StringRepresentable {
+        ALL(null),
+        DOWN(Direction.DOWN),
+        UP(Direction.UP),
+        NORTH(Direction.NORTH),
+        SOUTH(Direction.SOUTH),
+        WEST(Direction.WEST),
+        EAST(Direction.EAST);
+
+        public static final Codec<Facing> CODEC = StringRepresentable.fromEnum(Facing::values);
+        public final Direction dir;
+
+        Facing(@Nullable Direction dir) {
+            this.dir = dir;
+        }
+
+        @Override
+        public @NotNull String getSerializedName() {
+            return name().toLowerCase(Locale.ROOT);
+        }
     }
 }

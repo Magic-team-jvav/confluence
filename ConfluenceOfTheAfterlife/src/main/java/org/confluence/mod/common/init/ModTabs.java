@@ -5,6 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
@@ -14,6 +15,9 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public final class ModTabs {
@@ -45,11 +49,13 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.PRECIOUS_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.misc"))
                     .displayItems((parameters, output) -> {
-                        ModItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        ConsumableItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        BaitItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        QuestedFishes.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        CrateBlocks.BLOCKS.getEntries().forEach(item -> output.accept(item.get()));
+                        Consumer<Supplier<? extends ItemLike>> action = item -> output.accept(item.get());
+                        ModItems.ITEMS.getEntries().forEach(action);
+                        ConsumableItems.ITEMS.getEntries().forEach(action);
+                        BaitItems.ITEMS.getEntries().forEach(action);
+                        QuestedFishes.ITEMS.getEntries().forEach(action);
+                        CrateBlocks.BLOCKS.getEntries().forEach(action);
+                        PaintItems.ITEMS.getEntries().forEach(action);
                     }).build()
     );
     // 材料

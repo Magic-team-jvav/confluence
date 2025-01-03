@@ -251,8 +251,7 @@ public final class ModClientEvents {
                 ResourceLocation key = entry.getKey();
                 if (!key.getPath().endsWith(".gray")) {
                     ResourceLocation gray = key.withSuffix(".gray");
-                    TextureAtlasSprite target = atlas.getSprite(gray);
-                    GraySpriteShifterEntry.ALL.put(key, new GraySpriteShifterEntry(entry.getValue(), target));
+                    GraySpriteShifterEntry.ALL.put(key, new GraySpriteShifterEntry(entry.getValue(), atlas.getSprite(gray)));
                 }
             }
         }

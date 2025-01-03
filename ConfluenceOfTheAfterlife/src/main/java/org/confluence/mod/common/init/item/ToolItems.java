@@ -36,6 +36,4 @@ public class ToolItems {
     public static final Supplier<DemonConch> DEMON_CONCH = ITEMS.register("demon_ocnch", DemonConch::new);
 
     public static final Supplier<FertilizerItem> FERTILIZER = ITEMS.register("fertilizer", FertilizerItem::new);
-
-    public static final Supplier<PaintsBrushItem> PAINTS_BRUSH = ITEMS.register("paints_brush", PaintsBrushItem::new);
 }

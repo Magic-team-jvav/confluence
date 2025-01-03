@@ -16,22 +16,27 @@ import java.util.Map;
 import java.util.Set;
 
 @OnlyIn(Dist.CLIENT)
-public final class LocalData {
-    private static final Hashtable<BlockPos, Object2IntOpenHashMap<Integer>> DATA = new Hashtable<>();
+public final class LocalBrushData {
+    private static final Hashtable<BlockPos, Object2IntOpenHashMap<BrushData.Facing>> DATA = new Hashtable<>();
 
-    public static void putData(BlockPos pos, Integer tint, int color) {
-        Object2IntOpenHashMap<Integer> map = DATA.computeIfAbsent(pos, pos1 -> new Object2IntOpenHashMap<>());
-        map.put(tint, color);
+    public static void putData(BlockPos pos, BrushData.Facing facing, int color) {
+        DATA.computeIfAbsent(pos, pos1 -> new Object2IntOpenHashMap<>()).put(facing, color);
     }
 
-    public static @Nullable Object2IntOpenHashMap<Integer> get(BlockPos pos) {
+    public static @Nullable Object2IntOpenHashMap<BrushData.Facing> get(BlockPos pos) {
         return DATA.get(pos);
     }
 
     public static int getColor(BlockPos pos, Integer tint) {
-        Object2IntOpenHashMap<Integer> map = DATA.get(pos);
+        Object2IntOpenHashMap<BrushData.Facing> map = DATA.get(pos);
         if (map == null) return -1;
-        return map.getOrDefault(tint, 0xFFFFFF);
+        return map.getOrDefault(tint, -1);
+    }
+
+    public static int getColor(BlockPos pos) {
+        Object2IntOpenHashMap<BrushData.Facing> map = DATA.get(pos);
+        if (map == null) return -1;
+        return map.getOrDefault(BrushData.Facing.ALL, -2);
     }
 
     public static boolean hasColor(BlockPos pos) {
@@ -42,9 +47,9 @@ public final class LocalData {
         DATA.remove(pos);
     }
 
-    public static void removeData(BlockPos pos, Integer tint) {
-        Object2IntOpenHashMap<Integer> map = DATA.get(pos);
-        if (map != null) map.removeInt(tint);
+    public static void removeData(BlockPos pos, BrushData.Facing facing) {
+        Object2IntOpenHashMap<BrushData.Facing> map = DATA.get(pos);
+        if (map != null) map.removeInt(facing);
     }
 
     public static void clear() {
@@ -58,13 +63,13 @@ public final class LocalData {
             if (entry.map().isEmpty()) {
                 removeData(pos);
             } else {
-                for (Map.Entry<String, Integer> integerEntry : entry.map().entrySet()) {
-                    int tint = Integer.parseInt(integerEntry.getKey());
+                for (Map.Entry<BrushData.Facing, Integer> integerEntry : entry.map().entrySet()) {
+                    BrushData.Facing facing = integerEntry.getKey();
                     int color = integerEntry.getValue();
                     if (color == -1) {
-                        removeData(pos, tint);
+                        removeData(pos, facing);
                     } else {
-                        putData(pos, tint, color);
+                        putData(pos, facing, color);
                     }
                 }
             }

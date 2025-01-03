@@ -8,7 +8,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.core.BlockPos;
-import org.confluence.mod.client.textures.LocalData;
+import org.confluence.mod.client.textures.LocalBrushData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -16,10 +16,14 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class ModelBlockRendererMixin {
     @WrapOperation(method = "putQuadData", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;putBulkData(Lcom/mojang/blaze3d/vertex/PoseStack$Pose;Lnet/minecraft/client/renderer/block/model/BakedQuad;[FFFFF[IIZ)V"))
     private void putColor(VertexConsumer instance, PoseStack.Pose pose, BakedQuad quad, float[] brightness, float red, float green, float blue, float alpha, int[] lightmap, int packedOverlay, boolean readAlpha, Operation<Void> original, @Local(argsOnly = true) BlockPos pPos) {
-        int color = LocalData.getColor(pPos, quad.getTintIndex());
+        int color = LocalBrushData.getColor(pPos);
         if (color == -1) {
             original.call(instance, pose, quad, brightness, red, green, blue, alpha, lightmap, packedOverlay, readAlpha);
-        } else {
+            return;
+        } else if (color == -2) {
+            color = LocalBrushData.getColor(pPos, quad.getTintIndex());
+        }
+        if (color != -1) {
             float r = (float) (color >> 16 & 255) / 255.0F;
             float g = (float) (color >> 8 & 255) / 255.0F;
             float b = (float) (color & 255) / 255.0F;

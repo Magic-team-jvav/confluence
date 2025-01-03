@@ -67,6 +67,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         customModels.add(createDir(MaterialItems.ITEMS, "materials/", "ingot/", "ore/"));
         customModels.add(createDir(MinecartItems.ITEMS, "minecart/"));
         customModels.add(createDir(ModItems.ITEMS, "misc/"));
+        customModels.add(createDir(PaintItems.ITEMS, "paint/"));
         customModels.add(createDir(PotionItems.ITEMS, "potion/"));
         customModels.add(createDir(QuestedFishes.ITEMS, "quested_fish/"));
         customModels.add(createDir(ToolItems.ITEMS, "tool/"));

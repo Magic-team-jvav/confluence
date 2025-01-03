@@ -29,9 +29,4 @@ public abstract class BlockModelShaperMixin {
             cir.setReturnValue(modelByStateCache.getOrDefault(simulatorBlock.getSimulatedBlock(true), modelManager.getMissingModel()));
         }
     }
-//
-//    @Inject(method = "getBlockModel", at = @At("RETURN"), cancellable = true)
-//    private void wrap(BlockState state, CallbackInfoReturnable<BakedModel> cir) {
-//        cir.setReturnValue(new GrayBlockModelSwapper(cir.getReturnValue()));
-//    }
 }

@@ -1,99 +1,80 @@
 package org.confluence.mod.common.data.saved;
 
-import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.StringRepresentable;
-import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Hashtable;
+import java.util.Locale;
+import java.util.Map;
 
-public record BrushData(List<Entry> colors) {
+public record BrushData(Map<BlockPos, Entry> colors) {
+    public static final Entry EMPTY_ENTRY = new BrushData.Entry(Map.of());
+    public static final Codec<BlockPos> POS_CODEC = Codec.STRING.xmap(str -> {
+        String[] split = str.split(", ");
+        int[] pos = new int[3];
+        for (int i = 0; i < 3; i++) {
+            if (i < split.length) {
+                pos[i] = Integer.parseInt(split[i]);
+            }
+        }
+        return new BlockPos(pos[0], pos[1], pos[2]);
+    }, Vec3i::toShortString);
     public static final MapCodec<BrushData> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Entry.CODEC.listOf().fieldOf("entries").forGetter(BrushData::colors)
-    ).apply(instance, list -> new BrushData(Lists.newArrayList(list))));
+            Codec.unboundedMap(POS_CODEC, Entry.CODEC).fieldOf("entries").forGetter(BrushData::colors)
+    ).apply(instance, map -> new BrushData(new Hashtable<>(map))));
     public static final Codec<BrushData> CODEC = MAP_CODEC.codec();
 
-    public BrushData(IAttachmentHolder ignored) {
-        this(new ArrayList<>());
+    public BrushData(BlockPos pos, Facing facing, int color) {
+        this(Util.make(new Hashtable<>(), map -> {
+            Map<Facing, Integer> map1 = new Hashtable<>();
+            map1.put(facing, color);
+            map.put(pos, new Entry(map1));
+        }));
     }
 
-    public BrushData(BlockPos pos, BrushData.Facing facing, int color) {
-        this(Lists.newArrayList(new BrushData.Entry(pos, new Hashtable<>(Map.of(facing, color)))));
+    public void putEntry(BlockPos pos, Entry entry) {
+        Entry entry1 = colors.get(pos);
+        if (entry1 == null) {
+            colors.put(pos, entry);
+        } else {
+            entry1.map.putAll(entry.map);
+        }
     }
 
-    public boolean putEntry(Entry entry) {
-        boolean put = false;
-        for (Entry color : colors) {
-            if (color.pos.equals(entry.pos)) {
-                color.map.putAll(entry.map);
-                put = true;
+    public void putData(BlockPos pos, BrushData.Facing facing, int color) {
+        colors.computeIfAbsent(pos, pos1 -> new Entry(new Hashtable<>())).map.put(facing, color);
+    }
+
+    public void mergeData(BrushData data) {
+        for (Map.Entry<BlockPos, Entry> entry : data.colors.entrySet()) {
+            BlockPos pos = entry.getKey();
+            if (colors.containsKey(pos)) {
+                colors.get(pos).map.putAll(entry.getValue().map());
+            } else {
+                colors.put(pos, entry.getValue());
             }
         }
-        if (!put) {
-            return colors.add(entry);
-        }
-        return false;
-    }
-
-    public boolean putData(BlockPos pos, BrushData.Facing facing, int color) {
-        boolean put = false;
-        for (Entry entry : colors) {
-            if (entry.pos.equals(pos)) {
-                entry.map.put(facing, color);
-                put = true;
-            }
-        }
-        if (!put) {
-            Hashtable<Facing, Integer> map = new Hashtable<>();
-            map.put(facing, color);
-            return colors.add(new Entry(pos, map));
-        }
-        return false;
-    }
-
-    public boolean mergeData(BrushData data) {
-        boolean merge = false;
-        for (Entry entry : data.colors) {
-            for (Entry color : colors) {
-                if (color.pos.equals(entry.pos)) {
-                    color.map.putAll(entry.map);
-                    merge = true;
-                }
-            }
-        }
-        if (!merge) {
-            return colors.addAll(data.colors);
-        }
-        return true;
     }
 
     public void ensureValid(ServerLevel serverLevel) {
-        colors.removeIf(entry -> serverLevel.isLoaded(entry.pos) && serverLevel.getBlockState(entry.pos).isEmpty());
+        colors.entrySet().removeIf(entry -> serverLevel.isLoaded(entry.getKey()) && serverLevel.getBlockState(entry.getKey()).isEmpty());
     }
 
     public boolean removeEntry(BlockPos pos) {
-        Iterator<Entry> iterator = colors.iterator();
-        while (iterator.hasNext()) {
-            if (iterator.next().pos.equals(pos)) {
-                iterator.remove();
-                return true;
-            }
-        }
-        return false;
+        return colors.remove(pos) != null;
     }
 
-    public record Entry(BlockPos pos, Map<Facing, Integer> map) {
-        public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                BlockPos.CODEC.fieldOf("pos").forGetter(Entry::pos),
-                Codec.unboundedMap(Facing.CODEC, Codec.INT).fieldOf("color").forGetter(Entry::map)
-        ).apply(instance, (pos1, stringIntegerMap) -> new Entry(pos1, new Hashtable<>(stringIntegerMap))));
+    public record Entry(Map<Facing, Integer> map) {
+        public static final Codec<Entry> CODEC = Codec.unboundedMap(Facing.CODEC, Codec.INT).xmap(map -> new Entry(new Hashtable<>(map)), Entry::map);
     }
 
     public enum Facing implements StringRepresentable {
@@ -106,7 +87,7 @@ public record BrushData(List<Entry> colors) {
         EAST(Direction.EAST);
 
         public static final Codec<Facing> CODEC = StringRepresentable.fromEnum(Facing::values);
-        public final Direction dir;
+        public final @Nullable Direction dir;
 
         Facing(@Nullable Direction dir) {
             this.dir = dir;

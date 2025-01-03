@@ -58,12 +58,12 @@ public final class LocalBrushData {
 
     public static void handlePacket(BrushingColorPacketS2C packet) {
         Set<SectionPos> sectionPoses = new HashSet<>();
-        for (BrushData.Entry entry : packet.data().colors()) {
-            BlockPos pos = entry.pos();
-            if (entry.map().isEmpty()) {
+        for (Map.Entry<BlockPos, BrushData.Entry> entry : packet.data().colors().entrySet()) {
+            BlockPos pos = entry.getKey();
+            if (entry.getValue().map().isEmpty()) {
                 removeData(pos);
             } else {
-                for (Map.Entry<BrushData.Facing, Integer> integerEntry : entry.map().entrySet()) {
+                for (Map.Entry<BrushData.Facing, Integer> integerEntry : entry.getValue().map().entrySet()) {
                     BrushData.Facing facing = integerEntry.getKey();
                     int color = integerEntry.getValue();
                     if (color == -1) {

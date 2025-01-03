@@ -17,8 +17,7 @@ import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Hashtable;
 import java.util.Map;
 
 public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayload {
@@ -61,8 +60,8 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
         PacketDistributor.sendToPlayersTrackingChunk(level, chunkPos, new BrushingColorPacketS2C(data));
     }
 
-    public static void sendToPlayersTrackingChunk(ServerLevel level, ChunkPos chunkPos, BlockPos pos, BrushData.Facing facing, int color, boolean save) {
-        sendToPlayersTrackingChunk(level, chunkPos, new BrushData(pos, facing, color), save);
+    public static void sendToPlayersTrackingChunk(ServerLevel level, BlockPos pos, BrushData.Facing facing, int color, boolean save) {
+        sendToPlayersTrackingChunk(level, new ChunkPos(pos), new BrushData(pos, facing, color), save);
     }
 
     public static void remove(ServerLevel level, BlockPos pos) {
@@ -70,14 +69,14 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
             BrushData brushData = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap().get(new ChunkPos(pos));
             if (brushData != null) {
                 brushData.removeEntry(pos);
-                PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(new BrushData(Collections.singletonList(new BrushData.Entry(pos, Map.of())))));
+                PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(new BrushData(Map.of(pos, BrushData.EMPTY_ENTRY))));
             }
         }
     }
 
     private static void saveData(ServerLevel level, ChunkPos chunkPos, BrushData data) {
         level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap()
-                .computeIfAbsent(chunkPos, pos -> new BrushData(new ArrayList<>()))
+                .computeIfAbsent(chunkPos, pos -> new BrushData(new Hashtable<>()))
                 .mergeData(data);
     }
 }

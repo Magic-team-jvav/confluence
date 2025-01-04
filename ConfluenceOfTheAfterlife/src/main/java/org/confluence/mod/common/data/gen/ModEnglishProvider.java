@@ -195,6 +195,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("painting.confluence.chromatic.title", "CHROMATIC");
         add("painting.confluence.chromatic.author", "BiliBili_陌林_Chromatic");
 
+        add("painting.confluence.confluence.title", "CONFLUENCE");
+        add("painting.confluence.confluence.author", "汇流来世");
+        add("painting.confluence.the_twilight_of_dawn.title", "The Twilight Of Dawn");
+        add("painting.confluence.the_twilight_of_dawn.author", "The converging journey has reached a fork, and the moment to face powerful foes will inevitably arrive.");
+
         // new
         add("achievements.toast.complete", "Achievement achieved!");
         add("achievements.confluence.new_world.title", "Old World, New Journey!");

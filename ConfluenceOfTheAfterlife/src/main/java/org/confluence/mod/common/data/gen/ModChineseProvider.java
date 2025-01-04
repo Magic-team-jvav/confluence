@@ -186,6 +186,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("painting.confluence.chromatic.title", "CHROMATIC");
         add("painting.confluence.chromatic.author", "BiliBili_陌林_Chromatic");
 
+        add("painting.confluence.confluence.title", "CONFLUENCE");
+        add("painting.confluence.confluence.author", "汇流来世");
+        add("painting.confluence.the_twilight_of_dawn.title", "The Twilight Of Dawn");
+        add("painting.confluence.the_twilight_of_dawn.author", "汇聚的旅程走到了分岔口，迎接强敌的时刻终将来临。");
+
         // new
         add("achievements.toast.complete", "成就达成！");
         add("achievements.confluence.new_world.title", "旧的世界，新的旅途！");

@@ -60,7 +60,7 @@ public abstract class ClientLevelMixin implements LevelReader, SelfGetter<Client
                 WeatherHandler.handleBlock(self(), confluence$random, blockstate, blockPos, confluence$blockParticles);
             }
         }
-        if (r != -1 && !fluidstate.isEmpty()) {
+        if (confluence$fluidParticles != null && !fluidstate.isEmpty()) {
             if (r == 0 || confluence$random.nextInt(i1) == 0) {
                 WeatherHandler.handleFluid(self(), confluence$random, fluidstate, blockPos, confluence$fluidParticles);
             }

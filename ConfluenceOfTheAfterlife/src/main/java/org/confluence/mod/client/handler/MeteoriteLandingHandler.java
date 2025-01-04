@@ -17,7 +17,7 @@ import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
 import org.joml.Matrix4f;
 
 public final class MeteoriteLandingHandler {
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/painting/magic_harp.png");
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/environment/falling_meteorite.png");
     private static final float RADIUS = 5.0F;
     private static Vec3 location = null;
     private static int tickUntilLanding = 0;

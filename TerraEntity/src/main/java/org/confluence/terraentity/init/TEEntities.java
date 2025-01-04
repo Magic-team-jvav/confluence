@@ -168,8 +168,8 @@ public final class TEEntities {
         // boss
         event.registerEntityRenderer(KING_SLIME.get(), KingSlimeRenderer::new);
         event.registerEntityRenderer(CTHULHU_EYE.get(), c->new GeoBossRenderer<>(c,new GeoBossModel<>("eye_of_cthulhu")));
-        event.registerEntityRenderer(EATER_OF_WORLD_SEGMENT.get(), EaterOfWorldSegmentRenderer::new);
-        event.registerEntityRenderer(EATER_OF_WORLD.get(), c->new GeoBossRenderer<>(c,new GeoBossModel<>("eater_of_world")));
+        event.registerEntityRenderer(EATER_OF_WORLD_SEGMENT.get(), c-> new EaterOfWorldSegmentRenderer(c,2f));
+        event.registerEntityRenderer(EATER_OF_WORLD.get(), c->new GeoBossRenderer<>(c,new GeoBossModel<>("eater_of_world"),2f));
 
 
 

@@ -15,13 +15,19 @@ import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class GeoBossRenderer<T extends AbstractTerraBossBase, M extends GeoBossModel<T>> extends GeoEntityRenderer<T> {
+    float scale;
     public GeoBossRenderer(EntityRendererProvider.Context renderManager, M model) {
+        this(renderManager, model, 1.0f);
+    }
+
+    public GeoBossRenderer(EntityRendererProvider.Context renderManager, M model, float scale) {
         super(renderManager, model);
+        this.scale = scale;
     }
 
     @Override
     public void preRender(PoseStack poseStack, T entity, BakedGeoModel model, @org.jetbrains.annotations.Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
-
+        poseStack.scale(scale, scale, scale);
         float yRot = Mth.lerp(partialTick, entity.yBodyRotO, entity.yBodyRot);
         double rad = yRot*Math.PI/180;
         float xRot = Mth.lerp(partialTick, entity.xRotO, entity.getXRot());

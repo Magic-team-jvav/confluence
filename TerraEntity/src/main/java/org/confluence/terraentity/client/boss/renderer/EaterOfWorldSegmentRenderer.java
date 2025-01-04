@@ -8,8 +8,8 @@ import software.bernie.geckolib.model.GeoModel;
 
 public class EaterOfWorldSegmentRenderer extends GeoBossRenderer<EaterOfWorldSegment, GeoBossModel<EaterOfWorldSegment>> {
     static GeoBossModel<EaterOfWorldSegment> tailModel = new GeoBossModel<>("eater_of_world_tail");
-    public EaterOfWorldSegmentRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new GeoBossModel<>("eater_of_world_segment"));
+    public EaterOfWorldSegmentRenderer(EntityRendererProvider.Context renderManager,float scale) {
+        super(renderManager, new GeoBossModel<>("eater_of_world_segment"), scale);
     }
 
     public GeoModel<EaterOfWorldSegment> getGeoModel() {

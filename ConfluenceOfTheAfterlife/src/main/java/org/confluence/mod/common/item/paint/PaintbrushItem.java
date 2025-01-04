@@ -4,7 +4,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
-import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,12 +17,7 @@ public class PaintbrushItem extends Item {
         if (pContext.getPlayer() instanceof ServerPlayer serverPlayer) {
             int color = PaintItem.getColor(pContext.getPlayer());
             if (color != -1) {
-                BrushingColorPacketS2C.sendToPlayersTrackingChunk(
-                        serverPlayer.serverLevel(),
-                        pContext.getClickedPos(),
-                        BrushData.Facing.ALL,
-                        color, true
-                );
+                BrushingColorPacketS2C.sendToPlayersTrackingChunk(serverPlayer.serverLevel(), pContext.getClickedPos(), null, color, true);
             }
         }
         return InteractionResult.SUCCESS;

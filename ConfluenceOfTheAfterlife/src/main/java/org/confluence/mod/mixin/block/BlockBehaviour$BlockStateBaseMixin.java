@@ -45,11 +45,7 @@ public abstract class BlockBehaviour$BlockStateBaseMixin {
         if (!level.isClientSide && getBlock() != newState.getBlock() && level instanceof ServerLevel serverLevel) {
             Map<ChunkPos, BrushData> dataMap = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap();
             if (!dataMap.isEmpty()) {
-                BrushData data = dataMap.get(new ChunkPos(pos));
-                boolean removed = data != null && data.removeEntry(pos);
-                if (removed) {
-                    BrushingColorPacketS2C.remove(serverLevel, pos);
-                }
+                BrushingColorPacketS2C.remove(serverLevel, pos);
             }
         }
     }

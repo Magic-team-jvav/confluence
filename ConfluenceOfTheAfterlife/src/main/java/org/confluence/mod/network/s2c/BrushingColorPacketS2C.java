@@ -1,6 +1,8 @@
 package org.confluence.mod.network.s2c;
 
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
@@ -15,7 +17,9 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.textures.LocalBrushData;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Hashtable;
 import java.util.Map;
@@ -25,14 +29,43 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
     public static final StreamCodec<RegistryFriendlyByteBuf, BrushingColorPacketS2C> STREAM_CODEC = new StreamCodec<>() {
         @Override
         public @NotNull BrushingColorPacketS2C decode(RegistryFriendlyByteBuf buffer) {
-            return new BrushingColorPacketS2C(buffer.readJsonWithCodec(BrushData.CODEC));
+            int size = buffer.readInt();
+            Map<BlockPos, IntArrayList> map = new Hashtable<>();
+            for (int i = 0; i < size; i++) {
+                IntArrayList list = map.computeIfAbsent(buffer.readBlockPos(), BrushData.COMPUTE);
+                byte face = buffer.readByte();
+                for (int l = 0; l < 6; l++) {
+                    int m = 1 << l;
+                    if ((face & m) == m) {
+                        list.set(ModUtils.DIRECTIONS[l].get3DDataValue(), buffer.readInt());
+                    }
+                }
+            }
+            return new BrushingColorPacketS2C(new BrushData(map));
         }
 
         @Override
         public void encode(RegistryFriendlyByteBuf buffer, BrushingColorPacketS2C value) {
-            buffer.writeJsonWithCodec(BrushData.CODEC, value.data);
+            Map<BlockPos, IntArrayList> map = value.data.colors();
+            buffer.writeInt(map.size());
+            for (Map.Entry<BlockPos, IntArrayList> entry : map.entrySet()) {
+                buffer.writeLong(entry.getKey().asLong());
+                IntArrayList color = entry.getValue();
+                byte face = 0;
+                IntArrayList list = new IntArrayList();
+                for (int i = 0; i < 6; i++) {
+                    int c = color.getInt(i);
+                    if (c != -1) {
+                        face |= (byte) (1 << i);
+                        list.add(c);
+                    }
+                }
+                buffer.writeByte(face);
+                for (int c : list) buffer.writeInt(c);
+            }
         }
     };
+    private static final IntArrayList CLEAR_COLOR = BrushData.createColor(-2);
 
     @Override
     public @NotNull Type<BrushingColorPacketS2C> type() {
@@ -60,19 +93,16 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
         PacketDistributor.sendToPlayersTrackingChunk(level, chunkPos, new BrushingColorPacketS2C(data));
     }
 
-    public static void sendToPlayersTrackingChunk(ServerLevel level, BlockPos pos, BrushData.Facing facing, int color, boolean save) {
+    public static void sendToPlayersTrackingChunk(ServerLevel level, BlockPos pos, @Nullable Direction facing, int color, boolean save) {
         sendToPlayersTrackingChunk(level, new ChunkPos(pos), new BrushData(pos, facing, color), save);
     }
 
-    public static void remove(ServerLevel level, BlockPos pos, BrushData.Facing facing) {
+    public static void remove(ServerLevel level, BlockPos pos, Direction facing) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
             BrushData brushData = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap().get(new ChunkPos(pos));
             if (brushData != null) {
-                BrushData.Entry entry = brushData.colors().get(pos);
-                if (entry != null) {
-                    entry.map().remove(facing);
-                    PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(new BrushData(pos, facing, -1)));
-                }
+                brushData.remove(pos, facing);
+                PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(new BrushData(pos, facing, -2)));
             }
         }
     }
@@ -81,8 +111,8 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
         if (ServerLifecycleHooks.getCurrentServer() != null) {
             BrushData brushData = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap().get(new ChunkPos(pos));
             if (brushData != null) {
-                brushData.removeEntry(pos);
-                PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(new BrushData(Map.of(pos, BrushData.EMPTY_ENTRY))));
+                brushData.remove(pos);
+                PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(new BrushData(Map.of(pos, CLEAR_COLOR))));
             }
         }
     }
@@ -90,6 +120,6 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
     private static void saveData(ServerLevel level, ChunkPos chunkPos, BrushData data) {
         level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap()
                 .computeIfAbsent(chunkPos, pos -> new BrushData(new Hashtable<>()))
-                .mergeData(data);
+                .merge(data);
     }
 }

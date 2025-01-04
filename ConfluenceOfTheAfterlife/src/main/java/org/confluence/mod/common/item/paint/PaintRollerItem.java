@@ -7,7 +7,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
-import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,11 +23,7 @@ public class PaintRollerItem extends Item {
             Direction clickedFace = pContext.getClickedFace();
             int color = PaintItem.getColor(pContext.getPlayer());
             if (color != -1) {
-                BrushingColorPacketS2C.sendToPlayersTrackingChunk(
-                        serverLevel, clickedPos,
-                        BrushData.Facing.fromDirection(clickedFace),
-                        color, true
-                );
+                BrushingColorPacketS2C.sendToPlayersTrackingChunk(serverLevel, clickedPos, clickedFace, color, true);
             }
         }
         return InteractionResult.SUCCESS;

@@ -9,7 +9,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
-import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +25,7 @@ public class PaintScraperItem extends Item {
             ServerLevel serverLevel = serverPlayer.serverLevel();
             BlockPos clickedPos = pContext.getClickedPos();
             if (serverPlayer.isCrouching()) {
-                BrushingColorPacketS2C.remove(serverLevel, clickedPos, BrushData.Facing.fromDirection(pContext.getClickedFace()));
+                BrushingColorPacketS2C.remove(serverLevel, clickedPos, pContext.getClickedFace());
             } else {
                 BrushingColorPacketS2C.remove(serverLevel, clickedPos);
             }

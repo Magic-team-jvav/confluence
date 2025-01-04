@@ -1,5 +1,6 @@
 package org.confluence.mod.client.textures;
 
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -7,7 +8,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
@@ -21,14 +21,14 @@ import java.util.Set;
 public final class LocalBrushData {
     private static final Hashtable<BlockPos, Object2IntOpenHashMap<Direction>> DATA = new Hashtable<>();
 
-    public static void putData(BlockPos pos, BrushData.Facing facing, int color) {
+    public static void putData(BlockPos pos, Direction facing, int color) {
         Object2IntOpenHashMap<Direction> map = DATA.computeIfAbsent(pos, pos1 -> new Object2IntOpenHashMap<>());
-        if (facing == BrushData.Facing.ALL) {
+        if (facing == null) {
             for (Direction dir : ModUtils.DIRECTIONS) {
                 map.put(dir, color);
             }
         } else {
-            map.put(facing.dir, color);
+            map.put(facing, color);
         }
     }
 
@@ -50,16 +50,17 @@ public final class LocalBrushData {
         DATA.remove(pos);
     }
 
-    public static void removeData(BlockPos pos, BrushData.Facing facing) {
+    public static void removeData(BlockPos pos, Direction facing) {
         Object2IntOpenHashMap<Direction> map = DATA.get(pos);
         if (map == null) return;
-        if (facing == BrushData.Facing.ALL) {
+        if (facing == null) {
             for (Direction dir : ModUtils.DIRECTIONS) {
                 map.removeInt(dir);
             }
         } else {
-            map.removeInt(facing.dir);
+            map.removeInt(facing);
         }
+        if (map.isEmpty()) DATA.remove(pos);
     }
 
     public static void clear() {
@@ -68,17 +69,18 @@ public final class LocalBrushData {
 
     public static void handlePacket(BrushingColorPacketS2C packet) {
         Set<SectionPos> sectionPoses = new HashSet<>();
-        for (Map.Entry<BlockPos, BrushData.Entry> entry : packet.data().colors().entrySet()) {
+        for (Map.Entry<BlockPos, IntArrayList> entry : packet.data().colors().entrySet()) {
             BlockPos pos = entry.getKey();
-            if (entry.getValue().map().isEmpty()) {
+            if (entry.getValue().isEmpty()) {
                 removeData(pos);
             } else {
-                for (Map.Entry<BrushData.Facing, Integer> integerEntry : entry.getValue().map().entrySet()) {
-                    BrushData.Facing facing = integerEntry.getKey();
-                    int color = integerEntry.getValue();
-                    if (color == -1) {
+                IntArrayList colors = entry.getValue();
+                for (int i = 0; i < 6; i++) {
+                    int color = colors.getInt(i);
+                    Direction facing = Direction.from3DDataValue(i);
+                    if (color == -2) {
                         removeData(pos, facing);
-                    } else {
+                    } else if (color != -1) {
                         putData(pos, facing, color);
                     }
                 }

@@ -7,7 +7,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
@@ -24,11 +23,7 @@ public abstract class BlockMixin {
         if (!level.isClientSide && placer instanceof ServerPlayer serverPlayer && TCUtils.hasAccessoriesType(serverPlayer, AccessoryItems.PAINT$SPRAYER)) {
             int color = PaintItem.getColor(serverPlayer);
             if (color != -1) {
-                BrushingColorPacketS2C.sendToPlayersTrackingChunk(
-                        serverPlayer.serverLevel(), pos,
-                        BrushData.Facing.ALL,
-                        color, true
-                );
+                BrushingColorPacketS2C.sendToPlayersTrackingChunk(serverPlayer.serverLevel(), pos, null, color, true);
             }
         }
     }

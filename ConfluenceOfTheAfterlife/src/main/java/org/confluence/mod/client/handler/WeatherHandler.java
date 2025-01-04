@@ -27,7 +27,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.fluids.FluidType;
-import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
@@ -47,16 +46,13 @@ public final class WeatherHandler {
     public static String windSpeedInfo = "0.00";
 
     public static void handleBlock(ClientLevel level, RandomSource random, BlockState blockState, BlockPos.MutableBlockPos blockPos, Map<Block, Context> data) {
-        if (ClientConfigs.showWindParticles) {
             Context context = data.get(blockState.getBlock());
             if (context != null && context.facing.isAvailable(level, random, blockPos, blockState, context)) {
                 context.facing.apply(level, random, blockPos, blockState, context);
             }
-        }
     }
 
     public static void handleFluid(ClientLevel level, RandomSource random, FluidState fluidState, BlockPos.MutableBlockPos blockPos, Map<FluidType, ParticleOptions> data) {
-        if (!ClientConfigs.showWindParticles) return;
         ParticleOptions particleOptions = data.get(fluidState.getType().getFluidType());
         if (particleOptions == null) return;
 
@@ -108,7 +104,7 @@ public final class WeatherHandler {
         map.put(Blocks.MANGROVE_LEAVES, new Context(Facing.HORIZONTAL, ModParticleTypes.LEAVES.get(), Context.FULL));
         map.put(Blocks.AZALEA_LEAVES, new Context(Facing.HORIZONTAL, ModParticleTypes.LEAVES.get(), Context.FULL));
         map.put(Blocks.FLOWERING_AZALEA_LEAVES, new Context(Facing.HORIZONTAL, ModParticleTypes.LEAVES.get(), Context.FULL));
-        map.put(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get(), new Context(Facing.HORIZONTAL, ModParticleTypes.LEAVES.get(), Context.FULL));
+        map.put(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get(), new Context(Facing.HORIZONTAL, ModParticleTypes.YELLOW_WILLOW.get(), Context.FULL));
     }
 
     public static void sandParticles(Map<Block, Context> map) {

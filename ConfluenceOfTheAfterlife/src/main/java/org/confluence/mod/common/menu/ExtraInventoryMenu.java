@@ -24,6 +24,7 @@ import static org.confluence.mod.common.attachment.ExtraInventory.*;
 public class ExtraInventoryMenu extends AbstractContainerMenu {
     private final ExtraInventory extraInventory;
     private final int invStart;
+    private final int hotBar;
     private final int invEnd;
 
     public ExtraInventoryMenu(int containerId, Inventory inventory) {
@@ -94,10 +95,11 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                 addSlot(new Slot(inventory, l + k * 9 + 9, 8 + l * 18, 84 + k * 18));
             }
         }
+        this.hotBar = invStart + 27;
         for (int m = 0; m < 9; m++) {
             addSlot(new Slot(inventory, m, 8 + m * 18, 142));
         }
-        this.invEnd = count + 36;
+        this.invEnd = hotBar + 9;
     }
 
     private @NotNull ToggleSlot getDyeSlot(int i) {
@@ -139,7 +141,6 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                     return ItemStack.EMPTY;
                 }
             } else if (!moveItemStackTo(itemstack1, 0, invStart, false)) {
-                int hotBar = invEnd - 9;
                 if (index < hotBar) {
                     if (!moveItemStackTo(itemstack1, hotBar, invEnd, false)) {
                         return ItemStack.EMPTY;

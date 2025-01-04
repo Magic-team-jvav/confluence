@@ -1,20 +1,29 @@
 package org.confluence.mod.common.block.natural.spreadable;
 
+import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.Property;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
+import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 
 import static net.minecraft.world.level.block.Blocks.*;
@@ -48,18 +57,89 @@ public interface ISpreadable {
                 targetBlock = getType().blockMap.get(above.getBlock());
                 serverLevel.setBlockAndUpdate(targetPos.above(), targetBlock == null ? above : targetBlock.defaultBlockState());
             }
-
         }
     }
 
-    static boolean isFullBlock(ServerLevel serverLevel, BlockPos pos) {
+    default boolean isFullBlock(ServerLevel serverLevel, BlockPos pos) {
         return Block.isShapeFullBlock(serverLevel.getBlockState(pos).getCollisionShape(serverLevel, pos));
     }
 
-    static void spreadOrDie(int phase, BlockState selfState, ServerLevel serverLevel, BlockPos selfPos, RandomSource randomSource, BlockState targetState, BlockPos targetPos) {
+    default void spreadOrDie(int phase, BlockState selfState, ServerLevel serverLevel, BlockPos selfPos, RandomSource randomSource, BlockState targetState, BlockPos targetPos) {
+        spreadTree(serverLevel, targetPos, getType().blockMap);
         serverLevel.setBlockAndUpdate(targetPos, targetState);
         if (randomSource.nextInt(7) > phase) {
             serverLevel.setBlockAndUpdate(selfPos, selfState.setValue(STILL_ALIVE, false));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    static <T extends Comparable<T>, V extends T> void spreadTree(ServerLevel serverLevel, BlockPos targetPos, Map<Block, Block> type) {
+        BlockState blockState = serverLevel.getBlockState(targetPos.above());
+        if (blockState.is(BlockTags.LOGS) || blockState.is(BlockTags.LEAVES)) {
+            Map<BlockPos, BlockState> map = searchFace(serverLevel, targetPos, new Hashtable<>(), 0);
+            for (Map.Entry<BlockPos, BlockState> entry : map.entrySet()) {
+                BlockState value = entry.getValue();
+                if (value == AIR) continue;
+                Block block = type.get(value.getBlock());
+                if (block == null) continue;
+                BlockState targetState = block.defaultBlockState();
+                for (Map.Entry<Property<?>, Comparable<?>> entry1 : value.getValues().entrySet()) {
+                    if (targetState.hasProperty(entry1.getKey())) {
+                        targetState = targetState.setValue((Property<T>) entry1.getKey(), (V) entry1.getValue());
+                    }
+                }
+                serverLevel.setBlockAndUpdate(entry.getKey(), targetState);
+            }
+        }
+    }
+
+    Supplier<Set<Block>> PALMS = Suppliers.memoize(() -> {
+        LogBlockSet set = NatureBlocks.PALM_LOG_BLOCKS;
+        return Sets.newHashSet(
+                set.getLog().get(),
+                set.getWood().get(),
+                set.getStrippedLog().get(),
+                set.getStrippedWood().get(),
+                set.getLeaves().get()
+        );
+    });
+    BlockState AIR = Blocks.AIR.defaultBlockState();
+
+    private static Map<BlockPos, BlockState> searchFace(ServerLevel serverLevel, BlockPos targetPos, Map<BlockPos, BlockState> map, int depth) {
+        if (depth == 128) return map;
+        for (Direction direction : ModUtils.DIRECTIONS) {
+            BlockPos relative = targetPos.relative(direction);
+            if (map.containsKey(relative)) continue;
+            BlockState blockState = serverLevel.getBlockState(relative);
+            if (blockState.is(BlockTags.LOGS) || blockState.is(BlockTags.LEAVES)) {
+                map.put(relative, blockState);
+                if (PALMS.get().contains(blockState.getBlock())) {
+                    searchBox(serverLevel, relative, map, depth + 1);
+                } else {
+                    searchFace(serverLevel, relative, map, depth + 1);
+                }
+            } else {
+                map.put(relative, AIR);
+            }
+        }
+        return map;
+    }
+
+    private static void searchBox(ServerLevel serverLevel, BlockPos targetPos, Map<BlockPos, BlockState> map, int depth) {
+        if (depth == 128) return;
+        for (BlockPos relative : BlockPos.betweenClosed(targetPos.offset(-1, -1, -1), targetPos.offset(1, 1, 1))) {
+            if (map.containsKey(relative)) continue;
+            BlockState blockState = serverLevel.getBlockState(relative);
+            if (blockState.is(BlockTags.LOGS) || blockState.is(BlockTags.LEAVES)) {
+                map.put(relative.immutable(), blockState);
+                if (PALMS.get().contains(blockState.getBlock())) {
+                    searchBox(serverLevel, relative, map, depth + 1);
+                } else {
+                    searchFace(serverLevel, relative, map, depth + 1);
+                }
+            } else {
+                map.put(relative.immutable(), AIR);
+            }
         }
     }
 
@@ -206,10 +286,10 @@ public interface ISpreadable {
                 // 植物
                 NatureBlocks.CORRUPT_GRASS, NatureBlocks.HALLOW_GRASS,
                 NatureBlocks.TR_CRIMSON_GRASS, NatureBlocks.HALLOW_GRASS,
-                NatureBlocks.CRIMSON_THORN, getSupplier(AIR),
-                NatureBlocks.CORRUPTION_THORN, getSupplier(AIR),
-                NatureBlocks.JUNGLE_THORN, getSupplier(AIR),
-                NatureBlocks.PLANTERA_THORN, getSupplier(AIR)
+                NatureBlocks.CRIMSON_THORN, getSupplier(Blocks.AIR),
+                NatureBlocks.CORRUPTION_THORN, getSupplier(Blocks.AIR),
+                NatureBlocks.JUNGLE_THORN, getSupplier(Blocks.AIR),
+                NatureBlocks.PLANTERA_THORN, getSupplier(Blocks.AIR)
         ),
 
         CRIMSON(
@@ -440,8 +520,8 @@ public interface ISpreadable {
                 NatureBlocks.TR_CRIMSON_GRASS_BLOCK, getSupplier(GRASS_BLOCK),
                 NatureBlocks.CORRUPT_GRASS_BLOCK, getSupplier(GRASS_BLOCK),
                 NatureBlocks.HALLOW_GRASS_BLOCK, getSupplier(GRASS_BLOCK),
-                NatureBlocks.CRIMSON_THORN, getSupplier(AIR),
-                NatureBlocks.CORRUPTION_THORN, getSupplier(AIR)
+                NatureBlocks.CRIMSON_THORN, getSupplier(Blocks.AIR),
+                NatureBlocks.CORRUPTION_THORN, getSupplier(Blocks.AIR)
         );
 
         private Map<Supplier<? extends Block>, Supplier<? extends Block>> supplierMap;

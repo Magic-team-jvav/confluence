@@ -18,7 +18,7 @@ public class SpreadingGrassBlock extends SpreadingBlock {
     public void randomTick(@NotNull BlockState blockState, @NotNull ServerLevel serverLevel, @NotNull BlockPos blockPos, @NotNull RandomSource randomSource) {
         if (!serverLevel.isAreaLoaded(blockPos, 3)) return;
         BlockPos above = blockPos.above();
-        if (ISpreadable.isFullBlock(serverLevel, above)) {
+        if (isFullBlock(serverLevel, above)) {
             serverLevel.setBlockAndUpdate(blockPos, Blocks.DIRT.defaultBlockState());
         } else {
             ThornBlock thorn = switch (getType()) {

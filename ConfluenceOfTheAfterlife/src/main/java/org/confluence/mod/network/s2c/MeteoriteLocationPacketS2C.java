@@ -11,7 +11,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.handler.MeteoriteLandingHandler;
+import org.confluence.mod.client.handler.MeteorLandingHandler;
 import org.jetbrains.annotations.NotNull;
 
 public record MeteoriteLocationPacketS2C(BlockPos location, int tickUntilLanding) implements CustomPacketPayload {
@@ -31,7 +31,7 @@ public record MeteoriteLocationPacketS2C(BlockPos location, int tickUntilLanding
         context.enqueueWork(() -> {
             Player player = context.player();
             if (player.isLocalPlayer()) {
-                MeteoriteLandingHandler.handlePacket(this, player);
+                MeteorLandingHandler.handlePacket(this, player);
             }
         }).exceptionally(e -> {
             context.disconnect(Component.translatable("neoforge.network.invalid_flow", e.getMessage()));

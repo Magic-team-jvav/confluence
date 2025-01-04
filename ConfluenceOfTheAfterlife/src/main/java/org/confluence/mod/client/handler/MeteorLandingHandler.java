@@ -15,10 +15,12 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 
-public final class MeteoriteLandingHandler {
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/environment/falling_meteorite.png");
+public final class MeteorLandingHandler {
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/environment/meteor.png");
     private static final float RADIUS = 5.0F;
+    private static final Quaternionf ANGLE_45 = Axis.YP.rotation(Mth.HALF_PI * 0.5F);
     private static Vec3 location = null;
     private static int tickUntilLanding = 0;
 
@@ -30,6 +32,8 @@ public final class MeteoriteLandingHandler {
     private static float yawO = Mth.HALF_PI;
     private static Vec3 vector = null;
     private static double distance = 0.0;
+    private static float v0;
+    private static float v1;
 
     public static void handle(Minecraft minecraft, Player player) {
         if (minecraft.isPaused()) return;
@@ -38,6 +42,8 @@ public final class MeteoriteLandingHandler {
             yawO = yaw;
             calculate(player);
             tickUntilLanding--;
+            v0 = 0.25F * ((tickUntilLanding >> 1) % 4);
+            v1 = v0 + 0.25F;
         } else {
             location = null;
         }
@@ -80,12 +86,12 @@ public final class MeteoriteLandingHandler {
         RenderSystem.enableBlend();
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        Matrix4f matrix4f = poseStack.last().pose();
+        Matrix4f matrix4f = poseStack.last().pose().rotate(ANGLE_45);
         BufferBuilder bufferBuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-        bufferBuilder.addVertex(matrix4f, -RADIUS, 100, -RADIUS).setUv(0.0F, 1.0F).setColor(1.0F, 1.0F, 1.0F, alpha);
-        bufferBuilder.addVertex(matrix4f, RADIUS, 100, -RADIUS).setUv(1.0F, 1.0F).setColor(1.0F, 1.0F, 1.0F, alpha);
-        bufferBuilder.addVertex(matrix4f, RADIUS, 100, RADIUS).setUv(1.0F, 0.0F).setColor(1.0F, 1.0F, 1.0F, alpha);
-        bufferBuilder.addVertex(matrix4f, -RADIUS, 100, RADIUS).setUv(0.0F, 0.0F).setColor(1.0F, 1.0F, 1.0F, alpha);
+        bufferBuilder.addVertex(matrix4f, -RADIUS, 100, -RADIUS).setUv(0.0F, v1).setColor(1.0F, 1.0F, 1.0F, alpha);
+        bufferBuilder.addVertex(matrix4f, RADIUS, 100, -RADIUS).setUv(1.0F, v1).setColor(1.0F, 1.0F, 1.0F, alpha);
+        bufferBuilder.addVertex(matrix4f, RADIUS, 100, RADIUS).setUv(1.0F, v0).setColor(1.0F, 1.0F, 1.0F, alpha);
+        bufferBuilder.addVertex(matrix4f, -RADIUS, 100, RADIUS).setUv(0.0F, v0).setColor(1.0F, 1.0F, 1.0F, alpha);
         BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
     }
 }

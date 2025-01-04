@@ -25,7 +25,7 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.client.handler.HookThrowingHandler;
-import org.confluence.mod.client.handler.MeteoriteLandingHandler;
+import org.confluence.mod.client.handler.MeteorLandingHandler;
 import org.confluence.mod.client.handler.StarPhaseHandler;
 import org.confluence.mod.client.handler.WeatherHandler;
 import org.confluence.mod.client.textures.LocalBrushData;
@@ -59,7 +59,7 @@ public final class GameClientEvents {
             return;
         }
 
-        MeteoriteLandingHandler.handle(minecraft, player);
+        MeteorLandingHandler.handle(minecraft, player);
         ProjectileStrategy.handle(minecraft, player);
         HookThrowingHandler.handle(player);
     }
@@ -156,7 +156,7 @@ public final class GameClientEvents {
         SpelunkerHelper.renderLevel(event);
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
             StarPhaseHandler.render(event);
-            MeteoriteLandingHandler.render(event);
+            MeteorLandingHandler.render(event);
         }
     }
 

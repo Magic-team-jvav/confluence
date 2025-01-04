@@ -197,14 +197,6 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
             discardTick = 0;
             skills.tick();
         }
-//        if (level().isClientSide) {
-//            skills.index = this.entityData.get(DATA_SKILL_INDEX);
-//            skills.tick = this.entityData.get(DATA_SKILL_TICK);
-//        } else {
-//
-//            this.entityData.set(DATA_SKILL_INDEX, skills.index);
-//            this.entityData.set(DATA_SKILL_TICK, skills.tick);
-//        }
 
         collisionHurt();
 

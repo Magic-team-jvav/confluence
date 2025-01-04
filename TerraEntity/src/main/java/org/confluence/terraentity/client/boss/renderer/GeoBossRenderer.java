@@ -16,13 +16,15 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class GeoBossRenderer<T extends AbstractTerraBossBase, M extends GeoBossModel<T>> extends GeoEntityRenderer<T> {
     float scale;
+    float yOffset;
     public GeoBossRenderer(EntityRendererProvider.Context renderManager, M model) {
-        this(renderManager, model, 1.0f);
+        this(renderManager, model, 1.0f,0);
     }
 
-    public GeoBossRenderer(EntityRendererProvider.Context renderManager, M model, float scale) {
+    public GeoBossRenderer(EntityRendererProvider.Context renderManager, M model, float scale, float yOffset) {
         super(renderManager, model);
         this.scale = scale;
+        this.yOffset = yOffset;
     }
 
     @Override
@@ -32,7 +34,7 @@ public class GeoBossRenderer<T extends AbstractTerraBossBase, M extends GeoBossM
         double rad = yRot*Math.PI/180;
         float xRot = Mth.lerp(partialTick, entity.xRotO, entity.getXRot());
         poseStack.mulPose(Axis.of(new Vector3f((float) Math.cos(rad), 0, (float) Math.sin(rad))).rotationDegrees(xRot));
-        poseStack.translate(0,0.5,0);
+        poseStack.translate(0,yOffset,0);
         super.preRender(poseStack, entity, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
 
     }

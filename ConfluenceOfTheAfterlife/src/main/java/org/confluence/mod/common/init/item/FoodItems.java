@@ -170,7 +170,7 @@ public class FoodItems {
 
     public static DeferredItem<BaseFoodItem> registerNormalFood(String name, FoodProperties foodProperties) {
         return ITEMS.register(name, () -> {
-            BaseFoodItem.Builder builder = BaseFoodItem.builder(name).initialize().food(foodProperties).duration(d -> 10);
+            BaseFoodItem.Builder builder = BaseFoodItem.builder(name).initialize().food(foodProperties).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT);
             return builder.build();
         });
     }

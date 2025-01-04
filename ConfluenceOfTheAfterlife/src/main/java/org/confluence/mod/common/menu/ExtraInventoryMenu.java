@@ -14,18 +14,24 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.terra_curio.TerraCurio;
 import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
+
+import java.util.Optional;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.*;
 
 public class ExtraInventoryMenu extends AbstractContainerMenu {
     private final ExtraInventory extraInventory;
+    private final int invStart;
+    private final int invEnd;
 
     public ExtraInventoryMenu(int containerId, Inventory inventory) {
         super(ModMenuTypes.EXTRA_INVENTORY.get(), containerId);
         Player player = inventory.player;
         this.extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
-        for (int i = 0; i < extraInventory.getContainerSize(); i++) {
+        int count = extraInventory.getContainerSize();
+        for (int i = 0; i < count; i++) {
             if (i < COINS_START) {
                 addSlot(new ToggleSlot(extraInventory, i, 8, i * 18 + 8) { // vanity armor
                     @Override
@@ -71,16 +77,18 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                 addSlot(getDyeSlot(i));
             }
         }
-        CuriosApi.getCuriosInventory(player).ifPresent(handler -> {
-            ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);
+        Optional<ICuriosItemHandler> optional = CuriosApi.getCuriosInventory(player);
+        if (optional.isPresent()) {
+            ICurioStacksHandler accessory = optional.get().getCurios().get(TerraCurio.CURIO_SLOT);
             if (accessory != null) {
                 ToggleCurioSlot.WrappedContainer container = new ToggleCurioSlot.WrappedContainer(accessory);
+                count += accessory.getSlots();
                 for (int j = 0; j < accessory.getSlots(); j++) {
                     addSlot(new ToggleCurioSlot(container, j, -25, j * 18 + 8));
                 }
             }
-        });
-
+        }
+        this.invStart = count;
         for (int k = 0; k < 3; k++) {
             for (int l = 0; l < 9; l++) {
                 addSlot(new Slot(inventory, l + k * 9 + 9, 8 + l * 18, 84 + k * 18));
@@ -89,6 +97,7 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
         for (int m = 0; m < 9; m++) {
             addSlot(new Slot(inventory, m, 8 + m * 18, 142));
         }
+        this.invEnd = count + 36;
     }
 
     private @NotNull ToggleSlot getDyeSlot(int i) {
@@ -120,7 +129,40 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
 
     @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
-        return ItemStack.EMPTY;
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = slots.get(index);
+        if (slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
+            itemstack = itemstack1.copy();
+            if (index < extraInventory.getContainerSize()) {
+                if (!moveItemStackTo(itemstack1, invStart, invEnd, true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!moveItemStackTo(itemstack1, 0, invStart, false)) {
+                int hotBar = invEnd - 9;
+                if (index < hotBar) {
+                    if (!moveItemStackTo(itemstack1, hotBar, invEnd, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (index < invEnd && !moveItemStackTo(itemstack1, 8, hotBar, false)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+
+            if (itemstack1.isEmpty()) {
+                slot.setByPlayer(ItemStack.EMPTY);
+            }
+
+            slot.setChanged();
+            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(player, itemstack1);
+            broadcastChanges();
+        }
+
+        return itemstack;
     }
 
     @Override

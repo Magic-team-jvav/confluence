@@ -100,7 +100,7 @@ public class BaseFoodItem extends Item {
         }
 
         public BaseFoodItem build() {
-            return new BaseFoodItem(initialize().useAnim(u -> UseAnim.EAT));
+            return new BaseFoodItem(initialize());
         }
     }
 }

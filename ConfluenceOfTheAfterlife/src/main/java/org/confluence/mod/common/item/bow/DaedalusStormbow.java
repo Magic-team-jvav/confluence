@@ -36,7 +36,13 @@ public class DaedalusStormbow extends TerraBowItem {
         }
         @Override
         public Projectile getProjectile(Player player,ItemStack weapon) {
-            return createProjectile(player.level(), player, weapon, player.getProjectile(weapon), true);
+            ItemStack itemstack = player.getProjectile(weapon);
+//            if(player.getRandom().nextFloat() < 0.66f)
+                itemstack.shrink(1);
+            Projectile projectile = createProjectile(player.level(), player, weapon, itemstack, true);
+            projectile.setOwner(player);
+
+            return projectile;
         }
         @Override
         public SoundEvent getSound() {
@@ -52,8 +58,16 @@ public class DaedalusStormbow extends TerraBowItem {
         super.onUseTick(level, livingEntity, stack, remainingUseDuration);
         if (!level.isClientSide && livingEntity instanceof Player player && remainingUseDuration % 4 == 0) {
             container.genProjectile(player,stack);
+
         }
     }
 
     protected void shoot(ServerLevel level, LivingEntity shooter, InteractionHand hand, ItemStack weapon, List<ItemStack> projectileItems, float velocity, float inaccuracy, boolean isCrit, @Nullable LivingEntity target) {}
+
+
+//    @Override
+//    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+//        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+//        tooltipComponents.add(Component.literal("miss translation: 33% no consume ammo"));
+//    }
 }

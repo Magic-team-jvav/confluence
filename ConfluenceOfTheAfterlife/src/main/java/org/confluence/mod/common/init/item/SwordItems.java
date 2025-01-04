@@ -14,6 +14,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
+import org.confluence.mod.common.item.sword.LightSaber;
 import org.confluence.mod.common.item.sword.stagedy.EffectStrategy;
 import org.confluence.mod.common.item.sword.stagedy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
@@ -94,6 +95,15 @@ public class SwordItems {
             ModRarity.GREEN,    PROJ_SWORD.apply(STAR_FURY_PROJ));
     public static final DeferredItem<SwordItem> ENCHANTED_SWORD = register("enchanted_sword",ModTiers.TITANIUM, 7, -1.1F,
             ModRarity.ORANGE,   PROJ_SWORD.apply(ENCHANTED_SWORD_PROJ));
+
+    // 光剑
+    public static final DeferredItem<SwordItem> RED_LIGHT_SABER = register("red_light_saber", ()->new LightSaber.Red(ModTiers.TITANIUM, ModRarity.BLUE,10, 3));
+    public static final DeferredItem<SwordItem> ORANGE_LIGHT_SABER = register("orange_light_saber", ()->new LightSaber.Orange(ModTiers.TITANIUM, ModRarity.BLUE,10, 3));
+    public static final DeferredItem<SwordItem> YELLOW_LIGHT_SABER = register("yellow_light_saber", ()->new LightSaber.Yellow(ModTiers.TITANIUM, ModRarity.BLUE,10, 3));
+    public static final DeferredItem<SwordItem> GREEN_LIGHT_SABER = register("green_light_saber", ()->new LightSaber.Green(ModTiers.TITANIUM, ModRarity.BLUE,10, 3));
+    public static final DeferredItem<SwordItem> BLUE_LIGHT_SABER = register("blue_light_saber", ()->new LightSaber.Blue(ModTiers.TITANIUM, ModRarity.BLUE,10, 3));
+    public static final DeferredItem<SwordItem> PURPLE_LIGHT_SABER = register("purple_light_saber", ()->new LightSaber.Purple(ModTiers.TITANIUM, ModRarity.BLUE,10, 3));
+    public static final DeferredItem<SwordItem> WHITE_LIGHT_SABER = register("white_light_saber", ()->new LightSaber.White(ModTiers.TITANIUM, ModRarity.BLUE,10, 3));
 
 
     // 特殊剑

@@ -26,12 +26,12 @@ public class MeteoriteTracker {
             this.tickUntilLanding--;
             if (tickUntilLanding == 0) {
                 ChunkPos chunkPos = new ChunkPos(location);
-                place(level, chunkPos.x, chunkPos.z, !level.getForcedChunks().contains(chunkPos.toLong()));
+                place(level, chunkPos.x, chunkPos.z, !level.getForcedChunks().contains(chunkPos.toLong()), new BlockPos(location));
             }
         }
     }
 
-    private void place(ServerLevel level, int chunkX, int chunkZ, boolean withForceChunk) {
+    private void place(ServerLevel level, int chunkX, int chunkZ, boolean withForceChunk, BlockPos origin) {
         CompletableFuture.supplyAsync(() -> {
             boolean placed = false;
             if (withForceChunk) {
@@ -39,7 +39,7 @@ public class MeteoriteTracker {
                     level.setChunkForced(chunkX, chunkZ, true);
                     level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE)
                             .getHolder(Confluence.asResource("normal_meteorite")).orElseThrow().value()
-                            .place(level, level.getChunkSource().getGenerator(), level.random, location);
+                            .place(level, level.getChunkSource().getGenerator(), level.random, origin);
                     level.setChunkForced(chunkX, chunkZ, false);
                 } catch (Exception ignored) {}
             }

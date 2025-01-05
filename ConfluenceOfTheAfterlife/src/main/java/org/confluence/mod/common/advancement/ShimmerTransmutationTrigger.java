@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 public class ShimmerTransmutationTrigger extends SimpleCriterionTrigger<ShimmerTransmutationTrigger.TriggerInstance> {
-    public void trigger(ServerPlayer pPlayer, Entity entity) { // todo invoke
+    public void trigger(ServerPlayer pPlayer, Entity entity) {
         trigger(pPlayer, instance -> instance.matches(pPlayer, entity));
     }
 

@@ -1,5 +1,7 @@
 package org.confluence.mod.util;
 
+import com.xiaohunao.heaven_destiny_moment.common.moment.MomentManager;
+import com.xiaohunao.terra_moment.common.init.TMMoments;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -103,7 +105,9 @@ public final class PlayerUtils {
             case 4 -> 0.9F; // 新月
             default -> 1.0F;
         };
-        // todo 血月加成
+        if (MomentManager.of(level).hasMoment(TMMoments.BLOOD_MOON)) {
+            base *= 1.1F;
+        }
         return base + player.getLuck();
     }
 

@@ -78,9 +78,6 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add("key.confluence.hook", "Throwing Hook");
 
-        add("curios.identifier.hook", "Hook");
-        add("curios.identifier.minecart", "Minecart");
-
         add("death.attack.falling_star", "%1$s got a response from a meteor");
         add("death.attack.boulder", "%1$s  is crushed by boulder");
         add("death.attack.thron", "%1$s  discovered that he had become a hedgehog.");
@@ -155,6 +152,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.papyrus_scarab.0", "Increases minion limit by 1, increases summoner damage by 15%, increases minion knockback");
         add("tooltip.item.confluence.pygmy_necklace.0", "Increases minion limit by 1");
         add("tooltip.item.confluence.fledgling_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.chromatic_cloak.0", "Immunity to Shimmer Phasing.Hold Down to Phase while submerged in Shimmer");
 
         add("painting.confluence.magic_harp.title", "MAGIC_HARP");
         add("painting.confluence.magic_harp.author", "BiliBili_魔法竖琴waaa，看上去傻傻的...");
@@ -196,6 +194,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("painting.confluence.emerald_shenyi.author", "BiliBili_Emerald_审翼");
         add("painting.confluence.chromatic.title", "CHROMATIC");
         add("painting.confluence.chromatic.author", "BiliBili_陌林_Chromatic");
+
+        add("painting.confluence.confluence.title", "CONFLUENCE");
+        add("painting.confluence.confluence.author", "汇流来世");
+        add("painting.confluence.the_twilight_of_dawn.title", "The Twilight Of Dawn");
+        add("painting.confluence.the_twilight_of_dawn.author", "The converging journey has reached a fork, and the moment to face powerful foes will inevitably arrive.");
 
         // new
         add("achievements.toast.complete", "Achievement achieved!");
@@ -395,7 +398,7 @@ public class ModEnglishProvider extends LanguageProvider {
         BoomerangItems.ITEMS.getEntries().forEach(itemAction);
         BowItems.ITEMS.getEntries().forEach(itemAction);
         ConsumableItems.ITEMS.getEntries().forEach(itemAction);
-        CosmeticItems.ITEMS.getEntries().forEach(itemAction);
+        VanityArmorItems.ITEMS.getEntries().forEach(itemAction);
         DrillItems.ITEMS.getEntries().forEach(itemAction);
         FishingPoleItems.ITEMS.getEntries().forEach(itemAction);
         FoodItems.ITEMS.getEntries().forEach(itemAction);

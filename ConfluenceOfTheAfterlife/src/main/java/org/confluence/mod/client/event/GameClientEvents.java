@@ -3,6 +3,11 @@ package org.confluence.mod.client.event;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.ImageButton;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
@@ -17,17 +22,20 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.client.handler.HookThrowingHandler;
-import org.confluence.mod.client.handler.MeteoriteLandingHandler;
+import org.confluence.mod.client.handler.MeteorLandingHandler;
 import org.confluence.mod.client.handler.StarPhaseHandler;
 import org.confluence.mod.client.handler.WeatherHandler;
+import org.confluence.mod.client.textures.LocalBrushData;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.mixed.IMusicManager;
+import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PerformJumpingEvent;
 
@@ -46,9 +54,12 @@ public final class GameClientEvents {
         WeatherHandler.initialize(player);
         IMusicManager.reset(minecraft.getMusicManager()); // 1st
 
-        if (player == null) return;
+        if (player == null) {
+            LocalBrushData.clear();
+            return;
+        }
 
-        MeteoriteLandingHandler.handle(minecraft, player);
+        MeteorLandingHandler.handle(minecraft, player);
         ProjectileStrategy.handle(minecraft, player);
         HookThrowingHandler.handle(player);
     }
@@ -142,9 +153,26 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void renderLevelStage(RenderLevelStageEvent event) {
+        SpelunkerHelper.renderLevel(event);
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
             StarPhaseHandler.render(event);
-            MeteoriteLandingHandler.render(event);
+            MeteorLandingHandler.render(event);
+        }
+    }
+
+    @SubscribeEvent
+    public static void screen$Init$Post(ScreenEvent.Init.Post event) {
+        Screen screen = event.getScreen();
+        if (screen instanceof InventoryScreen || screen instanceof CreativeModeInventoryScreen) {
+            EffectRenderingInventoryScreen<?> screen1 = (EffectRenderingInventoryScreen<?>) screen;
+            event.addListener(new ImageButton(screen1.getGuiLeft() - 16, screen1.getGuiTop() + 44, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
+                Minecraft minecraft = Minecraft.getInstance();
+                LocalPlayer player = minecraft.player;
+                if (player == null) return;
+                ItemStack stack = player.containerMenu.getCarried();
+                player.containerMenu.setCarried(ItemStack.EMPTY);
+                OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.EXTRA_INVENTORY, stack);
+            }));
         }
     }
 }

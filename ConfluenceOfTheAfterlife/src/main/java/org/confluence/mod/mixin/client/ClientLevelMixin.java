@@ -10,8 +10,10 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.fluids.FluidType;
+import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.handler.WeatherHandler;
 import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Final;
@@ -28,7 +30,9 @@ import java.util.Map;
 @Mixin(ClientLevel.class)
 public abstract class ClientLevelMixin implements LevelReader, SelfGetter<ClientLevel> {
     @Unique
-    private Map<Block, ParticleOptions> confluence$blockParticles;
+    private static final RandomSource confluence$random = new LegacyRandomSource(1234567890L);
+    @Unique
+    private Map<Block, WeatherHandler.Context> confluence$blockParticles;
     @Unique
     private Map<FluidType, ParticleOptions> confluence$fluidParticles;
 
@@ -46,17 +50,19 @@ public abstract class ClientLevelMixin implements LevelReader, SelfGetter<Client
 
     @Inject(method = "doAnimateTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;isEmpty()Z"), locals = LocalCapture.CAPTURE_FAILSOFT)
     private void tick(int posX, int posY, int posZ, int range, RandomSource random, Block block, BlockPos.MutableBlockPos blockPos, CallbackInfo ci, int i, int j, int k, BlockState blockstate, FluidState fluidstate) {
-        if (WeatherHandler.windDirection == null) return;
+        int i1 = ClientConfigs.showWindParticles;
+        if (i1 == 0 || WeatherHandler.windDirection == null) return;
+        i1 = 100 - i1;
         int r = -1;
         if (confluence$blockParticles != null) {
-            r = random.nextInt(10);
+            r = i1 == 0 ? 0 : confluence$random.nextInt(i1);
             if (r == 0) {
-                WeatherHandler.handleBlock(self(), random, blockstate, blockPos, confluence$blockParticles);
+                WeatherHandler.handleBlock(self(), confluence$random, blockstate, blockPos, confluence$blockParticles);
             }
         }
         if (confluence$fluidParticles != null && !fluidstate.isEmpty()) {
-            if (r == 0 || random.nextInt(10) == 0) {
-                WeatherHandler.handleFluid(self(), random, fluidstate, blockPos, confluence$fluidParticles);
+            if (r == 0 || confluence$random.nextInt(i1) == 0) {
+                WeatherHandler.handleFluid(self(), confluence$random, fluidstate, blockPos, confluence$fluidParticles);
             }
         }
     }

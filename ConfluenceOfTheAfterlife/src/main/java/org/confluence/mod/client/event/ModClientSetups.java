@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.FogRenderer;
@@ -43,6 +44,7 @@ import java.util.function.Consumer;
 
 @SuppressWarnings("deprecation")
 public final class ModClientSetups {
+    static final WidgetSprites EXTRA_INVENTORY_BUTTON = new WidgetSprites(Confluence.asResource("widget/extra_inventory_button"), Confluence.asResource("widget/extra_inventory_button_highlighted"));
     static final IClientFluidTypeExtensions HONEY_CLIENT_EXTENSIONS = new IClientFluidTypeExtensions() {
         private static final ResourceLocation STILL = Confluence.asResource("block/fluid/honey_still");
         private static final ResourceLocation FLOWING = Confluence.asResource("block/fluid/honey_flowing");
@@ -98,6 +100,7 @@ public final class ModClientSetups {
     static final IClientItemExtensions ALTAR_CLIENT_EXTENSIONS = new IClientItemExtensions() {
         private GeoItemRenderer<AltarBlock.Item> renderer;
 
+        @SuppressWarnings("removal")
         @Override
         public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
             if (renderer == null) {

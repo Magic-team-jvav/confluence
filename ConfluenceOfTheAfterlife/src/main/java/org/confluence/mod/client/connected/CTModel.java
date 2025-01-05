@@ -30,8 +30,7 @@ public class CTModel extends BakedModelWrapperWithData {
 	}
 
 	@Override
-	protected ModelData.Builder gatherModelData(ModelData.Builder builder, BlockAndTintGetter world, BlockPos pos, BlockState state,
-		ModelData blockEntityData) {
+	protected ModelData.Builder gatherModelData(ModelData.Builder builder, BlockAndTintGetter world, BlockPos pos, BlockState state, ModelData blockEntityData) {
 		return builder.with(CT_PROPERTY, createCTData(world, pos, state));
 	}
 

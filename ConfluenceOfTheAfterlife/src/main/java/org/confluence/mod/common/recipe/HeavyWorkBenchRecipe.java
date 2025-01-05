@@ -24,6 +24,10 @@ public class HeavyWorkBenchRecipe extends AbstractAmountRecipe {
         this.pattern = pattern;
     }
 
+    public static HeavyWorkBenchRecipe of(ShapedRecipePattern pattern, ItemStack result) {
+        return new HeavyWorkBenchRecipe(result, pattern);
+    }
+
     @Override
     public boolean canCraftInDimensions(int width, int height) {
         return width >= pattern.width() && height >= pattern.height();

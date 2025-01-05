@@ -7,35 +7,56 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.particle.options.DamageIndicatorOptions;
+import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public final class ModParticleTypes {
     public static final DeferredRegister<ParticleType<?>> TYPES = DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, Confluence.MODID);
 
-    public static final DeferredHolder<ParticleType<?>, ParticleType<DamageIndicatorOptions>> DAMAGE_INDICATOR = register("damage_indicator", true, DamageIndicatorOptions.CODEC, DamageIndicatorOptions.STREAM_CODEC);
+    public static final Supplier<ParticleType<DamageIndicatorOptions>> DAMAGE_INDICATOR = register("damage_indicator", true, DamageIndicatorOptions.CODEC, DamageIndicatorOptions.STREAM_CODEC);
+    public static final Supplier<SimpleParticleType> LEAVES = register("leaves", true);
+    public static final Supplier<SimpleParticleType> RED_SAND = register("red_sand", true);
+    public static final Supplier<SimpleParticleType> SAND = register("sand", true);
+    public static final Supplier<SimpleParticleType> SNOW = register("snow", true);
+    public static final Supplier<SimpleParticleType> YELLOW_WILLOW = register("yellow_willow", true);
 
     // 原版用了Function获取codec，现在自己的用不到，要用了再改
-    private static <T extends ParticleOptions> DeferredHolder<ParticleType<?>, ParticleType<T>> register(String id,boolean overrideLimiter,MapCodec<T> mapCodec, StreamCodec<? super RegistryFriendlyByteBuf, T>streamCodec){
+    private static <T extends ParticleOptions> Supplier<ParticleType<T>> register(String id, boolean overrideLimiter, MapCodec<T> mapCodec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
         return TYPES.register(id, () -> new ParticleType<>(overrideLimiter) {
             @Override
             @NotNull
-            public MapCodec<T> codec(){
+            public MapCodec<T> codec() {
                 return mapCodec;
             }
 
             @Override
             @NotNull
-            public StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec(){
+            public StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec() {
                 return streamCodec;
             }
         });
     }
 
-    private static DeferredHolder<ParticleType<?>, SimpleParticleType> register(String id,boolean overrideLimiter){
+    private static Supplier<SimpleParticleType> register(String id, boolean overrideLimiter) {
         return TYPES.register(id, () -> new SimpleParticleType(overrideLimiter));
+    }
+
+    private static <T extends ParticleOptions> Supplier<ParticleType<T>> register(String name, boolean overrideLimitter, final Function<ParticleType<T>, MapCodec<T>> codecGetter, final Function<ParticleType<T>, StreamCodec<? super RegistryFriendlyByteBuf, T>> streamCodecGetter) {
+        return TYPES.register(name, () -> new ParticleType<T>(overrideLimitter) {
+            @Override
+            public MapCodec<T> codec() {
+                return codecGetter.apply(this);
+            }
+
+            @Override
+            public StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec() {
+                return streamCodecGetter.apply(this);
+            }
+        });
     }
 }

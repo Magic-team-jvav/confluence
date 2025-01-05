@@ -39,9 +39,11 @@ public class EnvironmentLevelAccess implements ContainerLevelAccess {
     public void initializeIfNeeded(Player player) {
         if (level == null) this.level = player.level();
         if (pos == null) {
-            Vec3 eyePosition = player.getEyePosition(0.5F);
+            Vec3 start = player.getEyePosition(0.5F);
             Vec3 lookVector = player.getViewVector(0.5F);
-            ClipContext context = new ClipContext(eyePosition, eyePosition.add(lookVector.scale(4.0)), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, CollisionContext.of(player));
+            double range = Math.max(player.blockInteractionRange(), player.entityInteractionRange());
+            Vec3 end = start.add(lookVector.x * range, lookVector.y * range, lookVector.z * range);
+            ClipContext context = new ClipContext(start, end, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, CollisionContext.of(player));
             BlockHitResult blockResult = player.level().clip(context);
             if (blockResult.getType() == HitResult.Type.BLOCK) {
                 this.pos = blockResult.getBlockPos();

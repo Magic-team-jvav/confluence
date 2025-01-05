@@ -1,0 +1,34 @@
+{
+    "variants": {
+        "facing=east,vertical_two_part=up": {
+            "model": "confluence:block/n1_statue",
+            "y": 90
+        },
+        "facing=north,vertical_two_part=up": {
+            "model": "confluence:block/n1_statue"
+        },
+        "facing=south,vertical_two_part=up": {
+            "model": "confluence:block/n1_statue",
+            "y": 180
+        },
+        "facing=west,vertical_two_part=up": {
+            "model": "confluence:block/n1_statue",
+            "y": 270
+        },
+        "facing=east,vertical_two_part=base": {
+            "model": "confluence:block/statue_base",
+            "y": 90
+        },
+        "facing=north,vertical_two_part=base": {
+            "model": "confluence:block/statue_base"
+        },
+        "facing=south,vertical_two_part=base": {
+            "model": "confluence:block/statue_base",
+            "y": 180
+        },
+        "facing=west,vertical_two_part=base": {
+            "model": "confluence:block/statue_base",
+            "y": 270
+        }
+    }
+}

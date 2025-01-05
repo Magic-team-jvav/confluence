@@ -20,12 +20,14 @@ public class FletchingTableRecipe implements Recipe<FletchingTableRecipe.Input> 
     private final Ingredient tail;
     private final Ingredient body;
     private final Ingredient head;
+    private final NonNullList<Ingredient> ingredients;
 
     protected FletchingTableRecipe(ItemStack pResult, Ingredient tail, Ingredient body, Ingredient head) {
         this.result = pResult;
         this.tail = tail;
         this.body = body;
         this.head = head;
+        this.ingredients = NonNullList.of(Ingredient.EMPTY, tail, body, head);
     }
 
     @Override
@@ -35,7 +37,7 @@ public class FletchingTableRecipe implements Recipe<FletchingTableRecipe.Input> 
 
     @Override
     public @NotNull NonNullList<Ingredient> getIngredients() {
-        return NonNullList.of(tail, body, head);
+        return ingredients;
     }
 
     public Ingredient getTail() {

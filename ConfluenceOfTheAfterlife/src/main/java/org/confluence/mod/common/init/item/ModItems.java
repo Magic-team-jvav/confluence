@@ -55,7 +55,7 @@ public final class ModItems {
         BoomerangItems.ITEMS.register(eventBus);
         BowItems.ITEMS.register(eventBus);
         ConsumableItems.ITEMS.register(eventBus);
-        CosmeticItems.ITEMS.register(eventBus);
+        VanityArmorItems.ITEMS.register(eventBus);
         DrillItems.ITEMS.register(eventBus);
         FishingPoleItems.ITEMS.register(eventBus);
         FoodItems.ITEMS.register(eventBus);
@@ -66,6 +66,7 @@ public final class ModItems {
         MaterialItems.ITEMS.register(eventBus);
         MinecartItems.ITEMS.register(eventBus);
         DeveloperItems.ITEMS.register(eventBus);
+        PaintItems.ITEMS.register(eventBus);
         PickaxeAxeItems.ITEMS.register(eventBus);
         PickaxeItems.ITEMS.register(eventBus);
         PotionItems.ITEMS.register(eventBus);

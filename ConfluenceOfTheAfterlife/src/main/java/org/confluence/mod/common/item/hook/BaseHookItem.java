@@ -5,19 +5,20 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_curio.util.TCUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
-public class BaseHookItem extends Item implements ICurioItem {
+public class BaseHookItem extends Item {
     protected final int amount;
     protected final float range;
     protected final float velocity;
@@ -57,11 +58,14 @@ public class BaseHookItem extends Item implements ICurioItem {
         return type;
     }
 
-    public boolean canHook(ServerLevel level, ItemStack itemStack) {
+    public boolean canHook(ServerLevel level, ExtraInventory extraInventory, ItemStack itemStack) {
         CompoundTag nbt = TCUtils.getItemStackNbt(itemStack);
         ListTag list = nbt.getList("hooks", Tag.TAG_COMPOUND);
         list.removeIf(tag -> getHookEntity(tag, level) == null);
-        TCUtils.updateItemStackNbt(itemStack, tag -> tag.put("hooks", list));
+        TCUtils.updateItemStackNbt(itemStack, tag -> {
+            tag.put("hooks", list);
+            extraInventory.setChanged();
+        });
         if (this instanceof IHookFastThrow) return list.size() <= getHookAmount();
         if (list.isEmpty()) return true;
         return list.stream().allMatch(tag -> {
@@ -70,21 +74,10 @@ public class BaseHookItem extends Item implements ICurioItem {
         });
     }
 
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        return "hook".equals(slotContext.identifier());
-    }
-
-    @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return canEquip(slotContext, stack);
-    }
-
-    @Override
-    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
+    public void onUnequip(ServerPlayer serverPlayer, ItemStack newStack, ItemStack stack) {
         if (ItemStack.isSameItem(newStack, stack)) return;
-        if (slotContext.entity().level() instanceof ServerLevel level && TCUtils.getItemStackNbt(stack).get("hooks") instanceof ListTag list) {
-            removeAll(list, level);
+        if (TCUtils.getItemStackNbt(stack).get("hooks") instanceof ListTag list) {
+            removeAll(list, serverPlayer.serverLevel());
         }
     }
 
@@ -105,7 +98,7 @@ public class BaseHookItem extends Item implements ICurioItem {
     }
 
     @Override
-    public Component getName(ItemStack stack) {
+    public @NotNull Component getName(@NotNull ItemStack stack) {
         return Component.translatable(getDescriptionId()).withStyle(style -> style.withColor(stack.get(TCDataComponentTypes.MOD_RARITY).getColor()));
     }
 

@@ -55,9 +55,6 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("key.confluence.hook", "使用钩爪");
 
-        add("curios.identifier.hook", "钩爪");
-        add("curios.identifier.minecart", "矿车");
-
         add("death.attack.falling_star", "%1$s 得到了流星的回应");
         add("death.attack.boulder", "%1$s 被巨石均匀地涂抹在地上");
         add("death.attack.thron", "%1$s 发现自己成了刺猬");
@@ -133,6 +130,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.papyrus_scarab.0", "仆从数量上限增加1，召唤伤害提高15%、提高仆从的击退力");
         add("tooltip.item.confluence.pygmy_necklace.0", "仆从数量上限增加1");
         add("tooltip.item.confluence.fledgling_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.chromatic_cloak.0", "对微光相位化免疫，当淹没在微光中时按住向下键可以相位化");
 
         add("biome.confluence.the_corruption", "腐化之地");
         add("biome.confluence.the_corruption_desert", "腐化沙漠");
@@ -187,6 +185,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("painting.confluence.emerald_shenyi.author", "BiliBili_Emerald_审翼");
         add("painting.confluence.chromatic.title", "CHROMATIC");
         add("painting.confluence.chromatic.author", "BiliBili_陌林_Chromatic");
+
+        add("painting.confluence.confluence.title", "CONFLUENCE");
+        add("painting.confluence.confluence.author", "汇流来世");
+        add("painting.confluence.the_twilight_of_dawn.title", "The Twilight Of Dawn");
+        add("painting.confluence.the_twilight_of_dawn.author", "汇聚的旅程走到了分岔口，迎接强敌的时刻终将来临。");
 
         // new
         add("achievements.toast.complete", "成就达成！");
@@ -379,6 +382,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.alchemy_table", "炼药桌");
         add("condition.confluence.requires_fuel", "需要燃料");
         add("container.confluence.fletching_table", "制箭台");
+        add("title.confluence.fletching_table", "制箭台");
 
         add("info.confluence.weather_radio.clear", "天气: 晴天, 风速: %s");
         add("info.confluence.weather_radio.cloudy", "天气: 阴天, 风速: %s");
@@ -789,7 +793,85 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.PINK_PURE_GLASS.get(), "品红纯净玻璃块");
         add(DecorativeBlocks.DISC_BLOCK.get(), "飞盘块");
         add(DecorativeBlocks.WOOD_STONE_SLATTED_BLOCKS.get(), "木石板条块");
+        add(DecorativeBlocks.LIHZAHRD_BRICKS.get(), "丛林蜥蜴砖");
 
+        // 雕像
+        add(StatueBlocks.A_STATUE.get(), "A字雕像");
+        add(StatueBlocks.B_STATUE.get(), "B字雕像");
+        add(StatueBlocks.C_STATUE.get(), "C字雕像");
+        add(StatueBlocks.D_STATUE.get(), "D字雕像");
+        add(StatueBlocks.E_STATUE.get(), "E字雕像");
+        add(StatueBlocks.F_STATUE.get(), "F字雕像");
+        add(StatueBlocks.G_STATUE.get(), "G字雕像");
+        add(StatueBlocks.H_STATUE.get(), "H字雕像");
+        add(StatueBlocks.I_STATUE.get(), "I字雕像");
+        add(StatueBlocks.J_STATUE.get(), "J字雕像");
+        add(StatueBlocks.K_STATUE.get(), "K字雕像");
+        add(StatueBlocks.L_STATUE.get(), "L字雕像");
+        add(StatueBlocks.M_STATUE.get(), "M字雕像");
+        add(StatueBlocks.N_STATUE.get(), "N字雕像");
+        add(StatueBlocks.O_STATUE.get(), "O字雕像");
+        add(StatueBlocks.P_STATUE.get(), "P字雕像");
+        add(StatueBlocks.Q_STATUE.get(), "Q字雕像");
+        add(StatueBlocks.R_STATUE.get(), "R字雕像");
+        add(StatueBlocks.S_STATUE.get(), "S字雕像");
+        add(StatueBlocks.T_STATUE.get(), "T字雕像");
+        add(StatueBlocks.U_STATUE.get(), "U字雕像");
+        add(StatueBlocks.V_STATUE.get(), "V字雕像");
+        add(StatueBlocks.W_STATUE.get(), "W字雕像");
+        add(StatueBlocks.X_STATUE.get(), "X字雕像");
+        add(StatueBlocks.Y_STATUE.get(), "Y字雕像");
+        add(StatueBlocks.Z_STATUE.get(), "Z字雕像");
+
+        add(StatueBlocks.N0_STATUE.get(), "0字雕像");
+        add(StatueBlocks.N1_STATUE.get(), "1字雕像");
+        add(StatueBlocks.N2_STATUE.get(), "2字雕像");
+        add(StatueBlocks.N3_STATUE.get(), "3字雕像");
+        add(StatueBlocks.N4_STATUE.get(), "4字雕像");
+        add(StatueBlocks.N5_STATUE.get(), "5字雕像");
+        add(StatueBlocks.N6_STATUE.get(), "6字雕像");
+        add(StatueBlocks.N7_STATUE.get(), "7字雕像");
+        add(StatueBlocks.N8_STATUE.get(), "8字雕像");
+        add(StatueBlocks.N9_STATUE.get(), "9字雕像");
+
+
+        add(StatueBlocks.ANVIL_STATUE.get(), "砧雕像");
+        add(StatueBlocks.ARMOR_STATUE.get(), "盔甲雕像");
+        add(StatueBlocks.AXE_STATUE.get(), "战斧雕像");
+        add(StatueBlocks.BOOMERANG_STATUE.get(), "回旋镖雕像");
+        add(StatueBlocks.BOOT_STATUE.get(), "靴子雕像");
+        add(StatueBlocks.BOW_STATUE.get(), "弓雕像");
+        add(StatueBlocks.CROSS_STATUE.get(), "十字架雕像");
+        add(StatueBlocks.GARGOYLE_STATUE.get(), "石像鬼雕像");
+        add(StatueBlocks.GLOOM_STATUE.get(), "幽冥雕像");
+        add(StatueBlocks.HAMMER_STATUE.get(), "战锤雕像");
+        add(StatueBlocks.PICKAXE_STATUE.get(), "镐雕像");
+        add(StatueBlocks.PILLAR_STATUE.get(), "石柱雕像");
+        add(StatueBlocks.POT_STATUE.get(), "陶罐雕像");
+        add(StatueBlocks.POTION_STATUE.get(), "药水雕像");
+        add(StatueBlocks.REAPER_STATUE.get(), "死神雕像");
+        add(StatueBlocks.SHIELD_STATUE.get(), "护盾雕像");
+        add(StatueBlocks.SPEAR_STATUE.get(), "长矛雕像");
+        add(StatueBlocks.SUNFLOWER_STATUE.get(), "向日葵雕像");
+        add(StatueBlocks.SWORD_STATUE.get(), "宝剑雕像");
+        add(StatueBlocks.TREE_STATUE.get(), "树木雕像");
+        add(StatueBlocks.WOMEN_STATUE.get(), "女人雕像");
+        add(StatueBlocks.LIHZAHRD_STATUE.get(), "丛林蜥蜴雕像");
+        add(StatueBlocks.LIHZAHRD_GUARDIAN_STATUE.get(), "丛林蜥蜴守卫雕像");
+        add(StatueBlocks.LIHZAHRD_WATCHER_STATUE.get(), "丛林蜥蜴看守人雕像");
+
+        add(StatueBlocks.ARMED_ZOMBIE_STATUE.get(), "武装僵尸雕像");
+        add(StatueBlocks.BONE_SKELETON_STATUE.get(), "骨头骷髅雕像");
+        add(StatueBlocks.CORRUPT_STATUE.get(), "腐化雕像");
+        add(StatueBlocks.DRIPPLER_STATUE.get(), "滴滴怪雕像");
+        add(StatueBlocks.EYEBALL_STATUE.get(), "魔眼雕像");
+        add(StatueBlocks.SKELETON_STATUE.get(), "骷髅雕像");
+        add(StatueBlocks.SLIME_STATUE.get(), "史莱姆雕像");
+
+        add(StatueBlocks.BOMB_STATUE.get(), "炸弹雕像");
+        add(StatueBlocks.HEART_STATUE.get(), "心形雕像");
+        add(StatueBlocks.STAR_STATUE.get(), "星星雕像");
+        add(StatueBlocks.BAST_STATUE.get(), "巴斯特雕像");
 
         add(ModBlocks.POO.get(), "臭臭");
 
@@ -990,9 +1072,14 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.FLOATING_WHEAT_HEADS.get(), "飘飘麦");
         add(MaterialItems.WEAVING_CLOUD_COTTON.get(), "织云棉");
         add(MaterialItems.ROTTEN_CHUNK.get(), "腐肉");
+        add(MaterialItems.WORM_TOOTH.get(), "蠕虫毒牙");
         add(MaterialItems.VERTEBRA.get(), "椎骨");
         add(MaterialItems.BLOOD_CLOT_POWDER.get(), "血凝粉末");
         add(MaterialItems.ROTTEN_BONE.get(), "腐蚀残骨");
+        add(MaterialItems.VILE_POWDER.get(), "魔粉");
+        add(MaterialItems.VICIOUS_POWDER.get(), "毒粉");
+        add(MaterialItems.PURIFICATION_POWDER.get(), "净化粉");
+        add(MaterialItems.FILAMENTOUS_FIN.get(), "羽状鳍");
         add(MaterialItems.LENS.get(), "晶状体");
         add(MaterialItems.BLACK_LENS.get(), "黑晶状体");
         add(MaterialItems.CRYSTAL_SHARDS_ITEM.get(), "水晶碎块");
@@ -1148,6 +1235,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.CLAM.get(), "牡蛎");
         add(ConsumableItems.CHRISTMAS_GIFT.get(), "圣诞礼物");
         add(ConsumableItems.RED_ENVELOPE.get(), "红包");
+        add(ConsumableItems.SUGAR_TANGERINE.get(), "砂糖桔");
+        add(ConsumableItems.DELUXE_PACKAGE.get(), "豪华套餐");
         add(ConsumableItems.CAN_OF_WORMS.get(), "蠕虫罐头");
         add(ConsumableItems.HERB_BAG.get(), "草药袋");
         add(ModItems.WHOOPIE_CUSHION.get(), "整蛊坐垫");
@@ -1160,6 +1249,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.ENCUMBERING_STONE.get(), "负重石");
         add(ConsumableItems.SUSPICIOUS_LOOKING_EYE.get(), "可疑眼球");
         add(ConsumableItems.SLIME_CROWN.get(), "史莱姆皇冠");
+        add(ConsumableItems.WORM_FOOD.get(), "蠕虫诱饵");
         add(FunctionalBlocks.STONE_PRESSURE_PLATE.get(), "石质压力板");
 
         // 杂项
@@ -1450,7 +1540,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(BowItems.DEVELOPER_BOW.get(), "开发者弓");
 
         // 光剑
-        /*
+
         add(SwordItems.RED_LIGHT_SABER.get(), "陨石红光剑");
         add(SwordItems.ORANGE_LIGHT_SABER.get(), "陨石橙光剑");
         add(SwordItems.YELLOW_LIGHT_SABER.get(), "陨石黄光剑");
@@ -1459,7 +1549,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.PURPLE_LIGHT_SABER.get(), "陨石紫光剑");
         add(SwordItems.WHITE_LIGHT_SABER.get(), "陨石白光剑");
 
-         */
         //剑气
         add(SwordItems.ENCHANTED_SWORD.get(), "附魔剑");
         //快攻
@@ -1552,8 +1641,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.CRIMSON_CHESTPLATE.get(), "猩红胸甲");
         add(ArmorItems.CRIMSON_LEGGINGS.get(), "猩红护腿");
         add(ArmorItems.CRIMSON_BOOTS.get(), "猩红靴");
-        add(CosmeticItems.GOLD_CROWN.get(), "金冠");
-        add(CosmeticItems.PLATINUM_CROWN.get(), "铂金冠");
+        add(VanityArmorItems.GOLD_CROWN.get(), "金冠");
+        add(VanityArmorItems.PLATINUM_CROWN.get(), "铂金冠");
 
         // 鱼
         add(FoodItems.SEA_BASS.get(), "鲈鱼");
@@ -1648,6 +1737,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.STAR_FRUIT.get(), "杨桃");
         add(FoodItems.POMEGRANATE.get(), "番石榴");
         add(FoodItems.RAMBUTAN.get(), "红毛丹");
+        add(FoodItems.PEELED_SUGAR_TANGERINE.get(), "拨开的砂糖桔");
         add(FoodItems.COOKED_SHRIMP.get(), "熟虾");
         add(FoodItems.ESCARGOT.get(), "法式蜗牛");
         add(FoodItems.FROGGLE_BUNWICH.get(), "面包夹田鸡");
@@ -1821,6 +1911,42 @@ public class ModChineseProvider extends LanguageProvider {
         add(AccessoryItems.PYGMY_NECKLACE.get(), "矮人项链");
         add(AccessoryItems.SPECTRE_GOGGLES.get(), "幽灵护目镜");
         add(AccessoryItems.FLEDGLING_WINGS.get(), "雏翼");
+        add(AccessoryItems.CHROMATIC_CLOAK.get(), "炫彩斗篷");
+        add(AccessoryItems.MUSIC_BOX.get(), "八音盒");
+
+        // 染料
+        add(PaintItems.PAINTBRUSH.get(), "漆刷");
+        add(PaintItems.PAINT_ROLLER.get(), "油漆滚刷");
+        add(PaintItems.PAINT_SCRAPER.get(), "漆铲");
+        add(PaintItems.RED_PAINT.get(), "红漆");
+        add(PaintItems.DEEP_RED_PAINT.get(), "深红漆");
+        add(PaintItems.ORANGE_PAINT.get(), "橙漆");
+        add(PaintItems.DEEP_ORANGE_PAINT.get(), "深橙漆");
+        add(PaintItems.YELLOW_PAINT.get(), "黄漆");
+        add(PaintItems.DEEP_YELLOW_PAINT.get(), "深黄漆");
+        add(PaintItems.LIME_PAINT.get(), "橙绿漆");
+        add(PaintItems.DEEP_LIME_PAINT.get(), "深橙绿漆");
+        add(PaintItems.GREEN_PAINT.get(), "绿漆");
+        add(PaintItems.DEEP_GREEN_PAINT.get(), "深绿漆");
+        add(PaintItems.TEAL_PAINT.get(), "青绿漆");
+        add(PaintItems.DEEP_TEAL_PAINT.get(), "深青绿漆");
+        add(PaintItems.CYAN_PAINT.get(), "青漆");
+        add(PaintItems.DEEP_CYAN_PAINT.get(), "深青漆");
+        add(PaintItems.SKY_BLUE_PAINT.get(), "天蓝漆");
+        add(PaintItems.DEEP_SKY_BLUE_PAINT.get(), "深天蓝漆");
+        add(PaintItems.BLUE_PAINT.get(), "蓝漆");
+        add(PaintItems.DEEP_BLUE_PAINT.get(), "深蓝漆");
+        add(PaintItems.PURPLE_PAINT.get(), "紫漆");
+        add(PaintItems.DEEP_PURPLE_PAINT.get(), "深紫漆");
+        add(PaintItems.VIOLET_PAINT.get(), "紫罗兰漆");
+        add(PaintItems.DEEP_VIOLET_PAINT.get(), "深紫罗兰漆");
+        add(PaintItems.PINK_PAINT.get(), "粉漆");
+        add(PaintItems.DEEP_PINK_PAINT.get(), "深粉漆");
+        add(PaintItems.BLACK_PAINT.get(), "黑漆");
+        add(PaintItems.GRAY_PAINT.get(), "灰漆");
+        add(PaintItems.WHITE_PAINT.get(), "白漆");
+        add(PaintItems.BROWN_PAINT.get(), "棕漆");
+        add(PaintItems.SHADOW_PAINT.get(), "暗影漆");
         // 药水效果
         add(ModEffects.MANA_SICKNESS.get(), "魔力病");
         add(ModEffects.SHINE.get(), "发光");
@@ -1845,13 +1971,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.BROKEN_ARMOR.get(), "破损盔甲");
         add(ModEffects.STONED.get(), "石化");
         add(ModEffects.CRATE.get(), "宝匣");
+        add(ModEffects.ACID_VENOM.get(), "酸性毒液");
+        add(ModEffects.CURSED_INFERNO.get(), "诅咒焰");
+        add(ModEffects.FROST_BURN.get(), "霜冻");
 
-        // 雕像
-//        add(STATUE_A.get(), "A雕像");
-        //endregion items
-
-        //region entities
-//        add(ModEntities.STEP_STOOL.get(), "梯凳");
-        //endregion entities
     }
 }

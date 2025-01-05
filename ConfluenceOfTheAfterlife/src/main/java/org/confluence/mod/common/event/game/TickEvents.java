@@ -19,6 +19,7 @@ import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
@@ -48,6 +49,7 @@ public final class TickEvents {
         if (player instanceof ServerPlayer serverPlayer) {
             PlayerUtils.regenerateMana(serverPlayer);
             ((IServerPlayer) serverPlayer).confluence$setCouldPickupItem(true);
+            serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).sync(serverPlayer);
 
             Level level = serverPlayer.level();
             if (level.getDayTime() % 1200L == 0L) {

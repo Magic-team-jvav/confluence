@@ -3,7 +3,7 @@ plugins {
 }
 var projectName = ["TerraEntity","MineTeam","EquipmentBenediction",
                    "TerraCurio","ParticleStorm","HeavenDestinyMoment","PhaseJourney",
-                   "TerraGuns","IsekaiInvaded"
+                   "TerraMoment","TerraGuns","IsekaiInvaded"
 ]
 
 

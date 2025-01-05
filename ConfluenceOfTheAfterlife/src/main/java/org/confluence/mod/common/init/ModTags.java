@@ -41,17 +41,21 @@ public final class ModTags {
     }
 
     public static class Items {
-        public static final TagKey<Item> HOOK = curios("hook");
-        public static final TagKey<Item> MINECART = curios("minecart");
-
         public static final TagKey<Item> INGOTS_TIN = neoforgeTag("ingots/tin");
         public static final TagKey<Item> INGOTS_SILVER = neoforgeTag("ingots/silver");
         public static final TagKey<Item> INGOTS_TUNGSTEN = neoforgeTag("ingots/tungsten");
         public static final TagKey<Item> INGOTS_PLATINUM = neoforgeTag("ingots/platinum");
 
+        public static final TagKey<Item> COINS = register("coins");
+        public static final TagKey<Item> AMMO = register("ammo");
+        public static final TagKey<Item> PET = register("pet");
+        public static final TagKey<Item> LIGHT_PET = register("light_pet");
+        public static final TagKey<Item> MINECART = register("minecart");
+        public static final TagKey<Item> HOOK = register("hook");
+        public static final TagKey<Item> DYE = register("dye");
+
         public static final TagKey<Item> PROVIDE_MANA = register("provide_mana");
         public static final TagKey<Item> PROVIDE_LIFE = register("provide_life");
-        public static final TagKey<Item> COIN = register("coin");
         public static final TagKey<Item> TORCH = register("torch"); // todo
         public static final TagKey<Item> HARDMODE = register("hardmode"); // todo
         public static final TagKey<Item> BOTTOMLESS = register("bottomless");
@@ -64,6 +68,7 @@ public final class ModTags {
         public static final TagKey<Item> MARINE_GRAVEL = register("marine_gravel");
         public static final TagKey<Item> CORALS = register("corals");
         public static final TagKey<Item> TR_PLANKS = register("tr_planks");
+        public static final TagKey<Item> EVIL_MATERIAL = register("evil_material");
         public static final TagKey<Item> WOODEN_COMBUSTIBLES = register("wooden_combustibles");  // 可燃木材系列
         public static final TagKey<Item> COMPOST = register("compost");  // 堆肥
         public static final TagKey<Item> LEAD_AND_IRON = register("lead_and_iron");

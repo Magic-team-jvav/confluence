@@ -4,6 +4,12 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -14,7 +20,9 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.connected.CustomBlockModels;
 import org.confluence.mod.client.connected.ModConnectives;
+import org.confluence.mod.client.connected.ModelSwapper;
 import org.confluence.mod.client.gui.AchievementToast;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
@@ -31,6 +39,9 @@ import org.confluence.mod.client.model.entity.hook.BaseHookModel;
 import org.confluence.mod.client.model.entity.hook.SkeletronHandModel;
 import org.confluence.mod.client.model.entity.hook.WebSlingerModel;
 import org.confluence.mod.client.model.entity.projectile.*;
+import org.confluence.mod.client.particle.BiomeColorParticle;
+import org.confluence.mod.client.particle.DamageIndicatorParticle;
+import org.confluence.mod.client.particle.SimpleTextureSheetParticle;
 import org.confluence.mod.client.renderer.block.*;
 import org.confluence.mod.client.renderer.entity.EmptyEntityRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.BaseFishingHookRenderer;
@@ -41,6 +52,8 @@ import org.confluence.mod.client.renderer.entity.hook.*;
 import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
 import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
+import org.confluence.mod.client.textures.GrayBlockModelSwapper;
+import org.confluence.mod.client.textures.GraySpriteShifterEntry;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModParticleTypes;
@@ -51,8 +64,9 @@ import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.mod.common.init.item.BowItems;
 import org.confluence.mod.common.init.item.FishingPoleItems;
 import org.confluence.mod.common.init.item.MaterialItems;
-import org.confluence.mod.common.particle.DamageIndicatorParticle;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
+
+import java.util.Map;
 
 import static org.confluence.mod.common.init.ModEntities.*;
 
@@ -87,6 +101,7 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.HELLFORGE.get(), HellforgeScreen::new);
         event.register(ModMenuTypes.FLETCHING_TABLE.get(), FletchingTableScreen::new);
         event.register(ModMenuTypes.ALCHEMY_TABLE.get(), AlchemyTableScreen::new);
+        event.register(ModMenuTypes.EXTRA_INVENTORY.get(), ExtraInventoryScreen::new);
     }
 
     @SubscribeEvent
@@ -189,6 +204,7 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(FunctionalBlocks.SKY_MILL_ENTITY.get(), context -> new SkyMillBlockRenderer());
         event.registerBlockEntityRenderer(FunctionalBlocks.EXTRACTINATOR_ENTITY.get(), context -> new ExtractinatorBlockRenderer());
         event.registerBlockEntityRenderer(FunctionalBlocks.MECHANICAL_BLOCK_ENTITY.get(), MechanicalBlockRenderer::new);
+        event.registerBlockEntityRenderer(FunctionalBlocks.SILLY_BALLOON_MACHINE_ENTITY.get(), MechanicalBlockRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.BASE_CHEST_BLOCK_ENTITY.get(), BaseChestBlockRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.DEATH_CHEST_BLOCK_ENTITY.get(), DeathChestBlockRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.WEATHER_VANE_ENTITY.get(), WeatherVaneBlockRenderer::new);
@@ -220,5 +236,39 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerParticles(RegisterParticleProvidersEvent event) {
         event.registerSpecial(ModParticleTypes.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
+        event.registerSpriteSet(ModParticleTypes.LEAVES.get(), BiomeColorParticle.Provider::new);
+        event.registerSpriteSet(ModParticleTypes.RED_SAND.get(), SimpleTextureSheetParticle.Provider::new);
+        event.registerSpriteSet(ModParticleTypes.SAND.get(), SimpleTextureSheetParticle.Provider::new);
+        event.registerSpriteSet(ModParticleTypes.SNOW.get(), SimpleTextureSheetParticle.Provider::new);
+        event.registerSpriteSet(ModParticleTypes.YELLOW_WILLOW.get(), SimpleTextureSheetParticle.Provider::new);
+    }
+
+    @SubscribeEvent
+    public static void textureAtlasStitched(TextureAtlasStitchedEvent event) {
+        TextureAtlas atlas = event.getAtlas();
+        if (atlas.location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+            for (Map.Entry<ResourceLocation, TextureAtlasSprite> entry : atlas.getTextures().entrySet()) {
+                ResourceLocation key = entry.getKey();
+                if (!key.getPath().endsWith(".gray")) {
+                    ResourceLocation gray = key.withSuffix(".gray");
+                    GraySpriteShifterEntry.ALL.put(key, new GraySpriteShifterEntry(entry.getValue(), atlas.getSprite(gray)));
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void model$ModifyBakingResult(ModelEvent.ModifyBakingResult event) {
+        Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
+        CustomBlockModels customBlockModels = ModConnectives.MODEL_SWAPPER.getCustomBlockModels();
+        BuiltInRegistries.BLOCK.stream().forEach(block -> {
+            if (customBlockModels.containsBlock(block)) return;
+            for (ModelResourceLocation modelLocation : ModelSwapper.getAllBlockStateModelLocations(block)) {
+                BakedModel bakedModel = modelRegistry.get(modelLocation);
+                if (bakedModel != null) {
+                    modelRegistry.put(modelLocation, new GrayBlockModelSwapper(bakedModel));
+                }
+            }
+        });
     }
 }

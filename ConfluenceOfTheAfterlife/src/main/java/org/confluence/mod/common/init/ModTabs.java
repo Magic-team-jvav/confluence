@@ -5,6 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
@@ -14,6 +15,9 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public final class ModTabs {
@@ -45,11 +49,13 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.PRECIOUS_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.misc"))
                     .displayItems((parameters, output) -> {
-                        ModItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        ConsumableItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        BaitItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        QuestedFishes.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        CrateBlocks.BLOCKS.getEntries().forEach(item -> output.accept(item.get()));
+                        Consumer<Supplier<? extends ItemLike>> action = item -> output.accept(item.get());
+                        ModItems.ITEMS.getEntries().forEach(action);
+                        ConsumableItems.ITEMS.getEntries().forEach(action);
+                        BaitItems.ITEMS.getEntries().forEach(action);
+                        QuestedFishes.ITEMS.getEntries().forEach(action);
+                        CrateBlocks.BLOCKS.getEntries().forEach(action);
+                        PaintItems.ITEMS.getEntries().forEach(action);
                     }).build()
     );
     // 材料
@@ -109,7 +115,7 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.SUMMON_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.summoners"))
                     .displayItems((parameters, output) -> {
-
+                        // todo
                     }).build());
     // 开发者物品
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> DEVELOPER = TABS.register("developer",
@@ -133,7 +139,7 @@ public final class ModTabs {
                     .displayItems((parameters, output) -> {
                         output.accept(TCItems.DIVING_HELMET.get());
                         ArmorItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        CosmeticItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                        VanityArmorItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                     }).build());
     // 器械
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MECHANICAL = TABS.register("mechanical",

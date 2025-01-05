@@ -13,11 +13,11 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.item.HookItems;
 import org.confluence.mod.network.c2s.HookThrowingPacketC2S;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.client.handler.PlayerJumpHandler;
-import org.confluence.terra_curio.util.CuriosUtils;
 
 import java.util.Iterator;
 
@@ -28,8 +28,7 @@ public final class HookThrowingHandler {
         while (ModKeyBindings.HOOK.get().consumeClick()) isDown = true;
         if (isDown) HookThrowingPacketC2S.push();
         if (localPlayer.isCrouching()) return;
-        ItemStack itemStack = CuriosUtils.getSlot(localPlayer, "hook", 0);
-        if (itemStack == null) return;
+        ItemStack itemStack = localPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).getHook();
         CompoundTag tag = ModUtils.getItemStackNbt(itemStack);
         if (tag == null) return;
 

@@ -15,6 +15,21 @@
                     "chance": 0.009
                 }
             ]
+        },
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:sugar_tangerine"
+                }
+            ],
+            "conditions": [
+                {
+                    "condition": "minecraft:random_chance",
+                    "chance": 0.009
+                }
+            ]
         }
     ]
 }

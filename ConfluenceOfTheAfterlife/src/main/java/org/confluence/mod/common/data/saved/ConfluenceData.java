@@ -1,7 +1,5 @@
 package org.confluence.mod.common.data.saved;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -22,7 +20,9 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 public class ConfluenceData extends SavedData {
     public static final int STAR_PHASES_SIZE = 10;
@@ -30,7 +30,7 @@ public class ConfluenceData extends SavedData {
     private boolean initialized = false;
     private GamePhase gamePhase = GamePhase.BEFORE_SKELETRON;
     private final Vector3f windSpeed = new Vector3f();
-    private final Int2ObjectMap<StarPhase> starPhases = new Int2ObjectArrayMap<>();
+    private final Map<Integer, StarPhase> starPhases = new Hashtable<>();
     private int revealStep = -1;
     private final MeteoriteTracker meteoriteTracker = MeteoriteTracker.INSTANCE;
 
@@ -144,15 +144,13 @@ public class ConfluenceData extends SavedData {
         return starPhases.getOrDefault(index, StarPhase.DEFAULT);
     }
 
-    public Int2ObjectMap<StarPhase> getStarPhases() {
+    public Map<Integer, StarPhase> getStarPhases() {
         return starPhases;
     }
 
     public boolean increaseRevealStep(ServerLevel serverLevel) {
         if (revealStep < 9) {
-            serverLevel.players().forEach(serverPlayer -> {
-                PhaseUtils.achievePhase(serverPlayer, Confluence.asResource("reveal_step_" + this.revealStep++), true);
-            });
+            serverLevel.players().forEach(serverPlayer -> PhaseUtils.achievePhase(serverPlayer, Confluence.asResource("reveal_step_" + this.revealStep++), true));
             setDirty();
             return true;
         }

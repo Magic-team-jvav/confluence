@@ -1,0 +1,20 @@
+{
+    "type": "confluence:fletching_table",
+    "body": {
+        "type": "terra_curio:amount_ingredient",
+        "ingredient": {
+            "item": "minecraft:stick"
+        },
+        "count": 5
+    },
+    "head": {
+        "item": "minecraft:flint"
+    },
+    "tail": {
+        "item": "minecraft:feather"
+    },
+    "result": {
+        "id": "minecraft:arrow",
+        "count": 20
+    }
+}

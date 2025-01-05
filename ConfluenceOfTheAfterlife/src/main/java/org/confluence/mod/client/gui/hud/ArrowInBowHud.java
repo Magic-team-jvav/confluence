@@ -68,7 +68,7 @@ public class ArrowInBowHud {
     }
 
     public static void transform(ItemStack bow, PoseStack poseStack, float charge, ItemDisplayContext displayContext){
-        if(displayContext == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND){
+        if(displayContext == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || displayContext == ItemDisplayContext.FIRST_PERSON_LEFT_HAND){
             //拉弓前后位移
             Holder<Item> it = bow.getItemHolder();
             Vec3 off = offsets.get(it);
@@ -82,15 +82,26 @@ public class ArrowInBowHud {
                 //                                  前后阶段偏移系数  前后帧偏移系数
                 poseStack.translate(0,-offset*0.04 ,offset*0.13);
             }
-            poseStack.mulPose(Axis.XN.rotationDegrees(90));
+            if(displayContext == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND)
+                poseStack.mulPose(Axis.XN.rotationDegrees(90));
+            else{
+                poseStack.translate(0, -0.12,-0.25);
+            }
             poseStack.scale(1.01f,1.01f,1.01f);
         }else if (displayContext == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND){
 
             poseStack.mulPose(Axis.YN.rotationDegrees(-90));
             poseStack.mulPose(Axis.ZN.rotationDegrees(20));
             poseStack.mulPose(Axis.XN.rotationDegrees(10));
+
             poseStack.translate(0.1, -0.25,-0.15);
 
+        }else if(displayContext == ItemDisplayContext.THIRD_PERSON_LEFT_HAND){
+            poseStack.mulPose(Axis.YN.rotationDegrees(-90));
+            poseStack.mulPose(Axis.ZN.rotationDegrees(20));
+            poseStack.mulPose(Axis.XN.rotationDegrees(0));
+
+            poseStack.translate(0.1, -0.3,0);
         }
 
     }

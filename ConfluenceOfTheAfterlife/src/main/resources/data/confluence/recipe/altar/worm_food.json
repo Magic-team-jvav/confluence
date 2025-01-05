@@ -1,0 +1,22 @@
+{
+    "type": "confluence:altar",
+    "result": {
+        "id": "confluence:worm_food"
+    },
+    "ingredients": [
+        {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:vile_powder"
+            },
+            "count": 30
+        },
+        {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:rotten_chunk"
+            },
+            "count": 15
+        }
+    ]
+}

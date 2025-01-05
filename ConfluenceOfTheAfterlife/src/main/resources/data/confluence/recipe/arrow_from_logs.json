@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "O",
+        "a"
+    ],
+    "key": {
+        "#": {
+            "tag": "minecraft:stone_crafting_materials"
+        },
+        "O": {
+            "tag": "minecraft:logs"
+        },
+        "a": {
+            "tag": "minecraft:wool"
+        }
+    },
+    "result": {
+        "id": "minecraft:arrow",
+        "count": 12
+    }
+}

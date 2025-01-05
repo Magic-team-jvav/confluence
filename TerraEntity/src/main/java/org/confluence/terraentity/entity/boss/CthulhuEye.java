@@ -37,7 +37,7 @@ public class CthulhuEye extends AbstractTerraBossBase implements GeoEntity, Boss
     public int stage = 1; //阶段
 
     //定义技能参数
-    private int summonCDAll = 15; //仆从召唤cd
+    private int summonCDAll = 20; //仆从召唤cd
     private int summonCD = summonCDAll;
 
     private final int stage2_dashCount_base = -5 + 3;
@@ -50,11 +50,9 @@ public class CthulhuEye extends AbstractTerraBossBase implements GeoEntity, Boss
 
 
     public CthulhuEye(EntityType<CthulhuEye> entityType, Level level) {
-        super(entityType, level);
+        super(entityType, level,MAX_HEALTHS);
         //初始属性
-        int size = level().players().size();
-        getAttribute(Attributes.MAX_HEALTH).setBaseValue(MAX_HEALTHS * size);
-        setHealth(MAX_HEALTHS* size);
+
         getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(DAMAGE);
         
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
@@ -268,6 +266,10 @@ public class CthulhuEye extends AbstractTerraBossBase implements GeoEntity, Boss
     protected SoundEvent getHurtSound(DamageSource damageSource) {return TESounds.ROUTINE_HURT.get();}
 
     @Override
+    protected SoundEvent getDeathSound() {
+        return TESounds.ROUTINE_DEATH.get();
+    }
+    @Override
     public boolean isNoGravity(){ return true; }
 
     // 转换阶段
@@ -278,12 +280,5 @@ public class CthulhuEye extends AbstractTerraBossBase implements GeoEntity, Boss
             skills.forceStartIndex(4); // 强制执行技能序列
         }
         return super.hurt(pSource, pAmount);
-    }
-
-    // 同步旋转
-    @Override
-    public void tick() {
-        super.tick();
-
     }
 }

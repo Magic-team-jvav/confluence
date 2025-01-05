@@ -144,6 +144,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DecorativeBlocks.AMETHYST_CHAIN.get(),
                 DecorativeBlocks.SILK_CHAIN.get(),
                 DecorativeBlocks.BONE_CHAIN.get(),
+                NatureBlocks.LIFE_CRYSTAL_BLOCK.get(),
                 NatureBlocks.EBONY_COBBLESTONE.get(),
                 NatureBlocks.TR_CRIMSON_COBBLESTONE.get(),
                 NatureBlocks.PEARL_COBBLESTONE.get(),
@@ -342,6 +343,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OreBlocks.FLESHIFICATION_TR_CRIMSON_ORE.get(),
                 OreBlocks.RAW_TR_CRIMSON_BLOCK.get(),
                 OreBlocks.TR_CRIMSON_BLOCK.get(),
+                OreBlocks.TR_CRIMSON_ORE.get(),
+                Blocks.ANCIENT_DEBRIS,
                 OreBlocks.TR_CRIMSON_ORE.get()
         );
         tag(ModTags.Blocks.NEEDS_4_LEVEL).add(

@@ -18,6 +18,7 @@ import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
+import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -51,6 +52,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getPlanks().asItem(), Blocks.OAK_PLANKS.asItem(), Blocks.SPRUCE_PLANKS.asItem(),
                 Blocks.ACACIA_PLANKS.asItem(), Blocks.DARK_OAK_PLANKS.asItem(), Blocks.JUNGLE_PLANKS.asItem(), Blocks.MANGROVE_PLANKS.asItem(), Blocks.CHERRY_PLANKS.asItem(), Blocks.BAMBOO_PLANKS.asItem(), Blocks.CRIMSON_PLANKS.asItem(),
                 Blocks.BIRCH_PLANKS.asItem(), Blocks.WARPED_PLANKS.asItem());
+        tag(ModTags.Items.EVIL_MATERIAL).add(
+                MaterialItems.TR_CRIMSON_INGOT.get(),
+                MaterialItems.DEMONITE_INGOT.get(),
+                MaterialItems.WORM_TOOTH.get(),
+                MaterialItems.VERTEBRA.get(),
+                MaterialItems.BLOOD_CLOT_POWDER.get(),
+                MaterialItems.ROTTEN_BONE.get()
+        );
 
         // 可烧的木材
         tag(ModTags.Items.WOODEN_COMBUSTIBLES).add(
@@ -347,7 +356,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         BoomerangItems.acceptTag(prefix_universal_only);
 
         copy(BlockTags.RAILS, ItemTags.RAILS);
-        tag(ModTags.Items.COIN).add(ModItems.COPPER_COIN.get(), ModItems.SILVER_COIN.get(), ModItems.GOLDEN_COIN.get(), ModItems.PLATINUM_COIN.get());
+        tag(ModTags.Items.COINS).add(
+                ModItems.COPPER_COIN.get(),
+                ModItems.SILVER_COIN.get(),
+                ModItems.GOLDEN_COIN.get(),
+                ModItems.PLATINUM_COIN.get(),
+                ModItems.EMERALD_COIN.get()
+        );
         tag(TETags.Items.HONEY_TRANSLATION_BUCKET).add(ToolItems.HONEY_BUCKET.get());
         tag(TETags.Items.HONEY_TRANSLATION_NOT_CONSUMED).add(ToolItems.BOTTOMLESS_HONEY_BUCKET.get());
         tag(ModTags.Items.HARDMODE_ORES).add(
@@ -372,5 +387,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.INGOTS_PLATINUM).add(MaterialItems.PLATINUM_INGOT.get());
 
         AccessoryItems.acceptTag(tag(TCTags.ACCESSORY));
+        IntrinsicTagAppender<Item> ammo = tag(ModTags.Items.AMMO);
+        ammo.addTag(ItemTags.ARROWS);
+        TGItems.ITEM_BULLETS.getEntries().forEach(item -> ammo.add(item.get()));
     }
 }

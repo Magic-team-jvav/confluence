@@ -123,6 +123,14 @@ public final class ModFluids {
         addItem(TACKLE_BOX.get(), HIGH_TEST_FISHING_LINE.get());
         addItem(STAR_CLOAK.get(), CHROMATIC_CLOAK.get());
         // todo 火把转化
+        // 微光箭转化
+        addItem(ArrowItems.FLAMING_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
+        addItem(ArrowItems.UNHOLY_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
+        addItem(ArrowItems.JESTERS_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
+        addItem(ArrowItems.HELLFIRE_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
+        addItem(ArrowItems.FROSTBURN_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
+        addItem(ArrowItems.BONE_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
+        addItem(Items.ARROW, ArrowItems.SHIMMER_ARROW.get());
         // 匣子转化
         addItem(CrateBlocks.PEARLWOOD_CRATE.get().asItem(), CrateBlocks.WOODEN_CRATE.get().asItem());
         addItem(CrateBlocks.MITHRIL_CRATE.get().asItem(), CrateBlocks.IRON_CRATE.get().asItem());

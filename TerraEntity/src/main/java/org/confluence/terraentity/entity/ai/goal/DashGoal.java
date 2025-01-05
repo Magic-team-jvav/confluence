@@ -65,7 +65,6 @@ public class DashGoal extends Goal {
 
     @Override
     public boolean canUse() {
-//        System.out.println("canUse: "+mob.tickCount);
         return mob.getTarget()!=null && mob.getTarget().isAlive();
     }
 
@@ -94,11 +93,9 @@ public class DashGoal extends Goal {
 
 
     public void tick() {
-//        System.out.println("tick: "+mob.tickCount);
         LivingEntity target = mob.getTarget();
         if(target == null ||!target.isAlive())
             return;
-        System.out.println(state +" " +mob.tickCount);
         if(mob.hurtTime>0) {
             state = States.idle;
 

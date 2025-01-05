@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "vertical_four_part=base,facing=north": {
+      "model": "confluence:block/alchemy_table_base"
+    },
+    "vertical_four_part=right,facing=north": {
+      "model": "confluence:block/alchemy_table_base",
+      "y": 180
+    },
+    "vertical_four_part=up,facing=north": {
+      "model": "confluence:block/alchemy_table_up"
+    },
+    "vertical_four_part=right_up,facing=north": {
+      "model": "confluence:block/alchemy_table_right_up"
+    },
+    "vertical_four_part=base,facing=east": {
+      "model": "confluence:block/alchemy_table_base",
+      "y": 90
+    },
+    "vertical_four_part=right,facing=east": {
+      "model": "confluence:block/alchemy_table_base",
+      "y": 270
+    },
+    "vertical_four_part=up,facing=east": {
+      "model": "confluence:block/alchemy_table_up",
+      "y": 90
+    },
+    "vertical_four_part=right_up,facing=east": {
+      "model": "confluence:block/alchemy_table_right_up",
+      "y": 90
+    },
+    "vertical_four_part=base,facing=south": {
+      "model": "confluence:block/alchemy_table_base",
+      "y": 180
+    },
+    "vertical_four_part=right,facing=south": {
+      "model": "confluence:block/alchemy_table_base"
+    },
+    "vertical_four_part=up,facing=south": {
+      "model": "confluence:block/alchemy_table_up",
+      "y": 180
+    },
+    "vertical_four_part=right_up,facing=south": {
+      "model": "confluence:block/alchemy_table_right_up",
+      "y": 180
+    },
+    "vertical_four_part=base,facing=west": {
+      "model": "confluence:block/alchemy_table_base",
+      "y": 270
+    },
+    "vertical_four_part=right,facing=west": {
+      "model": "confluence:block/alchemy_table_base",
+      "y": 90
+    },
+    "vertical_four_part=up,facing=west": {
+      "model": "confluence:block/alchemy_table_up",
+      "y": 270
+    },
+    "vertical_four_part=right_up,facing=west": {
+      "model": "confluence:block/alchemy_table_right_up",
+      "y": 270
+    }
+  }
+}

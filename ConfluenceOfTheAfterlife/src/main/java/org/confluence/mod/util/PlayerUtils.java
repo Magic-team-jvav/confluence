@@ -129,7 +129,7 @@ public final class PlayerUtils {
                     }
                 }
             }
-            GetCustomDiggingPowerEvent e = NeoForge.EVENT_BUS.post(new GetCustomDiggingPowerEvent(itemStack));
+            GetCustomDiggingPowerEvent e = NeoForge.EVENT_BUS.post(new GetCustomDiggingPowerEvent(itemStack, max));
             if (e.getPower() > max) {
                 max = e.getPower();
                 ret = itemStack;

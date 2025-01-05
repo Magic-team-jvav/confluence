@@ -53,6 +53,7 @@ public class AccessoryItems {
     public static final ValueType<Unit, UnitValue> TACKLE$BOX = ValueType.ofUnit("tackle_box");
     public static final ValueType<Unit, UnitValue> LAVAPROOF$FISHING$HOOK = ValueType.ofUnit("lavaproof_fishing_hook");
     public static final ValueType<Unit, UnitValue> SPECTRE$GOGGLES = ValueType.ofUnit("spectre_goggles");
+    public static final ValueType<Unit, UnitValue> PAINT$SPRAYER = ValueType.ofUnit("paint_sprayer");
 
     public static final ValueType<Float, FloatValue> MANA$USE$REDUCE = ValueType.ofFloat("mana_use_reduce", FloatValue.ADDITION_WITHIN_0_TO_1, 0.0F);
     public static final ValueType<Float, FloatValue> REDUCE$HEALING$COOLDOWN = ValueType.ofFloat("reduce_healing_cooldown", FloatValue.ADDITION_WITHIN_0_TO_1, 0.0F);
@@ -106,7 +107,7 @@ public class AccessoryItems {
     /* 机械标尺 */
 
     /* 自动安放器 */
-    /* 喷漆器 */
+    public static final Supplier<BaseCurioItem> PAINT_SPRAYER = registerCurio("paint_sprayer", builder -> builder.rarity(ORANGE).accessories(units(PAINT$SPRAYER))); // 喷漆器
 
     /* 向导巫毒娃娃 */
     /* 服装商巫毒娃娃 */

@@ -17,7 +17,6 @@ public abstract class ConnectedTextureBehaviour {
 	@Nullable
 	public abstract CTSpriteShiftEntry getShift(BlockState state, Direction direction, @NotNull TextureAtlasSprite sprite);
 
-	// TODO: allow more than one data type per state/face?
 	@Nullable
 	public abstract CTType getDataType(BlockAndTintGetter world, BlockPos pos, BlockState state, Direction direction);
 

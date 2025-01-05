@@ -20,6 +20,7 @@
         "block.AnvilBlockMixin",
         "block.BaseContainerBlockEntityMixin",
         "block.BlockBehaviour$BlockStateBaseMixin",
+        "block.BlockMixin",
         "entity.AbstractArrowMixin",
         "entity.AbstractMinecartMixin",
         "entity.DamageSourceMixin",
@@ -30,6 +31,7 @@
         "entity.PlayerMixin",
         "entity.ServerPlayerMixin",
         "entity.VillagerMixin",
+        "integration.adorned.CuriosServerPayloadHandlerMixin",
         "integration.terra_curio.AccessoriesAttachmentMixin",
         "integration.terra_curio.StarClockEntityMixin",
         "integration.terra_curio.WorkshopBlockMixin",
@@ -48,21 +50,26 @@
         "client.AdvancementWidgetMixin",
         "client.BlockModelShaperMixin",
         "client.ClientAdvancementsMixin",
+        "client.ClientEntityMixin",
         "client.ClientLevelMixin",
         "client.DeathScreenMixin",
         "client.GuiMixin",
+        "client.HumanoidArmorLayerMixin",
         "client.ItemRendererMixin",
         "client.LevelLoadingScreenMixin",
         "client.LocalPlayerMixin",
         "client.MinecraftMixin",
+        "client.ModelBlockRendererMixin",
         "client.MouseHandlerMixin",
         "client.MusicManagerMixin",
+        "client.SpriteLoaderMixin",
         "client.ToastComponent$ToastInstanceMixin",
         "client.WorldCreationUiStateMixin",
         "client.accessor.FontAccessor",
+        "integration.geckolib.InternalUtilMixin",
         "integration.terra_curio.InformationHandlerMixin"
     ],
     "injectors": {
         "defaultRequire": 1
-  }
+    }
 }

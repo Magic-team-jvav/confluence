@@ -6,19 +6,24 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import org.confluence.terraentity.entity.ai.goal.AccelerateOnSeeingGoal;
 import org.confluence.terraentity.entity.ai.goal.JumpAttack;
 import org.confluence.terraentity.entity.ai.goal.JumpOverBlockGoal;
 import org.confluence.terraentity.entity.monster.AbstractMonster;
 import org.confluence.terraentity.init.TEEntities;
+import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.constant.DefaultAnimations;
 
 import java.util.List;
 import java.util.function.Supplier;
+
+import static software.bernie.geckolib.constant.DefaultAnimations.*;
 
 public class LandMonsterPrefab extends AbstractPrefab {
 
@@ -26,18 +31,12 @@ public class LandMonsterPrefab extends AbstractPrefab {
             ()->new LandMonsterPrefab(20,2,1,30,0.5f,0.1f).getPrefab()
                     .setStepHeight(3.2f)
                     .setJumpStrength(0.8f)
-                    .addTarget((t,e)->{
-
-                        t.addGoal(1, new NearestAttackableTargetGoal<>(e, Player.class,false, LivingEntity::canBeSeenAsEnemy));
-
-                    })
+                    .addTarget((t,e)-> t.addGoal(1, new NearestAttackableTargetGoal<>(e, Player.class,false, LivingEntity::canBeSeenAsEnemy)))
                     .addGoal((g,e)-> {
                         g.addGoal(1, new JumpAttack(e, 3, 8));
                         g.addGoal(2, new JumpOverBlockGoal(e));
                         g.addGoal(3, new MeleeAttackGoal(e,  1f, true));
-
                         g.addGoal(7, new WaterAvoidingRandomStrollGoal(e, 1.0));
-
                     })
             ;
 
@@ -60,6 +59,28 @@ public class LandMonsterPrefab extends AbstractPrefab {
                         c.add(DefaultAnimations.genericIdleController(e));
                     })
             ;
+
+    public static Supplier<AbstractMonster.Builder> BLOOD_ZOMBIE_BUILDER =
+            ()->new LandMonsterPrefab(39,2,10,60,0.5f,0.1f).getPrefab()
+                    .setMovementSpeed(0.12f)
+                    .addTarget((t,e)-> {
+                        t.addGoal(1,new AccelerateOnSeeingGoal(e,0.55f));
+                        t.addGoal(2, new NearestAttackableTargetGoal<>(e, Player.class,false, LivingEntity::canBeSeenAsEnemy));
+
+                    })
+                    .setController((c,e)->{
+                        c.add(new AnimationController<>(e,10,state -> state.setAndContinue(!state.isMoving() ? DefaultAnimations.IDLE :
+                                e.clientTarget != null && e.clientTarget.isAlive()  ? RUN :WALK )
+                        ));
+                        c.add(DefaultAnimations.genericAttackAnimation(e,DefaultAnimations.ATTACK_STRIKE));
+                    })
+                    .addGoal((g,e)-> {
+                        g.addGoal(2, new JumpOverBlockGoal(e));
+                        g.addGoal(3, new MeleeAttackGoal(e,  0.8f, true));
+                        g.addGoal(7, new WaterAvoidingRandomStrollGoal(e, 1.0));
+                    });
+
+
     public LandMonsterPrefab(int health,int armor,int attack,int followRange,float knockBack,float knockbackResistance) {
         this(health,armor,attack,0.3f,followRange,knockBack,knockbackResistance);
     }
@@ -71,6 +92,9 @@ public class LandMonsterPrefab extends AbstractPrefab {
                 .setSafeFall(8)
 
                 .setMovementSpeed(moveSpeed)
+                .addTarget((t,e)->{
+                    t.addGoal(2,new HurtByTargetGoal(e, Monster.class));
+                })
                 .setController((c,e)->{
                     c.add(DefaultAnimations.genericWalkIdleController(e));
                 })

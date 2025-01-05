@@ -1,0 +1,10 @@
+{
+    "type": "neoforge:add_spawns",
+    "biomes":"confluence:the_corruption",
+    "spawners": {
+        "type": "terra_entity:decayeder",
+        "weight": 30,
+        "minCount": 1,
+        "maxCount": 1
+    }
+}

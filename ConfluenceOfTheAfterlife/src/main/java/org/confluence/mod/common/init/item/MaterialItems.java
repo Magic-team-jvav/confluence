@@ -2,15 +2,19 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.common.item.common.ColoredItem;
+import org.confluence.mod.common.item.common.ConversionItem;
 import org.confluence.mod.common.item.common.MushroomItem;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
 
 public class MaterialItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -71,40 +75,45 @@ public class MaterialItems {
     public static final DeferredItem<Item> SAPPHIRE = register("sapphire");
     public static final DeferredItem<Item> TOPAZ = register("topaz");
 
-    public static final DeferredItem<Item> STAR_PETALS = register("star_petals");
-    public static final DeferredItem<Item> FLOATING_WHEAT_HEADS = register("floating_wheat_heads");
+    public static final DeferredItem<Item> STAR_PETALS = register("star_petals",ModRarity.BLUE);
+    public static final DeferredItem<Item> FLOATING_WHEAT_HEADS = register("floating_wheat_heads",ModRarity.BLUE);
     public static final DeferredItem<Item> FALLING_STAR = register("falling_star");
-    public static final DeferredItem<Item> WEAVING_CLOUD_COTTON = register("weaving_cloud_cotton");
+    public static final DeferredItem<Item> WEAVING_CLOUD_COTTON = register("weaving_cloud_cotton",ModRarity.BLUE);
     public static final DeferredItem<Item> ROTTEN_CHUNK = register("rotten_chunk");
+    public static final DeferredItem<Item> WORM_TOOTH = register("worm_tooth");
     public static final DeferredItem<Item> VERTEBRA = register("vertebra");
-    public static final DeferredItem<Item> BLOOD_CLOT_POWDER = register("blood_clot_powder");
-    public static final DeferredItem<Item> ROTTEN_BONE = register("rotten_bone");
+    public static final DeferredItem<Item> BLOOD_CLOT_POWDER = register("blood_clot_powder",ModRarity.BLUE);
+    public static final DeferredItem<Item> ROTTEN_BONE = register("rotten_bone",ModRarity.BLUE);
+    public static final DeferredItem<Item> VILE_POWDER = ITEMS.register("vile_powder", () -> new ConversionItem(new Item.Properties(), Map.of(Blocks.SANDSTONE, NatureBlocks.EBONY_SANDSTONE.get(), Blocks.STONE, NatureBlocks.EBONY_STONE.get()), 5));
+    public static final DeferredItem<Item> VICIOUS_POWDER = register("vicious_powder");
+    public static final DeferredItem<Item> PURIFICATION_POWDER = register("purification_powder");
     public static final DeferredItem<Item> BLACK_INK = register("black_ink");
     public static final DeferredItem<Item> LEAD_NUGGET = register("lead_nugget");
     public static final DeferredItem<Item> PURPLE_MUCUS = register("purple_mucus");
     public static final DeferredItem<Item> SHARK_FIN = register("shark_fin");
     public static final DeferredItem<Item> ANTLION_MANDIBLE = register("antlion_mandible");
     public static final DeferredItem<Item> HOOK = register("hook");
+    public static final DeferredItem<Item> FILAMENTOUS_FIN = register("filamentous_fin");
     public static final DeferredItem<Item> LENS = register("lens");
     public static final DeferredItem<Item> BLACK_LENS = register("black_lens");
-    public static final DeferredItem<Item> STURDY_FOSSIL = register("sturdy_fossil");
-    public static final DeferredItem<Item> OPAL = register("opal");
-    public static final DeferredItem<Item> HEIM = register("heim");
-    public static final DeferredItem<Item> GELSTONE = register("gelstone");
-    public static final DeferredItem<Item> SPORE_ROOT = register("spore_root");
-    public static final DeferredItem<Item> WINTER_MARROW = register("winter_marrow");
-    public static final DeferredItem<Item> COLD_CRYSTAL = register("cold_crystal");
-    public static final DeferredItem<Item> SHADOW_SCALE = register("shadow_scale");
-    public static final DeferredItem<Item> TISSUE_SAMPLE = register("tissue_sample");
+    public static final DeferredItem<Item> STURDY_FOSSIL = register("sturdy_fossil",ModRarity.BLUE);
+    public static final DeferredItem<Item> OPAL = register("opal",ModRarity.BLUE);
+    public static final DeferredItem<Item> HEIM = register("heim",ModRarity.BLUE);
+    public static final DeferredItem<Item> GELSTONE = register("gelstone",ModRarity.BLUE);
+    public static final DeferredItem<Item> SPORE_ROOT = register("spore_root",ModRarity.BLUE);
+    public static final DeferredItem<Item> WINTER_MARROW = register("winter_marrow",ModRarity.BLUE);
+    public static final DeferredItem<Item> COLD_CRYSTAL = register("cold_crystal",ModRarity.BLUE);
+    public static final DeferredItem<Item> SHADOW_SCALE = register("shadow_scale",ModRarity.BLUE);
+    public static final DeferredItem<Item> TISSUE_SAMPLE = register("tissue_sample",ModRarity.BLUE);
 
-    public static final DeferredItem<Item> CRYSTAL_SHARDS_ITEM = register("crystal_shards_item");
-    public static final DeferredItem<Item> CURSED_FLAME = register("cursed_flame");
-    public static final DeferredItem<Item> ICHOR = register("ichor");
-    public static final DeferredItem<Item> PIXIE_DUST = register("pixie_dust");
+    public static final DeferredItem<Item> CRYSTAL_SHARDS_ITEM = register("crystal_shards_item",ModRarity.BLUE);
+    public static final DeferredItem<Item> CURSED_FLAME = register("cursed_flame",ModRarity.ORANGE);
+    public static final DeferredItem<Item> ICHOR = register("ichor",ModRarity.ORANGE);
+    public static final DeferredItem<Item> PIXIE_DUST = register("pixie_dust",ModRarity.BLUE);
 
-    public static final DeferredItem<Item> PEARL = register("pearl");
-    public static final DeferredItem<Item> BLACK_PEARL = register("black_pearl");
-    public static final DeferredItem<Item> PINK_PEARL = register("pink_pearl");
+    public static final DeferredItem<Item> PEARL = register("pearl", ModRarity.BLUE);
+    public static final DeferredItem<Item> BLACK_PEARL = register("black_pearl",ModRarity.BLUE);
+    public static final DeferredItem<Item> PINK_PEARL = register("pink_pearl",ModRarity.BLUE);
 
     // 草药
     public static final DeferredItem<Item> WATERLEAF = ITEMS.registerSimpleItem("waterleaf");

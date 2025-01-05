@@ -32,5 +32,10 @@ public class TEEnglishProvider extends LanguageProvider {
         add("itemGroup.terraentity.title", "tab.terraentity.name");
         add("message.terraentity.boss_spawn", "%s Has Awoken!");
         add("message.terraentity.boss_leave", "%s Have Been Defeated!");
+        add("message.terraentity.boss_discard", "Has Been Discarded！");
+
+        // Config
+        add("terra_entity.configuration.boss_clear_when_no_target", "Clear Boss When No Target");
+
     }
 }

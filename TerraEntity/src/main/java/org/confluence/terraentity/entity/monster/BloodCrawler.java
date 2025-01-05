@@ -5,6 +5,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -55,7 +56,7 @@ public class BloodCrawler extends Spider implements GeoEntity {
             .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE, 0.01)  // 召唤物品的几率
             .add(Attributes.KNOCKBACK_RESISTANCE, 0.8);     // 击退抗性
     }
-    public static boolean checkBloodCrawlerSpawn(EntityType<? extends BloodCrawler> type, LevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
+    public static boolean checkBloodCrawlerSpawn(EntityType<? extends Mob> type, LevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
         if (!(pLevel instanceof Level level)) {
             return false; // 如果 pLevel 不是 Level 的实例，返回 false
         }
@@ -71,6 +72,7 @@ public class BloodCrawler extends Spider implements GeoEntity {
 
         return true;
     }
+
     @Override
     protected SoundEvent getDeathSound() {
         return TESounds.BLOOD_CRAWLER_DEATH.get();

@@ -44,5 +44,4 @@ public class ModelSwapper {
 		block.getStateDefinition().getPossibleStates().forEach(state -> models.add(BlockModelShaper.stateToModelLocation(blockRl, state)));
 		return models;
 	}
-
 }

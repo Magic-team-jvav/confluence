@@ -106,6 +106,12 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(STURDY_FOSSIL_BLOCK.get());
 
             dropSelf(EXTRACTINATOR.get());
+            dropSelf(SKY_MILL.get());
+            dropSelf(HEAVY_WORK_BENCH.get());
+            dropSelf(HELLFORGE.get());
+            dropSelf(WEATHER_VANE.get());
+            dropSelf(ALCHEMY_TABLE.get());
+            dropSelf(LEAD_ANVIL.get());
             dropSelf(DEEPSLATE_PRESSURE_PLATE.get());
 
             add(SANCTIFICATION_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));

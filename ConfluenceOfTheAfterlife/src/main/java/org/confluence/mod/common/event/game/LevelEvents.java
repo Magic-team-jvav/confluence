@@ -14,12 +14,16 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.ChunkWatchEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
+import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.entity.projectile.bomb.ScarabBombEntity;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
 
 import java.util.List;
@@ -56,6 +60,15 @@ public final class LevelEvents {
                 List<ItemStack> drops = Block.getDrops(blockState, level, pos, event.getBlockEntity(), living, shears);
                 drops.forEach(itemStack -> Block.popResource(level, pos, itemStack));
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void chunkWatch$Watch(ChunkWatchEvent.Watch event) {
+        BrushData data = event.getLevel().getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap().get(event.getPos());
+        if (data != null && !data.colors().isEmpty()) {
+            data.ensureValid(event.getLevel());
+            BrushingColorPacketS2C.sendToClient(event.getPlayer(), event.getPos(), data, false);
         }
     }
 }

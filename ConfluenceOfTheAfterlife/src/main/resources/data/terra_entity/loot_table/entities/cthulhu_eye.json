@@ -6,7 +6,23 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:shield_of_cthulhu",
+          "name": "confluence:lesser_healing_potion",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "terra_curio:shield_of_cthulhu",
           "weight": 1
         }
       ]
@@ -36,7 +52,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:demonite_ingot",
+          "name": "confluence:raw_demonite",
           "functions": [
             {
               "function": "set_count",
@@ -56,7 +72,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:tr_crimson_ingot",
+          "name": "confluence:raw_tr_crimson",
           "functions": [
             {
               "function": "set_count",

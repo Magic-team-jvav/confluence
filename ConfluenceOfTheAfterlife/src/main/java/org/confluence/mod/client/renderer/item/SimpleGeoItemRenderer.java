@@ -22,6 +22,7 @@ public class SimpleGeoItemRenderer<T extends Item & GeoAnimatable> implements IC
         this.animation = animation;
     }
 
+    @SuppressWarnings("removal")
     @Override
     public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
         if (renderer == null) {

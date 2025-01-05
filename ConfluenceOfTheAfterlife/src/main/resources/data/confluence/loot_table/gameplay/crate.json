@@ -43,7 +43,7 @@
               ]
             }
           ],
-          "name": "confluence:jungle_box",
+          "name": "confluence:jungle_crate",
           "weight": 93
         },
         {
@@ -66,7 +66,7 @@
               ]
             }
           ],
-          "name": "confluence:sky_box",
+          "name": "confluence:sky_crate",
           "weight": 93
         },
         {
@@ -96,7 +96,7 @@
               ]
             }
           ],
-          "name": "confluence:oasis_box",
+          "name": "confluence:oasis_crate",
           "weight": 93
         },
         {
@@ -114,7 +114,7 @@
               ]
             }
           ],
-          "name": "confluence:sacred_box",
+          "name": "confluence:sacred_crate",
           "weight": 93
         },
         {
@@ -186,22 +186,22 @@
               ]
             }
           ],
-          "name": "confluence:ocean_box",
+          "name": "confluence:ocean_crate",
           "weight": 93
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:wooden_box",
+          "name": "confluence:wooden_crate",
           "weight":560
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:iron_box",
+          "name": "confluence:iron_crate",
           "weight":280
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:golden_box",
+          "name": "confluence:golden_crate",
           "weight":67
         },
         {
@@ -283,7 +283,7 @@
             }
           ],
 
-          "name": "confluence:freeze_box",
+          "name": "confluence:freeze_crate",
           "weight": 93
         },
         {
@@ -301,7 +301,7 @@
               ]
             }
           ],
-          "name": "confluence:tr_crimson_box",
+          "name": "confluence:tr_crimson_crate",
           "weight": 93
         },
         {
@@ -319,7 +319,7 @@
               ]
             }
           ],
-          "name": "confluence:corrupt_box",
+          "name": "confluence:corrupt_crate",
           "weight": 93
         }
       ],

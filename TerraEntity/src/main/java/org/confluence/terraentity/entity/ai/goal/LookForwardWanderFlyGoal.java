@@ -27,7 +27,7 @@ public class LookForwardWanderFlyGoal extends DemonEyeWanderGoal {
     public void tick(){
         super.tick();
 
-        mob.getLookControl().setLookAt(mob.position().add(mob.getDeltaMovement()));
+        mob.getLookControl().setLookAt(mob.position().add(mob.getDeltaMovement().scale(20).add(0,1,0)));
         mob.setYRot(mob.getYHeadRot());
 
 

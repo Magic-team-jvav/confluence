@@ -1,17 +1,23 @@
 package org.confluence.terraentity.entity.monster;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -30,10 +36,13 @@ public class AbstractMonster extends Monster implements GeoEntity {
     private int attackInternal = 0;
     private int _attackInternal = 20;
     public Builder builder;
+    public LivingEntity clientTarget;
+    public static final EntityDataAccessor<Integer> DATA_CLIENT_TARGET_DATA = SynchedEntityData.defineId(AbstractMonster.class, EntityDataSerializers.INT);
+
     public AbstractMonster(EntityType<? extends Monster> type, Level level,Builder builder) {
         super(type, level);
         this.builder = builder;
-        if (level != null && !level.isClientSide)
+        if (!level.isClientSide)
             this.registerGoals();
         this.navigation = createNavigation(level);
         this.setDiscardFriction(builder.noFriction);
@@ -54,6 +63,27 @@ public class AbstractMonster extends Monster implements GeoEntity {
 
     }
 
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_CLIENT_TARGET_DATA, 0);
+    }
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
+        if (DATA_CLIENT_TARGET_DATA.equals(key)) {
+            int id = entityData.get(DATA_CLIENT_TARGET_DATA);
+            if (id == 0) {
+                this.clientTarget = null;
+                return;
+            }
+            var entity = level().getEntity(id);
+            if (entity instanceof LivingEntity living)
+                this.clientTarget = living;
+        }
+
+    }
+    @Override
     protected void registerGoals() {
         if(builder!= null) builder.goals.forEach(g->g.accept(goalSelector,this));
         if(builder!= null) builder.targets.forEach(t->t.accept(targetSelector,this));
@@ -73,6 +103,43 @@ public class AbstractMonster extends Monster implements GeoEntity {
                 .add(Attributes.FLYING_SPEED)
 
                 ;
+    }
+    public static boolean checkFlyingFishSpawn(EntityType<? extends Mob> type, LevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
+        if (!(pLevel instanceof Level level)) {
+            return false; // 如果 pLevel 不是 Level 的实例，返回 false
+        }
+
+        if (!checkMobSpawnRules(type, pLevel, pSpawnType, pPos, pRandom)) {
+            return false;
+        }
+
+        // 判断是否下雨
+        if (!level.isRaining()) {
+            return false;
+        }
+
+        int y = pPos.getY();
+        if (y >= 260) {
+            return false; // 不能生成在 y = 260 或更高的位置
+        }
+
+        return true;
+    }
+    public static boolean checkRoutineMonsterSpawn(EntityType<? extends Mob> type, LevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
+        if (!(pLevel instanceof Level level)) {
+            return false; // 如果 pLevel 不是 Level 的实例，返回 false
+        }
+
+        if (!checkMobSpawnRules(type, pLevel, pSpawnType, pPos, pRandom)) {
+            return false;
+        }
+
+        int y = pPos.getY();
+        if (y >= 260) {
+            return false; // 不能生成在 y = 260 或更高的位置
+        }
+
+        return true;
     }
 /*
     public static boolean checkBloodCrawlerSpawn(EntityType<? extends CrimsonKemera> type, LevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
@@ -140,7 +207,12 @@ public class AbstractMonster extends Monster implements GeoEntity {
         super.tick();
 
         if(builder!=null && builder.ticker!=null) builder.ticker.accept(this);
-
+        if(!level().isClientSide){
+            if(getTarget() != clientTarget){
+                clientTarget = getTarget();
+                entityData.set(DATA_CLIENT_TARGET_DATA, clientTarget == null? 0 : clientTarget.getId());
+            }
+        }
         if(!level().isClientSide && --attackInternal<0 && builder.attachAttack){
             var entities = level().getEntities(this, this.getBoundingBox());
             if (!entities.isEmpty()) {

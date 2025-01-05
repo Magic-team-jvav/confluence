@@ -45,6 +45,7 @@ public class TEItems {
 
     public static final DeferredItem<Item> FLYING_FISH_SPAWN_EGG = register("flying_fish_spawn_egg", TEEntities.FLYING_FISH, 0xffe8fa, 0x002348);
     public static final DeferredItem<Item> DRIPPLER_SPAWN_EGG = register("drippler_spawn_egg", TEEntities.DRIPPLER, 0xe9dbc2, 0x830022);
+    public static final DeferredItem<Item> BLOOD_ZOMBIE_SPAWN_EGG = register("blood_zombie_spawn_egg", TEEntities.BLOOD_ZOMBIE, 0xe9dbc2, 0x830022);
     public static final DeferredItem<Item> CRIMSON_KEMERA_EGG = register("crimson_kemera_egg", TEEntities.CRIMSON_KEMERA, 0xa75049, 0x65292c);
     public static final DeferredItem<Item> EATER_OF_SOULS_SPAWN_EGG = register("eater_of_souls_spawn_egg", TEEntities.EATER_OF_SOULS, 0x5d478b, 0x8968cd);
     public static final DeferredItem<Item> FACE_MONSTER_EGG = register("face_monster_egg", TEEntities.FACE_MONSTER, 0xa75049, 0x65292c);
@@ -53,6 +54,7 @@ public class TEItems {
 
     public static final DeferredItem<Item> KING_SLIME_SPAWN_EGG = register("king_slime_spawn_egg", TEEntities.KING_SLIME, 0x73bcf4, 0xf8e234);
     public static final DeferredItem<Item> CTHULHU_EYE_SPAWN_EGG = register("cthulhu_eye_spawn_egg", TEEntities.CTHULHU_EYE, 0xffffff, 0xab0d0d);
+    public static final DeferredItem<Item> EATER_OF_WORLD_SPAWN_EGG = register("eater_of_world_spawn_egg", TEEntities.EATER_OF_WORLD, 0x5d478b, 0x8968cd);
 
     public static final DeferredItem<Item> DEBUG_ITEM = SPAWN_EGGS.register("debug_item", () -> new DebugItem(new Item.Properties().stacksTo(1)));
 

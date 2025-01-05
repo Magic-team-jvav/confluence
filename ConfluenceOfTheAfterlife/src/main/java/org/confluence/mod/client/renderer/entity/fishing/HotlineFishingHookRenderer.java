@@ -2,6 +2,7 @@ package org.confluence.mod.client.renderer.entity.fishing;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -16,6 +17,7 @@ import static org.confluence.mod.client.renderer.entity.fishing.BaseFishingHookR
 
 public class HotlineFishingHookRenderer extends EntityRenderer<HotlineFishingHook> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/fishing/hotline.png");
+    private static final RenderType GLOW = RenderType.entityCutoutNoCull(Confluence.asResource("textures/entity/fishing/hotline_glow.png"));
     private final HotlineFishingHookModel model;
 
     public HotlineFishingHookRenderer(EntityRendererProvider.Context pContext) {
@@ -31,7 +33,7 @@ public class HotlineFishingHookRenderer extends EntityRenderer<HotlineFishingHoo
     @Override
     public void render(@NotNull HotlineFishingHook pEntity, float pEntityYaw, float pPartialTick, @NotNull PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
         model.renderToBuffer(pPoseStack, pBuffer.getBuffer(model.renderType(TEXTURE)), pPackedLight, OverlayTexture.NO_OVERLAY);
-        // todo glowing
+        model.renderToBuffer(pPoseStack, pBuffer.getBuffer(GLOW), 0xF000F0, OverlayTexture.NO_OVERLAY);
         renderString(entityRenderDispatcher, pEntity, pPartialTick, pPoseStack, pBuffer, IntegerRGB.ORANGE);
     }
 }

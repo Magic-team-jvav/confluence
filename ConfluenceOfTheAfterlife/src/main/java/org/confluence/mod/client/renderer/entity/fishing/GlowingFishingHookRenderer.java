@@ -11,30 +11,31 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.fishing.GlowingFishingHookModel;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.util.color.IntegerRGB;
+import org.confluence.terra_curio.client.animate.ExpertColorAnimation;
 import org.jetbrains.annotations.NotNull;
 
 import static org.confluence.mod.client.renderer.entity.fishing.BaseFishingHookRenderer.renderString;
 
 public class GlowingFishingHookRenderer extends EntityRenderer<CurioFishingHook> {
     private static final ResourceLocation[] TEXTURES = new ResourceLocation[]{
-        Confluence.asResource("textures/entity/fishing/common.png"),
-        Confluence.asResource("textures/entity/fishing/glowing.png"),
-        Confluence.asResource("textures/entity/fishing/lava_moss.png"),
-        Confluence.asResource("textures/entity/fishing/helium_moss.png"),
-        Confluence.asResource("textures/entity/fishing/neon_moss.png"),
-        Confluence.asResource("textures/entity/fishing/argon_moss.png"),
-        Confluence.asResource("textures/entity/fishing/krypton_moss.png"),
-        Confluence.asResource("textures/entity/fishing/xenon_moss.png")
+            Confluence.asResource("textures/entity/fishing/common.png"),
+            Confluence.asResource("textures/entity/fishing/glowing.png"),
+            Confluence.asResource("textures/entity/fishing/lava_moss.png"),
+            Confluence.asResource("textures/entity/fishing/helium_moss.png"),
+            Confluence.asResource("textures/entity/fishing/neon_moss.png"),
+            Confluence.asResource("textures/entity/fishing/argon_moss.png"),
+            Confluence.asResource("textures/entity/fishing/krypton_moss.png"),
+            Confluence.asResource("textures/entity/fishing/xenon_moss.png")
     };
     private static final RenderType[] GLOWS = new RenderType[]{
-        null,
-        RenderType.entityCutoutNoCull(Confluence.asResource("textures/entity/fishing/glowing_glow.png")), // todo glowing
-        RenderType.entityCutoutNoCull(Confluence.asResource("textures/entity/fishing/lava_moss_glow.png")), // todo glowing
-        RenderType.entityCutoutNoCull(Confluence.asResource("textures/entity/fishing/helium_moss_glow.png")), // 无需发光
-        RenderType.entityCutoutNoCull(Confluence.asResource("textures/entity/fishing/neon_moss_glow.png")), // todo glowing
-        RenderType.entityCutoutNoCull(Confluence.asResource("textures/entity/fishing/argon_moss_glow.png")), // todo glowing
-        RenderType.entityCutoutNoCull(Confluence.asResource("textures/entity/fishing/krypton_moss_glow.png")), // todo glowing
-        RenderType.entityCutoutNoCull(Confluence.asResource("textures/entity/fishing/xenon_moss_glow.png")) // todo glowing
+            null,
+            RenderType.entityCutoutNoCull(Confluence.asResource("textures/entity/fishing/glowing_glow.png")),
+            RenderType.entityCutoutNoCull(Confluence.asResource("textures/entity/fishing/lava_moss_glow.png")),
+            RenderType.entityCutoutNoCull(Confluence.asResource("textures/entity/fishing/helium_moss_glow.png")),
+            RenderType.entityCutoutNoCull(Confluence.asResource("textures/entity/fishing/neon_moss_glow.png")),
+            RenderType.entityCutoutNoCull(Confluence.asResource("textures/entity/fishing/argon_moss_glow.png")),
+            RenderType.entityCutoutNoCull(Confluence.asResource("textures/entity/fishing/krypton_moss_glow.png")),
+            RenderType.entityCutoutNoCull(Confluence.asResource("textures/entity/fishing/xenon_moss_glow.png"))
     };
     private final GlowingFishingHookModel mossModel;
     private final GlowingFishingHookModel commonModel;
@@ -66,12 +67,10 @@ public class GlowingFishingHookRenderer extends EntityRenderer<CurioFishingHook>
     @Override
     public void render(@NotNull CurioFishingHook pEntity, float pEntityYaw, float pPartialTick, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBuffer, int pPackedLight) {
         int id = pEntity.getVariant().getId();
-        ResourceLocation texture = TEXTURES[id];
         GlowingFishingHookModel model = getModel(pEntity);
-        model.renderToBuffer(pPoseStack, pBuffer.getBuffer(model.renderType(texture)), pPackedLight, OverlayTexture.NO_OVERLAY);
-        RenderType glow = GLOWS[id];
-        if (glow != null) {
-            // todo glowing
+        model.renderToBuffer(pPoseStack, pBuffer.getBuffer(model.renderType(TEXTURES[id])), pPackedLight, OverlayTexture.NO_OVERLAY);
+        if (id != 0) {
+            model.renderToBuffer(pPoseStack, pBuffer.getBuffer(GLOWS[id]), 0xF000F0, OverlayTexture.NO_OVERLAY, id == 3 ? ExpertColorAnimation.INSTANCE.getColor() : -1);
         }
         renderString(entityRenderDispatcher, pEntity, pPartialTick, pPoseStack, pBuffer, IntegerRGB.BLACK);
     }

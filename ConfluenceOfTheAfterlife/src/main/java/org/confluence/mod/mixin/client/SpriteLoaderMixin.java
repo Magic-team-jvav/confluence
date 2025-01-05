@@ -70,12 +70,12 @@ public abstract class SpriteLoaderMixin {
         int i1 = u - d;
         float x;
         int y;
-        if (94.72F < i1) {
+        if (94 < i1) { // 94.72F < i1
             x = 94.72F / i1;
             y = 105;
         } else {
             x = 1.0F;
-            y = 199 - i1;
+            y = 199 - i1; // 94.72F - i1 + 105
         }
         for (int i = 0; i < height; i++) {
             int i2 = i * width;

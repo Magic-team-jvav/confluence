@@ -21,14 +21,7 @@ public final class LocalBrushData {
     private static final Hashtable<BlockPos, Object2IntOpenHashMap<Direction>> DATA = new Hashtable<>();
 
     public static void putData(BlockPos pos, Direction facing, int color) {
-        Object2IntOpenHashMap<Direction> map = DATA.computeIfAbsent(pos, pos1 -> new Object2IntOpenHashMap<>());
-        if (facing == null) {
-            for (Direction dir : ModUtils.DIRECTIONS) {
-                map.put(dir, color);
-            }
-        } else {
-            map.put(facing, color);
-        }
+        DATA.computeIfAbsent(pos, pos1 -> new Object2IntOpenHashMap<>()).put(facing, color);
     }
 
     public static @Nullable Set<Direction> getDirs(BlockPos pos) {
@@ -51,15 +44,10 @@ public final class LocalBrushData {
 
     public static void removeData(BlockPos pos, Direction facing) {
         Object2IntOpenHashMap<Direction> map = DATA.get(pos);
-        if (map == null) return;
-        if (facing == null) {
-            for (Direction dir : ModUtils.DIRECTIONS) {
-                map.removeInt(dir);
-            }
-        } else {
+        if (map != null) {
             map.removeInt(facing);
+            if (map.isEmpty()) DATA.remove(pos);
         }
-        if (map.isEmpty()) DATA.remove(pos);
     }
 
     public static void clear() {
@@ -73,7 +61,7 @@ public final class LocalBrushData {
             int[] colors = entry.getValue();
             for (int i = 0; i < 6; i++) {
                 int color = colors[i];
-                Direction facing = Direction.from3DDataValue(i);
+                Direction facing = ModUtils.DIRECTIONS[i];
                 if (color == -2) {
                     removeData(pos, facing);
                 } else if (color != -1) {

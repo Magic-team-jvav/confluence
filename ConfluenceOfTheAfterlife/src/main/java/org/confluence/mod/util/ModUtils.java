@@ -91,12 +91,12 @@ public final class ModUtils {
     }
 
     public static void dropMoney(int amount, double x, double y, double z, Level level) {
-        int copper_count = amount % 9;
-        int i = ((amount - copper_count) / 9);
-        int silver_count = i % 9;
-        int j = ((i - silver_count) / 9);
-        int golden_count = j % 9;
-        int k = (j - golden_count) / 9;
+        int copper_count = amount % 99;
+        int i = ((amount - copper_count) / 99);
+        int silver_count = i % 99;
+        int j = ((i - silver_count) / 99);
+        int golden_count = j % 99;
+        int k = (j - golden_count) / 99;
         createItemEntity(ModItems.COPPER_COIN.get(), copper_count, x, y, z, level, 0);
         createItemEntity(ModItems.SILVER_COIN.get(), silver_count, x, y, z, level, 0);
         createItemEntity(ModItems.GOLDEN_COIN.get(), golden_count, x, y, z, level, 0);

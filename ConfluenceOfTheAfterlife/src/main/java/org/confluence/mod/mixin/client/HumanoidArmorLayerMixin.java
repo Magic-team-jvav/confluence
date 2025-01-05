@@ -2,29 +2,63 @@ package org.confluence.mod.mixin.client;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 import static org.confluence.mod.util.ModUtils.getSlotIndex;
 
 @Mixin(HumanoidArmorLayer.class)
 public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends HumanoidModel<T>> {
+    @Unique
+    private ExtraInventory confluence$currentExtraInventory = null;
+    @Unique
+    private LivingEntity confluence$currentEntity = null;
+
     @WrapOperation(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;"))
     private ItemStack wrapItem(LivingEntity instance, EquipmentSlot slot, Operation<ItemStack> original) {
         if (AbstractClientPlayer.class.isAssignableFrom(instance.getClass())) {
             int index = getSlotIndex(slot);
             if (index != -1) {
-                ItemStack vanityArmor = instance.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmor(index);
+                this.confluence$currentExtraInventory = instance.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+                this.confluence$currentEntity = instance;
+                ItemStack vanityArmor = confluence$currentExtraInventory.getVanityArmor(index);
                 if (!vanityArmor.isEmpty()) return vanityArmor;
             }
         }
         return original.call(instance, slot);
+    }
+
+    @WrapOperation(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/client/extensions/common/IClientItemExtensions;getArmorLayerTintColor(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ArmorMaterial$Layer;II)I", remap = false))
+    private int dye(IClientItemExtensions instance, ItemStack stack, LivingEntity entity, ArmorMaterial.Layer layer, int layerIdx, int fallbackColor, Operation<Integer> original, @Local(argsOnly = true) EquipmentSlot slot) {
+        if (AbstractClientPlayer.class.isAssignableFrom(entity.getClass())) {
+            int index = getSlotIndex(slot);
+            if (index != -1) {
+                ItemStack vanityArmorDye;
+                if (confluence$currentEntity == entity) {
+                    vanityArmorDye = confluence$currentExtraInventory.getVanityArmorDye(index);
+                } else {
+                    vanityArmorDye = entity.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmorDye(index);
+                }
+                this.confluence$currentExtraInventory = null;
+                this.confluence$currentEntity = null;
+                if (!vanityArmorDye.isEmpty() && vanityArmorDye.getItem() instanceof BaseDyeItem dyeItem) {
+                    return dyeItem.color;
+                }
+            }
+        }
+        return original.call(instance, stack, entity, layer, layerIdx, fallbackColor);
     }
 }

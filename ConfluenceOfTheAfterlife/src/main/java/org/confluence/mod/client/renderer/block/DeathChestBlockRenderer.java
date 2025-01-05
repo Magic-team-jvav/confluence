@@ -3,6 +3,7 @@ package org.confluence.mod.client.renderer.block;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
@@ -16,10 +17,12 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.DeathChestBlock;
 import org.confluence.terra_curio.client.handler.InformationHandler;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Set;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class DeathChestBlockRenderer extends ChestRenderer<DeathChestBlock.Entity> { // 死人箱没有上锁变种
     public static final Material DEATH_GOLDEN = chest("death_golden");
     public static final Material DEATH_GOLDEN_LEFT = chest("death_golden_left");
@@ -55,19 +58,19 @@ public class DeathChestBlockRenderer extends ChestRenderer<DeathChestBlock.Entit
     }
 
     @Override
-    public boolean shouldRenderOffScreen(@NotNull DeathChestBlock.Entity pBlockEntity) {
+    public boolean shouldRenderOffScreen(DeathChestBlock.Entity pBlockEntity) {
         return InformationHandler.hasMechanicalView();
     }
 
     @Override
-    public boolean shouldRender(@NotNull DeathChestBlock.Entity pBlockEntity, @NotNull Vec3 pCameraPos) {
+    public boolean shouldRender(DeathChestBlock.Entity pBlockEntity, Vec3 pCameraPos) {
         return InformationHandler.hasMechanicalView()
             ? pBlockEntity.getBlockPos().getCenter().multiply(1.0, 0.0, 1.0).closerThan(pCameraPos.multiply(1.0, 0.0, 1.0), getViewDistance())
             : super.shouldRender(pBlockEntity, pCameraPos);
     }
 
     @Override
-    public void render(DeathChestBlock.@NotNull Entity pBlockEntity, float pPartialTick, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+    public void render(DeathChestBlock.Entity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
         super.render(pBlockEntity, pPartialTick, pPoseStack, pBuffer, pPackedLight, pPackedOverlay);
         if (InformationHandler.hasMechanicalView()) {
             long gameTime = pBlockEntity.getLevel().getGameTime();
@@ -91,14 +94,14 @@ public class DeathChestBlockRenderer extends ChestRenderer<DeathChestBlock.Entit
     }
 
     @Override
-    protected @NotNull Material getMaterial(DeathChestBlock.Entity blockEntity, @NotNull ChestType chestType) {
+    protected Material getMaterial(DeathChestBlock.Entity blockEntity, ChestType chestType) {
         return switch (blockEntity.variant) {
-            default -> chooseMaterial(chestType, DEATH_GOLDEN, DEATH_GOLDEN_LEFT, DEATH_GOLDEN_RIGHT);
             case UNLOCKED_SHADOW -> chooseMaterial(chestType, DEATH_SHADOW, DEATH_SHADOW_LEFT, DEATH_SHADOW_RIGHT);
             case UNLOCKED_FROZEN -> chooseMaterial(chestType, DEATH_FROZEN, DEATH_FROZEN_LEFT, DEATH_FROZEN_RIGHT);
             case UNLOCKED_WATER -> chooseMaterial(chestType, DEATH_WATER, DEATH_WATER_LEFT, DEATH_WATER_RIGHT);
             case UNLOCKED_SKYWARE -> chooseMaterial(chestType, DEATH_SKYWARE, DEATH_SKYWARE_LEFT, DEATH_SKYWARE_RIGHT);
             case UNLOCKED_LVY -> chooseMaterial(chestType, DEATH_LVY, DEATH_LVY_LEFT, DEATH_LVY_RIGHT);
+            default -> chooseMaterial(chestType, DEATH_GOLDEN, DEATH_GOLDEN_LEFT, DEATH_GOLDEN_RIGHT);
         };
     }
 

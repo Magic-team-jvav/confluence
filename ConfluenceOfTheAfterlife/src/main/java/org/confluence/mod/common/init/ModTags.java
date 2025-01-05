@@ -41,10 +41,10 @@ public final class ModTags {
     }
 
     public static class Items {
-        public static final TagKey<Item> INGOTS_TIN = neoforgeTag("ingots/tin");
-        public static final TagKey<Item> INGOTS_SILVER = neoforgeTag("ingots/silver");
-        public static final TagKey<Item> INGOTS_TUNGSTEN = neoforgeTag("ingots/tungsten");
-        public static final TagKey<Item> INGOTS_PLATINUM = neoforgeTag("ingots/platinum");
+        public static final TagKey<Item> INGOTS_TIN = c("ingots/tin");
+        public static final TagKey<Item> INGOTS_SILVER = c("ingots/silver");
+        public static final TagKey<Item> INGOTS_TUNGSTEN = c("ingots/tungsten");
+        public static final TagKey<Item> INGOTS_PLATINUM = c("ingots/platinum");
 
         public static final TagKey<Item> COINS = register("coins");
         public static final TagKey<Item> AMMO = register("ammo");
@@ -104,8 +104,8 @@ public final class ModTags {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath("curios", id));
         }
 
-        private static TagKey<Item> neoforgeTag(String name) {
-            return ItemTags.create(ResourceLocation.fromNamespaceAndPath("neoforge", name));
+        private static TagKey<Item> c(String name) {
+            return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
         }
 
         private static TagKey<Item> register(String id) {

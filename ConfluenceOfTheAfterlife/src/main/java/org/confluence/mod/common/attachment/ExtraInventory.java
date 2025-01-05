@@ -29,7 +29,6 @@ public class ExtraInventory extends ItemStackHandler implements Container {
 
     private int sizeAccessoryDye = 0;
     private transient boolean initialized = false;
-    private transient ServerPlayer serverPlayer;
     private transient NonNullList<ItemStack> previousStacks;
     private transient boolean dirty;
 
@@ -133,7 +132,6 @@ public class ExtraInventory extends ItemStackHandler implements Container {
     }
 
     public void initialize(ServerPlayer serverPlayer) {
-        this.serverPlayer = serverPlayer;
         if (!initialized) {
             int accessoryDye = CuriosApi.getCuriosInventory(serverPlayer).map(handler -> {
                 ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);

@@ -5,6 +5,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.sword.LightSaber;
 import software.bernie.geckolib.model.GeoModel;
 
+@SuppressWarnings("removal")
 public class LightSaberModel extends GeoModel<LightSaber> {
     public static final ResourceLocation barModel = Confluence.asResource("geo/item/light_saber_bar.geo.json");
     public static final ResourceLocation model = Confluence.asResource("geo/item/light_saber.geo.json");
@@ -29,6 +30,4 @@ public class LightSaberModel extends GeoModel<LightSaber> {
     public ResourceLocation getAnimationResource(LightSaber animatable) {
         return animation;
     }
-
-
 }

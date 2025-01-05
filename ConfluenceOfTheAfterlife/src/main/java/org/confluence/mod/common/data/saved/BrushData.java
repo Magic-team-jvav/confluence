@@ -10,7 +10,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.function.Function;
@@ -92,9 +91,10 @@ public record BrushData(Map<BlockPos, int[]> colors) {
         int index = facing.get3DDataValue();
         boolean b = list[index] != -1;
         list[index] = -1;
-        if (Arrays.stream(list).noneMatch(c -> c == -1)) {
-            colors.remove(pos);
+        for (int c : list) {
+            if (c != -1) return b;
         }
+        colors.remove(pos);
         return b;
     }
 

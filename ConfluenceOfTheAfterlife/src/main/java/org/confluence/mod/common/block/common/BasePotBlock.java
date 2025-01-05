@@ -301,7 +301,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
             if (level.random.nextBoolean()) {
                 item = ArrowItems.UNHOLY_ARROW.get();
             } else {
-                item = level.random.nextBoolean() ? TGItems.SILVER_BULLET.get() : TGItems.TUNGSTEN_BULLET.get();
+                item = level.random.nextBoolean() ? TGItems.MUSKET_BULLET.get() : TGItems.MUSKET_BULLET.get();  // todo 子弹
             }
         }
         ModUtils.createItemEntity(item, amount, center.x, center.y, center.z, level, 0);

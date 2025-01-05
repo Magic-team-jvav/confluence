@@ -1,0 +1,20 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:brick_layer"
+        },
+        {
+            "item": "terra_curio:extendo_grip"
+        },
+        {
+            "item": "confluence:paint_sprayer"
+        },
+        {
+            "item": "terra_curio:portable_cement_mixer"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:architect_gizmo_pack"
+    }
+}

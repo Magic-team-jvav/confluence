@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
@@ -34,11 +35,14 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.entity.MoneyHoleEntity;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.item.ArrowItems;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.util.ModUtils;
+import org.confluence.terra_guns.common.init.TGItems;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -147,11 +151,11 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     private boolean summonHole(Level level, Vec3 center) {
-//        if (level.random.nextFloat() < moneyHoleChance) {
-//            MoneyHoleEntity moneyHole = new MoneyHoleEntity(level, center);
-//            level.addFreshEntity(moneyHole);
-//            return true;
-//        } todo
+        if (level.random.nextFloat() < moneyHoleChance) {
+            MoneyHoleEntity moneyHole = new MoneyHoleEntity(level, center);
+            level.addFreshEntity(moneyHole);
+            return true;
+        }
         return false;
     }
 
@@ -285,17 +289,21 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     private boolean dropAmmo(Level level, Vec3 center) {
-//        int amount = level.random.nextInt(10, 21);
-//        Item item = Items.ARROW;
-//        boolean hardCore = ConfluenceData.get((ServerLevel) level).isHardcore();
-//        if (level.random.nextBoolean()) {
-//            item = hardCore ? ModItems.GRENADE.get() : ModItems.SHURIKEN.get();
-//        } else if (level.dimension() == Level.NETHER) {
-//            // 如果位于地狱，它会被狱炎箭替代
-//        } else if (hardCore) {
-//            // 被邪箭或银子弹（在包含银的世界中）/ 钨子弹（在包含钨的世界中）（箭或子弹的几率各为 50%）
-//        }
-//        ModUtils.createItemEntity(item, amount, center.x, center.y, center.z, level, 0); todo
+        int amount = level.random.nextInt(10, 21);
+        Item item = Items.ARROW;
+        boolean hardCore = ConfluenceData.get((ServerLevel) level).isHardcore();
+        if (level.random.nextBoolean()) {
+            item = hardCore ? ConsumableItems.GRENADE.get() : ConsumableItems.SHURIKEN.get();
+        } else if (level.dimension() == Level.NETHER) {
+            item = ArrowItems.HELLFIRE_ARROW.get();
+        } else if (hardCore) {
+            if (level.random.nextBoolean()) {
+                item = ArrowItems.UNHOLY_ARROW.get();
+            } else {
+                item = level.random.nextBoolean() ? TGItems.SILVER_BULLET.get() : TGItems.TUNGSTEN_BULLET.get();
+            }
+        }
+        ModUtils.createItemEntity(item, amount, center.x, center.y, center.z, level, 0);
         return true;
     }
 

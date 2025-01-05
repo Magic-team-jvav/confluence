@@ -7,18 +7,18 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModTags;
 
 public class ManaSicknessEffect extends MobEffect {
     public ManaSicknessEffect() {
         super(MobEffectCategory.HARMFUL, 0x0000FF);
     }
 
-    // todo
     public static float apply(DamageSource damageSource, float amount) {
         float multiply = 1.0F;
         if (damageSource.getEntity() instanceof Player player) {
             MobEffectInstance manaIssue = player.getEffect(ModEffects.MANA_SICKNESS);
-            if (manaIssue != null && (damageSource.is(DamageTypes.MAGIC)/* || player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof IManaWeapon*/)) {
+            if (manaIssue != null && (damageSource.is(DamageTypes.MAGIC) || player.getMainHandItem().is(ModTags.Items.MANA_WEAPON))) {
                 int duration = manaIssue.getDuration();
                 if (duration == -1) {
                     multiply = 0.5F;

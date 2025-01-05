@@ -153,6 +153,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     private boolean summonHole(Level level, Vec3 center) {
         if (level.random.nextFloat() < moneyHoleChance) {
             MoneyHoleEntity moneyHole = new MoneyHoleEntity(level, center);
+            moneyHole.setDeltaMovement(0.0, 0.2, 0.0);
             level.addFreshEntity(moneyHole);
             return true;
         }

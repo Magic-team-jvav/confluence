@@ -3,12 +3,25 @@ package org.confluence.mod.common.data.saved;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.ChunkPos;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.command.EnumArgument;
+import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
+
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Set;
 
 import static org.confluence.mod.common.data.saved.ConfluenceData.STAR_PHASES_SIZE;
 
@@ -73,6 +86,50 @@ public class ConfluenceCommand {
                     ConfluenceData.get(context.getSource().getLevel()).setMeteorite(location, tickUntilLanding);
                     return 1;
                 }))))
+                .then(Commands.literal("paint").then(Commands.argument("start", BlockPosArgument.blockPos()).then(Commands.argument("end", BlockPosArgument.blockPos())
+                        .then(Commands.literal("brush")
+                                .then(Commands.argument("face", EnumArgument.enumArgument(Direction.class)).then(Commands.argument("color", IntegerArgumentType.integer()).executes(context -> {
+                                    Direction face = context.getArgument("face", Direction.class);
+                                    int color = IntegerArgumentType.getInteger(context, "color");
+                                    int[] list = BrushData.createColor(-1);
+                                    list[face.get3DDataValue()] = color;
+                                    return fillPaints(context, list);
+                                })))
+                                .then(Commands.argument("color", IntegerArgumentType.integer()).executes(context -> {
+                                    int color = IntegerArgumentType.getInteger(context, "color");
+                                    int[] list = BrushData.createColor(color);
+                                    return fillPaints(context, list);
+                                }))
+                        )
+                        .then(Commands.literal("scraper")
+                                .then(Commands.argument("face", EnumArgument.enumArgument(Direction.class)).executes(context -> {
+                                    Direction face = context.getArgument("face", Direction.class);
+                                    int[] list = BrushData.createColor(-1);
+                                    list[face.get3DDataValue()] = -2;
+                                    return fillPaints(context, list);
+                                }))
+                                .executes(context -> fillPaints(context, BrushingColorPacketS2C.CLEAR_COLOR))
+                        )
+                )))
         );
+    }
+
+    private static int fillPaints(CommandContext<CommandSourceStack> context, int[] list) throws CommandSyntaxException {
+        BlockPos start = BlockPosArgument.getLoadedBlockPos(context, "start");
+        BlockPos end = BlockPosArgument.getLoadedBlockPos(context, "end");
+        Map<BlockPos, int[]> colors = new Hashtable<>();
+        Set<ChunkPos> chunkPosSet = new HashSet<>();
+        for (BlockPos blockPos : BlockPos.betweenClosed(start, end)) {
+            colors.put(blockPos.immutable(), list);
+            chunkPosSet.add(new ChunkPos(blockPos));
+        }
+        BrushData brushData = new BrushData(colors);
+        ServerLevel level = context.getSource().getLevel();
+        Map<ChunkPos, BrushData> dataMap = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap();
+        for (ChunkPos chunkPos : chunkPosSet) {
+            dataMap.computeIfAbsent(chunkPos, pos -> new BrushData(new Hashtable<>())).merge(brushData);
+            PacketDistributor.sendToPlayersTrackingChunk(level, chunkPos, new BrushingColorPacketS2C(brushData));
+        }
+        return colors.size();
     }
 }

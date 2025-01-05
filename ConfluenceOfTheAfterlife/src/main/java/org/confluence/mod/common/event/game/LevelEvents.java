@@ -66,7 +66,7 @@ public final class LevelEvents {
     @SubscribeEvent
     public static void chunkWatch$Watch(ChunkWatchEvent.Watch event) {
         BrushData data = event.getLevel().getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap().get(event.getPos());
-        if (data != null) {
+        if (data != null && !data.colors().isEmpty()) {
             data.ensureValid(event.getLevel());
             BrushingColorPacketS2C.sendToClient(event.getPlayer(), event.getPos(), data, false);
         }

@@ -1,6 +1,5 @@
 package org.confluence.mod.client.textures;
 
-import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -69,20 +68,16 @@ public final class LocalBrushData {
 
     public static void handlePacket(BrushingColorPacketS2C packet) {
         Set<SectionPos> sectionPoses = new HashSet<>();
-        for (Map.Entry<BlockPos, IntArrayList> entry : packet.data().colors().entrySet()) {
+        for (Map.Entry<BlockPos, int[]> entry : packet.data().colors().entrySet()) {
             BlockPos pos = entry.getKey();
-            if (entry.getValue().isEmpty()) {
-                removeData(pos);
-            } else {
-                IntArrayList colors = entry.getValue();
-                for (int i = 0; i < 6; i++) {
-                    int color = colors.getInt(i);
-                    Direction facing = Direction.from3DDataValue(i);
-                    if (color == -2) {
-                        removeData(pos, facing);
-                    } else if (color != -1) {
-                        putData(pos, facing, color);
-                    }
+            int[] colors = entry.getValue();
+            for (int i = 0; i < 6; i++) {
+                int color = colors[i];
+                Direction facing = Direction.from3DDataValue(i);
+                if (color == -2) {
+                    removeData(pos, facing);
+                } else if (color != -1) {
+                    putData(pos, facing, color);
                 }
             }
             sectionPoses.add(SectionPos.of(pos));

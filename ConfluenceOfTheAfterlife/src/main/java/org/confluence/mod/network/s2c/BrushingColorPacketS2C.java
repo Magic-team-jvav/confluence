@@ -30,14 +30,14 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
         @Override
         public @NotNull BrushingColorPacketS2C decode(RegistryFriendlyByteBuf buffer) {
             int size = buffer.readInt();
-            Map<BlockPos, IntArrayList> map = new Hashtable<>();
+            Map<BlockPos, int[]> map = new Hashtable<>();
             for (int i = 0; i < size; i++) {
-                IntArrayList list = map.computeIfAbsent(buffer.readBlockPos(), BrushData.COMPUTE);
+                int[] list = map.computeIfAbsent(buffer.readBlockPos(), BrushData.COMPUTE);
                 byte face = buffer.readByte();
                 for (int l = 0; l < 6; l++) {
                     int m = 1 << l;
                     if ((face & m) == m) {
-                        list.set(ModUtils.DIRECTIONS[l].get3DDataValue(), buffer.readInt());
+                        list[ModUtils.DIRECTIONS[l].get3DDataValue()] = buffer.readInt();
                     }
                 }
             }
@@ -46,15 +46,15 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
 
         @Override
         public void encode(RegistryFriendlyByteBuf buffer, BrushingColorPacketS2C value) {
-            Map<BlockPos, IntArrayList> map = value.data.colors();
+            Map<BlockPos, int[]> map = value.data.colors();
             buffer.writeInt(map.size());
-            for (Map.Entry<BlockPos, IntArrayList> entry : map.entrySet()) {
+            for (Map.Entry<BlockPos, int[]> entry : map.entrySet()) {
                 buffer.writeLong(entry.getKey().asLong());
-                IntArrayList color = entry.getValue();
+                int[] color = entry.getValue();
                 byte face = 0;
                 IntArrayList list = new IntArrayList();
                 for (int i = 0; i < 6; i++) {
-                    int c = color.getInt(i);
+                    int c = color[i];
                     if (c != -1) {
                         face |= (byte) (1 << i);
                         list.add(c);
@@ -65,7 +65,7 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
             }
         }
     };
-    private static final IntArrayList CLEAR_COLOR = BrushData.createColor(-2);
+    public static final int[] CLEAR_COLOR = BrushData.createColor(-2);
 
     @Override
     public @NotNull Type<BrushingColorPacketS2C> type() {

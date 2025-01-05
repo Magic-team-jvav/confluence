@@ -7,21 +7,21 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.function.Function;
 
-public record BrushData(Map<BlockPos, IntArrayList> colors) {
-    public static final Function<BlockPos, IntArrayList> COMPUTE = pos -> createColor(-1);
+public record BrushData(Map<BlockPos, int[]> colors) {
+    public static final Function<BlockPos, int[]> COMPUTE = pos -> createColor(-1);
+    public static final String POS_SPLIT = ", ";
     public static final MapCodec<BrushData> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.unboundedMap(
                     Codec.STRING.xmap(str -> {
-                        String[] split = str.split(", ");
+                        String[] split = str.split(POS_SPLIT);
                         int[] pos = new int[3];
                         for (int i = 0; i < 3; i++) {
                             if (i < split.length) {
@@ -29,56 +29,54 @@ public record BrushData(Map<BlockPos, IntArrayList> colors) {
                             }
                         }
                         return new BlockPos(pos[0], pos[1], pos[2]);
-                    }, Vec3i::toShortString),
-                    Codec.INT.listOf().xmap(IntArrayList::new, Function.identity())
+                    }, pos -> pos.getX() + POS_SPLIT + pos.getY() + POS_SPLIT + pos.getZ()),
+                    Codec.INT.listOf().xmap(list -> new IntArrayList(list).elements(), IntArrayList::new)
             ).fieldOf("entries").forGetter(BrushData::colors)
     ).apply(instance, map -> new BrushData(new Hashtable<>(map))));
     public static final Codec<BrushData> CODEC = MAP_CODEC.codec();
 
     public BrushData(BlockPos pos, @Nullable Direction facing, int color) {
         this(Util.make(new Hashtable<>(), map -> {
-            IntArrayList colors;
+            int[] colors;
             if (facing == null) {
                 colors = createColor(color);
             } else {
                 colors = createColor(-1);
-                colors.set(facing.get3DDataValue(), color);
+                colors[facing.get3DDataValue()] = color;
             }
             map.put(pos, colors);
         }));
     }
 
     public int get(BlockPos pos, Direction facing) {
-        IntArrayList list = colors.get(pos);
-        return list == null ? -1 : list.getInt(facing.get3DDataValue());
+        int[] list = colors.get(pos);
+        return list == null ? -1 : list[facing.get3DDataValue()];
     }
 
-    public void put(BlockPos pos, IntArrayList color) {
-        IntArrayList list = colors.get(pos);
+    public void put(BlockPos pos, int[] color) {
+        int[] list = colors.get(pos);
         if (list == null) {
             colors.put(pos, color);
         } else {
-            for (int i = 0; i < 6; i++) {
-                list.set(i, color.getInt(i));
-            }
+            System.arraycopy(color, 0, list, 0, 6);
         }
     }
 
     public void put(BlockPos pos, Direction facing, int color) {
-        colors.computeIfAbsent(pos, COMPUTE).set(facing.get3DDataValue(), color);
+        colors.computeIfAbsent(pos, COMPUTE)[facing.get3DDataValue()] = color;
     }
 
     public void merge(BrushData data) {
-        for (Map.Entry<BlockPos, IntArrayList> entry : data.colors.entrySet()) {
+        for (Map.Entry<BlockPos, int[]> entry : data.colors.entrySet()) {
             BlockPos pos = entry.getKey();
-            IntArrayList list = colors.get(pos);
-            IntArrayList color = entry.getValue();
+            int[] list = colors.get(pos);
+            int[] color = entry.getValue();
             if (list == null) {
                 colors.put(pos, color);
             } else {
                 for (int i = 0; i < 6; i++) {
-                    int c = color.getInt(i);
-                    if (c != -1) list.set(i, c);
+                    int c = color[i];
+                    if (c != -1) list[i] = c;
                 }
             }
         }
@@ -89,12 +87,12 @@ public record BrushData(Map<BlockPos, IntArrayList> colors) {
     }
 
     public boolean remove(BlockPos pos, Direction facing) {
-        IntArrayList list = colors.get(pos);
+        int[] list = colors.get(pos);
         if (list == null) return false;
         int index = facing.get3DDataValue();
-        boolean b = list.getInt(index) != -1;
-        list.set(index, -1);
-        if (list.intStream().allMatch(c -> c == -1)) {
+        boolean b = list[index] != -1;
+        list[index] = -1;
+        if (Arrays.stream(list).noneMatch(c -> c == -1)) {
             colors.remove(pos);
         }
         return b;
@@ -104,11 +102,7 @@ public record BrushData(Map<BlockPos, IntArrayList> colors) {
         colors.entrySet().removeIf(entry -> serverLevel.isLoaded(entry.getKey()) && serverLevel.getBlockState(entry.getKey()).isEmpty());
     }
 
-    public static @NotNull IntArrayList createColor(int color) {
-        IntArrayList colors = new IntArrayList();
-        for (int i = 0; i < 6; i++) {
-            colors.add(i, color);
-        }
-        return colors;
+    public static int[] createColor(int color) {
+        return new int[]{color, color, color, color, color, color};
     }
 }

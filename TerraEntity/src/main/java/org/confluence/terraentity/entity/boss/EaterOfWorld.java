@@ -129,14 +129,15 @@ public class EaterOfWorld extends AbstractTerraBossBase {
                     float random1 = random.nextFloat()*360;
                     double random2 = wanderPosRadius * Math.sin(random1);
                     double random3 = wanderPosRadius * Math.cos(random1);
+                    double h = 8 + random.nextFloat() * 4;
                     if(wanderType ==WonderType.DOWN){
-                        targetPos = target.position().add(random2,-8,random3);
+                        targetPos = target.position().add(random2,-h,random3);
                     }else if(wanderType ==WonderType.UP){
-                        targetPos = target.position().add(random2,8 ,random3);
+                        targetPos = target.position().add(random2,h ,random3);
                     }else{
                         targetPos = target.position().add(random1,random2,random3);
                     }
-                    turnSpeed = 5;
+                    turnSpeed = 2;
                     moveSpeed = 0.4f;
 
                 },
@@ -196,7 +197,6 @@ public class EaterOfWorld extends AbstractTerraBossBase {
     private int shootTick = 0;
     private int shootTickBase = 20;
     boolean isDashing = false;
-    private int discardTick = 0;
     boolean firstWander = false;
     @Override
     public void tick(){
@@ -332,7 +332,7 @@ public class EaterOfWorld extends AbstractTerraBossBase {
     @Override
     public void onRemovedFromLevel() {
         this.bossEvent.removeAllPlayers();
-        if(!level().isClientSide && ifBaseHead){
+        if(!level().isClientSide && ifBaseHead && discardTick < DISCARD_TICK){
             int aliveCount = 0;
             for(var n : baseSegments){
                 if(n.getHealth()>0.0 && n!=this){

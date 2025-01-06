@@ -30,6 +30,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.terraentity.Config;
 import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.entity.ai.BossSkill;
 import org.confluence.terraentity.entity.ai.CircleBossSkills;
@@ -47,7 +48,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Predicate;
 
-import static org.confluence.terraentity.Config.BOSS_CLEAR_WHEN_NO_TARGET;
 import static org.confluence.terraentity.utils.TEUtils.getMultiple;
 
 
@@ -83,12 +83,20 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.baseHealth);
         float multiplier = getAttributeMultiplier(Attributes.MAX_HEALTH);
         int size = level().players().size();
-        if(dirty){
-            this.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(TerraEntity.space("difficulty_modifier_max_health"), multiplier*size - 1, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-            this.setHealth(this.getMaxHealth());
-            firstSpawn();
+        if(!level().isClientSide){
+
+            if(dirty){
+                this.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(TerraEntity.space("difficulty_modifier_max_health"), multiplier*size - 1, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+                this.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(TerraEntity.space("server_modifier_max_health"), Config.boss_attributes_multiplier_health-1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+                this.setHealth(this.getMaxHealth());
+                firstSpawn();
+
+            }
+            this.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(new AttributeModifier(TerraEntity.space("difficulty_modifier_attack_damage"), multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+            this.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(new AttributeModifier(TerraEntity.space("server_modifier_max_health"), Config.boss_attributes_multiplier_damage-1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+
         }
-        this.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(new AttributeModifier(TerraEntity.space("difficulty_modifier_attack_damage"), multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+
         super.onAddedToLevel();
         this.addSkills();
     }
@@ -112,7 +120,7 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, false));
 
-        if(!BOSS_CLEAR_WHEN_NO_TARGET.get() && !(this instanceof EaterOfWorldSegment))
+        if(!Config.bossClearWhenNoTarget && !(this instanceof EaterOfWorldSegment))
             this.goalSelector.addGoal(10, new LookForwardWanderFlyGoal(this,0.3f));
 
     }
@@ -179,16 +187,18 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
     }
 
     LivingEntity target;
-    int discardTick = 0;
+    protected static final int DISCARD_TICK = 100;
+    protected int discardTick = 0;
     @Override
     public void tick() {
         super.tick();
+        attackInternal--;
         if (!level().isClientSide){
             //没有目标禁止行为
             target = getTarget();
             if(target==null){
                 discardTick++;
-                if(discardTick>100 && BOSS_CLEAR_WHEN_NO_TARGET.get()){
+                if(!level().isClientSide && discardTick>DISCARD_TICK && Config.bossClearWhenNoTarget){
                     this.bossEvent.getPlayers().forEach(p->p.sendSystemMessage(this.getDisplayName().copy().append(Component.translatable("message.terraentity.boss_discard"))));
                     this.discard();
                 }
@@ -196,11 +206,12 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
             }
             discardTick = 0;
             skills.tick();
+            collisionHurt();
         }
 
-        collisionHurt();
 
-        attackInternal--;
+
+
         this.setDeltaMovement(getDeltaMovement().scale(0.95));//空气阻力
     }
 
@@ -238,10 +249,10 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
     public void collisionHurt() {
         if (canCollisionHurt() && !level().isClientSide) {
             // 包围盒检测造成伤害
-            var entities = level().getEntities(this, this.getBoundingBox());
+            var entities = level().getEntities(this, this.getBoundingBox(), e->e instanceof LivingEntity living&& e!= this );
             if (!entities.isEmpty()) {
                 for (var e : entities) {
-                    if (canAttack(e)){
+                    if ( e instanceof LivingEntity living&& canAttack(living)){
                         attackInternal = _attackInternal;
                         //测试末影龙
                         e.hurt(this.damageSources().generic(),(float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue());
@@ -263,12 +274,11 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
         return super.hurt(pSource,pAmount);
     }
 
-    public boolean canAttack(Entity entity) {
-        return attackInternal < 0 &&
+    public boolean canAttack(LivingEntity entity) {
+        return super.canAttack(entity)&&
                 (
                         entity instanceof Player ||
-                                getTarget() != null && getTarget().is(entity)
-                                        && entity != this
+                                        entity != this
                                         &&!(entity instanceof AbstractTerraBossBase)
                                         && entity instanceof LivingEntity living && living.canBeSeenAsEnemy()
                 );

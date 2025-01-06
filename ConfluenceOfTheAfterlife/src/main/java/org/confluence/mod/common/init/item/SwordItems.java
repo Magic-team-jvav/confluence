@@ -118,18 +118,6 @@ public class SwordItems {
     );
 
 
-/*
-    RED_LIGHT_SABER("red_light_saber", LightSaber.Red::new),
-    ORANGE_LIGHT_SABER("orange_light_saber", LightSaber.Orange::new),
-    YELLOW_LIGHT_SABER("yellow_light_saber", LightSaber.Yellow::new),
-    GREEN_LIGHT_SABER("green_light_saber", LightSaber.Green::new),
-    BLUE_LIGHT_SABER("blue_light_saber", LightSaber.Blue::new),
-    PURPLE_LIGHT_SABER("purple_light_saber", LightSaber.Purple::new),
-    WHITE_LIGHT_SABER("white_light_saber", LightSaber.White::new),
-
-    */
-
-
     public static DeferredItem<SwordItem> register(String name, Supplier<SwordItem> supplier) {
         return ITEMS.register(name, supplier);
     }

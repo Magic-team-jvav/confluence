@@ -48,6 +48,7 @@
         "item.BowItemMixin",
         "item.FishingRodItemMixin",
         "item.HoneyBottleItemMixin",
+        "item.InventoryMixin",
         "item.ItemStackMixin",
         "item.ItemUtilsMixin",
         "item.PotionItemMixin",

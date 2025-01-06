@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import org.jetbrains.annotations.NotNull;
 
 public class SpreadingSandBlock extends ColoredFallingBlock implements ISpreadable {
     private final Type type;
@@ -32,7 +31,7 @@ public class SpreadingSandBlock extends ColoredFallingBlock implements ISpreadab
         return type;
     }
 
-    public void randomTick(@NotNull BlockState blockState, @NotNull ServerLevel serverLevel, @NotNull BlockPos blockPos, @NotNull RandomSource randomSource) {
+    public void randomTick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
         if (!serverLevel.isAreaLoaded(blockPos, 3)) return;
         spread(blockState, serverLevel, blockPos, randomSource);
     }

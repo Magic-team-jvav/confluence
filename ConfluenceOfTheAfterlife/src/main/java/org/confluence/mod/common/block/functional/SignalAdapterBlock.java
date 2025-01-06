@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -41,14 +40,14 @@ public class SignalAdapterBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    public void neighborChanged(@NotNull BlockState pState, Level pLevel, @NotNull BlockPos pPos, @NotNull Block pNeighborBlock, @NotNull BlockPos pNeighborPos, boolean pMovedByPiston) {
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
         if (!pLevel.isClientSide && pState.getValue(REVERSE)) { // power->signal
             execute(pState, (ServerLevel) pLevel, pPos, pLevel.hasNeighborSignal(pPos));
         }
     }
 
     @Override
-    public @NotNull InteractionResult useWithoutItem(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, Player pPlayer, @NotNull BlockHitResult pHit) {
+    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
         if (skipInteraction(pPlayer.getMainHandItem())) {
             return InteractionResult.PASS;
         }
@@ -59,7 +58,7 @@ public class SignalAdapterBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    public int getSignal(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull Direction pDirection) {
+    public int getSignal(BlockState pState, BlockGetter pLevel, BlockPos pPos, Direction pDirection) {
         return !pState.getValue(REVERSE) && pState.getValue(SIGNAL) ? 15 : 0;
     }
 

@@ -8,7 +8,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.terra_curio.common.component.ModRarity;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Predicate;
 
@@ -27,7 +26,7 @@ public class BossSummingItem extends CustomRarityItem {
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level pLevel, @NotNull Player pPlayer, @NotNull InteractionHand pUsedHand) {
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (!pLevel.isClientSide && condition.test(pPlayer)) {
             itemStack.shrink(1);

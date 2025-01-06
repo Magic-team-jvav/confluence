@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;
@@ -24,10 +23,10 @@ public abstract class BaseCropBlock extends CropBlock {
     }
 
     @Override
-    protected abstract @NotNull ItemLike getBaseSeedId();
+    protected abstract ItemLike getBaseSeedId();
 
     @Override
-    protected @NotNull IntegerProperty getAgeProperty() {
+    protected IntegerProperty getAgeProperty() {
         return AGE;
     }
 
@@ -49,7 +48,7 @@ public abstract class BaseCropBlock extends CropBlock {
     }
 
     @Override
-    public boolean canSurvive(@NotNull BlockState blockstate, LevelReader worldIn, BlockPos pos){
+    public boolean canSurvive(BlockState blockstate, LevelReader worldIn, BlockPos pos){
         BlockPos blockpos = pos.below();
         BlockState groundState = worldIn.getBlockState(blockpos);
         return this.mayPlaceOn(groundState, worldIn, blockpos);

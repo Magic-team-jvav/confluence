@@ -122,8 +122,8 @@ public final class ModUtils {
         Calendar calendar = Calendar.getInstance();
         int month = calendar.get(Calendar.MONTH);
         int date = calendar.get(Calendar.DATE);
-        return (month == Calendar.OCTOBER && date >= 15) || // 从 十月中旬
-                (month == Calendar.NOVEMBER && date <= 15); // 到 十一月中旬
+        return (month == Calendar.OCTOBER && date >= 15) || // 从 10月中旬
+                (month == Calendar.NOVEMBER && date <= 15); // 到 11月中旬
     }
 
     /**

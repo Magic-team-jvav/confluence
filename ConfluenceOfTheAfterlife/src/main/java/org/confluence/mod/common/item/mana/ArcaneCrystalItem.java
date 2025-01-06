@@ -12,7 +12,6 @@ import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.terra_curio.common.component.ModRarity;
-import org.jetbrains.annotations.NotNull;
 
 public class ArcaneCrystalItem extends CustomRarityItem {
     public ArcaneCrystalItem() {
@@ -20,7 +19,7 @@ public class ArcaneCrystalItem extends CustomRarityItem {
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand usedHand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         if (level.isClientSide) {
             player.playSound(SoundEvents.BELL_BLOCK);
         }

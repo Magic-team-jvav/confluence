@@ -9,7 +9,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import org.jetbrains.annotations.NotNull;
 
 public class FertilizerItem extends Item {
     public FertilizerItem() {
@@ -17,7 +16,7 @@ public class FertilizerItem extends Item {
     }
 
     @Override
-    public @NotNull InteractionResult useOn(UseOnContext context) {
+    public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         BlockPos clickedPos = context.getClickedPos();
         BlockState blockstate = level.getBlockState(clickedPos);

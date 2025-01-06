@@ -6,7 +6,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.FoodItems;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;
@@ -17,7 +16,7 @@ public class CloudWeaverBlock extends BaseCropBlock {
     }
 
     @Override
-    protected @NotNull ItemLike getBaseSeedId() {
+    protected ItemLike getBaseSeedId() {
         return FoodItems.CLOUDWEAVER_SEED.get();
     }
 

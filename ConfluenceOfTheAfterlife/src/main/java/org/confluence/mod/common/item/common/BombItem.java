@@ -9,7 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
-import org.jetbrains.annotations.NotNull;
 
 public class BombItem extends Item {
     protected float throwSpeed;
@@ -22,7 +21,7 @@ public class BombItem extends Item {
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand hand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             BaseBombEntity bomb = factory.create(player);

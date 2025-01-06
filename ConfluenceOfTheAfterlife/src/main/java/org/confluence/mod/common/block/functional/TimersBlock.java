@@ -38,7 +38,7 @@ public class TimersBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    public @NotNull InteractionResult useWithoutItem(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull Player pPlayer, @NotNull BlockHitResult pHit) {
+    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
         if (skipInteraction(pPlayer.getMainHandItem())) return InteractionResult.PASS;
         if (!pLevel.isClientSide && pPlayer.isCrouching()) {
             pState = pState.cycle(DRIVE);
@@ -52,7 +52,7 @@ public class TimersBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    public void neighborChanged(@NotNull BlockState pState, Level pLevel, @NotNull BlockPos pPos, @NotNull Block pNeighborBlock, @NotNull BlockPos pNeighborPos, boolean pMovedByPiston) {
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
         if (pLevel.isClientSide && pLevel.hasNeighborSignal(pPos)) {
             pLevel.setBlockAndUpdate(pPos, pState.cycle(DRIVE)); // 目前仅能用红石控制其开关
         }
@@ -63,7 +63,7 @@ public class TimersBlock extends AbstractMechanicalBlock {
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level pLevel, @NotNull BlockState pState, @NotNull BlockEntityType<T> pBlockEntityType) {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return ModUtils.getTicker(pBlockEntityType, FunctionalBlocks.MECHANICAL_BLOCK_ENTITY.get(), TimersBlock::timer);
     }
 

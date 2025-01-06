@@ -12,7 +12,6 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.stream.Stream;
 
@@ -26,7 +25,7 @@ public class HammerItem extends DiggerItem {
     }
 
     @Override
-    public boolean mineBlock(@NotNull ItemStack stack, @NotNull Level level, @NotNull BlockState state, @NotNull BlockPos pos, @NotNull LivingEntity entity) {
+    public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity) {
         if (!level.isClientSide) {
             int destroyCount = 1;
             if (entity instanceof Player player) {
@@ -49,7 +48,7 @@ public class HammerItem extends DiggerItem {
     /**
      * Scan 3*1*3 blocks related to the given pos.
      */
-    public static int iteForBlocks(Level level, Player player, @NotNull BlockPos pos, boolean xOff, boolean yOff, boolean zOff, float speedOff) {
+    public static int iteForBlocks(Level level, Player player, BlockPos pos, boolean xOff, boolean yOff, boolean zOff, float speedOff) {
         Stream<BlockPos> posStream = BlockPos.betweenClosedStream(pos.offset(xOff ? 1 : 0, yOff ? 1 : 0, zOff ? 1 : 0), pos.offset(xOff ? -1 : 0, yOff ? -1 : 0, zOff ? -1 : 0));
         return (int) posStream.filter(pos1 -> !pos1.equals(pos))
                 .map(pos1 -> applyBlockDestroy(level, pos1, player, speedOff))
@@ -64,7 +63,7 @@ public class HammerItem extends DiggerItem {
      * @param speedOff Related block's destroy speed * 1.5 (satisfied range).
      * @return TRUE, if the block has been broke, otherwise return FALSE.
      */
-    public static boolean applyBlockDestroy(@NotNull Level level, BlockPos pos, Player player, float speedOff) {
+    public static boolean applyBlockDestroy(Level level, BlockPos pos, Player player, float speedOff) {
         BlockState targetState = level.getBlockState(pos);
         float targetSpeed = targetState.getDestroySpeed(level, pos);
         boolean flag1 = targetState.canHarvestBlock(level, pos, player);
@@ -78,7 +77,7 @@ public class HammerItem extends DiggerItem {
     }
 
     @Override
-    public boolean canDisableShield(@NotNull ItemStack stack, @NotNull ItemStack shield, @NotNull LivingEntity entity, @NotNull LivingEntity attacker) {
+    public boolean canDisableShield(ItemStack stack, ItemStack shield, LivingEntity entity, LivingEntity attacker) {
         return true;
     }
 }

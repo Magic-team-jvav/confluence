@@ -15,7 +15,6 @@ import org.confluence.mod.common.entity.hook.AbstractHookEntity;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_curio.util.TCUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BaseHookItem extends Item {
@@ -98,7 +97,7 @@ public class BaseHookItem extends Item {
     }
 
     @Override
-    public @NotNull Component getName(@NotNull ItemStack stack) {
+    public Component getName(ItemStack stack) {
         return Component.translatable(getDescriptionId()).withStyle(style -> style.withColor(stack.get(TCDataComponentTypes.MOD_RARITY).getColor()));
     }
 

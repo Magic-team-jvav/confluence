@@ -23,7 +23,6 @@ import org.confluence.mod.network.c2s.ApplySelectionPacketC2S;
 import org.confluence.mod.network.s2c.OpenSelectionsScreenPacketS2C;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.util.TCUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -34,7 +33,7 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
     }
 
     @Override
-    public @NotNull InteractionResult useOn(UseOnContext pContext) {
+    public InteractionResult useOn(UseOnContext pContext) {
         Level level = pContext.getLevel();
         if (!level.isClientSide && pContext.getHand() == InteractionHand.MAIN_HAND && checkAvailable(pContext)) {
             BlockPos clickedPos = pContext.getClickedPos();
@@ -62,7 +61,7 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level pLevel, @NotNull Player pPlayer, @NotNull InteractionHand pUsedHand) {
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (pPlayer instanceof ServerPlayer serverPlayer) {
             CompoundTag tag = TCUtils.getItemStackNbt(itemStack);

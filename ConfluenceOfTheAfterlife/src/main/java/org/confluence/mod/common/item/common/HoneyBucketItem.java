@@ -14,7 +14,6 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.terra_curio.common.init.TCEffects;
-import org.jetbrains.annotations.NotNull;
 
 public class HoneyBucketItem extends BucketItem {
     public HoneyBucketItem() {
@@ -22,7 +21,7 @@ public class HoneyBucketItem extends BucketItem {
     }
 
     @Override
-    public @NotNull ItemStack finishUsingItem(@NotNull ItemStack pStack, Level pLevel, @NotNull LivingEntity pEntityLiving) {
+    public ItemStack finishUsingItem(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving) {
         if (!pLevel.isClientSide) {
             pEntityLiving.addEffect(new MobEffectInstance(TCEffects.HONEY, 900));
             pEntityLiving.removeEffect(MobEffects.POISON);
@@ -38,17 +37,17 @@ public class HoneyBucketItem extends BucketItem {
     }
 
     @Override
-    public int getUseDuration(@NotNull ItemStack stack, @NotNull LivingEntity entity) {
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return 32;
     }
 
     @Override
-    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack pStack) {
+    public UseAnim getUseAnimation(ItemStack pStack) {
         return UseAnim.DRINK;
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level pLevel, @NotNull Player pPlayer, @NotNull InteractionHand pHand) {
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
         InteractionResultHolder<ItemStack> use = super.use(pLevel, pPlayer, pHand);
         if (use.getResult() == InteractionResult.PASS) {
             return ItemUtils.startUsingInstantly(pLevel, pPlayer, pHand);

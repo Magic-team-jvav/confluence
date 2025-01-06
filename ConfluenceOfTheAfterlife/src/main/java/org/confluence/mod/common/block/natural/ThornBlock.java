@@ -66,7 +66,7 @@ public class ThornBlock extends PipeBlock {
     }
 
     @Override
-    public void entityInside(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull Entity pEntity) {
+    public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
         if (pLevel.isClientSide()) return;
         if (pEntity instanceof ServerPlayer player) {
             player.hurt(ModDamageTypes.of(pLevel, ModDamageTypes.THORN), damageAmount);
@@ -84,12 +84,12 @@ public class ThornBlock extends PipeBlock {
     }
 
     @Override
-    public boolean isRandomlyTicking(@NotNull BlockState pState) {
+    public boolean isRandomlyTicking(BlockState pState) {
         return !pState.is(NatureBlocks.PLANTERA_THORN.get()) && pState.getValue(PROP_AGE) < 7;
     }
 
     @Override
-    public void randomTick(@NotNull BlockState pState, @NotNull ServerLevel pLevel, @NotNull BlockPos pPos, @NotNull RandomSource pRandom) {
+    public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
         if(this == NatureBlocks.PLANTERA_THORN.get() || pRandom.nextInt(50) != 0) return;
         Direction dir = Direction.getRandom(pRandom);
         BlockPos targetPos = pPos.relative(dir);
@@ -111,7 +111,7 @@ public class ThornBlock extends PipeBlock {
 
     @Override
     @NotNull
-    public BlockState updateShape(@NotNull BlockState pState, @NotNull Direction pDirection, @NotNull BlockState pNeighborState, @NotNull LevelAccessor pLevel, @NotNull BlockPos pPos, @NotNull BlockPos pNeighborPos) {
+    public BlockState updateShape(BlockState pState, Direction pDirection, BlockState pNeighborState, LevelAccessor pLevel, BlockPos pPos, BlockPos pNeighborPos) {
         return pState.setValue(PROPERTY_BY_DIRECTION.get(pDirection), pNeighborState.is(this) || pNeighborState.is(ground));
     }
 }

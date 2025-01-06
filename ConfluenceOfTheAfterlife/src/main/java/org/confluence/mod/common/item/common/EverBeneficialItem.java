@@ -24,7 +24,6 @@ import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.network.s2c.RightClickSubtractorPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
@@ -90,7 +89,7 @@ public class EverBeneficialItem extends CustomRarityItem {
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand usedHand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         if (level.isClientSide && sound != null) {
             player.playSound(sound.get());
         }

@@ -13,7 +13,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.block.StateProperties;
-import org.jetbrains.annotations.NotNull;
 
 public class EchoBlock extends HalfTransparentBlock implements ISimulatorBlock {
     public EchoBlock() {
@@ -22,7 +21,7 @@ public class EchoBlock extends HalfTransparentBlock implements ISimulatorBlock {
     }
 
     @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState blockState, @NotNull BlockGetter blockGetter, @NotNull BlockPos blockPos, @NotNull CollisionContext context) {
+    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext context) {
         if (context instanceof EntityCollisionContext context1 && context1.getEntity() instanceof Player player) {
             if (player.isLocalPlayer()) return ClientPacketHandler.hasEchoVisible() ? Shapes.block() : Shapes.empty();
             return player.getPersistentData().getBoolean("confluence:hasEchoVisibility") ? Shapes.block() : Shapes.empty();
@@ -31,16 +30,16 @@ public class EchoBlock extends HalfTransparentBlock implements ISimulatorBlock {
     }
 
     @Override
-    public @NotNull VoxelShape getCollisionShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+    public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return getShape(pState, pLevel, pPos, pContext);
     }
 
     @Override
-    public @NotNull VoxelShape getVisualShape(@NotNull BlockState blockState, @NotNull BlockGetter blockGetter, @NotNull BlockPos blockPos, @NotNull CollisionContext context) {
+    public VoxelShape getVisualShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext context) {
         return Shapes.empty();
     }
 
-    public boolean propagatesSkylightDown(@NotNull BlockState blockState, @NotNull BlockGetter blockGetter, @NotNull BlockPos blockPos) {
+    public boolean propagatesSkylightDown(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
         return true;
     }
 
@@ -49,7 +48,7 @@ public class EchoBlock extends HalfTransparentBlock implements ISimulatorBlock {
         builder.add(StateProperties.VISIBLE);
     }
 
-    public float getShadeBrightness(@NotNull BlockState blockState, @NotNull BlockGetter blockGetter, @NotNull BlockPos blockPos) {
+    public float getShadeBrightness(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
         return 1.0F;
     }
 

@@ -12,7 +12,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
@@ -37,7 +36,7 @@ public class MechanicalFragileBlock extends AbstractMechanicalBlock implements I
     }
 
     @Override
-    public void neighborChanged(@NotNull BlockState pState, Level pLevel, @NotNull BlockPos pPos, @NotNull Block pNeighborBlock, @NotNull BlockPos pNeighborPos, boolean pMovedByPiston) {
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
         if (!pLevel.isClientSide && pLevel.hasNeighborSignal(pPos)) {
             execute(pState, (ServerLevel) pLevel, pPos, true);
         }
@@ -49,12 +48,12 @@ public class MechanicalFragileBlock extends AbstractMechanicalBlock implements I
     }
 
     @Override
-    protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return simulatorBlock.get().getShape(level, pos, context);
     }
 
     @Override
-    public @Nullable PushReaction getPistonPushReaction(@NotNull BlockState state) {
+    public @Nullable PushReaction getPistonPushReaction(BlockState state) {
         return PushReaction.DESTROY;
     }
 }

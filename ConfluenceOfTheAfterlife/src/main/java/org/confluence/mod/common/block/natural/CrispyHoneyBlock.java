@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -21,7 +20,7 @@ public class CrispyHoneyBlock extends Block {
         super(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).strength(1.2F));
     }
 
-    public void playerDestroy(@NotNull Level pLevel, @NotNull Player pPlayer, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable BlockEntity pTe, @NotNull ItemStack pStack) {
+    public void playerDestroy(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState, @Nullable BlockEntity pTe, ItemStack pStack) {
         super.playerDestroy(pLevel, pPlayer, pPos, pState, pTe, pStack);
         if (pLevel.random.nextBoolean()) {
             pLevel.setBlockAndUpdate(pPos, Blocks.LAVA.defaultBlockState());
@@ -29,7 +28,7 @@ public class CrispyHoneyBlock extends Block {
     }
 
     @Override
-    public void stepOn(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, Entity pEntity) {
+    public void stepOn(Level pLevel, BlockPos pPos, BlockState pState, Entity pEntity) {
         pEntity.igniteForSeconds(5.0F);
     }
 }

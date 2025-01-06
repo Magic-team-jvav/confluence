@@ -22,7 +22,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -49,23 +48,23 @@ public class LifeCrystalBlock extends HorizontalDirectionalBlock implements Enti
     }
 
     @Override
-    public @NotNull RenderShape getRenderShape(@NotNull BlockState pState) {
+    public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
     @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return SHAPE;
     }
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new Entity(pPos, pState);
     }
 
     @Override
-    protected @NotNull MapCodec<LifeCrystalBlock> codec() {
+    protected MapCodec<LifeCrystalBlock> codec() {
         return CODEC;
     }
 
@@ -101,7 +100,7 @@ public class LifeCrystalBlock extends HorizontalDirectionalBlock implements Enti
         }
 
         @Override
-        public @NotNull MutableComponent getName(@NotNull ItemStack pStack) {
+        public MutableComponent getName(ItemStack pStack) {
             return Component.translatable(getDescriptionId(pStack)).withStyle(style -> style.withColor(ModRarity.GREEN.getColor()));
         }
     }

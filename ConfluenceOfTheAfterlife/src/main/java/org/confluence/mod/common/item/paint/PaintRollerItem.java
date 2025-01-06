@@ -8,7 +8,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
-import org.jetbrains.annotations.NotNull;
 
 public class PaintRollerItem extends Item {
     public PaintRollerItem() {
@@ -16,7 +15,7 @@ public class PaintRollerItem extends Item {
     }
 
     @Override
-    public @NotNull InteractionResult useOn(UseOnContext pContext) {
+    public InteractionResult useOn(UseOnContext pContext) {
         if (pContext.getPlayer() instanceof ServerPlayer serverPlayer) {
             ServerLevel serverLevel = serverPlayer.serverLevel();
             BlockPos clickedPos = pContext.getClickedPos();

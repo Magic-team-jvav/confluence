@@ -18,7 +18,6 @@ import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.confluence.terra_curio.util.CuriosUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
@@ -69,7 +68,7 @@ public class MusicBoxItem extends BlockItem implements ICurioItem, IFunctionCoul
     }
 
     @Override
-    public @NotNull Component getName(@NotNull ItemStack stack) {
+    public Component getName(ItemStack stack) {
         return Component.translatable(getDescriptionId()).withStyle(style -> style.withColor(stack.get(TCDataComponentTypes.MOD_RARITY).getColor()));
     }
 

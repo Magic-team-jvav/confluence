@@ -15,7 +15,6 @@ import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
-import org.jetbrains.annotations.NotNull;
 
 public class ManaStaffItem extends CustomRarityItem {
     private final BulletFactory factory;
@@ -39,12 +38,12 @@ public class ManaStaffItem extends CustomRarityItem {
     }
 
     @Override
-    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack itemStack) {
+    public UseAnim getUseAnimation(ItemStack itemStack) {
         return UseAnim.BLOCK;
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand usedHand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (player instanceof ServerPlayer serverPlayer && PlayerUtils.extractMana(serverPlayer, () -> PrefixUtils.calculateManaCost(itemStack, manaCost))) {
             serverPlayer.awardStat(Stats.ITEM_USED.get(this));

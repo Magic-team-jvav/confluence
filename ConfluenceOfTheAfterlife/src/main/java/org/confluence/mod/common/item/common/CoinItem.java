@@ -7,7 +7,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.jetbrains.annotations.NotNull;
 
 public class CoinItem extends BlockItem {
     public CoinItem(Block block, ModRarity rarity) {
@@ -15,7 +14,7 @@ public class CoinItem extends BlockItem {
     }
 
     @Override
-    public @NotNull MutableComponent getName(@NotNull ItemStack pStack) {
+    public MutableComponent getName(ItemStack pStack) {
         return Component.translatable(getDescriptionId()).withStyle(style -> style.withColor(pStack.get(TCDataComponentTypes.MOD_RARITY).getColor()));
     }
 }

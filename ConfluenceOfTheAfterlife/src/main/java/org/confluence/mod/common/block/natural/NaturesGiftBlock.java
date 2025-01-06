@@ -32,7 +32,7 @@ public class NaturesGiftBlock extends BasePlantBlock {
 
     @Override
     @NotNull
-    public VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         Vec3 vec3 = pState.getOffset(pLevel, pPos);
         return SHAPE.move(vec3.x, vec3.y, vec3.z);
     }

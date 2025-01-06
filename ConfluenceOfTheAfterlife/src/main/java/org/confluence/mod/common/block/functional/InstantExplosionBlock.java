@@ -7,7 +7,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
-import org.jetbrains.annotations.NotNull;
 
 public class InstantExplosionBlock extends AbstractMechanicalBlock {
     public InstantExplosionBlock() {
@@ -15,7 +14,7 @@ public class InstantExplosionBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    public void neighborChanged(@NotNull BlockState pState, Level pLevel, @NotNull BlockPos pPos, @NotNull Block pNeighborBlock, @NotNull BlockPos pNeighborPos, boolean pMovedByPiston) {
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
         if (!pLevel.isClientSide && pLevel.hasNeighborSignal(pPos)) {
             execute(pState, (ServerLevel) pLevel, pPos, true);
         }

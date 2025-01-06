@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.mixed.ILivingEntity;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class CrackedBrickBlock extends Block {
@@ -22,14 +21,14 @@ public class CrackedBrickBlock extends Block {
     }
 
     @Override
-    public void updateEntityAfterFallOn(@NotNull BlockGetter blockGetter, @NotNull Entity entity) {
+    public void updateEntityAfterFallOn(BlockGetter blockGetter, Entity entity) {
         if (!(entity instanceof LivingEntity living && ((ILivingEntity) living).confluence$isBreakEasyCrashBlock())) {
             super.updateEntityAfterFallOn(blockGetter, entity);
         }
     }
 
     @Override
-    public void playerDestroy(@NotNull Level level, Player player, @NotNull BlockPos pos, @NotNull BlockState state, @Nullable BlockEntity blockEntity, @NotNull ItemStack item) {
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack item) {
         player.awardStat(Stats.BLOCK_MINED.get(this));
         player.causeFoodExhaustion(0.005F);
     }

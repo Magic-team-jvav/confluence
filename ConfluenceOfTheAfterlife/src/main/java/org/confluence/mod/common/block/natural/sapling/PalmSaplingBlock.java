@@ -7,7 +7,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 public class PalmSaplingBlock extends SaplingBlock {
     public PalmSaplingBlock(TreeGrower pTreeGrower, Properties pProperties) {
@@ -15,7 +14,7 @@ public class PalmSaplingBlock extends SaplingBlock {
     }
 
     @Override
-    public boolean canSurvive(@NotNull BlockState pState, LevelReader pLevel, BlockPos pPos) {
+    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         BlockPos below = pPos.below();
         BlockState blockBelow = pLevel.getBlockState(below);
         return blockBelow.is(BlockTags.SAND) || blockBelow.is(Blocks.GRASS_BLOCK);

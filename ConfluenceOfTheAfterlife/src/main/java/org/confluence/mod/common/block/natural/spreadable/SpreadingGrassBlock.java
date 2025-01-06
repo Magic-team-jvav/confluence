@@ -7,7 +7,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.block.natural.ThornBlock;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.jetbrains.annotations.NotNull;
 
 public class SpreadingGrassBlock extends SpreadingBlock {
     public SpreadingGrassBlock(Type type, Properties properties) {
@@ -15,7 +14,7 @@ public class SpreadingGrassBlock extends SpreadingBlock {
     }
 
     @Override
-    public void randomTick(@NotNull BlockState blockState, @NotNull ServerLevel serverLevel, @NotNull BlockPos blockPos, @NotNull RandomSource randomSource) {
+    public void randomTick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
         if (!serverLevel.isAreaLoaded(blockPos, 3)) return;
         BlockPos above = blockPos.above();
         if (isFullBlock(serverLevel, above)) {

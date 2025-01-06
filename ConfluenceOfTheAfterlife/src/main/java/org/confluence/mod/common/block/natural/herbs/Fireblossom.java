@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.block.natural.BaseHerbBlock;
 import org.confluence.mod.common.init.item.FoodItems;
-import org.jetbrains.annotations.NotNull;
 
 public class Fireblossom extends BaseHerbBlock {
     public Fireblossom(){
@@ -18,7 +17,7 @@ public class Fireblossom extends BaseHerbBlock {
     }
 
     @Override
-    protected @NotNull ItemLike getBaseSeedId(){
+    protected ItemLike getBaseSeedId(){
         return FoodItems.FIREBLOSSOM_SEED.get();
     }
 
@@ -29,7 +28,7 @@ public class Fireblossom extends BaseHerbBlock {
     }
 
     @Override
-    public void animateTick(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull RandomSource pRandom){
+    public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom){
         // TODO: 粒子
 //        if(getAge(pState) != MAX_AGE) return;
 //        int r = pRandom.nextInt(60);

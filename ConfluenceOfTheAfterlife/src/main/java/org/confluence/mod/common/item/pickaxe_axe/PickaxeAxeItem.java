@@ -18,7 +18,6 @@ import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -55,12 +54,12 @@ public class PickaxeAxeItem extends DiggerItem {
     }
 
     @Override
-    public @NotNull InteractionResult useOn(@NotNull UseOnContext context) {
+    public InteractionResult useOn(UseOnContext context) {
         return Items.NETHERITE_AXE.useOn(context);
     }
 
     @Override
-    public boolean canPerformAction(@NotNull ItemStack stack, @NotNull ItemAbility itemAbility) {
+    public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
         return ItemAbilities.DEFAULT_PICKAXE_ACTIONS.contains(itemAbility) || ItemAbilities.DEFAULT_AXE_ACTIONS.contains(itemAbility);
     }
 }

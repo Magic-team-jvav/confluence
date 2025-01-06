@@ -9,7 +9,6 @@ import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.terra_curio.common.component.ModRarity;
-import org.jetbrains.annotations.NotNull;
 
 public class WireCutterItem extends CustomRarityItem {
     public WireCutterItem() {
@@ -17,7 +16,7 @@ public class WireCutterItem extends CustomRarityItem {
     }
 
     @Override
-    public boolean isFoil(@NotNull ItemStack pStack) {
+    public boolean isFoil(ItemStack pStack) {
         return WrenchItem.containsPos(pStack);
     }
 
@@ -27,7 +26,7 @@ public class WireCutterItem extends CustomRarityItem {
     }
 
     @Override
-    public @NotNull InteractionResult useOn(UseOnContext pContext) {
+    public InteractionResult useOn(UseOnContext pContext) {
         Level level = pContext.getLevel();
         if (level.isClientSide) return InteractionResult.SUCCESS;
 

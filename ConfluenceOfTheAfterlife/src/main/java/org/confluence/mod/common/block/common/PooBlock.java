@@ -10,7 +10,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.init.ModEffects;
-import org.jetbrains.annotations.NotNull;
 
 public class PooBlock extends Block {
     public PooBlock(Properties properties) {
@@ -18,7 +17,7 @@ public class PooBlock extends Block {
     }
 
     @Override
-    public void stepOn(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Entity entity) {
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         if (entity instanceof LivingEntity living && !living.hasEffect(ModEffects.STINKY)) {
             living.addEffect(new MobEffectInstance(ModEffects.STINKY, 60));
             level.playSound(null, pos, SoundEvents.BELL_BLOCK, SoundSource.BLOCKS);
@@ -26,5 +25,5 @@ public class PooBlock extends Block {
     }
 
     @Override
-    public void fallOn(@NotNull Level level, @NotNull BlockState state, @NotNull BlockPos pos, @NotNull Entity entity, float fallDistance) {}
+    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {}
 }

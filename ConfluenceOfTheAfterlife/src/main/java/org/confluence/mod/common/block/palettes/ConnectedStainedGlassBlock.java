@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import org.jetbrains.annotations.NotNull;
 
 public class ConnectedStainedGlassBlock extends StainedGlassBlock {
     public ConnectedStainedGlassBlock(DyeColor dyeColor, Properties properties) {
@@ -18,12 +17,12 @@ public class ConnectedStainedGlassBlock extends StainedGlassBlock {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public boolean skipRendering(@NotNull BlockState state, BlockState adjacentBlockState, @NotNull Direction side) {
+    public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
         return adjacentBlockState.getBlock() instanceof ConnectedGlassBlock || super.skipRendering(state, adjacentBlockState, side);
     }
 
     @Override
-    public boolean shouldDisplayFluidOverlay(@NotNull BlockState state, @NotNull BlockAndTintGetter world, @NotNull BlockPos pos, @NotNull FluidState fluidState) {
+    public boolean shouldDisplayFluidOverlay(BlockState state, BlockAndTintGetter world, BlockPos pos, FluidState fluidState) {
         return true;
     }
 }

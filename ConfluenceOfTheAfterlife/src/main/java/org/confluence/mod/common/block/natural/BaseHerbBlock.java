@@ -51,7 +51,7 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
     }
 
     @Override
-    public boolean mayPlaceOn(@NotNull BlockState groundState, @NotNull BlockGetter worldIn, @NotNull BlockPos pos){
+    public boolean mayPlaceOn(BlockState groundState, BlockGetter worldIn, BlockPos pos){
         if (herbGroundMap == null) {
             herbGroundMap = new ImmutableMap.Builder<DeferredBlock<? extends Block>, Set<Block>>()
                     .put(ModBlocks.DAYBLOOM, Set.of(Blocks.GRASS_BLOCK, NatureBlocks.HALLOW_GRASS_BLOCK.get()))
@@ -74,7 +74,7 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
 
     // 重写，不检查光照，不检查合理密植，抄父方法
     @Override
-    public void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random){
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random){
         if(!level.isAreaLoaded(pos, 1)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light
         int i = this.getAge(state);
         if(i < this.getMaxAge()){
@@ -87,12 +87,12 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
     }
 
     @Override
-    public boolean isValidBonemealTarget(@NotNull LevelReader pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState){
+    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState){
         return false;
     }
 
     @Override
-    public boolean canSurvive(@NotNull BlockState blockstate, LevelReader worldIn, BlockPos pos){
+    public boolean canSurvive(BlockState blockstate, LevelReader worldIn, BlockPos pos){
         BlockPos blockpos = pos.below();
         BlockState groundState = worldIn.getBlockState(blockpos);
         return this.mayPlaceOn(groundState, worldIn, blockpos);
@@ -119,19 +119,19 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
     }
 
     @NotNull
-    public VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext){
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext){
         return SHAPE_BY_AGE[this.getAge(pState)];
     }
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState){
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState){
         return new Entity(pPos, pState);
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level pLevel, @NotNull BlockState pState, @NotNull BlockEntityType<T> pBlockEntityType){
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType){
         if(pLevel.isClientSide()){
             return null;
         }

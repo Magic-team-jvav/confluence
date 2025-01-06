@@ -24,7 +24,6 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -48,7 +47,7 @@ public class PalmLeaves extends LeavesBlock {
     }
 
     @Override
-    protected @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return switch (state.getValue(TYPE)) {
             case DOUBLE -> Shapes.block();
             case TOP -> TOP_AABB;
@@ -57,18 +56,18 @@ public class PalmLeaves extends LeavesBlock {
     }
 
     @Override
-    protected void randomTick(@NotNull BlockState state, ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         level.scheduleTick(pos, this, 2);
         super.randomTick(state, level, pos, random);
     }
 
     @Override
-    protected boolean isRandomlyTicking(@NotNull BlockState state) {
+    protected boolean isRandomlyTicking(BlockState state) {
         return !state.getValue(PERSISTENT);
     }
 
     @Override
-    protected void tick(@NotNull BlockState state, ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         level.setBlock(pos, updateDistance(state, level, pos), Block.UPDATE_ALL);
     }
 
@@ -108,17 +107,17 @@ public class PalmLeaves extends LeavesBlock {
     }
 
     @Override
-    public boolean placeLiquid(@NotNull LevelAccessor level, @NotNull BlockPos pos, BlockState state, @NotNull FluidState fluidState) {
+    public boolean placeLiquid(LevelAccessor level, BlockPos pos, BlockState state, FluidState fluidState) {
         return state.getValue(TYPE) != SlabType.DOUBLE && super.placeLiquid(level, pos, state, fluidState);
     }
 
     @Override
-    public boolean canPlaceLiquid(@Nullable Player player, @NotNull BlockGetter level, @NotNull BlockPos pos, BlockState state, @NotNull Fluid fluid) {
+    public boolean canPlaceLiquid(@Nullable Player player, BlockGetter level, BlockPos pos, BlockState state, Fluid fluid) {
         return state.getValue(TYPE) != SlabType.DOUBLE && super.canPlaceLiquid(player, level, pos, state, fluid);
     }
 
     @Override
-    protected boolean isPathfindable(@NotNull BlockState state, @NotNull PathComputationType pathComputationType) {
+    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
         return pathComputationType == PathComputationType.WATER && state.getFluidState().is(FluidTags.WATER);
     }
 

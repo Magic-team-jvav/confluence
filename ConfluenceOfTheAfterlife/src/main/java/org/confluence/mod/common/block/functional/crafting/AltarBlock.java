@@ -47,7 +47,6 @@ import org.confluence.mod.common.recipe.ItemStackContainer;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -75,32 +74,32 @@ public class AltarBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected @NotNull MapCodec<AltarBlock> codec() {
+    protected MapCodec<AltarBlock> codec() {
         return CODEC;
     }
 
     @Override
-    public @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
+    public RenderShape getRenderShape(BlockState state) {
         return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
     @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return SHAPE;
     }
 
     @Override
-    public float getDestroyProgress(@NotNull BlockState pState, @NotNull Player pPlayer, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos) {
+    public float getDestroyProgress(BlockState pState, Player pPlayer, BlockGetter pLevel, BlockPos pPos) {
         return pPlayer.getMainHandItem().is(HammerItems.PWNHAMMER) ? super.getDestroyProgress(pState, pPlayer, pLevel, pPos) : 0.0F;
     }
 
     @Override
-    public @Nullable PushReaction getPistonPushReaction(@NotNull BlockState state) {
+    public @Nullable PushReaction getPistonPushReaction(BlockState state) {
         return PushReaction.BLOCK;
     }
 
     @Override
-    public void playerDestroy(@NotNull Level pLevel, @NotNull Player pPlayer, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable BlockEntity pBlockEntity, @NotNull ItemStack pTool) {
+    public void playerDestroy(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState, @Nullable BlockEntity pBlockEntity, ItemStack pTool) {
         super.playerDestroy(pLevel, pPlayer, pPos, pState, pBlockEntity, pTool);
         if (pPlayer instanceof ServerPlayer serverPlayer) {
             ServerLevel serverLevel = serverPlayer.serverLevel();
@@ -120,7 +119,7 @@ public class AltarBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void onRemove(@NotNull BlockState pState, Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pNewState, boolean pMovedByPiston) {
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         if (pLevel.getBlockEntity(pPos) instanceof Entity entity) {
             Containers.dropContents(pLevel, pPos, entity.itemHandler);
             pLevel.removeBlockEntity(pPos);
@@ -128,7 +127,7 @@ public class AltarBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected @NotNull ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof Entity entity) { // 放/取物品
             if (player.isCrouching()) { // 取物品
                 player.addItem(entity.takeItem(-1));
@@ -165,7 +164,7 @@ public class AltarBlock extends BaseEntityBlock {
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new Entity(pPos, pState).setVariant(variant);
     }
 
@@ -231,7 +230,7 @@ public class AltarBlock extends BaseEntityBlock {
         }
 
         @Override
-        public void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider registries) {
+        public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
             super.loadAdditional(nbt, registries);
             variant = Variant.byId(nbt.getInt("variant"));
             itemHandler.setItems(NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY));
@@ -239,7 +238,7 @@ public class AltarBlock extends BaseEntityBlock {
         }
 
         @Override
-        protected void saveAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider registries) {
+        protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
             super.saveAdditional(nbt, registries);
             nbt.putInt("variant", variant.id);
             ContainerHelper.saveAllItems(nbt, itemHandler.getItems(), registries);
@@ -251,7 +250,7 @@ public class AltarBlock extends BaseEntityBlock {
         }
 
         @Override
-        public @NotNull CompoundTag getUpdateTag(HolderLookup.@NotNull Provider registries) {
+        public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
             CompoundTag nbt = new CompoundTag();
             nbt.putInt("variant", variant.id);
             ContainerHelper.saveAllItems(nbt, itemHandler.getItems(), registries);
@@ -307,7 +306,7 @@ public class AltarBlock extends BaseEntityBlock {
         }
 
         @Override
-        public @NotNull Component getName(@NotNull ItemStack stack) {
+        public Component getName(ItemStack stack) {
             return Component.translatable(getDescriptionId(stack)).withStyle(style -> style.withColor(ModRarity.PURPLE.getColor()));
         }
 
@@ -343,7 +342,7 @@ public class AltarBlock extends BaseEntityBlock {
         }
 
         @Override
-        public @NotNull String getSerializedName() {
+        public String getSerializedName() {
             return name;
         }
     }

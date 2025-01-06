@@ -7,12 +7,11 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.block.natural.BaseHerbBlock;
 import org.confluence.mod.common.init.item.FoodItems;
-import org.jetbrains.annotations.NotNull;
 
 public class ShiveringThorn extends BaseHerbBlock {
 
     @Override
-    protected @NotNull ItemLike getBaseSeedId(){
+    protected ItemLike getBaseSeedId(){
         return FoodItems.SHIVERTHORN_SEED.get();
     }
 
@@ -22,7 +21,7 @@ public class ShiveringThorn extends BaseHerbBlock {
     }
 
     @Override
-    public void randomTick(@NotNull BlockState pState, @NotNull ServerLevel pLevel, @NotNull BlockPos pPos, @NotNull RandomSource pRandom){
+    public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom){
         if(getAge(pState) == MAX_AGE - 1){
             pLevel.setBlockAndUpdate(pPos, pState.setValue(AGE, MAX_AGE));
         }

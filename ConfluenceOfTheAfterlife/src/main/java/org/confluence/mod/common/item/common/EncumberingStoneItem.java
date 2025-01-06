@@ -10,7 +10,6 @@ import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
-import org.jetbrains.annotations.NotNull;
 
 public class EncumberingStoneItem extends CustomRarityItem implements IFunctionCouldEnable {
     public EncumberingStoneItem() {
@@ -18,14 +17,14 @@ public class EncumberingStoneItem extends CustomRarityItem implements IFunctionC
     }
 
     @Override
-    public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slotId, boolean isSelected) {
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         if (entity instanceof ServerPlayer serverPlayer) {
             ((IServerPlayer) serverPlayer).confluence$setCouldPickupItem(!isEnabled(stack, null));
         }
     }
 
     @Override
-    public @NotNull MutableComponent getName(@NotNull ItemStack pStack) {
+    public MutableComponent getName(ItemStack pStack) {
         return isEnabled(pStack, null) ? super.getName(pStack) : withRarity(pStack, Component.translatable(getDescriptionId(pStack) + ".disable"));
     }
 }

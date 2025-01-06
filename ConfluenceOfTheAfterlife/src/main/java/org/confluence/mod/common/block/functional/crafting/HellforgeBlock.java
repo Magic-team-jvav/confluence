@@ -45,7 +45,6 @@ import org.confluence.mod.common.menu.HellforgeMenu;
 import org.confluence.mod.common.recipe.ArrayRecipeInput;
 import org.confluence.mod.common.recipe.HellforgeRecipe;
 import org.confluence.mod.util.ModUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -76,12 +75,12 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
     }
 
     @Override
-    protected @NotNull MapCodec<HellforgeBlock> codec() {
+    protected MapCodec<HellforgeBlock> codec() {
         return CODEC;
     }
 
     @Override
-    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hitResult) {
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
@@ -93,23 +92,23 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
     }
 
     @Override
-    protected boolean hasAnalogOutputSignal(@NotNull BlockState state) {
+    protected boolean hasAnalogOutputSignal(BlockState state) {
         return true;
     }
 
     @Override
-    protected int getAnalogOutputSignal(@NotNull BlockState blockState, Level level, @NotNull BlockPos pos) {
+    protected int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
         return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(level.getBlockEntity(pos));
     }
 
     @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         int index = pState.getValue(FACING).get2DDataValue();
         return pState.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase() ? BASE_SHAPES[index] : RIGHT_SHAPES[index];
     }
 
     @Override
-    public void setPlacedBy(Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
+    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         if (!pLevel.isClientSide) {
             BlockPos relativePos = pPos.relative(StateProperties.HorizontalTwoPart.getConnectedDirection(pState));
             pLevel.setBlockAndUpdate(relativePos, defaultBlockState().setValue(StateProperties.HORIZONTAL_TWO_PART, StateProperties.HorizontalTwoPart.RIGHT).setValue(FACING, pState.getValue(FACING)));
@@ -125,7 +124,7 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
     }
 
     @Override
-    public void onRemove(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pNewState, boolean pMovedByPiston) {
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         if (!pState.is(pNewState.getBlock())) {
             pLevel.setBlockAndUpdate(pPos.relative(StateProperties.HorizontalTwoPart.getConnectedDirection(pState)), Blocks.AIR.defaultBlockState());
             BlockEntity blockentity = pLevel.getBlockEntity(pPos);
@@ -146,12 +145,12 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new Entity(pos, state);
     }
 
     @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return level.isClientSide || state.getValue(StateProperties.HORIZONTAL_TWO_PART).isRight() ? null : ModUtils.getTicker(blockEntityType, FunctionalBlocks.HELLFORGE_ENTITY.get(), Entity::serverTick);
     }
 
@@ -450,7 +449,7 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
         }
 
         @Override
-        public int @NotNull [] getSlotsForFace(@NotNull Direction side) {
+        public int [] getSlotsForFace(Direction side) {
             if (side == Direction.DOWN) {
                 return SLOTS_FOR_DOWN;
             } else {
@@ -459,12 +458,12 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
         }
 
         @Override
-        public boolean canPlaceItemThroughFace(int index, @NotNull ItemStack itemStack, @Nullable Direction direction) {
+        public boolean canPlaceItemThroughFace(int index, ItemStack itemStack, @Nullable Direction direction) {
             return canPlaceItem(index, itemStack);
         }
 
         @Override
-        public boolean canTakeItemThroughFace(int index, @NotNull ItemStack stack, @NotNull Direction direction) {
+        public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
             return direction != Direction.DOWN || index != 1 || stack.is(Items.WATER_BUCKET) || stack.is(Items.BUCKET);
         }
 
@@ -474,7 +473,7 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
         }
 
         @Override
-        protected @NotNull NonNullList<ItemStack> getItems() {
+        protected NonNullList<ItemStack> getItems() {
             if (getBlockState().getValue(StateProperties.HORIZONTAL_TWO_PART).isRight()) {
                 return level != null && level.getBlockEntity(getBlockPos().relative(StateProperties.HorizontalTwoPart.getConnectedDirection(getBlockState()))) instanceof Entity entity ? entity.items : items;
             }
@@ -482,7 +481,7 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
         }
 
         @Override
-        protected void setItems(@NotNull NonNullList<ItemStack> items) {
+        protected void setItems(NonNullList<ItemStack> items) {
             if (getBlockState().getValue(StateProperties.HORIZONTAL_TWO_PART).isRight()) {
                 if (level != null && level.getBlockEntity(getBlockPos().relative(StateProperties.HorizontalTwoPart.getConnectedDirection(getBlockState()))) instanceof Entity entity) {
                     entity.items = items;
@@ -493,7 +492,7 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
         }
 
         @Override
-        protected @NotNull AbstractContainerMenu createMenu(int containerId, @NotNull Inventory inventory) {
+        protected AbstractContainerMenu createMenu(int containerId, Inventory inventory) {
             if (getBlockState().getValue(StateProperties.HORIZONTAL_TWO_PART).isBase()) {
                 return new HellforgeMenu(containerId, inventory, this, dataAccess);
             } else if (level != null && level.getBlockEntity(getBlockPos().relative(StateProperties.HorizontalTwoPart.getConnectedDirection(getBlockState()))) instanceof Entity entity) {
@@ -503,7 +502,7 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
         }
 
         @Override
-        public boolean canPlaceItem(int index, @NotNull ItemStack stack) {
+        public boolean canPlaceItem(int index, ItemStack stack) {
             if (index == RESULT_SLOT) {
                 return false;
             } else if (index < FUEL_SLOT) {
@@ -551,12 +550,12 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
         }
 
         @Override
-        protected @NotNull Component getDefaultName() {
+        protected Component getDefaultName() {
             return Component.translatable("container.confluence.hellforge");
         }
 
         @Override
-        protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
+        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
             super.loadAdditional(tag, registries);
             if (getBlockState().getValue(StateProperties.HORIZONTAL_TWO_PART).isBase()) {
                 this.items = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
@@ -574,7 +573,7 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
         }
 
         @Override
-        protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
+        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
             super.saveAdditional(tag, registries);
             if (getBlockState().getValue(StateProperties.HORIZONTAL_TWO_PART).isBase()) {
                 tag.putInt("BurnTime", this.litTime);

@@ -30,7 +30,6 @@ import org.confluence.mod.common.block.functional.network.Network;
 import org.confluence.mod.common.block.functional.network.NetworkNode;
 import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.mod.util.ModUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -62,13 +61,13 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
     }
 
     @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         VoxelShape shape = behaviour.getShape(pState, pLevel, pPos, pContext);
         return shape == null ? super.getShape(pState, pLevel, pPos, pContext) : shape;
     }
 
     @Override
-    public void onRemove(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pNewState, boolean pMovedByPiston) {
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         if (pState.getBlock() != pNewState.getBlock()) {
             onNodeRemove(pState, pLevel, pPos, pNewState);
             super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
@@ -102,17 +101,17 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return behaviour.newBlockEntity(pos, state);
     }
 
     @Override
-    protected void tick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         behaviour.tick(state, level, pos, random);
     }
 
     @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return state.getValue(StateProperties.VERTICAL_TWO_PART).isBase() ? ModUtils.getTicker(blockEntityType, StatueBlocks.BLOCK_ENTITY.get(), behaviour::entityTick) : null;
     }
 
@@ -122,13 +121,13 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
         }
 
         @Override
-        protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
+        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
             super.saveAdditional(tag, registries);
             ((BehaviourStatueBlock) getBlockState().getBlock()).behaviour.saveAdditional(tag, registries);
         }
 
         @Override
-        protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
+        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
             super.loadAdditional(tag, registries);
             ((BehaviourStatueBlock) getBlockState().getBlock()).behaviour.loadAdditional(tag, registries);
 
@@ -151,7 +150,7 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
 
         public void onUnExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {}
 
-        public void tick(BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+        public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
             if (state.getValue(StateProperties.DRIVE)) {
                 BlockState state1 = state.setValue(StateProperties.DRIVE, false);
                 level.setBlockAndUpdate(pos, state1);
@@ -165,13 +164,13 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
             return original;
         }
 
-        public @Nullable VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+        public @Nullable VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
             return null;
         }
 
         protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {}
 
-        protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.Provider registries) {}
+        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {}
     }
 
     public static class SummonBehaviour<E extends net.minecraft.world.entity.Entity> extends Behaviour {
@@ -233,7 +232,7 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
         }
 
         @Override
-        protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.Provider registries) {
+        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
             entities.clear();
             for (Tag entity : tag.getList("entities", Tag.TAG_INT_ARRAY)) {
                 entities.add(NbtUtils.loadUUID(entity));

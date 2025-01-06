@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
-import org.jetbrains.annotations.NotNull;
 
 import static net.minecraft.world.level.block.DirectionalBlock.FACING;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.TRIGGERED;
@@ -40,11 +39,11 @@ public class DartTrapBlock extends AbstractMechanicalBlock {
         return defaultBlockState().setValue(FACING, pContext.getNearestLookingDirection().getOpposite());
     }
 
-    public @NotNull BlockState rotate(BlockState pState, Rotation pRotation) {
+    public BlockState rotate(BlockState pState, Rotation pRotation) {
         return pState.setValue(FACING, pRotation.rotate(pState.getValue(FACING)));
     }
 
-    public @NotNull BlockState mirror(BlockState pState, Mirror pMirror) {
+    public BlockState mirror(BlockState pState, Mirror pMirror) {
         return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
     }
 
@@ -53,14 +52,14 @@ public class DartTrapBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    public void neighborChanged(@NotNull BlockState pState, Level pLevel, @NotNull BlockPos pPos, @NotNull Block pNeighborBlock, @NotNull BlockPos pNeighborPos, boolean pMovedByPiston) {
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
         if (!pLevel.isClientSide) {
             execute(pState, (ServerLevel) pLevel, pPos, pLevel.hasNeighborSignal(pPos));
         }
     }
 
     @Override
-    public void tick(BlockState pState, ServerLevel pLevel, @NotNull BlockPos pPos, @NotNull RandomSource pRandom) {
+    public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
         pLevel.setBlockAndUpdate(pPos, pState.setValue(TRIGGERED, false));
     }
 

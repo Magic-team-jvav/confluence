@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.terra_curio.common.entity.projectile.BeeProjectile;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -23,7 +22,7 @@ public class JungleHiveBlock extends Block {
     }
 
     @Override
-    public void playerDestroy(@NotNull Level level, @NotNull Player player, @NotNull BlockPos pos, @NotNull BlockState state, @Nullable BlockEntity blockEntity, @NotNull ItemStack tool) {
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
         if(level.isClientSide || player.getAbilities().instabuild) return;
         int randomNumber = level.random.nextInt(3);
         if (randomNumber == 0) {

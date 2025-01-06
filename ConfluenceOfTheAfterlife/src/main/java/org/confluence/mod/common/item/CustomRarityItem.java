@@ -7,7 +7,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -33,16 +32,16 @@ public class CustomRarityItem extends Item {
     }
 
     @Override
-    public @NotNull ItemAttributeModifiers getDefaultAttributeModifiers(@NotNull ItemStack stack) {
+    public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
         return modifiers == null ? super.getDefaultAttributeModifiers(stack) : modifiers;
     }
 
     @Override
-    public @NotNull MutableComponent getName(@NotNull ItemStack pStack) {
+    public MutableComponent getName(ItemStack pStack) {
         return withRarity(pStack, Component.translatable(getDescriptionId(pStack)));
     }
 
-    protected MutableComponent withRarity(@NotNull ItemStack pStack, MutableComponent component) {
+    protected MutableComponent withRarity(ItemStack pStack, MutableComponent component) {
         return component.withColor(pStack.get(TCDataComponentTypes.MOD_RARITY).getColor());
     }
 }

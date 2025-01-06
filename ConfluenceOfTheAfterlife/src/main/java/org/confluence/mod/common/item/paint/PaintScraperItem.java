@@ -10,7 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class PaintScraperItem extends Item {
     }
 
     @Override
-    public @NotNull InteractionResult useOn(UseOnContext pContext) {
+    public InteractionResult useOn(UseOnContext pContext) {
         if (pContext.getPlayer() instanceof ServerPlayer serverPlayer) {
             ServerLevel serverLevel = serverPlayer.serverLevel();
             BlockPos clickedPos = pContext.getClickedPos();
@@ -34,7 +33,7 @@ public class PaintScraperItem extends Item {
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable("tooltip.item.confluence.paint_scraper"));
     }
 }

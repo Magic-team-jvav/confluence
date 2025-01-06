@@ -7,12 +7,11 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.block.natural.BaseHerbBlock;
 import org.confluence.mod.common.init.item.FoodItems;
-import org.jetbrains.annotations.NotNull;
 
 public class Blinkroot extends BaseHerbBlock {
 
 	@Override
-	protected @NotNull ItemLike getBaseSeedId(){
+	protected ItemLike getBaseSeedId(){
 		return FoodItems.BLINKROOT_SEED.get();
 	}
 
@@ -22,7 +21,7 @@ public class Blinkroot extends BaseHerbBlock {
 	}
 
 	@Override
-	public void randomTick(@NotNull BlockState pState, @NotNull ServerLevel pLevel, @NotNull BlockPos pPos, @NotNull RandomSource pRandom){
+	public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom){
 		int age = getAge(pState);
 		int r = pRandom.nextInt(10);
 		if(age == MAX_AGE && r < 2){
@@ -34,7 +33,7 @@ public class Blinkroot extends BaseHerbBlock {
 	}
 
 	@Override
-	public boolean isRandomlyTicking(@NotNull BlockState pState){
+	public boolean isRandomlyTicking(BlockState pState){
 		return true;
 	}
 }

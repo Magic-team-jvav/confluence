@@ -48,18 +48,18 @@ public class BasePlantBlock extends BushBlock {
 
     @Override
     @NotNull
-    public VoxelShape getShape(BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull CollisionContext context){
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context){
         Vec3 offset = state.getOffset(world, pos);
         return box(2, 0, 2, 14, 13, 14).move(offset.x, offset.y, offset.z);
     }
 
     @Override
-    public boolean mayPlaceOn(@NotNull BlockState groundState, @NotNull BlockGetter worldIn, @NotNull BlockPos pos){
+    public boolean mayPlaceOn(BlockState groundState, BlockGetter worldIn, BlockPos pos){
         return Arrays.stream(survive).allMatch(state -> state == groundState.getBlock());
     }
 
     @Override
-    public boolean canSurvive(@NotNull BlockState blockstate, LevelReader worldIn, BlockPos pos){
+    public boolean canSurvive(BlockState blockstate, LevelReader worldIn, BlockPos pos){
         BlockPos blockpos = pos.below();
         BlockState groundState = worldIn.getBlockState(blockpos);
         return mayPlaceOn(groundState, worldIn, blockpos);
@@ -70,7 +70,7 @@ public class BasePlantBlock extends BushBlock {
      */
     @Override
     @NotNull
-    public BlockState updateShape(@NotNull BlockState originState, @NotNull Direction pFacing, @NotNull BlockState pFacingState, @NotNull LevelAccessor pLevel, @NotNull BlockPos pCurrentPos, @NotNull BlockPos pFacingPos){
+    public BlockState updateShape(BlockState originState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos){
         BlockState after = super.updateShape(originState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
         if(pFacing != Direction.DOWN) return after;
         ISpreadable.Type type = pFacingState.getBlock() instanceof ISpreadable sp ? sp.getType() : ISpreadable.Type.PURE;

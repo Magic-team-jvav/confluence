@@ -16,14 +16,13 @@ import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.terra_curio.common.component.ModRarity;
-import org.jetbrains.annotations.NotNull;
 
 public class RightClickLootItem extends CustomRarityItem {
     public RightClickLootItem(ModRarity rarity, ResourceKey<LootTable> lootTable) {
         super(new Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(lootTable)), rarity);
     }
 
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         if (level instanceof ServerLevel serverLevel) {
             LootParams lootparams = new LootParams.Builder(serverLevel)

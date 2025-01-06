@@ -28,7 +28,6 @@ import org.confluence.mod.mixed.IFishingHook;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractFishingPole extends CustomRarityItem {
     protected static final ImmutableMultimap<Attribute, AttributeModifier> EMPTY = ImmutableMultimap.of();
@@ -45,7 +44,7 @@ public abstract class AbstractFishingPole extends CustomRarityItem {
         super(properties, rarity);
     }
 
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level pLevel, Player pPlayer, @NotNull InteractionHand pHand) {
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
         if (pPlayer.fishing != null) {
             if (!pLevel.isClientSide) {
@@ -87,7 +86,7 @@ public abstract class AbstractFishingPole extends CustomRarityItem {
     }
 
     @Override
-    public boolean canPerformAction(@NotNull ItemStack stack, @NotNull ItemAbility itemAbility) {
+    public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
         return ItemAbilities.DEFAULT_FISHING_ROD_ACTIONS.contains(itemAbility);
     }
 

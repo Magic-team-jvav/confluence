@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class SignalPressurePlateBlock extends PressurePlateBlock implements EntityBlock, INetworkBlock {
@@ -21,13 +20,13 @@ public class SignalPressurePlateBlock extends PressurePlateBlock implements Enti
     }
 
     @Override
-    public void onRemove(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pNewState, boolean pMovedByPiston) {
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         onNodeRemove(pState, pLevel, pPos, pNewState);
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
     }
 
     @Override
-    public void tick(@NotNull BlockState pState, @NotNull ServerLevel pLevel, @NotNull BlockPos pPos, @NotNull RandomSource pRandom) {
+    public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
         int i = getSignalForState(pState);
         int j = getSignalStrength(pLevel, pPos);
         if (i > 0 && i != j) {
@@ -37,7 +36,7 @@ public class SignalPressurePlateBlock extends PressurePlateBlock implements Enti
     }
 
     @Override
-    public void entityInside(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull Entity pEntity) {
+    public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
         super.entityInside(pState, pLevel, pPos, pEntity);
         if (pLevel instanceof ServerLevel serverLevel) {
             int i = getSignalForState(pState);
@@ -48,7 +47,7 @@ public class SignalPressurePlateBlock extends PressurePlateBlock implements Enti
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new AbstractMechanicalBlock.Entity(blockPos, blockState);
     }
 

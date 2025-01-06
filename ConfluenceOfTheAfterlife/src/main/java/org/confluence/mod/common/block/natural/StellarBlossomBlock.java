@@ -17,7 +17,7 @@ public class StellarBlossomBlock extends BaseCropBlock {
     }
 
     @Override
-    protected @NotNull ItemLike getBaseSeedId() {
+    protected ItemLike getBaseSeedId() {
         return FoodItems.STELLAR_BLOSSOM_SEED.get();
     }
 

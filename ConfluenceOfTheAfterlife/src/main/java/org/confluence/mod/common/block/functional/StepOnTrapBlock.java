@@ -62,12 +62,12 @@ public class StepOnTrapBlock extends Block {
     }
 
     @Override
-    protected @NotNull VoxelShape getCollisionShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return behaviour.getCollisionShape(state, level, pos, context);
     }
 
     @Override
-    public void stepOn(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Entity entity) {
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         behaviour.onStep(level, pos, state, entity);
     }
 

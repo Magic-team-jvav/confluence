@@ -10,7 +10,6 @@ import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.item.PotionItems;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractPotionItem extends Item {
     public AbstractPotionItem(Properties properties) {
@@ -18,23 +17,23 @@ public abstract class AbstractPotionItem extends Item {
     }
 
     @Override
-    public int getUseDuration(@NotNull ItemStack itemStack, @NotNull LivingEntity entity) {
+    public int getUseDuration(ItemStack itemStack, LivingEntity entity) {
         return 20;
     }
 
     @Override
-    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack itemStack) {
+    public UseAnim getUseAnimation(ItemStack itemStack) {
         return UseAnim.DRINK;
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         if (canUse(level, player, hand)) return ItemUtils.startUsingInstantly(level, player, hand);
         return InteractionResultHolder.fail(player.getItemInHand(hand));
     }
 
     @Override
-    public @NotNull ItemStack finishUsingItem(@NotNull ItemStack itemStack, @NotNull Level level, @NotNull LivingEntity living) {
+    public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity living) {
         apply(itemStack, level, living);
         if (living instanceof Player player && !player.getAbilities().instabuild) {
             itemStack.shrink(1); // 创造模式不消耗

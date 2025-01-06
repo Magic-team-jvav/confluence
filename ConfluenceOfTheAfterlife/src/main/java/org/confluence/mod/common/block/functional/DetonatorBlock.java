@@ -17,7 +17,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Predicate;
 
@@ -39,19 +38,19 @@ public class DetonatorBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    protected @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return state.getValue(StateProperties.DRIVE) ? DRIVE : Shapes.block();
     }
 
     @Override
-    public void neighborChanged(@NotNull BlockState pState, Level pLevel, @NotNull BlockPos pPos, @NotNull Block pNeighborBlock, @NotNull BlockPos pNeighborPos, boolean pMovedByPiston) {
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
         if (!pLevel.isClientSide && pLevel.hasNeighborSignal(pPos)) {
             execute(pState, (ServerLevel) pLevel, pPos, true);
         }
     }
 
     @Override
-    public void fallOn(@NotNull Level level, @NotNull BlockState state, @NotNull BlockPos pos, net.minecraft.world.entity.@NotNull Entity entity, float fallDistance) {
+    public void fallOn(Level level, BlockState state, BlockPos pos, net.minecraft.world.entity.Entity entity, float fallDistance) {
         super.fallOn(level, state, pos, entity, fallDistance);
         if (fallDistance > 2.0F && !state.getValue(StateProperties.DRIVE) && entity instanceof ServerPlayer serverPlayer) {
             level.setBlockAndUpdate(pos, state.setValue(StateProperties.SIGNAL, true).setValue(StateProperties.DRIVE, true));
@@ -61,7 +60,7 @@ public class DetonatorBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    protected void tick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (state.getValue(StateProperties.DRIVE)) {
             if (!level.getEntitiesOfClass(LivingEntity.class, TOUCH_AABB.move(pos), PREDICATE).isEmpty() ||
                     (level.getBlockEntity(pos) instanceof Entity entity && entity.getOrCreateNetworkNode().hasSignal(pos))

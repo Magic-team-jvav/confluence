@@ -16,7 +16,6 @@ import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.terra_curio.common.component.ModRarity;
-import org.jetbrains.annotations.NotNull;
 
 public class ManaStarItem extends CustomRarityItem {
     public ManaStarItem() {
@@ -24,7 +23,7 @@ public class ManaStarItem extends CustomRarityItem {
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         level.playSound(player, player.getOnPos().above(), ModSoundEvents.MANA_STAR_USE.get(), SoundSource.PLAYERS, 1, 1);
         ItemStack itemStack = player.getItemInHand(hand);
         if (player instanceof ServerPlayer serverPlayer) {

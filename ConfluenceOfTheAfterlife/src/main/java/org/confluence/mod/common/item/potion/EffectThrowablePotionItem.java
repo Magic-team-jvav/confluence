@@ -12,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.projectile.EffectThrownPotion;
-import org.jetbrains.annotations.NotNull;
 
 public class EffectThrowablePotionItem extends EffectPotionItem {
     public EffectThrowablePotionItem(Properties properties, Holder<MobEffect> mobEffect, int duration, int amplifier) {
@@ -35,7 +34,7 @@ public class EffectThrowablePotionItem extends EffectPotionItem {
         super(mobEffect, duration, amplifier);
     }
 
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level pLevel, @NotNull Player pPlayer, @NotNull InteractionHand pHand) {
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
         pLevel.playSound(null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), SoundEvents.SPLASH_POTION_THROW, SoundSource.PLAYERS, 0.5F, 0.4F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
         if (!pLevel.isClientSide) {

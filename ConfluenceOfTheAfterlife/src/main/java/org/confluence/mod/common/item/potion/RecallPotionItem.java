@@ -11,7 +11,6 @@ import net.minecraft.world.level.storage.LevelData;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.jetbrains.annotations.NotNull;
 
 public class RecallPotionItem extends AbstractPotionItem {
     public RecallPotionItem() {
@@ -19,7 +18,7 @@ public class RecallPotionItem extends AbstractPotionItem {
     }
 
     @Override
-    public int getUseDuration(@NotNull ItemStack itemStack, @NotNull LivingEntity livingEntity) {
+    public int getUseDuration(ItemStack itemStack, LivingEntity livingEntity) {
         return 4;
     }
 

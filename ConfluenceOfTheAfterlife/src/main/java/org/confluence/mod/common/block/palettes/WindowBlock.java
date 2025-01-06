@@ -4,7 +4,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import org.jetbrains.annotations.NotNull;
 
 public class WindowBlock extends ConnectedGlassBlock {
     protected final boolean translucent;
@@ -20,7 +19,7 @@ public class WindowBlock extends ConnectedGlassBlock {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public boolean skipRendering(@NotNull BlockState state, BlockState adjacentBlockState, @NotNull Direction side) {
+    public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
         if (state.getBlock() == adjacentBlockState.getBlock()) {
             return true;
         }

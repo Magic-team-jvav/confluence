@@ -21,7 +21,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.jetbrains.annotations.NotNull;
 
 public class AetheriumCauldronBlock extends AbstractCauldronBlock {
     public static final MapCodec<AetheriumCauldronBlock> CODEC = simpleCodec(AetheriumCauldronBlock::new);
@@ -45,22 +44,22 @@ public class AetheriumCauldronBlock extends AbstractCauldronBlock {
     }
 
     @Override
-    protected @NotNull MapCodec<AetheriumCauldronBlock> codec() {
+    protected MapCodec<AetheriumCauldronBlock> codec() {
         return CODEC;
     }
 
     @Override
-    public boolean isFull(@NotNull BlockState state) {
+    public boolean isFull(BlockState state) {
         return true;
     }
 
     @Override
-    protected @NotNull ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
-    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hitResult) {
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (!level.isClientSide) {
             ItemStack filledStack = NatureBlocks.AETHERIUM_BLOCK.toStack();
             if (player.hasInfiniteMaterials()) {

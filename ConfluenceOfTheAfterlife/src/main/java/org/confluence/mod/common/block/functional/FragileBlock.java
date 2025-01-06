@@ -14,7 +14,6 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.block.StateProperties;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
@@ -50,7 +49,7 @@ public class FragileBlock extends Block implements ISimulatorBlock {
     }
 
     @Override
-    protected @NotNull BlockState updateShape(@NotNull BlockState state, @NotNull Direction direction, @NotNull BlockState neighborState, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos neighborPos) {
+    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         if (!level.isClientSide() && !state.getValue(StateProperties.IS_SUPPORTING)) {
             BlockState blockState = level.getBlockState(pos.relative(state.getValue(BlockStateProperties.FACING)));
             if (!blockState.hasProperty(StateProperties.IS_SUPPORTING)) {
@@ -61,12 +60,12 @@ public class FragileBlock extends Block implements ISimulatorBlock {
     }
 
     @Override
-    protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return simulatorBlock.get().getShape(level, pos, context);
     }
 
     @Override
-    public @Nullable PushReaction getPistonPushReaction(@NotNull BlockState state) {
+    public @Nullable PushReaction getPistonPushReaction(BlockState state) {
         return PushReaction.DESTROY;
     }
 }

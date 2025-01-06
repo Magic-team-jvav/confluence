@@ -5,7 +5,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.FlowingFluid;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.jetbrains.annotations.NotNull;
 
 public class BottomlessBucketItem extends BucketItem {
     public BottomlessBucketItem(FlowingFluid flowingFluid, ModRarity rarity) {
@@ -13,12 +12,12 @@ public class BottomlessBucketItem extends BucketItem {
     }
 
     @Override
-    public boolean hasCraftingRemainingItem(@NotNull ItemStack stack) {
+    public boolean hasCraftingRemainingItem(ItemStack stack) {
         return true;
     }
 
     @Override
-    public @NotNull ItemStack getCraftingRemainingItem(@NotNull ItemStack itemStack) {
+    public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
         return itemStack;
     }
 }

@@ -19,7 +19,6 @@ import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.util.ModUtils;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Hashtable;
 import java.util.Map;
@@ -34,7 +33,7 @@ public interface ISpreadable {
 
     Type getType();
 
-    default void spread(@NotNull BlockState blockState, @NotNull ServerLevel serverLevel, @NotNull BlockPos blockPos, @NotNull RandomSource randomSource) {
+    default void spread(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
         if (!blockState.getValue(STILL_ALIVE)) return;
         if (randomSource.nextInt(100) >= serverLevel.getGameRules().getInt(Confluence.SPREADABLE_CHANCE)) return;
         int phase = ConfluenceData.get(serverLevel).getGamePhase().ordinal();

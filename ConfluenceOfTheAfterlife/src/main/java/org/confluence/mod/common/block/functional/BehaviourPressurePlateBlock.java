@@ -22,7 +22,6 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWERED;
@@ -60,23 +59,23 @@ public class BehaviourPressurePlateBlock extends BasePressurePlateBlock implemen
     }
 
     @Override
-    public void onRemove(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pNewState, boolean pMovedByPiston) {
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         onNodeRemove(pState, pLevel, pPos, pNewState);
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new AbstractMechanicalBlock.Entity(blockPos, blockState);
     }
 
     @Override
-    protected @NotNull MapCodec<BehaviourPressurePlateBlock> codec() {
+    protected MapCodec<BehaviourPressurePlateBlock> codec() {
         return CODEC;
     }
 
     @Override
-    public void tick(@NotNull BlockState pState, @NotNull ServerLevel pLevel, @NotNull BlockPos pPos, @NotNull RandomSource pRandom) {
+    public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
         int i = getSignalForState(pState);
         int j = getSignalStrength(pLevel, pPos);
         if (i > 0 && i != j) {
@@ -86,7 +85,7 @@ public class BehaviourPressurePlateBlock extends BasePressurePlateBlock implemen
     }
 
     @Override
-    public void entityInside(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull Entity pEntity) {
+    public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
         super.entityInside(pState, pLevel, pPos, pEntity);
         if (pLevel instanceof ServerLevel serverLevel) {
             int i = getSignalForState(pState);
@@ -107,17 +106,17 @@ public class BehaviourPressurePlateBlock extends BasePressurePlateBlock implemen
     }
 
     @Override
-    protected int getSignalStrength(@NotNull Level level, @NotNull BlockPos blockPos) {
+    protected int getSignalStrength(Level level, BlockPos blockPos) {
         return behaviour.getSignalStrength(level, blockPos);
     }
 
     @Override
-    protected int getSignalForState(@NotNull BlockState blockState) {
+    protected int getSignalForState(BlockState blockState) {
         return behaviour.getSignalForState(blockState);
     }
 
     @Override
-    protected @NotNull BlockState setSignalForState(@NotNull BlockState blockState, int i) {
+    protected BlockState setSignalForState(BlockState blockState, int i) {
         return behaviour.setSignalForState(blockState, i);
     }
 

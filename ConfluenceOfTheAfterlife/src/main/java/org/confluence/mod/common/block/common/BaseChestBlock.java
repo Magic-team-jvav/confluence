@@ -37,7 +37,6 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.mixed.IBaseContainerBlockEntity;
 import org.confluence.terra_curio.util.TCUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.IntFunction;
@@ -53,12 +52,12 @@ public class BaseChestBlock extends ChestBlock {
     }
 
     @Override
-    public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new Entity(pPos, pState);
     }
 
     @Override
-    public void setPlacedBy(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, LivingEntity pPlacer, @NotNull ItemStack pStack) {
+    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
         CompoundTag tag = TCUtils.getItemStackNbt(pStack);
         if (pLevel.getBlockEntity(pPos) instanceof Entity entity) {
@@ -68,7 +67,7 @@ public class BaseChestBlock extends ChestBlock {
 
     @Nullable
     @Override
-    protected Direction candidatePartnerFacing(BlockPlaceContext pContext, @NotNull Direction pDirection) {
+    protected Direction candidatePartnerFacing(BlockPlaceContext pContext, Direction pDirection) {
         BlockPos relative = pContext.getClickedPos().relative(pDirection);
         if (pContext.getLevel().getBlockEntity(relative) instanceof Entity entity) {
             ItemStack itemStack = pContext.getItemInHand();
@@ -83,7 +82,7 @@ public class BaseChestBlock extends ChestBlock {
     }
 
     @Override
-    public @NotNull InteractionResult useWithoutItem(@NotNull BlockState pState, Level pLevel, @NotNull BlockPos pPos, @NotNull Player pPlayer, @NotNull BlockHitResult pHit) {
+    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
         if (pLevel.getBlockEntity(pPos) instanceof Entity entity && entity.isLocked()) {
             ItemStack itemStack = pPlayer.getMainHandItem();
             boolean isShadow = itemStack.is(ToolItems.SHADOW_KEY.get());
@@ -158,7 +157,7 @@ public class BaseChestBlock extends ChestBlock {
         }
 
         @Override
-        public boolean canOpen(@NotNull Player pPlayer) {
+        public boolean canOpen(Player pPlayer) {
             return !isLocked() && super.canOpen(pPlayer);
         }
 
@@ -180,7 +179,7 @@ public class BaseChestBlock extends ChestBlock {
         }
 
         @Override
-        public @NotNull CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
             CompoundTag nbt = super.getUpdateTag(registries);
             nbt.putInt("VariantId", variant.id);
             return nbt;
@@ -221,7 +220,7 @@ public class BaseChestBlock extends ChestBlock {
         }
 
         @Override
-        public @NotNull String getSerializedName() {
+        public String getSerializedName() {
             return name;
         }
     }

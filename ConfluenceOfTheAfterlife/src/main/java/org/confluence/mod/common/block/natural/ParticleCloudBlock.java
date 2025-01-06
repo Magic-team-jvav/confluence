@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 public class ParticleCloudBlock extends Block {
     private final ParticleOptions particleTypes;
@@ -20,14 +19,14 @@ public class ParticleCloudBlock extends Block {
         this.particleTypes = particleTypes;
     }
 
-    public void fallOn(@NotNull Level level, @NotNull BlockState state, @NotNull BlockPos pos, Entity entity, float fallDistance) {
+    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
         if (entity.isSuppressingBounce()) {
             super.fallOn(level, state, pos, entity, fallDistance);
         }
     }
 
     @Override
-    public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         super.animateTick(state, level, pos, random);
         double x = (double) pos.getX() + 0.5D;
         double y = pos.getY();

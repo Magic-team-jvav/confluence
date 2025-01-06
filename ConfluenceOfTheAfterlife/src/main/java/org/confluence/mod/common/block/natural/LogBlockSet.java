@@ -26,7 +26,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.ModBlockTagsProvider;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -59,7 +58,7 @@ public class LogBlockSet {
         return new Builder(id, ignitedByLava);
     }
 
-    public @NotNull DeferredBlock<Block> getPlanks() {
+    public DeferredBlock<Block> getPlanks() {
         return builder.PLANKS;
     }
 
@@ -480,7 +479,7 @@ public class LogBlockSet {
         }
 
         @Override
-        public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
+        public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
             return new ModSignBlockEntity(pPos, pState);
         }
     }
@@ -491,7 +490,7 @@ public class LogBlockSet {
         }
 
         @Override
-        public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
+        public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
             return new ModSignBlockEntity(pPos, pState);
         }
     }

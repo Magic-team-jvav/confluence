@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.terra_curio.common.init.TCEffects;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -45,22 +44,22 @@ public class HoneyCauldronBlock extends AbstractCauldronBlock {
     }
 
     @Override
-    public @NotNull MapCodec<HoneyCauldronBlock> codec() {
+    public MapCodec<HoneyCauldronBlock> codec() {
         return CODEC;
     }
 
     @Override
-    protected double getContentHeight(@NotNull BlockState blockState) {
+    protected double getContentHeight(BlockState blockState) {
         return 0.9375;
     }
 
     @Override
-    public boolean isFull(@NotNull BlockState blockState) {
+    public boolean isFull(BlockState blockState) {
         return true;
     }
 
     @Override
-    protected void entityInside(@NotNull BlockState blockState, Level level, @NotNull BlockPos blockPos, @NotNull Entity entity) {
+    protected void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity) {
         if (!level.isClientSide && isEntityInsideContent(blockState, blockPos, entity) && entity instanceof LivingEntity living) {
             if (living instanceof Animal || living instanceof ServerPlayer) {
                 living.addEffect(new MobEffectInstance(TCEffects.HONEY, 600));
@@ -69,7 +68,7 @@ public class HoneyCauldronBlock extends AbstractCauldronBlock {
     }
 
     @Override
-    protected int getAnalogOutputSignal(@NotNull BlockState blockState, @NotNull Level level, @NotNull BlockPos blockPos) {
+    protected int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos blockPos) {
         return 3;
     }
 }

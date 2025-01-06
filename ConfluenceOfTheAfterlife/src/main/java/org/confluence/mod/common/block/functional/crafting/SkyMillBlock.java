@@ -33,7 +33,6 @@ import org.confluence.mod.common.menu.SkyMillMenu;
 import org.confluence.mod.common.recipe.EnvironmentLevelAccess;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -54,7 +53,7 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
     }
 
     @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return SHAPE;
     }
 
@@ -69,17 +68,17 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
     }
 
     @Override
-    public @NotNull RenderShape getRenderShape(@NotNull BlockState pState) {
+    public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new Entity(pPos, pState);
     }
 
     @Override
-    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hitResult) {
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
@@ -89,12 +88,12 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
     }
 
     @Override
-    public @Nullable MenuProvider getMenuProvider(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos) {
+    public @Nullable MenuProvider getMenuProvider(BlockState pState, Level pLevel, BlockPos pPos) {
         return new SimpleMenuProvider((pContainerId, pPlayerInventory, pPlayer) -> new SkyMillMenu(pContainerId, pPlayerInventory, new LevelAccess(pLevel, pPos)), CONTAINER_TITLE);
     }
 
     @Override
-    protected @NotNull MapCodec<SkyMillBlock> codec() {
+    protected MapCodec<SkyMillBlock> codec() {
         return CODEC;
     }
 
@@ -126,7 +125,7 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
         }
 
         @Override
-        public @NotNull Component getName(@NotNull ItemStack stack) {
+        public Component getName(ItemStack stack) {
             return Component.translatable(getDescriptionId(stack)).withStyle(style -> style.withColor(ModRarity.BLUE.getColor()));
         }
 

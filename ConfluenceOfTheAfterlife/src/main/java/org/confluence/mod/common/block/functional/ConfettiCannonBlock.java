@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.particlestorm.data.event.ParticleEffect;
 import org.mesdag.particlestorm.data.molang.MolangExp;
@@ -22,6 +21,7 @@ import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;
 
 import java.util.Map;
 
+// todo
 public class ConfettiCannonBlock extends HorizontalDirectionalBlock implements EntityBlock, INetworkBlock {
     public static final IntegerProperty PITCH_30 = IntegerProperty.create("pitch_30", 0, 6);
     public static final MapCodec<ConfettiCannonBlock> CODEC = simpleCodec(ConfettiCannonBlock::new);
@@ -37,12 +37,12 @@ public class ConfettiCannonBlock extends HorizontalDirectionalBlock implements E
     }
 
     @Override
-    protected @NotNull MapCodec<ConfettiCannonBlock> codec() {
+    protected MapCodec<ConfettiCannonBlock> codec() {
         return CODEC;
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new AbstractMechanicalBlock.Entity(pos, state);
     }
 

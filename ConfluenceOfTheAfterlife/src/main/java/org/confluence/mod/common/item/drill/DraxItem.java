@@ -9,7 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import org.confluence.mod.common.item.pickaxe_axe.PickaxeAxeItem;
 import org.confluence.terra_curio.common.component.ModRarity;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -27,7 +26,7 @@ public class DraxItem extends PickaxeAxeItem {
     }
 
     @Override
-    public boolean onEntitySwing(@NotNull ItemStack stack, @NotNull LivingEntity entity, @NotNull InteractionHand hand) {
+    public boolean onEntitySwing(ItemStack stack, LivingEntity entity, InteractionHand hand) {
         return true; // 取消挥手
     }
 }

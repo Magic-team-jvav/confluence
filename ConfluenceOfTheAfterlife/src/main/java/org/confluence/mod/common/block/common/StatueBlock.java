@@ -17,7 +17,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.block.StateProperties;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -51,12 +50,12 @@ public class StatueBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    protected @NotNull MapCodec<StatueBlock> codec() {
+    protected MapCodec<StatueBlock> codec() {
         return CODEC;
     }
 
     @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         boolean base = pState.getValue(StateProperties.VERTICAL_TWO_PART).isBase();
         return switch (pState.getValue(FACING)) {
             case NORTH, SOUTH -> base ? LOWER_SHAPE_Z : UPPER_SHAPE_Z;
@@ -65,7 +64,7 @@ public class StatueBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public void setPlacedBy(Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
+    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         if (!pLevel.isClientSide) {
             BlockPos relativePos = pPos.relative(StateProperties.VerticalTwoPart.getConnectedDirection(pState));
             pLevel.setBlockAndUpdate(relativePos, defaultBlockState().setValue(StateProperties.VERTICAL_TWO_PART, StateProperties.VerticalTwoPart.UP).setValue(FACING, pState.getValue(FACING)));
@@ -81,7 +80,7 @@ public class StatueBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public void onRemove(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pNewState, boolean pMovedByPiston) {
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
         pLevel.setBlockAndUpdate(pPos.relative(StateProperties.VerticalTwoPart.getConnectedDirection(pState)), Blocks.AIR.defaultBlockState());
     }

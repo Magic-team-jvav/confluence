@@ -29,7 +29,6 @@ import org.confluence.mod.common.init.block.MusicBoxBlocks;
 import org.confluence.mod.common.item.accessory.MusicBoxItem;
 import org.confluence.mod.mixed.IMusicManager;
 import org.confluence.mod.util.ModUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
@@ -49,7 +48,7 @@ public class MusicBoxBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hitResult) {
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (!level.isClientSide) {
             level.setBlockAndUpdate(pos, state.cycle(StateProperties.DRIVE));
         }
@@ -57,7 +56,7 @@ public class MusicBoxBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new Entity(pos, state, musicBoxItem.get().music);
     }
 
@@ -67,7 +66,7 @@ public class MusicBoxBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return level.isClientSide ? ModUtils.getTicker(blockEntityType, MusicBoxBlocks.MUSIC_BOX_ENTITY.get(), Entity::clientTick) : null;
     }
 
@@ -84,7 +83,7 @@ public class MusicBoxBlock extends AbstractMechanicalBlock {
         }
 
         @Override
-        protected void loadAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
+        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
             super.loadAdditional(tag, registries);
             if (tag.contains("music")) {
                 this.music = Music.CODEC.parse(NbtOps.INSTANCE, tag.get("music")).getOrThrow();
@@ -92,7 +91,7 @@ public class MusicBoxBlock extends AbstractMechanicalBlock {
         }
 
         @Override
-        protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
+        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
             super.saveAdditional(tag, registries);
             if (music != null) {
                 tag.put("music", Music.CODEC.encodeStart(NbtOps.INSTANCE, music).getOrThrow());
@@ -100,7 +99,7 @@ public class MusicBoxBlock extends AbstractMechanicalBlock {
         }
 
         @Override
-        public @NotNull CompoundTag getUpdateTag(HolderLookup.@NotNull Provider registries) {
+        public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
             CompoundTag tag = super.getUpdateTag(registries);
             if (music != null) {
                 tag.put("music", Music.CODEC.encodeStart(NbtOps.INSTANCE, music).getOrThrow());

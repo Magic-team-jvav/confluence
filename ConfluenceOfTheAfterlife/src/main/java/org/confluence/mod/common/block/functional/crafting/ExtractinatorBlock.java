@@ -36,7 +36,6 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -65,18 +64,18 @@ public class ExtractinatorBlock extends HorizontalDirectionalBlock implements En
     }
 
     @Override
-    protected @NotNull MapCodec<ExtractinatorBlock> codec() {
+    protected MapCodec<ExtractinatorBlock> codec() {
         return CODEC;
     }
 
     @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         int index = pState.getValue(FACING).get2DDataValue();
         return pState.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase() ? BASE_SHAPES[index] : RIGHT_SHAPES[index];
     }
 
     @Override
-    public void setPlacedBy(Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
+    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         if (!pLevel.isClientSide) {
             BlockPos relativePos = pPos.relative(StateProperties.HorizontalTwoPart.getConnectedDirection(pState));
             pLevel.setBlockAndUpdate(relativePos, defaultBlockState().setValue(StateProperties.HORIZONTAL_TWO_PART, StateProperties.HorizontalTwoPart.RIGHT).setValue(FACING, pState.getValue(FACING)));
@@ -92,7 +91,7 @@ public class ExtractinatorBlock extends HorizontalDirectionalBlock implements En
     }
 
     @Override
-    public void onRemove(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pNewState, boolean pMovedByPiston) {
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
         pLevel.setBlockAndUpdate(pPos.relative(StateProperties.HorizontalTwoPart.getConnectedDirection(pState)), Blocks.AIR.defaultBlockState());
     }
@@ -104,17 +103,17 @@ public class ExtractinatorBlock extends HorizontalDirectionalBlock implements En
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new Entity(pPos, pState);
     }
 
     @Override
-    public @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
+    public RenderShape getRenderShape(BlockState state) {
         return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
     @Override
-    protected @NotNull ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (level instanceof ServerLevel serverLevel) {
             ItemStack item = player.getItemInHand(hand);
             ResourceKey<LootTable> path;
@@ -186,7 +185,7 @@ public class ExtractinatorBlock extends HorizontalDirectionalBlock implements En
         }
 
         @Override
-        public @NotNull Component getName(@NotNull ItemStack stack) {
+        public Component getName(ItemStack stack) {
             return Component.translatable(getDescriptionId(stack)).withStyle(style -> style.withColor(ModRarity.WHITE.getColor()));
         }
 

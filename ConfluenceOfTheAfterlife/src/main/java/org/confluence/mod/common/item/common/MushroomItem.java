@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.effect.harmful.PotionSicknessEffect;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.MaterialItems;
-import org.jetbrains.annotations.NotNull;
 
 public class MushroomItem extends BlockItem {
 
@@ -24,7 +23,7 @@ public class MushroomItem extends BlockItem {
     }
 
     @Override
-    protected boolean canPlace(@NotNull BlockPlaceContext pContext, @NotNull BlockState pState) {
+    protected boolean canPlace(BlockPlaceContext pContext, BlockState pState) {
         return false;
     }
 

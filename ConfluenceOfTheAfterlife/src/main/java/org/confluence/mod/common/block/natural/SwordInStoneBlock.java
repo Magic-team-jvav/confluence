@@ -24,7 +24,7 @@ public class SwordInStoneBlock extends Block {
     }
 
     @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return state.getValue(SWORD_TYPE) == SwordType.NULL ? NULL_SHAPE : SHAPE;
     }
 
@@ -46,7 +46,7 @@ public class SwordInStoneBlock extends Block {
         }
 
         @Override
-        public @NotNull String getSerializedName() {
+        public String getSerializedName() {
             return name;
         }
     }

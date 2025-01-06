@@ -43,7 +43,6 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_guns.common.init.TGItems;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -78,14 +77,14 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public @NotNull BlockState updateShape(BlockState pState, @NotNull Direction pDirection, @NotNull BlockState pNeighborState, @NotNull LevelAccessor pLevel, @NotNull BlockPos pPos, @NotNull BlockPos pNeighborPos) {
+    public BlockState updateShape(BlockState pState, Direction pDirection, BlockState pNeighborState, LevelAccessor pLevel, BlockPos pPos, BlockPos pNeighborPos) {
         if (pState.getValue(WATERLOGGED)) {
             pLevel.scheduleTick(pPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
         }
         return pState;
     }
 
-    public @NotNull FluidState getFluidState(BlockState pState) {
+    public FluidState getFluidState(BlockState pState) {
         return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
     }
 
@@ -95,7 +94,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return voxelShape;
     }
 
@@ -105,19 +104,19 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public void playerDestroy(@NotNull Level pLevel, @NotNull Player pPlayer, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable BlockEntity pBlockEntity, @NotNull ItemStack pTool) {
+    public void playerDestroy(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState, @Nullable BlockEntity pBlockEntity, ItemStack pTool) {
         pPlayer.awardStat(Stats.BLOCK_MINED.get(this));
         pPlayer.causeFoodExhaustion(0.005F);
         dropSequence(pLevel, pPos);
     }
 
     @Override
-    public void wasExploded(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull Explosion pExplosion) {
+    public void wasExploded(Level pLevel, BlockPos pPos, Explosion pExplosion) {
         dropSequence(pLevel, pPos);
     }
 
     @Override
-    public void onProjectileHit(@NotNull Level pLevel, @NotNull BlockState pState, @NotNull BlockHitResult pHit, @NotNull Projectile pProjectile) {
+    public void onProjectileHit(Level pLevel, BlockState pState, BlockHitResult pHit, Projectile pProjectile) {
         BlockPos blockPos = pHit.getBlockPos();
         Entity entity = pProjectile.getOwner();
         if (pLevel.destroyBlock(blockPos, true, entity)) {

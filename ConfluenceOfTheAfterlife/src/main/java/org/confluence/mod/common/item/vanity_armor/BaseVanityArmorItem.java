@@ -10,7 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.init.ModArmorMaterials;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.jetbrains.annotations.NotNull;
 
 public class BaseVanityArmorItem extends ArmorItem {
     public BaseVanityArmorItem(ArmorItem.Type type, ModRarity rarity) {
@@ -30,7 +29,7 @@ public class BaseVanityArmorItem extends ArmorItem {
     }
 
     @Override
-    public @NotNull MutableComponent getName(@NotNull ItemStack pStack) {
+    public MutableComponent getName(ItemStack pStack) {
         return Component.translatable(getDescriptionId(pStack)).withColor(pStack.get(TCDataComponentTypes.MOD_RARITY).getColor());
     }
 }

@@ -7,9 +7,7 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class BaseFoodItem extends Item {
@@ -25,22 +23,22 @@ public class BaseFoodItem extends Item {
     }
 
     @Override
-    public int getUseDuration(@NotNull ItemStack stack, @NotNull LivingEntity entity) {
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return builder.duration.apply(stack);
     }
 
     @Override
-    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack stack) {
+    public UseAnim getUseAnimation(ItemStack stack) {
         return builder.useAnim.apply(stack);
     }
 
     @Override
-    public @NotNull SoundEvent getDrinkingSound() {
+    public SoundEvent getDrinkingSound() {
         return builder.drinkingSoundType.apply(null);
     }
 
     @Override
-    public @NotNull SoundEvent getEatingSound() {
+    public SoundEvent getEatingSound() {
         return builder.eatingSoundType.apply(null);
     }
 

@@ -7,7 +7,6 @@ import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Tier;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.jetbrains.annotations.NotNull;
 
 public class BasePickaxeItem extends PickaxeItem {
     public BasePickaxeItem(Tier tier, float rawDamage, float rawSpeed) {
@@ -24,7 +23,7 @@ public class BasePickaxeItem extends PickaxeItem {
     }
 
     @Override
-    public @NotNull MutableComponent getName(@NotNull ItemStack pStack) {
+    public MutableComponent getName(ItemStack pStack) {
         return Component.translatable(getDescriptionId(pStack)).withColor(pStack.get(TCDataComponentTypes.MOD_RARITY).getColor());
     }
 }

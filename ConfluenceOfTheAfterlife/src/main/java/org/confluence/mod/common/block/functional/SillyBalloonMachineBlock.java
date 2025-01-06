@@ -16,7 +16,6 @@ import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.util.ModUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
@@ -38,18 +37,18 @@ public class SillyBalloonMachineBlock extends Block implements EntityBlock, INet
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new Entity(pos, state);
     }
 
     @Override
-    protected void onRemove(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState newState, boolean movedByPiston) {
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         onNodeRemove(state, level, pos, newState);
         super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
     @Override
-    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> blockEntityType) {
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return level.isClientSide ? ModUtils.getTicker(blockEntityType, FunctionalBlocks.SILLY_BALLOON_MACHINE_ENTITY.get(), Entity::clientTick) : null;
     }
 

@@ -27,7 +27,6 @@ import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.menu.HeavyWorkBenchMenu;
 import org.confluence.mod.common.recipe.EnvironmentLevelAccess;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class HeavyWorkBenchBlock extends HorizontalDirectionalBlock {
@@ -60,7 +59,7 @@ public class HeavyWorkBenchBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    protected @NotNull MapCodec<HeavyWorkBenchBlock> codec() {
+    protected MapCodec<HeavyWorkBenchBlock> codec() {
         return CODEC;
     }
 
@@ -70,7 +69,7 @@ public class HeavyWorkBenchBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hitResult) {
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
@@ -80,12 +79,12 @@ public class HeavyWorkBenchBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public @Nullable MenuProvider getMenuProvider(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos) {
+    public @Nullable MenuProvider getMenuProvider(BlockState pState, Level pLevel, BlockPos pPos) {
         return new SimpleMenuProvider((pContainerId, pPlayerInventory, pPlayer) -> new HeavyWorkBenchMenu(pContainerId, pPlayerInventory, new HeavyWorkBenchBlock.LevelAccess(pLevel, pPos)), CONTAINER_TITLE);
     }
 
     @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         int index = pState.getValue(FACING).get2DDataValue();
         return switch (pState.getValue(StateProperties.VERTICAL_FOUR_PART)) {
             case BASE -> BASE_SHAPES[index];
@@ -96,7 +95,7 @@ public class HeavyWorkBenchBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public void setPlacedBy(Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
+    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         if (!pLevel.isClientSide) {
             BlockPos relativePos = pPos.relative(StateProperties.VerticalFourPart.getConnectedDirection(pState));
             pLevel.setBlockAndUpdate(relativePos, defaultBlockState().setValue(StateProperties.VERTICAL_FOUR_PART, StateProperties.VerticalFourPart.RIGHT).setValue(FACING, pState.getValue(FACING)));
@@ -120,7 +119,7 @@ public class HeavyWorkBenchBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public void onRemove(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pNewState, boolean pMovedByPiston) {
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
         BlockState air = Blocks.AIR.defaultBlockState();
         BlockPos relative = pPos.relative(StateProperties.VerticalFourPart.getConnectedDirection(pState));

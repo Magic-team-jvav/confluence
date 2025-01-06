@@ -52,7 +52,7 @@ public class SwitchBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    public @NotNull VoxelShape getShape(BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return switch (pState.getValue(FACE)) {
             case FLOOR -> UP_SHAPE;
             case WALL -> switch (pState.getValue(FACING)) {
@@ -71,17 +71,17 @@ public class SwitchBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    public @NotNull BlockState rotate(BlockState pState, Rotation pRot) {
+    public BlockState rotate(BlockState pState, Rotation pRot) {
         return pState.setValue(FACING, pRot.rotate(pState.getValue(FACING)));
     }
 
     @Override
-    public @NotNull BlockState mirror(BlockState pState, Mirror pMirror) {
+    public BlockState mirror(BlockState pState, Mirror pMirror) {
         return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
     }
 
     @Override
-    public boolean canSurvive(@NotNull BlockState pState, @NotNull LevelReader pLevel, @NotNull BlockPos pPos) {
+    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         return canAttach(pLevel, pPos, getConnectedDirection(pState).getOpposite());
     }
 
@@ -107,12 +107,12 @@ public class SwitchBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    public @NotNull BlockState updateShape(@NotNull BlockState pState, @NotNull Direction pFacing, @NotNull BlockState pFacingState, @NotNull LevelAccessor pLevel, @NotNull BlockPos pCurrentPos, @NotNull BlockPos pFacingPos) {
+    public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
         return getConnectedDirection(pState).getOpposite() == pFacing && !pState.canSurvive(pLevel, pCurrentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
     }
 
     @Override
-    public @NotNull InteractionResult useWithoutItem(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull Player pPlayer, @NotNull BlockHitResult pHit) {
+    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
         if (skipInteraction(pPlayer.getMainHandItem())) {
             return InteractionResult.PASS;
         }

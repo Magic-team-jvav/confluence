@@ -11,7 +11,6 @@ import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.util.TCUtils;
-import org.jetbrains.annotations.NotNull;
 
 public class WrenchItem extends CustomRarityItem {
     public final int color;
@@ -22,7 +21,7 @@ public class WrenchItem extends CustomRarityItem {
     }
 
     @Override
-    public boolean isFoil(@NotNull ItemStack pStack) {
+    public boolean isFoil(ItemStack pStack) {
         return containsPos(pStack);
     }
 
@@ -36,7 +35,7 @@ public class WrenchItem extends CustomRarityItem {
     }
 
     @Override
-    public @NotNull InteractionResult useOn(UseOnContext pContext) {
+    public InteractionResult useOn(UseOnContext pContext) {
         Level pLevel = pContext.getLevel();
         if (pLevel.isClientSide) return InteractionResult.SUCCESS;
 

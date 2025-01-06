@@ -38,7 +38,6 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.mixin.accessor.ChestBlockEntityAccessor;
 import org.confluence.terra_curio.util.TCUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -49,34 +48,34 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
         super(Properties.ofFullCopy(Blocks.TRAPPED_CHEST).explosionResistance(ModBlocks.getObsidianBasedExplosionResistance(0.0F)), FunctionalBlocks.DEATH_CHEST_BLOCK_ENTITY::get);
     }
 
-    public BlockEntity newBlockEntity(@NotNull BlockPos pPos, @NotNull BlockState pState) {
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new Entity(pPos, pState);
     }
 
-    protected @NotNull Stat<ResourceLocation> getOpenChestStat() {
+    protected Stat<ResourceLocation> getOpenChestStat() {
         return Stats.CUSTOM.get(Stats.TRIGGER_TRAPPED_CHEST);
     }
 
-    public boolean isSignalSource(@NotNull BlockState pState) {
+    public boolean isSignalSource(BlockState pState) {
         return true;
     }
 
-    public int getSignal(@NotNull BlockState pBlockState, @NotNull BlockGetter pBlockAccess, @NotNull BlockPos pPos, @NotNull Direction pSide) {
+    public int getSignal(BlockState pBlockState, BlockGetter pBlockAccess, BlockPos pPos, Direction pSide) {
         return Mth.clamp(ChestBlockEntity.getOpenCount(pBlockAccess, pPos), 0, 15);
     }
 
-    public int getDirectSignal(@NotNull BlockState pBlockState, @NotNull BlockGetter pBlockAccess, @NotNull BlockPos pPos, @NotNull Direction pSide) {
+    public int getDirectSignal(BlockState pBlockState, BlockGetter pBlockAccess, BlockPos pPos, Direction pSide) {
         return pSide == Direction.UP ? pBlockState.getSignal(pBlockAccess, pPos, pSide) : 0;
     }
 
     @Override
-    public void onRemove(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pNewState, boolean pMovedByPiston) {
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         onNodeRemove(pState, pLevel, pPos, pNewState);
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
     }
 
     @Override
-    public @NotNull InteractionResult useWithoutItem(@NotNull BlockState pState, Level pLevel, @NotNull BlockPos pPos, @NotNull Player pPlayer, @NotNull BlockHitResult pHit) {
+    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
         if (skipInteraction(pPlayer.getMainHandItem())) {
             return InteractionResult.PASS;
         }
@@ -134,7 +133,7 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
             this.relativePoses = new Int2ObjectOpenHashMap<>();
         }
 
-        protected void signalOpenCount(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, int pEventId, int pEventParam) {
+        protected void signalOpenCount(Level pLevel, BlockPos pPos, BlockState pState, int pEventId, int pEventParam) {
             super.signalOpenCount(pLevel, pPos, pState, pEventId, pEventParam);
             if (pEventId != pEventParam) {
                 Block block = pState.getBlock();
@@ -157,7 +156,7 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
         }
 
         @Override
-        public void startOpen(@NotNull Player pPlayer) {
+        public void startOpen(Player pPlayer) {
             super.startOpen(pPlayer);
             if (((ChestBlockEntityAccessor) this).getOpenersCounter().getOpenerCount() == 1) {
                 ((INetworkBlock) getBlockState().getBlock()).execute(getBlockState(), (ServerLevel) getLevel(), getBlockPos(), true);
@@ -165,7 +164,7 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
         }
 
         @Override
-        public void stopOpen(@NotNull Player pPlayer) {
+        public void stopOpen(Player pPlayer) {
             super.stopOpen(pPlayer);
             if (((ChestBlockEntityAccessor) this).getOpenersCounter().getOpenerCount() == 0) {
                 ((INetworkBlock) getBlockState().getBlock()).execute(getBlockState(), (ServerLevel) getLevel(), getBlockPos(), false);
@@ -185,7 +184,7 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
         }
 
         @Override
-        public void loadAdditional(@NotNull CompoundTag tag, HolderLookup.Provider registryLookup) {
+        public void loadAdditional(CompoundTag tag, HolderLookup.Provider registryLookup) {
             super.loadAdditional(tag, registryLookup);
             deserializePoses(tag, "connectedPoses", connectedPoses);
             deserializePoses(tag, "relativePoses", relativePoses);
@@ -199,7 +198,7 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
         }
 
         @Override
-        public @NotNull CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
             return serializePoses(super.getUpdateTag(registries), "connectedPoses", connectedPoses);
         }
 

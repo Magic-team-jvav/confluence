@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.block.natural.BaseHerbBlock;
 import org.confluence.mod.common.init.item.FoodItems;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 public class Moonglow extends BaseHerbBlock {
@@ -34,12 +33,12 @@ public class Moonglow extends BaseHerbBlock {
 
 
 	@Override
-	protected @NotNull ItemLike getBaseSeedId(){
+	protected ItemLike getBaseSeedId(){
 		return FoodItems.MOONGLOW_SEED.get();
 	}
 
 	@Override
-	public void animateTick(@NotNull BlockState pState, @NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull RandomSource pRandom){
+	public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom){
 		if(getAge(pState) != MAX_AGE) return;
 		int r = pRandom.nextInt(200);
 		int brightness;

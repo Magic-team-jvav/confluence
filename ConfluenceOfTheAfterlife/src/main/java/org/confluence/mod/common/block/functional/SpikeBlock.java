@@ -13,7 +13,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.util.ModUtils;
-import org.jetbrains.annotations.NotNull;
 
 public class SpikeBlock extends Block {
     private static final VoxelShape SHAPE = box(4.0, 4.0, 4.0, 12.0, 12.0, 12.0);
@@ -23,7 +22,7 @@ public class SpikeBlock extends Block {
     }
 
     @Override
-    protected void entityInside(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (!level.isClientSide) {
             entity.hurt(ModDamageTypes.of(level, ModDamageTypes.THORN), 12.0F);
             if (entity.isAlive() && entity instanceof LivingEntity living) {
@@ -33,7 +32,7 @@ public class SpikeBlock extends Block {
     }
 
     @Override
-    protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 }

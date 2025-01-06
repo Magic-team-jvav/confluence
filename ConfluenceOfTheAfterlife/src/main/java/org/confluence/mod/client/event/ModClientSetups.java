@@ -2,6 +2,7 @@ package org.confluence.mod.client.event;
 
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Camera;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.gui.components.WidgetSprites;
@@ -32,15 +33,17 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.color.IntegerRGB;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.Consumer;
 
 @SuppressWarnings("deprecation")
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public final class ModClientSetups {
     static final WidgetSprites EXTRA_INVENTORY_BUTTON = new WidgetSprites(Confluence.asResource("widget/extra_inventory_button"), Confluence.asResource("widget/extra_inventory_button_highlighted"));
     static final IClientFluidTypeExtensions HONEY_CLIENT_EXTENSIONS = new IClientFluidTypeExtensions() {
@@ -49,22 +52,22 @@ public final class ModClientSetups {
         private static final Vector3f FOG_COLOR = new Vector3f(1.0F, 1.0F, 0.0F);
 
         @Override
-        public @NotNull ResourceLocation getStillTexture() {
+        public ResourceLocation getStillTexture() {
             return STILL;
         }
 
         @Override
-        public @NotNull ResourceLocation getFlowingTexture() {
+        public ResourceLocation getFlowingTexture() {
             return FLOWING;
         }
 
         @Override
-        public @NotNull Vector3f modifyFogColor(@NotNull Camera camera, float partialTick, @NotNull ClientLevel level, int renderDistance, float darkenWorldAmount, @NotNull Vector3f fluidFogColor) {
+        public Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
             return FOG_COLOR;
         }
 
         @Override
-        public void modifyFogRender(@NotNull Camera camera, FogRenderer.@NotNull FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, @NotNull FogShape shape) {
+        public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
             RenderSystem.setShaderFogStart(0.125F);
             RenderSystem.setShaderFogEnd(5.0F);
         }
@@ -75,22 +78,22 @@ public final class ModClientSetups {
         private static final Vector3f FOG_COLOR = new Vector3f(1.0F, 0.5882F, 1.0F);
 
         @Override
-        public @NotNull ResourceLocation getStillTexture() {
+        public ResourceLocation getStillTexture() {
             return STILL;
         }
 
         @Override
-        public @NotNull ResourceLocation getFlowingTexture() {
+        public ResourceLocation getFlowingTexture() {
             return FLOWING;
         }
 
         @Override
-        public @NotNull Vector3f modifyFogColor(@NotNull Camera camera, float partialTick, @NotNull ClientLevel level, int renderDistance, float darkenWorldAmount, @NotNull Vector3f fluidFogColor) {
+        public Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
             return FOG_COLOR;
         }
 
         @Override
-        public void modifyFogRender(@NotNull Camera camera, FogRenderer.@NotNull FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, @NotNull FogShape shape) {
+        public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
             RenderSystem.setShaderFogStart(0.125F);
             RenderSystem.setShaderFogEnd(10.0F);
         }
@@ -100,7 +103,7 @@ public final class ModClientSetups {
 
         @SuppressWarnings("removal")
         @Override
-        public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
+        public BlockEntityWithoutLevelRenderer getCustomRenderer() {
             if (renderer == null) {
                 this.renderer = new GeoItemRenderer<>(new GeoModel<>() {
                     @Override
@@ -124,7 +127,7 @@ public final class ModClientSetups {
     };
     static final BlockColor HALLOW_LEAVES_COLOR = new BlockColor() {
         @Override
-        public int getColor(@NotNull BlockState state, @Nullable BlockAndTintGetter level, @Nullable BlockPos pos, int tintIndex) {
+        public int getColor(BlockState state, @Nullable BlockAndTintGetter level, @Nullable BlockPos pos, int tintIndex) {
             if (pos == null) return -1;
             IntegerRGB x = hallowMixture(Math.abs(pos.getX()) % 12);
             IntegerRGB y = hallowMixture(Math.abs(pos.getY()) % 12);

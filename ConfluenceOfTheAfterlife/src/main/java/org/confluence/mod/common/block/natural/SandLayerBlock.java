@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -34,22 +33,22 @@ public class SandLayerBlock extends Block {
     }
 
     @Override
-    public @NotNull VoxelShape getShape(BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE_BY_LAYER[state.getValue(LAYERS)];
     }
 
     @Override
-    public @NotNull VoxelShape getCollisionShape(BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE_BY_LAYER[state.getValue(LAYERS) - 1];
     }
 
     @Override
-    public boolean useShapeForLightOcclusion(@NotNull BlockState state) {
+    public boolean useShapeForLightOcclusion(BlockState state) {
         return true;
     }
 
     @Override
-    public float getShadeBrightness(BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
+    public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
         return state.getValue(LAYERS) == 8 ? 0.2F : 1.0F;
     }
 
@@ -78,13 +77,13 @@ public class SandLayerBlock extends Block {
     }
 
     @Override
-    public boolean canSurvive(@NotNull BlockState state, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockState below = level.getBlockState(pos.below());
         return below.is(this) || !below.isAir();
     }
 
     @Override
-    public @NotNull BlockState updateShape(BlockState state, @NotNull Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor level, @NotNull BlockPos CurrentPos, @NotNull BlockPos facingPos) {
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos CurrentPos, BlockPos facingPos) {
         return !state.canSurvive(level, CurrentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, CurrentPos, facingPos);
     }
 

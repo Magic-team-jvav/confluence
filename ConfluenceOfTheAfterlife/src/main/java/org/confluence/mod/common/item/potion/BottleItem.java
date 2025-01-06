@@ -16,7 +16,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.confluence.mod.common.init.item.PotionItems;
-import org.jetbrains.annotations.NotNull;
 
 public class BottleItem extends Item {
     public BottleItem() {
@@ -24,7 +23,7 @@ public class BottleItem extends Item {
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         BlockHitResult blockhitresult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
         ItemStack itemstack = player.getItemInHand(hand);
         if (blockhitresult.getType() == HitResult.Type.BLOCK) {

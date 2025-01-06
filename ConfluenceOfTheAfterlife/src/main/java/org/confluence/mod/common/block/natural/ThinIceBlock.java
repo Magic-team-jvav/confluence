@@ -22,14 +22,14 @@ public class ThinIceBlock extends IceBlock {
     }
 
     @Override
-    public void updateEntityAfterFallOn(@NotNull BlockGetter blockGetter, @NotNull Entity entity) {
+    public void updateEntityAfterFallOn(BlockGetter blockGetter, Entity entity) {
         if (!(entity instanceof LivingEntity living && ((ILivingEntity) living).confluence$isBreakEasyCrashBlock())) {
             super.updateEntityAfterFallOn(blockGetter, entity);
         }
     }
 
     @Override
-    public void playerDestroy(@NotNull Level level, Player player, @NotNull BlockPos pos, @NotNull BlockState state, @Nullable BlockEntity entity, @NotNull ItemStack item) {
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity entity, ItemStack item) {
         player.awardStat(Stats.BLOCK_MINED.get(this));
         player.causeFoodExhaustion(0.005F);
     }

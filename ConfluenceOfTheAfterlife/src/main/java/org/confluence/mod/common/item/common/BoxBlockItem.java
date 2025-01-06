@@ -20,7 +20,6 @@ import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.util.PlayerUtils;
-import org.jetbrains.annotations.NotNull;
 
 public class BoxBlockItem extends BlockItem {
     public BoxBlockItem(Block block, ResourceKey<LootTable> lootTable) {
@@ -28,7 +27,7 @@ public class BoxBlockItem extends BlockItem {
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         if (level instanceof ServerLevel serverLevel) {
             if (hand == InteractionHand.MAIN_HAND && !player.isCrouching()) {
@@ -51,7 +50,7 @@ public class BoxBlockItem extends BlockItem {
     }
 
     @Override
-    protected boolean canPlace(BlockPlaceContext pContext, @NotNull BlockState pState) {
+    protected boolean canPlace(BlockPlaceContext pContext, BlockState pState) {
         return pContext.getPlayer() == null || pContext.getPlayer().isCrouching();
     }
 }

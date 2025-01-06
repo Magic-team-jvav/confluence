@@ -10,7 +10,6 @@ import net.minecraft.world.item.MinecartItem;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("rawtypes")
@@ -25,7 +24,7 @@ public class BaseMinecartItem extends MinecartItem {
     }
 
     @Override
-    public @NotNull MutableComponent getName(@NotNull ItemStack pStack) {
+    public MutableComponent getName(ItemStack pStack) {
         return Component.translatable(getDescriptionId()).withStyle(style -> style.withColor(pStack.get(TCDataComponentTypes.MOD_RARITY).getColor()));
     }
 

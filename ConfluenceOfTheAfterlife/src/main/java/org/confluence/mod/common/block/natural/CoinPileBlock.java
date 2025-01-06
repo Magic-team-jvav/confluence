@@ -19,7 +19,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -44,7 +43,7 @@ public class CoinPileBlock extends FallingBlock {
     }
 
     @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         int heaps = state.getValue(HEAPS);
         if (heaps <= 1) {
             return ONE_CUBE;
@@ -62,7 +61,7 @@ public class CoinPileBlock extends FallingBlock {
     }
 
     @Override
-    public boolean useShapeForLightOcclusion(@NotNull BlockState state) {
+    public boolean useShapeForLightOcclusion(BlockState state) {
         return true;
     }
 
@@ -82,18 +81,18 @@ public class CoinPileBlock extends FallingBlock {
     }
 
     @Override
-    public boolean canSurvive(@NotNull BlockState state, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockState Below = level.getBlockState(pos.below());
         return isCoinPileBlock(Below) || !Below.isAir();
     }
 
     @Override
-    protected @NotNull MapCodec<CoinPileBlock> codec() {
+    protected MapCodec<CoinPileBlock> codec() {
         return CODEC;
     }
 
     @Override
-    public @NotNull BlockState updateShape(@NotNull BlockState state, @NotNull Direction facing, @NotNull BlockState blockstate, @NotNull LevelAccessor level, @NotNull BlockPos CurrentPos, @NotNull BlockPos facingPos) {
+    public BlockState updateShape(BlockState state, Direction facing, BlockState blockstate, LevelAccessor level, BlockPos CurrentPos, BlockPos facingPos) {
         level.scheduleTick(CurrentPos, this, getDelayAfterPlace());
         if (blockstate.isAir()) {
             return state;

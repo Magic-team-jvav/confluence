@@ -6,7 +6,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 public class AetheriumBlock extends Block {
     public AetheriumBlock(Properties properties) {
@@ -14,7 +13,7 @@ public class AetheriumBlock extends Block {
     }
 
     @Override
-    public void animateTick(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         for (int i = 0; i < 4; i++) {
             if (random.nextDouble() < 0.1) {
                 double ox = random.nextDouble() * 5.0 - 2.5;

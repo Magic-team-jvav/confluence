@@ -20,7 +20,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("deprecation")
@@ -45,7 +44,7 @@ public class GeyserBlock extends AbstractMechanicalBlock { // 热喷泉
     }
 
     @Override
-    public void neighborChanged(@NotNull BlockState pState, Level pLevel, @NotNull BlockPos pPos, @NotNull Block pNeighborBlock, @NotNull BlockPos pNeighborPos, boolean pMovedByPiston) {
+    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
         if (!pLevel.isClientSide) {
             execute(pState, (ServerLevel) pLevel, pPos, pLevel.hasNeighborSignal(pPos));
         }
@@ -59,31 +58,31 @@ public class GeyserBlock extends AbstractMechanicalBlock { // 热喷泉
     }
 
     @Override
-    public boolean canSurvive(@NotNull BlockState pState, LevelReader pLevel, BlockPos pPos) {
+    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         BlockPos below = pPos.below();
         BlockPos above = pPos.above();
         return pLevel.getBlockState(below).isFaceSturdy(pLevel, below, Direction.UP) || pLevel.getBlockState(above).isFaceSturdy(pLevel, above, Direction.DOWN);
     }
 
     @Override
-    public @NotNull VoxelShape getShape(BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return pState.getValue(IS_FLOOR) ? SHAPE_FLOOR : SHAPE_CEIL;
     }
 
     @Override
-    public @NotNull VoxelShape getCollisionShape(@NotNull BlockState pState, @NotNull BlockGetter pLevel, @NotNull BlockPos pPos, @NotNull CollisionContext pContext) {
+    public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return Shapes.empty();
     }
 
     @Override
-    public void entityInside(@NotNull BlockState pState, Level pLevel, @NotNull BlockPos pPos, net.minecraft.world.entity.@NotNull Entity pEntity) {
+    public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, net.minecraft.world.entity.Entity pEntity) {
         if (!pLevel.isClientSide && pLevel.getBlockEntity(pPos) instanceof Entity entity) {
             onExecute(pState, (ServerLevel) pLevel, pPos, -1, entity);
         }
     }
 
     @Override
-    public void tick(BlockState pState, ServerLevel pLevel, @NotNull BlockPos pPos, @NotNull RandomSource pRandom) {
+    public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
         pLevel.setBlockAndUpdate(pPos, pState.setValue(StateProperties.DRIVE, false));
     }
 

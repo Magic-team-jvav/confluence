@@ -22,7 +22,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import org.confluence.mod.util.ModUtils;
-import org.jetbrains.annotations.NotNull;
 
 public class BranchesBlock extends PipeBlock {
     public static final MapCodec<BranchesBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -92,7 +91,7 @@ public class BranchesBlock extends PipeBlock {
     }
 
     @Override
-    protected @NotNull BlockState updateShape(@NotNull BlockState state, @NotNull Direction facing, @NotNull BlockState facingState, @NotNull LevelAccessor level, @NotNull BlockPos currentPos, @NotNull BlockPos facingPos) {
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         BlockState newState = updateDistance(state, level, currentPos);
         if (!newState.canSurvive(level, currentPos)) {
             level.scheduleTick(currentPos, this, 1);
@@ -105,14 +104,14 @@ public class BranchesBlock extends PipeBlock {
     }
 
     @Override
-    protected void tick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random) {
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (state.getValue(DISTANCE) == DECAY_DISTANCE && !state.canSurvive(level, pos)) {
             level.destroyBlock(pos, true);
         }
     }
 
     @Override
-    protected boolean canSurvive(@NotNull BlockState state, LevelReader level, BlockPos pos) {
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockState stateBelow = level.getBlockState(pos.below());
         if (stateBelow.is(this) || stateBelow.is(supporting)) {
             return true;
@@ -135,12 +134,12 @@ public class BranchesBlock extends PipeBlock {
     }
 
     @Override
-    protected boolean isPathfindable(@NotNull BlockState state, @NotNull PathComputationType pathComputationType) {
+    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
         return false;
     }
 
     @Override
-    protected @NotNull MapCodec<BranchesBlock> codec() {
+    protected MapCodec<BranchesBlock> codec() {
         return CODEC;
     }
 }

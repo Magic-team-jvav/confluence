@@ -199,7 +199,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MEOWMERE_MINECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
         event.registerEntityRenderer(DIGGING_MOLECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
 
-        event.registerEntityRenderer(MONEY_HOLE.get(), EmptyEntityRenderer::new);
+        event.registerEntityRenderer(COIN_PORTAL.get(), EmptyEntityRenderer::new);
 
         event.registerBlockEntityRenderer(ModBlocks.SIGN_BLOCK_ENTITY.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new AltarBlockModel()));

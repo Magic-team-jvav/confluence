@@ -5,8 +5,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.CoinPortalEntity;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
-import org.confluence.mod.common.entity.MoneyHoleEntity;
 import org.confluence.mod.common.entity.fishing.BaseFishingHook;
 import org.confluence.mod.common.entity.fishing.BloodyFishingHook;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
@@ -70,7 +70,7 @@ public final class ModEntities {
     public static final Supplier<EntityType<MeowmereMinecartEntity>> MEOWMERE_MINECART = registerMinecart("meowmere_minecart", MeowmereMinecartEntity::new);
     public static final Supplier<EntityType<DiggingMolecartEntity>> DIGGING_MOLECART = registerMinecart("digging_molecart", DiggingMolecartEntity::new);
 
-    public static final Supplier<EntityType<MoneyHoleEntity>> MONEY_HOLE = ENTITIES.register("money_hole", () -> EntityType.Builder.<MoneyHoleEntity>of(MoneyHoleEntity::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(6).build("confluence:money_hole"));
+    public static final Supplier<EntityType<CoinPortalEntity>> COIN_PORTAL = ENTITIES.register("coin_portal", () -> EntityType.Builder.<CoinPortalEntity>of(CoinPortalEntity::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(6).build("confluence:coin_portal"));
 
     private static <E extends BaseMinecartEntity> Supplier<EntityType<E>> registerMinecart(String id, EntityType.EntityFactory<E> factory) {
         return ENTITIES.register(id, () -> EntityType.Builder.of(factory, MobCategory.MISC).sized(0.98F, 0.7F).passengerAttachments(0.1875F).clientTrackingRange(8).build("confluence:" + id));

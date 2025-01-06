@@ -35,7 +35,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.entity.MoneyHoleEntity;
+import org.confluence.mod.common.entity.CoinPortalEntity;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ArrowItems;
 import org.confluence.mod.common.init.item.ConsumableItems;
@@ -152,7 +152,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
 
     private boolean summonHole(Level level, Vec3 center) {
         if (level.random.nextFloat() < moneyHoleChance) {
-            MoneyHoleEntity moneyHole = new MoneyHoleEntity(level, center);
+            CoinPortalEntity moneyHole = new CoinPortalEntity(level, center);
             moneyHole.setDeltaMovement(0.0, 0.2, 0.0);
             level.addFreshEntity(moneyHole);
             return true;

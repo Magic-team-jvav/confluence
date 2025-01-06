@@ -44,7 +44,7 @@ public class TEChineseProvider extends LanguageProvider {
 
 
         add("entity.terra_entity.king_slime", "史莱姆王");
-        add("entity.terra_entity.cthulhu_eye", "克苏鲁之眼");
+        add("entity.terra_entity.eye_of_cthulhu", "克苏鲁之眼");
         add("entity.terra_entity.eater_of_world", "世界吞噬怪");
         add("entity.terra_entity.eater_of_world_segment", "世界吞噬怪体节");
 
@@ -80,7 +80,7 @@ public class TEChineseProvider extends LanguageProvider {
         add(TEItems.DECAYEDER_SPAWN_EGG.get(), "腐骴刷怪蛋");
 
         add(TEItems.KING_SLIME_SPAWN_EGG.get(), "史莱姆王刷怪蛋");
-        add(TEItems.CTHULHU_EYE_SPAWN_EGG.get(), "克苏鲁之眼刷怪蛋");
+        add(TEItems.EYE_OF_CTHULHU_SPAWN_EGG.get(), "克苏鲁之眼刷怪蛋");
         add(TEItems.EATER_OF_WORLD_SPAWN_EGG.get(), "世界吞噬怪刷怪蛋");
 
         add("message.terraentity.boss_spawn", "%s已苏醒！");

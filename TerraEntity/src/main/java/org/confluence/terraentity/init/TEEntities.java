@@ -103,7 +103,7 @@ public final class TEEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<KingSlime>> KING_SLIME = ENTITIES.register("king_slime", () -> EntityType.Builder.<KingSlime>of(KingSlime::new, MobCategory.MONSTER).sized(0.6f, 0.6f).clientTrackingRange(10).build(Key("king_slime")));
     public static final DeferredHolder<EntityType<?>, EntityType<CrownOfKingSlimeModelEntity>> CROWN_OF_KING_SLIME_MODEL = ENTITIES.register("crown_of_king_slime_model", () -> EntityType.Builder.<CrownOfKingSlimeModelEntity>of(CrownOfKingSlimeModelEntity::new, MobCategory.MISC).sized(0.0F, 0.0F).clientTrackingRange(10).build(Key("crown_of_king_slime_model")));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<CthulhuEye>> CTHULHU_EYE = registerEntity("eye_of_cthulhu", CthulhuEye::new, 2.04F, 2.04F);
+    public static final DeferredHolder<EntityType<?>, EntityType<EyeOfCthulhu>> EYE_OF_CTHULHU = registerEntity("eye_of_cthulhu", EyeOfCthulhu::new, 2.04F, 2.04F);
     public static final DeferredHolder<EntityType<?>, EntityType<EaterOfWorldSegment>> EATER_OF_WORLD_SEGMENT = registerEntity("eater_of_world_segment", EaterOfWorldSegment::new, 2F, 2F);
     public static final DeferredHolder<EntityType<?>, EntityType<EaterOfWorld>> EATER_OF_WORLD = registerEntity("eater_of_world", EaterOfWorld::new, 3F, 2F);
 
@@ -167,7 +167,7 @@ public final class TEEntities {
 
         // boss
         event.registerEntityRenderer(KING_SLIME.get(), KingSlimeRenderer::new);
-        event.registerEntityRenderer(CTHULHU_EYE.get(), c->new GeoBossRenderer<>(c,new GeoBossModel<>(CTHULHU_EYE),1,0.5f));
+        event.registerEntityRenderer(EYE_OF_CTHULHU.get(), c->new GeoBossRenderer<>(c,new GeoBossModel<>(EYE_OF_CTHULHU),1,0.5f));
         event.registerEntityRenderer(EATER_OF_WORLD_SEGMENT.get(), c-> new EaterOfWorldSegmentRenderer(c,3f, 0f));
         event.registerEntityRenderer(EATER_OF_WORLD.get(), c->new GeoBossRenderer<>(c,new GeoBossModel<>(EATER_OF_WORLD),3f,0));
 
@@ -222,7 +222,7 @@ public final class TEEntities {
         event.put(BLOOD_ZOMBIE.get(), AbstractMonster.createAttributes().build());
 
         event.put(KING_SLIME.get(), KingSlime.createSlimeAttributes().build());
-        event.put(CTHULHU_EYE.get(), AbstractTerraBossBase.createAttributes().build());
+        event.put(EYE_OF_CTHULHU.get(), AbstractTerraBossBase.createAttributes().build());
         event.put(EATER_OF_WORLD_SEGMENT.get(), AbstractTerraBossBase.createAttributes().build());
         event.put(EATER_OF_WORLD.get(), AbstractTerraBossBase.createAttributes().build());
 

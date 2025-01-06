@@ -21,7 +21,7 @@ import software.bernie.geckolib.animation.RawAnimation;
 
 
 @SuppressWarnings("all")
-public class CthulhuEye extends AbstractTerraBossBase implements GeoEntity, Boss {
+public class EyeOfCthulhu extends AbstractTerraBossBase implements GeoEntity, Boss {
     private static final float MAX_HEALTHS = 728f;
     private static final float DAMAGE = 4f;//一阶段接触伤害
     private static final float CRAZY_DAMAGE = 6f;//二阶段接触伤害
@@ -49,7 +49,7 @@ public class CthulhuEye extends AbstractTerraBossBase implements GeoEntity, Boss
     private Vec3 dashDir;
 
 
-    public CthulhuEye(EntityType<CthulhuEye> entityType, Level level) {
+    public EyeOfCthulhu(EntityType<EyeOfCthulhu> entityType, Level level) {
         super(entityType, level,MAX_HEALTHS);
         //初始属性
 
@@ -60,8 +60,8 @@ public class CthulhuEye extends AbstractTerraBossBase implements GeoEntity, Boss
         this.playSound(TESounds.ROAR.get());
     }
 
-    public CthulhuEye(Level level) {
-        this(TEEntities.CTHULHU_EYE.get(), level);
+    public EyeOfCthulhu(Level level) {
+        this(TEEntities.EYE_OF_CTHULHU.get(), level);
     }
 
 

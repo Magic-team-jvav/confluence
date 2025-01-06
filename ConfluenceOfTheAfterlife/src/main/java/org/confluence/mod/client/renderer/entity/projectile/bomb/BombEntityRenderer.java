@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class BombEntityRenderer<E extends BaseBombEntity> extends EntityRenderer<E> {
     public BombEntityRenderer(EntityRendererProvider.Context pContext) {
@@ -18,12 +17,12 @@ public abstract class BombEntityRenderer<E extends BaseBombEntity> extends Entit
     }
 
     @Override
-    public abstract @NotNull ResourceLocation getTextureLocation(@NotNull E pEntity);
+    public abstract ResourceLocation getTextureLocation(E pEntity);
 
     public abstract EntityModel<E> getModel(E pEntity);
 
     @Override
-    public void render(@NotNull E pEntity, float pEntityYaw, float pPartialTick, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBuffer, int pPackedLight) {
+    public void render(E pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
         pPoseStack.pushPose();
         pPoseStack.translate(0, 0.1875, 0);
         pPoseStack.mulPose(Axis.YP.rotationDegrees(pEntity.getYRot() - 90.0F));

@@ -12,7 +12,6 @@ import org.confluence.mod.client.model.entity.fishing.GlowingFishingHookModel;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.util.color.IntegerRGB;
 import org.confluence.terra_curio.client.animate.ExpertColorAnimation;
-import org.jetbrains.annotations.NotNull;
 
 import static org.confluence.mod.client.renderer.entity.fishing.BaseFishingHookRenderer.renderString;
 
@@ -49,7 +48,7 @@ public class GlowingFishingHookRenderer extends EntityRenderer<CurioFishingHook>
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull CurioFishingHook pEntity) {
+    public ResourceLocation getTextureLocation(CurioFishingHook pEntity) {
         return TEXTURES[pEntity.getVariant().getId()];
     }
 
@@ -65,7 +64,7 @@ public class GlowingFishingHookRenderer extends EntityRenderer<CurioFishingHook>
     }
 
     @Override
-    public void render(@NotNull CurioFishingHook pEntity, float pEntityYaw, float pPartialTick, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBuffer, int pPackedLight) {
+    public void render(CurioFishingHook pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
         int id = pEntity.getVariant().getId();
         GlowingFishingHookModel model = getModel(pEntity);
         model.renderToBuffer(pPoseStack, pBuffer.getBuffer(model.renderType(TEXTURES[id])), pPackedLight, OverlayTexture.NO_OVERLAY);

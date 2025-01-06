@@ -15,7 +15,6 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.menu.AlchemyTableMenu;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
 import org.confluence.terra_curio.common.recipe.AmountIngredient;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
@@ -37,17 +36,17 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
     }
 
     @Override
-    public @NotNull NonNullList<Ingredient> getIngredients() {
+    public NonNullList<Ingredient> getIngredients() {
         return ingredients;
     }
 
     @Override
-    public boolean matches(@NotNull Input input, @NotNull Level level) {
+    public boolean matches(Input input, Level level) {
         return base.test(input.getItem(0)) && AbstractAmountRecipe.matches(input.materials.getContainerSize(), input.materials::getItem, ingredients);
     }
 
     @Override
-    public @NotNull ItemStack assemble(@NotNull Input input, HolderLookup.@NotNull Provider registries) {
+    public ItemStack assemble(Input input, HolderLookup.Provider registries) {
         return getResultItem(null).copy();
     }
 
@@ -57,17 +56,17 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
     }
 
     @Override
-    public @NotNull ItemStack getResultItem(@Nullable HolderLookup.Provider registries) {
+    public ItemStack getResultItem(@Nullable HolderLookup.Provider registries) {
         return result;
     }
 
     @Override
-    public @NotNull RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return ModRecipes.ALCHEMY_TABLE_SERIALIZER.get();
     }
 
     @Override
-    public @NotNull RecipeType<?> getType() {
+    public RecipeType<?> getType() {
         return ModRecipes.ALCHEMY_TABLE_TYPE.get();
     }
 
@@ -87,12 +86,12 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
         public static final StreamCodec<RegistryFriendlyByteBuf, AlchemyTableRecipe> STREAM_CODEC = StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
 
         @Override
-        public @NotNull MapCodec<AlchemyTableRecipe> codec() {
+        public MapCodec<AlchemyTableRecipe> codec() {
             return CODEC;
         }
 
         @Override
-        public @NotNull StreamCodec<RegistryFriendlyByteBuf, AlchemyTableRecipe> streamCodec() {
+        public StreamCodec<RegistryFriendlyByteBuf, AlchemyTableRecipe> streamCodec() {
             return STREAM_CODEC;
         }
 
@@ -129,7 +128,7 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
         }
 
         @Override
-        public void setItem(int index, @NotNull ItemStack stack) {
+        public void setItem(int index, ItemStack stack) {
             if (index == 0) {
                 super.setItem(0, stack);
             } else {
@@ -138,7 +137,7 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
         }
 
         @Override
-        public @NotNull ItemStack getItem(int index) {
+        public ItemStack getItem(int index) {
             if (index == 0) {
                 return super.getItem(0);
             }
@@ -146,7 +145,7 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
         }
 
         @Override
-        public @NotNull ItemStack removeItem(int index, int count) {
+        public ItemStack removeItem(int index, int count) {
             if (index == 0) {
                 return super.removeItem(0, count);
             }
@@ -154,7 +153,7 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
         }
 
         @Override
-        public @NotNull ItemStack removeItemNoUpdate(int index) {
+        public ItemStack removeItemNoUpdate(int index) {
             if (index == 0) {
                 return super.removeItemNoUpdate(0);
             }

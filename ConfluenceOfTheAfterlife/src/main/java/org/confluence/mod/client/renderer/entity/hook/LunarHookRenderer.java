@@ -6,7 +6,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.hook.LunarHookEntity;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
-import org.jetbrains.annotations.NotNull;
 
 public class LunarHookRenderer extends AbstractHookRenderer<LunarHookEntity> {
     private static final ResourceLocation[] TEXTURES = new ResourceLocation[]{
@@ -33,7 +32,7 @@ public class LunarHookRenderer extends AbstractHookRenderer<LunarHookEntity> {
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(LunarHookEntity pEntity) {
+    public ResourceLocation getTextureLocation(LunarHookEntity pEntity) {
         return TEXTURES[pEntity.getVariant().getId()];
     }
 }

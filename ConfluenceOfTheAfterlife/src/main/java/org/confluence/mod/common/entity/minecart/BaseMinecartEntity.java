@@ -13,7 +13,6 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -80,7 +79,7 @@ public class BaseMinecartEntity extends Minecart {
     }
 
     @Override
-    public void moveMinecartOnRail(@NotNull BlockPos pos) {
+    public void moveMinecartOnRail(BlockPos pos) {
         boolean upgradeKit = driver != null && driver.getData(ModAttachmentTypes.EVER_BENEFICIAL).isMinecartUpgradeKitUsed();
         if (upgradeKit) setDragAir(getUpgradedDragAir());
         double d25 = upgradeKit ? getUpgradedMaxSpeed() : getMaxSpeedWithRail();
@@ -102,7 +101,7 @@ public class BaseMinecartEntity extends Minecart {
     }
 
     @Override
-    public @NotNull Item getDropItem() {
+    public Item getDropItem() {
         return dropItem.get();
     }
 

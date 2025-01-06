@@ -9,7 +9,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
-import org.jetbrains.annotations.NotNull;
 
 public class BannedBiomeNoiseBasedChunkGenerator extends NoiseBasedChunkGenerator {
     public static final MapCodec<BannedBiomeNoiseBasedChunkGenerator> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -28,12 +27,12 @@ public class BannedBiomeNoiseBasedChunkGenerator extends NoiseBasedChunkGenerato
     }
 
     @Override
-    public @NotNull MultiNoiseBiomeSource getBiomeSource() {
+    public MultiNoiseBiomeSource getBiomeSource() {
         return (MultiNoiseBiomeSource) super.getBiomeSource();
     }
 
     @Override
-    protected @NotNull MapCodec<BannedBiomeNoiseBasedChunkGenerator> codec() {
+    protected MapCodec<BannedBiomeNoiseBasedChunkGenerator> codec() {
         return CODEC;
     }
 }

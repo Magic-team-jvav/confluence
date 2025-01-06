@@ -21,7 +21,6 @@ import org.confluence.mod.common.recipe.EnvironmentRecipeInput;
 import org.confluence.mod.common.recipe.SkyMillRecipe;
 import org.confluence.terra_curio.common.menu.AmountResultSlot;
 import org.confluence.terra_curio.common.menu.RecipeInputContainer;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -77,7 +76,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(@NotNull Player pPlayer) {
+    public boolean stillValid(Player pPlayer) {
         return stillValid(access, pPlayer, FunctionalBlocks.SKY_MILL.get());
     }
 
@@ -98,7 +97,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean clickMenuButton(@NotNull Player pPlayer, int pId) {
+    public boolean clickMenuButton(Player pPlayer, int pId) {
         if (isValidRecipeIndex(pId)) {
             selectedRecipeIndex.set(pId);
             setupResultSlot();
@@ -111,7 +110,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public void slotsChanged(@NotNull Container pInventory) {
+    public void slotsChanged(Container pInventory) {
         this.recipes = player.level().getRecipeManager().getRecipesFor(ModRecipes.SKY_MILL_TYPE.get(), input, player.level());
         if (selectedRecipeIndex.get() >= recipes.size()) selectedRecipeIndex.set(recipes.size() - 1);
         access.execute((level, pos) -> {
@@ -157,12 +156,12 @@ public class SkyMillMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean canTakeItemForPickAll(@NotNull ItemStack pStack, Slot pSlot) {
+    public boolean canTakeItemForPickAll(ItemStack pStack, Slot pSlot) {
         return pSlot.container != result && super.canTakeItemForPickAll(pStack, pSlot);
     }
 
     @Override
-    public @NotNull ItemStack quickMoveStack(@NotNull Player pPlayer, int pIndex) {
+    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = slots.get(pIndex);
         if (slot.hasItem()) {
@@ -208,7 +207,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public void removed(@NotNull Player pPlayer) {
+    public void removed(Player pPlayer) {
         super.removed(pPlayer);
         result.removeItemNoUpdate(0);
         access.execute((level, blockPos) -> clearContainer(pPlayer, input));

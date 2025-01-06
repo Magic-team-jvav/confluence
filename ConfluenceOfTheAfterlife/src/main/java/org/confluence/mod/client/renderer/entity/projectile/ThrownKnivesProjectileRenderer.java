@@ -11,7 +11,6 @@ import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.projectile.ThrownKnivesProjectileModel;
 import org.confluence.mod.common.entity.projectile.ThrownKnivesProjectile;
-import org.jetbrains.annotations.NotNull;
 
 public class ThrownKnivesProjectileRenderer extends EntityRenderer<ThrownKnivesProjectile> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/thrown_knives_projectile.png");
@@ -23,12 +22,12 @@ public class ThrownKnivesProjectileRenderer extends EntityRenderer<ThrownKnivesP
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull ThrownKnivesProjectile pEntity) {
+    public ResourceLocation getTextureLocation(ThrownKnivesProjectile pEntity) {
         return TEXTURE;
     }
 
     @Override
-    public void render(ThrownKnivesProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int packedLight) {
+    public void render(ThrownKnivesProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
         poseStack.pushPose();
         poseStack.translate(0.00F, 0.125F, 0.00F);
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - 90.0F));

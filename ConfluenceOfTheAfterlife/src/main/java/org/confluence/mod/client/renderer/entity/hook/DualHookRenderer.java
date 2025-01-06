@@ -6,7 +6,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.hook.DualHookEntity;
-import org.jetbrains.annotations.NotNull;
 
 public class DualHookRenderer extends AbstractHookRenderer<DualHookEntity> {
     private static final ResourceLocation[] TEXTURES = new ResourceLocation[]{
@@ -25,7 +24,7 @@ public class DualHookRenderer extends AbstractHookRenderer<DualHookEntity> {
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull DualHookEntity pEntity) {
+    public ResourceLocation getTextureLocation(DualHookEntity pEntity) {
         return TEXTURES[pEntity.getVariant().getId()];
     }
 }

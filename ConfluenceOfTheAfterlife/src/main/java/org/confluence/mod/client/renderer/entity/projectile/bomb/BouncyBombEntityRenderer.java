@@ -6,7 +6,6 @@ import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.bomb.BouncyBombEntityModel;
 import org.confluence.mod.common.entity.projectile.bomb.BouncyBombEntity;
-import org.jetbrains.annotations.NotNull;
 
 public class BouncyBombEntityRenderer extends BombEntityRenderer<BouncyBombEntity> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/bomb/bouncy_bomb_entity.png");
@@ -18,7 +17,7 @@ public class BouncyBombEntityRenderer extends BombEntityRenderer<BouncyBombEntit
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull BouncyBombEntity pEntity) {
+    public ResourceLocation getTextureLocation(BouncyBombEntity pEntity) {
         return TEXTURE;
     }
 

@@ -10,7 +10,6 @@ import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.ItemLike;
 import org.apache.commons.lang3.IntegerRange;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -72,7 +71,7 @@ public class RandomItemListing implements VillagerTrades.ItemListing {
     }
 
     @Override
-    public @Nullable MerchantOffer getOffer(@NotNull Entity trader, @NotNull RandomSource random) {
+    public @Nullable MerchantOffer getOffer(Entity trader, RandomSource random) {
         if (priceStack == null) {
             this.priceStack = price.getDefaultInstance();
             if (Objects.equals(priceRange.getMinimum(), priceRange.getMaximum())) {

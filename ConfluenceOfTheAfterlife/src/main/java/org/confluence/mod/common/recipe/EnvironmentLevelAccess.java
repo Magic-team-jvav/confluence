@@ -13,7 +13,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -87,7 +86,7 @@ public class EnvironmentLevelAccess implements ContainerLevelAccess {
     }
 
     @Override
-    public <T> @NotNull Optional<T> evaluate(@NotNull BiFunction<Level, BlockPos, T> levelPosConsumer) {
+    public <T> Optional<T> evaluate(BiFunction<Level, BlockPos, T> levelPosConsumer) {
         return level == null || pos == null ? Optional.empty() : Optional.of(levelPosConsumer.apply(level, pos));
     }
 }

@@ -15,7 +15,6 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
 import org.confluence.terra_curio.common.recipe.AmountIngredient;
-import org.jetbrains.annotations.NotNull;
 
 public class HellforgeRecipe extends AbstractAmountRecipe {
     protected final float experience;
@@ -47,22 +46,22 @@ public class HellforgeRecipe extends AbstractAmountRecipe {
     }
 
     @Override
-    public @NotNull String getGroup() {
+    public String getGroup() {
         return "hellforge";
     }
 
     @Override
-    public @NotNull ItemStack getToastSymbol() {
+    public ItemStack getToastSymbol() {
         return FunctionalBlocks.HELLFORGE.toStack();
     }
 
     @Override
-    public @NotNull RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return ModRecipes.HELLFORGE_SERIALIZER.get();
     }
 
     @Override
-    public @NotNull RecipeType<?> getType() {
+    public RecipeType<?> getType() {
         return ModRecipes.HELLFORGE_TYPE.get();
     }
 
@@ -84,12 +83,12 @@ public class HellforgeRecipe extends AbstractAmountRecipe {
         public static final StreamCodec<RegistryFriendlyByteBuf, HellforgeRecipe> STREAM_CODEC = StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
 
         @Override
-        public @NotNull MapCodec<HellforgeRecipe> codec() {
+        public MapCodec<HellforgeRecipe> codec() {
             return CODEC;
         }
 
         @Override
-        public @NotNull StreamCodec<RegistryFriendlyByteBuf, HellforgeRecipe> streamCodec() {
+        public StreamCodec<RegistryFriendlyByteBuf, HellforgeRecipe> streamCodec() {
             return STREAM_CODEC;
         }
 

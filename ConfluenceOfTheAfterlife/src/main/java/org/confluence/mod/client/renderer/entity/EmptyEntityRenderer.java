@@ -4,8 +4,9 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import org.jetbrains.annotations.NotNull;
 
+@javax.annotation.ParametersAreNonnullByDefault
+@net.minecraft.MethodsReturnNonnullByDefault
 public class EmptyEntityRenderer<E extends Entity> extends EntityRenderer<E> {
     private static final ResourceLocation TEXTURE = ResourceLocation.withDefaultNamespace("textures/environment/end_sky.png");
 
@@ -14,7 +15,7 @@ public class EmptyEntityRenderer<E extends Entity> extends EntityRenderer<E> {
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull E entity) {
+    public ResourceLocation getTextureLocation(E entity) {
         return TEXTURE;
     }
 }

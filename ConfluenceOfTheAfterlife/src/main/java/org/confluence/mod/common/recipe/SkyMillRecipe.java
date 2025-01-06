@@ -16,7 +16,6 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
 import org.confluence.terra_curio.common.recipe.AmountIngredient;
-import org.jetbrains.annotations.NotNull;
 
 public class SkyMillRecipe extends AbstractAmountRecipe {
     public SkyMillRecipe(ItemStack pResult, NonNullList<Ingredient> pIngredients) {
@@ -24,7 +23,7 @@ public class SkyMillRecipe extends AbstractAmountRecipe {
     }
 
     @Override
-    public boolean matches(@NotNull RecipeInput input, @NotNull Level pLevel) {
+    public boolean matches(RecipeInput input, Level pLevel) {
         if (input instanceof EnvironmentRecipeInput recipeInput) {
             return recipeInput.getAccess().matches(this) && super.matches(input, pLevel);
         }
@@ -37,22 +36,22 @@ public class SkyMillRecipe extends AbstractAmountRecipe {
     }
 
     @Override
-    public @NotNull String getGroup() {
+    public String getGroup() {
         return "sky_mill";
     }
 
     @Override
-    public @NotNull ItemStack getToastSymbol() {
+    public ItemStack getToastSymbol() {
         return FunctionalBlocks.SKY_MILL.toStack();
     }
 
     @Override
-    public @NotNull RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return ModRecipes.SKY_MILL_SERIALIZER.get();
     }
 
     @Override
-    public @NotNull RecipeType<?> getType() {
+    public RecipeType<?> getType() {
         return ModRecipes.SKY_MILL_TYPE.get();
     }
 
@@ -71,12 +70,12 @@ public class SkyMillRecipe extends AbstractAmountRecipe {
         public static final StreamCodec<RegistryFriendlyByteBuf, SkyMillRecipe> STREAM_CODEC = StreamCodec.of(SkyMillRecipe.Serializer::toNetwork, SkyMillRecipe.Serializer::fromNetwork);
 
         @Override
-        public @NotNull MapCodec<SkyMillRecipe> codec() {
+        public MapCodec<SkyMillRecipe> codec() {
             return CODEC;
         }
 
         @Override
-        public @NotNull StreamCodec<RegistryFriendlyByteBuf, SkyMillRecipe> streamCodec() {
+        public StreamCodec<RegistryFriendlyByteBuf, SkyMillRecipe> streamCodec() {
             return STREAM_CODEC;
         }
 

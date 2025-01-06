@@ -6,7 +6,6 @@ import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.bomb.ScarabBombEntityModel;
 import org.confluence.mod.common.entity.projectile.bomb.ScarabBombEntity;
-import org.jetbrains.annotations.NotNull;
 
 public class ScarabBombEntityRenderer extends BombEntityRenderer<ScarabBombEntity> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/bomb/scarab_bomb_entity.png");
@@ -18,7 +17,7 @@ public class ScarabBombEntityRenderer extends BombEntityRenderer<ScarabBombEntit
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull ScarabBombEntity pEntity) {
+    public ResourceLocation getTextureLocation(ScarabBombEntity pEntity) {
         return TEXTURE;
     }
 

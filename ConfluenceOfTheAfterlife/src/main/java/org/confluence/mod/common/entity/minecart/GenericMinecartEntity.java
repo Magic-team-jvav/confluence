@@ -8,7 +8,6 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ public class GenericMinecartEntity extends BaseMinecartEntity implements Variant
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_VARIANT_ID, 0);
     }
@@ -37,7 +36,7 @@ public class GenericMinecartEntity extends BaseMinecartEntity implements Variant
     }
 
     @Override
-    public @NotNull Variant getVariant() {
+    public Variant getVariant() {
         return Variant.byId(entityData.get(DATA_VARIANT_ID));
     }
 
@@ -72,7 +71,7 @@ public class GenericMinecartEntity extends BaseMinecartEntity implements Variant
         }
 
         @Override
-        public @NotNull String getSerializedName() {
+        public String getSerializedName() {
             return name;
         }
 

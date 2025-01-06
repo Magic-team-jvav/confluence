@@ -14,7 +14,6 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
 import org.confluence.terra_curio.common.recipe.AmountIngredient;
-import org.jetbrains.annotations.NotNull;
 
 public class AltarRecipe extends AbstractAmountRecipe {
     public AltarRecipe(ItemStack pResult, NonNullList<Ingredient> pIngredients) {
@@ -27,22 +26,22 @@ public class AltarRecipe extends AbstractAmountRecipe {
     }
 
     @Override
-    public @NotNull RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return ModRecipes.ALTAR_SERIALIZER.get();
     }
 
     @Override
-    public @NotNull String getGroup() {
+    public String getGroup() {
         return "altar";
     }
 
     @Override
-    public @NotNull RecipeType<?> getType() {
+    public RecipeType<?> getType() {
         return ModRecipes.ALTAR_TYPE.get();
     }
 
     @Override
-    public @NotNull ItemStack getToastSymbol() {
+    public ItemStack getToastSymbol() {
         return FunctionalBlocks.DEMON_ALTAR.get().asItem().getDefaultInstance();
     }
 
@@ -61,12 +60,12 @@ public class AltarRecipe extends AbstractAmountRecipe {
         public static final StreamCodec<RegistryFriendlyByteBuf, AltarRecipe> STREAM_CODEC = StreamCodec.of(AltarRecipe.Serializer::toNetwork, AltarRecipe.Serializer::fromNetwork);
 
         @Override
-        public @NotNull MapCodec<AltarRecipe> codec() {
+        public MapCodec<AltarRecipe> codec() {
             return CODEC;
         }
 
         @Override
-        public @NotNull StreamCodec<RegistryFriendlyByteBuf, AltarRecipe> streamCodec() {
+        public StreamCodec<RegistryFriendlyByteBuf, AltarRecipe> streamCodec() {
             return STREAM_CODEC;
         }
 

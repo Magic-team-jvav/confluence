@@ -5,7 +5,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
-import org.jetbrains.annotations.NotNull;
 
 public class ForgeFuelSlot extends Slot {
     private final RecipeType<?> recipeType;
@@ -21,7 +20,7 @@ public class ForgeFuelSlot extends Slot {
     }
 
     @Override
-    public int getMaxStackSize(@NotNull ItemStack stack) {
+    public int getMaxStackSize(ItemStack stack) {
         return isBucket(stack) ? 1 : super.getMaxStackSize(stack);
     }
 

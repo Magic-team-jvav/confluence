@@ -11,7 +11,6 @@ import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +33,7 @@ public class HeavyWorkBenchRecipe extends AbstractAmountRecipe {
     }
 
     @Override
-    public boolean matches(@NotNull RecipeInput input, @NotNull Level pLevel) {
+    public boolean matches(RecipeInput input, Level pLevel) {
         List<ItemStack> itemStacks = new ArrayList<>();
         for (int i = 0; i < input.size(); i++) {
             ItemStack itemStack = input.getItem(i);
@@ -55,22 +54,22 @@ public class HeavyWorkBenchRecipe extends AbstractAmountRecipe {
     }
 
     @Override
-    public @NotNull RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return ModRecipes.HEAVY_WORK_BENCH_SERIALIZER.get();
     }
 
     @Override
-    public @NotNull RecipeType<?> getType() {
+    public RecipeType<?> getType() {
         return ModRecipes.HEAVY_WORK_BENCH_TYPE.get();
     }
 
     @Override
-    public @NotNull String getGroup() {
+    public String getGroup() {
         return "heavy_work_bench";
     }
 
     @Override
-    public @NotNull ItemStack getToastSymbol() {
+    public ItemStack getToastSymbol() {
         return FunctionalBlocks.HEAVY_WORK_BENCH.toStack();
     }
 
@@ -82,12 +81,12 @@ public class HeavyWorkBenchRecipe extends AbstractAmountRecipe {
         public static final StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> STREAM_CODEC = StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
 
         @Override
-        public @NotNull MapCodec<HeavyWorkBenchRecipe> codec() {
+        public MapCodec<HeavyWorkBenchRecipe> codec() {
             return CODEC;
         }
 
         @Override
-        public @NotNull StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> streamCodec() {
+        public StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> streamCodec() {
             return STREAM_CODEC;
         }
 

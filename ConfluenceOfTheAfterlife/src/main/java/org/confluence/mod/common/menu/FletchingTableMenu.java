@@ -22,7 +22,6 @@ import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.recipe.FletchingTableRecipe;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -58,7 +57,7 @@ public class FletchingTableMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public void slotsChanged(@NotNull Container pInventory) {
+    public void slotsChanged(Container pInventory) {
         access.execute((level, pos) -> {
             if (player instanceof ServerPlayer serverPlayer) {
                 List<RecipeHolder<FletchingTableRecipe>> recipes = player.level().getRecipeManager().getRecipesFor(ModRecipes.FLETCHING_TABLE_TYPE.get(), input, player.level());
@@ -82,7 +81,7 @@ public class FletchingTableMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
+    public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = slots.get(index);
         if (slot.hasItem()) {
@@ -130,12 +129,12 @@ public class FletchingTableMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(@NotNull Player player) {
+    public boolean stillValid(Player player) {
         return stillValid(access, player, Blocks.FLETCHING_TABLE);
     }
 
     @Override
-    public void removed(@NotNull Player pPlayer) {
+    public void removed(Player pPlayer) {
         super.removed(pPlayer);
         result.removeItemNoUpdate(0);
         access.execute((level, blockPos) -> clearContainer(pPlayer, input));
@@ -151,12 +150,12 @@ public class FletchingTableMenu extends AbstractContainerMenu {
         }
 
         @Override
-        public @NotNull Component getDisplayName() {
+        public Component getDisplayName() {
             return Component.translatable("container.confluence.fletching_table");
         }
 
         @Override
-        public @Nullable AbstractContainerMenu createMenu(int containerId, @NotNull Inventory inventory, @NotNull Player player) {
+        public @Nullable AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
             return new FletchingTableMenu(containerId, inventory, ContainerLevelAccess.create(level, pos));
         }
     }
@@ -175,12 +174,12 @@ public class FletchingTableMenu extends AbstractContainerMenu {
         }
 
         @Override
-        public boolean mayPlace(@NotNull ItemStack pStack) {
+        public boolean mayPlace(ItemStack pStack) {
             return false;
         }
 
         @Override
-        public void onTake(@NotNull Player pPlayer, @NotNull ItemStack pStack) {
+        public void onTake(Player pPlayer, ItemStack pStack) {
             if (recipe != null) {
                 AbstractAmountRecipe.extractInput(input, recipe.getIngredients(), false);
                 input.setChanged();

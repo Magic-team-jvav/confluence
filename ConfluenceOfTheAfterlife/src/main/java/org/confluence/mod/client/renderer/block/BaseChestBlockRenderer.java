@@ -7,7 +7,6 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
-import org.jetbrains.annotations.NotNull;
 
 public class BaseChestBlockRenderer extends ChestRenderer<BaseChestBlock.Entity> {
     public static final Material LOCKED_GOLDEN = chest("locked_golden");
@@ -45,7 +44,7 @@ public class BaseChestBlockRenderer extends ChestRenderer<BaseChestBlock.Entity>
     }
 
     @Override
-    protected @NotNull Material getMaterial(BaseChestBlock.Entity blockEntity, @NotNull ChestType chestType) {
+    protected Material getMaterial(BaseChestBlock.Entity blockEntity, ChestType chestType) {
         return switch (blockEntity.variant) {
             case UNLOCKED_GOLDEN -> chooseMaterial(chestType, UNLOCKED_GOLDEN, UNLOCKED_GOLDEN_LEFT, UNLOCKED_GOLDEN_RIGHT);
             case UNLOCKED_FROZEN -> chooseMaterial(chestType, UNLOCKED_FROZEN, UNLOCKED_FROZEN_LEFT, UNLOCKED_FROZEN_RIGHT);

@@ -6,7 +6,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ContainerResultSlot extends Slot {
@@ -21,12 +20,12 @@ public class ContainerResultSlot extends Slot {
     }
 
     @Override
-    public boolean mayPlace(@NotNull ItemStack pStack) {
+    public boolean mayPlace(ItemStack pStack) {
         return false;
     }
 
     @Override
-    public void onTake(@NotNull Player pPlayer, @NotNull ItemStack pStack) {
+    public void onTake(Player pPlayer, ItemStack pStack) {
         if (recipe != null) {
             AbstractAmountRecipe.extractContainer(container, recipe.getIngredients(), false);
             container.setChanged();

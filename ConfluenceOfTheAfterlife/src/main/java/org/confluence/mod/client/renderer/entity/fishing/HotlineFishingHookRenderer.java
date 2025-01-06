@@ -11,7 +11,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.fishing.HotlineFishingHookModel;
 import org.confluence.mod.common.entity.fishing.HotlineFishingHook;
 import org.confluence.mod.util.color.IntegerRGB;
-import org.jetbrains.annotations.NotNull;
 
 import static org.confluence.mod.client.renderer.entity.fishing.BaseFishingHookRenderer.renderString;
 
@@ -26,12 +25,12 @@ public class HotlineFishingHookRenderer extends EntityRenderer<HotlineFishingHoo
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull HotlineFishingHook pEntity) {
+    public ResourceLocation getTextureLocation(HotlineFishingHook pEntity) {
         return TEXTURE;
     }
 
     @Override
-    public void render(@NotNull HotlineFishingHook pEntity, float pEntityYaw, float pPartialTick, @NotNull PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
+    public void render(HotlineFishingHook pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
         model.renderToBuffer(pPoseStack, pBuffer.getBuffer(model.renderType(TEXTURE)), pPackedLight, OverlayTexture.NO_OVERLAY);
         model.renderToBuffer(pPoseStack, pBuffer.getBuffer(GLOW), 0xF000F0, OverlayTexture.NO_OVERLAY);
         renderString(entityRenderDispatcher, pEntity, pPartialTick, pPoseStack, pBuffer, IntegerRGB.ORANGE);

@@ -12,7 +12,6 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.menu.FletchingTableMenu;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FletchingTableRecipe implements Recipe<FletchingTableRecipe.Input> {
@@ -31,12 +30,12 @@ public class FletchingTableRecipe implements Recipe<FletchingTableRecipe.Input> 
     }
 
     @Override
-    public boolean matches(@NotNull Input input, @NotNull Level level) {
+    public boolean matches(Input input, Level level) {
         return tail.test(input.getTail()) && body.test(input.getBody()) && head.test(input.getHead());
     }
 
     @Override
-    public @NotNull NonNullList<Ingredient> getIngredients() {
+    public NonNullList<Ingredient> getIngredients() {
         return ingredients;
     }
 
@@ -53,7 +52,7 @@ public class FletchingTableRecipe implements Recipe<FletchingTableRecipe.Input> 
     }
 
     @Override
-    public @NotNull ItemStack assemble(@NotNull Input input, HolderLookup.@NotNull Provider registries) {
+    public ItemStack assemble(Input input, HolderLookup.Provider registries) {
         return result.copy();
     }
 
@@ -63,17 +62,17 @@ public class FletchingTableRecipe implements Recipe<FletchingTableRecipe.Input> 
     }
 
     @Override
-    public @NotNull ItemStack getResultItem(@Nullable HolderLookup.Provider registries) {
+    public ItemStack getResultItem(@Nullable HolderLookup.Provider registries) {
         return result;
     }
 
     @Override
-    public @NotNull RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<?> getSerializer() {
         return ModRecipes.FLETCHING_TABLE_SERIALIZER.get();
     }
 
     @Override
-    public @NotNull RecipeType<?> getType() {
+    public RecipeType<?> getType() {
         return ModRecipes.FLETCHING_TABLE_TYPE.get();
     }
 
@@ -87,12 +86,12 @@ public class FletchingTableRecipe implements Recipe<FletchingTableRecipe.Input> 
         public static final StreamCodec<RegistryFriendlyByteBuf, FletchingTableRecipe> STREAM_CODEC = StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
 
         @Override
-        public @NotNull MapCodec<FletchingTableRecipe> codec() {
+        public MapCodec<FletchingTableRecipe> codec() {
             return CODEC;
         }
 
         @Override
-        public @NotNull StreamCodec<RegistryFriendlyByteBuf, FletchingTableRecipe> streamCodec() {
+        public StreamCodec<RegistryFriendlyByteBuf, FletchingTableRecipe> streamCodec() {
             return STREAM_CODEC;
         }
 

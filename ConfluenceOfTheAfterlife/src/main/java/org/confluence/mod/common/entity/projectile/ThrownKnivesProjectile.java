@@ -12,7 +12,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.util.ModUtils;
-import org.jetbrains.annotations.NotNull;
 
 public class ThrownKnivesProjectile extends ThrowableProjectile {
     int penetrate = 0;
@@ -29,10 +28,10 @@ public class ThrownKnivesProjectile extends ThrowableProjectile {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {}
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {}
 
     @Override
-    protected void onHitEntity(@NotNull EntityHitResult pResult) {
+    protected void onHitEntity(EntityHitResult pResult) {
         super.onHitEntity(pResult);
         Entity entity = pResult.getEntity();
         if (entity.hurt(damageSources().mobProjectile(this, (LivingEntity) getOwner()), 6.0F)) {
@@ -49,7 +48,7 @@ public class ThrownKnivesProjectile extends ThrowableProjectile {
     }
 
     @Override
-    protected void onHitBlock(@NotNull BlockHitResult pResult) {
+    protected void onHitBlock(BlockHitResult pResult) {
         super.onHitBlock(pResult);
         if (random.nextBoolean()) {
             ModUtils.createItemEntity(ConsumableItems.THROWING_KNIVES.get().getDefaultInstance(), getX(), getY(), getZ(), level(), 0);
@@ -58,7 +57,7 @@ public class ThrownKnivesProjectile extends ThrowableProjectile {
     }
 
     @Override
-    protected boolean canHitEntity(@NotNull Entity pTarget) {
+    protected boolean canHitEntity(Entity pTarget) {
         return pTarget != getOwner();
     }
 }

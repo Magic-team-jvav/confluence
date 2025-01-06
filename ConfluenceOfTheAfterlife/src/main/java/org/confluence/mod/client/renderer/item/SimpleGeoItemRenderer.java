@@ -4,7 +4,6 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.model.GeoModel;
@@ -24,7 +23,7 @@ public class SimpleGeoItemRenderer<T extends Item & GeoAnimatable> implements IC
 
     @SuppressWarnings("removal")
     @Override
-    public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
+    public BlockEntityWithoutLevelRenderer getCustomRenderer() {
         if (renderer == null) {
             this.renderer = new GeoItemRenderer<>(new GeoModel<>() {
                 @Override

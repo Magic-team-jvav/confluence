@@ -20,7 +20,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.structures.EndCityPieces;
 import org.confluence.mod.common.init.ModStructures;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +33,7 @@ public class LivingTreeStructure extends Structure {
     }
 
     @Override
-    protected @NotNull Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
+    protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
         Rotation rotation = Rotation.getRandom(context.random());
         BlockPos blockPos = getLowestYIn5by5BoxOffset7Blocks(context, rotation);
         if (blockPos.distSqr(Vec3i.ZERO) > DIST_SQR) {
@@ -50,7 +49,7 @@ public class LivingTreeStructure extends Structure {
     }
 
     @Override
-    public @NotNull StructureType<?> type() {
+    public StructureType<?> type() {
         return ModStructures.LIVING_TREE.get();
     }
 

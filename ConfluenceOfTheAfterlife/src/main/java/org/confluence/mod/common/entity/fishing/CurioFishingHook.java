@@ -10,7 +10,6 @@ import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.ModEntities;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.IntFunction;
 
@@ -39,7 +38,7 @@ public class CurioFishingHook extends AbstractFishingHook implements VariantHold
     }
 
     @Override
-    public @NotNull Variant getVariant() {
+    public Variant getVariant() {
         return Variant.byId(entityData.get(DATA_VARIANT_ID));
     }
 
@@ -71,7 +70,7 @@ public class CurioFishingHook extends AbstractFishingHook implements VariantHold
         }
 
         @Override
-        public @NotNull String getSerializedName() {
+        public String getSerializedName() {
             return name;
         }
     }

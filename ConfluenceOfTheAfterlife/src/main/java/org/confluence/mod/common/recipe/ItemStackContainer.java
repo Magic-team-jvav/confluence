@@ -7,7 +7,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
 
 public class ItemStackContainer extends ItemStackHandler implements Container, RecipeInput {
     public final BlockEntity blockEntity;
@@ -36,7 +35,7 @@ public class ItemStackContainer extends ItemStackHandler implements Container, R
     }
 
     @Override
-    public @NotNull ItemStack getItem(int pSlot) {
+    public ItemStack getItem(int pSlot) {
         return getStackInSlot(pSlot);
     }
 
@@ -46,17 +45,17 @@ public class ItemStackContainer extends ItemStackHandler implements Container, R
     }
 
     @Override
-    public @NotNull ItemStack removeItem(int pSlot, int pAmount) {
+    public ItemStack removeItem(int pSlot, int pAmount) {
         return extractItem(pSlot, pAmount, false);
     }
 
     @Override
-    public @NotNull ItemStack removeItemNoUpdate(int pSlot) {
+    public ItemStack removeItemNoUpdate(int pSlot) {
         return extractItem(pSlot, 64, true);
     }
 
     @Override
-    public void setItem(int pSlot, @NotNull ItemStack pStack) {
+    public void setItem(int pSlot, ItemStack pStack) {
         setStackInSlot(pSlot, pStack);
     }
 
@@ -66,7 +65,7 @@ public class ItemStackContainer extends ItemStackHandler implements Container, R
     }
 
     @Override
-    public boolean stillValid(@NotNull Player pPlayer) {
+    public boolean stillValid(Player pPlayer) {
         return true;
     }
 

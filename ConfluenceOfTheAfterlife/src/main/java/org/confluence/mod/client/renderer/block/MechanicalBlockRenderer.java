@@ -14,7 +14,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.block.functional.AbstractMechanicalBlock;
 import org.confluence.terra_curio.client.handler.InformationHandler;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
@@ -22,7 +21,7 @@ public class MechanicalBlockRenderer<E extends AbstractMechanicalBlock.Entity> i
     public MechanicalBlockRenderer(BlockEntityRendererProvider.Context context) {}
 
     @Override
-    public boolean shouldRenderOffScreen(@NotNull E pBlockEntity) {
+    public boolean shouldRenderOffScreen(E pBlockEntity) {
         return InformationHandler.hasMechanicalView();
     }
 
@@ -32,17 +31,17 @@ public class MechanicalBlockRenderer<E extends AbstractMechanicalBlock.Entity> i
     }
 
     @Override
-    public boolean shouldRender(@NotNull AbstractMechanicalBlock.Entity pBlockEntity, @NotNull Vec3 pCameraPos) {
+    public boolean shouldRender(AbstractMechanicalBlock.Entity pBlockEntity, Vec3 pCameraPos) {
         return InformationHandler.hasMechanicalView() && pBlockEntity.getBlockPos().getCenter().multiply(1.0, 0.0, 1.0).closerThan(pCameraPos.multiply(1.0, 0.0, 1.0), getViewDistance());
     }
 
     @Override
-    public @NotNull AABB getRenderBoundingBox(@NotNull E blockEntity) {
+    public AABB getRenderBoundingBox(E blockEntity) {
         return AABB.INFINITE;
     }
 
     @Override
-    public void render(@NotNull E pBlockEntity, float pPartialTick, @NotNull PoseStack pPoseStack, @NotNull MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+    public void render(E pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
         Level level = pBlockEntity.getLevel();
         long gameTime = level == null ? 0L : level.getGameTime();
         Vec3 vec31 = pBlockEntity.getBlockPos().getCenter();

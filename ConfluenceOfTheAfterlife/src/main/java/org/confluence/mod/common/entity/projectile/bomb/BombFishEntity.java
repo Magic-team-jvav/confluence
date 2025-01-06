@@ -9,7 +9,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ConsumableItems;
-import org.jetbrains.annotations.NotNull;
 
 public class BombFishEntity extends BaseBombEntity {
     private BlockPos stickBlock = null;
@@ -38,7 +37,7 @@ public class BombFishEntity extends BaseBombEntity {
     }
 
     @Override
-    protected @NotNull Item getDefaultItem() {
+    protected Item getDefaultItem() {
         return ConsumableItems.BOMB_FISH.get();
     }
 

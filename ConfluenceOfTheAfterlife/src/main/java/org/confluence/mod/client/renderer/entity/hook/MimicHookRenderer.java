@@ -6,7 +6,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.hook.MimicHookEntity;
-import org.jetbrains.annotations.NotNull;
 
 public class MimicHookRenderer extends AbstractHookRenderer<MimicHookEntity> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/hook/grappling_hook.png");
@@ -22,7 +21,7 @@ public class MimicHookRenderer extends AbstractHookRenderer<MimicHookEntity> {
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull MimicHookEntity pEntity) {
+    public ResourceLocation getTextureLocation(MimicHookEntity pEntity) {
         return TEXTURE;
     }
 }

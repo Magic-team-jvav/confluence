@@ -21,7 +21,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.item.hook.BaseHookItem;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.IntFunction;
 
@@ -120,7 +119,7 @@ public abstract class AbstractHookEntity extends Projectile {
     }
 
     @Override
-    public void shootFromRotation(@NotNull Entity pShooter, float pX, float pY, float pZ, float pVelocity, float pInaccuracy) {
+    public void shootFromRotation(Entity pShooter, float pX, float pY, float pZ, float pVelocity, float pInaccuracy) {
         float x = -Mth.sin(pY * Mth.DEG_TO_RAD) * Mth.cos(pX * Mth.DEG_TO_RAD);
         float y = -Mth.sin((pX + pZ) * Mth.DEG_TO_RAD);
         float z = Mth.cos(pY * Mth.DEG_TO_RAD) * Mth.cos(pX * Mth.DEG_TO_RAD);
@@ -156,7 +155,7 @@ public abstract class AbstractHookEntity extends Projectile {
             return BY_ID.apply(pId);
         }
 
-        public @NotNull String getSerializedName() {
+        public String getSerializedName() {
             return name;
         }
     }

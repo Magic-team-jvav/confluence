@@ -19,7 +19,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.util.PlayerUtils;
-import org.jetbrains.annotations.NotNull;
 
 public class DiggingMolecartEntity extends BaseMinecartEntity {
     public DiggingMolecartEntity(EntityType<? extends BaseMinecartEntity> entityType, Level level) {
@@ -31,7 +30,7 @@ public class DiggingMolecartEntity extends BaseMinecartEntity {
     }
 
     @Override
-    public void moveMinecartOnRail(@NotNull BlockPos pos) {
+    public void moveMinecartOnRail(BlockPos pos) {
         super.moveMinecartOnRail(pos);
         Vec3 motion = getDeltaMovement();
         if (motion.horizontalDistanceSqr() < 0.1) return;

@@ -7,7 +7,6 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.ItemLike;
 import org.apache.commons.lang3.IntegerRange;
 import org.confluence.mod.common.init.ModVillagers;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class SkyVillagerItemListing extends RandomItemListing {
@@ -48,7 +47,7 @@ public class SkyVillagerItemListing extends RandomItemListing {
     }
 
     @Override
-    public @Nullable MerchantOffer getOffer(@NotNull Entity pTrader, @NotNull RandomSource random) {
+    public @Nullable MerchantOffer getOffer(Entity pTrader, RandomSource random) {
         if (pTrader instanceof VillagerDataHolder holder && holder.getVillagerData().getType() == ModVillagers.SKY_TYPE.get()) {
             return super.getOffer(pTrader, random);
         } else {

@@ -14,7 +14,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * 基础属性如伤害、击退、初始位置由弹幕容器设置，弹幕实体只定义运动、伤害公式、碰撞检测
@@ -86,7 +85,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile {
     }
 
     @Override
-    protected void onHitEntity(@NotNull EntityHitResult entityHitResult) {
+    protected void onHitEntity(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
         if (!level().isClientSide) {
             float damage = getBaseDamage() * (attackDamage);
@@ -100,7 +99,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile {
     }
 
     @Override
-    public boolean hurt(@NotNull DamageSource source, float amount) {
+    public boolean hurt(DamageSource source, float amount) {
         return false;
     }
 

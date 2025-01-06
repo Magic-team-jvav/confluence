@@ -12,7 +12,6 @@ import net.minecraft.world.phys.HitResult;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.item.potion.EffectThrowablePotionItem;
-import org.jetbrains.annotations.NotNull;
 
 public class EffectThrownPotion extends ThrowableItemProjectile {
     private EffectThrowablePotionItem item;
@@ -30,7 +29,7 @@ public class EffectThrownPotion extends ThrowableItemProjectile {
     }
 
     @Override
-    public void setItem(@NotNull ItemStack pStack) {
+    public void setItem(ItemStack pStack) {
         super.setItem(pStack);
         if (pStack.getItem() instanceof EffectThrowablePotionItem effectThrowablePotionItem) {
             this.item = effectThrowablePotionItem;
@@ -38,12 +37,12 @@ public class EffectThrownPotion extends ThrowableItemProjectile {
     }
 
     @Override
-    protected @NotNull EffectThrowablePotionItem getDefaultItem() {
+    protected EffectThrowablePotionItem getDefaultItem() {
         return (EffectThrowablePotionItem) PotionItems.LOVE_POTION.get();
     }
 
     @Override
-    protected void onHit(@NotNull HitResult pResult) {
+    protected void onHit(HitResult pResult) {
         super.onHit(pResult);
         Level level = level();
         if (!level.isClientSide) {

@@ -6,7 +6,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ConsumableItems;
-import org.jetbrains.annotations.NotNull;
 
 public class BouncyBombEntity extends BaseBombEntity {
     private static final float BOUNCE_FACTOR_NEW = 0.8f;
@@ -27,7 +26,7 @@ public class BouncyBombEntity extends BaseBombEntity {
     }
 
     @Override
-    protected @NotNull Item getDefaultItem() {
+    protected Item getDefaultItem() {
         return ConsumableItems.BOUNCY_BOMB.get();
     }
 }

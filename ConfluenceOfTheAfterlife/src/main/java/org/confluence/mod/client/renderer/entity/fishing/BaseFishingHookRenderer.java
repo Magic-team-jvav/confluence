@@ -21,7 +21,6 @@ import org.confluence.mod.client.model.entity.fishing.BaseFishingHookModel;
 import org.confluence.mod.common.entity.fishing.AbstractFishingHook;
 import org.confluence.mod.common.entity.fishing.BaseFishingHook;
 import org.confluence.mod.util.color.IntegerRGB;
-import org.jetbrains.annotations.NotNull;
 
 public class BaseFishingHookRenderer extends EntityRenderer<BaseFishingHook> {
     private static final ResourceLocation[] TEXTURES = new ResourceLocation[]{
@@ -64,19 +63,19 @@ public class BaseFishingHookRenderer extends EntityRenderer<BaseFishingHook> {
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(BaseFishingHook pEntity) {
+    public ResourceLocation getTextureLocation(BaseFishingHook pEntity) {
         return TEXTURES[pEntity.getVariant().getId()];
     }
 
     @Override
-    public void render(BaseFishingHook pEntity, float pEntityYaw, float pPartialTicks, @NotNull PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
+    public void render(BaseFishingHook pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
         int id = pEntity.getVariant().getId();
         BaseFishingHookModel model = MODELS[id];
         model.renderToBuffer(pPoseStack, pBuffer.getBuffer(model.renderType(getTextureLocation(pEntity))), pPackedLight, OverlayTexture.NO_OVERLAY);
         renderString(entityRenderDispatcher, pEntity, pPartialTicks, pPoseStack, pBuffer, COLORS[id]);
     }
 
-    static <E extends AbstractFishingHook> void renderString(EntityRenderDispatcher entityRenderDispatcher, E pEntity, float pPartialTicks, @NotNull PoseStack pPoseStack, MultiBufferSource pBuffer, IntegerRGB color) {
+    static <E extends AbstractFishingHook> void renderString(EntityRenderDispatcher entityRenderDispatcher, E pEntity, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, IntegerRGB color) {
         Player player = pEntity.getPlayerOwner();
         if (player == null) return;
         pPoseStack.pushPose();

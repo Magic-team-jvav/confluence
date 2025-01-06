@@ -8,7 +8,6 @@ import net.minecraft.world.phys.AABB;
 import org.confluence.mod.client.model.block.ExtractinatorBlockModel;
 import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.block.functional.crafting.ExtractinatorBlock;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
@@ -25,12 +24,12 @@ public class ExtractinatorBlockRenderer extends GeoBlockRenderer<ExtractinatorBl
     }
 
     @Override
-    public boolean shouldRenderOffScreen(@NotNull ExtractinatorBlock.Entity pBlockEntity) {
+    public boolean shouldRenderOffScreen(ExtractinatorBlock.Entity pBlockEntity) {
         return true;
     }
 
     @Override
-    public @NotNull AABB getRenderBoundingBox(ExtractinatorBlock.@NotNull Entity blockEntity) {
+    public AABB getRenderBoundingBox(ExtractinatorBlock.Entity blockEntity) {
         return AABB.INFINITE;
     }
 }

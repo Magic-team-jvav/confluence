@@ -12,7 +12,6 @@ import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.terra_curio.TerraCurio;
-import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
@@ -36,7 +35,7 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
             if (i < COINS_START) {
                 addSlot(new ToggleSlot(extraInventory, i, 8, i * 18 + 8) { // vanity armor
                     @Override
-                    public boolean mayPlace(@NotNull ItemStack stack) {
+                    public boolean mayPlace(ItemStack stack) {
                         if (stack.getItem() instanceof ArmorItem armorItem) {
                             EquipmentSlot equipmentSlot = armorItem.getEquipmentSlot();
                             int slotIndex = getSlotIndex();
@@ -51,21 +50,21 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
             } else if (i < AMMO_START) {
                 addSlot(new Slot(extraInventory, i, 81, (i - COINS_START) * 18 + 8) { // coins
                     @Override
-                    public boolean mayPlace(@NotNull ItemStack stack) {
+                    public boolean mayPlace(ItemStack stack) {
                         return stack.is(ModTags.Items.COINS);
                     }
                 });
             } else if (i < EQUIPMENT_START) {
                 addSlot(new Slot(extraInventory, i, 99, (i - AMMO_START) * 18 + 8) { // ammo
                     @Override
-                    public boolean mayPlace(@NotNull ItemStack stack) {
+                    public boolean mayPlace(ItemStack stack) {
                         return stack.is(ModTags.Items.AMMO);
                     }
                 });
             } else if (i < DYE_START) {
                 addSlot(new ToggleSlot(extraInventory, i, 121, (i - EQUIPMENT_START) * 18 + 8) { // equipment
                     @Override
-                    public boolean mayPlace(@NotNull ItemStack stack) {
+                    public boolean mayPlace(ItemStack stack) {
                         return stack.is(switch (getSlotIndex() - EQUIPMENT_START) {
                             case 1 -> ModTags.Items.LIGHT_PET;
                             case 2 -> ModTags.Items.MINECART;
@@ -102,7 +101,7 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
         this.invEnd = hotBar + 9;
     }
 
-    private @NotNull ToggleSlot getDyeSlot(int i) {
+    private ToggleSlot getDyeSlot(int i) {
         int j = i - DYE_START;
         int x, y;
         if (j < SIZE_VANITY_ARMOR) { // vanity armor dye
@@ -130,7 +129,7 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
+    public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = slots.get(index);
         if (slot.hasItem()) {
@@ -167,7 +166,7 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(@NotNull Player player) {
+    public boolean stillValid(Player player) {
         return true;
     }
 }

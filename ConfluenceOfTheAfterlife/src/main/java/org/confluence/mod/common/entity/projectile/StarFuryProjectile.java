@@ -4,12 +4,9 @@ package org.confluence.mod.common.entity.projectile;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import org.confluence.mod.common.init.ModEntities;
-import org.jetbrains.annotations.NotNull;
 
 public class StarFuryProjectile extends SwordProjectile {
     public int hitCount = 2;//可穿透两个目标
@@ -19,7 +16,7 @@ public class StarFuryProjectile extends SwordProjectile {
     }
 
     @Override
-    protected void onHitEntity(@NotNull EntityHitResult pResult) {
+    protected void onHitEntity(EntityHitResult pResult) {
         super.onHitEntity(pResult);
         if(!this.level().isClientSide()) {
 
@@ -31,7 +28,7 @@ public class StarFuryProjectile extends SwordProjectile {
         }
     }
     @Override
-    protected void onHitBlock(@NotNull BlockHitResult pResult) {
+    protected void onHitBlock(BlockHitResult pResult) {
         super.onHitBlock(pResult);
         if(!this.level().isClientSide())
             discard();

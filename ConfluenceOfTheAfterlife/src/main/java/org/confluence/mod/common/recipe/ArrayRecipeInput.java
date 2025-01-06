@@ -2,7 +2,6 @@ package org.confluence.mod.common.recipe;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeInput;
-import org.jetbrains.annotations.NotNull;
 
 public class ArrayRecipeInput implements RecipeInput {
     private final ItemStack[] itemStacks;
@@ -12,7 +11,7 @@ public class ArrayRecipeInput implements RecipeInput {
     }
 
     @Override
-    public @NotNull ItemStack getItem(int index) {
+    public ItemStack getItem(int index) {
         return itemStacks[index];
     }
 

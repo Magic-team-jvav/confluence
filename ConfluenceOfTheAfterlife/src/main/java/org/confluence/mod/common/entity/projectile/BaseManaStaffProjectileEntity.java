@@ -21,7 +21,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.util.ModUtils;
-import org.jetbrains.annotations.NotNull;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
@@ -56,7 +55,7 @@ public class BaseManaStaffProjectileEntity extends Projectile {
         entityData.set(DATA_VARIANT_ID, pVariant.id);
     }
 
-    public @NotNull Variant getVariant() {
+    public Variant getVariant() {
         return Variant.byId(entityData.get(DATA_VARIANT_ID));
     }
 
@@ -92,7 +91,7 @@ public class BaseManaStaffProjectileEntity extends Projectile {
     }
 
     @Override
-    protected void onHitEntity(@NotNull EntityHitResult entityHitResult) {
+    protected void onHitEntity(EntityHitResult entityHitResult) {
         if (level().isClientSide) return;
         Entity entity = entityHitResult.getEntity();
         if (canAttack(entity)) {
@@ -130,7 +129,7 @@ public class BaseManaStaffProjectileEntity extends Projectile {
     }
 
     @Override
-    public boolean hurt(@NotNull DamageSource source, float amount) {
+    public boolean hurt(DamageSource source, float amount) {
         return false;
     }
 
@@ -153,7 +152,7 @@ public class BaseManaStaffProjectileEntity extends Projectile {
         }
 
         @Override
-        protected void onHitEntity(@NotNull EntityHitResult entityHitResult) {
+        protected void onHitEntity(EntityHitResult entityHitResult) {
             super.onHitEntity(entityHitResult);
             entityHitResult.getEntity().igniteForTicks(100);
         }
@@ -165,7 +164,7 @@ public class BaseManaStaffProjectileEntity extends Projectile {
         }
 
         @Override
-        protected void onHitEntity(@NotNull EntityHitResult entityHitResult) {
+        protected void onHitEntity(EntityHitResult entityHitResult) {
             super.onHitEntity(entityHitResult);
             if (entityHitResult.getEntity() instanceof LivingEntity living) {
                 int duration = living.getRandom().nextFloat() < 2.0F / 3.0F ? 40 : 60;
@@ -203,7 +202,7 @@ public class BaseManaStaffProjectileEntity extends Projectile {
         }
 
         @Override
-        public @NotNull String getSerializedName() {
+        public String getSerializedName() {
             return name;
         }
     }

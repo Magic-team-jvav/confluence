@@ -7,7 +7,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.hook.SkeletronHandModel;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
-import org.jetbrains.annotations.NotNull;
 
 public class SkeletronHandRenderer extends AbstractHookRenderer<AbstractHookEntity.Impl> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/hook/skeletron_hand.png");
@@ -19,7 +18,7 @@ public class SkeletronHandRenderer extends AbstractHookRenderer<AbstractHookEnti
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull AbstractHookEntity.Impl pEntity) {
+    public ResourceLocation getTextureLocation(AbstractHookEntity.Impl pEntity) {
         return TEXTURE;
     }
 

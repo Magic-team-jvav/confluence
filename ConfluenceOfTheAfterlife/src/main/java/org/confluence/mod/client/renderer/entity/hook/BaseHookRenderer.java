@@ -7,7 +7,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.hook.BaseHookEntity;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
-import org.jetbrains.annotations.NotNull;
 
 public class BaseHookRenderer extends AbstractHookRenderer<BaseHookEntity> {
     private static final ResourceLocation[] TEXTURE = new ResourceLocation[]{
@@ -37,7 +36,7 @@ public class BaseHookRenderer extends AbstractHookRenderer<BaseHookEntity> {
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull BaseHookEntity pEntity) {
+    public ResourceLocation getTextureLocation(BaseHookEntity pEntity) {
         return TEXTURE[pEntity.getVariant().getId()];
     }
 

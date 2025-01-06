@@ -4,7 +4,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
@@ -25,12 +24,12 @@ public class ToggleCurioSlot extends Slot implements IToggleSlot {
     }
 
     @Override
-    public boolean mayPlace(@NotNull ItemStack stack) {
+    public boolean mayPlace(ItemStack stack) {
         return false;
     }
 
     @Override
-    public boolean mayPickup(@NotNull Player player) {
+    public boolean mayPickup(Player player) {
         return false;
     }
 
@@ -67,24 +66,24 @@ public class ToggleCurioSlot extends Slot implements IToggleSlot {
         }
 
         @Override
-        public @NotNull ItemStack getItem(int slot) {
+        public ItemStack getItem(int slot) {
             return handler.getStackInSlot(slot);
         }
 
         @Override
-        public @NotNull ItemStack removeItem(int slot, int amount) {
+        public ItemStack removeItem(int slot, int amount) {
             return handler.extractItem(slot, amount, false);
         }
 
         @Override
-        public @NotNull ItemStack removeItemNoUpdate(int slot) {
+        public ItemStack removeItemNoUpdate(int slot) {
             ItemStack itemStack = getItem(slot);
             setItem(slot, ItemStack.EMPTY); // 还是会更新
             return itemStack;
         }
 
         @Override
-        public void setItem(int slot, @NotNull ItemStack stack) {
+        public void setItem(int slot, ItemStack stack) {
             handler.setStackInSlot(slot, stack);
         }
 
@@ -92,7 +91,7 @@ public class ToggleCurioSlot extends Slot implements IToggleSlot {
         public void setChanged() {}
 
         @Override
-        public boolean stillValid(@NotNull Player player) {
+        public boolean stillValid(Player player) {
             return true;
         }
 

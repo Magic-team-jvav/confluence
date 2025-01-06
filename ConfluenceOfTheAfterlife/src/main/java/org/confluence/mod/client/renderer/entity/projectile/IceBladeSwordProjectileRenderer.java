@@ -11,7 +11,6 @@ import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.projectile.IceBladeSwordProjectileModel;
 import org.confluence.mod.common.entity.projectile.SwordProjectile;
-import org.jetbrains.annotations.NotNull;
 
 public class IceBladeSwordProjectileRenderer extends EntityRenderer<SwordProjectile> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/ice_blade_sword_projectile.png");
@@ -28,7 +27,7 @@ public class IceBladeSwordProjectileRenderer extends EntityRenderer<SwordProject
     }
 
     @Override
-    public void render(SwordProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int packedLight) {
+    public void render(SwordProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
         poseStack.pushPose();
         poseStack.translate(0.00F, 0.125F, -0.125F);
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - 90.0F));

@@ -6,7 +6,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
-import org.jetbrains.annotations.NotNull;
 
 public class HookOfDissonanceRenderer extends AbstractHookRenderer<AbstractHookEntity.Impl> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/hook/grappling_hook.png");
@@ -22,7 +21,7 @@ public class HookOfDissonanceRenderer extends AbstractHookRenderer<AbstractHookE
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull AbstractHookEntity.Impl pEntity) {
+    public ResourceLocation getTextureLocation(AbstractHookEntity.Impl pEntity) {
         return TEXTURE;
     }
 }

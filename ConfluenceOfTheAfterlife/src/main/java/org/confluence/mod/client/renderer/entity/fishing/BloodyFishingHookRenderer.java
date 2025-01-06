@@ -10,7 +10,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.fishing.BloodyFishingHookModel;
 import org.confluence.mod.common.entity.fishing.BloodyFishingHook;
 import org.confluence.mod.util.color.IntegerRGB;
-import org.jetbrains.annotations.NotNull;
 
 import static org.confluence.mod.client.renderer.entity.fishing.BaseFishingHookRenderer.renderString;
 
@@ -24,12 +23,12 @@ public class BloodyFishingHookRenderer extends EntityRenderer<BloodyFishingHook>
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull BloodyFishingHook pEntity) {
+    public ResourceLocation getTextureLocation(BloodyFishingHook pEntity) {
         return TEXTURE;
     }
 
     @Override
-    public void render(@NotNull BloodyFishingHook pEntity, float pEntityYaw, float pPartialTick, @NotNull PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
+    public void render(BloodyFishingHook pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
         model.renderToBuffer(pPoseStack, pBuffer.getBuffer(model.renderType(TEXTURE)), pPackedLight, OverlayTexture.NO_OVERLAY);
         renderString(entityRenderDispatcher, pEntity, pPartialTick, pPoseStack, pBuffer, IntegerRGB.LIGHT_RED);
     }

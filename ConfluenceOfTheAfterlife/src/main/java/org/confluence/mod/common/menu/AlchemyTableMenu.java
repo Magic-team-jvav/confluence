@@ -21,7 +21,6 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.AlchemyTableRecipe;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
 import org.confluence.terra_curio.common.recipe.AmountIngredient;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -68,7 +67,7 @@ public class AlchemyTableMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public void slotsChanged(@NotNull Container pInventory) {
+    public void slotsChanged(Container pInventory) {
         access.execute((level, pos) -> {
             if (player instanceof ServerPlayer serverPlayer) {
                 List<RecipeHolder<AlchemyTableRecipe>> recipes = player.level().getRecipeManager().getRecipesFor(ModRecipes.ALCHEMY_TABLE_TYPE.get(), input, player.level());
@@ -92,7 +91,7 @@ public class AlchemyTableMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
+    public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = slots.get(index);
         if (slot.hasItem()) {
@@ -136,12 +135,12 @@ public class AlchemyTableMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(@NotNull Player player) {
+    public boolean stillValid(Player player) {
         return stillValid(access, player, FunctionalBlocks.ALCHEMY_TABLE.get());
     }
 
     @Override
-    public void removed(@NotNull Player pPlayer) {
+    public void removed(Player pPlayer) {
         super.removed(pPlayer);
         result.removeItemNoUpdate(0);
         access.execute((level, blockPos) -> {
@@ -165,12 +164,12 @@ public class AlchemyTableMenu extends AbstractContainerMenu {
         }
 
         @Override
-        public boolean mayPlace(@NotNull ItemStack pStack) {
+        public boolean mayPlace(ItemStack pStack) {
             return false;
         }
 
         @Override
-        public void onTake(@NotNull Player pPlayer, @NotNull ItemStack pStack) {
+        public void onTake(Player pPlayer, ItemStack pStack) {
             if (recipe != null) {
                 RandomSource random = pPlayer.getRandom();
                 SimpleContainer materials = input.getMaterials();

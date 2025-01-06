@@ -17,7 +17,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.client.model.entity.hook.BaseHookModel;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractHookRenderer<T extends AbstractHookEntity> extends EntityRenderer<T> {
     protected final EntityModel<? extends AbstractHookEntity> model;
@@ -37,7 +36,7 @@ public abstract class AbstractHookRenderer<T extends AbstractHookEntity> extends
 
     public abstract BlockState getChain(T entity);
 
-    public boolean shouldRender(@NotNull T entity, @NotNull Frustum pCamera, double pCamX, double pCamY, double pCamZ) {
+    public boolean shouldRender(T entity, Frustum pCamera, double pCamX, double pCamY, double pCamZ) {
         if (super.shouldRender(entity, pCamera, pCamX, pCamY, pCamZ)) {
             return true;
         } else {
@@ -52,7 +51,7 @@ public abstract class AbstractHookRenderer<T extends AbstractHookEntity> extends
     }
 
     @Override
-    public void render(T entity, float entityYaw, float partialTick, PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int packedLight) {
+    public void render(T entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
         int skyLight = LightTexture.pack(10, LightTexture.sky(packedLight));
         renderHook(entity, poseStack, multiBufferSource, skyLight);
         Entity owner = entity.getOwner();
@@ -81,7 +80,7 @@ public abstract class AbstractHookRenderer<T extends AbstractHookEntity> extends
         }
     }
 
-    protected void renderHook(T entity, PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int skyLight) {
+    protected void renderHook(T entity, PoseStack poseStack, MultiBufferSource multiBufferSource, int skyLight) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(entity.getYRot() - 90.0F));
         poseStack.mulPose(Axis.ZP.rotationDegrees(entity.getXRot()));

@@ -27,7 +27,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BoulderEntity extends Projectile {
@@ -100,7 +99,7 @@ public class BoulderEntity extends Projectile {
     }
 
     @Override
-    protected void onHitBlock(@NotNull BlockHitResult blockHitResult) {
+    protected void onHitBlock(BlockHitResult blockHitResult) {
         if (isVertical() && !getBlockStateOn().isAir() && blockHitResult.getDirection().getAxis() == Direction.Axis.Y) {
             targetTo(level().getNearestPlayer(this, SEARCH_RANGE));
         }
@@ -131,8 +130,8 @@ public class BoulderEntity extends Projectile {
     }
 
     @Override
-    protected void readAdditionalSaveData(@NotNull CompoundTag pCompound) {}
+    protected void readAdditionalSaveData(CompoundTag pCompound) {}
 
     @Override
-    protected void addAdditionalSaveData(@NotNull CompoundTag pCompound) {}
+    protected void addAdditionalSaveData(CompoundTag pCompound) {}
 }

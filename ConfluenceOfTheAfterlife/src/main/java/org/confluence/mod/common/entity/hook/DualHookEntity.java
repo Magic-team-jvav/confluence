@@ -16,7 +16,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.terra_curio.util.TCUtils;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.IntFunction;
 
@@ -44,7 +43,7 @@ public class DualHookEntity extends AbstractHookEntity implements VariantHolder<
     }
 
     @Override
-    public @NotNull Variant getVariant() {
+    public Variant getVariant() {
         return Variant.byId(entityData.get(DATA_VARIANT_ID));
     }
 
@@ -81,7 +80,7 @@ public class DualHookEntity extends AbstractHookEntity implements VariantHolder<
         }
 
         @Override
-        public @NotNull String getSerializedName() {
+        public String getSerializedName() {
             return name;
         }
     }

@@ -6,7 +6,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import org.confluence.mod.mixin.accessor.MultiNoiseBiomeSourceAccessor;
-import org.jetbrains.annotations.NotNull;
 
 public class BannedBiomeMultiNoiseBiomeSource extends MultiNoiseBiomeSource {
     private final ResourceKey<Biome> bannedBiome;
@@ -20,7 +19,7 @@ public class BannedBiomeMultiNoiseBiomeSource extends MultiNoiseBiomeSource {
     }
 
     @Override
-    public @NotNull Holder<Biome> getNoiseBiome(int pX, int pY, int pZ, Climate.@NotNull Sampler pSampler) {
+    public Holder<Biome> getNoiseBiome(int pX, int pY, int pZ, Climate.Sampler pSampler) {
         Holder<Biome> biome = super.getNoiseBiome(pX, pY, pZ, pSampler);
         if (biome.is(bannedBiome)) {
             if (target == null) {

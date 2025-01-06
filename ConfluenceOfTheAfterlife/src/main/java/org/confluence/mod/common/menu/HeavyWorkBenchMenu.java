@@ -20,7 +20,6 @@ import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 import org.confluence.terra_curio.common.menu.AmountResultSlot;
 import org.confluence.terra_curio.common.menu.RecipeInputContainer;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +55,7 @@ public class HeavyWorkBenchMenu extends AbstractContainerMenu {
             }
 
             @Override
-            public void onTake(@NotNull Player pPlayer, @NotNull ItemStack pStack) {
+            public void onTake(Player pPlayer, ItemStack pStack) {
                 if (recipe != null) {
                     AbstractAmountRecipe.extractInput(input, recipe.getIngredients(), true);
                     input.setChanged();
@@ -138,7 +137,7 @@ public class HeavyWorkBenchMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean clickMenuButton(@NotNull Player pPlayer, int pId) {
+    public boolean clickMenuButton(Player pPlayer, int pId) {
         if (isValidRecipeIndex(pId)) {
             selectedRecipeIndex.set(pId);
             setupResultSlot();
@@ -163,23 +162,23 @@ public class HeavyWorkBenchMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(@NotNull Player player) {
+    public boolean stillValid(Player player) {
         return stillValid(access, player, FunctionalBlocks.HEAVY_WORK_BENCH.get());
     }
 
     @Override
-    public void removed(@NotNull Player pPlayer) {
+    public void removed(Player pPlayer) {
         super.removed(pPlayer);
         access.execute((level, blockPos) -> clearContainer(pPlayer, input));
     }
 
     @Override
-    public boolean canTakeItemForPickAll(@NotNull ItemStack pStack, Slot pSlot) {
+    public boolean canTakeItemForPickAll(ItemStack pStack, Slot pSlot) {
         return pSlot.container != result && super.canTakeItemForPickAll(pStack, pSlot);
     }
 
     @Override
-    public void slotsChanged(@NotNull Container pContainer) {
+    public void slotsChanged(Container pContainer) {
         this.recipes = player.level().getRecipeManager().getRecipesFor(ModRecipes.HEAVY_WORK_BENCH_TYPE.get(), input, player.level());
         if (selectedRecipeIndex.get() >= recipes.size()) selectedRecipeIndex.set(recipes.size() - 1);
         access.execute((level, pos) -> {
@@ -205,7 +204,7 @@ public class HeavyWorkBenchMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public @NotNull ItemStack quickMoveStack(@NotNull Player pPlayer, int pIndex) {
+    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = slots.get(pIndex);
         if (slot.hasItem()) {

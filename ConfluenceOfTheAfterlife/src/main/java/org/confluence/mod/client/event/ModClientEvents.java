@@ -64,6 +64,7 @@ import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.mod.common.init.item.BowItems;
 import org.confluence.mod.common.init.item.FishingPoleItems;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.init.item.PaintItems;
 import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.common.item.paint.PaintItem;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
@@ -224,7 +225,10 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
         event.register((pStack, pTintIndex) -> ColoredItem.getColor(pStack), MaterialItems.GEL.get());
-        event.register((stack, tintIndex) -> tintIndex == 1 && stack.getItem() instanceof PaintItem paintItem ? 0xFF << 24 | paintItem.color : 0xFFFFFFFF);
+        event.register((stack, tintIndex) -> tintIndex == 1 && stack.getItem() instanceof PaintItem paintItem ? 0xFF << 24 | paintItem.color : 0xFFFFFFFF,
+                PaintItems.RED_PAINT.get(),
+                PaintItems.DEEP_RED_PAINT.get()
+        );
     }
 
     @SubscribeEvent

@@ -24,7 +24,7 @@
                         "condition": "minecraft:entity_properties",
                         "entity": "this",
                         "predicate": {
-                            "type": "terra_entity:cthulhu_eye"
+                            "type": "terra_entity:eye_of_cthulhu"
                         }
                     }
                 ]

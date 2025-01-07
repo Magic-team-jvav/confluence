@@ -5,5 +5,6 @@
     "creative_tab": "confluence:developer",
     "use_resource_pack": true,
     "model": "confluence:afterlife_notes",
-    "custom_book_item": "confluence:afterlife_notes"
+    "custom_book_item": "confluence:afterlife_notes",
+    "use_blocky_font": true
 }

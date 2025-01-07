@@ -20,6 +20,8 @@ import org.confluence.mod.common.init.item.MaterialItems;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
+@javax.annotation.ParametersAreNonnullByDefault
+@net.minecraft.MethodsReturnNonnullByDefault
 public class FallingStarItemEntity extends ItemEntity {
     private boolean wasOnGround;
     private ParticleEmitter emitter;

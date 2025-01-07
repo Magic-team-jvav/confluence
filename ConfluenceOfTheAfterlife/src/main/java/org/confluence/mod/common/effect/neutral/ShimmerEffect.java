@@ -9,15 +9,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.ModBlocks;
-import org.jetbrains.annotations.NotNull;
 
+@javax.annotation.ParametersAreNonnullByDefault
+@net.minecraft.MethodsReturnNonnullByDefault
 public class ShimmerEffect extends MobEffect {
     public ShimmerEffect() {
         super(MobEffectCategory.NEUTRAL, 0xFF96FF);
     }
 
     @Override
-    public boolean applyEffectTick(@NotNull LivingEntity living, int pAmplifier) {
+    public boolean applyEffectTick(LivingEntity living, int pAmplifier) {
         Level level = living.level();
         if (level.isClientSide) return true;
         if (living.position().y < level.getMinBuildHeight() + 5) return false;

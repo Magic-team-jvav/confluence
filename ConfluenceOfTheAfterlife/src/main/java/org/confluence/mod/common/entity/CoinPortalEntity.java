@@ -18,9 +18,8 @@ import org.mesdag.particlestorm.data.event.ParticleEffect;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@ParametersAreNonnullByDefault
+@javax.annotation.ParametersAreNonnullByDefault
+@net.minecraft.MethodsReturnNonnullByDefault
 public class CoinPortalEntity extends Entity {
     private static final EntityDataAccessor<Integer> DATA_AMOUNT = SynchedEntityData.defineId(CoinPortalEntity.class, EntityDataSerializers.INT);
     private int age = 0;

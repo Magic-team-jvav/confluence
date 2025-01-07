@@ -23,7 +23,7 @@ public abstract class ProtoChunkMixin {
     @Inject(method = "setBlockState",at = @At(value = "INVOKE",target = "Lnet/minecraft/world/level/chunk/status/ChunkStatus;isOrAfter(Lnet/minecraft/world/level/chunk/status/ChunkStatus;)Z"),locals = LocalCapture.CAPTURE_FAILSOFT)
     private void setBlock(BlockPos pPos, BlockState pState, boolean pIsMoving, CallbackInfoReturnable<BlockState> cir, int $$3, int $$4, int $$5, int $$6, LevelChunkSection section, boolean $$8, int $$9, int $$10, int $$11, BlockState beforeState){
         IChunkSection counter = (IChunkSection) section;
-        int[] i = {counter.confluence$getCrimson(), counter.confluence$getCorrupt(), counter.confluence$getHallow()};
+        int[] i = {counter.confluence$getCrimson(), counter.confluence$getCorrupt(), counter.confluence$getHallow(), counter.confluence$getSunflower()};
         Holder<Biome> targetBiome = balanceEvil(i, counter);
         if(targetBiome != null){
             confluence$infect(section, targetBiome);

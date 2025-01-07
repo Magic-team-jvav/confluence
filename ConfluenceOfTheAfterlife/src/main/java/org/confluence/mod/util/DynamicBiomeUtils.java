@@ -60,12 +60,13 @@ public class DynamicBiomeUtils {
     }
 
     /**
-     * @param counts 0猩红，1腐化，2神圣
+     * @param counts 0猩红，1腐化，2神圣，3向日葵
      * @return 平衡的结果，纯净返回null
      */
     public static Holder<Biome> balanceEvil(int[] counts, IChunkSection biomeSource){
-        int crimson = counts[0];
-        int corrupt = counts[1];
+        int sunflower = counts[3] * 64;
+        int crimson = Math.max(0, counts[0] - sunflower);
+        int corrupt = Math.max(0, counts[1] - sunflower);
         int hallow = counts[2];
 
         // (假设)同时存在400个猩红块和400个腐化块的时候，只要400个神圣块就能完全抵消，邪恶不会相加
@@ -91,7 +92,7 @@ public class DynamicBiomeUtils {
 
     public static Holder<Biome> judgeSection(LevelChunkSection section){
         IChunkSection counter = (IChunkSection) section;
-        return balanceEvil(new int[]{counter.confluence$getCrimson(), counter.confluence$getCorrupt(), counter.confluence$getHallow()}, counter);
+        return balanceEvil(new int[]{counter.confluence$getCrimson(), counter.confluence$getCorrupt(), counter.confluence$getHallow(),counter.confluence$getSunflower()}, counter);
     }
 
 }

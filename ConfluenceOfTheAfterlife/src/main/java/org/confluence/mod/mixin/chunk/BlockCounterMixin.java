@@ -1,8 +1,10 @@
 package org.confluence.mod.mixin.chunk;
 
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.IChunkSection;
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,6 +27,11 @@ public abstract class BlockCounterMixin {
                 case CORRUPT -> confluence$section.confluence$countCorrupt(count);
                 case HALLOW -> confluence$section.confluence$countHallow(count);
             }
+        }
+        if(state.is(ModTags.Blocks.TOMBSTONE)){
+            confluence$section.confluence$countTomb(count);
+        }else if(state.is(Blocks.SUNFLOWER)){
+            confluence$section.confluence$countSunflower(count);
         }
     }
 

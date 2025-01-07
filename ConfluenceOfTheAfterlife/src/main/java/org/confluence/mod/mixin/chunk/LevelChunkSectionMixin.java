@@ -5,10 +5,12 @@ import net.minecraft.core.IdMap;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainerRO;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.IChunkSection;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,6 +27,8 @@ public abstract class LevelChunkSectionMixin implements IChunkSection {
     @Unique public int confluence$crimsonCount;
     @Unique public int confluence$corruptCount;
     @Unique public int confluence$hallowCount;
+    @Unique public int confluence$sunflowerCount;
+    @Unique public int confluence$tombCount;
     @Unique private PalettedContainerRO<Holder<Biome>> confluence$backupBiome;
 
     @Override
@@ -40,6 +44,31 @@ public abstract class LevelChunkSectionMixin implements IChunkSection {
     @Override
     public void confluence$countHallow(int count){
         confluence$hallowCount += count;
+    }
+
+    @Override
+    public void confluence$countSunflower(int count){
+        confluence$sunflowerCount += count;
+    }
+
+    @Override
+    public void confluence$countTomb(int count){
+        confluence$tombCount += count;
+    }
+
+    @Override
+    public int confluence$getSunflower(){
+        return confluence$sunflowerCount;
+    }
+
+    @Override
+    public int confluence$getTomb(){
+        return confluence$tombCount;
+    }
+
+    @Override
+    public boolean confluence$isGraveyard(){
+        return confluence$getTomb() - confluence$getSunflower() >= 7;
     }
 
     @Override
@@ -93,6 +122,18 @@ public abstract class LevelChunkSectionMixin implements IChunkSection {
                 case CORRUPT -> confluence$corruptCount++;
                 case HALLOW -> confluence$hallowCount++;
             }
+        }
+        if(beforeState.is(Blocks.SUNFLOWER)){
+            confluence$sunflowerCount--;
+        }
+        if(targetState.is(Blocks.SUNFLOWER)){
+            confluence$sunflowerCount++;
+        }
+        if(beforeState.is(ModTags.Blocks.TOMBSTONE)){
+            confluence$tombCount--;
+        }
+        if(targetState.is(ModTags.Blocks.TOMBSTONE)){
+            confluence$tombCount++;
         }
     }
 

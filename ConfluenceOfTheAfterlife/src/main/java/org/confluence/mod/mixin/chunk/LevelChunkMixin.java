@@ -63,7 +63,7 @@ public abstract class LevelChunkMixin extends ChunkAccess {
     private void setBlock(BlockPos pPos, BlockState pState, boolean pIsMoving, CallbackInfoReturnable<BlockState> cir, int $, LevelChunkSection section, boolean flag, int j, int k, int l, BlockState beforeState){
         if(confluence$serverLevel == null) return;
         IChunkSection counter = (IChunkSection) section;
-        int[] i = {counter.confluence$getCrimson(), counter.confluence$getCorrupt(), counter.confluence$getHallow()};
+        int[] i = {counter.confluence$getCrimson(), counter.confluence$getCorrupt(), counter.confluence$getHallow(),counter.confluence$getSunflower()};
         Holder<Biome> targetBiome = balanceEvil(i, counter);
 
         if(targetBiome != null){

@@ -1203,7 +1203,6 @@ public class ModChineseProvider extends LanguageProvider {
 
         // 杂项
         add(ToolItems.ICE_MIRROR.get(), "冰雪镜");
-        add(DeveloperItems.COLLECTED_BOOK_ITEM.get(), "藏书");
 
 
         add(ModItems.COPPER_COIN.get(), "铜币");

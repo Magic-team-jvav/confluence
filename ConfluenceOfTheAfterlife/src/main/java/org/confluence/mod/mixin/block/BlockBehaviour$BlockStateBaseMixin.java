@@ -7,7 +7,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -34,7 +33,7 @@ public abstract class BlockBehaviour$BlockStateBaseMixin {
 
     @Inject(method = "getCollisionShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;", at = @At("RETURN"), cancellable = true)
     private void shimmer(BlockGetter pLevel, BlockPos pPos, CollisionContext pContext, CallbackInfoReturnable<VoxelShape> cir) {
-        if (pLevel.getBlockState(pPos).is(Blocks.BEDROCK)) return;
+        if (pLevel.getBlockState(pPos).getDestroySpeed(pLevel, pPos) == -1.0F) return;
         if (pContext instanceof EntityCollisionContext context && context.getEntity() instanceof LivingEntity living && living.hasEffect(ModEffects.SHIMMER)) {
             cir.setReturnValue(Shapes.empty());
         }

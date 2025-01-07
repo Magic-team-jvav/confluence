@@ -20,7 +20,6 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.TETags;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -31,7 +30,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
     }
 
     @Override
-    protected void addTags(HolderLookup.@NotNull Provider provider) {
+    protected void addTags(HolderLookup.Provider provider) {
         HookItems.acceptTag(tag(ModTags.Items.HOOK));
         IntrinsicTagAppender<Item> minecart = tag(ModTags.Items.MINECART);
         minecart.add(Items.MINECART);

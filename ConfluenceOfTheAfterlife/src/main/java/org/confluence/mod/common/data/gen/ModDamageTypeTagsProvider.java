@@ -7,7 +7,6 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.terra_curio.common.init.TCTags;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -18,7 +17,7 @@ public class ModDamageTypeTagsProvider extends DamageTypeTagsProvider {
     }
 
     @Override
-    protected void addTags(HolderLookup.@NotNull Provider provider) {
+    protected void addTags(HolderLookup.Provider provider) {
         tag(TCTags.HARMFUL_EFFECT).add(
                 ModDamageTypes.ACID_VENOM,
                 ModDamageTypes.CURSED_INFERNO,

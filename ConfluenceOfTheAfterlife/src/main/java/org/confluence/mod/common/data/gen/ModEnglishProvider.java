@@ -11,7 +11,6 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.mixin.accessor.LanguageProviderAccessor;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -421,7 +420,7 @@ public class ModEnglishProvider extends LanguageProvider {
     }
 
     @Override
-    public void add(Block key, @NotNull String name) {
+    public void add(Block key, String name) {
         String descriptionId = key.getDescriptionId();
         if (!((LanguageProviderAccessor) this).getData().containsKey(descriptionId)) {
             super.add(descriptionId, name);
@@ -429,7 +428,7 @@ public class ModEnglishProvider extends LanguageProvider {
     }
 
     @Override
-    public void add(Item key, @NotNull String name) {
+    public void add(Item key, String name) {
         String descriptionId = key.getDescriptionId();
         if (!((LanguageProviderAccessor) this).getData().containsKey(descriptionId)) {
             super.add(descriptionId, name);

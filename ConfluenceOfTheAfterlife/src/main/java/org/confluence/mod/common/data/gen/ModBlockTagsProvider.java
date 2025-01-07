@@ -16,7 +16,6 @@ import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -31,7 +30,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
     }
 
     @Override
-    protected void addTags(HolderLookup.@NotNull Provider provider) {
+    protected void addTags(HolderLookup.Provider provider) {
         LogBlockSet.acceptTags(this);
         OreBlocks.acceptTags(this);
         tag(ModTags.Blocks.JEWELLERY_BRANCHES_ATTACHABLE).add(NatureBlocks.STONY_LOG.get());
@@ -443,7 +442,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
     }
 
     @Override
-    public @NotNull IntrinsicTagAppender<Block> tag(@NotNull TagKey<Block> tag) {
+    public IntrinsicTagAppender<Block> tag(TagKey<Block> tag) {
         return super.tag(tag);
     }
 }

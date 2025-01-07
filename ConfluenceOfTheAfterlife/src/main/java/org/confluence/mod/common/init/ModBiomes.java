@@ -12,8 +12,14 @@ import static org.confluence.mod.Confluence.MODID;
 
 public final class ModBiomes {
     public static final ResourceKey<Biome> THE_CORRUPTION = register("the_corruption");
+    public static final ResourceKey<Biome> THE_CORRUPTION_DESERT = register("the_corruption_desert");
+    public static final ResourceKey<Biome> THE_CORRUPTION_TUNDRA = register("the_corruption_tundra");
     public static final ResourceKey<Biome> TR_CRIMSON = register("tr_crimson");
+    public static final ResourceKey<Biome> TR_CRIMSON_DESERT = register("tr_crimson_desert");
+    public static final ResourceKey<Biome> TR_CRIMSON_TUNDRA = register("tr_crimson_tundra");
     public static final ResourceKey<Biome> THE_HALLOW = register("the_hallow");
+    public static final ResourceKey<Biome> THE_HALLOW_DESERT = register("the_hallow_desert");
+    public static final ResourceKey<Biome> THE_HALLOW_TUNDRA = register("the_hallow_tundra");
     public static final ResourceKey<Biome> ASH_FOREST = register("ash_forest");
     public static final ResourceKey<Biome> ASH_WASTELAND = register("ash_wasteland");
     public static final ResourceKey<Biome> GLOWING_MUSHROOM = register("glowing_mushroom");

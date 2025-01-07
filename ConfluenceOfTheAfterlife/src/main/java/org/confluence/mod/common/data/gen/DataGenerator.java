@@ -34,6 +34,7 @@ public class DataGenerator {
         generator.addProvider(server, new ModLootTableProvider(output, lookup));
         generator.addProvider(server, new ModDamageTypeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModPoiTypeTagsProvider(output, lookup, helper));
+        generator.addProvider(server, new ModBiomeTagsProvider(output, lookup, helper));
 
         generator.addProvider(server, new ConfluenceWorkshopProvider(output));
         generator.addProvider(server, new HeavyWorkBenchRecipeProvider(output));

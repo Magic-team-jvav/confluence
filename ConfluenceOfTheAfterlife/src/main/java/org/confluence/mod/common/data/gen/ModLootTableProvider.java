@@ -30,7 +30,6 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.FoodItems;
 import org.confluence.mod.common.init.item.MaterialItems;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;
@@ -304,7 +303,7 @@ public class ModLootTableProvider extends LootTableProvider {
         }
 
         @Override
-        protected @NotNull Iterable<Block> getKnownBlocks() {
+        protected Iterable<Block> getKnownBlocks() {
             return Iterables.concat(
                     getIterableFromRegister(ModBlocks.BLOCKS),
                     getIterableFromRegister(OreBlocks.BLOCKS),

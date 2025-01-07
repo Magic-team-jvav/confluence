@@ -227,7 +227,34 @@ public final class ModClientEvents {
         event.register((pStack, pTintIndex) -> ColoredItem.getColor(pStack), MaterialItems.GEL.get());
         event.register((stack, tintIndex) -> tintIndex == 1 && stack.getItem() instanceof PaintItem paintItem ? 0xFF << 24 | paintItem.color : 0xFFFFFFFF,
                 PaintItems.RED_PAINT.get(),
-                PaintItems.DEEP_RED_PAINT.get()
+                PaintItems.DEEP_RED_PAINT.get(),
+                PaintItems.ORANGE_PAINT.get(),
+                PaintItems.DEEP_ORANGE_PAINT.get(),
+                PaintItems.YELLOW_PAINT.get(),
+                PaintItems.DEEP_YELLOW_PAINT.get(),
+                PaintItems.LIME_PAINT.get(),
+                PaintItems.DEEP_LIME_PAINT.get(),
+                PaintItems.GREEN_PAINT.get(),
+                PaintItems.DEEP_GREEN_PAINT.get(),
+                PaintItems.TEAL_PAINT.get(),
+                PaintItems.DEEP_TEAL_PAINT.get(),
+                PaintItems.CYAN_PAINT.get(),
+                PaintItems.DEEP_CYAN_PAINT.get(),
+                PaintItems.SKY_BLUE_PAINT.get(),
+                PaintItems.DEEP_SKY_BLUE_PAINT.get(),
+                PaintItems.BLUE_PAINT.get(),
+                PaintItems.DEEP_BLUE_PAINT.get(),
+                PaintItems.PURPLE_PAINT.get(),
+                PaintItems.DEEP_PURPLE_PAINT.get(),
+                PaintItems.VIOLET_PAINT.get(),
+                PaintItems.DEEP_VIOLET_PAINT.get(),
+                PaintItems.PINK_PAINT.get(),
+                PaintItems.DEEP_PINK_PAINT.get(),
+                PaintItems.BLACK_PAINT.get(),
+                PaintItems.GRAY_PAINT.get(),
+                PaintItems.WHITE_PAINT.get(),
+                PaintItems.BROWN_PAINT.get(),
+                PaintItems.SHADOW_PAINT.get()
         );
     }
 

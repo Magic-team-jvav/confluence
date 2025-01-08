@@ -9,7 +9,6 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.network.s2c.ExtraInventoryStackPacketS2C;
 import org.confluence.terra_curio.TerraCurio;
-import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
@@ -162,24 +161,24 @@ public class ExtraInventory extends ItemStackHandler implements Container {
     }
 
     @Override
-    public @NotNull ItemStack getItem(int slot) {
+    public ItemStack getItem(int slot) {
         return getStackInSlot(slot);
     }
 
     @Override
-    public @NotNull ItemStack removeItem(int slot, int amount) {
+    public ItemStack removeItem(int slot, int amount) {
         return extractItem(slot, amount, false);
     }
 
     @Override
-    public @NotNull ItemStack removeItemNoUpdate(int slot) {
+    public ItemStack removeItemNoUpdate(int slot) {
         ItemStack itemStack = getItem(slot);
         setItem(slot, ItemStack.EMPTY);
         return itemStack;
     }
 
     @Override
-    public void setItem(int slot, @NotNull ItemStack stack) {
+    public void setItem(int slot, ItemStack stack) {
         stacks.set(slot, stack);
         setChanged();
     }
@@ -195,7 +194,7 @@ public class ExtraInventory extends ItemStackHandler implements Container {
     }
 
     @Override
-    public boolean stillValid(@NotNull Player player) {
+    public boolean stillValid(Player player) {
         return true;
     }
 

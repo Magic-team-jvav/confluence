@@ -3,20 +3,13 @@ package org.confluence.terraentity.client.entity.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.CreeperRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.monster.Creeper;
-import net.neoforged.neoforge.event.level.ExplosionEvent;
 import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.client.entity.model.GeoNormalModel;
-import org.confluence.terraentity.entity.monster.BloodCrawler;
 import org.confluence.terraentity.entity.monster.BloodySpore;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.util.Color;
@@ -26,7 +19,7 @@ import static net.minecraft.client.renderer.entity.LivingEntityRenderer.getOverl
 public class BloodySporeRenderer extends GeoEntityRenderer<BloodySpore> {
 
     public BloodySporeRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new GeoNormalModel<>("bloody_spore"));
+        super(renderManager, new GeoNormalModel<>(TerraEntity.asResource("bloody_spore")));
     }
 
     @Override

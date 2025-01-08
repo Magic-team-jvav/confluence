@@ -18,6 +18,7 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -33,6 +34,7 @@ import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.fluid.FluidBuilder;
 import org.confluence.mod.common.init.ModBiomes;
+import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -47,6 +49,7 @@ import org.confluence.phase_journey.api.PhaseJourneyEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
+import org.confluence.terraentity.entity.monster.AbstractMonster;
 
 import java.util.Map;
 import java.util.Optional;
@@ -62,6 +65,7 @@ public final class ModEvents {
             Confluence.registerGameRules();
             ModFluids.registerInteraction();
             ModFluids.registerShimmerTransform();
+
             ModAchievements.initialize();
             ModBiomes.registerRegionAndSurface();
         });
@@ -136,7 +140,17 @@ public final class ModEvents {
         registrar.playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle);
         registrar.playToServer(ReplaceMusicBoxItemPacketC2S.TYPE, ReplaceMusicBoxItemPacketC2S.STREAM_CODEC, ReplaceMusicBoxItemPacketC2S::handle);
         registrar.playToServer(OpenMenuPacketC2S.TYPE, OpenMenuPacketC2S.STREAM_CODEC, OpenMenuPacketC2S::handle);
+        registrar.playToServer(NPCShopPacket.TYPE, NPCShopPacket.STREAM_CODEC, NPCShopPacket::handle);
+
+
     }
+
+    @SubscribeEvent
+    public static void registerAttributes(EntityAttributeCreationEvent event) {
+        event.put(ModEntities.GUIDE.get(), AbstractMonster.createAttributes().build());
+
+    }
+
 
     @SubscribeEvent
     public static void registerUnitType(RegisterAccessoriesComponentUpdateEvent.UnitType event) {

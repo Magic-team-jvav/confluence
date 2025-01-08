@@ -67,6 +67,7 @@ import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.PaintItems;
 import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.common.item.paint.PaintItem;
+import org.confluence.terraentity.client.entity.renderer.GeoNormalRenderer;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import java.util.Map;
@@ -105,6 +106,8 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.FLETCHING_TABLE.get(), FletchingTableScreen::new);
         event.register(ModMenuTypes.ALCHEMY_TABLE.get(), AlchemyTableScreen::new);
         event.register(ModMenuTypes.EXTRA_INVENTORY.get(), ExtraInventoryScreen::new);
+        event.register(ModMenuTypes.DAVE_TRADES_MENU.get(), NPCTradeScreen::new);
+
     }
 
     @SubscribeEvent
@@ -215,6 +218,9 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(FunctionalBlocks.WEATHER_VANE_ENTITY.get(), WeatherVaneBlockRenderer::new);
         event.registerBlockEntityRenderer(NatureBlocks.LIFE_CRYSTAL_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new LifeCrystalBlockModel()));
         event.registerBlockEntityRenderer(StatueBlocks.BLOCK_ENTITY.get(), MechanicalBlockRenderer::new);
+
+        // npc
+        event.registerEntityRenderer(GUIDE.get(), c->new GeoNormalRenderer<>(c,GUIDE.getId()));
     }
 
     @SubscribeEvent

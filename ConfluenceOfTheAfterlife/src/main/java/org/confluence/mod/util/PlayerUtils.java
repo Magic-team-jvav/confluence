@@ -7,10 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -22,13 +19,18 @@ import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.network.s2c.GamePhasePacketS2C;
 import org.confluence.mod.network.s2c.ManaPacketS2C;
 import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
 import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
 
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntSupplier;
+
+import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_COINS;
 
 public final class PlayerUtils {
     public static void syncMana2Client(ServerPlayer serverPlayer, ManaStorage manaStorage) {
@@ -152,5 +154,95 @@ public final class PlayerUtils {
             }
             data.putBoolean(key, true);
         }
+    }
+
+    public static int getItemCount(List<ItemStack> have, Item item){
+        AtomicInteger count = new AtomicInteger();
+        have.forEach(stack -> count.addAndGet(stack.is(item)? stack.getCount():0));
+        return count.get();
+    }
+
+    public static void consumeItemCount(List<ItemStack> have, Item item, int consumeCount){
+        AtomicInteger count = new AtomicInteger();
+        have.forEach(stack -> {
+            if(stack.is(item) && count.get() < consumeCount){
+                int toConsume = Math.min(stack.getCount(), consumeCount - count.get());
+                stack.shrink(toConsume);
+                count.addAndGet(toConsume);
+            }
+        });
+    }
+
+    public static  int[] getCoins(Player player){
+        Map<Item, Integer> item2index = Map.of(
+                ModItems.EMERALD_COIN.get(), 0,
+                ModItems.PLATINUM_COIN.get(), 1,
+                ModItems.GOLDEN_COIN.get(), 2,
+                ModItems.SILVER_COIN.get(), 3,
+                ModItems.COPPER_COIN.get(), 4
+        );
+        var data = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+        int[] coins = new int[5];
+        for(int i = 0; i < SIZE_COINS; i++){
+            coins[i] = data.getCoins(i).getCount();
+        }
+        for(int i=0;i<player.getInventory().items.size();i++){
+            ItemStack stack = player.getInventory().items.get(i);
+
+            if(item2index.containsKey(stack.getItem())){
+                int index = item2index.get(stack.getItem());
+                coins[index] += stack.getCount();
+            }
+        }
+        return coins;
+    }
+
+    public static long getMoney(Player player){
+        int[] coins = getCoins(player);
+        long res = 0;
+        for(int i=0;i<coins.length;i++){
+            res += (int) (coins[i] * Math.pow(99,4-i));
+        }
+        return res;
+    }
+
+    public static boolean tryCostMoney(Player player, long cost){
+
+        List<Item> items = List.of(
+                ModItems.COPPER_COIN.get(),
+                ModItems.SILVER_COIN.get(),
+                ModItems.GOLDEN_COIN.get(),
+                ModItems.PLATINUM_COIN.get(),
+                ModItems.EMERALD_COIN.get());
+
+        long have = getMoney(player);
+        if(have < cost) return false;
+
+
+        for(int i=0;i<player.getInventory().items.size();i++)
+            if(items.contains(player.getInventory().items.get(i).getItem()))
+                player.getInventory().items.get(i).setCount(0);
+        for(int i=0;i<SIZE_COINS;i++){
+            player.getData(ModAttachmentTypes.EXTRA_INVENTORY).getCoins(i).setCount(0);
+        }
+
+        long  remain = have - cost;
+
+        int[] coins = new int[5];
+        for(int i=0;i<5;i++){
+            int multiple = 99;
+            long num = remain % multiple;
+            if(num > 0){
+                coins[i] = (int)num;
+            }
+            remain /= multiple;
+        }
+
+        for(int i=0;i<coins.length;i++){
+            player.getInventory().add(new ItemStack(items.get(i), coins[i]));
+        }
+
+        return true;
+
     }
 }

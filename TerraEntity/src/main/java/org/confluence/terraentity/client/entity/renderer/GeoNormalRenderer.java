@@ -5,22 +5,31 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Mob;
 import org.confluence.terraentity.client.entity.model.GeoNormalModel;
-import org.confluence.terraentity.entity.monster.AbstractMonster;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class GeoNormalRenderer<T extends AbstractMonster> extends GeoEntityRenderer<T> {
-    boolean ifRotX = false;
+public class GeoNormalRenderer<T extends Mob & GeoEntity> extends GeoEntityRenderer<T> {
+    boolean ifRotX;
     float scale;
     float offsetY;
-    public GeoNormalRenderer(EntityRendererProvider.Context renderManager, String name, boolean ifRotX) {
-        this(renderManager, name, ifRotX,1,0);
+
+    /**
+     * @param path 实体文件位置 path.namespace/textures/entity/{name}.png
+     */
+    public GeoNormalRenderer(EntityRendererProvider.Context renderManager, ResourceLocation path) {
+        this(renderManager, path, false,1,0);
     }
-    public GeoNormalRenderer(EntityRendererProvider.Context renderManager, String name, boolean ifRotX,float scale,float offsetY) {
-        super(renderManager, new GeoNormalModel<>(name));
+    public GeoNormalRenderer(EntityRendererProvider.Context renderManager, ResourceLocation path, boolean ifRotX) {
+        this(renderManager, path, ifRotX,1,0);
+    }
+    public GeoNormalRenderer(EntityRendererProvider.Context renderManager, ResourceLocation path, boolean ifRotX, float scale, float offsetY) {
+        super(renderManager, new GeoNormalModel<>(path));
         this.ifRotX = ifRotX;
         this.scale=scale;
         this.offsetY=offsetY;

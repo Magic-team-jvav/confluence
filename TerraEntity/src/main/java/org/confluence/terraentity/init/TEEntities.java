@@ -148,10 +148,10 @@ public final class TEEntities {
         event.registerEntityRenderer(BLACK_SLIME.get(), c -> new CustomSlimeRenderer(c, "black"));
 
 
-        event.registerEntityRenderer(CRIMSON_KEMERA.get(), c->new GeoNormalRenderer<>(c,"crimson_kemera",true));
-        event.registerEntityRenderer(EATER_OF_SOULS.get(), c->new GeoNormalRenderer<>(c,"eater_of_souls",true));
-        event.registerEntityRenderer(DRIPPLER.get(), c->new GeoNormalRenderer<>(c,"drippler",false,2f,0));
-        event.registerEntityRenderer(FLYING_FISH.get(), c->new GeoNormalRenderer<>(c,"flying_fish",true,0.75f,-0.5f));
+        event.registerEntityRenderer(CRIMSON_KEMERA.get(), c->new GeoNormalRenderer<>(c,CRIMSON_KEMERA.getId(),true));
+        event.registerEntityRenderer(EATER_OF_SOULS.get(), c->new GeoNormalRenderer<>(c,EATER_OF_SOULS.getId(),true));
+        event.registerEntityRenderer(DRIPPLER.get(), c->new GeoNormalRenderer<>(c,DRIPPLER.getId(),false,2f,0));
+        event.registerEntityRenderer(FLYING_FISH.get(), c->new GeoNormalRenderer<>(c,FLYING_FISH.getId(),true,0.75f,-0.5f));
 
 
         event.registerEntityRenderer(DEMON_EYE.get(), DemonEyeRenderer::new);
@@ -160,9 +160,9 @@ public final class TEEntities {
         event.registerEntityRenderer(DECAYEDER.get(), SkeletonRenderer::new);  //todo
 
 
-        event.registerEntityRenderer(FACE_MONSTER.get(), c->new GeoNormalRenderer<>(c,"face_monster",false));
-        event.registerEntityRenderer(BLOOD_TUMORS.get(), c->new GeoNormalRenderer<>(c,"blood_tumors",false));
-        event.registerEntityRenderer(BLOOD_ZOMBIE.get(), c->new GeoNormalRenderer<>(c,"blood_zombie",false));
+        event.registerEntityRenderer(FACE_MONSTER.get(), c->new GeoNormalRenderer<>(c,FACE_MONSTER.getId(),false));
+        event.registerEntityRenderer(BLOOD_TUMORS.get(), c->new GeoNormalRenderer<>(c,BLOOD_TUMORS.getId(),false));
+        event.registerEntityRenderer(BLOOD_ZOMBIE.get(), c->new GeoNormalRenderer<>(c,BLOOD_ZOMBIE.getId(),false));
 
 
         // boss

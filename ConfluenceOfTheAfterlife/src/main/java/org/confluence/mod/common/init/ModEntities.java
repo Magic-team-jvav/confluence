@@ -3,8 +3,10 @@ package org.confluence.mod.common.init;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.event.ModClientEvents;
 import org.confluence.mod.common.entity.CoinPortalEntity;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
 import org.confluence.mod.common.entity.fishing.BaseFishingHook;
@@ -13,11 +15,20 @@ import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.entity.fishing.HotlineFishingHook;
 import org.confluence.mod.common.entity.hook.*;
 import org.confluence.mod.common.entity.minecart.*;
+import org.confluence.mod.common.entity.npc.AbstractTerraNPC;
 import org.confluence.mod.common.entity.projectile.*;
 import org.confluence.mod.common.entity.projectile.bomb.*;
+import org.confluence.mod.common.event.ModEvents;
 
 import java.util.function.Supplier;
 
+/**
+ * Fast Link:
+ * 渲染器 {@link ModClientEvents#registerEntityRenderers}
+ * 发包   {@link ModEvents#registerPayloadHandlers)}
+ * 属性   {@link ModEvents#registerAttributes}
+ *
+ */
 public final class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Confluence.MODID);
 
@@ -72,6 +83,11 @@ public final class ModEntities {
 
     public static final Supplier<EntityType<CoinPortalEntity>> COIN_PORTAL = ENTITIES.register("coin_portal", () -> EntityType.Builder.<CoinPortalEntity>of(CoinPortalEntity::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(6).build("confluence:coin_portal"));
 
+    // npc
+    public static final DeferredHolder<EntityType<?>,EntityType<AbstractTerraNPC>> GUIDE = ENTITIES.register("guide", () -> EntityType.Builder.of(AbstractTerraNPC::new, MobCategory.CREATURE).sized(0.95F, 1.95F).clientTrackingRange(6).build("confluence:guide"));
+
+
+
     private static <E extends BaseMinecartEntity> Supplier<EntityType<E>> registerMinecart(String id, EntityType.EntityFactory<E> factory) {
         return ENTITIES.register(id, () -> EntityType.Builder.of(factory, MobCategory.MISC).sized(0.98F, 0.7F).passengerAttachments(0.1875F).clientTrackingRange(8).build("confluence:" + id));
     }
@@ -79,4 +95,5 @@ public final class ModEntities {
     private static <E extends AbstractHookEntity> Supplier<EntityType<E>> registerHook(String id, EntityType.EntityFactory<E> supplier) {
         return ENTITIES.register(id, () -> EntityType.Builder.of(supplier, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("confluence:" + id));
     }
+
 }

@@ -110,10 +110,11 @@ public final class LivingEntityEvents {
                 }
             }
         }
-        if(((ILivingEntity) event.getEntity()).confluence$getImmunityTicks().containsKey(ModUtils.getImmunityCause(event.getSource()))){
+        Immunity cause = ModUtils.getImmunityCause(event.getSource());
+        if(((ILivingEntity) event.getEntity()).confluence$getImmunityTicks().containsKey(cause)){
             event.setCanceled(true);
         }
-        if(ModUtils.isDamageFromConfluenceWeapon(damageSource)){
+        if(cause != null){
             event.getContainer().setPostAttackInvulnerabilityTicks(event.getEntity().invulnerableTime);
         }
     }
@@ -181,7 +182,8 @@ public final class LivingEntityEvents {
         Immunity cause = ModUtils.getImmunityCause(damageSource);
         if(cause != null){
             Object2IntMap<Immunity> invTicks = ((ILivingEntity) damagingEntity).confluence$getImmunityTicks();
-            int time = cause.confluence$getImmunityDuration();
+            int time = cause.confluence$getImmunityDuration(damageSource);
+//            System.out.println(event.getNewDamage());
             if(time != 0){
                 invTicks.put(cause, time);
             }

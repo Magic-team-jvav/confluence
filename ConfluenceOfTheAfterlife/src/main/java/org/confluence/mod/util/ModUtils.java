@@ -5,6 +5,7 @@ import com.mojang.datafixers.util.Function4;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -20,8 +21,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -57,7 +60,7 @@ public final class ModUtils {
     public static final Direction[] HORIZONTAL = new Direction[]{Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH};
     public static final Direction[] DIRECTIONS = Direction.values();
     public static final String NO_DROPS_TAG = "confluence:no_drops";
-    private static final Set<String> CONFLUENCE_NAMESPACES = Set.of(Confluence.MODID, TerraCurio.MODID, TerraEntity.MODID, TerraGuns.MODID);
+    public static final Set<String> CONFLUENCE_NAMESPACES = Set.of(Confluence.MODID, TerraCurio.MODID, TerraEntity.MODID, TerraGuns.MODID);
 
     public static void createItemEntity(ItemStack itemStack, double x, double y, double z, Level level) {
         createItemEntity(itemStack, x, y, z, level, 40);
@@ -469,11 +472,19 @@ public final class ModUtils {
     @Nullable
     public static Immunity getImmunityCause(DamageSource damageSource){
         ItemStack weaponItemStack = damageSource.getWeaponItem();
-        if(weaponItemStack != null && weaponItemStack.getItem() instanceof Immunity im){
-            return switch(im.confluence$getImmunityType()){
-                case STATIC -> im;
-                case LOCAL -> (Immunity) (Object) weaponItemStack;
-            };
+        if(weaponItemStack != null){
+            Item weaponItem = weaponItemStack.getItem();
+            boolean fromConfluence = CONFLUENCE_NAMESPACES.contains(BuiltInRegistries.ITEM.getKey(weaponItem).getNamespace());
+            if(fromConfluence && (weaponItem instanceof SwordItem) && damageSource.getDirectEntity() instanceof Projectile projectile){
+                return (Immunity) projectile;
+            }else if(weaponItem instanceof Immunity im){
+                return switch(im.confluence$getImmunityType()){
+                    case STATIC -> im;
+                    case LOCAL -> (Immunity) (Object) weaponItemStack;
+                };
+            }else if(fromConfluence){
+                return (Immunity) (Object) weaponItemStack;
+            }
         }
         // TODO: 打表
         return null;
@@ -481,14 +492,17 @@ public final class ModUtils {
 
     public static boolean isDamageFromConfluenceWeapon(DamageSource source){
         ItemStack weaponItem = source.getWeaponItem();
-        return weaponItem != null && weaponItem.getItem() instanceof Immunity; // TODO: 打表
+        return weaponItem != null && ((weaponItem.getItem() instanceof Immunity)
+            || CONFLUENCE_NAMESPACES.contains(BuiltInRegistries.ITEM.getKey(weaponItem.getItem()).getNamespace())); // TODO: 打表
     }
 
     public static int getSlotIndex(EquipmentSlot slot) {
-        if (slot == EquipmentSlot.HEAD) return 0;
-        if (slot == EquipmentSlot.CHEST) return 1;
-        if (slot == EquipmentSlot.LEGS) return 2;
-        if (slot == EquipmentSlot.FEET) return 3;
-        return -1;
+        return switch(slot){
+            case HEAD -> 0;
+            case CHEST -> 1;
+            case LEGS -> 2;
+            case FEET -> 3;
+            case null, default -> -1;
+        };
     }
 }

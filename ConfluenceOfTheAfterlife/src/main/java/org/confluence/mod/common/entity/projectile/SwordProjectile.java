@@ -8,12 +8,14 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * 基础属性如伤害、击退、初始位置由弹幕容器设置，弹幕实体只定义运动、伤害公式、碰撞检测
@@ -25,16 +27,27 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile {
     protected float criticalChance = 0.0F;
     protected float knockBack = 0.0F;
     protected float baseKnockBack = 0.0F;
+    protected ItemStack firedFromWeapon;
 
     public SwordProjectile(EntityType<? extends SwordProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
+    }
+
+    @Override
+    @Nullable
+    public ItemStack getWeaponItem(){
+        return firedFromWeapon;
+    }
+
+    public void setWeapon(ItemStack weapon){
+        firedFromWeapon = weapon;
     }
 
     protected float getBaseDamage(){
         return baseAttackDamage;
     }
 
-    protected  float getBaseKnockBack(){
+    protected float getBaseKnockBack(){
         return baseKnockBack;
     }
 
@@ -51,7 +64,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile {
     public void onAddedToLevel(){
         super.onAddedToLevel();
         var owner1 = getOwner();
-        if(owner1 instanceof   LivingEntity owner){
+        if(owner1 instanceof LivingEntity owner){
             AttributeInstance attributeInstance = owner.getAttribute(Attributes.ATTACK_KNOCKBACK);
 
             if (attributeInstance != null) {

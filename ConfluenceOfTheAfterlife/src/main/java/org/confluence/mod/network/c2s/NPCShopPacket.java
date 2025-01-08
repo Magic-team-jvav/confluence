@@ -30,11 +30,13 @@ public record NPCShopPacket(NPCTrades.Trade trade) implements CustomPacketPayloa
         context.enqueueWork(() -> {
 
             if(trade.canTrade(context.player()) &&  context.player() instanceof ServerPlayer sp){
-
                 // todo
                 if(PlayerUtils.tryCostMoney(sp, trade.cost())) {
                     ItemStack result = trade.result();
-                    context.player().addItem(result.copy());
+                    if(context.player().getInventory().getFreeSlot() ==-1){
+                        context.player().drop(result.copy(),false);
+                    }
+                    else context.player().addItem(result.copy());
                 }
             }else{
                 context.player().sendSystemMessage(Component.translatable("confluence.trade.not_enough_items"));

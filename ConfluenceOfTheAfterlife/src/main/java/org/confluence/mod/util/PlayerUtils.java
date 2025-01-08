@@ -184,7 +184,12 @@ public final class PlayerUtils {
         var data = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
         int[] coins = new int[5];
         for(int i = 0; i < SIZE_COINS; i++){
-            coins[i] = data.getCoins(i).getCount();
+            ItemStack stack = data.getCoins(i);
+            if(item2index.containsKey(data.getCoins(i).getItem())){
+                int index = item2index.get(stack.getItem());
+                coins[index] += data.getCoins(i).getCount();
+            }
+
         }
         for(int i=0;i<player.getInventory().items.size();i++){
             ItemStack stack = player.getInventory().items.get(i);
@@ -207,7 +212,6 @@ public final class PlayerUtils {
     }
 
     public static boolean tryCostMoney(Player player, long cost){
-
         List<Item> items = List.of(
                 ModItems.COPPER_COIN.get(),
                 ModItems.SILVER_COIN.get(),
@@ -228,21 +232,33 @@ public final class PlayerUtils {
 
         long  remain = have - cost;
 
-        int[] coins = new int[5];
-        for(int i=0;i<5;i++){
-            int multiple = 99;
-            long num = remain % multiple;
-            if(num > 0){
-                coins[i] = (int)num;
-            }
-            remain /= multiple;
-        }
+        int[] coins = decodeCoin(remain);
+
 
         for(int i=0;i<coins.length;i++){
-            player.getInventory().add(new ItemStack(items.get(i), coins[i]));
+            if(player.getInventory().getFreeSlot() == -1) {
+                // todo 放入钱币栏
+                ItemStack it = new ItemStack(items.get(i), coins[i]);
+                player.drop(it, false);
+            }
+            else
+                player.getInventory().add(new ItemStack(items.get(i), coins[i]));
         }
 
         return true;
 
+    }
+
+    public static int[] decodeCoin(long money){
+        int[] coins = new int[5];
+        for(int i=0;i<5;i++){
+            int multiple = 99;
+            long num = money % multiple;
+            if(num > 0){
+                coins[i] = (int)num;
+            }
+            money /= multiple;
+        }
+        return coins;
     }
 }

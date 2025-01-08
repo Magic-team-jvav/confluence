@@ -146,13 +146,30 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
         }
         this.renderTooltip(guiGraphics, mouseX, mouseY);
 
-        int[] coins = PlayerUtils.getCoins(Minecraft.getInstance().player);
+        //背包的金币
+
+        int []myCoins =  PlayerUtils.getCoins(Minecraft.getInstance().player);
+        x = ii + 5;
+        y = jj - 20;
+        for( int i = 0; i < myCoins.length; i++){
+            ItemStack stack = new ItemStack(coinItem.get(i), myCoins[i]);
+            guiGraphics.renderItem(stack, x, y );
+            guiGraphics.renderItemDecorations(this.font, stack, x, y);
+            x+=20;
+        }
+
+        // 上面的材料物品
+        if(shopItem < 0 ||shopItem >= trades.size())
+            return;
+
+        var trade = trades.get(this.shopItem);
+
+        int[] coins = PlayerUtils.decodeCoin(trade.cost());
         x = ii + 120;
         y = jj + 21;
 
         for(int k = 0; k < coins.length; k++){
-            guiGraphics.renderItem(coinItem.get(k).getDefaultInstance(), x, y );
-
+            guiGraphics.renderItem(coinItem.get(4-k).getDefaultInstance(), x, y );
             guiGraphics.drawString(this.font, String.valueOf(coins[k]), x+4, y+16 , Color.orange.getRGB(), true);
             x+=20;
             if( k % 3 == 2){
@@ -160,11 +177,8 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
                 x = ii + 130;
             }
         }
-        // 上面的材料物品
-        if(shopItem < 0 ||shopItem >= trades.size()){
-            return;
-        }
-        var trade = trades.get(this.shopItem);
+
+
         boolean canBuy = trade.canTrade(Minecraft.getInstance().player);
 
         // 能否购买

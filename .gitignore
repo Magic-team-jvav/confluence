@@ -48,3 +48,14 @@ PhaseJourney/build
 TerraMoment/build
 ExtraWorldInvaded/build
 TerraGuns/build
+
+TerraEntity/src/generated
+MineTeam/src/generated
+EquipmentBenediction/src/generated
+TerraCurio/src/generated
+ParticleStorm/src/generated
+HeavenDestinyMoment/src/generated
+PhaseJourney/src/generated
+TerraMoment/src/generated
+ExtraWorldInvaded/src/generated
+TerraGuns/src/generated

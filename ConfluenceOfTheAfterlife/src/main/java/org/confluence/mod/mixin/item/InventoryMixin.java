@@ -85,15 +85,15 @@ public abstract class InventoryMixin {
     @Unique
     private int confluence$addResource2Extra(int head, int size, ExtraInventory extraInventory, ItemStack stack) {
         int index = 0;
-        ItemStack found = null;
+        boolean found = false;
         for (; index < size; index++) {
             ItemStack itemStack = extraInventory.getItem(head + index);
             if (itemStack.isEmpty() || hasRemainingSpaceForItem(itemStack, stack)) {
-                found = itemStack;
+                found = true;
                 break;
             }
         }
-        if (found == null) {
+        if (!found) {
             return stack.getCount();
         }
         int i = stack.getCount();

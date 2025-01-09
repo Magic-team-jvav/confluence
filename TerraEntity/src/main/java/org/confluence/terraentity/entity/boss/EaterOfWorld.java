@@ -9,6 +9,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -21,7 +22,7 @@ import org.confluence.terraentity.utils.TEUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class EaterOfWorld extends AbstractTerraBossBase {
@@ -45,8 +46,8 @@ public class EaterOfWorld extends AbstractTerraBossBase {
     boolean shouldFollowTarget = true;
     LivingEntity target;
     //public List<AbstractTerraBossBase>segments = new ArrayList<>();
-    public List<AbstractTerraBossBase>baseSegments = new ArrayList<>();
-    public List<Float>baseSegmentsHealth = new ArrayList<>();
+    public List<AbstractTerraBossBase>baseSegments = new CopyOnWriteArrayList<>();
+    public List<Float>baseSegmentsHealth = new CopyOnWriteArrayList<>();
 
 
     public enum WonderType {UP,DOWN}
@@ -335,7 +336,9 @@ public class EaterOfWorld extends AbstractTerraBossBase {
         if(!level().isClientSide && ifBaseHead && discardTick < DISCARD_TICK){
             int aliveCount = 0;
             for(var n : baseSegments){
-                if(n.getHealth()>0.0 && n!=this){
+                if(n==null || !n.isAlive() ) continue;
+                if(n.getHealth()>0.0 && n!=this
+                        && !level().getNearbyPlayers(TargetingConditions.DEFAULT,this,this.getBoundingBox().inflate(200)).isEmpty()){
                     if(n instanceof EaterOfWorldSegment){
                         EaterOfWorld newHead = new EaterOfWorld(level(),false);
                         newHead.setPos(n.position());
@@ -365,8 +368,8 @@ public class EaterOfWorld extends AbstractTerraBossBase {
         newHead.genSegments = false;
         if(ifBaseHead) {
             newHead.ifBaseHead = true;
-            newHead.baseSegments = baseSegments;
-            newHead.baseSegmentsHealth = baseSegmentsHealth;
+            newHead.baseSegments = new CopyOnWriteArrayList<>(baseSegments);
+            newHead.baseSegmentsHealth = new CopyOnWriteArrayList<>(baseSegmentsHealth);
         }
     }
 

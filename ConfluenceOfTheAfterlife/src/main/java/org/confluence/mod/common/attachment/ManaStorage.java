@@ -9,7 +9,6 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.IntSupplier;
 
@@ -34,7 +33,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
     }
 
     @Override
-    public CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider) {
+    public CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("stars", stars);
         nbt.putInt("additionalMana", additionalMana);
@@ -45,7 +44,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
     }
 
     @Override
-    public void deserializeNBT(HolderLookup.@NotNull Provider provider, @NotNull CompoundTag nbt) {
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
         this.stars = nbt.getInt("stars");
         this.additionalMana = nbt.getInt("additionalMana");
         this.currentMana = nbt.getInt("currentMana");

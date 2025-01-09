@@ -1,5 +1,6 @@
 package org.confluence.mod.mixin.item;
 
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.mixed.Immunity;
@@ -16,8 +17,10 @@ public abstract class ItemStackMixin implements Immunity {
     }
 
     @Override
-    public int confluence$getImmunityDuration(){
-        // 只有Item确定是Immunity了才会调这里
-        return ((Immunity)getItem()).confluence$getImmunityDuration();
+    public int confluence$getImmunityDuration(DamageSource damageSource){
+        if(getItem() instanceof Immunity immunity){
+            return immunity.confluence$getImmunityDuration(damageSource);
+        }
+        return Immunity.super.confluence$getImmunityDuration(damageSource);
     }
 }

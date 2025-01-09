@@ -3,7 +3,6 @@ package org.confluence.mod.common.attachment;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.neoforged.neoforge.common.util.INBTSerializable;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnknownNullability;
 
 public class EverBeneficial implements INBTSerializable<CompoundTag> {
@@ -121,7 +120,7 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
     }
 
     @Override
-    public @UnknownNullability CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider) {
+    public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("lifeCrystals", lifeCrystals);
         nbt.putInt("lifeFruits", lifeFruits);
@@ -136,7 +135,7 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
     }
 
     @Override
-    public void deserializeNBT(HolderLookup.@NotNull Provider provider, @NotNull CompoundTag nbt) {
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
         this.lifeCrystals = nbt.getInt("lifeCrystals");
         this.lifeFruits = nbt.getInt("lifeFruits");
 

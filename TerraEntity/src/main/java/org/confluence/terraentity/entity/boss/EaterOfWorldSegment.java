@@ -79,12 +79,23 @@ public class EaterOfWorldSegment extends AbstractTerraBossBase {
         return false;
     }
 
+    int discardTimer = 0;
     @Override
     public void tick(){
         super.tick();
+
         if(!level().isClientSide) {
             if (lastSegment != null && lastSegment.isAlive())
                 this.setPos(getNextPos());
+            if(head == null || !head.isAlive() ){
+                discardTimer++;
+                if(discardTimer > 100) {
+                    discard();
+
+                }
+                return;
+            }
+            discardTimer = 0;
         }
     }
     @Override // 受伤音效

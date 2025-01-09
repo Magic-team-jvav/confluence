@@ -37,6 +37,7 @@
         "entity.ItemEntityMixin",
         "entity.LivingEntityMixin",
         "entity.PlayerMixin",
+        "entity.ProjectileMixin",
         "entity.ServerPlayerMixin",
         "entity.VillagerMixin",
         "integration.adorned.CuriosServerPayloadHandlerMixin",

@@ -15,12 +15,15 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.entity.npc.AbstractTerraNPC;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.mixed.IPlayer;
 import org.confluence.mod.mixin.accessor.EntityAccessor;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
 
@@ -67,6 +70,15 @@ public final class EntityEvents {
     public static void entityJoinWorld(EntityJoinLevelEvent event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, serverPlayer, serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY));
+        }
+    }
+
+    // 打开戴夫商店
+    @SubscribeEvent
+    public static void interactEntity(PlayerInteractEvent.EntityInteract event) {
+        if(event.getTarget() instanceof AbstractTerraNPC npc) {
+            ((IPlayer) event.getEntity()).rhyme$setDaveTrades(npc.trades);
+            ((IPlayer) event.getEntity()).rhyme$setInteractingEntity(npc);
         }
     }
 }

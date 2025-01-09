@@ -8,7 +8,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.recipe.ConfluenceWorkshopProvider;
-import org.confluence.mod.common.data.gen.recipe.HeavyWorkBenchRecipeProvider;
+import org.confluence.mod.common.data.gen.recipe.NPCShopProvider;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -37,6 +37,7 @@ public class DataGenerator {
         generator.addProvider(server, new ModBiomeTagsProvider(output, lookup, helper));
 
         generator.addProvider(server, new ConfluenceWorkshopProvider(output));
-        generator.addProvider(server, new HeavyWorkBenchRecipeProvider(output));
+//        generator.addProvider(server, new HeavyWorkBenchRecipeProvider(output));
+        generator.addProvider(server, new NPCShopProvider(output));
     }
 }

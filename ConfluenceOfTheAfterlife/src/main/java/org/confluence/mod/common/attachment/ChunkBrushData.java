@@ -8,7 +8,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.ChunkPos;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.confluence.mod.common.data.saved.BrushData;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.Hashtable;
@@ -22,7 +21,7 @@ public class ChunkBrushData implements INBTSerializable<CompoundTag> {
     }
 
     @Override
-    public @UnknownNullability CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider) {
+    public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag nbt = new CompoundTag();
         ListTag listTag = new ListTag();
         for (Map.Entry<ChunkPos, BrushData> entry : dataMap.entrySet()) {
@@ -38,7 +37,7 @@ public class ChunkBrushData implements INBTSerializable<CompoundTag> {
     }
 
     @Override
-    public void deserializeNBT(HolderLookup.@NotNull Provider provider, CompoundTag nbt) {
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
         dataMap.clear();
         ListTag listTag = nbt.getList("dataMap", Tag.TAG_COMPOUND);
         for (Tag tag : listTag) {

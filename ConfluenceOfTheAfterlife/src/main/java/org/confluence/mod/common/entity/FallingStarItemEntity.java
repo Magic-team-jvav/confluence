@@ -17,6 +17,7 @@ import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.worldgen.secret_seed.ModSecretSeeds;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
@@ -59,9 +60,11 @@ public class FallingStarItemEntity extends ItemEntity {
                 }
             } else if (!wasOnGround && !level().getBlockState(getOnPos().below(6)).isAir()) {
                 level().playSound(null, getX(), getY(), getZ(), ModSoundEvents.STAR.get(), SoundSource.AMBIENT, 2.0F, 1.0F);
-            } else if (ProjectileUtil.getHitResultOnMoveVector(this, entity -> true) instanceof EntityHitResult entityHitResult) {
-                entityHitResult.getEntity().hurt(ModDamageTypes.of(level(), ModDamageTypes.FALLING_STAR), 100);
-                discard();
+            } else if (level() instanceof ServerLevel serverLevel && ModSecretSeeds.DONT_DIG_UP.match(serverLevel)) {
+                if (ProjectileUtil.getHitResultOnMoveVector(this, entity -> true) instanceof EntityHitResult entityHitResult) {
+                    entityHitResult.getEntity().hurt(ModDamageTypes.of(level(), ModDamageTypes.FALLING_STAR), 100);
+                    discard();
+                }
             }
         }
     }

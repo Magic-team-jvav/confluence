@@ -77,9 +77,10 @@ public final class PlayerUtils {
         }
 
         IntSupplier receive = () -> {
-            float a = manaStorage.getMaxMana() / 7.0F + (manaStorage.isFastManaRegeneration() ? 25 : 0) + 1;
+            // 1.0F / 7.0F = 0.14285715F
+            float a = manaStorage.getMaxMana() * 0.14285715F + (manaStorage.isFastManaRegeneration() ? 25 : 0) + 1;
             float b = manaStorage.getCurrentMana() * 0.8F / manaStorage.getMaxMana() + 0.2F;
-            if (notMove) a += manaStorage.getMaxMana() / 2.0F;
+            if (notMove) a += manaStorage.getMaxMana() * 0.5F;
             return Math.max(Math.round(a * b * 0.0115F), 1);
         };
 

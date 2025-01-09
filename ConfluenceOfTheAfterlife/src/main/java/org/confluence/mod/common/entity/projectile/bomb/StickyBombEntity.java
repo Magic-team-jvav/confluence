@@ -15,7 +15,7 @@ public class StickyBombEntity extends BaseBombEntity {
 
     public StickyBombEntity(EntityType<? extends StickyBombEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-        this.bounceFactor = 0f;
+        this.bounceFactor = 0.0;
     }
 
     public StickyBombEntity(EntityType<? extends StickyBombEntity> pEntityType, double pX, double pY, double pZ, Level pLevel) {
@@ -28,12 +28,12 @@ public class StickyBombEntity extends BaseBombEntity {
 
     public StickyBombEntity(Level pLevel, double pX, double pY, double pZ) {
         this(ModEntities.STICKY_BOMB_ENTITY.get(), pX, pY, pZ, pLevel);
-        this.bounceFactor = 0f;
+        this.bounceFactor = 0.0;
     }
 
     public StickyBombEntity(LivingEntity pShooter) {
         this(ModEntities.STICKY_BOMB_ENTITY.get(), pShooter);
-        this.bounceFactor = 0f;
+        this.bounceFactor = 0.0;
     }
 
     @Override

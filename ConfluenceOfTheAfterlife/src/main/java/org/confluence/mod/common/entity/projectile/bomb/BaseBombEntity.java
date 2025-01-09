@@ -1,15 +1,11 @@
 package org.confluence.mod.common.entity.projectile.bomb;
 
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -31,8 +27,8 @@ public class BaseBombEntity extends ThrowableItemProjectile {
 
     protected int delay = 60;
     protected float blastPower = 3.0F;
-    protected float bounceFactor = 0.2f;
-    protected float frictionFactor = 0.9f;
+    protected double bounceFactor = 0.2;
+    protected double frictionFactor = 0.9;
 
     public BaseBombEntity(EntityType<? extends BaseBombEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -58,22 +54,6 @@ public class BaseBombEntity extends ThrowableItemProjectile {
     protected Item getDefaultItem() {
         return ConsumableItems.BOMB.get();
     }
-
-    private ParticleOptions getParticle() {
-        ItemStack itemstack = getItem();
-        return itemstack.isEmpty() ? ParticleTypes.ITEM_SNOWBALL : new ItemParticleOption(ParticleTypes.ITEM, itemstack);
-    }
-
-    @Override
-    public void handleEntityEvent(byte pId) {
-        if (pId == 3) {
-            ParticleOptions particle = getParticle();
-            for (int num = 0; num < 8; ++num) {
-                level().addParticle(particle, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
-            }
-        }
-    }
-
 
     /**
      * 子类可以覆盖的方法，在弹跳前触发

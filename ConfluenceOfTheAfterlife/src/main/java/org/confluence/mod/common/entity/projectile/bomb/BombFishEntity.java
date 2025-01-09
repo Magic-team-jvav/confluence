@@ -15,7 +15,7 @@ public class BombFishEntity extends BaseBombEntity {
 
     public BombFishEntity(EntityType<? extends BombFishEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-        this.bounceFactor = 0f;
+        this.bounceFactor = 0.0;
     }
 
     public BombFishEntity(EntityType<? extends BombFishEntity> pEntityType, double pX, double pY, double pZ, Level pLevel) {
@@ -28,12 +28,12 @@ public class BombFishEntity extends BaseBombEntity {
 
     public BombFishEntity(Level pLevel, double pX, double pY, double pZ) {
         this(ModEntities.BOMB_FISH_ENTITY.get(), pX, pY, pZ, pLevel);
-        this.bounceFactor = 0f;
+        this.bounceFactor = 0.0;
     }
 
     public BombFishEntity(LivingEntity pShooter) {
         this(ModEntities.BOMB_FISH_ENTITY.get(), pShooter);
-        this.bounceFactor = 0f;
+        this.bounceFactor = 0.0;
     }
 
     @Override

@@ -12,16 +12,16 @@ import org.confluence.terra_curio.common.component.ModRarity;
 
 import java.util.Map;
 
-public class DraxItem extends PickaxeAxeItem {
-    public DraxItem(Tier tier, float rawDamage, float rawSpeed) {
+public class DrillItem extends PickaxeAxeItem {
+    public DrillItem(Tier tier, float rawDamage, float rawSpeed) {
         super(tier, rawDamage, rawSpeed);
     }
 
-    public DraxItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity) {
+    public DrillItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity) {
         super(tier, rawDamage, rawSpeed, rarity);
     }
 
-    public DraxItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity, Map<Holder<Attribute>, AttributeModifier> modifiers) {
+    public DrillItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity, Map<Holder<Attribute>, AttributeModifier> modifiers) {
         super(tier, rawDamage, rawSpeed, rarity, modifiers);
     }
 

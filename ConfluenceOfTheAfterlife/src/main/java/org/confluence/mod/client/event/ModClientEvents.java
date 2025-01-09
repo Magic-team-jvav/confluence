@@ -171,6 +171,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(THROWN_KNIVES_PROJECTILE.get(), ThrownKnivesProjectileRenderer::new);
         event.registerEntityRenderer(SHURIKEN_PROJECTILE.get(), ShurikenProjectileRenderer::new);
+        event.registerEntityRenderer(GRENADE.get(), EmptyEntityRenderer::new);
 
         event.registerEntityRenderer(FALLING_STAR_ITEM_ENTITY.get(), FallingStarRenderer::new);
 

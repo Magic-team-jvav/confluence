@@ -8,7 +8,7 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ConsumableItems;
 
 public class BouncyBombEntity extends BaseBombEntity {
-    private static final float BOUNCE_FACTOR_NEW = 0.8f;
+    private static final double BOUNCE_FACTOR_NEW = 0.8;
 
     public BouncyBombEntity(EntityType<? extends BouncyBombEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);

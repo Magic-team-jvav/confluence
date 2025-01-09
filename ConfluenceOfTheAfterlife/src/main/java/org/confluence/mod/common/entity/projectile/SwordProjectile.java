@@ -28,6 +28,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile {
     protected float knockBack = 0.0F;
     protected float baseKnockBack = 0.0F;
     protected ItemStack firedFromWeapon;
+    public int hitCount = 1;
 
     public SwordProjectile(EntityType<? extends SwordProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
@@ -102,13 +103,18 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile {
         Entity entity = entityHitResult.getEntity();
         if (!level().isClientSide) {
             float damage = getBaseDamage() * (attackDamage);
-             if (random.nextFloat() < criticalChance) damage *= 1.5F;
+            // 事件统一暴击判定 org.confluence.mod.common.event.game.entity.LivingEntityEvents.livingDamage$Pre
+//            if (random.nextFloat() < criticalChance) damage *= 1.5F;
             if (entity.hurt(damageSources().mobProjectile(this, (LivingEntity) getOwner()), damage)) {
                 float attackKnockBack = getBaseKnockBack() + knockBack;
                 ModUtils.knockBackA2B(this, entity, attackKnockBack * 0.5, 0.2);
+                if(--hitCount == 0){
+                    discard();
+                }
             }
         }
-        if (entity.isPickable()) discard();
+
+//        if (entity.isPickable()) discard();
     }
 
     @Override

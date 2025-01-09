@@ -36,6 +36,7 @@ public class ProjectileStrategy {
 
     public static final Supplier<AbstractProjContainer> UNDEFINED_PROJ = ()->ICE_PROJ.get().setDamage(1);
 
+    // TODO: 这是飞龙、波涌之刃的发剑气方式，还要写附魔剑、泰拉刃的
     @OnlyIn(Dist.CLIENT)
     public static void handle(Minecraft minecraft, LocalPlayer player) {
         if (minecraft.gameMode == null || minecraft.gameMode.isDestroying() || !minecraft.options.keyAttack.isDown()) {return;}
@@ -45,7 +46,7 @@ public class ProjectileStrategy {
         ) {
             PacketDistributor.sendToServer((new SwordShootingPacketC2S()));
             player.getCooldowns().addCooldown(sword,sword.modifier.proj.get().getAttackSpeed(player));
-            player.swing(InteractionHand.MAIN_HAND);
+//            player.swing(InteractionHand.MAIN_HAND);
         }
     }
 }

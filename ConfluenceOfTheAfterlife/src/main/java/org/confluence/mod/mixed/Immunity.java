@@ -23,7 +23,7 @@ public interface Immunity {
         Entity causeEntity = damageSource.getEntity();
         // 自身是汇流近战武器且使用者有攻击速度属性
         if(getSelf() instanceof ItemStack weaponItemStack && weaponItemStack.getItem() instanceof SwordItem weaponItem
-            && ModUtils.CONFLUENCE_NAMESPACES.contains(BuiltInRegistries.ITEM.getKey(weaponItem).getNamespace())
+            && ModUtils.isFromConfluence(BuiltInRegistries.ITEM,weaponItem)
             && causeEntity instanceof LivingEntity living && living.getAttributes().hasAttribute(Attributes.ATTACK_SPEED)){
             double speed = living.getAttribute(Attributes.ATTACK_SPEED).getValue();
             int time = (int) (20 / speed) - 1;

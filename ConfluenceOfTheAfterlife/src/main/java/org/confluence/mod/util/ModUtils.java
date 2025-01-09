@@ -5,9 +5,11 @@ import com.mojang.datafixers.util.Function4;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -471,11 +473,12 @@ public final class ModUtils {
 
     @Nullable
     public static Immunity getImmunityCause(DamageSource damageSource){
+        Entity directEntity = damageSource.getDirectEntity();
         ItemStack weaponItemStack = damageSource.getWeaponItem();
         if(weaponItemStack != null){
             Item weaponItem = weaponItemStack.getItem();
-            boolean fromConfluence = CONFLUENCE_NAMESPACES.contains(BuiltInRegistries.ITEM.getKey(weaponItem).getNamespace());
-            if(fromConfluence && (weaponItem instanceof SwordItem) && damageSource.getDirectEntity() instanceof Projectile projectile){
+            boolean fromConfluence = isFromConfluence(BuiltInRegistries.ITEM, weaponItem);
+            if(fromConfluence && (weaponItem instanceof SwordItem) && directEntity instanceof Projectile projectile){
                 return (Immunity) projectile;
             }else if(weaponItem instanceof Immunity im){
                 return switch(im.confluence$getImmunityType()){
@@ -486,14 +489,16 @@ public final class ModUtils {
                 return (Immunity) (Object) weaponItemStack;
             }
         }
+        if(directEntity instanceof Projectile && isFromConfluence(BuiltInRegistries.ENTITY_TYPE, directEntity.getType())){
+            return (Immunity) directEntity;
+        }
         // TODO: 打表
         return null;
     }
 
-    public static boolean isDamageFromConfluenceWeapon(DamageSource source){
-        ItemStack weaponItem = source.getWeaponItem();
-        return weaponItem != null && ((weaponItem.getItem() instanceof Immunity)
-            || CONFLUENCE_NAMESPACES.contains(BuiltInRegistries.ITEM.getKey(weaponItem.getItem()).getNamespace())); // TODO: 打表
+    public static <T> boolean isFromConfluence(Registry<T> registry, T obj){
+        ResourceLocation key = registry.getKey(obj);
+        return key != null && CONFLUENCE_NAMESPACES.contains(key.getNamespace());
     }
 
     public static int getSlotIndex(EquipmentSlot slot) {

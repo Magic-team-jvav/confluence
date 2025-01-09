@@ -1,6 +1,6 @@
 | 项目名                                                  | 备注            | 是否独立运行                |
 |------------------------------------------------------|---------------|-----------------------|
-| [ConfluenceOfTheAfterlife](ConfluenceOfTheAfterlife) | 本体            | 部分依赖                  |
+| [ConfluenceOfTheAfterlife](ConfluenceOfTheAfterlife) | 本体            | 依赖所有                  |
 | [TerraEntity](TerraEntity)                           | 泰拉实体生物        | 是                     |
 | [MineTeam](MineTeam)                                 | 类泰拉团队机制       | 是                     |
 | [EquipmentBenediction](EquipmentBenediction)         | 多种装备加成机制      | 是                     |

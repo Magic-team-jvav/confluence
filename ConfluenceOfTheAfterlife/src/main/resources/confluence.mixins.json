@@ -54,6 +54,7 @@
         "item.ItemUtilsMixin",
         "item.PotionItemMixin",
         "item.ProjectileWeaponItemMixin",
+        "level.LevelSummaryMixin",
         "level.WorldOptionsMixin"
     ],
     "client": [
@@ -75,6 +76,8 @@
         "client.SpriteLoaderMixin",
         "client.ToastComponent$ToastInstanceMixin",
         "client.WorldCreationUiStateMixin",
+        "client.WorldSelectionListMixin",
+        "client.WorldSelectionListMixin$WorldListEntryMixin",
         "client.accessor.FontAccessor",
         "integration.geckolib.InternalUtilMixin",
         "integration.terra_curio.InformationHandlerMixin"

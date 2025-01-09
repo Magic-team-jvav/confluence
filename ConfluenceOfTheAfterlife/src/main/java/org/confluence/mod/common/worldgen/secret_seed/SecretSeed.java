@@ -19,7 +19,7 @@ public abstract class SecretSeed {
     }
 
     public boolean match(MinecraftServer server) {
-        return (((IWorldOptions) server.getWorldData().worldGenOptions()).confluence$getSecretFlag() & flag) == flag;
+        return (((IWorldOptions) server.getWorldData().worldGenOptions()).confluence$getSecretFlag() & flag) != 0;
     }
 
     public boolean match(ServerLevel serverLevel) {
@@ -32,6 +32,6 @@ public abstract class SecretSeed {
     }
 
     public boolean match(long secretFlag) {
-        return (secretFlag & flag) == flag;
+        return (secretFlag & flag) != 0;
     }
 }

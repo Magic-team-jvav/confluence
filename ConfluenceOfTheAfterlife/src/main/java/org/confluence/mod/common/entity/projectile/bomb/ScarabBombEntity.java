@@ -38,10 +38,6 @@ public class ScarabBombEntity extends StickyBombEntity {
         super(pEntityType, pLevel);
     }
 
-    public ScarabBombEntity(Level pLevel, double pX, double pY, double pZ) {
-        super(ModEntities.SCARAB_BOMB_ENTITY.get(), pX, pY, pZ, pLevel);
-    }
-
     public ScarabBombEntity(LivingEntity pShooter) {
         super(ModEntities.SCARAB_BOMB_ENTITY.get(), pShooter);
     }
@@ -122,9 +118,9 @@ public class ScarabBombEntity extends StickyBombEntity {
     }
 
     @Override
-    public void setOwner(Entity owner) {
+    public void setOwner(@Nullable Entity owner) {
         super.setOwner(owner);
-        entityData.set(DATA_OWNER_ID, owner.getId());
+        entityData.set(DATA_OWNER_ID, owner == null ? 0 : owner.getId());
     }
 
     @Override

@@ -4,19 +4,19 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 
-public class BombItem extends Item {
+public class ThrowableItem<T extends ThrowableItemProjectile> extends Item {
     protected float throwSpeed;
-    private final Factory factory;
+    private final Factory<T> factory;
 
-    public BombItem(Factory factory) {
+    public ThrowableItem(float throwSpeed, Factory<T> factory) {
         super(new Properties().rarity(Rarity.COMMON));
-        this.throwSpeed = 0.8f;
+        this.throwSpeed = throwSpeed;
         this.factory = factory;
     }
 
@@ -24,7 +24,7 @@ public class BombItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            BaseBombEntity bomb = factory.create(player);
+            T bomb = factory.create(player);
             bomb.setOwner(player);
             bomb.setItem(itemStack);
             bomb.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, throwSpeed, 1.0F);
@@ -39,7 +39,7 @@ public class BombItem extends Item {
     }
 
     @FunctionalInterface
-    public interface Factory {
-        BaseBombEntity create(Player player);
+    public interface Factory<T extends ThrowableItemProjectile> {
+        T create(Player player);
     }
 }

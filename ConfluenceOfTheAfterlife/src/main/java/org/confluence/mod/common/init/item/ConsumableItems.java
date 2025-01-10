@@ -30,15 +30,16 @@ public class ConsumableItems {
     public static final Supplier<EverBeneficialItem> GALAXY_PEARL = ITEMS.register("galaxy_pearl", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.GALAXY_PEARL));
     public static final Supplier<EverBeneficialItem> MINECART_UPGRADE_KIT = ITEMS.register("minecart_upgrade_kit", () -> new EverBeneficialItem(ModRarity.EXPERT, EverBeneficialItem.MINECART_UPGRADE_KIT));
 
-    public static final Supplier<BombItem> BOMB = ITEMS.register("bomb", () -> new BombItem(BaseBombEntity::new));
-    public static final Supplier<BombItem> BOUNCY_BOMB = ITEMS.register("bouncy_bomb", () -> new BombItem(BouncyBombEntity::new));
-    public static final Supplier<BombItem> STICKY_BOMB = ITEMS.register("sticky_bomb", () -> new BombItem(StickyBombEntity::new));
-    public static final Supplier<BombItem> BOMB_FISH = ITEMS.register("bomb_fish", () -> new BombItem(BombFishEntity::new));
-    public static final Supplier<BombItem> SCARAB_BOMB = ITEMS.register("scarab_bomb", () -> new BombItem(ScarabBombEntity::new));
-
+    public static final Supplier<ThrowableItem<BaseBombEntity>> BOMB = ITEMS.register("bomb", () -> new ThrowableItem<>(0.8F, BaseBombEntity::new));
+    public static final Supplier<ThrowableItem<BouncyBombEntity>> BOUNCY_BOMB = ITEMS.register("bouncy_bomb", () -> new ThrowableItem<>(0.8F, BouncyBombEntity::new));
+    public static final Supplier<ThrowableItem<StickyBombEntity>> STICKY_BOMB = ITEMS.register("sticky_bomb", () -> new ThrowableItem<>(0.8F, StickyBombEntity::new));
+    public static final Supplier<ThrowableItem<BombFishEntity>> BOMB_FISH = ITEMS.register("bomb_fish", () -> new ThrowableItem<>(0.8F, BombFishEntity::new));
+    public static final Supplier<ThrowableItem<ScarabBombEntity>> SCARAB_BOMB = ITEMS.register("scarab_bomb", () -> new ThrowableItem<>(0.8F, ScarabBombEntity::new));
+    public static final Supplier<ThrowableItem<BaseGrenadeEntity>> GRENADE = ITEMS.register("grenade", () -> new ThrowableItem<>(0.7F, BaseGrenadeEntity::new)); // todo 模型
+    public static final Supplier<ThrowableItem<BouncyGrenadeEntity>> BOUNCY_GRENADE = ITEMS.register("bouncy_grenade", () -> new ThrowableItem<>(0.7F, BouncyGrenadeEntity::new));
+    public static final Supplier<ThrowableItem<StickyGrenadeEntity>> STICKY_GRENADE = ITEMS.register("sticky_grenade", () -> new ThrowableItem<>(0.7F, StickyGrenadeEntity::new));
     public static final Supplier<ShurikenItem> SHURIKEN = ITEMS.register("shuriken", ShurikenItem::new);
     public static final Supplier<ThrowingKnivesItem> THROWING_KNIVES = ITEMS.register("throwing_knives", ThrowingKnivesItem::new);
-    public static final Supplier<GrenadeItem> GRENADE = ITEMS.register("grenade", GrenadeItem::new); // todo 模型
 
     public static final Supplier<RightClickLootItem> CLAM = ITEMS.register("clam", () -> new RightClickLootItem(ModRarity.BLUE, ModLootTables.CLAM));
     public static final Supplier<RightClickLootItem> HERB_BAG = ITEMS.register("herb_bag", () -> new RightClickLootItem(ModRarity.BLUE, ModLootTables.HERB_BAG));

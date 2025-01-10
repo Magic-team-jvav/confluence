@@ -34,16 +34,8 @@ public class BaseBombEntity extends ThrowableItemProjectile {
         super(pEntityType, pLevel);
     }
 
-    public BaseBombEntity(EntityType<? extends BaseBombEntity> pEntityType, double pX, double pY, double pZ, Level pLevel) {
-        super(pEntityType, pX, pY, pZ, pLevel);
-    }
-
     public BaseBombEntity(EntityType<? extends BaseBombEntity> pEntityType, LivingEntity pShooter) {
         super(pEntityType, pShooter, pShooter.level());
-    }
-
-    public BaseBombEntity(Level pLevel, double pX, double pY, double pZ) {
-        this(ModEntities.BOMB_ENTITY.get(), pX, pY, pZ, pLevel);
     }
 
     public BaseBombEntity(LivingEntity pShooter) {
@@ -86,20 +78,21 @@ public class BaseBombEntity extends ThrowableItemProjectile {
             this.rotateO = rotate;
             this.rotate += r / Mth.PI;
             rotation.set(0.0, 0.0, rotate);
+            createEmitter();
+        } else if (this.delay-- < 0) {
+            explodeFunction();
+            discard();
+        }
+    }
 
-            if (emitter == null) {
-                this.emitter = new ParticleEmitter(level(), position(), getLeadParticle());
-                emitter.offsetRot.set(0.0, Mth.HALF_PI, 0.0);
-                emitter.offsetPos = new Vec3(0.0, DIAMETER, 0.0);
-                emitter.parentRotation = rotation;
-                emitter.attached = this;
-                PSGameClient.LOADER.addEmitter(emitter, false);
-            }
-        } else {
-            if (this.delay-- < 0) {
-                explodeFunction();
-                discard();
-            }
+    protected void createEmitter() {
+        if (emitter == null) {
+            this.emitter = new ParticleEmitter(level(), position(), getLeadParticle());
+            emitter.offsetRot.set(0.0, Mth.HALF_PI, 0.0);
+            emitter.offsetPos = new Vec3(0.0, DIAMETER, 0.0);
+            emitter.parentRotation = rotation;
+            emitter.attached = this;
+            PSGameClient.LOADER.addEmitter(emitter, false);
         }
     }
 

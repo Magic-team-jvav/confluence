@@ -10,26 +10,22 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ConsumableItems;
 
-public class StickyBombEntity extends BaseBombEntity {
+public class StickyGrenadeEntity extends BaseGrenadeEntity {
     protected BlockPos stickBlock = null;
 
-    public StickyBombEntity(EntityType<? extends StickyBombEntity> pEntityType, Level pLevel) {
+    public StickyGrenadeEntity(EntityType<StickyGrenadeEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.bounceFactor = 0.0;
     }
 
-    public StickyBombEntity(EntityType<? extends StickyBombEntity> pEntityType, LivingEntity pShooter) {
-        super(pEntityType, pShooter);
-    }
-
-    public StickyBombEntity(LivingEntity pShooter) {
-        super(ModEntities.STICKY_BOMB_ENTITY.get(), pShooter);
+    public StickyGrenadeEntity(LivingEntity shooter) {
+        super(ModEntities.STICKY_GRENADE.get(), shooter);
         this.bounceFactor = 0.0;
     }
 
     @Override
     protected Item getDefaultItem() {
-        return ConsumableItems.STICKY_BOMB.get();
+        return ConsumableItems.STICKY_GRENADE.get();
     }
 
     @Override

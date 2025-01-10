@@ -4,11 +4,9 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.util.MultiplyExplosionDamageCalculator;
 
 public class BaseDynamiteEntity extends BaseBombEntity {
@@ -30,11 +28,6 @@ public class BaseDynamiteEntity extends BaseBombEntity {
         super(ModEntities.DYNAMITE.get(), pShooter);
         this.delay = 100;
         this.diameter = 0.25F;
-    }
-
-    @Override
-    protected Item getDefaultItem() {
-        return ConsumableItems.DYNAMITE.get();
     }
 
     @Override

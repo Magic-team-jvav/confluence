@@ -4,12 +4,10 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.util.MultiplyExplosionDamageCalculator;
 
 public class BaseGrenadeEntity extends BaseBombEntity {
@@ -27,11 +25,6 @@ public class BaseGrenadeEntity extends BaseBombEntity {
 
     public BaseGrenadeEntity(LivingEntity shooter) {
         this(ModEntities.GRENADE.get(), shooter);
-    }
-
-    @Override
-    protected Item getDefaultItem() {
-        return ConsumableItems.GRENADE.get();
     }
 
     @Override

@@ -13,7 +13,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -26,7 +25,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.init.item.ConsumableItems;
 import org.jetbrains.annotations.Nullable;
 
 public class ScarabBombEntity extends StickyBombEntity {
@@ -40,11 +38,6 @@ public class ScarabBombEntity extends StickyBombEntity {
 
     public ScarabBombEntity(LivingEntity pShooter) {
         super(ModEntities.SCARAB_BOMB_ENTITY.get(), pShooter);
-    }
-
-    @Override
-    protected Item getDefaultItem() {
-        return ConsumableItems.SCARAB_BOMB.get();
     }
 
     @Override

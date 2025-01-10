@@ -1,11 +1,10 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.bomb.*;
-import org.confluence.mod.common.init.ModLootTables;
-import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.mana.ArcaneCrystalItem;
 import org.confluence.mod.common.item.mana.ManaStarItem;
@@ -43,6 +42,10 @@ public class ConsumableItems {
     public static final Supplier<ThrowableItem<StickyGrenadeEntity>> STICKY_GRENADE = ITEMS.register("sticky_grenade", () -> new ThrowableItem<>(0.7F, StickyGrenadeEntity::new)); // todo 模型
     public static final Supplier<ThrowableItem<BaseDirtBombEntity>> DIRT_BOMB = ITEMS.register("dirt_bomb", () -> new ThrowableItem<>(0.8F, BaseDirtBombEntity::new)); // todo 模型
     public static final Supplier<ThrowableItem<StickyDirtBombEntity>> STICKY_DIRT_BOMB = ITEMS.register("sticky_dirt_bomb", () -> new ThrowableItem<>(0.8F, StickyDirtBombEntity::new)); // todo 模型
+    public static final Supplier<ThrowableItem<DryBombEntity>> DRY_BOMB = ITEMS.register("dry_bomb", () -> new ThrowableItem<>(0.8F, DryBombEntity::new)); // todo 模型
+    public static final Supplier<ThrowableItem<LiquidBombEntity>> WET_BOMB = ITEMS.register("wet_bomb", () -> new ThrowableItem<>(0.8F, player -> new LiquidBombEntity(ModEntities.WET_BOMB.get(), player, Fluids.WATER, 3))); // todo 模型
+    public static final Supplier<ThrowableItem<LiquidBombEntity>> LAVA_BOMB = ITEMS.register("lava_bomb", () -> new ThrowableItem<>(0.8F, player -> new LiquidBombEntity(ModEntities.LAVA_BOMB.get(), player, Fluids.LAVA, 3))); // todo 模型
+    public static final Supplier<ThrowableItem<LiquidBombEntity>> HONEY_BOMB = ITEMS.register("honey_bomb", () -> new ThrowableItem<>(0.8F, player -> new LiquidBombEntity(ModEntities.HONEY_BOMB.get(), player, ModFluids.HONEY.fluid().get(), 3))); // todo 模型
     public static final Supplier<ShurikenItem> SHURIKEN = ITEMS.register("shuriken", ShurikenItem::new);
     public static final Supplier<ThrowingKnivesItem> THROWING_KNIVES = ITEMS.register("throwing_knives", ThrowingKnivesItem::new);
 

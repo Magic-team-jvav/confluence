@@ -179,6 +179,10 @@ public final class ModClientEvents {
         event.registerEntityRenderer(STICKY_DYNAMITE.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(DIRT_BOMB.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(STICKY_DIRT_BOMB.get(), EmptyEntityRenderer::new);
+        event.registerEntityRenderer(DRY_BOMB.get(), EmptyEntityRenderer::new);
+        event.registerEntityRenderer(WET_BOMB.get(), EmptyEntityRenderer::new);
+        event.registerEntityRenderer(LAVA_BOMB.get(), EmptyEntityRenderer::new);
+        event.registerEntityRenderer(HONEY_BOMB.get(), EmptyEntityRenderer::new);
 
         event.registerEntityRenderer(FALLING_STAR_ITEM_ENTITY.get(), FallingStarRenderer::new);
 

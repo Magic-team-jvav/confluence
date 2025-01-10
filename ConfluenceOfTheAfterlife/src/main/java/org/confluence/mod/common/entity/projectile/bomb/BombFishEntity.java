@@ -3,12 +3,10 @@ package org.confluence.mod.common.entity.projectile.bomb;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.init.item.ConsumableItems;
 
 public class BombFishEntity extends BaseBombEntity {
     private BlockPos stickBlock = null;
@@ -21,11 +19,6 @@ public class BombFishEntity extends BaseBombEntity {
     public BombFishEntity(LivingEntity pShooter) {
         super(ModEntities.BOMB_FISH_ENTITY.get(), pShooter);
         this.bounceFactor = 0.0;
-    }
-
-    @Override
-    protected Item getDefaultItem() {
-        return ConsumableItems.BOMB_FISH.get();
     }
 
     @Override

@@ -2,10 +2,8 @@ package org.confluence.mod.common.entity.projectile.bomb;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.init.item.ConsumableItems;
 
 public class BouncyGrenadeEntity extends BaseGrenadeEntity {
     public BouncyGrenadeEntity(EntityType<? extends BaseGrenadeEntity> pEntityType, Level pLevel) {
@@ -16,10 +14,5 @@ public class BouncyGrenadeEntity extends BaseGrenadeEntity {
     public BouncyGrenadeEntity(LivingEntity shooter) {
         super(ModEntities.BOUNCY_GRENADE.get(), shooter);
         this.bounceFactor = 0.8;
-    }
-
-    @Override
-    protected Item getDefaultItem() {
-        return ConsumableItems.BOUNCY_GRENADE.get();
     }
 }

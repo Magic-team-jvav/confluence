@@ -31,11 +31,23 @@ import java.util.function.Supplier;
 public final class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Confluence.MODID);
 
-    public static final Supplier<EntityType<BaseBombEntity>> BOMB_ENTITY = ENTITIES.register("bomb_entity", () -> EntityType.Builder.<BaseBombEntity>of(BaseBombEntity::new, MobCategory.MISC).sized(BaseBombEntity.DIAMETER, BaseBombEntity.DIAMETER).clientTrackingRange(4).updateInterval(10).fireImmune().build("confluence:bomb_entity"));
-    public static final Supplier<EntityType<BouncyBombEntity>> BOUNCY_BOMB_ENTITY = ENTITIES.register("bouncy_bomb_entity", () -> EntityType.Builder.<BouncyBombEntity>of(BouncyBombEntity::new, MobCategory.MISC).sized(0.375F, 0.375F).clientTrackingRange(4).updateInterval(10).fireImmune().build("confluence:bouncy_bomb_entity"));
-    public static final Supplier<EntityType<ScarabBombEntity>> SCARAB_BOMB_ENTITY = ENTITIES.register("scarab_bomb_entity", () -> EntityType.Builder.<ScarabBombEntity>of(ScarabBombEntity::new, MobCategory.MISC).sized(0.375F, 0.375F).clientTrackingRange(4).updateInterval(10).fireImmune().build("confluence:scarab_bomb_entity"));
-    public static final Supplier<EntityType<StickyBombEntity>> STICKY_BOMB_ENTITY = ENTITIES.register("sticky_bomb_entity", () -> EntityType.Builder.<StickyBombEntity>of(StickyBombEntity::new, MobCategory.MISC).sized(0.375F, 0.375F).clientTrackingRange(4).updateInterval(10).fireImmune().build("confluence:sticky_bomb_entity"));
-    public static final Supplier<EntityType<BombFishEntity>> BOMB_FISH_ENTITY = ENTITIES.register("bomb_fish_entity", () -> EntityType.Builder.<BombFishEntity>of(BombFishEntity::new, MobCategory.MISC).sized(0.375F, 0.375F).clientTrackingRange(4).updateInterval(10).fireImmune().build("confluence:bomb_fish_entity"));
+    public static final Supplier<EntityType<BaseBombEntity>> BOMB_ENTITY = registerBomb("bomb_entity", BaseBombEntity::new, BaseBombEntity.DIAMETER);
+    public static final Supplier<EntityType<BouncyBombEntity>> BOUNCY_BOMB_ENTITY = registerBomb("bouncy_bomb_entity", BouncyBombEntity::new, BaseBombEntity.DIAMETER);
+    public static final Supplier<EntityType<ScarabBombEntity>> SCARAB_BOMB_ENTITY = registerBomb("scarab_bomb_entity", ScarabBombEntity::new, BaseBombEntity.DIAMETER);
+    public static final Supplier<EntityType<StickyBombEntity>> STICKY_BOMB_ENTITY = registerBomb("sticky_bomb_entity", StickyBombEntity::new, BaseBombEntity.DIAMETER);
+    public static final Supplier<EntityType<BombFishEntity>> BOMB_FISH_ENTITY = registerBomb("bomb_fish_entity", BombFishEntity::new, BaseBombEntity.DIAMETER);
+    public static final Supplier<EntityType<BaseGrenadeEntity>> GRENADE = registerBomb("grenade", BaseGrenadeEntity::new, BaseGrenadeEntity.DIAMETER);
+    public static final Supplier<EntityType<BouncyGrenadeEntity>> BOUNCY_GRENADE = registerBomb("bouncy_grenade", BouncyGrenadeEntity::new, BaseGrenadeEntity.DIAMETER);
+    public static final Supplier<EntityType<StickyGrenadeEntity>> STICKY_GRENADE = registerBomb("sticky_grenade", StickyGrenadeEntity::new, BaseGrenadeEntity.DIAMETER);
+    public static final Supplier<EntityType<BaseDynamiteEntity>> DYNAMITE = registerBomb("dynamite", BaseDynamiteEntity::new, BaseDynamiteEntity.DIAMETER);
+    public static final Supplier<EntityType<BouncyDynamiteEntity>> BOUNCY_DYNAMITE = registerBomb("bouncy_dynamite", BouncyDynamiteEntity::new, BaseDynamiteEntity.DIAMETER);
+    public static final Supplier<EntityType<StickyDynamiteEntity>> STICKY_DYNAMITE = registerBomb("sticky_dynamite", StickyDynamiteEntity::new, BaseDynamiteEntity.DIAMETER);
+    public static final Supplier<EntityType<BaseDirtBombEntity>> DIRT_BOMB = registerBomb("dirt_bomb", BaseDirtBombEntity::new, BaseBombEntity.DIAMETER);
+    public static final Supplier<EntityType<StickyDirtBombEntity>> STICKY_DIRT_BOMB = registerBomb("sticky_dirt_bomb", StickyDirtBombEntity::new, BaseBombEntity.DIAMETER);
+    public static final Supplier<EntityType<DryBombEntity>> DRY_BOMB = registerBomb("dry_bomb", DryBombEntity::new, BaseBombEntity.DIAMETER);
+    public static final Supplier<EntityType<LiquidBombEntity>> WET_BOMB = registerBomb("wet_bomb", LiquidBombEntity::new, BaseBombEntity.DIAMETER);
+    public static final Supplier<EntityType<LiquidBombEntity>> LAVA_BOMB = registerBomb("lava_bomb", LiquidBombEntity::new, BaseBombEntity.DIAMETER);
+    public static final Supplier<EntityType<LiquidBombEntity>> HONEY_BOMB = registerBomb("honey_bomb", LiquidBombEntity::new, BaseBombEntity.DIAMETER);
 
     public static final Supplier<EntityType<BaseManaStaffProjectileEntity>> BASE_MANA_STAFF_PROJECTILE = ENTITIES.register("base_mana_staff_projectile", () -> EntityType.Builder.<BaseManaStaffProjectileEntity>of(BaseManaStaffProjectileEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(10).build("confluence:base_mana_staff_projectile"));
     public static final Supplier<EntityType<BaseArrowEntity>> ARROW_PROJECTILE = ENTITIES.register("arrow_projectile", () -> EntityType.Builder.<BaseArrowEntity>of(BaseArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:arrow_projectile"));
@@ -47,14 +59,6 @@ public final class ModEntities {
     public static final Supplier<EntityType<BoulderEntity>> BOULDER = ENTITIES.register("boulder", () -> EntityType.Builder.<BoulderEntity>of(BoulderEntity::new, MobCategory.MISC).sized(BoulderEntity.DIAMETER, BoulderEntity.DIAMETER).clientTrackingRange(6).build("confluence:boulder"));
     public static final Supplier<EntityType<ThrownKnivesProjectile>> THROWN_KNIVES_PROJECTILE = ENTITIES.register("thrown_knives_projectile", () -> EntityType.Builder.<ThrownKnivesProjectile>of(ThrownKnivesProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:thrown_knives_projectile"));
     public static final Supplier<EntityType<ShurikenProjectile>> SHURIKEN_PROJECTILE = ENTITIES.register("shuriken_projectile", () -> EntityType.Builder.<ShurikenProjectile>of(ShurikenProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:shuriken_projectile"));
-    public static final Supplier<EntityType<BaseGrenadeEntity>> GRENADE = ENTITIES.register("grenade", () -> EntityType.Builder.<BaseGrenadeEntity>of(BaseGrenadeEntity::new, MobCategory.MISC).sized(BaseGrenadeEntity.DIAMETER, BaseGrenadeEntity.DIAMETER).clientTrackingRange(4).updateInterval(10).fireImmune().build("confluence:grenade"));
-    public static final Supplier<EntityType<BouncyGrenadeEntity>> BOUNCY_GRENADE = ENTITIES.register("bouncy_grenade", () -> EntityType.Builder.<BouncyGrenadeEntity>of(BouncyGrenadeEntity::new, MobCategory.MISC).sized(BaseGrenadeEntity.DIAMETER, BaseGrenadeEntity.DIAMETER).clientTrackingRange(4).updateInterval(10).fireImmune().build("confluence:bouncy_grenade"));
-    public static final Supplier<EntityType<StickyGrenadeEntity>> STICKY_GRENADE = ENTITIES.register("sticky_grenade", () -> EntityType.Builder.<StickyGrenadeEntity>of(StickyGrenadeEntity::new, MobCategory.MISC).sized(BaseGrenadeEntity.DIAMETER, BaseGrenadeEntity.DIAMETER).clientTrackingRange(4).updateInterval(10).fireImmune().build("confluence:sticky_grenade"));
-    public static final Supplier<EntityType<BaseDynamiteEntity>> DYNAMITE = ENTITIES.register("dynamite", () -> EntityType.Builder.<BaseDynamiteEntity>of(BaseDynamiteEntity::new, MobCategory.MISC).sized(BaseDynamiteEntity.DIAMETER, BaseDynamiteEntity.DIAMETER).clientTrackingRange(4).updateInterval(10).fireImmune().build("confluence:dynamite"));
-    public static final Supplier<EntityType<BouncyDynamiteEntity>> BOUNCY_DYNAMITE = ENTITIES.register("bouncy_dynamite", () -> EntityType.Builder.<BouncyDynamiteEntity>of(BouncyDynamiteEntity::new, MobCategory.MISC).sized(BaseDynamiteEntity.DIAMETER, BaseDynamiteEntity.DIAMETER).clientTrackingRange(4).updateInterval(10).fireImmune().build("confluence:bouncy_dynamite"));
-    public static final Supplier<EntityType<StickyDynamiteEntity>> STICKY_DYNAMITE = ENTITIES.register("sticky_dynamite", () -> EntityType.Builder.<StickyDynamiteEntity>of(StickyDynamiteEntity::new, MobCategory.MISC).sized(BaseDynamiteEntity.DIAMETER, BaseDynamiteEntity.DIAMETER).clientTrackingRange(4).updateInterval(10).fireImmune().build("confluence:sticky_dynamite"));
-    public static final Supplier<EntityType<BaseDirtBombEntity>> DIRT_BOMB = ENTITIES.register("dirt_bomb", () -> EntityType.Builder.<BaseDirtBombEntity>of(BaseDirtBombEntity::new, MobCategory.MISC).sized(BaseBombEntity.DIAMETER, BaseBombEntity.DIAMETER).clientTrackingRange(4).updateInterval(10).fireImmune().build("confluence:dirt_bomb"));
-    public static final Supplier<EntityType<StickyDirtBombEntity>> STICKY_DIRT_BOMB = ENTITIES.register("sticky_dirt_bomb", () -> EntityType.Builder.<StickyDirtBombEntity>of(StickyDirtBombEntity::new, MobCategory.MISC).sized(BaseBombEntity.DIAMETER, BaseBombEntity.DIAMETER).clientTrackingRange(4).updateInterval(10).fireImmune().build("confluence:sticky_dirt_bomb"));
 
     public static final Supplier<EntityType<FallingStarItemEntity>> FALLING_STAR_ITEM_ENTITY = ENTITIES.register("falling_star", () -> EntityType.Builder.<FallingStarItemEntity>of(FallingStarItemEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(16).updateInterval(20).build("confluence:falling_star"));
     public static final Supplier<EntityType<BaseFishingHook>> BASE_FISHING_HOOK = ENTITIES.register("base_fishing_hook", () -> EntityType.Builder.<BaseFishingHook>of(BaseFishingHook::new, MobCategory.MISC).noSave().noSummon().sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(5).build("confluence:base_fishing_hook"));
@@ -100,5 +104,9 @@ public final class ModEntities {
 
     private static <E extends AbstractHookEntity> Supplier<EntityType<E>> registerHook(String id, EntityType.EntityFactory<E> supplier) {
         return ENTITIES.register(id, () -> EntityType.Builder.of(supplier, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("confluence:" + id));
+    }
+
+    private static <E extends BaseBombEntity> Supplier<EntityType<E>> registerBomb(String id, EntityType.EntityFactory<E> supplier, float size) {
+        return ENTITIES.register(id, () -> EntityType.Builder.of(supplier, MobCategory.MISC).sized(size, size).clientTrackingRange(4).updateInterval(10).fireImmune().build("confluence:" + id));
     }
 }

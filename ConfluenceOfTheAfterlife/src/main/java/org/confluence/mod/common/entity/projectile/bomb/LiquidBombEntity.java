@@ -3,45 +3,40 @@ package org.confluence.mod.common.entity.projectile.bomb;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import org.confluence.mod.common.init.ModEntities;
+import net.minecraft.world.level.material.Fluid;
 import org.confluence.mod.util.MultiplyExplosionDamageCalculator;
 
-public class BaseDirtBombEntity extends BaseBombEntity {
-    protected int radius = 4;
-    protected BlockState toFill = Blocks.DIRT.defaultBlockState();
+public class LiquidBombEntity extends BaseBombEntity {
+    private BlockState toFill;
+    private int radius;
 
-    public BaseDirtBombEntity(EntityType<? extends BaseDirtBombEntity> pEntityType, Level pLevel) {
+    public LiquidBombEntity(EntityType<? extends LiquidBombEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
-    public BaseDirtBombEntity(EntityType<? extends BaseDirtBombEntity> pEntityType, LivingEntity pShooter) {
+    public LiquidBombEntity(EntityType<? extends LiquidBombEntity> pEntityType, LivingEntity pShooter, Fluid fluid, int radius) {
         super(pEntityType, pShooter);
-    }
-
-    public BaseDirtBombEntity(LivingEntity pShooter) {
-        super(ModEntities.DIRT_BOMB.get(), pShooter);
+        this.toFill = fluid.defaultFluidState().createLegacyBlock();
+        this.radius = radius;
     }
 
     @Override
     protected void explodeFunction() {
         BlockPos blockPos = blockPosition();
         BlockPos.MutableBlockPos mutable = blockPos.mutable();
-        int radiusSqr = Mth.square(radius);
         for (int i = -radius; i < radius; i++) {
             int x = blockPos.getX() + i;
-            for (int j = -radius; j < radius; j++) {
+            for (int j = 0; j < radius; j++) {
                 int y = blockPos.getY() + j;
                 for (int k = -radius; k < radius; k++) {
                     int z = blockPos.getZ() + k;
                     mutable.set(x, y, z);
-                    if (mutable.distSqr(blockPos) <= radiusSqr && level().getBlockState(mutable).isEmpty()) {
+                    if (level().getBlockState(mutable).isEmpty()) {
                         level().setBlockAndUpdate(mutable, toFill);
                     }
                 }
@@ -54,5 +49,14 @@ public class BaseDirtBombEntity extends BaseBombEntity {
                 Level.ExplosionInteraction.NONE, ParticleTypes.EXPLOSION,
                 ParticleTypes.EXPLOSION_EMITTER, SoundEvents.GENERIC_EXPLODE
         );
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!level().isClientSide && isInFluidType()) {
+            explodeFunction();
+            discard();
+        }
     }
 }

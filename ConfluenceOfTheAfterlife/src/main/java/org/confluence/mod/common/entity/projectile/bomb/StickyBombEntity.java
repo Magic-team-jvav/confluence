@@ -3,12 +3,10 @@ package org.confluence.mod.common.entity.projectile.bomb;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.init.item.ConsumableItems;
 
 public class StickyBombEntity extends BaseBombEntity {
     protected BlockPos stickBlock = null;
@@ -26,11 +24,6 @@ public class StickyBombEntity extends BaseBombEntity {
     public StickyBombEntity(LivingEntity pShooter) {
         super(ModEntities.STICKY_BOMB_ENTITY.get(), pShooter);
         this.bounceFactor = 0.0;
-    }
-
-    @Override
-    protected Item getDefaultItem() {
-        return ConsumableItems.STICKY_BOMB.get();
     }
 
     @Override

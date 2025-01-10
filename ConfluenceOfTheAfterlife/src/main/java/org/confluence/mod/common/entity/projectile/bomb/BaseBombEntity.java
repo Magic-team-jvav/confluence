@@ -6,12 +6,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.util.ModUtils;
 import org.joml.Vector3f;
 import org.mesdag.particlestorm.PSGameClient;
@@ -45,7 +45,7 @@ public class BaseBombEntity extends ThrowableItemProjectile {
 
     @Override
     protected Item getDefaultItem() {
-        return ConsumableItems.BOMB.get();
+        return Items.AIR;
     }
 
     /**

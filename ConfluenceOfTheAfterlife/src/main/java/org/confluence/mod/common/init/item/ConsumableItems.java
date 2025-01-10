@@ -35,12 +35,14 @@ public class ConsumableItems {
     public static final Supplier<ThrowableItem<StickyBombEntity>> STICKY_BOMB = ITEMS.register("sticky_bomb", () -> new ThrowableItem<>(0.8F, StickyBombEntity::new));
     public static final Supplier<ThrowableItem<BombFishEntity>> BOMB_FISH = ITEMS.register("bomb_fish", () -> new ThrowableItem<>(0.8F, BombFishEntity::new));
     public static final Supplier<ThrowableItem<ScarabBombEntity>> SCARAB_BOMB = ITEMS.register("scarab_bomb", () -> new ThrowableItem<>(0.8F, ScarabBombEntity::new));
-    public static final Supplier<ThrowableItem<BaseDynamiteEntity>> DYNAMITE = ITEMS.register("dynamite", () -> new ThrowableItem<>(0.75F, BaseDynamiteEntity::new));
-    public static final Supplier<ThrowableItem<BouncyDynamiteEntity>> BOUNCY_DYNAMITE = ITEMS.register("bouncy_dynamite", () -> new ThrowableItem<>(0.75F, BouncyDynamiteEntity::new));
-    public static final Supplier<ThrowableItem<StickyDynamiteEntity>> STICKY_DYNAMITE = ITEMS.register("sticky_dynamite", () -> new ThrowableItem<>(0.75F, StickyDynamiteEntity::new));
+    public static final Supplier<ThrowableItem<BaseDynamiteEntity>> DYNAMITE = ITEMS.register("dynamite", () -> new ThrowableItem<>(0.75F, BaseDynamiteEntity::new)); // todo 模型
+    public static final Supplier<ThrowableItem<BouncyDynamiteEntity>> BOUNCY_DYNAMITE = ITEMS.register("bouncy_dynamite", () -> new ThrowableItem<>(0.75F, BouncyDynamiteEntity::new)); // todo 模型
+    public static final Supplier<ThrowableItem<StickyDynamiteEntity>> STICKY_DYNAMITE = ITEMS.register("sticky_dynamite", () -> new ThrowableItem<>(0.75F, StickyDynamiteEntity::new)); // todo 模型
     public static final Supplier<ThrowableItem<BaseGrenadeEntity>> GRENADE = ITEMS.register("grenade", () -> new ThrowableItem<>(0.7F, BaseGrenadeEntity::new)); // todo 模型
-    public static final Supplier<ThrowableItem<BouncyGrenadeEntity>> BOUNCY_GRENADE = ITEMS.register("bouncy_grenade", () -> new ThrowableItem<>(0.7F, BouncyGrenadeEntity::new));
-    public static final Supplier<ThrowableItem<StickyGrenadeEntity>> STICKY_GRENADE = ITEMS.register("sticky_grenade", () -> new ThrowableItem<>(0.7F, StickyGrenadeEntity::new));
+    public static final Supplier<ThrowableItem<BouncyGrenadeEntity>> BOUNCY_GRENADE = ITEMS.register("bouncy_grenade", () -> new ThrowableItem<>(0.7F, BouncyGrenadeEntity::new)); // todo 模型
+    public static final Supplier<ThrowableItem<StickyGrenadeEntity>> STICKY_GRENADE = ITEMS.register("sticky_grenade", () -> new ThrowableItem<>(0.7F, StickyGrenadeEntity::new)); // todo 模型
+    public static final Supplier<ThrowableItem<BaseDirtBombEntity>> DIRT_BOMB = ITEMS.register("dirt_bomb", () -> new ThrowableItem<>(0.8F, BaseDirtBombEntity::new)); // todo 模型
+    public static final Supplier<ThrowableItem<StickyDirtBombEntity>> STICKY_DIRT_BOMB = ITEMS.register("sticky_dirt_bomb", () -> new ThrowableItem<>(0.8F, StickyDirtBombEntity::new)); // todo 模型
     public static final Supplier<ShurikenItem> SHURIKEN = ITEMS.register("shuriken", ShurikenItem::new);
     public static final Supplier<ThrowingKnivesItem> THROWING_KNIVES = ITEMS.register("throwing_knives", ThrowingKnivesItem::new);
 

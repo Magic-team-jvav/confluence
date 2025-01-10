@@ -20,6 +20,7 @@ import org.mesdag.particlestorm.particle.ParticleEmitter;
 public class BaseBombEntity extends ThrowableItemProjectile {
     public static final ResourceLocation PARTICLE = Confluence.asResource("bomb_lead");
     public static final float DIAMETER = 0.375F;
+    protected float diameter = DIAMETER;
     public float rotateO = 0.0F;
     public float rotate = 0.0F;
     public Vector3f rotation = new Vector3f();
@@ -73,7 +74,7 @@ public class BaseBombEntity extends ThrowableItemProjectile {
         super.tick();
         if (level().isClientSide) {
             float s = (float) getDeltaMovement().length();
-            float r = 2.0F * s / DIAMETER;
+            float r = 2.0F * s / diameter;
             if (rotate > Mth.TWO_PI) this.rotate -= Mth.TWO_PI;
             this.rotateO = rotate;
             this.rotate += r / Mth.PI;

@@ -166,13 +166,13 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
             Item item = null;
             if (level.dimension() == Level.NETHER) {
                 item = switch (level.random.nextInt(14)) {
-                    // 洞穴探险
+                    case 0 -> SPELUNKER_POTION.get();
                     case 1 -> FEATHERFALL_POTION.get();
                     case 2 -> MANA_REGENERATION_POTION.get();
                     case 3 -> OBSIDIAN_SKIN_POTION.get();
                     case 4 -> MAGIC_POWER_POTION.get();
                     case 5 -> INVISIBILITY_POTION.get();
-                    // 狩猎
+                    case 6 -> HUNTER_POTION.get();
                     case 7 -> GRAVITATION_POTION.get();
                     case 8 -> THORNS_POTION.get();
                     case 9 -> WATER_WALKING_POTION.get();
@@ -186,19 +186,19 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                 }
             } else if (y <= 0.0) {
                 item = switch (level.random.nextInt(15)) {
-                    // 洞穴探险
+                    case 0 -> SPELUNKER_POTION.get();
                     case 1 -> FEATHERFALL_POTION.get();
                     case 2 -> NIGHT_OWL_POTION.get();
                     case 3, 4 -> WATER_WALKING_POTION.get();
                     case 5 -> ARCHERY_POTION.get();
                     case 6 -> GRAVITATION_POTION.get();
-                    // 狩猎
+                    case 7 -> HUNTER_POTION.get();
                     case 8 -> INVISIBILITY_POTION.get();
                     case 9 -> THORNS_POTION.get();
                     case 10 -> MINING_POTION.get();
                     case 11 -> HEART_REACH_POTION.get();
-                    // 脚蹼
-                    // 危险感
+                    case 12 -> FLIPPER_POTION.get();
+                    case 13 -> DANGERSENSE_POTION.get();
                     default -> RECALL_POTION.get();
                 };
             } else if (y <= 63.0) {
@@ -208,9 +208,9 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                     case 2 -> SWIFTNESS_POTION.get();
                     case 3 -> ARCHERY_POTION.get();
                     case 4 -> GILLS_POTION.get();
-                    // 狩猎
+                    case 5 -> HUNTER_POTION.get();
                     case 6 -> MINING_POTION.get();
-                    // 危险感
+                    case 7 -> DANGERSENSE_POTION.get();
                     default -> RECALL_POTION.get();
                 };
             } else if (y <= 240.0) {

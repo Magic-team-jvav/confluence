@@ -132,6 +132,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.fledgling_wings.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.chromatic_cloak.0", "对微光相位化免疫，当淹没在微光中时按住向下键可以相位化");
         add("tooltip.item.confluence.paint_scraper", "用于去除油漆或涂料，有时可以收集苔藓");
+        add("tooltip.item.confluence.paint_sprayer.0", "自动给放置的物体刷油漆或涂料");
         add("tooltip.item.confluence.coin", "潜行右键合并为上级钱币");
 
         add("biome.confluence.the_corruption", "腐化之地");
@@ -1259,6 +1260,18 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.STICKY_BOMB.get(), "粘性炸弹");
         add(ConsumableItems.SCARAB_BOMB.get(), "甲虫炸弹");
         add(ConsumableItems.BOMB_FISH.get(), "炸弹鱼");
+        add(ConsumableItems.DYNAMITE.get(), "雷管");
+        add(ConsumableItems.BOUNCY_DYNAMITE.get(), "弹力雷管");
+        add(ConsumableItems.STICKY_DYNAMITE.get(), "粘性雷管");
+        add(ConsumableItems.GRENADE.get(), "手榴弹");
+        add(ConsumableItems.BOUNCY_GRENADE.get(), "弹力手榴弹");
+        add(ConsumableItems.STICKY_GRENADE.get(), "粘性手榴弹");
+        add(ConsumableItems.DIRT_BOMB.get(), "泥土炸弹");
+        add(ConsumableItems.STICKY_DIRT_BOMB.get(), "粘性泥土炸弹");
+        add(ConsumableItems.DRY_BOMB.get(), "干炸弹");
+        add(ConsumableItems.WET_BOMB.get(), "湿炸弹");
+        add(ConsumableItems.LAVA_BOMB.get(), "熔岩炸弹");
+        add(ConsumableItems.HONEY_BOMB.get(), "蜂蜜炸弹");
         add(ConsumableItems.MANA_STAR.get(), "魔力水晶");
         add(ConsumableItems.LIFE_CRYSTAL.get(), "生命水晶");
         add(ConsumableItems.LIFE_FRUIT.get(), "生命果");
@@ -1914,6 +1927,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(AccessoryItems.FLEDGLING_WINGS.get(), "雏翼");
         add(AccessoryItems.CHROMATIC_CLOAK.get(), "炫彩斗篷");
         add(AccessoryItems.MUSIC_BOX.get(), "八音盒");
+        add(AccessoryItems.PAINT_SPRAYER.get(), "喷漆器");
 
         // 染料
         add(PaintItems.PAINTBRUSH.get(), "漆刷");

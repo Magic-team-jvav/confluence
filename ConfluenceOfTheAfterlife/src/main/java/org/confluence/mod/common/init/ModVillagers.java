@@ -45,8 +45,6 @@ public final class ModVillagers {
     // 村民的职业
     public static final Supplier<VillagerProfession> SKY_MILLER = PROFESSIONS.register("sky_miller", () -> new VillagerProfession("sky", holder -> holder.is(SKY_POI.getId()), holder -> holder.is(SKY_POI.getId()), ImmutableSet.of(MaterialItems.FALLING_STAR.get()), ImmutableSet.of(), SoundEvents.VILLAGER_WORK_WEAPONSMITH));
     public static final Supplier<VillagerProfession> BANKER = PROFESSIONS.register("banker", () -> new VillagerProfession("coin", holder -> holder.is(COIN_POI.getId()), holder -> holder.is(COIN_POI.getId()), ImmutableSet.of(
-            ModItems.COPPER_COIN.get(),
-            ModItems.SILVER_COIN.get(),
             ModItems.GOLDEN_COIN.get(),
             ModItems.PLATINUM_COIN.get(),
             ModItems.EMERALD_COIN.get()
@@ -169,7 +167,7 @@ public final class ModVillagers {
             tier4.add(new RandomItemListing(Items.EMERALD, IntegerRange.of(7, 7), HammerItems.PLATINUM_HAMMER.get(), 10, 25, 0.05F));
         } else if (type == BANKER.get()) {
             tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD), new ItemStack(Blocks.CHEST), 3, 25, 0.05F));
-            tier1.add(new BasicItemListing(new ItemStack(ModItems.SILVER_COIN.get(), 2), new ItemStack(Items.EMERALD), 3, 15, 0.05F));
+            tier1.add(new BasicItemListing(new ItemStack(ModItems.SILVER_COIN.get(), 20), new ItemStack(Items.EMERALD), 3, 15, 0.05F));
             tier2.add(new BasicItemListing(new ItemStack(ModItems.GOLDEN_COIN.get(), 3), new ItemStack(ModItems.EMERALD_COIN.get()), 3, 15, 0.05F));
             tier2.add(new BasicItemListing(new ItemStack(Items.EMERALD, 20), new ItemStack(ModItems.EMERALD_COIN.get()), 3, 25, 0.05F));
             tier4.add(new BasicItemListing(new ItemStack(ModItems.EMERALD_COIN.get()), new ItemStack(Items.EMERALD, 20), 3, 25, 0.05F));

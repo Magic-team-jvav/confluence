@@ -1,5 +1,5 @@
 {
-    "type": "minecraft:crafting_shaped",
+    "type": "confluence:heavy_work_bench",
     "pattern": [
         "#"
     ],

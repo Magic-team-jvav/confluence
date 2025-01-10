@@ -1,5 +1,5 @@
 {
-    "type": "minecraft:crafting_shaped",
+    "type": "confluence:heavy_work_bench",
     "pattern": [
         "###",
         "###",
@@ -7,7 +7,11 @@
     ],
     "key": {
         "#": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
             "item": "confluence:golden_coin"
+            },
+            "count": 11
         }
     },
     "result": {

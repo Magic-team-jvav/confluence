@@ -1,9 +1,7 @@
 {
-    "type": "minecraft:crafting_shaped",
+    "type": "confluence:heavy_work_bench",
     "pattern": [
-        "###",
-        "###",
-        "###"
+        "#"
     ],
     "key": {
         "#": {
@@ -11,6 +9,7 @@
         }
     },
     "result": {
-        "id": "confluence:golden_coin"
+        "id": "confluence:copper_coin",
+        "count": 99
     }
 }

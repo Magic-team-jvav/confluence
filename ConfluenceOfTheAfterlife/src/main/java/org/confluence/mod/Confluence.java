@@ -1,6 +1,9 @@
 package org.confluence.mod;
 
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.GameRules;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -54,5 +57,21 @@ public class Confluence {
 
     public static ResourceLocation asResource(String path) {
         return ResourceLocation.fromNamespaceAndPath(MODID, path);
+    }
+
+    public static String asDescriptionId(String path) {
+        return MODID + "." + path;
+    }
+
+    public static <T> ResourceKey<T> asResourceKey(ResourceKey<? extends Registry<T>> registryKey, String path) {
+        return ResourceKey.create(registryKey, asResource(path));
+    }
+
+    public static <T> ResourceKey<Registry<T>> asResourceKey(String path) {
+        return ResourceKey.createRegistryKey(asResource(path));
+    }
+
+    public static <T> TagKey<T> asTagKey(ResourceKey<Registry<T>> registryKey, String path) {
+        return TagKey.create(registryKey, asResource(path));
     }
 }

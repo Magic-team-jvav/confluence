@@ -6,6 +6,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.util.ModUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.awt.*;
 import java.util.List;
 
 @Mixin(DeathScreen.class)
@@ -57,6 +59,12 @@ public abstract class DeathScreenMixin extends Screen {
     public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick, CallbackInfo ci) {
         if (((confluence$respawnWaitTime * 20 - this.delayTicker) / 20) >= 0) {
             pGuiGraphics.drawCenteredString(this.font, this.confluence$respawnTimeComponent, this.width / 2, 120, 16777215);
+            pGuiGraphics.blit(ResourceLocation.withDefaultNamespace("textures/gui/sprites/widget/button_disabled.png"),
+                    this.width / 2 - 100, this.height / 4 + 72, 0, 0, 0, 200, 20, 200, 20);
+            if (minecraft != null) {
+                pGuiGraphics.drawCenteredString(this.font, Component.translatable("deathScreen.respawn"),
+                        this.width / 2, this.height / 4 + 72 + 6, 16777215);
+            }
         }
     }
 

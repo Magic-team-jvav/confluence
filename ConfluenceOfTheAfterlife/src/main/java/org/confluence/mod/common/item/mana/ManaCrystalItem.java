@@ -17,8 +17,8 @@ import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.terra_curio.common.component.ModRarity;
 
-public class ManaStarItem extends CustomRarityItem {
-    public ManaStarItem() {
+public class ManaCrystalItem extends CustomRarityItem {
+    public ManaCrystalItem() {
         super(new Properties().stacksTo(16), ModRarity.YELLOW);
     }
 

@@ -195,7 +195,7 @@ public final class ModFluids {
         addItem(ModItems.WHOOPIE_CUSHION.get(), SwordItems.ZOMBIE_ARM.get());
 
         addItem(ConsumableItems.LIFE_CRYSTAL.get(), ConsumableItems.VITAL_CRYSTAL.get());
-        addItem(ConsumableItems.MANA_STAR.get(), ConsumableItems.ARCANE_CRYSTAL.get());
+        addItem(ConsumableItems.MANA_CRYSTAL.get(), ConsumableItems.ARCANE_CRYSTAL.get());
         addItem(ConsumableItems.LIFE_FRUIT.get(), ConsumableItems.AEGIS_APPLE.get());
         addItem(ModTags.Items.FRUIT, ConsumableItems.AMBROSIA.get(), 1);
         addItem(BaitItems.GOLD_WORM.get(), ConsumableItems.GUMMY_WORM.get());

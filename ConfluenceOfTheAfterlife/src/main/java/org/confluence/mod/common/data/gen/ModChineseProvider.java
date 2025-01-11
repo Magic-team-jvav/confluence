@@ -41,7 +41,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("item.confluence.afterlife_notes", "来世手记");
 
-        add("text.confluence.afterlife_notes", "  冒险者，新的天地充满了无尽的挑战与机遇，这本手记将帮助你了解这个世界的奥秘，指引你面对怪物和困境，只有不断探索，你才能发现更多的力量与宝藏，你的旅途才刚刚开始。                              —— 向导");
+        add("text.confluence.afterlife_notes", "  冒险者，新的天地充满了无尽的挑战与机遇，这本手记将帮助你了解这个世界的奥秘，指引你面对怪物和困境，只有不断探索，你才能发现更多的力量与宝藏，你的旅途才刚刚开始。                            —— 向导");
 
         add("worldgen.confluence.placing_traps", "正在放置机关");
         add("worldgen.confluence.generating_bees", "正在生成蜜蜂");
@@ -1272,7 +1272,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.WET_BOMB.get(), "湿炸弹");
         add(ConsumableItems.LAVA_BOMB.get(), "熔岩炸弹");
         add(ConsumableItems.HONEY_BOMB.get(), "蜂蜜炸弹");
-        add(ConsumableItems.MANA_STAR.get(), "魔力水晶");
+        add(ConsumableItems.MANA_CRYSTAL.get(), "魔力水晶");
         add(ConsumableItems.LIFE_CRYSTAL.get(), "生命水晶");
         add(ConsumableItems.LIFE_FRUIT.get(), "生命果");
         // 种子

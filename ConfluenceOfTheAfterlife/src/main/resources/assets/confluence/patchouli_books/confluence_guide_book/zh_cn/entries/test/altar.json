@@ -1,0 +1,11 @@
+{
+    "name": "祭坛",
+    "icon": "confluence:demon_altar",
+    "category": "confluence:boss",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "恶魔祭坛和猩红祭坛是天然生成的制作站，主要出现在腐化之地或猩红之地中的裂隙之中和周围，较少出现在地下。它们用于制作困难模式之前的 Boss 召唤物品和其他特殊物品。它们不能被拿走、拾取、放置、或制作。"
+        }
+    ]
+}

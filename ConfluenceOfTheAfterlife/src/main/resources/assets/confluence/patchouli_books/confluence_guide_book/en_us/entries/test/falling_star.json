@@ -1,0 +1,11 @@
+{
+    "name": "Falling Star",
+    "icon": "confluence:falling_star",
+    "category": "confluence:mana",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "Stars fall all over the world at night. They can be used for all sorts of useful things. If you see one, be sure to grab it because they disappear after sunrise."
+        }
+    ]
+}

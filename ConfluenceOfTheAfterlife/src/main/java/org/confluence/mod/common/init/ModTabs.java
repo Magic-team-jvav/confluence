@@ -63,7 +63,7 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.MATERIAL_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.materials"))
                     .displayItems((parameters, output) -> {
-                        output.accept(ConsumableItems.MANA_STAR.get());
+                        output.accept(ConsumableItems.MANA_CRYSTAL.get());
                         output.accept(ConsumableItems.LIFE_CRYSTAL.get());
                         output.accept(ConsumableItems.LIFE_FRUIT.get());
                         MaterialItems.ITEMS.getEntries().forEach(item -> output.accept(item.get().getDefaultInstance()));

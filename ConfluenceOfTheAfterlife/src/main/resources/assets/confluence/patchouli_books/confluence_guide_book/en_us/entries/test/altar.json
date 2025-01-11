@@ -1,0 +1,11 @@
+{
+    "name": "Altar",
+    "icon": "confluence:demon_altar",
+    "category": "confluence:boss",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "Demon Altars and Crimson Altars are naturally-occurring crafting stations found mainly in and around chasms in The Corruption or The Crimson, and less frequently underground. They are used to craft pre-Hardmode boss-summoning items and special items such as the Void Bag and Vault. Altars cannot be freed, picked up, placed, or crafted."
+        }
+    ]
+}

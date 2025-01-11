@@ -1,0 +1,7 @@
+{
+  "parent": "confluence:block/template_drooping_vine",
+  "textures": {
+    "vine": "confluence:block/forest_drooping_vine",
+    "vine_1": "confluence:block/forest_drooping_vine_1"
+  }
+}

@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"1": "block/cobblestone",
-		"2": "confluence:item/enchanted_sword",
+		"2": "confluence:item/sword/enchanted_sword",
 		"particle": "block/cobblestone"
 	},
 	"elements": [

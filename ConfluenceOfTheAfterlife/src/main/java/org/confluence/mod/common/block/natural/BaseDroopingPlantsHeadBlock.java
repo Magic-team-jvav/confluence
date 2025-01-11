@@ -142,9 +142,8 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock {
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         double halfSide = (16 - side) / 2.0;
-        double height = state.getValue(AGE) == 0 ? 0 : 16 - side;
 
-        return SHAPE = Block.box(halfSide, height, halfSide, 16 - halfSide, 16, 16 - halfSide);
+        return SHAPE = Block.box(halfSide, 0, halfSide, 16 - halfSide, 16, 16 - halfSide);
     }
 
     @Override

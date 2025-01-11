@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"1": "block/cobblestone",
-		"3": "confluence:item/terragrim",
+		"3": "confluence:item/sword/terragrim",
 		"particle": "block/cobblestone"
 	},
 	"elements": [

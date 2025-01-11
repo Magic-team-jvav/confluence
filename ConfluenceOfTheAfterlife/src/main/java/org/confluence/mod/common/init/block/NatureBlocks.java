@@ -143,10 +143,10 @@ public class NatureBlocks {
     public static final LogBlockSet SPOOKY_LOG_BLOCKS = LogBlockSet.builder("spooky", true).createDefault(SPOOKY, false).build();
     // 生命树
     public static final LogBlockSet LIVING_LOG_BLOCKS = LogBlockSet.builder("living", true)
-            .log(properties -> new TransparentRotatedPillarBlock(properties.noOcclusion()))
-            .strippedLog(properties -> new TransparentRotatedPillarBlock(properties.noOcclusion()))
-            .wood(properties -> new TransparentRotatedPillarBlock(properties.noOcclusion()))
-            .strippedWood(properties -> new TransparentRotatedPillarBlock(properties.noOcclusion()))
+            .log(RotatedPillarBlock::new)
+            .strippedLog(RotatedPillarBlock::new)
+            .wood(RotatedPillarBlock::new)
+            .strippedWood(RotatedPillarBlock::new)
             .leaves(properties -> new TransparentLeavesBlock(properties.noOcclusion()))
             .button(properties -> new ButtonBlock(LIVING.SET, 30, properties))
             .fence(FenceBlock::new)

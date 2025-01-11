@@ -153,9 +153,16 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
         y = jj - 20;
         for( int i = 0; i < myCoins.length; i++){
             ItemStack stack = new ItemStack(coinItem.get(i), myCoins[i]);
+            int count = stack.getCount();
             guiGraphics.renderItem(stack, x, y );
-            guiGraphics.renderItemDecorations(this.font, stack, x, y);
-            x+=20;
+            float scale = (count < 1000) ? 1.0F : 0.75F;
+            int moveX = (count < 1000) ? 0 : 6;
+            int moveY = (count < 1000) ? 0 : 5;
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().scale(scale, scale, 1.0F);
+            guiGraphics.renderItemDecorations(this.font, stack, (int) (x / scale) + moveX, (int) (y / scale) + moveY);
+            guiGraphics.pose().popPose();
+            x+= (count == 0) ? 0 : 20;
         }
 
         // 上面的材料物品

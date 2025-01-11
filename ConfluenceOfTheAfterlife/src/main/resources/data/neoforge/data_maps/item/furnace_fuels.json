@@ -23,6 +23,9 @@
         },
         "#confluence:sapling": {
             "burn_time": 100
+        },
+        "confluence:bottomless_lava_bucket": {
+            "burn_time": 2147483647
         }
     }
 }

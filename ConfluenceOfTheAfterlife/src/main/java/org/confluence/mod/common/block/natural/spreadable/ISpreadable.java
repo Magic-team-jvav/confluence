@@ -230,8 +230,13 @@ public interface ISpreadable {
                 NatureBlocks.TR_CRIMSON_COBBLESTONE, NatureBlocks.PEARL_COBBLESTONE,
 
                 NatureBlocks.HARDENED_SAND_BLOCK, NatureBlocks.PEARL_HARDENED_SAND_BLOCK,
+                NatureBlocks.RED_HARDENED_SAND_BLOCK, NatureBlocks.PEARL_HARDENED_SAND_BLOCK,
+                NatureBlocks.MOIST_SAND_BLOCK, NatureBlocks.PEARL_MOIST_SAND_BLOCK,
+                NatureBlocks.RED_MOIST_SAND_BLOCK, NatureBlocks.PEARL_MOIST_SAND_BLOCK,
                 NatureBlocks.EBONY_HARDENED_SAND_BLOCK, NatureBlocks.PEARL_HARDENED_SAND_BLOCK,
+                NatureBlocks.EBONY_MOIST_SAND_BLOCK, NatureBlocks.PEARL_MOIST_SAND_BLOCK,
                 NatureBlocks.TR_CRIMSON_HARDENED_SAND_BLOCK, NatureBlocks.PEARL_HARDENED_SAND_BLOCK,
+                NatureBlocks.TR_CRIMSON_MOIST_SAND_BLOCK, NatureBlocks.PEARL_MOIST_SAND_BLOCK,
 
                 NatureBlocks.EBONY_SANDSTONE, NatureBlocks.PEARL_SANDSTONE,
                 NatureBlocks.TR_CRIMSON_SANDSTONE, NatureBlocks.PEARL_SANDSTONE,
@@ -378,8 +383,13 @@ public interface ISpreadable {
                 OreBlocks.TR_CRIMSON_ORE, OreBlocks.FLESHIFICATION_TR_CRIMSON_ORE,
 
                 // 蘑菇
-                NatureBlocks.LIFE_MUSHROOM, NatureBlocks.VICIOUS_MUSHROOM
-        ),
+                NatureBlocks.LIFE_MUSHROOM, NatureBlocks.VICIOUS_MUSHROOM,
+
+                NatureBlocks.HARDENED_SAND_BLOCK, NatureBlocks.TR_CRIMSON_HARDENED_SAND_BLOCK,
+                NatureBlocks.RED_HARDENED_SAND_BLOCK, NatureBlocks.TR_CRIMSON_HARDENED_SAND_BLOCK,
+                NatureBlocks.MOIST_SAND_BLOCK, NatureBlocks.TR_CRIMSON_MOIST_SAND_BLOCK,
+                NatureBlocks.RED_MOIST_SAND_BLOCK, NatureBlocks.TR_CRIMSON_MOIST_SAND_BLOCK
+                ),
 
 
         CORRUPT(
@@ -488,7 +498,11 @@ public interface ISpreadable {
                 NatureBlocks.PEARL_COBBLESTONE, NatureBlocks.EBONY_COBBLESTONE,
 
                 NatureBlocks.HARDENED_SAND_BLOCK, NatureBlocks.EBONY_HARDENED_SAND_BLOCK,
+                NatureBlocks.RED_HARDENED_SAND_BLOCK, NatureBlocks.EBONY_HARDENED_SAND_BLOCK,
+                NatureBlocks.MOIST_SAND_BLOCK, NatureBlocks.EBONY_MOIST_SAND_BLOCK,
+                NatureBlocks.RED_MOIST_SAND_BLOCK, NatureBlocks.EBONY_MOIST_SAND_BLOCK,
                 NatureBlocks.PEARL_HARDENED_SAND_BLOCK, NatureBlocks.EBONY_HARDENED_SAND_BLOCK,
+                NatureBlocks.PEARL_MOIST_SAND_BLOCK, NatureBlocks.EBONY_MOIST_SAND_BLOCK,
 
                 NatureBlocks.PEARL_SANDSTONE, NatureBlocks.EBONY_SANDSTONE,
 
@@ -508,6 +522,10 @@ public interface ISpreadable {
         GLOWING(
                 getSupplier(MUD), NatureBlocks.MUSHROOM_GRASS_BLOCK,
                 NatureBlocks.JUNGLE_SPORE, NatureBlocks.GLOWING_MUSHROOM
+        ),
+        JUNGLE(
+                getSupplier(MUD), NatureBlocks.MUSHROOM_GRASS_BLOCK,
+                NatureBlocks.GLOWING_MUSHROOM, NatureBlocks.JUNGLE_SPORE
         ),
 
         PURE(

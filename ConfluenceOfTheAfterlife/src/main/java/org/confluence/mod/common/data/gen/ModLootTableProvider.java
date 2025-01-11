@@ -38,6 +38,7 @@ import java.util.concurrent.CompletableFuture;
 import static org.confluence.mod.common.init.block.DecorativeBlocks.*;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
 import static org.confluence.mod.common.init.block.NatureBlocks.*;
+import static org.confluence.mod.common.init.block.NatureBlocks.EBONY_MOIST_SAND_BLOCK;
 import static org.confluence.mod.common.init.block.OreBlocks.*;
 import static org.confluence.mod.common.init.item.ConsumableItems.LIFE_CRYSTAL;
 import static org.confluence.mod.common.init.item.MaterialItems.*;
@@ -251,13 +252,19 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(BIG_TR_EMERALD_BLOCK.get());
 
             dropSelf(HARDENED_SAND_BLOCK.get());
+            dropSelf(MOIST_SAND_BLOCK.get());
             dropSelf(RED_HARDENED_SAND_BLOCK.get());
+            dropSelf(RED_MOIST_SAND_BLOCK.get());
             dropSelf(EBONY_HARDENED_SAND_BLOCK.get());
+            dropSelf(EBONY_MOIST_SAND_BLOCK.get());
             dropSelf(PEARL_HARDENED_SAND_BLOCK.get());
+            dropSelf(PEARL_MOIST_SAND_BLOCK.get());
             dropSelf(TR_CRIMSON_HARDENED_SAND_BLOCK.get());
+            dropSelf(TR_CRIMSON_MOIST_SAND_BLOCK.get());
 
             dropOther(LIFE_CRYSTAL_BLOCK.get(), LIFE_CRYSTAL.get());
             dropOther(MUSHROOM_GRASS_BLOCK.get(), Items.MUD);
+            dropOther(JUNGLE_GRASS_BLOCK.get(), Items.MUD);
 
             //chain
             dropSelf(RUBY_CHAIN.get());

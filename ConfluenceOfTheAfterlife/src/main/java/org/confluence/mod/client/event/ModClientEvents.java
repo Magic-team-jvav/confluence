@@ -123,6 +123,12 @@ public final class ModClientEvents {
         event.registerLayerDefinition(ScarabBombEntityModel.LAYER_LOCATION, ScarabBombEntityModel::createBodyLayer);
         event.registerLayerDefinition(StickyBombEntityModel.LAYER_LOCATION, StickyBombEntityModel::createBodyLayer);
         event.registerLayerDefinition(BombFishEntityModel.LAYER_LOCATION, BombFishEntityModel::createBodyLayer);
+        event.registerLayerDefinition(DirtBombEntityModel.LAYER_LOCATION, DirtBombEntityModel::createBodyLayer);
+        event.registerLayerDefinition(StickyDirtBombEntityModel.LAYER_LOCATION, StickyDirtBombEntityModel::createBodyLayer);
+        event.registerLayerDefinition(BaseDynamiteEntityModel.LAYER_LOCATION, BaseDynamiteEntityModel::createBodyLayer);
+        event.registerLayerDefinition(StickyDynamiteEntityModel.LAYER_LOCATION, StickyDynamiteEntityModel::createBodyLayer);
+        event.registerLayerDefinition(BouncyDynamiteEntityModel.LAYER_LOCATION, BouncyDynamiteEntityModel::createBodyLayer);
+        event.registerLayerDefinition(BaseGrenadeEntityModel.LAYER_LOCATION, BaseGrenadeEntityModel::createBodyLayer);
 
         event.registerLayerDefinition(BaseFishingHookModel.WOOD, BaseFishingHookModel::createWoodLayer);
         event.registerLayerDefinition(BaseFishingHookModel.REINFORCED, BaseFishingHookModel::createReinforcedLayer);
@@ -160,6 +166,8 @@ public final class ModClientEvents {
         event.registerEntityRenderer(SCARAB_BOMB_ENTITY.get(), ScarabBombEntityRenderer::new);
         event.registerEntityRenderer(STICKY_BOMB_ENTITY.get(), StickyBombEntityRenderer::new);
         event.registerEntityRenderer(BOMB_FISH_ENTITY.get(), BombFishEntityRenderer::new);
+        event.registerEntityRenderer(DIRT_BOMB.get(), DirtBombEntityRenderer::new);
+        event.registerEntityRenderer(STICKY_DIRT_BOMB.get(), StickyDirtBombEntityRenderer::new);
 
         event.registerEntityRenderer(BASE_MANA_STAFF_PROJECTILE.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(ARROW_PROJECTILE.get(), TerraArrowRenderer::new);
@@ -171,14 +179,12 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(THROWN_KNIVES_PROJECTILE.get(), ThrownKnivesProjectileRenderer::new);
         event.registerEntityRenderer(SHURIKEN_PROJECTILE.get(), ShurikenProjectileRenderer::new);
-        event.registerEntityRenderer(GRENADE.get(), EmptyEntityRenderer::new);
+        event.registerEntityRenderer(GRENADE.get(), BaseGrenadeEntityRenderer::new);
         event.registerEntityRenderer(BOUNCY_GRENADE.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(STICKY_GRENADE.get(), EmptyEntityRenderer::new);
-        event.registerEntityRenderer(DYNAMITE.get(), EmptyEntityRenderer::new);
-        event.registerEntityRenderer(BOUNCY_DYNAMITE.get(), EmptyEntityRenderer::new);
-        event.registerEntityRenderer(STICKY_DYNAMITE.get(), EmptyEntityRenderer::new);
-        event.registerEntityRenderer(DIRT_BOMB.get(), EmptyEntityRenderer::new);
-        event.registerEntityRenderer(STICKY_DIRT_BOMB.get(), EmptyEntityRenderer::new);
+        event.registerEntityRenderer(DYNAMITE.get(), BaseDynamiteEntityRenderer::new);
+        event.registerEntityRenderer(BOUNCY_DYNAMITE.get(), BouncyDynamiteEntityRenderer::new);
+        event.registerEntityRenderer(STICKY_DYNAMITE.get(), StickyDynamiteEntityRenderer::new);
         event.registerEntityRenderer(DRY_BOMB.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(WET_BOMB.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(LAVA_BOMB.get(), EmptyEntityRenderer::new);

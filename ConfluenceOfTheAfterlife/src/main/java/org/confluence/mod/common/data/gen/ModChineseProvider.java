@@ -1299,6 +1299,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.VILE_POWDER.get(), "魔粉");
         add(ConsumableItems.VICIOUS_POWDER.get(), "毒粉");
         add(ConsumableItems.PURIFICATION_POWDER.get(), "净化粉");
+        add(ConsumableItems.FERTILIZER.get(), "肥料");
         add(ConsumableItems.SUSPICIOUS_LOOKING_EYE.get(), "可疑眼球");
         add(ConsumableItems.SLIME_CROWN.get(), "史莱姆皇冠");
         add(ConsumableItems.WORM_FOOD.get(), "蠕虫诱饵");

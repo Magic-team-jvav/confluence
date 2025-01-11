@@ -559,6 +559,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(OreBlocks.HALLOWED_BLOCK.get(), "神圣块");
         add(OreBlocks.SPECTRE_BLOCK.get(), "幽灵块");
         add(OreBlocks.SHROOMITE_BLOCK.get(), "蘑菇矿块");
+        add(OreBlocks.SANCTIFICATION_REDSTONE_ORE.get(), "圣化红石矿石");
+        add(OreBlocks.CORRUPTION_REDSTONE_ORE.get(), "腐化红石矿石");
+        add(OreBlocks.FLESHIFICATION_REDSTONE_ORE.get(), "血化红石矿石");
 
         add(NatureBlocks.EBONY_LOG_BLOCKS.getButton().get(), "乌木按钮");
         add(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks().get(), "乌木板");
@@ -727,6 +730,79 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.ASH_BLOCK.get(), "灰烬块");
         add(NatureBlocks.ASH_GRASS_BLOCK.get(), "灰烬草块");
         add(NatureBlocks.ASH_GRASS.get(), "灰烬草");
+        add(NatureBlocks.CLOUD_BLOCK.get(), "云块");
+        add(NatureBlocks.EVAPORATIVE_CLOUD_BLOCK.get(), "蒸发云块");
+        add(NatureBlocks.RAIN_CLOUD_BLOCK.get(), "雨云块");
+        add(NatureBlocks.SNOW_CLOUD_BLOCK.get(), "雪云块");
+        add(NatureBlocks.THIN_ICE_BLOCK.get(), "薄冰块");
+        add(NatureBlocks.LIFE_CRYSTAL_BLOCK.get(), "生命水晶");
+        add(NatureBlocks.JUNGLE_HIVE_BLOCK.get(), "丛林蜂巢");
+        add(NatureBlocks.THIN_HONEY_BLOCK.get(), "稀薄蜂蜜块");
+        add(NatureBlocks.LOOSE_HONEY_BLOCK.get(), "松散蜂蜜块");
+        add(NatureBlocks.STONY_LOG.get(), "石质原木");
+        add(NatureBlocks.AMBER_BRANCHES.get(), "琥珀石枝杈");
+        add(NatureBlocks.RUBY_BRANCHES.get(), "红玉石枝杈");
+        add(NatureBlocks.TOPAZ_BRANCHES.get(), "黄玉石枝杈");
+        add(NatureBlocks.EMERALD_BRANCHES.get(), "翡翠石枝杈");
+        add(NatureBlocks.DIAMOND_BRANCHES.get(), "钻石枝杈");
+        add(NatureBlocks.SAPPHIRE_BRANCHES.get(), "蓝玉石枝杈");
+        add(NatureBlocks.TR_AMETHYST_BRANCHES.get(), "紫晶石枝杈");
+        add(NatureBlocks.ASH_BRANCHES.get(), "白蜡枝杈");
+        add(NatureBlocks.AETHERIUM_BLOCK.get(), "以太块");
+        add(NatureBlocks.DARK_AETHERIUM_BLOCK.get(), "黯淡以太块");
+
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getPlanks().get(), "阴森木板");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getPressurePlate().get(), "阴森木压力板");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getFence().get(), "阴森木栅栏");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getFenceGate().get(), "阴森木栅栏门");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getButton().get(), "阴森按钮");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getDoor().get(), "阴森木门");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getTrapdoor().get(), "阴森木活板门");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getSign().get(), "阴森告示牌");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getStairs().get(), "阴森楼梯");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getSlab().get(), "阴森台阶");
+
+        add(NatureBlocks.STELLAR_BLOSSOM.get(), "星辰花");
+        add(NatureBlocks.CLOUDWEAVER.get(), "云织草");
+        add(NatureBlocks.CRIMSON_THORN.get(), "猩红荆棘");
+        add(NatureBlocks.CORRUPTION_THORN.get(), "腐化荆棘");
+        add(NatureBlocks.JUNGLE_THORN.get(), "丛林荆棘");
+        add(NatureBlocks.PLANTERA_THORN.get(), "世纪之花荆棘");
+        // 树苗
+        add(NatureBlocks.SHADOW_SAPLING.get(), "暗影树苗");
+        add(NatureBlocks.EBONY_SAPLING.get(), "乌木树苗");
+        add(NatureBlocks.PALM_SAPLING.get(), "棕榈树苗");
+        add(NatureBlocks.PEARL_SAPLING.get(), "珍珠树苗");
+        add(NatureBlocks.RUBY_SAPLING.get(), "红玉树苗");
+        add(NatureBlocks.AMBER_SAPLING.get(), "琥珀树苗");
+        add(NatureBlocks.TOPAZ_SAPLING.get(), "黄玉树苗");
+        add(NatureBlocks.EMERALD_SAPLING.get(), "翡翠树苗");
+        add(NatureBlocks.DIAMOND_SAPLING.get(), "钻石树苗");
+        add(NatureBlocks.SAPPHIRE_SAPLING.get(), "蓝玉树苗");
+        add(NatureBlocks.TR_AMETHYST_SAPLING.get(), "紫晶树苗");
+        add(NatureBlocks.ASH_SAPLING.get(), "白蜡树苗");
+        add(NatureBlocks.LIVING_SAPLING.get(), "生命树树苗");
+
+        add(NatureBlocks.VICIOUS_MUSHROOM.get(), "毒蘑菇");
+        add(NatureBlocks.VILE_MUSHROOM.get(), "魔菇");
+        add(NatureBlocks.GLOWING_MUSHROOM.get(), "发光蘑菇");
+        add(NatureBlocks.LIFE_MUSHROOM.get(), "生命蘑菇");
+        add(NatureBlocks.JUNGLE_SPORE.get(), "丛林孢子");
+        add(NatureBlocks.JUNGLE_ROSE.get(), "丛林玫瑰");
+        add(NatureBlocks.CORRUPT_GRASS.get(), "腐化草");
+        add(NatureBlocks.TR_CRIMSON_GRASS.get(), "猩红草");
+        add(NatureBlocks.HALLOW_GRASS.get(), "神圣草");
+        add(NatureBlocks.NATURES_GIFT.get(), "大自然的恩赐");
+        //藤蔓
+        add(NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get(), "黄柳垂叶");
+        add(NatureBlocks.GLOWING_MUSHROOM_DROOPING_VINE.get(), "发光蘑菇垂藤");
+        add(NatureBlocks.FOREST_DROOPING_VINE.get(), "森林垂藤");
+        add(NatureBlocks.JUNGLE_DROOPING_VINE.get(), "丛林垂藤");
+        add(NatureBlocks.CORRUPT_DROOPING_VINE.get(), "腐化垂藤");
+        add(NatureBlocks.TR_CRIMSON_DROOPING_VINE.get(), "猩红垂藤");
+        add(NatureBlocks.HALLOW_DROOPING_VINE.get(), "神圣垂藤");
+
+
         add(DecorativeBlocks.BIG_RUBY_BLOCK.get(), "大红玉块");
         add(DecorativeBlocks.BIG_AMBER_BLOCK.get(), "大琥珀块");
         add(DecorativeBlocks.BIG_TOPAZ_BLOCK.get(), "大黄玉块");
@@ -797,6 +873,23 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.DISC_BLOCK.get(), "飞盘块");
         add(DecorativeBlocks.WOOD_STONE_SLATTED_BLOCKS.get(), "木石板条块");
         add(DecorativeBlocks.LIHZAHRD_BRICKS.get(), "丛林蜥蜴砖");
+        add(DecorativeBlocks.RUBY_CHAIN.get(), "红玉锁链");
+        add(DecorativeBlocks.AMBER_CHAIN.get(), "琥珀锁链");
+        add(DecorativeBlocks.TOPAZ_CHAIN.get(), "黄玉锁链");
+        add(DecorativeBlocks.EMERALD_CHAIN.get(), "翡翠锁链");
+        add(DecorativeBlocks.SAPPHIRE_CHAIN.get(), "蓝玉锁链");
+        add(DecorativeBlocks.DIAMOND_CHAIN.get(), "钻石锁链");
+        add(DecorativeBlocks.AMETHYST_CHAIN.get(), "紫晶锁链");
+        add(DecorativeBlocks.SILK_CHAIN.get(), "蛛丝绳");
+        add(DecorativeBlocks.BONE_CHAIN.get(), "骨头锁链");
+        add(DecorativeBlocks.FLOATING_WHEAT_BALE.get(), "飘飘麦捆");
+        add(DecorativeBlocks.BLUE_BRICKS.get(), "蓝色地牢砖");
+        add(DecorativeBlocks.GREEN_BRICKS.get(), "绿色地牢砖");
+        add(DecorativeBlocks.PINK_BRICKS.get(), "粉色地牢砖");
+        add(DecorativeBlocks.CHISELED_BLUE_BRICKS.get(), "雕纹蓝色地牢砖");
+        add(DecorativeBlocks.CHISELED_GREEN_BRICKS.get(), "雕纹绿色地牢砖");
+        add(DecorativeBlocks.CHISELED_PINK_BRICKS.get(), "雕纹粉色地牢砖");
+        add(DecorativeBlocks.AETHERIUM_BRICKS.get(), "以太砖");
 
         // 雕像
         add(StatueBlocks.A_STATUE.get(), "A字雕像");
@@ -837,7 +930,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(StatueBlocks.N8_STATUE.get(), "8字雕像");
         add(StatueBlocks.N9_STATUE.get(), "9字雕像");
 
-
         add(StatueBlocks.ANVIL_STATUE.get(), "砧雕像");
         add(StatueBlocks.ARMOR_STATUE.get(), "盔甲雕像");
         add(StatueBlocks.AXE_STATUE.get(), "战斧雕像");
@@ -876,68 +968,20 @@ public class ModChineseProvider extends LanguageProvider {
         add(StatueBlocks.STAR_STATUE.get(), "星星雕像");
         add(StatueBlocks.BAST_STATUE.get(), "巴斯特雕像");
 
+
         add(ModBlocks.POO.get(), "臭臭");
-
-
-        add(NatureBlocks.CLOUD_BLOCK.get(), "云块");
-        add(NatureBlocks.EVAPORATIVE_CLOUD_BLOCK.get(), "蒸发云块");
-        add(NatureBlocks.RAIN_CLOUD_BLOCK.get(), "雨云块");
-        add(NatureBlocks.SNOW_CLOUD_BLOCK.get(), "雪云块");
-        add(NatureBlocks.THIN_ICE_BLOCK.get(), "薄冰块");
         add(ModBlocks.CRISPY_HONEY_BLOCK.get(), "松脆蜂蜜块");
-        add(NatureBlocks.LIFE_CRYSTAL_BLOCK.get(), "生命水晶");
-        add(FunctionalBlocks.CRIMSON_ALTAR.get(), "猩红祭坛");
-        add(FunctionalBlocks.DEMON_ALTAR.get(), "恶魔祭坛");
-        add(FunctionalBlocks.EXTRACTINATOR.get(), "提炼机");
-        add(FunctionalBlocks.SKY_MILL.get(), "天磨");
-        add(FunctionalBlocks.HEAVY_WORK_BENCH.get(), "重型工作台");
-        add(FunctionalBlocks.HELLFORGE.get(), "地狱熔炉");
-        add(FunctionalBlocks.ALCHEMY_TABLE.get(), "炼药桌");
-        add(FunctionalBlocks.WEATHER_VANE.get(), "风向标");
-        add(FunctionalBlocks.LEAD_ANVIL.get(), "铅砧");
-        add(FunctionalBlocks.CHIPPED_LEAD_ANVIL.get(), "开裂的铅砧");
-        add(FunctionalBlocks.DAMAGED_LEAD_ANVIL.get(), "损坏的铅砧");
-        add(FunctionalBlocks.SHIMMER_TRAP.get(), "微光陷阱");
-        add(FunctionalBlocks.GRAVITATION_TRAP.get(), "重力陷阱");
-        add(FunctionalBlocks.PNEUMATIC_TRAP.get(), "气压陷阱");
-        add(FunctionalBlocks.SPIKE.get(), "尖刺");
-        add(FunctionalBlocks.PLAYER_PRESSURE_PLATE.get(), "玩家压力板");
-        add(FunctionalBlocks.GEYSER_BLOCK.get(), "热喷泉");
-        add(FunctionalBlocks.FRAGILE_SANDSTONE.get(), "易碎砂岩");
-        add(FunctionalBlocks.MECHANICAL_FRAGILE_SANDSTONE.get(), "机械易碎砂岩");
-        add(FunctionalBlocks.DETONATOR.get(), "引爆器");
-        add(DecorativeBlocks.FLOATING_WHEAT_BALE.get(), "飘飘麦捆");
-        add(FunctionalBlocks.BASE_CHEST_BLOCK.get(), "箱子");
-        add(NatureBlocks.JUNGLE_HIVE_BLOCK.get(), "丛林蜂巢");
-        add(NatureBlocks.THIN_HONEY_BLOCK.get(), "稀薄蜂蜜块");
-        add(NatureBlocks.LOOSE_HONEY_BLOCK.get(), "松散蜂蜜块");
-        add(OreBlocks.SANCTIFICATION_REDSTONE_ORE.get(), "圣化红石矿石");
-        add(OreBlocks.CORRUPTION_REDSTONE_ORE.get(), "腐化红石矿石");
-        add(OreBlocks.FLESHIFICATION_REDSTONE_ORE.get(), "血化红石矿石");
-//        add(ModBlocks.OCULAR_BLOCKS.get(), "血肉眼球块");
-        add(ModBlocks.SWORD_IN_STONE.get(), "石中剑");
-        add(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE.get(), "深板岩压力板");
-        add(NatureBlocks.STONY_LOG.get(), "石质原木");
-        add(NatureBlocks.AMBER_BRANCHES.get(), "琥珀石枝杈");
-        add(NatureBlocks.RUBY_BRANCHES.get(), "红玉石枝杈");
-        add(NatureBlocks.TOPAZ_BRANCHES.get(), "黄玉石枝杈");
-        add(NatureBlocks.EMERALD_BRANCHES.get(), "翡翠石枝杈");
-        add(NatureBlocks.DIAMOND_BRANCHES.get(), "钻石枝杈");
-        add(NatureBlocks.SAPPHIRE_BRANCHES.get(), "蓝玉石枝杈");
-        add(NatureBlocks.TR_AMETHYST_BRANCHES.get(), "紫晶石枝杈");
-        add(NatureBlocks.ASH_BRANCHES.get(), "白蜡枝杈");
         add(ModBlocks.CRACKED_BLUE_BRICK.get(), "碎裂蓝色地牢砖");
         add(ModBlocks.CRACKED_GREEN_BRICK.get(), "碎裂绿色地牢砖");
         add(ModBlocks.CRACKED_PINK_BRICK.get(), "碎裂粉色地牢砖");
-        add(DecorativeBlocks.BLUE_BRICKS.get(), "蓝色地牢砖");
-        add(DecorativeBlocks.GREEN_BRICKS.get(), "绿色地牢砖");
-        add(DecorativeBlocks.PINK_BRICKS.get(), "粉色地牢砖");
-        add(DecorativeBlocks.CHISELED_BLUE_BRICKS.get(), "雕纹蓝色地牢砖");
-        add(DecorativeBlocks.CHISELED_GREEN_BRICKS.get(), "雕纹绿色地牢砖");
-        add(DecorativeBlocks.CHISELED_PINK_BRICKS.get(), "雕纹粉色地牢砖");
-        add(NatureBlocks.AETHERIUM_BLOCK.get(), "以太块");
-        add(DecorativeBlocks.AETHERIUM_BRICKS.get(), "以太砖");
-        add(NatureBlocks.DARK_AETHERIUM_BLOCK.get(), "黯淡以太块");
+        add(ModBlocks.SWORD_IN_STONE.get(), "石中剑");
+        add(ModBlocks.WATERLEAF.get(), "幌菊");
+        add(ModBlocks.FIREBLOSSOM.get(), "火焰花");
+        add(ModBlocks.MOONGLOW.get(), "月光草");
+        add(ModBlocks.BLINKROOT.get(), "闪耀根");
+        add(ModBlocks.SHIVERTHORN.get(), "寒颤棘");
+        add(ModBlocks.DAYBLOOM.get(), "太阳花");
+        add(ModBlocks.DEATHWEED.get(), "死亡草");
 /*
         add(Torches.RED_TORCH.item.get(), "红火把");
         add(Torches.ORANGE_TORCH.item.get(), "橙火把");
@@ -1005,16 +1049,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(CrateBlocks.HELL_STONE_CRATE.get(), "狱石匣");
         add(CrateBlocks.BEACH_CRATE.get(), "海滩匣");
 
-        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getPlanks().get(), "阴森木板");
-        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getPressurePlate().get(), "阴森木压力板");
-        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getFence().get(), "阴森木栅栏");
-        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getFenceGate().get(), "阴森木栅栏门");
-        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getButton().get(), "阴森按钮");
-        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getDoor().get(), "阴森木门");
-        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getTrapdoor().get(), "阴森木活板门");
-        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getSign().get(), "阴森告示牌");
-        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getStairs().get(), "阴森楼梯");
-        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getSlab().get(), "阴森台阶");
 
         add(ArrowItems.FLAMING_ARROW.get(), "烈焰箭");
         add(ArrowItems.UNHOLY_ARROW.get(), "邪箭");
@@ -1079,9 +1113,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.VERTEBRA.get(), "椎骨");
         add(MaterialItems.BLOOD_CLOT_POWDER.get(), "血凝粉末");
         add(MaterialItems.ROTTEN_BONE.get(), "腐蚀残骨");
-        add(MaterialItems.VILE_POWDER.get(), "魔粉");
-        add(MaterialItems.VICIOUS_POWDER.get(), "毒粉");
-        add(MaterialItems.PURIFICATION_POWDER.get(), "净化粉");
         add(MaterialItems.FILAMENTOUS_FIN.get(), "羽状鳍");
         add(MaterialItems.LENS.get(), "晶状体");
         add(MaterialItems.BLACK_LENS.get(), "黑晶状体");
@@ -1109,8 +1140,15 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.WINTER_MARROW.get(), "霜髓");
         add(MaterialItems.COLD_CRYSTAL.get(), "寒晶");
         add(MaterialItems.LEAD_NUGGET.get(), "铅粒");
-        add(ModItems.EMERALD_COIN.get(), "绿宝石币");
-        add(ModItems.DEAD_MANS_SWEATER.get(), "死人毛衣");
+        // 植物
+        add(MaterialItems.WATERLEAF.get(), "幌菊");
+        add(MaterialItems.FIREBLOSSOM.get(), "火焰花");
+        add(MaterialItems.MOONGLOW.get(), "月光草");
+        add(MaterialItems.BLINKROOT.get(), "闪耀根");
+        add(MaterialItems.SHIVERTHORN.get(), "寒颤棘");
+        add(MaterialItems.DAYBLOOM.get(), "太阳花");
+        add(MaterialItems.DEATHWEED.get(), "死亡草");
+        add(MaterialItems.JUNGLE_SPORE.get(), "丛林孢子");
 
 
         add(SwordItems.COPPER_SHORT_SWORD.get(), "铜短剑");
@@ -1128,7 +1166,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.GOLDEN_SHORT_SWORD.get(), "金短剑");
         add(SwordItems.GOLDEN_BOARD_SWORD.get(), "金阔剑");
         add(SwordItems.CACTUS_SWORD.get(), "仙人掌剑");
-
 
         add(SwordItems.CROWBAR.get(), "撬棍");
         add(SwordItems.ZOMBIE_ARM.get(), "僵尸臂");
@@ -1151,6 +1188,20 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.EXOTIC_SCIMITAR.get(), "异域弯刀");
         add(SwordItems.FAKE_SWORD.get(), "假剑");
         add(SwordItems.VOLCANO.get(), "火山");
+        add(SwordItems.DEVELOPER_SWORD.get(), "开发者剑");
+        // 光剑
+        add(SwordItems.RED_LIGHT_SABER.get(), "陨石红光剑");
+        add(SwordItems.ORANGE_LIGHT_SABER.get(), "陨石橙光剑");
+        add(SwordItems.YELLOW_LIGHT_SABER.get(), "陨石黄光剑");
+        add(SwordItems.GREEN_LIGHT_SABER.get(), "陨石绿光剑");
+        add(SwordItems.BLUE_LIGHT_SABER.get(), "陨石蓝光剑");
+        add(SwordItems.PURPLE_LIGHT_SABER.get(), "陨石紫光剑");
+        add(SwordItems.WHITE_LIGHT_SABER.get(), "陨石白光剑");
+        //剑气
+        add(SwordItems.ENCHANTED_SWORD.get(), "附魔剑");
+        //快攻
+        add(SwordItems.TERRAGRIM.get(), "泰拉魔刃");
+
 
         add(BoomerangItems.WOOD_BOOMERANG.get(), "木回旋镖");
         add(BoomerangItems.ENCHANTED_BOOMERANG.get(), "附魔回旋镖");
@@ -1159,7 +1210,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(BoomerangItems.TRIMARANG.get(), "三尖回旋镖");
         add(BoomerangItems.FLAMARANG.get(), "烈焰回旋镖");
         add(BoomerangItems.DEVELOPER_BOOMERANG.get(), "开发者回旋镖");
-        add(SwordItems.DEVELOPER_SWORD.get(), "开发者剑");
+
 
         add(AxeItems.COPPER_AXE.get(), "铜斧");
         add(AxeItems.TIN_AXE.get(), "锡斧");
@@ -1185,9 +1236,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(PickaxeItems.NIGHTMARE_PICKAXE.get(), "恶魔镐");
         add(PickaxeItems.DEATHBRINGER_PICKAXE.get(), "死亡使者镐");
         add(PickaxeItems.MOLTEN_PICKAXE.get(), "熔岩镐");
+
         add(PickaxeAxeItems.PICKSAW.get(), "锯刃镐");
-        add(DrillItems.DRAX.get(), "斧钻");
         add(PickaxeAxeItems.PICKAXE_AXE.get(), "镐斧");
+
+        add(DrillItems.DRAX.get(), "斧钻");
 
         // Hammers
         add(HammerItems.WOODEN_HAMMER.get(), "木锤");
@@ -1203,17 +1256,16 @@ public class ModChineseProvider extends LanguageProvider {
         add(HammerItems.PWNHAMMER.get(), "神锤");
         /* HammerAxes */
 
-
         // 杂项
         add(ToolItems.ICE_MIRROR.get(), "冰雪镜");
-
-
-        add(ModItems.COPPER_COIN.get(), "铜币");
-        add(ModItems.SILVER_COIN.get(), "银币");
-        add(ModItems.GOLDEN_COIN.get(), "金币");
-        add(ModItems.PLATINUM_COIN.get(), "铂金币");
-        add(ConsumableItems.SHURIKEN.get(), "手里剑");
-        add(ConsumableItems.THROWING_KNIVES.get(), "投刀");
+        add(ToolItems.RED_WRENCH.get(), "红扳手");
+        add(ToolItems.BLUE_WRENCH.get(), "蓝扳手");
+        add(ToolItems.GREEN_WRENCH.get(), "绿扳手");
+        add(ToolItems.YELLOW_WRENCH.get(), "黄扳手");
+        add(ToolItems.WIRE_CUTTER.get(), "钢丝钳");
+        add(ToolItems.GOLDEN_KEY.get(), "金钥匙");
+        add(ToolItems.SHADOW_KEY.get(), "暗影钥匙");
+        add(ToolItems.ENCUMBERING_STONE.get(), "负重石");
         add(ToolItems.MAGIC_CONCH.get(), "魔法海螺");
         add(ToolItems.DEMON_CONCH.get(), "恶魔海螺");
         add(ToolItems.HONEY_BUCKET.get(), "蜂蜜桶");
@@ -1221,12 +1273,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.BOTTOMLESS_WATER_BUCKET.get(), "无底水桶");
         add(ToolItems.BOTTOMLESS_LAVA_BUCKET.get(), "无底岩浆桶");
         add(ToolItems.BOTTOMLESS_HONEY_BUCKET.get(), "无底蜂蜜桶");
-        add(ModItems.SOUL_CAKE.get(), "灵魂蛋糕");
-        add(ModItems.STAR.get(), "魔力星");
-        add(ModItems.SUGAR_PLUM.get(), "蜜糖李");
-        add(ModItems.HEART.get(), "心");
-        add(ModItems.CANDY_CANE.get(), "拐杖糖");
-        add(ModItems.CANDY_APPLE.get(), "糖葫芦");
+
+
+        add(ConsumableItems.SHURIKEN.get(), "手里剑");
+        add(ConsumableItems.THROWING_KNIVES.get(), "投刀");
         add(ConsumableItems.VITAL_CRYSTAL.get(), "活力水晶");
         add(ConsumableItems.MINECART_UPGRADE_KIT.get(), "矿车升级包");
         add(ConsumableItems.GALAXY_PEARL.get(), "银河珍珠");
@@ -1241,20 +1291,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.DELUXE_PACKAGE.get(), "豪华套餐");
         add(ConsumableItems.CAN_OF_WORMS.get(), "蠕虫罐头");
         add(ConsumableItems.HERB_BAG.get(), "草药袋");
-        add(ModItems.WHOOPIE_CUSHION.get(), "整蛊坐垫");
-        add(ToolItems.RED_WRENCH.get(), "红扳手");
-        add(ToolItems.BLUE_WRENCH.get(), "蓝扳手");
-        add(ToolItems.GREEN_WRENCH.get(), "绿扳手");
-        add(ToolItems.YELLOW_WRENCH.get(), "黄扳手");
-        add(ToolItems.GOLDEN_KEY.get(), "金钥匙");
-        add(ToolItems.SHADOW_KEY.get(), "暗影钥匙");
-        add(ToolItems.ENCUMBERING_STONE.get(), "负重石");
+        add(ConsumableItems.VILE_POWDER.get(), "魔粉");
+        add(ConsumableItems.VICIOUS_POWDER.get(), "毒粉");
+        add(ConsumableItems.PURIFICATION_POWDER.get(), "净化粉");
         add(ConsumableItems.SUSPICIOUS_LOOKING_EYE.get(), "可疑眼球");
         add(ConsumableItems.SLIME_CROWN.get(), "史莱姆皇冠");
         add(ConsumableItems.WORM_FOOD.get(), "蠕虫诱饵");
-        add(FunctionalBlocks.STONE_PRESSURE_PLATE.get(), "石质压力板");
-
-        // 杂项
         add(ConsumableItems.BOMB.get(), "炸弹");
         add(ConsumableItems.BOUNCY_BOMB.get(), "弹力炸弹");
         add(ConsumableItems.STICKY_BOMB.get(), "粘性炸弹");
@@ -1275,10 +1317,21 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.MANA_CRYSTAL.get(), "魔力水晶");
         add(ConsumableItems.LIFE_CRYSTAL.get(), "生命水晶");
         add(ConsumableItems.LIFE_FRUIT.get(), "生命果");
-        // 种子
-        add(FoodItems.STELLAR_BLOSSOM_SEED.get(), "星辰花种子");
-        add(FoodItems.CLOUDWEAVER_SEED.get(), "云织草种子");
-        add(FoodItems.FLOATING_WHEAT_SEED.get(), "飘飘麦种子");
+
+        // 杂项
+        add(ModItems.COPPER_COIN.get(), "铜币");
+        add(ModItems.SILVER_COIN.get(), "银币");
+        add(ModItems.GOLDEN_COIN.get(), "金币");
+        add(ModItems.PLATINUM_COIN.get(), "铂金币");
+        add(ModItems.EMERALD_COIN.get(), "绿宝石币");
+        add(ModItems.SOUL_CAKE.get(), "灵魂蛋糕");
+        add(ModItems.STAR.get(), "魔力星");
+        add(ModItems.SUGAR_PLUM.get(), "蜜糖李");
+        add(ModItems.HEART.get(), "心");
+        add(ModItems.CANDY_CANE.get(), "拐杖糖");
+        add(ModItems.CANDY_APPLE.get(), "糖葫芦");
+        add(ModItems.WHOOPIE_CUSHION.get(), "整蛊坐垫");
+        add(ModItems.DEAD_MANS_SWEATER.get(), "死人毛衣");
 
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");
@@ -1286,7 +1339,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get(), "瞬爆TNT");
         add(FunctionalBlocks.SWITCH.get(), "开关");
         add(FunctionalBlocks.SIGNAL_ADAPTER.get(), "信号适配器");
-        add(ToolItems.WIRE_CUTTER.get(), "钢丝钳");
         add(FunctionalBlocks.DART_TRAP.get(), "毒镖陷阱");
         add(FunctionalBlocks.TIMERS_BLOCK_1_1.get(), "1秒计时器");
         add(FunctionalBlocks.TIMERS_BLOCK_3_1.get(), "3秒计时器");
@@ -1294,6 +1346,31 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.TIMERS_BLOCK_1_2.get(), "1/2秒计时器");
         add(FunctionalBlocks.TIMERS_BLOCK_1_4.get(), "1/4秒计时器");
         add(FunctionalBlocks.EVER_POWERED_RAIL.get(), "永久动力铁轨");
+        add(FunctionalBlocks.STONE_PRESSURE_PLATE.get(), "石质压力板");
+
+        add(FunctionalBlocks.CRIMSON_ALTAR.get(), "猩红祭坛");
+        add(FunctionalBlocks.DEMON_ALTAR.get(), "恶魔祭坛");
+        add(FunctionalBlocks.EXTRACTINATOR.get(), "提炼机");
+        add(FunctionalBlocks.SKY_MILL.get(), "天磨");
+        add(FunctionalBlocks.HEAVY_WORK_BENCH.get(), "重型工作台");
+        add(FunctionalBlocks.HELLFORGE.get(), "地狱熔炉");
+        add(FunctionalBlocks.ALCHEMY_TABLE.get(), "炼药桌");
+        add(FunctionalBlocks.WEATHER_VANE.get(), "风向标");
+        add(FunctionalBlocks.LEAD_ANVIL.get(), "铅砧");
+        add(FunctionalBlocks.CHIPPED_LEAD_ANVIL.get(), "开裂的铅砧");
+        add(FunctionalBlocks.DAMAGED_LEAD_ANVIL.get(), "损坏的铅砧");
+        add(FunctionalBlocks.SHIMMER_TRAP.get(), "微光陷阱");
+        add(FunctionalBlocks.GRAVITATION_TRAP.get(), "重力陷阱");
+        add(FunctionalBlocks.PNEUMATIC_TRAP.get(), "气压陷阱");
+        add(FunctionalBlocks.SPIKE.get(), "尖刺");
+        add(FunctionalBlocks.PLAYER_PRESSURE_PLATE.get(), "玩家压力板");
+        add(FunctionalBlocks.GEYSER_BLOCK.get(), "热喷泉");
+        add(FunctionalBlocks.FRAGILE_SANDSTONE.get(), "易碎砂岩");
+        add(FunctionalBlocks.MECHANICAL_FRAGILE_SANDSTONE.get(), "机械易碎砂岩");
+        add(FunctionalBlocks.DETONATOR.get(), "引爆器");
+        add(FunctionalBlocks.BASE_CHEST_BLOCK.get(), "箱子");
+        add(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE.get(), "深板岩压力板");
+
 
         add(MinecartItems.MECHANICAL_CART.get(), "机械矿车");
         add(MinecartItems.DIGGING_MOLECART.get(), "挖掘鼹鼠矿车");
@@ -1332,6 +1409,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FishingPoleItems.MECHANICS_ROD.get(), "机械师钓竿");
         add(FishingPoleItems.SITTING_DUCKS_FISHING_POLE.get(), "冤大头钓竿");
         add(FishingPoleItems.GOLDEN_FISHING_ROD.get(), "金钓竿");
+
 
         add(BaitItems.APPRENTICE_BAIT.get(), "学徒诱饵");
         add(BaitItems.JOURNEYMAN_BAIT.get(), "熟手诱饵");
@@ -1407,88 +1485,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(HookItems.SPOOKY_HOOK.get(), "阴森钩");
         add(HookItems.TENDON_HOOK.get(), "肌腱钩");
 
-        add(DecorativeBlocks.RUBY_CHAIN.get(), "红玉锁链");
-        add(DecorativeBlocks.AMBER_CHAIN.get(), "琥珀锁链");
-        add(DecorativeBlocks.TOPAZ_CHAIN.get(), "黄玉锁链");
-        add(DecorativeBlocks.EMERALD_CHAIN.get(), "翡翠锁链");
-        add(DecorativeBlocks.SAPPHIRE_CHAIN.get(), "蓝玉锁链");
-        add(DecorativeBlocks.DIAMOND_CHAIN.get(), "钻石锁链");
-        add(DecorativeBlocks.AMETHYST_CHAIN.get(), "紫晶锁链");
-        add(DecorativeBlocks.SILK_CHAIN.get(), "蛛丝绳");
-        add(DecorativeBlocks.BONE_CHAIN.get(), "骨头锁链");
-
-        // 植物
-        add(ModBlocks.WATERLEAF.get(), "幌菊");
-        add(ModBlocks.FIREBLOSSOM.get(), "火焰花");
-        add(ModBlocks.MOONGLOW.get(), "月光草");
-        add(ModBlocks.BLINKROOT.get(), "闪耀根");
-        add(ModBlocks.SHIVERTHORN.get(), "寒颤棘");
-        add(ModBlocks.DAYBLOOM.get(), "太阳花");
-        add(ModBlocks.DEATHWEED.get(), "死亡草");
-        add(MaterialItems.WATERLEAF.get(), "幌菊");
-        add(MaterialItems.FIREBLOSSOM.get(), "火焰花");
-        add(MaterialItems.MOONGLOW.get(), "月光草");
-        add(MaterialItems.BLINKROOT.get(), "闪耀根");
-        add(MaterialItems.SHIVERTHORN.get(), "寒颤棘");
-        add(MaterialItems.DAYBLOOM.get(), "太阳花");
-        add(MaterialItems.DEATHWEED.get(), "死亡草");
-        add(MaterialItems.JUNGLE_SPORE.get(), "丛林孢子");
-
-        add(NatureBlocks.STELLAR_BLOSSOM.get(), "星辰花");
-        add(NatureBlocks.CLOUDWEAVER.get(), "云织草");
-        add(FoodItems.WATERLEAF_SEED.get(), "幌菊种子");
-        add(FoodItems.FIREBLOSSOM_SEED.get(), "火焰花种子");
-        add(FoodItems.MOONGLOW_SEED.get(), "月光草种子");
-        add(FoodItems.BLINKROOT_SEED.get(), "闪耀根种子");
-        add(FoodItems.SHIVERTHORN_SEED.get(), "寒颤棘种子");
-        add(FoodItems.DAYBLOOM_SEED.get(), "太阳花种子");
-        add(FoodItems.DEATHWEED_SEED.get(), "死亡草种子");
-
-
-        add(NatureBlocks.CRIMSON_THORN.get(), "猩红荆棘");
-        add(NatureBlocks.CORRUPTION_THORN.get(), "腐化荆棘");
-        add(NatureBlocks.JUNGLE_THORN.get(), "丛林荆棘");
-        add(NatureBlocks.PLANTERA_THORN.get(), "世纪之花荆棘");
-
-
-        // 树苗
-        add(NatureBlocks.SHADOW_SAPLING.get(), "暗影树苗");
-        add(NatureBlocks.EBONY_SAPLING.get(), "乌木树苗");
-        add(NatureBlocks.PALM_SAPLING.get(), "棕榈树苗");
-        add(NatureBlocks.PEARL_SAPLING.get(), "珍珠树苗");
-        add(NatureBlocks.RUBY_SAPLING.get(), "红玉树苗");
-        add(NatureBlocks.AMBER_SAPLING.get(), "琥珀树苗");
-        add(NatureBlocks.TOPAZ_SAPLING.get(), "黄玉树苗");
-        add(NatureBlocks.EMERALD_SAPLING.get(), "翡翠树苗");
-        add(NatureBlocks.DIAMOND_SAPLING.get(), "钻石树苗");
-        add(NatureBlocks.SAPPHIRE_SAPLING.get(), "蓝玉树苗");
-        add(NatureBlocks.TR_AMETHYST_SAPLING.get(), "紫晶树苗");
-        add(NatureBlocks.ASH_SAPLING.get(), "白蜡树苗");
-        add(NatureBlocks.LIVING_SAPLING.get(), "生命树树苗");
-
-
-        add(NatureBlocks.VICIOUS_MUSHROOM.get(), "毒蘑菇");
-        add(NatureBlocks.VILE_MUSHROOM.get(), "魔菇");
-        add(NatureBlocks.GLOWING_MUSHROOM.get(), "发光蘑菇");
-        add(NatureBlocks.LIFE_MUSHROOM.get(), "生命蘑菇");
-        add(NatureBlocks.JUNGLE_SPORE.get(), "丛林孢子");
-        add(NatureBlocks.JUNGLE_ROSE.get(), "丛林玫瑰");
-        add(NatureBlocks.CORRUPT_GRASS.get(), "腐化草");
-        add(NatureBlocks.TR_CRIMSON_GRASS.get(), "猩红草");
-        add(NatureBlocks.HALLOW_GRASS.get(), "神圣草");
-        add(NatureBlocks.NATURES_GIFT.get(), "大自然的恩赐");
-
-        //藤蔓
-        add(NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get(), "黄柳垂叶");
-        add(NatureBlocks.GLOWING_MUSHROOM_DROOPING_VINE.get(), "发光蘑菇垂藤");
-        add(NatureBlocks.FOREST_DROOPING_VINE.get(), "森林垂藤");
-        add(NatureBlocks.JUNGLE_DROOPING_VINE.get(), "丛林垂藤");
-        add(NatureBlocks.CORRUPT_DROOPING_VINE.get(), "腐化垂藤");
-        add(NatureBlocks.TR_CRIMSON_DROOPING_VINE.get(), "猩红垂藤");
-        add(NatureBlocks.HALLOW_DROOPING_VINE.get(), "神圣垂藤");
-
         // 法杖
-
         add(ManaStaffItems.RUBY_STAFF.get(), "红玉法杖");
         add(ManaStaffItems.AMBER_STAFF.get(), "琥珀法杖");
         add(ManaStaffItems.TOPAZ_STAFF.get(), "黄玉法杖");
@@ -1527,8 +1524,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeapons.STAFF_OF_EARTH.get(), "大地法杖");
         add(ManaWeapons.RAZORPINE.get(), "剃刀松");
         add(ManaWeapons.BETSYS_WRATH.get(), "双足翼龙怒气");
-
-
          */
 
         // 弓
@@ -1542,7 +1537,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(BowItems.GOLDEN_SHORT_BOW.get(), "金短弓");
         add(BowItems.PLATINUM_SHORT_BOW.get(), "铂金短弓");
 
-
         add(BowItems.COPPER_BOW.get(), "铜弓");
         add(BowItems.TIN_BOW.get(), "锡弓");
         add(BowItems.IRON_BOW.get(), "铁弓");
@@ -1552,21 +1546,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(BowItems.GOLDEN_BOW.get(), "金弓");
         add(BowItems.PLATINUM_BOW.get(), "铂金弓");
         add(BowItems.DEVELOPER_BOW.get(), "开发者弓");
-
-        // 光剑
-
-        add(SwordItems.RED_LIGHT_SABER.get(), "陨石红光剑");
-        add(SwordItems.ORANGE_LIGHT_SABER.get(), "陨石橙光剑");
-        add(SwordItems.YELLOW_LIGHT_SABER.get(), "陨石黄光剑");
-        add(SwordItems.GREEN_LIGHT_SABER.get(), "陨石绿光剑");
-        add(SwordItems.BLUE_LIGHT_SABER.get(), "陨石蓝光剑");
-        add(SwordItems.PURPLE_LIGHT_SABER.get(), "陨石紫光剑");
-        add(SwordItems.WHITE_LIGHT_SABER.get(), "陨石白光剑");
-
-        //剑气
-        add(SwordItems.ENCHANTED_SWORD.get(), "附魔剑");
-        //快攻
-        add(SwordItems.TERRAGRIM.get(), "泰拉魔刃");
 
         // 盔甲
         add(ArmorItems.CACTUS_CHESTPLATE.get(), "仙人掌胸甲");
@@ -1655,39 +1634,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.CRIMSON_CHESTPLATE.get(), "猩红胸甲");
         add(ArmorItems.CRIMSON_LEGGINGS.get(), "猩红护腿");
         add(ArmorItems.CRIMSON_BOOTS.get(), "猩红靴");
+
         add(VanityArmorItems.GOLD_CROWN.get(), "金冠");
         add(VanityArmorItems.PLATINUM_CROWN.get(), "铂金冠");
 
-        // 鱼
-        add(FoodItems.SEA_BASS.get(), "鲈鱼");
-        add(FoodItems.ATLANTIC_COD.get(), "大西洋鳕鱼");
-        add(FoodItems.ARMORED_CAVE_FISH.get(), "装甲洞穴鱼");
-        add(FoodItems.CHAOS_FISH.get(), "混沌鱼");
-        add(FoodItems.SCARLET_TIGER_FISH.get(), "猩红虎鱼");
-        add(FoodItems.DAMSEL_FISH.get(), "雀鲷");
-        add(FoodItems.PISCES_FIN_COD.get(), "双鳍鳕鱼");
-        add(FoodItems.EBONY_KOI.get(), "黑檀锦鲤");
-        add(FoodItems.FLASHFIN_KOI.get(), "闪耀锦鲤");
-        add(FoodItems.PARTIAL_MOUTH_FISH.get(), "偏口鱼");
-        add(FoodItems.FROSTY_MINNOW.get(), "寒霜鲦鱼");
-        add(FoodItems.GOLDEN_CARP.get(), "金鲤鱼");
-        add(FoodItems.BLOODY_PIRANHAS.get(), "血腥食人鱼");
-        add(FoodItems.NEON_GREASE_CARP.get(), "霓虹脂鲤");
-        add(FoodItems.OBSIDIAN_FISH.get(), "黑曜石鱼");
-        add(FoodItems.PRINCESS_FISH.get(), "公主鱼");
-        add(FoodItems.COLORFUL_MINERAL_FISH.get(), "七彩矿鱼");
-        add(FoodItems.RED_SNAPPER.get(), "红鲷鱼");
-        add(FoodItems.TROUT.get(), "鳟鱼");
-        add(FoodItems.ROCK_LOBSTER.get(), "岩石龙虾");
-        add(FoodItems.TR_SALMON.get(), "异域鲑鱼");
-        add(FoodItems.SHRIMP.get(), "虾");
-        add(FoodItems.MIRROR_FISH.get(), "镜面鱼");
-        add(FoodItems.STINKY_FISH.get(), "臭味鱼");
-        add(FoodItems.TUNA.get(), "金枪鱼");
-        add(FoodItems.MOTTLED_OILFISH.get(), "斑驳油鱼");
-
         // 任务鱼
-
         add(QuestedFishes.AMANITA_FUNGIFIN.get(), "发光蘑菇鱼");
         add(QuestedFishes.ANGELFISH.get(), "天使鱼");
         add(QuestedFishes.BATFISH.get(), "蝙蝠鱼");
@@ -1820,6 +1771,45 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.COOKED_FLUTTERING_LAMB_CHOPS.get(), "熟飘飘羊排");
         add(FoodItems.BAOBAB_FRUIT.get(), "猴面包果");
         add(FoodItems.COOKED_BAOBA_FRUIT.get(), "烤猴面包果");
+        // 鱼
+        add(FoodItems.SEA_BASS.get(), "鲈鱼");
+        add(FoodItems.ATLANTIC_COD.get(), "大西洋鳕鱼");
+        add(FoodItems.ARMORED_CAVE_FISH.get(), "装甲洞穴鱼");
+        add(FoodItems.CHAOS_FISH.get(), "混沌鱼");
+        add(FoodItems.SCARLET_TIGER_FISH.get(), "猩红虎鱼");
+        add(FoodItems.DAMSEL_FISH.get(), "雀鲷");
+        add(FoodItems.PISCES_FIN_COD.get(), "双鳍鳕鱼");
+        add(FoodItems.EBONY_KOI.get(), "黑檀锦鲤");
+        add(FoodItems.FLASHFIN_KOI.get(), "闪耀锦鲤");
+        add(FoodItems.PARTIAL_MOUTH_FISH.get(), "偏口鱼");
+        add(FoodItems.FROSTY_MINNOW.get(), "寒霜鲦鱼");
+        add(FoodItems.GOLDEN_CARP.get(), "金鲤鱼");
+        add(FoodItems.BLOODY_PIRANHAS.get(), "血腥食人鱼");
+        add(FoodItems.NEON_GREASE_CARP.get(), "霓虹脂鲤");
+        add(FoodItems.OBSIDIAN_FISH.get(), "黑曜石鱼");
+        add(FoodItems.PRINCESS_FISH.get(), "公主鱼");
+        add(FoodItems.COLORFUL_MINERAL_FISH.get(), "七彩矿鱼");
+        add(FoodItems.RED_SNAPPER.get(), "红鲷鱼");
+        add(FoodItems.TROUT.get(), "鳟鱼");
+        add(FoodItems.ROCK_LOBSTER.get(), "岩石龙虾");
+        add(FoodItems.TR_SALMON.get(), "异域鲑鱼");
+        add(FoodItems.SHRIMP.get(), "虾");
+        add(FoodItems.MIRROR_FISH.get(), "镜面鱼");
+        add(FoodItems.STINKY_FISH.get(), "臭味鱼");
+        add(FoodItems.TUNA.get(), "金枪鱼");
+        add(FoodItems.MOTTLED_OILFISH.get(), "斑驳油鱼");
+
+        add(FoodItems.WATERLEAF_SEED.get(), "幌菊种子");
+        add(FoodItems.FIREBLOSSOM_SEED.get(), "火焰花种子");
+        add(FoodItems.MOONGLOW_SEED.get(), "月光草种子");
+        add(FoodItems.BLINKROOT_SEED.get(), "闪耀根种子");
+        add(FoodItems.SHIVERTHORN_SEED.get(), "寒颤棘种子");
+        add(FoodItems.DAYBLOOM_SEED.get(), "太阳花种子");
+        add(FoodItems.DEATHWEED_SEED.get(), "死亡草种子");
+        // 种子
+        add(FoodItems.STELLAR_BLOSSOM_SEED.get(), "星辰花种子");
+        add(FoodItems.CLOUDWEAVER_SEED.get(), "云织草种子");
+        add(FoodItems.FLOATING_WHEAT_SEED.get(), "飘飘麦种子");
 
         // 药水
         add(PotionItems.BOTTLE.get(), "玻璃瓶");

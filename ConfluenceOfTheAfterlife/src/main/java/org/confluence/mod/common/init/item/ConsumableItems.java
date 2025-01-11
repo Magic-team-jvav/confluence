@@ -3,6 +3,7 @@ package org.confluence.mod.common.init.item;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.entity.projectile.bomb.*;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.item.common.*;
@@ -57,6 +58,9 @@ public class ConsumableItems {
     public static final Supplier<RightClickLootItem> DELUXE_PACKAGE = ITEMS.register("deluxe_package", () -> new RightClickLootItem(ModRarity.RED, ModLootTables.DELUXE_PACKAGE));
     public static final Supplier<RightClickLootItem> CHRISTMAS_GIFT = ITEMS.register("christmas_gift", () -> new RightClickLootItem(ModRarity.BLUE, ModLootTables.CHRISTMAS_GIFT));
 
+    public static final Supplier<ThrownPowderItem> PURIFICATION_POWDER = ITEMS.register("purification_powder", () -> new ThrownPowderItem(ISpreadable.Type.PURE));
+    public static final Supplier<ThrownPowderItem> VILE_POWDER = ITEMS.register("vile_powder", () -> new ThrownPowderItem(ISpreadable.Type.CORRUPT));
+    public static final Supplier<ThrownPowderItem> VICIOUS_POWDER = ITEMS.register("vicious_powder", () -> new ThrownPowderItem(ISpreadable.Type.CRIMSON));
     public static final Supplier<FertilizerItem> FERTILIZER = ITEMS.register("fertilizer", FertilizerItem::new);
 
     public static final Supplier<BossSummingItem> SUSPICIOUS_LOOKING_EYE = ITEMS.register("suspicious_looking_eye", () -> new BossSummingItem(player -> player.level().isNight(), EyeOfCthulhu::new));

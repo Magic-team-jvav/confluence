@@ -2,19 +2,15 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.common.item.common.ColoredItem;
-import org.confluence.mod.common.item.common.ConversionItem;
 import org.confluence.mod.common.item.common.MushroomItem;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Map;
 
 public class MaterialItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -84,9 +80,6 @@ public class MaterialItems {
     public static final DeferredItem<Item> VERTEBRA = register("vertebra");
     public static final DeferredItem<Item> BLOOD_CLOT_POWDER = register("blood_clot_powder",ModRarity.BLUE);
     public static final DeferredItem<Item> ROTTEN_BONE = register("rotten_bone",ModRarity.BLUE);
-    public static final DeferredItem<Item> VILE_POWDER = ITEMS.register("vile_powder", () -> new ConversionItem(new Item.Properties(), Map.of(Blocks.SANDSTONE, NatureBlocks.EBONY_SANDSTONE.get(), Blocks.STONE, NatureBlocks.EBONY_STONE.get()), 5));
-    public static final DeferredItem<Item> VICIOUS_POWDER = register("vicious_powder");
-    public static final DeferredItem<Item> PURIFICATION_POWDER = register("purification_powder");
     public static final DeferredItem<Item> BLACK_INK = register("black_ink");
     public static final DeferredItem<Item> LEAD_NUGGET = register("lead_nugget");
     public static final DeferredItem<Item> PURPLE_MUCUS = register("purple_mucus");

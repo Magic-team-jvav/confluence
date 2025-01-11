@@ -20,7 +20,6 @@ import org.confluence.mod.common.entity.hook.AbstractHookEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.terra_curio.util.TCUtils;
-import org.jetbrains.annotations.NotNull;
 
 public record HookThrowingPacketC2S(boolean throwing, int id) implements CustomPacketPayload {
     public static final Type<HookThrowingPacketC2S> TYPE = new Type<>(Confluence.asResource("hook_throwing"));
@@ -31,7 +30,7 @@ public record HookThrowingPacketC2S(boolean throwing, int id) implements CustomP
     );
 
     @Override
-    public @NotNull Type<HookThrowingPacketC2S> type() {
+    public Type<HookThrowingPacketC2S> type() {
         return TYPE;
     }
 

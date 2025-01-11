@@ -1,11 +1,11 @@
 package org.confluence.terraentity.client.entity.model;
 
 import net.minecraft.resources.ResourceLocation;
-
 import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.entity.monster.demoneye.DemonEye;
 import software.bernie.geckolib.model.GeoModel;
 
+@SuppressWarnings("removal")
 public class DemonEyeModel extends GeoModel<DemonEye> {
     private static final ResourceLocation MODEL = TerraEntity.space("geo/entity/demon_eye.geo.json");
     private static final ResourceLocation[] TEXTURES = new ResourceLocation[]{

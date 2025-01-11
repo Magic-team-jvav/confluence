@@ -1,9 +1,9 @@
 plugins {
     id 'net.neoforged.moddev'
 }
-var projectName = ["TerraEntity","MineTeam","EquipmentBenediction",
-                   "TerraCurio","ParticleStorm","HeavenDestinyMoment","PhaseJourney",
-                   "TerraMoment","TerraGuns","IsekaiInvaded"
+var projectName = ["TerraEntity", "MineTeam", "EquipmentBenediction",
+                   "TerraCurio", "ParticleStorm", "HeavenDestinyMoment", "PhaseJourney",
+                   "TerraMoment", "TerraGuns", "IsekaiInvaded"
 ]
 
 
@@ -113,7 +113,7 @@ repositories {
 }
 
 dependencies {
-    projectName.forEach {name -> implementation jarJar(project(":" + name))}
+    projectName.forEach { name -> implementation jarJar(project(":" + name)) }
 
 
     //implementation jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: "[${registrate_version},)")
@@ -133,6 +133,13 @@ dependencies {
     runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
 
     runtimeOnly "curse.maven:worldedit-225608:5830452"
+
+    compileOnly "curse.maven:ftb-chunks-forge-314906:5968500"
+    compileOnly "curse.maven:ftb-library-forge-404465:6016745"
+    runtimeOnly "curse.maven:ftb-chunks-forge-314906:5968500"
+    runtimeOnly "curse.maven:ftb-library-forge-404465:6016745"
+    runtimeOnly "curse.maven:ftb-teams-forge-404468:5882217"
+    runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -159,7 +166,7 @@ tasks.withType(ProcessResources).configureEach {
 
 tasks.withType(Copy).configureEach { duplicatesStrategy = DuplicatesStrategy.EXCLUDE }
 
-tasks.withType(JavaCompile).configureEach {options.encoding = 'UTF-8'}
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
 
 tasks.register("genVoilaRun") {
     def runtimeClasspath = files({

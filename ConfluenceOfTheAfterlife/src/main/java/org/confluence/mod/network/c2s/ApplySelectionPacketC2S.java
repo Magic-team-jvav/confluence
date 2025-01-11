@@ -11,7 +11,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.SelectionsScreen;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -26,7 +25,7 @@ public record ApplySelectionPacketC2S(byte selected) implements CustomPacketPayl
     );
 
     @Override
-    public @NotNull Type<ApplySelectionPacketC2S> type() {
+    public Type<ApplySelectionPacketC2S> type() {
         return TYPE;
     }
 

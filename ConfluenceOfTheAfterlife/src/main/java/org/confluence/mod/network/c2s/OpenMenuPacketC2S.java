@@ -17,13 +17,12 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.menu.ExtraInventoryMenu;
-import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.common.network.server.SPacketGrabbedItem;
 
 public record OpenMenuPacketC2S(int menuId, ItemStack stack) implements CustomPacketPayload {
     public static final int EXTRA_INVENTORY = 0;
     private static final Object2ObjectMap<Integer, Tuple<MenuConstructor, Component>> MENU_TYPES = Util.make(new Object2ObjectOpenHashMap<>(), map -> {
-        map.put(EXTRA_INVENTORY, new Tuple<>((containerId, playerInventory, player) -> new ExtraInventoryMenu(containerId, playerInventory), Component.translatable("container.confluence.coin")));
+        map.put(EXTRA_INVENTORY, new Tuple<>((containerId, playerInventory, player) -> new ExtraInventoryMenu(containerId, playerInventory), Component.empty()));
     });
     public static final Type<OpenMenuPacketC2S> TYPE = new Type<>(Confluence.asResource("open_menu"));
     public static final StreamCodec<RegistryFriendlyByteBuf, OpenMenuPacketC2S> STREAM_CODEC = StreamCodec.composite(
@@ -33,7 +32,7 @@ public record OpenMenuPacketC2S(int menuId, ItemStack stack) implements CustomPa
     );
 
     @Override
-    public @NotNull Type<OpenMenuPacketC2S> type() {
+    public Type<OpenMenuPacketC2S> type() {
         return TYPE;
     }
 

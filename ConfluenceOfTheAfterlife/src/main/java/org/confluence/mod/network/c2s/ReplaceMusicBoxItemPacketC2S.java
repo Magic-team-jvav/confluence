@@ -13,7 +13,6 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.accessory.MusicBoxItem;
 import org.confluence.terra_curio.TerraCurio;
-import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
@@ -26,7 +25,7 @@ public record ReplaceMusicBoxItemPacketC2S(int index, MusicBoxItem item) impleme
     );
 
     @Override
-    public @NotNull Type<ReplaceMusicBoxItemPacketC2S> type() {
+    public Type<ReplaceMusicBoxItemPacketC2S> type() {
         return TYPE;
     }
 

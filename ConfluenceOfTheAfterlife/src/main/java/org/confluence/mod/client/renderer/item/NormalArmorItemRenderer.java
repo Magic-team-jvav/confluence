@@ -25,7 +25,7 @@ public class NormalArmorItemRenderer extends DyeableGeoArmorRenderer<NormalArmor
 
     @Override
     protected Color getColorForBone(GeoBone bone) {
-        if (currentSlot != null && currentEntity != null && AbstractClientPlayer.class.isAssignableFrom(currentEntity.getClass())) {
+        if (currentSlot != null && currentEntity != null && currentEntity instanceof AbstractClientPlayer) {
             ItemStack vanityArmorDye = currentEntity.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmorDye(ModUtils.getSlotIndex(currentSlot));
             return !vanityArmorDye.isEmpty() && vanityArmorDye.getItem() instanceof BaseDyeItem dyeItem ? dyeItem.colour : Color.WHITE;
         }

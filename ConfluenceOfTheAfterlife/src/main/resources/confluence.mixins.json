@@ -41,6 +41,7 @@
         "entity.ServerPlayerMixin",
         "entity.VillagerMixin",
         "integration.adorned.CuriosServerPayloadHandlerMixin",
+        "integration.ftbchunks.LongRangePlayerTrackerMixin",
         "integration.terra_curio.AccessoriesAttachmentMixin",
         "integration.terra_curio.StarClockEntityMixin",
         "integration.terra_curio.WorkshopBlockMixin",
@@ -77,6 +78,7 @@
         "client.WorldCreationUiStateMixin",
         "client.WorldSelectionList$WorldListEntryMixin",
         "client.accessor.FontAccessor",
+        "integration.ftbchunks.EntityMapIconMixin",
         "integration.geckolib.InternalUtilMixin",
         "integration.terra_curio.InformationHandlerMixin"
     ],

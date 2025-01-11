@@ -2,7 +2,6 @@ package org.confluence.terraentity.client.boss.model;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-
 import net.minecraft.world.entity.EntityType;
 import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
@@ -10,6 +9,7 @@ import software.bernie.geckolib.model.GeoModel;
 
 import java.util.function.Supplier;
 
+@SuppressWarnings("removal")
 public class GeoBossModel<T extends AbstractTerraBossBase> extends GeoModel<T> {
     private final ResourceLocation MODEL ;
     private final ResourceLocation TEXTURES ;

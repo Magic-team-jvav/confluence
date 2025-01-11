@@ -10,7 +10,9 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.common.item.potion.*;
+import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCEffects;
 
 public class PotionItems {
@@ -66,6 +68,7 @@ public class PotionItems {
     public static final DeferredItem<AbstractPotionItem> RANDOM_TELEPORT_POTION = ITEMS.register("random_teleport_potion", RandomTeleportPotionItem::new);
     public static final DeferredItem<AbstractPotionItem> CRATE_POTION = ITEMS.register("crate_potion", () -> new EffectPotionItem(ModEffects.CRATE, 4800));
     public static final DeferredItem<AbstractPotionItem> STINK_POTION = ITEMS.register("stink_potion", () -> new EffectThrowablePotionItem(ModEffects.STINKY, 600));
+    public static final DeferredItem<CustomRarityItem> WORMHOLE_POTION = ITEMS.register("wormhole_potion", () -> new CustomRarityItem(new Item.Properties().stacksTo(16), ModRarity.BLUE));
 
     public static final DeferredItem<AbstractPotionItem> CHAOS_POTION = ITEMS.register("chaos_potion", ChaosPotionItem::new);
 }

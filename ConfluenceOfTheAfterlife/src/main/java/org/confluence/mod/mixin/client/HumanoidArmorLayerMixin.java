@@ -29,7 +29,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
 
     @WrapOperation(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;"))
     private ItemStack wrapItem(LivingEntity instance, EquipmentSlot slot, Operation<ItemStack> original) {
-        if (AbstractClientPlayer.class.isAssignableFrom(instance.getClass())) {
+        if (instance instanceof AbstractClientPlayer) {
             int index = getSlotIndex(slot);
             if (index != -1) {
                 this.confluence$currentExtraInventory = instance.getData(ModAttachmentTypes.EXTRA_INVENTORY);
@@ -43,7 +43,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
 
     @WrapOperation(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/client/extensions/common/IClientItemExtensions;getArmorLayerTintColor(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ArmorMaterial$Layer;II)I", remap = false))
     private int dye(IClientItemExtensions instance, ItemStack stack, LivingEntity entity, ArmorMaterial.Layer layer, int layerIdx, int fallbackColor, Operation<Integer> original, @Local(argsOnly = true) EquipmentSlot slot) {
-        if (AbstractClientPlayer.class.isAssignableFrom(entity.getClass())) {
+        if (entity instanceof AbstractClientPlayer) {
             int index = getSlotIndex(slot);
             if (index != -1) {
                 ItemStack vanityArmorDye;

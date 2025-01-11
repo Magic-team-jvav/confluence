@@ -7,7 +7,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.ByIdMap;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,8 +23,10 @@ import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.util.ModUtils;
 
 import java.util.Hashtable;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
 import static net.minecraft.world.level.block.Blocks.*;
@@ -143,7 +147,7 @@ public interface ISpreadable {
     }
 
     // 到时候溶液也用这个
-    enum Type {
+    enum Type implements StringRepresentable {
         HALLOW(
                 getSupplier(DIRT), NatureBlocks.HALLOW_GRASS_BLOCK,
                 // 原木
@@ -523,6 +527,7 @@ public interface ISpreadable {
                 NatureBlocks.CORRUPTION_THORN, getSupplier(Blocks.AIR)
         );
 
+        private static final IntFunction<Type> BY_ID = ByIdMap.continuous(Type::ordinal, values(), ByIdMap.OutOfBoundsStrategy.CLAMP);
         private Map<Supplier<? extends Block>, Supplier<? extends Block>> supplierMap;
         private Map<Block, Block> blockMap;
 
@@ -539,6 +544,15 @@ public interface ISpreadable {
 
         public Map<Block, Block> getBlockMap() {
             return blockMap;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return name().toLowerCase(Locale.ROOT);
+        }
+
+        public static Type byId(int pId) {
+            return BY_ID.apply(pId);
         }
 
         private static Supplier<Block> getSupplier(Block block) {

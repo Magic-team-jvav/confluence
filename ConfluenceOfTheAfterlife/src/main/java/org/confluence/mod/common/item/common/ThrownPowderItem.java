@@ -1,12 +1,13 @@
 package org.confluence.mod.common.item.common;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
+import org.confluence.mod.common.entity.ThrownPowderEntity;
 
 public class ThrownPowderItem extends Item {
     private final ISpreadable.Type type;
@@ -17,15 +18,17 @@ public class ThrownPowderItem extends Item {
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext context) {
-        BlockPos pos = context.getClickedPos();
-        Level level = context.getLevel();
-        Block clickedBlock = level.getBlockState(pos).getBlock();
-        Block target = type.getBlockMap().get(clickedBlock);
-        if (!level.isClientSide && target != null) {
-            // todo
-            context.getItemInHand().shrink(1);
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+        ItemStack itemStack = player.getItemInHand(usedHand);
+        if (!level.isClientSide) {
+            ThrownPowderEntity entity = new ThrownPowderEntity(level, type);
+            entity.setPos(player.getX(), player.getEyeY() - 0.1F, player.getZ());
+            entity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 0.5F);
+            level.addFreshEntity(entity);
+            if (!player.getAbilities().instabuild) {
+                itemStack.shrink(1);
+            }
         }
-        return InteractionResult.SUCCESS;
+        return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide);
     }
 }

@@ -18,8 +18,6 @@ import org.mesdag.particlestorm.data.event.ParticleEffect;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
-@javax.annotation.ParametersAreNonnullByDefault
-@net.minecraft.MethodsReturnNonnullByDefault
 public class CoinPortalEntity extends Entity {
     private static final EntityDataAccessor<Integer> DATA_AMOUNT = SynchedEntityData.defineId(CoinPortalEntity.class, EntityDataSerializers.INT);
     private int age = 0;
@@ -46,7 +44,7 @@ public class CoinPortalEntity extends Entity {
     @Override
     public void tick() {
         if (level().isClientSide && emitter == null && amount != 0) {
-            MolangExp expression = new MolangExp("variable.amount=" + amount + ";");
+            MolangExp expression = new MolangExp("amount", amount);
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("coin_portal"), ParticleEffect.Type.EMITTER, expression);
             emitter.attached = this;
             PSGameClient.LOADER.addEmitter(emitter, false);

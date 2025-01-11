@@ -184,7 +184,6 @@ public final class ModClientEvents {
         event.registerEntityRenderer(LAVA_BOMB.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(HONEY_BOMB.get(), EmptyEntityRenderer::new);
 
-        event.registerEntityRenderer(FALLING_STAR_ITEM_ENTITY.get(), FallingStarRenderer::new);
 
         event.registerEntityRenderer(HOTLINE_FISHING_HOOK.get(), HotlineFishingHookRenderer::new);
         event.registerEntityRenderer(BASE_FISHING_HOOK.get(), BaseFishingHookRenderer::new);
@@ -217,7 +216,9 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MEOWMERE_MINECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
         event.registerEntityRenderer(DIGGING_MOLECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
 
+        event.registerEntityRenderer(FALLING_STAR_ITEM_ENTITY.get(), FallingStarRenderer::new);
         event.registerEntityRenderer(COIN_PORTAL.get(), EmptyEntityRenderer::new);
+        event.registerEntityRenderer(THROWN_POWDER.get(), EmptyEntityRenderer::new);
 
         event.registerBlockEntityRenderer(ModBlocks.SIGN_BLOCK_ENTITY.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new AltarBlockModel()));

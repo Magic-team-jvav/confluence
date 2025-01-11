@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.MobCategory;
 import org.confluence.mod.Confluence;
 
-public class ModMoment {
+public final class ModMoment {
     public static final ResourceKey<Moment<?>> BATTLE_MOB_EFFECT = Confluence.asResourceKey(HDMRegistries.Keys.MOMENT, "battle_mob_effect");
     public static final ResourceKey<Moment<?>> WATER_CANDLE_MOB_EFFECT = Confluence.asResourceKey(HDMRegistries.Keys.MOMENT, "water_candle_mob_effect");
     public static final ResourceKey<Moment<?>> HAPPY_MOB_EFFECT = Confluence.asResourceKey(HDMRegistries.Keys.MOMENT, "happy_mob_effect");

@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 import static org.confluence.mod.Confluence.MODID;
 
 
-public class ModEntityDataSerializer {
+public final class ModEntityDataSerializer {
 
     public static final DeferredRegister<EntityDataSerializer<?>> ENTITY_DATA_SERIALIZERS = DeferredRegister.create(NeoForgeRegistries.ENTITY_DATA_SERIALIZERS, MODID);
 

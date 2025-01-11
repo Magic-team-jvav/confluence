@@ -6,9 +6,9 @@ import net.minecraft.world.entity.MobCategory;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.event.ModClientEvents;
 import org.confluence.mod.common.entity.CoinPortalEntity;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
+import org.confluence.mod.common.entity.ThrownPowderEntity;
 import org.confluence.mod.common.entity.fishing.BaseFishingHook;
 import org.confluence.mod.common.entity.fishing.BloodyFishingHook;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 
 /**
  * Fast Link:
- * 渲染器 {@link ModClientEvents#registerEntityRenderers}
+ * 渲染器 {@link org.confluence.mod.client.event.ModClientEvents#registerEntityRenderers}
  * 发包   {@link ModEvents#registerPayloadHandlers)}
  * 属性   {@link ModEvents#registerAttributes}
  */
@@ -60,7 +60,6 @@ public final class ModEntities {
     public static final Supplier<EntityType<ThrownKnivesProjectile>> THROWN_KNIVES_PROJECTILE = ENTITIES.register("thrown_knives_projectile", () -> EntityType.Builder.<ThrownKnivesProjectile>of(ThrownKnivesProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:thrown_knives_projectile"));
     public static final Supplier<EntityType<ShurikenProjectile>> SHURIKEN_PROJECTILE = ENTITIES.register("shuriken_projectile", () -> EntityType.Builder.<ShurikenProjectile>of(ShurikenProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:shuriken_projectile"));
 
-    public static final Supplier<EntityType<FallingStarItemEntity>> FALLING_STAR_ITEM_ENTITY = ENTITIES.register("falling_star", () -> EntityType.Builder.<FallingStarItemEntity>of(FallingStarItemEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(16).updateInterval(20).build("confluence:falling_star"));
     public static final Supplier<EntityType<BaseFishingHook>> BASE_FISHING_HOOK = ENTITIES.register("base_fishing_hook", () -> EntityType.Builder.<BaseFishingHook>of(BaseFishingHook::new, MobCategory.MISC).noSave().noSummon().sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(5).build("confluence:base_fishing_hook"));
     public static final Supplier<EntityType<HotlineFishingHook>> HOTLINE_FISHING_HOOK = ENTITIES.register("hotline_fishing_hook", () -> EntityType.Builder.<HotlineFishingHook>of(HotlineFishingHook::new, MobCategory.MISC).noSave().noSummon().fireImmune().sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(5).build("confluence:hotline_fishing_hook"));
     public static final Supplier<EntityType<CurioFishingHook>> CURIO_FISHING_HOOK = ENTITIES.register("curio_fishing_hook", () -> EntityType.Builder.<CurioFishingHook>of(CurioFishingHook::new, MobCategory.MISC).noSave().noSummon().sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(5).build("confluence:curio_fishing_hook"));
@@ -92,7 +91,9 @@ public final class ModEntities {
     public static final Supplier<EntityType<MeowmereMinecartEntity>> MEOWMERE_MINECART = registerMinecart("meowmere_minecart", MeowmereMinecartEntity::new);
     public static final Supplier<EntityType<DiggingMolecartEntity>> DIGGING_MOLECART = registerMinecart("digging_molecart", DiggingMolecartEntity::new);
 
+    public static final Supplier<EntityType<FallingStarItemEntity>> FALLING_STAR_ITEM_ENTITY = ENTITIES.register("falling_star", () -> EntityType.Builder.<FallingStarItemEntity>of(FallingStarItemEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(16).updateInterval(20).build("confluence:falling_star"));
     public static final Supplier<EntityType<CoinPortalEntity>> COIN_PORTAL = ENTITIES.register("coin_portal", () -> EntityType.Builder.<CoinPortalEntity>of(CoinPortalEntity::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(6).build("confluence:coin_portal"));
+    public static final Supplier<EntityType<ThrownPowderEntity>> THROWN_POWDER = ENTITIES.register("thrown_powder", () -> EntityType.Builder.<ThrownPowderEntity>of(ThrownPowderEntity::new, MobCategory.MISC).sized(0.0F, 0.0F).fireImmune().build("confluence:thrown_powder"));
 
     // npc
     public static final DeferredHolder<EntityType<?>, EntityType<AbstractTerraNPC>> GUIDE = ENTITIES.register("guide", () -> EntityType.Builder.of(AbstractTerraNPC::new, MobCategory.CREATURE).sized(0.95F, 1.95F).clientTrackingRange(6).build("confluence:guide"));

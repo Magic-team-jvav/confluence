@@ -3,18 +3,17 @@ package org.confluence.mod.common.attachment;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.util.INBTSerializable;
-import net.neoforged.neoforge.registries.DeferredItem;
 import org.confluence.mod.Confluence;
 import org.jetbrains.annotations.UnknownNullability;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class WeaponStorage implements INBTSerializable<CompoundTag> {
 
-    public Map<Item , Integer> boomerangCounter = new java.util.HashMap<>();
+    public Map<Item , Integer> boomerangCounter = new HashMap<>();
 
     @Override
     public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {

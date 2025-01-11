@@ -1268,6 +1268,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.ENCUMBERING_STONE.get(), "负重石");
         add(ToolItems.MAGIC_CONCH.get(), "魔法海螺");
         add(ToolItems.DEMON_CONCH.get(), "恶魔海螺");
+        add(ToolItems.HOUSE_DETECTOR.get(), "房屋探测器");
         add(ToolItems.HONEY_BUCKET.get(), "蜂蜜桶");
         add(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get(), "无底微光桶");
         add(ToolItems.BOTTOMLESS_WATER_BUCKET.get(), "无底水桶");

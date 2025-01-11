@@ -131,7 +131,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.pygmy_necklace.0", "仆从数量上限增加1");
         add("tooltip.item.confluence.fledgling_wings.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.chromatic_cloak.0", "对微光相位化免疫，当淹没在微光中时按住向下键可以相位化");
-        add("tooltip.item.confluence.paint_scraper", "用于去除油漆或涂料，有时可以收集苔藓");
+        add("tooltip.item.confluence.paint_scraper", "用于去除油漆或涂料，按下shift+右键仅去除一面");
         add("tooltip.item.confluence.paint_sprayer.0", "自动给放置的物体刷油漆或涂料");
         add("tooltip.item.confluence.coin", "潜行右键合并为上级钱币");
 

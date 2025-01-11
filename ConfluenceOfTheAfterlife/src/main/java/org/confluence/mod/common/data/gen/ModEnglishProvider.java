@@ -152,7 +152,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.pygmy_necklace.0", "Increases minion limit by 1");
         add("tooltip.item.confluence.fledgling_wings.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.chromatic_cloak.0", "Immunity to Shimmer Phasing.Hold Down to Phase while submerged in Shimmer");
-        add("tooltip.item.confluence.paint_scraper", "Used to remove paint or coatings.Can sometimes collect moss");
+        add("tooltip.item.confluence.paint_scraper", "Used to remove paint or coatings.Press Shift + Right-click to remove only one side.");
         add("tooltip.item.confluence.coin", "Using it while crouch to upgrade tier");
 
         add("painting.confluence.magic_harp.title", "MAGIC_HARP");

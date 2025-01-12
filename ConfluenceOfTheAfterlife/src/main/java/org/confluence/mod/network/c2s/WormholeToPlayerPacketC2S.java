@@ -36,19 +36,11 @@ public record WormholeToPlayerPacketC2S(UUID playerId) implements CustomPacketPa
         context.enqueueWork(() -> {
             if (context.player() instanceof ServerPlayer serverPlayer) {
                 ServerPlayer target = serverPlayer.server.getPlayerList().getPlayer(playerId);
-                if (target == null || serverPlayer.getTeam() != target.getTeam()) return;
-                Inventory inventory = serverPlayer.getInventory();
-                ItemStack stack = inventory.offhand.getFirst();
-                if (!stack.isEmpty() && stack.is(PotionItems.WORMHOLE_POTION)) {
-                    teleport(serverPlayer, target);
-                    stack.shrink(1);
-                } else {
-                    for (ItemStack itemStack : inventory.items) {
-                        if (!itemStack.isEmpty() && itemStack.is(PotionItems.WORMHOLE_POTION)) {
-                            teleport(serverPlayer, target);
-                            itemStack.shrink(1);
-                            break;
-                        }
+                if (target != null && serverPlayer.getTeam() == target.getTeam()) {
+                    ItemStack potion = getWormholePotion(serverPlayer);
+                    if (!potion.isEmpty()) {
+                        potion.shrink(1);
+                        teleport(serverPlayer, target);
                     }
                 }
             }
@@ -56,6 +48,26 @@ public record WormholeToPlayerPacketC2S(UUID playerId) implements CustomPacketPa
             context.disconnect(Component.translatable("neoforge.network.invalid_flow", e.getMessage()));
             return null;
         });
+    }
+
+    public static boolean isTrackable(ServerPlayer trackingPlayer, ServerPlayer trackedPlayer) {
+        if (trackingPlayer == trackedPlayer || trackingPlayer.getTeam() != trackedPlayer.getTeam()) return false;
+        return !getWormholePotion(trackingPlayer).isEmpty();
+    }
+
+    private static ItemStack getWormholePotion(ServerPlayer serverPlayer) {
+        Inventory inventory = serverPlayer.getInventory();
+        ItemStack stack = inventory.offhand.getFirst();
+        if (!stack.isEmpty() && stack.is(PotionItems.WORMHOLE_POTION)) {
+            return stack;
+        } else {
+            for (ItemStack itemStack : inventory.items) {
+                if (!itemStack.isEmpty() && itemStack.is(PotionItems.WORMHOLE_POTION)) {
+                    return itemStack;
+                }
+            }
+            return ItemStack.EMPTY;
+        }
     }
 
     private void teleport(ServerPlayer serverPlayer, ServerPlayer target) {

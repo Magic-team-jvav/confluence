@@ -79,6 +79,7 @@
         "client.WorldSelectionList$WorldListEntryMixin",
         "client.accessor.FontAccessor",
         "integration.ftbchunks.EntityMapIconMixin",
+        "integration.ftbchunks.TrackedPlayerMapIconMixin",
         "integration.geckolib.InternalUtilMixin",
         "integration.terra_curio.InformationHandlerMixin"
     ],

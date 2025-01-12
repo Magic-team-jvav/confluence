@@ -126,26 +126,24 @@ dependencies {
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
     implementation jarJar('com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version)
 
-    compileOnly "curse.maven:jade-324717:5639932"
-    runtimeOnly "curse.maven:jade-324717:5639932"
+    compileOnly "curse.maven:jade-324717:6011258"
+    runtimeOnly "curse.maven:jade-324717:6011258"
 
     compileOnly "mezz.jei:jei-1.21-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-1.21-neoforge-api:${jei_version}"
     runtimeOnly "mezz.jei:jei-1.21-neoforge:${jei_version}"
 
     compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE:api"
-    runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
+    //runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
 
-    runtimeOnly "curse.maven:worldedit-225608:5830452"
+    //runtimeOnly "curse.maven:worldedit-225608:5830452"
 
     compileOnly "curse.maven:ftb-chunks-forge-314906:5968500"
     compileOnly "curse.maven:ftb-library-forge-404465:6016745"
-//    runtimeOnly "curse.maven:ftb-chunks-forge-314906:5968500"
-//    runtimeOnly "curse.maven:ftb-library-forge-404465:6016745"
-//    runtimeOnly "curse.maven:ftb-teams-forge-404468:5882217"
-//    runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
-
-
+    runtimeOnly "curse.maven:ftb-chunks-forge-314906:5968500"
+    runtimeOnly "curse.maven:ftb-library-forge-404465:6016745"
+    runtimeOnly "curse.maven:ftb-teams-forge-404468:5882217"
+    runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
 }
 
 tasks.withType(ProcessResources).configureEach {

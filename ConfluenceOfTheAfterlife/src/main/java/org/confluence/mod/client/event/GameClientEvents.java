@@ -155,10 +155,9 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void renderLevelStage(RenderLevelStageEvent event) {
         SpelunkerHelper.renderLevel(event);
-        if(event.getStage() == RenderLevelStageEvent.Stage.AFTER_LEVEL){
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_LEVEL) {
             DebugBlocksHelper.Singleton().render(event);
-        }
-        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
+        } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
             StarPhaseHandler.render(event);
             MeteorLandingHandler.render(event);
         }

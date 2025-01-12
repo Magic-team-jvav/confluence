@@ -384,6 +384,19 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.INGOTS_SILVER).add(MaterialItems.SILVER_INGOT.get());
         tag(ModTags.Items.INGOTS_TUNGSTEN).add(MaterialItems.TUNGSTEN_INGOT.get());
         tag(ModTags.Items.INGOTS_PLATINUM).add(MaterialItems.PLATINUM_INGOT.get());
+        tag(ModTags.Items.MOSS_ITEM).add(
+            ModItems.BROWN_MOSS_ITEM.get(),
+            ModItems.BROWN_MOSS_ITEM.get(),
+            ModItems.RED_MOSS_ITEM.get(),
+            ModItems.BLUE_MOSS_ITEM.get(),
+            ModItems.PURPLE_MOSS_ITEM.get(),
+            ModItems.LAVA_MOSS_ITEM.get(),
+            ModItems.KRYPTON_MOSS_ITEM.get(),
+            ModItems.XENON_MOSS_ITEM.get(),
+            ModItems.ARGON_MOSS_ITEM.get(),
+            ModItems.NEON_MOSS_ITEM.get(),
+            ModItems.HELIUM_MOSS_ITEM.get()
+        );
 
         AccessoryItems.acceptTag(tag(TCTags.ACCESSORY));
         IntrinsicTagAppender<Item> ammo = tag(ModTags.Items.AMMO);

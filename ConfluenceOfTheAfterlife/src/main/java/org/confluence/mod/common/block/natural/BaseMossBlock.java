@@ -7,7 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -22,7 +21,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
-import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.init.ModTags;
 
 import java.util.function.ToIntFunction;
 
@@ -47,7 +46,7 @@ public class BaseMossBlock extends MultifaceBlock implements BonemealableBlock, 
     }
 
     public BaseMossBlock(int lightLevel, boolean isIgnitedByLava) {
-        super(BlockBehaviour.Properties.of().lightLevel(BaseMossBlock.emission(lightLevel)).noCollission().ignitedByLava().pushReaction(PushReaction.DESTROY).strength(0.2F).sound(SoundType.GLOW_LICHEN).replaceable());
+        super(BlockBehaviour.Properties.of().lightLevel(BaseMossBlock.emission(lightLevel)).noCollission().pushReaction(PushReaction.DESTROY).strength(0.2F).sound(SoundType.GLOW_LICHEN).replaceable());
         this.lightLevel = lightLevel;
         this.isIgnitedByLava = isIgnitedByLava;
         this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, false));
@@ -71,10 +70,10 @@ public class BaseMossBlock extends MultifaceBlock implements BonemealableBlock, 
         return face -> MultifaceBlock.hasAnyFace(face) ? lightLevel : 0;
     }
 
-//    @Override
-//    protected boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
-//        return !useContext.getItemInHand().is(ModItems.MOSS.get()) || super.canBeReplaced(state, useContext);
-//    }
+    @Override
+    protected boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
+        return !useContext.getItemInHand().is(ModTags.Items.MOSS_ITEM) || super.canBeReplaced(state, useContext);
+    }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

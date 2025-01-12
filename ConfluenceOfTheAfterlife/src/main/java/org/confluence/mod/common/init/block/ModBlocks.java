@@ -64,6 +64,19 @@ public final class ModBlocks {
 
     public static final Supplier<PooBlock> POO = registerWithItem("poo", () -> new PooBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD)));
 
+    //苔藓
+    public static final Supplier<BaseMossBlock> GREEN_MOSS_BLOCK = registerWithoutItem("green_moss", () -> new BaseMossBlock(5));
+    public static final Supplier<BaseMossBlock> BROWN_MOSS_BLOCK = registerWithoutItem("brown_moss", () -> new BaseMossBlock(5));
+    public static final Supplier<BaseMossBlock> RED_MOSS_BLOCK = registerWithoutItem("red_moss", () -> new BaseMossBlock(5));
+    public static final Supplier<BaseMossBlock> BLUE_MOSS_BLOCK = registerWithoutItem("blue_moss", () -> new BaseMossBlock(5));
+    public static final Supplier<BaseMossBlock> PURPLE_MOSS_BLOCK = registerWithoutItem("purple_moss", () -> new BaseMossBlock(5));
+    public static final Supplier<BaseMossBlock> LAVA_MOSS_BLOCK = registerWithoutItem("lava_moss", () -> new BaseMossBlock(10, true));
+    public static final Supplier<BaseMossBlock> KRYPTON_MOSS_BLOCK = registerWithoutItem("krypton_moss", () -> new BaseMossBlock(5));
+    public static final Supplier<BaseMossBlock> XENON_MOSS_BLOCK = registerWithoutItem("xenon_moss", () -> new BaseMossBlock(5));
+    public static final Supplier<BaseMossBlock> ARGON_MOSS_BLOCK = registerWithoutItem("argon_moss", () -> new BaseMossBlock(5));
+    public static final Supplier<BaseMossBlock> NEON_MOSS_BLOCK = registerWithoutItem("neon_moss", () -> new BaseMossBlock(5));
+    public static final Supplier<BaseMossBlock> HELIUM_MOSS_BLOCK = registerWithoutItem("helium_moss", () -> new BaseMossBlock(5));
+
     public static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> block) {
         return registerWithItem(id, block, new Item.Properties());
     }

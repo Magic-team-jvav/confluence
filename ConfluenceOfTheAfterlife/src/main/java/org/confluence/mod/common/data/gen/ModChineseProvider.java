@@ -611,21 +611,21 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.SHADOW_LOG_BLOCKS.getFenceGate().get(), "暗影木栅栏门");
         add(NatureBlocks.SHADOW_LOG_BLOCKS.getPressurePlate().get(), "暗影木压力板");
 
-        add(NatureBlocks.PALM_LOG_BLOCKS.getButton().get(), "沙漠风情按钮");
-        add(NatureBlocks.PALM_LOG_BLOCKS.getPlanks().get(), "沙漠风情木板");
+        add(NatureBlocks.PALM_LOG_BLOCKS.getButton().get(), "棕榈木按钮");
+        add(NatureBlocks.PALM_LOG_BLOCKS.getPlanks().get(), "棕榈木木板");
         add(NatureBlocks.PALM_LOG_BLOCKS.getLog().get(), "棕榈原木");
-        add(NatureBlocks.PALM_LOG_BLOCKS.getDoor().get(), "沙漠风情木门");
-        add(NatureBlocks.PALM_LOG_BLOCKS.getTrapdoor().get(), "沙漠风情活板门");
-        add(NatureBlocks.PALM_LOG_BLOCKS.getSign().get(), "沙漠风情告示牌");
-        add(NatureBlocks.PALM_LOG_BLOCKS.getStairs().get(), "沙漠风情楼梯");
-        add(NatureBlocks.PALM_LOG_BLOCKS.getSlab().get(), "沙漠风情台阶");
+        add(NatureBlocks.PALM_LOG_BLOCKS.getDoor().get(), "棕榈木木门");
+        add(NatureBlocks.PALM_LOG_BLOCKS.getTrapdoor().get(), "棕榈木活板门");
+        add(NatureBlocks.PALM_LOG_BLOCKS.getSign().get(), "棕榈木告示牌");
+        add(NatureBlocks.PALM_LOG_BLOCKS.getStairs().get(), "棕榈木楼梯");
+        add(NatureBlocks.PALM_LOG_BLOCKS.getSlab().get(), "棕榈木台阶");
         add(NatureBlocks.PALM_LOG_BLOCKS.getWood().get(), "棕榈木");
         add(NatureBlocks.PALM_LOG_BLOCKS.getStrippedLog().get(), "棕榈去皮原木");
         add(NatureBlocks.PALM_LOG_BLOCKS.getStrippedWood().get(), "棕榈去皮木");
         add(NatureBlocks.PALM_LOG_BLOCKS.getLeaves().get(), "棕榈树叶");
-        add(NatureBlocks.PALM_LOG_BLOCKS.getFence().get(), "沙漠风情栅栏");
-        add(NatureBlocks.PALM_LOG_BLOCKS.getFenceGate().get(), "沙漠风情栅栏门");
-        add(NatureBlocks.PALM_LOG_BLOCKS.getPressurePlate().get(), "沙漠风情压力板");
+        add(NatureBlocks.PALM_LOG_BLOCKS.getFence().get(), "棕榈木栅栏");
+        add(NatureBlocks.PALM_LOG_BLOCKS.getFenceGate().get(), "棕榈木栅栏门");
+        add(NatureBlocks.PALM_LOG_BLOCKS.getPressurePlate().get(), "棕榈木压力板");
 
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.getButton().get(), "猴面包木按钮");
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks().get(), "猴面包木板");
@@ -867,6 +867,14 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.TR_OAK_PLANKS.get(), "经典风情木板");
         add(DecorativeBlocks.TR_NORTHLAND_BEAM.get(), "北地风情木梁");
         add(DecorativeBlocks.TR_NORTHLAND_PLANKS.get(), "北地风情木板");
+        add(DecorativeBlocks.CHISELED_EBONY_PLANKS.get(), "雕纹乌木木板");
+        add(DecorativeBlocks.CHISELED_SHADOW_PLANKS.get(), "雕纹暗影木板");
+        add(DecorativeBlocks.CHISELED_PEARL_PLANKS.get(), "雕纹珍珠木板");
+        add(DecorativeBlocks.CHISELED_PALM_PLANKS.get(), "雕纹棕榈木板");
+        add(DecorativeBlocks.CHISELED_ASH_PLANKS.get(), "雕纹白蜡木板");
+        add(DecorativeBlocks.CHISELED_YELLOW_WILLOW_PLANKS.get(), "雕纹黄柳木板");
+        add(DecorativeBlocks.CHISELED_BAOBAB_PLANKS.get(), "雕纹猴面包木木板");
+        add(DecorativeBlocks.CHISELED_LIVING_PLANKS.get(), "雕纹生命木板");
         add(DecorativeBlocks.TR_GRANITE_COLUMN.get(), "异域花岗岩梁");
         add(DecorativeBlocks.MARBLE_COLUMN.get(), "异域大理岩梁");
         add(DecorativeBlocks.PURE_GLASS.get(), "纯净玻璃块");

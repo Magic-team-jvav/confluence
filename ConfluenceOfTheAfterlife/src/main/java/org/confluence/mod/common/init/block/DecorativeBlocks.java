@@ -26,6 +26,14 @@ public class DecorativeBlocks {
     public static final Supplier<Block> TR_OAK_PLANKS = copyBlockRegister("tr_oak_planks", Blocks.OAK_PLANKS);
     public static final Supplier<Block> TR_NORTHLAND_BEAM = copyBlockRegister("tr_northland_beam", Blocks.OAK_PLANKS);
     public static final Supplier<Block> TR_NORTHLAND_PLANKS = copyBlockRegister("tr_northland_planks", Blocks.OAK_PLANKS);
+    public static final Supplier<Block> CHISELED_EBONY_PLANKS = copyBlockRegister("chiseled_ebony_planks", Blocks.OAK_PLANKS);
+    public static final Supplier<Block> CHISELED_SHADOW_PLANKS = copyBlockRegister("chiseled_shadow_planks", Blocks.OAK_PLANKS);
+    public static final Supplier<Block> CHISELED_PEARL_PLANKS = copyBlockRegister("chiseled_pearl_planks", Blocks.OAK_PLANKS);
+    public static final Supplier<Block> CHISELED_PALM_PLANKS = copyBlockRegister("chiseled_palm_planks", Blocks.OAK_PLANKS);
+    public static final Supplier<Block> CHISELED_BAOBAB_PLANKS = copyBlockRegister("chiseled_baobab_planks", Blocks.OAK_PLANKS);
+    public static final Supplier<Block> CHISELED_YELLOW_WILLOW_PLANKS = copyBlockRegister("chiseled_yellow_willow_planks", Blocks.OAK_PLANKS);
+    public static final Supplier<Block> CHISELED_LIVING_PLANKS = copyBlockRegister("chiseled_living_planks", Blocks.OAK_PLANKS);
+    public static final Supplier<Block> CHISELED_ASH_PLANKS = copyBlockRegister("chiseled_ash_planks", Blocks.OAK_PLANKS);
     public static final Supplier<Block> WOOD_STONE_SLATTED_BLOCKS = copyBlockRegister("wood_stone_slatted_blocks", Blocks.OAK_PLANKS);
     public static final Supplier<Block> BLUE_ICE_BRICKS = copyBlockRegister("blue_ice_bricks", Blocks.BLUE_ICE);
     public static final Supplier<Block> PACKED_ICE_BRICKS = copyBlockRegister("packed_ice_bricks", Blocks.PACKED_ICE);
@@ -56,7 +64,6 @@ public class DecorativeBlocks {
     public static final Supplier<Block> TIN_BRICKS = copyBlockRegister("tin_bricks", Blocks.COPPER_BLOCK);
     public static final Supplier<Block> TIN_PLATE = copyBlockRegister("tin_plate", Blocks.COPPER_BLOCK);
     public static final Supplier<Block> TR_IRON_BRICKS = copyBlockRegister("tr_iron_bricks", Blocks.IRON_BLOCK);
-//    public static final Supplier<Block> TR_IRON_PLATE = copyBlockRegister("tr_iron_plate", () -> new  BeamLikeBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK);
 
     public static final Supplier<Block> LEAD_BRICKS = copyBlockRegister("lead_bricks", Blocks.IRON_BLOCK);
     public static final Supplier<Block> SILVER_BRICKS = copyBlockRegister("silver_bricks", Blocks.IRON_BLOCK);

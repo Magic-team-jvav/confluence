@@ -187,6 +187,23 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.TR_CRIMSON_SAND_LAYER_BLOCK.get(),
                 NatureBlocks.ASH_BLOCK.get()
         );
+        // 斧头
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithAxe = tag(BlockTags.MINEABLE_WITH_AXE);
+        mineableWithAxe.add(
+                DecorativeBlocks.TR_OAK_BEAM.get(),
+                DecorativeBlocks.TR_OAK_PLANKS.get(),
+                DecorativeBlocks.TR_NORTHLAND_BEAM.get(),
+                DecorativeBlocks.TR_NORTHLAND_PLANKS.get(),
+                DecorativeBlocks.CHISELED_EBONY_PLANKS.get(),
+                DecorativeBlocks.CHISELED_SHADOW_PLANKS.get(),
+                DecorativeBlocks.CHISELED_PEARL_PLANKS.get(),
+                DecorativeBlocks.CHISELED_PALM_PLANKS.get(),
+                DecorativeBlocks.CHISELED_BAOBAB_PLANKS.get(),
+                DecorativeBlocks.CHISELED_YELLOW_WILLOW_PLANKS.get(),
+                DecorativeBlocks.CHISELED_LIVING_PLANKS.get(),
+                DecorativeBlocks.CHISELED_ASH_PLANKS.get(),
+                DecorativeBlocks.WOOD_STONE_SLATTED_BLOCKS.get()
+        );
         tag(ModTags.Blocks.NEEDS_1_LEVEL).add(
                 OreBlocks.RAW_TIN_BLOCK.get(),
                 OreBlocks.DEEPSLATE_TIN_ORE.get(),

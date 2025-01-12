@@ -23,6 +23,7 @@ public class AllSpriteShifts {
     public static final CTSpriteShiftEntry PURPLE_PURE_GLASS = omni("purple_pure_glass");
     public static final CTSpriteShiftEntry MAGENTA_PURE_GLASS = omni("magenta_pure_glass");
     public static final CTSpriteShiftEntry PINK_PURE_GLASS = omni("pink_pure_glass");
+    public static final CTSpriteShiftEntry CHISELED_PALM_PLANKS = omni("chiseled_palm_planks");
 
     private static CTSpriteShiftEntry omni(String name) {
         return getCT(AllCTTypes.OMNIDIRECTIONAL, name);

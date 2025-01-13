@@ -4,15 +4,22 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.Unbreakable;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModJukeboxSongs;
 import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.common.item.common.CoinItem;
+import org.confluence.mod.common.item.common.GrassSeedItem;
 import org.confluence.terra_curio.common.component.ModRarity;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
@@ -56,6 +63,13 @@ public final class ModItems {
     public static final Supplier<BlockItem> NEON_MOSS_ITEM = ITEMS.register("neon_moss", () -> new BlockItem(ModBlocks.NEON_MOSS_BLOCK.get(), new Item.Properties().stacksTo(64)));
     public static final Supplier<BlockItem> HELIUM_MOSS_ITEM = ITEMS.register("helium_moss", () -> new BlockItem(ModBlocks.HELIUM_MOSS_BLOCK.get(), new Item.Properties().stacksTo(64)));
 
+    public static final Supplier<GrassSeedItem> GRASS_SEED = ITEMS.register("grass_seed", () -> new GrassSeedItem(Map.of(Blocks.DIRT, Blocks.GRASS_BLOCK)));
+    public static final Supplier<GrassSeedItem> JUNGLE_GRASS_SEED =  ITEMS.register("jungle_grass_seed", () -> new GrassSeedItem(Map.of(Blocks.MUD, NatureBlocks.JUNGLE_GRASS_BLOCK.get())));
+    public static final Supplier<GrassSeedItem> MUSHROOM_GRASS_SEED =  ITEMS.register("mushroom_grass_seed", () -> new GrassSeedItem(Map.of(Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get())));
+    public static final Supplier<GrassSeedItem> CORRUPT_SEED = ITEMS.register("corrupt_seed", () -> new GrassSeedItem(Map.of(Blocks.DIRT, NatureBlocks.CORRUPT_GRASS_BLOCK.get(), Blocks.MUD, NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK.get())));
+    public static final Supplier<GrassSeedItem> TR_CRIMSON_SEED = ITEMS.register("tr_crimson_seed", () -> new GrassSeedItem(Map.of(Blocks.DIRT, NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(), Blocks.MUD, NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK.get())));
+    public static final Supplier<GrassSeedItem> HALLOWED_SEED =  ITEMS.register("hallowed_seed", () -> new GrassSeedItem(Map.of(Blocks.DIRT, NatureBlocks.HALLOW_GRASS_BLOCK.get())));
+    public static final Supplier<GrassSeedItem> ASH_GRASS_SEED =  ITEMS.register("ash_grass_seed", () -> new GrassSeedItem(Map.of(NatureBlocks.ASH_BLOCK.get(), NatureBlocks.ASH_GRASS_BLOCK.get())));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

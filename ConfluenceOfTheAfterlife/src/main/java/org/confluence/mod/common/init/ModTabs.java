@@ -44,17 +44,6 @@ public final class ModTabs {
                             if (item != Items.AIR) output.accept(item);
                         });
                         PotBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
-                        output.accept(ModItems.GREEN_MOSS_ITEM.get());
-                        output.accept(ModItems.BROWN_MOSS_ITEM.get());
-                        output.accept(ModItems.RED_MOSS_ITEM.get());
-                        output.accept(ModItems.BLUE_MOSS_ITEM.get());
-                        output.accept(ModItems.PURPLE_MOSS_ITEM.get());
-                        output.accept(ModItems.LAVA_MOSS_ITEM.get());
-                        output.accept(ModItems.KRYPTON_MOSS_ITEM.get());
-                        output.accept(ModItems.XENON_MOSS_ITEM.get());
-                        output.accept(ModItems.ARGON_MOSS_ITEM.get());
-                        output.accept(ModItems.NEON_MOSS_ITEM.get());
-                        output.accept(ModItems.HELIUM_MOSS_ITEM.get());
                     }).build()
     );
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MISC = TABS.register("misc",

@@ -706,6 +706,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.EBONY_SANDSTONE.get(), "黑檀砂岩");
         add(NatureBlocks.EBONY_SAND.get(), "黑檀沙块");
         add(NatureBlocks.CORRUPT_GRASS_BLOCK.get(), "腐化草方块");
+        add(NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK.get(), "腐化丛林草方块");
         add(NatureBlocks.EBONY_SAND_LAYER_BLOCK.get(), "腐化沙片");
         add(NatureBlocks.PEARL_STONE.get(), "珍珠石块");
         add(NatureBlocks.PEARL_COBBLESTONE.get(), "珍珠圆石");
@@ -729,6 +730,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.PURPLE_ICE.get(), "紫冰块");
         add(NatureBlocks.PURPLE_PACKED_ICE.get(), "紫浮冰块");
         add(NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(), "猩红草方块");
+        add(NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK.get(), "猩红丛林草方块");
         add(NatureBlocks.MUSHROOM_GRASS_BLOCK.get(), "蘑菇草方块");
         add(NatureBlocks.JUNGLE_GRASS_BLOCK.get(), "丛林草方块");
         add(NatureBlocks.ASH_BLOCK.get(), "灰烬块");
@@ -1832,6 +1834,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.SHIVERTHORN_SEED.get(), "寒颤棘种子");
         add(FoodItems.DAYBLOOM_SEED.get(), "太阳花种子");
         add(FoodItems.DEATHWEED_SEED.get(), "死亡草种子");
+        add(ModItems.GRASS_SEED.get(), "草种子");
+        add(ModItems.JUNGLE_GRASS_SEED.get(), "丛林草种子");
+        add(ModItems.MUSHROOM_GRASS_SEED.get(), "蘑菇草种子");
+        add(ModItems.CORRUPT_SEED.get(), "腐化种子");
+        add(ModItems.TR_CRIMSON_SEED.get(), "猩红种子");
+        add(ModItems.HALLOWED_SEED.get(), "神圣种子");
+        add(ModItems.ASH_GRASS_SEED.get(), "灰烬草种子");
         // 种子
         add(FoodItems.STELLAR_BLOSSOM_SEED.get(), "星辰花种子");
         add(FoodItems.CLOUDWEAVER_SEED.get(), "云织草种子");

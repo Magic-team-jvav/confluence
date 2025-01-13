@@ -1,0 +1,20 @@
+package org.confluence.mod.mixin.integration.terra_curio;
+
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.material.FluidState;
+import org.confluence.mod.common.init.ModEffects;
+import org.confluence.terra_curio.client.handler.TCClientPacketHandler;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+@Mixin(value = TCClientPacketHandler.class, remap = false)
+public abstract class TCClientPacketHandlerMixin {
+    @Inject(method = "isFluidWalkable", at = @At("RETURN"), cancellable = true)
+    private static void waterWalkingEffect(LivingEntity living, FluidState fluidState, CallbackInfoReturnable<Boolean> cir) {
+        if (!cir.getReturnValue() && living.hasEffect(ModEffects.WATER_WALKING)) {
+            cir.setReturnValue(true);
+        }
+    }
+}

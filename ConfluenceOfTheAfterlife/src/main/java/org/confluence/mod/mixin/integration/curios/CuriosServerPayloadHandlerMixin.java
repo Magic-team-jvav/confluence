@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.integration.adorned;
+package org.confluence.mod.mixin.integration.curios;
 
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;

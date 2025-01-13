@@ -1,5 +1,5 @@
 {
-    "event_name": "net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock",
+    "event_name": "net.neoforged.neoforge.event.entity.player.PlayerInteractEvent$RightClickBlock",
     "moments": {
         "terra_moment:slime_rain": {
             "ready": {
@@ -9,5 +9,5 @@
             }
         }
     },
-    "condition_type": "block"
+    "condition_type": "player"
 }

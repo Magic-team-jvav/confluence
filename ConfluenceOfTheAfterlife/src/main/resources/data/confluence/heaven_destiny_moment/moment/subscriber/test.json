@@ -1,0 +1,13 @@
+{
+    "event_name": "net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock",
+    "moments": {
+        "terra_moment:slime_rain": {
+            "ready": {
+                "type": "heaven_destiny_moment:time",
+                "max": 9000,
+                "min": 1000
+            }
+        }
+    },
+    "condition_type": "block"
+}

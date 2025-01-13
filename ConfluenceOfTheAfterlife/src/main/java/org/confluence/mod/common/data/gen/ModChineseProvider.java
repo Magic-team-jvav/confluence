@@ -693,9 +693,11 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(NatureBlocks.DESERT_FOSSIL.get(), "沙漠化石");
         add(NatureBlocks.HARDENED_SAND_BLOCK.get(), "硬化沙块");
+        add(NatureBlocks.MOIST_SAND_BLOCK.get(), "湿润沙块");
         add(NatureBlocks.SAND_LAYER_BLOCK.get(), "沙片");
         add(NatureBlocks.RED_SAND_LAYER_BLOCK.get(), "红沙片");
         add(NatureBlocks.RED_HARDENED_SAND_BLOCK.get(), "硬化红沙块");
+        add(NatureBlocks.RED_MOIST_SAND_BLOCK.get(), "湿润红沙块");
         add(NatureBlocks.DIATOMACEOUS.get(), "硅藻土");
         add(NatureBlocks.SLUSH.get(), "雪泥块");
         add(NatureBlocks.MARINE_GRAVEL.get(), "海洋砂砾");
@@ -719,7 +721,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.TR_CRIMSON_STONE.get(), "猩红石块");
         add(NatureBlocks.TR_CRIMSON_COBBLESTONE.get(), "猩红圆石");
         add(NatureBlocks.TR_CRIMSON_HARDENED_SAND_BLOCK.get(), "硬化猩红沙块");
-        add(NatureBlocks.TR_CRIMSON_MOIST_SAND_BLOCK.get(), "硬化猩红沙块");
+        add(NatureBlocks.TR_CRIMSON_MOIST_SAND_BLOCK.get(), "湿润猩红沙块");
         add(NatureBlocks.TR_CRIMSON_SANDSTONE.get(), "猩红砂岩");
         add(NatureBlocks.TR_CRIMSON_SAND.get(), "猩红沙块");
         add(NatureBlocks.TR_CRIMSON_SAND_LAYER_BLOCK.get(), "猩红沙片");
@@ -733,6 +735,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK.get(), "猩红丛林草方块");
         add(NatureBlocks.MUSHROOM_GRASS_BLOCK.get(), "蘑菇草方块");
         add(NatureBlocks.JUNGLE_GRASS_BLOCK.get(), "丛林草方块");
+        add(NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK.get(), "腐化丛林草方块");
+        add(NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK.get(), "猩红丛林草方块");
         add(NatureBlocks.ASH_BLOCK.get(), "灰烬块");
         add(NatureBlocks.ASH_GRASS_BLOCK.get(), "灰烬草块");
         add(NatureBlocks.ASH_GRASS.get(), "灰烬草");

@@ -150,6 +150,7 @@ public interface ISpreadable {
     enum Type implements StringRepresentable {
         HALLOW(
                 getSupplier(DIRT), NatureBlocks.HALLOW_GRASS_BLOCK,
+
                 // 原木
                 getSupplier(OAK_LOG), NatureBlocks.PEARL_LOG_BLOCKS.getLog(),
                 getSupplier(ACACIA_LOG), NatureBlocks.PEARL_LOG_BLOCKS.getLog(),
@@ -302,6 +303,7 @@ public interface ISpreadable {
 
         CRIMSON(
                 getSupplier(DIRT), NatureBlocks.TR_CRIMSON_GRASS_BLOCK,
+                getSupplier(MUD), NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK,
                 // 原木
                 getSupplier(OAK_LOG), NatureBlocks.SHADOW_LOG_BLOCKS.getLog(),
                 getSupplier(ACACIA_LOG), NatureBlocks.SHADOW_LOG_BLOCKS.getLog(),
@@ -394,6 +396,7 @@ public interface ISpreadable {
 
         CORRUPT(
                 getSupplier(DIRT), NatureBlocks.CORRUPT_GRASS_BLOCK,
+                getSupplier(MUD),NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK,
                 // 原木
                 getSupplier(OAK_LOG), NatureBlocks.EBONY_LOG_BLOCKS.getLog(),
                 getSupplier(ACACIA_LOG), NatureBlocks.EBONY_LOG_BLOCKS.getLog(),

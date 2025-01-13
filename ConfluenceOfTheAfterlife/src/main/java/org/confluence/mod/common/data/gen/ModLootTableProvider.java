@@ -330,6 +330,8 @@ public class ModLootTableProvider extends LootTableProvider {
             dropOther(LIFE_CRYSTAL_BLOCK.get(), LIFE_CRYSTAL.get());
             dropOther(MUSHROOM_GRASS_BLOCK.get(), Items.MUD);
             dropOther(JUNGLE_GRASS_BLOCK.get(), Items.MUD);
+            dropOther(CORRUPT_JUNGLE_GRASS_BLOCK.get(), Items.MUD);
+            dropOther(TR_CRIMSON_JUNGLE_GRASS_BLOCK.get(), Items.MUD);
 
             //chain
             dropSelf(RUBY_CHAIN.get());

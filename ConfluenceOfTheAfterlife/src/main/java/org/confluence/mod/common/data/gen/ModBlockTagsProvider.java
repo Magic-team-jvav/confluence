@@ -12,10 +12,7 @@ import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.block.DecorativeBlocks;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.init.block.OreBlocks;
+import org.confluence.mod.common.init.block.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -33,6 +30,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
         LogBlockSet.acceptTags(this);
         OreBlocks.acceptTags(this);
+        StatueBlocks.acceptTags(this);
         tag(ModTags.Blocks.JEWELLERY_BRANCHES_ATTACHABLE).add(NatureBlocks.STONY_LOG.get());
         tag(ModTags.Blocks.ASH_LOG_BRANCHES_ATTACHABLE).add(NatureBlocks.ASH_LOG_BLOCKS.getLog().get());
         tag(BlockTags.ANVIL).add(

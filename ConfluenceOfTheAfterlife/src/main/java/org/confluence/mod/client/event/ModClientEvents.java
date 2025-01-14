@@ -129,6 +129,12 @@ public final class ModClientEvents {
         event.registerLayerDefinition(StickyDynamiteEntityModel.LAYER_LOCATION, StickyDynamiteEntityModel::createBodyLayer);
         event.registerLayerDefinition(BouncyDynamiteEntityModel.LAYER_LOCATION, BouncyDynamiteEntityModel::createBodyLayer);
         event.registerLayerDefinition(BaseGrenadeEntityModel.LAYER_LOCATION, BaseGrenadeEntityModel::createBodyLayer);
+        event.registerLayerDefinition(DryBombEntityModel.LAYER_LOCATION, DryBombEntityModel::createBodyLayer);
+        event.registerLayerDefinition(WetBombEntityModel.LAYER_LOCATION, WetBombEntityModel::createBodyLayer);
+        event.registerLayerDefinition(LavaBombEntityModel.LAYER_LOCATION, LavaBombEntityModel::createBodyLayer);
+        event.registerLayerDefinition(HoneyBombEntityModel.LAYER_LOCATION, HoneyBombEntityModel::createBodyLayer);
+        event.registerLayerDefinition(StickyGrenadeEntityModel.LAYER_LOCATION, StickyGrenadeEntityModel::createBodyLayer);
+        event.registerLayerDefinition(BouncyGrenadeEntityModel.LAYER_LOCATION, BouncyGrenadeEntityModel::createBodyLayer);
 
         event.registerLayerDefinition(BaseFishingHookModel.WOOD, BaseFishingHookModel::createWoodLayer);
         event.registerLayerDefinition(BaseFishingHookModel.REINFORCED, BaseFishingHookModel::createReinforcedLayer);
@@ -180,15 +186,15 @@ public final class ModClientEvents {
         event.registerEntityRenderer(THROWN_KNIVES_PROJECTILE.get(), ThrownKnivesProjectileRenderer::new);
         event.registerEntityRenderer(SHURIKEN_PROJECTILE.get(), ShurikenProjectileRenderer::new);
         event.registerEntityRenderer(GRENADE.get(), BaseGrenadeEntityRenderer::new);
-        event.registerEntityRenderer(BOUNCY_GRENADE.get(), EmptyEntityRenderer::new);
-        event.registerEntityRenderer(STICKY_GRENADE.get(), EmptyEntityRenderer::new);
+        event.registerEntityRenderer(BOUNCY_GRENADE.get(), BouncyGrenadeEntityRenderer::new);
+        event.registerEntityRenderer(STICKY_GRENADE.get(), StickyGrenadeEntityRenderer::new);
         event.registerEntityRenderer(DYNAMITE.get(), BaseDynamiteEntityRenderer::new);
         event.registerEntityRenderer(BOUNCY_DYNAMITE.get(), BouncyDynamiteEntityRenderer::new);
         event.registerEntityRenderer(STICKY_DYNAMITE.get(), StickyDynamiteEntityRenderer::new);
-        event.registerEntityRenderer(DRY_BOMB.get(), EmptyEntityRenderer::new);
-        event.registerEntityRenderer(WET_BOMB.get(), EmptyEntityRenderer::new);
-        event.registerEntityRenderer(LAVA_BOMB.get(), EmptyEntityRenderer::new);
-        event.registerEntityRenderer(HONEY_BOMB.get(), EmptyEntityRenderer::new);
+        event.registerEntityRenderer(DRY_BOMB.get(), DryBombEntityRenderer::new);
+        event.registerEntityRenderer(WET_BOMB.get(), WetBombEntityRenderer::new);
+        event.registerEntityRenderer(LAVA_BOMB.get(), LavaBombEntityRenderer::new);
+        event.registerEntityRenderer(HONEY_BOMB.get(), HoneyBombEntityRenderer::new);
 
 
         event.registerEntityRenderer(HOTLINE_FISHING_HOOK.get(), HotlineFishingHookRenderer::new);

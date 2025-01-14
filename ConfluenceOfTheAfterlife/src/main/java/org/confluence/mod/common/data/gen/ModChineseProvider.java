@@ -957,6 +957,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(StatueBlocks.N7_STATUE.get(), "7字雕像");
         add(StatueBlocks.N8_STATUE.get(), "8字雕像");
         add(StatueBlocks.N9_STATUE.get(), "9字雕像");
+        add(StatueBlocks.PERIOD_STATUE.get(), "句号雕像");
+        add(StatueBlocks.EXCLAMATION_MARK_STATUE.get(), "叹号雕像");
+        add(StatueBlocks.QUESTION_MARK_STATUE.get(), "问号雕像");
 
         add(StatueBlocks.ANVIL_STATUE.get(), "砧雕像");
         add(StatueBlocks.ARMOR_STATUE.get(), "盔甲雕像");

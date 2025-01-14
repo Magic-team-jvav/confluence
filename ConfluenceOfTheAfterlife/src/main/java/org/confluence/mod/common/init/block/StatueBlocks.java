@@ -1,7 +1,9 @@
 package org.confluence.mod.common.init.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -15,18 +17,21 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.block.common.StatueBlock;
 import org.confluence.mod.common.block.functional.BehaviourStatueBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
+import org.confluence.mod.common.data.gen.ModBlockTagsProvider;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ModItems;
@@ -85,6 +90,10 @@ public class StatueBlocks {
     public static final Supplier<StatueBlock> N7_STATUE = register("n7_statue");
     public static final Supplier<StatueBlock> N8_STATUE = register("n8_statue");
     public static final Supplier<StatueBlock> N9_STATUE = register("n9_statue");
+
+    public static final Supplier<StatueBlock> PERIOD_STATUE = register("period_statue");
+    public static final Supplier<StatueBlock> EXCLAMATION_MARK_STATUE = register("exclamation_mark_statue");
+    public static final Supplier<StatueBlock> QUESTION_MARK_STATUE = register("question_mark_statue");
 
 
     public static final Supplier<StatueBlock> ANVIL_STATUE = register("anvil_statue");
@@ -248,5 +257,11 @@ public class StatueBlocks {
         ModItems.BLOCK_ITEMS.registerSimpleBlockItem(block, new Item.Properties());
         BEHAVIOUR_STATUES.add(block);
         return block;
+    }
+    public static void acceptTags(ModBlockTagsProvider provider) {
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithPickaxe = provider.tag(BlockTags.MINEABLE_WITH_PICKAXE);
+        for (DeferredHolder<Block, ? extends Block> statueblock : BLOCKS.getEntries()) {
+            mineableWithPickaxe.add(statueblock.get());
+        }
     }
 }

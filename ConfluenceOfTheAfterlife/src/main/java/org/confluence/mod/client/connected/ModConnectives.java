@@ -1,6 +1,5 @@
 package org.confluence.mod.client.connected;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -12,7 +11,6 @@ import org.confluence.mod.client.connected.custom.RandomizeCTModel;
 import org.confluence.mod.client.connected.custom.WeightedCTModel;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
 import java.util.function.BiConsumer;
@@ -70,7 +68,7 @@ public final class ModConnectives {
      * @param behaviorSupplier 所注册的连接行为
      */
     private static void register(Block entry, Supplier<ConnectedTextureBehaviour> behaviorSupplier) {
-        MODEL_SWAPPER.getCustomBlockModels().register(BuiltInRegistries.BLOCK.getKey(entry), model -> new CTModel(model, behaviorSupplier.get()));
+        MODEL_SWAPPER.getCustomBlockModels().register(entry, model -> new CTModel(model, behaviorSupplier.get()));
     }
 
     /**
@@ -81,7 +79,7 @@ public final class ModConnectives {
      * @param width            可选的数量，即贴图的宽高比。如256x128的贴图是2
      */
     private static void registerRandomize(Block entry, Supplier<ConnectedTextureBehaviour> behaviorSupplier, int width) {
-        MODEL_SWAPPER.getCustomBlockModels().register(BuiltInRegistries.BLOCK.getKey(entry), model -> new RandomizeCTModel(model, behaviorSupplier.get(), width));
+        MODEL_SWAPPER.getCustomBlockModels().register(entry, model -> new RandomizeCTModel(model, behaviorSupplier.get(), width));
     }
 
     /**
@@ -92,6 +90,6 @@ public final class ModConnectives {
      * @param weights          一个权重数组
      */
     private static void registerWeighted(Block entry, Supplier<ConnectedTextureBehaviour> behaviorSupplier, int... weights) {
-        MODEL_SWAPPER.getCustomBlockModels().register(BuiltInRegistries.BLOCK.getKey(entry), model -> new WeightedCTModel(model, behaviorSupplier.get(), weights));
+        MODEL_SWAPPER.getCustomBlockModels().register(entry, model -> new WeightedCTModel(model, behaviorSupplier.get(), weights));
     }
 }

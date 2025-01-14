@@ -250,7 +250,8 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
         event.register((pStack, pTintIndex) -> ColoredItem.getColor(pStack), MaterialItems.GEL.get());
-        event.register((stack, tintIndex) -> tintIndex == 1 && stack.getItem() instanceof PaintItem paintItem ? 0xFF << 24 | paintItem.color : 0xFFFFFFFF,
+        event.register((stack, tintIndex) -> tintIndex == 1 && stack.getItem() instanceof PaintItem paintItem ? 0xFF << 24 | paintItem.getColor(stack) : 0xFFFFFFFF,
+                PaintItems.PAINT.get(),
                 PaintItems.RED_PAINT.get(),
                 PaintItems.DEEP_RED_PAINT.get(),
                 PaintItems.ORANGE_PAINT.get(),

@@ -52,6 +52,11 @@ public record BrushData(Map<BlockPos, int[]> colors) {
         return list == null ? -1 : list[facing.get3DDataValue()];
     }
 
+    public int getOrDefault(BlockPos pos, Direction facing, int defaultColor) {
+        int[] list = colors.get(pos);
+        return list == null ? defaultColor : list[facing.get3DDataValue()];
+    }
+
     public void put(BlockPos pos, int[] color) {
         int[] list = colors.get(pos);
         if (list == null) {

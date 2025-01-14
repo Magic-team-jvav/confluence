@@ -1,32 +1,36 @@
 package org.confluence.mod.common.item.paint;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.DyedItemColor;
 
 public class PaintItem extends Item {
-    public final int color;
-
     public PaintItem(int color) {
-        super(new Properties().stacksTo(99));
-        this.color = color;
+        super(new Properties().stacksTo(99).component(DataComponents.DYED_COLOR, new DyedItemColor(color, true)));
+    }
+
+    public int getColor(ItemStack stack) {
+        return DyedItemColor.getOrDefault(stack, 0xFFFFFF);
     }
 
     public static int getColor(Player player) {
         Inventory inventory = player.getInventory();
-        if (!inventory.offhand.isEmpty() && inventory.offhand.getFirst().getItem() instanceof PaintItem paintItem) {
+        ItemStack stack = inventory.offhand.getFirst();
+        if (!stack.isEmpty() && stack.getItem() instanceof PaintItem paintItem) {
             if (!player.getAbilities().instabuild) {
-                inventory.offhand.getFirst().shrink(1);
+                stack.shrink(1);
             }
-            return paintItem.color;
+            return paintItem.getColor(stack);
         }
         for (ItemStack itemStack : inventory.items) {
             if (!itemStack.isEmpty() && itemStack.getItem() instanceof PaintItem paintItem) {
                 if (!player.getAbilities().instabuild) {
                     itemStack.shrink(1);
                 }
-                return paintItem.color;
+                return paintItem.getColor(itemStack);
             }
         }
         return -1;

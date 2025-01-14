@@ -28,7 +28,7 @@ public abstract class SpriteLoaderMixin {
             List<SpriteContents> neoContents = Lists.newArrayList(contents);
             for (SpriteContents content : contents) {
                 ResourceLocation name = content.name();
-                if (name.getPath().startsWith("item/")) continue;
+                if (!name.getPath().startsWith("block/")) continue;
                 NativeImage neoImage = ClientUtils.copyWithGray(content.getOriginalImage());
                 SpriteContents neoContent = new SpriteContents(
                         name.withSuffix(".gray"),

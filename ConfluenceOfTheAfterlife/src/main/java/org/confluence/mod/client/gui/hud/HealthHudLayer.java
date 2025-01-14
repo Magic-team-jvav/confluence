@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
-import org.confluence.mod.util.GuiUtils;
+import org.confluence.mod.util.ClientUtils;
 
 public class HealthHudLayer implements LayeredDraw.Layer {
     public static final ResourceLocation HEART_SINGLE_FANCY = Confluence.asResource("textures/gui/hud/heart_single_fancy.png");
@@ -27,8 +27,8 @@ public class HealthHudLayer implements LayeredDraw.Layer {
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         if (!ClientConfigs.terraStyleHealth) return;
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.options.hideGui || !GuiUtils.shouldDrawSurvivalElements(minecraft)) return;
-        GuiUtils.setupOverlayRenderState(true, false);
+        if (minecraft.options.hideGui || !ClientUtils.shouldDrawSurvivalElements(minecraft)) return;
+        ClientUtils.setupOverlayRenderState(true, false);
         minecraft.getProfiler().push("health");
 
         int screenWidth = guiGraphics.guiWidth();

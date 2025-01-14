@@ -239,7 +239,7 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(StatueBlocks.BLOCK_ENTITY.get(), MechanicalBlockRenderer::new);
 
         // npc
-        event.registerEntityRenderer(GUIDE.get(), c->new GeoNormalRenderer<>(c,GUIDE.getId()));
+        event.registerEntityRenderer(GUIDE.get(), c -> new GeoNormalRenderer<>(c, GUIDE.getId()));
     }
 
     @SubscribeEvent
@@ -308,12 +308,13 @@ public final class ModClientEvents {
     public static void textureAtlasStitched(TextureAtlasStitchedEvent event) {
         TextureAtlas atlas = event.getAtlas();
         if (atlas.location().equals(TextureAtlas.LOCATION_BLOCKS)) {
-            for (Map.Entry<ResourceLocation, TextureAtlasSprite> entry : atlas.getTextures().entrySet()) {
+            Map<ResourceLocation, TextureAtlasSprite> textures = atlas.getTextures();
+            for (Map.Entry<ResourceLocation, TextureAtlasSprite> entry : textures.entrySet()) {
                 ResourceLocation key = entry.getKey();
-                if (!key.getPath().endsWith(".gray")) {
-                    ResourceLocation gray = key.withSuffix(".gray");
-                    GraySpriteShifterEntry.ALL.put(key, new GraySpriteShifterEntry(entry.getValue(), atlas.getSprite(gray)));
-                }
+                if (key.getPath().endsWith(".gray")) continue;
+                TextureAtlasSprite sprite = textures.get(key.withSuffix(".gray"));
+                if (sprite == null) continue;
+                GraySpriteShifterEntry.ALL.put(key, new GraySpriteShifterEntry(entry.getValue(), sprite));
             }
         }
     }

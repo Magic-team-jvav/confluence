@@ -1,11 +1,16 @@
 package org.confluence.mod.mixin.client;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.mojang.blaze3d.platform.NativeImage;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorMaterial;
@@ -14,9 +19,13 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
+import org.confluence.mod.util.ClientUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 import static org.confluence.mod.util.ModUtils.getSlotIndex;
 
@@ -26,6 +35,8 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
     private ExtraInventory confluence$currentExtraInventory = null;
     @Unique
     private LivingEntity confluence$currentEntity = null;
+    @Unique
+    private boolean confluence$isDyeColor = false;
 
     @WrapOperation(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;"))
     private ItemStack wrapItem(LivingEntity instance, EquipmentSlot slot, Operation<ItemStack> original) {
@@ -42,7 +53,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
     }
 
     @WrapOperation(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/client/extensions/common/IClientItemExtensions;getArmorLayerTintColor(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ArmorMaterial$Layer;II)I", remap = false))
-    private int dye(IClientItemExtensions instance, ItemStack stack, LivingEntity entity, ArmorMaterial.Layer layer, int layerIdx, int fallbackColor, Operation<Integer> original, @Local(argsOnly = true) EquipmentSlot slot) {
+    private int dyeColor(IClientItemExtensions instance, ItemStack stack, LivingEntity entity, ArmorMaterial.Layer layer, int layerIdx, int fallbackColor, Operation<Integer> original, @Local(argsOnly = true) EquipmentSlot slot) {
         if (entity instanceof AbstractClientPlayer) {
             int index = getSlotIndex(slot);
             if (index != -1) {
@@ -53,12 +64,37 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
                     vanityArmorDye = entity.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmorDye(index);
                 }
                 this.confluence$currentExtraInventory = null;
-                this.confluence$currentEntity = null;
                 if (!vanityArmorDye.isEmpty() && vanityArmorDye.getItem() instanceof BaseDyeItem dyeItem) {
+                    this.confluence$isDyeColor = true;
                     return dyeItem.color;
                 }
             }
         }
         return original.call(instance, stack, entity, layer, layerIdx, fallbackColor);
+    }
+
+    @ModifyExpressionValue(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/client/ClientHooks;getArmorTexture(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ArmorMaterial$Layer;ZLnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/resources/ResourceLocation;", remap = false))
+    private ResourceLocation withGray(ResourceLocation original, @Local(argsOnly = true) LivingEntity entity, @Local(argsOnly = true) EquipmentSlot slot) {
+        if (entity instanceof AbstractClientPlayer) {
+            if (confluence$currentEntity == entity && (confluence$isDyeColor || !entity.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmorDye(getSlotIndex(slot)).isEmpty())) {
+                this.confluence$currentEntity = null;
+                this.confluence$isDyeColor = false;
+                ResourceLocation gray = original.withSuffix(".gray");
+                if (Minecraft.getInstance().getTextureManager().getTexture(gray, null) == null) {
+                    try {
+                        try (InputStream inputstream = Minecraft.getInstance().getResourceManager().getResourceOrThrow(original).open()) {
+                            DynamicTexture texture = new DynamicTexture(ClientUtils.copyWithGray(NativeImage.read(inputstream)));
+                            Minecraft.getInstance().getTextureManager().register(gray, texture);
+                        }
+                        return gray;
+                    } catch (IOException ioexception) {
+                        return original;
+                    }
+                } else {
+                    return gray;
+                }
+            }
+        }
+        return original;
     }
 }

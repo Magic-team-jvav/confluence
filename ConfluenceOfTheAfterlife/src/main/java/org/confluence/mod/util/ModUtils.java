@@ -1,7 +1,5 @@
 package org.confluence.mod.util;
 
-import com.mojang.blaze3d.platform.NativeImage;
-import com.mojang.datafixers.util.Function4;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Direction;
@@ -47,11 +45,6 @@ import org.confluence.terraentity.utils.TEUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
@@ -351,46 +344,6 @@ public final class ModUtils {
      */
     public static double angleBetween(Vec3 v1, Vec3 v2) {
         return Math.acos(v1.dot(v2) / v1.length() / v2.length());
-    }
-
-    /**
-     * 将游戏缓存的贴图写入文件
-     *
-     * @param nativeImage 游戏缓存的贴图
-     * @param path        文件全路径，比如<code>FMLPaths.GAMEDIR.getPrefab().resolve("redstone.png")</code>
-     * @param argbMixer   argb的混合方法
-     */
-    public static void writeImageToFile(NativeImage nativeImage, Path path, Function4<Integer, Integer, Integer, Integer, Integer> argbMixer) {
-        int[] pixels = nativeImage.getPixelsRGBA();
-        Path parent = path.getParent();
-        try {
-            if (!Files.exists(parent)) Files.createDirectories(parent);
-            BufferedImage image = new BufferedImage(nativeImage.getWidth(), nativeImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
-            for (int i = 0; i < nativeImage.getHeight(); ++i) {
-                for (int j = 0; j < nativeImage.getWidth(); ++j) {
-                    int color = pixels[j + i * nativeImage.getWidth()];
-                    int a = color >>> 24;
-                    int b = color >> 16 & 255;
-                    int g = color >> 8 & 255;
-                    int r = color & 255;
-                    image.setRGB(j, i, argbMixer.apply(a, r, g, b));
-                }
-            }
-            ImageIO.write(image, "png", path.toFile());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void writeRawImageToFile(NativeImage nativeImage, Path path) {
-        writeImageToFile(nativeImage, path, (a, r, g, b) -> a << 24 | r << 16 | g << 8 | b);
-    }
-
-    public static void writeGrayImageToFile(NativeImage nativeImage, Path path) {
-        writeImageToFile(nativeImage, path, (a, r, g, b) -> {
-            int avg = (r + g + b) / 3;
-            return a << 24 | avg << 16 | avg << 8 | avg;
-        });
     }
 
     public static void lightningPathList(List<Vector3d> locationList, double dis, int move, RandomSource random) {

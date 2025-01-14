@@ -16,6 +16,10 @@
             {
                 "model": "confluence:block/pearl_sand_2",
                 "weight": 1
+            },
+            {
+                "model": "confluence:block/pearl_sand_3",
+                "weight": 1
             }
         ]
     }

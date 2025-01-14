@@ -4,12 +4,9 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.mojang.blaze3d.platform.NativeImage;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,9 +20,6 @@ import org.confluence.mod.util.ClientUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 import static org.confluence.mod.util.ModUtils.getSlotIndex;
 
@@ -79,20 +73,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
             if (confluence$currentEntity == entity && (confluence$isDyeColor || !entity.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmorDye(getSlotIndex(slot)).isEmpty())) {
                 this.confluence$currentEntity = null;
                 this.confluence$isDyeColor = false;
-                ResourceLocation gray = original.withSuffix(".gray");
-                if (Minecraft.getInstance().getTextureManager().getTexture(gray, null) == null) {
-                    try {
-                        try (InputStream inputstream = Minecraft.getInstance().getResourceManager().getResourceOrThrow(original).open()) {
-                            DynamicTexture texture = new DynamicTexture(ClientUtils.copyWithGray(NativeImage.read(inputstream)));
-                            Minecraft.getInstance().getTextureManager().register(gray, texture);
-                        }
-                        return gray;
-                    } catch (IOException ioexception) {
-                        return original;
-                    }
-                } else {
-                    return gray;
-                }
+                return ClientUtils.getGrayTexture(original);
             }
         }
         return original;

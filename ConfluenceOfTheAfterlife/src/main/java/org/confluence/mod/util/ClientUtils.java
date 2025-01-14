@@ -8,6 +8,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.SimpleBakedModel;
 import net.minecraft.network.chat.Component;
@@ -17,10 +18,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -177,5 +180,22 @@ public final class ClientUtils {
             }
         }
         return image;
+    }
+
+    public static @NotNull ResourceLocation getGrayTexture(ResourceLocation original) {
+        ResourceLocation gray = original.withSuffix(".gray");
+        if (Minecraft.getInstance().getTextureManager().getTexture(gray, null) == null) {
+            try {
+                try (InputStream inputstream = Minecraft.getInstance().getResourceManager().getResourceOrThrow(original).open()) {
+                    DynamicTexture texture = new DynamicTexture(copyWithGray(NativeImage.read(inputstream)));
+                    Minecraft.getInstance().getTextureManager().register(gray, texture);
+                }
+                return gray;
+            } catch (IOException ioexception) {
+                return original;
+            }
+        } else {
+            return gray;
+        }
     }
 }

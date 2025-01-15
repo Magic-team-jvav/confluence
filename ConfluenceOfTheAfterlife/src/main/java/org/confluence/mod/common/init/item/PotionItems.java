@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -12,8 +13,10 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.common.item.potion.*;
+import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCEffects;
+import org.jetbrains.annotations.NotNull;
 
 public class PotionItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -21,7 +24,11 @@ public class PotionItems {
     public static final DeferredItem<BottleItem> BOTTLE = ITEMS.register("bottle", BottleItem::new);
     public static final DeferredItem<AbstractPotionItem> BOTTLED_WATER = ITEMS.register("bottled_water", () -> new AbstractPotionItem(new Item.Properties().stacksTo(16)) {
         @Override
-        protected void apply(ItemStack itemStack, Level level, LivingEntity living) {}
+        protected void apply(@NotNull ItemStack itemStack, @NotNull Level level, @NotNull LivingEntity living) {
+            if (living.getAirSupply() <= 0 && living instanceof ServerPlayer serverPlayer) {
+                PlayerUtils.awardAchievement(serverPlayer, "unusual_survival_strategies");
+            }
+        }
     });
     public static final DeferredItem<AbstractPotionItem> ARCHERY_POTION = ITEMS.register("archery_potion", () -> new EffectPotionItem(ModEffects.ARCHERY, 9600));
     public static final DeferredItem<AbstractPotionItem> BUILDER_POTION = ITEMS.register("builder_potion", () -> new EffectPotionItem(ModEffects.BUILDER, 54000));

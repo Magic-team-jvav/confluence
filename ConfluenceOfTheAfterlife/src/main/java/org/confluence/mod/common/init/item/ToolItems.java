@@ -2,6 +2,7 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModFluids;
@@ -19,7 +20,7 @@ public class ToolItems {
     public static final Supplier<BottomlessBucketItem> BOTTOMLESS_WATER_BUCKET = ITEMS.register("bottomless_water_bucket", () -> new BottomlessBucketItem(Fluids.WATER, ModRarity.LIME));
     public static final Supplier<BottomlessBucketItem> BOTTOMLESS_LAVA_BUCKET = ITEMS.register("bottomless_lava_bucket", () -> new BottomlessBucketItem(Fluids.LAVA, ModRarity.LIME));
     public static final Supplier<BottomlessBucketItem> BOTTOMLESS_HONEY_BUCKET = ITEMS.register("bottomless_honey_bucket", () -> new BottomlessBucketItem(ModFluids.HONEY.fluid().get(), ModRarity.LIME));
-    public static final Supplier<BottomlessBucketItem> BOTTOMLESS_SHIMMER_BUCKET = ITEMS.register("bottomless_shimmer_bucket", () -> new BottomlessBucketItem(ModFluids.SHIMMER.fluid().get(), ModRarity.RED));
+    public static final DeferredItem<BottomlessBucketItem> BOTTOMLESS_SHIMMER_BUCKET = ITEMS.register("bottomless_shimmer_bucket", () -> new BottomlessBucketItem(ModFluids.SHIMMER.fluid().get(), ModRarity.RED));
 
     public static final Supplier<Item> GOLDEN_KEY = ITEMS.register("golden_key", () -> new CustomRarityItem(ModRarity.WHITE));
     public static final Supplier<Item> SHADOW_KEY = ITEMS.register("shadow_key", () -> new CustomRarityItem(ModRarity.WHITE));

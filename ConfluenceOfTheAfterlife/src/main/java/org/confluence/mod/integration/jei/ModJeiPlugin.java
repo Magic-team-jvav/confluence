@@ -2,6 +2,7 @@ package org.confluence.mod.integration.jei;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
@@ -10,8 +11,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Blocks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
@@ -21,6 +22,8 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.terra_curio.integration.jei.JeiBackGround;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 @JeiPlugin
 public final class ModJeiPlugin implements IModPlugin {
@@ -55,19 +58,23 @@ public final class ModJeiPlugin implements IModPlugin {
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null) return;
         RecipeManager recipeManager = level.getRecipeManager();
-        registration.addRecipes(SkyMillCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.SKY_MILL_TYPE.get()).stream().map(RecipeHolder::value).toList());
-        registration.addRecipes(AltarCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.ALTAR_TYPE.get()).stream().map(RecipeHolder::value).toList());
-        registration.addRecipes(HellforgeCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HELLFORGE_TYPE.get()).stream().map(RecipeHolder::value).toList());
-        registration.addRecipes(HeavyWorkBenchCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HEAVY_WORK_BENCH_TYPE.get()).stream().map(RecipeHolder::value).toList());
-        registration.addRecipes(AlchemyTableCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.ALCHEMY_TABLE_TYPE.get()).stream().map(RecipeHolder::value).toList());
+        registration.addRecipes(SkyMillCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.SKY_MILL_TYPE.get()));
+        registration.addRecipes(AltarCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.ALTAR_TYPE.get()));
+        registration.addRecipes(HellforgeCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.HELLFORGE_TYPE.get()));
+        registration.addRecipes(HeavyWorkBenchCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.HEAVY_WORK_BENCH_TYPE.get()));
+        registration.addRecipes(AlchemyTableCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.ALCHEMY_TABLE_TYPE.get()));
         if (CommonConfigs.FLETCHING_MENU.get()) {
-            registration.addRecipes(FletchingTableCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.FLETCHING_TABLE_TYPE.get()).stream().map(RecipeHolder::value).toList());
+            registration.addRecipes(FletchingTableCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.FLETCHING_TABLE_TYPE.get()));
         }
+    }
+
+    private static <I extends RecipeInput, T extends Recipe<I>> List<T> getAllRecipesFor(RecipeManager recipeManager, RecipeType<T> recipeType) {
+        return recipeManager.getAllRecipesFor(recipeType).stream().map(RecipeHolder::value).toList();
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get().getDefaultInstance(), ShimmerItemTransmutationCategory.TYPE);
+        registration.addRecipeCatalyst(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.toStack(), ShimmerItemTransmutationCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.SKY_MILL.toStack(), SkyMillCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.DEMON_ALTAR.toStack(), AltarCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.CRIMSON_ALTAR.toStack(), AltarCategory.TYPE);
@@ -75,8 +82,9 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(FunctionalBlocks.HEAVY_WORK_BENCH.toStack(), HeavyWorkBenchCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.ALCHEMY_TABLE.toStack(), AlchemyTableCategory.TYPE);
         if (CommonConfigs.FLETCHING_MENU.get()) {
-            registration.addRecipeCatalyst(Blocks.FLETCHING_TABLE.asItem().getDefaultInstance(), FletchingTableCategory.TYPE);
+            registration.addRecipeCatalyst(new ItemStack(Blocks.FLETCHING_TABLE), FletchingTableCategory.TYPE);
         }
+        registration.addRecipeCatalyst(FunctionalBlocks.LEAD_ANVIL.toStack(), RecipeTypes.ANVIL);
     }
 
     public static void drawArrowDown(GuiGraphics guiGraphics, int x, int y, boolean usable) {

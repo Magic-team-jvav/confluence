@@ -1,6 +1,5 @@
 package org.confluence.mod.mixin.client;
 
-import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.renderer.texture.SpriteContents;
 import net.minecraft.client.renderer.texture.SpriteLoader;
@@ -14,6 +13,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(SpriteLoader.class)
@@ -25,8 +25,9 @@ public abstract class SpriteLoaderMixin {
     @ModifyVariable(method = "stitch", at = @At("HEAD"), argsOnly = true)
     private List<SpriteContents> generateGraySprites(List<SpriteContents> contents) {
         if (location.equals(TextureAtlas.LOCATION_BLOCKS)) {
-            List<SpriteContents> neoContents = Lists.newArrayList(contents);
+            List<SpriteContents> neoContents = new ArrayList<>();
             for (SpriteContents content : contents) {
+                neoContents.add(content);
                 ResourceLocation name = content.name();
                 if (!name.getPath().startsWith("block/")) continue;
                 NativeImage neoImage = ClientUtils.copyWithGray(content.getOriginalImage());

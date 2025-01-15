@@ -36,7 +36,7 @@ public class FTBChunksHelper {
         }
     }
 
-    public static boolean longRangePlayerTracker$shouldTrack(ServerPlayer trackingPlayer, ServerPlayer trackedPlayer) {
+    public static boolean shouldTrack(ServerPlayer trackingPlayer, ServerPlayer trackedPlayer) {
         if (!IS_LOADED) return false;
         if (FTBChunksWorldConfig.LOCATION_MODE_OVERRIDE.get()) return true;
         return WormholeToPlayerPacketC2S.isTrackable(trackingPlayer, trackedPlayer);

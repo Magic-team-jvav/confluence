@@ -50,7 +50,7 @@ public class FunctionalBlocks {
     /**
      * @see org.confluence.mod.mixin.block.AnvilBlockMixin
      */
-    public static final Supplier<AnvilBlock> LEAD_ANVIL = registerWithItem("lead_anvil", () -> new AnvilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL)));
+    public static final DeferredBlock<AnvilBlock> LEAD_ANVIL = registerWithItem("lead_anvil", () -> new AnvilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL)));
     public static final Supplier<AnvilBlock> CHIPPED_LEAD_ANVIL = registerWithItem("chipped_lead_anvil", () -> new AnvilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHIPPED_ANVIL)));
     public static final Supplier<AnvilBlock> DAMAGED_LEAD_ANVIL = registerWithItem("damaged_lead_anvil", () -> new AnvilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DAMAGED_ANVIL)));
 

@@ -81,9 +81,9 @@ public final class ModBlocks {
         return registerWithItem(id, block, new Item.Properties());
     }
 
-    public static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> block, Function<Supplier<B>, Supplier<BlockItem>> item) {
+    public static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> block, Function<B, BlockItem> item) {
         DeferredBlock<B> object = BLOCKS.register(id, block);
-        ModItems.BLOCK_ITEMS.register(id, item.apply(object));
+        ModItems.BLOCK_ITEMS.register(id, () -> item.apply(object.get()));
         return object;
     }
 

@@ -5,12 +5,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.bomb.BaseDynamiteEntityModel;
-import org.confluence.mod.client.model.entity.bomb.BouncyDynamiteEntityModel;
 import org.confluence.mod.common.entity.projectile.bomb.BaseDynamiteEntity;
-import org.confluence.mod.common.entity.projectile.bomb.BouncyBombEntity;
-import org.confluence.mod.common.entity.projectile.bomb.BouncyDynamiteEntity;
 
-public class BouncyDynamiteEntityRenderer extends DynamiteEntityRenderer<BaseDynamiteEntity> {
+public class BouncyDynamiteEntityRenderer extends BombEntityRenderer<BaseDynamiteEntity> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/bomb/bouncy_dynamite_entity.png");
     private final BaseDynamiteEntityModel model;
 

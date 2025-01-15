@@ -4,12 +4,10 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.model.entity.bomb.BaseGrenadeEntityModel;
 import org.confluence.mod.client.model.entity.bomb.StickyGrenadeEntityModel;
-import org.confluence.mod.common.entity.projectile.bomb.BaseGrenadeEntity;
 import org.confluence.mod.common.entity.projectile.bomb.StickyGrenadeEntity;
 
-public class StickyGrenadeEntityRenderer extends GrenadeEntityRenderer<StickyGrenadeEntity> {
+public class StickyGrenadeEntityRenderer extends BombEntityRenderer<StickyGrenadeEntity> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/bomb/sticky_grenade_entity.png");
     private final StickyGrenadeEntityModel model;
 

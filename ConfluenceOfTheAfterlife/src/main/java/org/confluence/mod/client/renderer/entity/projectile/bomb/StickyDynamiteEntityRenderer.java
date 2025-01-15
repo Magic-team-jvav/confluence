@@ -7,7 +7,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.bomb.BaseDynamiteEntityModel;
 import org.confluence.mod.common.entity.projectile.bomb.BaseDynamiteEntity;
 
-public class StickyDynamiteEntityRenderer extends DynamiteEntityRenderer<BaseDynamiteEntity> {
+public class StickyDynamiteEntityRenderer extends BombEntityRenderer<BaseDynamiteEntity> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/bomb/sticky_dynamite_entity.png");
     private final BaseDynamiteEntityModel model;
 

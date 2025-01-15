@@ -9,6 +9,7 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import org.confluence.mod.util.MultiplyExplosionDamageCalculator;
 
 public class LiquidBombEntity extends BaseBombEntity {
@@ -27,17 +28,19 @@ public class LiquidBombEntity extends BaseBombEntity {
 
     @Override
     protected void explodeFunction() {
-        BlockPos blockPos = blockPosition();
-        BlockPos.MutableBlockPos mutable = blockPos.mutable();
-        for (int i = -radius; i < radius; i++) {
-            int x = blockPos.getX() + i;
-            for (int j = 0; j < radius; j++) {
-                int y = blockPos.getY() + j;
-                for (int k = -radius; k < radius; k++) {
-                    int z = blockPos.getZ() + k;
-                    mutable.set(x, y, z);
-                    if (level().getBlockState(mutable).isEmpty()) {
-                        level().setBlockAndUpdate(mutable, toFill);
+    if (!level().dimensionType().ultraWarm() || toFill.getFluidState().getType().getFluidType() != NeoForgeMod.WATER_TYPE.value()) {
+            BlockPos blockPos = blockPosition();
+            BlockPos.MutableBlockPos mutable = blockPos.mutable();
+            for (int i = -radius; i < radius; i++) {
+                int x = blockPos.getX() + i;
+                for (int j = 0; j < radius; j++) {
+                    int y = blockPos.getY() + j;
+                    for (int k = -radius; k < radius; k++) {
+                        int z = blockPos.getZ() + k;
+                        mutable.set(x, y, z);
+                        if (level().getBlockState(mutable).isEmpty()) {
+                            level().setBlockAndUpdate(mutable, toFill);
+                        }
                     }
                 }
             }

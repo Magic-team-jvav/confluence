@@ -14,7 +14,7 @@ public interface IMusicManager {
     static void reset(MusicManager musicManager) {
         IMusicManager manager = (IMusicManager) musicManager;
         if (manager.confluence$getMusicBoxOccupied().isAccessory()) {
-            manager.confluence$setMusicBoxOccupied(IMusicManager.State.NONE);
+            manager.confluence$setMusicBoxOccupied(State.NONE);
         }
     }
 

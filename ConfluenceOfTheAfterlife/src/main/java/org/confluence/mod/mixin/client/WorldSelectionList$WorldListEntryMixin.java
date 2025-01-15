@@ -33,6 +33,6 @@ public abstract class WorldSelectionList$WorldListEntryMixin {
 
     @Inject(method = "render", at = @At("TAIL"))
     private void renderSecretFlagIcon(GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick, CallbackInfo ci) {
-        guiGraphics.drawString(minecraft.font, Long.toString(confluence$secretFlag), left, top, 0xFFFFFF);
+        guiGraphics.drawString(minecraft.font, Long.toString(confluence$secretFlag), left, top, 0xFFFFFF); // todo 存档角标
     }
 }

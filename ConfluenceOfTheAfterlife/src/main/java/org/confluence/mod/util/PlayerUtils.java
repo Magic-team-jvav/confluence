@@ -38,11 +38,10 @@ import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_COINS;
 
 public final class PlayerUtils {
     public static final ToIntFunction<Item> COIN_2_INDEX = coin -> {
-        if (coin == ModItems.EMERALD_COIN.get()) return 0;
-        if (coin == ModItems.PLATINUM_COIN.get()) return 1;
-        if (coin == ModItems.GOLDEN_COIN.get()) return 2;
-        if (coin == ModItems.SILVER_COIN.get()) return 3;
-        if (coin == ModItems.COPPER_COIN.get()) return 4;
+        if (coin == ModItems.PLATINUM_COIN.get()) return 0;
+        if (coin == ModItems.GOLDEN_COIN.get()) return 1;
+        if (coin == ModItems.SILVER_COIN.get()) return 2;
+        if (coin == ModItems.COPPER_COIN.get()) return 3;
         return -1;
     };
     public static final IntFunction<Item> INDEX_2_COIN = index -> switch (index) {
@@ -50,7 +49,6 @@ public final class PlayerUtils {
         case 1 -> ModItems.SILVER_COIN.get();
         case 2 -> ModItems.GOLDEN_COIN.get();
         case 3 -> ModItems.PLATINUM_COIN.get();
-        case 4 -> ModItems.EMERALD_COIN.get();
         default -> Items.AIR;
     };
 
@@ -197,18 +195,22 @@ public final class PlayerUtils {
 
     public static int[] getCoins(Player player) {
         ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
-        int[] coins = new int[5];
+        int[] coins = new int[SIZE_COINS];
         for (int i = 0; i < SIZE_COINS; i++) {
             ItemStack stack = extraInventory.getCoins(i);
             if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
                 int index = COIN_2_INDEX.applyAsInt(stack.getItem());
-                coins[index] += stack.getCount();
+                if (index != -1) {
+                    coins[index] += stack.getCount();
+                }
             }
         }
         for (ItemStack stack : player.getInventory().items) {
             if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
                 int index = COIN_2_INDEX.applyAsInt(stack.getItem());
-                coins[index] += stack.getCount();
+                if (index != -1) {
+                    coins[index] += stack.getCount();
+                }
             }
         }
         return coins;
@@ -217,8 +219,8 @@ public final class PlayerUtils {
     public static long getMoney(Player player) {
         int[] coins = getCoins(player);
         long res = 0;
-        for (int i = 0; i < coins.length; i++) {
-            res += (int) (coins[i] * Math.pow(99, 4 - i));
+        for (int i = 0; i < SIZE_COINS; i++) {
+            res += (int) (coins[i] * Math.pow(99, 3 - i));
         }
         return res;
     }
@@ -239,16 +241,16 @@ public final class PlayerUtils {
         }
         int[] coins = decodeCoin(have - cost);
 
-        for (int i = 0; i < coins.length; i++) {
+        for (int i = 0; i < SIZE_COINS; i++) {
             player.getInventory().add(new ItemStack(INDEX_2_COIN.apply(i), coins[i]));
         }
         return true;
     }
 
     public static int[] decodeCoin(long money) {
-        int[] coins = new int[5];
+        int[] coins = new int[SIZE_COINS];
         int multiple = 99;
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < SIZE_COINS; i++) {
             long num = money % multiple;
             if (num > 0) {
                 coins[i] = (int) num;

@@ -45,8 +45,6 @@ public abstract class InventoryMixin {
                             itemStack = ModItems.GOLDEN_COIN.get().getDefaultInstance();
                         } else if (coin == ModItems.GOLDEN_COIN.get()) {
                             itemStack = ModItems.PLATINUM_COIN.get().getDefaultInstance();
-                        } else if (coin == ModItems.PLATINUM_COIN.get()) {
-                            itemStack = ModItems.EMERALD_COIN.get().getDefaultInstance();
                         }
                         if (itemStack != null) {
                             extraInventory1.setItem(COINS_START + i, ItemStack.EMPTY);

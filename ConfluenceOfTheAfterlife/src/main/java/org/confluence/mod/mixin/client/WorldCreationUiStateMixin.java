@@ -19,9 +19,6 @@ public abstract class WorldCreationUiStateMixin {
     @Shadow
     public abstract String getSeed();
 
-    @Shadow
-    private String seed;
-
     @WrapOperation(method = "lambda$setSeed$2", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/levelgen/WorldOptions;withSeed(Ljava/util/OptionalLong;)Lnet/minecraft/world/level/levelgen/WorldOptions;"))
     private WorldOptions checkSecretSeed(WorldOptions instance, OptionalLong seed, Operation<WorldOptions> original) {
         String s = getSeed().trim().toLowerCase(Locale.ROOT);

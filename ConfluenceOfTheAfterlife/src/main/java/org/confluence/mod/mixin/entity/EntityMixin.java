@@ -81,7 +81,7 @@ public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
     }
 
     @Inject(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;pop()V"))
-    private void tickProfiler(CallbackInfo ci) {
+    private void shimmerTick(CallbackInfo ci) {
         if (confluence$entity_coolDown < 0) this.confluence$entity_coolDown = 0;
 
         Entity self = self();

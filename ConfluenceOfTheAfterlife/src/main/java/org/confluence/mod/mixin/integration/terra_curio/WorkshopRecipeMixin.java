@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class WorkshopRecipeMixin implements SelfGetter<WorkshopRecipe> {
     @ModifyExpressionValue(method = "matches", at = @At(value = "INVOKE", target = "Lorg/confluence/terra_curio/util/TCUtils;forConfluence$ModifyExpression(Ljava/lang/Object;)Ljava/lang/Object;"))
     private Object modify(Object original, @Local(argsOnly = true) RecipeInput input) {
-        if (input instanceof EnvironmentRecipeInput recipeInput) {
-            return ((Boolean) original) && recipeInput.getAccess().matches(self());
+        if (((Boolean) original) && input instanceof EnvironmentRecipeInput recipeInput) {
+            return recipeInput.getAccess().matches(self());
         }
         return original;
     }

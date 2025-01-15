@@ -28,7 +28,7 @@ public class BaseMinecartItem extends MinecartItem {
         return Component.translatable(getDescriptionId()).withStyle(style -> style.withColor(pStack.get(TCDataComponentTypes.MOD_RARITY).getColor()));
     }
 
-    public AbstractMinecart createMinecart(ServerLevel level, double x, double y, double z, AbstractMinecart.Type type, ItemStack stack, @Nullable Player player) {
+    public @Nullable AbstractMinecart createMinecart(ServerLevel level, double x, double y, double z, AbstractMinecart.Type type, ItemStack stack, @Nullable Player player) {
         if (type == AbstractMinecart.Type.RIDEABLE && stack.is(this)) {
             return factory.createMinecart(level, x, y, z, abilities);
         }

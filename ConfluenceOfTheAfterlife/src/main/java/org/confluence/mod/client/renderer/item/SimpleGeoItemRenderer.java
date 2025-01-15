@@ -3,13 +3,13 @@ package org.confluence.mod.client.renderer.item;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
-public class SimpleGeoItemRenderer<T extends Item & GeoAnimatable> implements IClientItemExtensions {
+public class SimpleGeoItemRenderer<T extends Item & GeoAnimatable> implements GeoRenderProvider {
     private final ResourceLocation model;
     private final ResourceLocation texture;
     private final @Nullable ResourceLocation animation;
@@ -23,7 +23,7 @@ public class SimpleGeoItemRenderer<T extends Item & GeoAnimatable> implements IC
 
     @SuppressWarnings("removal")
     @Override
-    public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+    public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
         if (renderer == null) {
             this.renderer = new GeoItemRenderer<>(new GeoModel<>() {
                 @Override
@@ -37,7 +37,7 @@ public class SimpleGeoItemRenderer<T extends Item & GeoAnimatable> implements IC
                 }
 
                 @Override
-                public ResourceLocation getAnimationResource(T animatable) {
+                public @Nullable ResourceLocation getAnimationResource(T animatable) {
                     return animation;
                 }
             });

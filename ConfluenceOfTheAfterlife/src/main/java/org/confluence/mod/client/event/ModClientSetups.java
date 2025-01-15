@@ -7,7 +7,6 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -21,10 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.model.block.AltarBlockModel;
-import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -35,8 +31,6 @@ import org.confluence.mod.util.color.IntegerRGB;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
-import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.Consumer;
@@ -96,33 +90,6 @@ public final class ModClientSetups {
         public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
             RenderSystem.setShaderFogStart(0.125F);
             RenderSystem.setShaderFogEnd(10.0F);
-        }
-    };
-    static final IClientItemExtensions ALTAR_CLIENT_EXTENSIONS = new IClientItemExtensions() {
-        private GeoItemRenderer<AltarBlock.Item> renderer;
-
-        @SuppressWarnings("removal")
-        @Override
-        public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-            if (renderer == null) {
-                this.renderer = new GeoItemRenderer<>(new GeoModel<>() {
-                    @Override
-                    public ResourceLocation getModelResource(AltarBlock.Item animatable) {
-                        return AltarBlockModel.MODELS[animatable.getVariant().getId()];
-                    }
-
-                    @Override
-                    public ResourceLocation getTextureResource(AltarBlock.Item animatable) {
-                        return AltarBlockModel.TEXTURES[animatable.getVariant().getId()];
-                    }
-
-                    @Override
-                    public ResourceLocation getAnimationResource(AltarBlock.Item animatable) {
-                        return AltarBlockModel.ANIMATIONS[animatable.getVariant().getId()];
-                    }
-                });
-            }
-            return renderer;
         }
     };
     static final BlockColor HALLOW_LEAVES_COLOR = new BlockColor() {

@@ -19,15 +19,20 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
+import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
+
+import java.util.function.Consumer;
 
 public class LifeCrystalBlock extends HorizontalDirectionalBlock implements EntityBlock {
     public static final MapCodec<LifeCrystalBlock> CODEC = simpleCodec(LifeCrystalBlock::new);
@@ -89,6 +94,11 @@ public class LifeCrystalBlock extends HorizontalDirectionalBlock implements Enti
 
         public Item(LifeCrystalBlock pBlock) {
             super(pBlock, new Properties().component(TCDataComponentTypes.MOD_RARITY, ModRarity.GREEN));
+        }
+
+        @Override
+        public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+            consumer.accept(new SimpleGeoItemRenderer<>(LifeCrystalBlockModel.MODEL, LifeCrystalBlockModel.TEXTURE, null));
         }
 
         @Override

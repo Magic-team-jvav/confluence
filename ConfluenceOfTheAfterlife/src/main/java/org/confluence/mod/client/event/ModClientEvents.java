@@ -28,7 +28,9 @@ import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.client.gui.hud.HealthHudLayer;
 import org.confluence.mod.client.gui.hud.ManaHudLayer;
-import org.confluence.mod.client.model.block.*;
+import org.confluence.mod.client.model.block.AltarBlockModel;
+import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
+import org.confluence.mod.client.model.block.WeatherVaneBlockModel;
 import org.confluence.mod.client.model.entity.FallingStarRenderer;
 import org.confluence.mod.client.model.entity.bomb.*;
 import org.confluence.mod.client.model.entity.fishing.BaseFishingHookModel;
@@ -51,7 +53,6 @@ import org.confluence.mod.client.renderer.entity.fishing.HotlineFishingHookRende
 import org.confluence.mod.client.renderer.entity.hook.*;
 import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
-import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.client.textures.GrayBlockModelSwapper;
 import org.confluence.mod.client.textures.GraySpriteShifterEntry;
 import org.confluence.mod.common.init.ModFluids;
@@ -294,11 +295,6 @@ public final class ModClientEvents {
     public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
         event.registerFluidType(ModClientSetups.HONEY_CLIENT_EXTENSIONS, ModFluids.HONEY.type());
         event.registerFluidType(ModClientSetups.SHIMMER_CLIENT_EXTENSIONS, ModFluids.SHIMMER.type());
-
-        event.registerItem(ModClientSetups.ALTAR_CLIENT_EXTENSIONS, FunctionalBlocks.DEMON_ALTAR.asItem(), FunctionalBlocks.CRIMSON_ALTAR.asItem());
-        event.registerItem(new SimpleGeoItemRenderer<>(LifeCrystalBlockModel.MODEL, LifeCrystalBlockModel.TEXTURE, null), NatureBlocks.LIFE_CRYSTAL_BLOCK.asItem());
-        event.registerItem(new SimpleGeoItemRenderer<>(SkyMillBlockModel.MODEL, SkyMillBlockModel.TEXTURE, SkyMillBlockModel.ANIMATION), FunctionalBlocks.SKY_MILL.asItem());
-        event.registerItem(new SimpleGeoItemRenderer<>(ExtractinatorBlockModel.MODEL, ExtractinatorBlockModel.TEXTURE, ExtractinatorBlockModel.ANIMATION), FunctionalBlocks.EXTRACTINATOR.asItem());
     }
 
     @SubscribeEvent

@@ -27,6 +27,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.fluids.FluidType;
+import org.confluence.mod.client.model.block.SkyMillBlockModel;
+import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.menu.SkyMillMenu;
@@ -36,11 +38,14 @@ import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
+
+import java.util.function.Consumer;
 
 public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBlock {
     public static final MapCodec<SkyMillBlock> CODEC = simpleCodec(SkyMillBlock::new);
@@ -122,6 +127,11 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
 
         public Item(SkyMillBlock pBlock) {
             super(pBlock, new Properties().component(TCDataComponentTypes.MOD_RARITY, ModRarity.BLUE));
+        }
+
+        @Override
+        public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+            consumer.accept(new SimpleGeoItemRenderer<>(SkyMillBlockModel.MODEL, SkyMillBlockModel.TEXTURE, SkyMillBlockModel.ANIMATION));
         }
 
         @Override

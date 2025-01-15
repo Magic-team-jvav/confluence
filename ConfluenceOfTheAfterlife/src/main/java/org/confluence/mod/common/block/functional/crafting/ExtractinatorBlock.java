@@ -28,6 +28,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.mod.client.model.block.ExtractinatorBlockModel;
+import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModTags;
@@ -39,11 +41,14 @@ import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
+
+import java.util.function.Consumer;
 
 public class ExtractinatorBlock extends HorizontalDirectionalBlock implements EntityBlock {
     public static final MapCodec<ExtractinatorBlock> CODEC = simpleCodec(ExtractinatorBlock::new);
@@ -182,6 +187,11 @@ public class ExtractinatorBlock extends HorizontalDirectionalBlock implements En
 
         public Item(ExtractinatorBlock pBlock) {
             super(pBlock, new Properties().component(TCDataComponentTypes.MOD_RARITY, ModRarity.WHITE).stacksTo(1));
+        }
+
+        @Override
+        public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+            consumer.accept(new SimpleGeoItemRenderer<>(ExtractinatorBlockModel.MODEL, ExtractinatorBlockModel.TEXTURE, ExtractinatorBlockModel.ANIMATION));
         }
 
         @Override

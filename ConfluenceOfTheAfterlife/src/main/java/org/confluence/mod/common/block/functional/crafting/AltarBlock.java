@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -12,6 +13,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.ByIdMap;
@@ -38,6 +40,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.model.block.AltarBlockModel;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -51,13 +54,17 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.IntFunction;
 
 public class AltarBlock extends BaseEntityBlock {
@@ -299,6 +306,37 @@ public class AltarBlock extends BaseEntityBlock {
 
         public Item(AltarBlock pBlock) {
             super(pBlock, new Properties().component(TCDataComponentTypes.MOD_RARITY, ModRarity.PURPLE));
+        }
+
+        @Override
+        public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+            consumer.accept(new GeoRenderProvider() {
+                private GeoItemRenderer<Item> renderer;
+
+                @SuppressWarnings("removal")
+                @Override
+                public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
+                    if (renderer == null) {
+                        this.renderer = new GeoItemRenderer<>(new GeoModel<>() {
+                            @Override
+                            public ResourceLocation getModelResource(AltarBlock.Item animatable) {
+                                return AltarBlockModel.MODELS[animatable.getVariant().getId()];
+                            }
+
+                            @Override
+                            public ResourceLocation getTextureResource(AltarBlock.Item animatable) {
+                                return AltarBlockModel.TEXTURES[animatable.getVariant().getId()];
+                            }
+
+                            @Override
+                            public ResourceLocation getAnimationResource(AltarBlock.Item animatable) {
+                                return AltarBlockModel.ANIMATIONS[animatable.getVariant().getId()];
+                            }
+                        });
+                    }
+                    return renderer;
+                }
+            });
         }
 
         public Variant getVariant() {

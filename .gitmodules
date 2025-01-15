@@ -34,3 +34,7 @@
 	path = IsekaiInvaded
 	url = https://github.com/XiaoHuNao/IsekaiInvaded
 	branch = neoforge-dev/1.21.1
+[submodule "TerraFurniture"]
+	path = TerraFurniture
+	url = https://github.com/MakerTechno/TerraFurniture
+	branch = neoforge-dev/1.21.1

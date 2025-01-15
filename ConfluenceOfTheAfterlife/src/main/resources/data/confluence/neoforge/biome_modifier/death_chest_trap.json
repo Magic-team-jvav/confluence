@@ -1,0 +1,8 @@
+{
+    "type": "neoforge:add_features",
+    "biomes": "#minecraft:is_overworld",
+    "features": [
+        "confluence:normal_death_chest_trap"
+    ],
+    "step": "underground_decoration"
+}

@@ -1,0 +1,8 @@
+{
+    "type": "neoforge:add_features",
+    "biomes": "minecraft:desert",
+    "features": [
+        "confluence:normal_falling_sand_trap"
+    ],
+    "step": "underground_decoration"
+}

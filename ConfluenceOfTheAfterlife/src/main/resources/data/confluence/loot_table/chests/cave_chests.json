@@ -192,6 +192,22 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "confluence:dynamite",
+          "weight": 1
+        },
+
+        {
+          "type": "minecraft:empty",
+          "weight": 2
+        }
+      ],
+      "rolls": 1
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
           "name": "confluence:suspicious_looking_eye",
           "weight": 1
         },

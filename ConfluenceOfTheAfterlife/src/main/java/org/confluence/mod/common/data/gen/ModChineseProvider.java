@@ -40,6 +40,8 @@ public class ModChineseProvider extends LanguageProvider {
 
 
         add("item.confluence.afterlife_notes", "来世手记");
+        add("item.confluence.encumbering_stone.disable", "负重石：关闭");
+        add("item.confluence.paint", "油漆");
 
         add("text.confluence.afterlife_notes", "  冒险者，新的天地充满了无尽的挑战与机遇，这本手记将帮助你了解这个世界的奥秘，指引你面对怪物和困境，只有不断探索，你才能发现更多的力量与宝藏，你的旅途才刚刚开始。                            —— 向导");
 
@@ -1963,6 +1965,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(PaintItems.PAINTBRUSH.get(), "漆刷");
         add(PaintItems.PAINT_ROLLER.get(), "油漆滚刷");
         add(PaintItems.PAINT_SCRAPER.get(), "漆铲");
+        add(PaintItems.EYEDROPPER.get(), "滴管");
         add(PaintItems.RED_PAINT.get(), "红漆");
         add(PaintItems.DEEP_RED_PAINT.get(), "深红漆");
         add(PaintItems.ORANGE_PAINT.get(), "橙漆");

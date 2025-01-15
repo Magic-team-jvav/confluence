@@ -78,6 +78,7 @@
         "client.WorldCreationUiStateMixin",
         "client.WorldSelectionList$WorldListEntryMixin",
         "client.accessor.FontAccessor",
+        "client.accessor.ParticleAccessor",
         "integration.ftbchunks.EntityMapIconMixin",
         "integration.ftbchunks.TrackedPlayerMapIconMixin",
         "integration.geckolib.InternalUtilMixin",

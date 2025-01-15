@@ -29,6 +29,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.mixin.client.accessor.ParticleAccessor;
 import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
@@ -46,10 +47,10 @@ public final class WeatherHandler {
     public static String windSpeedInfo = "0.00";
 
     public static void handleBlock(ClientLevel level, RandomSource random, BlockState blockState, BlockPos.MutableBlockPos blockPos, Map<Block, Context> data) {
-            Context context = data.get(blockState.getBlock());
-            if (context != null && context.facing.isAvailable(level, random, blockPos, blockState, context)) {
-                context.facing.apply(level, random, blockPos, blockState, context);
-            }
+        Context context = data.get(blockState.getBlock());
+        if (context != null && context.facing.isAvailable(level, random, blockPos, blockState, context)) {
+            context.facing.apply(level, random, blockPos, blockState, context);
+        }
     }
 
     public static void handleFluid(ClientLevel level, RandomSource random, FluidState fluidState, BlockPos.MutableBlockPos blockPos, Map<FluidType, ParticleOptions> data) {
@@ -64,15 +65,18 @@ public final class WeatherHandler {
         double x = vec3.x + Mth.nextDouble(random, -0.5, 0.5);
         double y = vec3.y + 0.57;
         double z = vec3.z + Mth.nextDouble(random, -0.5, 0.5);
-        spawnParticle(particleOptions, x, y, z);
+        spawnParticle(particleOptions, x, y, z, random);
     }
 
-    private static void spawnParticle(ParticleOptions particleOptions, double x, double y, double z) {
+    private static void spawnParticle(ParticleOptions particleOptions, double x, double y, double z, RandomSource random) {
         Particle particle = Minecraft.getInstance().particleEngine.createParticle(particleOptions, x, y, z, 0.0, 0.0, 0.0);
         if (particle != null) {
             float windSpeedX = getWindSpeedX();
             float windSpeedZ = getWindSpeedZ();
             particle.setParticleSpeed(windSpeedX * 0.01, 0.0, windSpeedZ * 0.01);
+            float roll = Mth.nextFloat(random, -Mth.HALF_PI, Mth.HALF_PI);
+            ((ParticleAccessor) particle).setORoll(roll);
+            ((ParticleAccessor) particle).setRoll(roll);
         }
     }
 
@@ -177,7 +181,7 @@ public final class WeatherHandler {
                 double x = vec3.x + Mth.nextDouble(random, -0.5, 0.5);
                 double y = vec3.y + context.step.apply(level, blockPos, blockState).y;
                 double z = vec3.z + Mth.nextDouble(random, -0.5, 0.5);
-                spawnParticle(context.options, x, y, z);
+                spawnParticle(context.options, x, y, z, random);
             }
         };
         public static final Facing HORIZONTAL = new Facing() {
@@ -201,7 +205,7 @@ public final class WeatherHandler {
                 double x = vec3.x + (i == 0 ? Mth.nextDouble(random, -0.5, 0.5) : i * step.x);
                 double y = vec3.y + Mth.nextDouble(random, -0.5, 0.5);
                 double z = vec3.z + (k == 0 ? Mth.nextDouble(random, -0.5, 0.5) : k * step.z);
-                spawnParticle(context.options, x, y, z);
+                spawnParticle(context.options, x, y, z, random);
             }
         };
 

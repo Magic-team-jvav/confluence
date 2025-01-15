@@ -11,7 +11,7 @@
 | [PhaseJourney](PhaseJourney)                         | 提供各类阶游戏段机制API | 是                     |
 | [TerraMoment](TerraMoment)                           | 泰拉事件          | 依赖HeavenDestinyMoment |
 | [IsekaiInvaded](IsekaiInvaded)                       | 多维度入侵事件       | 依赖HeavenDestinyMoment |
-| [TerraFurniture](TerraFurniture)                     | 泰拉家军          | 是                     |
+| [TerraFurniture](TerraFurniture)                     | 泰拉家具          | 是                     |
 
 ## 构建项目
 

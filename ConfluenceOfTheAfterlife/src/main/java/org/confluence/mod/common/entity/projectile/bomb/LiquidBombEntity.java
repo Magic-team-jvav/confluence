@@ -28,7 +28,7 @@ public class LiquidBombEntity extends BaseBombEntity {
 
     @Override
     protected void explodeFunction() {
-    if (!level().dimensionType().ultraWarm() || toFill.getFluidState().getType().getFluidType() != NeoForgeMod.WATER_TYPE.value()) {
+        if (!level().dimensionType().ultraWarm() || toFill.getFluidState().getType().getFluidType() != NeoForgeMod.WATER_TYPE.value()) {
             BlockPos blockPos = blockPosition();
             BlockPos.MutableBlockPos mutable = blockPos.mutable();
             for (int i = -radius; i < radius; i++) {

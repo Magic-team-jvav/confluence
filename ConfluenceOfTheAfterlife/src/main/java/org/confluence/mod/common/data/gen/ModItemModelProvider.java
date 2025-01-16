@@ -12,6 +12,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.common.GrassSeedItem;
 
 import java.util.*;
 import java.util.function.Consumer;

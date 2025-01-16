@@ -1,21 +1,21 @@
 {
     "type": "confluence:alchemy_table",
     "base": {
-        "item": "confluence:bottle"
+        "item": "confluence:lesser_healing_potion"
     },
     "ingredients": [
         {
-            "item": "confluence:life_mushroom"
+            "item": "confluence:glowing_mushroom"
         },
         {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "item": "confluence:gel"
+                "item": "confluence:lesser_healing_potion"
             },
             "count": 2
         }
     ],
     "result": {
-        "id": "confluence:lesser_healing_potion"
+        "id": "confluence:healing_potion"
     }
 }

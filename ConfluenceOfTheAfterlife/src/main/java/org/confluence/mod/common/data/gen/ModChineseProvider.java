@@ -1889,7 +1889,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(PotionItems.ARCHERY_POTION.get(), "箭术药水");
         add(PotionItems.HEART_REACH_POTION.get(), "拾心药水");
         add(PotionItems.GILLS_POTION.get(), "鱼腮药水");
-        add(PotionItems.INVISIBILITY_POTION.get(), "虫洞药水");
+        add(PotionItems.INVISIBILITY_POTION.get(), "隐形药水");
+        add(PotionItems.WORMHOLE_POTION.get(), "虫洞药水");
         add(PotionItems.MINING_POTION.get(), "采矿药水");
         add(PotionItems.RECALL_POTION.get(), "回忆药水");
         add(PotionItems.NIGHT_OWL_POTION.get(), "夜猫子药水");
@@ -1995,6 +1996,36 @@ public class ModChineseProvider extends LanguageProvider {
         add(PaintItems.WHITE_PAINT.get(), "白漆");
         add(PaintItems.BROWN_PAINT.get(), "棕漆");
         add(PaintItems.SHADOW_PAINT.get(), "暗影漆");
+
+        add(VanityArmorItems.RED_DYE.get(), "红染料");
+        add(VanityArmorItems.BRIGHT_RED_DYE.get(), "淡红染料");
+        add(VanityArmorItems.ORANGE_DYE.get(), "橙染料");
+        add(VanityArmorItems.BRIGHT_ORANGE_DYE.get(), "淡橙染料");
+        add(VanityArmorItems.YELLOW_DYE.get(), "黄染料");
+        add(VanityArmorItems.BRIGHT_YELLOW_DYE.get(), "淡黄染料");
+        add(VanityArmorItems.LIME_DYE.get(), "橙绿染料");
+        add(VanityArmorItems.BRIGHT_LIME_DYE.get(), "淡橙绿染料");
+        add(VanityArmorItems.GREEN_DYE.get(), "绿染料");
+        add(VanityArmorItems.BRIGHT_GREEN_DYE.get(), "淡绿染料");
+        add(VanityArmorItems.TEAL_DYE.get(), "青绿染料");
+        add(VanityArmorItems.BRIGHT_TEAL_DYE.get(), "淡青绿染料");
+        add(VanityArmorItems.CYAN_DYE.get(), "青色染料");
+        add(VanityArmorItems.BRIGHT_CYAN_DYE.get(), "淡青色染料");
+        add(VanityArmorItems.SKY_BLUE_DYE.get(), "天蓝染料");
+        add(VanityArmorItems.BRIGHT_SKY_BLUE_DYE.get(), "淡天蓝染料");
+        add(VanityArmorItems.BLUE_DYE.get(), "蓝染料");
+        add(VanityArmorItems.BRIGHT_BLUE_DYE.get(), "淡蓝染料");
+        add(VanityArmorItems.PURPLE_DYE.get(), "紫染料");
+        add(VanityArmorItems.BRIGHT_PURPLE_DYE.get(), "淡紫染料");
+        add(VanityArmorItems.VIOLET_DYE.get(), "紫罗兰染料");
+        add(VanityArmorItems.BRIGHT_VIOLET_DYE.get(), "淡紫罗兰染料");
+        add(VanityArmorItems.PINK_DYE.get(), "粉红染料");
+        add(VanityArmorItems.BRIGHT_PINK_DYE.get(), "淡粉红染料");
+        add(VanityArmorItems.BLACK_DYE.get(), "黑染料");
+        add(VanityArmorItems.GRAY_DYE.get(), "灰染料");
+        add(VanityArmorItems.SILVER_DYE.get(), "银染料");
+        add(VanityArmorItems.BROWN_DYE.get(), "棕染料");
+
         // 药水效果
         add(ModEffects.MANA_SICKNESS.get(), "魔力病");
         add(ModEffects.SHINE.get(), "发光");

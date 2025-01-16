@@ -307,6 +307,11 @@ public final class ModRecipes {
             registerMix(new Item[]{
                     FoodItems.MIRROR_FISH.get(),
                     MaterialItems.BLINKROOT.get()
+            }, PotionItems.WORMHOLE_POTION.toStack());
+            // 隐身
+            registerMix(new Item[]{
+                    MaterialItems.BLINKROOT.get(),
+                    MaterialItems.MOONGLOW.get()
             }, PotionItems.INVISIBILITY_POTION.toStack());
             // 传送
             registerMix(new Item[]{

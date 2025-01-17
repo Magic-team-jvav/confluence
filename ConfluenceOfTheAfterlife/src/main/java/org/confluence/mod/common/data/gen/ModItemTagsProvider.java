@@ -16,6 +16,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.common.GrassSeedItem;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_guns.common.init.TGItems;
@@ -203,6 +204,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.SHIVERTHORN_SEED.get(),
                 FoodItems.DAYBLOOM_SEED.get(),
                 FoodItems.DEATHWEED_SEED.get(),
+                ModItems.GRASS_SEED.get(),
+                ModItems.JUNGLE_GRASS_SEED.get(),
+                ModItems.MUSHROOM_GRASS_SEED.get(),
+                ModItems.CORRUPT_SEED.get(),
+                ModItems.TR_CRIMSON_SEED.get(),
+                ModItems.HALLOWED_SEED.get(),
+                ModItems.ASH_GRASS_SEED.get(),
 
                 MaterialItems.WATERLEAF.get(),
                 MaterialItems.FIREBLOSSOM.get(),

@@ -22,17 +22,19 @@ public class PaintItem extends Item {
         Inventory inventory = player.getInventory();
         ItemStack stack = inventory.offhand.getFirst();
         if (!stack.isEmpty() && stack.getItem() instanceof PaintItem paintItem) {
+            int color = paintItem.getColor(stack);
             if (!player.getAbilities().instabuild) {
                 stack.shrink(1);
             }
-            return paintItem.getColor(stack);
+            return color;
         }
         for (ItemStack itemStack : inventory.items) {
             if (!itemStack.isEmpty() && itemStack.getItem() instanceof PaintItem paintItem) {
+                int color = paintItem.getColor(stack);
                 if (!player.getAbilities().instabuild) {
                     itemStack.shrink(1);
                 }
-                return paintItem.getColor(itemStack);
+                return color;
             }
         }
         return BrushData.EMPTY_COLOR;

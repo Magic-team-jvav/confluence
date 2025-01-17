@@ -15,7 +15,12 @@ import java.util.Map;
 import java.util.function.Function;
 
 public record BrushData(Map<BlockPos, int[]> colors) {
-    public static final Function<BlockPos, int[]> COMPUTE = pos -> createColor(-1);
+    public static final int EMPTY_COLOR = -1;
+    public static final int CLEAR_COLOR = -2;
+    public static final int NEGATIVE_COLOR = -3;
+    public static final int ILLUMINANT_COLOR = -4;
+    public static final int ECHO_COLOR = -5;
+    public static final Function<BlockPos, int[]> COMPUTE = pos -> createColor(EMPTY_COLOR);
     public static final String POS_SPLIT = ", ";
     public static final MapCodec<BrushData> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.unboundedMap(
@@ -40,7 +45,7 @@ public record BrushData(Map<BlockPos, int[]> colors) {
             if (facing == null) {
                 colors = createColor(color);
             } else {
-                colors = createColor(-1);
+                colors = createColor(EMPTY_COLOR);
                 colors[facing.get3DDataValue()] = color;
             }
             map.put(pos, colors);
@@ -49,7 +54,7 @@ public record BrushData(Map<BlockPos, int[]> colors) {
 
     public int get(BlockPos pos, Direction facing) {
         int[] list = colors.get(pos);
-        return list == null ? -1 : list[facing.get3DDataValue()];
+        return list == null ? EMPTY_COLOR : list[facing.get3DDataValue()];
     }
 
     public int getOrDefault(BlockPos pos, Direction facing, int defaultColor) {
@@ -80,7 +85,7 @@ public record BrushData(Map<BlockPos, int[]> colors) {
             } else {
                 for (int i = 0; i < 6; i++) {
                     int c = color[i];
-                    if (c != -1) list[i] = c;
+                    if (c != EMPTY_COLOR) list[i] = c;
                 }
             }
         }
@@ -94,10 +99,10 @@ public record BrushData(Map<BlockPos, int[]> colors) {
         int[] list = colors.get(pos);
         if (list == null) return false;
         int index = facing.get3DDataValue();
-        boolean b = list[index] != -1;
-        list[index] = -1;
+        boolean b = list[index] != EMPTY_COLOR;
+        list[index] = EMPTY_COLOR;
         for (int c : list) {
-            if (c != -1) return b;
+            if (c != EMPTY_COLOR) return b;
         }
         colors.remove(pos);
         return b;

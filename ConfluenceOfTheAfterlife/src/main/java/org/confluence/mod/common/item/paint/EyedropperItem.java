@@ -26,9 +26,9 @@ public class EyedropperItem extends Item {
             BrushData brushData = serverPlayer.level().getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap().get(new ChunkPos(clickedPos));
             if (brushData != null) {
                 int color = brushData.get(clickedPos, context.getClickedFace());
-                if (color != -1) {
+                if (color != BrushData.EMPTY_COLOR) {
                     ItemStack itemStack = PaintItems.PAINT.get().getDefaultInstance();
-                    itemStack.set(DataComponents.DYED_COLOR, new DyedItemColor(color & 0xFFFFFF, true));
+                    itemStack.set(DataComponents.DYED_COLOR, new DyedItemColor(color, true));
                     serverPlayer.setItemInHand(InteractionHand.OFF_HAND, itemStack);
                 }
             }

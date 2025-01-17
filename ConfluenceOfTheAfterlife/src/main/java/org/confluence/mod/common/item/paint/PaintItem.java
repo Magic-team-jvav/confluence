@@ -6,6 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
+import org.confluence.mod.common.data.saved.BrushData;
 
 public class PaintItem extends Item {
     public PaintItem(int color) {
@@ -13,7 +14,8 @@ public class PaintItem extends Item {
     }
 
     public int getColor(ItemStack stack) {
-        return DyedItemColor.getOrDefault(stack, 0xFFFFFF);
+        DyedItemColor dyeditemcolor = stack.get(DataComponents.DYED_COLOR);
+        return dyeditemcolor != null ? dyeditemcolor.rgb() : 0xFFFFFF;
     }
 
     public static int getColor(Player player) {
@@ -33,6 +35,6 @@ public class PaintItem extends Item {
                 return paintItem.getColor(itemStack);
             }
         }
-        return -1;
+        return BrushData.EMPTY_COLOR;
     }
 }

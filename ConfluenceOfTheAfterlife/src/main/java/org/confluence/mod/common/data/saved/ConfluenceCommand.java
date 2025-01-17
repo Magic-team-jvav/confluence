@@ -10,12 +10,17 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.ChunkPos;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.command.EnumArgument;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.init.item.PaintItems;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 
 import java.util.HashSet;
@@ -86,31 +91,43 @@ public class ConfluenceCommand {
                     ConfluenceData.get(context.getSource().getLevel()).setMeteorite(location, tickUntilLanding);
                     return 1;
                 }))))
-                .then(Commands.literal("paint").then(Commands.argument("start", BlockPosArgument.blockPos()).then(Commands.argument("end", BlockPosArgument.blockPos())
-                        .then(Commands.literal("brush")
-                                .then(Commands.argument("face", EnumArgument.enumArgument(Direction.class)).then(Commands.argument("color", IntegerArgumentType.integer()).executes(context -> {
-                                    Direction face = context.getArgument("face", Direction.class);
-                                    int color = IntegerArgumentType.getInteger(context, "color");
-                                    int[] list = BrushData.createColor(-1);
-                                    list[face.get3DDataValue()] = color;
-                                    return fillPaints(context, list);
-                                })))
-                                .then(Commands.argument("color", IntegerArgumentType.integer()).executes(context -> {
-                                    int color = IntegerArgumentType.getInteger(context, "color");
-                                    int[] list = BrushData.createColor(color);
-                                    return fillPaints(context, list);
-                                }))
-                        )
-                        .then(Commands.literal("scraper")
-                                .then(Commands.argument("face", EnumArgument.enumArgument(Direction.class)).executes(context -> {
-                                    Direction face = context.getArgument("face", Direction.class);
-                                    int[] list = BrushData.createColor(-1);
-                                    list[face.get3DDataValue()] = -2;
-                                    return fillPaints(context, list);
-                                }))
-                                .executes(context -> fillPaints(context, BrushingColorPacketS2C.CLEAR_COLOR))
-                        )
-                )))
+                .then(Commands.literal("paint")
+                        .then(Commands.argument("start", BlockPosArgument.blockPos()).then(Commands.argument("end", BlockPosArgument.blockPos())
+                                .then(Commands.literal("brush")
+                                        .then(Commands.argument("face", EnumArgument.enumArgument(Direction.class)).then(Commands.argument("color", IntegerArgumentType.integer()).executes(context -> {
+                                            Direction face = context.getArgument("face", Direction.class);
+                                            int color = IntegerArgumentType.getInteger(context, "color");
+                                            int[] list = BrushData.createColor(BrushData.EMPTY_COLOR);
+                                            list[face.get3DDataValue()] = color;
+                                            return fillPaints(context, list);
+                                        })))
+                                        .then(Commands.argument("color", IntegerArgumentType.integer()).executes(context -> {
+                                            int color = IntegerArgumentType.getInteger(context, "color");
+                                            int[] list = BrushData.createColor(color);
+                                            return fillPaints(context, list);
+                                        }))
+                                )
+                                .then(Commands.literal("scraper")
+                                        .then(Commands.argument("face", EnumArgument.enumArgument(Direction.class)).executes(context -> {
+                                            Direction face = context.getArgument("face", Direction.class);
+                                            int[] list = BrushData.createColor(BrushData.EMPTY_COLOR);
+                                            list[face.get3DDataValue()] = BrushData.CLEAR_COLOR;
+                                            return fillPaints(context, list);
+                                        }))
+                                        .executes(context -> fillPaints(context, BrushingColorPacketS2C.CLEAR_COLORS))
+                                )
+                        ))
+                        .then(Commands.literal("item").then(Commands.argument("color", IntegerArgumentType.integer()).executes(context -> {
+                            if (context.getSource().getEntityOrException() instanceof Player player) {
+                                int color = IntegerArgumentType.getInteger(context, "color");
+                                ItemStack itemStack = PaintItems.PAINT.get().getDefaultInstance();
+                                itemStack.set(DataComponents.DYED_COLOR, new DyedItemColor(color, true));
+                                player.getInventory().add(itemStack);
+                                return 1;
+                            }
+                            return 0;
+                        })))
+                )
         );
     }
 

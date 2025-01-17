@@ -55,7 +55,7 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
                 IntArrayList list = new IntArrayList();
                 for (int i = 0; i < 6; i++) {
                     int c = color[i];
-                    if (c != -1) {
+                    if (c != BrushData.EMPTY_COLOR) {
                         face |= (byte) (1 << i);
                         list.add(c);
                     }
@@ -65,7 +65,7 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
             }
         }
     };
-    public static final int[] CLEAR_COLOR = BrushData.createColor(-2);
+    public static final int[] CLEAR_COLORS = BrushData.createColor(BrushData.CLEAR_COLOR);
 
     @Override
     public @NotNull Type<BrushingColorPacketS2C> type() {
@@ -102,7 +102,7 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
             BrushData brushData = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap().get(new ChunkPos(pos));
             if (brushData != null) {
                 brushData.remove(pos, facing);
-                PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(new BrushData(pos, facing, -2)));
+                PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(new BrushData(pos, facing, BrushData.CLEAR_COLOR)));
             }
         }
     }
@@ -112,7 +112,7 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
             BrushData brushData = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap().get(new ChunkPos(pos));
             if (brushData != null) {
                 brushData.remove(pos);
-                PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(new BrushData(Map.of(pos, CLEAR_COLOR))));
+                PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(new BrushData(Map.of(pos, CLEAR_COLORS))));
             }
         }
     }

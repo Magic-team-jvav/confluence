@@ -1,5 +1,6 @@
 package org.confluence.mod.client.textures;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -7,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
@@ -24,14 +26,13 @@ public final class LocalBrushData {
         DATA.computeIfAbsent(pos, pos1 -> new Object2IntOpenHashMap<>()).put(facing, color);
     }
 
-    public static @Nullable Set<Direction> getDirs(BlockPos pos) {
-        Object2IntOpenHashMap<Direction> map = DATA.get(pos);
-        return map == null ? null : map.keySet();
+    public static @Nullable Object2IntMap<Direction> getDirs(BlockPos pos) {
+        return DATA.get(pos);
     }
 
     public static int getColor(BlockPos pos, Direction facing) {
         Object2IntOpenHashMap<Direction> map = DATA.get(pos);
-        return map == null ? -1 : map.getOrDefault(facing, -1);
+        return map == null ? BrushData.EMPTY_COLOR : map.getOrDefault(facing, BrushData.EMPTY_COLOR);
     }
 
     public static boolean hasColor(BlockPos pos) {
@@ -62,9 +63,9 @@ public final class LocalBrushData {
             for (int i = 0; i < 6; i++) {
                 int color = colors[i];
                 Direction facing = ModUtils.DIRECTIONS[i];
-                if (color == -2) {
+                if (color == BrushData.CLEAR_COLOR) {
                     removeData(pos, facing);
-                } else if (color != -1) {
+                } else if (color != BrushData.EMPTY_COLOR) {
                     putData(pos, facing, color);
                 }
             }

@@ -1,5 +1,6 @@
 package org.confluence.mod.client.textures;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
@@ -12,15 +13,15 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
 import org.confluence.mod.client.connected.BakedModelWrapperWithData;
 import org.confluence.mod.client.connected.BakedQuadHelper;
+import org.confluence.mod.common.data.saved.BrushData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class GrayBlockModelSwapper extends BakedModelWrapperWithData {
-    protected static final ModelProperty<Set<Direction>> COLOR_PROPERTY = new ModelProperty<>();
+    protected static final ModelProperty<Object2IntMap<Direction>> COLOR_PROPERTY = new ModelProperty<>();
 
     public GrayBlockModelSwapper(BakedModel originalModel) {
         super(originalModel);
@@ -28,7 +29,7 @@ public class GrayBlockModelSwapper extends BakedModelWrapperWithData {
 
     @Override
     protected ModelData.Builder gatherModelData(ModelData.Builder builder, BlockAndTintGetter world, BlockPos pos, BlockState state, ModelData blockEntityData) {
-        Set<Direction> dirs = LocalBrushData.getDirs(pos);
+        Object2IntMap<Direction> dirs = LocalBrushData.getDirs(pos);
         if (dirs != null) {
             return builder.with(COLOR_PROPERTY, dirs);
         }
@@ -38,8 +39,10 @@ public class GrayBlockModelSwapper extends BakedModelWrapperWithData {
     @Override
     public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData extraData, @Nullable RenderType renderType) {
         List<BakedQuad> quads = super.getQuads(state, side, rand, extraData, renderType);
-        Set<Direction> dirs = extraData.get(COLOR_PROPERTY);
-        if (dirs == null || !dirs.contains(side)) return quads;
+        Object2IntMap<Direction> dirs = extraData.get(COLOR_PROPERTY);
+        if (dirs == null) return quads;
+        int color = dirs.getOrDefault(side, BrushData.EMPTY_COLOR);
+        if (color == BrushData.EMPTY_COLOR || color == BrushData.ILLUMINANT_COLOR) return quads;
         quads = new ArrayList<>(quads);
 
         for (int i = 0; i < quads.size(); i++) {

@@ -338,5 +338,5 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "confluence:blocks/golden_coin_pile"
+  "random_sequence": "confluence:block/golden_coin_pile"
 }

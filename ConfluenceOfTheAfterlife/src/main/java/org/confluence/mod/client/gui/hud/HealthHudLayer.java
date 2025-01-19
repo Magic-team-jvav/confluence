@@ -1,11 +1,11 @@
 package org.confluence.mod.client.gui.hud;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -15,14 +15,12 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.util.ClientUtils;
 
-public class HealthHudLayer implements LayeredDraw.Layer {
-    public static final ResourceLocation HEART_SINGLE_FANCY = Confluence.asResource("textures/gui/hud/heart_single_fancy.png");
-    public static final ResourceLocation HEART_LEFT = Confluence.asResource("textures/gui/hud/heart_left.png");
-    public static final ResourceLocation HEART_MIDDLE = Confluence.asResource("textures/gui/hud/heart_middle.png");
-    public static final ResourceLocation HEART_RIGHT_FANCY = Confluence.asResource("textures/gui/hud/heart_right_fancy.png");
-    public static final ResourceLocation HEART_RIGHT = Confluence.asResource("textures/gui/hud/heart_right.png");
-    public static final ResourceLocation HEART_FILL = Confluence.asResource("textures/gui/hud/heart_fill.png");
+import java.util.ArrayList;
+import java.util.List;
 
+public class HealthHudLayer implements LayeredDraw.Layer {
+    public static final ResourceLocation ICON = Confluence.asResource("textures/gui/hud/icon.png");
+    public static final Integer SIZE = 128;
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         if (!ClientConfigs.terraStyleHealth) return;
@@ -31,140 +29,98 @@ public class HealthHudLayer implements LayeredDraw.Layer {
         ClientUtils.setupOverlayRenderState(true, false);
         minecraft.getProfiler().push("health");
 
-        int screenWidth = guiGraphics.guiWidth();
+        int width = guiGraphics.guiWidth() - 130;
         float maxHealth = 0.0F;
         float currentHealth = 0.0F;
-        float lifeFruitHealth = 0.0F; // 生命果
+        int heartBuff = 0;
+        int lifeFruitHealth = 0; // 生命果
+        float absorptionHealth = 0.0F;
 
         Player player = minecraft.player;
         if (player != null) {
+            heartBuff = (player.getTicksFrozen() >= 140) ? 1 : heartBuff;
+            heartBuff = (player.hasEffect(MobEffects.WITHER)) ? 2 : heartBuff;
+            heartBuff = (player.hasEffect(MobEffects.POISON)) ? 3 : heartBuff;
+            absorptionHealth = player.getAbsorptionAmount();
             maxHealth = player.getMaxHealth();
             currentHealth = player.getHealth();
             AttributeInstance instance = player.getAttribute(Attributes.MAX_HEALTH);
             AttributeModifier modifier = instance.getModifier(EverBeneficialItem.LIFE_FRUITS.id());
             if (modifier != null) {
-                lifeFruitHealth = (float) modifier.amount();
+                lifeFruitHealth = (int) modifier.amount();
             }
         }
-
-        //以下是为了画出ui做的坐标计算
-        int maxHeartCount = ((int) maxHealth) / 4;
-        int currentHealthCount = ((int) currentHealth) / 4;
-        float lastHeartSize = 0.0F;
-        if (((int) maxHealth) % 4 != 0) {
-            maxHeartCount += 1;
-        }
-        if (((int) currentHealth) % 4 != 0) {
-            currentHealthCount += 1;
-            lastHeartSize = (currentHealth % 4) / 4;
-        }
-        int count;
-        int heartCount;
-        int smP = maxHeartCount / 10;
-        int heartSmP = currentHealthCount / 10;
-        int move = 0;
-        int heartMove = 0;
-        if (maxHeartCount % 10 != 0) {
-            smP += 1;
-        }
-        int cSmP = smP;
-        if (currentHealthCount % 10 != 0) {
-            heartSmP += 1;
-        }
-        int line = smP * 14;
-        int heartLine = heartSmP * 14;
-
-        //绘制血量槽
-        while (smP > 0) {
-            if (smP > 1) {
-                count = 8;
-            } else if (maxHeartCount % 10 != 0) {
-                count = maxHeartCount % 10 - 2;
-            } else {
-                count = 8;
-            }
-            if (cSmP == 1) {
-                move = (8 - count) * 12;
-            }
-            int setCount = 8 - count;
-            if (maxHeartCount <= 1) {//绘制血量槽左端
-                guiGraphics.blit(HEART_SINGLE_FANCY, screenWidth - 20 - 28 - setCount * 12 + move, 10 + line - smP * 14, 0, 0, 18, 19, 18, 19);
-            } else {
-                guiGraphics.blit(HEART_LEFT, screenWidth - 20 - (count + 1) * 12 - 26 - setCount * 12 + move, 12 + line - smP * 14, 0, 0, 14, 15, 14, 15);
-
-                //绘制血量槽中部
-                if (count >= 1) {
-                    while (count > 0) {
-                        guiGraphics.blit(HEART_MIDDLE, screenWidth - 20 - count * 12 - 24 - setCount * 12 + move, 12 + line - smP * 14, 0, 0, 12, 15, 12, 15);
-                        count -= 1;
-                    }
-                }
-
-                //绘制血量槽右端
-                if (smP == 1) {//按情况判断使用哪种右端材质
-                    guiGraphics.blit(HEART_RIGHT_FANCY, screenWidth - 20 - 28 - setCount * 12 + move, 10 + line - smP * 14, 0, 0, 18, 19, 18, 19);
-                } else {
-                    guiGraphics.blit(HEART_RIGHT, screenWidth - 20 - 24 - setCount * 12 + move, 12 + line - smP * 14, 0, 0, 13, 15, 13, 15);
-                }
-            }
-            smP -= 1;
-        }
-
-        //绘制血量
-        while (heartSmP > 0) {
-            if (heartSmP > 1) {
-                heartCount = 8;
-            } else if (currentHealthCount % 10 != 0) {
-                heartCount = currentHealthCount % 10 - 2;
-            } else {
-                heartCount = 8;
-            }
-            if (heartSmP == 1) {
-                smP = maxHeartCount / 10;
-                if (maxHeartCount % 10 != 0) {
-                    smP += 1;
-                }
-                if (maxHeartCount % 10 != 0) {
-                    count = maxHeartCount % 10 - 2;
-                } else {
-                    count = 8;
-                }
-                if (smP == 1) {
-                    heartMove = (8 - count) * 12;
-                }
-            }
-            int setHeartCount = 8 - heartCount;
-            if (currentHealthCount <= 1) {//绘制血条左端
-                guiGraphics.blit(HEART_FILL, screenWidth - 20 - 28 + 4 - setHeartCount * 12 + heartMove, 10 + heartLine - heartSmP * 14 + 4, 0, 0, 11, 11, 11, 11);
-            } else {
-                if ((currentHealthCount % 10) != 1 || (heartSmP == 1 && lastHeartSize == 0.0f) || heartSmP >= 2) {
-                    guiGraphics.blit(HEART_FILL, screenWidth - 20 - (heartCount + 1) * 12 - 26 + 2 - setHeartCount * 12 + heartMove, 12 + heartLine - heartSmP * 14 + 2, 0, 0, 11, 11, 11, 11);
-                }
-                //绘制血条中部
-
-                if (heartCount >= 1) {
-                    while (heartCount > 0) {
-                        guiGraphics.blit(HEART_FILL, screenWidth - 20 - heartCount * 12 - 24 - setHeartCount * 12 + heartMove, 12 + heartLine - heartSmP * 14 + 2, 0, 0, 11, 11, 11, 11);
-                        heartCount -= 1;
-                    }
-                }
-
-                //绘制血条右端
-                if (heartSmP == 1 && lastHeartSize != 0.0f) {
-                    PoseStack pose = guiGraphics.pose();
-                    pose.pushPose();
-                    float delta = (11 - 11 * lastHeartSize) / 2;
-                    pose.translate(screenWidth - 20 - 24 - setHeartCount * 12 + heartMove + delta, 12 + heartLine - heartSmP * 14 + 2 + delta, 0.0F);
-                    pose.scale(lastHeartSize, lastHeartSize, 0.0F);
-                    guiGraphics.blit(HEART_FILL, 0, 0, 0, 0, 11, 11, 11, 11);
-                    pose.popPose();
-                } else {
-                    guiGraphics.blit(HEART_FILL, screenWidth - 20 - 24 - setHeartCount * 12 + heartMove, 12 + heartLine - heartSmP * 14 + 2, 0, 0, 11, 11, 11, 11);
-                }
-            }
-            heartSmP -= 1;
-        }
-
+        int countHeart = (int) ((maxHealth - (float) lifeFruitHealth) / 4);
+        int countHeartAbsorptionHealth = (int) (absorptionHealth / 4.0F) + ((((int) absorptionHealth) % 4 == 0) ? 0 : 1);
+        int yLine = 4 + (int) (6.0F / (float) ((countHeart + countHeartAbsorptionHealth - 1) / 20 + 1));
+        int heightToAbsorption = blit(heartBuff, maxHealth, currentHealth, lifeFruitHealth, guiGraphics, width, 10, 0, yLine);
+        blit(0, countHeartAbsorptionHealth * 4, absorptionHealth, 0, guiGraphics, width, heightToAbsorption, 1, yLine);
         minecraft.getProfiler().pop();
+    }
+
+    private static void blitHeart(GuiGraphics guiGraphics, int type, int typeHeart, float num, int x, int y, int heartBuff) {
+        float heartNum = (type == 1) ? 5.0F : 4.0F;
+        heartBuff = (typeHeart == 0) ? heartBuff : 0;
+        int heightUV = (typeHeart * 17);
+        if (num == heartNum) {
+            guiGraphics.blit(ICON, x, y, ((type == 1) ? 54 : 44) + heartBuff, heightUV, 9, 16, SIZE, SIZE);
+        } else if (num > 0.0F) {
+            float ts = num / heartNum;
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(x + 4.5F * (1.0F - ts), y + 9.0F * (1.0F - ts), 0.0F);
+            guiGraphics.pose().scale(ts, ts, 1.0F);
+            guiGraphics.blit(ICON, 0, 0, ((type == 1) ? 54 : 44) + heartBuff, heightUV, 9, 16, SIZE, SIZE);
+            guiGraphics.pose().popPose();
+        }
+    }
+
+    private static int blit(int heartBuff, float maxHealth, float currentHealth, int lifeFruitHealth, GuiGraphics guiGraphics, int width, int height, int typeHeart, int yLine) {
+        heartBuff *= 20;
+        int heightUV = (typeHeart * 17);
+        int countHeart = (int) ((maxHealth - (float) lifeFruitHealth) / 4);
+        int countLine;
+        int type;
+        int blitX;
+        int blitY = 0;
+        int blitXFirst;
+        List<Float> heartNumList = new ArrayList<>();
+        float currentHealthToType = currentHealth;
+        float heartNum;
+        boolean ifLifeFruit;
+        for (int i = 0; i < countHeart; i ++) {
+            ifLifeFruit = i < lifeFruitHealth;
+            heartNum = ifLifeFruit ? 5.0F : 4.0F;
+            currentHealthToType -= heartNum;
+            if (currentHealthToType >= 0) {
+                heartNumList.add(heartNum);
+            } else if (currentHealthToType + heartNum >= 0) {
+                heartNumList.add(currentHealthToType + heartNum);
+            } else {
+                heartNumList.add(0.0F);
+            }
+        }
+        for (int countToBlit = 0; countToBlit < countHeart; countToBlit ++) {
+            countLine = countToBlit / 10;
+            blitY = yLine * countLine;
+            blitX = countToBlit * 10 - countLine * 100;
+            blitXFirst = (countHeart / 10 == 0) ? 100 - (countHeart - (countHeart / 10) * 10) * 10 : 0;
+            if (countToBlit % 10 == 0) {
+                guiGraphics.blit(ICON, width + blitX - 1 + blitXFirst, height + blitY, 0, heightUV, 1, 16, SIZE, SIZE);
+                if (countToBlit + 1 == countHeart) {
+                    guiGraphics.blit(ICON, width + blitX - 3 + blitXFirst, height + blitY, 13, heightUV, 17, 16, SIZE, SIZE);
+                } else {
+                    guiGraphics.blit(ICON, width + blitX + blitXFirst, height + blitY, 2, heightUV, 10, 16, SIZE, SIZE);
+                }
+            } else if (countToBlit + 1 == countHeart) {
+                guiGraphics.blit(ICON, width + blitX - 3 + blitXFirst, height + blitY, 13, heightUV, 17, 16, SIZE, SIZE);
+            } else if ((countToBlit + 1) % 10 == 0) {
+                guiGraphics.blit(ICON, width + blitX + blitXFirst, height + blitY, 31, heightUV, 12, 16, SIZE, SIZE);
+            } else {
+                guiGraphics.blit(ICON, width + blitX + blitXFirst, height + blitY, 2, heightUV, 10, 16, SIZE, SIZE);
+            }
+            type = (countToBlit < lifeFruitHealth) ? 1 : 0;
+            blitHeart(guiGraphics, type, typeHeart, heartNumList.get(countToBlit), width + blitX + blitXFirst + 1, height + blitY, heartBuff);
+        }
+        return (height + blitY + yLine);
     }
 }

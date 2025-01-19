@@ -3,6 +3,7 @@ package org.confluence.mod.client.textures;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -41,7 +42,7 @@ public class GrayBlockModelSwapper extends BakedModelWrapperWithData {
         List<BakedQuad> quads = super.getQuads(state, side, rand, extraData, renderType);
         Object2IntMap<Direction> dirs = extraData.get(COLOR_PROPERTY);
         if (dirs == null) return quads;
-        int color = dirs.getOrDefault(side, BrushData.EMPTY_COLOR);
+        int color = dirs.getOrDefault(side == null ? Direction.WEST : side, BrushData.EMPTY_COLOR);
         if (color == BrushData.EMPTY_COLOR || color == BrushData.ILLUMINANT_COLOR) return quads;
         quads = new ArrayList<>(quads);
 
@@ -49,14 +50,15 @@ public class GrayBlockModelSwapper extends BakedModelWrapperWithData {
             BakedQuad quad = quads.get(i);
             GraySpriteShifterEntry entry = GraySpriteShifterEntry.ALL.get(quad.getSprite().contents().name());
             if (entry != null) {
+                TextureAtlasSprite sprite = color == BrushData.NEGATIVE_COLOR ? entry.negative() : entry.gray();
                 BakedQuad bakedQuad = BakedQuadHelper.clone(quad);
                 int[] vertexData = bakedQuad.getVertices();
 
                 for (int vertex = 0; vertex < 4; vertex++) {
                     float u = BakedQuadHelper.getU(vertexData, vertex);
                     float v = BakedQuadHelper.getV(vertexData, vertex);
-                    BakedQuadHelper.setU(vertexData, vertex, entry.getTargetU(u));
-                    BakedQuadHelper.setV(vertexData, vertex, entry.getTargetV(v));
+                    BakedQuadHelper.setU(vertexData, vertex, entry.getTargetU(sprite, u));
+                    BakedQuadHelper.setV(vertexData, vertex, entry.getTargetV(sprite, v));
                 }
                 quads.set(i, bakedQuad);
             }

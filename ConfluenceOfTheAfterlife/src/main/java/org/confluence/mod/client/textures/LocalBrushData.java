@@ -3,9 +3,11 @@ package org.confluence.mod.client.textures;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.common.data.saved.BrushData;
@@ -23,7 +25,16 @@ public final class LocalBrushData {
     private static final Hashtable<BlockPos, Object2IntOpenHashMap<Direction>> DATA = new Hashtable<>();
 
     public static void putData(BlockPos pos, Direction facing, int color) {
-        DATA.computeIfAbsent(pos, pos1 -> new Object2IntOpenHashMap<>()).put(facing, color);
+        ClientLevel level = Minecraft.getInstance().level;
+        Object2IntOpenHashMap<Direction> map = DATA.computeIfAbsent(pos, pos1 -> new Object2IntOpenHashMap<>());
+        BlockState blockState;
+        if (level == null || (blockState = level.getBlockState(pos)).isAir() || blockState.isSolidRender(level, pos)) {
+            map.put(facing, color);
+        } else {
+            for (Direction dir : ModUtils.DIRECTIONS) {
+                map.put(dir, color);
+            }
+        }
     }
 
     public static @Nullable Object2IntMap<Direction> getDirs(BlockPos pos) {

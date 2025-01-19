@@ -30,7 +30,7 @@ public class PaintItem extends Item {
         }
         for (ItemStack itemStack : inventory.items) {
             if (!itemStack.isEmpty() && itemStack.getItem() instanceof PaintItem paintItem) {
-                int color = paintItem.getColor(stack);
+                int color = paintItem.getColor(itemStack);
                 if (!player.getAbilities().instabuild) {
                     itemStack.shrink(1);
                 }

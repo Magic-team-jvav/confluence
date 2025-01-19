@@ -69,6 +69,7 @@ import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.PaintItems;
 import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.common.item.paint.PaintItem;
+import org.confluence.mod.util.ClientUtils;
 import org.confluence.terraentity.client.entity.renderer.GeoNormalRenderer;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
@@ -313,12 +314,13 @@ public final class ModClientEvents {
         TextureAtlas atlas = event.getAtlas();
         if (atlas.location().equals(TextureAtlas.LOCATION_BLOCKS)) {
             Map<ResourceLocation, TextureAtlasSprite> textures = atlas.getTextures();
-            for (Map.Entry<ResourceLocation, TextureAtlasSprite> entry : textures.entrySet()) {
-                ResourceLocation key = entry.getKey();
-                if (key.getPath().endsWith(".gray")) continue;
-                TextureAtlasSprite sprite = textures.get(key.withSuffix(".gray"));
-                if (sprite == null) continue;
-                GraySpriteShifterEntry.ALL.put(key, new GraySpriteShifterEntry(entry.getValue(), sprite));
+            for (ResourceLocation key : ClientUtils.ORIGINAL) {
+                TextureAtlasSprite sprite = textures.get(key);
+                TextureAtlasSprite gray = textures.get(key.withSuffix(ClientUtils.GRAY_SUFFIX));
+                TextureAtlasSprite negative = textures.get(key.withSuffix(ClientUtils.NEGATIVE_SUFFIX));
+                if (sprite != null) {
+                    GraySpriteShifterEntry.ALL.put(key, new GraySpriteShifterEntry(sprite, gray, negative));
+                }
             }
         }
     }

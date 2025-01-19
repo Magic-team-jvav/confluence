@@ -13,12 +13,12 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.SimpleBakedModel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -26,10 +26,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @OnlyIn(Dist.CLIENT)
 public final class ClientUtils {
+    public static final String GRAY_SUFFIX = ".gray";
+    public static final String NEGATIVE_SUFFIX = ".negative";
+
     public static void drawImage(ResourceLocation loc, GuiGraphics g, int x, int y, int wid, int hig, int imWid, int imHig) {
         g.blit(loc, x, y, 0, 0, wid, hig, imWid, imHig);
     }
@@ -176,14 +181,36 @@ public final class ClientUtils {
                 int avg = color & 255;
                 avg = (int) ((avg - d) * x) + y;
                 int a = color >> 8 & 255;
-                image.setPixelRGBA(j, i, a << 24 | avg << 16 | avg << 8 | avg);
+                image.setPixelRGBA(j, i, FastColor.ARGB32.color(a, avg, avg, avg));
             }
         }
         return image;
     }
 
-    public static @NotNull ResourceLocation getGrayTexture(ResourceLocation original) {
-        ResourceLocation gray = original.withSuffix(".gray");
+    public static NativeImage copyWithNegative(NativeImage original) {
+        NativeImage image = new NativeImage(original.format(), original.getWidth(), original.getHeight(), false);
+        image.copyFrom(original);
+        image.applyToAllPixels(color -> {
+            int a = color >>> 24;
+            int b = color >> 16 & 255;
+            int g = color >> 8 & 255;
+            int r = color & 255;
+            return FastColor.ARGB32.color(a, 255 - r, 255 - g, 255 - b);
+        });
+        return image;
+    }
+
+    private static final Set<ResourceLocation> failed = new HashSet<>();
+    public static final Set<ResourceLocation> ORIGINAL = new HashSet<>();
+
+    public static void clearCache() {
+        failed.clear();
+        ORIGINAL.clear();
+    }
+
+    public static ResourceLocation getGrayTexture(ResourceLocation original) {
+        if (failed.contains(original)) return original;
+        ResourceLocation gray = original.withSuffix(GRAY_SUFFIX);
         if (Minecraft.getInstance().getTextureManager().getTexture(gray, null) == null) {
             try {
                 try (InputStream inputstream = Minecraft.getInstance().getResourceManager().getResourceOrThrow(original).open()) {
@@ -192,6 +219,7 @@ public final class ClientUtils {
                 }
                 return gray;
             } catch (IOException ioexception) {
+                failed.add(original);
                 return original;
             }
         } else {

@@ -8,7 +8,7 @@
           "block": "confluence:silver_coin_pile",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "heaps": 1
+            "heaps": "1"
           }
         }
       ],
@@ -19,10 +19,7 @@
           "functions": [
             {
               "function": "set_count",
-              "count": {
-                "min": 1,
-                "max": 1
-              }
+              "count": 1
             }
           ]
         }
@@ -36,7 +33,7 @@
           "block": "confluence:silver_coin_pile",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "heaps": 2
+            "heaps": "2"
           }
         }
       ],
@@ -47,10 +44,7 @@
           "functions": [
             {
               "function": "set_count",
-              "count": {
-                "min": 2,
-                "max": 2
-              }
+              "count": 2
             }
           ]
         }
@@ -64,7 +58,7 @@
           "block": "confluence:silver_coin_pile",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "heaps": 3
+            "heaps": "3"
           }
         }
       ],
@@ -75,10 +69,7 @@
           "functions": [
             {
               "function": "set_count",
-              "count": {
-                "min": 3,
-                "max": 3
-              }
+              "count":3
             }
           ]
         }
@@ -92,7 +83,7 @@
           "block": "confluence:silver_coin_pile",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "heaps": 4
+            "heaps": "4"
           }
         }
       ],
@@ -103,10 +94,7 @@
           "functions": [
             {
               "function": "set_count",
-              "count": {
-                "min": 4,
-                "max": 4
-              }
+              "count":4
             }
           ]
         }
@@ -120,7 +108,7 @@
           "block": "confluence:silver_coin_pile",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "heaps": 5
+            "heaps": "5"
           }
         }
       ],
@@ -131,10 +119,7 @@
           "functions": [
             {
               "function": "set_count",
-              "count": {
-                "min": 5,
-                "max": 5
-              }
+              "count":5
             }
           ]
         }
@@ -148,7 +133,7 @@
           "block": "confluence:silver_coin_pile",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "heaps": 6
+            "heaps": "6"
           }
         }
       ],
@@ -159,10 +144,7 @@
           "functions": [
             {
               "function": "set_count",
-              "count": {
-                "min": 6,
-                "max": 6
-              }
+              "count":6
             }
           ]
         }
@@ -176,7 +158,7 @@
           "block": "confluence:silver_coin_pile",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "heaps": 7
+            "heaps": "7"
           }
         }
       ],
@@ -187,10 +169,7 @@
           "functions": [
             {
               "function": "set_count",
-              "count": {
-                "min": 7,
-                "max": 7
-              }
+              "count":7
             }
           ]
         }
@@ -204,7 +183,7 @@
           "block": "confluence:silver_coin_pile",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "heaps": 8
+            "heaps": "8"
           }
         }
       ],
@@ -215,10 +194,7 @@
           "functions": [
             {
               "function": "set_count",
-              "count": {
-                "min": 8,
-                "max": 8
-              }
+              "count":8
             }
           ]
         }
@@ -232,7 +208,7 @@
           "block": "confluence:silver_coin_pile",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "heaps": 9
+            "heaps": "9"
           }
         }
       ],
@@ -243,10 +219,7 @@
           "functions": [
             {
               "function": "set_count",
-              "count": {
-                "min": 9,
-                "max": 9
-              }
+              "count":9
             }
           ]
         }
@@ -260,7 +233,7 @@
           "block": "confluence:silver_coin_pile",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "heaps": 10
+            "heaps": "10"
           }
         }
       ],
@@ -271,10 +244,7 @@
           "functions": [
             {
               "function": "set_count",
-              "count": {
-                "min": 10,
-                "max": 10
-              }
+              "count":10
             }
           ]
         }
@@ -288,7 +258,7 @@
           "block": "confluence:silver_coin_pile",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "heaps": 11
+            "heaps": "11"
           }
         }
       ],
@@ -299,10 +269,7 @@
           "functions": [
             {
               "function": "set_count",
-              "count": {
-                "min": 11,
-                "max": 11
-              }
+              "count":11
             }
           ]
         }
@@ -316,7 +283,7 @@
           "block": "confluence:silver_coin_pile",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "heaps": 12
+            "heaps": "12"
           }
         }
       ],
@@ -327,10 +294,7 @@
           "functions": [
             {
               "function": "set_count",
-              "count": {
-                "min": 12,
-                "max": 12
-              }
+              "count":12
             }
           ]
         }

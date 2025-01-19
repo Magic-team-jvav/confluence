@@ -94,26 +94,32 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
     }
 
     public static void sendToPlayersTrackingChunk(ServerLevel level, BlockPos pos, @Nullable Direction facing, int color, boolean save) {
+        if (!(level.getBlockState(pos)).isSolidRender(level, pos)) {
+            facing = null;
+        }
         sendToPlayersTrackingChunk(level, new ChunkPos(pos), new BrushData(pos, facing, color), save);
     }
 
     public static void remove(ServerLevel level, BlockPos pos, Direction facing) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
             BrushData brushData = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap().get(new ChunkPos(pos));
-            if (brushData != null) {
+            if (brushData == null) return;
+            if ((level.getBlockState(pos)).isSolidRender(level, pos)) {
                 brushData.remove(pos, facing);
-                PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(new BrushData(pos, facing, BrushData.CLEAR_COLOR)));
+            } else {
+                brushData.remove(pos);
+                facing = null;
             }
+            PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(new BrushData(pos, facing, BrushData.CLEAR_COLOR)));
         }
     }
 
     public static void remove(ServerLevel level, BlockPos pos) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
             BrushData brushData = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap().get(new ChunkPos(pos));
-            if (brushData != null) {
-                brushData.remove(pos);
-                PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(new BrushData(Map.of(pos, CLEAR_COLORS))));
-            }
+            if (brushData == null) return;
+            brushData.remove(pos);
+            PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(new BrushData(Map.of(pos, CLEAR_COLORS))));
         }
     }
 

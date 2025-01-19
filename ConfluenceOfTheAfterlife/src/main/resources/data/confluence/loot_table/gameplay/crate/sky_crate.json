@@ -21,7 +21,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "terra_curio:celestial_magnet",
+          "name": "confluence:celestial_magnet",
           "weight": 1
         }
       ],
@@ -32,7 +32,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "terra_curio:fledgling_wings",
+          "name": "confluence:fledgling_wings",
           "weight": 1
         },
         {

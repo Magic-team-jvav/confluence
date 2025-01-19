@@ -25,18 +25,22 @@ public abstract class SpriteLoaderMixin {
     @ModifyVariable(method = "stitch", at = @At("HEAD"), argsOnly = true)
     private List<SpriteContents> generateGraySprites(List<SpriteContents> contents) {
         if (location.equals(TextureAtlas.LOCATION_BLOCKS)) {
+            ClientUtils.clearCache();
             List<SpriteContents> neoContents = new ArrayList<>();
             for (SpriteContents content : contents) {
                 neoContents.add(content);
                 ResourceLocation name = content.name();
                 if (!name.getPath().startsWith("block/")) continue;
-                NativeImage neoImage = ClientUtils.copyWithGray(content.getOriginalImage());
-                SpriteContents neoContent = new SpriteContents(
-                        name.withSuffix(".gray"),
-                        new FrameSize(content.width(), content.height()),
-                        neoImage,
-                        content.metadata());
-                neoContents.add(neoContent);
+                ClientUtils.ORIGINAL.add(name);
+                FrameSize frameSize = new FrameSize(content.width(), content.height());
+
+                NativeImage grayImage = ClientUtils.copyWithGray(content.getOriginalImage());
+                SpriteContents grayContent = new SpriteContents(name.withSuffix(ClientUtils.GRAY_SUFFIX), frameSize, grayImage, content.metadata());
+                neoContents.add(grayContent);
+
+                NativeImage negativeImage = ClientUtils.copyWithNegative(content.getOriginalImage());
+                SpriteContents negativeContent = new SpriteContents(name.withSuffix(ClientUtils.NEGATIVE_SUFFIX), frameSize, negativeImage, content.metadata());
+                neoContents.add(negativeContent);
             }
             return neoContents;
         }

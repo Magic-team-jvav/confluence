@@ -18,7 +18,7 @@ public abstract class ModelBlockRendererMixin {
     @WrapOperation(method = "putQuadData", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;putBulkData(Lcom/mojang/blaze3d/vertex/PoseStack$Pose;Lnet/minecraft/client/renderer/block/model/BakedQuad;[FFFFF[IIZ)V"))
     private void putColor(VertexConsumer instance, PoseStack.Pose pose, BakedQuad quad, float[] brightness, float red, float green, float blue, float alpha, int[] lightmap, int packedOverlay, boolean readAlpha, Operation<Void> original, @Local(argsOnly = true) BlockPos pPos) {
         int color = LocalBrushData.getColor(pPos, quad.getDirection());
-        if (color == BrushData.EMPTY_COLOR) {
+        if (color == BrushData.EMPTY_COLOR || color == BrushData.NEGATIVE_COLOR) {
             original.call(instance, pose, quad, brightness, red, green, blue, alpha, lightmap, packedOverlay, readAlpha);
         } else if (color == BrushData.ILLUMINANT_COLOR) {
             original.call(instance, pose, quad, brightness, red, green, blue, alpha, new int[]{0xF000F0, 0xF000F0, 0xF000F0, 0xF000F0}, packedOverlay, readAlpha);

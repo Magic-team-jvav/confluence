@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
+import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 
 public class PaintRollerItem extends Item {
@@ -21,7 +22,7 @@ public class PaintRollerItem extends Item {
             BlockPos clickedPos = pContext.getClickedPos();
             Direction clickedFace = pContext.getClickedFace();
             int color = PaintItem.getColor(pContext.getPlayer());
-            if (color != -1) {
+            if (color != BrushData.EMPTY_COLOR) {
                 BrushingColorPacketS2C.sendToPlayersTrackingChunk(serverLevel, clickedPos, clickedFace, color, true);
             }
         }

@@ -52,7 +52,7 @@ public class HealthHudLayer implements LayeredDraw.Layer {
         }
         int countHeart = (int) ((maxHealth - (float) lifeFruitHealth) / 4);
         int countHeartAbsorptionHealth = (int) (absorptionHealth / 4.0F) + ((((int) absorptionHealth) % 4 == 0) ? 0 : 1);
-        int yLine = 4 + (int) (6.0F / (float) ((countHeart + countHeartAbsorptionHealth - 1) / 20 + 1));
+        int yLine = 4 + (int) (6.0F / (float) ((countHeart - 1) / 20 + (countHeartAbsorptionHealth - 1) / 20 + 1));
         int heightToAbsorption = blit(heartBuff, maxHealth, currentHealth, lifeFruitHealth, guiGraphics, width, 10, 0, yLine);
         blit(0, countHeartAbsorptionHealth * 4, absorptionHealth, 0, guiGraphics, width, heightToAbsorption, 1, yLine);
         minecraft.getProfiler().pop();

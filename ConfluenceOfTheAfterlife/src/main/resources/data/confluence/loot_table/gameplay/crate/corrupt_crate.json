@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "terra_curio:band_of_starpower",
+          "name": "confluence:band_of_starpower",
           "weight": 1
         }
       ],

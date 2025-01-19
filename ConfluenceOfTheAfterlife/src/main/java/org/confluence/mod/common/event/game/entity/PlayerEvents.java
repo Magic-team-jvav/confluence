@@ -3,9 +3,11 @@ package org.confluence.mod.common.event.game.entity;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -14,8 +16,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -32,6 +37,7 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.MinecartItems;
@@ -47,6 +53,9 @@ import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.confluence.mod.api.event.MinecartAbilityEvent.DismountOnMinecart;
 import static org.confluence.mod.api.event.MinecartAbilityEvent.RightClickRailBlock;
@@ -281,6 +290,31 @@ public final class PlayerEvents {
     public static void startTracking(PlayerEvent.StartTracking event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer && event.getTarget() instanceof ServerPlayer player) {
             ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, player, player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
+        }
+    }
+
+    @SubscribeEvent
+    public static void conversionSandEvent(PlayerInteractEvent.RightClickBlock event) {
+        Level level = event.getLevel();
+        BlockPos pos = event.getPos();
+        ItemStack stack = event.getItemStack();
+        BlockState state = level.getBlockState(pos);
+        Player player = event.getEntity();
+        PotionContents potioncontents = stack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
+        if (!level.isClientSide && potioncontents.is(Potions.WATER)) {
+            level.playSound(null, pos, SoundEvents.GENERIC_SPLASH, SoundSource.BLOCKS, 1.0F, 1.0F);
+            player.setItemInHand(event.getHand(), ItemUtils.createFilledResult(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
+            player.awardStat(net.minecraft.stats.Stats.ITEM_USED.get(stack.getItem()));
+            Map<Block, Block> sandMapping = new HashMap<>();
+            sandMapping.put(Blocks.SAND, NatureBlocks.MOIST_SAND_BLOCK.get());
+            sandMapping.put(Blocks.RED_SAND, NatureBlocks.RED_MOIST_SAND_BLOCK.get());
+            sandMapping.put(NatureBlocks.EBONY_SAND.get(), NatureBlocks.EBONY_MOIST_SAND_BLOCK.get());
+            sandMapping.put(NatureBlocks.PEARL_SAND.get(), NatureBlocks.PEARL_MOIST_SAND_BLOCK.get());
+            sandMapping.put(NatureBlocks.TR_CRIMSON_SAND.get(), NatureBlocks.TR_CRIMSON_MOIST_SAND_BLOCK.get());
+            Block newBlock = sandMapping.get(state.getBlock());
+            if (newBlock != null) {
+                level.setBlockAndUpdate(pos, newBlock.defaultBlockState());
+            }
         }
     }
 }

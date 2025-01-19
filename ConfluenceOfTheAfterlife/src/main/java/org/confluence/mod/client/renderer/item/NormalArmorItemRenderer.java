@@ -18,8 +18,6 @@ import software.bernie.geckolib.util.Color;
 import static org.confluence.mod.util.ModUtils.getSlotIndex;
 
 public class NormalArmorItemRenderer extends DyeableGeoArmorRenderer<NormalArmorItem> {
-    private boolean isDyeColor = false;
-
     public NormalArmorItemRenderer(String path) {
         super(new DefaultedItemGeoModel<>(Confluence.asResource(path)));
     }
@@ -36,12 +34,10 @@ public class NormalArmorItemRenderer extends DyeableGeoArmorRenderer<NormalArmor
             if (index != -1) {
                 ItemStack vanityArmorDye = currentEntity.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmorDye(index);
                 if (!vanityArmorDye.isEmpty() && vanityArmorDye.getItem() instanceof BaseDyeItem dyeItem) {
-                    this.isDyeColor = true;
                     return dyeItem.colour;
                 }
             }
         }
-        this.isDyeColor = false;
         return Color.WHITE;
     }
 
@@ -49,7 +45,7 @@ public class NormalArmorItemRenderer extends DyeableGeoArmorRenderer<NormalArmor
     public ResourceLocation getTextureLocation(NormalArmorItem animatable) {
         ResourceLocation original = super.getTextureLocation(animatable);
         if (currentSlot != null && currentEntity instanceof AbstractClientPlayer) {
-            if (isDyeColor || !currentEntity.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmorDye(getSlotIndex(currentSlot)).isEmpty()) {
+            if (!currentEntity.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmorDye(getSlotIndex(currentSlot)).isEmpty()) {
                 return ClientUtils.getGrayTexture(original);
             }
         }

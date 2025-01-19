@@ -13,33 +13,22 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
 import org.confluence.mod.util.ClientUtils;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 import static org.confluence.mod.util.ModUtils.getSlotIndex;
 
 @Mixin(HumanoidArmorLayer.class)
 public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends HumanoidModel<T>> {
-    @Unique
-    private ExtraInventory confluence$currentExtraInventory = null;
-    @Unique
-    private LivingEntity confluence$currentEntity = null;
-    @Unique
-    private boolean confluence$isDyeColor = false;
-
     @WrapOperation(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;"))
     private ItemStack wrapItem(LivingEntity instance, EquipmentSlot slot, Operation<ItemStack> original) {
         if (instance instanceof AbstractClientPlayer) {
             int index = getSlotIndex(slot);
             if (index != -1) {
-                this.confluence$currentExtraInventory = instance.getData(ModAttachmentTypes.EXTRA_INVENTORY);
-                this.confluence$currentEntity = instance;
-                ItemStack vanityArmor = confluence$currentExtraInventory.getVanityArmor(index);
+                ItemStack vanityArmor = instance.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmor(index);
                 if (!vanityArmor.isEmpty()) return vanityArmor;
             }
         }
@@ -51,15 +40,8 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
         if (entity instanceof AbstractClientPlayer) {
             int index = getSlotIndex(slot);
             if (index != -1) {
-                ItemStack vanityArmorDye;
-                if (confluence$currentEntity == entity) {
-                    vanityArmorDye = confluence$currentExtraInventory.getVanityArmorDye(index);
-                } else {
-                    vanityArmorDye = entity.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmorDye(index);
-                }
-                this.confluence$currentExtraInventory = null;
+                ItemStack vanityArmorDye = entity.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmorDye(index);
                 if (!vanityArmorDye.isEmpty() && vanityArmorDye.getItem() instanceof BaseDyeItem dyeItem) {
-                    this.confluence$isDyeColor = true;
                     return dyeItem.color;
                 }
             }
@@ -70,9 +52,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
     @ModifyExpressionValue(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/client/ClientHooks;getArmorTexture(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ArmorMaterial$Layer;ZLnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/resources/ResourceLocation;", remap = false))
     private ResourceLocation withGray(ResourceLocation original, @Local(argsOnly = true) LivingEntity entity, @Local(argsOnly = true) EquipmentSlot slot) {
         if (entity instanceof AbstractClientPlayer) {
-            if (confluence$currentEntity == entity && (confluence$isDyeColor || !entity.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmorDye(getSlotIndex(slot)).isEmpty())) {
-                this.confluence$currentEntity = null;
-                this.confluence$isDyeColor = false;
+            if (!entity.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmorDye(getSlotIndex(slot)).isEmpty()) {
                 return ClientUtils.getGrayTexture(original);
             }
         }

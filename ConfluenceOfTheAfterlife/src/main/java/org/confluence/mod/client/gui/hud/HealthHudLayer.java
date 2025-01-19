@@ -1,5 +1,6 @@
 package org.confluence.mod.client.gui.hud;
 
+import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -14,15 +15,14 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.util.ClientUtils;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public class HealthHudLayer implements LayeredDraw.Layer {
     public static final ResourceLocation ICON = Confluence.asResource("textures/gui/hud/icon.png");
     public static final Integer SIZE = 128;
+
     @Override
-    public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public void render(@NotNull GuiGraphics guiGraphics, @NotNull DeltaTracker deltaTracker) {
         if (!ClientConfigs.terraStyleHealth) return;
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.options.hideGui || !ClientUtils.shouldDrawSurvivalElements(minecraft)) return;
@@ -83,23 +83,8 @@ public class HealthHudLayer implements LayeredDraw.Layer {
         int blitX;
         int blitY = 0;
         int blitXFirst;
-        List<Float> heartNumList = new ArrayList<>();
-        float currentHealthToType = currentHealth;
-        float heartNum;
-        boolean ifLifeFruit;
-        for (int i = 0; i < countHeart; i ++) {
-            ifLifeFruit = i < lifeFruitHealth;
-            heartNum = ifLifeFruit ? 5.0F : 4.0F;
-            currentHealthToType -= heartNum;
-            if (currentHealthToType >= 0) {
-                heartNumList.add(heartNum);
-            } else if (currentHealthToType + heartNum >= 0) {
-                heartNumList.add(currentHealthToType + heartNum);
-            } else {
-                heartNumList.add(0.0F);
-            }
-        }
-        for (int countToBlit = 0; countToBlit < countHeart; countToBlit ++) {
+        FloatArrayList heartNumList = getHeartNumList(currentHealth, lifeFruitHealth, countHeart);
+        for (int countToBlit = 0; countToBlit < countHeart; countToBlit++) {
             countLine = countToBlit / 10;
             blitY = yLine * countLine;
             blitX = countToBlit * 10 - countLine * 100;
@@ -119,8 +104,28 @@ public class HealthHudLayer implements LayeredDraw.Layer {
                 guiGraphics.blit(ICON, width + blitX + blitXFirst, height + blitY, 2, heightUV, 10, 16, SIZE, SIZE);
             }
             type = (countToBlit < lifeFruitHealth) ? 1 : 0;
-            blitHeart(guiGraphics, type, typeHeart, heartNumList.get(countToBlit), width + blitX + blitXFirst + 1, height + blitY, heartBuff);
+            blitHeart(guiGraphics, type, typeHeart, heartNumList.getFloat(countToBlit), width + blitX + blitXFirst + 1, height + blitY, heartBuff);
         }
         return (height + blitY + yLine);
+    }
+
+    private static @NotNull FloatArrayList getHeartNumList(float currentHealth, int lifeFruitHealth, int countHeart) {
+        FloatArrayList heartNumList = new FloatArrayList();
+        float currentHealthToType = currentHealth;
+        float heartNum;
+        boolean ifLifeFruit;
+        for (int i = 0; i < countHeart; i++) {
+            ifLifeFruit = i < lifeFruitHealth;
+            heartNum = ifLifeFruit ? 5.0F : 4.0F;
+            currentHealthToType -= heartNum;
+            if (currentHealthToType >= 0) {
+                heartNumList.add(heartNum);
+            } else if (currentHealthToType + heartNum >= 0) {
+                heartNumList.add(currentHealthToType + heartNum);
+            } else {
+                heartNumList.add(0.0F);
+            }
+        }
+        return heartNumList;
     }
 }

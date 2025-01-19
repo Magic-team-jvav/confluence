@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui.hud;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -9,13 +8,14 @@ import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.util.ClientUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class ManaHudLayer implements LayeredDraw.Layer {
     public static final ResourceLocation ICON = Confluence.asResource("textures/gui/hud/icon.png");
     public static final Integer SIZE = 128;
 
     @Override
-    public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public void render(@NotNull GuiGraphics guiGraphics, @NotNull DeltaTracker deltaTracker) {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.options.hideGui || !ClientUtils.shouldDrawSurvivalElements(minecraft)) return;
         ClientUtils.setupOverlayRenderState(true, false);
@@ -26,7 +26,7 @@ public class ManaHudLayer implements LayeredDraw.Layer {
         int maxManaCount = ClientPacketHandler.getMaxMana() / 20;
         int currentManaToBlit;
         float ts;
-        for (int i = 0; i < maxManaCount; i ++) {
+        for (int i = 0; i < maxManaCount; i++) {
             currentManaToBlit = currentMana - (i + 1) * 20;
             guiGraphics.blit(ICON, width, 10 + i * 12, 0, 34, 17, 16, SIZE, SIZE);
             if (currentManaToBlit >= 0) {

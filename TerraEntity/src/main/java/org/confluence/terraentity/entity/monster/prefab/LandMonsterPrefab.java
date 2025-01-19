@@ -28,7 +28,7 @@ import static software.bernie.geckolib.constant.DefaultAnimations.*;
 public class LandMonsterPrefab extends AbstractPrefab {
 
     public static Supplier<AbstractMonster.Builder> FACE_MONSTER_BUILDER =
-            ()->new LandMonsterPrefab(20,2,1,30,0.5f,0.1f).getPrefab()
+            ()->new LandMonsterPrefab(36,2,13,64,0.7f,0.1f).getPrefab()
                     .setStepHeight(3.2f)
                     .setJumpStrength(0.8f)
                     .addTarget((t,e)-> t.addGoal(1, new NearestAttackableTargetGoal<>(e, Player.class,false, LivingEntity::canBeSeenAsEnemy)))

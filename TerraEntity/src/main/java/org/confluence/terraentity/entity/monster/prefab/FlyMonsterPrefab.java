@@ -43,7 +43,7 @@ public class FlyMonsterPrefab extends AbstractPrefab {
             ;
 
     public static final Supplier<AbstractMonster.Builder> DRIPPLER_BUILDER  =
-            Suppliers.memoize(()->new FlyMonsterPrefab(26,3,14,30,0.5f,0.2f).getPrefab()
+            Suppliers.memoize(()->new FlyMonsterPrefab(26,3,14,64,0.5f,0.2f).getPrefab()
                 .setHurtSound(TESounds.DRIPPLER_HURT)
                 .setDeathSound(TESounds.DRIPPLER_DEATH)
                 .addGoal((g,e)->{
@@ -53,7 +53,7 @@ public class FlyMonsterPrefab extends AbstractPrefab {
             ;
 
     public static Supplier<AbstractMonster.Builder> FLYING_FISH_BUILDER  =
-            ()->new FlyMonsterPrefab(10,1,4,30,0.5f,0.3f).getPrefab()
+            ()->new FlyMonsterPrefab(10,1,2,30,0.5f,0.3f).getPrefab()
                 .setHurtSound(TESounds.ROUTINE_HURT)
                 .setDeathSound(TESounds.ROUTINE_DEATH)
                 .addGoal((g,e)->{

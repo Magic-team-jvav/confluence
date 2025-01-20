@@ -13,7 +13,7 @@ plugins {
 
 include ":ConfluenceOfTheAfterlife"
 
-var projectName = ["MineTeam","EquipmentBenediction",
+var projectName = ["TerraEntity","MineTeam","EquipmentBenediction",
                    "TerraCurio","ParticleStorm","HeavenDestinyMoment","PhaseJourney",
                     "TerraMoment","TerraGuns","IsekaiInvaded","TerraFurniture"
 ]

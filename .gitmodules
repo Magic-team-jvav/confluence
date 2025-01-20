@@ -38,4 +38,7 @@
 	path = TerraFurniture
 	url = https://github.com/MakerTechno/TerraFurniture
 	branch = neoforge-dev/1.21.1
-
+[submodule "TerraEntity"]
+	path = TerraEntity
+	url = https://github.com/EDGtheXu/TerraEntity
+	branch = neoforge-dev/1.21.1

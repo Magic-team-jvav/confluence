@@ -1,7 +1,6 @@
 package org.confluence.mod.client.event;
 
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -60,7 +59,6 @@ import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.mod.common.init.item.BowItems;
@@ -235,7 +233,6 @@ public final class ModClientEvents {
         event.registerEntityRenderer(COIN_PORTAL.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(THROWN_POWDER.get(), EmptyEntityRenderer::new);
 
-        event.registerBlockEntityRenderer(ModBlocks.SIGN_BLOCK_ENTITY.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new AltarBlockModel()));
         event.registerBlockEntityRenderer(FunctionalBlocks.SKY_MILL_ENTITY.get(), context -> new SkyMillBlockRenderer());
         event.registerBlockEntityRenderer(FunctionalBlocks.EXTRACTINATOR_ENTITY.get(), context -> new ExtractinatorBlockRenderer());

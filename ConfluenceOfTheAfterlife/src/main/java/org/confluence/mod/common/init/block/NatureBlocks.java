@@ -12,7 +12,6 @@ import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.block.natural.SpreadableMoistSandBlock;
 import org.confluence.mod.common.block.natural.MushroomBlock;
 import org.confluence.mod.common.block.natural.*;
 import org.confluence.mod.common.block.natural.sapling.*;
@@ -132,7 +131,7 @@ public class NatureBlocks {
             .pressurePlate(properties -> new PressurePlateBlock(PALM.SET, properties))
             .slab(SlabBlock::new)
             .stair(StairBlock::new)
-            .sign(properties -> new LogBlockSet.ModStandingSignBlock(PALM.TYPE, properties), properties -> new LogBlockSet.ModWallSignBlock(PALM.TYPE, properties), SignItem::new)
+            .sign(properties -> new StandingSignBlock(PALM.TYPE, properties), properties -> new WallSignBlock(PALM.TYPE, properties), SignItem::new)
             .trapdoor(properties -> new TrapDoorBlock(PALM.SET, properties))
             .door(properties -> new DoorBlock(PALM.SET, properties)).build();
 
@@ -156,7 +155,7 @@ public class NatureBlocks {
             .pressurePlate(properties -> new PressurePlateBlock(LIVING.SET, properties))
             .slab(SlabBlock::new)
             .stair(StairBlock::new)
-            .sign(properties -> new LogBlockSet.ModStandingSignBlock(LIVING.TYPE, properties), properties -> new LogBlockSet.ModWallSignBlock(LIVING.TYPE, properties), SignItem::new)
+            .sign(properties -> new StandingSignBlock(LIVING.TYPE, properties), properties -> new WallSignBlock(LIVING.TYPE, properties), SignItem::new)
             .trapdoor(properties -> new TrapDoorBlock(LIVING.SET, properties))
             .door(properties -> new DoorBlock(LIVING.SET, properties)).build();
     // 灰烬

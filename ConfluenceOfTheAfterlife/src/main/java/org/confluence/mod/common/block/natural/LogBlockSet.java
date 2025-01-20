@@ -10,8 +10,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
@@ -24,7 +22,6 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.ModBlockTagsProvider;
-import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 
 import java.util.ArrayList;
@@ -354,7 +351,7 @@ public class LogBlockSet {
                     .pressurePlate(properties -> new PressurePlateBlock(woodSetType.SET, properties))
                     .slab(SlabBlock::new)
                     .stair(StairBlock::new)
-                    .sign(properties -> new ModStandingSignBlock(woodSetType.TYPE, properties), properties -> new ModWallSignBlock(woodSetType.TYPE, properties), SignItem::new)
+                    .sign(properties -> new StandingSignBlock(woodSetType.TYPE, properties), properties -> new WallSignBlock(woodSetType.TYPE, properties), SignItem::new)
                     .trapdoor(properties -> new TrapDoorBlock(woodSetType.SET, properties))
                     .door(properties -> new DoorBlock(woodSetType.SET, properties));
             return this;
@@ -464,34 +461,6 @@ public class LogBlockSet {
 
         private static boolean never(BlockState state, BlockGetter getter, BlockPos pos, EntityType<?> entityType) {
             return false;
-        }
-    }
-
-    public static class ModSignBlockEntity extends SignBlockEntity {
-        public ModSignBlockEntity(BlockPos pPos, BlockState pBlockState) {
-            super(ModBlocks.SIGN_BLOCK_ENTITY.get(), pPos, pBlockState);
-        }
-    }
-
-    public static class ModStandingSignBlock extends StandingSignBlock {
-        public ModStandingSignBlock(WoodType pType, Properties pProperties) {
-            super(pType, pProperties);
-        }
-
-        @Override
-        public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-            return new ModSignBlockEntity(pPos, pState);
-        }
-    }
-
-    public static class ModWallSignBlock extends WallSignBlock {
-        public ModWallSignBlock(WoodType pType, Properties pProperties) {
-            super(pType, pProperties);
-        }
-
-        @Override
-        public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-            return new ModSignBlockEntity(pPos, pState);
         }
     }
 

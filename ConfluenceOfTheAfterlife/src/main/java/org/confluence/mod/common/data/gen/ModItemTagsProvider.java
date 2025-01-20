@@ -419,7 +419,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             tag(ItemTags.DURABILITY_ENCHANTABLE).add(item.get());
             tag(ItemTags.WEAPON_ENCHANTABLE).add(item.get());
             tag(ItemTags.BOW_ENCHANTABLE).add(item.get());
-            tag(ItemTags.ARROWS).add(item.get());
         });
 
         // Sword 附魔

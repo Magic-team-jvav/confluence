@@ -134,6 +134,7 @@ dependencies {
     runtimeOnly "mezz.jei:jei-1.21-neoforge:${jei_version}"
 
     compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE:api"
+    compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
     runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
 
     runtimeOnly "curse.maven:worldedit-225608:5830452"

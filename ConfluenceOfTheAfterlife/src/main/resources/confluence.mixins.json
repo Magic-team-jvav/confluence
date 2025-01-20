@@ -82,6 +82,7 @@
         "integration.ftbchunks.EntityMapIconMixin",
         "integration.ftbchunks.TrackedPlayerMapIconMixin",
         "integration.geckolib.InternalUtilMixin",
+        "integration.patchouli.BookPageMixin",
         "integration.terra_curio.InformationHandlerMixin",
         "integration.terra_curio.TCClientPacketHandlerMixin"
     ],

@@ -20,7 +20,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -76,7 +75,7 @@ public final class LivingEntityEvents {
     @SubscribeEvent
     public static void livingHeal(LivingHealEvent event) {
         LivingEntity living = event.getEntity();
-        if (living.level().isClientSide) return;
+        if (!(living.level() instanceof ServerLevel level)) return;
         if (living.hasEffect(ModEffects.FROST_BURN) || living.hasEffect(ModEffects.BLEEDING)) {
             event.setCanceled(true); // todo 有些怪物对其免疫
         } else if (living.getData(ModAttachmentTypes.EVER_BENEFICIAL).isVitalCrystalUsed()) {
@@ -84,14 +83,15 @@ public final class LivingEntityEvents {
         }
 
         // 治疗数字显示
-        if (!(living.level() instanceof ServerLevel level)) return;
-        AABB bb = living.getBoundingBoxForCulling();
-        Vec3 pos = living.position();
-        float amount = Math.round(event.getAmount() * 10) / 10f;
-        int intAmount = (int) amount;
-        String text = amount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(amount);
-        MutableComponent component = Component.literal(text).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD);
-        level.sendParticles(new DamageIndicatorOptions(component, false), pos.x, bb.maxY, pos.z, 1, 0.1, 0.1, 0.1, 0);
+        if (living.getHealth() < living.getMaxHealth()) {
+            // 治疗数字显示
+            double y = living.getBoundingBoxForCulling().maxY;
+            Vec3 pos = living.position();
+            float amount = Math.round(event.getAmount() * 10.0F) / 10.0F;
+            String text = amount % 1 == 0 ? Integer.toString((int) amount) : Float.toString(amount);
+            MutableComponent component = Component.literal(text).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD);
+            level.sendParticles(new DamageIndicatorOptions(component, false), pos.x, y, pos.z, 1, 0.1, 0.1, 0.1, 0.0);
+        }
     }
 
     @SubscribeEvent
@@ -111,10 +111,10 @@ public final class LivingEntityEvents {
             }
         }
         Immunity cause = ModUtils.getImmunityCause(event.getSource());
-        if(((ILivingEntity) event.getEntity()).confluence$getImmunityTicks().containsKey(cause)){
+        if (((ILivingEntity) event.getEntity()).confluence$getImmunityTicks().containsKey(cause)) {
             event.setCanceled(true);
         }
-        if(cause != null){
+        if (cause != null) {
             event.getContainer().setPostAttackInvulnerabilityTicks(event.getEntity().invulnerableTime);
         }
     }
@@ -180,11 +180,11 @@ public final class LivingEntityEvents {
         }
 
         Immunity cause = ModUtils.getImmunityCause(damageSource);
-        if(cause != null){
+        if (cause != null) {
             Object2IntMap<Immunity> invTicks = ((ILivingEntity) damagingEntity).confluence$getImmunityTicks();
             int time = cause.confluence$getImmunityDuration(damageSource);
 //            System.out.println(event.getNewDamage());
-            if(time != 0){
+            if (time != 0) {
                 invTicks.put(cause, time);
             }
 

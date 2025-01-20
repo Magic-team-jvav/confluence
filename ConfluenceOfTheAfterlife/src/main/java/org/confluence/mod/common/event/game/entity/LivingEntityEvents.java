@@ -7,6 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -170,7 +171,7 @@ public final class LivingEntityEvents {
         }
         if (damagingEntity instanceof ServerPlayer serverPlayer) {
             if (damagingEntity.isAlive()) {
-                if (damagingEntity.getHealth() / damagingEntity.getMaxHealth() < 0.1F) {
+                if (damagingEntity.getHealth() / damagingEntity.getMaxHealth() < 0.1F && damageSource.is(DamageTypeTags.IS_FALL)) {
                     PlayerUtils.awardAchievement(serverPlayer, "lucky_break");
                 }
             } else if (sourceEntity != null && DartTrapBlock.NAME.equals(sourceEntity.getCustomName())) {

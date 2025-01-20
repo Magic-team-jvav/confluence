@@ -84,7 +84,6 @@ public final class LivingEntityEvents {
 
         // 治疗数字显示
         if (living.getHealth() < living.getMaxHealth()) {
-            // 治疗数字显示
             double y = living.getBoundingBoxForCulling().maxY;
             Vec3 pos = living.position();
             float amount = Math.round(event.getAmount() * 10.0F) / 10.0F;

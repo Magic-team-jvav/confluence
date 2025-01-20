@@ -126,7 +126,7 @@ public final class ModFluids {
         // 微光箭转化
         addItem(ArrowItems.FLAMING_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
         addItem(ArrowItems.UNHOLY_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
-        addItem(ArrowItems.JESTERS_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
+        addItem(ArrowItems.STAR_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
         addItem(ArrowItems.HELLFIRE_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
         addItem(ArrowItems.FROSTBURN_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
         addItem(ArrowItems.BONE_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());

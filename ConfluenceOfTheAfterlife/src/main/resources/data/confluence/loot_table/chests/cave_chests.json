@@ -167,7 +167,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:jesters_arrow",
+          "name": "confluence:star_arrow",
           "functions": [
             {
               "function": "set_count",

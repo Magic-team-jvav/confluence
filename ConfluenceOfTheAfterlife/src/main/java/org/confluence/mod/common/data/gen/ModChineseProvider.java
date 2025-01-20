@@ -1085,7 +1085,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(ArrowItems.FLAMING_ARROW.get(), "烈焰箭");
         add(ArrowItems.UNHOLY_ARROW.get(), "邪箭");
-        add(ArrowItems.JESTERS_ARROW.get(), "小丑之箭");
+        add(ArrowItems.STAR_ARROW.get(), "耀星之箭");
         add(ArrowItems.HELLFIRE_ARROW.get(), "狱炎箭");
         add(ArrowItems.FROSTBURN_ARROW.get(), "寒霜箭");
         add(ArrowItems.BONE_ARROW.get(), "骨箭");

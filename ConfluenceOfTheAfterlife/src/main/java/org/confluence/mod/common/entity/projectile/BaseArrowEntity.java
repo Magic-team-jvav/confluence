@@ -54,7 +54,7 @@ public class BaseArrowEntity extends AbstractArrow {
     }
 
     public static Map<Item,Tuple> selectArrowFromItemMap = Map.of(
-            ArrowItems.JESTERS_ARROW.get(), Tuple.JESTERS_ARROW_ENTITY,
+            ArrowItems.STAR_ARROW.get(), Tuple.JESTERS_ARROW_ENTITY,
             ArrowItems.UNHOLY_ARROW.get(), Tuple.UNHOLY_ARROW_ENTITY,
             ArrowItems.FLAMING_ARROW.get(), Tuple.FLAMING_ARROW_ENTITY
     );

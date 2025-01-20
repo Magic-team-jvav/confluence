@@ -13,7 +13,7 @@ public class ArrowItems {
 
     public static final DeferredItem<BaseArrowItem> FLAMING_ARROW = ITEMS.register("flaming_arrow", () -> new BaseArrowItem(ModRarity.WHITE));
     public static final DeferredItem<BaseArrowItem> UNHOLY_ARROW = ITEMS.register("unholy_arrow", () -> new  BaseArrowItem(ModRarity.BLUE));
-    public static final DeferredItem<BaseArrowItem> JESTERS_ARROW = ITEMS.register("jesters_arrow", () -> new  BaseArrowItem(ModRarity.BLUE));
+    public static final DeferredItem<BaseArrowItem> STAR_ARROW = ITEMS.register("star_arrow", () -> new  BaseArrowItem(ModRarity.BLUE));
     public static final DeferredItem<BaseArrowItem> HELLFIRE_ARROW = ITEMS.register("hellfire_arrow", () -> new  BaseArrowItem(ModRarity.GREEN));
     public static final DeferredItem<BaseArrowItem> FROSTBURN_ARROW = ITEMS.register("frostburn_arrow", () -> new  BaseArrowItem(ModRarity.WHITE));
     public static final DeferredItem<BaseArrowItem> BONE_ARROW = ITEMS.register("bone_arrow", () -> new  BaseArrowItem(ModRarity.WHITE));

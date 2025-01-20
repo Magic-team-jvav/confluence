@@ -120,7 +120,7 @@ public final class ModVillagers {
             tier2.add(new SkyVillagerItemListing(Items.EMERALD, 2, ArrowItems.FLAMING_ARROW.get(), 15, 10, 25, 0.05F));
             tier3.add(new SkyVillagerItemListing(Items.EMERALD, 2, BowItems.WOODEN_SHORT_BOW.get(), 10, 25, 0.05F));
             tier4.add(new SkyVillagerItemListing(Items.EMERALD, 12, BowItems.TUNGSTEN_SHORT_BOW.get(), 10, 25, 0.05F));
-            tier5.add(new SkyVillagerItemListing(Items.EMERALD, 3, ArrowItems.JESTERS_ARROW.get(), 25, 10, 25, 0.05F));
+            tier5.add(new SkyVillagerItemListing(Items.EMERALD, 3, ArrowItems.STAR_ARROW.get(), 25, 10, 25, 0.05F));
         } else if (type == VillagerProfession.LEATHERWORKER) {
             tier3.add(new SkyVillagerItemListing(Items.EMERALD, 4, ArmorItems.SNOW_CAPS.get(), 10, 25, 0.05F));
             tier3.add(new SkyVillagerItemListing(Items.EMERALD, 4, ArmorItems.PINK_SNOW_CAPS.get(), 10, 25, 0.05F));

@@ -1,7 +1,7 @@
 plugins {
     id 'net.neoforged.moddev'
 }
-var projectName = ["TerraEntity", "MineTeam", "EquipmentBenediction",
+var projectName = ["MineTeam", "EquipmentBenediction",
                    "TerraCurio", "ParticleStorm", "HeavenDestinyMoment", "PhaseJourney",
                    "TerraMoment", "TerraGuns", "IsekaiInvaded","TerraFurniture"
 ]

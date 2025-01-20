@@ -5,6 +5,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -16,7 +18,6 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.item.common.GrassSeedItem;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_guns.common.init.TGItems;
@@ -412,5 +413,50 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         TGItems.ITEM_BULLETS.getEntries().forEach(item -> ammo.add(item.get()));
         IntrinsicTagAppender<Item> dye = tag(ModTags.Items.DYE);
         VanityArmorItems.DYE_ITEMS.forEach(dye::add);
+
+        // Bow 附魔
+        BowItems.ITEMS.getEntries().forEach(item->{
+            tag(ItemTags.DURABILITY_ENCHANTABLE).add(item.get());
+            tag(ItemTags.WEAPON_ENCHANTABLE).add(item.get());
+            tag(ItemTags.BOW_ENCHANTABLE).add(item.get());
+            tag(ItemTags.ARROWS).add(item.get());
+        });
+
+        // Sword 附魔
+        SwordItems.ITEMS.getEntries().forEach(item->{
+            tag(ItemTags.SHARP_WEAPON_ENCHANTABLE).add(item.get());
+            tag(ItemTags.SWORD_ENCHANTABLE).add(item.get());
+            tag(ItemTags.DURABILITY_ENCHANTABLE).add(item.get());
+            tag(ItemTags.WEAPON_ENCHANTABLE).add(item.get());
+        });
+
+        // Tool 附魔
+        ToolItems.ITEMS.getEntries().forEach(item->{
+            tag(ItemTags.DURABILITY_ENCHANTABLE).add(item.get());
+
+
+        });
+
+        // Armor 附魔
+        ArmorItems.ITEMS.getEntries().forEach(item->{
+            if(item.get() instanceof ArmorItem armor){
+                tag(ItemTags.DURABILITY_ENCHANTABLE).add(item.get());
+                tag(ItemTags.ARMOR_ENCHANTABLE).add(item.get());
+                tag(ItemTags.EQUIPPABLE_ENCHANTABLE).add(item.get());
+                if(armor.getEquipmentSlot() == EquipmentSlot.HEAD){
+                    tag(ItemTags.HEAD_ARMOR_ENCHANTABLE).add(item.get());
+                    tag(ItemTags.HEAD_ARMOR).add(item.get());
+                }else if(armor.getEquipmentSlot() == EquipmentSlot.CHEST){
+                    tag(ItemTags.CHEST_ARMOR_ENCHANTABLE).add(item.get());
+                    tag(ItemTags.CHEST_ARMOR).add(item.get());
+                }else if(armor.getEquipmentSlot() == EquipmentSlot.LEGS){
+                    tag(ItemTags.LEG_ARMOR_ENCHANTABLE).add(item.get());
+                    tag(ItemTags.LEG_ARMOR).add(item.get());
+                }else if(armor.getEquipmentSlot() == EquipmentSlot.FEET){
+                    tag(ItemTags.FOOT_ARMOR).add(item.get());
+                    tag(ItemTags.FOOT_ARMOR_ENCHANTABLE).add(item.get());
+                }
+            }
+        });
     }
 }

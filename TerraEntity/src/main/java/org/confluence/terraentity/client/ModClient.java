@@ -9,6 +9,8 @@ import net.minecraft.world.entity.EntityType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import org.confluence.terraentity.TerraEntity;
@@ -49,6 +51,20 @@ public final class ModClient {
     }
 */
 
+    @SubscribeEvent
+    public static void clientSetup(FMLClientSetupEvent event) {
+        event.enqueueWork(() -> {
+            ClientConfig.load();
+
+        });
+    }
+
+    @SubscribeEvent
+    public static void configChanged(ModConfigEvent event) {
+        if(event.getConfig().getSpec() == ClientConfig.SPEC){
+            ClientConfig.load();
+        }
+    }
 
     @SubscribeEvent
     public static void registerEntityLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
@@ -71,6 +87,8 @@ public final class ModClient {
     public static void registerParticles(RegisterParticleProvidersEvent event) {
 
     }
+
+
 
 
 

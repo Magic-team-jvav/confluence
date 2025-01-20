@@ -3,9 +3,11 @@ package org.confluence.terraentity.event;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
@@ -15,14 +17,13 @@ import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
-import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEvent;
+import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.confluence.terraentity.entity.ai.Boss;
 import org.confluence.terraentity.entity.monster.AbstractMonster;
 import org.confluence.terraentity.entity.monster.Decayeder;
+import org.confluence.terraentity.entity.monster.demoneye.DemonEye;
+import org.confluence.terraentity.entity.monster.demoneye.DemonEyeVariant;
 import org.confluence.terraentity.entity.monster.slime.BaseSlime;
 import org.confluence.terraentity.entity.monster.slime.BlackSlime;
 import org.confluence.terraentity.entity.monster.slime.HoneySlime;
@@ -178,4 +179,16 @@ public class GameEntityEvent {
             event.setCanceled(true);
         }
     }
+
+    @SubscribeEvent
+    public static void mobFinalizeSpawn(FinalizeSpawnEvent event) {
+        Mob mob = event.getEntity();
+        RandomSource randomSource = mob.getRandom();
+        if (mob instanceof DemonEye demonEye) {
+            demonEye.setVariant(DemonEyeVariant.random(randomSource));
+        } else if (mob instanceof BlackSlime blackSlime) {
+            blackSlime.finalizeSpawn(randomSource, event.getDifficulty());
+        }
+    }
+
 }

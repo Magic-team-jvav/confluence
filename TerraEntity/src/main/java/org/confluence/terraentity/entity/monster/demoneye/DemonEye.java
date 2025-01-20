@@ -1,11 +1,13 @@
 package org.confluence.terraentity.entity.monster.demoneye;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -20,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.terraentity.entity.util.DeathAnimOptions;
 import org.confluence.terraentity.init.TESounds;
+import org.confluence.terraentity.mixin.accessor.EntityAccessor;
 import org.confluence.terraentity.utils.TEUtils;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -135,8 +138,8 @@ public class DemonEye extends Monster implements Enemy, VariantHolder<DemonEyeVa
             super.move(pType, motion);
             return;
         }
-        /*
-        Vec3 collide = super.collicallCollide(motion);
+
+        Vec3 collide = ((EntityAccessor) this).callCollide(motion);
         if (collide.x != motion.x) {
             motion = new Vec3(motion.x < 0 ? 0.22 : -0.22, motion.y, motion.z);
         }
@@ -150,9 +153,6 @@ public class DemonEye extends Monster implements Enemy, VariantHolder<DemonEyeVa
         if (collide.z != motion.z) {
             motion = new Vec3(motion.x, motion.y, motion.z < 0 ? 0.3 : -0.3);
         }
-        */
-
-
 
         setDeltaMovement(motion);
         super.move(pType, motion);

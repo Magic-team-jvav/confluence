@@ -32,6 +32,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.terraentity.Config;
 import org.confluence.terraentity.TerraEntity;
+import org.confluence.terraentity.client.gui.CustomizeBossHealthBar;
 import org.confluence.terraentity.entity.ai.BossSkill;
 import org.confluence.terraentity.entity.ai.CircleBossSkills;
 import org.confluence.terraentity.entity.ai.goal.LookForwardWanderFlyGoal;
@@ -68,7 +69,9 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
         setNoGravity(true);
         this.baseHealth = health;
         var a = bossEvent.getOverlay();
-
+        if(level().isClientSide){
+            CustomizeBossHealthBar.registerBossHealthBar(getDisplayName().getString(),this.getType());
+        }
     }
 
     public abstract void addSkills();
@@ -196,6 +199,7 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
         if (!level().isClientSide){
             //没有目标禁止行为
             target = getTarget();
+            skills.tick();
             if(target==null){
                 discardTick++;
                 if(!level().isClientSide && discardTick>DISCARD_TICK && Config.bossClearWhenNoTarget){
@@ -205,12 +209,8 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
                 return;
             }
             discardTick = 0;
-            skills.tick();
             collisionHurt();
         }
-
-
-
 
         this.setDeltaMovement(getDeltaMovement().scale(0.95));//空气阻力
     }
@@ -292,8 +292,9 @@ public abstract class AbstractTerraBossBase extends Monster implements GeoEntity
     @Override // boss条显示
     public void startSeenByPlayer(ServerPlayer player) {
         super.startSeenByPlayer(player);
-        if (shouldShowBossBar())
+        if (shouldShowBossBar()){
             this.bossEvent.addPlayer(player);
+        }
     }
 
     @Override // boss条消失

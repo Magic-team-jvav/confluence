@@ -1,7 +1,5 @@
 package org.confluence.terraentity;
 
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 
@@ -16,15 +14,12 @@ public class Config {
     public static float boss_attributes_multiplier_health;
     public static float boss_attributes_multiplier_damage;
 
-    public static void init() {
+    public static void load() {
         bossClearWhenNoTarget = BOSS_CLEAR_WHEN_NO_TARGET.get();
         boss_attributes_multiplier_health = BOSS_ATTRIBUTES_MULTIPLIER_HEALTH.get();
         boss_attributes_multiplier_damage = BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE.get();
     }
-    @SubscribeEvent
-    public static void onLoad(final ModConfigEvent event) {
-        init();
-    }
+
     public static final ModConfigSpec SPEC = BUILDER.build();
 
 }

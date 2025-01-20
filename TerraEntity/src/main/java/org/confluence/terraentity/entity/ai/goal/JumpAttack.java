@@ -2,7 +2,6 @@ package org.confluence.terraentity.entity.ai.goal;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.goal.Goal;
 
 public class JumpAttack extends JumpOverBlockGoal {
     private final double distanceToJump;
@@ -17,7 +16,7 @@ public class JumpAttack extends JumpOverBlockGoal {
         LivingEntity target = mob.getTarget();
         if(target == null) return false;
         float distance = (float) mob.distanceToSqr(target);
-        return mob.onGround() && lastAttackTime < mob.tickCount - 40 && distance < distanceToJump * distanceToJump
+        return mob.onGround() && lastAttackTime < mob.tickCount - 60 && distance < distanceToJump * distanceToJump
                 && distance > 4*4;
     }
 

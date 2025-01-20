@@ -12,7 +12,7 @@ public class ModEvent {
     @SubscribeEvent
     public static void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            Config.init();
+            Config.load();
 
         });
     }

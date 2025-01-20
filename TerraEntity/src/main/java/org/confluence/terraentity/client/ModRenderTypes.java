@@ -23,10 +23,13 @@ public final class ModRenderTypes {
         public static void onRegisterShaders(RegisterShadersEvent event) throws IOException {
             ResourceProvider resourceProvider = event.getResourceProvider();
 
-//            event.registerShader(new ShaderInstance(resourceProvider,
-//                    TerraEntity.space("float_bar"),
-//                    DefaultVertexFormat.POSITION_TEX_COLOR),
-//                    shader -> floatBarShader = shader);
+            event.registerShader(new ShaderInstance(resourceProvider,
+                            TerraEntity.space("float_bar"),
+                            DefaultVertexFormat.POSITION_TEX),
+                    shader -> {
+                        floatBarShader = shader;
+                    }
+            );
 
         }
     }

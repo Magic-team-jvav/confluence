@@ -208,25 +208,28 @@ public class EaterOfWorld extends AbstractTerraBossBase {
             if(this.tickCount > genTick && genSegments && this.dirty){
                 genSegments();
                 genSegments=false;
+                final TargetingConditions attackTargeting = TargetingConditions.forNonCombat().range(64.0);
+                level().getNearbyPlayers(attackTargeting,this,this.getBoundingBox().inflate(200))
+                        .forEach(p->bossEvent.addPlayer((ServerPlayer) p));
+                bossEvent.setProgress(1);
             }
 
             //没有目标禁止行为
             target = getTarget();
-            if(target==null) return;
-
-            if(!firstWander){
-                skills.forceStartIndex(2);
-                skills.forceEnd();
-                firstWander = true;
-            }
-            if(targetPos.x==0&&targetPos.y==0&&targetPos.z==0){
-                targetPos = target.position();
-            }
-            //头部发射弹幕
-            if(--shootTick <0){
-                if(this.position().y>target.yo){
-                    shootTick = shootTickBase;
-                    //todo
+            if(target!=null) {
+                if (!firstWander) {
+                    skills.forceStartIndex(2);
+                    skills.forceEnd();
+                    firstWander = true;
+                }
+                if (targetPos.x == 0 && targetPos.y == 0 && targetPos.z == 0) {
+                    targetPos = target.position();
+                }
+                //头部发射弹幕
+                if (--shootTick < 0) {
+                    if (this.position().y > target.yo) {
+                        shootTick = shootTickBase;
+                        //todo
 //                    BaseBulletEntity bullet = new BaseBulletEntity(this,level(),EMERALD){
 //                        @Override
 //                        public boolean canAttack(Entity entity) {
@@ -237,20 +240,22 @@ public class EaterOfWorld extends AbstractTerraBossBase {
 //                    bullet.setPos(position());
 //                    bullet.setDamage(projDamage[difficultyIdx]);
 //                    bullet.shoot(target.getX()-getX(),target.getY()+1-getY(),target.getZ()-getZ(),2F,1);
-                    //level().addFreshEntity(bullet);
+                        //level().addFreshEntity(bullet);
+                    }
                 }
-            }
-            //转向机制
-            if(shouldFollowTarget){
-                this.lookAt(target, turnSpeed,80);
+                //转向机制
+                if (shouldFollowTarget) {
+                    this.lookAt(target, turnSpeed, 80);
 
-            }else{
-                this.lookAtPos(targetPos,turnSpeed,80);
-            }
+                } else {
+                    this.lookAtPos(targetPos, turnSpeed, 80);
+                }
 
-            //移动机制
-            if(shouldMove) {
-                this.setPos(position().add(getForward().normalize().scale(moveSpeed)));
+                //移动机制
+                if (shouldMove) {
+                    this.setPos(position().add(getForward().normalize().scale(moveSpeed)));
+                }
+
             }
             //中枢头刷新和重现机制
             if(ifBaseHead){
@@ -381,7 +386,7 @@ public class EaterOfWorld extends AbstractTerraBossBase {
             float maxHp = 0;
             int index = 0;
             for (AbstractTerraBossBase segment : baseSegments) {
-                health += baseSegmentsHealth.get(index);
+                health += segment.getHealth();
                 maxHp += segment.getMaxHealth();
                 index++;
             }

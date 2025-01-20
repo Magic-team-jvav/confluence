@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.block.natural.BaseHerbBlock;
 import org.confluence.mod.common.init.item.FoodItems;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 public class Moonglow extends BaseHerbBlock {
@@ -33,7 +34,7 @@ public class Moonglow extends BaseHerbBlock {
 
 
 	@Override
-	protected ItemLike getBaseSeedId(){
+	protected @NotNull ItemLike getBaseSeedId(){
 		return FoodItems.MOONGLOW_SEED.get();
 	}
 

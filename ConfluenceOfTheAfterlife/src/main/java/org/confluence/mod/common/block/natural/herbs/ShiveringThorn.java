@@ -7,11 +7,12 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.block.natural.BaseHerbBlock;
 import org.confluence.mod.common.init.item.FoodItems;
+import org.jetbrains.annotations.NotNull;
 
 public class ShiveringThorn extends BaseHerbBlock {
 
     @Override
-    protected ItemLike getBaseSeedId(){
+    protected @NotNull ItemLike getBaseSeedId(){
         return FoodItems.SHIVERTHORN_SEED.get();
     }
 

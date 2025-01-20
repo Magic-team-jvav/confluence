@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.block.natural.BaseHerbBlock;
 import org.confluence.mod.common.init.item.FoodItems;
+import org.jetbrains.annotations.NotNull;
 
 public class Fireblossom extends BaseHerbBlock {
     public Fireblossom(){
@@ -17,7 +18,7 @@ public class Fireblossom extends BaseHerbBlock {
     }
 
     @Override
-    protected ItemLike getBaseSeedId(){
+    protected @NotNull ItemLike getBaseSeedId(){
         return FoodItems.FIREBLOSSOM_SEED.get();
     }
 

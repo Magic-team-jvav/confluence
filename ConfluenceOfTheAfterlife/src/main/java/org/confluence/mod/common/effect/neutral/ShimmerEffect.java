@@ -10,8 +10,6 @@ import net.minecraft.world.level.block.Blocks;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.ModBlocks;
 
-@javax.annotation.ParametersAreNonnullByDefault
-@net.minecraft.MethodsReturnNonnullByDefault
 public class ShimmerEffect extends MobEffect {
     public ShimmerEffect() {
         super(MobEffectCategory.NEUTRAL, 0xFF96FF);

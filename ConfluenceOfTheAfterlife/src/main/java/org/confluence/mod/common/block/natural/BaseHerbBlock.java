@@ -2,7 +2,6 @@ package org.confluence.mod.common.block.natural;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Items;
@@ -23,7 +22,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.registries.DeferredBlock;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.util.ModUtils;
@@ -40,7 +38,7 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
     public static final IntegerProperty AGE = BlockStateProperties.AGE_2;
     private static final VoxelShape[] SHAPE_BY_AGE = new VoxelShape[]{Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D)};
 
-    public static Map<DeferredBlock<? extends Block>, Set<Block>> herbGroundMap;
+    public static Map<Block, Set<Block>> herbGroundMap;
 
     public BaseHerbBlock(){
         super(Properties.ofFullCopy(Blocks.DANDELION).randomTicks());
@@ -53,18 +51,18 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
     @Override
     public boolean mayPlaceOn(BlockState groundState, BlockGetter worldIn, BlockPos pos){
         if (herbGroundMap == null) {
-            herbGroundMap = new ImmutableMap.Builder<DeferredBlock<? extends Block>, Set<Block>>()
-                    .put(ModBlocks.DAYBLOOM, Set.of(Blocks.GRASS_BLOCK, NatureBlocks.HALLOW_GRASS_BLOCK.get()))
-                    .put(ModBlocks.MOONGLOW, Set.of(Blocks.GRASS_BLOCK, Blocks.MOSS_BLOCK))
-                    .put(NatureBlocks.STELLAR_BLOSSOM, Set.of(NatureBlocks.CLOUD_BLOCK.get(), NatureBlocks.RAIN_CLOUD_BLOCK.get()))
-                    .put(ModBlocks.SHIVERTHORN, Set.of(Blocks.GRASS_BLOCK, Blocks.ICE, NatureBlocks.RED_ICE.get(), NatureBlocks.RED_PACKED_ICE.get(), NatureBlocks.PINK_PACKED_ICE.get(), NatureBlocks.PINK_ICE.get(), NatureBlocks.PURPLE_ICE.get(), NatureBlocks.PURPLE_PACKED_ICE.get()))
-                    .put(ModBlocks.BLINKROOT, Set.of(Blocks.DIRT, Blocks.MUD, Blocks.STONE, Blocks.DEEPSLATE))
-                    .put(ModBlocks.DEATHWEED, Set.of(NatureBlocks.CORRUPT_GRASS_BLOCK.get(), NatureBlocks.EBONY_STONE.get(), NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(), NatureBlocks.TR_CRIMSON_STONE.get()))
-                    .put(ModBlocks.WATERLEAF, Set.of(Blocks.SAND, Blocks.RED_SAND, NatureBlocks.PEARL_SAND.get()))
-                    .put(ModBlocks.FIREBLOSSOM, Set.of(NatureBlocks.ASH_BLOCK.get(), NatureBlocks.ASH_GRASS_BLOCK.get()))
+            herbGroundMap = new ImmutableMap.Builder<Block, Set<Block>>()
+                    .put(ModBlocks.DAYBLOOM.get(), Set.of(Blocks.GRASS_BLOCK, NatureBlocks.HALLOW_GRASS_BLOCK.get()))
+                    .put(ModBlocks.MOONGLOW.get(), Set.of(Blocks.GRASS_BLOCK, Blocks.MOSS_BLOCK))
+                    .put(NatureBlocks.STELLAR_BLOSSOM.get(), Set.of(NatureBlocks.CLOUD_BLOCK.get(), NatureBlocks.RAIN_CLOUD_BLOCK.get()))
+                    .put(ModBlocks.SHIVERTHORN.get(), Set.of(Blocks.GRASS_BLOCK, Blocks.ICE, NatureBlocks.RED_ICE.get(), NatureBlocks.RED_PACKED_ICE.get(), NatureBlocks.PINK_PACKED_ICE.get(), NatureBlocks.PINK_ICE.get(), NatureBlocks.PURPLE_ICE.get(), NatureBlocks.PURPLE_PACKED_ICE.get()))
+                    .put(ModBlocks.BLINKROOT.get(), Set.of(Blocks.DIRT, Blocks.MUD, Blocks.STONE, Blocks.DEEPSLATE))
+                    .put(ModBlocks.DEATHWEED.get(), Set.of(NatureBlocks.CORRUPT_GRASS_BLOCK.get(), NatureBlocks.EBONY_STONE.get(), NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(), NatureBlocks.TR_CRIMSON_STONE.get()))
+                    .put(ModBlocks.WATERLEAF.get(), Set.of(Blocks.SAND, Blocks.RED_SAND, NatureBlocks.PEARL_SAND.get()))
+                    .put(ModBlocks.FIREBLOSSOM.get(), Set.of(NatureBlocks.ASH_BLOCK.get(), NatureBlocks.ASH_GRASS_BLOCK.get()))
                     .build();
         }
-        Set<Block> blocks = herbGroundMap.get(DeferredBlock.createBlock(BuiltInRegistries.BLOCK.getKey(this)));
+        Set<Block> blocks = herbGroundMap.get(this);
         return blocks != null && blocks.contains(groundState.getBlock());
     }
 

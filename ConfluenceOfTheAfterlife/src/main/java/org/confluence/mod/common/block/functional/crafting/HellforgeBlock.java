@@ -14,7 +14,6 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.ExperienceOrb;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -22,11 +21,13 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.RecipeCraftingHolder;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.AbstractFurnaceBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -38,6 +39,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.mod.common.block.HorizontalDirectionalWithHorizontalTwoPartBlock;
 import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -53,7 +55,7 @@ import java.util.function.BooleanSupplier;
 
 import static org.confluence.mod.common.menu.HellforgeMenu.*;
 
-public class HellforgeBlock extends HorizontalDirectionalBlock implements EntityBlock {
+public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBlock implements EntityBlock {
     public static final MapCodec<HellforgeBlock> CODEC = simpleCodec(HellforgeBlock::new);
     private static final VoxelShape BASE_SHAPE_SOUTH = box(3, 0, 3, 16, 16, 13);
     private static final VoxelShape BASE_SHAPE_WEST = box(3, 0, 3, 13, 16, 16);
@@ -68,10 +70,7 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
 
     public HellforgeBlock(Properties properties) {
         super(properties);
-        registerDefaultState(stateDefinition.any()
-                .setValue(StateProperties.HORIZONTAL_TWO_PART, StateProperties.HorizontalTwoPart.BASE)
-                .setValue(FACING, Direction.NORTH)
-                .setValue(BlockStateProperties.LIT, false));
+        registerDefaultState(defaultBlockState().setValue(BlockStateProperties.LIT, false));
     }
 
     @Override
@@ -108,25 +107,8 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
     }
 
     @Override
-    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
-        if (!pLevel.isClientSide) {
-            BlockPos relativePos = pPos.relative(StateProperties.HorizontalTwoPart.getConnectedDirection(pState));
-            pLevel.setBlockAndUpdate(relativePos, defaultBlockState().setValue(StateProperties.HORIZONTAL_TWO_PART, StateProperties.HorizontalTwoPart.RIGHT).setValue(FACING, pState.getValue(FACING)));
-        }
-    }
-
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        Level level = pContext.getLevel();
-        BlockState blockState = defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite());
-        BlockPos relativePos = pContext.getClickedPos().relative(StateProperties.HorizontalTwoPart.getConnectedDirection(blockState));
-        return level.getBlockState(relativePos).canBeReplaced(pContext) && level.getWorldBorder().isWithinBounds(relativePos) ? blockState : null;
-    }
-
-    @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         if (!pState.is(pNewState.getBlock())) {
-            pLevel.setBlockAndUpdate(pPos.relative(StateProperties.HorizontalTwoPart.getConnectedDirection(pState)), Blocks.AIR.defaultBlockState());
             BlockEntity blockentity = pLevel.getBlockEntity(pPos);
             if (blockentity instanceof Entity entity && pState.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase()) {
                 if (pLevel instanceof ServerLevel serverLevel) {
@@ -141,7 +123,8 @@ public class HellforgeBlock extends HorizontalDirectionalBlock implements Entity
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(StateProperties.HORIZONTAL_TWO_PART, FACING, BlockStateProperties.LIT);
+        super.createBlockStateDefinition(pBuilder);
+        pBuilder.add(BlockStateProperties.LIT);
     }
 
     @Override

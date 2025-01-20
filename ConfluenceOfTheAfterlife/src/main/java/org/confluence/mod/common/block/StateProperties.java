@@ -1,5 +1,6 @@
 package org.confluence.mod.common.block;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -7,6 +8,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
 
 public class StateProperties {
     public static final BooleanProperty SIGNAL = BooleanProperty.create("signal"); // 电网信号
@@ -42,6 +45,10 @@ public class StateProperties {
                 case BASE -> facing.getCounterClockWise(); // 获取其相对右边
                 case RIGHT -> facing.getClockWise(); // 获取其相对左边
             };
+        }
+
+        public static HorizontalTwoPart getAnotherPart(HorizontalTwoPart exclude) {
+            return exclude.isRight() ? BASE : RIGHT;
         }
 
         public String toString() {
@@ -81,6 +88,10 @@ public class StateProperties {
          */
         public static Direction getConnectedDirection(BlockState blockState) {
             return blockState.getValue(VERTICAL_TWO_PART).isBase() ? Direction.UP : Direction.DOWN;
+        }
+
+        public static VerticalTwoPart getAnotherPart(VerticalTwoPart exclude) {
+            return exclude.isUpper() ? BASE : UP;
         }
 
         @Override
@@ -128,6 +139,38 @@ public class StateProperties {
                 case BASE, UP -> facing.getCounterClockWise(); // 获取其相对右边
                 case RIGHT, RIGHT_UP -> facing.getClockWise(); // 获取其相对左边
             };
+        }
+
+        public static Map<VerticalFourPart, BlockPos> getRelatives(VerticalFourPart part, Direction facing, BlockPos pos) {
+            if (part == BASE) {
+                BlockPos right = pos.relative(facing.getCounterClockWise());
+                return Map.of(
+                        UP, pos.above(),
+                        RIGHT, right,
+                        RIGHT_UP, right.above()
+                );
+            } else if (part == RIGHT) {
+                BlockPos left = pos.relative(facing.getClockWise());
+                return Map.of(
+                        RIGHT_UP, pos.above(),
+                        BASE, left,
+                        UP, left.above()
+                );
+            } else if (part == UP) {
+                BlockPos right = pos.relative(facing.getCounterClockWise());
+                return Map.of(
+                        BASE, pos.below(),
+                        RIGHT_UP, right,
+                        RIGHT, right.below()
+                );
+            } else {
+                BlockPos left = pos.relative(facing.getClockWise());
+                return Map.of(
+                        RIGHT, pos.below(),
+                        UP, left,
+                        BASE, left.below()
+                );
+            }
         }
 
         public String toString() {

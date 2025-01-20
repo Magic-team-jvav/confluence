@@ -55,7 +55,7 @@ public class BasePlantBlock extends BushBlock {
 
     @Override
     public boolean mayPlaceOn(BlockState groundState, BlockGetter worldIn, BlockPos pos){
-        return Arrays.stream(survive).allMatch(state -> state == groundState.getBlock());
+        return Arrays.stream(survive).anyMatch(state -> state == groundState.getBlock());
     }
 
     @Override

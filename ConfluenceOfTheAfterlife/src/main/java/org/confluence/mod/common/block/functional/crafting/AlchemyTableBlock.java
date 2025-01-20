@@ -2,32 +2,25 @@ package org.confluence.mod.common.block.functional.crafting;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.mod.common.block.HorizontalDirectionalWithVerticalFourPartBlock;
 import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.menu.AlchemyTableMenu;
 import org.jetbrains.annotations.Nullable;
 
-public class AlchemyTableBlock extends HorizontalDirectionalBlock {
+public class AlchemyTableBlock extends HorizontalDirectionalWithVerticalFourPartBlock {
     public static final MapCodec<AlchemyTableBlock> CODEC = simpleCodec(AlchemyTableBlock::new);
     private static final VoxelShape BASE_SHAPE_SOUTH = Shapes.or(box(5, 3, 2, 16, 12, 14), box(2, 0, 1, 16, 3, 15), box(0, 12, 0, 16, 16, 16));
     private static final VoxelShape BASE_SHAPE_WEST = Shapes.or(box(2, 3, 5, 14, 12, 16), box(1, 0, 2, 15, 3, 16), box(0, 12, 0, 16, 16, 16));
@@ -53,17 +46,11 @@ public class AlchemyTableBlock extends HorizontalDirectionalBlock {
 
     public AlchemyTableBlock(Properties properties) {
         super(properties);
-        registerDefaultState(stateDefinition.any().setValue(StateProperties.VERTICAL_FOUR_PART, StateProperties.VerticalFourPart.BASE).setValue(FACING, Direction.NORTH));
     }
 
     @Override
     protected MapCodec<AlchemyTableBlock> codec() {
         return CODEC;
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(StateProperties.VERTICAL_FOUR_PART, FACING);
     }
 
     @Override
@@ -90,44 +77,5 @@ public class AlchemyTableBlock extends HorizontalDirectionalBlock {
             case UP -> UP_SHAPES[index];
             case RIGHT_UP -> RIGHT_UP_SHAPES[index];
         };
-    }
-
-    @Override
-    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
-        if (!pLevel.isClientSide) {
-            BlockPos relativePos = pPos.relative(StateProperties.VerticalFourPart.getConnectedDirection(pState));
-            pLevel.setBlockAndUpdate(relativePos, defaultBlockState().setValue(StateProperties.VERTICAL_FOUR_PART, StateProperties.VerticalFourPart.RIGHT).setValue(FACING, pState.getValue(FACING)));
-            pLevel.setBlockAndUpdate(pPos.above(), defaultBlockState().setValue(StateProperties.VERTICAL_FOUR_PART, StateProperties.VerticalFourPart.UP).setValue(FACING, pState.getValue(FACING)));
-            pLevel.setBlockAndUpdate(relativePos.above(), defaultBlockState().setValue(StateProperties.VERTICAL_FOUR_PART, StateProperties.VerticalFourPart.RIGHT_UP).setValue(FACING, pState.getValue(FACING)));
-        }
-    }
-
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        Level level = pContext.getLevel();
-        BlockState blockState = defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite());
-        BlockPos clickedPos = pContext.getClickedPos();
-        BlockPos relativeUpPos = clickedPos.relative(StateProperties.VerticalFourPart.getConnectedDirection(blockState)).above();
-        for (BlockPos blockPos : BlockPos.betweenClosed(clickedPos, relativeUpPos)) {
-            if (!level.getBlockState(blockPos).canBeReplaced(pContext) || !level.getWorldBorder().isWithinBounds(blockPos)) {
-                return null;
-            }
-        }
-        return blockState;
-    }
-
-    @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
-        BlockState air = Blocks.AIR.defaultBlockState();
-        BlockPos relative = pPos.relative(StateProperties.VerticalFourPart.getConnectedDirection(pState));
-        pLevel.setBlockAndUpdate(relative, air);
-        if (pState.getValue(StateProperties.VERTICAL_FOUR_PART).isUpper()) {
-            pLevel.setBlockAndUpdate(pPos.below(), air);
-            pLevel.setBlockAndUpdate(relative.below(), air);
-        } else {
-            pLevel.setBlockAndUpdate(pPos.above(), air);
-            pLevel.setBlockAndUpdate(relative.above(), air);
-        }
     }
 }

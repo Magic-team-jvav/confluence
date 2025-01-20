@@ -46,13 +46,15 @@ public class WithDetonatorFeature extends Feature<WithDetonatorFeature.Config> {
         carveRoom(bound, level, center);
 
         BlockPos detonatorPos = placeDetonator(random, bound, i, k, center, level);
-        level.setBlock(detonatorPos, FunctionalBlocks.DETONATOR.get().defaultBlockState(), 3);
-        level.setBlock(origin, FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get().defaultBlockState(), 3);
+        boolean b = level.setBlock(detonatorPos, FunctionalBlocks.DETONATOR.get().defaultBlockState(), 3);
+        boolean b1 = level.setBlock(origin, FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get().defaultBlockState(), 3);
 
-        INetworkEntity tnt = ModFeatures.getNetworkEntity(level, origin);
-        INetworkEntity detonator = ModFeatures.getNetworkEntity(level, detonatorPos);
-        if (tnt != null && detonator != null) {
-            tnt.connectTo(0x0000FF, detonatorPos, detonator);
+        if (b && b1) {
+            INetworkEntity tnt = ModFeatures.getNetworkEntity(level, origin);
+            INetworkEntity detonator = ModFeatures.getNetworkEntity(level, detonatorPos);
+            if (tnt != null && detonator != null) {
+                tnt.connectTo(0x0000FF, detonatorPos, detonator);
+            }
         }
         return placedSubFeature;
     }

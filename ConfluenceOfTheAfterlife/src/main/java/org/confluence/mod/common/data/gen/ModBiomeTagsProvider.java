@@ -3,6 +3,7 @@ package org.confluence.mod.common.data.gen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModBiomes;
@@ -23,5 +24,58 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
                 ModBiomes.THE_CORRUPTION_DESERT,
                 ModBiomes.THE_CORRUPTION_TUNDRA
         );
+        tag(ModTags.Biomes.TR_CRIMSON).add(
+                ModBiomes.TR_CRIMSON,
+                ModBiomes.TR_CRIMSON_DESERT,
+                ModBiomes.TR_CRIMSON_TUNDRA
+        );
+        tag(ModTags.Biomes.THE_HALLOW).add(
+                ModBiomes.THE_HALLOW,
+                ModBiomes.THE_HALLOW_DESERT,
+                ModBiomes.THE_HALLOW_TUNDRA
+        );
+        tag(ModTags.Biomes.SPREADABLE).addTags(
+                ModTags.Biomes.THE_CORRUPTION,
+                ModTags.Biomes.TR_CRIMSON,
+                ModTags.Biomes.THE_HALLOW
+        );
+        tag(ModTags.Biomes.IS_CONFLUENCE).add(
+                ModBiomes.THE_CORRUPTION,
+                ModBiomes.THE_CORRUPTION_DESERT,
+                ModBiomes.THE_CORRUPTION_TUNDRA,
+
+                ModBiomes.TR_CRIMSON,
+                ModBiomes.TR_CRIMSON_DESERT,
+                ModBiomes.TR_CRIMSON_TUNDRA,
+
+                ModBiomes.THE_HALLOW,
+                ModBiomes.THE_HALLOW_DESERT,
+                ModBiomes.THE_HALLOW_TUNDRA,
+
+                ModBiomes.ASH_FOREST,
+                ModBiomes.ASH_WASTELAND,
+
+                ModBiomes.GLOWING_MUSHROOM
+        );
+        tag(Tags.Biomes.IS_OVERWORLD).add(
+                ModBiomes.THE_CORRUPTION,
+                ModBiomes.THE_CORRUPTION_DESERT,
+                ModBiomes.THE_CORRUPTION_TUNDRA,
+
+                ModBiomes.TR_CRIMSON,
+                ModBiomes.TR_CRIMSON_DESERT,
+                ModBiomes.TR_CRIMSON_TUNDRA,
+
+                ModBiomes.THE_HALLOW,
+                ModBiomes.THE_HALLOW_DESERT,
+                ModBiomes.THE_HALLOW_TUNDRA,
+
+                ModBiomes.GLOWING_MUSHROOM
+        );
+        tag(Tags.Biomes.IS_NETHER).add(
+                ModBiomes.ASH_FOREST,
+                ModBiomes.ASH_WASTELAND
+        );
+        tag(Tags.Biomes.IS_NETHER_FOREST).add(ModBiomes.ASH_FOREST);
     }
 }

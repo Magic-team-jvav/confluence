@@ -55,6 +55,7 @@
         "item.ItemUtilsMixin",
         "item.PotionItemMixin",
         "item.ProjectileWeaponItemMixin",
+        "level.MultiNoiseBiomeSourceMixin",
         "level.WorldOptionsMixin"
     ],
     "client": [

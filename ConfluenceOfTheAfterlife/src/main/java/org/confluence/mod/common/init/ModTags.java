@@ -111,8 +111,11 @@ public final class ModTags {
     }
 
     public static class Biomes {
+        public static final TagKey<Biome> IS_CONFLUENCE = register("is_confluence");
         public static final TagKey<Biome> SPREADABLE = register("spreadable");
         public static final TagKey<Biome> THE_CORRUPTION = register("the_corruption");
+        public static final TagKey<Biome> TR_CRIMSON = register("tr_crimson");
+        public static final TagKey<Biome> THE_HALLOW = register("the_hallow");
 
         private static TagKey<Biome> register(String id) {
             return TagKey.create(Registries.BIOME, Confluence.asResource(id));

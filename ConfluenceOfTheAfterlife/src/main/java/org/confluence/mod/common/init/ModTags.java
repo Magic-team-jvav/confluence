@@ -101,6 +101,7 @@ public final class ModTags {
         public static final TagKey<Item> REDSTONE_ORE_SMELTING = register("redstone_ore_smelting");
         public static final TagKey<Item> MOSS_ITEM = register("moss_item");
         public static final TagKey<Item> SUMMONER_WEAPON = register("summoner_weapon");
+        public static final TagKey<Item> CROP_FORTUNE = register("crop_fortune");
 
         private static TagKey<Item> c(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));

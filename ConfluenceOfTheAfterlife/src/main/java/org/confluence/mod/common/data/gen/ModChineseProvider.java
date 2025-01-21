@@ -1254,6 +1254,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(AxeItems.PLATINUM_AXE.get(), "铂金斧");
         add(AxeItems.WAR_AXE_OF_THE_NIGHT.get(), "暗夜战斧");
         add(AxeItems.BLOOD_LUST_CLUSTER.get(), "嗜血狂斧");
+        add(AxeItems.STAFF_OF_REGROWTH.get(), "再生法杖");
+        add(AxeItems.DRILL_OF_REGROWTH.get(), "再生之斧");
 
 
         add(PickaxeItems.COPPER_PICKAXE.get(), "铜镐");

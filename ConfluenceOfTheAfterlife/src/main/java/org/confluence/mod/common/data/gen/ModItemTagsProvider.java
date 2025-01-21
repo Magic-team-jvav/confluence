@@ -406,6 +406,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             ModItems.NEON_MOSS_ITEM.get(),
             ModItems.HELIUM_MOSS_ITEM.get()
         );
+        // 农作物掉落提升 再生法杖/再生之斧
+        tag(ModTags.Items.CROP_FORTUNE).add(AxeItems.STAFF_OF_REGROWTH.get(), AxeItems.DRILL_OF_REGROWTH.get());
 
         AccessoryItems.acceptTag(tag(TCTags.ACCESSORY));
         IntrinsicTagAppender<Item> ammo = tag(ModTags.Items.AMMO);

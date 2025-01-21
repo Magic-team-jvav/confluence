@@ -5,6 +5,7 @@
     "compatibilityLevel": "JAVA_21",
     "refmap": "confluence.refmap.json",
     "mixins": [
+        "DifficultyInstanceMixin",
         "LootModifierManagerMixin",
         "RecipeManagerMixin",
         "ServerAdvancementManagerMixin",

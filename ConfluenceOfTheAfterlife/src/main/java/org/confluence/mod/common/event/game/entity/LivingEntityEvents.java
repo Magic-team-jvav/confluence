@@ -43,7 +43,6 @@ import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_curio.util.TCUtils;
@@ -215,13 +214,6 @@ public final class LivingEntityEvents {
         if (event.getSlot().getType() == EquipmentSlot.Type.HUMANOID_ARMOR && living instanceof ServerPlayer serverPlayer) {
             if (Streams.stream(serverPlayer.getArmorSlots()).noneMatch(ItemStack::isEmpty)) {
                 PlayerUtils.awardAchievement(serverPlayer, "matching_attire");
-            }
-        }
-
-        if (event.getSlot() == EquipmentSlot.MAINHAND) {
-            ItemStack to = event.getTo();
-            if (PrefixUtils.canInit(to)) {
-                PrefixUtils.initPrefix(living.getRandom(), to);
             }
         }
     }

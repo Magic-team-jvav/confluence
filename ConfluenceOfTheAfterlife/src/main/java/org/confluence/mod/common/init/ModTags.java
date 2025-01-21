@@ -100,6 +100,7 @@ public final class ModTags {
         public static final TagKey<Item> TR_AMETHYST_ORE_SMELTING = register("tr_amethyst_ore_smelting");
         public static final TagKey<Item> REDSTONE_ORE_SMELTING = register("redstone_ore_smelting");
         public static final TagKey<Item> MOSS_ITEM = register("moss_item");
+        public static final TagKey<Item> SUMMONER_WEAPON = register("summoner_weapon");
 
         private static TagKey<Item> c(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
@@ -111,8 +112,11 @@ public final class ModTags {
     }
 
     public static class Biomes {
+        public static final TagKey<Biome> IS_CONFLUENCE = register("is_confluence");
         public static final TagKey<Biome> SPREADABLE = register("spreadable");
         public static final TagKey<Biome> THE_CORRUPTION = register("the_corruption");
+        public static final TagKey<Biome> TR_CRIMSON = register("tr_crimson");
+        public static final TagKey<Biome> THE_HALLOW = register("the_hallow");
 
         private static TagKey<Biome> register(String id) {
             return TagKey.create(Registries.BIOME, Confluence.asResource(id));

@@ -161,7 +161,7 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
     public record Config(int maxDartDistance, BlockState boulder, int boulderAmount, int maxBoulderHeight, int tntAmount, int maxSearchDown,
                          ResourceKey<LootTable> lootTable) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_dart_distance", 32).forGetter(Config::maxDartDistance),
+                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_dart_distance", 24).forGetter(Config::maxDartDistance),
                 BlockState.CODEC.fieldOf("boulder").orElseGet(() -> FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState()).forGetter(Config::boulder),
                 ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("boulder_amount", 5).forGetter(Config::boulderAmount),
                 ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_boulder_height", 64).forGetter(Config::maxBoulderHeight),

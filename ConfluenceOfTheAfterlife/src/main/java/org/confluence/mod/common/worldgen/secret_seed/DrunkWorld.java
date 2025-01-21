@@ -7,6 +7,6 @@ public class DrunkWorld extends SecretSeed {
 
     @Override
     public boolean match(String seed) {
-        return "5162020".equals(seed) || "05162020".equals(seed);
+        return Long.parseLong(seed) == 5162020L;
     }
 }

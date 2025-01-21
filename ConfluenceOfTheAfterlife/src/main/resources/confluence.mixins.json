@@ -5,7 +5,9 @@
     "compatibilityLevel": "JAVA_21",
     "refmap": "confluence.refmap.json",
     "mixins": [
+        "DifficultyInstanceMixin",
         "LootModifierManagerMixin",
+        "LootTableMixin",
         "RecipeManagerMixin",
         "ServerAdvancementManagerMixin",
         "ServerPlayerGameModeMixin",
@@ -55,6 +57,7 @@
         "item.ItemUtilsMixin",
         "item.PotionItemMixin",
         "item.ProjectileWeaponItemMixin",
+        "level.MultiNoiseBiomeSourceMixin",
         "level.WorldOptionsMixin"
     ],
     "client": [

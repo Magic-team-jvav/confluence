@@ -61,7 +61,7 @@ public final class MeteorLandingHandler {
 
     private static void calculate(Player player) {
         vector = player.position().subtract(location);
-        distance = vector.length();
+        distance = vector.length() * 0.0625; // 1.0 / 16.0
         Vec3 vec = vector.normalize();
         alpha = 1.0F - (float) tickUntilLanding / (float) totalLandingTick; // 0.0 -> 1.0
         float ratio = Mth.lerp(alpha, 0.3F, 1.0F); // 0.3 -> 1.0

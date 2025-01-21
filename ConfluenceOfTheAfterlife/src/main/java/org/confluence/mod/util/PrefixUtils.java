@@ -27,20 +27,40 @@ public final class PrefixUtils {
 
     public static void initPrefix(RandomSource random, ItemStack itemStack) {
         if (random.nextFloat() < 0.75F) {
-            if (itemStack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY)) {
-                createWithMercy(random, itemStack, PrefixType.UNIVERSAL);
-            } else if (itemStack.is(Tags.Items.MELEE_WEAPON_TOOLS) || itemStack.is(Tags.Items.MINING_TOOL_TOOLS)) {
-                createWithMercy(random, itemStack, PrefixType.MELEE);
-            } else if (itemStack.is(Tags.Items.RANGED_WEAPON_TOOLS)) { // todo 三叉戟会从背包里飞出去，而吃不到加成
-                createWithMercy(random, itemStack, PrefixType.RANGED);
-            } else if (itemStack.is(ModTags.Items.MANA_WEAPON)) {
-                createWithMercy(random, itemStack, PrefixType.MAGIC);
-            } else if (itemStack.is(TCTags.ACCESSORY)) {
-                createWithMercy(random, itemStack, PrefixType.ACCESSORY);
+            PrefixType prefixType = getPrefixType(itemStack);
+            if (prefixType != PrefixType.UNKNOWN) {
+                createWithMercy(random, itemStack, prefixType);
             }
         } else {
             unknown(itemStack);
         }
+    }
+
+    public static void best(RandomSource random, ItemStack itemStack) {
+        PrefixType prefixType = getPrefixType(itemStack);
+        if (prefixType != PrefixType.UNKNOWN) {
+            ModPrefix modPrefix = prefixType.bestPrefix(random, itemStack);
+            if (modPrefix == null) {
+                unknown(itemStack);
+            } else {
+                itemStack.set(ModDataComponentTypes.PREFIX, modPrefix.createComponent(prefixType));
+            }
+        }
+    }
+
+    public static PrefixType getPrefixType(ItemStack itemStack) {
+        if (itemStack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY)) {
+            return PrefixType.UNIVERSAL;
+        } else if (itemStack.is(Tags.Items.MELEE_WEAPON_TOOLS) || itemStack.is(Tags.Items.MINING_TOOL_TOOLS)) {
+            return PrefixType.MELEE;
+        } else if (itemStack.is(Tags.Items.RANGED_WEAPON_TOOLS)) { // todo 三叉戟会从背包里飞出去，而吃不到加成
+            return PrefixType.RANGED;
+        } else if (itemStack.is(ModTags.Items.MANA_WEAPON) || itemStack.is(ModTags.Items.SUMMONER_WEAPON)) {
+            return PrefixType.MAGIC;
+        } else if (itemStack.is(TCTags.ACCESSORY)) {
+            return PrefixType.ACCESSORY;
+        }
+        return PrefixType.UNKNOWN;
     }
 
     public static void createWithMercy(RandomSource random, ItemStack itemStack, PrefixType prefixType) {

@@ -7,6 +7,6 @@ public class Celebrationmk10 extends SecretSeed {
 
     @Override
     public boolean match(String seed) {
-        return "5162011".equals(seed) || "5162021".equals(seed) || "05162011".equals(seed) || "05162021".equals(seed) || "celebrationmk10".equals(seed);
+        return Long.parseLong(seed) == 5162011L || "celebrationmk10".equals(seed);
     }
 }

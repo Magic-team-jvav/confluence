@@ -7,6 +7,7 @@
     "mixins": [
         "DifficultyInstanceMixin",
         "LootModifierManagerMixin",
+        "LootTableMixin",
         "RecipeManagerMixin",
         "ServerAdvancementManagerMixin",
         "ServerPlayerGameModeMixin",

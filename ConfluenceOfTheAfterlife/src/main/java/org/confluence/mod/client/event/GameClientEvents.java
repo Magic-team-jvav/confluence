@@ -34,6 +34,7 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
+import org.confluence.mod.mixed.IInventoryScreen;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.mixed.IMusicManager;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
@@ -166,16 +167,22 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void screen$Init$Post(ScreenEvent.Init.Post event) {
         Screen screen = event.getScreen();
-        if (screen instanceof InventoryScreen || screen instanceof CreativeModeInventoryScreen) {
+        boolean isInventoryScreen = screen instanceof InventoryScreen;
+        if (isInventoryScreen || screen instanceof CreativeModeInventoryScreen) {
             EffectRenderingInventoryScreen<?> screen1 = (EffectRenderingInventoryScreen<?>) screen;
-            event.addListener(new ImageButton(screen1.getGuiLeft() - 16, screen1.getGuiTop() + 44, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
+            ImageButton extraInventoryButton = new ImageButton(screen1.getGuiLeft() - 16, screen1.getGuiTop() + 44, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
                 Minecraft minecraft = Minecraft.getInstance();
                 LocalPlayer player = minecraft.player;
-                if (player == null) return;
-                ItemStack stack = player.containerMenu.getCarried();
-                player.containerMenu.setCarried(ItemStack.EMPTY);
-                OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.EXTRA_INVENTORY, stack);
-            }));
+                if (player != null) {
+                    ItemStack stack = player.containerMenu.getCarried();
+                    player.containerMenu.setCarried(ItemStack.EMPTY);
+                    OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.EXTRA_INVENTORY, stack);
+                }
+            });
+            if (isInventoryScreen) {
+                ((IInventoryScreen) screen).confluence$setExtraInventoryButton(extraInventoryButton);
+            }
+            event.addListener(extraInventoryButton);
         }
     }
 }

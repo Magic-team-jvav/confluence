@@ -24,6 +24,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.ModFeatures;
+import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.mixed.IBaseContainerBlockEntity;
 import org.confluence.mod.util.ModUtils;
@@ -167,7 +168,7 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
                 ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_boulder_height", 64).forGetter(Config::maxBoulderHeight),
                 ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("tnt_amount", 3).forGetter(Config::tntAmount),
                 ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_search_down", 32).forGetter(Config::maxSearchDown),
-                ResourceKey.codec(Registries.LOOT_TABLE).lenientOptionalFieldOf("loot_table", BuiltInLootTables.SIMPLE_DUNGEON).forGetter(Config::lootTable)
+                ResourceKey.codec(Registries.LOOT_TABLE).lenientOptionalFieldOf("loot_table", ModLootTables.CAVE_CHESTS).forGetter(Config::lootTable)
         ).apply(instance, Config::new));
     }
 }

@@ -25,6 +25,7 @@ public final class ModTiers {
     public static final Tier CACTUS = new PoweredTier(35, ModTags.Blocks.NEEDS_2_LEVEL, 144, 3, 1, 4, () -> Ingredient.of(Items.CACTUS));
     public static final Tier COPPER = new PoweredTier(35, ModTags.Blocks.NEEDS_2_LEVEL, 250, 4, 1, 5, () -> Ingredient.of(Items.COPPER_INGOT));
     public static final Tier TIN = new PoweredTier(35, ModTags.Blocks.NEEDS_2_LEVEL, 270, 4, 1, 5, () -> Ingredient.of(MaterialItems.TIN_INGOT.get()));
+    public static final Tier IRON = new PoweredTier(40, ModTags.Blocks.NEEDS_2_LEVEL, 286, 5, 2, 14, () -> Ingredient.of(Items.IRON_INGOT));
     public static final Tier LEAD = new PoweredTier(43, ModTags.Blocks.NEEDS_2_LEVEL, 286, 6, 2, 14, () -> Ingredient.of(MaterialItems.LEAD_INGOT.get()));
     public static final Tier SILVER = new PoweredTier(45, ModTags.Blocks.NEEDS_2_LEVEL, 304, 6, 2, 14, () -> Ingredient.of(MaterialItems.SILVER_INGOT.get()));
     public static final Tier TUNGSTEN = new PoweredTier(50, ModTags.Blocks.NEEDS_3_LEVEL, 648, 8, 2, 18, () -> Ingredient.of(MaterialItems.TUNGSTEN_INGOT.get()));

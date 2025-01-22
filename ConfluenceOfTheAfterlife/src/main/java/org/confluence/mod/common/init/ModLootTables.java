@@ -52,6 +52,8 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> EXTRACT_SLUSH = register("gameplay/extract/with_slush");
     public static final ResourceKey<LootTable> EXTRACT_MARINE_GRAVEL = register("gameplay/extract/with_marine_gravel");
 
+    public static final ResourceKey<LootTable> CAVE_CHESTS = register("chests/cave_chests");
+
 
     public static ResourceKey<LootTable> register(String name) {
         return ResourceKey.create(Registries.LOOT_TABLE, Confluence.asResource(name));

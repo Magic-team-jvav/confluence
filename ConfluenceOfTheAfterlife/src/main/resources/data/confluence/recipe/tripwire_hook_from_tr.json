@@ -3,7 +3,7 @@
     "category": "redstone",
     "key": {
         "#": {
-            "tag": "confluence:tr_planks"
+            "tag": "minecraft:planks"
         },
         "I": {
             "tag": "confluence:lead_and_iron"

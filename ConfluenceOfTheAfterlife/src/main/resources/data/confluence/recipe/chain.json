@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "i",
+        "#"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:lead_nugget"
+        },
+        "i": {
+            "item": "confluence:lead_ingot"
+        }
+    },
+    "result": {
+        "id": "minecraft:chain",
+        "count": 1
+    }
+}

@@ -7,7 +7,7 @@
     ],
     "key": {
         "#": {
-            "tag": "confluence:tr_planks"
+            "tag": "minecraft:planks"
         },
         "/": {
             "item": "minecraft:stick"

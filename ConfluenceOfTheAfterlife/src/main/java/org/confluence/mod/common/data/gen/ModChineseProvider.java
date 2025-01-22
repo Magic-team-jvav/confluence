@@ -7,6 +7,8 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 
+import static org.confluence.mod.common.init.item.PickaxeItems.MOLTEN_PICKAXE;
+
 public class ModChineseProvider extends LanguageProvider {
     public ModChineseProvider(PackOutput output) {
         super(output, Confluence.MODID, "zh_cn");
@@ -1189,6 +1191,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.TIN_SHORT_SWORD.get(), "锡短剑");
         add(SwordItems.COPPER_BOARD_SWORD.get(), "铜阔剑");
         add(SwordItems.TIN_BOARD_SWORD.get(), "锡阔剑");
+        add(SwordItems.IRON_SHORT_SWORD.get(), "铁短剑");
         add(SwordItems.LEAD_SHORT_SWORD.get(), "铅短剑");
         add(SwordItems.LEAD_BOARD_SWORD.get(), "铅阔剑");
         add(SwordItems.SILVER_SHORT_SWORD.get(), "银短剑");
@@ -1271,7 +1274,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(PickaxeItems.PLATINUM_PICKAXE.get(), "铂金镐");
         add(PickaxeItems.NIGHTMARE_PICKAXE.get(), "恶魔镐");
         add(PickaxeItems.DEATHBRINGER_PICKAXE.get(), "死亡使者镐");
-        add(PickaxeItems.MOLTEN_PICKAXE.get(), "熔岩镐");
+        add(MOLTEN_PICKAXE.get(), "熔岩镐");
 
         add(PickaxeAxeItems.PICKSAW.get(), "锯刃镐");
         add(PickaxeAxeItems.PICKAXE_AXE.get(), "镐斧");
@@ -1282,6 +1285,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(HammerItems.WOODEN_HAMMER.get(), "木锤");
         add(HammerItems.COPPER_HAMMER.get(), "铜锤");
         add(HammerItems.TIN_HAMMER.get(), "锡锤");
+        add(HammerItems.IRON_HAMMER.get(), "铁锤");
         add(HammerItems.LEAD_HAMMER.get(), "铅锤");
         add(HammerItems.SILVER_HAMMER.get(), "银锤");
         add(HammerItems.TUNGSTEN_HAMMER.get(), "钨锤");
@@ -1999,6 +2003,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(PaintItems.WHITE_PAINT.get(), "白漆");
         add(PaintItems.BROWN_PAINT.get(), "棕漆");
         add(PaintItems.SHADOW_PAINT.get(), "暗影漆");
+        add(PaintItems.NEGATIVE_PAINT.get(), "反色漆");
+        add(PaintItems.ILLUMINANT_COATING.get(), "夜明漆");
+        add(PaintItems.ECHO_COATING.get(), "回声漆");
 
         add(VanityArmorItems.RED_DYE.get(), "红染料");
         add(VanityArmorItems.BRIGHT_RED_DYE.get(), "淡红染料");

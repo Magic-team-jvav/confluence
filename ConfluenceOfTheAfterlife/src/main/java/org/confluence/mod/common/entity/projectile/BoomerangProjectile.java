@@ -168,7 +168,7 @@ public class BoomerangProjectile extends AbstractHurtingProjectile {
 
     @Override
     public void onRemovedFromLevel(){
-        if(!weapon.isEmpty() && !level().isClientSide) {
+        if(!level().isClientSide && !weapon.isEmpty() && getOwner() != null) {
             Boomerang.setBacked(weapon, SingleBooleanComponent.TRUE);
             Integer count = getOwner().getData(ModAttachmentTypes.WEAPON_STORAGE).boomerangCounter.compute(weapon.getItem(), (k, c) -> c != null && c > 0? c - 1 : 0);
 

@@ -69,6 +69,7 @@
         "client.DeathScreenMixin",
         "client.GuiMixin",
         "client.HumanoidArmorLayerMixin",
+        "client.InventoryScreenMixin",
         "client.ItemRendererMixin",
         "client.LevelLoadingScreenMixin",
         "client.LocalPlayerMixin",

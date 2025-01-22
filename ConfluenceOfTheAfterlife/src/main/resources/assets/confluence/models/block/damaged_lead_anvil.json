@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_anvil",
+  "textures": {
+    "top": "confluence:block/damaged_lead_anvil_top"
+  }
+}

@@ -357,6 +357,7 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add("entity.minecraft.villager.confluence.sky_miller", "Sky Miller");
         add("entity.minecraft.villager.confluence.banker", "Banker");
+        add("entity.confluence.dart", "Dart");
 
         add("container.confluence.workshop", "Workshop");
         add("title.confluence.workshop", "Workshop");

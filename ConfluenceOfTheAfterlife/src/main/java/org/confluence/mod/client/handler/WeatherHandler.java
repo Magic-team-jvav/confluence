@@ -73,7 +73,7 @@ public final class WeatherHandler {
         if (particle != null) {
             float windSpeedX = getWindSpeedX();
             float windSpeedZ = getWindSpeedZ();
-            particle.setParticleSpeed(windSpeedX * 0.01, 0.0, windSpeedZ * 0.01);
+            particle.setParticleSpeed(windSpeedX * random.nextDouble() * 0.02, 0.0, windSpeedZ * random.nextDouble() * 0.02);
             float roll = Mth.nextFloat(random, -Mth.HALF_PI, Mth.HALF_PI);
             ((ParticleAccessor) particle).setORoll(roll);
             ((ParticleAccessor) particle).setRoll(roll);

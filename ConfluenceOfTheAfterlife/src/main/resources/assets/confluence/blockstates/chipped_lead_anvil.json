@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "confluence:block/chipped_lead_anvil",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "confluence:block/chipped_lead_anvil",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "confluence:block/chipped_lead_anvil"
+    },
+    "facing=west": {
+      "model": "confluence:block/chipped_lead_anvil",
+      "y": 90
+    }
+  }
+}

@@ -45,7 +45,7 @@ public class BaseArrowEntity extends AbstractArrow {
         static Tuple create(String path, Supplier<Builder> type){Tuple t = new Tuple();t.path = path;t.attr = type.get();return t;}
 
         //构建箭的默认属性   mc原版木箭：   setDamage：2f
-        static Tuple JESTERS_ARROW_ENTITY = create("textures/entity/arrow/jesters_arrow.png",()->new Builder()
+        static Tuple STAR_ARROW_ENTITY = create("textures/entity/arrow/star_arrow.png",()->new Builder()
                 .setDamage(4f).setPenetration(99).setKnockBack(2).setSpeedFactor(0.8f).setAutoDiscard(50).setGravity(0));
         static Tuple UNHOLY_ARROW_ENTITY = create("textures/entity/arrow/unholy_arrow.png",()->new Builder()
                 .setDamage(4.5f).setPenetration(5).setKnockBack(1.5f));
@@ -54,7 +54,7 @@ public class BaseArrowEntity extends AbstractArrow {
     }
 
     public static Map<Item,Tuple> selectArrowFromItemMap = Map.of(
-            ArrowItems.STAR_ARROW.get(), Tuple.JESTERS_ARROW_ENTITY,
+            ArrowItems.STAR_ARROW.get(), Tuple.STAR_ARROW_ENTITY,
             ArrowItems.UNHOLY_ARROW.get(), Tuple.UNHOLY_ARROW_ENTITY,
             ArrowItems.FLAMING_ARROW.get(), Tuple.FLAMING_ARROW_ENTITY
     );

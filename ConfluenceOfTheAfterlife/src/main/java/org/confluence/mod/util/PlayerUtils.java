@@ -182,6 +182,12 @@ public final class PlayerUtils {
         return count.get();
     }
 
+    public static int getInventoryItemCount(Player player, Item item){
+        AtomicInteger count = new AtomicInteger();
+        player.getInventory().items.forEach(stack -> count.addAndGet(stack.is(item)? stack.getCount():0));
+        return count.get();
+    }
+
     public static void consumeItemCount(List<ItemStack> have, Item item, int consumeCount) {
         AtomicInteger count = new AtomicInteger();
         have.forEach(stack -> {

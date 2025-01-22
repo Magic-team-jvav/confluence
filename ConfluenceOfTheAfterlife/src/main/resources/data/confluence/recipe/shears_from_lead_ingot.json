@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "i ",
+    " i"
+  ],
+  "key": {
+    "i": {
+      "item": "confluence:lead_ingot"
+    }
+  },
+  "result": {
+    "id": "minecraft:shears",
+    "count": 1
+  }
+}

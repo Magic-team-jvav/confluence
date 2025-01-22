@@ -7,13 +7,13 @@
     ],
     "key": {
         "#": {
-            "tag": "minecraft:planks"
+            "item": "minecraft:iron_ingot"
         },
         "/": {
             "item": "minecraft:stick"
         }
     },
     "result": {
-        "id": "confluence:wooden_hammer"
+        "id": "confluence:iron_hammer"
     }
 }

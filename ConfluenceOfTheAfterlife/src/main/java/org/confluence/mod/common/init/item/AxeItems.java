@@ -1,12 +1,16 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.item.axe.BaseAxeItem;
+import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 
 public class AxeItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -20,6 +24,13 @@ public class AxeItems {
     public static final DeferredItem<BaseAxeItem> PLATINUM_AXE = ITEMS.register("platinum_axe", () -> new BaseAxeItem(ModTiers.PLATINUM, 5, 1));
     public static final DeferredItem<BaseAxeItem> WAR_AXE_OF_THE_NIGHT = ITEMS.register("war_axe_of_the_night", () -> new BaseAxeItem(ModTiers.DEMONITE, 7, 1));
     public static final DeferredItem<BaseAxeItem> BLOOD_LUST_CLUSTER = ITEMS.register("blood_lust_cluster", () -> new BaseAxeItem(ModTiers.TR_CRIMSON, 8, 1));
+
+    // 再生法杖
+    public static final DeferredItem<Item> STAFF_OF_REGROWTH = ITEMS.register("staff_of_regrowth", () -> new Item(new Item.Properties().component(TCDataComponentTypes.MOD_RARITY, ModRarity.GREEN)
+            .component(DataComponents.ATTRIBUTE_MODIFIERS, DiggerItem.createAttributes(ModTiers.PLATINUM, (3 - ModTiers.PLATINUM.getAttackDamageBonus() - 1), 1 - 4))));
+  ;
+    // 再生之斧
+    public static final DeferredItem<Item> DRILL_OF_REGROWTH = ITEMS.register("drill_of_regrowth", () -> new BaseAxeItem(ModTiers.PLATINUM, 5, 1f));
 
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
         ITEMS.getEntries().forEach(axe -> tag.add(axe.get()));

@@ -2,6 +2,7 @@ package org.confluence.mod.common.init.item;
 
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.item.paint.*;
 
 import java.util.function.Supplier;
@@ -44,4 +45,7 @@ public class PaintItems {
     public static final Supplier<PaintItem> WHITE_PAINT = ITEMS.register("white_paint", () -> new PaintItem(0xfffef6));
     public static final Supplier<PaintItem> BROWN_PAINT = ITEMS.register("brown_paint", () -> new PaintItem(0x8b653f));
     public static final Supplier<PaintItem> SHADOW_PAINT = ITEMS.register("shadow_paint", () -> new PaintItem(0x000000));
+    public static final Supplier<PaintItem> NEGATIVE_PAINT = ITEMS.register("negative_paint", () -> new PaintItem(BrushData.NEGATIVE_COLOR));
+    public static final Supplier<PaintItem> ILLUMINANT_COATING = ITEMS.register("illuminant_coating", () -> new PaintItem(BrushData.ILLUMINANT_COLOR));
+    public static final Supplier<PaintItem> ECHO_COATING = ITEMS.register("echo_coating", () -> new PaintItem(BrushData.ECHO_COLOR)); // todo
 }

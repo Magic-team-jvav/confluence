@@ -423,6 +423,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("entity.minecraft.villager.confluence.sky_miller", "天师");
         add("entity.minecraft.villager.confluence.banker", "银行家");
+        add("entity.confluence.dart", "毒镖");
 
         //region blocks
         add(OreBlocks.SANCTIFICATION_COAL_ORE.get(), "圣化煤矿石");

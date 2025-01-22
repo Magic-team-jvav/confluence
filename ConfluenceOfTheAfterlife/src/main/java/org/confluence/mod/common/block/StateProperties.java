@@ -19,6 +19,7 @@ public class StateProperties {
     public static final BooleanProperty IS_SUPPORTING = BooleanProperty.create("is_supporting"); // 支撑
     public static final EnumProperty<HorizontalTwoPart> HORIZONTAL_TWO_PART = EnumProperty.create("horizontal_two_part", HorizontalTwoPart.class);
     public static final EnumProperty<VerticalTwoPart> VERTICAL_TWO_PART = EnumProperty.create("vertical_two_part", VerticalTwoPart.class);
+    public static final EnumProperty<HorizontalFourPart> HORIZONTAL_FOUR_PART = EnumProperty.create("horizontal_four_part", HorizontalFourPart.class);
     public static final EnumProperty<VerticalFourPart> VERTICAL_FOUR_PART = EnumProperty.create("vertical_four_part", VerticalFourPart.class);
 
     public enum HorizontalTwoPart implements StringRepresentable {
@@ -40,7 +41,7 @@ public class StateProperties {
          * @return 相对方向
          */
         public static Direction getConnectedDirection(BlockState blockState) {
-            Direction facing = blockState.getValue(HorizontalDirectionalBlock.FACING);
+            Direction facing = blockState.hasProperty(HorizontalDirectionalBlock.FACING) ? blockState.getValue(HorizontalDirectionalBlock.FACING) : Direction.NORTH;
             return switch (blockState.getValue(HORIZONTAL_TWO_PART)) {
                 case BASE -> facing.getCounterClockWise(); // 获取其相对右边
                 case RIGHT -> facing.getClockWise(); // 获取其相对左边
@@ -113,6 +114,81 @@ public class StateProperties {
         }
     }
 
+    public enum HorizontalFourPart implements StringRepresentable {
+        BASE("base"),
+        RIGHT("right"),
+        FRONT("front"),
+        CORNER("corner");
+
+        private final String name;
+
+        HorizontalFourPart(String name) {
+            this.name = name;
+        }
+
+        /**
+         * 获取与该方块相连的多方块的相对方向
+         * <p>
+         * 注：是以玩家视角看向的相对方向
+         *
+         * @param blockState 该方块的方块状态
+         * @return 相对方向
+         */
+        public static Direction getConnectedDirection(BlockState blockState) {
+            Direction facing = blockState.hasProperty(HorizontalDirectionalBlock.FACING) ? blockState.getValue(HorizontalDirectionalBlock.FACING) : Direction.NORTH;
+            return switch (blockState.getValue(HORIZONTAL_FOUR_PART)) {
+                case BASE, FRONT -> facing.getCounterClockWise(); // 获取其相对右边
+                case RIGHT, CORNER -> facing.getClockWise(); // 获取其相对左边
+            };
+        }
+
+        public static Map<HorizontalFourPart, BlockPos> getRelatives(HorizontalFourPart part, Direction facing, BlockPos pos) {
+            Direction left = facing.getClockWise(); // '↓' -> '←'
+            Direction front = left.getClockWise(); // '←' -> '↑'
+            Direction right = front.getClockWise(); // '↑' -> '→'
+
+            BlockPos leftPos = pos.relative(left);
+            BlockPos frontPos = pos.relative(front);
+            BlockPos rightPos = pos.relative(right);
+            BlockPos backPos = pos.relative(facing);
+            if (part == BASE) {
+                return Map.of(
+                        RIGHT, rightPos,
+                        FRONT, frontPos,
+                        CORNER, frontPos.relative(right)
+                );
+            } else if (part == RIGHT) {
+                return Map.of(
+                        BASE, leftPos,
+                        FRONT, leftPos.relative(front),
+                        CORNER, frontPos
+                );
+            } else if (part == FRONT) {
+                return Map.of(
+                        BASE, backPos,
+                        RIGHT, backPos.relative(right),
+                        CORNER, rightPos
+                );
+            } else {
+                return Map.of(
+                        BASE, leftPos.relative(facing),
+                        RIGHT, backPos,
+                        FRONT, leftPos
+                );
+            }
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+
+        @Override
+        public @NotNull String getSerializedName() {
+            return name;
+        }
+    }
+
     public enum VerticalFourPart implements StringRepresentable {
         BASE("base"),
         RIGHT("right"),
@@ -134,7 +210,7 @@ public class StateProperties {
          * @return 相对方向
          */
         public static Direction getConnectedDirection(BlockState blockState) {
-            Direction facing = blockState.getValue(HorizontalDirectionalBlock.FACING);
+            Direction facing = blockState.hasProperty(HorizontalDirectionalBlock.FACING) ? blockState.getValue(HorizontalDirectionalBlock.FACING) : Direction.NORTH;
             return switch (blockState.getValue(VERTICAL_FOUR_PART)) {
                 case BASE, UP -> facing.getCounterClockWise(); // 获取其相对右边
                 case RIGHT, RIGHT_UP -> facing.getClockWise(); // 获取其相对左边

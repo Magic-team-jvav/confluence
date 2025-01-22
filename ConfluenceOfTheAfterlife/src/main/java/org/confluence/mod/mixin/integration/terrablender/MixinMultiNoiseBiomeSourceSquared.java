@@ -87,14 +87,22 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
         if (confluence$biomePair == null) {
             if (ServerLifecycleHooks.getCurrentServer() != null) {
                 WorldOptions worldOptions = ServerLifecycleHooks.getCurrentServer().getWorldData().worldGenOptions();
-                LegacyRandomSource randomSource = new LegacyRandomSource(worldOptions.seed());
                 Pair<ResourceKey<Biome>, ResourceKey<Biome>> pair;
-                if (randomSource.nextBoolean()) {
-                    pair = new Pair<>(ModBiomes.THE_CORRUPTION, ModBiomes.TR_CRIMSON);
-                    ((IWorldOptions) worldOptions).confluence$withSecretFlag(IWorldOptions.TR_CRIMSON);
+                long flag = ((IWorldOptions) worldOptions).confluence$getSecretFlag();
+                if ((flag & (IWorldOptions.TR_CRIMSON | IWorldOptions.THE_CORRUPTION)) == 0) {
+                    if (new LegacyRandomSource(worldOptions.seed()).nextBoolean()) {
+                        pair = new Pair<>(ModBiomes.THE_CORRUPTION, ModBiomes.TR_CRIMSON);
+                        ((IWorldOptions) worldOptions).confluence$withSecretFlag(IWorldOptions.TR_CRIMSON);
+                    } else {
+                        pair = new Pair<>(ModBiomes.TR_CRIMSON, ModBiomes.THE_CORRUPTION);
+                        ((IWorldOptions) worldOptions).confluence$withSecretFlag(IWorldOptions.THE_CORRUPTION);
+                    }
                 } else {
-                    pair = new Pair<>(ModBiomes.TR_CRIMSON, ModBiomes.THE_CORRUPTION);
-                    ((IWorldOptions) worldOptions).confluence$withSecretFlag(IWorldOptions.THE_CORRUPTION);
+                    if ((flag & IWorldOptions.THE_CORRUPTION) != 0) {
+                        pair = new Pair<>(ModBiomes.TR_CRIMSON, ModBiomes.THE_CORRUPTION);
+                    } else {
+                        pair = new Pair<>(ModBiomes.THE_CORRUPTION, ModBiomes.TR_CRIMSON);
+                    }
                 }
                 Holder<Biome> source = null;
                 Holder<Biome> target = null;

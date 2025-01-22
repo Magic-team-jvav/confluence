@@ -9,6 +9,6 @@ public interface IWorldOptions {
 
     void confluence$setLegacyCustomOptions(Optional<String> legacyCustomOptions);
 
-    long THE_CORRUPTION = 1L;
-    long TR_CRIMSON = 2L;
+    long THE_CORRUPTION = 0b01;
+    long TR_CRIMSON = 0b10;
 }

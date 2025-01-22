@@ -37,7 +37,12 @@ public abstract class DeathScreenMixin extends Screen {
     @Inject(method = "init", at = @At("RETURN"))
     private void init(CallbackInfo ci) {
         delayTicker = 0;
-        exitButtons.getFirst().visible = false;
+
+        exitButtons.stream()
+                .filter(bt->bt.getMessage().getString().equals(Component.translatable("deathScreen.respawn").getString()))
+                .toList()
+                .forEach(bt->bt.visible = false);
+
         if (this.minecraft != null) {
             if (this.minecraft.player != null && !this.minecraft.player.isCreative()) {
                 confluence$respawnWaitTime = ModUtils.getRespawnWaitTime(this.minecraft.player);
@@ -57,7 +62,7 @@ public abstract class DeathScreenMixin extends Screen {
 
     @Inject(method = "render", at = @At("HEAD"))
     public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick, CallbackInfo ci) {
-        if (((confluence$respawnWaitTime * 20 - this.delayTicker) / 20) >= 0) {
+        if (confluence$respawnWaitTime * 20 >= this.delayTicker) {
             pGuiGraphics.drawCenteredString(this.font, this.confluence$respawnTimeComponent, this.width / 2, 120, 16777215);
             pGuiGraphics.blit(ResourceLocation.withDefaultNamespace("textures/gui/sprites/widget/button_disabled.png"),
                     this.width / 2 - 100, this.height / 4 + 72, 0, 0, 0, 200, 20, 200, 20);
@@ -71,7 +76,13 @@ public abstract class DeathScreenMixin extends Screen {
     @Inject(method = "tick", at = @At("HEAD"))
     private void tick(CallbackInfo ci) {
         if (delayTicker >= confluence$respawnWaitTime * 20){
-            exitButtons.getFirst().visible = true;
+            exitButtons.stream()
+                    .filter(bt->bt.getMessage().getString().equals(Component.translatable("deathScreen.respawn").getString()))
+                    .toList()
+                    .forEach(bt->{
+                        bt.visible = true;
+                        bt.active = true;
+                    });
         }
         confluence$respawnTimeComponent = Component.translatable("info.confluence.respawn_time")
                 .append(Component.literal(

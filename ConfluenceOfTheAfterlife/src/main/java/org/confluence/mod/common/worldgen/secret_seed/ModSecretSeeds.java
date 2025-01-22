@@ -17,7 +17,7 @@ public final class ModSecretSeeds {
     public static final SecretSeed GET_FIXED_BOI = register(GetFixedBoi::new);
 
     private static SecretSeed register(Function<Long, SecretSeed> function) {
-        SecretSeed secretSeed = function.apply(1L << VALUES.size());
+        SecretSeed secretSeed = function.apply(1L << (VALUES.size() + 2)); // 猩红腐化
         VALUES.add(secretSeed);
         return secretSeed;
     }

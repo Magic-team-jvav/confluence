@@ -38,6 +38,7 @@ import org.confluence.mod.mixed.Immunity;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.common.component.NbtComponent;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
+import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terra_guns.TerraGuns;
 import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.entity.ai.Boss;
@@ -416,7 +417,7 @@ public final class ModUtils {
     /**
      * 仅获取
      *
-     * @see org.confluence.terra_curio.util.TCUtils#getItemStackNbt(ItemStack) 获取或创建
+     * @see TCUtils#getItemStackNbt(ItemStack) 获取或创建
      */
     public static @Nullable CompoundTag getItemStackNbt(ItemStack itemStack) {
         NbtComponent component = itemStack.get(TCDataComponentTypes.NBT);
@@ -425,37 +426,37 @@ public final class ModUtils {
     }
 
     @Nullable
-    public static Immunity getImmunityCause(DamageSource damageSource){
+    public static Immunity getImmunityCause(DamageSource damageSource) {
         Entity directEntity = damageSource.getDirectEntity();
         ItemStack weaponItemStack = damageSource.getWeaponItem();
-        if(weaponItemStack != null){
+        if (weaponItemStack != null) {
             Item weaponItem = weaponItemStack.getItem();
             boolean fromConfluence = isFromConfluence(BuiltInRegistries.ITEM, weaponItem);
-            if(fromConfluence && (weaponItem instanceof SwordItem) && directEntity instanceof Projectile projectile){
+            if (fromConfluence && (weaponItem instanceof SwordItem) && directEntity instanceof Projectile projectile) {
                 return (Immunity) projectile;
-            }else if(weaponItem instanceof Immunity im){
-                return switch(im.confluence$getImmunityType()){
+            } else if (weaponItem instanceof Immunity im) {
+                return switch (im.confluence$getImmunityType()) {
                     case STATIC -> im;
                     case LOCAL -> (Immunity) (Object) weaponItemStack;
                 };
-            }else if(fromConfluence){
+            } else if (fromConfluence) {
                 return (Immunity) (Object) weaponItemStack;
             }
         }
-        if(directEntity instanceof Projectile && isFromConfluence(BuiltInRegistries.ENTITY_TYPE, directEntity.getType())){
+        if (directEntity instanceof Projectile && isFromConfluence(BuiltInRegistries.ENTITY_TYPE, directEntity.getType())) {
             return (Immunity) directEntity;
         }
         // TODO: 打表
         return null;
     }
 
-    public static <T> boolean isFromConfluence(Registry<T> registry, T obj){
+    public static <T> boolean isFromConfluence(Registry<T> registry, T obj) {
         ResourceLocation key = registry.getKey(obj);
         return key != null && CONFLUENCE_NAMESPACES.contains(key.getNamespace());
     }
 
     public static int getSlotIndex(EquipmentSlot slot) {
-        return switch(slot){
+        return switch (slot) {
             case HEAD -> 0;
             case CHEST -> 1;
             case LEGS -> 2;

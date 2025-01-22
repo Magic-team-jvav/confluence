@@ -36,6 +36,7 @@ public class SwordItems {
     // 普通短剑
     public static final DeferredItem<SwordItem> COPPER_SHORT_SWORD = register("copper_short_sword", ModTiers.COPPER, 0, -1, SHORT_SWORD.get());
     public static final DeferredItem<SwordItem> TIN_SHORT_SWORD = register("tin_short_sword", ModTiers.TIN, 0, -1, SHORT_SWORD.get());
+    public static final DeferredItem<SwordItem> IRON_SHORT_SWORD = register("iron_short_sword", ModTiers.IRON, 1, -1, SHORT_SWORD.get());
     public static final DeferredItem<SwordItem> LEAD_SHORT_SWORD = register("lead_short_sword", ModTiers.LEAD, 1, -1, SHORT_SWORD.get());
     public static final DeferredItem<SwordItem> SILVER_SHORT_SWORD = register("silver_short_sword", ModTiers.SILVER, 1, -1, SHORT_SWORD.get());
     public static final DeferredItem<SwordItem> TUNGSTEN_SHORT_SWORD = register("tungsten_short_sword", ModTiers.TUNGSTEN, 2, -1, SHORT_SWORD.get());

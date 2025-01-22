@@ -6,7 +6,7 @@
       "item": "confluence:lead_block"
     },
     "i": {
-      "tag": "confluence:lead_and_iron"
+      "item": "confluence:lead_ingot"
     }
   },
   "pattern": [
@@ -15,7 +15,7 @@
     "iii"
   ],
   "result": {
-    "id": "minecraft:anvil"
+    "id": "confluence:lead_anvil"
   },
   "show_notification": true
 }

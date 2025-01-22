@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " c",
+        "c "
+    ],
+    "key": {
+        "c": {
+            "item": "minecraft:iron_ingot"
+        }
+    },
+    "result": {
+        "id": "confluence:iron_short_sword"
+    }
+}

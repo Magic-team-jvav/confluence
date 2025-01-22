@@ -49,6 +49,7 @@
         "integration.terra_curio.WorkshopBlockMixin",
         "integration.terra_curio.WorkshopMenuMixin",
         "integration.terra_curio.WorkshopRecipeMixin",
+        "integration.terrablender.MixinMultiNoiseBiomeSourceSquared",
         "item.BowItemMixin",
         "item.FishingRodItemMixin",
         "item.HoneyBottleItemMixin",
@@ -57,7 +58,6 @@
         "item.ItemUtilsMixin",
         "item.PotionItemMixin",
         "item.ProjectileWeaponItemMixin",
-        "level.MultiNoiseBiomeSourceMixin",
         "level.WorldOptionsMixin"
     ],
     "client": [
@@ -69,6 +69,7 @@
         "client.DeathScreenMixin",
         "client.GuiMixin",
         "client.HumanoidArmorLayerMixin",
+        "client.InventoryScreenMixin",
         "client.ItemRendererMixin",
         "client.LevelLoadingScreenMixin",
         "client.LocalPlayerMixin",

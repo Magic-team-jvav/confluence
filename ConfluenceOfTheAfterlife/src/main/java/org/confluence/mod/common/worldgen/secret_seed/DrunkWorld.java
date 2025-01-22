@@ -7,6 +7,10 @@ public class DrunkWorld extends SecretSeed {
 
     @Override
     public boolean match(String seed) {
-        return Long.parseLong(seed) == 5162020L;
+        try {
+            return Long.parseLong(seed) == 5162020L;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

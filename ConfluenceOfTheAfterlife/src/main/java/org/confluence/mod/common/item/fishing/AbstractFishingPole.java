@@ -1,6 +1,8 @@
 package org.confluence.mod.common.item.fishing;
 
 import com.google.common.collect.ImmutableMultimap;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -13,7 +15,9 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
+import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -26,22 +30,26 @@ import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.common.item.accessory.FishingBobber;
 import org.confluence.mod.mixed.IFishingHook;
 import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
 
-public abstract class AbstractFishingPole extends CustomRarityItem {
+import java.util.function.Consumer;
+
+public abstract class AbstractFishingPole extends FishingRodItem {
     protected static final ImmutableMultimap<Attribute, AttributeModifier> EMPTY = ImmutableMultimap.of();
+    protected ItemAttributeModifiers modifiers;
 
     public AbstractFishingPole(Properties properties) {
         super(properties);
     }
 
     public AbstractFishingPole(ModRarity rarity) {
-        super(rarity);
+        this(new Properties().component(TCDataComponentTypes.MOD_RARITY.get(), rarity));
     }
 
     public AbstractFishingPole(Properties properties, ModRarity rarity) {
-        super(properties, rarity);
+        super(properties.component(TCDataComponentTypes.MOD_RARITY.get(), rarity));
     }
 
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
@@ -99,4 +107,24 @@ public abstract class AbstractFishingPole extends CustomRarityItem {
     }
 
     protected abstract FishingHook getHook(ItemStack itemStack, Player player, Level level, int luckBonus, int speedBonus);
+
+    @Override
+    public MutableComponent getName(ItemStack pStack) {
+        return withRarity(pStack, Component.translatable(getDescriptionId(pStack)));
+    }
+
+    protected MutableComponent withRarity(ItemStack pStack, MutableComponent component) {
+        return component.withColor(pStack.get(TCDataComponentTypes.MOD_RARITY).getColor());
+    }
+
+    protected void addAttributeModifiers(Consumer<ItemAttributeModifiers.Builder> consumer) {
+        ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
+        consumer.accept(builder);
+        this.modifiers = builder.build();
+    }
+
+    @Override
+    public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
+        return modifiers == null ? super.getDefaultAttributeModifiers(stack) : modifiers;
+    }
 }

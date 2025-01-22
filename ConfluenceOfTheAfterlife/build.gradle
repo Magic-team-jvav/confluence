@@ -1,10 +1,9 @@
-
 plugins {
     id 'net.neoforged.moddev'
 }
 var projectName = ["TerraEntity", "MineTeam", "EquipmentBenediction",
                    "TerraCurio", "ParticleStorm", "HeavenDestinyMoment", "PhaseJourney",
-                   "TerraMoment", "TerraGuns", "IsekaiInvaded","TerraFurniture"
+                   "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture"
 ]
 
 
@@ -126,6 +125,9 @@ dependencies {
 
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
     implementation jarJar('com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version)
+
+    compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.2.0"))
+    implementation(jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-neoforge', version: '[0.2.0,)'))
 
     compileOnly "curse.maven:jade-324717:6011258"
     runtimeOnly "curse.maven:jade-324717:6011258"

@@ -14,9 +14,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.PushReaction;
 import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@ParametersAreNonnullByDefault
 public abstract class HorizontalDirectionalWithHorizontalTwoPartBlock extends HorizontalDirectionalBlock {
     public HorizontalDirectionalWithHorizontalTwoPartBlock(Properties properties) {
         super(properties);

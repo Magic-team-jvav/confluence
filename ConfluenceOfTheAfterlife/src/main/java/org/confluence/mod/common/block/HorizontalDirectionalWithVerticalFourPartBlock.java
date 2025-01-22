@@ -14,9 +14,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.PushReaction;
 import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@ParametersAreNonnullByDefault
 public abstract class HorizontalDirectionalWithVerticalFourPartBlock extends HorizontalDirectionalBlock {
     public HorizontalDirectionalWithVerticalFourPartBlock(Properties properties) {
         super(properties);
@@ -45,9 +42,9 @@ public abstract class HorizontalDirectionalWithVerticalFourPartBlock extends Hor
         BlockPos clickedPos = pContext.getClickedPos();
         BlockPos relativeUpPos = clickedPos.relative(StateProperties.VerticalFourPart.getConnectedDirection(blockState)).above();
         for (BlockPos blockPos : BlockPos.betweenClosed(clickedPos, relativeUpPos)) {
-            if (!level.getBlockState(blockPos).canBeReplaced(pContext) || !level.getWorldBorder().isWithinBounds(blockPos)) {
-                return null;
-            }
+            if (!canSurvive(blockState, level, blockPos)) return null;
+            if (!level.getBlockState(blockPos).canBeReplaced(pContext)) return null;
+            if (!level.getWorldBorder().isWithinBounds(blockPos)) return null;
         }
         return blockState;
     }

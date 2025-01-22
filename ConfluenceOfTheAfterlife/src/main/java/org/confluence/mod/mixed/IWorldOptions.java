@@ -8,4 +8,7 @@ public interface IWorldOptions {
     long confluence$getSecretFlag();
 
     void confluence$setLegacyCustomOptions(Optional<String> legacyCustomOptions);
+
+    long THE_CORRUPTION = 0b01;
+    long TR_CRIMSON = 0b10;
 }

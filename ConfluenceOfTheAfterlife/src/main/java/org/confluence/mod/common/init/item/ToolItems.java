@@ -36,6 +36,6 @@ public class ToolItems {
     public static final Supplier<MagicConch> MAGIC_CONCH = ITEMS.register("magic_conch", () -> new MagicConch(new Item.Properties().stacksTo(1), ModRarity.BLUE));
     public static final Supplier<DemonConch> DEMON_CONCH = ITEMS.register("demon_ocnch", DemonConch::new);
 
-    public static final Supplier<Item> HOUSE_DETECTOR = ITEMS.register("house_detector",()->new HouseDetector(new Item.Properties().stacksTo(1)));
-
+    public static final Supplier<Item> HOUSE_DETECTOR = ITEMS.register("house_detector", () -> new HouseDetector(new Item.Properties().stacksTo(1)));
+    public static final Supplier<BugNetItem> BUG_NET = ITEMS.register("bug_net", () -> new BugNetItem(ModRarity.BLUE));
 }

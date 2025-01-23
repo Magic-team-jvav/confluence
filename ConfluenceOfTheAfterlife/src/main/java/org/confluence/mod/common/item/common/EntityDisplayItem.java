@@ -1,0 +1,54 @@
+package org.confluence.mod.common.item.common;
+
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import org.confluence.mod.util.ModUtils;
+
+import java.util.function.Function;
+
+public class EntityDisplayItem extends Item {
+    public EntityDisplayItem() {
+        super(new Properties());
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext context) {
+        Level level = context.getLevel();
+        if (!level.isClientSide) {
+            ItemStack itemStack = context.getItemInHand();
+            CompoundTag tag = ModUtils.getItemStackNbt(itemStack);
+            if (tag != null) {
+                Entity entity = EntityType.loadEntityRecursive(tag, level, Function.identity());
+                if (entity != null) {
+                    entity.setPos(context.getClickLocation());
+                    level.addFreshEntity(entity);
+                }
+            }
+            itemStack.shrink(1);
+            if (itemStack.isEmpty() && context.getPlayer() != null) {
+                context.getPlayer().setItemInHand(context.getHand(), ItemStack.EMPTY);
+            }
+            return InteractionResult.CONSUME_PARTIAL;
+        }
+        return InteractionResult.PASS;
+    }
+
+    @Override
+    public Component getName(ItemStack pStack) {
+        CompoundTag tag = ModUtils.getItemStackNbt(pStack);
+        if (tag != null) {
+            EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.getOptional(ResourceLocation.parse(tag.getString("id"))).orElse(EntityType.PIG);
+            return entityType.getDescription();
+        }
+        return super.getName(pStack);
+    }
+}

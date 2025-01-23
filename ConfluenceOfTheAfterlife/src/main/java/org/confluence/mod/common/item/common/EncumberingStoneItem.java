@@ -1,7 +1,6 @@
 package org.confluence.mod.common.item.common;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -24,7 +23,7 @@ public class EncumberingStoneItem extends CustomRarityItem implements IFunctionC
     }
 
     @Override
-    public MutableComponent getName(ItemStack pStack) {
+    public Component getName(ItemStack pStack) {
         return isEnabled(pStack, null) ? super.getName(pStack) : withRarity(pStack, Component.translatable(getDescriptionId(pStack) + ".disable"));
     }
 }

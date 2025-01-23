@@ -1,0 +1,48 @@
+package org.confluence.mod.common.item.common;
+
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.protocol.game.ServerboundInteractPacket;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.item.CustomRarityItem;
+import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.terra_curio.util.TCUtils;
+
+public class BugNetItem extends CustomRarityItem {
+    public BugNetItem(ModRarity rarity) {
+        super(new Properties().stacksTo(1), rarity);
+    }
+
+    @Override
+    public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity interactionTarget, InteractionHand usedHand) {
+        if (usedHand != InteractionHand.MAIN_HAND) return InteractionResult.PASS;
+        if (player.level().isClientSide) {
+            ((LocalPlayer) player).connection.send(ServerboundInteractPacket.createInteractionPacket(interactionTarget, false, InteractionHand.MAIN_HAND));
+        } else if (interactionTarget instanceof Animal && interactionTarget.getBoundingBox().getSize() <= 0.5) {
+            ItemStack itemStack = ModItems.ENTITY_DISPLAY.get().getDefaultInstance();
+            interactionTarget.setYRot(0.0F);
+            interactionTarget.setYHeadRot(0.0F);
+            interactionTarget.setYBodyRot(0.0F);
+            interactionTarget.setXRot(0.0F);
+            TCUtils.updateItemStackNbt(itemStack, tag -> {
+                interactionTarget.save(tag);
+                tag.putInt("EntityDisplayIndex", generateIndex());
+            });
+            player.addItem(itemStack);
+            interactionTarget.discard();
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.PASS;
+    }
+
+    private static int index = Integer.MIN_VALUE;
+
+    private static int generateIndex() {
+        return index++;
+    }
+}

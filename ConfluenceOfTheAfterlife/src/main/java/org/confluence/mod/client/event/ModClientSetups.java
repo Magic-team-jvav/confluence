@@ -8,6 +8,7 @@ import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -24,7 +25,9 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.renderer.item.EntityDisplayItemRenderer;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -100,6 +103,17 @@ public final class ModClientSetups {
         @Override
         public boolean addHitEffects(BlockState state, Level level, HitResult target, ParticleEngine manager) {
             return true;
+        }
+    };
+    static final IClientItemExtensions ENTITY_DISPLAY = new IClientItemExtensions() {
+        private EntityDisplayItemRenderer renderer;
+
+        @Override
+        public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+            if (renderer == null) {
+                this.renderer = new EntityDisplayItemRenderer();
+            }
+            return renderer;
         }
     };
     static final BlockColor HALLOW_LEAVES_COLOR = new BlockColor() {

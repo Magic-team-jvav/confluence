@@ -196,10 +196,10 @@ public final class ModEvents {
     public static void buildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
         CreativeModeTab.TabVisibility visibility = CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS;
         if (event.getTab() == TCTabs.ACCESSORIES.get()) {
-            event.insertFirst(TCItems.BASE_POINT.get().getDefaultInstance(), visibility);
-            event.insertFirst(TCItems.EVERLASTING.get().getDefaultInstance(), visibility);
-
             ItemStack everlasting = TCItems.EVERLASTING.get().getDefaultInstance();
+            event.insertFirst(TCItems.BASE_POINT.get().getDefaultInstance(), visibility);
+            event.insertFirst(everlasting, visibility);
+
             for (DeferredHolder<Item, ? extends Item> entry : AccessoryItems.ITEMS.getEntries()) {
                 event.insertBefore(everlasting, entry.get().getDefaultInstance(), visibility);
             }

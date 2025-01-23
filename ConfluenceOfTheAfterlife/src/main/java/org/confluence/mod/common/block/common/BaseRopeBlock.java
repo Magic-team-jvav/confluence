@@ -28,6 +28,7 @@ import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.mixin.accessor.UseOnContextAccessor;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -133,7 +134,7 @@ public class BaseRopeBlock extends PipeBlock implements SimpleWaterloggedBlock {
         @Override
         public InteractionResult place(BlockPlaceContext context) {
             Level level = context.getLevel();
-            BlockHitResult hitResult = context.getHitResult();
+            BlockHitResult hitResult = ((UseOnContextAccessor) context).callGetHitResult();
             BlockPos.MutableBlockPos relative = hitResult.getBlockPos().mutable();
             while (level.getBlockState(relative).is(ModTags.Blocks.ROPE)) {
                 relative.move(0, -1, 0);

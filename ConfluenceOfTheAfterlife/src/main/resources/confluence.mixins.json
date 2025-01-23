@@ -19,6 +19,7 @@
         "accessor.LootParamsAccessor",
         "accessor.MultiNoiseBiomeSourceAccessor",
         "accessor.ShapedRecipePatternAccessor",
+        "accessor.UseOnContextAccessor",
         "block.AnvilBlockMixin",
         "block.BaseContainerBlockEntityMixin",
         "block.BlockBehaviour$BlockStateBaseMixin",

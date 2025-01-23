@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.common;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -30,6 +31,10 @@ public class EntityDisplayItem extends Item {
                 Entity entity = EntityType.loadEntityRecursive(tag, level, Function.identity());
                 if (entity != null) {
                     entity.setPos(context.getClickLocation());
+                    Component customName = itemStack.get(DataComponents.CUSTOM_NAME);
+                    if (customName != null) {
+                        entity.setCustomName(customName);
+                    }
                     level.addFreshEntity(entity);
                 }
             }

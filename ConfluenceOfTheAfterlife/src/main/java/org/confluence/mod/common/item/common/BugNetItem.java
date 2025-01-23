@@ -1,6 +1,7 @@
 package org.confluence.mod.common.item.common;
 
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.protocol.game.ServerboundInteractPacket;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -29,20 +30,14 @@ public class BugNetItem extends CustomRarityItem {
             interactionTarget.setYHeadRot(0.0F);
             interactionTarget.setYBodyRot(0.0F);
             interactionTarget.setXRot(0.0F);
-            TCUtils.updateItemStackNbt(itemStack, tag -> {
-                interactionTarget.save(tag);
-                tag.putInt("EntityDisplayIndex", generateIndex());
-            });
+            TCUtils.updateItemStackNbt(itemStack, interactionTarget::save);
+            if (interactionTarget.hasCustomName()) {
+                itemStack.set(DataComponents.CUSTOM_NAME, interactionTarget.getCustomName());
+            }
             player.addItem(itemStack);
             interactionTarget.discard();
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
-    }
-
-    private static int index = Integer.MIN_VALUE;
-
-    private static int generateIndex() {
-        return index++;
     }
 }

@@ -18,10 +18,11 @@ import org.confluence.mod.util.ModUtils;
 
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 public class EntityDisplayItemRenderer extends BlockEntityWithoutLevelRenderer {
-    private final Map<Integer, Entity> entityMap = new Hashtable<>();
+    private final Map<UUID, Entity> entityMap = new Hashtable<>();
 
     public EntityDisplayItemRenderer() {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
@@ -33,7 +34,7 @@ public class EntityDisplayItemRenderer extends BlockEntityWithoutLevelRenderer {
         if (level == null) return;
         CompoundTag tag = ModUtils.getItemStackNbt(stack);
         if (tag == null) return;
-        Entity entity = entityMap.computeIfAbsent(tag.getInt("EntityDisplayIndex"), index -> {
+        Entity entity = entityMap.computeIfAbsent(tag.getUUID(Entity.UUID_TAG), itemStack -> {
             Entity loaded = EntityType.loadEntityRecursive(tag, level, Function.identity());
             return loaded == null ? new Pig(EntityType.PIG, level) : loaded;
         });

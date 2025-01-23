@@ -15,8 +15,11 @@ import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.util.TCUtils;
 
 public class BugNetItem extends CustomRarityItem {
-    public BugNetItem(ModRarity rarity) {
+    private final double maxSize;
+
+    public BugNetItem(ModRarity rarity, double maxSize) {
         super(new Properties().stacksTo(1), rarity);
+        this.maxSize = maxSize;
     }
 
     @Override
@@ -24,7 +27,7 @@ public class BugNetItem extends CustomRarityItem {
         if (usedHand != InteractionHand.MAIN_HAND) return InteractionResult.PASS;
         if (player.level().isClientSide) {
             ((LocalPlayer) player).connection.send(ServerboundInteractPacket.createInteractionPacket(interactionTarget, false, InteractionHand.MAIN_HAND));
-        } else if (interactionTarget instanceof Animal && interactionTarget.getBoundingBox().getSize() <= 0.5) {
+        } else if (interactionTarget instanceof Animal && interactionTarget.getBoundingBox().getSize() <= maxSize) {
             ItemStack itemStack = ModItems.ENTITY_DISPLAY.get().getDefaultInstance();
             interactionTarget.setYRot(0.0F);
             interactionTarget.setYHeadRot(0.0F);

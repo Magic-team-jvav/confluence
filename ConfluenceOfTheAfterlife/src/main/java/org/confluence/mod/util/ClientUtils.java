@@ -21,6 +21,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -155,9 +156,9 @@ public final class ClientUtils {
                 int index = j + i1;
                 int color = pixels[index];
                 int a = color >>> 24;
-                int b = color >> 16 & 255;
+                int b = color & 255;
                 int g = color >> 8 & 255;
-                int r = color & 255;
+                int r = color >> 16 & 255;
                 int avg = (int) (r * 0.3F + g * 0.59F + b * 0.11F);
                 if (avg > u) u = avg;
                 if (avg < d) d = avg;
@@ -192,9 +193,9 @@ public final class ClientUtils {
         image.copyFrom(original);
         image.applyToAllPixels(color -> {
             int a = color >>> 24;
-            int b = color >> 16 & 255;
+            int b = color & 255;
             int g = color >> 8 & 255;
-            int r = color & 255;
+            int r = color >> 16 & 255;
             return FastColor.ARGB32.color(a, 255 - r, 255 - g, 255 - b);
         });
         return image;

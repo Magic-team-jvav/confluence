@@ -1,6 +1,5 @@
 package org.confluence.mod.mixin.entity;
 
-import com.google.common.util.concurrent.AtomicDouble;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -150,9 +149,9 @@ public abstract class FishingHookMixin implements IFishingHook, SelfGetter<Fishi
     @ModifyArg(method = "retrieve", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItems(Lnet/minecraft/world/level/storage/loot/LootParams;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;"))
     private LootParams modifyLuck(LootParams pParams) {
         Player owner = getPlayerOwner();
-        AtomicDouble fishing = new AtomicDouble(luck);
+        float fishing = luck;
         if (owner != null) {
-            fishing.addAndGet(TCUtils.getAccessoriesValue(owner, AccessoryItems.FISHING$POWER));
+            fishing += TCUtils.getAccessoriesValue(owner, AccessoryItems.FISHING$POWER);
             Inventory inventory = owner.getInventory();
             float bonus = 1.0F;
             for (ItemStack itemStack : inventory.offhand) {
@@ -172,9 +171,9 @@ public abstract class FishingHookMixin implements IFishingHook, SelfGetter<Fishi
                     }
                 }
             }
-            if (confluence$bait != null) fishing.set(fishing.get() * bonus);
+            if (confluence$bait != null) fishing *= bonus;
         }
-        ((LootParamsAccessor) pParams).setLuck(fishing.floatValue());
+        ((LootParamsAccessor) pParams).setLuck(fishing);
         return pParams;
     }
 
@@ -195,18 +194,17 @@ public abstract class FishingHookMixin implements IFishingHook, SelfGetter<Fishi
         return self().getInBlockState().getFluidState().is(FluidTags.LAVA);
     }
 
-    @ModifyExpressionValue(method = "retrieve",at= @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItems(Lnet/minecraft/world/level/storage/loot/LootParams;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;"))
+    @ModifyExpressionValue(method = "retrieve", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItems(Lnet/minecraft/world/level/storage/loot/LootParams;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;"))
     private ObjectArrayList<ItemStack> addCrate(ObjectArrayList<ItemStack> original) {
         if (getPlayerOwner() instanceof ServerPlayer serverPlayer) {
             float chance = serverPlayer.hasEffect(ModEffects.CRATE) ? 0.25F : 0.1F;
             ServerLevel level = serverPlayer.serverLevel();
             if (level.random.nextFloat() < chance) {
-                LootParams lootparams = new LootParams.Builder(level)
-                        .withParameter(LootContextParams.ORIGIN, self().position())
-                        .withParameter(LootContextParams.THIS_ENTITY, self())
-                        .create(LootContextParamSets.GIFT);
-                LootTable loottable = level.getServer().reloadableRegistries().getLootTable(ModLootTables.CRATE);
-                original.addAll(loottable.getRandomItems(lootparams));
+                return level.getServer().reloadableRegistries().getLootTable(ModLootTables.CRATE)
+                        .getRandomItems(new LootParams.Builder(level)
+                                .withParameter(LootContextParams.ORIGIN, self().position())
+                                .withParameter(LootContextParams.THIS_ENTITY, self())
+                                .create(LootContextParamSets.GIFT));
             }
         }
         return original;

@@ -161,7 +161,7 @@ public final class ModEvents {
     @SubscribeEvent
     public static void registerUnitType(RegisterAccessoriesComponentUpdateEvent.UnitType event) {
         event.register(AccessoryItems.LUCKY$COIN);
-        event.register(AccessoryItems.SHEARS$DIG);
+        event.register(AccessoryItems.VINE$ROPE);
         event.register(AccessoryItems.ICE$SAFE);
         event.register(AccessoryItems.AUTO$GET$MANA);
         event.register(AccessoryItems.HURT$GET$MANA);

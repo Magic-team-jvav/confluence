@@ -6,7 +6,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
@@ -79,6 +78,10 @@ public final class ModTabs {
                         output.accept(TCItems.MAGIC_MIRROR.get());
                         output.accept(TCItems.CELL_PHONE.get());
                         output.accept(TCItems.DIVING_HELMET.get());
+                        output.accept(ModBlocks.ROPE.get());
+                        output.accept(ModBlocks.VINE_ROPE.get());
+                        output.accept(ModBlocks.SILK_ROPE.get());
+                        output.accept(ModBlocks.WEB_ROPE.get());
                         AxeItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                         PickaxeItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                         PickaxeAxeItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));

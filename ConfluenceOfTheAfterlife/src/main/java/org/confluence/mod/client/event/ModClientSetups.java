@@ -7,6 +7,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -16,9 +17,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.HitResult;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModFluids;
@@ -90,6 +94,12 @@ public final class ModClientSetups {
         public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
             RenderSystem.setShaderFogStart(0.125F);
             RenderSystem.setShaderFogEnd(10.0F);
+        }
+    };
+    static final IClientBlockExtensions NO_HIT_EFFECTS = new IClientBlockExtensions() {
+        @Override
+        public boolean addHitEffects(BlockState state, Level level, HitResult target, ParticleEngine manager) {
+            return true;
         }
     };
     static final BlockColor HALLOW_LEAVES_COLOR = new BlockColor() {

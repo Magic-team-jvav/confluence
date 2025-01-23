@@ -117,7 +117,7 @@ public class BaseRopeBlock extends PipeBlock implements SimpleWaterloggedBlock {
             Entity entity = ecc.getEntity();
             if (entity instanceof Player) {
                 BlockPos blockPos = entity.blockPosition().atY((int) entity.getEyeY());
-                if (blockPos.equals(pos) || blockPos.below().equals(pos)) {
+                if (level.getBlockState(blockPos).is(ModTags.Blocks.ROPE) || level.getBlockState(blockPos.below()).is(ModTags.Blocks.ROPE)) {
                     return Shapes.empty(); // 玩家在绳子里不阻挡
                 }
                 return super.getShape(state, level, pos, context);
@@ -133,6 +133,8 @@ public class BaseRopeBlock extends PipeBlock implements SimpleWaterloggedBlock {
 
         @Override
         public InteractionResult place(BlockPlaceContext context) {
+            Player player = context.getPlayer();
+            if (player == null || player.isCrouching()) return super.place(context);
             Level level = context.getLevel();
             BlockHitResult hitResult = ((UseOnContextAccessor) context).callGetHitResult();
             BlockPos.MutableBlockPos relative = hitResult.getBlockPos().mutable();
@@ -140,7 +142,11 @@ public class BaseRopeBlock extends PipeBlock implements SimpleWaterloggedBlock {
                 relative.move(0, -1, 0);
             }
             BlockHitResult hitResult1 = new BlockHitResult(hitResult.getLocation(), hitResult.getDirection(), relative, hitResult.isInside());
-            return super.place(new BlockPlaceContext(level, context.getPlayer(), context.getHand(), context.getItemInHand(), hitResult1));
+            InteractionResult place = super.place(new BlockPlaceContext(level, player, context.getHand(), context.getItemInHand(), hitResult1));
+            if (place == InteractionResult.FAIL) {
+                return super.place(context);
+            }
+            return place;
         }
     }
 }

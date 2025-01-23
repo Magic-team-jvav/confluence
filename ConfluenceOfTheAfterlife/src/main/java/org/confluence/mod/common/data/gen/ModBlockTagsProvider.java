@@ -455,7 +455,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OreBlocks.LUMINITE_BLOCK.get()
         );
         tag(ModTags.Blocks.ROPE).add(
-                ROPE.get()
+                ROPE.get(),
+                VINE_ROPE.get(),
+                SILK_ROPE.get(),
+                WEB_ROPE.get()
         );
     }
 

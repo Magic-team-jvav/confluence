@@ -815,17 +815,17 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.TR_CRIMSON_DROOPING_VINE.get(), "猩红垂藤");
         add(NatureBlocks.HALLOW_DROOPING_VINE.get(), "神圣垂藤");
 
-        add(ModItems.GREEN_MOSS_ITEM.get(), "绿苔藓");
-        add(ModItems.BROWN_MOSS_ITEM.get(), "棕苔藓");
-        add(ModItems.RED_MOSS_ITEM.get(), "红苔藓");
-        add(ModItems.BLUE_MOSS_ITEM.get(), "蓝苔藓");
-        add(ModItems.PURPLE_MOSS_ITEM.get(), "紫苔藓");
-        add(ModItems.LAVA_MOSS_ITEM.get(), "熔岩苔藓");
-        add(ModItems.KRYPTON_MOSS_ITEM.get(), "氪苔藓");
-        add(ModItems.XENON_MOSS_ITEM.get(), "氙苔藓");
-        add(ModItems.ARGON_MOSS_ITEM.get(), "氩苔藓");
-        add(ModItems.NEON_MOSS_ITEM.get(), "氖苔藓");
-        add(ModItems.HELIUM_MOSS_ITEM.get(), "氦苔藓");
+        add(NatureBlocks.GREEN_MOSS.get(), "绿苔藓");
+        add(NatureBlocks.BROWN_MOSS.get(), "棕苔藓");
+        add(NatureBlocks.RED_MOSS.get(), "红苔藓");
+        add(NatureBlocks.BLUE_MOSS.get(), "蓝苔藓");
+        add(NatureBlocks.PURPLE_MOSS.get(), "紫苔藓");
+        add(NatureBlocks.LAVA_MOSS.get(), "熔岩苔藓");
+        add(NatureBlocks.KRYPTON_MOSS.get(), "氪苔藓");
+        add(NatureBlocks.XENON_MOSS.get(), "氙苔藓");
+        add(NatureBlocks.ARGON_MOSS.get(), "氩苔藓");
+        add(NatureBlocks.NEON_MOSS.get(), "氖苔藓");
+        add(NatureBlocks.HELIUM_MOSS.get(), "氦苔藓");
 
 
         add(DecorativeBlocks.BIG_RUBY_BLOCK.get(), "大红玉块");

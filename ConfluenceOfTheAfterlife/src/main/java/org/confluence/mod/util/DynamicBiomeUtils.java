@@ -11,7 +11,7 @@ import org.confluence.mod.mixed.IChunkSection;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class DynamicBiomeUtils {
+public final class DynamicBiomeUtils {
     public static Holder<Biome> BIOME_CRIMSON;
     public static Holder<Biome> BIOME_CORRUPT;
     public static Holder<Biome> BIOME_HALLOW;

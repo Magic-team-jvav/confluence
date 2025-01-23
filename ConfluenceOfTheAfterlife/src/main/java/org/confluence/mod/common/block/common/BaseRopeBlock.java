@@ -1,43 +1,65 @@
 package org.confluence.mod.common.block.common;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.EntityCollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.NotNull;
 
-public class BaseRopeBlock extends Block implements SimpleWaterloggedBlock {
-    public static final BooleanProperty NORTH = BlockStateProperties.NORTH;
-    public static final BooleanProperty EAST = BlockStateProperties.EAST;
-    public static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
-    public static final BooleanProperty WEST = BlockStateProperties.WEST;
-    public static final BooleanProperty UP = BlockStateProperties.UP;
-    public static final BooleanProperty DOWN = BlockStateProperties.DOWN;
+public class BaseRopeBlock extends PipeBlock implements SimpleWaterloggedBlock {
+    public static final MapCodec<BaseRopeBlock> CODEC = simpleCodec(BaseRopeBlock::new);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    public static final VoxelShape SHAPE = Block.box(1.0, 0.0, 1.0, 15.0, 16.0, 15.0);
 
-    public BaseRopeBlock() {
-        super(BlockBehaviour.Properties.of().noCollission().instabreak());
+    public BaseRopeBlock(Properties properties) {
+        super(0.25F, properties);
         registerDefaultState(stateDefinition.any()
-            .setValue(NORTH, false)
-            .setValue(EAST, false)
-            .setValue(SOUTH, false)
-            .setValue(WEST, false)
-            .setValue(UP, false)
-            .setValue(DOWN, false)
-            .setValue(WATERLOGGED, false));
+                .setValue(NORTH, false)
+                .setValue(EAST, false)
+                .setValue(SOUTH, false)
+                .setValue(WEST, false)
+                .setValue(UP, false)
+                .setValue(DOWN, false)
+                .setValue(WATERLOGGED, false));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, WATERLOGGED);
+    }
+
+    @Override
+    protected MapCodec<BaseRopeBlock> codec() {
+        return CODEC;
+    }
+
+    @Override
+    protected boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
+        return true;
     }
 
     @NotNull
@@ -47,7 +69,7 @@ public class BaseRopeBlock extends Block implements SimpleWaterloggedBlock {
             level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
         boolean isAir = facingState.isAir();
-        return state.setValue(getPropertyForDirection(facing), !isAir);
+        return state.setValue(PROPERTY_BY_DIRECTION.get(facing), !isAir);
     }
 
     @Override
@@ -58,11 +80,11 @@ public class BaseRopeBlock extends Block implements SimpleWaterloggedBlock {
         if (belowState.getFluidState().is(Fluids.WATER)) {
             state = state.setValue(WATERLOGGED, true);
         }
-        for (Direction direction : Direction.values()) {
+        for (Direction direction : ModUtils.DIRECTIONS) {
             BlockPos neighborPos = pos.relative(direction);
             BlockState neighborState = context.getLevel().getBlockState(neighborPos);
             if (!neighborState.isAir()) {
-                state = state.setValue(getPropertyForDirection(direction), true);
+                state = state.setValue(PROPERTY_BY_DIRECTION.get(direction), true);
             }
         }
         return state;
@@ -79,18 +101,45 @@ public class BaseRopeBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, WATERLOGGED);
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return Shapes.empty();
     }
 
-    private BooleanProperty getPropertyForDirection(Direction direction) {
-        return switch (direction) {
-            case NORTH -> NORTH;
-            case EAST -> EAST;
-            case SOUTH -> SOUTH;
-            case WEST -> WEST;
-            case UP -> UP;
-            case DOWN -> DOWN;
-        };
+    @Override
+    protected VoxelShape getVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return Shapes.empty();
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        if (context instanceof EntityCollisionContext ecc) {
+            Entity entity = ecc.getEntity();
+            if (entity instanceof Player) {
+                BlockPos blockPos = entity.blockPosition().atY((int) entity.getEyeY());
+                if (blockPos.equals(pos) || blockPos.below().equals(pos)) {
+                    return Shapes.empty(); // 玩家在绳子里不阻挡
+                }
+                return super.getShape(state, level, pos, context);
+            }
+        }
+        return Shapes.empty();
+    }
+
+    public static class Item extends BlockItem {
+        public Item(Block block) {
+            super(block, new Properties());
+        }
+
+        @Override
+        public InteractionResult place(BlockPlaceContext context) {
+            Level level = context.getLevel();
+            BlockHitResult hitResult = context.getHitResult();
+            BlockPos.MutableBlockPos relative = hitResult.getBlockPos().mutable();
+            while (level.getBlockState(relative).is(ModTags.Blocks.ROPE)) {
+                relative.move(0, -1, 0);
+            }
+            BlockHitResult hitResult1 = new BlockHitResult(hitResult.getLocation(), hitResult.getDirection(), relative, hitResult.isInside());
+            return super.place(new BlockPlaceContext(level, context.getPlayer(), context.getHand(), context.getItemInHand(), hitResult1));
+        }
     }
 }

@@ -454,6 +454,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OreBlocks.RAW_LUMINITE_BLOCK.get(),
                 OreBlocks.LUMINITE_BLOCK.get()
         );
+        tag(ModTags.Blocks.ROPE).add(
+                ROPE.get()
+        );
     }
 
     @Override

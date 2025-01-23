@@ -1,10 +1,8 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.Unbreakable;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -17,9 +15,7 @@ import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.common.GrassSeedItem;
 import org.confluence.terra_curio.common.component.ModRarity;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
@@ -50,18 +46,6 @@ public final class ModItems {
 
     public static final Supplier<Item> DEAD_MANS_SWEATER = ITEMS.registerItem("dead_mans_seater", properties -> new CustomRarityItem(properties.stacksTo(1), ModRarity.GREEN)); // todo 模型
     public static final Supplier<Item> WHOOPIE_CUSHION = ITEMS.registerSimpleItem("whoopie_cushion", new Item.Properties().stacksTo(1));
-
-    public static final Supplier<BlockItem> GREEN_MOSS_ITEM = ITEMS.register("green_moss", () -> new BlockItem(ModBlocks.GREEN_MOSS_BLOCK.get(), new Item.Properties().stacksTo(64)));
-    public static final Supplier<BlockItem> BROWN_MOSS_ITEM = ITEMS.register("brown_moss", () -> new BlockItem(ModBlocks.BROWN_MOSS_BLOCK.get(), new Item.Properties().stacksTo(64)));
-    public static final Supplier<BlockItem> RED_MOSS_ITEM = ITEMS.register("red_moss", () -> new BlockItem(ModBlocks.RED_MOSS_BLOCK.get(), new Item.Properties().stacksTo(64)));
-    public static final Supplier<BlockItem> BLUE_MOSS_ITEM = ITEMS.register("blue_moss", () -> new BlockItem(ModBlocks.BLUE_MOSS_BLOCK.get(), new Item.Properties().stacksTo(64)));
-    public static final Supplier<BlockItem> PURPLE_MOSS_ITEM = ITEMS.register("purple_moss", () -> new BlockItem(ModBlocks.PURPLE_MOSS_BLOCK.get(), new Item.Properties().stacksTo(64)));
-    public static final Supplier<BlockItem> LAVA_MOSS_ITEM = ITEMS.register("lava_moss", () -> new BlockItem(ModBlocks.LAVA_MOSS_BLOCK.get(), new Item.Properties().stacksTo(64)));
-    public static final Supplier<BlockItem> KRYPTON_MOSS_ITEM = ITEMS.register("krypton_moss", () -> new BlockItem(ModBlocks.KRYPTON_MOSS_BLOCK.get(), new Item.Properties().stacksTo(64)));
-    public static final Supplier<BlockItem> XENON_MOSS_ITEM = ITEMS.register("xenon_moss", () -> new BlockItem(ModBlocks.XENON_MOSS_BLOCK.get(), new Item.Properties().stacksTo(64)));
-    public static final Supplier<BlockItem> ARGON_MOSS_ITEM = ITEMS.register("argon_moss", () -> new BlockItem(ModBlocks.ARGON_MOSS_BLOCK.get(), new Item.Properties().stacksTo(64)));
-    public static final Supplier<BlockItem> NEON_MOSS_ITEM = ITEMS.register("neon_moss", () -> new BlockItem(ModBlocks.NEON_MOSS_BLOCK.get(), new Item.Properties().stacksTo(64)));
-    public static final Supplier<BlockItem> HELIUM_MOSS_ITEM = ITEMS.register("helium_moss", () -> new BlockItem(ModBlocks.HELIUM_MOSS_BLOCK.get(), new Item.Properties().stacksTo(64)));
 
     public static final Supplier<GrassSeedItem> GRASS_SEED = ITEMS.register("grass_seed", () -> new GrassSeedItem(Map.of(Blocks.DIRT, Blocks.GRASS_BLOCK)));
     public static final Supplier<GrassSeedItem> JUNGLE_GRASS_SEED =  ITEMS.register("jungle_grass_seed", () -> new GrassSeedItem(Map.of(Blocks.MUD, NatureBlocks.JUNGLE_GRASS_BLOCK.get())));

@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.*;
 import java.util.function.Predicate;
 
-public class ComputerUtils {
+public final class ComputerUtils {
 
     private static final BlockPos[] DIRECTIONS = {
             new BlockPos( 1,  0,  0), new BlockPos(-1,  0,  0),

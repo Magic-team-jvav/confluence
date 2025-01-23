@@ -126,7 +126,11 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.DEVELOPER_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.developer"))
                     .displayItems((parameters, output) -> {
-                        // todo
+                        ModItems.HIDDEN.getEntries().forEach(item -> output.accept(item.get()));
+                        output.accept(ToolItems.DEV_BUG_NET.get());
+                        output.accept(SwordItems.DEVELOPER_SWORD.get());
+                        output.accept(BoomerangItems.DEVELOPER_BOOMERANG.get());
+                        output.accept(BowItems.DEVELOPER_BOW.get());
                     }).build());
     // 食物与药水
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FOOD_AND_POTIONS = TABS.register("food_and_potions",

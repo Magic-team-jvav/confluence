@@ -9,6 +9,8 @@ import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,9 +25,11 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.neoforged.neoforgespi.locating.IModFile;
+import nowebsite.makertechno.terra_furniture.common.init.TFBlocks;
+import nowebsite.makertechno.terra_furniture.common.init.TFTabs;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.advancement.ModAchievements;
@@ -34,6 +38,7 @@ import org.confluence.mod.common.block.common.HoneyCauldronBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
+import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.fluid.FluidBuilder;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModEntities;
@@ -41,6 +46,7 @@ import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
+import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.accessory.MusicBoxItem;
@@ -118,6 +124,7 @@ public final class ModEvents {
             });
         }
     }
+
     @SubscribeEvent
     public static void register(RegisterEvent event) {
         FluidBuilder.register(event);
@@ -184,22 +191,39 @@ public final class ModEvents {
         event.register(AccessoryItems.SPECIAL$PRICE);
     }
 
+    @SuppressWarnings("all")
     @SubscribeEvent
     public static void buildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
+        CreativeModeTab.TabVisibility visibility = CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS;
         if (event.getTab() == TCTabs.ACCESSORIES.get()) {
-            event.insertFirst(TCItems.BASE_POINT.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            event.insertFirst(TCItems.EVERLASTING.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertFirst(TCItems.BASE_POINT.get().getDefaultInstance(), visibility);
+            event.insertFirst(TCItems.EVERLASTING.get().getDefaultInstance(), visibility);
 
-            Object[] entries = AccessoryItems.ITEMS.getEntries().toArray();
-            for (int i = entries.length - 1; i > -1; i--) {
-                DeferredItem<? extends Item> entry = (DeferredItem<? extends Item>) entries[i];
-                event.insertFirst(entry.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            ItemStack everlasting = TCItems.EVERLASTING.get().getDefaultInstance();
+            for (DeferredHolder<Item, ? extends Item> entry : AccessoryItems.ITEMS.getEntries()) {
+                event.insertBefore(everlasting, entry.get().getDefaultInstance(), visibility);
+            }
+        } else if (event.getTab() == TFTabs.FURNITURE.get()) {
+            ItemStack plasticChair = TFBlocks.PLASTIC_CHAIR.toStack();
+            for (LogBlockSet logBlockSet : LogBlockSet.LOG_BLOCK_SETS) {
+                if (logBlockSet.getDoor() != null) {
+                    event.insertBefore(plasticChair, logBlockSet.getDoor().toStack(), visibility);
+                }
+                if (logBlockSet.getTrapdoor() != null) {
+                    event.insertBefore(plasticChair, logBlockSet.getTrapdoor().toStack(), visibility);
+                }
+                if (logBlockSet.getSignItem() != null) {
+                    event.insertBefore(plasticChair, logBlockSet.getSignItem().toStack(), visibility);
+                }
+            }
+            for (DeferredHolder<Block, ? extends Block> entry : StatueBlocks.BLOCKS.getEntries()) {
+                event.insertBefore(plasticChair, entry.get().asItem().getDefaultInstance(), visibility);
             }
         }
     }
 
     /**
-     * @see org.confluence.mod.common.data.saved.ConfluenceData#increaseRevealStep
+     * @see ConfluenceData#increaseRevealStep
      */
     @SubscribeEvent
     public static void phaseJourney$Register(PhaseJourneyEvent.Register event) {

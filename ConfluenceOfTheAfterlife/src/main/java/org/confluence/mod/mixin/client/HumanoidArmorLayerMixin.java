@@ -4,6 +4,8 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.Share;
+import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
@@ -13,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
 import org.confluence.mod.util.ClientUtils;
@@ -24,11 +27,13 @@ import static org.confluence.mod.util.ModUtils.getSlotIndex;
 @Mixin(HumanoidArmorLayer.class)
 public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends HumanoidModel<T>> {
     @WrapOperation(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;"))
-    private ItemStack wrapItem(LivingEntity instance, EquipmentSlot slot, Operation<ItemStack> original) {
+    private ItemStack wrapItem(LivingEntity instance, EquipmentSlot slot, Operation<ItemStack> original, @Share("extra") LocalRef<ExtraInventory> extra) {
         if (instance instanceof AbstractClientPlayer) {
             int index = getSlotIndex(slot);
             if (index != -1) {
-                ItemStack vanityArmor = instance.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmor(index);
+                ExtraInventory inventory = instance.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+                extra.set(inventory);
+                ItemStack vanityArmor = inventory.getVanityArmor(index);
                 if (!vanityArmor.isEmpty()) return vanityArmor;
             }
         }
@@ -36,11 +41,11 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
     }
 
     @WrapOperation(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/client/extensions/common/IClientItemExtensions;getArmorLayerTintColor(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ArmorMaterial$Layer;II)I", remap = false))
-    private int dyeColor(IClientItemExtensions instance, ItemStack stack, LivingEntity entity, ArmorMaterial.Layer layer, int layerIdx, int fallbackColor, Operation<Integer> original, @Local(argsOnly = true) EquipmentSlot slot) {
+    private int dyeColor(IClientItemExtensions instance, ItemStack stack, LivingEntity entity, ArmorMaterial.Layer layer, int layerIdx, int fallbackColor, Operation<Integer> original, @Local(argsOnly = true) EquipmentSlot slot, @Share("extra") LocalRef<ExtraInventory> extra) {
         if (entity instanceof AbstractClientPlayer) {
             int index = getSlotIndex(slot);
             if (index != -1) {
-                ItemStack vanityArmorDye = entity.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmorDye(index);
+                ItemStack vanityArmorDye = extra.get().getVanityArmorDye(index);
                 if (!vanityArmorDye.isEmpty() && vanityArmorDye.getItem() instanceof BaseDyeItem dyeItem) {
                     return dyeItem.color;
                 }
@@ -50,9 +55,9 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
     }
 
     @ModifyExpressionValue(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/client/ClientHooks;getArmorTexture(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ArmorMaterial$Layer;ZLnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/resources/ResourceLocation;", remap = false))
-    private ResourceLocation withGray(ResourceLocation original, @Local(argsOnly = true) LivingEntity entity, @Local(argsOnly = true) EquipmentSlot slot) {
+    private ResourceLocation withGray(ResourceLocation original, @Local(argsOnly = true) LivingEntity entity, @Local(argsOnly = true) EquipmentSlot slot, @Share("extra") LocalRef<ExtraInventory> extra) {
         if (entity instanceof AbstractClientPlayer) {
-            if (!entity.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmorDye(getSlotIndex(slot)).isEmpty()) {
+            if (!extra.get().getVanityArmorDye(getSlotIndex(slot)).isEmpty()) {
                 return ClientUtils.getGrayTexture(original);
             }
         }

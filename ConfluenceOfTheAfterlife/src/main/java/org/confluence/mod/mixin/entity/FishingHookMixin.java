@@ -3,6 +3,8 @@ package org.confluence.mod.mixin.entity;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Share;
+import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -84,23 +86,29 @@ public abstract class FishingHookMixin implements IFishingHook, SelfGetter<Fishi
         return confluence$bait;
     }
 
+    @Inject(method = "tick", at = @At("HEAD"))
+    private void checkInLava(CallbackInfo ci, @Share("isLavaHook") LocalBooleanRef isLavaHook) {
+        isLavaHook.set(confluence$isLavaHook());
+    }
+
     @ModifyArg(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;is(Lnet/minecraft/tags/TagKey;)Z"))
-    private TagKey<Fluid> isLavaTag(TagKey<Fluid> pTag) {
-        if (confluence$isLavaHook()) return ModTags.FISHING_ABLE;
+    private TagKey<Fluid> isLavaTag(TagKey<Fluid> pTag, @Share("isLavaHook") LocalBooleanRef isLavaHook) {
+        if (isLavaHook.get()) return ModTags.FISHING_ABLE;
         return ModTags.NOT_LAVA;
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
-    private void achievement(CallbackInfo ci) {
-        if (!confluence$achievement && confluence$isLavaHook() && confluence$isInLava() && getPlayerOwner() instanceof ServerPlayer serverPlayer) {
+    private void achievement(CallbackInfo ci, @Share("isLavaHook") LocalBooleanRef isLavaHook) {
+        if (!confluence$achievement && isLavaHook.get() && confluence$isInLava() && getPlayerOwner() instanceof ServerPlayer serverPlayer) {
             PlayerUtils.awardAchievement(serverPlayer, "hot_reels");
             this.confluence$achievement = true;
         }
     }
 
     @WrapOperation(method = "catchingFish", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/world/level/block/Block;)Z"))
-    private boolean isLavaBlock(BlockState instance, Block block, Operation<Boolean> original) {
-        if (confluence$isLavaHook()) return original.call(instance, block) || instance.is(Blocks.LAVA) || instance.is(ModBlocks.HONEY.get()) || instance.is(ModBlocks.SHIMMER.get());
+    private boolean isLavaBlock(BlockState instance, Block block, Operation<Boolean> original, @Share("isLavaHook") LocalBooleanRef isLavaHook) {
+        isLavaHook.set(confluence$isLavaHook());
+        if (isLavaHook.get()) return original.call(instance, block) || instance.is(Blocks.LAVA) || instance.is(ModBlocks.HONEY.get()) || instance.is(ModBlocks.SHIMMER.get());
         return original.call(instance, block) || instance.is(ModBlocks.HONEY.get()) || instance.is(ModBlocks.SHIMMER.get());
     }
 
@@ -111,38 +119,39 @@ public abstract class FishingHookMixin implements IFishingHook, SelfGetter<Fishi
     }
 
     @ModifyArg(method = "catchingFish", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;sendParticles(Lnet/minecraft/core/particles/ParticleOptions;DDDIDDDD)I", ordinal = 0), index = 0)
-    private ParticleOptions smokeParticle(ParticleOptions pType) {
-        if (confluence$isInLava()) return ParticleTypes.SMOKE;
+    private ParticleOptions smokeParticle(ParticleOptions pType, @Share("isLavaHook") LocalBooleanRef isLavaHook) {
+        if (isLavaHook.get()) return ParticleTypes.SMOKE;
         return pType;
     }
 
     @ModifyArg(method = "catchingFish", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;sendParticles(Lnet/minecraft/core/particles/ParticleOptions;DDDIDDDD)I", ordinal = 1), index = 0)
-    private ParticleOptions flameParticle(ParticleOptions pType) {
-        if (confluence$isInLava()) return ParticleTypes.FLAME;
+    private ParticleOptions flameParticle(ParticleOptions pType, @Share("isLavaHook") LocalBooleanRef isLavaHook) {
+        if (isLavaHook.get()) return ParticleTypes.FLAME;
         return pType;
     }
 
     @ModifyArg(method = "catchingFish", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;sendParticles(Lnet/minecraft/core/particles/ParticleOptions;DDDIDDDD)I", ordinal = 2), index = 0)
-    private ParticleOptions flameParticle2(ParticleOptions pType) {
-        if (confluence$isInLava()) return ParticleTypes.FLAME;
+    private ParticleOptions flameParticle2(ParticleOptions pType, @Share("isLavaHook") LocalBooleanRef isLavaHook) {
+        if (isLavaHook.get()) return ParticleTypes.FLAME;
         return pType;
     }
 
     @ModifyArg(method = "catchingFish", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;sendParticles(Lnet/minecraft/core/particles/ParticleOptions;DDDIDDDD)I", ordinal = 3), index = 0)
-    private ParticleOptions smokeParticle2(ParticleOptions pType) {
-        if (confluence$isInLava()) return ParticleTypes.SMOKE;
+    private ParticleOptions smokeParticle2(ParticleOptions pType, @Share("isLavaHook") LocalBooleanRef isLavaHook) {
+        isLavaHook.set(confluence$isInLava());
+        if (isLavaHook.get()) return ParticleTypes.SMOKE;
         return pType;
     }
 
     @ModifyArg(method = "catchingFish", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;sendParticles(Lnet/minecraft/core/particles/ParticleOptions;DDDIDDDD)I", ordinal = 4), index = 0)
-    private ParticleOptions flameParticle3(ParticleOptions pType) {
-        if (confluence$isInLava()) return ParticleTypes.FLAME;
+    private ParticleOptions flameParticle3(ParticleOptions pType, @Share("isLavaHook") LocalBooleanRef isLavaHook) {
+        if (isLavaHook.get()) return ParticleTypes.FLAME;
         return pType;
     }
 
     @ModifyArg(method = "catchingFish", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;sendParticles(Lnet/minecraft/core/particles/ParticleOptions;DDDIDDDD)I", ordinal = 5), index = 0)
-    private ParticleOptions lavaParticle(ParticleOptions pType) {
-        if (confluence$isInLava()) return ParticleTypes.LAVA;
+    private ParticleOptions lavaParticle(ParticleOptions pType, @Share("isLavaHook") LocalBooleanRef isLavaHook) {
+        if (isLavaHook.get()) return ParticleTypes.LAVA;
         return pType;
     }
 

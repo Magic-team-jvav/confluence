@@ -4,6 +4,8 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.Share;
+import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import net.minecraft.core.Holder;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.effect.MobEffect;
@@ -25,13 +27,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Villager.class)
 public abstract class VillagerMixin {
     @ModifyExpressionValue(method = "updateSpecialPrices", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;hasEffect(Lnet/minecraft/core/Holder;)Z"))
-    private boolean hasSpecialOffer(boolean original, @Local(argsOnly = true) Player player) {
-        return original || TCUtils.getAccessoriesValue(player, AccessoryItems.SPECIAL$PRICE) > 0;
+    private boolean hasSpecialOffer(boolean original, @Local(argsOnly = true) Player player, @Share("specialPrice") LocalIntRef specialPrice) {
+        int value = TCUtils.getAccessoriesValue(player, AccessoryItems.SPECIAL$PRICE);
+        specialPrice.set(value);
+        return original || value > 0;
     }
 
     @WrapOperation(method = "updateSpecialPrices", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getEffect(Lnet/minecraft/core/Holder;)Lnet/minecraft/world/effect/MobEffectInstance;"))
-    private MobEffectInstance modifyAmplifier(Player instance, Holder<MobEffect> holder, Operation<MobEffectInstance> original) {
-        int value = TCUtils.getAccessoriesValue(instance, AccessoryItems.SPECIAL$PRICE);
+    private MobEffectInstance modifyAmplifier(Player instance, Holder<MobEffect> holder, Operation<MobEffectInstance> original, @Share("specialPrice") LocalIntRef specialPrice) {
+        int value = specialPrice.get();
         MobEffectInstance effectInstance = original.call(instance, holder);
         if (value > 0) {
             if (effectInstance == null) {

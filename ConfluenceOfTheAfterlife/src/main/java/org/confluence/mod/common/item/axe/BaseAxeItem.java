@@ -16,9 +16,6 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.level.BlockDropsEvent;
-import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
@@ -33,7 +30,11 @@ public class BaseAxeItem extends AxeItem {
     }
 
     public BaseAxeItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity) {
-        super(tier, new Properties().component(TCDataComponentTypes.MOD_RARITY, rarity)
+        this(tier, rawDamage, rawSpeed, new Properties(), rarity);
+    }
+
+    public BaseAxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
+        super(tier, properties.component(TCDataComponentTypes.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4)));
     }
 

@@ -138,7 +138,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         // todo 如果罐子位于天然地牢墙前方且低于地表地层，有 1/35 (2.86%) 的几率掉落金钥匙。若掉落，则流程结束。
         if (ModSecretSeeds.FOR_THE_WORTHY.match() && level.random.nextFloat() < 0.25F) {
             BaseBombEntity bomb = new BaseBombEntity(ModEntities.BOMB_ENTITY.get(), level);
-            bomb.setPos(blockPos.getCenter());
+            bomb.setPos(center);
             level.addFreshEntity(bomb);
             return;
         }

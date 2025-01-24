@@ -30,11 +30,11 @@ public final class ModTiers {
     public static final Tier SILVER = new PoweredTier(45, ModTags.Blocks.NEEDS_2_LEVEL, 304, 6, 2, 14, () -> Ingredient.of(MaterialItems.SILVER_INGOT.get()));
     public static final Tier TUNGSTEN = new PoweredTier(50, ModTags.Blocks.NEEDS_3_LEVEL, 648, 8, 2, 18, () -> Ingredient.of(MaterialItems.TUNGSTEN_INGOT.get()));
     public static final Tier GOLD = new PoweredTier(55, ModTags.Blocks.NEEDS_4_LEVEL, 1600, 8, 3, 22, () -> Ingredient.of(Items.GOLD_INGOT));
-    public static final Tier CANDY = new PoweredTier(55, ModTags.Blocks.NEEDS_4_LEVEL, 4000, 6, 2, 14, () -> Ingredient.of(Items.SUGAR)); // 糖(圣诞限定）
+    public static final Tier CANDY_CANE = new PoweredTier(55, ModTags.Blocks.NEEDS_4_LEVEL, 4000, 6, 2, 14, () -> Ingredient.of(Items.SUGAR)); // 糖(圣诞限定）
     public static final Tier FOSSIL = new PoweredTier(55, ModTags.Blocks.NEEDS_4_LEVEL, 1200, 8, 3, 22, () -> Ingredient.of(MaterialItems.STURDY_FOSSIL.get()));
-    // 骨镐 55 4
+    public static final Tier BONE = new PoweredTier(55, ModTags.Blocks.NEEDS_4_LEVEL, 1, 1, 1, 1, () -> Ingredient.of(Items.BONE_BLOCK));
     public static final Tier PLATINUM = new PoweredTier(59, ModTags.Blocks.NEEDS_4_LEVEL, 1661, 8, 3, 22, () -> Ingredient.of(MaterialItems.PLATINUM_INGOT.get()));
-    // 掠夺鲨 59 4
+    public static final Tier REAVER_SHARK = new PoweredTier(59, ModTags.Blocks.NEEDS_4_LEVEL, 1, 1, 1, 1, () -> Ingredient.EMPTY);
 
     public static final Tier DEMONITE = new PoweredTier(65, ModTags.Blocks.NEEDS_5_LEVEL, 10000, 10, 4, 24, () -> Ingredient.of(MaterialItems.DEMONITE_INGOT.get()));
     public static final Tier TR_CRIMSON = new PoweredTier(70, ModTags.Blocks.NEEDS_5_LEVEL, 10000, 11, 4, 25, () -> Ingredient.of(MaterialItems.TR_CRIMSON_INGOT.get()));

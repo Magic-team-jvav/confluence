@@ -60,8 +60,8 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> PLATINUM_BOARD_SWORD = register("platinum_board_sword", ModTiers.PLATINUM, 4, -2.4F, NORMAL_SWORD.get());
 
     //tip 注册剑的特殊功能只需修改最后一个参数即可，只需要把 NORMAL_SWORD替换成prefab的其他预制效果，还可以追加效果
-    public static final DeferredItem<SwordItem> FAKE_SWORD = register("fake_sword",ModTiers.CANDY, 0, -2.4F, ModRarity.GRAY, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> CANDY_CANE_SWORD = register("candy_cane_sword",ModTiers.CANDY,2,-1.4f,NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> FAKE_SWORD = register("fake_sword",ModTiers.CANDY_CANE, 0, -2.4F, ModRarity.GRAY, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> CANDY_CANE_SWORD = register("candy_cane_sword",ModTiers.CANDY_CANE,2,-1.4f,NORMAL_SWORD.get());
 
     public static final DeferredItem<SwordItem> FALCON_BLADE = register("falcon_blade",ModTiers.TITANIUM, 3, -1.45F, ModRarity.BLUE, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> ZOMBIE_ARM = register("zombie_arm",ModTiers.TITANIUM,3,-1.4f,NORMAL_SWORD.get());

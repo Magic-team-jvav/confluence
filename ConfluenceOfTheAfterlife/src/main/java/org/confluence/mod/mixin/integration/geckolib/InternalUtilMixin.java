@@ -15,7 +15,7 @@ import static org.confluence.mod.util.ModUtils.getSlotIndex;
 
 @Mixin(value = InternalUtil.class, remap = false)
 public abstract class InternalUtilMixin {
-    @ModifyVariable(method = "tryRenderGeoArmorPiece", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getItem()Lnet/minecraft/world/item/Item;"), argsOnly = true)
+    @ModifyVariable(method = "tryRenderGeoArmorPiece", at = @At("HEAD"), argsOnly = true)
     private static <T extends LivingEntity> ItemStack wrapItem(ItemStack stack, @Local(argsOnly = true) T entity, @Local(argsOnly = true) EquipmentSlot slot) {
         if (entity instanceof AbstractClientPlayer) {
             int index = getSlotIndex(slot);

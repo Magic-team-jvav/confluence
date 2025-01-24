@@ -35,12 +35,16 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.CoinPortalEntity;
+import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
+import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ArrowItems;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
+import org.confluence.mod.common.worldgen.secret_seed.ModSecretSeeds;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.jetbrains.annotations.Nullable;
@@ -127,13 +131,17 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         }
     }
 
-    // todo 专家模式掉落
     private void dropSequence(Level level, BlockPos blockPos) {
         if (level.isClientSide) return;
         Vec3 center = blockPos.getCenter();
         if (summonHole(level, center)) return;
-        // 如果罐子位于天然地牢墙前方且低于地表地层，有 1/35 (2.86%) 的几率掉落金钥匙。若掉落，则流程结束。
-        // 如果玩家正在游玩秘密世界种子 for the worthy，有 1/4 (25%) 的几率掉落一个点燃的炸弹。若掉落，则流程结束。
+        // todo 如果罐子位于天然地牢墙前方且低于地表地层，有 1/35 (2.86%) 的几率掉落金钥匙。若掉落，则流程结束。
+        if (ModSecretSeeds.FOR_THE_WORTHY.match() && level.random.nextFloat() < 0.25F) {
+            BaseBombEntity bomb = new BaseBombEntity(ModEntities.BOMB_ENTITY.get(), level);
+            bomb.setPos(center);
+            level.addFreshEntity(bomb);
+            return;
+        }
         if (dropPotion(level, center)) return;
         if (dropWormhole(level, center)) return;
         boolean flag = switch (level.random.nextInt(7)) {
@@ -160,8 +168,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     private boolean dropPotion(Level level, Vec3 center) {
-        // 专家模式 0.0444F
-        if (level.random.nextFloat() < 0.0222F) {
+        if (level.random.nextFloat() < (ModUtils.isAtLeastExpert(level) ? 0.0444F : 0.0222F)) {
             double y = center.y;
             Item item = null;
             if (level.dimension() == Level.NETHER) {
@@ -176,7 +183,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                     case 7 -> GRAVITATION_POTION.get();
                     case 8 -> THORNS_POTION.get();
                     case 9 -> WATER_WALKING_POTION.get();
-                    // 战斗
+                    // todo 战斗
                     case 11 -> HEART_REACH_POTION.get();
                     case 12 -> TITAN_POTION.get();
                     default -> null;
@@ -220,13 +227,13 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                     case 2 -> NIGHT_OWL_POTION.get();
                     case 3 -> SWIFTNESS_POTION.get();
                     case 4 -> MINING_POTION.get();
-                    // 镇静
+                    // todo 镇静
                     case 6 -> BUILDER_POTION.get();
                     default -> RECALL_POTION.get();
                 };
             }
             if (item != null) {
-                ModUtils.createItemEntity(item, 1, center.x, y, center.z, level, 0);
+                ModUtils.createItemEntity(item.getDefaultInstance(), center.x, y, center.z, level, 0);
                 return true;
             }
         }
@@ -235,7 +242,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
 
     private boolean dropWormhole(Level level, Vec3 center) {
         if (level.players().size() > 1 && level.random.nextFloat() < 0.0333F) {
-            // todo 生成虫洞药水
+            ModUtils.createItemEntity(WORMHOLE_POTION.toStack(), center.x, center.y, center.z, level, 0);
             return true;
         }
         return false;
@@ -248,7 +255,10 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
             if (player.getHealth() < player.getMaxHealth()) {
                 int amount = 1;
                 if (level.random.nextBoolean()) amount++;
-                /* 在专家模式中，有 1/8 的几率掉落 1 个心，3/8 的几率掉落 2 个心，3/8 的几率掉落 3 个心，以及 1/8 的几率掉落 4 个心。*/
+                if (ModUtils.isAtLeastExpert(level)) {
+                    if (level.random.nextBoolean()) amount++;
+                    if (level.random.nextBoolean()) amount++;
+                }
                 ModUtils.createItemEntity(ModItems.HEART.get(), amount, center.x, center.y, center.z, level, 0);
             } else if (player.getInventory().hasAnyMatching(itemStack -> itemStack.getCount() < 20 && itemStack.is(ModTags.Items.TORCH))) {
                 return dropTorch(level, blockPos, center);
@@ -259,6 +269,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         return false;
     }
 
+    // todo 掉火把
     private boolean dropTorch(Level level, BlockPos blockPos, Vec3 center) {
 //        boolean tundra = this == TUNDRA_POTS.get();
 //        int amount = tundra ? level.random.nextInt(2, 7) : level.random.nextInt(4, 13);
@@ -314,8 +325,11 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         } else {
             item = PotionItems.LESSER_HEALING_POTION.get();
         }
-        // 在专家模式，有 1/3 的几率额外掉落 1 个
-        ModUtils.createItemEntity(item, 1, center.x, center.y, center.z, level, 0);
+        int amount = 1;
+        if (ModUtils.isAtLeastExpert(level) && level.random.nextFloat() < 0.3333F) {
+            amount++;
+        }
+        ModUtils.createItemEntity(item, amount, center.x, center.y, center.z, level, 0);
         return true;
     }
 
@@ -328,8 +342,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         } else {
             return dropRope(level, center);
         }
-        // 专家模式 1-7 个
-        ModUtils.createItemEntity(item, level.random.nextInt(1, 5), center.x, center.y, center.z, level, 0);
+        ModUtils.createItemEntity(item, level.random.nextInt(1, ModUtils.isAtLeastExpert(level) ? 5 : 8), center.x, center.y, center.z, level, 0);
         return true;
     }
 
@@ -364,10 +377,23 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         } else if (random < 0.25F) {
             ratio = Mth.nextFloat(level.random, 1.05F, 1.1F);
         }
-        // 专家模式增益
-        // 击败增益
+        if (ModUtils.isAtLeastExpert(level)) {
+            ratio *= 2.5F;
+            random = level.random.nextFloat();
+            if (random < 0.25F) {
+                ratio *= 1.25F;
+            } else if (random < 0.5F) {
+                ratio *= 1.25F;
+            } else {
+                ratio *= 1.75F;
+            }
+        }
+        KillBoard killBoard = ConfluenceData.get((ServerLevel) level).getKillBoard();
+        if (killBoard.isEyeOfCthulhuDefeated() || killBoard.isEaterOfWorld_BrainOfCthulhuDefeated()) {
+            ratio *= 1.1F; // todo 剩下的
+        }
         ratio *= moneyRatio;
-        int amount = (int) Math.ceil(level.random.nextInt(8, 34) * ratio);
+        int amount = (int) Math.ceil(level.random.nextInt(80, 358) * ratio);
         ModUtils.dropMoney(amount, center.x, y, center.z, level);
         return true;
     }

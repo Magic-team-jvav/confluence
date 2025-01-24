@@ -205,6 +205,19 @@ public class NatureBlocks {
 
     public static final DeferredBlock<Block> BLINKING_ROYAL_WATERLILY = registerWithItem("blinking_royal_waterlily", () -> new BlinkingRoyalWaterlilyBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LILY_PAD)), BlinkingRoyalWaterlilyBlock.Item::new);
 
+    //苔藓
+    public static final Supplier<BaseMossBlock> GREEN_MOSS = registerWithItem("green_moss", () -> new BaseMossBlock(5));
+    public static final Supplier<BaseMossBlock> BROWN_MOSS = registerWithItem("brown_moss", () -> new BaseMossBlock(5));
+    public static final Supplier<BaseMossBlock> RED_MOSS = registerWithItem("red_moss", () -> new BaseMossBlock(5));
+    public static final Supplier<BaseMossBlock> BLUE_MOSS = registerWithItem("blue_moss", () -> new BaseMossBlock(5));
+    public static final Supplier<BaseMossBlock> PURPLE_MOSS = registerWithItem("purple_moss", () -> new BaseMossBlock(5));
+    public static final Supplier<BaseMossBlock> LAVA_MOSS = registerWithItem("lava_moss", () -> new BaseMossBlock(10, true));
+    public static final Supplier<BaseMossBlock> KRYPTON_MOSS = registerWithItem("krypton_moss", () -> new BaseMossBlock(5));
+    public static final Supplier<BaseMossBlock> XENON_MOSS = registerWithItem("xenon_moss", () -> new BaseMossBlock(5));
+    public static final Supplier<BaseMossBlock> ARGON_MOSS = registerWithItem("argon_moss", () -> new BaseMossBlock(5));
+    public static final Supplier<BaseMossBlock> NEON_MOSS = registerWithItem("neon_moss", () -> new BaseMossBlock(5));
+    public static final Supplier<BaseMossBlock> HELIUM_MOSS = registerWithItem("helium_moss", () -> new BaseMossBlock(5));
+
     private static <B extends Block> DeferredBlock<B> registerWithoutItem(String id, Supplier<B> block) {
         return BLOCKS.register(id, block);
     }

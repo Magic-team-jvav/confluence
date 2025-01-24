@@ -140,13 +140,10 @@ public abstract class ShimmerItemTransmutationEvent extends Event {
                             int count = result.getCount() * times;
                             int maxStackSize = result.getMaxStackSize();
                             while (count > maxStackSize) {
-                                ItemStack copy = result.copy();
-                                copy.setCount(maxStackSize);
-                                results.add(copy);
+                                results.add(result.copyWithCount(maxStackSize));
                                 count -= maxStackSize;
                             }
-                            result.setCount(count);
-                            results.add(result);
+                            results.add(result.copyWithCount(count));
                         }
                         this.shrink = transmutation.shrink * times;
                         this.targets = results;

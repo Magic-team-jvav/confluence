@@ -39,7 +39,7 @@ public class CustomRarityItem extends Item {
     }
 
     @Override
-    public MutableComponent getName(ItemStack pStack) {
+    public Component getName(ItemStack pStack) {
         return withRarity(pStack, Component.translatable(getDescriptionId(pStack)));
     }
 

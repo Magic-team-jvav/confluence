@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Entity.class)
 public abstract class ClientEntityMixin implements SelfGetter<Entity> {
     @Inject(method = "getTeamColor", at = @At("HEAD"), cancellable = true)
-    public void getTeamColor(CallbackInfoReturnable<Integer> cir) {
+    private void getTeamColor(CallbackInfoReturnable<Integer> cir) {
         if (Minecraft.getInstance().player != null && Minecraft.getInstance().player.hasEffect(ModEffects.HUNTER)) {
             GlowingHelper helper = GlowingHelper.INSTANCE;
             //自定义狩猎药水表

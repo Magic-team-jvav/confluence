@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -22,11 +21,10 @@ import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.entity.projectile.bomb.ScarabBombEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
-
-import java.util.List;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class LevelEvents {
@@ -54,11 +52,9 @@ public final class LevelEvents {
             ServerLevel level = event.getLevel();
             BlockState blockState = event.getState();
             BlockPos pos = event.getPos();
-            ItemStack shears = Items.SHEARS.getDefaultInstance();
-            if (blockState.is(ModTags.Blocks.VINES) && TCUtils.hasAccessoriesType(living, AccessoryItems.SHEARS$DIG)) {
+            if (blockState.is(ModTags.Blocks.VINES) && TCUtils.hasAccessoriesType(living, AccessoryItems.VINE$ROPE)) {
                 event.setCanceled(true);
-                List<ItemStack> drops = Block.getDrops(blockState, level, pos, event.getBlockEntity(), living, shears);
-                drops.forEach(itemStack -> Block.popResource(level, pos, itemStack));
+                Block.popResource(level, pos, ModBlocks.VINE_ROPE.get().asItem().getDefaultInstance());
             }
         }
     }

@@ -2,6 +2,7 @@ package org.confluence.mod.util;
 
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentManager;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,6 +23,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.network.s2c.GamePhasePacketS2C;
 import org.confluence.mod.network.s2c.ManaPacketS2C;
 import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
@@ -32,8 +34,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntFunction;
 import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
+import static org.confluence.mod.common.attachment.ExtraInventory.COINS_START;
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_COINS;
 
 public final class PlayerUtils {
@@ -44,12 +48,12 @@ public final class PlayerUtils {
         if (coin == ModItems.COPPER_COIN.get()) return 3;
         return -1;
     };
-    public static final IntFunction<Item> INDEX_2_COIN = index -> switch (index) {
+    public static final IntFunction<CoinItem> INDEX_2_COIN = index -> switch (index) {
         case 0 -> ModItems.COPPER_COIN.get();
         case 1 -> ModItems.SILVER_COIN.get();
         case 2 -> ModItems.GOLDEN_COIN.get();
         case 3 -> ModItems.PLATINUM_COIN.get();
-        default -> Items.AIR;
+        default -> ModItems.EMERALD_COIN.get();
     };
 
     public static void syncMana2Client(ServerPlayer serverPlayer, ManaStorage manaStorage) {
@@ -177,15 +181,13 @@ public final class PlayerUtils {
     }
 
     public static int getItemCount(List<ItemStack> have, Item item) {
-        AtomicInteger count = new AtomicInteger();
-        have.forEach(stack -> count.addAndGet(stack.is(item) ? stack.getCount() : 0));
-        return count.get();
-    }
-
-    public static int getInventoryItemCount(Player player, Item item){
-        AtomicInteger count = new AtomicInteger();
-        player.getInventory().items.forEach(stack -> count.addAndGet(stack.is(item)? stack.getCount():0));
-        return count.get();
+        int count = 0;
+        for (ItemStack itemStack : have) {
+            if (!itemStack.isEmpty() && itemStack.is(item)) {
+                count += itemStack.getCount();
+            }
+        }
+        return count;
     }
 
     public static void consumeItemCount(List<ItemStack> have, Item item, int consumeCount) {
@@ -264,5 +266,36 @@ public final class PlayerUtils {
             money /= multiple;
         }
         return coins;
+    }
+
+    public static void sortCoins(Player player) {
+        ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+        Object2IntOpenHashMap<Integer> map = new Object2IntOpenHashMap<>();
+        for (int i = 0; i < SIZE_COINS; i++) {
+            ItemStack coins = extraInventory.getCoins(i);
+            if (coins.isEmpty() || !coins.is(ModTags.Items.COINS)) continue;
+            upgradesCoin(map, COIN_2_INDEX.applyAsInt(coins.getItem()), i, coins.getCount(), extraInventory);
+        }
+        for (int i = 0, j = 0; i < SIZE_COINS; i++) {
+            int count = map.getInt(i);
+            if (count <= 0) continue;
+            CoinItem coinItem = INDEX_2_COIN.apply(3 - i);
+            while (count > 99) {
+                extraInventory.setItem(COINS_START + j++, new ItemStack(coinItem, 99));
+                count -= 99;
+            }
+            if (count > 0) {
+                extraInventory.setItem(COINS_START + j++, new ItemStack(coinItem, count));
+            }
+        }
+    }
+
+    private static void upgradesCoin(Object2IntOpenHashMap<Integer> map, int index, int slot, int count, ExtraInventory extraInventory) {
+        if (map.addTo(index, count) + count < 99) return;
+        Supplier<CoinItem> upgrade = INDEX_2_COIN.apply(3 - index).upgrade;
+        if (upgrade == null) return;
+        extraInventory.setItem(COINS_START + slot, ItemStack.EMPTY);
+        upgradesCoin(map, COIN_2_INDEX.applyAsInt(upgrade.get()), index, 1, extraInventory);
+        map.addTo(index, -99);
     }
 }

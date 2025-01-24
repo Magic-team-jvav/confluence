@@ -83,7 +83,7 @@ public class BlinkingRoyalWaterlilyBlock extends HorizontalDirectionalWithHorizo
                 if (level.mayInteract(player, blockpos) && player.mayUseItemAt(blockpos1, direction, itemstack)) {
                     BlockState blockstate1 = level.getBlockState(blockpos);
                     if (blockstate1.getFluidState().is(ModFluids.SHIMMER.fluid().get())) {
-                        player.swing(context.getHand());
+                        player.swing(context.getHand(), true);
                         return useOn(new BlockPlaceContext(player, context.getHand(), itemstack, new BlockHitResult(blockhitresult.getLocation(), direction, blockpos1, blockhitresult.isInside())));
                     }
                 }

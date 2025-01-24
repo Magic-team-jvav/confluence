@@ -12,7 +12,6 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.item.common.GrassSeedItem;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -68,6 +67,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         customModels.add(createDir(MaterialItems.ITEMS, "materials/", "ingot/", "ore/"));
         customModels.add(createDir(MinecartItems.ITEMS, "minecart/"));
         customModels.add(createDir(ModItems.ITEMS, "misc/"));
+        customModels.add(createDir(ModItems.HIDDEN, "misc/"));
         customModels.add(createDir(PaintItems.ITEMS, "paint/"));
         customModels.add(createDir(PotionItems.ITEMS, "potion/"));
         customModels.add(createDir(QuestedFishes.ITEMS, "quested_fish/"));

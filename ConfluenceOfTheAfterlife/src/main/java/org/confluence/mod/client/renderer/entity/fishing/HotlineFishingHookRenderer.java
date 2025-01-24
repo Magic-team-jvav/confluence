@@ -33,6 +33,6 @@ public class HotlineFishingHookRenderer extends EntityRenderer<HotlineFishingHoo
     public void render(HotlineFishingHook pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
         model.renderToBuffer(pPoseStack, pBuffer.getBuffer(model.renderType(TEXTURE)), pPackedLight, OverlayTexture.NO_OVERLAY);
         model.renderToBuffer(pPoseStack, pBuffer.getBuffer(GLOW), 0xF000F0, OverlayTexture.NO_OVERLAY);
-        renderString(entityRenderDispatcher, pEntity, pPartialTick, pPoseStack, pBuffer, IntegerRGB.ORANGE);
+        renderString(entityRenderDispatcher, pEntity, pPartialTick, pPoseStack, pBuffer, IntegerRGB.ORANGE.get());
     }
 }

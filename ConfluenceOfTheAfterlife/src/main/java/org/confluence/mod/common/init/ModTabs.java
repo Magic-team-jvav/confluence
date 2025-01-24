@@ -6,7 +6,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
@@ -79,6 +78,10 @@ public final class ModTabs {
                         output.accept(TCItems.MAGIC_MIRROR.get());
                         output.accept(TCItems.CELL_PHONE.get());
                         output.accept(TCItems.DIVING_HELMET.get());
+                        output.accept(ModBlocks.ROPE.get());
+                        output.accept(ModBlocks.VINE_ROPE.get());
+                        output.accept(ModBlocks.SILK_ROPE.get());
+                        output.accept(ModBlocks.WEB_ROPE.get());
                         AxeItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                         PickaxeItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                         PickaxeAxeItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
@@ -123,7 +126,11 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.DEVELOPER_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.developer"))
                     .displayItems((parameters, output) -> {
-                        // todo
+                        ModItems.HIDDEN.getEntries().forEach(item -> output.accept(item.get()));
+                        output.accept(ToolItems.DEV_BUG_NET.get());
+                        output.accept(SwordItems.DEVELOPER_SWORD.get());
+                        output.accept(BoomerangItems.DEVELOPER_BOOMERANG.get());
+                        output.accept(BowItems.DEVELOPER_BOW.get());
                     }).build());
     // 食物与药水
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FOOD_AND_POTIONS = TABS.register("food_and_potions",

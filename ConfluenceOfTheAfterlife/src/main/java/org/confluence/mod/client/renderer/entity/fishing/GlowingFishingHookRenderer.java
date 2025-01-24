@@ -71,6 +71,6 @@ public class GlowingFishingHookRenderer extends EntityRenderer<CurioFishingHook>
         if (id != 0) {
             model.renderToBuffer(pPoseStack, pBuffer.getBuffer(GLOWS[id]), 0xF000F0, OverlayTexture.NO_OVERLAY, id == 3 ? ExpertColorAnimation.INSTANCE.getColor() : -1);
         }
-        renderString(entityRenderDispatcher, pEntity, pPartialTick, pPoseStack, pBuffer, IntegerRGB.BLACK);
+        renderString(entityRenderDispatcher, pEntity, pPartialTick, pPoseStack, pBuffer, IntegerRGB.BLACK.get());
     }
 }

@@ -16,9 +16,6 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.level.BlockDropsEvent;
-import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
@@ -33,23 +30,27 @@ public class BaseAxeItem extends AxeItem {
     }
 
     public BaseAxeItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity) {
-        super(tier, new Properties().component(TCDataComponentTypes.MOD_RARITY, rarity)
+        this(tier, rawDamage, rawSpeed, new Properties(), rarity);
+    }
+
+    public BaseAxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
+        super(tier, properties.component(TCDataComponentTypes.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4)));
     }
 
     public static void dropAndPlaceOnRightClick(Player player, ItemStack stack, BlockPos pos) {
         Level level = player.level();
         BlockState block = level.getBlockState(pos);
-        if(block.is(BlockTags.CROPS)){
-            for(var p  : block.getProperties()){
-                if(p instanceof IntegerProperty ip) {
+        if (block.is(BlockTags.CROPS)) {
+            for (var p : block.getProperties()) {
+                if (p instanceof IntegerProperty ip) {
                     int l = block.getValue(ip);
-                    if(p.getPossibleValues().size() == l+1){  // 其他模组可能不兼容
-                        dropResources(block, level, pos,null, player, stack);
+                    if (p.getPossibleValues().size() == l + 1) {  // 其他模组可能不兼容
+                        dropResources(block, level, pos, null, player, stack);
                         level.removeBlock(pos, false);
                         var i = block.getBlock().asItem();
-                        if(PlayerUtils.getInventoryItemCount(player, i) > 0){
-                            PlayerUtils.consumeItemCount(player.getInventory().items,i,1);
+                        if (player.getInventory().countItem(i) > 0) {
+                            PlayerUtils.consumeItemCount(player.getInventory().items, i, 1);
                             BlockState newState = block.getBlock().defaultBlockState();
                             newState.setValue(ip, 0);
                             level.setBlock(pos, newState, 2);
@@ -66,11 +67,11 @@ public class BaseAxeItem extends AxeItem {
         Holder<Enchantment> enchantment = entity.level().registryAccess()
                 .lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE);
         int l = stack.getTagEnchantments().getLevel(enchantment);
-        for(ItemEntity drop : drops){
-            int increase = entity.getRandom().nextIntBetweenInclusive(0,2);
+        for (ItemEntity drop : drops) {
+            int increase = entity.getRandom().nextIntBetweenInclusive(0, 2);
             drop.getItem().grow(increase);
-            for(int i=0;i<l;i++){
-                if(entity.getRandom().nextFloat()<0.5f){
+            for (int i = 0; i < l; i++) {
+                if (entity.getRandom().nextFloat() < 0.5f) {
                     drop.getItem().grow(1);
                 }
             }

@@ -59,12 +59,10 @@ import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
-import org.confluence.mod.common.init.item.BowItems;
-import org.confluence.mod.common.init.item.FishingPoleItems;
-import org.confluence.mod.common.init.item.MaterialItems;
-import org.confluence.mod.common.init.item.PaintItems;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.util.ClientUtils;
@@ -294,6 +292,8 @@ public final class ModClientEvents {
     public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
         event.registerFluidType(ModClientSetups.HONEY_CLIENT_EXTENSIONS, ModFluids.HONEY.type());
         event.registerFluidType(ModClientSetups.SHIMMER_CLIENT_EXTENSIONS, ModFluids.SHIMMER.type());
+        event.registerBlock(ModClientSetups.NO_HIT_EFFECTS, ModBlocks.ROPE.get(), ModBlocks.VINE_ROPE.get(), ModBlocks.SILK_ROPE.get(), ModBlocks.WEB_ROPE.get());
+        event.registerItem(ModClientSetups.ENTITY_DISPLAY, ModItems.ENTITY_DISPLAY.get());
     }
 
     @SubscribeEvent

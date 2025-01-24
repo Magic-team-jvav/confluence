@@ -15,6 +15,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
+import org.confluence.mod.common.block.common.BaseRopeBlock;
 import org.confluence.mod.common.block.common.HoneyCauldronBlock;
 import org.confluence.mod.common.block.common.PooBlock;
 import org.confluence.mod.common.block.natural.*;
@@ -61,18 +62,10 @@ public final class ModBlocks {
 
     public static final Supplier<PooBlock> POO = registerWithItem("poo", () -> new PooBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD)));
 
-    //苔藓
-    public static final Supplier<BaseMossBlock> GREEN_MOSS_BLOCK = registerWithoutItem("green_moss", () -> new BaseMossBlock(5));
-    public static final Supplier<BaseMossBlock> BROWN_MOSS_BLOCK = registerWithoutItem("brown_moss", () -> new BaseMossBlock(5));
-    public static final Supplier<BaseMossBlock> RED_MOSS_BLOCK = registerWithoutItem("red_moss", () -> new BaseMossBlock(5));
-    public static final Supplier<BaseMossBlock> BLUE_MOSS_BLOCK = registerWithoutItem("blue_moss", () -> new BaseMossBlock(5));
-    public static final Supplier<BaseMossBlock> PURPLE_MOSS_BLOCK = registerWithoutItem("purple_moss", () -> new BaseMossBlock(5));
-    public static final Supplier<BaseMossBlock> LAVA_MOSS_BLOCK = registerWithoutItem("lava_moss", () -> new BaseMossBlock(10, true));
-    public static final Supplier<BaseMossBlock> KRYPTON_MOSS_BLOCK = registerWithoutItem("krypton_moss", () -> new BaseMossBlock(5));
-    public static final Supplier<BaseMossBlock> XENON_MOSS_BLOCK = registerWithoutItem("xenon_moss", () -> new BaseMossBlock(5));
-    public static final Supplier<BaseMossBlock> ARGON_MOSS_BLOCK = registerWithoutItem("argon_moss", () -> new BaseMossBlock(5));
-    public static final Supplier<BaseMossBlock> NEON_MOSS_BLOCK = registerWithoutItem("neon_moss", () -> new BaseMossBlock(5));
-    public static final Supplier<BaseMossBlock> HELIUM_MOSS_BLOCK = registerWithoutItem("helium_moss", () -> new BaseMossBlock(5));
+    public static final Supplier<BaseRopeBlock> ROPE = registerWithItem("rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().noCollission().instabreak()), BaseRopeBlock.Item::new);
+    public static final Supplier<BaseRopeBlock> VINE_ROPE = registerWithItem("vine_rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().noCollission().instabreak()), BaseRopeBlock.Item::new);
+    public static final Supplier<BaseRopeBlock> SILK_ROPE = registerWithItem("silk_rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().noCollission().instabreak()), BaseRopeBlock.Item::new);
+    public static final Supplier<BaseRopeBlock> WEB_ROPE = registerWithItem("web_rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().noCollission().instabreak()), BaseRopeBlock.Item::new);
 
     public static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> block) {
         return registerWithItem(id, block, new Item.Properties());

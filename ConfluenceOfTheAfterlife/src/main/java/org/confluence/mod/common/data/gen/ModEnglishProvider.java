@@ -411,6 +411,7 @@ public class ModEnglishProvider extends LanguageProvider {
         MaterialItems.ITEMS.getEntries().forEach(itemAction);
         MinecartItems.ITEMS.getEntries().forEach(itemAction);
         ModItems.ITEMS.getEntries().forEach(itemAction);
+        ModItems.HIDDEN.getEntries().forEach(itemAction);
         ModItems.BLOCK_ITEMS.getEntries().forEach(itemAction);
         PickaxeAxeItems.ITEMS.getEntries().forEach(itemAction);
         PickaxeItems.ITEMS.getEntries().forEach(itemAction);

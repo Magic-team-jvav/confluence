@@ -8,6 +8,7 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -38,7 +39,7 @@ public abstract class InventoryMixin {
             if (confluence$insert2Extra(COINS_START, SIZE_COINS, extraInventory, stack, extraInventory1 -> {
                 for (int i = 0; i < SIZE_COINS; i++) {
                     ItemStack coins = extraInventory.getCoins(i);
-                    if (coins.getCount() == coins.getMaxStackSize()) {
+                    if (coins.getCount() == 99) {
                         Item coin = coins.getItem();
                         ItemStack itemStack = null;
                         if (coin == ModItems.COPPER_COIN.get()) {
@@ -55,6 +56,7 @@ public abstract class InventoryMixin {
                     }
                 }
             })) {
+                PlayerUtils.sortCoins(player);
                 cir.setReturnValue(true);
             }
         } else if (stack.is(ModTags.Items.AMMO)) {

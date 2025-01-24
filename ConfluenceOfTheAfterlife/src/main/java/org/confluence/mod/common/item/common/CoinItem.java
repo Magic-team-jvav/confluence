@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class CoinItem extends BlockItem {
-    private final Supplier<CoinItem> upgrade;
+    public final Supplier<CoinItem> upgrade;
 
     public CoinItem(Block block, ModRarity rarity, @Nullable Supplier<CoinItem> upgrade) {
         super(block, new Properties().fireResistant().stacksTo(99).component(TCDataComponentTypes.MOD_RARITY, rarity));

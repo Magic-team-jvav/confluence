@@ -76,7 +76,7 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
             if (ServerLifecycleHooks.getCurrentServer() == null) {
                 return 0L;
             } else {
-                this.confluence$secretFlag = ((IWorldOptions) ServerLifecycleHooks.getCurrentServer().getWorldData().worldGenOptions()).confluence$getSecretFlag();
+                this.confluence$secretFlag = IWorldOptions.getSecretFlag(ServerLifecycleHooks.getCurrentServer());
             }
         }
         return confluence$secretFlag;
@@ -102,10 +102,10 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
                         ((IWorldOptions) worldOptions).confluence$withSecretFlag(IWorldOptions.THE_CORRUPTION);
                     }
                 } else {
-                    if ((flag & IWorldOptions.THE_CORRUPTION) != 0) {
-                        pair = new Pair<>(ModBiomes.TR_CRIMSON, ModBiomes.THE_CORRUPTION);
-                    } else {
+                    if ((flag & IWorldOptions.THE_CORRUPTION) == 0) {
                         pair = new Pair<>(ModBiomes.THE_CORRUPTION, ModBiomes.TR_CRIMSON);
+                    } else {
+                        pair = new Pair<>(ModBiomes.TR_CRIMSON, ModBiomes.THE_CORRUPTION);
                     }
                 }
                 Holder<Biome> source = null;

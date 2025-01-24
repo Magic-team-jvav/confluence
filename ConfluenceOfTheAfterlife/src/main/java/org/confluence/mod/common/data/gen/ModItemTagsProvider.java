@@ -403,17 +403,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.INGOTS_TUNGSTEN).add(MaterialItems.TUNGSTEN_INGOT.get());
         tag(ModTags.Items.INGOTS_PLATINUM).add(MaterialItems.PLATINUM_INGOT.get());
         tag(ModTags.Items.MOSS_ITEM).add(
-            ModItems.BROWN_MOSS_ITEM.get(),
-            ModItems.BROWN_MOSS_ITEM.get(),
-            ModItems.RED_MOSS_ITEM.get(),
-            ModItems.BLUE_MOSS_ITEM.get(),
-            ModItems.PURPLE_MOSS_ITEM.get(),
-            ModItems.LAVA_MOSS_ITEM.get(),
-            ModItems.KRYPTON_MOSS_ITEM.get(),
-            ModItems.XENON_MOSS_ITEM.get(),
-            ModItems.ARGON_MOSS_ITEM.get(),
-            ModItems.NEON_MOSS_ITEM.get(),
-            ModItems.HELIUM_MOSS_ITEM.get()
+            NatureBlocks.BROWN_MOSS.get().asItem(),
+            NatureBlocks.BROWN_MOSS.get().asItem(),
+            NatureBlocks.RED_MOSS.get().asItem(),
+            NatureBlocks.BLUE_MOSS.get().asItem(),
+            NatureBlocks.PURPLE_MOSS.get().asItem(),
+            NatureBlocks.LAVA_MOSS.get().asItem(),
+            NatureBlocks.KRYPTON_MOSS.get().asItem(),
+            NatureBlocks.XENON_MOSS.get().asItem(),
+            NatureBlocks.ARGON_MOSS.get().asItem(),
+            NatureBlocks.NEON_MOSS.get().asItem(),
+            NatureBlocks.HELIUM_MOSS.get().asItem()
         );
         // 农作物掉落提升 再生法杖/再生之斧
         tag(ModTags.Items.CROP_FORTUNE).add(AxeItems.STAFF_OF_REGROWTH.get(), AxeItems.DRILL_OF_REGROWTH.get());
@@ -421,6 +421,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         AccessoryItems.acceptTag(tag(TCTags.ACCESSORY));
         IntrinsicTagAppender<Item> ammo = tag(ModTags.Items.AMMO);
         ammo.addTag(ItemTags.ARROWS);
+        ammo.add(Items.FIREWORK_ROCKET);
         TGItems.ITEM_BULLETS.getEntries().forEach(item -> ammo.add(item.get()));
         IntrinsicTagAppender<Item> dye = tag(ModTags.Items.DYE);
         VanityArmorItems.DYE_ITEMS.forEach(dye::add);

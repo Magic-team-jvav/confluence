@@ -139,6 +139,99 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.paint_sprayer.0", "自动给放置的物体刷油漆或涂料");
         add("tooltip.item.confluence.coin", "潜行右键合并为上级钱币");
 
+        add("jei.tooltip.item.confluence.bezoar.0", "有几率从黄蜂，青苔蜜蜂，毒泥身上掉落。");
+        add("jei.tooltip.item.confluence.holy_water.0", "有几率从凋零骷髅身上掉落。");
+        add("jei.tooltip.item.confluence.vitamins.0", "有几率从腐化者，恶心浮游怪身上掉落。");
+        add("jei.tooltip.item.confluence.energy_bar.0", "有几率从僵尸猪灵身上掉落。");
+        add("jei.tooltip.item.confluence.blindfold.0", "有几率从血木乃伊，暗黑木乃伊，猩红史莱姆，腐化史莱姆，恶翅史莱姆身上掉落。");
+        add("jei.tooltip.item.confluence.flashlight.0", "有几率从要塞宝箱中获得。");
+        add("jei.tooltip.item.confluence.fast_clock.0", "有几率从木乃伊，妖精，幻灵身上掉落。");
+        add("jei.tooltip.item.confluence.trifold_map.0", "有几率从小丑，巨型蝙蝠，光明木乃伊身上掉落。");
+        add("jei.tooltip.item.confluence.hand_drill.0", "从远古守卫者身上掉落。");
+        add("jei.tooltip.item.confluence.shot_put.0", "有几率从要塞宝箱中获得。");
+        add("jei.tooltip.item.confluence.star_cloak.0", "有几率从宝箱怪中获得。");
+        add("jei.tooltip.item.confluence.black_belt.0", "有几率从骷髅李小龙身上获得。");
+        add("jei.tooltip.item.confluence.sun_stone.0", "有几率从石巨人身上获得。");
+        add("jei.tooltip.item.confluence.moon_stone.0", "有几率从吸血鬼身上获得。");
+        add("jei.tooltip.item.confluence.moon_charm.0", "有几率从狼人身上获得。");
+        add("jei.tooltip.item.confluence.neptunes_shell.0", "有几率从水月怪身上获得。");
+        add("jei.tooltip.item.confluence.cobalt_shield.0", "有几率从地牢箱、地牢匣/围栏匣（金锁盒）中获得。");
+        add("jei.tooltip.item.confluence.cross_necklace.0", "有几率从宝箱怪中获得。");
+        add("jei.tooltip.item.confluence.ranger_emblem.0", "有几率从血肉之墙身上获得。");
+        add("jei.tooltip.item.confluence.warrior_emblem.0", "有几率从血肉之墙身上获得。");
+        add("jei.tooltip.item.confluence.sorcerer_emblem.0", "有几率从血肉之墙身上获得。");
+        add("jei.tooltip.item.confluence.eye_of_the_golem.0", "有几率从石巨人身上获得。");
+        add("jei.tooltip.item.confluence.feral_claws.0", "有几率从常春藤箱、丛林匣/荆棘匣，以及丛林神庙（Minecraft）中的宝箱获得。");
+        add("jei.tooltip.item.confluence.titan_glove.0", "有几率从宝箱怪中获得。");
+        add("jei.tooltip.item.confluence.flesh_knuckles.0", "有几率从猩红宝箱怪身上获得。");
+        add("jei.tooltip.item.confluence.paladins_shield.0", "有几率从圣骑士身上获得。");
+        add("jei.tooltip.item.confluence.frozen_turtle_shell.0", "有几率从冰雪陆龟身上获得。");
+        add("jei.tooltip.item.confluence.honey_comb.0", "有几率从蜂王身上获得。");
+        add("jei.tooltip.item.confluence.shark_tooth_necklace.0", "有几率从血腥僵尸，滴滴怪身上获得。");
+        add("jei.tooltip.item.confluence.panic_necklace.0", "有几率从猩红匣/血匣，猩红心脏获得。");
+        add("jei.tooltip.item.confluence.magic_quiver.0", "有几率从骷髅弓箭手身上获得。");
+        add("jei.tooltip.item.confluence.rifle_scope.0", "有几率从骷髅狙击手身上获得。");
+        add("jei.tooltip.item.confluence.magma_stone.0", "有几率从地狱蝙蝠，熔岩蝙蝠身上获得。");
+        add("jei.tooltip.item.confluence.obsidian_rose.0", "有几率从火焰小鬼身上获得。");
+        add("jei.tooltip.item.confluence.putrid_scent.0", "有几率从腐化宝箱怪身上获得。");
+        add("jei.tooltip.item.confluence.shackle.0", "有几率从僵尸身上获得。");
+        add("jei.tooltip.item.confluence.toolbelt.0", "在哥布林工匠处购买。");
+        add("jei.tooltip.item.confluence.toolbox.0", "有几率从礼物中获得。");
+        add("jei.tooltip.item.confluence.extendo_grip.0", "在旅商处购买。");
+        add("jei.tooltip.item.confluence.portable_cement_mixer.0", "在旅商处购买。");
+        add("jei.tooltip.item.confluence.brick_layer.0", "在旅商处购买。");
+        add("jei.tooltip.item.confluence.ancient_chisel.0", "有几率从绿洲匣/幻象匣，砂岩箱获得。");
+        add("jei.tooltip.item.confluence.band_of_regeneration.0", "有几率从地下层箱子获得。");
+        add("jei.tooltip.item.confluence.depth_meter.0", "有几率从洞穴蝙蝠，巨型蝙蝠，冰雪蝙蝠，丛林蝙蝠，龙虾，巨型卷壳怪，蝾螈怪身上获得。");
+        add("jei.tooltip.item.confluence.compass.0", "有几率从装甲维京海盗，亡灵维京海盗，史莱姆之母，食人鱼，小雪怪，龙虾，巨型卷壳怪，蝾螈怪身上获得。");
+        add("jei.tooltip.item.confluence.radar.0", "在骷髅商人处购买。有几率从木匣/珍珠木匣，地表宝箱获得。");
+        add("jei.tooltip.item.confluence.life_form_analyzer.0", "在旅商处购买。");
+        add("jei.tooltip.item.confluence.tally_counter.0", "有几率从愤怒骷髅怪，诅咒骷髅头，暗黑法师身上获得。");
+        add("jei.tooltip.item.confluence.metal_detector.0", "有几率从宁芙身上获得。");
+        add("jei.tooltip.item.confluence.dps_meter.0", "有几率从愤怒骷髅怪，诅咒骷髅头，暗黑法师身上获得。");
+        add("jei.tooltip.item.confluence.fishermans_pocket_guide.0", "有几率从渔夫任务获得。");
+        add("jei.tooltip.item.confluence.weather_radio.0", "有几率从渔夫任务获得。");
+        add("jei.tooltip.item.confluence.sextant.0", "有几率从渔夫任务获得。");
+        add("jei.tooltip.item.confluence.step_stool.0", "有几率从木匣/珍珠木匣，地表宝箱获得。");
+        add("jei.tooltip.item.confluence.flying_carpet.0", "有几率从金字塔，沙漠神殿宝箱获得。");
+        add("jei.tooltip.item.confluence.aglet.0","有几率从木匣/珍珠木匣，地表宝箱获得。");
+        add("jei.tooltip.item.confluence.magiluminescence.0","合成获得。");
+        add("jei.tooltip.item.confluence.lava_charm.0","有几率从黑曜石匣/狱石匣，洞穴宝箱获得。");
+        add("jei.tooltip.item.confluence.climbing_claws.0","有几率从木匣/珍珠木匣，地表宝箱获得。");
+        add("jei.tooltip.item.confluence.shoe_spikes.0","有几率从洞穴宝箱，红木箱中获得。");
+        add("jei.tooltip.item.confluence.tabi.0","有几率从骷髅李小龙身上获得。");
+        add("jei.tooltip.item.confluence.hermes_boots.0","有几率从地下宝箱获得。");
+        add("jei.tooltip.item.confluence.flurry_boots.0","有几率从冰冻匣/针叶木匣，冰冻箱，冰雪宝箱怪中获得。");
+        add("jei.tooltip.item.confluence.sailfish_boots.0","有几率从木匣/铁匣，铁匣/秘银匣，沉船宝箱，废墟宝箱中获得。");
+        add("jei.tooltip.item.confluence.dunerider_boots.0", "有几率从绿洲匣/幻象匣，砂岩箱，沙漠神殿宝箱获得。");
+        add("jei.tooltip.item.confluence.water_walking_boots.0", "有几率从海洋匣/海边匣，水中箱，沉船宝箱，废墟宝箱中获得。");
+        add("jei.tooltip.item.confluence.cloud_in_a_bottle.0", "有几率从地下宝箱，洞穴宝箱中获得。");
+        add("jei.tooltip.item.confluence.sandstorm_in_a_bottle.0", "有几率从绿洲匣/幻象匣，金字塔宝箱，沙漠神殿宝箱获得。");
+        add("jei.tooltip.item.confluence.fart_in_a_jar.0", "合成获得。");
+        add("jei.tooltip.item.confluence.diving_helmet.0", "有几率从鲨鱼身上获得。");
+        add("jei.tooltip.item.confluence.diving_helmet.1", "有几率从溺尸身上获得。");
+        add("jei.tooltip.item.confluence.tsunami_in_a_bottle.0", "有几率从木匣/铁匣，铁匣/秘银匣，沉船宝箱，废墟宝箱中获得。");
+        add("jei.tooltip.item.confluence.shiny_red_balloon.0", "有几率从天蓝匣/天域匣，天域箱中获得。");
+        add("jei.tooltip.item.confluence.lucky_horseshoe.0", "有几率从天蓝匣/天域匣，天域箱中获得。");
+        add("jei.tooltip.item.confluence.inner_tube.0", "有几率从海洋匣/海边匣，水中箱中获得。");
+        add("jei.tooltip.item.confluence.flipper.0","有几率从海洋匣/海边匣，水中箱，沉船宝箱，废墟宝箱中获得。");
+        add("jei.tooltip.item.confluence.jellyfish_necklace.0","有几率从粉水母，绿水母，蓝水母身上获得。");
+        add("jei.tooltip.item.confluence.arctic_diving_gear.0","合成获得。");
+        add("jei.tooltip.item.confluence.frog_leg.0","在任意群系钓鱼有几率获得。");
+        add("jei.tooltip.item.confluence.treasure_magnet.0","有几率从黑曜石锁盒，暗影箱中获得。");
+        add("jei.tooltip.item.confluence.flower_boots.0","有几率从常春藤箱、丛林匣/荆棘匣，以及丛林神庙（Minecraft）中的宝箱获得。");
+        add("jei.tooltip.item.confluence.angler_earring.0","有几率从渔夫任务获得。");
+        add("jei.tooltip.item.confluence.royal_gel.0","在普通模式或更高难度下，击败史莱姆之王获得。");
+        add("jei.tooltip.item.confluence.shield_of_cthulhu.0","在普通模式或更高难度下，击败克苏鲁之眼获得。");
+        add("jei.tooltip.item.confluence.worm_scarf.0","在普通模式或更高难度下，击败世界吞噬怪获得。");
+        add("jei.tooltip.item.confluence.brain_of_confusion.0","在普通模式或更高难度下，击败克苏鲁之脑获得。");
+        add("jei.tooltip.item.confluence.hive_pack.0","在普通模式或更高难度下，击败蜂王获得。");
+        add("jei.tooltip.item.confluence.demon_heart.0","在普通模式或更高难度下，击败血肉之墙获得。");
+        add("jei.tooltip.item.confluence.shiny_stone.0","在普通模式或更高难度下，击败石巨人获得。");
+        add("jei.tooltip.item.confluence.soaring_insignia.0","在普通模式或更高难度下，击败光之女皇获得。");
+        add("jei.tooltip.item.confluence.gravity_globe.0","在普通模式或更高难度下，击败月球领主获得。");
+        add("jei.tooltip.item.confluence.celestial_starboard.0","在普通模式或更高难度下，击败月球领主获得。");
+
         add("biome.confluence.the_corruption", "腐化之地");
         add("biome.confluence.the_corruption_desert", "腐化沙漠");
         add("biome.confluence.the_corruption_tundra", "腐化苔原");
@@ -815,17 +908,17 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.TR_CRIMSON_DROOPING_VINE.get(), "猩红垂藤");
         add(NatureBlocks.HALLOW_DROOPING_VINE.get(), "神圣垂藤");
 
-        add(ModItems.GREEN_MOSS_ITEM.get(), "绿苔藓");
-        add(ModItems.BROWN_MOSS_ITEM.get(), "棕苔藓");
-        add(ModItems.RED_MOSS_ITEM.get(), "红苔藓");
-        add(ModItems.BLUE_MOSS_ITEM.get(), "蓝苔藓");
-        add(ModItems.PURPLE_MOSS_ITEM.get(), "紫苔藓");
-        add(ModItems.LAVA_MOSS_ITEM.get(), "熔岩苔藓");
-        add(ModItems.KRYPTON_MOSS_ITEM.get(), "氪苔藓");
-        add(ModItems.XENON_MOSS_ITEM.get(), "氙苔藓");
-        add(ModItems.ARGON_MOSS_ITEM.get(), "氩苔藓");
-        add(ModItems.NEON_MOSS_ITEM.get(), "氖苔藓");
-        add(ModItems.HELIUM_MOSS_ITEM.get(), "氦苔藓");
+        add(NatureBlocks.GREEN_MOSS.get(), "绿苔藓");
+        add(NatureBlocks.BROWN_MOSS.get(), "棕苔藓");
+        add(NatureBlocks.RED_MOSS.get(), "红苔藓");
+        add(NatureBlocks.BLUE_MOSS.get(), "蓝苔藓");
+        add(NatureBlocks.PURPLE_MOSS.get(), "紫苔藓");
+        add(NatureBlocks.LAVA_MOSS.get(), "熔岩苔藓");
+        add(NatureBlocks.KRYPTON_MOSS.get(), "氪苔藓");
+        add(NatureBlocks.XENON_MOSS.get(), "氙苔藓");
+        add(NatureBlocks.ARGON_MOSS.get(), "氩苔藓");
+        add(NatureBlocks.NEON_MOSS.get(), "氖苔藓");
+        add(NatureBlocks.HELIUM_MOSS.get(), "氦苔藓");
 
 
         add(DecorativeBlocks.BIG_RUBY_BLOCK.get(), "大红玉块");
@@ -913,7 +1006,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.SAPPHIRE_CHAIN.get(), "蓝玉锁链");
         add(DecorativeBlocks.DIAMOND_CHAIN.get(), "钻石锁链");
         add(DecorativeBlocks.AMETHYST_CHAIN.get(), "紫晶锁链");
-        add(DecorativeBlocks.SILK_CHAIN.get(), "蛛丝绳");
+        add(DecorativeBlocks.SILK_CHAIN.get(), "蛛丝锁链");
         add(DecorativeBlocks.BONE_CHAIN.get(), "骨头锁链");
         add(DecorativeBlocks.FLOATING_WHEAT_BALE.get(), "飘飘麦捆");
         add(DecorativeBlocks.BLUE_BRICKS.get(), "蓝色地牢砖");
@@ -1168,6 +1261,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.HOOK.get(), "爪钩");
         add(MaterialItems.GEL.get(), "凝胶");
         add(MaterialItems.PINK_GEL.get(), "粉凝胶");
+        add(MaterialItems.SILK.get(), "丝绸");
         add(MaterialItems.STURDY_FOSSIL.get(), "坚固化石");
         add(MaterialItems.OPAL.get(), "欧泊");
         add(MaterialItems.HEIM.get(), "海沫");
@@ -1314,6 +1408,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.BOTTOMLESS_WATER_BUCKET.get(), "无底水桶");
         add(ToolItems.BOTTOMLESS_LAVA_BUCKET.get(), "无底岩浆桶");
         add(ToolItems.BOTTOMLESS_HONEY_BUCKET.get(), "无底蜂蜜桶");
+        add(ToolItems.BUG_NET.get(), "虫网");
+        add(ToolItems.DEV_BUG_NET.get(), "开发者虫网");
+        add(ToolItems.GOLDEN_BUG_NET.get(), "金虫网");
 
 
         add(ConsumableItems.SHURIKEN.get(), "手里剑");
@@ -1374,6 +1471,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.CANDY_APPLE.get(), "糖葫芦");
         add(ModItems.WHOOPIE_CUSHION.get(), "整蛊坐垫");
         add(ModItems.DEAD_MANS_SWEATER.get(), "死人毛衣");
+
+        add(ModBlocks.ROPE.get(), "绳子");
+        add(ModBlocks.VINE_ROPE.get(), "藤蔓绳");
+        add(ModBlocks.SILK_ROPE.get(), "丝绸绳");
+        add(ModBlocks.WEB_ROPE.get(), "蛛丝绳");
 
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");

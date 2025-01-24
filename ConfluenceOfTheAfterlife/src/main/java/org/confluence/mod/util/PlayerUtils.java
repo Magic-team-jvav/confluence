@@ -274,14 +274,7 @@ public final class PlayerUtils {
         for (int i = 0; i < SIZE_COINS; i++) {
             ItemStack coins = extraInventory.getCoins(i);
             if (coins.isEmpty() || !coins.is(ModTags.Items.COINS)) continue;
-            int index = COIN_2_INDEX.applyAsInt(coins.getItem());
-            int count = coins.getCount();
-            if (map.addTo(index, count) + count < 99) continue;
-            Supplier<CoinItem> upgrade = INDEX_2_COIN.apply(3 - index).upgrade;
-            if (upgrade == null) continue;
-            extraInventory.setItem(COINS_START + i, ItemStack.EMPTY);
-            map.addTo(COIN_2_INDEX.applyAsInt(upgrade.get()), 1);
-            map.addTo(index, -99);
+            upgradesCoin(map, COIN_2_INDEX.applyAsInt(coins.getItem()), i, coins.getCount(), extraInventory);
         }
         for (int i = 0, j = 0; i < SIZE_COINS; i++) {
             int count = map.getInt(i);
@@ -295,5 +288,14 @@ public final class PlayerUtils {
                 extraInventory.setItem(COINS_START + j++, new ItemStack(coinItem, count));
             }
         }
+    }
+
+    private static void upgradesCoin(Object2IntOpenHashMap<Integer> map, int index, int slot, int count, ExtraInventory extraInventory) {
+        if (map.addTo(index, count) + count < 99) return;
+        Supplier<CoinItem> upgrade = INDEX_2_COIN.apply(3 - index).upgrade;
+        if (upgrade == null) return;
+        extraInventory.setItem(COINS_START + slot, ItemStack.EMPTY);
+        upgradesCoin(map, COIN_2_INDEX.applyAsInt(upgrade.get()), index, 1, extraInventory);
+        map.addTo(index, -99);
     }
 }

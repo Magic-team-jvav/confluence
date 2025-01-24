@@ -1006,7 +1006,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.SAPPHIRE_CHAIN.get(), "蓝玉锁链");
         add(DecorativeBlocks.DIAMOND_CHAIN.get(), "钻石锁链");
         add(DecorativeBlocks.AMETHYST_CHAIN.get(), "紫晶锁链");
-        add(DecorativeBlocks.SILK_CHAIN.get(), "蛛丝绳");
+        add(DecorativeBlocks.SILK_CHAIN.get(), "蛛丝锁链");
         add(DecorativeBlocks.BONE_CHAIN.get(), "骨头锁链");
         add(DecorativeBlocks.FLOATING_WHEAT_BALE.get(), "飘飘麦捆");
         add(DecorativeBlocks.BLUE_BRICKS.get(), "蓝色地牢砖");
@@ -1261,6 +1261,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.HOOK.get(), "爪钩");
         add(MaterialItems.GEL.get(), "凝胶");
         add(MaterialItems.PINK_GEL.get(), "粉凝胶");
+        add(MaterialItems.SILK.get(), "丝绸");
         add(MaterialItems.STURDY_FOSSIL.get(), "坚固化石");
         add(MaterialItems.OPAL.get(), "欧泊");
         add(MaterialItems.HEIM.get(), "海沫");
@@ -1407,6 +1408,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.BOTTOMLESS_WATER_BUCKET.get(), "无底水桶");
         add(ToolItems.BOTTOMLESS_LAVA_BUCKET.get(), "无底岩浆桶");
         add(ToolItems.BOTTOMLESS_HONEY_BUCKET.get(), "无底蜂蜜桶");
+        add(ToolItems.BUG_NET.get(), "虫网");
+        add(ToolItems.DEV_BUG_NET.get(), "开发者虫网");
+        add(ToolItems.GOLDEN_BUG_NET.get(), "金虫网");
 
 
         add(ConsumableItems.SHURIKEN.get(), "手里剑");
@@ -1467,6 +1471,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.CANDY_APPLE.get(), "糖葫芦");
         add(ModItems.WHOOPIE_CUSHION.get(), "整蛊坐垫");
         add(ModItems.DEAD_MANS_SWEATER.get(), "死人毛衣");
+
+        add(ModBlocks.ROPE.get(), "绳子");
+        add(ModBlocks.VINE_ROPE.get(), "藤蔓绳");
+        add(ModBlocks.SILK_ROPE.get(), "丝绸绳");
+        add(ModBlocks.WEB_ROPE.get(), "蛛丝绳");
 
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");

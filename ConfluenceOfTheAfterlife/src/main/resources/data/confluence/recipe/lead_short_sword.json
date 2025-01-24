@@ -1,10 +1,13 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        " c",
+        " a",
         "c "
     ],
     "key": {
+        "a": {
+            "item": "confluence:lead_nugget"
+        },
         "c": {
             "item": "confluence:lead_ingot"
         }

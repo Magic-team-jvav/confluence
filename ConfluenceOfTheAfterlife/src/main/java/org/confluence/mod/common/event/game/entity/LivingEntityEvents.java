@@ -21,12 +21,14 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.*;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.DartTrapBlock;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
@@ -49,6 +51,8 @@ import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.entity.ai.Boss;
 import org.confluence.terraentity.init.TEEntities;
+
+import java.util.function.Predicate;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class LivingEntityEvents {
@@ -233,6 +237,24 @@ public final class LivingEntityEvents {
     public static void livingDrops(LivingDropsEvent event) {
         if (event.getEntity().getTags().contains(ModUtils.NO_DROPS_TAG)) {
             event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void livingGetProjectile(LivingGetProjectileEvent event) {
+        if (event.getProjectileItemStack().isEmpty()) {
+            ItemStack weapon = event.getProjectileWeaponItemStack();
+            if (weapon.getItem() instanceof ProjectileWeaponItem weaponItem && event.getEntity() instanceof ServerPlayer serverPlayer) {
+                Predicate<ItemStack> predicate = weaponItem.getSupportedHeldProjectiles(weapon);
+                ExtraInventory extraInventory = serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+                for (int i = 0; i < ExtraInventory.SIZE_AMMO; i++) {
+                    ItemStack ammo = extraInventory.getAmmo(i);
+                    if (predicate.test(ammo)) {
+                        event.setProjectileItemStack(ammo);
+                        return;
+                    }
+                }
+            }
         }
     }
 }

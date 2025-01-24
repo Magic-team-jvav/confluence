@@ -421,6 +421,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         AccessoryItems.acceptTag(tag(TCTags.ACCESSORY));
         IntrinsicTagAppender<Item> ammo = tag(ModTags.Items.AMMO);
         ammo.addTag(ItemTags.ARROWS);
+        ammo.add(Items.FIREWORK_ROCKET);
         TGItems.ITEM_BULLETS.getEntries().forEach(item -> ammo.add(item.get()));
         IntrinsicTagAppender<Item> dye = tag(ModTags.Items.DYE);
         VanityArmorItems.DYE_ITEMS.forEach(dye::add);

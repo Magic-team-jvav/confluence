@@ -19,7 +19,7 @@ import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.color.IntegerRGB;
 import org.confluence.terra_guns.common.init.TGItems;
-import org.confluence.terraentity.entity.boss.EaterOfWorld;
+import org.confluence.terraentity.entity.boss.EaterOfWorlds;
 import org.jetbrains.annotations.Nullable;
 
 public class ShadowOrbBlock extends Block {
@@ -65,9 +65,9 @@ public class ShadowOrbBlock extends Block {
             serverLevel.getServer().getPlayerList().broadcastSystemMessage(component, false);
 
             if (data.updateEvilBrokenCount()) {
-                EaterOfWorld eaterOfWorld = new EaterOfWorld(level, true);
-                eaterOfWorld.setPos(center.x + level.random.nextInt(-50, 51), center.y, center.z + level.random.nextInt(-50, 51));
-                level.addFreshEntity(eaterOfWorld);
+                EaterOfWorlds eaterOfWorlds = new EaterOfWorlds(level, true);
+                eaterOfWorlds.setPos(center.x + level.random.nextInt(-50, 51), center.y, center.z + level.random.nextInt(-50, 51));
+                level.addFreshEntity(eaterOfWorlds);
             }
         }
     }

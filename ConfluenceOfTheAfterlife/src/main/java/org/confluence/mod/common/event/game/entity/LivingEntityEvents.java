@@ -244,9 +244,9 @@ public final class LivingEntityEvents {
     public static void livingGetProjectile(LivingGetProjectileEvent event) {
         if (event.getProjectileItemStack().isEmpty()) {
             ItemStack weapon = event.getProjectileWeaponItemStack();
-            if (weapon.getItem() instanceof ProjectileWeaponItem weaponItem && event.getEntity() instanceof ServerPlayer serverPlayer) {
+            if (weapon.getItem() instanceof ProjectileWeaponItem weaponItem && event.getEntity() instanceof Player player) {
                 Predicate<ItemStack> predicate = weaponItem.getSupportedHeldProjectiles(weapon);
-                ExtraInventory extraInventory = serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+                ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
                 for (int i = 0; i < ExtraInventory.SIZE_AMMO; i++) {
                     ItemStack ammo = extraInventory.getAmmo(i);
                     if (predicate.test(ammo)) {

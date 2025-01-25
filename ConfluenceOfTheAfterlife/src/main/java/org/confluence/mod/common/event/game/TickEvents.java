@@ -35,11 +35,16 @@ public final class TickEvents {
         FallingStarItemEntity.summon(serverLevel);
         MeteoriteTracker.INSTANCE.tick(serverLevel);
 
-        if (serverLevel.getDayTime() % 24000L == 0L) {
+        long dayTime = serverLevel.getDayTime() % 24000L;
+        if (dayTime == 0L) {
             RandomSource random = serverLevel.random;
             float factorX = Mth.nextFloat(random, -1.0F, 1.0F);
             float factorZ = Mth.nextFloat(random, -1.0F, 1.0F);
             ConfluenceData.get(serverLevel).setWindSpeed(factorX, factorZ);
+        } else if (dayTime == 18000L) {
+            if (ConfluenceData.get(serverLevel).getKillBoard().isEaterOfWorld_BrainOfCthulhuDefeated()) {
+                // todo 陨石坠落
+            }
         }
     }
 

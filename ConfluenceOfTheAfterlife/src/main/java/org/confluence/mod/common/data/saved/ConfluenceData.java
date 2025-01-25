@@ -34,6 +34,7 @@ public class ConfluenceData extends SavedData {
     private int revealStep = -1;
     private final MeteoriteTracker meteoriteTracker = MeteoriteTracker.INSTANCE;
     private final KillBoard killBoard = new KillBoard();
+    private int evilBrokenCount = 0;
 
     ConfluenceData() {
         for (int i = 0; i < STAR_PHASES_SIZE; i++) {
@@ -54,6 +55,7 @@ public class ConfluenceData extends SavedData {
         this.revealStep = nbt.getInt("revealStep");
         this.meteoriteTracker.deserialize(nbt);
         this.killBoard.deserializeNBT(registries, nbt);
+        this.evilBrokenCount = nbt.getInt("evilBrokenCount");
     }
 
     public static ConfluenceData get(ServerLevel serverLevel) {
@@ -98,6 +100,7 @@ public class ConfluenceData extends SavedData {
         nbt.putInt("revealStep", revealStep);
         meteoriteTracker.serialize(nbt);
         nbt.put("killBoard", killBoard.serializeNBT(registries));
+        nbt.putInt("evilBrokenCount", evilBrokenCount);
         return nbt;
     }
 
@@ -173,5 +176,15 @@ public class ConfluenceData extends SavedData {
 
     public KillBoard getKillBoard() {
         return killBoard;
+    }
+
+    public boolean updateEvilBrokenCount() {
+        this.evilBrokenCount++;
+        setDirty();
+        return evilBrokenCount % 3 == 0;
+    }
+
+    public int getEvilBrokenCount() {
+        return evilBrokenCount;
     }
 }

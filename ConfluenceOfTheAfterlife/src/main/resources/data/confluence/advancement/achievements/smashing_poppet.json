@@ -1,0 +1,23 @@
+{
+    "display": {
+        "icon": {
+            "id": "confluence:shadow_orb"
+        },
+        "title": {
+            "translate": "achievements.confluence.smashing_poppet.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.smashing_poppet.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "never": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

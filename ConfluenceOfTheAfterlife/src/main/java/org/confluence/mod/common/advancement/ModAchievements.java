@@ -59,7 +59,7 @@ public final class ModAchievements {
         offset("ooo_shinny", 7, 0);
         offset("heart_breaker", 8, 0);
         offset("i_am_loot", 9, 0);
-        /* Smashing Poppet (10, 0) */
+        offset("smashing_poppet", 10, 0);
         /* Where's My Honey (6, 1) */
         offset("dungeon_heist", 7, 1);
         offset("its_getting_hot_in_here", 8, 1);

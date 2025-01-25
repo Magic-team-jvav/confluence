@@ -119,7 +119,7 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.SUMMON_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.summoners"))
                     .displayItems((parameters, output) -> {
-                        // todo
+                        LightPetItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                     }).build());
     // 开发者物品
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> DEVELOPER = TABS.register("developer",

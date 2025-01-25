@@ -20,6 +20,20 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "terra_curio:compass",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 98
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
           "functions": [
             {
               "add": false,

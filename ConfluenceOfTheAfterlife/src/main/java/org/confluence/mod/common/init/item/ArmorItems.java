@@ -49,10 +49,10 @@ public class ArmorItems {
     public static final Supplier<ArmorItem> INSULATED_PANTS = registerNormalArmor("insulated_pants", "snow_armor", ModArmorMaterials.SNOW_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 150);
     public static final Supplier<ArmorItem> INSULATED_SHOES = registerNormalArmor("insulated_shoes", "snow_armor", ModArmorMaterials.SNOW_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 140);
 
-    public static final Supplier<ArmorItem> PINK_SNOW_CAPS = registerNormalArmor("pink_snow_caps", "", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 120);
-    public static final Supplier<ArmorItem> PINK_SNOW_SUITS = registerNormalArmor("pink_snow_suits", "", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 170);
-    public static final Supplier<ArmorItem> PINK_INSULATED_PANTS = registerNormalArmor("pink_insulated_pants", "", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 150);
-    public static final Supplier<ArmorItem> PINK_INSULATED_SHOES = registerNormalArmor("pink_insulated_shoes", "", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 140);
+    public static final Supplier<ArmorItem> PINK_SNOW_CAPS = registerNormalArmor("pink_snow_caps", "snow_pink_armor", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 120);
+    public static final Supplier<ArmorItem> PINK_SNOW_SUITS = registerNormalArmor("pink_snow_suits", "snow_pink_armor", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 170);
+    public static final Supplier<ArmorItem> PINK_INSULATED_PANTS = registerNormalArmor("pink_insulated_pants", "snow_pink_armor", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 150);
+    public static final Supplier<ArmorItem> PINK_INSULATED_SHOES = registerNormalArmor("pink_insulated_shoes", "snow_pink_armor", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 140);
 
     public static final Supplier<ArmorItem> COPPER_HELMET = registerNormalArmor("copper_helmet", "copper_armor", ModArmorMaterials.COPPER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 120);
     public static final Supplier<ArmorItem> COPPER_CHESTPLATE = registerNormalArmor("copper_chestplate", "copper_armor", ModArmorMaterials.COPPER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 170);
@@ -70,9 +70,9 @@ public class ArmorItems {
     public static final Supplier<ArmorItem> LEAD_BOOTS = registerNormalArmor("lead_boots", "lead_armor", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 160);
 
     public static final Supplier<ArmorItem> SILVER_HELMET = registerNormalArmor("silver_helmet", "silver_armor", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 190);
-    public static final Supplier<ArmorItem> SILVER_CHESTPLATE = registerNormalArmor("silver_chestplate", "silver_", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 270);
-    public static final Supplier<ArmorItem> SILVER_LEGGINGS = registerNormalArmor("silver_leggings", "silver_", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 250);
-    public static final Supplier<ArmorItem> SILVER_BOOTS = registerNormalArmor("silver_boots", "silver_", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 180);
+    public static final Supplier<ArmorItem> SILVER_CHESTPLATE = registerNormalArmor("silver_chestplate", "silver_armor", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 270);
+    public static final Supplier<ArmorItem> SILVER_LEGGINGS = registerNormalArmor("silver_leggings", "silver_armor", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 250);
+    public static final Supplier<ArmorItem> SILVER_BOOTS = registerNormalArmor("silver_boots", "silver_armor", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 180);
 
     public static final Supplier<ArmorItem> TUNGSTEN_HELMET = registerNormalArmor("tungsten_helmet", "tungsten_armor", ModArmorMaterials.TUNGSTEN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 210);
     public static final Supplier<ArmorItem> TUNGSTEN_CHESTPLATE = registerNormalArmor("tungsten_chestplate", "tungsten_armor", ModArmorMaterials.TUNGSTEN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 290);

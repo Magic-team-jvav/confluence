@@ -188,67 +188,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.LIVING_SAPLING.get().asItem()
         );
 
-        // 堆肥
-        tag(ModTags.Items.COMPOST).add(
-                FoodItems.STELLAR_BLOSSOM_SEED.get(),
-                FoodItems.CLOUDWEAVER_SEED.get(),
-                FoodItems.FLOATING_WHEAT_SEED.get(),
-                FoodItems.WATERLEAF_SEED.get(),
-                FoodItems.FIREBLOSSOM_SEED.get(),
-                FoodItems.MOONGLOW_SEED.get(),
-                FoodItems.BLINKROOT_SEED.get(),
-                FoodItems.SHIVERTHORN_SEED.get(),
-                FoodItems.DAYBLOOM_SEED.get(),
-                FoodItems.DEATHWEED_SEED.get(),
-                ModItems.GRASS_SEED.get(),
-                ModItems.JUNGLE_GRASS_SEED.get(),
-                ModItems.MUSHROOM_GRASS_SEED.get(),
-                ModItems.CORRUPT_SEED.get(),
-                ModItems.TR_CRIMSON_SEED.get(),
-                ModItems.HALLOWED_SEED.get(),
-                ModItems.ASH_GRASS_SEED.get(),
-
-                MaterialItems.WATERLEAF.get(),
-                MaterialItems.FIREBLOSSOM.get(),
-                MaterialItems.MOONGLOW.get(),
-                MaterialItems.BLINKROOT.get(),
-                MaterialItems.SHIVERTHORN.get(),
-                MaterialItems.DAYBLOOM.get(),
-                MaterialItems.DEATHWEED.get(),
-
-                MaterialItems.STAR_PETALS.get(),
-                MaterialItems.FLOATING_WHEAT_HEADS.get(),
-                MaterialItems.WEAVING_CLOUD_COTTON.get(),
-                MaterialItems.ROTTEN_CHUNK.get(),
-                MaterialItems.VERTEBRA.get(),
-
-                NatureBlocks.EBONY_LOG_BLOCKS.getLeaves().asItem(),
-                NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().asItem(),
-                NatureBlocks.LIVING_LOG_BLOCKS.getLeaves().asItem(),
-                NatureBlocks.PALM_LOG_BLOCKS.getLeaves().asItem(),
-                NatureBlocks.SHADOW_LOG_BLOCKS.getLeaves().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLeaves().asItem(),
-                NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().asItem(),
-
-
-                NatureBlocks.VICIOUS_MUSHROOM.get().asItem(),
-                NatureBlocks.VILE_MUSHROOM.get().asItem(),
-                NatureBlocks.GLOWING_MUSHROOM.get().asItem(),
-                NatureBlocks.LIFE_MUSHROOM.get().asItem(),
-                NatureBlocks.JUNGLE_SPORE.get().asItem(),
-                NatureBlocks.JUNGLE_ROSE.get().asItem(),
-                NatureBlocks.CORRUPT_GRASS.get().asItem(),
-                NatureBlocks.TR_CRIMSON_GRASS.get().asItem(),
-                NatureBlocks.HALLOW_GRASS.get().asItem(),
-                NatureBlocks.NATURES_GIFT.get().asItem(),
-                NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get().asItem(),
-                NatureBlocks.GLOWING_MUSHROOM_DROOPING_VINE.get().asItem(),
-                NatureBlocks.FOREST_DROOPING_VINE.get().asItem(),
-                NatureBlocks.JUNGLE_DROOPING_VINE.get().asItem(),
-                NatureBlocks.CORRUPT_DROOPING_VINE.get().asItem(),
-                NatureBlocks.TR_CRIMSON_DROOPING_VINE.get().asItem(),
-                NatureBlocks.HALLOW_DROOPING_VINE.get().asItem()
-        );
         tag(ModTags.Items.DEMONITE_AND_CRIMSON_INGOT).add(MaterialItems.DEMONITE_INGOT.get(), MaterialItems.TR_CRIMSON_INGOT.get());
         tag(ModTags.Items.LEAD_AND_IRON).add(Items.IRON_INGOT, MaterialItems.LEAD_INGOT.get());
         IntrinsicTagAppender<Item> torch = tag(ModTags.Items.TORCH);

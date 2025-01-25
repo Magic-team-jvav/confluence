@@ -1449,6 +1449,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.SUSPICIOUS_LOOKING_EYE.get(), "可疑眼球");
         add(ConsumableItems.SLIME_CROWN.get(), "史莱姆皇冠");
         add(ConsumableItems.WORM_FOOD.get(), "蠕虫诱饵");
+        add(ConsumableItems.BLOODY_SPINE.get(), "血腥脊椎");
         add(ConsumableItems.BOMB.get(), "炸弹");
         add(ConsumableItems.BOUNCY_BOMB.get(), "弹力炸弹");
         add(ConsumableItems.STICKY_BOMB.get(), "粘性炸弹");

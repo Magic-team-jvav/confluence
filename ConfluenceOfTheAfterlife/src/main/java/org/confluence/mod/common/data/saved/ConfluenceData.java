@@ -169,7 +169,7 @@ public class ConfluenceData extends SavedData {
 
     public void setMeteorite(BlockPos location, int tickUntilLanding) {
         this.meteoriteTracker.location = location;
-        this.meteoriteTracker.tickUntilLanding = tickUntilLanding;
+        this.meteoriteTracker.tickUntilLanding.set(tickUntilLanding);
         MeteoriteLocationPacketS2C.sendToAll(location, tickUntilLanding);
         setDirty();
     }

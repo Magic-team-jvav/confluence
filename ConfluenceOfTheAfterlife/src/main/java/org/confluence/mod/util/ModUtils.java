@@ -46,6 +46,7 @@ import org.confluence.terraentity.utils.TEUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
+import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
@@ -463,5 +464,26 @@ public final class ModUtils {
             case FEET -> 3;
             case null, default -> -1;
         };
+    }
+
+    public static int getDayTime(int hour, int minute) {
+        if (hour < 0 || hour > 23) throw new DateTimeParseException("hour bounds is [0, 23], currently is " + hour, "", 0);
+        if (minute < 0 || minute > 59) throw new DateTimeParseException("minute bounds is [0, 59], currently is " + minute, "", 0);
+        int i = (hour - 6) * 1000;
+        int j = (int) (minute / 0.06F);
+        if (i < 0) i += 24000;
+        return i + j;
+    }
+
+    public static boolean isWithinDayTime(int start, int end, long time) {
+        time %= 24000L;
+        if (start > end) {
+            return time >= start || time <= end;
+        }
+        return time >= start && time <= end;
+    }
+
+    public static boolean isWithinDayTime(int startHour, int startMinute, int endHour, int endMinute, long time) {
+        return isWithinDayTime(getDayTime(startHour, startMinute), getDayTime(endHour, endMinute), time);
     }
 }

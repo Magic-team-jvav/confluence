@@ -70,7 +70,7 @@ public class ThrownPowderEntity extends Entity {
                 case CRIMSON -> 0xFF0000;
                 default -> 0;
             };
-            // todo
+            // todo 粒子
 //            this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("thrown_powder"), ParticleEffect.Type.PARTICLE_WITH_VELOCITY, new MolangExp("color", color));
 //            emitter.attached = this;
 //            PSGameClient.LOADER.addEmitter(emitter, false);

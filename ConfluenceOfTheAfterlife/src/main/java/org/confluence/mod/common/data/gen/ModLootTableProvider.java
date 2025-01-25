@@ -38,7 +38,6 @@ import java.util.concurrent.CompletableFuture;
 import static org.confluence.mod.common.init.block.DecorativeBlocks.*;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
 import static org.confluence.mod.common.init.block.NatureBlocks.*;
-import static org.confluence.mod.common.init.block.NatureBlocks.EBONY_MOIST_SAND_BLOCK;
 import static org.confluence.mod.common.init.block.OreBlocks.*;
 import static org.confluence.mod.common.init.item.ConsumableItems.LIFE_CRYSTAL;
 import static org.confluence.mod.common.init.item.MaterialItems.*;
@@ -405,7 +404,6 @@ public class ModLootTableProvider extends LootTableProvider {
             ));
         }
 
-        // TODO: 时运 再生法杖 再生之斧
         private void addHerbDrop(BaseHerbBlock block, Item herb, Item seed) {
             add(block, LootTable.lootTable()
                     .withPool(LootPool.lootPool()

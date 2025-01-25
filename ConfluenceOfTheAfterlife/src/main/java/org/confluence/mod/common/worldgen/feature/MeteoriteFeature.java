@@ -26,12 +26,15 @@ public class MeteoriteFeature extends Feature<MeteoriteFeature.Config> {
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<Config> context) { // todo 调整大小，外观
+    public boolean place(FeaturePlaceContext<Config> context) { // todo 调整大小
         WorldGenLevel level = context.level();
         BlockPos origin = context.origin();
         RandomSource random = context.random();
-        int radius = context.config().radius;
-        float sparse = context.config().sparse;
+        Config config = context.config();
+        int radius = config.radius;
+        float sparse = config.sparse;
+        float lava = config.lava;
+        float fire = config.fire;
         float dense = 1.0F - sparse;
         int length = radius + radius + 1;
         int max = level.getMaxBuildHeight() - length;
@@ -57,13 +60,13 @@ public class MeteoriteFeature extends Feature<MeteoriteFeature.Config> {
                     if (point < sparse) {
                         if (dist > outer) {
                             if (v > point + sparse) {
-                                level.setBlock(offset, meteorite, Block.UPDATE_ALL);
+                                setBlock(level, offset, meteorite, random, lava, fire);
                             }
                         } else {
-                            level.setBlock(offset, v + sparse > point ? air : meteorite, Block.UPDATE_ALL);
+                            setBlock(level, offset, v + sparse > point ? air : meteorite, random, lava, fire);
                         }
                     } else {
-                        level.setBlock(offset, v + dense < point ? air : meteorite, Block.UPDATE_ALL);
+                        setBlock(level, offset, v + dense < point ? air : meteorite, random, lava, fire);
                     }
                 }
             }
@@ -71,10 +74,20 @@ public class MeteoriteFeature extends Feature<MeteoriteFeature.Config> {
         return true;
     }
 
-    public record Config(int radius, float sparse) implements FeatureConfiguration {
+    private static void setBlock(WorldGenLevel level, BlockPos pos, BlockState state, RandomSource random, float lava, float fire) {
+        boolean b = state.is(OreBlocks.METEORITE_ORE);
+        level.setBlock(pos, b && random.nextFloat() < lava ? Blocks.LAVA.defaultBlockState() : state, Block.UPDATE_ALL);
+        if (b && level.getBlockState(pos.above()).canBeReplaced() && random.nextFloat() < fire) {
+            level.setBlock(pos.above(), Blocks.FIRE.defaultBlockState(), Block.UPDATE_ALL);
+        }
+    }
+
+    public record Config(int radius, float sparse, float lava, float fire) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 ExtraCodecs.intRange(1, 7).lenientOptionalFieldOf("radius", 7).forGetter(Config::radius),
-                Codec.floatRange(0.0F, 1.0F).lenientOptionalFieldOf("sparse", 0.4F).forGetter(Config::sparse)
+                Codec.floatRange(0.0F, 1.0F).lenientOptionalFieldOf("sparse", 0.4F).forGetter(Config::sparse),
+                Codec.floatRange(0.0F, 1.0F).lenientOptionalFieldOf("lava", 0.1F).forGetter(Config::lava),
+                Codec.floatRange(0.0F, 1.0F).lenientOptionalFieldOf("fire", 0.15F).forGetter(Config::fire)
         ).apply(instance, Config::new));
     }
 }

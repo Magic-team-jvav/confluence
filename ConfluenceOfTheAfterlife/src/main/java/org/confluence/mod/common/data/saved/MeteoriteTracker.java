@@ -3,46 +3,130 @@ package org.confluence.mod.common.data.saved;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ChunkMap;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.level.ChunkPos;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MeteoriteTracker {
     public static final MeteoriteTracker INSTANCE = new MeteoriteTracker();
 
-    BlockPos location = BlockPos.ZERO;
-    int tickUntilLanding = 0;
+    private transient volatile boolean shouldGenerate = true;
+    public volatile boolean spawnAtNextNight = false;
+    volatile BlockPos location = BlockPos.ZERO;
+    volatile AtomicInteger tickUntilLanding = new AtomicInteger();
 
     public void tick(ServerLevel level) {
-        if (tickUntilLanding == 0) {
+        if (spawnAtNextNight && level.getDayTime() % 24000L == 18000L) { // midnight
+            this.spawnAtNextNight = false;
+            generateLandingDetail(level);
+        }
+        if (tickUntilLanding.get() == 0) {
             this.location = BlockPos.ZERO;
-        } else if (tickUntilLanding > 0) {
-            this.tickUntilLanding--;
-            if (tickUntilLanding == 0) {
+        } else if (tickUntilLanding.get() > 0) {
+            tickUntilLanding.decrementAndGet();
+            if (tickUntilLanding.get() == 0) {
                 ChunkPos chunkPos = new ChunkPos(location);
                 place(level, chunkPos.x, chunkPos.z, !level.getForcedChunks().contains(chunkPos.toLong()), new BlockPos(location));
             }
         }
     }
 
+    public void generateLandingDetail(ServerLevel level) {
+        if (!shouldGenerate) return;
+        this.shouldGenerate = false;
+        CompletableFuture.supplyAsync(() -> {
+            // 获取玩家数量最小的象限
+            int[][] quadrant = {{1, 1}, {-1, 1}, {-1, -1}, {1, -1}};
+            int[] counts = new int[4];
+            for (int i = 0; i < 4; i++) {
+                int x = quadrant[i][0];
+                int z = quadrant[i][1];
+                for (ServerPlayer player : level.players()) {
+                    if (Mth.sign(player.getX()) == x && Mth.sign(player.getZ()) == z) counts[i]++;
+                }
+            }
+            int min = 0;
+            for (int i = 0; i < 4; i++) if (counts[i] < counts[min]) min = i;
+            int xStep = quadrant[min][0];
+            int zStep = quadrant[min][1];
+            // 获取未被加载的区块
+            ChunkPos chunkPos;
+            int x = 0, z = 0;
+            ChunkMap chunkMap = level.getChunkSource().chunkMap;
+            List<ServerPlayer> players = new ArrayList<>(level.players());
+            do {
+                if (!players.isEmpty()) {
+                    Iterator<ServerPlayer> iterator = players.iterator();
+                    while (iterator.hasNext()) {
+                        ServerPlayer player = iterator.next();
+                        int dist = player.requestedViewDistance();
+                        int cx = SectionPos.blockToSectionCoord(player.getX());
+                        int cz = SectionPos.blockToSectionCoord(player.getZ());
+                        boolean removal = false;
+                        if (x > cx - dist && x < cx + dist) {
+                            x += xStep * dist;
+                            removal = true;
+                        }
+                        if (z > cz - dist && z < cz + dist) {
+                            z += zStep * dist;
+                            removal = true;
+                        }
+                        if (removal || Math.abs(x) > Math.abs(cx) || Math.abs(z) > Math.abs(cz)) {
+                            iterator.remove();
+                        }
+                    }
+                }
+                chunkPos = new ChunkPos(x += xStep, z += zStep);
+            } while (chunkMap.getVisibleChunkIfPresent(chunkPos.toLong()) != null);
+            // 获取能放陨石的区块
+            BlockPos.MutableBlockPos landingPos;
+            int maxBuildHeight = level.getMaxBuildHeight();
+            do {
+                level.setChunkForced(x, z, true);
+                landingPos = new ChunkPos(x, z).getBlockAt(7, maxBuildHeight, 7).mutable();
+                while (level.getBlockState(landingPos).isAir()) {
+                    landingPos.move(0, -1, 0);
+                }
+                level.setChunkForced(x, z, false);
+                if (level.random.nextBoolean()) x += xStep;
+                else z += zStep;
+            } while (!level.getBlockState(landingPos).getFluidState().isEmpty());
+
+            return new Tuple<>(landingPos.immutable(), level.random.nextInt(200, 401));
+        }, Util.backgroundExecutor()).thenAccept(tuple -> {
+            this.shouldGenerate = true;
+            this.location = tuple.getA();
+            this.tickUntilLanding.set(tuple.getB());
+            MeteoriteLocationPacketS2C.sendToAll(location, tickUntilLanding.get());
+        });
+    }
+
     private void place(ServerLevel level, int chunkX, int chunkZ, boolean withForceChunk, BlockPos origin) {
         CompletableFuture.supplyAsync(() -> {
             boolean placed = false;
-            if (withForceChunk) {
-                try {
-                    level.setChunkForced(chunkX, chunkZ, true);
-                    level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE)
-                            .getHolder(Confluence.asResource("normal_meteorite")).orElseThrow().value()
-                            .place(level, level.getChunkSource().getGenerator(), level.random, origin);
-                    level.setChunkForced(chunkX, chunkZ, false);
-                } catch (Exception ignored) {}
-            }
+            if (withForceChunk) level.setChunkForced(chunkX, chunkZ, true);
+            try {
+                level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE)
+                        .getHolder(Confluence.asResource("normal_meteorite")).orElseThrow().value()
+                        .place(level, level.getChunkSource().getGenerator(), level.random, origin);
+            } catch (Exception ignored) {}
+            if (withForceChunk) level.setChunkForced(chunkX, chunkZ, false);
             return placed;
         }, Util.backgroundExecutor()).thenAccept(success -> {
             Component message = Component.translatable("event.confluence.meteorite").withStyle(ChatFormatting.DARK_PURPLE);
@@ -51,12 +135,14 @@ public class MeteoriteTracker {
     }
 
     public void deserialize(CompoundTag nbt) {
+        this.spawnAtNextNight = nbt.getBoolean("spawnAtNextNight");
         this.location = NbtUtils.readBlockPos(nbt, "meteoriteLocation").orElse(BlockPos.ZERO);
-        this.tickUntilLanding = nbt.getInt("tickUtilMeteoriteLanding");
+        this.tickUntilLanding.set(nbt.getInt("tickUtilMeteoriteLanding"));
     }
 
     public void serialize(CompoundTag nbt) {
+        nbt.putBoolean("spawnAtNextNight", spawnAtNextNight);
         nbt.put("meteoriteLocation", NbtUtils.writeBlockPos(location));
-        nbt.putInt("tickUtilMeteoriteLanding", tickUntilLanding);
+        nbt.putInt("tickUtilMeteoriteLanding", tickUntilLanding.get());
     }
 }

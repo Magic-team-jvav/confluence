@@ -36,14 +36,14 @@ public final class TickEvents {
         MeteoriteTracker.INSTANCE.tick(serverLevel);
 
         long dayTime = serverLevel.getDayTime() % 24000L;
-        if (dayTime == 0L) {
-            RandomSource random = serverLevel.random;
+        RandomSource random = serverLevel.random;
+        if (dayTime == 0L) { // 6:00
             float factorX = Mth.nextFloat(random, -1.0F, 1.0F);
             float factorZ = Mth.nextFloat(random, -1.0F, 1.0F);
             ConfluenceData.get(serverLevel).setWindSpeed(factorX, factorZ);
-        } else if (dayTime == 18000L) {
-            if (ConfluenceData.get(serverLevel).getKillBoard().isEaterOfWorld_BrainOfCthulhuDefeated()) {
-                // todo 陨石坠落
+        } else if (dayTime == 13500L) { // 19:30
+            if (random.nextFloat() < 0.02F && ConfluenceData.get(serverLevel).getKillBoard().isEaterOfWorld_BrainOfCthulhuDefeated()) {
+                MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
             }
         }
     }
@@ -79,7 +79,7 @@ public final class TickEvents {
         // 实体身上的无敌帧每刻-1
         if (event.getEntity() instanceof ILivingEntity living) {
             Object2IntMap<Immunity> invTicks = living.confluence$getImmunityTicks();
-            for(ObjectIterator<Object2IntMap.Entry<Immunity>> iterator = invTicks.object2IntEntrySet().iterator(); iterator.hasNext(); ){
+            for (ObjectIterator<Object2IntMap.Entry<Immunity>> iterator = invTicks.object2IntEntrySet().iterator(); iterator.hasNext(); ) {
                 Object2IntMap.Entry<Immunity> entry = iterator.next();
                 int remain = entry.getIntValue() - 1;
                 if (remain < 0) {

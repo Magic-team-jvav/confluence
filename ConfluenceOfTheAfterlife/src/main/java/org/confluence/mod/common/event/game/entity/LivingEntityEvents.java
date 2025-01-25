@@ -31,6 +31,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.DartTrapBlock;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
 import org.confluence.mod.common.effect.beneficial.LuckEffect;
 import org.confluence.mod.common.effect.beneficial.ThornsEffect;
@@ -74,14 +75,18 @@ public final class LivingEntityEvents {
                 ModUtils.dropMoney(amount, living.getX(), living.getEyeY() - 0.3, living.getZ(), level);
             }
             if (living instanceof Boss boss && boss.shouldShowMessage()) {
-                ConfluenceData data = ConfluenceData.get(level);
                 EntityType<?> type = living.getType();
                 if (type == TEEntities.EYE_OF_CTHULHU.get()) {
-                    data.getKillBoard().defeatedEyeOfCthulhu();
-                    data.setDirty();
-                } else if (type == TEEntities.EATER_OF_WORLD.get() /* todo 克脑 */) {
-                    data.getKillBoard().defeatedEaterOfWorld_BrainOfCthulhu();
-                    data.setDirty();
+                    ConfluenceData data = ConfluenceData.get(level);
+                    data.getKillBoard().defeatedEyeOfCthulhu(data);
+                } else if (type == TEEntities.EATER_OF_WORLD.get() || type == TEEntities.BRAIN_OF_CTHULHU.get()) {
+                    ConfluenceData data = ConfluenceData.get(level);
+                    data.getKillBoard().defeatedEaterOfWorld_BrainOfCthulhu(data);
+                    if (ModUtils.isWithinDayTime(0, 0, 4, 30, level.getDayTime())) { // 00:00 -> 04:30
+                        MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
+                    } else if (!MeteoriteTracker.INSTANCE.spawnAtNextNight) {
+                        MeteoriteTracker.INSTANCE.spawnAtNextNight = level.random.nextBoolean();
+                    }
                 }
             }
         }
@@ -106,11 +111,6 @@ public final class LivingEntityEvents {
             MutableComponent component = Component.literal(text).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD);
             level.sendParticles(new DamageIndicatorOptions(component, false), pos.x, y, pos.z, 1, 0.1, 0.1, 0.1, 0.0);
         }
-    }
-
-    @SubscribeEvent
-    public static void livingBreathe(LivingBreatheEvent event) {
-
     }
 
     @SubscribeEvent

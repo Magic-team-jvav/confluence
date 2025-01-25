@@ -39,6 +39,7 @@ import java.util.function.ToIntFunction;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.COINS_START;
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_COINS;
+import static org.confluence.mod.util.ModUtils.isWithinDayTime;
 
 public final class PlayerUtils {
     public static final ToIntFunction<Item> COIN_2_INDEX = coin -> {
@@ -120,10 +121,10 @@ public final class PlayerUtils {
         long dayTime = level.dayTime() % 24000; // [0, 23999]
         if (level.isRaining()) base *= 1.1F;
         else if (level.isThundering()) base *= 1.2F;
-        if (dayTime >= 22500 || dayTime == 0) base *= 1.3F; // 04:30 -> 06:00
-        else if (dayTime >= 3000 && dayTime <= 9000) base *= 0.8F; // 09:00 -> 15:00
-        else if (dayTime >= 12000 && dayTime <= 13500) base *= 1.3F; // 18:00 -> 19:30
-        else if (dayTime >= 15300 && dayTime <= 20200) base *= 0.8F; // 21:18 -> 02:12
+        if (isWithinDayTime(4, 30, 6, 0, dayTime)) base *= 1.3F; // 04:30 -> 06:00
+        else if (isWithinDayTime(9, 0, 15, 0, dayTime)) base *= 0.8F; // 09:00 -> 15:00
+        else if (isWithinDayTime(18, 0, 19, 30, dayTime)) base *= 1.3F; // 18:00 -> 19:30
+        else if (isWithinDayTime(21, 18, 2, 12, dayTime)) base *= 0.8F; // 21:18 -> 02:12
         base *= switch (level.getMoonPhase()) {
             case 0 -> 1.1F; // 满月
             case 1, 7 -> 1.05F; // 凸月

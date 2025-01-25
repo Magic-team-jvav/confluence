@@ -12,16 +12,22 @@ public class KillBoard implements INBTSerializable<CompoundTag> {
     private boolean eyeOfCthulhu = false;
     private boolean eaterOfWorld_brainOfCthulhu = false;
 
-    public void defeatedEyeOfCthulhu() {
-        this.eyeOfCthulhu = true;
+    public void defeatedEyeOfCthulhu(ConfluenceData data) {
+        if (!eyeOfCthulhu) {
+            this.eyeOfCthulhu = true;
+            data.setDirty();
+        }
     }
 
     public boolean isEyeOfCthulhuDefeated() {
         return eyeOfCthulhu;
     }
 
-    public void defeatedEaterOfWorld_BrainOfCthulhu() {
-        this.eaterOfWorld_brainOfCthulhu = true;
+    public void defeatedEaterOfWorld_BrainOfCthulhu(ConfluenceData data) {
+        if (!eaterOfWorld_brainOfCthulhu) {
+            this.eaterOfWorld_brainOfCthulhu = true;
+            data.setDirty();
+        }
     }
 
     public boolean isEaterOfWorld_BrainOfCthulhuDefeated() {

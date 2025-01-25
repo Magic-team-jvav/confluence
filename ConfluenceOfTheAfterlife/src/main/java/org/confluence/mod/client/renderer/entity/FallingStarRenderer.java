@@ -1,4 +1,4 @@
-package org.confluence.mod.client.model.entity;
+package org.confluence.mod.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -7,25 +7,22 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemEntityRenderer;
-import net.minecraft.util.Brightness;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.item.ItemEntity;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
 public class FallingStarRenderer extends ItemEntityRenderer {
     private static final float length = 0.5F;
     private static final float width = 0.25F;
     private static final float HALF_SQRT_3 = (float) (Math.sqrt(3.0D) / 2.0D);
-    private static final int fullBright = Brightness.FULL_BRIGHT.pack();
 
     public FallingStarRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
     @Override
-    public void render(@NotNull ItemEntity itemEntity, float entityYaw, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int packedLight) {
-        super.render(itemEntity, entityYaw, partialTick, poseStack, multiBufferSource, fullBright);
+    public void render(ItemEntity itemEntity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
+        super.render(itemEntity, entityYaw, partialTick, poseStack, multiBufferSource, 0xF000F0);
 
         float delta = ((float) itemEntity.level().getGameTime() + partialTick) / 200.0F;
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.lightning());

@@ -31,7 +31,6 @@ import org.confluence.mod.client.gui.hud.ManaHudLayer;
 import org.confluence.mod.client.model.block.AltarBlockModel;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.model.block.WeatherVaneBlockModel;
-import org.confluence.mod.client.model.entity.FallingStarRenderer;
 import org.confluence.mod.client.model.entity.bomb.*;
 import org.confluence.mod.client.model.entity.fishing.BaseFishingHookModel;
 import org.confluence.mod.client.model.entity.fishing.BloodyFishingHookModel;
@@ -46,6 +45,8 @@ import org.confluence.mod.client.particle.DamageIndicatorParticle;
 import org.confluence.mod.client.particle.SimpleTextureSheetParticle;
 import org.confluence.mod.client.renderer.block.*;
 import org.confluence.mod.client.renderer.entity.EmptyEntityRenderer;
+import org.confluence.mod.client.renderer.entity.FallingStarRenderer;
+import org.confluence.mod.client.renderer.entity.TreasureBagRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.BaseFishingHookRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.BloodyFishingHookRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.GlowingFishingHookRenderer;
@@ -228,6 +229,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(DIGGING_MOLECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
 
         event.registerEntityRenderer(FALLING_STAR_ITEM_ENTITY.get(), FallingStarRenderer::new);
+        event.registerEntityRenderer(TREASURE_BAG_ITEM_ENTITY.get(), TreasureBagRenderer::new);
         event.registerEntityRenderer(COIN_PORTAL.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(THROWN_POWDER.get(), EmptyEntityRenderer::new);
 

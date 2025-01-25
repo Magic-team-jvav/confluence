@@ -35,6 +35,7 @@ import org.confluence.mod.common.advancement.ModAchievements;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
+import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -126,6 +127,8 @@ public final class PlayerEvents {
             player.heal(itemStack.getCount() * 4.0F);
             itemEntity.discard();
             event.setCanPickup(TriState.FALSE);
+        } else if (itemEntity instanceof TreasureBagItemEntity entity) {
+            if (!entity.isOwner(player)) event.setCanPickup(TriState.FALSE);
         }
     }
 

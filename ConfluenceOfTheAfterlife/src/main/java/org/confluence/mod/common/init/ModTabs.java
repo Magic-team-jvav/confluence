@@ -56,6 +56,7 @@ public final class ModTabs {
                         QuestedFishes.ITEMS.getEntries().forEach(action);
                         CrateBlocks.BLOCKS.getEntries().forEach(action);
                         PaintItems.ITEMS.getEntries().forEach(action);
+                        TreasureBagItems.ITEMS.getEntries().forEach(action);
                     }).build()
     );
     // 材料

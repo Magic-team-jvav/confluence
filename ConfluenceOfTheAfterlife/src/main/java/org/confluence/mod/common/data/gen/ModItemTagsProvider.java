@@ -411,5 +411,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         IntrinsicTagAppender<Item> lightPet = tag(ModTags.Items.LIGHT_PET);
         LightPetItems.ITEMS.getEntries().forEach(item -> lightPet.add(item.get()));
+        IntrinsicTagAppender<Item> treasureBag = tag(ModTags.Items.TREASURE_BAG);
+        TreasureBagItems.ITEMS.getEntries().forEach(item -> treasureBag.add(item.get()));
     }
 }

@@ -1,0 +1,50 @@
+package org.confluence.mod.common.entity;
+
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.init.ModEntities;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
+import java.util.UUID;
+
+public class TreasureBagItemEntity extends ItemEntity {
+    private static final EntityDataAccessor<Optional<UUID>> DATA_OWNER = SynchedEntityData.defineId(TreasureBagItemEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+
+    public TreasureBagItemEntity(EntityType<TreasureBagItemEntity> entityType, Level level) {
+        super(entityType, level);
+    }
+
+    public TreasureBagItemEntity(Level level, Vec3 pos, ItemStack itemStack, Player player) {
+        this(ModEntities.TREASURE_BAG_ITEM_ENTITY.get(), level);
+        setPos(pos);
+        setDeltaMovement(level.random.nextDouble() * 0.2 - 0.1, 0.2, level.random.nextDouble() * 0.2 - 0.1);
+        setItem(itemStack);
+        this.lifespan = itemStack.getEntityLifespan(level);
+        setThrower(player);
+        entityData.set(DATA_OWNER, Optional.of(player.getUUID()));
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_OWNER, Optional.empty());
+    }
+
+    public void setOwner(@Nullable Player player) {
+        entityData.set(DATA_OWNER, Optional.ofNullable(player == null ? null : player.getUUID()));
+    }
+
+    public boolean isOwner(@Nullable Player player) {
+        if (player == null) return false;
+        Optional<UUID> uuid = entityData.get(DATA_OWNER);
+        return uuid.isPresent() && uuid.get().equals(player.getUUID());
+    }
+}

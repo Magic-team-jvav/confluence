@@ -9,6 +9,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.CoinPortalEntity;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
 import org.confluence.mod.common.entity.ThrownPowderEntity;
+import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.fishing.BaseFishingHook;
 import org.confluence.mod.common.entity.fishing.BloodyFishingHook;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
@@ -92,6 +93,7 @@ public final class ModEntities {
     public static final Supplier<EntityType<DiggingMolecartEntity>> DIGGING_MOLECART = registerMinecart("digging_molecart", DiggingMolecartEntity::new);
 
     public static final Supplier<EntityType<FallingStarItemEntity>> FALLING_STAR_ITEM_ENTITY = ENTITIES.register("falling_star", () -> EntityType.Builder.<FallingStarItemEntity>of(FallingStarItemEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(16).updateInterval(20).build("confluence:falling_star"));
+    public static final Supplier<EntityType<TreasureBagItemEntity>> TREASURE_BAG_ITEM_ENTITY = ENTITIES.register("treasure_bag", () -> EntityType.Builder.<TreasureBagItemEntity>of(TreasureBagItemEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(16).updateInterval(20).build("confluence:treasure_bag"));
     public static final Supplier<EntityType<CoinPortalEntity>> COIN_PORTAL = ENTITIES.register("coin_portal", () -> EntityType.Builder.<CoinPortalEntity>of(CoinPortalEntity::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(6).build("confluence:coin_portal"));
     public static final Supplier<EntityType<ThrownPowderEntity>> THROWN_POWDER = ENTITIES.register("thrown_powder", () -> EntityType.Builder.<ThrownPowderEntity>of(ThrownPowderEntity::new, MobCategory.MISC).sized(0.0F, 0.0F).fireImmune().build("confluence:thrown_powder"));
 

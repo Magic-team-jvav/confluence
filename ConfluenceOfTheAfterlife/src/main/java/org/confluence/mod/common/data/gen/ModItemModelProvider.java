@@ -60,7 +60,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         customModels.add(createDir(ArrowItems.ITEMS, "arrow/"));
         customModels.add(createDir(BaitItems.ITEMS, "bait/"));
         customModels.add(createDir(ConsumableItems.ITEMS, "consumable/"));
-        customModels.add(createDir(VanityArmorItems.ITEMS, "vanity_armor/"));
         customModels.add(createDir(FoodItems.ITEMS, "food/", "seed/"));
         customModels.add(createDir(HookItems.ITEMS, "hook/"));
         customModels.add(createDir(IconItems.ITEMS, "icon/"));
@@ -73,6 +72,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         customModels.add(createDir(PotionItems.ITEMS, "potion/"));
         customModels.add(createDir(QuestedFishes.ITEMS, "quested_fish/"));
         customModels.add(createDir(ToolItems.ITEMS, "tool/"));
+        customModels.add(createDir(TreasureBagItems.ITEMS, "treasure_bag/"));
+        customModels.add(createDir(VanityArmorItems.ITEMS, "vanity_armor/"));
 
         genModels(customModels, "item/generated", false);
 

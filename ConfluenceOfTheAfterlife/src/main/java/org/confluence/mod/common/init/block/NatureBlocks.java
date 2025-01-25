@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
@@ -219,6 +220,22 @@ public class NatureBlocks {
     public static final Supplier<BaseMossBlock> ARGON_MOSS = registerWithItem("argon_moss", () -> new BaseMossBlock(5));
     public static final Supplier<BaseMossBlock> NEON_MOSS = registerWithItem("neon_moss", () -> new BaseMossBlock(5));
     public static final Supplier<BaseMossBlock> HELIUM_MOSS = registerWithItem("helium_moss", () -> new BaseMossBlock(5));
+
+    //香蒲
+    public static final Supplier<CattailsBodyBlock> CATTAILS_BODY = registerWithoutItem("cattails_body", () -> new CattailsBodyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+    public static final Supplier<CattailsBodyBlock> JUNGLE_CATTAILS_BODY = registerWithoutItem("jungle_cattails_body", () -> new CattailsBodyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+    public static final Supplier<CattailsBodyBlock> MUSHROOM_CATTAILS_BODY = registerWithoutItem("mushroom_cattails_body", () -> new CattailsBodyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+    public static final Supplier<CattailsBodyBlock> HALLOW_CATTAILS_BODY = registerWithoutItem("hallow_cattails_body", () -> new CattailsBodyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+    public static final Supplier<CattailsBodyBlock> EBONY_CATTAILS_BODY = registerWithoutItem("ebony_cattails_body", () -> new CattailsBodyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+    public static final Supplier<CattailsBodyBlock> TR_CRIMSON_CATTAILS_BODY = registerWithoutItem("tr_crimson_cattails_body", () -> new CattailsBodyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+
+    public static final Supplier<CattailsHeadBlock> CATTAILS_HEAD = registerWithoutItem("cattails_head", () -> new CattailsHeadBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+    public static final Supplier<CattailsHeadBlock> JUNGLE_CATTAILS_HEAD = registerWithoutItem("jungle_cattails_head", () -> new CattailsHeadBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+    public static final Supplier<CattailsHeadBlock> MUSHROOM_CATTAILS_HEAD = registerWithoutItem("mushroom_cattails_head", () -> new CattailsHeadBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+    public static final Supplier<CattailsHeadBlock> HALLOW_CATTAILS_HEAD = registerWithoutItem("hallow_cattails_head", () -> new CattailsHeadBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+    public static final Supplier<CattailsHeadBlock> EBONY_CATTAILS_HEAD = registerWithoutItem("ebony_cattails_head", () -> new CattailsHeadBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+    public static final Supplier<CattailsHeadBlock> TR_CRIMSON_CATTAILS_HEAD = registerWithoutItem("tr_crimson_cattails_head", () -> new CattailsHeadBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+
 
     private static <B extends Block> DeferredBlock<B> registerWithoutItem(String id, Supplier<B> block) {
         return BLOCKS.register(id, block);

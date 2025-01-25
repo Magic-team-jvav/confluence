@@ -1,6 +1,7 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.level.block.Blocks;
@@ -56,6 +57,13 @@ public final class ModItems {
     public static final Supplier<GrassSeedItem> TR_CRIMSON_SEED = ITEMS.register("tr_crimson_seed", () -> new GrassSeedItem(Map.of(Blocks.DIRT, NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(), Blocks.MUD, NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK.get())));
     public static final Supplier<GrassSeedItem> HALLOWED_SEED = ITEMS.register("hallowed_seed", () -> new GrassSeedItem(Map.of(Blocks.DIRT, NatureBlocks.HALLOW_GRASS_BLOCK.get())));
     public static final Supplier<GrassSeedItem> ASH_GRASS_SEED = ITEMS.register("ash_grass_seed", () -> new GrassSeedItem(Map.of(NatureBlocks.ASH_BLOCK.get(), NatureBlocks.ASH_GRASS_BLOCK.get())));
+
+    public static final Supplier<BlockItem> CATTAILS = BLOCK_ITEMS.register("cattails", () -> new BlockItem(NatureBlocks.CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
+    public static final Supplier<BlockItem> JUNGLE_CATTAILS = BLOCK_ITEMS.register("jungle_cattails", () -> new BlockItem(NatureBlocks.JUNGLE_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
+    public static final Supplier<BlockItem> MUSHROOM_CATTAILS = BLOCK_ITEMS.register("mushroom_cattails", () -> new BlockItem(NatureBlocks.MUSHROOM_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
+    public static final Supplier<BlockItem> HALLOW_CATTAILS = BLOCK_ITEMS.register("hallow_cattails", () -> new BlockItem(NatureBlocks.HALLOW_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
+    public static final Supplier<BlockItem> EBONY_CATTAILS = BLOCK_ITEMS.register("ebony_cattails", () -> new BlockItem(NatureBlocks.EBONY_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
+    public static final Supplier<BlockItem> TR_CRIMSON_CATTAILS = BLOCK_ITEMS.register("tr_crimson_cattails", () -> new BlockItem(NatureBlocks.TR_CRIMSON_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

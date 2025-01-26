@@ -60,7 +60,7 @@ public final class ModItems {
 
     public static final Supplier<BlockItem> CATTAILS = BLOCK_ITEMS.register("cattails", () -> new BlockItem(NatureBlocks.CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
     public static final Supplier<BlockItem> JUNGLE_CATTAILS = BLOCK_ITEMS.register("jungle_cattails", () -> new BlockItem(NatureBlocks.JUNGLE_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
-    public static final Supplier<BlockItem> MUSHROOM_CATTAILS = BLOCK_ITEMS.register("mushroom_cattails", () -> new BlockItem(NatureBlocks.MUSHROOM_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
+    public static final Supplier<BlockItem> GLOWING_MUSHROOM_CATTAILS = BLOCK_ITEMS.register("glowing_mushroom_cattails", () -> new BlockItem(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
     public static final Supplier<BlockItem> HALLOW_CATTAILS = BLOCK_ITEMS.register("hallow_cattails", () -> new BlockItem(NatureBlocks.HALLOW_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
     public static final Supplier<BlockItem> EBONY_CATTAILS = BLOCK_ITEMS.register("ebony_cattails", () -> new BlockItem(NatureBlocks.EBONY_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
     public static final Supplier<BlockItem> TR_CRIMSON_CATTAILS = BLOCK_ITEMS.register("tr_crimson_cattails", () -> new BlockItem(NatureBlocks.TR_CRIMSON_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));

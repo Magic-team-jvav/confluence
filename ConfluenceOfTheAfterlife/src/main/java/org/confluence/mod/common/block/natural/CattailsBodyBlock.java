@@ -37,8 +37,8 @@ public class CattailsBodyBlock extends GrowingPlantBodyBlock implements LiquidBl
             return NatureBlocks.CATTAILS_HEAD.get();
         } else if (state.is(NatureBlocks.JUNGLE_CATTAILS_BODY.get())) {
             return NatureBlocks.JUNGLE_CATTAILS_HEAD.get();
-        } else if (state.is(NatureBlocks.MUSHROOM_CATTAILS_BODY.get())) {
-            return NatureBlocks.MUSHROOM_CATTAILS_HEAD.get();
+        } else if (state.is(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_BODY.get())) {
+            return NatureBlocks.GLOWING_MUSHROOM_CATTAILS_HEAD.get();
         } else if (state.is(NatureBlocks.HALLOW_CATTAILS_BODY.get())) {
             return NatureBlocks.HALLOW_CATTAILS_HEAD.get();
         } else if (state.is(NatureBlocks.EBONY_CATTAILS_BODY.get())) {

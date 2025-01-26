@@ -46,6 +46,21 @@ public class NatureBlocks {
     public static final DeferredBlock<AetheriumBlock> AETHERIUM_BLOCK = registerWithItem("aetherium_block", () -> new AetheriumBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).lightLevel(blockState -> 10)));
     public static final DeferredBlock<Block> DARK_AETHERIUM_BLOCK = registerWithItem("dark_aetherium_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK)));
 
+    //香蒲
+    public static final DeferredBlock<CattailsBodyBlock> CATTAILS_BODY = registerWithoutItem("cattails_body", () -> new CattailsBodyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+    public static final DeferredBlock<CattailsBodyBlock> JUNGLE_CATTAILS_BODY = registerWithoutItem("jungle_cattails_body", () -> new CattailsBodyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+    public static final DeferredBlock<CattailsBodyBlock> GLOWING_MUSHROOM_CATTAILS_BODY = registerWithoutItem("glowing_mushroom_cattails_body", () -> new CattailsBodyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+    public static final DeferredBlock<CattailsBodyBlock> HALLOW_CATTAILS_BODY = registerWithoutItem("hallow_cattails_body", () -> new CattailsBodyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+    public static final DeferredBlock<CattailsBodyBlock> EBONY_CATTAILS_BODY = registerWithoutItem("ebony_cattails_body", () -> new CattailsBodyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+    public static final DeferredBlock<CattailsBodyBlock> TR_CRIMSON_CATTAILS_BODY = registerWithoutItem("tr_crimson_cattails_body", () -> new CattailsBodyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+
+    public static final DeferredBlock<CattailsHeadBlock> CATTAILS_HEAD = registerWithoutItem("cattails_head", () -> new CattailsHeadBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+    public static final DeferredBlock<CattailsHeadBlock> JUNGLE_CATTAILS_HEAD = registerWithoutItem("jungle_cattails_head", () -> new CattailsHeadBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+    public static final DeferredBlock<CattailsHeadBlock> GLOWING_MUSHROOM_CATTAILS_HEAD = registerWithoutItem("glowing_mushroom_cattails_head", () -> new CattailsHeadBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+    public static final DeferredBlock<CattailsHeadBlock> HALLOW_CATTAILS_HEAD = registerWithoutItem("hallow_cattails_head", () -> new CattailsHeadBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+    public static final DeferredBlock<CattailsHeadBlock> EBONY_CATTAILS_HEAD = registerWithoutItem("ebony_cattails_head", () -> new CattailsHeadBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+    public static final DeferredBlock<CattailsHeadBlock> TR_CRIMSON_CATTAILS_HEAD = registerWithoutItem("tr_crimson_cattails_head", () -> new CattailsHeadBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
+
     // 环境辅助
     public static final DeferredBlock<ThinIceBlock> THIN_ICE_BLOCK = registerWithItem("thin_ice_block", ThinIceBlock::new);
     public static final DeferredBlock<Block> HARDENED_SAND_BLOCK = registerWithItem("hardened_sand_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE)));
@@ -220,21 +235,6 @@ public class NatureBlocks {
     public static final Supplier<BaseMossBlock> ARGON_MOSS = registerWithItem("argon_moss", () -> new BaseMossBlock(5));
     public static final Supplier<BaseMossBlock> NEON_MOSS = registerWithItem("neon_moss", () -> new BaseMossBlock(5));
     public static final Supplier<BaseMossBlock> HELIUM_MOSS = registerWithItem("helium_moss", () -> new BaseMossBlock(5));
-
-    //香蒲
-    public static final Supplier<CattailsBodyBlock> CATTAILS_BODY = registerWithoutItem("cattails_body", () -> new CattailsBodyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
-    public static final Supplier<CattailsBodyBlock> JUNGLE_CATTAILS_BODY = registerWithoutItem("jungle_cattails_body", () -> new CattailsBodyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
-    public static final Supplier<CattailsBodyBlock> MUSHROOM_CATTAILS_BODY = registerWithoutItem("mushroom_cattails_body", () -> new CattailsBodyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
-    public static final Supplier<CattailsBodyBlock> HALLOW_CATTAILS_BODY = registerWithoutItem("hallow_cattails_body", () -> new CattailsBodyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
-    public static final Supplier<CattailsBodyBlock> EBONY_CATTAILS_BODY = registerWithoutItem("ebony_cattails_body", () -> new CattailsBodyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
-    public static final Supplier<CattailsBodyBlock> TR_CRIMSON_CATTAILS_BODY = registerWithoutItem("tr_crimson_cattails_body", () -> new CattailsBodyBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
-
-    public static final Supplier<CattailsHeadBlock> CATTAILS_HEAD = registerWithoutItem("cattails_head", () -> new CattailsHeadBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
-    public static final Supplier<CattailsHeadBlock> JUNGLE_CATTAILS_HEAD = registerWithoutItem("jungle_cattails_head", () -> new CattailsHeadBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
-    public static final Supplier<CattailsHeadBlock> MUSHROOM_CATTAILS_HEAD = registerWithoutItem("mushroom_cattails_head", () -> new CattailsHeadBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
-    public static final Supplier<CattailsHeadBlock> HALLOW_CATTAILS_HEAD = registerWithoutItem("hallow_cattails_head", () -> new CattailsHeadBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
-    public static final Supplier<CattailsHeadBlock> EBONY_CATTAILS_HEAD = registerWithoutItem("ebony_cattails_head", () -> new CattailsHeadBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
-    public static final Supplier<CattailsHeadBlock> TR_CRIMSON_CATTAILS_HEAD = registerWithoutItem("tr_crimson_cattails_head", () -> new CattailsHeadBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
 
 
     private static <B extends Block> DeferredBlock<B> registerWithoutItem(String id, Supplier<B> block) {

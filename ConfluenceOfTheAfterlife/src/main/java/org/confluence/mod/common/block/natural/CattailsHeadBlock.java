@@ -81,8 +81,8 @@ public class CattailsHeadBlock extends GrowingPlantHeadBlock implements LiquidBl
             return NatureBlocks.CATTAILS_BODY.get();
         } else if (state.is(NatureBlocks.JUNGLE_CATTAILS_HEAD.get())) {
             return NatureBlocks.JUNGLE_CATTAILS_BODY.get();
-        } else if (state.is(NatureBlocks.MUSHROOM_CATTAILS_HEAD.get())) {
-            return NatureBlocks.MUSHROOM_CATTAILS_BODY.get();
+        } else if (state.is(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_HEAD.get())) {
+            return NatureBlocks.GLOWING_MUSHROOM_CATTAILS_BODY.get();
         } else if (state.is(NatureBlocks.HALLOW_CATTAILS_HEAD.get())) {
             return NatureBlocks.HALLOW_CATTAILS_BODY.get();
         } else if (state.is(NatureBlocks.EBONY_CATTAILS_HEAD.get())) {
@@ -108,6 +108,23 @@ public class CattailsHeadBlock extends GrowingPlantHeadBlock implements LiquidBl
     protected boolean canGrowInto(BlockState state) {
         return state.is(Blocks.WATER) || state.is(Blocks.AIR);
     }
+
+    @Override
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        int currentAge = state.getValue(AGE);
+        if (currentAge == 3) {
+            return;
+        }
+        BlockPos blockpos = pos.relative(this.growthDirection);
+        int i = Math.min(currentAge + 1, MAX_AGE);
+        int j = this.getBlocksToGrowWhenBonemealed(random);
+        for (int k = 0; k < j && this.canGrowInto(level.getBlockState(blockpos)); k++) {
+            level.setBlockAndUpdate(blockpos, state.setValue(AGE, i));
+            blockpos = blockpos.relative(this.growthDirection);
+            i = Math.min(i + 1, MAX_AGE);
+        }
+    }
+
 
     @Override
     public boolean canPlaceLiquid(@Nullable Player player, BlockGetter level, BlockPos pos, BlockState state, Fluid fluid) {

@@ -32,7 +32,6 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
     }
 
     private static final List<PlantEntry> PLANTS = new ArrayList<>();
-    private static final Random RANDOM = new Random();
 
     static {
     }
@@ -130,22 +129,12 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
             }
             BlockState blockstate1 = serverLevel.getBlockState(blockpos1);
             if (blockstate1.isAir()) {
-                BlockState randomPlant = selectRandomPlant();
-                if (isWaterPlant(randomPlant)) {
-                    if (serverLevel.getBlockState(blockpos1.below()).is(Blocks.WATER)) {
-                        serverLevel.setBlock(blockpos1, randomPlant, 3);
-                    }
-                } else {
-                    if (randomPlant.canSurvive(serverLevel, blockpos1)) {
-                        serverLevel.setBlock(blockpos1, randomPlant, 3);
-                    }
+                BlockState randomPlant = selectRandomPlant(randomSource);
+                if (randomPlant.canSurvive(serverLevel, blockpos1)) {
+                    serverLevel.setBlock(blockpos1, randomPlant, 3);
                 }
             }
         }
-    }
-    //预制香蒲的位置
-    private boolean isWaterPlant(BlockState plant) {
-        return plant.is(Blocks.AIR);
     }
 
     @Override
@@ -162,9 +151,9 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
         return holder.is(Biomes.DESERT);
     }
 
-    private static BlockState selectRandomPlant() {
+    private static BlockState selectRandomPlant(RandomSource randomSource) {
         int totalWeight = PLANTS.stream().mapToInt(p -> p.weight).sum();
-        int randomValue = RANDOM.nextInt(totalWeight);
+        int randomValue = randomSource.nextInt(totalWeight);
         int cumulativeWeight = 0;
 
         for (MoistSandBlock.PlantEntry entry : PLANTS) {

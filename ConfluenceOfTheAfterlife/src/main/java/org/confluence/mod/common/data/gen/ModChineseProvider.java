@@ -924,14 +924,14 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(NatureBlocks.CATTAILS_BODY.get(), "香蒲");
         add(NatureBlocks.JUNGLE_CATTAILS_BODY.get(), "丛林香蒲");
-        add(NatureBlocks.MUSHROOM_CATTAILS_BODY.get(), "蘑菇香蒲");
+        add(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_BODY.get(), "发光蘑菇香蒲");
         add(NatureBlocks.HALLOW_CATTAILS_BODY.get(), "神圣香蒲");
         add(NatureBlocks.EBONY_CATTAILS_BODY.get(), "腐化香蒲");
         add(NatureBlocks.TR_CRIMSON_CATTAILS_BODY.get(), "猩红香蒲");
 
         add(ModItems.CATTAILS.get(), "香蒲");
         add(ModItems.JUNGLE_CATTAILS.get(), "丛林香蒲");
-        add(ModItems.MUSHROOM_CATTAILS.get(), "蘑菇香蒲");
+        add(ModItems.GLOWING_MUSHROOM_CATTAILS.get(), "发光蘑菇香蒲");
         add(ModItems.HALLOW_CATTAILS.get(), "神圣香蒲");
         add(ModItems.EBONY_CATTAILS.get(), "腐化香蒲");
         add(ModItems.TR_CRIMSON_CATTAILS.get(), "猩红香蒲");

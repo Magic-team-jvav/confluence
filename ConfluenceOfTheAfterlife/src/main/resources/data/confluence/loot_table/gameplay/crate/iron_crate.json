@@ -37,7 +37,7 @@
               "function": "set_count",
               "count": {
                 "type": "uniform",
-                "min": 4,
+                "min": 5,
                 "max": 10
               }
             }

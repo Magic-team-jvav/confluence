@@ -6,6 +6,6 @@
     "minecraft:sparse_jungle",
     "minecraft:bamboo_jungle"
   ],
-  "features": "confluence:jungle_spore",
+  "features": "confluence:natures_gift",
   "step": "vegetal_decoration"
 }

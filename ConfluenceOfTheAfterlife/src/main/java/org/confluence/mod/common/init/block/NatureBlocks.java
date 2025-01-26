@@ -175,7 +175,7 @@ public class NatureBlocks {
     public static final DeferredBlock<JungleSporeBlock> JUNGLE_SPORE = registerWithoutItem("jungle_spore", JungleSporeBlock::new);
     public static final DeferredBlock<Block> NATURES_GIFT = registerWithoutItem("natures_gift", NaturesGiftBlock::new);
     public static final DeferredBlock<Block> JUNGLE_HIVE_BLOCK = registerWithItem("jungle_hive_block", JungleHiveBlock::new);
-    public static final DeferredBlock<Block> JUNGLE_ROSE = registerWithItem("jungle_rose", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION)));
+    public static final DeferredBlock<Block> JUNGLE_ROSE = registerWithItem("jungle_rose", NaturesGiftBlock::new);
 
     // 空岛
     public static final DeferredBlock<CloudBlock> CLOUD_BLOCK = registerWithItem("cloud_block", CloudBlock::new);

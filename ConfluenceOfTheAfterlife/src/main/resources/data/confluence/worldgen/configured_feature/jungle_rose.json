@@ -1,7 +1,7 @@
 {
   "type": "minecraft:random_patch",
   "config": {
-    "tries": 32,
+    "tries": 16,
     "feature": {
       "feature": {
         "type": "minecraft:simple_block",

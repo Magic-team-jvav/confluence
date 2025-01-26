@@ -26,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
+
 public class ModItemTagsProvider extends ItemTagsProvider {
     public ModItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagLookup<Block>> b, @Nullable ExistingFileHelper helper) {
         super(output, provider, b, Confluence.MODID, helper);
@@ -283,11 +284,42 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.ASH_LOG_BLOCKS.getLog().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getLog().asItem(),
                 NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getLog().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().asItem()
         );
+        tag(ItemTags.WOODEN_SLABS).add(
+                NatureBlocks.EBONY_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getSlab().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getSlab().asItem(),NatureBlocks.ASH_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getSlab().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getSlab().asItem()
+        );
+        tag(ItemTags.WOODEN_FENCES).add(
+                NatureBlocks.EBONY_LOG_BLOCKS.getFence().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getFence().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getFence().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getFence().asItem(),NatureBlocks.ASH_LOG_BLOCKS.getFence().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getFence().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getFence().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getFence().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getFence().asItem()
+        );
+        tag(ItemTags.WOODEN_DOORS).add(
+                NatureBlocks.EBONY_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getDoor().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getDoor().asItem(),NatureBlocks.ASH_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getDoor().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getDoor().asItem()
+        );
+        tag(ItemTags.WOODEN_TRAPDOORS).add(
+                NatureBlocks.EBONY_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getTrapdoor().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getTrapdoor().asItem(),NatureBlocks.ASH_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getTrapdoor().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getTrapdoor().asItem()
+        );
+        tag(ItemTags.WOODEN_PRESSURE_PLATES).add(
+                NatureBlocks.EBONY_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getPressurePlate().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getPressurePlate().asItem(),NatureBlocks.ASH_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getPressurePlate().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getPressurePlate().asItem()
+        );
+        tag(ItemTags.WOODEN_STAIRS).add(
+                NatureBlocks.EBONY_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getStairs().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getStairs().asItem(),NatureBlocks.ASH_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getStairs().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getStairs().asItem()
+        );
         tag(ModTags.Items.CHARCOAL_CAN_BE_BURNED).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getLog().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getLog().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getLog().asItem(),
                 NatureBlocks.ASH_LOG_BLOCKS.getLog().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getLog().asItem(),
                 NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getLog().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().asItem()
         );
+
         BowItems.acceptTag(tag(Tags.Items.TOOLS_BOW));
         ArrowItems.acceptTag(tag(ItemTags.ARROWS));
         HammerItems.acceptTag(tag(ModTags.Items.HAMMER));

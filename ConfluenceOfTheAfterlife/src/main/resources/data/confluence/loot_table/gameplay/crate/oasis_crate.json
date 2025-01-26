@@ -103,8 +103,8 @@
               "function": "set_count",
               "count": {
                 "type": "uniform",
-                "min": 4,
-                "max": 10
+                "min": 5,
+                "max": 12
               }
             }
           ],

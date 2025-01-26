@@ -20,7 +20,7 @@ public class JungleSporeBlock extends BasePlantBlock {
 
 
     public JungleSporeBlock() {
-        super(Properties.ofFullCopy(Blocks.DANDELION).lightLevel(value -> 4), Blocks.GRASS_BLOCK, Blocks.MOSS_BLOCK, Blocks.CLAY);
+        super(Properties.ofFullCopy(Blocks.DANDELION).lightLevel(value -> 4), Blocks.GRASS_BLOCK,Blocks.STONE,Blocks.DEEPSLATE, Blocks.MOSS_BLOCK, Blocks.CLAY);
     }
 
     @Override

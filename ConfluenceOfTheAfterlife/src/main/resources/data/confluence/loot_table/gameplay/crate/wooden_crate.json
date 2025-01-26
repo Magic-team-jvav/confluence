@@ -68,7 +68,7 @@
               "count": {
                 "type": "uniform",
                 "min": 20,
-                "max": 64
+                "max": 90
               }
             }
           ],
@@ -83,7 +83,7 @@
               "count": {
                 "type": "uniform",
                 "min": 1,
-                "max": 7
+                "max": 5
               }
             }
           ],

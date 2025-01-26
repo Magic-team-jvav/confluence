@@ -1260,6 +1260,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.BLACK_LENS.get(), "黑晶状体");
         add(MaterialItems.CRYSTAL_SHARDS_ITEM.get(), "水晶碎块");
         add(MaterialItems.ANTLION_MANDIBLE.get(), "蚁狮下颚");
+        add(MaterialItems.STINGER.get(), "毒刺");
+        add(MaterialItems.MAN_EATER_VINE.get(), "食人怪藤蔓");
         add(MaterialItems.BLACK_INK.get(), "黑墨水");
         add(MaterialItems.SHARK_FIN.get(), "鲨鱼鳍");
         add(MaterialItems.SHADOW_SCALE.get(), "暗影鳞片");

@@ -328,6 +328,8 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(TR_CRIMSON_HARDENED_SAND_BLOCK.get());
             dropSelf(TR_CRIMSON_MOIST_SAND_BLOCK.get());
 
+            dropSelf(JUNGLE_ROSE.get());
+
             dropOther(LIFE_CRYSTAL_BLOCK.get(), LIFE_CRYSTAL.get());
             dropOther(MUSHROOM_GRASS_BLOCK.get(), Items.MUD);
             dropOther(JUNGLE_GRASS_BLOCK.get(), Items.MUD);

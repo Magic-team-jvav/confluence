@@ -1470,6 +1470,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.MANA_CRYSTAL.get(), "魔力水晶");
         add(ConsumableItems.LIFE_CRYSTAL.get(), "生命水晶");
         add(ConsumableItems.LIFE_FRUIT.get(), "生命果");
+        add(TreasureBagItems.KING_SLIME_TREASURE_BAG.get(), "史莱姆之王宝藏袋");
+        add(TreasureBagItems.EYE_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之眼宝藏袋");
+        add(TreasureBagItems.EATER_OF_WORLDS_TREASURE_BAG.get(), "世界吞噬怪宝藏袋");
+        add(TreasureBagItems.BRAIN_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之脑宝藏袋");
 
         // 杂项
         add(ModItems.COPPER_COIN.get(), "铜币");

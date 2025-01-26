@@ -14,6 +14,7 @@ import net.minecraft.client.resources.model.SimpleBakedModel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
@@ -21,7 +22,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +35,7 @@ import java.util.Set;
 public final class ClientUtils {
     public static final String GRAY_SUFFIX = ".gray";
     public static final String NEGATIVE_SUFFIX = ".negative";
+    public static final float HALF_SQRT_3 = Mth.sqrt(3.0F) / 2.0F;
 
     public static void drawImage(ResourceLocation loc, GuiGraphics g, int x, int y, int wid, int hig, int imWid, int imHig) {
         g.blit(loc, x, y, 0, 0, wid, hig, imWid, imHig);

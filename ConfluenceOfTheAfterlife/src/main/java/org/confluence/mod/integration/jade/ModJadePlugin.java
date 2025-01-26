@@ -6,6 +6,7 @@ import org.confluence.mod.common.block.functional.AbstractMechanicalBlock;
 import org.confluence.mod.common.block.functional.BehaviourPressurePlateBlock;
 import org.confluence.mod.common.block.functional.DeathChestBlock;
 import org.confluence.mod.common.block.functional.SignalPressurePlateBlock;
+import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import snownee.jade.api.*;
 
 @WailaPlugin
@@ -29,6 +30,10 @@ public class ModJadePlugin implements IWailaPlugin {
                     CompoundTag serverData = blockAccessor.getServerData();
                     serverData.putString("givenName", "{\"translate\":\"block.confluence.base_chest_block." + entity.variant.getSerializedName() + "\"}");
                     return registration.blockAccessor().from(blockAccessor).serverData(serverData).build();
+                }
+            } else if (accessor instanceof EntityAccessor entityAccessor) {
+                if (entityAccessor.getEntity() instanceof TreasureBagItemEntity entity && !entity.isOwner(accessor.getPlayer())) {
+                    return null;
                 }
             }
             return accessor;

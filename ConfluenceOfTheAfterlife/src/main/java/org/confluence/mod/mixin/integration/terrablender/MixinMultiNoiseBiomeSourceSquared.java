@@ -89,11 +89,10 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
                 WorldOptions worldOptions = ServerLifecycleHooks.getCurrentServer().getWorldData().worldGenOptions();
                 Pair<ResourceKey<Biome>, ResourceKey<Biome>> pair;
                 long flag = ((IWorldOptions) worldOptions).confluence$getSecretFlag();
-                long l = IWorldOptions.TR_CRIMSON | IWorldOptions.THE_CORRUPTION;
-                if ((flag & l) == l) {
+                if ((flag & IWorldOptions.DOUBLE_EVIL) == IWorldOptions.DOUBLE_EVIL) {
                     this.confluence$biomePair = new Pair<>(null, null);
                     return confluence$biomePair;
-                } else if ((flag & l) == 0) {
+                } else if ((flag & IWorldOptions.DOUBLE_EVIL) == 0) {
                     if (new LegacyRandomSource(worldOptions.seed()).nextBoolean()) {
                         pair = new Pair<>(ModBiomes.THE_CORRUPTION, ModBiomes.TR_CRIMSON);
                         ((IWorldOptions) worldOptions).confluence$withSecretFlag(IWorldOptions.TR_CRIMSON);

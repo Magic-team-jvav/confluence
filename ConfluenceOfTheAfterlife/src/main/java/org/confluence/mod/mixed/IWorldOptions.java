@@ -17,4 +17,5 @@ public interface IWorldOptions {
 
     long THE_CORRUPTION = 0b01;
     long TR_CRIMSON = 0b10;
+    long DOUBLE_EVIL = THE_CORRUPTION | TR_CRIMSON;
 }

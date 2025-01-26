@@ -25,12 +25,20 @@ import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terraentity.init.TEEntities;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Function;
+
 public class TreasureBagItem extends CustomRarityItem {
     private final ResourceLocation lootTable;
+    private final Function<ServerLevel, String> suffix;
 
-    public TreasureBagItem(ResourceLocation lootTable) {
+    public TreasureBagItem(ResourceLocation lootTable, Function<ServerLevel, String> suffix) {
         super(new Properties().fireResistant(), ModRarity.EXPERT);
         this.lootTable = lootTable;
+        this.suffix = suffix;
+    }
+
+    public TreasureBagItem(ResourceLocation lootTable) {
+        this(lootTable, level -> ModUtils.switchByDifficulty(level, "/classic", "/expert", "/master"));
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
@@ -41,7 +49,7 @@ public class TreasureBagItem extends CustomRarityItem {
                     .withParameter(LootContextParams.THIS_ENTITY, player)
                     .withLuck(player.getLuck())
                     .create(LootContextParamSets.GIFT);
-            ResourceKey<LootTable> lootTableKey = ResourceKey.create(Registries.LOOT_TABLE, lootTable.withSuffix(ModUtils.switchByDifficulty(level, "/classic", "/expert", "/master")));
+            ResourceKey<LootTable> lootTableKey = ResourceKey.create(Registries.LOOT_TABLE, lootTable.withSuffix(suffix.apply(serverLevel)));
             LootTable loottable = serverLevel.getServer().reloadableRegistries().getLootTable(lootTableKey);
             int count = 1;
             if (player.isCrouching()) count = itemStack.getCount();

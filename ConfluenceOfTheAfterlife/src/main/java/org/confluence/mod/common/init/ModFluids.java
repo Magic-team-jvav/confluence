@@ -201,6 +201,12 @@ public final class ModFluids {
         addItem(BaitItems.GOLD_WORM.get(), ConsumableItems.GUMMY_WORM.get());
         addItem(MaterialItems.PINK_PEARL.get(), ConsumableItems.GALAXY_PEARL.get());
 
+        addItem(MaterialItems.GEL.get(), Items.SLIME_BALL);
+        addItem(ConsumableItems.HERB_BAG.get(), ConsumableItems.CAN_OF_WORMS.get());
+        addItem(ConsumableItems.CAN_OF_WORMS.get(), ConsumableItems.HERB_BAG.get());
+        addItem(ConsumableItems.VICIOUS_POWDER.get(), ConsumableItems.PURIFICATION_POWDER.get());
+        addItem(ConsumableItems.VICIOUS_POWDER.get(), ConsumableItems.PURIFICATION_POWDER.get());
+
         addEntity(EntityType.WITCH, EntityType.VILLAGER);
         addEntity(entity -> {
             EntityType<?> entityType = entity.getType();

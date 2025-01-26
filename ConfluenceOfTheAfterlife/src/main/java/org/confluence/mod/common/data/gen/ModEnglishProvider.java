@@ -49,9 +49,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("creativetab.confluence.developer", "Confluence | Developer");
 
         add("chat.type.advancement.achievement", "%s has achieved the achievement %s");
+        add("options.difficulty.legendary", "Legendary");
 
         add("item.confluence.meteorite_ingot.tooltip", "Warm to the touch");
-        add("item.confluence.alpha.desc", "C418 - alpha");
+        add("jukebox_song.confluence.song", "C418 - alpha");
 
         add("bossevent.confluence.boss_generate", "The %s has awakened!");
         add("bossevent.confluence.boss_death", "The %s been defeated!");

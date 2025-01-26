@@ -33,8 +33,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("creativetab.confluence.developer", "汇流来世 | 开发者物品");
 
         add("chat.type.advancement.achievement", "%s达成了成就%s");
+        add("options.difficulty.legendary", "传奇");
 
         add("item.confluence.meteorite_ingot.tooltip", "摸起来是温的");
+        add("jukebox_song.confluence.song", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
         add("generator.confluence.the_corruption", "腐化之地");

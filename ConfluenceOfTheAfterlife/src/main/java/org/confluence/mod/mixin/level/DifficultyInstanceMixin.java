@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin;
+package org.confluence.mod.mixin.level;
 
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;

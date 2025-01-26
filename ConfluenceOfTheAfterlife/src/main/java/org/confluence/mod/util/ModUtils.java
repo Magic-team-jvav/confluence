@@ -1,29 +1,25 @@
 package org.confluence.mod.util;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -51,43 +47,32 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
-import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
-
 public final class ModUtils {
     public static final Direction[] HORIZONTAL = new Direction[]{Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH};
     public static final Direction[] DIRECTIONS = Direction.values();
     public static final String NO_DROPS_TAG = "confluence:no_drops";
     public static final Set<String> CONFLUENCE_NAMESPACES = Set.of(Confluence.MODID, TerraCurio.MODID, TerraEntity.MODID, TerraGuns.MODID);
 
-    public static void createItemEntity(ItemStack itemStack, double x, double y, double z, Level level) {
-        createItemEntity(itemStack, x, y, z, level, 40);
-    }
-
-    public static void createItemEntity(List<ItemStack> itemStacks, double x, double y, double z, Level level) {
-        for (ItemStack itemStack : itemStacks) {
-            createItemEntity(itemStack, x, y, z, level, 40);
-        }
-    }
-
     public static void createItemEntity(ItemStack itemStack, double x, double y, double z, Level level, int pickUpDelay) {
+        if (itemStack.isEmpty()) return;
         ItemEntity itemEntity = new ItemEntity(level, x, y, z, itemStack);
         itemEntity.setPickUpDelay(pickUpDelay);
         level.addFreshEntity(itemEntity);
     }
 
-    public static void createItemEntity(Item item, int count, double x, double y, double z, Level level) {
-        createItemEntity(item, count, x, y, z, level, 40);
+    public static void createItemEntity(ItemStack itemStack, Vec3 pos, Level level, int pickUpDelay) {
+        createItemEntity(itemStack, pos.x, pos.y, pos.z, level, pickUpDelay);
     }
 
     public static void createItemEntity(Item item, int count, double x, double y, double z, Level level, int pickUpDelay) {
-        if (count <= 0) return;
+        if (count <= 0 || item == Items.AIR) return;
         ItemEntity itemEntity = new ItemEntity(level, x, y, z, new ItemStack(item, count));
         itemEntity.setPickUpDelay(pickUpDelay);
         level.addFreshEntity(itemEntity);
     }
 
-    public static void createItemEntity(ItemStack itemStack, Vec3 vec, Level level) {
-        createItemEntity(itemStack, vec.x, vec.y, vec.z, level, 40);
+    public static void createItemEntity(Item item, int count, Vec3 pos, Level level, int pickUpDelay) {
+        createItemEntity(new ItemStack(item, count), pos.x, pos.y, pos.z, level, pickUpDelay);
     }
 
     public static void dropMoney(int amount, double x, double y, double z, Level level) {
@@ -101,16 +86,6 @@ public final class ModUtils {
         createItemEntity(ModItems.SILVER_COIN.get(), silver_count, x, y, z, level, 0);
         createItemEntity(ModItems.GOLDEN_COIN.get(), golden_count, x, y, z, level, 0);
         createItemEntity(ModItems.PLATINUM_COIN.get(), k, x, y, z, level, 0);
-    }
-
-    public static Component getModifierTooltip(double amount, String type) {
-        boolean b = amount > 0.0;
-        amount *= 100.0;
-        return Component.translatable(
-                "prefix.confluence.tooltip." + (b ? "plus" : "take"),
-                ATTRIBUTE_MODIFIER_FORMAT.format(b ? amount : -amount),
-                Component.translatable("prefix.confluence.tooltip." + type)
-        ).withStyle(b ? ChatFormatting.BLUE : ChatFormatting.RED);
     }
 
     @SuppressWarnings("unchecked")
@@ -133,108 +108,11 @@ public final class ModUtils {
         double x = vec.x;
         double y = vec.y;
         double z = vec.z;
-
-        double yaw = Math.toDegrees(Mth.atan2(-x, z));
-        double pitch = Math.toDegrees(Mth.atan2(-y, Math.sqrt(x * x + z * z)));
-
-        return new float[]{(float) yaw, (float) pitch};
-    }
-
-    /**
-     * 把角度转成向量
-     *
-     * @param yaw   角度的yaw，单位为角度而非弧度
-     * @param pitch 角度的pitch，单位为角度
-     * @return 返回朝向对应角度（yaw、pitch）的单位向量
-     */
-    public static Vec3 rotToDir(float yaw, float pitch) {
-        float yawRad = (float) Math.toRadians(yaw);
-        float pitchRad = (float) Math.toRadians(pitch);
-        // Mth类的三角函数优化较好
-        double y = -1 * Mth.sin(pitchRad);
-        double div = Mth.cos(pitchRad);
-        double x = -1 * Mth.sin(yawRad);
-        double z = Mth.cos(yawRad);
-        x *= div;
-        z *= div;
-        return new Vec3(x, y, z); // Vec3.directionFromRotation(pitch, yaw);
-    }
-
-    /**
-     * 更新实体朝向
-     */
-    public static void updateEntityRotation(Entity entity, Vec3 dir) {
-        float[] angle = dirToRot(dir);
-        entity.setYRot(angle[0]);
-        entity.setXRot(angle[1]);
-    }
-
-    /**
-     * 获得两个位置之间的方向向量；若两点重合则默认返回向上的向量
-     * 若要自定义默认返回的向量，请在length后传入一个默认向量
-     *
-     * @param start  开始位置的位置向量
-     * @param end    结束位置的位置向量
-     * @param length 返回向量的长度
-     */
-    public static Vec3 getDirection(Vec3 start, Vec3 end, double length) {
-        return getDirection(start, end, length, new Vec3(0, length, 0));
-    }
-
-    /**
-     * 获得两个位置之间的方向向量；若两点重合则默认返回的向量
-     *
-     * @param start      开始位置的位置向量
-     * @param end        结束位置的位置向量
-     * @param length     返回向量的长度
-     * @param defaultVec 两点重合时返回的默认向量（注：直接原样返回，不会判定该向量的长度）
-     */
-    public static Vec3 getDirection(Vec3 start, Vec3 end, double length, Vec3 defaultVec) {
-        return getDirection(start, end, length, defaultVec, false);
-    }
-
-    /**
-     * 获得两个位置之间的方向向量
-     * 若preserveShorterVectors为true且两点之间的距离小于length则不会改变向量长度
-     *
-     * @param start                  开始位置的位置向量
-     * @param end                    结束位置的位置向量
-     * @param length                 返回向量的长度
-     * @param defaultVec             两点重合时返回的默认向量（注：直接原样返回，不会判定该向量的长度）
-     * @param preserveShorterVectors 若向量比length短，是否保留原向量
-     */
-    public static Vec3 getDirection(Vec3 start, Vec3 end, double length,
-                                    Vec3 defaultVec, boolean preserveShorterVectors) {
-        Vec3 result = end.subtract(start);
-        double distSqr = result.lengthSqr();
-        // 此时直接返回比length更短的向量
-        if (preserveShorterVectors && distSqr <= length * length) {
-            return result;
-        }
-        // 向量长度重设为length
-
-        // 两点之间过近
-        if (distSqr < 1e-9) {
-            return defaultVec;
-        }
-        result.scale(length / Math.sqrt(distSqr));
-        return result;
-    }
-
-    /**
-     * 测试信息；使用此接口有助于集中管理防止漏网之鱼
-     */
-    public static void testMessage(String msg) {
-        Confluence.LOGGER.info(msg);
-    }
-
-    public static void testMessage(Player player, String msg) {
-        player.sendSystemMessage(Component.literal(msg));
-    }
-
-    public static void testMessage(Level level, String msg) {
-        for (Player ply : level.players())
-            ply.sendSystemMessage(Component.literal(msg));
+        double h = vec.horizontalDistance();
+        return new float[]{
+                (float) Mth.atan2(-x, z) * Mth.RAD_TO_DEG,
+                (float) Mth.atan2(-y, h) * Mth.RAD_TO_DEG
+        };
     }
 
     /**
@@ -302,14 +180,6 @@ public final class ModUtils {
         }
     }
 
-    public static Vec3 componentMin(Vec3 vec1, Vec3 vec2) {
-        return new Vec3(Math.min(vec1.x, vec2.x), Math.min(vec1.y, vec2.y), Math.min(vec1.z, vec2.z));
-    }
-
-    public static Vec3 componentMax(Vec3 vec1, Vec3 vec2) {
-        return new Vec3(Math.max(vec1.x, vec2.x), Math.max(vec1.y, vec2.y), Math.max(vec1.z, vec2.z));
-    }
-
     public static Direction[] directionsInAxis(Direction.Axis axis) {
         return switch (axis) {
             case X -> new Direction[]{Direction.EAST, Direction.WEST};
@@ -331,21 +201,6 @@ public final class ModUtils {
         double y = axis == Direction.Axis.Y ? scale * vec3.y : vec3.y;
         double z = axis == Direction.Axis.Z ? scale * vec3.z : vec3.z;
         return new Vec3(x, y, z);
-    }
-
-    private static ChatFormatting getPotionCategoryColor(MobEffect effect) {
-        return effect.getCategory().equals(MobEffectCategory.NEUTRAL) ?
-                ChatFormatting.GRAY : effect.getCategory().equals(MobEffectCategory.BENEFICIAL) ?
-                ChatFormatting.BLUE : ChatFormatting.RED;
-    }
-
-    /**
-     * 计算向量夹角
-     *
-     * @return degree
-     */
-    public static double angleBetween(Vec3 v1, Vec3 v2) {
-        return Math.acos(v1.dot(v2) / v1.length() / v2.length());
     }
 
     public static void lightningPathList(List<Vector3d> locationList, double dis, int move, RandomSource random) {
@@ -372,7 +227,6 @@ public final class ModUtils {
         } while (refined);
     }
 
-
     /**
      * 检测半径内是否存在boss
      *
@@ -381,8 +235,7 @@ public final class ModUtils {
      * @param box    参照实体碰撞箱
      * @return 是否存在boss
      */
-    public static boolean hasBoss(double radius, Level level,
-                                  AABB box) {
+    public static boolean hasBoss(double radius, Level level, AABB box) {
         boolean flag = false;
         for (Entity entity : TEUtils.getNearbyEntities(radius, level, Entity.class, box)) {
             if (entity instanceof Boss) {
@@ -393,8 +246,7 @@ public final class ModUtils {
         return flag;
     }
 
-    public static boolean hasBoss(Level level,
-                                  AABB box) {
+    public static boolean hasBoss(Level level, AABB box) {
         return hasBoss(Short.MAX_VALUE, level, box);
     }
 
@@ -407,11 +259,15 @@ public final class ModUtils {
     public static int getRespawnWaitTime(LocalPlayer player) {
         boolean hasBoss = hasBoss(player.level(), player.getBoundingBox());
         if (hasBoss) {
-            return player.getRandom().nextInt(CommonConfigs.BOSS_RESPAWN_TIME_MIN.get()
-                    , CommonConfigs.BOSS_RESPAWN_TIME_MAX.get());
+            return player.getRandom().nextInt(
+                    CommonConfigs.BOSS_RESPAWN_TIME_MIN.get(),
+                    CommonConfigs.BOSS_RESPAWN_TIME_MAX.get()
+            );
         } else {
-            return player.getRandom().nextInt(CommonConfigs.DEFAULT_RESPAWN_TIME_MIN.get(),
-                    CommonConfigs.DEFAULT_RESPAWN_TIME_MAX.get());
+            return player.getRandom().nextInt(
+                    CommonConfigs.DEFAULT_RESPAWN_TIME_MIN.get(),
+                    CommonConfigs.DEFAULT_RESPAWN_TIME_MAX.get()
+            );
         }
     }
 

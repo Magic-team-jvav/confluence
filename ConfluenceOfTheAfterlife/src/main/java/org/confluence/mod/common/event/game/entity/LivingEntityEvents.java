@@ -4,7 +4,6 @@ import com.google.common.collect.Streams;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -79,12 +78,9 @@ public final class LivingEntityEvents {
             }
             if (living instanceof Boss boss && boss.shouldShowMessage()) {
                 EntityType<?> type = living.getType();
-                if (type == TEEntities.EYE_OF_CTHULHU.get()) {
-                    ConfluenceData data = ConfluenceData.get(level);
-                    data.getKillBoard().defeatedEyeOfCthulhu(data);
-                } else if (type == TEEntities.EATER_OF_WORLD.get() || type == TEEntities.BRAIN_OF_CTHULHU.get()) {
-                    ConfluenceData data = ConfluenceData.get(level);
-                    data.getKillBoard().defeatedEaterOfWorld_BrainOfCthulhu(data);
+                ConfluenceData data = ConfluenceData.get(level);
+                data.getKillBoard().defeated(type, data);
+                if (type == TEEntities.EATER_OF_WORLD.get() || type == TEEntities.BRAIN_OF_CTHULHU.get()) {
                     if (ModUtils.isWithinDayTime(0, 0, 4, 30, level.getDayTime())) { // 00:00 -> 04:30
                         MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
                     } else if (!MeteoriteTracker.INSTANCE.spawnAtNextNight) {
@@ -115,7 +111,7 @@ public final class LivingEntityEvents {
             Vec3 pos = living.position();
             float amount = Math.round(event.getAmount() * 10.0F) / 10.0F;
             String text = amount % 1 == 0 ? Integer.toString((int) amount) : Float.toString(amount);
-            MutableComponent component = Component.literal(text).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD);
+            Component component = Component.literal(text).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD);
             level.sendParticles(new DamageIndicatorOptions(component, false), pos.x, y, pos.z, 1, 0.1, 0.1, 0.1, 0.0);
         }
     }
@@ -173,7 +169,7 @@ public final class LivingEntityEvents {
         int intAmount = (int) roundedAmount;
         String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
         Vec3 pos = damagingEntity.position();
-        MutableComponent component = Component.literal(text).withStyle(crit ? ChatFormatting.DARK_RED : ChatFormatting.GOLD, ChatFormatting.BOLD);
+        Component component = Component.literal(text).withStyle(crit ? ChatFormatting.DARK_RED : ChatFormatting.GOLD, ChatFormatting.BOLD);
         level.sendParticles(new DamageIndicatorOptions(component, crit), pos.x, damagingEntity.getBoundingBoxForCulling().maxY, pos.z, 1, 0.1, 0.1, 0.1, 0);
         event.setNewDamage(amount);
     }

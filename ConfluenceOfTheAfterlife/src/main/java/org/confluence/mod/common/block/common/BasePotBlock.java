@@ -132,11 +132,11 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     private void dropSequence(Level level, BlockPos blockPos) {
-        if (level.isClientSide) return;
+        if (!(level instanceof ServerLevel serverLevel)) return;
         Vec3 center = blockPos.getCenter();
         if (summonHole(level, center)) return;
         // todo 如果罐子位于天然地牢墙前方且低于地表地层，有 1/35 (2.86%) 的几率掉落金钥匙。若掉落，则流程结束。
-        if (ModSecretSeeds.FOR_THE_WORTHY.match() && level.random.nextFloat() < 0.25F) {
+        if (ModSecretSeeds.FOR_THE_WORTHY.match(serverLevel) && level.random.nextFloat() < 0.25F) {
             BaseBombEntity bomb = new BaseBombEntity(ModEntities.BOMB_ENTITY.get(), level);
             bomb.setPos(center);
             level.addFreshEntity(bomb);
@@ -233,7 +233,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                 };
             }
             if (item != null) {
-                ModUtils.createItemEntity(item.getDefaultInstance(), center.x, y, center.z, level, 0);
+                ModUtils.createItemEntity(item.getDefaultInstance(), center, level, 0);
                 return true;
             }
         }
@@ -242,7 +242,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
 
     private boolean dropWormhole(Level level, Vec3 center) {
         if (level.players().size() > 1 && level.random.nextFloat() < 0.0333F) {
-            ModUtils.createItemEntity(WORMHOLE_POTION.toStack(), center.x, center.y, center.z, level, 0);
+            ModUtils.createItemEntity(WORMHOLE_POTION.toStack(), center, level, 0);
             return true;
         }
         return false;
@@ -259,7 +259,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                     if (level.random.nextBoolean()) amount++;
                     if (level.random.nextBoolean()) amount++;
                 }
-                ModUtils.createItemEntity(ModItems.HEART.get(), amount, center.x, center.y, center.z, level, 0);
+                ModUtils.createItemEntity(ModItems.HEART.get(), amount, center, level, 0);
             } else if (player.getInventory().hasAnyMatching(itemStack -> itemStack.getCount() < 20 && itemStack.is(ModTags.Items.TORCH))) {
                 return dropTorch(level, blockPos, center);
             } else {
@@ -295,7 +295,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
 //                item = Items.TORCH;
 //            }
 //        }
-//        ModUtils.createItemEntity(item, amount, center.x, center.y, center.z, level, 0); todo
+//        ModUtils.createItemEntity(item, amount, center, level, 0); todo
         return true;
     }
 
@@ -314,7 +314,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                 item = level.random.nextBoolean() ? TGItems.SILVER_BULLET.get() : TGItems.TUNGSTEN_BULLET.get();
             }
         }
-        ModUtils.createItemEntity(item, amount, center.x, center.y, center.z, level, 0);
+        ModUtils.createItemEntity(item, amount, center, level, 0);
         return true;
     }
 
@@ -329,7 +329,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         if (ModUtils.isAtLeastExpert(level) && level.random.nextFloat() < 0.3333F) {
             amount++;
         }
-        ModUtils.createItemEntity(item, amount, center.x, center.y, center.z, level, 0);
+        ModUtils.createItemEntity(item, amount, center, level, 0);
         return true;
     }
 
@@ -342,7 +342,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         } else {
             return dropRope(level, center);
         }
-        ModUtils.createItemEntity(item, level.random.nextInt(1, ModUtils.isAtLeastExpert(level) ? 5 : 8), center.x, center.y, center.z, level, 0);
+        ModUtils.createItemEntity(item, level.random.nextInt(1, ModUtils.isAtLeastExpert(level) ? 5 : 8), center, level, 0);
         return true;
     }
 
@@ -350,7 +350,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         if (level.dimension() == Level.NETHER || ConfluenceData.get((ServerLevel) level).isHardcore()) {
             return dropMoney(level, center);
         } else {
-            ModUtils.createItemEntity(Blocks.SCAFFOLDING.asItem(), level.random.nextInt(5, 11), center.x, center.y, center.z, level, 0);
+            ModUtils.createItemEntity(Blocks.SCAFFOLDING.asItem(), level.random.nextInt(5, 11), center, level, 0);
             return true;
         }
     }

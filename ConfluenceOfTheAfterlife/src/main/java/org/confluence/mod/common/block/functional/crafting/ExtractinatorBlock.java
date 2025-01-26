@@ -126,7 +126,7 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
                     .withParameter(LootContextParams.THIS_ENTITY, player)
                     .create(LootContextParamSets.GIFT);
             for (ItemStack loot : lootTable.getRandomItems(lootparams)) {
-                ModUtils.createItemEntity(loot, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, level);
+                ModUtils.createItemEntity(loot, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, level, 40);
             }
 
             player.getItemInHand(hand).setCount(item.getCount() - 1);

@@ -118,7 +118,7 @@ public final class PlayerUtils {
         float base = TCUtils.getAccessoriesValue(player, AccessoryItems.FISHING$POWER);
         if (player.getData(ModAttachmentTypes.EVER_BENEFICIAL).isGummyWormUsed()) base += 3.0F;
         Level level = player.level();
-        long dayTime = level.dayTime() % 24000; // [0, 23999]
+        long dayTime = level.dayTime();
         if (level.isRaining()) base *= 1.1F;
         else if (level.isThundering()) base *= 1.2F;
         if (isWithinDayTime(4, 30, 6, 0, dayTime)) base *= 1.3F; // 04:30 -> 06:00

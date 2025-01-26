@@ -2,6 +2,7 @@ package org.confluence.mod.common.event.game;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Items;
@@ -18,11 +19,14 @@ import net.neoforged.neoforge.event.level.ExplosionEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.data.saved.BrushData;
+import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.entity.projectile.bomb.ScarabBombEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.worldgen.secret_seed.ModSecretSeeds;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -48,14 +52,19 @@ public final class LevelEvents {
 
     @SubscribeEvent
     public static void blockDropsEvent(BlockDropsEvent event) {
+        ServerLevel level = event.getLevel();
+        BlockState blockState = event.getState();
+        BlockPos pos = event.getPos();
         if (event.getBreaker() instanceof LivingEntity living && !living.getMainHandItem().is(Items.SHEARS)) {
-            ServerLevel level = event.getLevel();
-            BlockState blockState = event.getState();
-            BlockPos pos = event.getPos();
             if (blockState.is(ModTags.Blocks.VINES) && TCUtils.hasAccessoriesType(living, AccessoryItems.VINE$ROPE)) {
                 event.setCanceled(true);
                 Block.popResource(level, pos, ModBlocks.VINE_ROPE.get().asItem().getDefaultInstance());
             }
+        }
+        if (ModSecretSeeds.FOR_THE_WORTHY.match(level) && blockState.is(BlockTags.LEAVES) && level.random.nextFloat() < 0.25F) {
+            BaseBombEntity bomb = new BaseBombEntity(ModEntities.BOMB_ENTITY.get(), level);
+            bomb.setPos(pos.getCenter());
+            level.addFreshEntity(bomb);
         }
     }
 

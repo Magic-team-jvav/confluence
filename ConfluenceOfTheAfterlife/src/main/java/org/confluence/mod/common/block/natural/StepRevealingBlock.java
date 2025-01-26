@@ -1,8 +1,6 @@
 package org.confluence.mod.common.block.natural;
 
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -11,7 +9,7 @@ public class StepRevealingBlock extends Block {
     public static final IntegerProperty REVEAL_STEP = IntegerProperty.create("reveal_step", 0, 2);
 
     public StepRevealingBlock(Properties properties) {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE));
+        super(properties);
         registerDefaultState(stateDefinition.any().setValue(REVEAL_STEP, 0));
     }
 

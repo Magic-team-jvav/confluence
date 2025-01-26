@@ -22,6 +22,7 @@ import org.confluence.mod.common.init.item.TreasureBagItems;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.init.TEEntities;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,8 +50,8 @@ public class TreasureBagItem extends CustomRarityItem {
                     .withParameter(LootContextParams.THIS_ENTITY, player)
                     .withLuck(player.getLuck())
                     .create(LootContextParamSets.GIFT);
-            ResourceKey<LootTable> lootTableKey = ResourceKey.create(Registries.LOOT_TABLE, lootTable.withSuffix(suffix.apply(serverLevel)));
-            LootTable loottable = serverLevel.getServer().reloadableRegistries().getLootTable(lootTableKey);
+            ResourceLocation table = ResourceLocation.parse(TCUtils.getItemStackNbt(itemStack).getString("lootTable"));
+            LootTable loottable = serverLevel.getServer().reloadableRegistries().getLootTable(ResourceKey.create(Registries.LOOT_TABLE, table));
             int count = 1;
             if (player.isCrouching()) count = itemStack.getCount();
             for (int i = 0; i < count; i++) {
@@ -66,6 +67,7 @@ public class TreasureBagItem extends CustomRarityItem {
     }
 
     public static @Nullable ItemStack getTreasureBag(LivingEntity living) {
+        if (!(living.level() instanceof ServerLevel serverLevel)) return null;
         EntityType<?> type = living.getType();
         TreasureBagItem item = null;
         if (type == TEEntities.KING_SLIME.get()) {
@@ -77,7 +79,11 @@ public class TreasureBagItem extends CustomRarityItem {
         } else if (type == TEEntities.BRAIN_OF_CTHULHU.get()) {
             item = TreasureBagItems.BRAIN_OF_CTHULHU_TREASURE_BAG.get();
         }
-        return item == null ? null : item.getDefaultInstance();
+        if (item == null) return null;
+        ItemStack itemStack = item.getDefaultInstance();
+        String lootTable = item.lootTable.withSuffix(item.suffix.apply(serverLevel)).toString();
+        TCUtils.updateItemStackNbt(itemStack, tag -> tag.putString("lootTable", lootTable));
+        return itemStack;
     }
 
     public static void createItemEntity(LivingEntity living, ServerPlayer owner) {

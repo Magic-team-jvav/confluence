@@ -114,6 +114,7 @@ public class MeteoriteTracker {
             this.location = tuple.getA();
             this.tickUntilLanding.set(tuple.getB());
             MeteoriteLocationPacketS2C.sendToAll(location, tickUntilLanding.get());
+            Confluence.LOGGER.debug("A meteorite has been landed, which at [{}]", location.toShortString());
         });
     }
 

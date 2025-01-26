@@ -13,8 +13,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.*;
@@ -319,8 +321,143 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.ASH_LOG_BLOCKS.getLog().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getLog().asItem(),
                 NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getLog().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().asItem()
         );
+        // neoforge
+        tag(Tags.Items.BONES).add(
+                MaterialItems.ROTTEN_BONE.get(),
+                MaterialItems.VERTEBRA.get()
+        );
+        tag(Tags.Items.BRICKS).add(
+                DecorativeBlocks.TR_COPPER_BRICKS.get().asItem(),
+                DecorativeBlocks.TR_CRIMSON_ORE_BRICKS.get().asItem(),
+                DecorativeBlocks.TR_CRIMSON_ROCK_BRICKS.get().asItem(),
+                DecorativeBlocks.TR_GOLD_BRICKS.get().asItem(),
+                DecorativeBlocks.TR_IRON_BRICKS.get().asItem(),
+                DecorativeBlocks.TR_STONE_BRICKS.get().asItem(),
+                DecorativeBlocks.DEMONITE_ORE_BRICKS.get().asItem(),
+                DecorativeBlocks.EBONY_ROCK_BRICKS.get().asItem(),
+                DecorativeBlocks.BLUE_ICE_BRICKS.get().asItem(),
+                DecorativeBlocks.PACKED_ICE_BRICKS.get().asItem(),
+                DecorativeBlocks.LEAD_BRICKS.get().asItem(),
+                DecorativeBlocks.METEORITE_BRICKS.get().asItem(),
+                DecorativeBlocks.PEARL_ROCK_BRICKS.get().asItem(),
+                DecorativeBlocks.PLATINUM_BRICKS.get().asItem(),
+                DecorativeBlocks.SILVER_BRICKS.get().asItem(),
+                DecorativeBlocks.SNOW_BRICKS.get().asItem(),
+                DecorativeBlocks.TUNGSTEN_BRICKS.get().asItem(),
+                DecorativeBlocks.TR_LAVA_BRICKS.get().asItem(),
+                DecorativeBlocks.TR_OBSIDIAN_BRICKS.get().asItem(),
+                DecorativeBlocks.TR_OBSIDIAN_SMALL_BRICKS.get().asItem(),
+                DecorativeBlocks.CRYSTAL_BLOCKS.get().asItem(),
+                DecorativeBlocks.RAINBOW_BRICKS.get().asItem()
+        );
+        tag(Tags.Items.BUCKETS).add(
+                ToolItems.HONEY_BUCKET.get(),
+                ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get(),
+                ToolItems.BOTTOMLESS_WATER_BUCKET.get(),
+                ToolItems.BOTTOMLESS_LAVA_BUCKET.get(),
+                ToolItems.BOTTOMLESS_HONEY_BUCKET.get()
+        );
+        tag(Tags.Items.BUCKETS_LAVA).add(ToolItems.BOTTOMLESS_LAVA_BUCKET.get());
+        tag(Tags.Items.BUCKETS_WATER).add(ToolItems.BOTTOMLESS_WATER_BUCKET.get());
+        tag(Tags.Items.CROPS).add(
+                MaterialItems.FLOATING_WHEAT_HEADS.get(),
+                MaterialItems.WEAVING_CLOUD_COTTON.get(),
+                MaterialItems.STAR_PETALS.get()
+        );
+        tag(Tags.Items.CROPS_WHEAT).add(
+                MaterialItems.FLOATING_WHEAT_HEADS.get()
+        );
+        tag(Tags.Items.DUSTS).add(
+                MaterialItems.BLOOD_CLOT_POWDER.get()
+        );
+        tag(Tags.Items.DYED_WHITE).add(DecorativeBlocks.WHITE_PURE_GLASS.get().asItem());
+        tag(Tags.Items.DYED_LIGHT_GRAY).add(DecorativeBlocks.LIGHT_GRAY_PURE_GLASS.get().asItem());
+        tag(Tags.Items.DYED_GRAY).add(DecorativeBlocks.GRAY_PURE_GLASS.get().asItem());
+        tag(Tags.Items.DYED_BLACK).add(DecorativeBlocks.BLACK_PURE_GLASS.get().asItem());
+        tag(Tags.Items.DYED_BROWN).add(DecorativeBlocks.BROWN_PURE_GLASS.get().asItem());
+        tag(Tags.Items.DYED_RED).add(DecorativeBlocks.RED_PURE_GLASS.get().asItem());
+        tag(Tags.Items.DYED_ORANGE).add(DecorativeBlocks.ORANGE_PURE_GLASS.get().asItem());
+        tag(Tags.Items.DYED_YELLOW).add(DecorativeBlocks.YELLOW_PURE_GLASS.get().asItem());
+        tag(Tags.Items.DYED_LIME).add(DecorativeBlocks.LIME_PURE_GLASS.get().asItem());
+        tag(Tags.Items.DYED_GREEN).add(DecorativeBlocks.GREEN_PURE_GLASS.get().asItem());
+        tag(Tags.Items.DYED_CYAN).add(DecorativeBlocks.CYAN_PURE_GLASS.get().asItem());
+        tag(Tags.Items.DYED_LIGHT_BLUE).add(DecorativeBlocks.LIGHT_BLUE_PURE_GLASS.get().asItem());
+        tag(Tags.Items.DYED_BLUE).add(DecorativeBlocks.BLUE_PURE_GLASS.get().asItem());
+        tag(Tags.Items.DYED_PURPLE).add(DecorativeBlocks.PURPLE_PURE_GLASS.get().asItem());
+        tag(Tags.Items.DYED_MAGENTA).add(DecorativeBlocks.MAGENTA_PURE_GLASS.get().asItem());
+        tag(Tags.Items.DYED_PINK).add(DecorativeBlocks.PINK_PURE_GLASS.get().asItem());
+        tag(Tags.Items.GEMS).add(
+                MaterialItems.RUBY.get(),
+                MaterialItems.AMBER.get(),
+                MaterialItems.TOPAZ.get(),
+                MaterialItems.TR_EMERALD.get(),
+                MaterialItems.SAPPHIRE.get(),
+                MaterialItems.TR_AMETHYST.get()
+        );
+
+        tag(Tags.Items.GUNPOWDERS).add(
+                MaterialItems.BLOOD_CLOT_POWDER.get()
+        );
+        tag(Tags.Items.INGOTS).add(
+                MaterialItems.TIN_INGOT.get(),
+                MaterialItems.LEAD_INGOT.get(),
+                MaterialItems.SILVER_INGOT.get(),
+                MaterialItems.TUNGSTEN_INGOT.get(),
+                MaterialItems.PLATINUM_INGOT.get(),
+                MaterialItems.METEORITE_INGOT.get(),
+                MaterialItems.DEMONITE_INGOT.get(),
+                MaterialItems.TR_CRIMSON_INGOT.get(),
+                MaterialItems.HELLSTONE_INGOT.get(),
+                MaterialItems.COBALT_INGOT.get(),
+                MaterialItems.PALLADIUM_INGOT.get(),
+                MaterialItems.MITHRIL_INGOT.get(),
+                MaterialItems.ORICHALCUM_INGOT.get(),
+                MaterialItems.ADAMANTITE_INGOT.get(),
+                MaterialItems.TITANIUM_INGOT.get(),
+                MaterialItems.HALLOWED_INGOT.get(),
+                MaterialItems.CHLOROPHYTE_INGOT.get(),
+                MaterialItems.SHROOMITE_INGOT.get(),
+                MaterialItems.SPECTRE_INGOT.get(),
+                MaterialItems.LUMINITE_INGOT.get()
+        );
+        tag(Tags.Items.MUSHROOMS).add(
+                MaterialItems.GLOWING_MUSHROOM.get(),
+                MaterialItems.LIFE_MUSHROOM.get(),
+                MaterialItems.VICIOUS_MUSHROOM.get(),
+                MaterialItems.VILE_MUSHROOM.get()
+        );
+        tag(Tags.Items.NUGGETS).add(
+                MaterialItems.LEAD_NUGGET.get()
+        );
+        tag(Tags.Items.SEEDS).add(
+                FoodItems.FLOATING_WHEAT_SEED.get(),
+                FoodItems.CLOUDWEAVER_SEED.get(),
+                FoodItems.STELLAR_BLOSSOM_SEED.get()
+        );
+        tag(Tags.Items.SEEDS_WHEAT).add(
+                FoodItems.FLOATING_WHEAT_SEED.get()
+        );
+        tag(Tags.Items.RAW_MATERIALS).add(
+                MaterialItems.RAW_ADAMANTITE.get(),
+                MaterialItems.RAW_CHLOROPHYTE.get(),
+                MaterialItems.RAW_COBALT.get(),
+                MaterialItems.RAW_LEAD.get(),
+                MaterialItems.RAW_HELLSTONE.get(),
+                MaterialItems.RAW_LUMINITE.get(),
+                MaterialItems.RAW_METEORITE.get(),
+                MaterialItems.RAW_MITHRIL.get(),
+                MaterialItems.RAW_ORICHALCUM.get(),
+                MaterialItems.RAW_DEMONITE.get(),
+                MaterialItems.RAW_PALLADIUM.get(),
+                MaterialItems.RAW_PLATINUM.get(),
+                MaterialItems.RAW_SILVER.get(),
+                MaterialItems.RAW_TIN.get(),
+                MaterialItems.RAW_TUNGSTEN.get(),
+                MaterialItems.RAW_TR_CRIMSON.get()
+        );
 
         BowItems.acceptTag(tag(Tags.Items.TOOLS_BOW));
+        PaintItems.acceptTag(tag(Tags.Items.DYED));
         ArrowItems.acceptTag(tag(ItemTags.ARROWS));
         HammerItems.acceptTag(tag(ModTags.Items.HAMMER));
         IntrinsicTagAppender<Item> pickaxes = tag(ItemTags.PICKAXES);
@@ -344,6 +481,41 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         BoomerangItems.acceptTag(prefix_universal_only);
 
         copy(BlockTags.RAILS, ItemTags.RAILS);
+        copy(Tags.Blocks.ORES, Tags.Items.ORES);
+        copy(Tags.Blocks.ORE_RATES_DENSE, Tags.Items.ORE_RATES_DENSE);
+        copy(Tags.Blocks.ORE_BEARING_GROUND_STONE, Tags.Items.ORE_BEARING_GROUND_STONE);
+        copy(Tags.Blocks.ORE_BEARING_GROUND_NETHERRACK, Tags.Items.ORE_BEARING_GROUND_NETHERRACK);
+        copy(Tags.Blocks.OBSIDIANS, Tags.Items.OBSIDIANS);
+        copy(Tags.Blocks.HIDDEN_FROM_RECIPE_VIEWERS, Tags.Items.HIDDEN_FROM_RECIPE_VIEWERS);
+        copy(Tags.Blocks.GRAVELS, Tags.Items.GRAVELS);
+        copy(Tags.Blocks.GLASS_BLOCKS_CHEAP, Tags.Items.GLASS_BLOCKS_CHEAP);
+        copy(Tags.Blocks.GLASS_BLOCKS_COLORLESS, Tags.Items.GLASS_BLOCKS_COLORLESS);
+        copy(Tags.Blocks.GLASS_BLOCKS, Tags.Items.GLASS_BLOCKS);
+        copy(Tags.Blocks.FENCE_GATES_WOODEN, Tags.Items.FENCE_GATES_WOODEN);
+        copy(Tags.Blocks.FENCE_GATES, Tags.Items.FENCE_GATES);
+        copy(Tags.Blocks.FENCES_WOODEN, Tags.Items.FENCES_WOODEN);
+        copy(Tags.Blocks.FENCES, Tags.Items.FENCES);
+        copy(Tags.Blocks.CHAINS, Tags.Items.CHAINS);
+        copy(Tags.Blocks.DYED, Tags.Items.DYED);
+        copy(Tags.Blocks.COBBLESTONES_NORMAL, Tags.Items.COBBLESTONES_NORMAL);
+        copy(Tags.Blocks.COBBLESTONES, Tags.Items.COBBLESTONES);
+        copy(Tags.Blocks.ORES_COAL, Tags.Items.ORES_COAL);
+        copy(Tags.Blocks.ORES_COPPER, Tags.Items.ORES_COPPER);
+        copy(Tags.Blocks.ORES_DIAMOND, Tags.Items.ORES_DIAMOND);
+        copy(Tags.Blocks.ORES_EMERALD, Tags.Items.ORES_EMERALD);
+        copy(Tags.Blocks.ORES_GOLD, Tags.Items.ORES_GOLD);
+        copy(Tags.Blocks.ORES_IRON, Tags.Items.ORES_IRON);
+        copy(Tags.Blocks.ORES_LAPIS, Tags.Items.ORES_LAPIS);
+        copy(Tags.Blocks.ORES_REDSTONE, Tags.Items.ORES_REDSTONE);
+        copy(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE, Tags.Items.ORES_IN_GROUND_DEEPSLATE);
+        copy(Tags.Blocks.ORES_IN_GROUND_NETHERRACK, Tags.Items.ORES_IN_GROUND_NETHERRACK);
+        copy(Tags.Blocks.ORES_IN_GROUND_STONE, Tags.Items.ORES_IN_GROUND_STONE);
+        copy(Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES, Tags.Items.PLAYER_WORKSTATIONS_CRAFTING_TABLES);
+        copy(Tags.Blocks.PLAYER_WORKSTATIONS_FURNACES, Tags.Items.PLAYER_WORKSTATIONS_FURNACES);
+        copy(Tags.Blocks.ROPES, Tags.Items.ROPES);
+        copy(Tags.Blocks.SANDS, Tags.Items.SANDS);
+        copy(Tags.Blocks.SANDSTONE_BLOCKS, Tags.Items.SANDSTONE_BLOCKS);
+        copy(Tags.Blocks.SANDSTONE_RED_BLOCKS, Tags.Items.SANDSTONE_RED_BLOCKS);
         tag(ModTags.Items.COINS).add(
                 ModItems.COPPER_COIN.get(),
                 ModItems.SILVER_COIN.get(),

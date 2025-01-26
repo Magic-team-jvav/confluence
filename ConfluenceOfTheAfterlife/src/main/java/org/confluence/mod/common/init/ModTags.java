@@ -37,12 +37,16 @@ public final class ModTags {
         public static final TagKey<Block> TOMBSTONE = register("tombstone");
         public static final TagKey<Block> ROPE = register("rope");
 
+        private static TagKey<Block> c(String name) {
+            return BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
+        }
         private static TagKey<Block> register(String id) {
             return BlockTags.create(Confluence.asResource(id));
         }
     }
 
     public static class Items {
+        // neoforge
         public static final TagKey<Item> INGOTS_TIN = c("ingots/tin");
         public static final TagKey<Item> INGOTS_SILVER = c("ingots/silver");
         public static final TagKey<Item> INGOTS_TUNGSTEN = c("ingots/tungsten");

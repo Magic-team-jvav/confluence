@@ -1,5 +1,7 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.BrushData;
@@ -48,4 +50,9 @@ public class PaintItems {
     public static final Supplier<PaintItem> NEGATIVE_PAINT = ITEMS.register("negative_paint", () -> new PaintItem(BrushData.NEGATIVE_COLOR));
     public static final Supplier<PaintItem> ILLUMINANT_COATING = ITEMS.register("illuminant_coating", () -> new PaintItem(BrushData.ILLUMINANT_COLOR));
     public static final Supplier<PaintItem> ECHO_COATING = ITEMS.register("echo_coating", () -> new PaintItem(BrushData.ECHO_COLOR)); // todo
+
+    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
+        ITEMS.getEntries().forEach(entry -> tag.add(entry.get()));
+    }
 }
+

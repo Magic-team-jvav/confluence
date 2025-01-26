@@ -3,12 +3,14 @@ package org.confluence.mod.common.init.block;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BrushableBlock;
 import net.minecraft.world.level.block.RedStoneOreBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.PushReaction;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -234,6 +236,12 @@ public class OreBlocks {
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithPickaxe = provider.tag(BlockTags.MINEABLE_WITH_PICKAXE);
         for (DeferredHolder<Block, ? extends Block> oreblock : BLOCKS.getEntries()) {
             mineableWithPickaxe.add(oreblock.get());
+        }
+    }
+    public static void acceptOreTags(ModBlockTagsProvider provider) {
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> ores = provider.tag(Tags.Blocks.ORES);
+        for (DeferredHolder<Block, ? extends Block> oreblock : BLOCKS.getEntries()) {
+            ores.add(oreblock.get());
         }
     }
 }

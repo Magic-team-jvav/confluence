@@ -15,18 +15,28 @@ import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.joml.Matrix4f;
 
+import java.util.Calendar;
+
+import static org.confluence.mod.util.ClientUtils.HALF_SQRT_3;
+
 public class TreasureBagRenderer extends ItemEntityRenderer {
     private static final float length = 0.8F;
     private static final float width = 0.3F;
-    private static final float HALF_SQRT_3 = (float) (Math.sqrt(3.0D) / 2.0D);
+    private final long time;
 
     public TreasureBagRenderer(EntityRendererProvider.Context context) {
         super(context);
+        Calendar instance = Calendar.getInstance();
+        int year = instance.get(Calendar.YEAR);
+        int month = instance.get(Calendar.MONTH) + 1;
+        int day = instance.get(Calendar.DAY_OF_MONTH);
+        this.time = Long.parseLong(String.valueOf(year) + (month < 10 ? "0" + month : month) + (day < 10 ? "0" + day : day));
     }
 
     @Override
     public void render(ItemEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         if (entity instanceof TreasureBagItemEntity entity1 && entity1.isOwner(Minecraft.getInstance().player)) {
+            this.shadowStrength = 1.0F;
             super.render(entity, entityYaw, partialTicks, poseStack, buffer, 0xF000F0);
 
             float delta = ((float) entity.level().getGameTime() + partialTicks) / 200.0F;
@@ -35,7 +45,7 @@ public class TreasureBagRenderer extends ItemEntityRenderer {
             float y = Mth.sin(((float) entity.getAge() + partialTicks) / 10.0F + entity.bobOffs) * 0.1F;
             poseStack.translate(0.0F, 0.35F + y, 0.0F);
 
-            RandomSource randomSource = new LegacyRandomSource(20250125L);
+            RandomSource randomSource = new LegacyRandomSource(time);
             for (int i = 0; i < 12; i++) {
                 poseStack.mulPose(Axis.XP.rotationDegrees(i * randomSource.nextInt(60) + delta * randomSource.nextInt(30)));
                 poseStack.mulPose(Axis.YN.rotationDegrees(i * randomSource.nextInt(60) + delta * randomSource.nextInt(60)));
@@ -48,6 +58,8 @@ public class TreasureBagRenderer extends ItemEntityRenderer {
             }
 
             poseStack.popPose();
+        } else {
+            this.shadowStrength = 0.0F;
         }
     }
 
@@ -56,14 +68,14 @@ public class TreasureBagRenderer extends ItemEntityRenderer {
     }
 
     private static void vertex2(VertexConsumer vertexConsumer, Matrix4f matrix4f, RandomSource randomSource) {
-        vertexConsumer.addVertex(matrix4f, -HALF_SQRT_3 * width, length, -0.5F * width).setColor(randomSource.nextInt(255), randomSource.nextInt(255), 0, 0);
+        vertexConsumer.addVertex(matrix4f, -HALF_SQRT_3 * width, length, -0.5F * width).setColor(randomSource.nextInt(255), randomSource.nextInt(255), randomSource.nextInt(255), 0);
     }
 
     private static void vertex3(VertexConsumer vertexConsumer, Matrix4f matrix4f, RandomSource randomSource) {
-        vertexConsumer.addVertex(matrix4f, HALF_SQRT_3 * width, length, -0.5F * width).setColor(randomSource.nextInt(255), randomSource.nextInt(255), 0, 0);
+        vertexConsumer.addVertex(matrix4f, HALF_SQRT_3 * width, length, -0.5F * width).setColor(randomSource.nextInt(255), randomSource.nextInt(255), randomSource.nextInt(255), 0);
     }
 
     private static void vertex4(VertexConsumer vertexConsumer, Matrix4f matrix4f, RandomSource randomSource) {
-        vertexConsumer.addVertex(matrix4f, 0.0F, length, width).setColor(randomSource.nextInt(255), randomSource.nextInt(255), 0, 0);
+        vertexConsumer.addVertex(matrix4f, 0.0F, length, width).setColor(randomSource.nextInt(255), randomSource.nextInt(255), randomSource.nextInt(255), 0);
     }
 }

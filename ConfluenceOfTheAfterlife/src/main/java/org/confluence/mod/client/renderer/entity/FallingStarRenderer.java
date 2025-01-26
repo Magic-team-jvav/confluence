@@ -11,10 +11,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.item.ItemEntity;
 import org.joml.Matrix4f;
 
+import static org.confluence.mod.util.ClientUtils.HALF_SQRT_3;
+
 public class FallingStarRenderer extends ItemEntityRenderer {
     private static final float length = 0.5F;
     private static final float width = 0.25F;
-    private static final float HALF_SQRT_3 = (float) (Math.sqrt(3.0D) / 2.0D);
 
     public FallingStarRenderer(EntityRendererProvider.Context context) {
         super(context);

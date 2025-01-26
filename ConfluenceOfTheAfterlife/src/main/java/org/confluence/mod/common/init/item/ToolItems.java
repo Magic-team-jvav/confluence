@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -37,7 +38,7 @@ public class ToolItems {
     public static final Supplier<DemonConch> DEMON_CONCH = ITEMS.register("demon_ocnch", DemonConch::new);
 
     public static final Supplier<Item> HOUSE_DETECTOR = ITEMS.register("house_detector", () -> new HouseDetector(new Item.Properties().stacksTo(1)));
-    public static final Supplier<BugNetItem> BUG_NET = ITEMS.register("bug_net", () -> new BugNetItem(ModRarity.BLUE, 0.5));
-    public static final Supplier<BugNetItem> GOLDEN_BUG_NET = ITEMS.register("golden_bug_net", () -> new BugNetItem(ModRarity.QUEST, 1.1));
-    public static final Supplier<BugNetItem> DEV_BUG_NET = ITEMS.register("dev_bug_net", () -> new BugNetItem(ModRarity.MASTER, Double.MAX_VALUE));
+    public static final Supplier<BugNetItem> BUG_NET = ITEMS.register("bug_net", () -> new BugNetItem(ModRarity.BLUE, 0.5, living -> living instanceof Animal));
+    public static final Supplier<BugNetItem> GOLDEN_BUG_NET = ITEMS.register("golden_bug_net", () -> new BugNetItem(ModRarity.QUEST, 1.1, living -> living instanceof Animal));
+    public static final Supplier<BugNetItem> DEV_BUG_NET = ITEMS.register("dev_bug_net", () -> new BugNetItem(ModRarity.MASTER, Double.MAX_VALUE, living -> true));
 }

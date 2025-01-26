@@ -63,6 +63,7 @@ public class EntityDisplayItemRenderer extends BlockEntityWithoutLevelRenderer {
         if (tag == null) {
             entity = magicHarp2333.apply(level);
         } else {
+            if (level.getGameTime() % 24000L == 0) entityMap.clear(); // 每天清一次缓存
             entity = entityMap.computeIfAbsent(tag.getUUID(Entity.UUID_TAG), itemStack -> {
                 Entity loaded = EntityType.loadEntityRecursive(tag, level, Function.identity());
                 return loaded == null ? new Pig(EntityType.PIG, level) : loaded;

@@ -387,6 +387,24 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OreBlocks.RAW_HELLSTONE_BLOCK.get(),
                 OreBlocks.ASH_HELLSTONE.get()
         );
+        tag(ModTags.Blocks.NEEDS_5_LEVEL).add(
+                OreBlocks.DEEPSLATE_COBALT_ORE.get(),
+                OreBlocks.RAW_COBALT_BLOCK.get(),
+                OreBlocks.DEEPSLATE_PALLADIUM_ORE.get(),
+                OreBlocks.RAW_PALLADIUM_BLOCK.get()
+        );
+        tag(ModTags.Blocks.NEEDS_6_LEVEL).add(
+                OreBlocks.DEEPSLATE_MITHRIL_ORE.get(),
+                OreBlocks.RAW_MITHRIL_BLOCK.get(),
+                OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get(),
+                OreBlocks.RAW_ORICHALCUM_BLOCK.get()
+        );
+        tag(ModTags.Blocks.NEEDS_7_LEVEL).add(
+                OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get(),
+                OreBlocks.RAW_ADAMANTITE_BLOCK.get(),
+                OreBlocks.DEEPSLATE_TITANIUM_ORE.get(),
+                OreBlocks.RAW_TITANIUM_BLOCK.get()
+        );
         tag(ModTags.Blocks.NEEDS_1_LEVEL).addTags(ModTags.Blocks.NEEDS_2_LEVEL, ModTags.Blocks.NEEDS_3_LEVEL, ModTags.Blocks.NEEDS_4_LEVEL, ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL,
                 Tags.Blocks.ORES_LAPIS, Tags.Blocks.STORAGE_BLOCKS_LAPIS,
                 Tags.Blocks.ORES_COAL, Tags.Blocks.STORAGE_BLOCKS_COAL,

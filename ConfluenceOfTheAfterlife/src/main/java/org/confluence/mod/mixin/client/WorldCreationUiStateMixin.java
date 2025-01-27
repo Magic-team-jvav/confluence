@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.gui.screens.worldselection.WorldCreationUiState;
 import net.minecraft.world.level.levelgen.WorldOptions;
-import org.confluence.mod.common.worldgen.secret_seed.ModSecretSeeds;
+import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.secret_seed.SecretSeed;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.spongepowered.asm.mixin.Mixin;

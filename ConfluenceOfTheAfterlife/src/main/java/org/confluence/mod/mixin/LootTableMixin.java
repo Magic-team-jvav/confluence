@@ -6,7 +6,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
-import org.confluence.mod.common.worldgen.secret_seed.ModSecretSeeds;
+import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.util.PrefixUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

@@ -2,7 +2,7 @@ package org.confluence.mod.mixin.level;
 
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
-import org.confluence.mod.common.worldgen.secret_seed.ModSecretSeeds;
+import org.confluence.mod.common.init.ModSecretSeeds;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.WorldOptions;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.common.init.ModBiomes;
-import org.confluence.mod.common.worldgen.secret_seed.ModSecretSeeds;
+import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.secret_seed.NotTheBees;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.terra_curio.mixed.SelfGetter;

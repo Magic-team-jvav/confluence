@@ -2,7 +2,7 @@ package org.confluence.mod.mixed;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import org.confluence.mod.common.worldgen.secret_seed.ModSecretSeeds;
+import org.confluence.mod.common.init.ModSecretSeeds;
 
 public interface ILevelLoadingScreen {
     void confluence$setSecretFlag(long flag);

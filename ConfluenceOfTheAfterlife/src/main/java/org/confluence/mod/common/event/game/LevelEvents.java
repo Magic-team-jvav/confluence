@@ -23,10 +23,10 @@ import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.entity.projectile.bomb.ScarabBombEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.worldgen.secret_seed.ModSecretSeeds;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
 

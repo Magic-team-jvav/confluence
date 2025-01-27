@@ -3,7 +3,7 @@ package org.confluence.mod.mixin.client;
 import net.minecraft.advancements.AdvancementNode;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.advancements.AdvancementWidget;
-import org.confluence.mod.common.advancement.ModAchievements;
+import org.confluence.mod.common.init.ModAchievements;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

@@ -1,7 +1,7 @@
 package org.confluence.mod.common.worldgen.secret_seed;
 
 public class Celebrationmk10 extends SecretSeed {
-    Celebrationmk10(long flag) {
+    public Celebrationmk10(long flag) {
         super(flag);
     }
 

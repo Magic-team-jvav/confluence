@@ -2,8 +2,8 @@ package org.confluence.mod.mixin.level;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Difficulty;
+import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
-import org.confluence.mod.common.worldgen.secret_seed.ModSecretSeeds;
 import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

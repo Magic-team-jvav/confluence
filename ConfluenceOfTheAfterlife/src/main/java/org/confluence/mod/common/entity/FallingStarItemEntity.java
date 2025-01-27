@@ -15,9 +15,9 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.item.MaterialItems;
-import org.confluence.mod.common.worldgen.secret_seed.ModSecretSeeds;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 

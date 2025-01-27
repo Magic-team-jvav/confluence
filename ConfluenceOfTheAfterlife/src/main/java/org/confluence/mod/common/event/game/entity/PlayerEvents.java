@@ -31,7 +31,6 @@ import net.neoforged.neoforge.event.entity.player.*;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.GetCustomDiggingPowerEvent;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.advancement.ModAchievements;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;

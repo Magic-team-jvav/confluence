@@ -8,7 +8,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.phys.Vec2;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.advancement.ModAchievements;
+import org.confluence.mod.common.init.ModAchievements;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

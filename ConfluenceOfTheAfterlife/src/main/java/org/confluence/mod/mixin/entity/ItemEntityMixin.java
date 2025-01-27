@@ -8,7 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
-import org.confluence.mod.common.advancement.ModCriterionTriggers;
+import org.confluence.mod.common.init.ModCriterionTriggers;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.mixed.IEntity;
 import org.confluence.mod.mixed.IItemEntity;

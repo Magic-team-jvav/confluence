@@ -1,4 +1,4 @@
-package org.confluence.mod.common.advancement;
+package org.confluence.mod.common.init;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec2;

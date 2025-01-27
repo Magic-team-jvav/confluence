@@ -1,7 +1,7 @@
 package org.confluence.mod.common.worldgen.secret_seed;
 
 public class DontDigUp extends SecretSeed {
-    DontDigUp(long flag) {
+    public DontDigUp(long flag) {
         super(flag);
     }
 

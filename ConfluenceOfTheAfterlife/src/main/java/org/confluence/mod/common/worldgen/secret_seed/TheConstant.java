@@ -1,7 +1,7 @@
 package org.confluence.mod.common.worldgen.secret_seed;
 
 public class TheConstant extends SecretSeed {
-    TheConstant(long flag) {
+    public TheConstant(long flag) {
         super(flag);
     }
 

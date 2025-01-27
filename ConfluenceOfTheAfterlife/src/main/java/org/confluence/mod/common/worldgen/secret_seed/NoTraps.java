@@ -1,7 +1,7 @@
 package org.confluence.mod.common.worldgen.secret_seed;
 
 public class NoTraps extends SecretSeed {
-    NoTraps(long flag) {
+    public NoTraps(long flag) {
         super(flag);
     }
 

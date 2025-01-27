@@ -6,7 +6,7 @@ package org.confluence.mod.common.worldgen.secret_seed;
 public class DrunkWorld extends SecretSeed {
     public static final int SEA_LEVEL = 47;
 
-    DrunkWorld(long flag) {
+    public DrunkWorld(long flag) {
         super(flag);
     }
 

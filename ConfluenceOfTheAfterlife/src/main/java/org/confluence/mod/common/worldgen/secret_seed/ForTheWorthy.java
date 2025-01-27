@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class ForTheWorthy extends SecretSeed {
     public static final BlockState LAVA = Blocks.LAVA.defaultBlockState();
 
-    ForTheWorthy(long flag) {
+    public ForTheWorthy(long flag) {
         super(flag);
     }
 

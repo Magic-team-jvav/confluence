@@ -1,9 +1,10 @@
-package org.confluence.mod.common.advancement;
+package org.confluence.mod.common.init;
 
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.advancement.ShimmerTransmutationTrigger;
 
 import java.util.function.Supplier;
 

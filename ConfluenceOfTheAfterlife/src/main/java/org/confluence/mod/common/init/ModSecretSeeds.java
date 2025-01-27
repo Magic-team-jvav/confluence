@@ -1,4 +1,6 @@
-package org.confluence.mod.common.worldgen.secret_seed;
+package org.confluence.mod.common.init;
+
+import org.confluence.mod.common.worldgen.secret_seed.*;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -20,7 +20,7 @@ public class NotTheBees extends SecretSeed {
         list.add(ModTags.Biomes.IS_CONFLUENCE);
     });
 
-    NotTheBees(long flag) {
+    public NotTheBees(long flag) {
         super(flag);
     }
 

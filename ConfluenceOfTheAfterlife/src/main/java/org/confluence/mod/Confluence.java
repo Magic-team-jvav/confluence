@@ -10,7 +10,6 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.advancement.ModCriterionTriggers;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;

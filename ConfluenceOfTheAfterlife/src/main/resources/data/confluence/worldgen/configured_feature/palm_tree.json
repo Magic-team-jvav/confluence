@@ -7,28 +7,34 @@
         "Name": "confluence:palm_log"
       }
     },
-    "leaves_block": {
+    "leaves_block_bottom": {
       "type": "simple_state_provider",
       "state": {
-        "Name": "confluence:palm_leaves"
-      }
-    },
-    "leaves_block_double": {
-      "type": "simple_state_provider",
-      "state": {
-        "Name": "confluence:palm_leaves"
+        "Name": "confluence:palm_leaves",
+        "Properties": {
+          "distance": 0,
+          "type": "bottom"
+        }
       }
     },
     "leaves_block_top": {
       "type": "simple_state_provider",
       "state": {
-        "Name": "confluence:palm_leaves"
+        "Name": "confluence:palm_leaves",
+        "Properties": {
+          "distance": 0,
+          "type": "top"
+        }
       }
     },
-    "leaves_block_bottom": {
+    "leaves_block_double": {
       "type": "simple_state_provider",
       "state": {
-        "Name": "confluence:palm_leaves"
+        "Name": "confluence:palm_leaves",
+        "Properties": {
+          "distance": 0,
+          "type": "double"
+        }
       }
     }
   }

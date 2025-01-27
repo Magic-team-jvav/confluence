@@ -1,0 +1,24 @@
+{
+  "type": "confluence:yellow_willow",
+  "config": {
+    "trunk_block": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "confluence:yellow_willow_log"
+      }
+    },
+    "leaves_block": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "confluence:yellow_willow_leaves"
+      }
+    },
+    "drooping_leaves_block": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "confluence:yellow_willow_drooping_leaves"
+      }
+    },
+    "height": 6
+  }
+}

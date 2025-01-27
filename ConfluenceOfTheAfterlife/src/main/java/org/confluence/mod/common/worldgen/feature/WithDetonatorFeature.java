@@ -70,8 +70,7 @@ public class WithDetonatorFeature extends Feature<WithDetonatorFeature.Config> {
     }
 
     private static boolean placeSubFeature(@NotNull FeaturePlaceContext<Config> context, WorldGenLevel level, Config config, RandomSource random, BlockPos origin) {
-        return level.getLevel().getServer().registryAccess()
-                .registryOrThrow(Registries.CONFIGURED_FEATURE)
+        return level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE)
                 .getHolder(config.subFeature).orElseThrow().value()
                 .place(level, context.chunkGenerator(), random, origin);
     }

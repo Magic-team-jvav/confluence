@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.chunk;
+package org.confluence.mod.mixin.level;
 
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import org.confluence.mod.common.worldgen.secret_seed.DrunkWorld;
@@ -15,7 +15,7 @@ public abstract class NoiseGeneratorSettingsMixin {
     private Boolean confluence$isDrunkWorld;
 
     /**
-     * @see org.confluence.mod.mixin.level.LevelMixin#modify(CallbackInfoReturnable)
+     * @see LevelMixin#modify(CallbackInfoReturnable)
      */
     @Inject(method = "seaLevel", at = @At("RETURN"), cancellable = true)
     private void modify(CallbackInfoReturnable<Integer> cir) {

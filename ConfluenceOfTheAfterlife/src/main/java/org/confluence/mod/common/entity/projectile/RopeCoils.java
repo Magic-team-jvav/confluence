@@ -51,11 +51,11 @@ public class RopeCoils extends ThrowableItemProjectile {
         if (level.isEmptyBlock(pos) || level.getBlockState(pos).canBeReplaced()) {
             int up = 0; int down = 0;
             for (int i = 0; i < SIZE; i++){
-                if (level.getBlockState(pos.above(i)).isAir()) up++;
+                if (level.isEmptyBlock(pos.above(i))) up++;
                 else break;
             }
             for (int i = 0; i < SIZE; i++){
-                if (level.getBlockState(pos.below(i)).isAir()) down++;
+                if (level.isEmptyBlock(pos.below(i))) down++;
                 else break;
             }
             willUp = up > down;
@@ -63,9 +63,9 @@ public class RopeCoils extends ThrowableItemProjectile {
             isPlaced = place(willUp, state, level, pos);
         }
         if (!isPlaced) {
-            ModUtils.createItemEntity(ModItems.ROPE_COILS.get(), 1, Vec3.atLowerCornerOf(pos), level, 0);
+            ModUtils.createItemEntity(ModItems.ROPE_COILS.get().getDefaultInstance(), pos.getCenter(), level, 0);
         }
-        this.remove(RemovalReason.DISCARDED);
+        this.discard();
         super.onHitBlock(result);
     }
 
@@ -143,7 +143,7 @@ public class RopeCoils extends ThrowableItemProjectile {
                 if (!isPlaced) {
                     ModUtils.createItemEntity(ModItems.ROPE_COILS.get(), 1, Vec3.atLowerCornerOf(pos), level, 0);
                 }
-                this.remove(RemovalReason.DISCARDED);
+                this.discard();
             }
         }
     }

@@ -72,7 +72,7 @@ public final class ModUtils {
     }
 
     public static void createItemEntity(Item item, int count, Vec3 pos, Level level, int pickUpDelay) {
-        createItemEntity(new ItemStack(item, count), pos.x, pos.y, pos.z, level, pickUpDelay);
+        createItemEntity(item, count, pos.x, pos.y, pos.z, level, pickUpDelay);
     }
 
     public static void dropMoney(int amount, double x, double y, double z, Level level) {

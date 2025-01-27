@@ -21,12 +21,9 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.FishingPoleItems;
-import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.common.item.accessory.FishingBobber;
 import org.confluence.mod.mixed.IFishingHook;
 import org.confluence.terra_curio.common.component.ModRarity;
@@ -91,11 +88,6 @@ public abstract class AbstractFishingPole extends FishingRodItem {
             pPlayer.gameEvent(GameEvent.ITEM_INTERACT_START);
         }
         return InteractionResultHolder.sidedSuccess(itemstack, pLevel.isClientSide);
-    }
-
-    @Override
-    public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
-        return ItemAbilities.DEFAULT_FISHING_ROD_ACTIONS.contains(itemAbility);
     }
 
     protected SoundEvent getRetrieveSound() {

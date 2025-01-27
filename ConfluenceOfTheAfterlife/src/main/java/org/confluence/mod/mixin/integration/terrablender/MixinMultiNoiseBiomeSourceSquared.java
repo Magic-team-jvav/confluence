@@ -3,7 +3,10 @@ package org.confluence.mod.mixin.integration.terrablender;
 import com.bawnorton.mixinsquared.TargetHandler;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
@@ -24,9 +27,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Mixin(value = MultiNoiseBiomeSource.class, priority = 1100)
 public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<MultiNoiseBiomeSource> {
@@ -48,7 +51,7 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
                 }
             } else {
                 Pair<Holder<Biome>, Holder<Biome>> pair = confluence$getBiomePair();
-                if (pair != null && pair.getSecond() != null && cir.getReturnValue() == pair.getFirst()) {
+                if (pair != null && cir.getReturnValue() == pair.getFirst()) {
                     cir.setReturnValue(pair.getSecond());
                 }
             }
@@ -59,12 +62,7 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
     private List<Holder<Biome>> confluence$getJungle() {
         if (confluence$jungle == null) {
             this.confluence$jungle = new ArrayList<>();
-            Set<Holder<Biome>> set = new HashSet<>();
-            for (Holder<Biome> holder : self().possibleBiomes()) {
-                if (holder.is(Tags.Biomes.IS_JUNGLE)) {
-                    set.add(holder);
-                }
-            }
+            Set<Holder<Biome>> set = self().possibleBiomes().stream().filter(holder -> holder.is(Tags.Biomes.IS_JUNGLE)).collect(Collectors.toSet());
             confluence$jungle.addAll(set);
         }
         return confluence$jungle;
@@ -85,39 +83,36 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
     @Unique
     private Pair<Holder<Biome>, Holder<Biome>> confluence$getBiomePair() {
         if (confluence$biomePair == null) {
-            if (ServerLifecycleHooks.getCurrentServer() != null) {
-                WorldOptions worldOptions = ServerLifecycleHooks.getCurrentServer().getWorldData().worldGenOptions();
-                Pair<ResourceKey<Biome>, ResourceKey<Biome>> pair;
-                long flag = ((IWorldOptions) worldOptions).confluence$getSecretFlag();
-                if ((flag & IWorldOptions.DOUBLE_EVIL) == IWorldOptions.DOUBLE_EVIL) {
-                    this.confluence$biomePair = new Pair<>(null, null);
-                    return confluence$biomePair;
-                } else if ((flag & IWorldOptions.DOUBLE_EVIL) == 0) {
-                    if (new LegacyRandomSource(worldOptions.seed()).nextBoolean()) {
-                        pair = new Pair<>(ModBiomes.THE_CORRUPTION, ModBiomes.TR_CRIMSON);
-                        ((IWorldOptions) worldOptions).confluence$withSecretFlag(IWorldOptions.TR_CRIMSON);
-                    } else {
-                        pair = new Pair<>(ModBiomes.TR_CRIMSON, ModBiomes.THE_CORRUPTION);
-                        ((IWorldOptions) worldOptions).confluence$withSecretFlag(IWorldOptions.THE_CORRUPTION);
-                    }
+            MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+            if (server == null) return null;
+            WorldOptions worldOptions = server.getWorldData().worldGenOptions();
+            long flag = ((IWorldOptions) worldOptions).confluence$getSecretFlag();
+            ResourceKey<Biome> from;
+            ResourceKey<Biome> to;
+            if ((flag & IWorldOptions.DOUBLE_EVIL) == IWorldOptions.DOUBLE_EVIL) {
+                this.confluence$biomePair = new Pair<>(null, null);
+                return confluence$biomePair;
+            } else if ((flag & IWorldOptions.DOUBLE_EVIL) == 0) {
+                if (new LegacyRandomSource(worldOptions.seed()).nextBoolean()) {
+                    from = ModBiomes.THE_CORRUPTION;
+                    to = ModBiomes.TR_CRIMSON;
+                    ((IWorldOptions) worldOptions).confluence$withSecretFlag(IWorldOptions.TR_CRIMSON);
                 } else {
-                    if ((flag & IWorldOptions.THE_CORRUPTION) == 0) {
-                        pair = new Pair<>(ModBiomes.THE_CORRUPTION, ModBiomes.TR_CRIMSON);
-                    } else {
-                        pair = new Pair<>(ModBiomes.TR_CRIMSON, ModBiomes.THE_CORRUPTION);
-                    }
+                    from = ModBiomes.TR_CRIMSON;
+                    to = ModBiomes.THE_CORRUPTION;
+                    ((IWorldOptions) worldOptions).confluence$withSecretFlag(IWorldOptions.THE_CORRUPTION);
                 }
-                Holder<Biome> source = null;
-                Holder<Biome> target = null;
-                for (Holder<Biome> biome : self().possibleBiomes()) {
-                    if (biome.is(pair.getFirst())) {
-                        source = biome;
-                    } else if (biome.is(pair.getSecond())) {
-                        target = biome;
-                    }
+            } else {
+                if ((flag & IWorldOptions.THE_CORRUPTION) == 0) {
+                    from = ModBiomes.THE_CORRUPTION;
+                    to = ModBiomes.TR_CRIMSON;
+                } else {
+                    from = ModBiomes.TR_CRIMSON;
+                    to = ModBiomes.THE_CORRUPTION;
                 }
-                this.confluence$biomePair = new Pair<>(source, target);
             }
+            Registry<Biome> biomes = server.registryAccess().registryOrThrow(Registries.BIOME);
+            this.confluence$biomePair = new Pair<>(biomes.getHolderOrThrow(from), biomes.getHolderOrThrow(to));
         }
         return confluence$biomePair;
     }

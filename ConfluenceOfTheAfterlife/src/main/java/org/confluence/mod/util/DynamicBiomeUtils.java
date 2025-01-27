@@ -1,6 +1,9 @@
 package org.confluence.mod.util;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.SectionPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainer;
@@ -95,4 +98,11 @@ public final class DynamicBiomeUtils {
         return balanceEvil(new int[]{counter.confluence$getCrimson(), counter.confluence$getCorrupt(), counter.confluence$getHallow(),counter.confluence$getSunflower()}, counter);
     }
 
+    public static LevelChunkSection getSection(Level level, BlockPos pos) {
+        return level.getChunk(SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ())).getSection(level.getSectionIndex(pos.getY()));
+    }
+
+    public static IChunkSection getISection(Level level, BlockPos pos) {
+        return (IChunkSection) getSection(level, pos);
+    }
 }

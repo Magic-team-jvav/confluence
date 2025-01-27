@@ -6,7 +6,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -25,8 +24,8 @@ public final class ModTags {
         public static final TagKey<Block> NEEDS_8_LEVEL = register("needs_8_level");
         public static final TagKey<Block> NEEDS_9_LEVEL = register("needs_9_level");
         public static final TagKey<Block> UNBREAKABLE = register("unbreakable"); // 用于锯刃镐及以上
-        public static final TagKey<Block> TORCH = register("torch");
-        public static final TagKey<Block> HARDMODE = register("hardmode");
+        public static final TagKey<Block> TORCH = register("torch"); // todo
+        public static final TagKey<Block> HARDMODE = register("hardmode"); // todo
         public static final TagKey<Block> COIN_PILE = register("coin_pile");
         public static final TagKey<Block> EASY_CRASH = register("easy_crash");
         public static final TagKey<Block> VINES = register("vines");
@@ -40,13 +39,13 @@ public final class ModTags {
         private static TagKey<Block> c(String name) {
             return BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
         }
+
         private static TagKey<Block> register(String id) {
             return BlockTags.create(Confluence.asResource(id));
         }
     }
 
     public static class Items {
-        // neoforge
         public static final TagKey<Item> INGOTS_TIN = c("ingots/tin");
         public static final TagKey<Item> INGOTS_SILVER = c("ingots/silver");
         public static final TagKey<Item> INGOTS_TUNGSTEN = c("ingots/tungsten");
@@ -62,8 +61,8 @@ public final class ModTags {
 
         public static final TagKey<Item> PROVIDE_MANA = register("provide_mana");
         public static final TagKey<Item> PROVIDE_LIFE = register("provide_life");
-        public static final TagKey<Item> TORCH = register("torch"); // todo
-        public static final TagKey<Item> HARDMODE = register("hardmode"); // todo
+        public static final TagKey<Item> TORCH = register("torch");
+        public static final TagKey<Item> HARDMODE = register("hardmode");
         public static final TagKey<Item> BOTTOMLESS = register("bottomless");
         public static final TagKey<Item> FRUIT = register("fruit");
         public static final TagKey<Item> SAPLING = register("sapling");
@@ -132,6 +131,4 @@ public final class ModTags {
 
     public static final TagKey<Fluid> FISHING_ABLE = FluidTags.create(Confluence.asResource("fishing_able"));
     public static final TagKey<Fluid> NOT_LAVA = FluidTags.create(Confluence.asResource("not_lava"));
-
-    public static final TagKey<DamageType> HARMFUL_EFFECT = TagKey.create(Registries.DAMAGE_TYPE, Confluence.asResource("harmful_effect"));
 }

@@ -21,6 +21,7 @@ import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.menu.HeavyWorkBenchMenu;
 import org.confluence.mod.common.recipe.EnvironmentLevelAccess;
+import org.confluence.mod.util.DynamicBiomeUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class HeavyWorkBenchBlock extends HorizontalDirectionalWithVerticalFourPartBlock {
@@ -89,10 +90,10 @@ public class HeavyWorkBenchBlock extends HorizontalDirectionalWithVerticalFourPa
 
         @Override
         public <R extends Recipe<?>> boolean matches(R recipe) {
-            if (level == null) return false;
+            if (level == null || pos == null) return false;
             ItemStack resultItem = recipe.getResultItem(level.registryAccess());
             if (resultItem.is(NatureBlocks.THIN_ICE_BLOCK.asItem())) {
-                return false; // todo 灵雾
+                return DynamicBiomeUtils.getISection(level, pos).confluence$isGraveyard();
             }
             return true;
         }

@@ -6,6 +6,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.recipe.EnvironmentLevelAccess;
+import org.confluence.mod.util.DynamicBiomeUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,10 +17,10 @@ public class WorkshopLevelAccess extends EnvironmentLevelAccess {
 
     @Override
     public <R extends Recipe<?>> boolean matches(R recipe) {
-        if (level == null) return false;
+        if (level == null || pos == null) return false;
         ItemStack resultItem = recipe.getResultItem(level.registryAccess());
         if (resultItem.is(AccessoryItems.BAND_OF_STARPOWER.get()) || resultItem.is(TCItems.PANIC_NECKLACE.get())) {
-            return false; // todo 灵雾
+            return DynamicBiomeUtils.getISection(level, pos).confluence$isGraveyard();
         }
         return true;
     }

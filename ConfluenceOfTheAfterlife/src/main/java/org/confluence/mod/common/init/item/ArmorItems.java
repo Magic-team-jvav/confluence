@@ -79,10 +79,10 @@ public class ArmorItems {
     public static final Supplier<ArmorItem> GLADIATOR_LEGGINGS = registerNormalArmor("gladiator_leggings", "gladiator_armor", ModArmorMaterials.GLADIATOR_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
     public static final Supplier<ArmorItem> GLADIATOR_BOOTS = registerNormalArmor("gladiator_boots", "gladiator_armor", ModArmorMaterials.GLADIATOR_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
 
-    public static final Supplier<ArmorItem> METEOR_HELMET = registerNormalArmor("meteor_armorhelmet", "meteor_armor", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final Supplier<ArmorItem> METEOR_CHESTPLATE = registerNormalArmor("meteor_armorchestplate", "meteor_armor", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final Supplier<ArmorItem> METEOR_LEGGINGS = registerNormalArmor("meteor_armorleggings", "meteor_armor", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final Supplier<ArmorItem> METEOR_BOOTS = registerNormalArmor("meteor_armorboots", "meteor_armor", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
+    public static final Supplier<ArmorItem> METEOR_HELMET = registerNormalArmor("meteor_helmet", "meteor_armor", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
+    public static final Supplier<ArmorItem> METEOR_CHESTPLATE = registerNormalArmor("meteor_chestplate", "meteor_armor", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
+    public static final Supplier<ArmorItem> METEOR_LEGGINGS = registerNormalArmor("meteor_leggings", "meteor_armor", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
+    public static final Supplier<ArmorItem> METEOR_BOOTS = registerNormalArmor("meteor_boots", "meteor_armor", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
 
     public static final Supplier<ArmorItem> ANGLER_HAT = registerNormalArmor("angler_hat", "angler_armor", ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
     public static final Supplier<ArmorItem> ANGLER_VEST = registerNormalArmor("angler_vest", "angler_armor", ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);

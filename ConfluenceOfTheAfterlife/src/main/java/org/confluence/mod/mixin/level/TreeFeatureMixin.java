@@ -18,7 +18,7 @@ public abstract class TreeFeatureMixin {
     @Inject(method = "place", at = @At("HEAD"), cancellable = true)
     private void replace(FeaturePlaceContext<TreeConfiguration> context, CallbackInfoReturnable<Boolean> cir) {
         if (context.level().getBiome(context.origin()).is(ModTags.Biomes.VANITY_TREES_REPLACEABLE)) {
-            float v = ModSecretSeeds.DRUNK_WORLD.match() ? 0.1667F : 0.05F;
+            float v = ModSecretSeeds.DRUNK_WORLD.match() ? 0.02F : 0.01F;
             if (context.random().nextFloat() < v) {
                 if (context.random().nextFloat() < 0.75F) {
                     boolean placed = context.level().registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE)

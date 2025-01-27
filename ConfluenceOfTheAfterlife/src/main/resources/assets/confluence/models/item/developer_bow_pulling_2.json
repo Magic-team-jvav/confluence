@@ -1,0 +1,6 @@
+{
+    "parent": "confluence:item/developer_bow",
+    "textures": {
+        "layer0": "confluence:item/bow/developer_bow_pulling_2"
+    }
+}

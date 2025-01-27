@@ -2241,6 +2241,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.AMMO_BOX.get(), "弹药箱");
         add(ModEffects.ARCHERY.get(), "箭术");
         add(ModEffects.HEART_REACH.get(), "拾心");
+        add(ModEffects.OBSIDIAN_SKIN.get(), "黑曜石皮");
 
     }
 }

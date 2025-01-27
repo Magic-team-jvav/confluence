@@ -1,13 +1,11 @@
 package org.confluence.mod.common.item.sword;
 
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -25,7 +23,6 @@ import org.confluence.mod.common.item.sword.stagedy.EffectStrategy;
 import org.confluence.mod.common.item.sword.stagedy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.stagedy.projectile.BoomerangProjContainer;
 import org.confluence.mod.common.item.sword.stagedy.projectile.IProjContainer;
-import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,21 +34,8 @@ public class Boomerang extends Item {
 
     public final BoomerangModifier boomerangModifier;
 
-
-    public Boomerang(float damage, int durability) {
-        this(damage,durability,ModRarity.WHITE);
-    }
-
-    public Boomerang(float damage ,int durability, ModRarity rarity) {
-        this(damage,durability,rarity,new BoomerangModifier());
-    }
-
-    public Boomerang(float damage, int durability, ModRarity rarity, BoomerangModifier boomerangModifier) {
-        super(new Properties().stacksTo(1).durability(durability)
-                .component(TCDataComponentTypes.MOD_RARITY, rarity)
-                .component(ModDataComponentTypes.BOOMERANG_READY, SingleBooleanComponent.TRUE)
-                .component(DataComponents.ATTRIBUTE_MODIFIERS, boomerangModifier.attributeModifiersBuilder.build())
-        );
+    public Boomerang(float damage, BoomerangModifier boomerangModifier, Properties properties) {
+        super(properties);
         this.boomerangModifier = boomerangModifier;
         this.boomerangModifier.damage = damage;
         this.boomerangModifier.proj = new BoomerangProjContainer(boomerangModifier);
@@ -89,8 +73,9 @@ public class Boomerang extends Item {
         if(boomerangModifier.proj == null)
             return InteractionResultHolder.fail(stack);
         boomerangModifier.proj.genProjectile(player, stack);
-        if(usedHand == InteractionHand.OFF_HAND) stack.hurtAndBreak(1, player, EquipmentSlot.OFFHAND);
-        else stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
+//        if(stack.get(DataComponents.UNBREAKABLE)==null)
+//            if(usedHand == InteractionHand.OFF_HAND) stack.hurtAndBreak(1, player, EquipmentSlot.OFFHAND);
+//            else stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
         if(boomerangModifier.shouldApplyCd ) {
             var map = player.getData(ModAttachmentTypes.WEAPON_STORAGE).boomerangCounter;
             Integer count = map.compute(this, (k, v) -> v == null? 1 : v + 1);

@@ -73,23 +73,41 @@ public class RopeCoils extends ThrowableItemProjectile {
         return place(willUp, state, level, pos, 0);
     }
 
+    public static void createRope(int offset, int i, BlockPos pos, Level level){
+        ModUtils.createItemEntity(ModBlocks.ROPE.get().asItem(), SIZE + offset - i, Vec3.atLowerCornerOf(pos), level, 0);
+    }
+
     public static boolean place(boolean willUp, BlockState state, Level level, BlockPos pos, int offset){
         boolean isPlaced = false;
         if (willUp){
             for (int i = offset; i < SIZE + offset; i++){
                 if (state.canSurvive(level, pos.above(i)) && level.isEmptyBlock(pos.above(i))){
-                    isPlaced = level.setBlockAndUpdate(pos.above(i), state);
+                    if (level.setBlockAndUpdate(pos.above(i), state)){
+                        isPlaced = true;
+                    } else {
+                        if (i == offset) break;
+                        createRope(offset, i, pos, level);
+                        break;
+                    }
                 } else {
-                    ModUtils.createItemEntity(ModBlocks.ROPE.get().asItem(), SIZE + offset - i, Vec3.atLowerCornerOf(pos), level, 0);
+                    isPlaced = true;
+                    createRope(offset, i, pos, level);
                     break;
                 }
             }
         } else {
             for (int i = offset; i < SIZE + offset; i++){
                 if (state.canSurvive(level, pos.below(i)) && level.isEmptyBlock(pos.below(i))){
-                    isPlaced = level.setBlockAndUpdate(pos.below(i), state);
+                    if (level.setBlockAndUpdate(pos.below(i), state)){
+                        isPlaced = true;
+                    } else {
+                        if (i == offset) break;
+                        createRope(offset, i, pos, level);
+                        break;
+                    }
                 } else {
-                    ModUtils.createItemEntity(ModBlocks.ROPE.get().asItem(), SIZE + offset - i, Vec3.atLowerCornerOf(pos), level, 0);
+                    isPlaced = true;
+                    createRope(offset, i, pos, level);
                     break;
                 }
             }

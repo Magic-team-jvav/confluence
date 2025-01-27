@@ -6,6 +6,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import org.apache.commons.lang3.stream.Streams;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.network.s2c.ExtraInventoryStackPacketS2C;
 import org.confluence.mod.util.PlayerUtils;
@@ -21,8 +22,7 @@ public class ExtraInventory extends ItemStackHandler implements Container {
     public static final int SIZE_DYE_EXCEPT_ACCESSORY_DYE = SIZE_VANITY_ARMOR + SIZE_EQUIPMENT;
     public static final int SIZE_EXCEPT_ACCESSORY_DYE = SIZE_VANITY_ARMOR + SIZE_COINS + SIZE_AMMO + SIZE_EQUIPMENT + SIZE_DYE_EXCEPT_ACCESSORY_DYE;
 
-    public static final int VANITY_ARMOR_START = 0;
-    public static final int COINS_START = VANITY_ARMOR_START + SIZE_VANITY_ARMOR;
+    public static final int COINS_START = SIZE_VANITY_ARMOR;
     public static final int AMMO_START = COINS_START + SIZE_COINS;
     public static final int EQUIPMENT_START = AMMO_START + SIZE_AMMO;
     public static final int DYE_START = EQUIPMENT_START + SIZE_EQUIPMENT;
@@ -52,7 +52,7 @@ public class ExtraInventory extends ItemStackHandler implements Container {
 
     public ItemStack getVanityArmor(int index) {
         validateIndex(index, SIZE_VANITY_ARMOR);
-        return getItem(VANITY_ARMOR_START + index);
+        return getItem(index);
     }
 
     public ItemStack getCoins(int index) {
@@ -83,7 +83,7 @@ public class ExtraInventory extends ItemStackHandler implements Container {
 
     public ItemStack getVanityArmorDye(int index) {
         validateIndex(index, SIZE_VANITY_ARMOR);
-        return getItem(DYE_START + VANITY_ARMOR_START + index);
+        return getItem(DYE_START + index);
     }
 
     public ItemStack getPetDye() {
@@ -117,6 +117,7 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         initialize(serverPlayer);
         if (dirty) {
             boolean dyeHard = true;
+            boolean fashionStatement = true;
 
             for (int i = 0; i < getContainerSize(); i++) {
                 ItemStack itemStack = getItem(i);
@@ -130,10 +131,14 @@ public class ExtraInventory extends ItemStackHandler implements Container {
                 }
 
                 if (dyeHard && i >= DYE_START && itemStack.isEmpty()) dyeHard = false;
+                if (fashionStatement && i < COINS_START && itemStack.isEmpty()) fashionStatement = false;
             }
             this.dirty = false;
 
             if (dyeHard) PlayerUtils.awardAchievement(serverPlayer, "dye_hard");
+            if (fashionStatement && Streams.of(serverPlayer.getArmorSlots()).noneMatch(ItemStack::isEmpty)) {
+                PlayerUtils.awardAchievement(serverPlayer, "fashion_statement");
+            }
         }
     }
 

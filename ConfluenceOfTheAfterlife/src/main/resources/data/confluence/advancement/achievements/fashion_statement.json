@@ -1,0 +1,23 @@
+{
+    "display": {
+        "icon": {
+            "id": "confluence:jungle_rose"
+        },
+        "title": {
+            "translate": "achievements.confluence.fashion_statement.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.fashion_statement.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "never": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

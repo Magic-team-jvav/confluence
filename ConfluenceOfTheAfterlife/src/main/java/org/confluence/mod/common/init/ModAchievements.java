@@ -38,7 +38,7 @@ public final class ModAchievements {
         offset("like_a_boss", 3, 1);
         offset("drax_attax", 4, 1);
         /* Temple Raider (0, 2) */
-        /* Fashion Statement (1, 2) */
+        offset("fashion_statement", 1, 2);
         /* Sword of the Hero (2, 2) */
         offset("dye_hard", 3, 2);
         /* Sick Throw (4, 2) */
@@ -70,7 +70,7 @@ public final class ModAchievements {
         offset("get_a_life", 8, 2);
         /* Robbing the Grave (9, 2) */
         /* Big Booty (10, 2) */
-        /* Bloodbath (6, 3) */
+        offset("bloodbath", 6, 3);
         /* Kill the Sun (7, 3) */
         /* Sticky Situation (8, 3) */
         /* Jeepers Creepers (9, 3) */

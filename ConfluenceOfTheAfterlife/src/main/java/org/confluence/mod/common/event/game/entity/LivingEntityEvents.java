@@ -57,6 +57,8 @@ import org.confluence.terraentity.init.TEEntities;
 
 import java.util.function.Predicate;
 
+import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_VANITY_ARMOR;
+
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class LivingEntityEvents {
     @SubscribeEvent
@@ -238,6 +240,15 @@ public final class LivingEntityEvents {
         if (event.getSlot().getType() == EquipmentSlot.Type.HUMANOID_ARMOR && living instanceof ServerPlayer serverPlayer) {
             if (Streams.stream(serverPlayer.getArmorSlots()).noneMatch(ItemStack::isEmpty)) {
                 PlayerUtils.awardAchievement(serverPlayer, "matching_attire");
+                ExtraInventory extraInventory = serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+                boolean fashionStatement = true;
+                for (int i = 0; i < SIZE_VANITY_ARMOR; i++) {
+                    if (extraInventory.getVanityArmor(i).isEmpty()) {
+                        fashionStatement = false;
+                        break;
+                    }
+                }
+                if (fashionStatement) PlayerUtils.awardAchievement(serverPlayer, "fashion_statement");
             }
         }
     }

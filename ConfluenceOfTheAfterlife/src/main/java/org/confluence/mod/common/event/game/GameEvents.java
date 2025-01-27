@@ -1,8 +1,9 @@
 package org.confluence.mod.common.event.game;
 
-import net.minecraft.core.BlockPos;
+import com.xiaohunao.heaven_destiny_moment.common.event.MomentEvent;
+import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstance;
+import com.xiaohunao.terra_moment.common.init.TMMoments;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
@@ -10,18 +11,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.ItemStackedOnOtherEvent;
@@ -30,7 +26,6 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
@@ -41,7 +36,6 @@ import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.AxeItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.item.common.ColoredItem;
@@ -56,9 +50,9 @@ import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.confluence.terra_curio.util.TCUtils;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
 
-import java.util.*;
-
-import static net.minecraft.world.level.block.Block.dropResources;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class GameEvents {
@@ -193,5 +187,17 @@ public final class GameEvents {
             BaseAxeItem.dropAndPlaceOnRightClick(event.getEntity(), event.getItemStack(), event.getPos());
         }
 
+    }
+
+    @SubscribeEvent
+    public static void moment$Victory(MomentEvent.Victory event) {
+        MomentInstance<?> momentInstance = event.getMomentInstance();
+        if (momentInstance.getLevel() instanceof ServerLevel serverLevel) {
+            if (momentInstance.is(TMMoments.BLOOD_MOON)) {
+                for (Player player : momentInstance.getPlayers()) {
+                    PlayerUtils.awardAchievement((ServerPlayer)player, "");
+                }
+            }
+        }
     }
 }

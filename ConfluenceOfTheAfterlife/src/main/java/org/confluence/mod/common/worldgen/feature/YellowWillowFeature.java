@@ -47,7 +47,7 @@ public class YellowWillowFeature extends Feature<YellowWillowFeature.Config> {
             for (int y = yStart; y <= yEnd; y++) {
                 for (int z = zStart; z <= zEnd; z++) {
                     posPlace = new BlockPos(x, y, z);
-                    set = !((x == xStart || x == xEnd) && (z == zStart || z == zEnd)) || ((y == yStart || up) && random.nextInt(3) == 0) && (level.getBlockState(posPlace).isAir());
+                    set = (!((x == xStart || x == xEnd) && (z == zStart || z == zEnd)) || ((y == yStart || up) && random.nextInt(3) == 0)) && (level.getBlockState(posPlace).isAir());
                     if (set) {
                         level.setBlock(posPlace, leaves, 3);
                     }
@@ -79,7 +79,7 @@ public class YellowWillowFeature extends Feature<YellowWillowFeature.Config> {
         BlockState droopingLeavesBlockState = config.drooping_leaves.getState(random, baseBlockPos);
         int height = config.height + random.nextInt(3);
         List<BlockPos> trunkPosList = new ArrayList<>();
-        for (int i = 0; i < height; i++) {
+        for (int i = 0; i < height + 3; i++) {
             trunkPosList.add(baseBlockPos.offset(0, i, 0));
         }
 
@@ -95,8 +95,8 @@ public class YellowWillowFeature extends Feature<YellowWillowFeature.Config> {
             for (int i = 0; i < trunkPosList.size(); i++) {
                 level.setBlock(trunkPosList.get(i), trunkBlockState, 3);
             }
-            setLeaves(baseBlockPos.offset(-2, height - 1, -2), baseBlockPos.offset(2, height, 2), leavesBlockState, true, random, level, droopingLeavesBlockState);
-            setLeaves(baseBlockPos.offset(-1, height + 1, -1), baseBlockPos.offset(1, height + 2, 1), leavesBlockState, false, random, level);
+            setLeaves(baseBlockPos.offset(-2, height, -2), baseBlockPos.offset(2, height + 1, 2), leavesBlockState, true, random, level, droopingLeavesBlockState);
+            setLeaves(baseBlockPos.offset(-1, height + 2, -1), baseBlockPos.offset(1, height + 3, 1), leavesBlockState, false, random, level);
             return true;
         }
         return false;

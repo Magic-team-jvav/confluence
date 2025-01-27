@@ -79,7 +79,7 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
                 ModBiomes.ASH_WASTELAND
         );
         tag(Tags.Biomes.IS_NETHER_FOREST).add(ModBiomes.ASH_FOREST);
-        TagAppender<Biome> yellowWillowReplaceable = tag(ModTags.Biomes.YELLOW_WILLOW_REPLACEABLE);
+        TagAppender<Biome> yellowWillowReplaceable = tag(ModTags.Biomes.VANITY_TREES_REPLACEABLE);
         yellowWillowReplaceable.add(Biomes.PLAINS, Biomes.FOREST, Biomes.FLOWER_FOREST);
         yellowWillowReplaceable.addTag(Tags.Biomes.IS_BIRCH_FOREST);
     }

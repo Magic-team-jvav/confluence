@@ -1269,6 +1269,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SHARK_FIN.get(), "鲨鱼鳍");
         add(MaterialItems.SHADOW_SCALE.get(), "暗影鳞片");
         add(MaterialItems.TISSUE_SAMPLE.get(), "组织样本");
+        add(MaterialItems.ROYAL_WAX.get(), "蜂王蜡");
         add(MaterialItems.PURPLE_MUCUS.get(), "紫色黏液");
         add(MaterialItems.CURSED_FLAME.get(), "诅咒火");
         add(MaterialItems.ICHOR.get(), "灵液");
@@ -1735,6 +1736,14 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.PEARL_HELMET.get(), "珍珠木头盔");
         add(ArmorItems.PEARL_LEGGINGS.get(), "珍珠木护腿");
         add(ArmorItems.PEARL_BOOTS.get(), "珍珠木靴子");
+        add(ArmorItems.ASH_CHESTPLATE.get(), "白蜡木胸甲");
+        add(ArmorItems.ASH_HELMET.get(), "白蜡木头盔");
+        add(ArmorItems.ASH_LEGGINGS.get(), "白蜡木护腿");
+        add(ArmorItems.ASH_BOOTS.get(), "白蜡木靴子");
+        add(ArmorItems.PUMPKIN_CHESTPLATE.get(), "南瓜胸甲");
+        add(ArmorItems.PUMPKIN_HELMET.get(), "南瓜头盔");
+        add(ArmorItems.PUMPKIN_LEGGINGS.get(), "南瓜护腿");
+        add(ArmorItems.PUMPKIN_BOOTS.get(), "南瓜靴子");
         add(ArmorItems.RAIN_CAP.get(), "雨帽");
         add(ArmorItems.RAINCOAT.get(), "雨衣");
         add(ArmorItems.SNOW_CAPS.get(), "防雪帽");
@@ -1745,6 +1754,18 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.PINK_SNOW_SUITS.get(), "粉色防雪衣");
         add(ArmorItems.PINK_INSULATED_PANTS.get(), "粉色保温裤");
         add(ArmorItems.PINK_INSULATED_SHOES.get(), "粉色保温鞋");
+        add(ArmorItems.OBSIDIAN_CHESTPLATE.get(), "黑曜石胸甲");
+        add(ArmorItems.OBSIDIAN_HELMET.get(), "黑曜石头盔");
+        add(ArmorItems.OBSIDIAN_LEGGINGS.get(), "黑曜石护腿");
+        add(ArmorItems.OBSIDIAN_BOOTS.get(), "黑曜石靴子");
+        add(ArmorItems.GLADIATOR_CHESTPLATE.get(), "角斗士胸甲");
+        add(ArmorItems.GLADIATOR_HELMET.get(), "角斗士头盔");
+        add(ArmorItems.GLADIATOR_LEGGINGS.get(), "角斗士护腿");
+        add(ArmorItems.GLADIATOR_BOOTS.get(), "角斗士靴子");
+        add(ArmorItems.METEOR_CHESTPLATE.get(), "陨石胸甲");
+        add(ArmorItems.METEOR_HELMET.get(), "陨石头盔");
+        add(ArmorItems.METEOR_LEGGINGS.get(), "陨石护腿");
+        add(ArmorItems.METEOR_BOOTS.get(), "陨石靴子");
         add(ArmorItems.COPPER_HELMET.get(), "铜头盔");
         add(ArmorItems.COPPER_CHESTPLATE.get(), "铜胸甲");
         add(ArmorItems.COPPER_LEGGINGS.get(), "铜护腿");
@@ -1777,6 +1798,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.FOSSIL_CHESTPLATE.get(), "化石胸甲");
         add(ArmorItems.FOSSIL_LEGGINGS.get(), "化石护腿");
         add(ArmorItems.FOSSIL_BOOTS.get(), "化石靴");
+        add(ArmorItems.BEE_HELMET.get(), "蜜蜂头盔");
+        add(ArmorItems.BEE_CHESTPLATE.get(), "蜜蜂胸甲");
+        add(ArmorItems.BEE_LEGGINGS.get(), "蜜蜂护腿");
+        add(ArmorItems.BEE_BOOTS.get(), "蜜蜂靴");
         add(ArmorItems.NINJA_HELMET.get(), "忍者头盔");
         add(ArmorItems.NINJA_CHESTPLATE.get(), "忍者胸甲");
         add(ArmorItems.NINJA_LEGGINGS.get(), "忍者护腿");
@@ -1801,6 +1826,17 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.CRIMSON_CHESTPLATE.get(), "猩红胸甲");
         add(ArmorItems.CRIMSON_LEGGINGS.get(), "猩红护腿");
         add(ArmorItems.CRIMSON_BOOTS.get(), "猩红靴");
+        add(ArmorItems.MINING_HELMET.get(), "照明头盔");
+        add(ArmorItems.MINING_CHESTPLATE.get(), "矿工衣");
+        add(ArmorItems.MINING_LEGGINGS.get(), "矿工裤");
+        add(ArmorItems.MINING_BOOTS.get(), "矿工靴");
+        add(ArmorItems.ANGLER_HAT.get(), "渔夫帽");
+        add(ArmorItems.ANGLER_VEST.get(), "渔夫背心");
+        add(ArmorItems.ANGLER_PANTS.get(), "渔夫裤");
+        add(ArmorItems.MOLTEN_CHESTPLATE.get(), "熔岩胸甲");
+        add(ArmorItems.MOLTEN_HELMET.get(), "熔岩头盔");
+        add(ArmorItems.MOLTEN_LEGGINGS.get(), "熔岩护腿");
+        add(ArmorItems.MOLTEN_BOOTS.get(), "熔岩靴子");
 
         add(VanityArmorItems.GOLD_CROWN.get(), "金冠");
         add(VanityArmorItems.PLATINUM_CROWN.get(), "铂金冠");
@@ -2188,6 +2224,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.ACID_VENOM.get(), "酸性毒液");
         add(ModEffects.CURSED_INFERNO.get(), "诅咒焰");
         add(ModEffects.FROST_BURN.get(), "霜冻");
+        add(ModEffects.RAGE.get(), "暴怒");
+        add(ModEffects.FISHING.get(), "钓鱼");
+        add(ModEffects.LUCK_EFFECT.get(), "幸运");
 
     }
 }

@@ -101,6 +101,7 @@ public class MaterialItems {
     public static final DeferredItem<Item> COLD_CRYSTAL = register("cold_crystal",ModRarity.BLUE);
     public static final DeferredItem<Item> SHADOW_SCALE = register("shadow_scale",ModRarity.BLUE);
     public static final DeferredItem<Item> TISSUE_SAMPLE = register("tissue_sample",ModRarity.BLUE);
+    public static final DeferredItem<Item> ROYAL_WAX = register("royal_wax",ModRarity.BLUE);
 
     public static final DeferredItem<Item> CRYSTAL_SHARDS_ITEM = register("crystal_shards_item",ModRarity.BLUE);
     public static final DeferredItem<Item> CURSED_FLAME = register("cursed_flame",ModRarity.ORANGE);

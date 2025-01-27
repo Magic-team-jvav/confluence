@@ -42,7 +42,7 @@ public final class ModAchievements {
         /* Sword of the Hero (2, 2) */
         offset("dye_hard", 3, 2);
         /* Sick Throw (4, 2) */
-        /* The Cavalry (0, 3) */
+        offset("the_cavalry", 0, 3);
         offset("completely_awesome", 1, 3);
         /* Prismancer (2, 3) */
         offset("glorious_golden_pole", 3, 3);

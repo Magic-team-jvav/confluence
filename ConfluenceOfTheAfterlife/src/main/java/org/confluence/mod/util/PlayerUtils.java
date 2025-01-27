@@ -181,16 +181,6 @@ public final class PlayerUtils {
         }
     }
 
-    public static int getItemCount(List<ItemStack> have, Item item) {
-        int count = 0;
-        for (ItemStack itemStack : have) {
-            if (!itemStack.isEmpty() && itemStack.is(item)) {
-                count += itemStack.getCount();
-            }
-        }
-        return count;
-    }
-
     public static void consumeItemCount(List<ItemStack> have, Item item, int consumeCount) {
         AtomicInteger count = new AtomicInteger();
         have.forEach(stack -> {

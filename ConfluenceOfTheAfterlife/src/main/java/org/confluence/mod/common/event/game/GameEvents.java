@@ -172,7 +172,7 @@ public final class GameEvents {
         ItemStack tool = event.getTool();
 
         // 再生法杖/再生之斧 时运
-        if(tool.is(ModTags.Items.CROP_FORTUNE) && breaker != null && (state.is(BlockTags.CROPS) || state.getBlock() instanceof CropBlock)){
+        if (tool.is(ModTags.Items.CROP_FORTUNE) && breaker != null && (state.is(BlockTags.CROPS) || state.getBlock() instanceof CropBlock)) {
             BaseAxeItem.increaseDropsOnBlockBreak(breaker, tool, event.getDrops());
         }
     }
@@ -183,7 +183,7 @@ public final class GameEvents {
         ItemStack itemStack = event.getItemStack();
 
         // 再生之斧/再生法杖 右键自动收获
-        if(!level.isClientSide && itemStack.is(ModTags.Items.CROP_FORTUNE)){
+        if (!level.isClientSide && itemStack.is(ModTags.Items.CROP_FORTUNE)) {
             BaseAxeItem.dropAndPlaceOnRightClick(event.getEntity(), event.getItemStack(), event.getPos());
         }
 
@@ -192,10 +192,10 @@ public final class GameEvents {
     @SubscribeEvent
     public static void moment$Victory(MomentEvent.Victory event) {
         MomentInstance<?> momentInstance = event.getMomentInstance();
-        if (momentInstance.getLevel() instanceof ServerLevel serverLevel) {
+        if (momentInstance.getLevel() instanceof ServerLevel) {
             if (momentInstance.is(TMMoments.BLOOD_MOON)) {
                 for (Player player : momentInstance.getPlayers()) {
-                    PlayerUtils.awardAchievement((ServerPlayer)player, "");
+                    PlayerUtils.awardAchievement((ServerPlayer) player, "");
                 }
             }
         }

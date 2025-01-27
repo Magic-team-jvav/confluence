@@ -11,6 +11,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Saddleable;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -110,6 +111,13 @@ public final class PlayerEvents {
                 player.openMenu(new FletchingTableMenu.Provider(level, blockPos));
             }
             event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void playerInteract$EntityInteract(PlayerInteractEvent.EntityInteract event) {
+        if (event.getEntity() instanceof ServerPlayer serverPlayer && event.getTarget() instanceof Saddleable saddleable && saddleable.isSaddled()) {
+            PlayerUtils.awardAchievement(serverPlayer, "the_cavalry");
         }
     }
 

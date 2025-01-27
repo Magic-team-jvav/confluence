@@ -8,6 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.network.s2c.ExtraInventoryStackPacketS2C;
+import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.TerraCurio;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
@@ -115,6 +116,8 @@ public class ExtraInventory extends ItemStackHandler implements Container {
     public void sync(ServerPlayer serverPlayer) {
         initialize(serverPlayer);
         if (dirty) {
+            boolean dyeHard = true;
+
             for (int i = 0; i < getContainerSize(); i++) {
                 ItemStack itemStack = getItem(i);
                 ItemStack previous = previousStacks.get(i);
@@ -125,8 +128,12 @@ public class ExtraInventory extends ItemStackHandler implements Container {
                     }
                     previousStacks.set(i, itemStack.copy());
                 }
+
+                if (dyeHard && i >= DYE_START && itemStack.isEmpty()) dyeHard = false;
             }
             this.dirty = false;
+
+            if (dyeHard) PlayerUtils.awardAchievement(serverPlayer, "dye_hard");
         }
     }
 

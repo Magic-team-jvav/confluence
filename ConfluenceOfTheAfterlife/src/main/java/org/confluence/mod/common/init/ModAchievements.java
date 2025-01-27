@@ -40,7 +40,7 @@ public final class ModAchievements {
         /* Temple Raider (0, 2) */
         /* Fashion Statement (1, 2) */
         /* Sword of the Hero (2, 2) */
-        /* Dye Hard (3, 2) */
+        offset("dye_hard", 3, 2);
         /* Sick Throw (4, 2) */
         /* The Cavalry (0, 3) */
         offset("completely_awesome", 1, 3);
@@ -88,8 +88,8 @@ public final class ModAchievements {
 
         // Slayer [0, 6] -> [4, 12]
         offset("eye_on_you", 0, 6);
-        /* Worm Fodder 1, 6 */
-        /* Mastermind 2, 6 */
+        offset("worm_fodder", 1, 6);
+        offset("mastermind", 2, 6);
         /* Sting Operation 3, 6 */
         /* Boned 4, 6 */
         /* Still Hungry 0, 7 */

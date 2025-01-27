@@ -80,7 +80,8 @@ public final class LivingEntityEvents {
                 EntityType<?> type = living.getType();
                 ConfluenceData data = ConfluenceData.get(level);
                 data.getKillBoard().defeated(type, data);
-                if (type == TEEntities.EATER_OF_WORLD.get() || type == TEEntities.BRAIN_OF_CTHULHU.get()) {
+                boolean isEaterOfWorlds = type == TEEntities.EATER_OF_WORLDS.get();
+                if (isEaterOfWorlds || type == TEEntities.BRAIN_OF_CTHULHU.get()) {
                     if (ModUtils.isWithinDayTime(0, 0, 4, 30, level.getDayTime())) { // 00:00 -> 04:30
                         MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
                     } else if (!MeteoriteTracker.INSTANCE.spawnAtNextNight) {
@@ -90,7 +91,12 @@ public final class LivingEntityEvents {
                 ResourceKey<Level> dimension = living.level().dimension();
                 level.players().stream()
                         .filter(player -> player.level().dimension().equals(dimension))
-                        .forEach(player -> TreasureBagItem.createItemEntity(living, player));
+                        .forEach(player -> {
+                            TreasureBagItem.createItemEntity(living, player);
+                            if (isEaterOfWorlds) {
+                                PlayerUtils.awardAchievement(serverPlayer, "worm_fodder");
+                            }
+                        });
             }
         }
     }

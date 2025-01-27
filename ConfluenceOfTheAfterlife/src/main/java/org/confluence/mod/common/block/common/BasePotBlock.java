@@ -389,7 +389,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
             }
         }
         KillBoard killBoard = ConfluenceData.get((ServerLevel) level).getKillBoard();
-        if (killBoard.isEyeOfCthulhuDefeated() || killBoard.isEaterOfWorld_BrainOfCthulhuDefeated()) {
+        if (killBoard.isEyeOfCthulhuDefeated() || killBoard.isEaterOfWorlds_BrainOfCthulhuDefeated()) {
             ratio *= 1.1F; // todo 剩下的
         }
         ratio *= moneyRatio;

@@ -42,7 +42,7 @@ public final class TickEvents {
             float factorZ = Mth.nextFloat(random, -1.0F, 1.0F);
             ConfluenceData.get(serverLevel).setWindSpeed(factorX, factorZ);
         } else if (dayTime == 13500L) { // 19:30
-            if (random.nextFloat() < 0.02F && ConfluenceData.get(serverLevel).getKillBoard().isEaterOfWorld_BrainOfCthulhuDefeated()) {
+            if (random.nextFloat() < 0.02F && ConfluenceData.get(serverLevel).getKillBoard().isEaterOfWorlds_BrainOfCthulhuDefeated()) {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
             }
         }

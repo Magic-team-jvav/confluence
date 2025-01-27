@@ -13,7 +13,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class KillBoard implements INBTSerializable<CompoundTag> {
     private boolean kingSlime = false;
     private boolean eyeOfCthulhu = false;
-    private boolean eaterOfWorld_brainOfCthulhu = false;
+    private boolean eaterOfWorlds_brainOfCthulhu = false;
 
     public void defeatedKingSlime(ConfluenceData data) {
         if (!kingSlime) {
@@ -37,15 +37,15 @@ public class KillBoard implements INBTSerializable<CompoundTag> {
         return eyeOfCthulhu;
     }
 
-    public void defeatedEaterOfWorld_BrainOfCthulhu(ConfluenceData data) {
-        if (!eaterOfWorld_brainOfCthulhu) {
-            this.eaterOfWorld_brainOfCthulhu = true;
+    public void defeatedEaterOfWorlds_BrainOfCthulhu(ConfluenceData data) {
+        if (!eaterOfWorlds_brainOfCthulhu) {
+            this.eaterOfWorlds_brainOfCthulhu = true;
             data.setDirty();
         }
     }
 
-    public boolean isEaterOfWorld_BrainOfCthulhuDefeated() {
-        return eaterOfWorld_brainOfCthulhu;
+    public boolean isEaterOfWorlds_BrainOfCthulhuDefeated() {
+        return eaterOfWorlds_brainOfCthulhu;
     }
 
     public void defeated(EntityType<?> type, ConfluenceData data) {
@@ -53,8 +53,8 @@ public class KillBoard implements INBTSerializable<CompoundTag> {
             defeatedKingSlime(data);
         } else if (type == TEEntities.EYE_OF_CTHULHU.get()) {
             defeatedEyeOfCthulhu(data);
-        } else if (type == TEEntities.EATER_OF_WORLD.get() || type == TEEntities.BRAIN_OF_CTHULHU.get()) {
-            defeatedEaterOfWorld_BrainOfCthulhu(data);
+        } else if (type == TEEntities.EATER_OF_WORLDS.get() || type == TEEntities.BRAIN_OF_CTHULHU.get()) {
+            defeatedEaterOfWorlds_BrainOfCthulhu(data);
         }
     }
 
@@ -63,7 +63,7 @@ public class KillBoard implements INBTSerializable<CompoundTag> {
         CompoundTag tag = new CompoundTag();
         tag.putBoolean("KingSlime", kingSlime);
         tag.putBoolean("EyeOfCthulhu", eyeOfCthulhu);
-        tag.putBoolean("EaterOfWorld_BrainOfCthulhu", eaterOfWorld_brainOfCthulhu);
+        tag.putBoolean("EaterOfWorlds_BrainOfCthulhu", eaterOfWorlds_brainOfCthulhu);
         return tag;
     }
 
@@ -71,6 +71,6 @@ public class KillBoard implements INBTSerializable<CompoundTag> {
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
         this.kingSlime = nbt.getBoolean("KingSlime");
         this.eyeOfCthulhu = nbt.getBoolean("EyeOfCthulhu");
-        this.eaterOfWorld_brainOfCthulhu = nbt.getBoolean("EaterOfWorld_BrainOfCthulhu");
+        this.eaterOfWorlds_brainOfCthulhu = nbt.getBoolean("EaterOfWorlds_BrainOfCthulhu");
     }
 }

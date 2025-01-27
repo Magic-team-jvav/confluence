@@ -128,6 +128,7 @@ public final class ModTabs {
                     .title(Component.translatable("creativetab.confluence.developer"))
                     .displayItems((parameters, output) -> {
                         ModItems.HIDDEN.getEntries().forEach(item -> output.accept(item.get()));
+                        output.accept(FunctionalBlocks.ANDESITE_CASING.get());
                         output.accept(ToolItems.DEV_BUG_NET.get());
                         output.accept(SwordItems.DEVELOPER_SWORD.get());
                         output.accept(BoomerangItems.DEVELOPER_BOOMERANG.get());

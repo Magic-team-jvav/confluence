@@ -123,7 +123,7 @@ public final class ModTags {
         public static final TagKey<Biome> THE_CORRUPTION = register("the_corruption");
         public static final TagKey<Biome> TR_CRIMSON = register("tr_crimson");
         public static final TagKey<Biome> THE_HALLOW = register("the_hallow");
-        public static final TagKey<Biome> YELLOW_WILLOW_REPLACEABLE = register("yellow_willow_replaceable");
+        public static final TagKey<Biome> VANITY_TREES_REPLACEABLE = register("vanity_trees_replaceable");
 
         private static TagKey<Biome> register(String id) {
             return TagKey.create(Registries.BIOME, Confluence.asResource(id));

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.fishing;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -10,13 +11,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.fishing.BaseFishingHook;
+import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.terra_curio.common.component.ModRarity;
 
 public class SittingDucksFishingPole extends AbstractFishingPole {
     public static final ResourceLocation ID = Confluence.asResource("sitting_duck_fishing_pole");
 
     public SittingDucksFishingPole() {
-        super(new Properties().durability(384), ModRarity.GREEN);
+        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE).durability(384), ModRarity.GREEN);
         addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new AttributeModifier(ID, 0.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND));
     }
 

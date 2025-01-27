@@ -2227,6 +2227,20 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.RAGE.get(), "暴怒");
         add(ModEffects.FISHING.get(), "钓鱼");
         add(ModEffects.LUCK_EFFECT.get(), "幸运");
+        add(ModEffects.MANA_REGENERATION.get(), "魔力回复");
+        add(ModEffects.WATER_WALKING.get(), "水上漂");
+        add(ModEffects.MAGIC_POWER.get(), "魔能");
+        add(ModEffects.FLIPPER.get(), "脚蹼");
+        add(ModEffects.SPELUNKER.get(), "寻宝");
+        add(ModEffects.HUNTER.get(), "狩猎");
+        add(ModEffects.DANGER_SENSE.get(), "危险感知");
+        add(ModEffects.FROZEN.get(), "冻结");
+        add(ModEffects.STINKY.get(), "臭味");
+        add(ModEffects.THE_BAST_DEFENSE.get(), "巴斯特防御");
+        add(ModEffects.SHARPENED.get(), "锋利");
+        add(ModEffects.AMMO_BOX.get(), "弹药箱");
+        add(ModEffects.ARCHERY.get(), "箭术");
+        add(ModEffects.HEART_REACH.get(), "拾心");
 
     }
 }

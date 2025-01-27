@@ -188,7 +188,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.SAPPHIRE_SAPLING.get().asItem(),
                 NatureBlocks.TR_AMETHYST_SAPLING.get().asItem(),
                 NatureBlocks.ASH_SAPLING.get().asItem(),
-                NatureBlocks.LIVING_SAPLING.get().asItem()
+                NatureBlocks.LIVING_SAPLING.get().asItem(),
+                NatureBlocks.YELLOW_WILLOW_SAPLING.get().asItem()
         );
 
         tag(ModTags.Items.DEMONITE_AND_CRIMSON_INGOT).add(MaterialItems.DEMONITE_INGOT.get(), MaterialItems.TR_CRIMSON_INGOT.get());

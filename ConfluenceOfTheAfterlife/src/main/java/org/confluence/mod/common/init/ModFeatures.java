@@ -114,6 +114,7 @@ public final class ModFeatures {
         public static final TreeGrower TR_AMETHYST_GROWER = register("tr_amethyst", TR_AMETHYST);
         public static final TreeGrower ASH_GROWER = register("ash", ASH);
         public static final TreeGrower LIVING_GROWER = register("living", LIVING);
+        public static final TreeGrower YELLOW_WILLOW_GROWER = register("yellow_willow_grower", CONFIGURED_YELLOW_WILLOW);
 
         private static TreeGrower register(String name, ResourceKey<ConfiguredFeature<?, ?>> tree) {
             return new TreeGrower(Confluence.MODID + ":" + name, Optional.empty(), Optional.of(tree), Optional.empty());

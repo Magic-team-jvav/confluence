@@ -28,6 +28,7 @@
         "chunk.LevelChunkMixin",
         "chunk.LevelChunkSectionMixin",
         "chunk.NoiseChunkGenMixin",
+        "chunk.NoiseGeneratorSettingsMixin",
         "chunk.PalettedContainerAccessor",
         "chunk.PalettedContainerMixin",
         "chunk.ProtoChunkMixin",
@@ -60,6 +61,7 @@
         "item.ProjectileWeaponItemMixin",
         "level.DifficultyInstanceMixin",
         "level.DifficultyMixin",
+        "level.LevelMixin",
         "level.WorldOptionsMixin"
     ],
     "client": [

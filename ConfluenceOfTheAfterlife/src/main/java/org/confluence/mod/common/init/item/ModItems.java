@@ -15,6 +15,7 @@ import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.common.EntityDisplayItem;
 import org.confluence.mod.common.item.common.GrassSeedItem;
+import org.confluence.mod.common.item.common.RopeCoilsItem;
 import org.confluence.terra_curio.common.component.ModRarity;
 
 import java.util.Map;
@@ -49,6 +50,7 @@ public final class ModItems {
 
     public static final Supplier<Item> DEAD_MANS_SWEATER = ITEMS.registerItem("dead_mans_seater", properties -> new CustomRarityItem(properties.stacksTo(1), ModRarity.GREEN)); // todo 模型
     public static final Supplier<Item> WHOOPIE_CUSHION = ITEMS.registerSimpleItem("whoopie_cushion", new Item.Properties().stacksTo(1));
+    public static final Supplier<RopeCoilsItem> ROPE_COILS = ITEMS.register("rope_coils", () -> new RopeCoilsItem(new Item.Properties()));
 
     public static final Supplier<GrassSeedItem> GRASS_SEED = ITEMS.register("grass_seed", () -> new GrassSeedItem(Map.of(Blocks.DIRT, Blocks.GRASS_BLOCK)));
     public static final Supplier<GrassSeedItem> JUNGLE_GRASS_SEED = ITEMS.register("jungle_grass_seed", () -> new GrassSeedItem(Map.of(Blocks.MUD, NatureBlocks.JUNGLE_GRASS_BLOCK.get())));

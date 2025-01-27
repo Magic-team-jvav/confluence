@@ -11,6 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
@@ -18,8 +19,11 @@ import org.confluence.mod.common.init.item.HookItems;
 import org.confluence.mod.network.c2s.HookThrowingPacketC2S;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.client.handler.PlayerJumpHandler;
+import org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S;
 
 import java.util.Iterator;
+
+import static org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S.RESET_FALL_DISTANCE;
 
 @OnlyIn(Dist.CLIENT)
 public final class HookThrowingHandler {
@@ -74,6 +78,10 @@ public final class HookThrowingHandler {
                         Vec3 motion = subtract.normalize().scale(hookEntity.getPullVelocity());
                         localPlayer.setDeltaMovement(localPlayer.getDeltaMovement().scale(0.96).add(motion));
                     }
+                }
+                if (localPlayer.fallDistance > 3.0F) {
+                    localPlayer.fallDistance = 0.0F;
+                    PacketDistributor.sendToServer(new PlayerJumpPacketC2S(RESET_FALL_DISTANCE, (float) localPlayer.getDeltaMovement().y));
                 }
             }
         }

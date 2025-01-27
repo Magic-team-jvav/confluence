@@ -63,4 +63,5 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> CRATE = EFFECTS.register("crate", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xD88B3F));
     public static final DeferredHolder<MobEffect, MobEffect> THE_BAST_DEFENSE = EFFECTS.register("the_bast_defense", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x000000).addAttributeModifier(Attributes.ARMOR, Confluence.asResource("the_bast_defense"), 5.0, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> SHARPENED = EFFECTS.register("sharpened", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xDDDDDD).addAttributeModifier(TCAttributes.getArmorPass(), Confluence.asResource("sharpened"), 12.0, AttributeModifier.Operation.ADD_VALUE));
+    public static final DeferredHolder<MobEffect, MobEffect> AMMO_BOX = EFFECTS.register("ammo_box", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x119911));
 }

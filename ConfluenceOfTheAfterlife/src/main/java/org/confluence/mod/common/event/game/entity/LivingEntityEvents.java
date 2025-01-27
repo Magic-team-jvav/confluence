@@ -245,19 +245,24 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void livingGetProjectile(LivingGetProjectileEvent event) {
+        LivingEntity living = event.getEntity();
         if (event.getProjectileItemStack().isEmpty()) {
             ItemStack weapon = event.getProjectileWeaponItemStack();
-            if (weapon.getItem() instanceof ProjectileWeaponItem weaponItem && event.getEntity() instanceof Player player) {
+            if (weapon.getItem() instanceof ProjectileWeaponItem weaponItem && living instanceof Player player) {
                 Predicate<ItemStack> predicate = weaponItem.getSupportedHeldProjectiles(weapon);
                 ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
                 for (int i = 0; i < ExtraInventory.SIZE_AMMO; i++) {
                     ItemStack ammo = extraInventory.getAmmo(i);
                     if (predicate.test(ammo)) {
                         event.setProjectileItemStack(ammo);
-                        return;
+                        break;
                     }
                 }
             }
+        }
+        ItemStack projectileItemStack = event.getProjectileItemStack();
+        if (!projectileItemStack.isEmpty() && living.hasEffect(ModEffects.AMMO_BOX) && living.getRandom().nextFloat() < 0.2F) {
+            event.setProjectileItemStack(projectileItemStack.copy());
         }
     }
 }

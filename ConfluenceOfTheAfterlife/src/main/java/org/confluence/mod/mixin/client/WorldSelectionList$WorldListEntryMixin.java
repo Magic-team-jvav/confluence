@@ -3,8 +3,10 @@ package org.confluence.mod.mixin.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.worldselection.WorldSelectionList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.storage.LevelSummary;
+import org.confluence.mod.mixed.IWorldOptions;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -21,6 +23,8 @@ public abstract class WorldSelectionList$WorldListEntryMixin {
 
     @Unique
     private long confluence$secretFlag = 0L;
+    @Unique
+    private ResourceLocation confluence$worldIcon;
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void loadSecretFlag(WorldSelectionList this$0, WorldSelectionList worldSelectionList, LevelSummary summary, CallbackInfo ci) {
@@ -33,6 +37,9 @@ public abstract class WorldSelectionList$WorldListEntryMixin {
 
     @Inject(method = "render", at = @At("TAIL"))
     private void renderSecretFlagIcon(GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick, CallbackInfo ci) {
-        guiGraphics.drawString(minecraft.font, Long.toString(confluence$secretFlag), left, top, 0xFFFFFF); // todo 存档角标
+        if (confluence$worldIcon == null) {
+            this.confluence$worldIcon = IWorldOptions.getWorldIcon(confluence$secretFlag);
+        }
+        guiGraphics.blit(confluence$worldIcon, left, top, 0, 0, 32, 32, 32, 32);
     }
 }

@@ -114,7 +114,6 @@ public class MeteoriteTracker {
             this.location = tuple.getA();
             this.tickUntilLanding.set(tuple.getB());
             MeteoriteLocationPacketS2C.sendToAll(location, tickUntilLanding.get());
-            Confluence.LOGGER.debug("A meteorite has been landed, which at [{}]", location.toShortString());
         });
     }
 
@@ -130,8 +129,11 @@ public class MeteoriteTracker {
             if (withForceChunk) level.setChunkForced(chunkX, chunkZ, false);
             return placed;
         }, Util.backgroundExecutor()).thenAccept(success -> {
-            Component message = Component.translatable("event.confluence.meteorite").withStyle(ChatFormatting.DARK_PURPLE);
-            level.getServer().getPlayerList().broadcastSystemMessage(message, false);
+            if (success) {
+                Component message = Component.translatable("event.confluence.meteorite").withStyle(ChatFormatting.DARK_PURPLE);
+                level.getServer().getPlayerList().broadcastSystemMessage(message, false);
+                Confluence.LOGGER.debug("A meteorite has been landed, which at [{}]", location.toShortString());
+            }
         });
     }
 

@@ -18,8 +18,15 @@ public final class ModSecretSeeds {
     public static final SecretSeed DONT_DIG_UP = register(DontDigUp::new);
     public static final SecretSeed GET_FIXED_BOI = register(GetFixedBoi::new);
 
+    /**
+     * 1: 腐化
+     * 2: 猩红
+     * 3: 肉后
+     * 4 ~ 8: 暂无，也许附属模组可以利用这个空缺
+     * @see org.confluence.mod.mixed.IWorldOptions
+     */
     private static SecretSeed register(Function<Long, SecretSeed> function) {
-        SecretSeed secretSeed = function.apply(1L << (VALUES.size() + 2)); // 猩红腐化
+        SecretSeed secretSeed = function.apply(1L << (VALUES.size() + 8));
         VALUES.add(secretSeed);
         return secretSeed;
     }

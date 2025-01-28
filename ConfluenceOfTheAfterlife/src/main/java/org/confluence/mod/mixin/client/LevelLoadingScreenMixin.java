@@ -11,6 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.progress.StoringChunkProgressListener;
 import net.minecraft.util.Mth;
 import org.confluence.mod.mixed.ILevelLoadingScreen;
+import org.confluence.mod.mixed.IWorldOptions;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -37,18 +38,18 @@ public abstract class LevelLoadingScreenMixin implements ILevelLoadingScreen {
     private void secretMessage(CallbackInfoReturnable<Component> cir) {
         if (confluence$secretFlag == 0L) return;
         int progress = progressListener.getProgress();
-        if ((confluence$secretFlag & DW_MASK) == DW_MASK) {
+        if ((confluence$secretFlag & IWorldOptions.DW_MASK) != 0) {
             if (progress >= 50) {
                 cir.setReturnValue(PLACING_TRAPS);
             } else {
                 cir.setReturnValue(SSK);
             }
-        } else if ((confluence$secretFlag & NTB_MASK) == NTB_MASK) {
+        } else if ((confluence$secretFlag & IWorldOptions.NTB_MASK) != 0) {
             cir.setReturnValue(GENERATING_BEES);
-        } else if ((confluence$secretFlag & TC_MASK) == TC_MASK) {
+        } else if ((confluence$secretFlag & IWorldOptions.TC_MASK) != 0) {
             cir.setReturnValue(GENERATING_WAVY_CAVES);
         } else if (progress >= 50) {
-            if ((confluence$secretFlag & NT_MASK) == NT_MASK || (confluence$secretFlag & GFB_MASK) == GFB_MASK) {
+            if ((confluence$secretFlag & IWorldOptions.NT_MASK) != 0 || (confluence$secretFlag & IWorldOptions.GFB_MASK) != 0) {
                 cir.setReturnValue(NOT_PLACING_TRAPS);
             } else {
                 cir.setReturnValue(PLACING_TRAPS);
@@ -58,7 +59,7 @@ public abstract class LevelLoadingScreenMixin implements ILevelLoadingScreen {
 
     @WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawCenteredString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"))
     private void wrapDraw(GuiGraphics instance, Font font, Component text, int x, int y, int color, Operation<Void> original) {
-        if ((confluence$secretFlag & FTW_MASK) == FTW_MASK || (confluence$secretFlag & GFB_MASK) == GFB_MASK) {
+        if ((confluence$secretFlag & IWorldOptions.FTW_MASK) != 0 || (confluence$secretFlag & IWorldOptions.GFB_MASK) != 0) {
             if (text == NOT_PLACING_TRAPS) {
                 original.call(instance, font, text, x, y, color);
             } else {
@@ -69,7 +70,7 @@ public abstract class LevelLoadingScreenMixin implements ILevelLoadingScreen {
                 original.call(instance, font, text, 0, 0, color);
                 pose.popPose();
             }
-        } else if ((confluence$secretFlag & C10_MASK) == C10_MASK) {
+        } else if ((confluence$secretFlag & IWorldOptions.C10_MASK) != 0) {
             original.call(instance, font, text, x, y, PINK);
         } else {
             original.call(instance, font, text, x, y, color);

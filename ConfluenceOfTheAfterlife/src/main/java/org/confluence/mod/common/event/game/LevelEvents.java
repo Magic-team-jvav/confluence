@@ -1,7 +1,7 @@
 package org.confluence.mod.common.event.game;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -9,6 +9,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.ItemAbilities;
@@ -33,14 +34,14 @@ import org.confluence.terra_curio.util.TCUtils;
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class LevelEvents {
     @SubscribeEvent
-    public static void explosionDetonate(ExplosionEvent.Detonate event) {
+    public static void explosion$Detonate(ExplosionEvent.Detonate event) {
         if (event.getExplosion().getDirectSourceEntity() instanceof ScarabBombEntity) {
             event.getAffectedEntities().removeIf(entity -> entity instanceof ItemEntity);
         }
     }
 
     @SubscribeEvent
-    public static void blockToolModification(BlockEvent.BlockToolModificationEvent event) {
+    public static void block$ToolModification(BlockEvent.BlockToolModificationEvent event) {
         if (event.getItemAbility() == ItemAbilities.AXE_STRIP) {
             BlockState originalState = event.getState();
             Block block = LogBlockSet.WRAPPED_STRIP_TABLE.get(originalState.getBlock());
@@ -51,20 +52,12 @@ public final class LevelEvents {
     }
 
     @SubscribeEvent
-    public static void blockDropsEvent(BlockDropsEvent event) {
-        ServerLevel level = event.getLevel();
-        BlockState blockState = event.getState();
-        BlockPos pos = event.getPos();
+    public static void blockDrops(BlockDropsEvent event) {
         if (event.getBreaker() instanceof LivingEntity living && !living.getMainHandItem().is(Items.SHEARS)) {
-            if (blockState.is(ModTags.Blocks.VINES) && TCUtils.hasAccessoriesType(living, AccessoryItems.VINE$ROPE)) {
+            if (event.getState().is(ModTags.Blocks.VINES) && TCUtils.hasAccessoriesType(living, AccessoryItems.VINE$ROPE)) {
                 event.setCanceled(true);
-                Block.popResource(level, pos, ModBlocks.VINE_ROPE.get().asItem().getDefaultInstance());
+                Block.popResource(event.getLevel(), event.getPos(), ModBlocks.VINE_ROPE.get().asItem().getDefaultInstance());
             }
-        }
-        if (ModSecretSeeds.FOR_THE_WORTHY.match(level) && blockState.is(BlockTags.LEAVES) && level.random.nextFloat() < 0.25F) {
-            BaseBombEntity bomb = new BaseBombEntity(ModEntities.BOMB_ENTITY.get(), level);
-            bomb.setPos(pos.getCenter());
-            level.addFreshEntity(bomb);
         }
     }
 
@@ -74,6 +67,21 @@ public final class LevelEvents {
         if (data != null && !data.colors().isEmpty()) {
             data.ensureValid(event.getLevel());
             BrushingColorPacketS2C.sendToClient(event.getPlayer(), event.getPos(), data, false);
+        }
+    }
+
+    @SubscribeEvent
+    public static void block$Break(BlockEvent.BreakEvent event) {
+        if (event.isCanceled() || !(event.getPlayer() instanceof ServerPlayer serverPlayer)) return;
+
+        BlockState blockState = event.getState();
+        if (blockState.is(BlockTags.LEAVES) && (!blockState.hasProperty(BlockStateProperties.PERSISTENT) || !blockState.getValue(BlockStateProperties.PERSISTENT))) {
+            ServerLevel level = serverPlayer.serverLevel();
+            if (ModSecretSeeds.FOR_THE_WORTHY.match(level) && blockState.is(BlockTags.LEAVES) && level.random.nextFloat() < 0.25F) {
+                BaseBombEntity bomb = new BaseBombEntity(ModEntities.BOMB_ENTITY.get(), level);
+                bomb.setPos(event.getPos().getCenter());
+                level.addFreshEntity(bomb);
+            }
         }
     }
 }

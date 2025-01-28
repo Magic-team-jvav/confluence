@@ -12,26 +12,30 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class YellowWillowFeature extends Feature<YellowWillowFeature.Config> {
     public YellowWillowFeature(Codec<Config> pCodec) {
         super(pCodec);
     }
 
-    private static void setLeaves(BlockPos startPos, BlockPos endPos, BlockState leaves, boolean up, RandomSource random, WorldGenLevel level) {
-        leaves(startPos, endPos, leaves, up, random, level, Blocks.AIR.defaultBlockState(), false);
+    private static Set<BlockPos> setLeaves(BlockPos startPos, BlockPos endPos, BlockState leaves, boolean up, RandomSource random, WorldGenLevel level) {
+        return leaves(startPos, endPos, leaves, up, random, level, Blocks.AIR.defaultBlockState(), false);
     }
 
-    private static void setLeaves(BlockPos startPos, BlockPos endPos, BlockState leaves, boolean up, RandomSource random, WorldGenLevel level, BlockState droopingLeaves) {
-        leaves(startPos, endPos, leaves, up, random, level, droopingLeaves, true);
+    private static Set<BlockPos> setLeaves(BlockPos startPos, BlockPos endPos, BlockState leaves, boolean up, RandomSource random, WorldGenLevel level, BlockState droopingLeaves) {
+        return leaves(startPos, endPos, leaves, up, random, level, droopingLeaves, true);
     }
 
-    private static void leaves(BlockPos startPos, BlockPos endPos, BlockState leaves, boolean up, RandomSource random, WorldGenLevel level, BlockState droopingLeaves, boolean droop) {
+    private static Set<BlockPos> leaves(BlockPos startPos, BlockPos endPos, BlockState leaves, boolean up, RandomSource random, WorldGenLevel level, BlockState droopingLeaves, boolean droop) {
         int xStart = startPos.getX();
         int yStart = startPos.getY();
         int zStart = startPos.getZ();
@@ -43,6 +47,7 @@ public class YellowWillowFeature extends Feature<YellowWillowFeature.Config> {
         BlockPos posDroop;
         int yDroop;
         int length;
+        Set<BlockPos> leavesPos = new HashSet<>();
         for (int x = xStart; x <= xEnd; x++) {
             for (int y = yStart; y <= yEnd; y++) {
                 for (int z = zStart; z <= zEnd; z++) {
@@ -50,6 +55,7 @@ public class YellowWillowFeature extends Feature<YellowWillowFeature.Config> {
                     set = (!((x == xStart || x == xEnd) && (z == zStart || z == zEnd)) || ((y == yStart || up) && random.nextInt(3) == 0)) && (level.getBlockState(posPlace).isAir());
                     if (set) {
                         level.setBlock(posPlace, leaves, 3);
+                        leavesPos.add(posPlace);
                     }
                     if (droop) {
                         if (posPlace.getY() == yStart) {
@@ -66,6 +72,7 @@ public class YellowWillowFeature extends Feature<YellowWillowFeature.Config> {
                 }
             }
         }
+        return leavesPos;
     }
 
     @Override
@@ -79,6 +86,11 @@ public class YellowWillowFeature extends Feature<YellowWillowFeature.Config> {
         BlockState droopingLeavesBlockState = config.drooping_leaves.getState(random, baseBlockPos);
         int height = config.height + random.nextInt(3);
         List<BlockPos> trunkPosList = new ArrayList<>();
+        Set<BlockPos> trunkPos = new HashSet<>();
+        Set<BlockPos> leavesPos = new HashSet<>();
+        Set<BlockPos> rootPos = new HashSet<>();
+        BoundingBox box = new BoundingBox(baseBlockPos.getX() - 4, baseBlockPos.getY(), baseBlockPos.getZ() - 4, baseBlockPos.getX() + 4, baseBlockPos.getY() + height + 8, baseBlockPos.getZ() + 4);
+        rootPos.add(baseBlockPos);
         for (int i = 0; i < height + 3; i++) {
             trunkPosList.add(baseBlockPos.offset(0, i, 0));
         }
@@ -94,9 +106,11 @@ public class YellowWillowFeature extends Feature<YellowWillowFeature.Config> {
         if (placed) {
             for (int i = 0; i < trunkPosList.size(); i++) {
                 level.setBlock(trunkPosList.get(i), trunkBlockState, 3);
+                trunkPos.add(trunkPosList.get(i));
             }
-            setLeaves(baseBlockPos.offset(-2, height, -2), baseBlockPos.offset(2, height + 1, 2), leavesBlockState, true, random, level, droopingLeavesBlockState);
-            setLeaves(baseBlockPos.offset(-1, height + 2, -1), baseBlockPos.offset(1, height + 3, 1), leavesBlockState, false, random, level);
+            leavesPos.addAll(setLeaves(baseBlockPos.offset(-2, height, -2), baseBlockPos.offset(2, height + 1, 2), leavesBlockState, true, random, level, droopingLeavesBlockState));
+            leavesPos.addAll(setLeaves(baseBlockPos.offset(-1, height + 2, -1), baseBlockPos.offset(1, height + 3, 1), leavesBlockState, false, random, level));
+            TreeFeature.updateLeaves(level, box, rootPos, trunkPos, leavesPos);
             return true;
         }
         return false;

@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "##"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:baobab_planks"
+        }
+    },
+    "result": {
+        "id": "confluence:baobab_pressure_plate"
+    },
+    "group": "wooden_pressure_plate"
+}

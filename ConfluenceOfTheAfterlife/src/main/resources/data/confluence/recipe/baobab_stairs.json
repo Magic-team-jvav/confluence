@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#  ",
+        "## ",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:baobab_planks"
+        }
+    },
+    "result": {
+        "id": "confluence:baobab_stairs",
+        "count": 4
+    },
+    "group": "wooden_stairs"
+}

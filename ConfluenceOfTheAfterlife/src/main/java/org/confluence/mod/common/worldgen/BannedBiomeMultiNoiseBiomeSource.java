@@ -8,6 +8,9 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.mod.common.init.ModBiomes;
+import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.mixin.accessor.MultiNoiseBiomeSourceAccessor;
 
 public class BannedBiomeMultiNoiseBiomeSource extends MultiNoiseBiomeSource {
@@ -29,6 +32,11 @@ public class BannedBiomeMultiNoiseBiomeSource extends MultiNoiseBiomeSource {
                 MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
                 if (server == null) return biome;
                 this.target = server.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(targetBiome);
+                if (targetBiome.equals(ModBiomes.THE_CORRUPTION)) {
+                    ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.THE_CORRUPTION);
+                } else if (targetBiome.equals(ModBiomes.TR_CRIMSON)) {
+                    ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.TR_CRIMSON);
+                }
             }
             return target;
         }

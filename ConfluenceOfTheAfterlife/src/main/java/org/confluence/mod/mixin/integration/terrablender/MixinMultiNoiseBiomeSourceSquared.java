@@ -16,6 +16,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModSecretSeeds;
+import org.confluence.mod.common.worldgen.BannedBiomeMultiNoiseBiomeSource;
 import org.confluence.mod.common.worldgen.secret_seed.NotTheBees;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
@@ -76,9 +77,11 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
             long flag = ((IWorldOptions) worldOptions).confluence$getSecretFlag();
             ResourceKey<Biome> from;
             ResourceKey<Biome> to;
-            if ((flag & IWorldOptions.DOUBLE_EVIL) == IWorldOptions.DOUBLE_EVIL) {
-                this.confluence$biomePair = new Pair<>(null, null);
-                return confluence$biomePair;
+            if (self() instanceof BannedBiomeMultiNoiseBiomeSource) {
+                return this.confluence$biomePair = new Pair<>(null, null);
+            } else if (ModSecretSeeds.DRUNK_WORLD.match(flag)) {
+                ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.DOUBLE_EVIL);
+                return this.confluence$biomePair = new Pair<>(null, null);
             } else if ((flag & IWorldOptions.DOUBLE_EVIL) == 0) {
                 if (new LegacyRandomSource(worldOptions.seed()).nextBoolean()) {
                     from = ModBiomes.THE_CORRUPTION;

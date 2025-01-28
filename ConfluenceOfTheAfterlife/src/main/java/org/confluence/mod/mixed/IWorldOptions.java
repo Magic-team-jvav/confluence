@@ -13,6 +13,10 @@ import org.confluence.mod.common.init.ModSecretSeeds;
 import java.util.Optional;
 
 public interface IWorldOptions {
+    /**
+     * 能获取到服务器的情况下尽量使用如下方法
+     * @see IMinecraftServer#confluence$updateSecretFlag(long)
+     */
     void confluence$withSecretFlag(long flag);
 
     long confluence$getSecretFlag();
@@ -42,7 +46,7 @@ public interface IWorldOptions {
         map.put(THE_CORRUPTION, Confluence.asResource("missing"));
         map.put(THE_CORRUPTION | HARDMODE, Confluence.asResource("missing"));
 
-        map.put(TR_CRIMSON, Confluence.asResource("missing"));
+        map.put(TR_CRIMSON, Confluence.asResource("textures/gui/world_icon/crimson.png"));
         map.put(TR_CRIMSON | HARDMODE, Confluence.asResource("missing"));
 
         map.put(DOUBLE_EVIL, Confluence.asResource("missing"));

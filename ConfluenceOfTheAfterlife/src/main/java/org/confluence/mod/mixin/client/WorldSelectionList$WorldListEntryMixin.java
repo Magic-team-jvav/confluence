@@ -22,7 +22,7 @@ public abstract class WorldSelectionList$WorldListEntryMixin {
     private Minecraft minecraft;
 
     @Unique
-    private long confluence$secretFlag = 0L;
+    private long confluence$secretFlag;
     @Unique
     private ResourceLocation confluence$worldIcon;
 
@@ -40,6 +40,6 @@ public abstract class WorldSelectionList$WorldListEntryMixin {
         if (confluence$worldIcon == null) {
             this.confluence$worldIcon = IWorldOptions.getWorldIcon(confluence$secretFlag);
         }
-        guiGraphics.blit(confluence$worldIcon, left, top, 0, 0, 32, 32, 32, 32);
+        guiGraphics.blit(confluence$worldIcon, left, top - 1, 0, 0, 32, 32, 32, 32);
     }
 }

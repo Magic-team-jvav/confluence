@@ -302,12 +302,12 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     private boolean dropAmmo(Level level, Vec3 center) {
         int amount = level.random.nextInt(10, 21);
         Item item = Items.ARROW;
-        boolean hardCore = ConfluenceData.get((ServerLevel) level).isHardcore();
+        boolean isHardmode = ConfluenceData.get((ServerLevel) level).getGamePhase().isHardmode();
         if (level.random.nextBoolean()) {
-            item = hardCore ? ConsumableItems.GRENADE.get() : ConsumableItems.SHURIKEN.get();
+            item = isHardmode ? ConsumableItems.GRENADE.get() : ConsumableItems.SHURIKEN.get();
         } else if (level.dimension() == Level.NETHER) {
             item = ArrowItems.HELLFIRE_ARROW.get();
-        } else if (hardCore) {
+        } else if (isHardmode) {
             if (level.random.nextBoolean()) {
                 item = ArrowItems.UNHOLY_ARROW.get();
             } else {
@@ -320,7 +320,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
 
     private boolean dropHeal(Level level, Vec3 center) {
         Item item;
-        if (level.dimension() == Level.NETHER || ConfluenceData.get((ServerLevel) level).isHardcore()) {
+        if (level.dimension() == Level.NETHER || ConfluenceData.get((ServerLevel) level).getGamePhase().isHardmode()) {
             item = PotionItems.HEALING_POTION.get();
         } else {
             item = PotionItems.LESSER_HEALING_POTION.get();
@@ -347,7 +347,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     private boolean dropRope(Level level, Vec3 center) {
-        if (level.dimension() == Level.NETHER || ConfluenceData.get((ServerLevel) level).isHardcore()) {
+        if (level.dimension() == Level.NETHER || ConfluenceData.get((ServerLevel) level).getGamePhase().isHardmode()) {
             return dropMoney(level, center);
         } else {
             ModUtils.createItemEntity(Blocks.SCAFFOLDING.asItem(), level.random.nextInt(5, 11), center, level, 0);

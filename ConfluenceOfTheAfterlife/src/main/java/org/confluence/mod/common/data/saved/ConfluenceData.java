@@ -5,12 +5,15 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.GamePhasePacketS2C;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
 import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
@@ -104,17 +107,12 @@ public class ConfluenceData extends SavedData {
         return nbt;
     }
 
-    public boolean isHardcore() {
-        return gamePhase.ordinal() > 1;
-    }
-
-    public boolean isGraduated() {
-        return gamePhase.ordinal() == 6;
-    }
-
-    public void setGamePhase(GamePhase gamePhase) {
+    public void setGamePhase(MinecraftServer server, GamePhase gamePhase) {
         this.gamePhase = gamePhase;
         GamePhasePacketS2C.sendToAll(gamePhase);
+        if (gamePhase.isHardmode()) { // 一旦设置为困难模式，就不能撤回
+            ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
+        }
         setDirty();
     }
 

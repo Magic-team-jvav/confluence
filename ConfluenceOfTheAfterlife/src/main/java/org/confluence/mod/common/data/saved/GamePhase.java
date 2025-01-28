@@ -33,4 +33,12 @@ public enum GamePhase implements StringRepresentable {
     public static GamePhase getById(int id) {
         return BY_ID.apply(id);
     }
+
+    public boolean isHardmode() {
+        return ordinal() >= WALL_OF_FLESH.ordinal();
+    }
+
+    public boolean isGraduated() {
+        return this == MOON_LORD;
+    }
 }

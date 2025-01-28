@@ -81,7 +81,7 @@ public final class GameEvents {
 
     @SubscribeEvent
     public static void shimmerTransmutation$Post(ShimmerItemTransmutationEvent.Post event) {
-        if (ConfluenceData.get((ServerLevel) event.getSource().level()).isGraduated()) {
+        if (ConfluenceData.get((ServerLevel) event.getSource().level()).getGamePhase().isGraduated()) {
             ItemStack itemStack = event.getSource().getItem();
             Item item = itemStack.getItem();
             if (item == ToolItems.BOTTOMLESS_WATER_BUCKET.get()) {

@@ -155,7 +155,7 @@ public abstract class ShimmerItemTransmutationEvent extends Event {
 
                 if (sourceItem.getDamageValue() != 0) return null;
                 RegistryAccess registryAccess = source.level().registryAccess();
-                boolean isHardCore = data.isHardcore();
+                boolean isHardmode = data.getGamePhase().isHardmode();
                 RandomSource random = source.level().random;
                 for (RecipeHolder<?> recipeHolder : ((ServerLevel) source.level()).getServer().getRecipeManager().getRecipes()) {
                     Recipe<?> recipe = recipeHolder.value();
@@ -170,7 +170,7 @@ public abstract class ShimmerItemTransmutationEvent extends Event {
                                 continue;
                             }
                             ItemStack input = itemStacks[random.nextInt(itemStacks.length)];
-                            while (!isHardCore && input.is(ModTags.Items.HARDMODE)) {
+                            while (!isHardmode && input.is(ModTags.Items.HARDMODE)) {
                                 input = itemStacks[random.nextInt(itemStacks.length)];
                             }
                             ItemStack result = input.copy();

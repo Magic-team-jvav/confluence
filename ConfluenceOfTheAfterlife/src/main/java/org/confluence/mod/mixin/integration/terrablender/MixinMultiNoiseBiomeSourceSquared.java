@@ -17,6 +17,7 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.secret_seed.NotTheBees;
+import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Mixin;
@@ -34,8 +35,6 @@ import java.util.stream.Collectors;
 @Mixin(value = MultiNoiseBiomeSource.class, priority = 1100)
 public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<MultiNoiseBiomeSource> {
     @Unique
-    private long confluence$secretFlag = -1L;
-    @Unique
     private List<Holder<Biome>> confluence$jungle;
     @Unique
     private Pair<Holder<Biome>, Holder<Biome>> confluence$biomePair;
@@ -44,7 +43,7 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
     @Inject(method = "@MixinSquared:Handler", at = @At("TAIL"))
     private void replaceBiome(int x, int y, int z, Climate.Sampler sampler, CallbackInfoReturnable<Holder<Biome>> cir, CallbackInfo ci) {
         if (cir.getReturnValue() != null) {
-            if (ModSecretSeeds.NOT_THE_BEES.match(confluence$getSecretFlag())) {
+            if (ModSecretSeeds.NOT_THE_BEES.match()) {
                 List<Holder<Biome>> jungle = confluence$getJungle();
                 if (!jungle.isEmpty()) {
                     cir.setReturnValue(NotTheBees.replaceBiome(x, y, z, cir.getReturnValue(), jungle));
@@ -69,18 +68,6 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
     }
 
     @Unique
-    private long confluence$getSecretFlag() {
-        if (confluence$secretFlag == -1L) {
-            if (ServerLifecycleHooks.getCurrentServer() == null) {
-                return 0L;
-            } else {
-                this.confluence$secretFlag = IWorldOptions.getSecretFlag(ServerLifecycleHooks.getCurrentServer());
-            }
-        }
-        return confluence$secretFlag;
-    }
-
-    @Unique
     private Pair<Holder<Biome>, Holder<Biome>> confluence$getBiomePair() {
         if (confluence$biomePair == null) {
             MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
@@ -96,11 +83,11 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
                 if (new LegacyRandomSource(worldOptions.seed()).nextBoolean()) {
                     from = ModBiomes.THE_CORRUPTION;
                     to = ModBiomes.TR_CRIMSON;
-                    ((IWorldOptions) worldOptions).confluence$withSecretFlag(IWorldOptions.TR_CRIMSON);
+                    ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.TR_CRIMSON);
                 } else {
                     from = ModBiomes.TR_CRIMSON;
                     to = ModBiomes.THE_CORRUPTION;
-                    ((IWorldOptions) worldOptions).confluence$withSecretFlag(IWorldOptions.THE_CORRUPTION);
+                    ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.THE_CORRUPTION);
                 }
             } else {
                 if ((flag & IWorldOptions.THE_CORRUPTION) == 0) {

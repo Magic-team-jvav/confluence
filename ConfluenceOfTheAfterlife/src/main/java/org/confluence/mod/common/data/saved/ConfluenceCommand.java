@@ -66,7 +66,8 @@ public class ConfluenceCommand {
                         }))
                         .then(Commands.literal("set").then(Commands.argument("value", EnumArgument.enumArgument(GamePhase.class)).executes(context -> {
                             GamePhase gamePhase = context.getArgument("value", GamePhase.class);
-                            ConfluenceData.get(context.getSource().getLevel()).setGamePhase(gamePhase);
+                            ServerLevel serverLevel = context.getSource().getLevel();
+                            ConfluenceData.get(serverLevel).setGamePhase(serverLevel.getServer(), gamePhase);
                             context.getSource().sendSuccess(() -> Component.literal("Has been set to " + gamePhase.getSerializedName()), true);
                             return 1;
                         })))

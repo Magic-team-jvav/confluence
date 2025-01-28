@@ -29,7 +29,14 @@ public abstract class MinecraftServerMixin implements IMinecraftServer {
     private long confluence$secretFlag;
 
     @Override
-    public boolean confluence$cacheSecretSeeds(SecretSeed secretSeed) {
+    public void confluence$updateSecretFlag(long flag) {
+        IWorldOptions iWorldOptions = (IWorldOptions) getWorldData().worldGenOptions();
+        iWorldOptions.confluence$withSecretFlag(flag);
+        this.confluence$secretFlag = iWorldOptions.confluence$getSecretFlag();
+    }
+
+    @Override
+    public boolean confluence$matchesSecretFlag(SecretSeed secretSeed) {
         return secretSeed.match(confluence$secretFlag);
     }
 

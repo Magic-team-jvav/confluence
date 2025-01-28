@@ -86,6 +86,40 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.PURPLE_ICE.get(),
                 NatureBlocks.PURPLE_PACKED_ICE.get()
         );
+        tag((BlockTags.LOGS)).add(
+                NatureBlocks.EBONY_LOG_BLOCKS.getStrippedLog().get(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedLog().get(),
+                NatureBlocks.PALM_LOG_BLOCKS.getStrippedLog().get(),
+                NatureBlocks.ASH_LOG_BLOCKS.getStrippedLog().get(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getStrippedLog().get(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedLog().get(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getStrippedLog().get(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedLog().get(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getLog().get(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getLog().get(),
+                NatureBlocks.PALM_LOG_BLOCKS.getLog().get(),
+                NatureBlocks.ASH_LOG_BLOCKS.getLog().get(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getLog().get(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().get(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getLog().get(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().get(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getWood().get(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getWood().get(),
+                NatureBlocks.PALM_LOG_BLOCKS.getWood().get(),
+                NatureBlocks.ASH_LOG_BLOCKS.getWood().get(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getWood().get(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getWood().get(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getWood().get(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getStrippedWood().get(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedWood().get(),
+                NatureBlocks.PALM_LOG_BLOCKS.getStrippedWood().get(),
+                NatureBlocks.ASH_LOG_BLOCKS.getStrippedWood().get(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getStrippedWood().get(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedWood().get(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getStrippedWood().get(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedWood().get()
+        );
         /*IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithHoe = tag(BlockTags.MINEABLE_WITH_HOE);
         mineableWithHoe.add(
         );
@@ -445,6 +479,17 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OreBlocks.HELLSTONE_BLOCK.get()
         );
         tag(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE).addTag(BlockTags.LEAVES);
+        tag(BlockTags.LEAVES).add(
+                NatureBlocks.EBONY_LOG_BLOCKS.getLeaves().get(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getLeaves().get(),
+                NatureBlocks.PALM_LOG_BLOCKS.getLeaves().get(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().get(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getLeaves().get(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().get(),
+                NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get()
+
+        );
         tag(ModTags.Blocks.COIN_PILE).add(COPPER_COIN_PILE.get(), SILVER_COIN_PILE.get(), GOLDEN_COIN_PILE.get(), PLATINUM_COIN_PILE.get(), EMERALD_COIN_PILE.get());
 
         tag(ModTags.Blocks.NEEDS_5_LEVEL).add(

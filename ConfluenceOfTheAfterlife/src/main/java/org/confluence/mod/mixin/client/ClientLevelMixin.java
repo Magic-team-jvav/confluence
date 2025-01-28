@@ -49,7 +49,7 @@ public abstract class ClientLevelMixin implements LevelReader, SelfGetter<Client
     }
 
     @Inject(method = "doAnimateTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;isEmpty()Z"))
-    private void tick(int posX, int posY, int posZ, int range, RandomSource random, Block block, BlockPos.MutableBlockPos blockPos, CallbackInfo cir, @Local BlockState blockstate, @Local FluidState fluidstate) {
+    private void tick(int posX, int posY, int posZ, int range, RandomSource random, Block block, BlockPos.MutableBlockPos blockPos, CallbackInfo ci, @Local BlockState blockstate, @Local FluidState fluidstate) {
         int i1 = ClientConfigs.showWindParticles;
         if (i1 == 0 || WeatherHandler.windDirection == null) return;
         i1 = 100 - i1;

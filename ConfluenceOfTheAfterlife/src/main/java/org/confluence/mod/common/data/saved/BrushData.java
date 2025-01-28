@@ -52,6 +52,10 @@ public record BrushData(Map<BlockPos, int[]> colors) {
         }));
     }
 
+    public int @Nullable [] get(BlockPos pos) {
+        return colors.get(pos);
+    }
+
     public int get(BlockPos pos, Direction facing) {
         int[] list = colors.get(pos);
         return list == null ? EMPTY_COLOR : list[facing.get3DDataValue()];

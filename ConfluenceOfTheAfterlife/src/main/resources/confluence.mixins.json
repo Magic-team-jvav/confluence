@@ -12,6 +12,7 @@
         "ServerAdvancementManagerMixin",
         "ServerPlayerGameModeMixin",
         "StructureTemplateMixin",
+        "StructureTemplateMixin$StructureBlockInfoMixin",
         "VillagerTrades$EmeraldsForVillagerTypeItemMixin",
         "accessor.ChestBlockEntityAccessor",
         "accessor.EntityAccessor",

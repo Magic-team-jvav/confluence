@@ -15,6 +15,7 @@ import java.util.Optional;
 public interface IWorldOptions {
     /**
      * 能获取到服务器的情况下尽量使用如下方法
+     *
      * @see IMinecraftServer#confluence$updateSecretFlag(long)
      */
     void confluence$withSecretFlag(long flag);
@@ -27,10 +28,11 @@ public interface IWorldOptions {
         return ((IWorldOptions) server.getWorldData().worldGenOptions()).confluence$getSecretFlag();
     }
 
-    long THE_CORRUPTION = 0b001;
-    long TR_CRIMSON = 0b010;
-    long DOUBLE_EVIL = THE_CORRUPTION | TR_CRIMSON;
-    long HARDMODE = 0b100;
+    long THE_CORRUPTION = 0b0001;
+    long TR_CRIMSON = 0b0010;
+    long DOUBLE_EVIL = 0b0011;
+    long HARDMODE = 0b0100;
+    long GRADUATED = 0b1100;
 
     long DW_MASK = ModSecretSeeds.DRUNK_WORLD.getFlag();
     long NTB_MASK = ModSecretSeeds.NOT_THE_BEES.getFlag();
@@ -41,59 +43,33 @@ public interface IWorldOptions {
     long DDU_MASK = ModSecretSeeds.DONT_DIG_UP.getFlag();
     long GFB_MASK = ModSecretSeeds.GET_FIXED_BOI.getFlag();
 
-    ResourceLocation UNKNOWN_WORLD_ICON = Confluence.asResource("missing");
+    ResourceLocation UNKNOWN_WORLD_ICON = Confluence.asResource("textures/gui/world_icon/unknown.png");
     Long2ObjectMap<ResourceLocation> WORLD_ICON = Util.make(new Long2ObjectOpenHashMap<>(), map -> {
-        map.put(THE_CORRUPTION, Confluence.asResource("missing"));
-        map.put(THE_CORRUPTION | HARDMODE, Confluence.asResource("missing"));
-
-        map.put(TR_CRIMSON, Confluence.asResource("textures/gui/world_icon/crimson.png"));
-        map.put(TR_CRIMSON | HARDMODE, Confluence.asResource("missing"));
-
-        map.put(DOUBLE_EVIL, Confluence.asResource("missing"));
-        map.put(DOUBLE_EVIL | HARDMODE, Confluence.asResource("missing"));
-
-        map.put(DW_MASK | DOUBLE_EVIL, Confluence.asResource("missing"));
-        map.put(DW_MASK | DOUBLE_EVIL | HARDMODE, Confluence.asResource("missing"));
-
-        map.put(NTB_MASK | THE_CORRUPTION, Confluence.asResource("missing"));
-        map.put(NTB_MASK | THE_CORRUPTION | HARDMODE, Confluence.asResource("missing"));
-        map.put(NTB_MASK | TR_CRIMSON, Confluence.asResource("missing"));
-        map.put(NTB_MASK | TR_CRIMSON | HARDMODE, Confluence.asResource("missing"));
-
-        map.put(FTW_MASK | THE_CORRUPTION, Confluence.asResource("missing"));
-        map.put(FTW_MASK | THE_CORRUPTION | HARDMODE, Confluence.asResource("missing"));
-        map.put(FTW_MASK | TR_CRIMSON, Confluence.asResource("missing"));
-        map.put(FTW_MASK | TR_CRIMSON | HARDMODE, Confluence.asResource("missing"));
-
-        map.put(C10_MASK | THE_CORRUPTION, Confluence.asResource("missing"));
-        map.put(C10_MASK | THE_CORRUPTION | HARDMODE, Confluence.asResource("missing"));
-        map.put(C10_MASK | TR_CRIMSON, Confluence.asResource("missing"));
-        map.put(C10_MASK | TR_CRIMSON | HARDMODE, Confluence.asResource("missing"));
-
-        map.put(TC_MASK | THE_CORRUPTION, Confluence.asResource("missing"));
-        map.put(TC_MASK | THE_CORRUPTION | HARDMODE, Confluence.asResource("missing"));
-        map.put(TC_MASK | TR_CRIMSON, Confluence.asResource("missing"));
-        map.put(TC_MASK | TR_CRIMSON | HARDMODE, Confluence.asResource("missing"));
-
-        map.put(NT_MASK | THE_CORRUPTION, Confluence.asResource("missing"));
-        map.put(NT_MASK | THE_CORRUPTION | HARDMODE, Confluence.asResource("missing"));
-        map.put(NT_MASK | TR_CRIMSON, Confluence.asResource("missing"));
-        map.put(NT_MASK | TR_CRIMSON | HARDMODE, Confluence.asResource("missing"));
-
-        map.put(DDU_MASK | THE_CORRUPTION, Confluence.asResource("missing"));
-        map.put(DDU_MASK | THE_CORRUPTION | HARDMODE, Confluence.asResource("missing"));
-        map.put(DDU_MASK | TR_CRIMSON, Confluence.asResource("missing"));
-        map.put(DDU_MASK | TR_CRIMSON | HARDMODE, Confluence.asResource("missing"));
-
-        map.put(GFB_MASK | THE_CORRUPTION, Confluence.asResource("missing"));
-        map.put(GFB_MASK | THE_CORRUPTION | HARDMODE, Confluence.asResource("missing"));
-        map.put(GFB_MASK | TR_CRIMSON, Confluence.asResource("missing"));
-        map.put(GFB_MASK | TR_CRIMSON | HARDMODE, Confluence.asResource("missing"));
+        registerWorldIcon(map, 0, "normal");
+        map.put(DW_MASK | DOUBLE_EVIL, Confluence.asResource("textures/gui/world_icon/drunk_world.png"));
+        map.put(DW_MASK | DOUBLE_EVIL | HARDMODE, Confluence.asResource("textures/gui/world_icon/drunk_world_hardmode.png"));
+        map.put(DW_MASK | DOUBLE_EVIL | GRADUATED, Confluence.asResource("textures/gui/world_icon/drunk_world_graduated.png"));
+        registerWorldIcon(map, NTB_MASK, "not_the_bees");
+        registerWorldIcon(map, FTW_MASK, "for_the_worthy");
+        registerWorldIcon(map, C10_MASK, "celebrationmk10");
+        registerWorldIcon(map, TC_MASK, "the_constant");
+        registerWorldIcon(map, NT_MASK, "no_traps");
+        registerWorldIcon(map, DDU_MASK, "dont_dig_up");
+        registerWorldIcon(map, GFB_MASK, "get_fixed_boi");
 
         CustomWorldIconRegisterEvent event = new CustomWorldIconRegisterEvent(map);
         ModLoader.postEvent(event);
         map.putAll(event.getToAdd());
     });
+
+    static void registerWorldIcon(Long2ObjectMap<ResourceLocation> map, long flag, String base) {
+        map.put(flag | THE_CORRUPTION, Confluence.asResource("textures/gui/world_icon/" + base + "_corruption.png"));
+        map.put(flag | THE_CORRUPTION | HARDMODE, Confluence.asResource("textures/gui/world_icon/" + base + "_corruption_hardmode.png"));
+        map.put(flag | THE_CORRUPTION | GRADUATED, Confluence.asResource("textures/gui/world_icon/" + base + "_corruption_graduated.png"));
+        map.put(flag | TR_CRIMSON, Confluence.asResource("textures/gui/world_icon/" + base + "_crimson.png"));
+        map.put(flag | TR_CRIMSON | HARDMODE, Confluence.asResource("textures/gui/world_icon/" + base + "_crimson_hardmode.png"));
+        map.put(flag | TR_CRIMSON | GRADUATED, Confluence.asResource("textures/gui/world_icon/" + base + "_crimson_graduated.png"));
+    }
 
     static ResourceLocation getWorldIcon(long flag) {
         return WORLD_ICON.getOrDefault(flag, UNKNOWN_WORLD_ICON);

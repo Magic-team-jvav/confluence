@@ -19,10 +19,11 @@ public final class ModSecretSeeds {
     public static final SecretSeed GET_FIXED_BOI = register(GetFixedBoi::new);
 
     /**
-     * 1: 腐化
-     * 2: 猩红
-     * 3: 肉后
-     * 4 ~ 8: 暂无，也许附属模组可以利用这个空缺
+     * 1: 腐化<br>
+     * 2: 猩红<br>
+     * 3: 肉后<br>
+     * 4: 毕业<br>
+     * 5 ~ 8: 暂无，也许附属模组可以利用这个空缺
      * @see org.confluence.mod.mixed.IWorldOptions
      */
     private static SecretSeed register(Function<Long, SecretSeed> function) {

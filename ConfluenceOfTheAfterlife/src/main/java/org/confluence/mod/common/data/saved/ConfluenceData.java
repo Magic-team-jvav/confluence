@@ -110,7 +110,9 @@ public class ConfluenceData extends SavedData {
     public void setGamePhase(MinecraftServer server, GamePhase gamePhase) {
         this.gamePhase = gamePhase;
         GamePhasePacketS2C.sendToAll(gamePhase);
-        if (gamePhase.isHardmode()) { // 一旦设置为困难模式，就不能撤回
+        if (gamePhase.isGraduated()) {
+            ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.GRADUATED);
+        } else if (gamePhase.isHardmode()) {
             ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
         }
         setDirty();

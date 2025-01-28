@@ -2,8 +2,6 @@ package org.confluence.mod.common.item.sword.stagedy;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Item;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -11,7 +9,9 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
-import org.confluence.mod.common.item.sword.stagedy.projectile.*;
+import org.confluence.mod.common.item.sword.stagedy.projectile.AbstractProjContainer;
+import org.confluence.mod.common.item.sword.stagedy.projectile.ForwardProjContainer;
+import org.confluence.mod.common.item.sword.stagedy.projectile.StarFuryProjContainer;
 import org.confluence.mod.network.c2s.SwordShootingPacketC2S;
 import org.confluence.terraentity.init.TESounds;
 

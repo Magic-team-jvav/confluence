@@ -15,7 +15,6 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.terra_curio.common.data.gen.AbstractRecipeProvider;
 
-
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;

@@ -16,7 +16,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.util.ModUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static org.confluence.mod.common.block.StateProperties.DRIVE;

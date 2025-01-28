@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.IceBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.mixed.ILivingEntity;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ThinIceBlock extends IceBlock {

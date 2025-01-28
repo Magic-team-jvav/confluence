@@ -1,6 +1,8 @@
 package org.confluence.mod.common.data.gen.recipe;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mojang.serialization.JavaOps;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;

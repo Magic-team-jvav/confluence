@@ -3,7 +3,6 @@ package org.confluence.mod.common.init.block;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BrushableBlock;

@@ -8,7 +8,6 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.entity.projectile.bomb.BaseDynamiteEntity;
 
 public class BaseDynamiteEntityModel extends EntityModel<BaseDynamiteEntity> {

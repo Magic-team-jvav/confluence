@@ -4,9 +4,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.model.entity.bomb.BombFishEntityModel;
 import org.confluence.mod.client.model.entity.bomb.DryBombEntityModel;
-import org.confluence.mod.common.entity.projectile.bomb.BombFishEntity;
 import org.confluence.mod.common.entity.projectile.bomb.DryBombEntity;
 
 public class DryBombEntityRenderer extends BombEntityRenderer<DryBombEntity> {

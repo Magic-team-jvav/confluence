@@ -1,6 +1,7 @@
 package org.confluence.mod.client.effect;
 
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -11,7 +12,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
-
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
@@ -27,11 +27,10 @@ import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
-import static org.confluence.mod.client.ModKeyBindings.*;
+import static org.confluence.mod.client.ModKeyBindings.SHOW_DETAIL_SPECULAR;
 import static org.confluence.mod.client.effect.RenderUtil.renderDebugBlock;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
-import static org.confluence.mod.common.init.block.NatureBlocks.*;
+import static org.confluence.mod.common.init.block.NatureBlocks.LIFE_CRYSTAL_BLOCK;
 import static org.confluence.mod.common.init.block.OreBlocks.*;
 
 

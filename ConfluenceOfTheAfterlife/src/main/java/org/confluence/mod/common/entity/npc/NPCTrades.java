@@ -16,10 +16,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.util.PlayerUtils;
 
-
 import java.io.IOException;
 import java.io.Reader;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public record NPCTrades(List<Trade> trades) {
 

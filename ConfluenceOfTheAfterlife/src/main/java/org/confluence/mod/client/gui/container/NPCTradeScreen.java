@@ -21,7 +21,6 @@ import org.confluence.mod.util.PlayerUtils;
 
 import java.awt.*;
 import java.util.List;
-import java.util.Map;
 
 
 public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {

@@ -15,7 +15,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.terra_curio.common.init.TCEffects;
-import org.jetbrains.annotations.NotNull;
 
 public class StepOnTrapBlock extends Block {
     public static final Behaviour SHIMMER = new Behaviour() {

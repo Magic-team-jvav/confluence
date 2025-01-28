@@ -11,7 +11,6 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 
 public class SwordInStoneBlock extends Block {
     public static final EnumProperty<SwordType> SWORD_TYPE = EnumProperty.create("sword_type", SwordType.class);

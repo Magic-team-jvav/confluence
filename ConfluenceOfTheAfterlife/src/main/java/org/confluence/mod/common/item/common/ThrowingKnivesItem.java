@@ -10,7 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.projectile.ThrownKnivesProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.jetbrains.annotations.NotNull;
 
 public class ThrowingKnivesItem extends Item {
     public ThrowingKnivesItem() {

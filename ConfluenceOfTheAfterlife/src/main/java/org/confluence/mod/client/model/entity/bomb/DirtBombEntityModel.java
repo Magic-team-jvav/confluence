@@ -9,7 +9,6 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.bomb.BaseDirtBombEntity;
-import org.confluence.mod.common.entity.projectile.bomb.BouncyBombEntity;
 
 public class DirtBombEntityModel extends EntityModel<BaseDirtBombEntity> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("dirt_bomb_entity"), "main");

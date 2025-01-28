@@ -4,10 +4,8 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.model.entity.bomb.BouncyBombEntityModel;
 import org.confluence.mod.client.model.entity.bomb.DirtBombEntityModel;
 import org.confluence.mod.common.entity.projectile.bomb.BaseDirtBombEntity;
-import org.confluence.mod.common.entity.projectile.bomb.BouncyBombEntity;
 
 public class DirtBombEntityRenderer extends BombEntityRenderer<BaseDirtBombEntity> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/bomb/dirt_bomb_entity.png");

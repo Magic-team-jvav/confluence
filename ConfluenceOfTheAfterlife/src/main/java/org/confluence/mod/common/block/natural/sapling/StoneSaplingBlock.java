@@ -6,7 +6,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 public class StoneSaplingBlock extends SaplingBlock {
     public StoneSaplingBlock(TreeGrower pTreeGrower, Properties pProperties) {

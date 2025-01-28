@@ -9,7 +9,6 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.bomb.BouncyGrenadeEntity;
-import org.confluence.mod.common.entity.projectile.bomb.StickyGrenadeEntity;
 
 public class BouncyGrenadeEntityModel extends EntityModel<BouncyGrenadeEntity> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("bouncy_grenade"), "main");

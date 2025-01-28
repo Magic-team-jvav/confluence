@@ -1,5 +1,6 @@
 package org.confluence.mod.mixin.client;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -23,7 +24,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.Map;
 
@@ -48,8 +48,8 @@ public abstract class ClientLevelMixin implements LevelReader, SelfGetter<Client
         this.confluence$fluidParticles = WeatherHandler.getFluidParticles(biome);
     }
 
-    @Inject(method = "doAnimateTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;isEmpty()Z"), locals = LocalCapture.CAPTURE_FAILSOFT)
-    private void tick(int posX, int posY, int posZ, int range, RandomSource random, Block block, BlockPos.MutableBlockPos blockPos, CallbackInfo ci, int i, int j, int k, BlockState blockstate, FluidState fluidstate) {
+    @Inject(method = "doAnimateTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;isEmpty()Z"))
+    private void tick(int posX, int posY, int posZ, int range, RandomSource random, Block block, BlockPos.MutableBlockPos blockPos, CallbackInfo cir, @Local BlockState blockstate, @Local FluidState fluidstate) {
         int i1 = ClientConfigs.showWindParticles;
         if (i1 == 0 || WeatherHandler.windDirection == null) return;
         i1 = 100 - i1;

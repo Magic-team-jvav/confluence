@@ -206,21 +206,6 @@
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:bomb_fish",
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "type": "uniform",
-                "min": 1,
-                "max": 7
-              }
-            }
-          ],
-          "weight":67
-        },
-        {
-          "type": "minecraft:item",
           "conditions": [
             {
               "condition": "minecraft:any_of",

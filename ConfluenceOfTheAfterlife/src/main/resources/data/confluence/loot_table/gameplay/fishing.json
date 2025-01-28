@@ -14,7 +14,7 @@
           "type": "minecraft:loot_table",
           "value": "confluence:gameplay/fishing/treasure",
           "quality": 2,
-          "weight": 5
+          "weight": 10
         },
         {
           "type": "minecraft:loot_table",

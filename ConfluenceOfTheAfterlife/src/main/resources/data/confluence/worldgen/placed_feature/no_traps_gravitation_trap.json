@@ -1,5 +1,5 @@
 {
-    "feature": "confluence:shimmer_trap",
+    "feature": "confluence:no_traps_gravitation_trap",
     "placement": [
         {
             "type": "minecraft:rarity_filter",
@@ -27,7 +27,12 @@
             "type": "minecraft:environment_scan",
             "allowed_search_condition": {
                 "type": "minecraft:matching_blocks",
-                "blocks": "minecraft:air"
+                "blocks": "minecraft:air",
+                "offset": [
+                    0,
+                    1,
+                    0
+                ]
             },
             "direction_of_search": "up",
             "max_steps": 12,

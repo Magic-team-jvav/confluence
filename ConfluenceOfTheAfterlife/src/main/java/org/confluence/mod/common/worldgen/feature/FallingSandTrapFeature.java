@@ -35,6 +35,7 @@ public class FallingSandTrapFeature extends Feature<FallingSandTrapFeature.Confi
         if (!ModFeatures.isPosAir(level, origin)) return false;
         Optional<Column> optionalColumn = Column.scan(level, origin, config.maxDistanceTo, BlockBehaviour.BlockStateBase::isAir, ModFeatures.IS_BASE_STONE);
         if (optionalColumn.isPresent() && optionalColumn.get() instanceof Column.Range range && range.height() >= config.minDistanceTo) {
+            int halfHeight = range.height() / 2;
             BlockPos supportPos = origin.atY(range.floor());
             if (!ModFeatures.isPosSturdy(level, supportPos, Direction.UP)) return false;
 
@@ -55,6 +56,7 @@ public class FallingSandTrapFeature extends Feature<FallingSandTrapFeature.Confi
                 if (fragileEntity1 != null) {
                     fragileEntity1.connectTo(0xFFFF00, supportingPos, fragileEntity);
                 }
+                fillAir(level, mutable1, halfHeight);
             }
 
             for (int x = 1; x < width; x++) {
@@ -70,11 +72,12 @@ public class FallingSandTrapFeature extends Feature<FallingSandTrapFeature.Confi
                     if (fragileEntity1 != null) {
                         fragileEntity1.connectTo(0xFFFF00, supportingPos, fragileEntity);
                     }
+                    fillAir(level, mutable1, halfHeight);
                 }
             }
 
             BlockState sand = Blocks.SAND.defaultBlockState();
-            for (BlockPos pos : BlockPos.betweenClosed(origin.atY(0).offset(-width, ceiling + 1, -width), origin.atY(0).offset(width, ceiling + config.height, width))) {
+            for (BlockPos pos : BlockPos.betweenClosed(origin.atY(0).offset(-radius, ceiling + 1, -radius), origin.atY(0).offset(radius, ceiling + config.height, radius))) {
                 ModFeatures.safeSetBlock(level, pos, sand, ModFeatures.IS_REPLACEABLE);
             }
 
@@ -87,6 +90,12 @@ public class FallingSandTrapFeature extends Feature<FallingSandTrapFeature.Confi
             }
         }
         return false;
+    }
+
+    private static void fillAir(WorldGenLevel level, BlockPos pos, int height) {
+        for (int i = 1; i < height; i++) {
+            level.setBlock(pos.below(i), Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
+        }
     }
 
     public record Config(BlockStateProvider fallingBlock, int radius, int height, int minDistanceTo, int maxDistanceTo) implements FeatureConfiguration {

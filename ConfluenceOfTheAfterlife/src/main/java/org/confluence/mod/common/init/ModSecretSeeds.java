@@ -1,9 +1,14 @@
 package org.confluence.mod.common.init;
 
+import com.mojang.datafixers.util.Pair;
+import net.minecraft.world.level.levelgen.WorldOptions;
 import org.confluence.mod.common.worldgen.secret_seed.*;
+import org.confluence.mod.mixed.IWorldOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.OptionalLong;
 import java.util.function.Function;
 
 public final class ModSecretSeeds {
@@ -24,11 +29,23 @@ public final class ModSecretSeeds {
      * 3: 肉后<br>
      * 4: 毕业<br>
      * 5 ~ 8: 暂无，也许附属模组可以利用这个空缺
+     *
      * @see org.confluence.mod.mixed.IWorldOptions
      */
     private static SecretSeed register(Function<Long, SecretSeed> function) {
         SecretSeed secretSeed = function.apply(1L << (VALUES.size() + 8));
         VALUES.add(secretSeed);
         return secretSeed;
+    }
+
+    public static Pair<SecretSeed, WorldOptions> matchSeed(String seed, WorldOptions worldOptions) {
+        String s = seed.trim().toLowerCase(Locale.ROOT);
+        for (SecretSeed secretSeed : VALUES) {
+            if (secretSeed.match(s)) {
+                ((IWorldOptions) worldOptions).confluence$withSecretFlag(secretSeed.getFlag());
+                return new Pair<>(secretSeed, worldOptions.withSeed(OptionalLong.of(WorldOptions.randomSeed())));
+            }
+        }
+        return new Pair<>(null, worldOptions);
     }
 }

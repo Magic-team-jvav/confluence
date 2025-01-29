@@ -8,7 +8,6 @@ import net.minecraft.server.level.progress.ChunkProgressListenerFactory;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.storage.WorldData;
-import org.confluence.mod.common.worldgen.secret_seed.SecretSeed;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,8 +35,8 @@ public abstract class MinecraftServerMixin implements IMinecraftServer {
     }
 
     @Override
-    public boolean confluence$matchesSecretFlag(SecretSeed secretSeed) {
-        return secretSeed.match(confluence$secretFlag);
+    public boolean confluence$matchesSecretFlag(long flag) {
+        return (confluence$secretFlag & flag) != 0;
     }
 
     @Inject(method = "<init>", at = @At("TAIL"))

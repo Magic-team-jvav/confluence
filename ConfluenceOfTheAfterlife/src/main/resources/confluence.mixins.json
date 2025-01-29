@@ -99,6 +99,9 @@
         "integration.terra_curio.InformationHandlerMixin",
         "integration.terra_curio.TCClientPacketHandlerMixin"
     ],
+    "server": [
+        "DedicatedServerPropertiesMixin"
+    ],
     "injectors": {
         "defaultRequire": 1
     }

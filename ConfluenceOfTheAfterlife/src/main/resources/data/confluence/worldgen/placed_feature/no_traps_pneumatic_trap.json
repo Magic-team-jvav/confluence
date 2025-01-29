@@ -1,5 +1,5 @@
 {
-    "feature": "confluence:pneumatic_trap",
+    "feature": "confluence:no_traps_pneumatic_trap",
     "placement": [
         {
             "type": "minecraft:rarity_filter",

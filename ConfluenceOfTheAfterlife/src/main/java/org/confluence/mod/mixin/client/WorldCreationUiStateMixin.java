@@ -2,16 +2,15 @@ package org.confluence.mod.mixin.client;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.gui.screens.worldselection.WorldCreationUiState;
 import net.minecraft.world.level.levelgen.WorldOptions;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.secret_seed.SecretSeed;
-import org.confluence.mod.mixed.IWorldOptions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
-import java.util.Locale;
 import java.util.OptionalLong;
 
 @Mixin(WorldCreationUiState.class)
@@ -21,12 +20,9 @@ public abstract class WorldCreationUiStateMixin {
 
     @WrapOperation(method = "lambda$setSeed$2", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/levelgen/WorldOptions;withSeed(Ljava/util/OptionalLong;)Lnet/minecraft/world/level/levelgen/WorldOptions;"))
     private WorldOptions checkSecretSeed(WorldOptions instance, OptionalLong seed, Operation<WorldOptions> original) {
-        String s = getSeed().trim().toLowerCase(Locale.ROOT);
-        for (SecretSeed secretSeed : ModSecretSeeds.VALUES) {
-            if (secretSeed.match(s)) {
-                ((IWorldOptions) instance).confluence$withSecretFlag(secretSeed.getFlag());
-                return original.call(instance, OptionalLong.of(WorldOptions.randomSeed()));
-            }
+        Pair<SecretSeed, WorldOptions> tuple = ModSecretSeeds.matchSeed(getSeed(), instance);
+        if (tuple.getFirst() != null) {
+            return tuple.getSecond();
         }
         return original.call(instance, seed);
     }

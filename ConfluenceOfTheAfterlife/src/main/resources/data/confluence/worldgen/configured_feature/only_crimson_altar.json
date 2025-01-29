@@ -1,0 +1,7 @@
+{
+    "type": "confluence:secret_flag",
+    "config": {
+        "sub_feature": "confluence:crimson_altar",
+        "flag": 2
+    }
+}

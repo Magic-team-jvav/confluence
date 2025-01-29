@@ -2,6 +2,6 @@
     "type": "confluence:secret_flag",
     "config": {
         "sub_feature": "confluence:gravitation_trap",
-        "flag": 8192
+        "flag": "&10000000000000"
     }
 }

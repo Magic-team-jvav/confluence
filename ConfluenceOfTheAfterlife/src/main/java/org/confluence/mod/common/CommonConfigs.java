@@ -11,14 +11,17 @@ public final class CommonConfigs {
     public static BooleanValue AUTO_STACK_GELS_COLOR;
     public static BooleanValue FLETCHING_MENU;
     public static BooleanValue SHIMMER_DECOMPOSE;
+    private static IntValue FALLING_STAR_FREQUENCY;
 
     public static IntValue DEFAULT_RESPAWN_TIME_MIN;
     public static IntValue DEFAULT_RESPAWN_TIME_MAX;
     public static IntValue BOSS_RESPAWN_TIME_MIN;
     public static IntValue BOSS_RESPAWN_TIME_MAX;
 
-    public static void onLoad() {
+    public static long fallingStarFrequency = 600L;
 
+    public static void onLoad() {
+        fallingStarFrequency = FALLING_STAR_FREQUENCY.get();
     }
 
     public static void register(ModContainer container) {
@@ -27,6 +30,7 @@ public final class CommonConfigs {
         AUTO_STACK_GELS_COLOR = BUILDER.comment("Auto stack when pickup colorful gels").define("autoStackGelsColor", true);
         FLETCHING_MENU = BUILDER.comment("Allows you to open menu through right click the Fletching Table").define("fletchingMenu", true);
         SHIMMER_DECOMPOSE = BUILDER.comment("Allows Shimmer fluid to decomposing items").define("shimmer_decompose", true);
+        FALLING_STAR_FREQUENCY = BUILDER.comment("Determines how long the falling star spawning next time").defineInRange("fallingStarFrequency", 600, 20, 20000);
 
         DEFAULT_RESPAWN_TIME_MIN = BUILDER.comment("The min value of the default respawn time").defineInRange("defaultRespawnTimeMin", 3, 0, Integer.MAX_VALUE);
         DEFAULT_RESPAWN_TIME_MAX = BUILDER.comment("The max value of the default respawn time").defineInRange("defaultRespawnTimeMax", 8, 0, Integer.MAX_VALUE);

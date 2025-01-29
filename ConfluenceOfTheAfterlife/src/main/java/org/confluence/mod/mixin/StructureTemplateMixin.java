@@ -44,7 +44,7 @@ public abstract class StructureTemplateMixin {
             if (brushData != null) {
                 int[] colors = brushData.get(blockpos3);
                 if (colors != null) {
-                    ((IStructureTemplate$StructureBlockInfo) (Record) structuretemplate$structureblockinfo).confluence$setColors(colors);
+                    IStructureTemplate$StructureBlockInfo.of(structuretemplate$structureblockinfo).confluence$setColors(colors);
                 }
             }
         }
@@ -52,7 +52,7 @@ public abstract class StructureTemplateMixin {
 
     @Inject(method = "save", at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/ListTag;add(Ljava/lang/Object;)Z", ordinal = 0))
     private void saveBrushData(CompoundTag tag, CallbackInfoReturnable<CompoundTag> cir, @Local StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo, @Local(ordinal = 1) CompoundTag compoundtag) {
-        int[] colors = ((IStructureTemplate$StructureBlockInfo) (Record) structuretemplate$structureblockinfo).confluence$getColors();
+        int[] colors = IStructureTemplate$StructureBlockInfo.of(structuretemplate$structureblockinfo).confluence$getColors();
         if (colors != null) {
             compoundtag.putIntArray("confluence:colors", colors);
         }
@@ -62,21 +62,21 @@ public abstract class StructureTemplateMixin {
     private void loadBrushData(HolderGetter<Block> blockGetter, ListTag paletteTag, ListTag blocksTag, CallbackInfo ci, @Local(ordinal = 0) CompoundTag compoundtag, @Local StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo) {
         if (compoundtag.contains("confluence:colors", ListTag.TAG_INT_ARRAY)) {
             int[] colors = compoundtag.getIntArray("confluence:colors");
-            ((IStructureTemplate$StructureBlockInfo) (Record) structuretemplate$structureblockinfo).confluence$setColors(colors);
+            IStructureTemplate$StructureBlockInfo.of(structuretemplate$structureblockinfo).confluence$setColors(colors);
         }
     }
 
     @Inject(method = "processBlockInfos(Lnet/minecraft/world/level/ServerLevelAccessor;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructurePlaceSettings;Ljava/util/List;Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplate;)Ljava/util/List;", at = @At(value = "INVOKE", target = "Ljava/util/List;iterator()Ljava/util/Iterator;", ordinal = 1))
     private static void processBrushData(ServerLevelAccessor serverLevel, BlockPos offset, BlockPos pos, StructurePlaceSettings settings, List<StructureTemplate.StructureBlockInfo> blockInfos, StructureTemplate template, CallbackInfoReturnable<List<StructureTemplate.StructureBlockInfo>> cir, @Local(ordinal = 0) StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo, @Local(ordinal = 1) StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo1) {
-        ((IStructureTemplate$StructureBlockInfo) (Record) structuretemplate$structureblockinfo1).confluence$setColors(
-                ((IStructureTemplate$StructureBlockInfo) (Record) structuretemplate$structureblockinfo).confluence$getColors()
+        IStructureTemplate$StructureBlockInfo.of(structuretemplate$structureblockinfo1).confluence$setColors(
+                IStructureTemplate$StructureBlockInfo.of(structuretemplate$structureblockinfo).confluence$getColors()
         );
     }
 
     @Inject(method = "filterBlocks(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructurePlaceSettings;Lnet/minecraft/world/level/block/Block;Z)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/ObjectArrayList;add(Ljava/lang/Object;)Z", shift = At.Shift.AFTER))
     private void filterBrushData(BlockPos pos, StructurePlaceSettings settings, Block block, boolean relativePosition, CallbackInfoReturnable<ObjectArrayList<StructureTemplate.StructureBlockInfo>> cir, @Local ObjectArrayList<StructureTemplate.StructureBlockInfo> objectarraylist, @Local StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo) {
-        ((IStructureTemplate$StructureBlockInfo) (Record) objectarraylist.getLast()).confluence$setColors(
-                ((IStructureTemplate$StructureBlockInfo) (Record) structuretemplate$structureblockinfo).confluence$getColors()
+        IStructureTemplate$StructureBlockInfo.of(objectarraylist.getLast()).confluence$setColors(
+                IStructureTemplate$StructureBlockInfo.of(structuretemplate$structureblockinfo).confluence$getColors()
         );
     }
 
@@ -87,7 +87,7 @@ public abstract class StructureTemplateMixin {
 
     @Inject(method = "placeInWorld", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 0))
     private void updateBrushData(ServerLevelAccessor serverLevel, BlockPos offset, BlockPos pos, StructurePlaceSettings settings, RandomSource random, int flags, CallbackInfoReturnable<Boolean> cir, @Local StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo, @Share("brushData") LocalRef<Map<ChunkPos, BrushData>> brushData) {
-        int[] colors = ((IStructureTemplate$StructureBlockInfo) (Record) structuretemplate$structureblockinfo).confluence$getColors();
+        int[] colors = IStructureTemplate$StructureBlockInfo.of(structuretemplate$structureblockinfo).confluence$getColors();
         if (colors != null) {
             BlockPos pos1 = structuretemplate$structureblockinfo.pos();
             brushData.get().computeIfAbsent(new ChunkPos(pos1), pos3 -> new BrushData(new Hashtable<>())).put(pos1, colors);

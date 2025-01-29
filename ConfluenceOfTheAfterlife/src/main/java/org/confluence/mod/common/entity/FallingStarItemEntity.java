@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
@@ -20,6 +22,9 @@ import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class FallingStarItemEntity extends ItemEntity {
     private boolean wasOnGround;
@@ -80,14 +85,19 @@ public class FallingStarItemEntity extends ItemEntity {
     }
 
     public static void summon(ServerLevel serverLevel) {
-        if (serverLevel.getDayTime() % 24000 > 12000 && serverLevel.getGameTime() % 600 == 0) {
+        if (serverLevel.getDayTime() % 24000 > 12000 && serverLevel.getGameTime() % CommonConfigs.fallingStarFrequency == 0) {
             RandomSource random = serverLevel.random;
+            Set<Vec3> cache = new HashSet<>();
             for (ServerPlayer serverPlayer : serverLevel.players()) {
+                if (cache.stream().anyMatch(pos -> serverPlayer.distanceToSqr(pos) < Mth.square(serverPlayer.requestedViewDistance() * 16))) {
+                    continue;
+                }
                 int offsetX = (random.nextBoolean() ? 1 : -1) * random.nextInt(2);
                 int offsetZ = (random.nextBoolean() ? 1 : -1) * random.nextInt(2);
                 BlockPos pos = serverPlayer.getOnPos().offset(offsetX, 0, offsetZ).atY(256);
                 if (serverLevel.isLoaded(pos)) {
                     serverLevel.addFreshEntity(new FallingStarItemEntity(serverLevel, pos.getCenter()));
+                    cache.add(serverPlayer.position());
                 }
             }
         }

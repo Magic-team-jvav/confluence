@@ -30,12 +30,12 @@ public class BoulderBlock extends AbstractMechanicalBlock {
 
     @Override
     public void playerDestroy(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState, @Nullable BlockEntity pBlockEntity, ItemStack pTool) {
-        summon(pLevel, pPos, entity -> pPlayer);
+        summon(pLevel, pPos, pState, entity -> pPlayer);
     }
 
     @Override
     public void wasExploded(Level pLevel, BlockPos pPos, Explosion pExplosion) {
-        summon(pLevel, pPos, entity -> pLevel.getNearestPlayer(entity, BoulderEntity.SEARCH_RANGE));
+        summon(pLevel, pPos, defaultBlockState(), entity -> pLevel.getNearestPlayer(entity, BoulderEntity.SEARCH_RANGE));
     }
 
     @Override
@@ -58,12 +58,12 @@ public class BoulderBlock extends AbstractMechanicalBlock {
     @Override
     public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
         pLevel.removeBlock(pPos, false);
-        summon(pLevel, pPos, entity -> pLevel.getNearestPlayer(entity, BoulderEntity.SEARCH_RANGE));
+        summon(pLevel, pPos, pState, entity -> pLevel.getNearestPlayer(entity, BoulderEntity.SEARCH_RANGE));
     }
 
-    public static void summon(Level level, BlockPos pos, Function<BoulderEntity, Player> function) {
+    public static void summon(Level level, BlockPos pos, BlockState blockState, Function<BoulderEntity, Player> function) {
         Vec3 position = new Vec3(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-        BoulderEntity entity = new BoulderEntity(level, position);
+        BoulderEntity entity = new BoulderEntity(level, position, blockState);
         if (level.getBlockState(pos.below()).isAir()) {
             entity.getEntityData().set(BoulderEntity.DATA_VERTICAL, true);
         } else {

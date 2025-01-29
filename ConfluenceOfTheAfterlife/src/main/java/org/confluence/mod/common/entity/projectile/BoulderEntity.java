@@ -21,16 +21,19 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
 
 public class BoulderEntity extends Projectile {
     public static final EntityDataAccessor<Boolean> DATA_VERTICAL = SynchedEntityData.defineId(BoulderEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<BlockState> DATA_BLOCK_STATE = SynchedEntityData.defineId(BoulderEntity.class, EntityDataSerializers.BLOCK_STATE);
     public static final double SPEED = 0.7;
     public static final float DIAMETER = 1.0F;
     public static final float SEARCH_RANGE = 31.5F;
@@ -41,20 +44,25 @@ public class BoulderEntity extends Projectile {
         super(pEntityType, pLevel);
     }
 
-    public BoulderEntity(Level level, Vec3 pos) {
+    public BoulderEntity(Level level, Vec3 pos, BlockState blockState) {
         super(ModEntities.BOULDER.get(), level);
         setPos(pos);
+        entityData.set(DATA_BLOCK_STATE, blockState);
     }
 
     public boolean isVertical() {
         return entityData.get(DATA_VERTICAL);
     }
 
+    public BlockState getBlockState() {
+        return entityData.get(DATA_BLOCK_STATE);
+    }
+
     public void remove() {
         if (level() instanceof ServerLevel serverLevel) {
             BlockPos pos = getOnPos().above();
             serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.COBBLESTONE.defaultBlockState())
-                .setPos(pos), getX(), getY() + 0.5, getZ(), 175, 0.0, 0.0, 0.0, 0.15);
+                    .setPos(pos), getX(), getY() + 0.5, getZ(), 175, 0.0, 0.0, 0.0, 0.15);
             serverLevel.playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 5.0F, 1.0F);
         }
         discard();
@@ -127,6 +135,7 @@ public class BoulderEntity extends Projectile {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(DATA_VERTICAL, false);
+        builder.define(DATA_BLOCK_STATE, FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState());
     }
 
     @Override

@@ -3,6 +3,9 @@
   "biomes": [
     "confluence:the_corruption"
   ],
-  "features": "confluence:corruption_pot",
+  "features":[
+    "confluence:corruption_pot",
+    "confluence:corrupt_grass"
+  ],
   "step": "local_modifications"
 }

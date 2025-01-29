@@ -3,6 +3,9 @@
   "biomes": [
     "confluence:ash_forest"
   ],
-  "features": "confluence:ash_grass",
+  "features": [
+    "confluence:ash_grass",
+    "confluence:ash_tree"
+  ],
   "step": "vegetal_decoration"
 }

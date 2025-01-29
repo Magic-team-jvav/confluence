@@ -1,4 +1,11 @@
 {
-    "type": "confluence:gravitation_trap",
-    "config": {}
+    "type": "minecraft:simple_block",
+    "config": {
+        "to_place": {
+            "type": "simple_state_provider",
+            "state": {
+                "Name": "confluence:gravitation_trap"
+            }
+        }
+    }
 }

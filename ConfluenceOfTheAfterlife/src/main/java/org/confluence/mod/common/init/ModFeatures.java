@@ -45,7 +45,8 @@ public final class ModFeatures {
     public static final Supplier<PalmTreeFeature> PALM_TREE = FEATURES.register("palm_tree", () -> new PalmTreeFeature(PalmTreeFeature.Config.CODEC));
     public static final Supplier<LivingTreeFeature> LIVING_TREE = FEATURES.register("living_tree", () -> new LivingTreeFeature(LivingTreeFeature.Config.CODEC));
     public static final Supplier<QueenBeeHiveFeature> QUEEN_BEE_HIVE = FEATURES.register("queen_bee_hive", () -> new QueenBeeHiveFeature(QueenBeeHiveFeature.Config.CODEC));
-    public static final Supplier<YellowWillowFeature> YELLOW_WILLOW = FEATURES.register("yellow_willow", () -> new YellowWillowFeature(YellowWillowFeature.Config.CODEC));
+    public static final Supplier<DroopingVineTreeFeature> DROOPING_VINE_TREE = FEATURES.register("drooping_vine_tree", () -> new DroopingVineTreeFeature(DroopingVineTreeFeature.Config.CODEC));
+    public static final Supplier<BaobabTreeFeature> BAOBAB_TREE = FEATURES.register("baobab_tree", () -> new BaobabTreeFeature(BaobabTreeFeature.Config.CODEC));
     public static final Supplier<MeteoriteFeature> METEORITE = FEATURES.register("meteorite", () -> new MeteoriteFeature(MeteoriteFeature.Config.CODEC));
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> SHADOW = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("trees_set/trees_tr_crimson"));

@@ -1,5 +1,6 @@
 package org.confluence.mod.util;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -22,9 +23,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
@@ -317,5 +321,42 @@ public final class ModUtils {
 
     public static boolean isWithinDayTime(int startHour, int startMinute, int endHour, int endMinute, long time) {
         return isWithinDayTime(getDayTime(startHour, startMinute), getDayTime(endHour, endMinute), time);
+    }
+
+    public static void leaves(BoundingBox box, BlockState leaves, boolean up, RandomSource random, WorldGenLevel level, BlockState droopingLeaves, boolean droop) {
+        int xStart = box.minX();
+        int yStart = box.minY();
+        int zStart = box.minZ();
+        int xEnd = box.maxX();
+        int yEnd = box.maxY();
+        int zEnd = box.maxZ();
+        boolean set;
+        BlockPos posPlace;
+        BlockPos posDroop;
+        int yDroop;
+        int length;
+        for (int x = xStart; x <= xEnd; x++) {
+            for (int y = yStart; y <= yEnd; y++) {
+                for (int z = zStart; z <= zEnd; z++) {
+                    posPlace = new BlockPos(x, y, z);
+                    set = (!((x == xStart || x == xEnd) && (z == zStart || z == zEnd)) || ((y == yStart || up) && random.nextInt(3) == 0)) && (level.getBlockState(posPlace).isAir());
+                    if (set) {
+                        level.setBlock(posPlace, leaves, 3);
+                    }
+                    if (droop) {
+                        if (posPlace.getY() == yStart) {
+                            yDroop = posPlace.getY() - 1;
+                            length = (level.getBlockState(posPlace).isAir()) ? 0 : random.nextInt(4);
+                            for (int i = 0; i < length; i++) {
+                                posDroop = new BlockPos(x, yDroop - i, z);
+                                if (level.getBlockState(posDroop).isAir()) {
+                                    level.setBlock(posDroop, droopingLeaves, 3);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

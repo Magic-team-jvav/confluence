@@ -1,5 +1,5 @@
 {
-  "type": "confluence:yellow_willow",
+  "type": "confluence:drooping_vine_tree",
   "config": {
     "trunk_block": {
       "type": "simple_state_provider",
@@ -13,7 +13,7 @@
         "Name": "confluence:yellow_willow_leaves"
       }
     },
-    "drooping_leaves_block": {
+    "drooping_vine_block": {
       "type": "simple_state_provider",
       "state": {
         "Name": "confluence:yellow_willow_drooping_leaves"

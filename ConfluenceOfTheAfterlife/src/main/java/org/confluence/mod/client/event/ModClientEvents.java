@@ -1,6 +1,9 @@
 package org.confluence.mod.client.event;
 
+import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -10,6 +13,7 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
+import net.minecraft.world.level.FoliageColor;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -254,6 +258,9 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
         event.register(ModClientSetups.HALLOW_LEAVES_COLOR, NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().get());
+        event.register((state, level, pos, tintIndex) -> {
+            return level != null && pos != null ? BiomeColors.getAverageFoliageColor(level, pos) : FoliageColor.getDefaultColor();
+        }, NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().get());
     }
 
     @SubscribeEvent

@@ -68,7 +68,7 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> FLUTTERING_LAMB_CHOPS = registerNormalFood("fluttering_lamb_chops", FoodType.LOW);
     public static final DeferredItem<BaseFoodItem> COOKED_FLUTTERING_LAMB_CHOPS = registerNormalFood("cooked_fluttering_lamb_chops", FoodType.SENIOR);
     public static final DeferredItem<BaseFoodItem> BAOBAB_FRUIT = registerNormalFood("baobab_fruit", Foods.BREAD); //猴面包果
-    public static final DeferredItem<BaseFoodItem> COOKED_BAOBA_FRUIT = registerNormalFood("cooked_baobab_fruit", Foods.BREAD); //烤猴面包果
+    public static final DeferredItem<BaseFoodItem> COOKED_BAOBAB_FRUIT = registerNormalFood("cooked_baobab_fruit", Foods.BREAD); //烤猴面包果
     // 水果
     public static final DeferredItem<BaseFoodItem> APRICOT = registerNormalFood("apricot", FoodType.LOW);
     public static final DeferredItem<BaseFoodItem> BANANA = registerNormalFood("banana", FoodType.LOW);

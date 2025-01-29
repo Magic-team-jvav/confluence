@@ -63,6 +63,7 @@ public final class ModFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> ASH = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("ash_tree"));
     public static final ResourceKey<ConfiguredFeature<?, ?>> LIVING = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("living_tree"));
     public static final ResourceKey<ConfiguredFeature<?, ?>> CONFIGURED_YELLOW_WILLOW = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("yellow_willow"));
+    public static final ResourceKey<ConfiguredFeature<?, ?>> BAOBAB = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("baobab_tree"));
 
     public static @NotNull BlockState getPressurePlate(WorldGenLevel level, BlockPos supportPos) {
         return level.isStateAtPosition(supportPos, blockState -> blockState.is(Blocks.DEEPSLATE))
@@ -117,6 +118,7 @@ public final class ModFeatures {
         public static final TreeGrower ASH_GROWER = register("ash", ASH);
         public static final TreeGrower LIVING_GROWER = register("living", LIVING);
         public static final TreeGrower YELLOW_WILLOW_GROWER = register("yellow_willow_grower", CONFIGURED_YELLOW_WILLOW);
+        public static final TreeGrower BAOBAB_GROWER = register("baobab_grower", BAOBAB);
 
         private static TreeGrower register(String name, ResourceKey<ConfiguredFeature<?, ?>> tree) {
             return new TreeGrower(Confluence.MODID + ":" + name, Optional.empty(), Optional.of(tree), Optional.empty());

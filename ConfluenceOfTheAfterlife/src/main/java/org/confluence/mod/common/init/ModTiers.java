@@ -62,7 +62,7 @@ public final class ModTiers {
             case GOLD -> 39;
             case IRON -> 40;
             case DIAMOND -> 59;
-            case NETHERITE -> 70;
+            case NETHERITE -> 90;
         };
     }
 
@@ -81,8 +81,9 @@ public final class ModTiers {
      * 110 钴 <p>
      * 101 ======================= 6 <p>
      * 100 狱石 <p>
+     * 90 下界合金 <p>
      * 71 ======================= 5 <p>
-     * 70 猩红、下界合金<p>
+     * 70 猩红<p>
      * 65 腐化 <p>
      * 60 ======================= 4 <p>
      * 59 铂金、骨镐、掠夺鲨、钻石 <p>

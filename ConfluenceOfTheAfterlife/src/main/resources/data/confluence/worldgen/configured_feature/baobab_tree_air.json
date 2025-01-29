@@ -22,7 +22,7 @@
     "inner_block": {
       "type": "simple_state_provider",
       "state": {
-        "Name": "confluence:baobab_wood"
+        "Name": "minecraft:air"
       }
     },
     "leaves_block": {

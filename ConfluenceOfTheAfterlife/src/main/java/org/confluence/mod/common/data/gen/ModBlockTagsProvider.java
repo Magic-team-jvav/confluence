@@ -402,6 +402,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OreBlocks.TR_CRIMSON_BLOCK.get(),
                 OreBlocks.TR_CRIMSON_ORE.get(),
                 Blocks.ANCIENT_DEBRIS,
+                Blocks.OBSIDIAN,
+                Blocks.CRYING_OBSIDIAN,
                 OreBlocks.TR_CRIMSON_ORE.get()
         );
         tag(ModTags.Blocks.NEEDS_4_LEVEL).add(

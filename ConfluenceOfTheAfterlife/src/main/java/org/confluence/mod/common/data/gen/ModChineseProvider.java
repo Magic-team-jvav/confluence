@@ -891,6 +891,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.ASH_SAPLING.get(), "白蜡树苗");
         add(NatureBlocks.LIVING_SAPLING.get(), "生命树树苗");
         add(NatureBlocks.YELLOW_WILLOW_SAPLING.get(), "黄柳树苗");
+        add(NatureBlocks.BAOBAB_SAPLING.get(), "猴面包树苗");
 
         add(NatureBlocks.VICIOUS_MUSHROOM.get(), "毒蘑菇");
         add(NatureBlocks.VILE_MUSHROOM.get(), "魔菇");
@@ -1973,7 +1974,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.FLUTTERING_LAMB_CHOPS.get(), "飘飘羊排");
         add(FoodItems.COOKED_FLUTTERING_LAMB_CHOPS.get(), "熟飘飘羊排");
         add(FoodItems.BAOBAB_FRUIT.get(), "猴面包果");
-        add(FoodItems.COOKED_BAOBA_FRUIT.get(), "烤猴面包果");
+        add(FoodItems.COOKED_BAOBAB_FRUIT.get(), "烤猴面包果");
         // 鱼
         add(FoodItems.SEA_BASS.get(), "鲈鱼");
         add(FoodItems.ATLANTIC_COD.get(), "大西洋鳕鱼");

@@ -38,7 +38,7 @@ public final class ModFeatures {
     public static final Supplier<DeathChestTrapFeature> DEATH_CHEST_TRAP = FEATURES.register("death_chest_trap", () -> new DeathChestTrapFeature(DeathChestTrapFeature.Config.CODEC));
     public static final Supplier<WithDetonatorFeature> WITH_DETONATOR = FEATURES.register("with_detonator", () -> new WithDetonatorFeature(WithDetonatorFeature.Config.CODEC));
     public static final Supplier<FallingSandTrapFeature> FALLING_SAND_TRAP = FEATURES.register("falling_sand_trap", () -> new FallingSandTrapFeature(FallingSandTrapFeature.Config.CODEC));
-    public static final Supplier<SecretSeedsFeature> NO_TRAPS_FEATURE = FEATURES.register("secret_flag", () -> new SecretSeedsFeature(SecretSeedsFeature.Config.CODEC));
+    public static final Supplier<SecretFlagFeature> NO_TRAPS_FEATURE = FEATURES.register("secret_flag", () -> new SecretFlagFeature(SecretFlagFeature.Config.CODEC));
 
     public static final Supplier<JewelryTreeFeature> JEWELRY_TREE = FEATURES.register("jewelry_tree", () -> new JewelryTreeFeature(JewelryTreeFeature.Config.CODEC));
     public static final Supplier<SimpleBlockNBTFeature> SIMPLE_BLOCK_NBT = FEATURES.register("simple_block_nbt", () -> new SimpleBlockNBTFeature(SimpleBlockNBTFeature.Config.CODEC));

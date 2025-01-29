@@ -51,7 +51,7 @@ public abstract class TreeFeatureMixin {
 
     @WrapOperation(method = "lambda$place$6", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/WorldGenLevel;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"))
     private static boolean logBoulder(WorldGenLevel instance, BlockPos blockPos, BlockState blockState, int i, Operation<Boolean> original) {
-        if (blockState.is(Blocks.OAK_LOG) && blockState.getValue(BlockStateProperties.AXIS) == Direction.Axis.Y) {
+        if (ModSecretSeeds.NO_TRAPS.match(instance.getLevel().getServer()) && blockState.is(Blocks.OAK_LOG) && blockState.getValue(BlockStateProperties.AXIS) == Direction.Axis.Y) {
             if (instance.getRandom().nextFloat() < 0.2F) {
                 blockState = FunctionalBlocks.OAK_LOG_BOULDER.get().defaultBlockState();
             }

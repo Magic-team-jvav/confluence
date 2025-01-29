@@ -4,8 +4,7 @@
     "confluence:the_corruption"
   ],
   "features":[
-    "confluence:corruption_pot",
-    "confluence:corrupt_grass"
+    "confluence:corruption_pot"
   ],
   "step": "local_modifications"
 }

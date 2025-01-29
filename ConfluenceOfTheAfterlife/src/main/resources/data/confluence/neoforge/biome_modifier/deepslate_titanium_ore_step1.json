@@ -1,8 +1,0 @@
-{
-    "type": "neoforge:add_features",
-    "biomes": {
-        "type": "neoforge:any"
-    },
-    "features": "confluence:deepslate_titanium_ore_step1",
-    "step": "surface_structures"
-}

@@ -1,8 +1,0 @@
-{
-  "type": "neoforge:add_features",
-  "biomes": {
-    "type": "neoforge:any"
-  },
-  "features": "confluence:lead_ore_generates",
-  "step": "surface_structures"
-}

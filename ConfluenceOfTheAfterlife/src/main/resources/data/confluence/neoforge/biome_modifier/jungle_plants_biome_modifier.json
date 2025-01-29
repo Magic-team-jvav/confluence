@@ -1,0 +1,16 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:jungle",
+    "minecraft:lush_caves",
+    "minecraft:sparse_jungle",
+    "minecraft:bamboo_jungle"
+  ],
+  "features": [
+    "confluence:jungle_rose",
+    "confluence:jungle_spore",
+    "confluence:moonglow",
+    "confluence:natures_gift"
+  ],
+  "step": "vegetal_decoration"
+}

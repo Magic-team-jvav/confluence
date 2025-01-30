@@ -31,26 +31,28 @@ public class SurfaceRuleData {
     private static final SurfaceRules.RuleSource ASH_GRASS_BLOCK = makeStateRule(NatureBlocks.ASH_GRASS_BLOCK.get());
     private static final SurfaceRules.RuleSource DIATOMACEOUS = makeStateRule(NatureBlocks.DIATOMACEOUS.get());
 
-    // 主世界 =============================================================
-    public static SurfaceRules.RuleSource makeOverWorldRules() {
+    // 判断 =============================================================
+    //表面判断
+    private static final SurfaceRules.ConditionSource isAtOrAboveWaterLevel = SurfaceRules.waterBlockCheck(-1, 0);
+    private static final SurfaceRules.ConditionSource isUnderWaterLevel = SurfaceRules.waterStartCheck(-6, -1);
+    private static final SurfaceRules.ConditionSource isHole = SurfaceRules.hole();
+    //渐变层随机种子
+    private static final SurfaceRules.ConditionSource bedrockRoofSeed = SurfaceRules.verticalGradient("minecraft:bedrock_roof", VerticalAnchor.belowTop(5), VerticalAnchor.belowTop(0));
+    private static final SurfaceRules.ConditionSource bedrockFloorSeed = SurfaceRules.verticalGradient("minecraft:bedrock_floor", VerticalAnchor.aboveBottom(0), VerticalAnchor.aboveBottom(5));
+    private static final SurfaceRules.ConditionSource deepslateSeed = SurfaceRules.verticalGradient("minecraft:deepslate", VerticalAnchor.absolute(0), VerticalAnchor.absolute(8));
+    private static final SurfaceRules.ConditionSource grassSeed = SurfaceRules.verticalGradient("minecraft:bedrock_floor", VerticalAnchor.absolute(48), VerticalAnchor.absolute(52));
+    //群系组合
+    private static final SurfaceRules.ConditionSource isOcean = SurfaceRules.isBiome(Biomes.OCEAN, Biomes.WARM_OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.COLD_OCEAN, Biomes.FROZEN_OCEAN, Biomes.DEEP_OCEAN, Biomes.DEEP_FROZEN_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_COLD_OCEAN);
 
-        // 判断 =============================================================
-        //表面判断
-        SurfaceRules.ConditionSource isAtOrAboveWaterLevel = SurfaceRules.waterBlockCheck(-1, 0);
-        SurfaceRules.ConditionSource isUnderWaterLevel = SurfaceRules.waterStartCheck(-6, -1);
-        SurfaceRules.ConditionSource isHole = SurfaceRules.hole();
-        //渐变层随机种子
-        SurfaceRules.ConditionSource bedrockRoofSeed = SurfaceRules.verticalGradient("minecraft:bedrock_roof", VerticalAnchor.belowTop(5), VerticalAnchor.belowTop(0));
-        SurfaceRules.ConditionSource bedrockFloorSeed = SurfaceRules.verticalGradient("minecraft:bedrock_floor", VerticalAnchor.aboveBottom(0), VerticalAnchor.aboveBottom(5));
-        SurfaceRules.ConditionSource deepslateSeed = SurfaceRules.verticalGradient("minecraft:deepslate", VerticalAnchor.absolute(0), VerticalAnchor.absolute(8));
-        SurfaceRules.ConditionSource grassSeed = SurfaceRules.verticalGradient("minecraft:bedrock_floor", VerticalAnchor.absolute(48), VerticalAnchor.absolute(52));
-        //群系组合
-        SurfaceRules.ConditionSource isOcean = SurfaceRules.isBiome(Biomes.OCEAN, Biomes.WARM_OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.COLD_OCEAN, Biomes.FROZEN_OCEAN, Biomes.DEEP_OCEAN, Biomes.DEEP_FROZEN_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_COLD_OCEAN);
+    // 生成 =============================================================
+    private static final SurfaceRules.RuleSource corruptGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, CORRUPT_GRASS_BLOCK), DIRT);
+    private static final SurfaceRules.RuleSource trCrimsonGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, TR_CRIMSON_GRASS_BLOCK), DIRT);
+    private static final SurfaceRules.RuleSource mushroomSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isUnderWaterLevel, MUSHROOM_GRASS_BLOCK), MUD);
+    private static final SurfaceRules.RuleSource ashGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, ASH_GRASS_BLOCK), ASH_BLOCK);
 
-        // 生成 =============================================================
-        SurfaceRules.RuleSource corruptGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, CORRUPT_GRASS_BLOCK), DIRT);
-        SurfaceRules.RuleSource trCrimsonGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, TR_CRIMSON_GRASS_BLOCK), DIRT);
-        SurfaceRules.RuleSource mushroomSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isUnderWaterLevel, MUSHROOM_GRASS_BLOCK), MUD);
+    // confluence =============================================================
+    //主世界
+    public static SurfaceRules.RuleSource makeConfluenceOverWorldRules() {
         return SurfaceRules.sequence(
                 //腐化
                 SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.THE_CORRUPTION),
@@ -98,20 +100,8 @@ public class SurfaceRuleData {
         );
     }
 
-    // 地狱 =============================================================
-    public static SurfaceRules.RuleSource makeNetherRules() {
-
-        // 判断 =============================================================
-        //表面判断
-        SurfaceRules.ConditionSource isAtOrAboveWaterLevel = SurfaceRules.waterBlockCheck(-1, 0);
-        SurfaceRules.ConditionSource isUnderWaterLevel = SurfaceRules.waterStartCheck(-6, -1);
-        SurfaceRules.ConditionSource isHole = SurfaceRules.hole();
-        //渐变层随机种子
-        SurfaceRules.ConditionSource bedrockRoofSeed = SurfaceRules.verticalGradient("minecraft:bedrock_roof", VerticalAnchor.belowTop(5), VerticalAnchor.belowTop(0));
-        SurfaceRules.ConditionSource bedrockFloorSeed = SurfaceRules.verticalGradient("minecraft:bedrock_floor", VerticalAnchor.aboveBottom(0), VerticalAnchor.aboveBottom(5));
-
-        // 生成 =============================================================
-        SurfaceRules.RuleSource ashGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, ASH_GRASS_BLOCK), ASH_BLOCK);
+    //地狱
+    public static SurfaceRules.RuleSource makeConfluenceNetherRules() {
         return SurfaceRules.sequence(
                 //灰烬森林
                 SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.ASH_FOREST),
@@ -131,6 +121,20 @@ public class SurfaceRuleData {
                                 SurfaceRules.ifTrue(SurfaceRules.not(bedrockFloorSeed),
                                         ASH_BLOCK
                                 )
+                        )
+                )
+        );
+    }
+
+
+    // minecraft =============================================================
+    //主世界
+    public static SurfaceRules.RuleSource makeMinecraftOverWorldRules() {
+        return SurfaceRules.sequence(
+                //海洋
+                SurfaceRules.ifTrue(isOcean,
+                        SurfaceRules.ifTrue(SurfaceRules.not(deepslateSeed),
+                                DIATOMACEOUS
                         )
                 )
         );

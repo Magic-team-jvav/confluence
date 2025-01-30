@@ -33,7 +33,7 @@ public final class ModBiomes {
         Regions.register(new TheCorruptionRegion(Confluence.asResource("the_corruption"), 1));
         Regions.register(new AshForestRegion(Confluence.asResource("ash_forest"), 1));
         Regions.register(new AshWastelandRegion(Confluence.asResource("ash_wasteland"), 1));
-        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, SurfaceRuleData.makeOverWorldRules());
-        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.NETHER, MODID, SurfaceRuleData.makeNetherRules());
+        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, SurfaceRuleData.makeConfluenceOverWorldRules());
+        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.NETHER, MODID, SurfaceRuleData.makeConfluenceNetherRules());
     }
 }

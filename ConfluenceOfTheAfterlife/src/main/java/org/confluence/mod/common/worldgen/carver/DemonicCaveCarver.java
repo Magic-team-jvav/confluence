@@ -53,7 +53,7 @@ public class DemonicCaveCarver extends WorldCarver<DemonicCaveCarver.Config> {
                 int maxRadius = random1.nextInt(9) + 4;
                 int radius = maxRadius - Mth.lerpInt(Math.abs(i - size * 0.5F) / size, 8, maxRadius);
                 boolean b = carveEllipsoid(context, config, chunk, biomeAccessor, aquifer, position.x, position.y - j * yScale, position.z, radius, yScale, carvingMask, (context1, relativeX, relativeY, relativeZ, y) -> false);
-                if (b && j == 7 && random1.nextFloat() < 0.25F) {
+                if (b && j == 7) {
                     BlockPos pos = new BlockPos((int) position.x, (int) (position.y - 8 * yScale), (int) position.z);
                     set.add(pos);
                 }
@@ -61,7 +61,7 @@ public class DemonicCaveCarver extends WorldCarver<DemonicCaveCarver.Config> {
         }
         for (BlockPos pos : set) {
             BlockPos below = pos.below();
-            if (chunk.getBlockState(below).isFaceSturdy(chunk, below, Direction.UP)) {
+            if (chunk.getBlockState(below).isFaceSturdy(chunk, below, Direction.UP) && random1.nextFloat() < 0.25F) {
                 chunk.setBlockState(pos, FunctionalBlocks.DEMON_ALTAR.get().defaultBlockState(), false);
             }
         }

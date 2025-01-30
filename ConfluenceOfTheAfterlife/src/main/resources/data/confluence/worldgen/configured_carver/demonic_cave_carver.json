@@ -9,17 +9,12 @@
         "y": {
             "type": "minecraft:uniform",
             "max_inclusive": {
-                "absolute": 67
+                "absolute": 80
             },
             "min_inclusive": {
-                "absolute": 10
+                "absolute": 40
             }
         },
-        "yScale": 4.0,
-        "depth_range": {
-            "type": "minecraft:uniform",
-            "max_exclusive": 0.125,
-            "min_inclusive": -0.125
-        }
+        "yScale": 4.0
     }
 }

@@ -31,7 +31,8 @@ public class SurfaceRuleData {
     private static final SurfaceRules.RuleSource ASH_GRASS_BLOCK = makeStateRule(NatureBlocks.ASH_GRASS_BLOCK.get());
     private static final SurfaceRules.RuleSource DIATOMACEOUS = makeStateRule(NatureBlocks.DIATOMACEOUS.get());
 
-    public static SurfaceRules.RuleSource makeRules() {
+    // 主世界 =============================================================
+    public static SurfaceRules.RuleSource makeOverWorldRules() {
 
         // 判断 =============================================================
         //表面判断
@@ -49,11 +50,8 @@ public class SurfaceRuleData {
         // 生成 =============================================================
         SurfaceRules.RuleSource corruptGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, CORRUPT_GRASS_BLOCK), DIRT);
         SurfaceRules.RuleSource trCrimsonGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, TR_CRIMSON_GRASS_BLOCK), DIRT);
-        SurfaceRules.RuleSource ashGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, ASH_GRASS_BLOCK), ASH_BLOCK);
-        SurfaceRules.RuleSource mushroomSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isUnderWaterLevel, MUSHROOM_GRASS_BLOCK), CLAY);
-        SurfaceRules.RuleSource mudSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isUnderWaterLevel, MUD), CLAY);
+        SurfaceRules.RuleSource mushroomSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isUnderWaterLevel, MUSHROOM_GRASS_BLOCK), MUD);
         return SurfaceRules.sequence(
-                // 主世界 =============================================================
                 //腐化
                 SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.THE_CORRUPTION),
                         SurfaceRules.sequence(
@@ -93,13 +91,28 @@ public class SurfaceRuleData {
                                         mushroomSurface
                                 ),
                                 SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR,
-                                        mudSurface
+                                        MUD
                                 )
                         )
-                ),
+                )
+        );
+    }
 
+    // 地狱 =============================================================
+    public static SurfaceRules.RuleSource makeNetherRules() {
 
-                // 地狱 =============================================================
+        // 判断 =============================================================
+        //表面判断
+        SurfaceRules.ConditionSource isAtOrAboveWaterLevel = SurfaceRules.waterBlockCheck(-1, 0);
+        SurfaceRules.ConditionSource isUnderWaterLevel = SurfaceRules.waterStartCheck(-6, -1);
+        SurfaceRules.ConditionSource isHole = SurfaceRules.hole();
+        //渐变层随机种子
+        SurfaceRules.ConditionSource bedrockRoofSeed = SurfaceRules.verticalGradient("minecraft:bedrock_roof", VerticalAnchor.belowTop(5), VerticalAnchor.belowTop(0));
+        SurfaceRules.ConditionSource bedrockFloorSeed = SurfaceRules.verticalGradient("minecraft:bedrock_floor", VerticalAnchor.aboveBottom(0), VerticalAnchor.aboveBottom(5));
+
+        // 生成 =============================================================
+        SurfaceRules.RuleSource ashGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, ASH_GRASS_BLOCK), ASH_BLOCK);
+        return SurfaceRules.sequence(
                 //灰烬森林
                 SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.ASH_FOREST),
                         SurfaceRules.ifTrue(bedrockRoofSeed,
@@ -120,9 +133,6 @@ public class SurfaceRuleData {
                                 )
                         )
                 )
-
-
-                // 末地 =============================================================
         );
     }
 

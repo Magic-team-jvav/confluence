@@ -31,16 +31,17 @@ public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
         super(pCodec);
     }
 
-    private static void setLeaves(BlockPos startPos, int size, BlockState leaves, RandomSource random, WorldGenLevel level) {
+    private static void setLeaves(BlockPos startPos, int size1, int size2, BlockState leaves, RandomSource random, WorldGenLevel level) {
         int x = startPos.getX();
         int y = startPos.getY();
         int z = startPos.getZ();
+        int size = Math.max(size1, size2);
         Set<BlockPos> rootSet = new HashSet<>();
         Set<BlockPos> trunkSet = new HashSet<>();
         Set<BlockPos> leavesSet = new HashSet<>();
         rootSet.add(startPos);
-        BoundingBox boxDown = new BoundingBox(x - size, y, z - size, x + size, y, z + size);
-        BoundingBox boxUp = new BoundingBox(x - size + 2, y + 1, z - size + 2, x + size - 2, y + 1, z + size - 2);
+        BoundingBox boxDown = new BoundingBox(x - size1, y, z - size1, x + size1, y, z + size1);
+        BoundingBox boxUp = new BoundingBox(x - size2, y + 1, z - size2, x + size2, y + 1, z + size2);
         BoundingBox box = new BoundingBox(x - size, y, z - size, x + size, y + 1, z + size);
         ModUtils.leaves(boxDown, leaves, true, random, level, Blocks.AIR.defaultBlockState(), false);
         ModUtils.leaves(boxUp, leaves, true, random, level, Blocks.AIR.defaultBlockState(), false);
@@ -91,6 +92,11 @@ public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
 
         for (int k = 0; k < trunkPosList.size() && placed; k++) {
             placed = (level.getBlockState(trunkPosList.get(k)).canBeReplaced() || level.getBlockState(trunkPosList.get(k)).is(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("minecraft", "leaves"))));
+        }
+        for (int kx = -1; kx < 3; kx++) {
+            for (int kz = -1; kz < 3; kz++) {
+                placed = (level.getBlockState(baseBlockPos.offset(kx, -1, kz)).is(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("minecraft", "dirt"))) && placed);
+            }
         }
 
         if (placed) {
@@ -157,7 +163,7 @@ public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
                 rootPosList.clear();
             }
             for (int i = 0; i < leavesPosList.size(); i++) {
-                setLeaves(leavesPosList.get(i), random.nextInt(2) + 3, leavesBlockState, random, level);
+                setLeaves(leavesPosList.get(i), 2 + random.nextInt(2), 1, leavesBlockState, random, level);
             }
             return true;
         }

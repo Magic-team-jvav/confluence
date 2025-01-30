@@ -45,7 +45,8 @@ public class Confluence {
         ModParticleTypes.TYPES.register(eventBus);
         ModChunkGenerators.GENERATORS.register(eventBus);
         ModPaintingVariants.VARIANTS.register(eventBus);
-        ModEntityDataSerializer.ENTITY_DATA_SERIALIZERS.register(eventBus);
+        ModEntityDataSerializers.SERIALIZERS.register(eventBus);
+        ModCarvers.CARVERS.register(eventBus);
     }
 
     public static void registerGameRules() {

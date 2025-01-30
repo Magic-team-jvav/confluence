@@ -1,0 +1,6 @@
+{
+    "type": "neoforge:add_carvers",
+    "biomes": "confluence:the_corruption",
+    "carvers": "confluence:demonic_cave_carver",
+    "step": "air"
+}

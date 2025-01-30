@@ -18,7 +18,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.goal.NPCTradeGoal;
-import org.confluence.mod.common.init.ModEntityDataSerializer;
+import org.confluence.mod.common.init.ModEntityDataSerializers;
 import org.confluence.mod.common.menu.NPCTradesMenu;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -41,7 +41,7 @@ public class AbstractTerraNPC extends PathfinderMob implements GeoEntity {
         }
     }
 
-    private static final EntityDataAccessor<NPCTrades> DATA_DAVE_DATA = SynchedEntityData.defineId(AbstractTerraNPC.class, ModEntityDataSerializer.DAVE_TRADES_SERIALIZER.get());
+    private static final EntityDataAccessor<NPCTrades> DATA_DAVE_DATA = SynchedEntityData.defineId(AbstractTerraNPC.class, ModEntityDataSerializers.DAVE_TRADES_SERIALIZER.get());
 
     @Override
     protected void registerGoals() {

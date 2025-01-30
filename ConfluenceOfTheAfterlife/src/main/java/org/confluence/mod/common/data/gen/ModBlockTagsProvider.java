@@ -728,11 +728,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.MARINE_GRAVEL.get()
         );
         tag(Tags.Blocks.OBSIDIANS).add(
-               DecorativeBlocks.TR_OBSIDIAN_PLATE.get(),
-               DecorativeBlocks.TR_OBSIDIAN_BEAM.get(),
-               DecorativeBlocks.TR_OBSIDIAN_BRICKS.get(),
-               DecorativeBlocks.TR_OBSIDIAN_SMALL_BRICKS.get(),
-               DecorativeBlocks.CHISELED_TR_OBSIDIAN_BRICKS.get()
+                DecorativeBlocks.TR_OBSIDIAN_PLATE.get(),
+                DecorativeBlocks.TR_OBSIDIAN_BEAM.get(),
+                DecorativeBlocks.TR_OBSIDIAN_BRICKS.get(),
+                DecorativeBlocks.TR_OBSIDIAN_SMALL_BRICKS.get(),
+                DecorativeBlocks.CHISELED_TR_OBSIDIAN_BRICKS.get()
         );
         tag(Tags.Blocks.ORE_BEARING_GROUND_NETHERRACK).add(
                 NatureBlocks.ASH_BLOCK.get()
@@ -940,23 +940,23 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DecorativeBlocks.TR_POLISHED_GRANITE.get()
         );
         tag(Tags.Blocks.STORAGE_BLOCKS).add(
-               OreBlocks.RAW_TIN_BLOCK.get(),
-               OreBlocks.RAW_LEAD_BLOCK.get(),
-               OreBlocks.RAW_SILVER_BLOCK.get(),
-               OreBlocks.RAW_TUNGSTEN_BLOCK.get(),
-               OreBlocks.RAW_PLATINUM_BLOCK.get(),
-               OreBlocks.RAW_DEMONITE_BLOCK.get(),
-               OreBlocks.RAW_TR_CRIMSON_BLOCK.get(),
-               OreBlocks.METEORITE_BLOCK.get(),
-               OreBlocks.RAW_ADAMANTITE_BLOCK.get(),
-               OreBlocks.RAW_COBALT_BLOCK.get(),
-               OreBlocks.RAW_HELLSTONE_BLOCK.get(),
-               OreBlocks.RAW_CHLOROPHYTE_BLOCK.get(),
-               OreBlocks.RAW_LUMINITE_BLOCK.get(),
-               OreBlocks.RAW_PALLADIUM_BLOCK.get(),
-               OreBlocks.RAW_ORICHALCUM_BLOCK.get(),
-               OreBlocks.RAW_TITANIUM_BLOCK.get(),
-               DecorativeBlocks.FLOATING_WHEAT_BALE.get()
+                OreBlocks.RAW_TIN_BLOCK.get(),
+                OreBlocks.RAW_LEAD_BLOCK.get(),
+                OreBlocks.RAW_SILVER_BLOCK.get(),
+                OreBlocks.RAW_TUNGSTEN_BLOCK.get(),
+                OreBlocks.RAW_PLATINUM_BLOCK.get(),
+                OreBlocks.RAW_DEMONITE_BLOCK.get(),
+                OreBlocks.RAW_TR_CRIMSON_BLOCK.get(),
+                OreBlocks.METEORITE_BLOCK.get(),
+                OreBlocks.RAW_ADAMANTITE_BLOCK.get(),
+                OreBlocks.RAW_COBALT_BLOCK.get(),
+                OreBlocks.RAW_HELLSTONE_BLOCK.get(),
+                OreBlocks.RAW_CHLOROPHYTE_BLOCK.get(),
+                OreBlocks.RAW_LUMINITE_BLOCK.get(),
+                OreBlocks.RAW_PALLADIUM_BLOCK.get(),
+                OreBlocks.RAW_ORICHALCUM_BLOCK.get(),
+                OreBlocks.RAW_TITANIUM_BLOCK.get(),
+                DecorativeBlocks.FLOATING_WHEAT_BALE.get()
         );
         tag(Tags.Blocks.STORAGE_BLOCKS).add(
                 OreBlocks.RAW_TIN_BLOCK.get(),
@@ -1015,6 +1015,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SILK_ROPE.get(),
                 WEB_ROPE.get()
         );
+        tag(BlockTags.OVERWORLD_CARVER_REPLACEABLES).add(NatureBlocks.EBONY_STONE.get());
     }
 
     @Override

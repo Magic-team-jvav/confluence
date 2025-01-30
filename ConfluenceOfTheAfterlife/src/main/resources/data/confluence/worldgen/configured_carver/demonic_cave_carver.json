@@ -1,0 +1,25 @@
+{
+    "type": "confluence:demonic_cave_carver",
+    "config": {
+        "lava_level": {
+            "above_bottom": 8
+        },
+        "probability": 0.2,
+        "replaceable": "#minecraft:overworld_carver_replaceables",
+        "y": {
+            "type": "minecraft:uniform",
+            "max_inclusive": {
+                "absolute": 67
+            },
+            "min_inclusive": {
+                "absolute": 10
+            }
+        },
+        "yScale": 4.0,
+        "depth_range": {
+            "type": "minecraft:uniform",
+            "max_exclusive": 0.125,
+            "min_inclusive": -0.125
+        }
+    }
+}

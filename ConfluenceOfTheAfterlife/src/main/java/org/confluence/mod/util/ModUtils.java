@@ -206,23 +206,23 @@ public final class ModUtils {
         return new Vec3(x, y, z);
     }
 
-    public static void lightningPathList(List<Vector3d> locationList, double dis, int move, RandomSource random) {
+    public static void lightningPathList(List<Vector3d> locationList, double dist, int move, RandomSource random) {
+        double distSqr = dist * dist;
         boolean refined;
         do {
             refined = false;
             for (int i = 0; i < locationList.size() - 1; i++) {
                 Vector3d point1 = locationList.get(i);
                 Vector3d point2 = locationList.get(i + 1);
-                double distance = Math.sqrt(Math.pow(point2.x - point1.x, 2) + Math.pow(point2.y - point1.y, 2) + Math.pow(point2.z - point1.z, 2));
-                if (distance > dis) {
+                double distanceSqr = point2.distanceSquared(point1);
+                if (distanceSqr > distSqr) {
                     Vector3d midpoint = new Vector3d();
-                    midpoint.x = ((point1.x + point2.x) / 2);
-                    midpoint.y = ((point1.y + point2.y) / 2);
-                    midpoint.z = ((point1.z + point2.z) / 2);
-                    double offset = distance / move;
-                    midpoint.x = midpoint.x + (random.nextDouble() - 0.5) * offset * 2;
-                    midpoint.y = midpoint.y + (random.nextDouble() - 0.5) * offset * 2;
-                    midpoint.z = midpoint.z + (random.nextDouble() - 0.5) * offset * 2;
+                    point1.add(point2, midpoint).mul(0.5);
+                    double offset = Math.sqrt(distanceSqr) / move;
+                    double twoOffset = offset * 2;
+                    midpoint.x = midpoint.x + (random.nextDouble() - 0.5) * twoOffset;
+                    midpoint.y = midpoint.y + (random.nextDouble() - 0.5) * twoOffset;
+                    midpoint.z = midpoint.z + (random.nextDouble() - 0.5) * twoOffset;
                     locationList.add(i + 1, midpoint);
                     refined = true;
                 }

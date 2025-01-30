@@ -27,17 +27,17 @@ public class BannedBiomeMultiNoiseBiomeSource extends MultiNoiseBiomeSource {
     @Override
     public Holder<Biome> getNoiseBiome(int pX, int pY, int pZ, Climate.Sampler pSampler) {
         Holder<Biome> biome = super.getNoiseBiome(pX, pY, pZ, pSampler);
-        if (biome.is(bannedBiome)) {
-            if (target == null) {
-                MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-                if (server == null) return biome;
-                this.target = server.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(targetBiome);
-                if (targetBiome.equals(ModBiomes.THE_CORRUPTION)) {
-                    ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.THE_CORRUPTION);
-                } else if (targetBiome.equals(ModBiomes.TR_CRIMSON)) {
-                    ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.TR_CRIMSON);
-                }
+        if (target == null) {
+            MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+            if (server == null) return biome;
+            this.target = server.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(targetBiome);
+            if (targetBiome.equals(ModBiomes.THE_CORRUPTION)) {
+                ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.THE_CORRUPTION);
+            } else if (targetBiome.equals(ModBiomes.TR_CRIMSON)) {
+                ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.TR_CRIMSON);
             }
+        }
+        if (biome.is(bannedBiome)) {
             return target;
         }
         return biome;

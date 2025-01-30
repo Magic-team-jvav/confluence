@@ -71,7 +71,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(),
                 NatureBlocks.HALLOW_GRASS_BLOCK.get(),
                 NatureBlocks.ASH_GRASS_BLOCK.get(),
-                NatureBlocks.MUSHROOM_GRASS_BLOCK.get()
+                NatureBlocks.MUSHROOM_GRASS_BLOCK.get(),
+                NatureBlocks.JUNGLE_GRASS_BLOCK.get()
         );
         tag(BlockTags.SAND).add(
                 NatureBlocks.TR_CRIMSON_SAND.get(),
@@ -118,7 +119,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.PEARL_LOG_BLOCKS.getStrippedWood().get(),
                 NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedWood().get(),
                 NatureBlocks.LIVING_LOG_BLOCKS.getStrippedWood().get(),
-                NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedWood().get()
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedWood().get(),
+                FunctionalBlocks.OAK_LOG_BOULDER.get()
         );
         /*IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithHoe = tag(BlockTags.MINEABLE_WITH_HOE);
         mineableWithHoe.add(
@@ -464,6 +466,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(ModTags.Blocks.MINEABLE_WITH_PICKAXE_AXE).addTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.MINEABLE_WITH_AXE);
         tag(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE).add(
                 NatureBlocks.MUSHROOM_GRASS_BLOCK.get(),
+                NatureBlocks.JUNGLE_GRASS_BLOCK.get(),
                 NatureBlocks.HALLOW_GRASS_BLOCK.get(),
                 NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(),
                 NatureBlocks.CORRUPT_GRASS_BLOCK.get(),
@@ -490,7 +493,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.LIVING_LOG_BLOCKS.getLeaves().get(),
                 NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().get(),
                 NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get()
-
         );
         tag(ModTags.Blocks.COIN_PILE).add(COPPER_COIN_PILE.get(), SILVER_COIN_PILE.get(), GOLDEN_COIN_PILE.get(), PLATINUM_COIN_PILE.get(), EMERALD_COIN_PILE.get());
 

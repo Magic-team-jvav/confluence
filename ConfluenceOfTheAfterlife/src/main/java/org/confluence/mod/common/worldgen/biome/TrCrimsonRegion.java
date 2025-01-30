@@ -16,8 +16,8 @@ import java.util.function.Consumer;
 import static terrablender.api.ParameterUtils.*;
 
 //腐化群系设置（自然生成，参数设置）
-public class AnotherCrimsonRegion extends Region {
-    public AnotherCrimsonRegion(ResourceLocation name, int weight) {
+public class TrCrimsonRegion extends Region {
+    public TrCrimsonRegion(ResourceLocation name, int weight) {
         super(name, RegionType.OVERWORLD, weight);
     }
 

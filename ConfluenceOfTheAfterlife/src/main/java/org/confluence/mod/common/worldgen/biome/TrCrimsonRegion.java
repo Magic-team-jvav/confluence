@@ -31,7 +31,7 @@ public class TrCrimsonRegion extends Region {
             .humidity(Humidity.span(Humidity.ARID, Humidity.HUMID))
             .continentalness(Continentalness.INLAND)
             .erosion(Erosion.EROSION_4, Erosion.EROSION_5)
-            .depth(Depth.SURFACE, Depth.FLOOR)
+            .depth(Depth.SURFACE, Depth.FULL_RANGE)
             .weirdness(Weirdness.MID_SLICE_NORMAL_ASCENDING, Weirdness.FULL_RANGE)
             .build().forEach(point -> builder.add(point, ModBiomes.TR_CRIMSON));
 

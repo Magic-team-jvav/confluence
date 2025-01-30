@@ -28,7 +28,7 @@ public class TheCorruptionRegion extends Region {
             .humidity(Humidity.span(Humidity.ARID, Humidity.DRY))
             .continentalness(Continentalness.INLAND)
             .erosion(Erosion.EROSION_0, Erosion. EROSION_3)
-            .depth(Depth.SURFACE, Depth.SURFACE)
+            .depth(Depth.SURFACE, Depth.FULL_RANGE)
             .weirdness(Weirdness.FULL_RANGE, Weirdness.LOW_SLICE_VARIANT_ASCENDING)
             .build().forEach(point -> builder.add(point, ModBiomes.THE_CORRUPTION));
         builder.build().forEach(mapper);

@@ -1,0 +1,19 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        "###",
+        "# #"
+    ],
+    "key": {
+        "#": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "minecraft:pumpkin"
+            },
+            "count": 4
+        }
+    },
+    "result": {
+        "id": "confluence:pumpkin_helmet"
+    }
+}

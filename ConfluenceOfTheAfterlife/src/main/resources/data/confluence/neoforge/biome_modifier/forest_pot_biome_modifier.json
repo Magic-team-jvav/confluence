@@ -25,5 +25,5 @@
     "minecraft:old_growth_pine_taiga"
   ],
   "features": "confluence:forest_pot",
-  "step": "local_modifications"
+  "step": "underground_decoration"
 }

@@ -12,6 +12,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +21,7 @@ public class JungleSporeBlock extends BasePlantBlock {
 
 
     public JungleSporeBlock() {
-        super(Properties.ofFullCopy(Blocks.DANDELION).lightLevel(value -> 4), Blocks.GRASS_BLOCK,Blocks.STONE,Blocks.DEEPSLATE, Blocks.MOSS_BLOCK, Blocks.CLAY);
+        super(Properties.ofFullCopy(Blocks.DANDELION).lightLevel(value -> 4), NatureBlocks.JUNGLE_GRASS_BLOCK.get(),Blocks.STONE,Blocks.DEEPSLATE, Blocks.MOSS_BLOCK, Blocks.CLAY);
     }
 
     @Override

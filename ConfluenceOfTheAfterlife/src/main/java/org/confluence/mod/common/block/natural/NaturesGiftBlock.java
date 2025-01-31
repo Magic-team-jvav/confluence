@@ -15,6 +15,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,7 +23,7 @@ public class NaturesGiftBlock extends BasePlantBlock {
     private static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 10.0D, 12.0D);
 
     public NaturesGiftBlock() {
-        super(Blocks.GRASS_BLOCK, Blocks.MOSS_BLOCK, Blocks.CLAY);
+        super(Blocks.GRASS_BLOCK, Blocks.MOSS_BLOCK, Blocks.CLAY, NatureBlocks.JUNGLE_SPORE.get());
     }
 
     @Override

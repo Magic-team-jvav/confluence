@@ -10,6 +10,9 @@
     "confluence:jungle_rose",
     "confluence:jungle_spore",
     "confluence:moonglow",
+    "confluence:under_ground_jungle_grass",
+    "confluence:under_ground_jungle_bush",
+    "confluence:under_ground_jungle_tree",
     "confluence:natures_gift"
   ],
   "step": "vegetal_decoration"

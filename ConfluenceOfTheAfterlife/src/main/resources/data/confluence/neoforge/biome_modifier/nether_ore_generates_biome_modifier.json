@@ -9,6 +9,9 @@
     "minecraft:warped_forest",
     "minecraft:soul_sand_valley"
   ],
-  "features": "confluence:hellstone_generates",
+  "features": [
+    "confluence:hellstone_generates",
+    "confluence:ore_ancient_debris_add"
+  ],
   "step": "surface_structures"
 }

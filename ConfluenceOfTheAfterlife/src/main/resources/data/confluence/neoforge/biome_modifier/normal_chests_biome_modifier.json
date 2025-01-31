@@ -43,5 +43,5 @@
     "confluence:underground_chests",
     "confluence:surface_chests"
   ],
-  "step": "local_modifications"
+  "step": "underground_decoration"
 }

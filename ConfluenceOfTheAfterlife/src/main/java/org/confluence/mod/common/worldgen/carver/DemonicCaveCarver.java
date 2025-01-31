@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.valueproviders.FloatProvider;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.CarvingMask;
@@ -35,12 +36,12 @@ public class DemonicCaveCarver extends WorldCarver<DemonicCaveCarver.Config> {
     @Override
     public boolean carve(CarvingContext context, Config config, ChunkAccess chunk, Function<BlockPos, Holder<Biome>> biomeAccessor, RandomSource random, Aquifer aquifer, ChunkPos chunkPos, CarvingMask carvingMask) {
         RandomSource random1 = RandomSource.create(random.nextLong());
-        int x1 = chunkPos.getBlockX(random1.nextInt(24, 48) * (random1.nextBoolean() ? -1 : 1));
+        int x1 = chunkPos.getBlockX((int) config.verticalLength.sample(random1) * (random1.nextBoolean() ? -1 : 1));
         int y1 = config.y.sample(random1, context) + 8;
-        int z1 = chunkPos.getBlockZ(random1.nextInt(24, 48) * (random1.nextBoolean() ? -1 : 1));
-        int x2 = chunkPos.getBlockX(random1.nextInt(24, 48) * (random1.nextBoolean() ? -1 : 1));
+        int z1 = chunkPos.getBlockZ((int) config.verticalLength.sample(random1) * (random1.nextBoolean() ? -1 : 1));
+        int x2 = chunkPos.getBlockX((int) config.verticalLength.sample(random1) * (random1.nextBoolean() ? -1 : 1));
         int y2 = config.y.sample(random1, context) + 8;
-        int z2 = chunkPos.getBlockZ(random1.nextInt(24, 48) * (random1.nextBoolean() ? -1 : 1));
+        int z2 = chunkPos.getBlockZ((int) config.verticalLength.sample(random1) * (random1.nextBoolean() ? -1 : 1));
         float yScale = config.yScale.sample(random1);
 
         List<Vector3d> positions = Lists.newArrayList(new Vector3d(x1, y1, z1), new Vector3d(x2, y2, z2));
@@ -49,10 +50,11 @@ public class DemonicCaveCarver extends WorldCarver<DemonicCaveCarver.Config> {
         Set<BlockPos> set = new HashSet<>();
         for (int i = 0; i < size; i++) {
             Vector3d position = positions.get(i);
-            for (int j = -8; j < 8; j++) {
+            float delta = Math.abs(i - size * 0.5F) / size;
+            for (int j = -4; j < 13; j++) {
                 int maxRadius = random1.nextInt(9) + 4;
-                int radius = maxRadius - Mth.lerpInt(Math.abs(i - size * 0.5F) / size, 8, maxRadius);
-                boolean b = carveEllipsoid(context, config, chunk, biomeAccessor, aquifer, position.x, position.y - j * yScale, position.z, radius, yScale, carvingMask, (context1, relativeX, relativeY, relativeZ, y) -> false);
+                int radius = maxRadius - Mth.lerpInt(delta, 8, maxRadius);
+                boolean b = carveEllipsoid(context, config, chunk, biomeAccessor, aquifer, position.x, position.y - j * yScale, position.z, radius, yScale + 4, carvingMask, (context1, relativeX, relativeY, relativeZ, y) -> false);
                 if (b && j == 7) {
                     BlockPos pos = new BlockPos((int) position.x, (int) (position.y - 8 * yScale), (int) position.z);
                     set.add(pos);
@@ -70,16 +72,19 @@ public class DemonicCaveCarver extends WorldCarver<DemonicCaveCarver.Config> {
 
     @Override
     public boolean isStartChunk(Config config, RandomSource random) {
-        return random.nextFloat() <= config.probability;
+        return random.nextFloat() < config.probability;
     }
 
     public static class Config extends CarverConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                CarverConfiguration.CODEC.forGetter(config -> config)
+                CarverConfiguration.CODEC.forGetter(config -> config),
+                FloatProvider.codec(0, 127).fieldOf("vertical_length").forGetter(config -> config.verticalLength)
         ).apply(instance, Config::new));
+        private final FloatProvider verticalLength;
 
-        public Config(CarverConfiguration baseConfig) {
+        public Config(CarverConfiguration baseConfig, FloatProvider verticalLength) {
             super(baseConfig.probability, baseConfig.y, baseConfig.yScale, baseConfig.lavaLevel, baseConfig.debugSettings, baseConfig.replaceable);
+            this.verticalLength = verticalLength;
         }
     }
 }

@@ -15,6 +15,11 @@
                 "absolute": 40
             }
         },
-        "yScale": 4.0
+        "yScale": 4.0,
+        "vertical_length": {
+            "type": "minecraft:uniform",
+            "min_inclusive": 24,
+            "max_exclusive": 48
+        }
     }
 }

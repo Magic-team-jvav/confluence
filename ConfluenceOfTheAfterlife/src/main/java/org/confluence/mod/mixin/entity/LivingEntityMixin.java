@@ -46,6 +46,8 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @Unique
     private boolean confluence$breakingEasyCrashBlock = false;
 
+    @Unique private boolean confluence$deadO;
+
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
@@ -114,5 +116,13 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
             return 0.0;
         }
         return Math.max(deltaMovement.y, -0.15F);
+    }
+
+    @Override
+    public boolean confluence$deadO(boolean... dead){
+        if(dead != null && dead.length > 0){
+            confluence$deadO = dead[0];
+        }
+        return confluence$deadO;
     }
 }

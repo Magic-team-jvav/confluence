@@ -141,6 +141,7 @@ public final class ModEvents {
         registrar.playToClient(ExtraInventorySyncPacketS2C.TYPE, ExtraInventorySyncPacketS2C.STREAM_CODEC, ExtraInventorySyncPacketS2C::handle);
         registrar.playToClient(ExtraInventoryStackPacketS2C.TYPE, ExtraInventoryStackPacketS2C.STREAM_CODEC, ExtraInventoryStackPacketS2C::handle);
         registrar.playToClient(BrushingColorPacketS2C.TYPE, BrushingColorPacketS2C.STREAM_CODEC, BrushingColorPacketS2C::handle);
+        registrar.playToClient(DeathMotionPacketS2C.TYPE, DeathMotionPacketS2C.STREAM_CODEC, DeathMotionPacketS2C::handle);
         if (PatchouliHelper.IS_LOADED) {
             registrar.playToClient(PatchouliEntityEntriesPacketS2C.TYPE, PatchouliEntityEntriesPacketS2C.STREAM_CODEC, PatchouliEntityEntriesPacketS2C::handle);
         }

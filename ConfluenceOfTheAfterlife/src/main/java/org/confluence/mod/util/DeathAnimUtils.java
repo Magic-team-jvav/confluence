@@ -9,8 +9,13 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.terraentity.entity.util.DeathAnimOptions;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import software.bernie.geckolib.cache.object.GeoCube;
+import software.bernie.geckolib.cache.object.GeoQuad;
+import software.bernie.geckolib.cache.object.GeoVertex;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /** @author voila */
@@ -363,4 +368,46 @@ public final class DeathAnimUtils {
         double x = range.getXsize() * range.getYsize() * range.getZsize();
         return (int) (85 * Math.log(x + 1));
     }
+
+    public static GeoCube duplicateGeoCube(GeoCube geoCube){
+        GeoQuad[] quads = geoCube.quads();
+        GeoQuad[] newQuads = new GeoQuad[quads.length];
+        List<Vector3f> allVertices = new ArrayList<>();
+        for(int j = 0, quadsLength = quads.length; j < quadsLength; j++){
+            GeoQuad quad = quads[j];
+            GeoVertex[] vertices = quad.vertices();
+            GeoVertex[] newVertex = new GeoVertex[vertices.length];
+            for(int i = 0, verticesLength = vertices.length; i < verticesLength; i++){
+                GeoVertex vertex = vertices[i];
+                Vector3f pos = vertex.position();
+                allVertices.add(pos);
+                newVertex[i] = new GeoVertex(new Vector3f(pos), vertex.texU(), vertex.texV());
+            }
+            newQuads[j] = new GeoQuad(newVertex, new Vector3f(quad.normal()), quad.direction());
+        }
+
+        float[] coords = new float[3];
+        for(Vector3f vec : allVertices){
+            coords[0] += vec.x;
+//            coords[1] += vec.y;
+            coords[2] += vec.z;
+        }
+        coords[0] /= allVertices.size();
+        coords[1] = allVertices.get(2).y;
+        coords[2] /= allVertices.size();
+        Vec3 offset =  new Vec3(coords[0], coords[1], coords[2]);
+        GeoCube newCube = new GeoCube(newQuads, geoCube.pivot().subtract(offset.scale(16)), geoCube.rotation(), geoCube.size(), geoCube.inflate(), geoCube.mirror());
+        moveToOrigin(newCube, offset);
+        return newCube;
+    }
+
+    public static void moveToOrigin(GeoCube cube, Vec3 centroid){
+        for(GeoQuad quad : cube.quads()){
+            for(GeoVertex vertex : quad.vertices()){
+                Vector3f pos = vertex.position();
+                pos.set(pos.x - centroid.x, pos.y - centroid.y, pos.z - centroid.z);
+            }
+        }
+    }
+
 }

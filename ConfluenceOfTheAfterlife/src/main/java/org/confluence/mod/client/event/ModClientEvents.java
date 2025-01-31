@@ -1,7 +1,5 @@
 package org.confluence.mod.client.event;
 
-import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
@@ -10,15 +8,11 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
-import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -56,6 +50,7 @@ import org.confluence.mod.client.particle.BiomeColorParticle;
 import org.confluence.mod.client.particle.DamageIndicatorParticle;
 import org.confluence.mod.client.particle.SimpleTextureSheetParticle;
 import org.confluence.mod.client.renderer.block.*;
+import org.confluence.mod.client.renderer.entity.BodyPartRenderer;
 import org.confluence.mod.client.renderer.entity.EmptyEntityRenderer;
 import org.confluence.mod.client.renderer.entity.FallingStarRenderer;
 import org.confluence.mod.client.renderer.entity.TreasureBagRenderer;
@@ -244,6 +239,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(COIN_PORTAL.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(THROWN_POWDER.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(ROPE_COILS.get(), EmptyEntityRenderer::new);
+        event.registerEntityRenderer(BODY_PART.get(), BodyPartRenderer::new);
 
         event.registerBlockEntityRenderer(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new AltarBlockModel()));
         event.registerBlockEntityRenderer(FunctionalBlocks.SKY_MILL_ENTITY.get(), context -> new SkyMillBlockRenderer());

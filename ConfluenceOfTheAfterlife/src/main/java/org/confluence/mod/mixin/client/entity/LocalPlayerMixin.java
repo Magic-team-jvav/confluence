@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.client;
+package org.confluence.mod.mixin.client.entity;
 
 import net.minecraft.client.player.LocalPlayer;
 import org.confluence.mod.mixed.ILocalPlayer;

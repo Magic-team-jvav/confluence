@@ -1,19 +1,23 @@
-package org.confluence.mod.mixin.client;
+package org.confluence.mod.mixin.client.entity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.client.effect.GlowingHelper;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.mixed.IEntity;
 import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
-public abstract class ClientEntityMixin implements SelfGetter<Entity> {
+public abstract class ClientEntityMixin implements SelfGetter<Entity>, IEntity {
+    @Unique private Vec3 confluence$deathMotion;
     @Inject(method = "getTeamColor", at = @At("HEAD"), cancellable = true)
     private void getTeamColor(CallbackInfoReturnable<Integer> cir) {
         if (Minecraft.getInstance().player != null && Minecraft.getInstance().player.hasEffect(ModEffects.HUNTER)) {
@@ -44,5 +48,13 @@ public abstract class ClientEntityMixin implements SelfGetter<Entity> {
             }
             cir.setReturnValue(helper.defaultColor.getRGB());
         }
+    }
+
+    @Override
+    public Vec3 confluence$deathMotion(Vec3... motion){
+        if(motion!=null && motion.length>0){
+            confluence$deathMotion = motion[0];
+        }
+        return confluence$deathMotion;
     }
 }

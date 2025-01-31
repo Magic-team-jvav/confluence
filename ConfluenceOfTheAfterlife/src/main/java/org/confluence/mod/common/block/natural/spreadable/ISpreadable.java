@@ -523,27 +523,38 @@ public interface ISpreadable {
         ),
 
         GLOWING(
-                getSupplier(MUD), NatureBlocks.MUSHROOM_GRASS_BLOCK,
-                NatureBlocks.JUNGLE_SPORE, NatureBlocks.GLOWING_MUSHROOM
         ),
         JUNGLE(
-                getSupplier(MUD), NatureBlocks.MUSHROOM_GRASS_BLOCK,
-                NatureBlocks.GLOWING_MUSHROOM, NatureBlocks.JUNGLE_SPORE
         ),
 
         PURE(
                 NatureBlocks.ASH_BLOCK, NatureBlocks.ASH_GRASS_BLOCK,
-                getSupplier(MUD), NatureBlocks.MUSHROOM_GRASS_BLOCK,
                 NatureBlocks.VICIOUS_MUSHROOM, NatureBlocks.LIFE_MUSHROOM,
                 NatureBlocks.VILE_MUSHROOM, NatureBlocks.LIFE_MUSHROOM,
                 NatureBlocks.CORRUPT_GRASS, getSupplier(SHORT_GRASS),
                 NatureBlocks.TR_CRIMSON_GRASS, getSupplier(SHORT_GRASS),
                 NatureBlocks.HALLOW_GRASS, getSupplier(SHORT_GRASS),
                 NatureBlocks.TR_CRIMSON_STONE, getSupplier(STONE),
+                NatureBlocks.TR_CRIMSON_COBBLESTONE, getSupplier(COBBLESTONE),
                 NatureBlocks.TR_CRIMSON_SAND, getSupplier(SAND),
+                NatureBlocks.TR_CRIMSON_SANDSTONE, getSupplier(SANDSTONE),
+                NatureBlocks.TR_CRIMSON_HARDENED_SAND_BLOCK, NatureBlocks.HARDENED_SAND_BLOCK,
+                NatureBlocks.TR_CRIMSON_MOIST_SAND_BLOCK, NatureBlocks.MOIST_SAND_BLOCK,
                 NatureBlocks.TR_CRIMSON_GRASS_BLOCK, getSupplier(GRASS_BLOCK),
+                NatureBlocks.EBONY_STONE, getSupplier(STONE),
+                NatureBlocks.EBONY_COBBLESTONE, getSupplier(COBBLESTONE),
+                NatureBlocks.EBONY_HARDENED_SAND_BLOCK, NatureBlocks.HARDENED_SAND_BLOCK,
+                NatureBlocks.EBONY_SANDSTONE, getSupplier(SANDSTONE),
+                NatureBlocks.EBONY_MOIST_SAND_BLOCK, NatureBlocks.MOIST_SAND_BLOCK,
+                NatureBlocks.EBONY_SAND, getSupplier(SAND),
                 NatureBlocks.CORRUPT_GRASS_BLOCK, getSupplier(GRASS_BLOCK),
                 NatureBlocks.HALLOW_GRASS_BLOCK, getSupplier(GRASS_BLOCK),
+                NatureBlocks.PEARL_STONE, getSupplier(STONE),
+                NatureBlocks.PEARL_COBBLESTONE, getSupplier(COBBLESTONE),
+                NatureBlocks.PEARL_HARDENED_SAND_BLOCK, NatureBlocks.HARDENED_SAND_BLOCK,
+                NatureBlocks.PEARL_SANDSTONE, getSupplier(SANDSTONE),
+                NatureBlocks.PEARL_MOIST_SAND_BLOCK, NatureBlocks.MOIST_SAND_BLOCK,
+                NatureBlocks.PEARL_SAND, getSupplier(SAND),
                 NatureBlocks.CRIMSON_THORN, getSupplier(Blocks.AIR),
                 NatureBlocks.CORRUPTION_THORN, getSupplier(Blocks.AIR)
         );

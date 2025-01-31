@@ -1128,6 +1128,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModBlocks.SHIVERTHORN.get(), "寒颤棘");
         add(ModBlocks.DAYBLOOM.get(), "太阳花");
         add(ModBlocks.DEATHWEED.get(), "死亡草");
+        add(NatureBlocks.FLOATING_WHEAT.get(), "飘飘麦");
 /*
         add(Torches.RED_TORCH.item.get(), "红火把");
         add(Torches.ORANGE_TORCH.item.get(), "橙火把");
@@ -1834,6 +1835,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.ANGLER_HAT.get(), "渔夫帽");
         add(ArmorItems.ANGLER_VEST.get(), "渔夫背心");
         add(ArmorItems.ANGLER_PANTS.get(), "渔夫裤");
+        add(ArmorItems.ANGLER_BOOTS.get(), "渔夫鞋");
         add(ArmorItems.MOLTEN_CHESTPLATE.get(), "熔岩胸甲");
         add(ArmorItems.MOLTEN_HELMET.get(), "熔岩头盔");
         add(ArmorItems.MOLTEN_LEGGINGS.get(), "熔岩护腿");

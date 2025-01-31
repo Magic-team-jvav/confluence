@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -46,5 +47,19 @@ public class TreasureBagItemEntity extends ItemEntity {
         if (player == null) return false;
         Optional<UUID> uuid = entityData.get(DATA_OWNER);
         return uuid.isPresent() && uuid.get().equals(player.getUUID());
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        entityData.get(DATA_OWNER).ifPresent(uuid -> compound.putUUID("ActuallyOwner", uuid));
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        if (compound.hasUUID("ActuallyOwner")) {
+            entityData.set(DATA_OWNER, Optional.of(compound.getUUID("ActuallyOwner")));
+        }
     }
 }

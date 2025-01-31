@@ -1017,7 +1017,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SILK_ROPE.get(),
                 WEB_ROPE.get()
         );
-        tag(BlockTags.OVERWORLD_CARVER_REPLACEABLES).add(NatureBlocks.EBONY_STONE.get());
+        tag(BlockTags.OVERWORLD_CARVER_REPLACEABLES).add(
+                NatureBlocks.EBONY_STONE.get(),
+                NatureBlocks.TR_CRIMSON_STONE.get()
+        );
     }
 
     @Override

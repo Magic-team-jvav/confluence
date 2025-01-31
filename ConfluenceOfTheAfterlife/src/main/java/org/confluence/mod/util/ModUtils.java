@@ -359,4 +359,13 @@ public final class ModUtils {
             }
         }
     }
+
+    public static Vector3d toVector3d(BlockPos blockPos) {
+        Vec3 center = blockPos.getCenter();
+        return new Vector3d(center.x, center.y, center.z);
+    }
+
+    public static BlockPos fromVector3d(Vector3d vector3d) {
+        return new BlockPos((int) vector3d.x, (int) vector3d.y, (int) vector3d.z);
+    }
 }

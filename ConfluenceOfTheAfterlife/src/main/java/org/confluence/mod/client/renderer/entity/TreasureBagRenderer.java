@@ -20,8 +20,8 @@ import java.util.Calendar;
 import static org.confluence.mod.util.ClientUtils.HALF_SQRT_3;
 
 public class TreasureBagRenderer extends ItemEntityRenderer {
-    private static final float length = 0.8F;
-    private static final float width = 0.3F;
+    private static final float length = 1.0F;
+    private static final float width = 0.4F;
     private final long time;
 
     public TreasureBagRenderer(EntityRendererProvider.Context context) {

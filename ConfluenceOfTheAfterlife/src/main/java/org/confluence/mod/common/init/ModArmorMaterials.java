@@ -337,6 +337,6 @@ public final class ModArmorMaterials {
                 map.put(ArmorItem.Type.BOOTS, 5);
             }),
             15, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HELLSTONE_INGOT),
-            List.of(new ArmorMaterial.Layer(Confluence.asResource("molten"))), 1.0F, 0.0F
+            List.of(new ArmorMaterial.Layer(Confluence.asResource("molten"))), 0.0F, 0.0F
     ));
 }

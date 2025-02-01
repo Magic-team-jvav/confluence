@@ -12,6 +12,7 @@ import net.minecraft.world.item.component.Unbreakable;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.LightSaber;
@@ -23,8 +24,7 @@ import org.confluence.terra_curio.common.component.ModRarity;
 
 import java.util.function.Supplier;
 
-import static org.confluence.mod.common.item.sword.stagedy.EffectStrategy.BLOOD_BUTCHERED_EFFECT;
-import static org.confluence.mod.common.item.sword.stagedy.EffectStrategy.UNDEFINED_EFFECT;
+import static org.confluence.mod.common.item.sword.stagedy.EffectStrategy.*;
 import static org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy.*;
 import static org.confluence.mod.common.item.sword.stagedy.SwordPrefabs.*;
 
@@ -80,11 +80,11 @@ public class SwordItems {
 
     //效果剑
     public static final DeferredItem<SwordItem> LIGHTS_BANE = register("lights_bane",ModTiers.TITANIUM, 5, -1.0f,
-            ModRarity.BLUE,     EFFECT_SWORD.apply(UNDEFINED_EFFECT).addOnHitEffect(BLOOD_BUTCHERED_EFFECT)); //TODO 魔光剑,暂时发光效果,同时添加血腥屠刀效果
+            ModRarity.BLUE,     EFFECT_SWORD.apply(ON_HIT_PROJECTILE.apply((level)->ModEntities.LIGHTS_BANE_PROJECTILE.get().create(level).addAttackDamage(1.5f))));
     public static final DeferredItem<SwordItem> BLOOD_BUTCHERER = register("blood_butchere",ModTiers.TITANIUM, 7, -2.7F,
             ModRarity.BLUE,     EFFECT_SWORD.apply(BLOOD_BUTCHERED_EFFECT));
     public static final DeferredItem<SwordItem> VOLCANO = register("volcano",ModTiers.TITANIUM, 10, -1.4f,
-            ModRarity.ORANGE,   EFFECT_SWORD.apply(UNDEFINED_EFFECT));  //todo 
+            ModRarity.ORANGE,   EFFECT_SWORD.apply(EffectStrategy.SET_FIRE.apply(5,1f)));
     public static final DeferredItem<SwordItem> BAT_BAT = register("bat_bat", ModTiers.TITANIUM,12,-3.7f,
             ModRarity.ORANGE,   EFFECT_SWORD.apply(UNDEFINED_EFFECT));  //todo
 

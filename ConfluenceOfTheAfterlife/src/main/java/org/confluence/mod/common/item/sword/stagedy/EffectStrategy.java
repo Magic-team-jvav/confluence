@@ -5,11 +5,12 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.function.TriFunction;
+import org.confluence.mod.common.entity.projectile.SwordProjectile;
 import org.confluence.mod.common.init.ModEffects;
 
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
+import java.util.function.*;
 
 /**
  * 攻击时给敌人施加的效果或回调
@@ -62,7 +63,13 @@ public class EffectStrategy {
     public static final BiFunction<Integer,Float,BiConsumer<LivingEntity,LivingEntity>> SET_FIRE = (ticks,possibility) ->
             (owner1,entity1)->{ if(entity1.getRandom().nextFloat() < possibility)  entity1.setRemainingFireTicks(ticks);};
 
-
+    /**命中时残留弹幕*/
+    public static final Function<Function<Level, SwordProjectile>, BiConsumer<LivingEntity, LivingEntity>>  ON_HIT_PROJECTILE = (supplier)-> (owner, entity)->{
+         SwordProjectile projectile = supplier.apply(owner.level());
+         projectile.setOwner(owner);
+         projectile.setPos(entity.position().add(entity.getRandom().nextFloat()*0.2f, entity.getEyeHeight()*0.5f, entity.getRandom().nextFloat()*0.2f));
+         owner.level().addFreshEntity(projectile);
+    };
 
 
 

@@ -1718,6 +1718,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(BowItems.TUNGSTEN_BOW.get(), "钨弓");
         add(BowItems.GOLDEN_BOW.get(), "金弓");
         add(BowItems.PLATINUM_BOW.get(), "铂金弓");
+        add(BowItems.DEMON_BOW.get(), "恶魔弓");
+        add(BowItems.TENDON_BOW.get(), "肌腱弓");
+
+
         add(BowItems.DEVELOPER_BOW.get(), "开发者弓");
 
         // 盔甲

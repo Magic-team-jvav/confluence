@@ -17,8 +17,7 @@ public class LineSwordProjectile extends SwordProjectile {
         double offX = getX() + vec3.x;
         double offY = getY() + vec3.y;
         double offZ = getZ() + vec3.z;
-        setDeltaMovement(vec3.scale(0.93));
+        setDeltaMovement(vec3.scale(0.8));
         setPos(offX, offY, offZ);
-        if (tickCount >= SwordProjectile.TIME_EXISTENCE) discard();
     }
 }

@@ -492,7 +492,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         copy(BlockTags.RAILS, ItemTags.RAILS);
         copy(Tags.Blocks.ORES, Tags.Items.ORES);
         copy(Tags.Blocks.ORE_RATES_DENSE, Tags.Items.ORE_RATES_DENSE);
-        copy(Tags.Blocks.ORE_BEARING_GROUND_STONE, Tags.Items.ORE_BEARING_GROUND_STONE);
         copy(Tags.Blocks.ORE_BEARING_GROUND_NETHERRACK, Tags.Items.ORE_BEARING_GROUND_NETHERRACK);
         copy(Tags.Blocks.OBSIDIANS, Tags.Items.OBSIDIANS);
         copy(Tags.Blocks.HIDDEN_FROM_RECIPE_VIEWERS, Tags.Items.HIDDEN_FROM_RECIPE_VIEWERS);
@@ -584,7 +583,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             tag(ItemTags.WEAPON_ENCHANTABLE).add(item.get());
             tag(ItemTags.BOW_ENCHANTABLE).add(item.get());
         });
-
+        //  FishingPole 附魔
+        FishingPoleItems.ITEMS.getEntries().forEach(item -> {
+            tag(ItemTags.FISHING_ENCHANTABLE).add(item.get());
+        });
         // Sword 附魔
         SwordItems.ITEMS.getEntries().forEach(item -> {
             tag(ItemTags.SHARP_WEAPON_ENCHANTABLE).add(item.get());

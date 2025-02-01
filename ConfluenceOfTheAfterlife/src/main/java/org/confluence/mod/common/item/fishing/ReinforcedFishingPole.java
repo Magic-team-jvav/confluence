@@ -18,7 +18,7 @@ public class ReinforcedFishingPole extends AbstractFishingPole {
     public static final ResourceLocation ID = Confluence.asResource("reinforced_fishing_pole");
 
     public ReinforcedFishingPole() {
-        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE).durability(128), ModRarity.WHITE);
+        super(new Properties().durability(128), ModRarity.WHITE);
         addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new AttributeModifier(ID, 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND));
     }
 

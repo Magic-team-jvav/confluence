@@ -33,6 +33,7 @@ public final class ModTags {
         public static final TagKey<Block> DROOPING_VINE_CAN_SURVIVE = register("drooping_vine_can_survive");
         public static final TagKey<Block> JEWELLERY_BRANCHES_ATTACHABLE = register("jewellery_branches_attachable");
         public static final TagKey<Block> ASH_LOG_BRANCHES_ATTACHABLE = register("ash_log_branches_attachable");
+        public static final TagKey<Block> DESERT_FOSSIL_REPLACEMENT = register("desert_fossil_replacement");
         public static final TagKey<Block> TOMBSTONE = register("tombstone");
         public static final TagKey<Block> ROPE = register("rope");
 

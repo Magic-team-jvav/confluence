@@ -34,6 +34,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         StatueBlocks.acceptTags(this);
         tag(ModTags.Blocks.JEWELLERY_BRANCHES_ATTACHABLE).add(NatureBlocks.STONY_LOG.get());
         tag(ModTags.Blocks.ASH_LOG_BRANCHES_ATTACHABLE).add(NatureBlocks.ASH_LOG_BLOCKS.getLog().get());
+        tag(ModTags.Blocks.DESERT_FOSSIL_REPLACEMENT).add(
+                NatureBlocks.HARDENED_SAND_BLOCK.get(),
+                NatureBlocks.RED_HARDENED_SAND_BLOCK.get()
+        );
         tag(BlockTags.ANVIL).add(
                 FunctionalBlocks.LEAD_ANVIL.get(),
                 FunctionalBlocks.CHIPPED_LEAD_ANVIL.get(),
@@ -58,13 +62,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         );
         tag(BlockTags.RAILS).add(FunctionalBlocks.EVER_POWERED_RAIL.get());
 
-        tag((BlockTags.STONE_ORE_REPLACEABLES)).add(
-                NatureBlocks.HARDENED_SAND_BLOCK.get(),
-                NatureBlocks.RED_HARDENED_SAND_BLOCK.get(),
-                NatureBlocks.EBONY_STONE.get(),
-                NatureBlocks.PEARL_STONE.get(),
-                NatureBlocks.TR_CRIMSON_STONE.get()
-        );
+       // tag((BlockTags.STONE_ORE_REPLACEABLES)).add(
+       // );
         tag(BlockTags.DIRT).add(
                 NatureBlocks.CORRUPT_GRASS_BLOCK.get(),
                 NatureBlocks.ASH_BLOCK.get(),
@@ -739,18 +738,13 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(Tags.Blocks.ORE_BEARING_GROUND_NETHERRACK).add(
                 NatureBlocks.ASH_BLOCK.get()
         );
-        tag(Tags.Blocks.ORE_BEARING_GROUND_STONE).add(
+        /* tag(Tags.Blocks.ORE_BEARING_GROUND_STONE).add(
                 NatureBlocks.HARDENED_SAND_BLOCK.get(),
                 NatureBlocks.TR_CRIMSON_HARDENED_SAND_BLOCK.get(),
                 NatureBlocks.EBONY_HARDENED_SAND_BLOCK.get(),
                 NatureBlocks.PEARL_HARDENED_SAND_BLOCK.get()
         );
-        tag(Tags.Blocks.ORE_BEARING_GROUND_STONE).add(
-                NatureBlocks.HARDENED_SAND_BLOCK.get(),
-                NatureBlocks.TR_CRIMSON_HARDENED_SAND_BLOCK.get(),
-                NatureBlocks.EBONY_HARDENED_SAND_BLOCK.get(),
-                NatureBlocks.PEARL_HARDENED_SAND_BLOCK.get()
-        );
+         */
         tag(Tags.Blocks.ORE_RATES_DENSE).add(
                 OreBlocks.CORRUPTION_COPPER_ORE.get(),
                 OreBlocks.FLESHIFICATION_COPPER_ORE.get(),

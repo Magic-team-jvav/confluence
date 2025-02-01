@@ -1502,6 +1502,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModBlocks.VINE_ROPE.get(), "藤蔓绳");
         add(ModBlocks.SILK_ROPE.get(), "丝绸绳");
         add(ModBlocks.WEB_ROPE.get(), "蛛丝绳");
+        add(ModItems.ROPE_COILS.get(), "绳圈");
 
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");

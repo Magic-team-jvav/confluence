@@ -3,9 +3,9 @@ package org.confluence.mod.common.attachment;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.util.INBTSerializable;
-import org.confluence.mod.Confluence;
 import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.HashMap;
@@ -28,7 +28,7 @@ public class WeaponStorage implements INBTSerializable<CompoundTag> {
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag compoundTag) {
         for (String key : compoundTag.getAllKeys()) {
-            Item item = BuiltInRegistries.ITEM.get(Confluence.asResource(key));
+            Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(key));
             boomerangCounter.put(item, compoundTag.getInt(key));
         }
     }

@@ -49,6 +49,11 @@ public class HeavyWorkBenchRecipe extends AbstractAmountRecipe {
     }
 
     @Override
+    public boolean isIncomplete() {
+        return false;
+    }
+
+    @Override
     protected int maxIngredientSize() {
         return 16;
     }

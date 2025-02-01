@@ -31,7 +31,8 @@
     "air": [
       "minecraft:cave",
       "minecraft:cave_extra_underground",
-      "minecraft:canyon"
+      "minecraft:canyon",
+      "confluence:demonic_cave_carver"
     ]
   },
   "features": [

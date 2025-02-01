@@ -6,6 +6,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.worldgen.structure.CrimsonCaveStructure;
 import org.confluence.mod.common.worldgen.structure.LivingTreeStructure;
 
 import java.util.function.Supplier;
@@ -16,6 +17,10 @@ public final class ModStructures {
 
     public static final Supplier<StructureType<LivingTreeStructure>> LIVING_TREE = TYPES.register("living_tree", () -> () -> LivingTreeStructure.CODEC);
     public static final Supplier<StructurePieceType> LIVING_TREE_TRUNK = PIECE_TYPES.register("living_tree_trunk", () -> LivingTreeStructure.TrunkPiece::new);
+
+    public static final Supplier<StructureType<CrimsonCaveStructure>> CRIMSON_CAVE = TYPES.register("crimson_cave", () -> () -> CrimsonCaveStructure.CODEC);
+    public static final Supplier<StructurePieceType.ContextlessType> CRIMSON_CAVE_HILL = PIECE_TYPES.register("crimson_cave_hill", () -> CrimsonCaveStructure.HillPiece::new);
+    public static final Supplier<StructurePieceType.ContextlessType> CRIMSON_CAVE_PALM = PIECE_TYPES.register("crimson_cave_palm", () -> CrimsonCaveStructure.PalmPiece::new);
 
     public static void register(IEventBus bus) {
         TYPES.register(bus);

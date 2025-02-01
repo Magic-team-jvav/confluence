@@ -1,0 +1,14 @@
+{
+    "placement": {
+        "type": "minecraft:random_spread",
+        "salt": 89303042,
+        "separation": 8,
+        "spacing": 32
+    },
+    "structures": [
+        {
+            "structure": "confluence:crimson_cave",
+            "weight": 1
+        }
+    ]
+}

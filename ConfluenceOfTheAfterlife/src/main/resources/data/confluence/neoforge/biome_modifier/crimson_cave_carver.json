@@ -1,6 +1,0 @@
-{
-    "type": "neoforge:add_carvers",
-    "biomes": "confluence:tr_crimson",
-    "carvers": "confluence:crimson_cave_carver",
-    "step": "air"
-}

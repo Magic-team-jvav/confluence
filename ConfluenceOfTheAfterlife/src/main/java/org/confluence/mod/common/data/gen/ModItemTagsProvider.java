@@ -285,6 +285,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.MUSHROOM_GRASS_BLOCK.get().asItem(),
                 NatureBlocks.JUNGLE_GRASS_BLOCK.get().asItem()
         );
+        tag(ItemTags.CAT_FOOD).add(
+                FoodItems.SEA_BASS.get(),
+                FoodItems.ATLANTIC_COD.get(),
+                FoodItems.DAMSEL_FISH.get(),
+                FoodItems.TROUT.get(),
+                FoodItems.TUNA.get(),
+                FoodItems.PARTIAL_MOUTH_FISH.get()
+        );
         tag(ItemTags.PLANKS).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getPlanks().asItem(),
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getPlanks().asItem(),

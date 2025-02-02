@@ -10,7 +10,9 @@ import org.apache.commons.lang3.function.TriFunction;
 import org.confluence.mod.common.entity.projectile.SwordProjectile;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.terraentity.utils.TEUtils;
 
+import java.util.Map;
 import java.util.function.*;
 
 /**
@@ -47,6 +49,11 @@ public class EffectStrategy {
     /**附加ticks的效果*/
     public static final BiFunction<Holder<MobEffect>,Integer, BiConsumer<LivingEntity,LivingEntity>> TIME_EFFECT = (effect, ticks)->
             TIME_POSSIBILITY_EFFECT.apply(effect, ticks, 1f);
+
+    /**概率附加随机效果*/
+    public static final Function<Map<BiConsumer<LivingEntity,LivingEntity>,Float>, BiConsumer<LivingEntity,LivingEntity>> RANDOM_POSSIBILITY_EFFECT = (consumer_map)->
+            (owner, entity)->TEUtils.getRandomByWeight(consumer_map).accept(owner, entity);
+
 
 /* *****************************************************************************************************************************************/
 

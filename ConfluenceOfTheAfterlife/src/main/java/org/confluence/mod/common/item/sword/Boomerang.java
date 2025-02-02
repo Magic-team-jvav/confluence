@@ -108,6 +108,7 @@ public class Boomerang extends Item {
         public int cd = 10;                         //冷却时间
         public int forwardTick = 15;                //前进时间
         public int maxCount = 1;                    //最大射击次数
+        public int maxPenetration = 1;              //最大穿透次数
         public boolean canPenetrate = false;        //是否可穿透，否则命中生物返回
         public boolean shouldWaitForBack = true;    //是否等待返回
         public boolean shouldApplyCd = false;       //是否应用冷却
@@ -215,6 +216,13 @@ public class Boomerang extends Item {
          */
         public BoomerangModifier setBackSpeedFactor(float backSpeed) {
             this.backSpeed *= backSpeed;
+            return this;
+        }
+        /**
+         * 设置最大穿透次数
+         */
+        public BoomerangModifier setMaxPenetration(int maxPenetration) {
+            this.maxPenetration = maxPenetration;
             return this;
         }
 

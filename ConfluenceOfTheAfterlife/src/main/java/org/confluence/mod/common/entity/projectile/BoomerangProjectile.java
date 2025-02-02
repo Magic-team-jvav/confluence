@@ -30,6 +30,7 @@ public class BoomerangProjectile extends AbstractHurtingProjectile {
     private float backSpeed;//碰撞返回的速度
     public boolean isBacking;//正在返回
     private int backTime;//返回时间
+    private int penetrationCount;
 
     public BoomerangProjectile(EntityType<? extends AbstractHurtingProjectile> entityType, Level level) {
         super(entityType, level);
@@ -44,6 +45,8 @@ public class BoomerangProjectile extends AbstractHurtingProjectile {
         this.modifier = modifier;
         this.weapon = weapon;
         this.entityData.set(DATA_WEAPON, weapon.copy());
+        this.penetrationCount = modifier.maxPenetration;
+
     }
 
     //同步客户端数据
@@ -82,12 +85,13 @@ public class BoomerangProjectile extends AbstractHurtingProjectile {
                     && this.getOwner()!= null && !this.getOwner().is(living)
             ){
                 assert this.getOwner() instanceof LivingEntity;
+                penetrationCount--;
                 living.hurt(this.damageSources().mobProjectile(this, (LivingEntity) this.getOwner()), modifier.damage);
                 modifier.onHitEffects.forEach(effect -> effect.accept((LivingEntity) this.getOwner(), living));
                 //击退
                 doKnockback(living);
             }
-            if(!modifier.canPenetrate) {
+            if(!modifier.canPenetrate && penetrationCount <= 0) {
                 if(!isBacking) {
                     backTime = this.tickCount;
                     this.entityData.set(DATA_BACKING_TIME, backTime);
@@ -98,6 +102,17 @@ public class BoomerangProjectile extends AbstractHurtingProjectile {
 
             }
         }
+    }
+
+    @Override
+    protected boolean canHitEntity(Entity target) {
+        if (!target.canBeHitByProjectile()) {
+            return false;
+        }
+        Entity entity = this.getOwner();
+        if(entity == null || !entity.isPassengerOfSameVehicle(target))
+            return true;
+        return target != entity;
     }
 
     protected void doKnockback(LivingEntity entity) {
@@ -142,7 +157,7 @@ public class BoomerangProjectile extends AbstractHurtingProjectile {
                 Vec3 motion = dir.scale(actualSpeed);
                 this.setDeltaMovement(motion);
 //                this.move(MoverType.SELF, this.getDeltaMovement());
-                if(this.distanceToSqr(living.position().add(0,1,0)) < 1.5){
+                if(this.distanceToSqr(living.position().add(0,1,0)) < 2){
                     discard();
                 }
             }

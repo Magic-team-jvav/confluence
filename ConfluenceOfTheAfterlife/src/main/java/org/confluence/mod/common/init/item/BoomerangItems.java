@@ -2,6 +2,7 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.Unbreakable;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -12,8 +13,11 @@ import org.confluence.mod.common.component.SingleBooleanComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.sword.Boomerang;
+import org.confluence.mod.common.item.sword.stagedy.EffectStrategy;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
+
+import java.util.Map;
 
 import static org.confluence.mod.common.item.sword.stagedy.EffectStrategy.SET_FIRE;
 import static org.confluence.mod.common.item.sword.stagedy.EffectStrategy.TIME_POSSIBILITY_EFFECT;
@@ -27,8 +31,6 @@ public class BoomerangItems {
 
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
-
-
 
 
     public static final DeferredItem<Boomerang> WOOD_BOOMERANG = register("wood_boomerang",3,ModRarity.BLUE,
@@ -60,10 +62,25 @@ public class BoomerangItems {
 
     public static final DeferredItem<Boomerang> DEVELOPER_BOOMERANG = register("developer_boomerang",20, ModRarity.EPIC,
             new Boomerang.BoomerangModifier().setNotWaitForBack().setCd(10) // 不需要等待返回，设置cd
-                    .setForwardTick(50).setFlySpeedFactor(1.5f) // 设置向前飞行速度
+                    .setForwardTick(50)
+                    .setFlySpeedFactor(1.5f) // 设置向前飞行速度
                     .setBackSpeedFactor(2f) // 设置后退速度
     );
 
+
+    public static final DeferredItem<Boomerang> BeiDou_BOOMERANG = register("bei_dou_boomerang",10, ModRarity.EPIC,
+            MULTI_BOOMERANG_MODIFIER.apply(5, 4,
+                    NORMAL_BOOMERANG_MODIFIER.apply(20, 2.0f, 2.0f)
+                            .setMaxPenetration(7)
+                            .addOnHitEffect(EffectStrategy.RANDOM_POSSIBILITY_EFFECT.apply(Map.of(
+                                    EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(ModEffects.FROST_BURN, 200,3,3,1f), 5f,
+                                    EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(MobEffects.WITHER, 200,3,3,1f), 5f,
+                                    EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(MobEffects.POISON, 200,3,3,1f), 6f,
+                                    SET_FIRE.apply(200,1f), 9f
+                                    ))
+                            )
+            )
+    );
 
     private static DeferredItem<Boomerang> register(String name, float damage, ModRarity rarity, Boomerang.BoomerangModifier boomerangModifier) {
         return ITEMS.register(name, () -> new Boomerang(damage,boomerangModifier,new Item.Properties().stacksTo(1)

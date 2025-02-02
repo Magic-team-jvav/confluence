@@ -1362,6 +1362,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(BoomerangItems.TRIMARANG.get(), "三尖回旋镖");
         add(BoomerangItems.FLAMARANG.get(), "烈焰回旋镖");
         add(BoomerangItems.DEVELOPER_BOOMERANG.get(), "开发者回旋镖");
+        add(BoomerangItems.BeiDou_BOOMERANG.get(), "北斗飞镖");
+
 
 
         add(AxeItems.COPPER_AXE.get(), "铜斧");

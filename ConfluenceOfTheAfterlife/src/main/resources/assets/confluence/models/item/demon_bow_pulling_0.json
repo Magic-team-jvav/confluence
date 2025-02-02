@@ -1,0 +1,6 @@
+{
+    "parent": "confluence:item/demon_bow",
+    "textures": {
+        "layer0": "confluence:item/bow/demon_bow_pulling_0"
+    }
+}

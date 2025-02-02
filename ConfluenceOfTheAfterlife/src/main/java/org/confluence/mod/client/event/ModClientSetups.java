@@ -136,10 +136,6 @@ public final class ModClientSetups {
 
     static void setRenderLayers() {
         RenderType translucent = RenderType.translucent();
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.RED_ICE.get(), translucent);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.PURPLE_ICE.get(), translucent);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.PINK_ICE.get(), translucent);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.THIN_ICE_BLOCK.get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(ModFluids.SHIMMER.fluid().get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(ModFluids.SHIMMER.flowing().get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(ModFluids.HONEY.fluid().get(), translucent);

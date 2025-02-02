@@ -33,6 +33,7 @@ public class StillSwordProjectile extends SwordProjectile {
 
     }
 
+
     @Override
     protected void tickAttack() {
         if(direction!=null) {

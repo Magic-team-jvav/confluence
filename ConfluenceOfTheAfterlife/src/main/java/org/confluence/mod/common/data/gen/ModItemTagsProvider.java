@@ -7,6 +7,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -576,6 +577,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
         // 农作物掉落提升 再生法杖/再生之斧
         tag(ModTags.Items.CROP_FORTUNE).add(AxeItems.STAFF_OF_REGROWTH.get(), AxeItems.DRILL_OF_REGROWTH.get());
+        // 速发弓：恶魔弓、肌腱弓
+        tag(ModTags.Items.FAST_BOW).add(
+                BowItems.DEMON_BOW.get(),
+                BowItems.TENDON_BOW.get(),
+                BowItems.DAEDALUS_STORM_BOW.get()
+        );
 
         AccessoryItems.acceptTag(tag(TCTags.ACCESSORY));
         IntrinsicTagAppender<Item> ammo = tag(ModTags.Items.AMMO);

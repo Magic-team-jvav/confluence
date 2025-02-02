@@ -4,10 +4,14 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.bow.ShortBowItem;
+import org.confluence.mod.common.item.bow.TerraBowItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -17,6 +21,8 @@ public abstract class BowItemMixin {
     private float shortBowPower(int pCharge, Operation<Float> original, @Local(argsOnly = true) ItemStack itemStack) {
         if (itemStack.getItem() instanceof ShortBowItem shortBow) {
             return shortBow.getShortPowerForTime(pCharge);
+        }else if(itemStack.is(ModTags.Items.FAST_BOW)){
+            return TerraBowItem.getFastBowPowerForTime(pCharge);
         }
         return original.call(pCharge);
     }

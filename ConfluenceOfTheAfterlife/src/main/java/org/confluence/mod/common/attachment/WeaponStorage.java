@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WeaponStorage implements INBTSerializable<CompoundTag> {
-
     public Map<Item , Integer> boomerangCounter = new HashMap<>();
+    public boolean bowFullPull = false;
 
     @Override
     public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {

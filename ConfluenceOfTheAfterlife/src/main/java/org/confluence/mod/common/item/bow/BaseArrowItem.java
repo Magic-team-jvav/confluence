@@ -19,9 +19,9 @@ public class BaseArrowItem extends ArrowItem {
         if(pStack.getItem() instanceof BaseArrowItem && BaseArrowEntity.selectArrowFromItemMap.containsKey(pStack.getItem())){
             BaseArrowEntity arrow;
             if(weapon.getItem() instanceof TerraBowItem item){
-                arrow= new BaseArrowEntity(pShooter,this.getDefaultInstance(),weapon,item.modifyArrowBuilder);
+                arrow= new BaseArrowEntity(pShooter,this.getDefaultInstance(), weapon, item.modifyArrowBuilder);
             }else{
-                arrow= new BaseArrowEntity(pShooter,this.getDefaultInstance(),weapon);
+                arrow= new BaseArrowEntity(pShooter,this.getDefaultInstance(), weapon);
             }
             //arrow.setEffectsFromItem(pStack);
             return arrow;

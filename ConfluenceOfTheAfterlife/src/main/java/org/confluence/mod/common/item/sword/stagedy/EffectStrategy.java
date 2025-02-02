@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.function.TriFunction;
 import org.confluence.mod.common.entity.projectile.SwordProjectile;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModEntities;
 
 import java.util.function.*;
 
@@ -40,7 +41,7 @@ public class EffectStrategy {
 
     /**概率附加ticks的效果*/
     public static final TriFunction<Holder<MobEffect>,Integer,Float, BiConsumer<LivingEntity,LivingEntity>> TIME_POSSIBILITY_EFFECT = (effect, ticks, possibility)->
-            TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(effect, ticks, 1,1, possibility);
+            TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(effect, ticks, 0,0, possibility);
 
 
     /**附加ticks的效果*/
@@ -73,6 +74,8 @@ public class EffectStrategy {
          owner.level().addFreshEntity(projectile);
     };
 
+    // 魔光剑
+    public static final BiConsumer<LivingEntity, LivingEntity> LIGHTS_BANE_EFFECT = ON_HIT_PROJECTILE.apply((level)->ModEntities.LIGHTS_BANE_PROJECTILE.get().create(level).addAttackDamage(7f));
 
 
 /* ***********************************************************************************************************************************************/

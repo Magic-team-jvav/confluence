@@ -8,6 +8,10 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
+import org.confluence.mod.common.attachment.WeaponStorage;
+import org.confluence.mod.common.entity.projectile.BaseArrowEntity;
+import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.item.bow.BaseArrowItem;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,6 +26,13 @@ public abstract class ProjectileWeaponItemMixin {
     private void modifyProjectile(ServerLevel level, LivingEntity shooter, InteractionHand hand, ItemStack weapon, List<ItemStack> projectileItems, float velocity, float inaccuracy, boolean isCrit, LivingEntity target, CallbackInfo ci, @Local Projectile projectile) {
         if (projectile instanceof AbstractArrow abstractArrow) {
             ShortBowItem.applyToArrow(weapon, abstractArrow);
+            if(abstractArrow instanceof BaseArrowEntity terraArrow){
+                WeaponStorage data = shooter.getData(ModAttachmentTypes.WEAPON_STORAGE);
+                if(data.bowFullPull){ // 激活弓箭满蓄力特殊效果
+                    terraArrow.fullPull = true;
+                    data.bowFullPull = false;
+                }
+            }
         }
     }
 }

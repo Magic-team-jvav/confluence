@@ -50,8 +50,8 @@ public class DaedalusStormbow extends TerraBowItem {
         }
     };
 
-    public DaedalusStormbow(float baseDamage, int durability, ModRarity rarity) {
-        super(baseDamage, durability, rarity);
+    public DaedalusStormbow(float baseDamage,  ModRarity rarity) {
+        super(baseDamage, rarity);
     }
 
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int remainingUseDuration) {

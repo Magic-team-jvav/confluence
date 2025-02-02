@@ -15,6 +15,7 @@ import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.common.item.bow.DaedalusStormbow;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.bow.TerraBowItem;
+import org.confluence.mod.common.item.sword.stagedy.EffectStrategy;
 import org.confluence.terra_curio.common.component.ModRarity;
 
 import java.util.function.Supplier;
@@ -48,15 +49,18 @@ public class BowItems {
     public static final DeferredItem<TerraBowItem> TUNGSTEN_BOW = register("tungsten_bow", 4.0F, 1280);
     public static final DeferredItem<TerraBowItem> GOLDEN_BOW = register("golden_bow", 4.5F, 1408);
     public static final DeferredItem<TerraBowItem> PLATINUM_BOW = register("platinum_bow", 4.5F, 1536);
-    public static final DeferredItem<TerraBowItem> DEMON_BOW = register("demon_bow", 6F, 1600);
-    public static final DeferredItem<TerraBowItem> TENDON_BOW = register("tendon_bow", 7F, 1600);
-
+    public static final DeferredItem<TerraBowItem> DEMON_BOW = register("demon_bow", () -> new TerraBowItem(6F, ModRarity.GRAY,
+            modifier->modifier.addFullPullHitEffect(EffectStrategy.LIGHTS_BANE_EFFECT)
+    ));
+    public static final DeferredItem<TerraBowItem> TENDON_BOW = register("tendon_bow",  () -> new TerraBowItem(7F, ModRarity.PINK,
+            modifier->modifier.addFullPullHitEffect(EffectStrategy.BLOOD_BUTCHERED_EFFECT)
+    ));
 
     // 代达罗斯风暴弓
-    public static final DeferredItem<TerraBowItem> DAEDALUS_STORM_BOW = register("daedalus_storm_bow", ()->new DaedalusStormbow(10F, 2000, ModRarity.PURPLE));
+    public static final DeferredItem<TerraBowItem> DAEDALUS_STORM_BOW = register("daedalus_storm_bow", ()->new DaedalusStormbow(10F, ModRarity.PURPLE));
 
 
-    public static final DeferredItem<TerraBowItem> DEVELOPER_BOW = register("developer_bow", () -> new TerraBowItem(1F, 1536, ModRarity.MASTER,
+    public static final DeferredItem<TerraBowItem> DEVELOPER_BOW = register("developer_bow", () -> new TerraBowItem(1F, ModRarity.MASTER,
             modifier->modifier.setCauseFire(200)
                     .setDamage(10)
                     .setSpeedFactor(2)

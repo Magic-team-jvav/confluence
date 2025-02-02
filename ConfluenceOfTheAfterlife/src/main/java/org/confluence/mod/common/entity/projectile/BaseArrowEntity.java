@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -10,7 +11,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,26 +23,32 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ArrowItems;
+import org.confluence.mod.common.item.sword.stagedy.EffectStrategy;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class BaseArrowEntity extends AbstractArrow {
 
-
-
     static final float minSpeedAttackFactor = 0.5f;//速度影响伤害的最小系数
 
     public static class Tuple {
         public String path;
-        public Builder attr;
-        static Tuple create(String path, Supplier<Builder> type){Tuple t = new Tuple();t.path = path;t.attr = type.get();return t;}
+        public Supplier<Builder> attr;
+        static Tuple create(String path, Supplier<Builder> type){
+            Tuple t = new Tuple();
+            t.path = path;
+            t.attr = type;
+            return t;
+        }
 
         //构建箭的默认属性   mc原版木箭：   setDamage：2f
         static Tuple STAR_ARROW_ENTITY = create("textures/entity/arrow/star_arrow.png",()->new Builder()
@@ -51,17 +57,19 @@ public class BaseArrowEntity extends AbstractArrow {
                 .setDamage(4.5f).setPenetration(5).setKnockBack(1.5f));
         static Tuple FLAMING_ARROW_ENTITY = create("textures/entity/arrow/flaming_arrow.png",()->new Builder()
                 .setDamage(4.5f).setCauseFire(10*20));
+        static Tuple FROSTBURN_ARROW_ENTITY = create("textures/entity/arrow/frostburn_arrow.png",()->new Builder()
+                .setDamage(4.5f).addOnHitEffect(EffectStrategy.TIME_EFFECT.apply(ModEffects.FROST_BURN,10*20)));
     }
 
-    public static Map<Item,Tuple> selectArrowFromItemMap = Map.of(
+    public static Map<Item, Tuple> selectArrowFromItemMap = Map.of(
             ArrowItems.STAR_ARROW.get(), Tuple.STAR_ARROW_ENTITY,
             ArrowItems.UNHOLY_ARROW.get(), Tuple.UNHOLY_ARROW_ENTITY,
-            ArrowItems.FLAMING_ARROW.get(), Tuple.FLAMING_ARROW_ENTITY
+            ArrowItems.FLAMING_ARROW.get(), Tuple.FLAMING_ARROW_ENTITY,
+            ArrowItems.FROSTBURN_ARROW.get(), Tuple.FROSTBURN_ARROW_ENTITY
     );
 
         /*
         HELLFIRE_ARROW
-        FROSTBURN_ARROW
         BONE_ARROW
         SHIMMER_ARROW
         */
@@ -71,20 +79,20 @@ public class BaseArrowEntity extends AbstractArrow {
     private int penetrate = 0;
     private List<LivingEntity> havenBeen = new ArrayList<>();//标记不能重复穿透
     public Builder modify = new Builder();
+    private Tuple baseArrowTuple;
+    public boolean fullPull = false;
 
     public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
-    private Tuple baseArrowTuple;
-
     public BaseArrowEntity(LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon) {
         super(ModEntities.ARROW_PROJECTILE.get(), owner, owner.level(), pickupItemStack, firedFromWeapon);
         this.baseArrowTuple = selectArrowFromItemMap.get(pickupItemStack.getItem());
-        this.modify = baseArrowTuple.attr;
+        this.modify = baseArrowTuple.attr.get();
 
     }
-    public BaseArrowEntity(LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon,Consumer<Builder> modifyConsumer) {
+    public BaseArrowEntity(LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, Consumer<Builder> modifyConsumer) {
         this(owner,pickupItemStack,firedFromWeapon);
         if(modifyConsumer!=null) modifyConsumer.accept(modify);
     }
@@ -190,18 +198,20 @@ public class BaseArrowEntity extends AbstractArrow {
                 }
             }
         }
-
-
-
     }
+
+    @Override
     public double getBaseDamage() {
         return modify.base_damage;
     }
 
+    @Override
     protected void doPostHurtEffects(LivingEntity pLiving) {
+        if(getOwner() instanceof LivingEntity owner){
+            modify.onHitEffect.forEach(m->m.accept(owner,pLiving));
+            if(fullPull) modify.fullPullHitEffect.forEach(m->m.accept(owner,pLiving));
+        }
         super.doPostHurtEffects(pLiving);
-
-
     }
 
     private static SoundEvent getSound(){
@@ -212,15 +222,13 @@ public class BaseArrowEntity extends AbstractArrow {
     @Override
     protected ItemStack getDefaultPickupItem() {
         // 构造延迟
-        if(this.modify ==null) return Items.ARROW.getDefaultInstance();
-
-
-
+        if(this.modify == null)
+            return Items.ARROW.getDefaultInstance();
         return Items.ARROW.getDefaultInstance();
     }
 
 
-
+    @Override
     public void tick(){
 
         if(!level().isClientSide && tickCount> modify.auto_discard_tick)discard();
@@ -235,19 +243,30 @@ public class BaseArrowEntity extends AbstractArrow {
         return penetrate+1 < modify.penetration_count;
     }
 
-
-
+    @Override
     public void defineSynchedData(SynchedEntityData.Builder pBuilder){
         super.defineSynchedData(pBuilder);
         pBuilder.define(TEXTURE_PATH,"");
     }
+    @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> pKey) {
         super.onSyncedDataUpdated(pKey);
         this.texturePath =entityData.get(TEXTURE_PATH);
 
     }
 
-
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+    }
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if(selectArrowFromItemMap.containsKey(getPickupItem().getItem())) {
+            texturePath = selectArrowFromItemMap.get(getPickupItem().getItem()).path;
+            entityData.set(TEXTURE_PATH,texturePath);
+        }
+    }
 
 
 
@@ -270,8 +289,18 @@ public class BaseArrowEntity extends AbstractArrow {
         private float speedFactor = 1;
         private float knockBack = 0;
         private int causeFireTick = 0;
-        private List<MobEffect> effects = new ArrayList<>();
-        private Item attachArrow;
+        private final List<BiConsumer<LivingEntity, LivingEntity>> onHitEffect = new ArrayList<>();
+        private final List<BiConsumer<LivingEntity, LivingEntity>> fullPullHitEffect = new ArrayList<>();
+
+
+        public Builder addFullPullHitEffect(BiConsumer<LivingEntity, LivingEntity> consumer){
+            this.fullPullHitEffect.add(consumer);
+            return this;
+        }
+        public Builder addOnHitEffect(BiConsumer<LivingEntity, LivingEntity> consumer){
+            this.onHitEffect.add(consumer);
+            return this;
+        }
         public Builder setDamage(float damage){//基本伤害
             base_damage = damage;
             return this;
@@ -298,7 +327,6 @@ public class BaseArrowEntity extends AbstractArrow {
             return this;
         }
         public Builder setSpeedFactor(float factor){//初始速度修正系数
-            type|= Tag.auto_discard;
             speedFactor = factor;
             return this;
         }

@@ -80,7 +80,7 @@ public class SwordItems {
 
     //效果剑
     public static final DeferredItem<SwordItem> LIGHTS_BANE = register("lights_bane",ModTiers.TITANIUM, 5, -1.0f,
-            ModRarity.BLUE,     EFFECT_SWORD.apply(ON_HIT_PROJECTILE.apply((level)->ModEntities.LIGHTS_BANE_PROJECTILE.get().create(level).addAttackDamage(7f))));
+            ModRarity.BLUE,     EFFECT_SWORD.apply(LIGHTS_BANE_EFFECT));
     public static final DeferredItem<SwordItem> BLOOD_BUTCHERER = register("blood_butchere",ModTiers.TITANIUM, 7, -2.7F,
             ModRarity.BLUE,     EFFECT_SWORD.apply(BLOOD_BUTCHERED_EFFECT));
     public static final DeferredItem<SwordItem> VOLCANO = register("volcano",ModTiers.TITANIUM, 10, -1.4f,

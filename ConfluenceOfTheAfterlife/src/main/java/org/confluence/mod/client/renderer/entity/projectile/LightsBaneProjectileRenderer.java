@@ -31,9 +31,15 @@ public class LightsBaneProjectileRenderer extends EntityRenderer<StillSwordProje
     @Override
     public void render(StillSwordProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
         poseStack.pushPose();
-        poseStack.translate(0.00F, 0.125F, -0.125F);
-        float scale = Math.min((entity.tickCount + partialTick) * 0.2f, 1.0f);
+        float scale;
+        if(entity.tickCount > entity.TIME_EXISTENCE - 10){
+            scale = 1 - (entity.tickCount + partialTick - (entity.TIME_EXISTENCE - 10)) * 0.1f;
+        }else
+            scale = Math.min((entity.tickCount + partialTick) * 0.2f, 1.0f);
         poseStack.scale(scale, scale, scale);
+
+        poseStack.translate(0.00F, 0.125F, -0.125F);
+
         poseStack.mulPose(Axis.YP.rotationDegrees(-Mth.lerp(partialTick, entity.getYRot(), entity.getYRot())) );
         float yRot =  entity.getYHeadRot();
         double rad = yRot*Math.PI/180;

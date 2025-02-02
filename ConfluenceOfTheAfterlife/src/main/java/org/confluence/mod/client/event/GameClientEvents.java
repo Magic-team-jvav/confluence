@@ -234,6 +234,9 @@ public final class GameClientEvents {
 //                    GeoCube copyCube = DeathAnimUtils.duplicateGeoCube(cube);
                     GeoCube copyCube = ((IGeoCube) (Object) cube).confluence$getCopy();
                     Vec3 deathMotion = ((IEntity) (entity)).confluence$deathMotion();
+                    if(deathMotion == null){
+                        deathMotion = entity.getDeltaMovement();
+                    }
                     DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, copyCube, (float) deathMotion.length());
 
                     Vector3f min = cube.quads()[0].vertices()[2].position();

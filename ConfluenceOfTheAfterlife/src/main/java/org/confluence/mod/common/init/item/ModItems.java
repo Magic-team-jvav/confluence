@@ -12,10 +12,7 @@ import org.confluence.mod.common.init.ModJukeboxSongs;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.CustomRarityItem;
-import org.confluence.mod.common.item.common.CoinItem;
-import org.confluence.mod.common.item.common.EntityDisplayItem;
-import org.confluence.mod.common.item.common.GrassSeedItem;
-import org.confluence.mod.common.item.common.RopeCoilsItem;
+import org.confluence.mod.common.item.common.*;
 import org.confluence.terra_curio.common.component.ModRarity;
 
 import java.util.Map;
@@ -66,6 +63,8 @@ public final class ModItems {
     public static final Supplier<BlockItem> HALLOW_CATTAILS = BLOCK_ITEMS.register("hallow_cattails", () -> new BlockItem(NatureBlocks.HALLOW_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
     public static final Supplier<BlockItem> EBONY_CATTAILS = BLOCK_ITEMS.register("ebony_cattails", () -> new BlockItem(NatureBlocks.EBONY_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
     public static final Supplier<BlockItem> TR_CRIMSON_CATTAILS = BLOCK_ITEMS.register("tr_crimson_cattails", () -> new BlockItem(NatureBlocks.TR_CRIMSON_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
+
+    public static final Supplier<TargetDummyItem> TARGET_DUMMY = ITEMS.register("target_dummy", () -> new TargetDummyItem(new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

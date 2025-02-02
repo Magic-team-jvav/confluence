@@ -38,6 +38,7 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.entity.TargetDummyEntity;
 import org.confluence.mod.common.fluid.FluidBuilder;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -159,6 +160,7 @@ public final class ModEvents {
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(ModEntities.GUIDE.get(), AbstractMonster.createAttributes().build());
 
+        event.put(ModEntities.TARGET_DUMMY.get(), TargetDummyEntity.createAttributes().build());
     }
 
 

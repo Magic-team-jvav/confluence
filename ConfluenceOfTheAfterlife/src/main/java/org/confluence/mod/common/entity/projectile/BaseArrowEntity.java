@@ -123,7 +123,10 @@ public class BaseArrowEntity extends AbstractArrow {
         if((modify.type & Tag.cause_fire)!=0) //todo 火焰附加要不要减去移动时间
             entity.setRemainingFireTicks(this.getRemainingFireTicks() + modify.causeFireTick - tickCount);
 
-        if(!canPenetrate()) super.onHitEntity(pResult);
+        if(!canPenetrate()) {
+            super.onHitEntity(pResult);
+            return;
+        }
 
         if(!(entity instanceof LivingEntity)) {
             super.onHitEntity(pResult);

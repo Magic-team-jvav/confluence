@@ -48,7 +48,7 @@ public class StillSwordProjectile extends SwordProjectile {
                 var entities = level().getEntities(this,this.getBoundingBox());
                 if(!entities.isEmpty()){
                     for (var e:entities) {
-                        if(e instanceof LivingEntity living) {
+                        if(e instanceof LivingEntity living && canHitEntity(living)) {
                             doHurt(living);
                             ((ServerLevel) level()).sendParticles(ModParticleTypes.LIGHT_BANE.get(),getX(),getY(),getZ(),1,0,0,0,0);
                         }

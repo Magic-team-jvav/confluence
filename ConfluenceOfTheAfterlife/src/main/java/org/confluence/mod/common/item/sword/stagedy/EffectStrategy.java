@@ -25,7 +25,8 @@ public class EffectStrategy {
      * <p>possibility 概率</p>
      * */
     public static final FifFunction<Holder<MobEffect>,Integer,Integer,Integer,Float, BiConsumer<LivingEntity,LivingEntity>> TIME_POSSIBILITY_AMPLIFIER_EFFECT = (effect, ticks, minAmplifier, maxAmplifier,possibility)->
-            (owner, entity) ->{ if(entity.getRandom().nextFloat() < possibility) {
+            (owner, entity) ->{
+        if(entity.getRandom().nextFloat() < possibility) {
                 if (entity.hasEffect(effect)) {
                     if (entity.getEffect(effect).getAmplifier() < maxAmplifier) {
                         entity.addEffect(new MobEffectInstance(effect, ticks, entity.getEffect(effect).getAmplifier() + 1, false, true, false));
@@ -49,11 +50,12 @@ public class EffectStrategy {
 /* *****************************************************************************************************************************************/
 
     /**占位符，未定义效果，暂时用发光代替*/
-    public static final BiConsumer<LivingEntity,LivingEntity> UNDEFINED_EFFECT = TIME_EFFECT.apply(MobEffects.GLOWING, 20*5);
+    public static final BiConsumer<LivingEntity,LivingEntity> UNDEFINED_EFFECT =
+            TIME_EFFECT.apply(MobEffects.GLOWING, 20*5);
 
 
     /**血腥屠刀*/
-    public static final BiConsumer<LivingEntity,LivingEntity> BLOOD_BUTCHERED_EFFECT = (owner,entity) ->
+    public static final BiConsumer<LivingEntity,LivingEntity> BLOOD_BUTCHERED_EFFECT =
             TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(ModEffects.BLOOD_BUTCHERED, 180, 0, 4, 0.5f);
 
 

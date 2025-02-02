@@ -18,6 +18,7 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -233,7 +234,12 @@ public final class GameClientEvents {
                 for(GeoCube cube : bone.getCubes()){
 //                    GeoCube copyCube = DeathAnimUtils.duplicateGeoCube(cube);
                     GeoCube copyCube = ((IGeoCube) (Object) cube).confluence$getCopy();
-                    Vec3 deathMotion = ((IEntity) (entity)).confluence$deathMotion();
+                    Vec3 deathMotion;
+                    if(entity instanceof Mob mob && mob.isNoAi()){
+                        deathMotion = Vec3.ZERO;
+                    }else {
+                        deathMotion = ((IEntity) (entity)).confluence$deathMotion();
+                    }
                     if(deathMotion == null){
                         deathMotion = entity.getDeltaMovement();
                     }
@@ -268,6 +274,7 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void postRenderLiving(RenderLivingEvent.Post<?,?> event){
+        if(!ClientConfigs.goreEffect) return;
         LivingEntity entity = event.getEntity();
         boolean dead = ((LivingEntityAccessor) entity).getDead();
         if(dead != ((ILivingEntity) entity).confluence$deadO()){
@@ -278,6 +285,7 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void postRenderGeoLiving(GeoRenderEvent.Entity.Post event){
+        if(!ClientConfigs.goreEffect) return;
         Entity entity = event.getEntity();
         // 渲染这个实体结束的时候检测是不是刚死，这时候方便获取到这个实体的姿势
         if(entity instanceof LivingEntity living && entity instanceof ILivingEntity li && entity instanceof LivingEntityAccessor la){

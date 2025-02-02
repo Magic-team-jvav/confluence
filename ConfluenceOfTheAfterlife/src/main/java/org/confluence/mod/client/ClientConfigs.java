@@ -12,6 +12,7 @@ public final class ClientConfigs {
 
     public static boolean hurtRedOverlay = true;
     public static boolean bloodyEffect = true;
+    public static boolean goreEffect = true;
     public static boolean damageIndicator = true;
 
     private static ModConfigSpec.IntValue SHOW_WIND_PARTICLES;
@@ -21,6 +22,7 @@ public final class ClientConfigs {
 
     private static ModConfigSpec.BooleanValue HURT_RED_OVERLAY;
     private static ModConfigSpec.BooleanValue BLOODY_EFFECT;
+    private static ModConfigSpec.BooleanValue GORE_EFFECT;
     private static ModConfigSpec.BooleanValue DAMAGE_INDICATOR;
 
     public static void onLoad() {
@@ -31,6 +33,7 @@ public final class ClientConfigs {
 
         hurtRedOverlay = HURT_RED_OVERLAY.get();
         bloodyEffect = BLOODY_EFFECT.get();
+        goreEffect = GORE_EFFECT.get();
         damageIndicator = DAMAGE_INDICATOR.get();
     }
 
@@ -44,6 +47,7 @@ public final class ClientConfigs {
 
         HURT_RED_OVERLAY = BUILDER.pop().push("Entity").define("hurtRedOverlay", true);
         BLOODY_EFFECT = BUILDER.define("bloodyEffect", true);
+        GORE_EFFECT = BUILDER.define("goreEffect", true);
         DAMAGE_INDICATOR = BUILDER.define("damageIndicator", true);
 
         container.registerConfig(ModConfig.Type.CLIENT, BUILDER.build());

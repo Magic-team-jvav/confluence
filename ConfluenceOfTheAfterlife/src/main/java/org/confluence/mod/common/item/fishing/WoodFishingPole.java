@@ -18,7 +18,7 @@ public class WoodFishingPole extends AbstractFishingPole {
     public static final ResourceLocation ID = Confluence.asResource("wood_fishing_pole");
 
     public WoodFishingPole() {
-        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE).durability(64), ModRarity.WHITE);
+        super(new Properties().durability(64), ModRarity.WHITE);
         addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new AttributeModifier(ID, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND));
     }
 

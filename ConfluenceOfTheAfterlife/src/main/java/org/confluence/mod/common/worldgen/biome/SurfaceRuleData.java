@@ -215,7 +215,7 @@ public class SurfaceRuleData {
                                                         SANDSTONE
                                                 )
                                         ),
-                                        RED_HARDENED_SAND
+                                        HARDENED_SAND
                                 )
                         )
                 ),

@@ -89,13 +89,8 @@ public class BaseSwordItem extends SwordItem {
         private int modifyCount = 0;
         public boolean canPerformSweep = true;
         private float sweepRange = 1.0F;
-        private boolean unbreakable = false;
         private Item.Properties properties = new Item.Properties();
 
-        public ModifierBuilder setUnbreakable(){
-            this.unbreakable = true;
-            return this;
-        }
 
         /**添加击中效果
          * @see EffectStrategy

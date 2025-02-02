@@ -24,6 +24,11 @@ public final class ModParticleTypes {
     public static final Supplier<SimpleParticleType> SAND = register("sand", true);
     public static final Supplier<SimpleParticleType> SNOW = register("snow", true);
     public static final Supplier<SimpleParticleType> YELLOW_WILLOW = register("yellow_willow", true);
+    public static final Supplier<SimpleParticleType> LIGHT_BANE = register("lights_bane", true);
+    public static final Supplier<SimpleParticleType> LIGHT_BANE_DUST = register("lights_bane_dust", true);
+    public static final Supplier<SimpleParticleType> LIGHT_BANE_FADE = register("lights_bane_fade", true);
+
+
 
     // 原版用了Function获取codec，现在自己的用不到，要用了再改
     private static <T extends ParticleOptions> Supplier<ParticleType<T>> register(String id, boolean overrideLimiter, MapCodec<T> mapCodec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {

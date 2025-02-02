@@ -69,6 +69,20 @@
           "weight": 99
         }
       ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "confluence:gameplay/corruption_carry",
+          "weight": 19
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 9981
+        }
+      ]
     }
   ],
   "random_sequence": "terra_entity:entity/eater_of_souls"

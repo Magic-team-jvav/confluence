@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
  * 基础属性如伤害、击退、初始位置由弹幕容器设置，弹幕实体只定义运动、伤害公式、碰撞检测
  */
 public abstract class SwordProjectile extends AbstractHurtingProjectile {
-    protected static final int TIME_EXISTENCE = 40;
+    public int TIME_EXISTENCE = 40;
     protected float attackDamage = 0.0F;
     protected float baseAttackDamage = 0;
     protected float criticalChance = 0.0F;
@@ -86,10 +86,11 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile {
     @Override
     public void tick() {
         super.tick();
-        checkCollision();
+        if (!level().isClientSide &&tickCount >= TIME_EXISTENCE) discard();
+        tickAttack();
     }
 
-    protected void checkCollision() {
+    protected void tickAttack() {
         HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, entity -> entity != getOwner());
         if (hitResult.getType() == HitResult.Type.ENTITY) {
             onHitEntity((EntityHitResult) hitResult);
@@ -101,20 +102,28 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile {
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        if (!level().isClientSide) {
-            float damage = getBaseDamage() * (attackDamage);
+        if (!level().isClientSide && entity instanceof LivingEntity living && getOwner() instanceof LivingEntity) {
             // 事件统一暴击判定 org.confluence.mod.common.event.game.entity.LivingEntityEvents.livingDamage$Pre
 //            if (random.nextFloat() < criticalChance) damage *= 1.5F;
-            if (entity.hurt(damageSources().mobProjectile(this, (LivingEntity) getOwner()), damage)) {
-                float attackKnockBack = getBaseKnockBack() + knockBack;
-                ModUtils.knockBackA2B(this, entity, attackKnockBack * 0.5, 0.2);
-                if(--hitCount == 0){
-                    discard();
-                }
+            doHurt(living);
+        }
+    }
+
+    public DamageSource damageSource(){
+        if(getOwner() instanceof LivingEntity living)
+            return damageSources().mobProjectile(this, living);
+        else return damageSources().magic();
+    }
+
+    protected void doHurt(LivingEntity living){
+        float damage = getBaseDamage() * (attackDamage);
+        if (living.hurt(damageSource(), damage)) {
+            float attackKnockBack = getBaseKnockBack() + knockBack;
+            ModUtils.knockBackA2B(this, living, attackKnockBack * 0.5, 0.2);
+            if(--hitCount == 0){
+                discard();
             }
         }
-
-//        if (entity.isPickable()) discard();
     }
 
     @Override
@@ -134,5 +143,11 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile {
     @Override//空气阻力
     protected float getInertia() {
         return 1;
+    }
+
+
+    public SwordProjectile setExistTime(int time){
+        TIME_EXISTENCE = time;
+        return this;
     }
 }

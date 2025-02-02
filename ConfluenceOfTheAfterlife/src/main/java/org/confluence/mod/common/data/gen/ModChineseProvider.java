@@ -1502,6 +1502,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModBlocks.VINE_ROPE.get(), "藤蔓绳");
         add(ModBlocks.SILK_ROPE.get(), "丝绸绳");
         add(ModBlocks.WEB_ROPE.get(), "蛛丝绳");
+        add(ModItems.ROPE_COILS.get(), "绳圈");
 
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");
@@ -1510,6 +1511,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.SWITCH.get(), "开关");
         add(FunctionalBlocks.SIGNAL_ADAPTER.get(), "信号适配器");
         add(FunctionalBlocks.DART_TRAP.get(), "毒镖陷阱");
+        add(FunctionalBlocks.DART_TRAP_STONE.get(), "石头毒镖陷阱");
+        add(FunctionalBlocks.DART_TRAP_DEEPSLATE.get(), "深板岩毒镖陷阱");
         add(FunctionalBlocks.TIMERS_BLOCK_1_1.get(), "1秒计时器");
         add(FunctionalBlocks.TIMERS_BLOCK_3_1.get(), "3秒计时器");
         add(FunctionalBlocks.TIMERS_BLOCK_5_1.get(), "5秒计时器");
@@ -1715,6 +1718,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(BowItems.TUNGSTEN_BOW.get(), "钨弓");
         add(BowItems.GOLDEN_BOW.get(), "金弓");
         add(BowItems.PLATINUM_BOW.get(), "铂金弓");
+        add(BowItems.DEMON_BOW.get(), "恶魔弓");
+        add(BowItems.TENDON_BOW.get(), "肌腱弓");
+
+
         add(BowItems.DEVELOPER_BOW.get(), "开发者弓");
 
         // 盔甲

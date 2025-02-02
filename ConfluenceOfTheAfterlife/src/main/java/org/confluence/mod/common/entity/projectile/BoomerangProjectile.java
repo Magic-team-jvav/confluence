@@ -4,10 +4,12 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
@@ -16,11 +18,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SingleBooleanComponent;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.sword.Boomerang;
 import org.confluence.mod.common.item.sword.Boomerang.BoomerangModifier;
+import org.confluence.terra_curio.common.init.TCAttributes;
 
 public class BoomerangProjectile extends AbstractHurtingProjectile {
 
@@ -82,11 +86,14 @@ public class BoomerangProjectile extends AbstractHurtingProjectile {
     protected void onHitEntity(EntityHitResult result) {
         if(!level().isClientSide){
             if(result.getEntity() instanceof LivingEntity living && living.isAlive()
-                    && this.getOwner()!= null && !this.getOwner().is(living)
+                    && this.getOwner() instanceof LivingEntity owner && !this.getOwner().is(living)
             ){
-                assert this.getOwner() instanceof LivingEntity;
                 penetrationCount--;
-                living.hurt(this.damageSources().mobProjectile(this, (LivingEntity) this.getOwner()), modifier.damage);
+                ResourceLocation temp = Confluence.asResource("temp_boomerang");
+                owner.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(new AttributeModifier(temp, modifier.damage - 1, AttributeModifier.Operation.ADD_VALUE));
+                float damage = (float) owner.getAttributeValue(Attributes.ATTACK_DAMAGE);
+                owner.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(temp);
+                living.hurt(this.damageSources().mobProjectile(this,owner), damage);
                 modifier.onHitEffects.forEach(effect -> effect.accept((LivingEntity) this.getOwner(), living));
                 //击退
                 doKnockback(living);
@@ -157,7 +164,7 @@ public class BoomerangProjectile extends AbstractHurtingProjectile {
                 Vec3 motion = dir.scale(actualSpeed);
                 this.setDeltaMovement(motion);
 //                this.move(MoverType.SELF, this.getDeltaMovement());
-                if(this.distanceToSqr(living.position().add(0,1,0)) < 2){
+                if(this.distanceToSqr(living.position().add(0,1,0)) < 1.5f){
                     discard();
                 }
             }

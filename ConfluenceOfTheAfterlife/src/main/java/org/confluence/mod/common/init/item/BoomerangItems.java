@@ -70,7 +70,7 @@ public class BoomerangItems {
 
     public static final DeferredItem<Boomerang> BeiDou_BOOMERANG = register("bei_dou_boomerang",10, ModRarity.EPIC,
             MULTI_BOOMERANG_MODIFIER.apply(5, 4,
-                    NORMAL_BOOMERANG_MODIFIER.apply(20, 2.0f, 2.0f)
+                    NORMAL_BOOMERANG_MODIFIER.apply(40, 3.0f, 3.0f)
                             .setMaxPenetration(7)
                             .addOnHitEffect(EffectStrategy.RANDOM_POSSIBILITY_EFFECT.apply(Map.of(
                                     EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(ModEffects.FROST_BURN, 200,3,3,1f), 5f,

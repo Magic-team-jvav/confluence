@@ -140,6 +140,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.paint_scraper", "用于去除油漆或涂料，按下shift+右键仅去除一面");
         add("tooltip.item.confluence.paint_sprayer.0", "自动给放置的物体刷油漆或涂料");
         add("tooltip.item.confluence.coin", "潜行右键合并为上级钱币");
+        add("tooltip.item.confluence.penetration", "穿透数量");
+        add("tooltip.item.confluence.on_hit_effects", "命中效果");
+        add("tooltip.item.confluence.max_count", "分身数量");
+        add("tooltip.item.confluence.fly_speed", "飞行速度");
+
 
         add("jei.tooltip.item.confluence.bezoar.0", "有几率从黄蜂，青苔蜜蜂，毒泥身上掉落。");
         add("jei.tooltip.item.confluence.holy_water.0", "有几率从凋零骷髅身上掉落。");
@@ -521,6 +526,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("entity.minecraft.villager.confluence.sky_miller", "天师");
         add("entity.minecraft.villager.confluence.banker", "银行家");
         add("entity.confluence.dart", "毒镖");
+
+
 
         //region blocks
         add(OreBlocks.SANCTIFICATION_COAL_ORE.get(), "圣化煤矿石");

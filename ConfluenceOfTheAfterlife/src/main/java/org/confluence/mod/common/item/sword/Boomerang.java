@@ -13,6 +13,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
@@ -98,6 +99,23 @@ public class Boomerang extends Item {
     public @NotNull MutableComponent getName(@NotNull ItemStack pStack) {
         return Component.translatable(getDescriptionId()).withStyle(style -> style.withColor(pStack.get(TCDataComponentTypes.MOD_RARITY).getColor()));
     }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        tooltipComponents.add(Component.translatable("attribute.name.generic.attack_damage").append(": ").append(String.format("%.1f", boomerangModifier.damage)).withColor(0x00FF00));
+        tooltipComponents.add(Component.translatable("tooltip.item.confluence.fly_speed").append(": ").append(String.format("%.2f", boomerangModifier.flySpeed)).withColor(0xCCCC00));
+
+        if(this.boomerangModifier.maxCount > 1){
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.max_count").append(": ").append(String.valueOf(this.boomerangModifier.maxCount)).withColor(0xAA8800));
+        }
+        if(this.boomerangModifier.canPenetrate || this.boomerangModifier.maxPenetration > 1){
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.penetration").append(": ").append(String.valueOf(this.boomerangModifier.maxPenetration)).withColor(0x00FFFF));
+        }
+        if(!this.boomerangModifier.onHitEffects.isEmpty()){
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").append(String.valueOf(this.boomerangModifier.onHitEffects.size())).withColor(0xFF00FF));
+        }
+    }
+
 
     public static class BoomerangModifier {
 
@@ -208,14 +226,14 @@ public class Boomerang extends Item {
          * 设置向前飞行速度倍率
          */
         public BoomerangModifier setFlySpeedFactor(float flySpeed) {
-            this.flySpeed *= flySpeed;
+            this.flySpeed = flySpeed;
             return this;
         }
         /**
          * 设置向后飞行速度倍率
          */
         public BoomerangModifier setBackSpeedFactor(float backSpeed) {
-            this.backSpeed *= backSpeed;
+            this.backSpeed = backSpeed;
             return this;
         }
         /**

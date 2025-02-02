@@ -155,6 +155,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.chromatic_cloak.0", "Immunity to Shimmer Phasing.Hold Down to Phase while submerged in Shimmer");
         add("tooltip.item.confluence.paint_scraper", "Used to remove paint or coatings.Press Shift + Right-click to remove only one side.");
         add("tooltip.item.confluence.coin", "Using it while crouch to upgrade tier");
+        add("tooltip.item.confluence.penetration", "Penetrates Count");
+        add("tooltip.item.confluence.on_hit_effects", "Effects");
+        add("tooltip.item.confluence.max_count", "Max Count");
+        add("tooltip.item.confluence.fly_speed", "Fly Speed");
 
         add("painting.confluence.magic_harp.title", "MAGIC_HARP");
         add("painting.confluence.magic_harp.author", "BiliBili_魔法竖琴waaa，看上去傻傻的...");

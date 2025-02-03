@@ -120,13 +120,10 @@ public class BaseArrowEntity extends AbstractArrow {
 
     protected void onHitEntity(EntityHitResult pResult) {
         Entity entity = pResult.getEntity();
-        if((modify.type & Tag.cause_fire)!=0) //todo 火焰附加要不要减去移动时间
+        if((modify.type & Tag.cause_fire)!=0)
             entity.setRemainingFireTicks(this.getRemainingFireTicks() + modify.causeFireTick - tickCount);
 
-        if(!canPenetrate()) {
-            super.onHitEntity(pResult);
-            return;
-        }
+
 
         if(!(entity instanceof LivingEntity)) {
             super.onHitEntity(pResult);
@@ -134,15 +131,7 @@ public class BaseArrowEntity extends AbstractArrow {
         }
         if(havenBeen.contains((LivingEntity) entity)) return;
         float f = (float)this.getDeltaMovement().length();
-        f = Math.max(f, minSpeedAttackFactor);//速度修正系数影响的最小速度值
-        float i = (float) Mth.clamp((double)f * this.getBaseDamage(), 0.0D, Integer.MAX_VALUE);
 
-        /*暴击增伤
-        if (this.isCritArrow()) {
-            long j = this.random.nextInt(i / 2 + 2);
-            i = (int)Math.min(j + (long)i, 2147483647L);
-        }
-        */
         Entity entity1 = this.getOwner();
         DamageSource damagesource;
         if (entity1 == null) {
@@ -153,27 +142,42 @@ public class BaseArrowEntity extends AbstractArrow {
                 ((LivingEntity)entity1).setLastHurtMob(entity);
             }
         }
+
+        // 附魔增伤
+        double d0 = this.getBaseDamage();
+        if (this.getWeaponItem() != null) {
+            Level var9 = this.level();
+            if (var9 instanceof ServerLevel) {
+                ServerLevel serverlevel = (ServerLevel)var9;
+                d0 = EnchantmentHelper.modifyDamage(serverlevel, this.getWeaponItem(), entity, damagesource, (float)d0);
+            }
+        }
+
+        //速度修正系数影响的最小速度值
+        f = Math.max(f, minSpeedAttackFactor);
+        int i = Mth.ceil(Mth.clamp((double)f * d0, 0.0, 2.147483647E9));
+
+        //暴击增伤
+        if (this.isCritArrow()) {
+            long j = this.random.nextInt(i / 2 + 2);
+            i = (int)Math.min(j + (long)i, 2147483647L);
+        }
+
         havenBeen.add((LivingEntity) pResult.getEntity());
-        penetrate++;
+
         int k = entity.getRemainingFireTicks();
-
-        if(entity.hurt(damagesource, i)){
+        if(entity.hurt(damagesource, i + modify.base_damage)){
             this.playSound(getSound(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
-
             LivingEntity livingentity = (LivingEntity)entity;
-
             this.doPostHurtEffects(livingentity);
-
-
             if (!this.level().isClientSide) {
                 livingentity.setArrowCount(livingentity.getArrowCount() + 1);
             }
             //todo 击退
             this.doKnockback(livingentity,damagesource);
-
             if (modify.knockBack > 0) {
-                double d0 = modify.knockBack;
-                Vec3 vec3 = this.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D).normalize().scale(0.6 * d0);
+                double d1 = modify.knockBack;
+                Vec3 vec3 = this.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D).normalize().scale(0.6 * d1);
                 if (vec3.lengthSqr() > 0.0D) {
                     livingentity.push(vec3.x, 0.1D, vec3.z);
                 }
@@ -186,8 +190,13 @@ public class BaseArrowEntity extends AbstractArrow {
             }
 
             //命中自己
-            if (entity1 != null && livingentity != entity1 && livingentity instanceof Player && entity1 instanceof ServerPlayer && !this.isSilent()) {
+            if (livingentity != entity1 && livingentity instanceof Player && entity1 instanceof ServerPlayer && !this.isSilent()) {
                 ((ServerPlayer)entity1).connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
+            }
+            penetrate++;
+            if(!canPenetrate()) {
+                discard();
+                return;
             }
 
         }else {
@@ -205,7 +214,7 @@ public class BaseArrowEntity extends AbstractArrow {
 
     @Override
     public double getBaseDamage() {
-        return modify.base_damage;
+        return super.getBaseDamage();
     }
 
     @Override
@@ -243,7 +252,7 @@ public class BaseArrowEntity extends AbstractArrow {
 
 
     public boolean canPenetrate(){
-        return penetrate+1 < modify.penetration_count;
+        return penetrate+1 <= modify.penetration_count;
     }
 
     @Override

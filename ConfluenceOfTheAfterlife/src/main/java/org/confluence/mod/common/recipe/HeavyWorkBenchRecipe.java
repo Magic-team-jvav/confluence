@@ -3,6 +3,7 @@ package org.confluence.mod.common.recipe;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
@@ -50,7 +51,8 @@ public class HeavyWorkBenchRecipe extends AbstractAmountRecipe {
 
     @Override
     public boolean isIncomplete() {
-        return false;
+        NonNullList<Ingredient> nonnulllist = getIngredients();
+        return nonnulllist.isEmpty() || nonnulllist.stream().filter(ingredient -> !ingredient.isEmpty()).anyMatch(Ingredient::hasNoItems);
     }
 
     @Override

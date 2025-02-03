@@ -1,5 +1,6 @@
 package org.confluence.mod.mixin.entity;
 
+import net.minecraft.Util;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -153,9 +154,12 @@ public abstract class ItemEntityMixin implements IItemEntity {
                     if (itemStacks.length == 0 || Arrays.stream(itemStacks).allMatch(itemStack -> itemStack.is(ModTags.Items.HARDMODE))) {
                         continue;
                     }
-                    ItemStack input = itemStacks[random.nextInt(itemStacks.length)];
-                    while (!isHardmode && input.is(ModTags.Items.HARDMODE)) {
-                        input = itemStacks[random.nextInt(itemStacks.length)];
+                    ItemStack input = Util.getRandom(itemStacks, random);
+                    if (!isHardmode && input.is(ModTags.Items.HARDMODE)) {
+                        for (int i = 0; i < itemStacks.length && input.is(ModTags.Items.HARDMODE); i++) {
+                            input = itemStacks[i];
+                        }
+                        if (input.is(ModTags.Items.HARDMODE)) continue;
                     }
                     ItemStack result = input.copy();
                     if (result.getItem().hasCraftingRemainingItem(result)) continue;

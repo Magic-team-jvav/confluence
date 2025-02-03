@@ -66,14 +66,16 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
 
             poseStack.pushPose();
 
+            if(geoEntityRenderer instanceof GeoBossRenderer<?, ?> bossRenderer){
+                float scale = bossRenderer.getScale();
+                poseStack.scale(scale, scale, scale);
+                poseStack.translate(0, bossRenderer.getYOffset(), 0);
+            }
             // GeoGeo的奇妙Y轴旋转
             poseStack.mulPose(Axis.YP.rotationDegrees(-dying.getYRot() + 180));
             poseStack.mulPose(Axis.XP.rotationDegrees(dying.getXRot()));
             // GeoGeo的奇妙Y轴偏移
             poseStack.translate(0, 0.01f, 0);
-            if(geoEntityRenderer instanceof GeoBossRenderer<?, ?> bossRenderer){
-                poseStack.translate(0, bossRenderer.getYOffset(), 0);
-            }
             // 还原bone的各级旋转
             List<Vector3f> rots = entity.boneRots;
             List<Vector3f> pivots = entity.bonePivots;

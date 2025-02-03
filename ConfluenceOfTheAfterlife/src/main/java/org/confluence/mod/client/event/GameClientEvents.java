@@ -52,6 +52,7 @@ import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PerformJumpingEvent;
+import org.confluence.terraentity.client.boss.renderer.GeoBossRenderer;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -214,6 +215,10 @@ public final class GameClientEvents {
         if(entity instanceof GeoAnimatable && Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity) instanceof GeoEntityRenderer renderer){
             Minecraft.getInstance().tell(entity::discard);
             PoseStack poseStack = new PoseStack();
+            if(renderer instanceof GeoBossRenderer<?, ?> bossRenderer){
+                float scale = bossRenderer.getScale();
+                poseStack.scale(scale, scale, scale);
+            }
             Vec3 entityPos = entity.position();
             poseStack.mulPose(Axis.XP.rotationDegrees(entity.getXRot()));
             poseStack.mulPose(Axis.YP.rotationDegrees(-entity.getYRot() + 180));

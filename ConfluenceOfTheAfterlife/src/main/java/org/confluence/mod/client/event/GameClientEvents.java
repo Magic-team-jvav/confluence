@@ -234,6 +234,7 @@ public final class GameClientEvents {
                 for(GeoCube cube : bone.getCubes()){
 //                    GeoCube copyCube = DeathAnimUtils.duplicateGeoCube(cube);
                     GeoCube copyCube = ((IGeoCube) (Object) cube).confluence$getCopy();
+                    if(copyCube == null) continue;
                     Vec3 deathMotion;
                     if(entity instanceof Mob mob && mob.isNoAi()){
                         deathMotion = Vec3.ZERO;
@@ -245,11 +246,11 @@ public final class GameClientEvents {
                     }
                     DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, copyCube, (float) deathMotion.length());
 
-                    Vector3f min = cube.quads()[0].vertices()[2].position();
-                    Vector3f max = cube.quads()[1].vertices()[1].position();
-                    float xOffset = ((min.x + max.x) / 2) + boneOffset.x;
-                    float yOffset = min.y + boneOffset.y;
-                    float zOffset = ((min.z + max.z) / 2) + boneOffset.z;
+                    float[] min = ((IGeoCube) (Object) copyCube).confluence$getMinCoords();
+                    float[] max = ((IGeoCube) (Object) copyCube).confluence$getMaxCoords();
+                    float xOffset = ((min[0] + max[0]) / 2) + boneOffset.x;
+                    float yOffset = min[1] + boneOffset.y;
+                    float zOffset = ((min[2] + max[2]) / 2) + boneOffset.z;
                     part.boneRots = rots;
                     ArrayList<Vector3f> bonePivots = new ArrayList<>();
                     bonePivots.add(new Vector3f(bone.getPivotX(), bone.getPivotY(), bone.getPivotZ()).sub(new Vector3f(xOffset, yOffset, zOffset).mul(16)).div(16));
@@ -302,7 +303,12 @@ public final class GameClientEvents {
         LivingEntity entity = event.getEntity();
         if(!(entity.level() instanceof ServerLevel)) return;
         // 死前服务端把死亡时的速度发给客户端
-        DeathMotionPacketS2C.sendToAll(entity.getId(), entity.getDeltaMovement());
+        Vec3 motion = entity.getDeltaMovement();
+        if(motion.length() == 0){
+            Vec3 pos = entity.position();
+            motion = new Vec3(pos.x - entity.xo, pos.y - entity.yo, pos.z - entity.zo);
+        }
+        DeathMotionPacketS2C.sendToAll(entity.getId(), motion);
     }
 
 }

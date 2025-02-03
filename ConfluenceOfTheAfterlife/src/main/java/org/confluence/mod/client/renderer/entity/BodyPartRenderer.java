@@ -15,6 +15,8 @@ import org.confluence.terraentity.client.boss.renderer.GeoBossRenderer;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import software.bernie.geckolib.cache.object.GeoCube;
+import software.bernie.geckolib.cache.object.GeoQuad;
+import software.bernie.geckolib.cache.object.GeoVertex;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 import java.util.List;
@@ -36,6 +38,32 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
         Entity dying = entity.dyingEntity;
         // Geo生物
         if(dying != null && bone instanceof GeoCube geoCube && Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(dying) instanceof GeoEntityRenderer geoEntityRenderer){
+            // 把计算Y轴中心放到前面，如果cube有问题就提前返回
+            GeoQuad[] twoQuads = new GeoQuad[2];
+            for(GeoQuad quad : geoCube.quads()){
+                if(quad == null) continue;
+                if(twoQuads[0] == null){
+                    twoQuads[0] = quad;
+                }else {
+                    twoQuads[1] = quad;
+                    break;
+                }
+            }
+            if(twoQuads[0] == null){
+                return;
+            }
+            if(twoQuads[1] == null){
+                twoQuads[1] = twoQuads[0];
+            }
+            float minY=Float.MAX_VALUE;
+            float maxY=-Float.MAX_VALUE;
+            for(GeoVertex vertex : twoQuads[0].vertices()){
+                minY = Math.min(minY, vertex.position().y);
+                maxY = Math.max(maxY, vertex.position().y);
+            }
+
+            float centerY = (minY + maxY) / 2;
+
             poseStack.pushPose();
 
             // GeoGeo的奇妙Y轴旋转
@@ -59,8 +87,6 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                 poseStack.translate(-bonePivot.x, -bonePivot.y, -bonePivot.z);
             }
 
-            // cube的Y轴重心
-            float centerY = (geoCube.quads()[0].vertices()[1].position().y + geoCube.quads()[0].vertices()[2].position().y) / 2;
             // 模拟打飞的旋转
             poseStack.translate(0, centerY, 0);
             if(entity.stop){

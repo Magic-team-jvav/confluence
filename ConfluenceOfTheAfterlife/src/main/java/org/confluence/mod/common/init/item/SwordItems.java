@@ -2,6 +2,7 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
@@ -12,6 +13,7 @@ import net.minecraft.world.item.component.Unbreakable;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
@@ -71,7 +73,6 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> STYLISH_SCISSORS = register("stylish_scissors",ModTiers.TITANIUM, 3, -1.2f, ModRarity.GREEN, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> EXOTIC_SCIMITAR = register("exotic_scimitar",ModTiers.TITANIUM, 5, -1.1f, ModRarity.GREEN, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> KATANA = register("katana",ModTiers.TITANIUM, 4, -0.3f, ModRarity.BLUE, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> TENTACLE_MACE = register("tentacle_mace",ModTiers.TITANIUM, 5, -1.4F, ModRarity.GREEN, NORMAL_SWORD.get());
 
 
 
@@ -86,7 +87,10 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> VOLCANO = register("volcano",ModTiers.TITANIUM, 10, -1.4f,
             ModRarity.ORANGE,   EFFECT_SWORD.apply(EffectStrategy.SET_FIRE.apply(5,1f)));
     public static final DeferredItem<SwordItem> BAT_BAT = register("bat_bat", ModTiers.TITANIUM,12,-3.7f,
-            ModRarity.ORANGE,   EFFECT_SWORD.apply(UNDEFINED_EFFECT));  //todo
+            ModRarity.ORANGE,   EFFECT_SWORD.apply(BAT_FANG_EFFECT));
+    public static final DeferredItem<SwordItem> TENTACLE_MACE = register("tentacle_mace",ModTiers.TITANIUM, 5, -1.4F,
+            ModRarity.GREEN,    EFFECT_SWORD.apply(TENTACLE_SPIKES_EFFECT));
+
 
 
     //弹幕剑

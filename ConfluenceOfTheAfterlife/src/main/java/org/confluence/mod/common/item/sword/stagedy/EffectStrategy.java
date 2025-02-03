@@ -66,9 +66,13 @@ public class EffectStrategy {
     public static final BiConsumer<LivingEntity,LivingEntity> BLOOD_BUTCHERED_EFFECT =
             TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(ModEffects.BLOOD_BUTCHERED, 180, 0, 4, 0.5f);
 
+    /**触手钉锤*/
+    public static final BiConsumer<LivingEntity,LivingEntity> TENTACLE_SPIKES_EFFECT =
+            TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(ModEffects.TENTACLE_SPIKES, 180, 0, 4, 0.5f);
 
 
-/*其他回调用法********************************************************************************************************************************/
+
+    /*其他回调用法********************************************************************************************************************************/
     /**着火*/
     public static final BiFunction<Integer,Float,BiConsumer<LivingEntity,LivingEntity>> SET_FIRE = (ticks,possibility) ->
             (owner1,entity1)->{ if(entity1.getRandom().nextFloat() < possibility)  entity1.setRemainingFireTicks(ticks);};
@@ -80,6 +84,9 @@ public class EffectStrategy {
          projectile.setPos(entity.position().add(entity.getRandom().nextFloat()*0.2f, entity.getEyeHeight()*0.5f, entity.getRandom().nextFloat()*0.2f));
          owner.level().addFreshEntity(projectile);
     };
+
+    /**蝙蝠棍*/
+    public static final BiConsumer<LivingEntity, LivingEntity> BAT_FANG_EFFECT = (owner, entity)-> owner.heal(1);
 
     // 魔光剑
     public static final BiConsumer<LivingEntity, LivingEntity> LIGHTS_BANE_EFFECT = ON_HIT_PROJECTILE.apply((level)->ModEntities.LIGHTS_BANE_PROJECTILE.get().create(level).addAttackDamage(7f));

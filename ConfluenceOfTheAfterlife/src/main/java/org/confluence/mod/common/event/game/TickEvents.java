@@ -55,7 +55,6 @@ public final class TickEvents {
             PlayerUtils.regenerateMana(serverPlayer);
             ((IServerPlayer) serverPlayer).confluence$setCouldPickupItem(true);
             serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).sync(serverPlayer);
-
             Level level = serverPlayer.level();
             if (level.getDayTime() % 1200L == 0L) { // 每分钟检查一次
                 long firstNight = serverPlayer.getPersistentData().getLong("confluence:you_can_do_it");

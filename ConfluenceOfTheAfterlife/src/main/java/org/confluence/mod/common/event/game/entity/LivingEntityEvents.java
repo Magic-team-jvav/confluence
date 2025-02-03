@@ -191,7 +191,8 @@ public final class LivingEntityEvents {
         if (sourceEntity instanceof LivingEntity livingEntity) {
             if (livingEntity.getItemInHand(event.getEntity().getUsedItemHand()).getItem() instanceof BaseSwordItem sword) {
                 if (sword.modifier != null) {
-                    sword.modifier.onHitEffects.forEach(effect -> effect.accept(livingEntity, damagingEntity));
+                    if(livingEntity instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.95f)
+                        sword.modifier.onHitEffects.forEach(effect -> effect.accept(livingEntity, damagingEntity));
                 }
             }
         }

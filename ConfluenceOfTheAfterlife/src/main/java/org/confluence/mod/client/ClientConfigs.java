@@ -2,6 +2,8 @@ package org.confluence.mod.client;
 
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 public final class ClientConfigs {
@@ -50,6 +52,8 @@ public final class ClientConfigs {
         GORE_EFFECT = BUILDER.define("goreEffect", true);
         DAMAGE_INDICATOR = BUILDER.define("damageIndicator", true);
 
-        container.registerConfig(ModConfig.Type.CLIENT, BUILDER.build());
+        ModConfigSpec SPEC = BUILDER.build();
+        container.registerConfig(ModConfig.Type.CLIENT, SPEC);
+        container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
     }
 }

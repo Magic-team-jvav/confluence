@@ -10,8 +10,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.BaseArrowEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
@@ -21,21 +24,31 @@ import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class TerraBowItem extends BowItem {
 
-    public Consumer<BaseArrowEntity.Builder> modifyArrowBuilder;
     public float baseDamage;
+    public Consumer<BaseArrowEntity.Builder> modifyArrowBuilder;
+
+    /**
+     * 仅用来在客户端appendHoverText中显示信息颜色，实际的consumer作用于createArrowEntity
+      */
+    @OnlyIn(Dist.CLIENT)
+    public BaseArrowEntity.Builder arrowModifier;
+
 
     public TerraBowItem(float baseDamage, int durability, ModRarity rarity) {
         super(new Properties().durability(durability)
                 .component(TCDataComponentTypes.MOD_RARITY, rarity));
         this.baseDamage = baseDamage;
+        this.arrowModifier = new BaseArrowEntity.Builder();
     }
     public TerraBowItem(float baseDamage, int durability, ModRarity rarity, Consumer<BaseArrowEntity.Builder> modifyArrowBuilder) {
         this(baseDamage, durability, rarity);
         this.modifyArrowBuilder = modifyArrowBuilder;
+        modifyArrowBuilder.accept(this.arrowModifier);
     }
 
     // 无法破坏
@@ -43,10 +56,12 @@ public class TerraBowItem extends BowItem {
         super(new Properties().component(DataComponents.UNBREAKABLE, new Unbreakable(true))
                 .component(TCDataComponentTypes.MOD_RARITY, rarity));
         this.baseDamage = baseDamage;
+        this.arrowModifier = new BaseArrowEntity.Builder();
     }
     public TerraBowItem(float baseDamage, ModRarity rarity, Consumer<BaseArrowEntity.Builder> modifyArrowBuilder) {
         this(baseDamage, rarity);
         this.modifyArrowBuilder = modifyArrowBuilder;
+        modifyArrowBuilder.accept(this.arrowModifier);
     }
 
     @Override
@@ -82,6 +97,19 @@ public class TerraBowItem extends BowItem {
 
             }
         }
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        tooltipComponents.add(Component.translatable("attribute.name.generic.attack_damage").append(": ").append(String.format("%.1f", this.baseDamage)).withColor(0x00FF00));
+
+        if(!this.arrowModifier.onHitEffect.isEmpty()){
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").append(String.valueOf(this.arrowModifier.onHitEffect.size())).withColor(0xFF00FF));
+        }
+        if(!this.arrowModifier.fullPullHitEffect.isEmpty()){
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.bow_full_pull_on_hit_effects").append(": ").append(String.valueOf(this.arrowModifier.fullPullHitEffect.size())).withColor(0xFF00FF));
+        }
+
 
     }
 

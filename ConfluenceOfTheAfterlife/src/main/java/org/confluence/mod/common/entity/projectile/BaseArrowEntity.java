@@ -301,8 +301,8 @@ public class BaseArrowEntity extends AbstractArrow {
         private float speedFactor = 1;
         private float knockBack = 0;
         private int causeFireTick = 0;
-        private final List<BiConsumer<LivingEntity, LivingEntity>> onHitEffect = new ArrayList<>();
-        private final List<BiConsumer<LivingEntity, LivingEntity>> fullPullHitEffect = new ArrayList<>();
+        public final List<BiConsumer<LivingEntity, LivingEntity>> onHitEffect = new ArrayList<>();
+        public final List<BiConsumer<LivingEntity, LivingEntity>> fullPullHitEffect = new ArrayList<>();
 
 
         public Builder addFullPullHitEffect(BiConsumer<LivingEntity, LivingEntity> consumer){

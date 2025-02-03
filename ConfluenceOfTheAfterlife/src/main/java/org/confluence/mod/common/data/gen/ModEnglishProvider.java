@@ -159,6 +159,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.on_hit_effects", "Effects");
         add("tooltip.item.confluence.max_count", "Max Count");
         add("tooltip.item.confluence.fly_speed", "Fly Speed");
+        add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "Full Pull Effects");
+        add("tooltip.item.confluence.has_proj", "Has Projectile");
+
+
+
 
         add("painting.confluence.magic_harp.title", "MAGIC_HARP");
         add("painting.confluence.magic_harp.author", "BiliBili_魔法竖琴waaa，看上去傻傻的...");

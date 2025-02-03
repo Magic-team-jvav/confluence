@@ -144,6 +144,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.on_hit_effects", "命中效果");
         add("tooltip.item.confluence.max_count", "分身数量");
         add("tooltip.item.confluence.fly_speed", "飞行速度");
+        add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "蓄满效果");
+        add("tooltip.item.confluence.has_proj", "剑气");
+
 
 
         add("jei.tooltip.item.confluence.bezoar.0", "有几率从黄蜂，青苔蜜蜂，毒泥身上掉落。");

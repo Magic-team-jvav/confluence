@@ -9,6 +9,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.block.functional.network.NetworkNode;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.terra_curio.client.handler.InformationHandler;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.IServerDataProvider;
@@ -23,6 +24,7 @@ public class NetworkComponentProvider implements IBlockComponentProvider, IServe
 
     @Override
     public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
+        if (!InformationHandler.hasMechanicalView()) return;
         CompoundTag compoundTag = blockAccessor.getServerData();
         if (compoundTag.get("networkInfo") instanceof ListTag listTag) {
             listTag.forEach(tag -> {

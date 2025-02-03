@@ -8,6 +8,7 @@ import net.minecraft.world.level.GameRules;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.*;
@@ -24,7 +25,9 @@ public class Confluence {
 
     public Confluence(IEventBus eventBus, ModContainer container) {
         CommonConfigs.register(container);
-        ClientConfigs.register(container);
+        if (FMLEnvironment.dist.isClient()) {
+            ClientConfigs.register(container);
+        }
         ModBlocks.register(eventBus);
         ModItems.register(eventBus);
         ModVillagers.register(eventBus);

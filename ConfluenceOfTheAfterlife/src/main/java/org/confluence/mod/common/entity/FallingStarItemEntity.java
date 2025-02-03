@@ -73,6 +73,11 @@ public class FallingStarItemEntity extends ItemEntity {
     }
 
     @Override
+    public boolean shouldRender(double x, double y, double z) {
+        return true;
+    }
+
+    @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putBoolean("wasOnGround", wasOnGround);

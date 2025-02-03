@@ -20,7 +20,6 @@ import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
-import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.connected.CustomBlockModels;
@@ -29,8 +28,7 @@ import org.confluence.mod.client.connected.ModelSwapper;
 import org.confluence.mod.client.gui.AchievementToast;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
-import org.confluence.mod.client.gui.hud.HealthHudLayer;
-import org.confluence.mod.client.gui.hud.ManaHudLayer;
+import org.confluence.mod.client.gui.hud.HudLayerTerrariaRefined;
 import org.confluence.mod.client.model.block.AltarBlockModel;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.model.block.WeatherVaneBlockModel;
@@ -120,8 +118,7 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerGuiLayers(RegisterGuiLayersEvent event) {
-        event.registerBelow(VanillaGuiLayers.SELECTED_ITEM_NAME, Confluence.asResource("mana_hud"), new ManaHudLayer());
-        event.registerAboveAll(Confluence.asResource("health_hud"), new HealthHudLayer());
+        event.registerAboveAll(Confluence.asResource("health_hud"), new HudLayerTerrariaRefined());
     }
 
     @SubscribeEvent

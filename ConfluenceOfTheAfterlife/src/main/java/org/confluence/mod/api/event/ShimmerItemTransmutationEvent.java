@@ -1,26 +1,16 @@
 package org.confluence.mod.api.event;
 
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.ICancellableEvent;
-import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.GamePhase;
-import org.confluence.mod.common.init.ModTags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -121,79 +111,6 @@ public abstract class ShimmerItemTransmutationEvent extends Event {
          * If targets have not set yet, it will try to generate targets.
          */
         public @Nullable List<ItemStack> getTargets() {
-            if (targets == null) {
-                ItemStack sourceItem = source.getItem();
-                for (Ingredient ingredient : BLACK_LIST) {
-                    if (ingredient.test(sourceItem)) {
-                        return null;
-                    }
-                }
-
-                ConfluenceData data = ConfluenceData.get((ServerLevel) source.level());
-                int ordinal = data.getGamePhase().ordinal();
-                for (ItemTransmutation transmutation : ITEM_TRANSMUTATION) {
-                    if (ordinal < transmutation.gamePhase.ordinal()) continue;
-                    if (transmutation.source.test(sourceItem)) {
-                        int times = sourceItem.getCount() / transmutation.shrink;
-                        List<ItemStack> results = new ArrayList<>();
-                        for (ItemStack result : transmutation.target) {
-                            int count = result.getCount() * times;
-                            int maxStackSize = result.getMaxStackSize();
-                            while (count > maxStackSize) {
-                                results.add(result.copyWithCount(maxStackSize));
-                                count -= maxStackSize;
-                            }
-                            results.add(result.copyWithCount(count));
-                        }
-                        this.shrink = transmutation.shrink * times;
-                        this.targets = results;
-                        return targets;
-                    }
-                }
-
-                if (!CommonConfigs.SHIMMER_DECOMPOSE.get()) return targets;
-
-                if (sourceItem.getDamageValue() != 0) return null;
-                RegistryAccess registryAccess = source.level().registryAccess();
-                boolean isHardmode = data.getGamePhase().isHardmode();
-                RandomSource random = source.level().random;
-                for (RecipeHolder<?> recipeHolder : ((ServerLevel) source.level()).getServer().getRecipeManager().getRecipes()) {
-                    Recipe<?> recipe = recipeHolder.value();
-                    if (recipe.isSpecial() || recipe.isIncomplete() || recipe instanceof AbstractCookingRecipe) continue;
-                    ItemStack resultItem = recipe.getResultItem(registryAccess);
-                    if (sourceItem.getCount() >= resultItem.getCount() && ItemStack.isSameItem(sourceItem, resultItem)) {
-                        int times = sourceItem.getCount() / resultItem.getCount();
-                        List<ItemStack> results = new ArrayList<>();
-                        for (Ingredient ingredient : recipe.getIngredients()) {
-                            ItemStack[] itemStacks = ingredient.getItems();
-                            if (itemStacks.length == 0 || Arrays.stream(itemStacks).allMatch(itemStack -> itemStack.is(ModTags.Items.HARDMODE))) {
-                                continue;
-                            }
-                            ItemStack input = itemStacks[random.nextInt(itemStacks.length)];
-                            while (!isHardmode && input.is(ModTags.Items.HARDMODE)) {
-                                input = itemStacks[random.nextInt(itemStacks.length)];
-                            }
-                            ItemStack result = input.copy();
-                            if (result.getItem().hasCraftingRemainingItem(result)) continue;
-                            int count = result.getCount() * times;
-                            int maxStackSize = result.getMaxStackSize();
-                            while (count > maxStackSize) {
-                                ItemStack copy = result.copy();
-                                copy.setCount(maxStackSize);
-                                results.add(copy);
-                                count -= maxStackSize;
-                            }
-                            result.setCount(count);
-                            results.add(result);
-                        }
-                        if (results.isEmpty()) continue;
-                        this.shrink = resultItem.getCount() * times;
-                        this.targets = results;
-                        return targets;
-                    }
-                }
-                return null;
-            }
             return targets;
         }
     }

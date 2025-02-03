@@ -41,4 +41,8 @@ public enum GamePhase implements StringRepresentable {
     public boolean isGraduated() {
         return this == MOON_LORD;
     }
+
+    public boolean isOtherBelowThenMe(GamePhase other) {
+        return other.ordinal() < ordinal();
+    }
 }

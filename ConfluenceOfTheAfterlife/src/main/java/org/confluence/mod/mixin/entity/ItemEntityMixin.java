@@ -1,15 +1,25 @@
 package org.confluence.mod.mixin.entity;
 
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
+import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.ModCriterionTriggers;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.IEntity;
 import org.confluence.mod.mixed.IItemEntity;
 import org.confluence.mod.util.PrefixUtils;
@@ -20,7 +30,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static org.confluence.mod.api.event.ShimmerItemTransmutationEvent.BLACK_LIST;
+import static org.confluence.mod.api.event.ShimmerItemTransmutationEvent.ITEM_TRANSMUTATION;
 
 @Mixin(ItemEntity.class)
 public abstract class ItemEntityMixin implements IItemEntity {
@@ -56,6 +71,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
                 self.addDeltaMovement(ANTI_GRAVITY);
             } else {
                 ShimmerItemTransmutationEvent.Post post = new ShimmerItemTransmutationEvent.Post(self);
+                confluence$initTargets(post);
                 NeoForge.EVENT_BUS.post(post);
                 List<ItemStack> targets = post.getTargets();
                 self.getItem().shrink(post.getShrink());
@@ -86,5 +102,79 @@ public abstract class ItemEntityMixin implements IItemEntity {
         entity.setDeltaMovement(motion.x, y, motion.z);
         ((IItemEntity) entity).confluence$item_setCoolDown(coolDown);
         entity.setGlowingTag(true);
+    }
+
+    @Unique
+    private static void confluence$initTargets(ShimmerItemTransmutationEvent.Post event) {
+        ItemEntity source = event.getSource();
+        ItemStack sourceItem = source.getItem();
+        for (Ingredient ingredient : BLACK_LIST) {
+            if (ingredient.test(sourceItem)) {
+                return;
+            }
+        }
+
+        ConfluenceData data = ConfluenceData.get((ServerLevel) source.level());
+        for (ShimmerItemTransmutationEvent.ItemTransmutation transmutation : ITEM_TRANSMUTATION) {
+            if (transmutation.gamePhase().isOtherBelowThenMe(data.getGamePhase())) continue;
+            if (transmutation.source().test(sourceItem)) {
+                int times = sourceItem.getCount() / transmutation.shrink();
+                List<ItemStack> results = new ArrayList<>();
+                for (ItemStack result : transmutation.target()) {
+                    int count = result.getCount() * times;
+                    int maxStackSize = result.getMaxStackSize();
+                    while (count > maxStackSize) {
+                        results.add(result.copyWithCount(maxStackSize));
+                        count -= maxStackSize;
+                    }
+                    results.add(result.copyWithCount(count));
+                }
+                event.setShrink(transmutation.shrink() * times);
+                event.setTargets(results);
+                return;
+            }
+        }
+
+        if (!CommonConfigs.SHIMMER_DECOMPOSE.get()) return;
+
+        if (sourceItem.getDamageValue() != 0) return;
+        RegistryAccess registryAccess = source.level().registryAccess();
+        boolean isHardmode = data.getGamePhase().isHardmode();
+        RandomSource random = source.level().random;
+        for (RecipeHolder<?> recipeHolder : ((ServerLevel) source.level()).getServer().getRecipeManager().getRecipes()) {
+            Recipe<?> recipe = recipeHolder.value();
+            if (recipe.isSpecial() || recipe.isIncomplete() || recipe instanceof AbstractCookingRecipe) continue;
+            ItemStack resultItem = recipe.getResultItem(registryAccess);
+            if (sourceItem.getCount() >= resultItem.getCount() && ItemStack.isSameItem(sourceItem, resultItem)) {
+                int times = sourceItem.getCount() / resultItem.getCount();
+                List<ItemStack> results = new ArrayList<>();
+                for (Ingredient ingredient : recipe.getIngredients()) {
+                    ItemStack[] itemStacks = ingredient.getItems();
+                    if (itemStacks.length == 0 || Arrays.stream(itemStacks).allMatch(itemStack -> itemStack.is(ModTags.Items.HARDMODE))) {
+                        continue;
+                    }
+                    ItemStack input = itemStacks[random.nextInt(itemStacks.length)];
+                    while (!isHardmode && input.is(ModTags.Items.HARDMODE)) {
+                        input = itemStacks[random.nextInt(itemStacks.length)];
+                    }
+                    ItemStack result = input.copy();
+                    if (result.getItem().hasCraftingRemainingItem(result)) continue;
+                    int count = result.getCount() * times;
+                    int maxStackSize = result.getMaxStackSize();
+                    while (count > maxStackSize) {
+                        ItemStack copy = result.copy();
+                        copy.setCount(maxStackSize);
+                        results.add(copy);
+                        count -= maxStackSize;
+                    }
+                    result.setCount(count);
+                    results.add(result);
+                }
+                if (results.isEmpty()) continue;
+                event.setShrink(resultItem.getCount() * times);
+                event.setTargets(results);
+                return;
+            }
+        }
     }
 }

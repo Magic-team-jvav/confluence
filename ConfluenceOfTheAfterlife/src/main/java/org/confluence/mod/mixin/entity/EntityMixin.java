@@ -1,9 +1,11 @@
 package org.confluence.mod.mixin.entity;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
@@ -11,6 +13,8 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.mod.api.event.ShimmerEntityTransmutationEvent;
+import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.mixed.IEntity;
@@ -21,6 +25,8 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import static org.confluence.mod.api.event.ShimmerEntityTransmutationEvent.ENTITY_TRANSMUTATION;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
@@ -108,6 +114,7 @@ public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
                     self.addDeltaMovement(ANTI_GRAVITY);
                 } else {
                     ShimmerEntityTransmutationEvent.Post post = new ShimmerEntityTransmutationEvent.Post(self);
+                    confluence$initTarget(post);
                     NeoForge.EVENT_BUS.post(post);
                     Entity target = post.getTarget();
                     if (target != null) {
@@ -148,5 +155,28 @@ public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
         Vec3 motion = entity.getDeltaMovement();
         entity.setDeltaMovement(motion.x, y, motion.z);
         entity.setGlowingTag(true);
+    }
+
+    @Unique
+    private static void confluence$initTarget(ShimmerEntityTransmutationEvent.Post event) {
+        Entity sourceEntity = event.getSource();
+        GamePhase gamePhase = ConfluenceData.get((ServerLevel) sourceEntity.level()).getGamePhase();
+        for (ShimmerEntityTransmutationEvent.EntityTransmutation transmutation : ENTITY_TRANSMUTATION) {
+            if (transmutation.gamePhase().isOtherBelowThenMe(gamePhase)) continue;
+            if (transmutation.source().test(sourceEntity)) {
+                Entity target = transmutation.target().create(sourceEntity.level());
+                if (target == null) continue;
+                target.setPos(sourceEntity.position());
+                target.setXRot(sourceEntity.getXRot());
+                target.setYRot(sourceEntity.getYRot());
+                target.setYHeadRot(sourceEntity.getYHeadRot());
+                if (target instanceof LivingEntity livingTarget && sourceEntity instanceof LivingEntity livingSource) {
+                    float ratio = livingSource.getHealth() / livingSource.getMaxHealth();
+                    livingTarget.setHealth(livingTarget.getMaxHealth() * ratio);
+                }
+                event.setTarget(target);
+                return;
+            }
+        }
     }
 }

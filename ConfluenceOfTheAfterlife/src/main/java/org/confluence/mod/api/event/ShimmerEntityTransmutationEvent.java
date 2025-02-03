@@ -1,12 +1,9 @@
 package org.confluence.mod.api.event;
 
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.ICancellableEvent;
-import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.jetbrains.annotations.Nullable;
 
@@ -73,25 +70,6 @@ public abstract class ShimmerEntityTransmutationEvent extends Event {
         }
 
         public @Nullable Entity getTarget() {
-            if (target == null) {
-                int ordinal = ConfluenceData.get((ServerLevel) sourceEntity.level()).getGamePhase().ordinal();
-                for (EntityTransmutation transmutation : ENTITY_TRANSMUTATION) {
-                    if (ordinal < transmutation.gamePhase.ordinal()) continue;
-                    if (transmutation.source.test(sourceEntity)) {
-                        this.target = transmutation.target.create(sourceEntity.level());
-                        if (target == null) continue;
-                        target.setPos(sourceEntity.position());
-                        target.setXRot(sourceEntity.getXRot());
-                        target.setYRot(sourceEntity.getYRot());
-                        target.setYHeadRot(sourceEntity.getYHeadRot());
-                        if (target instanceof LivingEntity livingTarget && sourceEntity instanceof LivingEntity livingSource) {
-                            float ratio = livingSource.getHealth() / livingSource.getMaxHealth();
-                            livingTarget.setHealth(livingTarget.getMaxHealth() * ratio);
-                        }
-                        return target;
-                    }
-                }
-            }
             return target;
         }
     }

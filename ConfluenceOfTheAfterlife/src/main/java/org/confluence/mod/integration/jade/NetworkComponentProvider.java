@@ -24,7 +24,7 @@ public class NetworkComponentProvider implements IBlockComponentProvider, IServe
 
     @Override
     public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
-        if (!InformationHandler.hasMechanicalView()) return;
+        if (!blockAccessor.getPlayer().isCreative() && !InformationHandler.hasMechanicalView()) return;
         CompoundTag compoundTag = blockAccessor.getServerData();
         if (compoundTag.get("networkInfo") instanceof ListTag listTag) {
             listTag.forEach(tag -> {

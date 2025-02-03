@@ -1389,6 +1389,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(PickaxeItems.COPPER_PICKAXE.get(), "铜镐");
         add(PickaxeItems.CACTUS_PICKAXE.get(), "仙人掌镐");
         add(PickaxeItems.CANDY_CANE_PICKAXE.get(), "糖棒镐");
+        add(PickaxeItems.BONE_PICKAXE.get(), "骨镐");
+        add(PickaxeItems.REAVER_SHARK_PICKAXE.get(), "掠夺鲨");
         add(PickaxeItems.FOSSIL_PICKAXE.get(), "化石镐");
         add(PickaxeItems.TIN_PICKAXE.get(), "锡镐");
         add(PickaxeItems.LEAD_PICKAXE.get(), "铅镐");
@@ -1727,6 +1729,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(BowItems.TUNGSTEN_BOW.get(), "钨弓");
         add(BowItems.GOLDEN_BOW.get(), "金弓");
         add(BowItems.PLATINUM_BOW.get(), "铂金弓");
+        add(BowItems.FOSSIL_BOW.get(), "石骸弓");
         add(BowItems.DEMON_BOW.get(), "恶魔弓");
         add(BowItems.TENDON_BOW.get(), "肌腱弓");
 

@@ -13,9 +13,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileItem;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.RopeCoils;
 
 public class RopeCoilsItem extends Item implements ProjectileItem {
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
     public RopeCoilsItem(Properties properties) {
         super(properties);
     }

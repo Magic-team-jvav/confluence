@@ -11,10 +11,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -141,6 +138,17 @@ public class BaseSwordItem extends SwordItem {
 
 
 
+
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        if(!this.modifier.onHitEffects.isEmpty()){
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").append(String.valueOf(this.modifier.onHitEffects.size())).withColor(0xFF00FF));
+        }
+        if(this.modifier.proj != null){
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj").withColor(0xAABB));
+        }
 
     }
 

@@ -52,6 +52,7 @@ import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PerformJumpingEvent;
+import org.confluence.terraentity.client.boss.renderer.GeoBossRenderer;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -214,6 +215,10 @@ public final class GameClientEvents {
         if(entity instanceof GeoAnimatable && Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity) instanceof GeoEntityRenderer renderer){
             Minecraft.getInstance().tell(entity::discard);
             PoseStack poseStack = new PoseStack();
+            if(renderer instanceof GeoBossRenderer<?, ?> bossRenderer){
+                float scale = bossRenderer.getScale();
+                poseStack.scale(scale, scale, scale);
+            }
             Vec3 entityPos = entity.position();
             poseStack.mulPose(Axis.XP.rotationDegrees(entity.getXRot()));
             poseStack.mulPose(Axis.YP.rotationDegrees(-entity.getYRot() + 180));
@@ -234,6 +239,7 @@ public final class GameClientEvents {
                 for(GeoCube cube : bone.getCubes()){
 //                    GeoCube copyCube = DeathAnimUtils.duplicateGeoCube(cube);
                     GeoCube copyCube = ((IGeoCube) (Object) cube).confluence$getCopy();
+                    if(copyCube == null) continue;
                     Vec3 deathMotion;
                     if(entity instanceof Mob mob && mob.isNoAi()){
                         deathMotion = Vec3.ZERO;
@@ -245,11 +251,11 @@ public final class GameClientEvents {
                     }
                     DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, copyCube, (float) deathMotion.length());
 
-                    Vector3f min = cube.quads()[0].vertices()[2].position();
-                    Vector3f max = cube.quads()[1].vertices()[1].position();
-                    float xOffset = ((min.x + max.x) / 2) + boneOffset.x;
-                    float yOffset = min.y + boneOffset.y;
-                    float zOffset = ((min.z + max.z) / 2) + boneOffset.z;
+                    float[] min = ((IGeoCube) (Object) copyCube).confluence$getMinCoords();
+                    float[] max = ((IGeoCube) (Object) copyCube).confluence$getMaxCoords();
+                    float xOffset = ((min[0] + max[0]) / 2) + boneOffset.x;
+                    float yOffset = min[1] + boneOffset.y;
+                    float zOffset = ((min[2] + max[2]) / 2) + boneOffset.z;
                     part.boneRots = rots;
                     ArrayList<Vector3f> bonePivots = new ArrayList<>();
                     bonePivots.add(new Vector3f(bone.getPivotX(), bone.getPivotY(), bone.getPivotZ()).sub(new Vector3f(xOffset, yOffset, zOffset).mul(16)).div(16));
@@ -302,7 +308,12 @@ public final class GameClientEvents {
         LivingEntity entity = event.getEntity();
         if(!(entity.level() instanceof ServerLevel)) return;
         // 死前服务端把死亡时的速度发给客户端
-        DeathMotionPacketS2C.sendToAll(entity.getId(), entity.getDeltaMovement());
+        Vec3 motion = entity.getDeltaMovement();
+        if(motion.length() == 0){
+            Vec3 pos = entity.position();
+            motion = new Vec3(pos.x - entity.xo, pos.y - entity.yo, pos.z - entity.zo);
+        }
+        DeathMotionPacketS2C.sendToAll(entity.getId(), motion);
     }
 
 }

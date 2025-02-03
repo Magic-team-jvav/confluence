@@ -6,6 +6,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.terraentity.entity.ai.Boss;
+import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import software.bernie.geckolib.cache.object.GeoCube;
@@ -36,7 +38,11 @@ public class DeadBodyPartEntity extends Entity {
         super(entityType, level);
         this.dyingEntity = dyingEntity;
         this.bone = bone;
-        lifetime = level.random.nextInt(20, 30);
+        if(dyingEntity instanceof AbstractTerraBossBase || dyingEntity instanceof Boss){
+            lifetime = level.random.nextInt(60, 75);
+        }else{
+            lifetime = level.random.nextInt(20, 30);
+        }
         float speed = deathSpeed * 1.36f + 1.5f;
         // 只转两个轴，但是看起来好像还是转了3个轴
         int stay = lifetime % 3;

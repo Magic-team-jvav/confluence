@@ -36,7 +36,6 @@ public class TerraBowItem extends BowItem {
     public TerraBowItem(float baseDamage, int durability, ModRarity rarity, Consumer<BaseArrowEntity.Builder> modifyArrowBuilder) {
         this(baseDamage, durability, rarity);
         this.modifyArrowBuilder = modifyArrowBuilder;
-        this.baseDamage = baseDamage;
     }
 
     // 无法破坏
@@ -48,7 +47,6 @@ public class TerraBowItem extends BowItem {
     public TerraBowItem(float baseDamage, ModRarity rarity, Consumer<BaseArrowEntity.Builder> modifyArrowBuilder) {
         this(baseDamage, rarity);
         this.modifyArrowBuilder = modifyArrowBuilder;
-        this.baseDamage = baseDamage;
     }
 
     @Override
@@ -90,7 +88,7 @@ public class TerraBowItem extends BowItem {
 
     public static float getFastBowPowerForTime(int pCharge) {
         float f = pCharge / 20.0f;
-        f = (f * f + f * 2.0F) / 3.0F + 0.5f; // 0.5f< f < 3/3+0.5
+        f = (f * f + f * 2.0F) / 3 * 0.5f + 0.5f; // 0.5f< f < 0.7+0.5
         f = Math.min(f, 1.5F);
         return f;
     }

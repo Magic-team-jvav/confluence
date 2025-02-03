@@ -13,23 +13,28 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.util.ClientUtils;
 import org.jetbrains.annotations.NotNull;
 
-public class HealthHudLayer implements LayeredDraw.Layer {
+public class HudLayerTerrariaRefined implements LayeredDraw.Layer {
     public static final ResourceLocation ICON = Confluence.asResource("textures/gui/hud/icon.png");
     public static final Integer SIZE = 128;
 
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, @NotNull DeltaTracker deltaTracker) {
-        if (!ClientConfigs.terraStyleHealth) return;
+
+        //预设
+        int width = guiGraphics.guiWidth();
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.options.hideGui || !ClientUtils.shouldDrawSurvivalElements(minecraft)) return;
         ClientUtils.setupOverlayRenderState(true, false);
-        minecraft.getProfiler().push("health");
+        minecraft.getProfiler().push("hud_layer_terraria_refined");
 
-        int width = guiGraphics.guiWidth() - 130;
+        //生命值
+
+        int widthHealth = width - 130;
         float maxHealth = 0.0F;
         float currentHealth = 0.0F;
         int heartBuff = 0;
@@ -53,8 +58,34 @@ public class HealthHudLayer implements LayeredDraw.Layer {
         int countHeart = (int) ((maxHealth - (float) lifeFruitHealth) / 4);
         int countHeartAbsorptionHealth = (int) (absorptionHealth / 4.0F) + ((((int) absorptionHealth) % 4 == 0) ? 0 : 1);
         int yLine = 4 + (int) (6.0F / (float) ((countHeart - 1) / 20 + (countHeartAbsorptionHealth - 1) / 20 + 1));
-        int heightToAbsorption = blit(heartBuff, maxHealth, currentHealth, lifeFruitHealth, guiGraphics, width, 10, 0, yLine);
-        blit(0, countHeartAbsorptionHealth * 4, absorptionHealth, 0, guiGraphics, width, heightToAbsorption, 1, yLine);
+        int heightToAbsorption = blit(heartBuff, maxHealth, currentHealth, lifeFruitHealth, guiGraphics, widthHealth, 10, 0, yLine);
+        blit(0, countHeartAbsorptionHealth * 4, absorptionHealth, 0, guiGraphics, widthHealth, heightToAbsorption, 1, yLine);
+
+        //魔力条
+
+        int widthMana = width - 23;
+        int currentMana = ClientPacketHandler.getCurrentMana();
+        int maxManaCount = ClientPacketHandler.getMaxMana() / 20;
+        int currentManaToBlit;
+        float ts;
+        for (int i = 0; i < maxManaCount; i++) {
+            currentManaToBlit = currentMana - (i + 1) * 20;
+            guiGraphics.blit(ICON, widthMana, 10 + i * 12, 0, 34, 17, 16, SIZE, SIZE);
+            if (currentManaToBlit >= 0) {
+                guiGraphics.blit(ICON, widthMana + 2, 10 + i * 12, 18, 34, 13, 16, SIZE, SIZE);
+            } else if (currentManaToBlit + 20 >= 0) {
+                ts = ((float) (currentManaToBlit + 20)) / 20.0F;
+                guiGraphics.pose().pushPose();
+                guiGraphics.pose().translate(widthMana + 2 + 6.5F * (1 - ts), 10 + i * 12 + 8.5F * (1 - ts), 0.0F);
+                guiGraphics.pose().scale(ts, ts, 1.0F);
+                guiGraphics.blit(ICON, 0, 0, 18, 34, 13, 16, SIZE, SIZE);
+                guiGraphics.pose().popPose();
+            }
+        }
+
+        //护甲
+
+
         minecraft.getProfiler().pop();
     }
 

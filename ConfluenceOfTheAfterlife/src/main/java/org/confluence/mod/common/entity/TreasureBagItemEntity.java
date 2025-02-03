@@ -55,6 +55,11 @@ public class TreasureBagItemEntity extends ItemEntity {
     }
 
     @Override
+    protected boolean isMergable() {
+        return false;
+    }
+
+    @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         entityData.get(DATA_OWNER).ifPresent(uuid -> compound.putUUID("ActuallyOwner", uuid));

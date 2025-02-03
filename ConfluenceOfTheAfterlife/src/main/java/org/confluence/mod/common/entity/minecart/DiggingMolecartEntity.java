@@ -69,7 +69,7 @@ public class DiggingMolecartEntity extends BaseMinecartEntity {
 
     protected AABB getDiggingRange(BlockPos facingPos, Direction facing) {
         Direction right = facing.getClockWise();
-        Direction left = right.getOpposite();
+        Direction left = facing.getCounterClockWise();
         BlockPos rightBottom = facingPos.relative(right);
         BlockPos leftTop = facingPos.above(2).relative(left);
         return new AABB(rightBottom.getCenter(), leftTop.getCenter());

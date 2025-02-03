@@ -77,7 +77,7 @@ public abstract class MinecartAbilityEvent extends PlayerEvent {
 
         @Override
         public @NotNull AbstractMinecart getMinecart() {
-            return Objects.requireNonNull(super.getMinecart());
+            return Objects.requireNonNull(minecart);
         }
     }
 }

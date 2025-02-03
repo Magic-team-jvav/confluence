@@ -31,7 +31,6 @@ import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntFunction;
 import java.util.function.IntSupplier;
 import java.util.function.Supplier;
@@ -182,14 +181,14 @@ public final class PlayerUtils {
     }
 
     public static void consumeItemCount(List<ItemStack> have, Item item, int consumeCount) {
-        AtomicInteger count = new AtomicInteger();
-        have.forEach(stack -> {
-            if (stack.is(item) && count.get() < consumeCount) {
-                int toConsume = Math.min(stack.getCount(), consumeCount - count.get());
+        int count = 0;
+        for (ItemStack stack : have) {
+            if (stack.is(item) && count < consumeCount) {
+                int toConsume = Math.min(stack.getCount(), consumeCount - count);
                 stack.shrink(toConsume);
-                count.addAndGet(toConsume);
+                count += toConsume;
             }
-        });
+        }
     }
 
     public static int[] getCoins(Player player) {
@@ -265,7 +264,17 @@ public final class PlayerUtils {
         for (int i = 0; i < SIZE_COINS; i++) {
             ItemStack coins = extraInventory.getCoins(i);
             if (coins.isEmpty() || !coins.is(ModTags.Items.COINS)) continue;
-            upgradesCoin(map, COIN_2_INDEX.applyAsInt(coins.getItem()), i, coins.getCount(), extraInventory);
+            int index = COIN_2_INDEX.applyAsInt(coins.getItem());
+            int slot = i;
+            int count = coins.getCount();
+            Supplier<CoinItem> upgrade;
+            while (map.addTo(index, count) + count >= 99 && (upgrade = INDEX_2_COIN.apply(3 - index).upgrade) != null) {
+                extraInventory.setItem(COINS_START + slot, ItemStack.EMPTY);
+                map.addTo(index, -99);
+                index = COIN_2_INDEX.applyAsInt(upgrade.get());
+                slot = index;
+                count = 1;
+            }
         }
         for (int i = 0, j = 0; i < SIZE_COINS; i++) {
             int count = map.getInt(i);
@@ -279,14 +288,5 @@ public final class PlayerUtils {
                 extraInventory.setItem(COINS_START + j++, new ItemStack(coinItem, count));
             }
         }
-    }
-
-    private static void upgradesCoin(Object2IntOpenHashMap<Integer> map, int index, int slot, int count, ExtraInventory extraInventory) {
-        if (map.addTo(index, count) + count < 99) return;
-        Supplier<CoinItem> upgrade = INDEX_2_COIN.apply(3 - index).upgrade;
-        if (upgrade == null) return;
-        extraInventory.setItem(COINS_START + slot, ItemStack.EMPTY);
-        upgradesCoin(map, COIN_2_INDEX.applyAsInt(upgrade.get()), index, 1, extraInventory);
-        map.addTo(index, -99);
     }
 }

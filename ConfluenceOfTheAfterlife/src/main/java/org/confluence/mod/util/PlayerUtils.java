@@ -264,15 +264,15 @@ public final class PlayerUtils {
         for (int i = 0; i < SIZE_COINS; i++) {
             ItemStack coins = extraInventory.getCoins(i);
             if (coins.isEmpty() || !coins.is(ModTags.Items.COINS)) continue;
-            int index = COIN_2_INDEX.applyAsInt(coins.getItem());
             int slot = i;
+            int index = COIN_2_INDEX.applyAsInt(coins.getItem());
             int count = coins.getCount();
             Supplier<CoinItem> upgrade;
             while (map.addTo(index, count) + count >= 99 && (upgrade = INDEX_2_COIN.apply(3 - index).upgrade) != null) {
                 extraInventory.setItem(COINS_START + slot, ItemStack.EMPTY);
                 map.addTo(index, -99);
-                index = COIN_2_INDEX.applyAsInt(upgrade.get());
                 slot = index;
+                index = COIN_2_INDEX.applyAsInt(upgrade.get());
                 count = 1;
             }
         }

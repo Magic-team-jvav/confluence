@@ -3,8 +3,10 @@ package org.confluence.mod.client.gui.hud;
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -17,6 +19,7 @@ import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.util.ClientUtils;
 
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
@@ -42,7 +45,45 @@ public class TerraStyleHud implements LayeredDraw.Layer {
         LEGACY {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
-                // todo
+                long armorNum = 0;
+                long armorToughnessNum = 0;
+                Player player = minecraft.player;
+                if (player != null) {
+                    armorNum = player.getArmorValue();
+                    armorToughnessNum = (int) player.getAttribute(Attributes.ARMOR_TOUGHNESS).getValue();
+                }
+                String armor = Long.toString(armorNum);
+                String armorToughness = Long.toString(armorToughnessNum);
+                int widthArmor = guiGraphics.guiWidth() - 26;
+                int heightArmor = guiGraphics.guiHeight() - 28;
+                int textWidthArmor = minecraft.font.width(Component.literal(armor));
+                int textWidthArmorToughness = minecraft.font.width(Component.literal(armorToughness));
+                int textWidth = minecraft.font.width(Component.literal("|"));
+                int textHeight = minecraft.font.lineHeight;
+                int colorWhite = 0xFFFFFF;
+                int colorArmor = 0xEEB354;
+                int colorArmorToughness = 0x54E4EE;
+                float widthOffset = (armorToughnessNum == 0) ? (11.5F + (textWidthArmor / 2.0F) - 22) : (13.5F + (textWidth / 2.0F) + textWidthArmorToughness - 22);
+                widthOffset = (widthOffset > 0) ? widthOffset : 0;
+                guiGraphics.pose().pushPose();
+                guiGraphics.pose().translate(-widthOffset, 0.0F, 0.0F);
+                guiGraphics.blit(ICON, widthArmor, heightArmor, 0, 51, 23, 25, SIZE, SIZE);
+                guiGraphics.pose().popPose();
+                if (armorToughnessNum == 0) {
+                    drawString(guiGraphics, minecraft.font, armor, widthArmor + 11.5F - (textWidthArmor / 2.0F) - widthOffset, heightArmor + 12.5F - (textHeight / 2.0F), colorArmor);
+                } else {
+                    drawString(guiGraphics, minecraft.font, "|", widthArmor + 11.5F - (textWidth / 2.0F) - widthOffset, heightArmor + 12.5F - (textHeight / 2.0F), colorWhite);
+                    drawString(guiGraphics, minecraft.font, armor, widthArmor + 9.5F - (textWidth / 2.0F) - textWidthArmor - widthOffset, heightArmor + 12.5F - (textHeight / 2.0F), colorArmor);
+                    drawString(guiGraphics, minecraft.font, armorToughness, widthArmor + 13.5F + (textWidth / 2.0F) - widthOffset, heightArmor + 12.5F - (textHeight / 2.0F), colorArmorToughness);
+                }
+            }
+
+            public void drawString(GuiGraphics guiGraphics, Font font, @Nullable String text, float x, float y, int color) {
+                guiGraphics.drawString(font, text, x + 1, y, 0x000000, false);
+                guiGraphics.drawString(font, text, x - 1, y, 0x000000, false);
+                guiGraphics.drawString(font, text, x, y + 1, 0x000000, false);
+                guiGraphics.drawString(font, text, x, y - 1, 0x000000, false);
+                guiGraphics.drawString(font, text, x, y, color, false);
             }
         };
 

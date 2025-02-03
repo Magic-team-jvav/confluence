@@ -45,7 +45,6 @@ import org.confluence.mod.common.entity.DeadBodyPartEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
-import org.confluence.mod.mixed.IInventoryScreen;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.mixin.accessor.LivingEntityAccessor;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
@@ -105,6 +104,8 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void renderGuiOverlay$Pre(RenderGuiLayerEvent.Pre event) {
         if (ClientConfigs.terraStyleHealth && VanillaGuiLayers.PLAYER_HEALTH.equals(event.getName())) {
+            event.setCanceled(true);
+        } else if (ClientConfigs.terraStyleArmor && VanillaGuiLayers.ARMOR_LEVEL.equals(event.getName())) {
             event.setCanceled(true);
         }
     }

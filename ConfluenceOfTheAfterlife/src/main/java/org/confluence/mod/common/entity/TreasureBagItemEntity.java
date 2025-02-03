@@ -30,7 +30,7 @@ public class TreasureBagItemEntity extends ItemEntity {
         setItem(itemStack);
         this.lifespan = itemStack.getEntityLifespan(level);
         setThrower(player);
-        entityData.set(DATA_OWNER, Optional.of(player.getUUID()));
+        setOwner(player);
     }
 
     @Override
@@ -47,6 +47,11 @@ public class TreasureBagItemEntity extends ItemEntity {
         if (player == null) return false;
         Optional<UUID> uuid = entityData.get(DATA_OWNER);
         return uuid.isPresent() && uuid.get().equals(player.getUUID());
+    }
+
+    @Override
+    public boolean shouldRender(double x, double y, double z) {
+        return true;
     }
 
     @Override

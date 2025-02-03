@@ -88,7 +88,7 @@ public class BoulderEntity extends Projectile {
         Vec3 end = start.add(delta);
         HitResult hitResult = level().clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
         if (hitResult.getType() != HitResult.Type.MISS) end = hitResult.getLocation();
-        HitResult hitResult1 = ProjectileUtil.getEntityHitResult(level(), this, start, end, getBoundingBox().expandTowards(delta).inflate(1.0), entity -> true);
+        HitResult hitResult1 = ProjectileUtil.getEntityHitResult(level(), this, start, end, getBoundingBox().expandTowards(delta).inflate(1.0), this::canHitEntity);
         if (hitResult1 != null) hitResult = hitResult1;
 
         if (hitResult instanceof BlockHitResult blockHitResult) {

@@ -52,7 +52,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("options.difficulty.legendary", "§aLegendary");
 
         add("item.confluence.meteorite_ingot.tooltip", "Warm to the touch");
-        add("jukebox_song.confluence.song", "C418 - alpha");
+        add("jukebox_song.confluence.alpha", "C418 - alpha");
 
         add("bossevent.confluence.boss_generate", "The %s has awakened!");
         add("bossevent.confluence.boss_death", "The %s been defeated!");

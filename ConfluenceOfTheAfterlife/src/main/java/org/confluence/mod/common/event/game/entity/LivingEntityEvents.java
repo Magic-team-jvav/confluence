@@ -21,8 +21,8 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.item.ProjectileWeaponItem;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -67,7 +67,7 @@ public final class LivingEntityEvents {
         LivingEntity living = event.getEntity();
         if (event.getSource().getEntity() instanceof ServerPlayer serverPlayer) {
             ServerLevel level = serverPlayer.serverLevel();
-            if(level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT) && CommonConfigs.DROP_MONEY.get() && living instanceof Enemy){
+            if (living instanceof Enemy && CommonConfigs.DROP_MONEY.get() && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
                 AttributeInstance attack = living.getAttribute(Attributes.ATTACK_DAMAGE);
                 AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
                 AttributeInstance knockbackResistance = living.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
@@ -93,11 +93,11 @@ public final class LivingEntityEvents {
                 }
                 ResourceKey<Level> dimension = living.level().dimension();
                 level.players().stream()
-                        .filter(player -> player.level().dimension().equals(dimension))
+                        .filter(player -> player.level().dimension() == dimension)
                         .forEach(player -> {
                             TreasureBagItem.createItemEntity(living, player);
                             if (isEaterOfWorlds) {
-                                PlayerUtils.awardAchievement(serverPlayer, "worm_fodder");
+                                PlayerUtils.awardAchievement(player, "worm_fodder");
                             }
                         });
             }

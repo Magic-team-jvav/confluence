@@ -1,5 +1,7 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -13,8 +15,10 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.common.item.common.*;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
 
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -64,6 +68,10 @@ public final class ModItems {
     public static final Supplier<BlockItem> TR_CRIMSON_CATTAILS = BLOCK_ITEMS.register("tr_crimson_cattails", () -> new BlockItem(NatureBlocks.TR_CRIMSON_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
 
     public static final Supplier<TargetDummyItem> TARGET_DUMMY = ITEMS.register("target_dummy", () -> new TargetDummyItem(new Item.Properties()));
+
+
+    //赞助物品
+    public static final Supplier<TooltipItem> TOKYO_TEDDY_BEAR = ITEMS.register("tokyo_teddy_bear", () -> new TooltipItem(new Item.Properties(), ModUtils.getTooltipsFromString("tokyo_teddy_bear", 6)));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

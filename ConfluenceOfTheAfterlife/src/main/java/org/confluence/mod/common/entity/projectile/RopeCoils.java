@@ -174,6 +174,7 @@ public class RopeCoils extends ThrowableItemProjectile {
         }
         BlockPos pos = result.getEntity().getOnPos();
         ModUtils.createItemEntity(ropeCoil, 1, Vec3.atLowerCornerOf(pos), level, 0);
+        this.remove(RemovalReason.DISCARDED);
         super.onHitEntity(result);
     }
 }

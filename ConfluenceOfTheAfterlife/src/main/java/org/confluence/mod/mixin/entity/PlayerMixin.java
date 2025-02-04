@@ -1,15 +1,16 @@
 package org.confluence.mod.mixin.entity;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.entity.npc.NPCTrades;
+import org.confluence.mod.common.entity.projectile.IceTofuBrickProjectile;
 import org.confluence.mod.mixed.IDamageSource;
 import org.confluence.mod.mixed.IPlayer;
 import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -27,9 +28,6 @@ public abstract class PlayerMixin implements IPlayer , SelfGetter<Player> {
     private void attack(Entity target, CallbackInfo ci, @Local DamageSource damagesource, @Local(ordinal = 2) boolean flag1) {
         ((IDamageSource) damagesource).confluence$setCritical(flag1);
     }
-
-
-
 
     public NPCTrades rhyme$getDaveTrades() {
         return rhyme$NPCTrades;

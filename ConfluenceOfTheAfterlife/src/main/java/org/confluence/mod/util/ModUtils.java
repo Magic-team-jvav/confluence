@@ -1,10 +1,12 @@
 package org.confluence.mod.util;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -43,6 +45,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
@@ -327,5 +330,13 @@ public final class ModUtils {
 
     public static BlockPos fromVector3d(Vector3d vector3d) {
         return new BlockPos((int) vector3d.x, (int) vector3d.y, (int) vector3d.z);
+    }
+
+    public static List<Component> getTooltipsFromString(String id, int lineCount){
+        List<Component> components = new ArrayList<>();
+        for (int i = 1; i <= lineCount; i++){
+            components.add(Component.translatable("item.confluence." + id + ".tooltip." + i).withStyle(ChatFormatting.DARK_GRAY));
+        }
+        return components;
     }
 }

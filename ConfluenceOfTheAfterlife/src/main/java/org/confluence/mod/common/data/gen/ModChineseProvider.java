@@ -7,6 +7,8 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 
+import javax.tools.Tool;
+
 import static org.confluence.mod.common.init.item.PickaxeItems.MOLTEN_PICKAXE;
 
 public class ModChineseProvider extends LanguageProvider {
@@ -37,6 +39,13 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("item.confluence.meteorite_ingot.tooltip", "摸起来是温的");
         add("jukebox_song.confluence.song", "C418 - alpha");
+
+        add("item.confluence.tokyo_teddy_bear.tooltip.1", "一位自卑的少女如破碎的泰迪熊般说到：");
+        add("item.confluence.tokyo_teddy_bear.tooltip.2", "           来让你听听");
+        add("item.confluence.tokyo_teddy_bear.tooltip.3", "           全智全能的话吧");
+        add("item.confluence.tokyo_teddy_bear.tooltip.4", "           头脑以外的");
+        add("item.confluence.tokyo_teddy_bear.tooltip.5", "           已不再需要");
+        add("item.confluence.tokyo_teddy_bear.tooltip.6", "——由一只蜘蛛讲述的故事");
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
         add("generator.confluence.the_corruption", "腐化之地");
@@ -1520,6 +1529,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.VINE_ROPE_COIL.get(), "藤蔓绳圈");
         add(ToolItems.SILK_ROPE_COIL.get(), "丝绸绳圈");
         add(ToolItems.WEB_ROPE_COIL.get(), "蛛丝绳圈");
+
+        add(ModItems.TOKYO_TEDDY_BEAR.get(), "东京泰迪熊");
+        add(ToolItems.ICE_TOFU_BRICK.get(), "冰豆腐砖");
 
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");

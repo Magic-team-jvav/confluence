@@ -240,7 +240,8 @@ public final class ModClientEvents {
         event.registerEntityRenderer(TREASURE_BAG_ITEM_ENTITY.get(), TreasureBagRenderer::new);
         event.registerEntityRenderer(COIN_PORTAL.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(THROWN_POWDER.get(), EmptyEntityRenderer::new);
-        event.registerEntityRenderer(ROPE_COILS.get(), EmptyEntityRenderer::new);
+        event.registerEntityRenderer(ROPE_COILS.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(ICE_TOFU_BRICK_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(BODY_PART.get(), BodyPartRenderer::new);
 
         event.registerBlockEntityRenderer(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new AltarBlockModel()));

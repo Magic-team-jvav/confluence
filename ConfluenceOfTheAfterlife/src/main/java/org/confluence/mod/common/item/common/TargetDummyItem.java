@@ -18,6 +18,7 @@ public class TargetDummyItem extends Item {
         TargetDummyEntity entity = new TargetDummyEntity(ModEntities.TARGET_DUMMY.get(), context.getLevel());
         entity.setPos(pos);
         context.getLevel().addFreshEntity(entity);
+        context.getItemInHand().consume(1, context.getPlayer());
         return super.useOn(context);
     }
 }

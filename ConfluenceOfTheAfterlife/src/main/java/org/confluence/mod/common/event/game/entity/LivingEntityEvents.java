@@ -176,6 +176,7 @@ public final class LivingEntityEvents {
         crit |= ((IDamageSource) damageSource).confluence$isCritical();
         float roundedAmount = Math.round(amount * 10) / 10f;
         int intAmount = (int) roundedAmount;
+        if (roundedAmount == 0F) return;
         String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
         Vec3 pos = damagingEntity.position();
         Component component = Component.literal(text).withStyle(crit ? ChatFormatting.DARK_RED : ChatFormatting.GOLD, ChatFormatting.BOLD);

@@ -12,10 +12,7 @@ import org.confluence.mod.common.init.ModJukeboxSongs;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.CustomRarityItem;
-import org.confluence.mod.common.item.common.CoinItem;
-import org.confluence.mod.common.item.common.EntityDisplayItem;
-import org.confluence.mod.common.item.common.GrassSeedItem;
-import org.confluence.mod.common.item.common.RopeCoilsItem;
+import org.confluence.mod.common.item.common.*;
 import org.confluence.terra_curio.common.component.ModRarity;
 
 import java.util.Map;
@@ -50,7 +47,6 @@ public final class ModItems {
 
     public static final Supplier<Item> DEAD_MANS_SWEATER = ITEMS.registerItem("dead_mans_seater", properties -> new CustomRarityItem(properties.stacksTo(1), ModRarity.GREEN)); // todo 模型
     public static final Supplier<Item> WHOOPIE_CUSHION = ITEMS.registerSimpleItem("whoopie_cushion", new Item.Properties().stacksTo(1));
-    public static final Supplier<RopeCoilsItem> ROPE_COILS = ITEMS.register("rope_coils", () -> new RopeCoilsItem(new Item.Properties()));
 
     public static final Supplier<GrassSeedItem> GRASS_SEED = ITEMS.register("grass_seed", () -> new GrassSeedItem(Map.of(Blocks.DIRT, Blocks.GRASS_BLOCK)));
     public static final Supplier<GrassSeedItem> JUNGLE_GRASS_SEED = ITEMS.register("jungle_grass_seed", () -> new GrassSeedItem(Map.of(Blocks.MUD, NatureBlocks.JUNGLE_GRASS_BLOCK.get())));
@@ -66,6 +62,8 @@ public final class ModItems {
     public static final Supplier<BlockItem> HALLOW_CATTAILS = BLOCK_ITEMS.register("hallow_cattails", () -> new BlockItem(NatureBlocks.HALLOW_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
     public static final Supplier<BlockItem> EBONY_CATTAILS = BLOCK_ITEMS.register("ebony_cattails", () -> new BlockItem(NatureBlocks.EBONY_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
     public static final Supplier<BlockItem> TR_CRIMSON_CATTAILS = BLOCK_ITEMS.register("tr_crimson_cattails", () -> new BlockItem(NatureBlocks.TR_CRIMSON_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
+
+    public static final Supplier<TargetDummyItem> TARGET_DUMMY = ITEMS.register("target_dummy", () -> new TargetDummyItem(new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

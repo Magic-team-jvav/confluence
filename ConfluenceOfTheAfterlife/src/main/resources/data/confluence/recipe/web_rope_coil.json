@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "confluence:web_rope"
+        },
+        {
+            "item": "confluence:web_rope"
+        },
+        {
+            "item": "confluence:web_rope"
+        },
+        {
+            "item": "confluence:web_rope"
+        }
+    ],
+    "result": {
+        "id": "confluence:web_rope_coil"
+    }
+}

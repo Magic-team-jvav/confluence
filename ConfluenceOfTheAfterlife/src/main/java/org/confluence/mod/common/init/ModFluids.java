@@ -192,7 +192,7 @@ public final class ModFluids {
         addItem(Items.WATER_BUCKET, Items.LAVA_BUCKET);
         addItem(Items.LAVA_BUCKET, ToolItems.HONEY_BUCKET.get());
         addItem(ToolItems.HONEY_BUCKET.get(), Items.WATER_BUCKET);
-        addItem(ModItems.WHOOPIE_CUSHION.get(), SwordItems.ZOMBIE_ARM.get());
+        addItem(SwordItems.ZOMBIE_ARM.get(), ModItems.WHOOPIE_CUSHION.get());
 
         addItem(ConsumableItems.LIFE_CRYSTAL.get(), ConsumableItems.VITAL_CRYSTAL.get());
         addItem(ConsumableItems.MANA_CRYSTAL.get(), ConsumableItems.ARCANE_CRYSTAL.get());

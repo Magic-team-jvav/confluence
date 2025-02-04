@@ -13,6 +13,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.RopeCoilItem;
+import org.confluence.terraentity.init.TEItems;
 
 import java.util.*;
 import java.util.function.Consumer;

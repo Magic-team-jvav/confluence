@@ -6,6 +6,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.terraentity.init.TEItems;
 
 import javax.tools.Tool;
 
@@ -1532,6 +1533,9 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(ModItems.TOKYO_TEDDY_BEAR.get(), "东京泰迪熊");
         add(ToolItems.ICE_TOFU_BRICK.get(), "冰豆腐砖");
+
+
+        add(TEItems.SLIME_SUMMONER.get(), "史莱姆召唤杖");
 
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");

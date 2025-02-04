@@ -3,6 +3,7 @@ package org.confluence.mod.common.item.armor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,6 +28,11 @@ public class NormalArmorItem extends ArmorItem implements GeoItem {
     public NormalArmorItem(String name, Holder<ArmorMaterial> material, Type type, Properties properties) {
         super(material, type, properties);
         this.name = name;
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return stack.getMaxStackSize() == 1;
     }
 
     @Override

@@ -15,6 +15,7 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terraentity.init.TEItems;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -120,6 +121,7 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.SUMMON_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.summoners"))
                     .displayItems((parameters, output) -> {
+                        TEItems.SUMMON_ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                         LightPetItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                     }).build());
     // 开发者物品

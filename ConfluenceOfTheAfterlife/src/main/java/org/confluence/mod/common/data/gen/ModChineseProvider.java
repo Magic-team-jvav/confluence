@@ -1516,10 +1516,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModBlocks.VINE_ROPE.get(), "藤蔓绳");
         add(ModBlocks.SILK_ROPE.get(), "丝绸绳");
         add(ModBlocks.WEB_ROPE.get(), "蛛丝绳");
-        add(ModItems.ROPE_COILS.get(), "绳圈");
-        add(ModItems.VINE_ROPE_COILS.get(), "藤蔓绳圈");
-        add(ModItems.SILK_ROPE_COILS.get(), "丝绸绳圈");
-        add(ModItems.WEB_ROPE_COILS.get(), "蛛丝绳圈");
+        add(ToolItems.ROPE_COIL.get(), "绳圈");
+        add(ToolItems.VINE_ROPE_COIL.get(), "藤蔓绳圈");
+        add(ToolItems.SILK_ROPE_COIL.get(), "丝绸绳圈");
+        add(ToolItems.WEB_ROPE_COIL.get(), "蛛丝绳圈");
 
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");

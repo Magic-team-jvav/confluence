@@ -12,7 +12,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.item.common.RopeCoilsItem;
+import org.confluence.mod.common.item.common.RopeCoilItem;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -73,7 +73,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         customModels.add(createDir(PotionItems.ITEMS, "potion/"));
         customModels.add(createDir(QuestedFishes.ITEMS, "quested_fish/"));
         customModels.add(createDir(ToolItems.ITEMS, "tool/"));
-        customModels.add(createDir(RopeCoilsItem.ITEMS, "tool/"));
         customModels.add(createDir(TreasureBagItems.ITEMS, "treasure_bag/"));
         customModels.add(createDir(VanityArmorItems.ITEMS, "vanity_armor/"));
 

@@ -18,11 +18,10 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.RopeCoils;
 
-public class RopeCoilsItem extends Item implements ProjectileItem {
-    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
+public class RopeCoilItem extends Item implements ProjectileItem {
     private final Block rope;
 
-    public RopeCoilsItem(Properties properties, Block rope) {
+    public RopeCoilItem(Properties properties, Block rope) {
         super(properties);
         this.rope = rope;
     }

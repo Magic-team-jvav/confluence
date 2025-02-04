@@ -17,6 +17,7 @@ import org.confluence.mod.common.block.common.BaseRopeBlock;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.util.ModUtils;
 
 public class RopeCoils extends ThrowableItemProjectile {
@@ -26,13 +27,13 @@ public class RopeCoils extends ThrowableItemProjectile {
 
     public RopeCoils(EntityType<? extends RopeCoils> type, Level level) {
         super(type, level);
-        ropeCoil = ModItems.ROPE_COILS.get();
+        ropeCoil = ToolItems.ROPE_COIL.get();
         rope = ModBlocks.ROPE.get();
     }
 
     public RopeCoils(double x, double y, double z, Level level) {
         super(ModEntities.ROPE_COILS.get(), x, y, z, level);
-        ropeCoil = ModItems.ROPE_COILS.get();
+        ropeCoil = ToolItems.ROPE_COIL.get();
         rope = ModBlocks.ROPE.get();
     }
 

@@ -13,21 +13,25 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.RopeCoils;
 
 public class RopeCoilsItem extends Item implements ProjectileItem {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
-    public RopeCoilsItem(Properties properties) {
+    private final Block rope;
+
+    public RopeCoilsItem(Properties properties, Block rope) {
         super(properties);
+        this.rope = rope;
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
         if (!level.isClientSide) {
-            RopeCoils coils = new RopeCoils(player, level);
+            RopeCoils coils = new RopeCoils(player, level, this, rope);
             coils.setItem(itemstack);
             coils.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
             level.addFreshEntity(coils);
@@ -43,5 +47,9 @@ public class RopeCoilsItem extends Item implements ProjectileItem {
         RopeCoils coils = new RopeCoils(pos.x(), pos.y(), pos.z(), level);
         coils.setItem(stack);
         return coils;
+    }
+
+    public Block getRope() {
+        return rope;
     }
 }

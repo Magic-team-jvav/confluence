@@ -6,6 +6,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,22 +21,38 @@ import org.confluence.mod.util.ModUtils;
 
 public class RopeCoils extends ThrowableItemProjectile {
     public static final int SIZE = 4;
+    private final Item ropeCoil;
+    private final Block rope;
 
     public RopeCoils(EntityType<? extends RopeCoils> type, Level level) {
         super(type, level);
+        ropeCoil = ModItems.ROPE_COILS.get();
+        rope = ModBlocks.ROPE.get();
     }
 
     public RopeCoils(double x, double y, double z, Level level) {
         super(ModEntities.ROPE_COILS.get(), x, y, z, level);
+        ropeCoil = ModItems.ROPE_COILS.get();
+        rope = ModBlocks.ROPE.get();
     }
 
-    public RopeCoils(LivingEntity shooter, Level level) {
+    public RopeCoils(LivingEntity shooter, Level level, Item ropeCoil, Block rope) {
         super(ModEntities.ROPE_COILS.get(), shooter, level);
+        this.ropeCoil = ropeCoil;
+        this.rope = rope;
+    }
+
+    public Item getRopeCoil() {
+        return ropeCoil;
+    }
+
+    public Block getRope() {
+        return rope;
     }
 
     @Override
     protected Item getDefaultItem() {
-        return ModItems.ROPE_COILS.get();
+        return Items.AIR;
     }
 
     @Override
@@ -59,25 +76,25 @@ public class RopeCoils extends ThrowableItemProjectile {
                 else break;
             }
             willUp = up > down;
-            BlockState state = ModBlocks.ROPE.get().defaultBlockState();
-            isPlaced = place(willUp, state, level, pos);
+            BlockState state = rope.defaultBlockState();
+            isPlaced = place(rope, willUp, state, level, pos);
         }
         if (!isPlaced) {
-            ModUtils.createItemEntity(ModItems.ROPE_COILS.get().getDefaultInstance(), pos.getCenter(), level, 0);
+            ModUtils.createItemEntity(ropeCoil.getDefaultInstance(), pos.getCenter(), level, 0);
         }
         this.discard();
         super.onHitBlock(result);
     }
 
-    public static boolean place(boolean willUp, BlockState state, Level level, BlockPos pos){
-        return place(willUp, state, level, pos, 0);
+    public static boolean place(Block rope, boolean willUp, BlockState state, Level level, BlockPos pos){
+        return place(rope, willUp, state, level, pos, 0);
     }
 
-    public static void createRope(int offset, int i, BlockPos pos, Level level){
-        ModUtils.createItemEntity(ModBlocks.ROPE.get().asItem(), SIZE + offset - i, Vec3.atLowerCornerOf(pos), level, 0);
+    public static void createRope(Block rope, int offset, int i, BlockPos pos, Level level){
+        ModUtils.createItemEntity(rope.asItem(), SIZE + offset - i, Vec3.atLowerCornerOf(pos), level, 0);
     }
 
-    public static boolean place(boolean willUp, BlockState state, Level level, BlockPos pos, int offset){
+    public static boolean place(Block rope, boolean willUp, BlockState state, Level level, BlockPos pos, int offset){
         boolean isPlaced = false;
         if (willUp){
             for (int i = offset; i < SIZE + offset; i++){
@@ -86,12 +103,12 @@ public class RopeCoils extends ThrowableItemProjectile {
                         isPlaced = true;
                     } else {
                         if (i == offset) break;
-                        createRope(offset, i, pos, level);
+                        createRope(rope, offset, i, pos, level);
                         break;
                     }
                 } else {
                     isPlaced = true;
-                    createRope(offset, i, pos, level);
+                    createRope(rope, offset, i, pos, level);
                     break;
                 }
             }
@@ -102,12 +119,12 @@ public class RopeCoils extends ThrowableItemProjectile {
                         isPlaced = true;
                     } else {
                         if (i == offset) break;
-                        createRope(offset, i, pos, level);
+                        createRope(rope, offset, i, pos, level);
                         break;
                     }
                 } else {
                     isPlaced = true;
-                    createRope(offset, i, pos, level);
+                    createRope(rope, offset, i, pos, level);
                     break;
                 }
             }
@@ -138,10 +155,10 @@ public class RopeCoils extends ThrowableItemProjectile {
                     else break;
                 }
                 willUp = up > down;
-                BlockState state = ModBlocks.ROPE.get().defaultBlockState();
-                isPlaced = place(willUp, state, level, pos, 1);
+                BlockState state = rope.defaultBlockState();
+                isPlaced = place(rope, willUp, state, level, pos, 1);
                 if (!isPlaced) {
-                    ModUtils.createItemEntity(ModItems.ROPE_COILS.get(), 1, Vec3.atLowerCornerOf(pos), level, 0);
+                    ModUtils.createItemEntity(ropeCoil, 1, Vec3.atLowerCornerOf(pos), level, 0);
                 }
                 this.discard();
             }
@@ -155,7 +172,7 @@ public class RopeCoils extends ThrowableItemProjectile {
             return;
         }
         BlockPos pos = result.getEntity().getOnPos();
-        ModUtils.createItemEntity(ModItems.ROPE_COILS.get(), 1, Vec3.atLowerCornerOf(pos), level, 0);
+        ModUtils.createItemEntity(ropeCoil, 1, Vec3.atLowerCornerOf(pos), level, 0);
         super.onHitEntity(result);
     }
 }

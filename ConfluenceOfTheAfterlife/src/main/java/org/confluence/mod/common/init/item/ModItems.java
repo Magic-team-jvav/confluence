@@ -47,7 +47,11 @@ public final class ModItems {
 
     public static final Supplier<Item> DEAD_MANS_SWEATER = ITEMS.registerItem("dead_mans_seater", properties -> new CustomRarityItem(properties.stacksTo(1), ModRarity.GREEN)); // todo 模型
     public static final Supplier<Item> WHOOPIE_CUSHION = ITEMS.registerSimpleItem("whoopie_cushion", new Item.Properties().stacksTo(1));
-    public static final Supplier<RopeCoilsItem> ROPE_COILS = ITEMS.register("rope_coils", () -> new RopeCoilsItem(new Item.Properties()));
+
+    public static final Supplier<RopeCoilsItem> ROPE_COILS = ITEMS.register("rope_coils", () -> new RopeCoilsItem(new Item.Properties(), ModBlocks.ROPE.get()));
+    public static final Supplier<RopeCoilsItem> VINE_ROPE_COILS = ITEMS.register("vine_rope_coils", () -> new RopeCoilsItem(new Item.Properties(), ModBlocks.VINE_ROPE.get()));
+    public static final Supplier<RopeCoilsItem> SILK_ROPE_COILS = ITEMS.register("silk_rope_coils", () -> new RopeCoilsItem(new Item.Properties(), ModBlocks.SILK_ROPE.get()));
+    public static final Supplier<RopeCoilsItem> WEB_ROPE_COILS = ITEMS.register("web_rope_coils", () -> new RopeCoilsItem(new Item.Properties(), ModBlocks.WEB_ROPE.get()));
 
     public static final Supplier<GrassSeedItem> GRASS_SEED = ITEMS.register("grass_seed", () -> new GrassSeedItem(Map.of(Blocks.DIRT, Blocks.GRASS_BLOCK)));
     public static final Supplier<GrassSeedItem> JUNGLE_GRASS_SEED = ITEMS.register("jungle_grass_seed", () -> new GrassSeedItem(Map.of(Blocks.MUD, NatureBlocks.JUNGLE_GRASS_BLOCK.get())));

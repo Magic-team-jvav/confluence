@@ -17,7 +17,7 @@ public final class ClientConfigs {
     public static TerraStyleHud.Health healthStyle = TerraStyleHud.Health.LEGACY;
     public static TerraStyleHud.Mana manaStyle = TerraStyleHud.Mana.LEGACY;
     public static boolean terraStyleArmor = true;
-    public static TerraStyleHud.Armor armorStyle = TerraStyleHud.Armor.LEGACY;
+    public static TerraStyleHud.Armor armorStyle = TerraStyleHud.Armor.LEGACY_HORIZONTAL;
     public static boolean leftEffectIcon = true;
 
     public static boolean hurtRedOverlay = true;
@@ -73,7 +73,7 @@ public final class ClientConfigs {
 
         BUILDER.push("Armor");
         TERRA_STYLE_ARMOR = BUILDER.define("terraStyleArmor", true);
-        ARMOR_STYLE = BUILDER.defineEnum("armorStyle", TerraStyleHud.Armor.LEGACY);
+        ARMOR_STYLE = BUILDER.defineEnum("armorStyle", TerraStyleHud.Armor.LEGACY_DIAGONAL);
         BUILDER.pop();
 
         LEFT_EFFECT_ICON = BUILDER.define("leftEffectIcon", true);

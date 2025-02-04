@@ -42,50 +42,99 @@ public class TerraStyleHud implements LayeredDraw.Layer {
     }
 
     public enum Armor {
-        LEGACY {
+        LEGACY_HORIZONTAL {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
-                long armorNum = 0;
-                long armorToughnessNum = 0;
-                Player player = minecraft.player;
-                if (player != null) {
-                    armorNum = player.getArmorValue();
-                    armorToughnessNum = (int) player.getAttribute(Attributes.ARMOR_TOUGHNESS).getValue();
-                }
-                String armor = Long.toString(armorNum);
-                String armorToughness = Long.toString(armorToughnessNum);
-                int widthArmor = guiGraphics.guiWidth() - 26;
-                int heightArmor = guiGraphics.guiHeight() - 28;
-                int textWidthArmor = minecraft.font.width(Component.literal(armor));
-                int textWidthArmorToughness = minecraft.font.width(Component.literal(armorToughness));
-                int textWidth = minecraft.font.width(Component.literal("|"));
-                int textHeight = minecraft.font.lineHeight;
-                int colorWhite = 0xFFFFFF;
-                int colorArmor = 0xEEB354;
-                int colorArmorToughness = 0x54E4EE;
-                float widthOffset = (armorToughnessNum == 0) ? (11.5F + (textWidthArmor / 2.0F) - 22) : (13.5F + (textWidth / 2.0F) + textWidthArmorToughness - 22);
-                widthOffset = (widthOffset > 0) ? widthOffset : 0;
-                guiGraphics.pose().pushPose();
-                guiGraphics.pose().translate(-widthOffset, 0.0F, 0.0F);
-                guiGraphics.blit(ICON, widthArmor, heightArmor, 0, 51, 23, 25, SIZE, SIZE);
-                guiGraphics.pose().popPose();
-                if (armorToughnessNum == 0) {
-                    drawString(guiGraphics, minecraft.font, armor, widthArmor + 11.5F - (textWidthArmor / 2.0F) - widthOffset, heightArmor + 12.5F - (textHeight / 2.0F), colorArmor);
-                } else {
-                    drawString(guiGraphics, minecraft.font, "|", widthArmor + 11.5F - (textWidth / 2.0F) - widthOffset, heightArmor + 12.5F - (textHeight / 2.0F), colorWhite);
-                    drawString(guiGraphics, minecraft.font, armor, widthArmor + 9.5F - (textWidth / 2.0F) - textWidthArmor - widthOffset, heightArmor + 12.5F - (textHeight / 2.0F), colorArmor);
-                    drawString(guiGraphics, minecraft.font, armorToughness, widthArmor + 13.5F + (textWidth / 2.0F) - widthOffset, heightArmor + 12.5F - (textHeight / 2.0F), colorArmorToughness);
-                }
+                draw(guiGraphics, minecraft, 1);
             }
-
-            public void drawString(GuiGraphics guiGraphics, Font font, @Nullable String text, float x, float y, int color) {
-                guiGraphics.drawString(font, text, x + 1, y, 0x000000, false);
-                guiGraphics.drawString(font, text, x - 1, y, 0x000000, false);
-                guiGraphics.drawString(font, text, x, y + 1, 0x000000, false);
-                guiGraphics.drawString(font, text, x, y - 1, 0x000000, false);
-                guiGraphics.drawString(font, text, x, y, color, false);
+        },
+        LEGACY_DIAGONAL {
+            @Override
+            public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
+                draw(guiGraphics, minecraft, 2);
+            }
+        },
+        LEGACY_VERTICAL {
+            @Override
+            public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
+                draw(guiGraphics, minecraft, 3);
             }
         };
+
+        private void drawString(GuiGraphics guiGraphics, Font font, @Nullable String text, float x, float y, int color) {
+            guiGraphics.drawString(font, text, x + 1, y, 0x000000, false);
+            guiGraphics.drawString(font, text, x - 1, y, 0x000000, false);
+            guiGraphics.drawString(font, text, x, y + 1, 0x000000, false);
+            guiGraphics.drawString(font, text, x, y - 1, 0x000000, false);
+            guiGraphics.drawString(font, text, x, y, color, false);
+        }
+
+        public void draw(GuiGraphics guiGraphics, Minecraft minecraft, int type) {
+            int armorNum = 0;
+            int armorToughnessNum = 0;
+            Player player = minecraft.player;
+            if (player != null) {
+                armorNum = player.getArmorValue();
+                armorToughnessNum = (int) player.getAttribute(Attributes.ARMOR_TOUGHNESS).getValue();
+            }
+            String armor = Integer.toString(armorNum);
+            String armorToughness = Integer.toString(armorToughnessNum);
+            String text = switch (type) {
+                case 1 -> "|";
+                case 3 -> str("-", Math.max(armor.length(), armorToughness.length()));
+                default -> "/";
+            };
+            int widthArmor = guiGraphics.guiWidth() - 26;
+            int heightArmor = guiGraphics.guiHeight() - 28;
+            int textWidthArmor = minecraft.font.width(Component.literal(armor));
+            int textWidthArmorToughness = minecraft.font.width(Component.literal(armorToughness));
+            int textWidth = minecraft.font.width(Component.literal(text));
+            int textHeight = minecraft.font.lineHeight;
+            int colorWhite = 0xFFFFFF;
+            int colorArmor = 0xEEB354;
+            int colorArmorToughness = 0x54E4EE;
+            float widthOffset;
+            if (armorToughnessNum == 0) {
+                widthOffset = (11.5F + (textWidthArmor / 2.0F) - 22);
+            } else {
+                widthOffset = switch (type) {
+                    case 1 -> (13.5F + (textWidth / 2.0F) + textWidthArmorToughness - 22);
+                    case 3 -> (11.5F + (Math.max(textWidthArmor, textWidthArmorToughness) / 2.0F) - 22);
+                    default -> (11.5F + (textWidth / 2.0F) + textWidthArmorToughness - 22);
+                };
+            }
+            widthOffset = (widthOffset > 0) ? widthOffset : 0;
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(-widthOffset, 0.0F, 0.0F);
+            guiGraphics.blit(ICON, widthArmor, heightArmor, 0, 51, 23, 25, SIZE, SIZE);
+            guiGraphics.pose().popPose();
+            if (armorToughnessNum == 0) {
+                drawString(guiGraphics, minecraft.font, armor, widthArmor + 11.5F - (textWidthArmor / 2.0F) - widthOffset, heightArmor + 12.5F - (textHeight / 2.0F), colorArmor);
+            } else {
+                drawString(guiGraphics, minecraft.font, text, widthArmor + 11.5F - (textWidth / 2.0F) - widthOffset, heightArmor + 12.5F - (textHeight / 2.0F), colorWhite);
+                switch (type) {
+                    case 1:
+                        drawString(guiGraphics, minecraft.font, armor, widthArmor + 9.5F - (textWidth / 2.0F) - textWidthArmor - widthOffset, heightArmor + 12.5F - (textHeight / 2.0F), colorArmor);
+                        drawString(guiGraphics, minecraft.font, armorToughness, widthArmor + 13.5F + (textWidth / 2.0F) - widthOffset, heightArmor + 12.5F - (textHeight / 2.0F), colorArmorToughness);
+                        break;
+                    case 3:
+                        drawString(guiGraphics, minecraft.font, armor, widthArmor + 11.5F - (textWidthArmor / 2.0F) - widthOffset, heightArmor + 10.5F - textHeight, colorArmor);
+                        drawString(guiGraphics, minecraft.font, armorToughness, widthArmor + 11.5F - (textWidthArmorToughness / 2.0F) - widthOffset, heightArmor + 14.5F, colorArmorToughness);
+                        break;
+                    default:
+                        drawString(guiGraphics, minecraft.font, armor, widthArmor + 11.5F - (textWidth / 2.0F) - textWidthArmor - widthOffset, heightArmor + 9.5F - (textHeight / 2.0F), colorArmor);
+                        drawString(guiGraphics, minecraft.font, armorToughness, widthArmor + 11.5F + (textWidth / 2.0F) - widthOffset, heightArmor + 15.5F - (textHeight / 2.0F), colorArmorToughness);
+                }
+            }
+        }
+
+        public static String str(String text, int count) {
+            String str = "";
+            for (int i = 0; i < count; i++) {
+                str += text;
+            }
+            return str;
+        }
 
         public abstract void render(GuiGraphics guiGraphics, Minecraft minecraft);
     }

@@ -73,7 +73,7 @@ public class TargetDummyEntity extends LivingEntity {
     @Override
     public void tick() {
         if (getHealth() != getMaxHealth()){
-            heal(getMaxHealth());
+            setHealth(getMaxHealth());
         }
         super.tick();
     }

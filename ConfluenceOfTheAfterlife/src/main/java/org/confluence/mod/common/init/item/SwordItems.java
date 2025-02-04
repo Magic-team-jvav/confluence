@@ -85,7 +85,7 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> BLOOD_BUTCHERER = register("blood_butchere",ModTiers.TITANIUM, 7, -2.7F,
             ModRarity.BLUE,     EFFECT_SWORD.apply(BLOOD_BUTCHERED_EFFECT));
     public static final DeferredItem<SwordItem> VOLCANO = register("volcano",ModTiers.TITANIUM, 10, -1.4f,
-            ModRarity.ORANGE,   EFFECT_SWORD.apply(EffectStrategy.SET_FIRE.apply(5,1f)));
+            ModRarity.ORANGE,   EFFECT_SWORD.apply(EffectStrategy.SET_FIRE.apply(5 * 20,1f)));
     public static final DeferredItem<SwordItem> BAT_BAT = register("bat_bat", ModTiers.TITANIUM,12,-3.7f,
             ModRarity.ORANGE,   EFFECT_SWORD.apply(BAT_FANG_EFFECT));
     public static final DeferredItem<SwordItem> TENTACLE_MACE = register("tentacle_mace",ModTiers.TITANIUM, 5, -1.4F,

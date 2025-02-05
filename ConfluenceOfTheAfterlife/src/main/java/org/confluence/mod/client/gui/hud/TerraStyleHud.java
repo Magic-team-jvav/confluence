@@ -1,6 +1,7 @@
 package org.confluence.mod.client.gui.hud;
 
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.handler.ClientPacketHandler;
@@ -21,8 +23,10 @@ import org.confluence.mod.util.ClientUtils;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Locale;
 
 @ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class TerraStyleHud implements LayeredDraw.Layer {
     private static final ResourceLocation ICON = Confluence.asResource("textures/gui/hud/icon.png");
     private static final int SIZE = 128;
@@ -41,7 +45,7 @@ public class TerraStyleHud implements LayeredDraw.Layer {
         minecraft.getProfiler().pop();
     }
 
-    public enum Armor {
+    public enum Armor implements TranslatableEnum {
         LEGACY_HORIZONTAL {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
@@ -137,9 +141,14 @@ public class TerraStyleHud implements LayeredDraw.Layer {
         }
 
         public abstract void render(GuiGraphics guiGraphics, Minecraft minecraft);
+
+        @Override
+        public Component getTranslatedName() {
+            return Component.translatable("confluence.configuration.armorStyle." + name().toLowerCase(Locale.ROOT));
+        }
     }
 
-    public enum Mana {
+    public enum Mana implements TranslatableEnum {
         LEGACY {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
@@ -166,9 +175,14 @@ public class TerraStyleHud implements LayeredDraw.Layer {
         };
 
         public abstract void render(GuiGraphics guiGraphics, Minecraft minecraft);
+
+        @Override
+        public Component getTranslatedName() {
+            return Component.translatable("confluence.configuration.manaStyle." + name().toLowerCase(Locale.ROOT));
+        }
     }
 
-    public enum Health {
+    public enum Health implements TranslatableEnum {
         LEGACY {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
@@ -273,5 +287,10 @@ public class TerraStyleHud implements LayeredDraw.Layer {
         };
 
         public abstract void render(GuiGraphics guiGraphics, Minecraft minecraft);
+
+        @Override
+        public Component getTranslatedName() {
+            return Component.translatable("confluence.configuration.healthStyle." + name().toLowerCase(Locale.ROOT));
+        }
     }
 }

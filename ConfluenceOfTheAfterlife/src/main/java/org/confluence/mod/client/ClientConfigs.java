@@ -2,8 +2,6 @@ package org.confluence.mod.client;
 
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.client.gui.ConfigurationScreen;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.Builder;
 import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
@@ -89,6 +87,5 @@ public final class ClientConfigs {
 
 
         container.registerConfig(ModConfig.Type.CLIENT, BUILDER.build());
-        container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
     }
 }

@@ -156,6 +156,8 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
             }
         },
         OVERLAY {
+            private static final Map<Integer, Vector3i> COLOR = new HashMap<>();
+
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
                 float maxHealth = 0.0F;
@@ -179,7 +181,7 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                 int lineCount = heartCount / 20;
                 int drawCount;
                 int lineCountDraw = lineCount;
-                Vector3i color = new Vector3i(0, 0, 0);
+                Vector3i color;
                 for (int i = 0; i <= lineCount; i++) {
                     drawCount = (i == lineCount) ? (heartCount % 20) : 20;
                     if (i < HEALTH.length) {
@@ -267,8 +269,6 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                 }
             }
         };
-
-        private static Map<Integer, Vector3i> COLOR = new HashMap<>();
 
         public abstract void render(GuiGraphics guiGraphics, Minecraft minecraft);
 

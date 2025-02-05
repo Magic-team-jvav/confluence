@@ -72,6 +72,7 @@ import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.common.item.paint.PaintItem;
+import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.terraentity.client.entity.renderer.GeoNormalRenderer;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
@@ -270,38 +271,8 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
         event.register((pStack, pTintIndex) -> ColoredItem.getColor(pStack), MaterialItems.GEL.get());
-        event.register((stack, tintIndex) -> tintIndex == 1 && stack.getItem() instanceof PaintItem paintItem ? FastColor.ARGB32.opaque(paintItem.getColor(stack)) : 0xFFFFFFFF,
-                PaintItems.PAINT.get(),
-                PaintItems.RED_PAINT.get(),
-                PaintItems.DEEP_RED_PAINT.get(),
-                PaintItems.ORANGE_PAINT.get(),
-                PaintItems.DEEP_ORANGE_PAINT.get(),
-                PaintItems.YELLOW_PAINT.get(),
-                PaintItems.DEEP_YELLOW_PAINT.get(),
-                PaintItems.LIME_PAINT.get(),
-                PaintItems.DEEP_LIME_PAINT.get(),
-                PaintItems.GREEN_PAINT.get(),
-                PaintItems.DEEP_GREEN_PAINT.get(),
-                PaintItems.TEAL_PAINT.get(),
-                PaintItems.DEEP_TEAL_PAINT.get(),
-                PaintItems.CYAN_PAINT.get(),
-                PaintItems.DEEP_CYAN_PAINT.get(),
-                PaintItems.SKY_BLUE_PAINT.get(),
-                PaintItems.DEEP_SKY_BLUE_PAINT.get(),
-                PaintItems.BLUE_PAINT.get(),
-                PaintItems.DEEP_BLUE_PAINT.get(),
-                PaintItems.PURPLE_PAINT.get(),
-                PaintItems.DEEP_PURPLE_PAINT.get(),
-                PaintItems.VIOLET_PAINT.get(),
-                PaintItems.DEEP_VIOLET_PAINT.get(),
-                PaintItems.PINK_PAINT.get(),
-                PaintItems.DEEP_PINK_PAINT.get(),
-                PaintItems.BLACK_PAINT.get(),
-                PaintItems.GRAY_PAINT.get(),
-                PaintItems.WHITE_PAINT.get(),
-                PaintItems.BROWN_PAINT.get(),
-                PaintItems.SHADOW_PAINT.get()
-        );
+        event.register((stack, tintIndex) -> tintIndex == 1 && stack.getItem() instanceof PaintItem paintItem ? FastColor.ARGB32.opaque(paintItem.getColor(stack)) : 0xFFFFFFFF, PaintItems.PAINT_ITEMS.toArray(PaintItem[]::new));
+        event.register((stack, tintIndex) -> tintIndex == 1 && stack.getItem() instanceof BaseDyeItem dyeItem ? dyeItem.color : 0xFFFFFFFF, VanityArmorItems.DYE_ITEMS.toArray(BaseDyeItem[]::new));
     }
 
     @SubscribeEvent

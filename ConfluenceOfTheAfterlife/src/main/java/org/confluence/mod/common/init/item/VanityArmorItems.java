@@ -8,6 +8,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
 import org.confluence.mod.common.item.vanity_armor.BaseVanityArmorItem;
 import org.confluence.terra_curio.common.component.ModRarity;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class VanityArmorItems {
 
     public static final Supplier<BaseVanityArmorItem> GOLD_CROWN = ITEMS.register("gold_crown", () -> new BaseVanityArmorItem(ArmorItem.Type.HELMET, ModRarity.WHITE) {
         @Override
-        public boolean makesPiglinsNeutral(Player player, ItemStack stack) {
+        public boolean makesPiglinsNeutral(@NotNull Player player, @NotNull ItemStack stack) {
             return true;
         }
     });

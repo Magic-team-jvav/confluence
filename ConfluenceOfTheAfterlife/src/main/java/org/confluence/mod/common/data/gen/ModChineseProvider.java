@@ -1535,7 +1535,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.ICE_TOFU_BRICK.get(), "冰豆腐砖");
 
 
-        add(TEItems.SLIME_SUMMONER.get(), "史莱姆召唤杖");
+        add(TEItems.SLIME_STAFF.get(), "史莱姆召唤杖");
 
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");

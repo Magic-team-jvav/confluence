@@ -28,7 +28,9 @@ import org.confluence.mod.client.connected.ModelSwapper;
 import org.confluence.mod.client.gui.AchievementToast;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
-import org.confluence.mod.client.gui.hud.TerraStyleHud;
+import org.confluence.mod.client.gui.hud.TerraStyleArmorHud;
+import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
+import org.confluence.mod.client.gui.hud.TerraStyleManaHud;
 import org.confluence.mod.client.model.block.AltarBlockModel;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.model.block.WeatherVaneBlockModel;
@@ -119,7 +121,9 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerGuiLayers(RegisterGuiLayersEvent event) {
-        event.registerAboveAll(Confluence.asResource("health_hud"), new TerraStyleHud());
+        event.registerAboveAll(Confluence.asResource("health_hud"), new TerraStyleHealthHud());
+        event.registerAboveAll(Confluence.asResource("armor_hud"), new TerraStyleArmorHud());
+        event.registerAboveAll(Confluence.asResource("mana_hud"), new TerraStyleManaHud());
     }
 
     @SubscribeEvent

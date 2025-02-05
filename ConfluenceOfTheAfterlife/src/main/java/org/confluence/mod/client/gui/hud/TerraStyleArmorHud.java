@@ -29,6 +29,7 @@ public class TerraStyleArmorHud implements LayeredDraw.Layer {
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+        if (!ClientConfigs.terraStyleArmor) return;
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.options.hideGui || !ClientUtils.shouldDrawSurvivalElements(minecraft)) return;
         ClientUtils.setupOverlayRenderState(true, false);

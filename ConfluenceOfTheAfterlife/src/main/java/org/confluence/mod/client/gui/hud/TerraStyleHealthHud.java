@@ -41,6 +41,7 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+        if (!ClientConfigs.terraStyleHealth) return;
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.options.hideGui || !ClientUtils.shouldDrawSurvivalElements(minecraft)) return;
         ClientUtils.setupOverlayRenderState(true, false);
@@ -165,7 +166,8 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                     currentHealth = player.getHealth();
                 }
                 int widthHealth = guiGraphics.guiWidth() / 2 - 91;
-                int heightHealth = guiGraphics.guiHeight() - 39;
+                int heightHealth = guiGraphics.guiHeight() - minecraft.gui.leftHeight;
+                minecraft.gui.leftHeight += 10;
                 RandomSource random = RandomSource.create(114514);
                 int backCount = (int) (maxHealth / 2);
                 int heartCount = (int) (currentHealth);

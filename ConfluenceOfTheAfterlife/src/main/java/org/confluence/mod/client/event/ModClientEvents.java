@@ -20,6 +20,7 @@ import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.connected.CustomBlockModels;
@@ -121,9 +122,12 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerGuiLayers(RegisterGuiLayersEvent event) {
-        event.registerAboveAll(Confluence.asResource("health_hud"), new TerraStyleHealthHud());
-        event.registerAboveAll(Confluence.asResource("armor_hud"), new TerraStyleArmorHud());
-        event.registerAboveAll(Confluence.asResource("mana_hud"), new TerraStyleManaHud());
+        ResourceLocation healthHud = Confluence.asResource("health_hud");
+        event.registerBelow(VanillaGuiLayers.ARMOR_LEVEL, healthHud, new TerraStyleHealthHud());
+        ResourceLocation armorHud = Confluence.asResource("armor_hud");
+        event.registerAbove(healthHud, armorHud, new TerraStyleArmorHud());
+        ResourceLocation manaHud = Confluence.asResource("mana_hud");
+        event.registerAbove(VanillaGuiLayers.FOOD_LEVEL, manaHud, new TerraStyleManaHud());
     }
 
     @SubscribeEvent

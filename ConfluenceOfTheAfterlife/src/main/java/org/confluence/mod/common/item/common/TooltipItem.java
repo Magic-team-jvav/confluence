@@ -6,10 +6,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TooltipItem extends Item {
-
     private final List<Component> tooltips;
 
     public TooltipItem(Properties properties, List<Component> tooltips) {
@@ -33,5 +33,13 @@ public class TooltipItem extends Item {
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.addAll(tooltips);
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+    }
+
+    public static List<Component> getTooltipsFromString(String id, int lineCount){
+        List<Component> components = new ArrayList<>();
+        for (int i = 1; i <= lineCount; i++){
+            components.add(Component.translatable("item.confluence." + id + ".tooltip." + i).withStyle(ChatFormatting.DARK_GRAY));
+        }
+        return components;
     }
 }

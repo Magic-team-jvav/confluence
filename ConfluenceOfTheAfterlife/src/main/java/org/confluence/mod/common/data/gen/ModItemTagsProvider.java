@@ -7,7 +7,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -43,7 +42,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.PROVIDE_MANA).add(ModItems.STAR.get(), ModItems.SOUL_CAKE.get(), ModItems.SUGAR_PLUM.get());
         tag(ModTags.Items.PROVIDE_LIFE).add(ModItems.HEART.get(), ModItems.CANDY_APPLE.get(), ModItems.CANDY_CANE.get());
         tag(ModTags.Items.DESERT_FOSSIL).add(NatureBlocks.DESERT_FOSSIL.get().asItem());
-        tag(ModTags.Items.GRAVEL).add(Blocks.GRAVEL.asItem());
         tag(ModTags.Items.SLUSH).add(NatureBlocks.SLUSH.get().asItem());
         tag(ModTags.Items.MARINE_GRAVEL).add(NatureBlocks.MARINE_GRAVEL.get().asItem());
         tag(ModTags.Items.JUNK).add(Blocks.LILY_PAD.asItem(), Items.LEATHER_BOOTS, Blocks.SEAGRASS.asItem());
@@ -175,7 +173,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.LIVING_LOG_BLOCKS.getFenceGate().asItem(),
                 NatureBlocks.LIVING_LOG_BLOCKS.getPressurePlate().asItem()
         );
-        tag(ModTags.Items.SAPLING).add(
+        tag(ItemTags.SAPLINGS).add(
                 NatureBlocks.SHADOW_SAPLING.get().asItem(),
                 NatureBlocks.EBONY_SAPLING.get().asItem(),
                 NatureBlocks.PALM_SAPLING.get().asItem(),
@@ -306,32 +304,32 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
         tag(ItemTags.WOODEN_SLABS).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getSlab().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getSlab().asItem(),NatureBlocks.ASH_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getSlab().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getSlab().asItem(),
                 NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getSlab().asItem()
         );
         tag(ItemTags.WOODEN_FENCES).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getFence().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getFence().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getFence().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getFence().asItem(),NatureBlocks.ASH_LOG_BLOCKS.getFence().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getFence().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getFence().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getFence().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getFence().asItem(),
                 NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getFence().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getFence().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getFence().asItem()
         );
         tag(ItemTags.WOODEN_DOORS).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getDoor().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getDoor().asItem(),NatureBlocks.ASH_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getDoor().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getDoor().asItem(),
                 NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getDoor().asItem()
         );
         tag(ItemTags.WOODEN_TRAPDOORS).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getTrapdoor().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getTrapdoor().asItem(),NatureBlocks.ASH_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getTrapdoor().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getTrapdoor().asItem(),
                 NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getTrapdoor().asItem()
         );
         tag(ItemTags.WOODEN_PRESSURE_PLATES).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getPressurePlate().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getPressurePlate().asItem(),NatureBlocks.ASH_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getPressurePlate().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getPressurePlate().asItem(),
                 NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getPressurePlate().asItem()
         );
         tag(ItemTags.WOODEN_STAIRS).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getStairs().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getStairs().asItem(),NatureBlocks.ASH_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getStairs().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getStairs().asItem(),
                 NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getStairs().asItem()
         );
         tag(ModTags.Items.CHARCOAL_CAN_BE_BURNED).add(
@@ -620,28 +618,26 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         // Armor 附魔
         ArmorItems.ITEMS.getEntries().forEach(item -> {
             if (item.get() instanceof ArmorItem armor) {
-                tag(ItemTags.DURABILITY_ENCHANTABLE).add(item.get());
-                tag(ItemTags.ARMOR_ENCHANTABLE).add(item.get());
-                tag(ItemTags.EQUIPPABLE_ENCHANTABLE).add(item.get());
+                tag(ItemTags.DURABILITY_ENCHANTABLE).add(armor);
+                tag(ItemTags.ARMOR_ENCHANTABLE).add(armor);
+                tag(ItemTags.EQUIPPABLE_ENCHANTABLE).add(armor);
                 if (armor.getEquipmentSlot() == EquipmentSlot.HEAD) {
-                    tag(ItemTags.HEAD_ARMOR_ENCHANTABLE).add(item.get());
-                    tag(ItemTags.HEAD_ARMOR).add(item.get());
+                    tag(ItemTags.HEAD_ARMOR_ENCHANTABLE).add(armor);
+                    tag(ItemTags.HEAD_ARMOR).add(armor);
                 } else if (armor.getEquipmentSlot() == EquipmentSlot.CHEST) {
-                    tag(ItemTags.CHEST_ARMOR_ENCHANTABLE).add(item.get());
-                    tag(ItemTags.CHEST_ARMOR).add(item.get());
+                    tag(ItemTags.CHEST_ARMOR_ENCHANTABLE).add(armor);
+                    tag(ItemTags.CHEST_ARMOR).add(armor);
                 } else if (armor.getEquipmentSlot() == EquipmentSlot.LEGS) {
-                    tag(ItemTags.LEG_ARMOR_ENCHANTABLE).add(item.get());
-                    tag(ItemTags.LEG_ARMOR).add(item.get());
+                    tag(ItemTags.LEG_ARMOR_ENCHANTABLE).add(armor);
+                    tag(ItemTags.LEG_ARMOR).add(armor);
                 } else if (armor.getEquipmentSlot() == EquipmentSlot.FEET) {
-                    tag(ItemTags.FOOT_ARMOR).add(item.get());
-                    tag(ItemTags.FOOT_ARMOR_ENCHANTABLE).add(item.get());
+                    tag(ItemTags.FOOT_ARMOR).add(armor);
+                    tag(ItemTags.FOOT_ARMOR_ENCHANTABLE).add(armor);
                 }
             }
         });
 
-        IntrinsicTagAppender<Item> lightPet = tag(ModTags.Items.LIGHT_PET);
-        LightPetItems.ITEMS.getEntries().forEach(item -> lightPet.add(item.get()));
-        IntrinsicTagAppender<Item> treasureBag = tag(ModTags.Items.TREASURE_BAG);
-        TreasureBagItems.ITEMS.getEntries().forEach(item -> treasureBag.add(item.get()));
+        LightPetItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.LIGHT_PET).add(item.get()));
+        TreasureBagItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.TREASURE_BAG).add(item.get()));
     }
 }

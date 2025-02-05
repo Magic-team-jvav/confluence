@@ -27,6 +27,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.client.model.block.ExtractinatorBlockModel;
 import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.block.HorizontalDirectionalWithHorizontalTwoPartBlock;
@@ -98,7 +99,7 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
             if (item.is(ModTags.Items.DESERT_FOSSIL)) {
                 path = ModLootTables.EXTRACT_DESERT_FOSSIL;
                 block = NatureBlocks.DESERT_FOSSIL.get();
-            } else if (item.is(ModTags.Items.GRAVEL)) {
+            } else if (item.is(Tags.Items.GRAVELS)) {
                 path = ModLootTables.EXTRACT_GRAVEL;
                 block = Blocks.GRAVEL;
             } else if (item.is(ModTags.Items.JUNK)) {

@@ -66,9 +66,7 @@ public final class ModTags {
         public static final TagKey<Item> HARDMODE = register("hardmode");
         public static final TagKey<Item> BOTTOMLESS = register("bottomless");
         public static final TagKey<Item> FRUIT = register("fruit");
-        public static final TagKey<Item> SAPLING = register("sapling");
         public static final TagKey<Item> DESERT_FOSSIL = register("desert_fossil");
-        public static final TagKey<Item> GRAVEL = register("gravel");
         public static final TagKey<Item> JUNK = register("junk");
         public static final TagKey<Item> SLUSH = register("slush");
         public static final TagKey<Item> MARINE_GRAVEL = register("marine_gravel");

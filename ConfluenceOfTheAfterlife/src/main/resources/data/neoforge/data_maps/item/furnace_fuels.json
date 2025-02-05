@@ -21,9 +21,6 @@
         "#confluence:wooden_combustibles": {
             "burn_time": 300
         },
-        "#confluence:sapling": {
-            "burn_time": 100
-        },
         "confluence:bottomless_lava_bucket": {
             "burn_time": 1
         }

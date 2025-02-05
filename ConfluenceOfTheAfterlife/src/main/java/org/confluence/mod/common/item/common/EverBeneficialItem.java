@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,6 +19,7 @@ import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.common.item.CustomRarityItem;
+import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.network.s2c.RightClickSubtractorPacketS2C;
@@ -101,11 +101,8 @@ public class EverBeneficialItem extends CustomRarityItem {
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
                 itemStack.shrink(1);
             }
-            if (player.getData(ModAttachmentTypes.MANA_STORAGE).isStarMaximum() && data.isLifeCrystalsMaximum() && data.isLifeFruitsMaximum()) {
-                AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource("achievements/topped_off"));
-                if (advancement != null) {
-                    serverPlayer.getAdvancements().award(advancement, "never");
-                }
+            if (data.isLifeCrystalsMaximum() && data.isLifeFruitsMaximum() && player.getData(ModAttachmentTypes.MANA_STORAGE).isStarMaximum()) {
+                PlayerUtils.awardAchievement(serverPlayer, "topped_off");
             }
         }
         return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide);

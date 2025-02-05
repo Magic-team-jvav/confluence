@@ -20,6 +20,20 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "terra_entity:slime_staff",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 5599
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
           "functions": [
             {
               "add": false,

@@ -73,6 +73,15 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.MUSHROOM_GRASS_BLOCK.get(),
                 NatureBlocks.JUNGLE_GRASS_BLOCK.get()
         );
+        tag(BlockTags.SCULK_REPLACEABLE).add(
+                NatureBlocks.CORRUPT_GRASS_BLOCK.get(),
+                NatureBlocks.ASH_BLOCK.get(),
+                NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(),
+                NatureBlocks.HALLOW_GRASS_BLOCK.get(),
+                NatureBlocks.ASH_GRASS_BLOCK.get(),
+                NatureBlocks.MUSHROOM_GRASS_BLOCK.get(),
+                NatureBlocks.JUNGLE_GRASS_BLOCK.get()
+        );
         tag(BlockTags.SAND).add(
                 NatureBlocks.TR_CRIMSON_SAND.get(),
                 NatureBlocks.EBONY_SAND.get(),

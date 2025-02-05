@@ -251,6 +251,39 @@ public class ModChineseProvider extends LanguageProvider {
         add("jei.tooltip.item.confluence.gravity_globe.0","在普通模式或更高难度下，击败月球领主获得。");
         add("jei.tooltip.item.confluence.celestial_starboard.0","在普通模式或更高难度下，击败月球领主获得。");
 
+
+        add("confluence.configuration.dropsMoney","钱币掉落");
+        add("confluence.configuration.autoStackGelsColor","自动合并凝胶");
+        add("confluence.configuration.fletchingMenu","制箭台菜单");
+        add("confluence.configuration.shimmer_decompose","微光分解");
+        add("confluence.configuration.fallingStarFrequency","坠星频率");
+        add("confluence.configuration.defaultRespawnTimeMin","默认最小重生时间");
+        add("confluence.configuration.defaultRespawnTimeMax","默认最大重生时间");
+        add("confluence.configuration.bossRespawnTimeMin","最小重生时间（boss战时）");
+        add("confluence.configuration.bossRespawnTimeMax","最大重生时间（boss战时）");
+        add("confluence.configuration.showWindParticles","风粒子展示");
+        add("confluence.configuration.HUD","HUD");
+        add("confluence.configuration.Health","生命值");
+        add("confluence.configuration.terraStyleHealth","泰拉样式生命值");
+        add("confluence.configuration.terraStyleArmor","泰拉样式护甲值");
+        add("confluence.configuration.healthStyleHealth","生命值样式");
+        add("confluence.configuration.manaStyle","魔力值样式");
+        add("confluence.configuration.armorStyle","护甲值样式");
+        add("confluence.configuration.armorStyle.legacy_horizontal","护甲值样式:精致-水平");
+        add("confluence.configuration.armorStyle.legacy_diagonal","护甲值样式:精致-对角");
+        add("confluence.configuration.armorStyle.legacy_vertical","护甲值样式:精致-垂直");
+        add("confluence.configuration.manaStyle.legacy","魔力值样式:精致");
+        add("confluence.configuration.healthStyleHealth.legacy","生命值样式:精致");
+        add("confluence.configuration.healthStyleHealth.overlay","生命值样式:叠加");
+        add("confluence.configuration.Mana","魔力值");
+        add("confluence.configuration.Armor","护甲值");
+        add("confluence.configuration.leftEffectIcon","左侧药水效果标识");
+        add("confluence.configuration.Entity","生物效果");
+        add("confluence.configuration.hurtRedOverlay","受击红色显示");
+        add("confluence.configuration.bloodyEffect","血效果");
+        add("confluence.configuration.goreEffect","血腥效果");
+        add("confluence.configuration.damageIndicator","血腥效果");
+
         add("biome.confluence.the_corruption", "腐化之地");
         add("biome.confluence.the_corruption_desert", "腐化沙漠");
         add("biome.confluence.the_corruption_tundra", "腐化苔原");

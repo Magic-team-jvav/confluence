@@ -11,6 +11,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PointedDripstoneBlock;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.FluidInteractionRegistry;
@@ -101,6 +102,7 @@ public final class ModFluids {
         addItem(ItemTags.WOOL, Items.WHITE_WOOL, 1);
         addItem(ItemTags.WOOL_CARPETS, Items.WHITE_CARPET, 1);
         addItem(Items.CRAFTING_TABLE, Items.OAK_PLANKS, 1);
+        addItem(AccessoryItems.BAND_OF_STARPOWER.get(), ConsumableItems.MANA_CRYSTAL.get(), 1);
         // 饰品转化
         addItem(BALLOON_PUFFERFISH.get(), SHINY_RED_BALLOON.get());
         addItem(MAGMA_STONE.get(), LAVA_CHARM.get());

@@ -1,7 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -15,10 +13,8 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.common.item.common.*;
-import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
 
-import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -42,6 +38,9 @@ public final class ModItems {
     public static final Supplier<Item> CANDY_APPLE = HIDDEN.register("candy_apple", () -> new CustomRarityItem(new Item.Properties().stacksTo(1), ModRarity.MASTER));
     public static final Supplier<Item> CANDY_CANE = HIDDEN.register("candy_cane", () -> new CustomRarityItem(new Item.Properties().stacksTo(1), ModRarity.MASTER));
     public static final Supplier<EntityDisplayItem> ENTITY_DISPLAY = HIDDEN.register("entity_display", EntityDisplayItem::new);
+    public static final Supplier<TargetDummyItem> TARGET_DUMMY = HIDDEN.register("target_dummy", () -> new TargetDummyItem(new Item.Properties()));
+    // 赞助物品
+    public static final Supplier<TooltipItem> TOKYO_TEDDY_BEAR = HIDDEN.register("tokyo_teddy_bear", () -> new TooltipItem(new Item.Properties(), TooltipItem.getTooltipsFromString("tokyo_teddy_bear", 6)));
 
     public static final Supplier<CoinItem> COPPER_COIN = ITEMS.register("copper_coin", () -> new CoinItem(ModBlocks.COPPER_COIN_PILE.get(), ModRarity.WHITE, ModItems.SILVER_COIN));
     public static final Supplier<CoinItem> SILVER_COIN = ITEMS.register("silver_coin", () -> new CoinItem(ModBlocks.SILVER_COIN_PILE.get(), ModRarity.ORANGE, ModItems.GOLDEN_COIN));
@@ -49,7 +48,7 @@ public final class ModItems {
     public static final Supplier<CoinItem> PLATINUM_COIN = ITEMS.register("platinum_coin", () -> new CoinItem(ModBlocks.PLATINUM_COIN_PILE.get(), ModRarity.CYAN, null));
     public static final Supplier<CoinItem> EMERALD_COIN = ITEMS.register("emerald_coin", () -> new CoinItem(ModBlocks.EMERALD_COIN_PILE.get(), ModRarity.PURPLE, null));
 
-    public static final Supplier<Item> DEAD_MANS_SWEATER = ITEMS.registerItem("dead_mans_seater", properties -> new CustomRarityItem(properties.stacksTo(1), ModRarity.GREEN)); // todo 模型
+    public static final Supplier<Item> DEAD_MANS_SWEATER = ITEMS.registerItem("dead_mans_seater", properties -> new CustomRarityItem(properties.stacksTo(1), ModRarity.GREEN));
     public static final Supplier<Item> WHOOPIE_CUSHION = ITEMS.registerSimpleItem("whoopie_cushion", new Item.Properties().stacksTo(1));
 
     public static final Supplier<GrassSeedItem> GRASS_SEED = ITEMS.register("grass_seed", () -> new GrassSeedItem(Map.of(Blocks.DIRT, Blocks.GRASS_BLOCK)));
@@ -66,12 +65,6 @@ public final class ModItems {
     public static final Supplier<BlockItem> HALLOW_CATTAILS = BLOCK_ITEMS.register("hallow_cattails", () -> new BlockItem(NatureBlocks.HALLOW_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
     public static final Supplier<BlockItem> EBONY_CATTAILS = BLOCK_ITEMS.register("ebony_cattails", () -> new BlockItem(NatureBlocks.EBONY_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
     public static final Supplier<BlockItem> TR_CRIMSON_CATTAILS = BLOCK_ITEMS.register("tr_crimson_cattails", () -> new BlockItem(NatureBlocks.TR_CRIMSON_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
-
-    public static final Supplier<TargetDummyItem> TARGET_DUMMY = ITEMS.register("target_dummy", () -> new TargetDummyItem(new Item.Properties()));
-
-
-    //赞助物品
-    public static final Supplier<TooltipItem> TOKYO_TEDDY_BEAR = ITEMS.register("tokyo_teddy_bear", () -> new TooltipItem(new Item.Properties(), ModUtils.getTooltipsFromString("tokyo_teddy_bear", 6)));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

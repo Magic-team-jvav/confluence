@@ -27,10 +27,11 @@ public class CustomRarityItem extends Item {
         super(properties.component(TCDataComponentTypes.MOD_RARITY, rarity));
     }
 
-    protected void addAttributeModifiers(Consumer<ItemAttributeModifiers.Builder> consumer) {
+    public CustomRarityItem addAttributeModifiers(Consumer<ItemAttributeModifiers.Builder> consumer) {
         ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
         consumer.accept(builder);
         this.modifiers = builder.build();
+        return this;
     }
 
     @Override

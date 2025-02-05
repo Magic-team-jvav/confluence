@@ -48,6 +48,7 @@ import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.mixed.IDamageSource;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
+import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
@@ -101,6 +102,16 @@ public final class LivingEntityEvents {
                             }
                         });
             }
+        }
+
+        if (!living.level().isClientSide) {
+            // 死前服务端把死亡时的速度发给客户端
+            Vec3 motion = living.getDeltaMovement();
+            if (motion.length() == 0) {
+                Vec3 pos = living.position();
+                motion = new Vec3(pos.x - living.xo, pos.y - living.yo, pos.z - living.zo);
+            }
+            DeathMotionPacketS2C.sendToAll(living.getId(), motion);
         }
     }
 

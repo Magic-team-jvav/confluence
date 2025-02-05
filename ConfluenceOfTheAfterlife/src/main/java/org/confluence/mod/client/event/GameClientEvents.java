@@ -15,7 +15,6 @@ import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -27,7 +26,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
-import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
@@ -48,7 +46,6 @@ import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.mixin.accessor.LivingEntityAccessor;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
-import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PerformJumpingEvent;
 import org.confluence.terraentity.client.boss.renderer.GeoBossRenderer;
@@ -252,8 +249,8 @@ public final class GameClientEvents {
                     }
                     DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, copyCube, (float) deathMotion.length());
 
-                    float[] min = ((IGeoCube) (Object) copyCube).confluence$getMinCoords();
-                    float[] max = ((IGeoCube) (Object) copyCube).confluence$getMaxCoords();
+                    float[] min = IGeoCube.of(copyCube).confluence$getMinCoords();
+                    float[] max = IGeoCube.of(copyCube).confluence$getMaxCoords();
                     float xOffset = ((min[0] + max[0]) / 2) + boneOffset.x;
                     float yOffset = min[1] + boneOffset.y;
                     float zOffset = ((min[2] + max[2]) / 2) + boneOffset.z;
@@ -303,18 +300,4 @@ public final class GameClientEvents {
             li.confluence$deadO(dead);
         }
     }
-
-    @SubscribeEvent
-    public static void livingDeath(LivingDeathEvent event){
-        LivingEntity entity = event.getEntity();
-        if(!(entity.level() instanceof ServerLevel)) return;
-        // 死前服务端把死亡时的速度发给客户端
-        Vec3 motion = entity.getDeltaMovement();
-        if(motion.length() == 0){
-            Vec3 pos = entity.position();
-            motion = new Vec3(pos.x - entity.xo, pos.y - entity.yo, pos.z - entity.zo);
-        }
-        DeathMotionPacketS2C.sendToAll(entity.getId(), motion);
-    }
-
 }

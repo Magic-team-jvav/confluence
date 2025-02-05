@@ -97,6 +97,7 @@
     "integration.ftbchunks.TrackedPlayerMapIconMixin",
     "integration.geckolib.GeoCubeMixin",
     "integration.geckolib.InternalUtilMixin",
+    "integration.jei.FurnaceFuelCategory$RecipeWidgetMixin",
     "integration.jei.ScreenHelperMixin",
     "integration.patchouli.BookPageMixin",
     "integration.terra_curio.InformationHandlerMixin",

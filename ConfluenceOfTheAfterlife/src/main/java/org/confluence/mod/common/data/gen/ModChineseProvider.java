@@ -8,8 +8,6 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terraentity.init.TEItems;
 
-import javax.tools.Tool;
-
 import static org.confluence.mod.common.init.item.PickaxeItems.MOLTEN_PICKAXE;
 
 public class ModChineseProvider extends LanguageProvider {
@@ -38,24 +36,25 @@ public class ModChineseProvider extends LanguageProvider {
         add("chat.type.advancement.achievement", "%s达成了成就%s");
         add("options.difficulty.legendary", "§a传奇");
 
-        add("item.confluence.meteorite_ingot.tooltip", "摸起来是温的");
         add("jukebox_song.confluence.song", "C418 - alpha");
 
-        add("item.confluence.tokyo_teddy_bear.tooltip.1", "一位自卑的少女如破碎的泰迪熊般说到：");
-        add("item.confluence.tokyo_teddy_bear.tooltip.2", "           来让你听听");
-        add("item.confluence.tokyo_teddy_bear.tooltip.3", "           全智全能的话吧");
-        add("item.confluence.tokyo_teddy_bear.tooltip.4", "           头脑以外的");
-        add("item.confluence.tokyo_teddy_bear.tooltip.5", "           已不再需要");
-        add("item.confluence.tokyo_teddy_bear.tooltip.6", "——由一只蜘蛛讲述的故事");
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
         add("generator.confluence.the_corruption", "腐化之地");
         add("generator.confluence.tr_crimson", "猩红之地");
 
 
+        add("item.confluence.meteorite_ingot.tooltip", "摸起来是温的");
         add("item.confluence.afterlife_notes", "来世手记");
         add("item.confluence.encumbering_stone.disable", "负重石：关闭");
         add("item.confluence.paint", "油漆");
+        add("item.confluence.tokyo_teddy_bear.tooltip.1", "一位自卑的少女如破碎的泰迪熊般说到：");
+        add("item.confluence.tokyo_teddy_bear.tooltip.2", "           来让你听听");
+        add("item.confluence.tokyo_teddy_bear.tooltip.3", "           全智全能的话吧");
+        add("item.confluence.tokyo_teddy_bear.tooltip.4", "           头脑以外的");
+        add("item.confluence.tokyo_teddy_bear.tooltip.5", "           已不再需要");
+        add("item.confluence.tokyo_teddy_bear.tooltip.6", "——由一只蜘蛛讲述的故事");
+        add("item.confluence.paradox_interlactifo_medal.tooltip.0", "同时玩过钢铁雄心、维多利亚、欧陆风云、十字军之王、都市天际线的证明。");
 
         add("text.confluence.afterlife_notes", "  冒险者，新的天地充满了无尽的挑战与机遇，这本手记将帮助你了解这个世界的奥秘，指引你面对怪物和困境，只有不断探索，你才能发现更多的力量与宝藏，你的旅途才刚刚开始。                            —— 向导");
 
@@ -251,6 +250,39 @@ public class ModChineseProvider extends LanguageProvider {
         add("jei.tooltip.item.confluence.soaring_insignia.0","在普通模式或更高难度下，击败光之女皇获得。");
         add("jei.tooltip.item.confluence.gravity_globe.0","在普通模式或更高难度下，击败月球领主获得。");
         add("jei.tooltip.item.confluence.celestial_starboard.0","在普通模式或更高难度下，击败月球领主获得。");
+
+
+        add("confluence.configuration.dropsMoney","钱币掉落");
+        add("confluence.configuration.autoStackGelsColor","自动合并凝胶");
+        add("confluence.configuration.fletchingMenu","制箭台菜单");
+        add("confluence.configuration.shimmer_decompose","微光分解");
+        add("confluence.configuration.fallingStarFrequency","坠星频率");
+        add("confluence.configuration.defaultRespawnTimeMin","默认最小重生时间");
+        add("confluence.configuration.defaultRespawnTimeMax","默认最大重生时间");
+        add("confluence.configuration.bossRespawnTimeMin","最小重生时间（boss战时）");
+        add("confluence.configuration.bossRespawnTimeMax","最大重生时间（boss战时）");
+        add("confluence.configuration.showWindParticles","风粒子展示");
+        add("confluence.configuration.HUD","HUD");
+        add("confluence.configuration.Health","生命值");
+        add("confluence.configuration.terraStyleHealth","泰拉样式生命值");
+        add("confluence.configuration.terraStyleArmor","泰拉样式护甲值");
+        add("confluence.configuration.healthStyleHealth","生命值样式");
+        add("confluence.configuration.manaStyle","魔力值样式");
+        add("confluence.configuration.armorStyle","护甲值样式");
+        add("confluence.configuration.armorStyle.legacy_horizontal","护甲值样式:精致-水平");
+        add("confluence.configuration.armorStyle.legacy_diagonal","护甲值样式:精致-对角");
+        add("confluence.configuration.armorStyle.legacy_vertical","护甲值样式:精致-垂直");
+        add("confluence.configuration.manaStyle.legacy","魔力值样式:精致");
+        add("confluence.configuration.healthStyleHealth.legacy","生命值样式:精致");
+        add("confluence.configuration.healthStyleHealth.overlay","生命值样式:叠加");
+        add("confluence.configuration.Mana","魔力值");
+        add("confluence.configuration.Armor","护甲值");
+        add("confluence.configuration.leftEffectIcon","左侧药水效果标识");
+        add("confluence.configuration.Entity","生物效果");
+        add("confluence.configuration.hurtRedOverlay","受击红色显示");
+        add("confluence.configuration.bloodyEffect","血效果");
+        add("confluence.configuration.goreEffect","血腥效果");
+        add("confluence.configuration.damageIndicator","血腥效果");
 
         add("biome.confluence.the_corruption", "腐化之地");
         add("biome.confluence.the_corruption_desert", "腐化沙漠");

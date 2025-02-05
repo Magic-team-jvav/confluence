@@ -9,6 +9,8 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.*;
@@ -27,6 +29,7 @@ public class Confluence {
         CommonConfigs.register(container);
         if (FMLEnvironment.dist.isClient()) {
             ClientConfigs.register(container);
+            container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         }
         ModBlocks.register(eventBus);
         ModItems.register(eventBus);

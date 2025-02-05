@@ -76,6 +76,9 @@ public class BoomerangItems {
                                     EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(ModEffects.FROST_BURN, 200,3,3,1f), 5f,
                                     EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(MobEffects.WITHER, 200,3,3,1f), 5f,
                                     EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(MobEffects.POISON, 200,3,3,1f), 6f,
+                                    EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(MobEffects.HARM, 1,6,6,1f), 1f,
+
+
                                     SET_FIRE.apply(200,1f), 9f
                                     ))
                             )

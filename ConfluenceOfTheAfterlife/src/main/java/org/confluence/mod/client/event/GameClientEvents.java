@@ -252,8 +252,8 @@ public final class GameClientEvents {
                     }
                     DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, copyCube, (float) deathMotion.length());
 
-                    float[] min = ((IGeoCube) (Object) copyCube).confluence$getMinCoords();
-                    float[] max = ((IGeoCube) (Object) copyCube).confluence$getMaxCoords();
+                    float[] min = IGeoCube.of(copyCube).confluence$getMinCoords();
+                    float[] max = IGeoCube.of(copyCube).confluence$getMaxCoords();
                     float xOffset = ((min[0] + max[0]) / 2) + boneOffset.x;
                     float yOffset = min[1] + boneOffset.y;
                     float zOffset = ((min[2] + max[2]) / 2) + boneOffset.z;

@@ -2,6 +2,7 @@ package org.confluence.mod.client.gui.hud;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -11,7 +12,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -21,13 +21,13 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.util.ClientUtils;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
-import java.util.Random;
 
 @ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class TerraStyleHud implements LayeredDraw.Layer {
     private static final ResourceLocation LEGACY_TEXTURE = Confluence.asResource("textures/gui/hud/icon.png");
     private static final ResourceLocation OVERLAY_TEXTURE = Confluence.asResource("textures/gui/hud/overlay.png");
@@ -51,78 +51,7 @@ public class TerraStyleHud implements LayeredDraw.Layer {
         minecraft.getProfiler().pop();
     }
 
-    private static void drawString(GuiGraphics guiGraphics, Font font, @Nullable String text, float x, float y, int color) {
-        guiGraphics.drawString(font, text, x + 1, y, 0x000000, false);
-        guiGraphics.drawString(font, text, x - 1, y, 0x000000, false);
-        guiGraphics.drawString(font, text, x, y + 1, 0x000000, false);
-        guiGraphics.drawString(font, text, x, y - 1, 0x000000, false);
-        guiGraphics.drawString(font, text, x, y, color, false);
-    }
-
-    private static void drawColor(GuiGraphics guiGraphics, int x, int y, int iconX, int iconY, ResourceLocation icon, int color, int colorHigh, int colorLow) {
-        float red = ((color >> 16) & 0xFF) / 255.0F;
-        float green = ((color >> 8) & 0xFF) / 255.0F;
-        float blue = (color & 0xFF) / 255.0F;
-        float redHigh = ((colorHigh >> 16) & 0xFF) / 255.0F;
-        float greenHigh = ((colorHigh >> 8) & 0xFF) / 255.0F;
-        float blueHigh = (colorHigh & 0xFF) / 255.0F;
-        float redLow = ((colorLow >> 16) & 0xFF) / 255.0F;
-        float greenLow = ((colorLow >> 8) & 0xFF) / 255.0F;
-        float blueLow = (colorLow & 0xFF) / 255.0F;
-        RenderSystem.setShaderColor(red, green, blue, 1.0F);
-        guiGraphics.blit(icon, x, y, iconX, iconY, 9, 9, OVERLAY_SIZE, OVERLAY_SIZE);
-        RenderSystem.setShaderColor(redLow, greenLow, blueLow, 1.0F);
-        guiGraphics.blit(icon, x, y, iconX + 20, iconY, 9, 9, OVERLAY_SIZE, OVERLAY_SIZE);
-        RenderSystem.setShaderColor(redHigh, greenHigh, blueHigh, 1.0F);
-        guiGraphics.blit(icon, x, y, iconX + 40, iconY, 9, 9, OVERLAY_SIZE, OVERLAY_SIZE);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-    }
-
-    private static int colorHigh(int color) {
-        return (color / 255 * 55 + 200);
-    }
-
-    private static int colorLow(int color, RandomSource random) {
-        int colorT = (color - 60 + random.nextInt(121));
-        if (colorT < 0) {colorT = 0;}
-        if (colorT > 255) {colorT = 255;}
-        return colorT;
-    }
-
-    private static void draw(int x, int y, GuiGraphics guiGraphics, RandomSource random, int count) {
-        int R;
-        int G;
-        int B;
-        do {
-            R = random.nextInt(256);
-            G = random.nextInt(256);
-            B = random.nextInt(256) + 255 - R - G;
-        } while (B > 255 || B < 0);
-        int color = (R << 16) | (G << 8) | B;
-        int colorHigh =  (colorHigh(R) << 16) | (colorHigh(G) << 8) | colorHigh(B);
-        int colorLow =  (colorLow(R, random) << 16) | (colorLow(G, random) << 8) | colorLow(B, random);
-        int countT = count / 2;
-        int xT = x - 8;
-        for (int i = 0; i < countT; i++) {
-            xT = x + i * 8;
-            drawColor(guiGraphics, xT, y, 0, 0, OVERLAY_TEXTURE, color, colorHigh, colorLow);
-        } if (count - countT * 2 == 1) {
-            drawColor(guiGraphics, xT + 8, y, 10, 0, OVERLAY_TEXTURE, color, colorHigh, colorLow);
-        }
-    }
-
-    private static void draw(int x, int y, GuiGraphics guiGraphics, int count, int color, int colorHigh, int colorLow) {
-        int countT = count / 2;
-        int xT = x - 8;
-        for (int i = 0; i < countT; i++) {
-            xT = x + i * 8;
-            drawColor(guiGraphics, xT, y, 0, 0, OVERLAY_TEXTURE, color, colorHigh, colorLow);
-        } if (count - countT * 2 == 1) {
-            drawColor(guiGraphics, xT + 8, y, 10, 0, OVERLAY_TEXTURE, color, colorHigh, colorLow);
-        }
-    }
-
-    public enum Armor {
+    public enum Armor implements TranslatableEnum {
         LEGACY_HORIZONTAL {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
@@ -142,7 +71,15 @@ public class TerraStyleHud implements LayeredDraw.Layer {
             }
         };
 
-        public void draw(GuiGraphics guiGraphics, Minecraft minecraft, int type) {
+        private static void drawString(GuiGraphics guiGraphics, Font font, @Nullable String text, float x, float y, int color) {
+            guiGraphics.drawString(font, text, x + 1, y, 0x000000, false);
+            guiGraphics.drawString(font, text, x - 1, y, 0x000000, false);
+            guiGraphics.drawString(font, text, x, y + 1, 0x000000, false);
+            guiGraphics.drawString(font, text, x, y - 1, 0x000000, false);
+            guiGraphics.drawString(font, text, x, y, color, false);
+        }
+
+        private static void draw(GuiGraphics guiGraphics, Minecraft minecraft, int type) {
             int armorNum = 0;
             int armorToughnessNum = 0;
             Player player = minecraft.player;
@@ -154,7 +91,7 @@ public class TerraStyleHud implements LayeredDraw.Layer {
             String armorToughness = Integer.toString(armorToughnessNum);
             String text = switch (type) {
                 case 1 -> "|";
-                case 3 -> str("-", Math.max(armor.length(), armorToughness.length()));
+                case 3 -> "-".repeat(Math.max(armor.length(), armorToughness.length()));
                 default -> "/";
             };
             int widthArmor = guiGraphics.guiWidth() - 26;
@@ -167,49 +104,49 @@ public class TerraStyleHud implements LayeredDraw.Layer {
             int colorArmor = 0xEEB354;
             int colorArmorToughness = 0x54E4EE;
             float widthOffset;
+            float v = textWidthArmor * 0.5F;
+            float v1 = textWidth * 0.5F;
+            float v2 = textHeight * 0.5F;
             if (armorToughnessNum == 0) {
-                widthOffset = (11.5F + (textWidthArmor / 2.0F) - 22);
+                widthOffset = 11.5F + v - 22;
             } else {
                 widthOffset = switch (type) {
-                    case 1 -> (13.5F + (textWidth / 2.0F) + textWidthArmorToughness - 22);
-                    case 3 -> (11.5F + (Math.max(textWidthArmor, textWidthArmorToughness) / 2.0F) - 22);
-                    default -> (11.5F + (textWidth / 2.0F) + textWidthArmorToughness - 22);
+                    case 1 -> 13.5F + v1 + textWidthArmorToughness - 22;
+                    case 3 -> 11.5F + Math.max(textWidthArmor, textWidthArmorToughness) * 0.5F - 22;
+                    default -> 11.5F + v1 + textWidthArmorToughness - 22;
                 };
             }
-            widthOffset = (widthOffset > 0) ? widthOffset : 0;
+            widthOffset = widthOffset > 0 ? widthOffset : 0;
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate(-widthOffset, 0.0F, 0.0F);
             guiGraphics.blit(LEGACY_TEXTURE, widthArmor, heightArmor, 0, 51, 23, 25, LEGACY_SIZE, LEGACY_SIZE);
             guiGraphics.pose().popPose();
             if (armorToughnessNum == 0) {
-                drawString(guiGraphics, minecraft.font, armor, widthArmor + 11.5F - (textWidthArmor / 2.0F) - widthOffset, heightArmor + 12.5F - (textHeight / 2.0F), colorArmor);
+                drawString(guiGraphics, minecraft.font, armor, widthArmor + 11.5F - v - widthOffset, heightArmor + 12.5F - v2, colorArmor);
             } else {
-                drawString(guiGraphics, minecraft.font, text, widthArmor + 11.5F - (textWidth / 2.0F) - widthOffset, heightArmor + 12.5F - (textHeight / 2.0F), colorWhite);
+                drawString(guiGraphics, minecraft.font, text, widthArmor + 11.5F - v1 - widthOffset, heightArmor + 12.5F - v2, colorWhite);
                 switch (type) {
                     case 1:
-                        drawString(guiGraphics, minecraft.font, armor, widthArmor + 9.5F - (textWidth / 2.0F) - textWidthArmor - widthOffset, heightArmor + 12.5F - (textHeight / 2.0F), colorArmor);
-                        drawString(guiGraphics, minecraft.font, armorToughness, widthArmor + 13.5F + (textWidth / 2.0F) - widthOffset, heightArmor + 12.5F - (textHeight / 2.0F), colorArmorToughness);
+                        drawString(guiGraphics, minecraft.font, armor, widthArmor + 9.5F - v1 - textWidthArmor - widthOffset, heightArmor + 12.5F - v2, colorArmor);
+                        drawString(guiGraphics, minecraft.font, armorToughness, widthArmor + 13.5F + v1 - widthOffset, heightArmor + 12.5F - v2, colorArmorToughness);
                         break;
                     case 3:
-                        drawString(guiGraphics, minecraft.font, armor, widthArmor + 11.5F - (textWidthArmor / 2.0F) - widthOffset, heightArmor + 10.5F - textHeight, colorArmor);
-                        drawString(guiGraphics, minecraft.font, armorToughness, widthArmor + 11.5F - (textWidthArmorToughness / 2.0F) - widthOffset, heightArmor + 14.5F, colorArmorToughness);
+                        drawString(guiGraphics, minecraft.font, armor, widthArmor + 11.5F - v - widthOffset, heightArmor + 10.5F - textHeight, colorArmor);
+                        drawString(guiGraphics, minecraft.font, armorToughness, widthArmor + 11.5F - (textWidthArmorToughness * 0.5F) - widthOffset, heightArmor + 14.5F, colorArmorToughness);
                         break;
                     default:
-                        drawString(guiGraphics, minecraft.font, armor, widthArmor + 11.5F - (textWidth / 2.0F) - textWidthArmor - widthOffset, heightArmor + 9.5F - (textHeight / 2.0F), colorArmor);
-                        drawString(guiGraphics, minecraft.font, armorToughness, widthArmor + 11.5F + (textWidth / 2.0F) - widthOffset, heightArmor + 15.5F - (textHeight / 2.0F), colorArmorToughness);
+                        drawString(guiGraphics, minecraft.font, armor, widthArmor + 11.5F - v1 - textWidthArmor - widthOffset, heightArmor + 9.5F - v2, colorArmor);
+                        drawString(guiGraphics, minecraft.font, armorToughness, widthArmor + 11.5F + v1 - widthOffset, heightArmor + 15.5F - v2, colorArmorToughness);
                 }
             }
         }
 
-        private static String str(String text, int count) {
-            String str = "";
-            for (int i = 0; i < count; i++) {
-                str += text;
-            }
-            return str;
-        }
-
         public abstract void render(GuiGraphics guiGraphics, Minecraft minecraft);
+
+        @Override
+        public Component getTranslatedName() {
+            return Component.translatable("confluence.configuration.armorStyle." + name().toLowerCase(Locale.ROOT));
+        }
     }
 
     public enum Mana implements TranslatableEnum {
@@ -267,8 +204,7 @@ public class TerraStyleHud implements LayeredDraw.Layer {
                     absorptionHealth = player.getAbsorptionAmount();
                     maxHealth = player.getMaxHealth();
                     currentHealth = player.getHealth();
-                    AttributeInstance instance = player.getAttribute(Attributes.MAX_HEALTH);
-                    AttributeModifier modifier = instance.getModifier(EverBeneficialItem.LIFE_FRUITS.id());
+                    AttributeModifier modifier = player.getAttribute(Attributes.MAX_HEALTH).getModifier(EverBeneficialItem.LIFE_FRUITS.id());
                     if (modifier != null) {
                         lifeFruitHealth = (int) modifier.amount();
                     }
@@ -388,6 +324,79 @@ public class TerraStyleHud implements LayeredDraw.Layer {
                 String drawString = Integer.toString(lineCountDraw);
                 if (lineCountDraw > 1) {
                     drawString(guiGraphics, minecraft.font, drawString, widthHealth - 3 - minecraft.font.width(Component.literal(drawString)), heightHealth + 1, 0xFFFFFF);
+                }
+            }
+
+            private static void drawString(GuiGraphics guiGraphics, Font font, @Nullable String text, float x, float y, int color) {
+                guiGraphics.drawString(font, text, x + 1, y, 0x000000, false);
+                guiGraphics.drawString(font, text, x - 1, y, 0x000000, false);
+                guiGraphics.drawString(font, text, x, y + 1, 0x000000, false);
+                guiGraphics.drawString(font, text, x, y - 1, 0x000000, false);
+                guiGraphics.drawString(font, text, x, y, color, false);
+            }
+
+            private static void drawColor(GuiGraphics guiGraphics, int x, int y, int iconX, int iconY, ResourceLocation icon, int color, int colorHigh, int colorLow) {
+                float red = ((color >> 16) & 0xFF) / 255.0F;
+                float green = ((color >> 8) & 0xFF) / 255.0F;
+                float blue = (color & 0xFF) / 255.0F;
+                float redHigh = ((colorHigh >> 16) & 0xFF) / 255.0F;
+                float greenHigh = ((colorHigh >> 8) & 0xFF) / 255.0F;
+                float blueHigh = (colorHigh & 0xFF) / 255.0F;
+                float redLow = ((colorLow >> 16) & 0xFF) / 255.0F;
+                float greenLow = ((colorLow >> 8) & 0xFF) / 255.0F;
+                float blueLow = (colorLow & 0xFF) / 255.0F;
+                RenderSystem.setShaderColor(red, green, blue, 1.0F);
+                guiGraphics.blit(icon, x, y, iconX, iconY, 9, 9, OVERLAY_SIZE, OVERLAY_SIZE);
+                RenderSystem.setShaderColor(redLow, greenLow, blueLow, 1.0F);
+                guiGraphics.blit(icon, x, y, iconX + 20, iconY, 9, 9, OVERLAY_SIZE, OVERLAY_SIZE);
+                RenderSystem.setShaderColor(redHigh, greenHigh, blueHigh, 1.0F);
+                guiGraphics.blit(icon, x, y, iconX + 40, iconY, 9, 9, OVERLAY_SIZE, OVERLAY_SIZE);
+                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            }
+
+            private static int colorHigh(int color) {
+                return (color / 255 * 55 + 200);
+            }
+
+            private static int colorLow(int color, RandomSource random) {
+                int colorT = (color - 60 + random.nextInt(121));
+                if (colorT < 0) {colorT = 0;}
+                if (colorT > 255) {colorT = 255;}
+                return colorT;
+            }
+
+            private static void draw(int x, int y, GuiGraphics guiGraphics, RandomSource random, int count) {
+                int R;
+                int G;
+                int B;
+                do {
+                    R = random.nextInt(256);
+                    G = random.nextInt(256);
+                    B = random.nextInt(256) + 255 - R - G;
+                } while (B > 255 || B < 0);
+                int color = (R << 16) | (G << 8) | B;
+                int colorHigh = (colorHigh(R) << 16) | (colorHigh(G) << 8) | colorHigh(B);
+                int colorLow = (colorLow(R, random) << 16) | (colorLow(G, random) << 8) | colorLow(B, random);
+                int countT = count / 2;
+                int xT = x - 8;
+                for (int i = 0; i < countT; i++) {
+                    xT = x + i * 8;
+                    drawColor(guiGraphics, xT, y, 0, 0, OVERLAY_TEXTURE, color, colorHigh, colorLow);
+                }
+                if (count - countT * 2 == 1) {
+                    drawColor(guiGraphics, xT + 8, y, 10, 0, OVERLAY_TEXTURE, color, colorHigh, colorLow);
+                }
+            }
+
+            private static void draw(int x, int y, GuiGraphics guiGraphics, int count, int color, int colorHigh, int colorLow) {
+                int countT = count / 2;
+                int xT = x - 8;
+                for (int i = 0; i < countT; i++) {
+                    xT = x + i * 8;
+                    drawColor(guiGraphics, xT, y, 0, 0, OVERLAY_TEXTURE, color, colorHigh, colorLow);
+                }
+                if (count - countT * 2 == 1) {
+                    drawColor(guiGraphics, xT + 8, y, 10, 0, OVERLAY_TEXTURE, color, colorHigh, colorLow);
                 }
             }
         };

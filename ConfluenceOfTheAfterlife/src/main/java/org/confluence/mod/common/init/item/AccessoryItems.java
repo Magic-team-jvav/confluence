@@ -15,7 +15,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
-import org.confluence.mod.common.init.ModAttributes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.MusicBoxBlocks;
 import org.confluence.mod.common.item.accessory.*;
@@ -26,6 +25,7 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
 import org.confluence.terra_curio.common.item.curio.health.BandOfRegeneration;
 import org.confluence.terra_curio.util.TCUtils;
+import org.confluence.terraentity.init.TEAttributes;
 
 import java.util.List;
 import java.util.Set;
@@ -125,15 +125,15 @@ public class AccessoryItems {
     SPECTRE_GOGGLES = registerDirectly("spectre_goggles", name -> new SpectreGoggles(BaseCurioItem.builder(name).rarity(PINK).accessories(units(SPECTRE$GOGGLES)))), // 幽灵护目镜
             CHROMATIC_CLOAK = registerCurio("chromatic_cloak", builder -> builder.rarity(PINK).accessories(of(TCItems.EFFECT$IMMUNITIES, Set.of(ModEffects.SHIMMER)))); // 炫彩斗篷
 
-    public static final Supplier<BaseCurioItem> SUMMONER_EMBLEM = registerCurio("summoner_emblem", builder -> builder.rarity(LIGHT_RED).attribute(ModAttributes.SUMMON_DAMAGE, 0.15, ADD_MULTIPLIED_TOTAL)), // 召唤师徽章
-            APPRENTICES_SCARF = registerCurio("apprentices_scarf", builder -> builder.rarity(PINK).attribute(ModAttributes.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(ModAttributes.SUMMON_DAMAGE, 0.1, ADD_MULTIPLIED_TOTAL)), // 学徒围巾
-            SQUIRES_SHIELD = registerCurio("squires_shield", builder -> builder.rarity(PINK).attribute(ModAttributes.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(ModAttributes.SUMMON_DAMAGE, 0.1, ADD_MULTIPLIED_TOTAL)), // 侍卫护盾
-            HUNTRESSS_BUCKLER = registerCurio("huntresss_buckler", builder -> builder.rarity(PINK).attribute(ModAttributes.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(ModAttributes.SUMMON_DAMAGE, 0.1, ADD_MULTIPLIED_TOTAL)), // 女猎人圆盾
-            MONKS_BELT = registerCurio("monks_belt", builder -> builder.rarity(PINK).attribute(ModAttributes.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(ModAttributes.SUMMON_DAMAGE, 0.1, ADD_MULTIPLIED_TOTAL)), // 武僧腰带
-            HERCULES_BEETLE = registerCurio("hercules_beetle", builder -> builder.rarity(LIME).attribute(ModAttributes.SUMMON_DAMAGE, 0.15, ADD_MULTIPLIED_TOTAL).attribute(ModAttributes.SUMMON_KNOCKBACK, 2.0, ADD_VALUE)), // 大力士甲虫
-            NECROMANTIC_SCROLL = registerCurio("necromantic_scroll", builder -> builder.rarity(YELLOW).attribute(ModAttributes.MINION_CAPACITY, 1.0, ADD_VALUE).attribute(ModAttributes.SUMMON_DAMAGE, 0.1, ADD_MULTIPLIED_TOTAL)), // 死灵卷轴
-            PAPYRUS_SCARAB = registerCurio("papyrus_scarab", builder -> builder.rarity(YELLOW).attribute(ModAttributes.MINION_CAPACITY, 1.0, ADD_VALUE).attribute(ModAttributes.SUMMON_DAMAGE, 0.15, ADD_MULTIPLIED_TOTAL).attribute(ModAttributes.SUMMON_KNOCKBACK, 2.0, ADD_VALUE)), // 甲虫莎草纸
-            PYGMY_NECKLACE = registerCurio("pygmy_necklace", builder -> builder.rarity(LIME).attribute(ModAttributes.MINION_CAPACITY, 1.0, ADD_VALUE)); // 矮人项链
+    public static final Supplier<BaseCurioItem> SUMMONER_EMBLEM = registerCurio("summoner_emblem", builder -> builder.rarity(LIGHT_RED).attribute(TEAttributes.SUMMON_DAMAGE, 0.15, ADD_MULTIPLIED_TOTAL)), // 召唤师徽章
+            APPRENTICES_SCARF = registerCurio("apprentices_scarf", builder -> builder.rarity(PINK).attribute(TEAttributes.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(TEAttributes.SUMMON_DAMAGE, 0.1, ADD_MULTIPLIED_TOTAL)), // 学徒围巾
+            SQUIRES_SHIELD = registerCurio("squires_shield", builder -> builder.rarity(PINK).attribute(TEAttributes.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(TEAttributes.SUMMON_DAMAGE, 0.1, ADD_MULTIPLIED_TOTAL)), // 侍卫护盾
+            HUNTRESSS_BUCKLER = registerCurio("huntresss_buckler", builder -> builder.rarity(PINK).attribute(TEAttributes.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(TEAttributes.SUMMON_DAMAGE, 0.1, ADD_MULTIPLIED_TOTAL)), // 女猎人圆盾
+            MONKS_BELT = registerCurio("monks_belt", builder -> builder.rarity(PINK).attribute(TEAttributes.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(TEAttributes.SUMMON_DAMAGE, 0.1, ADD_MULTIPLIED_TOTAL)), // 武僧腰带
+            HERCULES_BEETLE = registerCurio("hercules_beetle", builder -> builder.rarity(LIME).attribute(TEAttributes.SUMMON_DAMAGE, 0.15, ADD_MULTIPLIED_TOTAL).attribute(TEAttributes.SUMMON_KNOCKBACK, 2.0, ADD_VALUE)), // 大力士甲虫
+            NECROMANTIC_SCROLL = registerCurio("necromantic_scroll", builder -> builder.rarity(YELLOW).attribute(TEAttributes.MINION_CAPACITY, 1.0, ADD_VALUE).attribute(TEAttributes.SUMMON_DAMAGE, 0.1, ADD_MULTIPLIED_TOTAL)), // 死灵卷轴
+            PAPYRUS_SCARAB = registerCurio("papyrus_scarab", builder -> builder.rarity(YELLOW).attribute(TEAttributes.MINION_CAPACITY, 1.0, ADD_VALUE).attribute(TEAttributes.SUMMON_DAMAGE, 0.15, ADD_MULTIPLIED_TOTAL).attribute(TEAttributes.SUMMON_KNOCKBACK, 2.0, ADD_VALUE)), // 甲虫莎草纸
+            PYGMY_NECKLACE = registerCurio("pygmy_necklace", builder -> builder.rarity(LIME).attribute(TEAttributes.MINION_CAPACITY, 1.0, ADD_VALUE)); // 矮人项链
 
     public static final Supplier<BaseCurioItem> FLEDGLING_WINGS = registerCurio("fledgling_wings", builder -> builder.rarity(WHITE).accessories(of(TCItems.MAY$FLY, new MayFlyAbilityValue.Storage(0.3F, 36, true, false))));
 

@@ -8,8 +8,6 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terraentity.init.TEItems;
 
-import javax.tools.Tool;
-
 import static org.confluence.mod.common.init.item.PickaxeItems.MOLTEN_PICKAXE;
 
 public class ModChineseProvider extends LanguageProvider {
@@ -38,24 +36,25 @@ public class ModChineseProvider extends LanguageProvider {
         add("chat.type.advancement.achievement", "%s达成了成就%s");
         add("options.difficulty.legendary", "§a传奇");
 
-        add("item.confluence.meteorite_ingot.tooltip", "摸起来是温的");
         add("jukebox_song.confluence.song", "C418 - alpha");
 
-        add("item.confluence.tokyo_teddy_bear.tooltip.1", "一位自卑的少女如破碎的泰迪熊般说到：");
-        add("item.confluence.tokyo_teddy_bear.tooltip.2", "           来让你听听");
-        add("item.confluence.tokyo_teddy_bear.tooltip.3", "           全智全能的话吧");
-        add("item.confluence.tokyo_teddy_bear.tooltip.4", "           头脑以外的");
-        add("item.confluence.tokyo_teddy_bear.tooltip.5", "           已不再需要");
-        add("item.confluence.tokyo_teddy_bear.tooltip.6", "——由一只蜘蛛讲述的故事");
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
         add("generator.confluence.the_corruption", "腐化之地");
         add("generator.confluence.tr_crimson", "猩红之地");
 
 
+        add("item.confluence.meteorite_ingot.tooltip", "摸起来是温的");
         add("item.confluence.afterlife_notes", "来世手记");
         add("item.confluence.encumbering_stone.disable", "负重石：关闭");
         add("item.confluence.paint", "油漆");
+        add("item.confluence.tokyo_teddy_bear.tooltip.1", "一位自卑的少女如破碎的泰迪熊般说到：");
+        add("item.confluence.tokyo_teddy_bear.tooltip.2", "           来让你听听");
+        add("item.confluence.tokyo_teddy_bear.tooltip.3", "           全智全能的话吧");
+        add("item.confluence.tokyo_teddy_bear.tooltip.4", "           头脑以外的");
+        add("item.confluence.tokyo_teddy_bear.tooltip.5", "           已不再需要");
+        add("item.confluence.tokyo_teddy_bear.tooltip.6", "——由一只蜘蛛讲述的故事");
+        add("item.confluence.paradox_interlactifo_medal.tooltip.0", "同时玩过钢铁雄心、维多利亚、欧陆风云、十字军之王、都市天际线的证明。");
 
         add("text.confluence.afterlife_notes", "  冒险者，新的天地充满了无尽的挑战与机遇，这本手记将帮助你了解这个世界的奥秘，指引你面对怪物和困境，只有不断探索，你才能发现更多的力量与宝藏，你的旅途才刚刚开始。                            —— 向导");
 

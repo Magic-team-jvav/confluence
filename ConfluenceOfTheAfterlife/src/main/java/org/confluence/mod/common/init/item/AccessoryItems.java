@@ -18,6 +18,7 @@ import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.MusicBoxBlocks;
 import org.confluence.mod.common.item.accessory.*;
+import org.confluence.mod.common.item.accessory.sponsor.ParadoxInterlactifoMedal;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.api.primitive.*;
 import org.confluence.terra_curio.common.init.TCAttributes;
@@ -138,6 +139,8 @@ public class AccessoryItems {
     public static final Supplier<BaseCurioItem> FLEDGLING_WINGS = registerCurio("fledgling_wings", builder -> builder.rarity(WHITE).accessories(of(TCItems.MAY$FLY, new MayFlyAbilityValue.Storage(0.3F, 36, true, false))));
 
     public static final Supplier<MusicBoxItem> MUSIC_BOX = ITEMS.register("music_box", () -> new MusicBoxItem(null, MusicBoxBlocks.MUSIC_BOX.get()));
+
+    public static final Supplier<ParadoxInterlactifoMedal> PARADOX_INTERLACTIFO_MEDAL = ModItems.HIDDEN.register("paradox_interlactifo_medal", ParadoxInterlactifoMedal::new);
 
     private static Supplier<BaseCurioItem> registerCurio(String name, Consumer<BaseCurioItem.Builder> consumer) {
         return ITEMS.register(name, () -> {

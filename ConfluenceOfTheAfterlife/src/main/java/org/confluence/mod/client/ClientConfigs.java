@@ -14,10 +14,10 @@ public final class ClientConfigs {
     public static int showWindParticles = 90;
 
     public static boolean terraStyleHealth = true;
-    public static TerraStyleHealthHud.Health healthStyle = TerraStyleHealthHud.Health.LEGACY;
-    public static TerraStyleManaHud.Mana manaStyle = TerraStyleManaHud.Mana.LEGACY;
+    public static TerraStyleHealthHud.Health healthStyle = TerraStyleHealthHud.Health.OVERLAY;
+    public static TerraStyleManaHud.Mana manaStyle = TerraStyleManaHud.Mana.OVERLAY;
     public static boolean terraStyleArmor = true;
-    public static TerraStyleArmorHud.Armor armorStyle = TerraStyleArmorHud.Armor.LEGACY_HORIZONTAL;
+    public static TerraStyleArmorHud.Armor armorStyle = TerraStyleArmorHud.Armor.OVERLAY;
     public static boolean leftEffectIcon = true;
 
     public static boolean hurtRedOverlay = true;
@@ -64,16 +64,16 @@ public final class ClientConfigs {
         BUILDER.push("HUD");
         BUILDER.push("Health");
         TERRA_STYLE_HEALTH = BUILDER.define("terraStyleHealth", true);
-        HEALTH_STYLE = BUILDER.defineEnum("healthStyle", TerraStyleHealthHud.Health.LEGACY);
+        HEALTH_STYLE = BUILDER.defineEnum("healthStyle", TerraStyleHealthHud.Health.OVERLAY);
         BUILDER.pop();
 
         BUILDER.push("Mana");
-        MANA_STYLE = BUILDER.defineEnum("manaStyle", TerraStyleManaHud.Mana.LEGACY);
+        MANA_STYLE = BUILDER.defineEnum("manaStyle", TerraStyleManaHud.Mana.OVERLAY);
         BUILDER.pop();
 
         BUILDER.push("Armor");
         TERRA_STYLE_ARMOR = BUILDER.define("terraStyleArmor", true);
-        ARMOR_STYLE = BUILDER.defineEnum("armorStyle", TerraStyleArmorHud.Armor.LEGACY_DIAGONAL);
+        ARMOR_STYLE = BUILDER.defineEnum("armorStyle", TerraStyleArmorHud.Armor.OVERLAY);
         BUILDER.pop();
 
         LEFT_EFFECT_ICON = BUILDER.define("leftEffectIcon", true);

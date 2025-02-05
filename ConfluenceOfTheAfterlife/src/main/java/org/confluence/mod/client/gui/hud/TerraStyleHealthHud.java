@@ -1,11 +1,9 @@
 package org.confluence.mod.client.gui.hud;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.network.chat.Component;
@@ -20,13 +18,14 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.util.ClientUtils;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3i;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import static org.confluence.mod.util.ClientUtils.*;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -35,9 +34,9 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
     private static final ResourceLocation OVERLAY_TEXTURE = Confluence.asResource("textures/gui/hud/overlay.png");
     private static final int LEGACY_SIZE = 128;
     private static final int OVERLAY_SIZE = 128;
-    private static final int[] HEALTH = new int[]{0xab311e, 0x5d11ba, 0x436dd0, 0x37c438, 0xeed536};
-    private static final int[] HEALTH_LOW = new int[]{0xab1f5d, 0x9d44ac, 0x5d11ba, 0x266c71, 0xf7b60b};
-    private static final int[] HEALTH_HIGH = new int[]{0xffb5b5, 0xd6e7eb, 0xc5d4f8, 0xd6eead, 0xeff4ce};
+    private static final int[] HEALTH = new int[]{0xab311e, 0x5d11ba, 0x41a9ba, 0x37c438, 0xeed536};
+    private static final int[] HEALTH_LOW = new int[]{0xab1f5d, 0x9d44ac, 0x12f7dd, 0x1fab7f, 0xf7b60b};
+    private static final int[] HEALTH_HIGH = new int[]{0xffb5b5, 0xd6e7eb, 0xbdced0, 0xd6eead, 0xeff4ce};
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
@@ -156,8 +155,6 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
             }
         },
         OVERLAY {
-            private static final Map<Integer, Vector3i> COLOR = new HashMap<>();
-
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
                 float maxHealth = 0.0F;
@@ -171,102 +168,7 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                 int heightHealth = guiGraphics.guiHeight() - minecraft.gui.leftHeight;
                 minecraft.gui.leftHeight += 10;
                 RandomSource random = RandomSource.create(114514);
-                int backCount = (int) (maxHealth / 2);
-                int heartCount = (int) (currentHealth);
-                if (maxHealth / 2 > (float) backCount) {backCount++;}
-                if (currentHealth > (float) heartCount) {heartCount++;}
-                for (int i = 0; i < backCount && i < 10; i++) {
-                    guiGraphics.blit(OVERLAY_TEXTURE, widthHealth + i * 8, heightHealth, 60, 0, 9, 9, OVERLAY_SIZE, OVERLAY_SIZE);
-                }
-                int lineCount = heartCount / 20;
-                int drawCount;
-                int lineCountDraw = lineCount;
-                Vector3i color;
-                for (int i = 0; i <= lineCount; i++) {
-                    drawCount = (i == lineCount) ? (heartCount % 20) : 20;
-                    if (i < HEALTH.length) {
-                        if (lineCount - i < 3) {
-                            draw(widthHealth, heightHealth, guiGraphics, drawCount, HEALTH[i], HEALTH_HIGH[i], HEALTH_LOW[i]);
-                        }
-                    } else {
-                        color = COLOR.computeIfAbsent(i, k -> color(random));
-                        if (lineCount - i < 3) {
-                            draw(widthHealth, heightHealth, guiGraphics, drawCount, color.x, color.y, color.z);
-                        }
-                    }
-                    if (drawCount != 20 && drawCount != 0) {
-                        lineCountDraw = lineCount + 1;
-                    }
-                }
-                String drawString = Integer.toString(lineCountDraw);
-                if (lineCountDraw > 1) {
-                    drawString(guiGraphics, minecraft.font, drawString, widthHealth - 3 - minecraft.font.width(Component.literal(drawString)), heightHealth + 1, 0xFFFFFF);
-                }
-            }
-
-            private static void drawString(GuiGraphics guiGraphics, Font font, @Nullable String text, float x, float y, int color) {
-                guiGraphics.drawString(font, text, x + 1, y, 0x000000, false);
-                guiGraphics.drawString(font, text, x - 1, y, 0x000000, false);
-                guiGraphics.drawString(font, text, x, y + 1, 0x000000, false);
-                guiGraphics.drawString(font, text, x, y - 1, 0x000000, false);
-                guiGraphics.drawString(font, text, x, y, color, false);
-            }
-
-            private static void drawColor(GuiGraphics guiGraphics, int x, int y, int iconX, int iconY, ResourceLocation icon, int color, int colorHigh, int colorLow) {
-                float red = ((color >> 16) & 0xFF) / 255.0F;
-                float green = ((color >> 8) & 0xFF) / 255.0F;
-                float blue = (color & 0xFF) / 255.0F;
-                float redHigh = ((colorHigh >> 16) & 0xFF) / 255.0F;
-                float greenHigh = ((colorHigh >> 8) & 0xFF) / 255.0F;
-                float blueHigh = (colorHigh & 0xFF) / 255.0F;
-                float redLow = ((colorLow >> 16) & 0xFF) / 255.0F;
-                float greenLow = ((colorLow >> 8) & 0xFF) / 255.0F;
-                float blueLow = (colorLow & 0xFF) / 255.0F;
-                RenderSystem.setShaderColor(red, green, blue, 1.0F);
-                guiGraphics.blit(icon, x, y, iconX, iconY, 9, 9, OVERLAY_SIZE, OVERLAY_SIZE);
-                RenderSystem.setShaderColor(redLow, greenLow, blueLow, 1.0F);
-                guiGraphics.blit(icon, x, y, iconX + 20, iconY, 9, 9, OVERLAY_SIZE, OVERLAY_SIZE);
-                RenderSystem.setShaderColor(redHigh, greenHigh, blueHigh, 1.0F);
-                guiGraphics.blit(icon, x, y, iconX + 40, iconY, 9, 9, OVERLAY_SIZE, OVERLAY_SIZE);
-                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            }
-
-            private static int colorHigh(int color) {
-                return (color / 255 * 55 + 200);
-            }
-
-            private static int colorLow(int color, RandomSource random) {
-                int colorT = (color - 60 + random.nextInt(121));
-                if (colorT < 0) {colorT = 0;}
-                if (colorT > 255) {colorT = 255;}
-                return colorT;
-            }
-
-            private static Vector3i color(RandomSource random) {
-                int R;
-                int G;
-                int B;
-                do {
-                    R = random.nextInt(256);
-                    G = random.nextInt(256);
-                    B = random.nextInt(256) + 255 - R - G;
-                } while (B > 255 || B < 0);
-                int color = (R << 16) | (G << 8) | B;
-                int colorHigh = (colorHigh(R) << 16) | (colorHigh(G) << 8) | colorHigh(B);
-                int colorLow = (colorLow(R, random) << 16) | (colorLow(G, random) << 8) | colorLow(B, random);
-                return new Vector3i(color, colorHigh, colorLow);
-            }
-
-            private static void draw(int x, int y, GuiGraphics guiGraphics, int count, int color, int colorHigh, int colorLow) {
-                int countT = count / 2;
-                int xT = x - 8;
-                for (int i = 0; i < countT; i++) {
-                    xT = x + i * 8;
-                    drawColor(guiGraphics, xT, y, 0, 0, OVERLAY_TEXTURE, color, colorHigh, colorLow);
-                }
-                if (count - countT * 2 == 1) {
-                    drawColor(guiGraphics, xT + 8, y, 10, 0, OVERLAY_TEXTURE, color, colorHigh, colorLow);
-                }
+                colorDraw(guiGraphics, minecraft, random, OVERLAY_TEXTURE, HEALTH, HEALTH_HIGH, HEALTH_LOW, maxHealth, currentHealth, widthHealth, heightHealth, OVERLAY_SIZE, 0, true, 0);
             }
         };
 

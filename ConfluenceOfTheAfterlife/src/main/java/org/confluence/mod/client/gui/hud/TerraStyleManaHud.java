@@ -7,14 +7,20 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.util.ClientUtils;
+import org.joml.Vector3i;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
+
+import static org.confluence.mod.util.ClientUtils.colorDraw;
+import static org.confluence.mod.util.ClientUtils.draw;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -23,6 +29,9 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
     private static final ResourceLocation OVERLAY_TEXTURE = Confluence.asResource("textures/gui/hud/overlay.png");
     private static final int LEGACY_SIZE = 128;
     private static final int OVERLAY_SIZE = 128;
+    private static final int[] MANA = new int[]{0x5a82e2, 0xa248d7};
+    private static final int[] MANA_LOW = new int[]{0x5d11ba, 0xac1a91};
+    private static final int[] MANA_HIGH = new int[]{0x90aff8, 0xff94bd};
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
@@ -60,6 +69,18 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
                         guiGraphics.pose().popPose();
                     }
                 }
+            }
+        },
+        OVERLAY {
+            @Override
+            public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
+                float currentMana = ClientPacketHandler.getCurrentMana() / 10.0F;
+                float maxMana = ClientPacketHandler.getMaxMana() / 10.0F;
+                int widthHealth = guiGraphics.guiWidth() / 2 + 10;
+                int heightHealth = guiGraphics.guiHeight() - minecraft.gui.rightHeight;
+                minecraft.gui.rightHeight += 10;
+                RandomSource random = RandomSource.create(1919810);
+                colorDraw(guiGraphics, minecraft, random, OVERLAY_TEXTURE, MANA, MANA_HIGH, MANA_LOW, maxMana, currentMana, widthHealth, heightHealth, OVERLAY_SIZE, 10, false, 2);
             }
         };
 

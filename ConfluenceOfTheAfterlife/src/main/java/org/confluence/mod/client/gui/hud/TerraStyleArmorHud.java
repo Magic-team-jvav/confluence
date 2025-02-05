@@ -8,6 +8,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.TranslatableEnum;
@@ -19,6 +20,9 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
 
+import static org.confluence.mod.util.ClientUtils.colorDraw;
+import static org.confluence.mod.util.ClientUtils.drawString;
+
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class TerraStyleArmorHud implements LayeredDraw.Layer {
@@ -26,6 +30,9 @@ public class TerraStyleArmorHud implements LayeredDraw.Layer {
     private static final ResourceLocation OVERLAY_TEXTURE = Confluence.asResource("textures/gui/hud/overlay.png");
     private static final int LEGACY_SIZE = 128;
     private static final int OVERLAY_SIZE = 128;
+    private static final int[] ARMOR = new int[]{0x8097b8};
+    private static final int[] ARMOR_LOW = new int[]{0x515277};
+    private static final int[] ARMOR_HIGH = new int[]{0xf6d8eb};
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
@@ -58,15 +65,22 @@ public class TerraStyleArmorHud implements LayeredDraw.Layer {
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
                 draw(guiGraphics, minecraft, 3);
             }
+        },
+        OVERLAY {
+            @Override
+            public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
+                float armor = 0.0F;
+                Player player = minecraft.player;
+                if (player != null) {
+                    armor = player.getArmorValue();
+                }
+                int widthHealth = guiGraphics.guiWidth() / 2 - 91;
+                int heightHealth = guiGraphics.guiHeight() - minecraft.gui.leftHeight;
+                minecraft.gui.leftHeight += 10;
+                RandomSource random = RandomSource.create(59160153);
+                colorDraw(guiGraphics, minecraft, random, OVERLAY_TEXTURE, ARMOR, ARMOR_HIGH, ARMOR_LOW, armor, widthHealth, heightHealth, OVERLAY_SIZE, 20, true, 3);
+            }
         };
-
-        private static void drawString(GuiGraphics guiGraphics, Font font, @Nullable String text, float x, float y, int color) {
-            guiGraphics.drawString(font, text, x + 1, y, 0x000000, false);
-            guiGraphics.drawString(font, text, x - 1, y, 0x000000, false);
-            guiGraphics.drawString(font, text, x, y + 1, 0x000000, false);
-            guiGraphics.drawString(font, text, x, y - 1, 0x000000, false);
-            guiGraphics.drawString(font, text, x, y, color, false);
-        }
 
         private static void draw(GuiGraphics guiGraphics, Minecraft minecraft, int type) {
             int armorNum = 0;

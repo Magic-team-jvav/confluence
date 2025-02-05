@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Function4;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
@@ -15,11 +16,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3i;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -27,9 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @OnlyIn(Dist.CLIENT)
 public final class ClientUtils {
@@ -226,6 +228,122 @@ public final class ClientUtils {
             }
         } else {
             return gray;
+        }
+    }
+
+    public static void drawString(GuiGraphics guiGraphics, Font font, @Nullable String text, float x, float y, int color) {
+        guiGraphics.drawString(font, text, x + 1, y, 0x000000, false);
+        guiGraphics.drawString(font, text, x - 1, y, 0x000000, false);
+        guiGraphics.drawString(font, text, x, y + 1, 0x000000, false);
+        guiGraphics.drawString(font, text, x, y - 1, 0x000000, false);
+        guiGraphics.drawString(font, text, x, y, color, false);
+    }
+
+    public static void drawColor(GuiGraphics guiGraphics, int x, int y, int iconX, int iconY, ResourceLocation icon, int color, int colorHigh, int colorLow, int size) {
+        float red = ((color >> 16) & 0xFF) / 255.0F;
+        float green = ((color >> 8) & 0xFF) / 255.0F;
+        float blue = (color & 0xFF) / 255.0F;
+        float redHigh = ((colorHigh >> 16) & 0xFF) / 255.0F;
+        float greenHigh = ((colorHigh >> 8) & 0xFF) / 255.0F;
+        float blueHigh = (colorHigh & 0xFF) / 255.0F;
+        float redLow = ((colorLow >> 16) & 0xFF) / 255.0F;
+        float greenLow = ((colorLow >> 8) & 0xFF) / 255.0F;
+        float blueLow = (colorLow & 0xFF) / 255.0F;
+        RenderSystem.setShaderColor(red, green, blue, 1.0F);
+        guiGraphics.blit(icon, x, y, iconX, iconY, 9, 9, size, size);
+        RenderSystem.setShaderColor(redLow, greenLow, blueLow, 1.0F);
+        guiGraphics.blit(icon, x, y, iconX + 20, iconY, 9, 9, size, size);
+        RenderSystem.setShaderColor(redHigh, greenHigh, blueHigh, 1.0F);
+        guiGraphics.blit(icon, x, y, iconX + 40, iconY, 9, 9, size, size);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+    }
+
+    public static int colorHigh(int color) {
+        return (color / 255 * 55 + 200);
+    }
+
+    public static int colorLow(int color, RandomSource random) {
+        int colorT = (color - 60 + random.nextInt(121));
+        if (colorT < 0) {colorT = 0;}
+        if (colorT > 255) {colorT = 255;}
+        return colorT;
+    }
+
+    public static Vector3i color(RandomSource random) {
+        int R;
+        int G;
+        int B;
+        do {
+            R = random.nextInt(256);
+            G = random.nextInt(256);
+            B = random.nextInt(256) + 255 - R - G;
+        } while (B > 255 || B < 0);
+        int color = (R << 16) | (G << 8) | B;
+        int colorHigh = (colorHigh(R) << 16) | (colorHigh(G) << 8) | colorHigh(B);
+        int colorLow = (colorLow(R, random) << 16) | (colorLow(G, random) << 8) | colorLow(B, random);
+        return new Vector3i(color, colorHigh, colorLow);
+    }
+
+    public static void draw(int x, int y, GuiGraphics guiGraphics, int count, int color, int colorHigh, int colorLow, ResourceLocation icon, int size, int uvY, boolean left) {
+        int countT = count / 2;
+        int xT = left ? (x - 8) : (x + 80);
+        for (int i = 0; i < countT; i++) {
+            xT = left ? (x + i * 8) : (x + 72 - i * 8);
+            drawColor(guiGraphics, xT, y, 0, uvY, icon, color, colorHigh, colorLow, size);
+        }
+        if (count - countT * 2 == 1) {
+            drawColor(guiGraphics, xT + (left ? 8 : -8), y, 10, uvY, icon, color, colorHigh, colorLow, size);
+        }
+    }
+
+    private static Map<Long, Vector3i> COLOR_R = new HashMap<>();
+
+    public static void colorDraw(GuiGraphics guiGraphics, Minecraft minecraft, RandomSource random, ResourceLocation texture, int[] COLOR, int[] COLOR_HIGH, int[] COLOR_LOW, float max, float current, int x, int y, int size, int uvY, boolean left, int type) {
+        colorDraw(guiGraphics, minecraft, random, texture, COLOR, COLOR_HIGH, COLOR_LOW, max, current, x, y, size, uvY, left, true, type);
+    }
+
+    public static void colorDraw(GuiGraphics guiGraphics, Minecraft minecraft, RandomSource random, ResourceLocation texture, int[] COLOR, int[] COLOR_HIGH, int[] COLOR_LOW, float current, int x, int y, int size, int uvY, boolean left, int type) {
+        colorDraw(guiGraphics, minecraft, random, texture, COLOR, COLOR_HIGH, COLOR_LOW, 0.0F, current, x, y, size, uvY, left, false, type);
+    }
+
+    public static void colorDraw(GuiGraphics guiGraphics, Minecraft minecraft, RandomSource random, ResourceLocation texture, int[] COLOR, int[] COLOR_HIGH, int[] COLOR_LOW, float max, float current, int x, int y, int size, int uvY, boolean left, boolean background, int type) {
+        int backCount = (int) (max / 2);
+        int heartCount = (int) (current);
+        if (max / 2 > (float) backCount) {backCount++;}
+        if (current > (float) heartCount) {heartCount++;}
+        for (int i = 0; i < backCount && i < 10 && background; i++) {
+            guiGraphics.blit(texture, (x + i * 8) + ((backCount < 10 && !left) ? ((10 - backCount) * 8) : 0), y, 60, uvY, 9, 9, size, size);
+        }
+        int lineCount = heartCount / 20;
+        int drawCount;
+        int lineCountDraw = lineCount;
+        Vector3i color = new Vector3i(0, 0, 0);
+        Vector3i colorJ;
+        for (int i = 0; i <= lineCount; i++) {
+            colorJ = color;
+            drawCount = (i == lineCount) ? (heartCount % 20) : 20;
+            if (i < Math.min(COLOR.length, Math.min(COLOR_HIGH.length, COLOR_LOW.length))) {
+                color = COLOR_R.computeIfAbsent(Integer.toUnsignedLong(i) + 10000L * type, k -> color(random));
+                color.x = COLOR[i];
+                if (lineCount - i < 3) {
+                    draw(x, y, guiGraphics, drawCount, COLOR[i], COLOR_HIGH[i], COLOR_LOW[i], texture, size, uvY, left);
+                }
+            } else {
+                color = COLOR_R.computeIfAbsent(Integer.toUnsignedLong(i) + 10000L * type, k -> color(random));
+                if (lineCount - i < 3) {
+                    draw(x, y, guiGraphics, drawCount, color.x, color.y, color.z, texture, size, uvY, left);
+                }
+            }
+            if (drawCount != 20 && drawCount != 0) {
+                lineCountDraw = lineCount + 1;
+            }
+            if (drawCount == 0) {
+                color = colorJ;
+            }
+        }
+        String drawString = Integer.toString(lineCountDraw);
+        if (lineCountDraw > 1) {
+            drawString(guiGraphics, minecraft.font, drawString, (left) ? (x - 3 - minecraft.font.width(Component.literal(drawString))) : (x + 85), y + 1, color.x);
         }
     }
 }

@@ -6,16 +6,18 @@ import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.Builder;
 import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
-import org.confluence.mod.client.gui.hud.TerraStyleHud;
+import org.confluence.mod.client.gui.hud.TerraStyleArmorHud;
+import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
+import org.confluence.mod.client.gui.hud.TerraStyleManaHud;
 
 public final class ClientConfigs {
     public static int showWindParticles = 90;
 
     public static boolean terraStyleHealth = true;
-    public static TerraStyleHud.Health healthStyle = TerraStyleHud.Health.LEGACY;
-    public static TerraStyleHud.Mana manaStyle = TerraStyleHud.Mana.LEGACY;
+    public static TerraStyleHealthHud.Health healthStyle = TerraStyleHealthHud.Health.LEGACY;
+    public static TerraStyleManaHud.Mana manaStyle = TerraStyleManaHud.Mana.LEGACY;
     public static boolean terraStyleArmor = true;
-    public static TerraStyleHud.Armor armorStyle = TerraStyleHud.Armor.LEGACY_HORIZONTAL;
+    public static TerraStyleArmorHud.Armor armorStyle = TerraStyleArmorHud.Armor.LEGACY_HORIZONTAL;
     public static boolean leftEffectIcon = true;
 
     public static boolean hurtRedOverlay = true;
@@ -26,10 +28,10 @@ public final class ClientConfigs {
     private static IntValue SHOW_WIND_PARTICLES;
 
     private static BooleanValue TERRA_STYLE_HEALTH;
-    private static EnumValue<TerraStyleHud.Health> HEALTH_STYLE;
-    private static EnumValue<TerraStyleHud.Mana> MANA_STYLE;
+    private static EnumValue<TerraStyleHealthHud.Health> HEALTH_STYLE;
+    private static EnumValue<TerraStyleManaHud.Mana> MANA_STYLE;
     private static BooleanValue TERRA_STYLE_ARMOR;
-    private static EnumValue<TerraStyleHud.Armor> ARMOR_STYLE;
+    private static EnumValue<TerraStyleArmorHud.Armor> ARMOR_STYLE;
     private static BooleanValue LEFT_EFFECT_ICON;
 
     private static BooleanValue HURT_RED_OVERLAY;
@@ -62,16 +64,16 @@ public final class ClientConfigs {
         BUILDER.push("HUD");
         BUILDER.push("Health");
         TERRA_STYLE_HEALTH = BUILDER.define("terraStyleHealth", true);
-        HEALTH_STYLE = BUILDER.defineEnum("healthStyle", TerraStyleHud.Health.LEGACY);
+        HEALTH_STYLE = BUILDER.defineEnum("healthStyle", TerraStyleHealthHud.Health.LEGACY);
         BUILDER.pop();
 
         BUILDER.push("Mana");
-        MANA_STYLE = BUILDER.defineEnum("manaStyle", TerraStyleHud.Mana.LEGACY);
+        MANA_STYLE = BUILDER.defineEnum("manaStyle", TerraStyleManaHud.Mana.LEGACY);
         BUILDER.pop();
 
         BUILDER.push("Armor");
         TERRA_STYLE_ARMOR = BUILDER.define("terraStyleArmor", true);
-        ARMOR_STYLE = BUILDER.defineEnum("armorStyle", TerraStyleHud.Armor.LEGACY_DIAGONAL);
+        ARMOR_STYLE = BUILDER.defineEnum("armorStyle", TerraStyleArmorHud.Armor.LEGACY_DIAGONAL);
         BUILDER.pop();
 
         LEFT_EFFECT_ICON = BUILDER.define("leftEffectIcon", true);

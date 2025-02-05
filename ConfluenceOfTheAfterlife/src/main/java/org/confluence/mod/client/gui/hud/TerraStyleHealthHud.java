@@ -18,17 +18,19 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
-import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.util.ClientUtils;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3i;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class TerraStyleHud implements LayeredDraw.Layer {
+public class TerraStyleHealthHud implements LayeredDraw.Layer {
     private static final ResourceLocation LEGACY_TEXTURE = Confluence.asResource("textures/gui/hud/icon.png");
     private static final ResourceLocation OVERLAY_TEXTURE = Confluence.asResource("textures/gui/hud/overlay.png");
     private static final int LEGACY_SIZE = 128;
@@ -44,144 +46,9 @@ public class TerraStyleHud implements LayeredDraw.Layer {
         ClientUtils.setupOverlayRenderState(true, false);
         minecraft.getProfiler().push("terra_style_hud");
 
-        if (ClientConfigs.terraStyleHealth) ClientConfigs.healthStyle.render(guiGraphics, minecraft);
-        ClientConfigs.manaStyle.render(guiGraphics, minecraft);
-        if (ClientConfigs.terraStyleArmor) ClientConfigs.armorStyle.render(guiGraphics, minecraft);
+        ClientConfigs.healthStyle.render(guiGraphics, minecraft);
 
         minecraft.getProfiler().pop();
-    }
-
-    public enum Armor implements TranslatableEnum {
-        LEGACY_HORIZONTAL {
-            @Override
-            public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
-                draw(guiGraphics, minecraft, 1);
-            }
-        },
-        LEGACY_DIAGONAL {
-            @Override
-            public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
-                draw(guiGraphics, minecraft, 2);
-            }
-        },
-        LEGACY_VERTICAL {
-            @Override
-            public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
-                draw(guiGraphics, minecraft, 3);
-            }
-        };
-
-        private static void drawString(GuiGraphics guiGraphics, Font font, @Nullable String text, float x, float y, int color) {
-            guiGraphics.drawString(font, text, x + 1, y, 0x000000, false);
-            guiGraphics.drawString(font, text, x - 1, y, 0x000000, false);
-            guiGraphics.drawString(font, text, x, y + 1, 0x000000, false);
-            guiGraphics.drawString(font, text, x, y - 1, 0x000000, false);
-            guiGraphics.drawString(font, text, x, y, color, false);
-        }
-
-        private static void draw(GuiGraphics guiGraphics, Minecraft minecraft, int type) {
-            int armorNum = 0;
-            int armorToughnessNum = 0;
-            Player player = minecraft.player;
-            if (player != null) {
-                armorNum = player.getArmorValue();
-                armorToughnessNum = (int) player.getAttribute(Attributes.ARMOR_TOUGHNESS).getValue();
-            }
-            String armor = Integer.toString(armorNum);
-            String armorToughness = Integer.toString(armorToughnessNum);
-            String text = switch (type) {
-                case 1 -> "|";
-                case 3 -> "-".repeat(Math.max(armor.length(), armorToughness.length()));
-                default -> "/";
-            };
-            int widthArmor = guiGraphics.guiWidth() - 26;
-            int heightArmor = guiGraphics.guiHeight() - 28;
-            int textWidthArmor = minecraft.font.width(Component.literal(armor));
-            int textWidthArmorToughness = minecraft.font.width(Component.literal(armorToughness));
-            int textWidth = minecraft.font.width(Component.literal(text));
-            int textHeight = minecraft.font.lineHeight;
-            int colorWhite = 0xFFFFFF;
-            int colorArmor = 0xEEB354;
-            int colorArmorToughness = 0x54E4EE;
-            float widthOffset;
-            float v = textWidthArmor * 0.5F;
-            float v1 = textWidth * 0.5F;
-            float v2 = textHeight * 0.5F;
-            if (armorToughnessNum == 0) {
-                widthOffset = 11.5F + v - 22;
-            } else {
-                widthOffset = switch (type) {
-                    case 1 -> 13.5F + v1 + textWidthArmorToughness - 22;
-                    case 3 -> 11.5F + Math.max(textWidthArmor, textWidthArmorToughness) * 0.5F - 22;
-                    default -> 11.5F + v1 + textWidthArmorToughness - 22;
-                };
-            }
-            widthOffset = widthOffset > 0 ? widthOffset : 0;
-            guiGraphics.pose().pushPose();
-            guiGraphics.pose().translate(-widthOffset, 0.0F, 0.0F);
-            guiGraphics.blit(LEGACY_TEXTURE, widthArmor, heightArmor, 0, 51, 23, 25, LEGACY_SIZE, LEGACY_SIZE);
-            guiGraphics.pose().popPose();
-            if (armorToughnessNum == 0) {
-                drawString(guiGraphics, minecraft.font, armor, widthArmor + 11.5F - v - widthOffset, heightArmor + 12.5F - v2, colorArmor);
-            } else {
-                drawString(guiGraphics, minecraft.font, text, widthArmor + 11.5F - v1 - widthOffset, heightArmor + 12.5F - v2, colorWhite);
-                switch (type) {
-                    case 1:
-                        drawString(guiGraphics, minecraft.font, armor, widthArmor + 9.5F - v1 - textWidthArmor - widthOffset, heightArmor + 12.5F - v2, colorArmor);
-                        drawString(guiGraphics, minecraft.font, armorToughness, widthArmor + 13.5F + v1 - widthOffset, heightArmor + 12.5F - v2, colorArmorToughness);
-                        break;
-                    case 3:
-                        drawString(guiGraphics, minecraft.font, armor, widthArmor + 11.5F - v - widthOffset, heightArmor + 10.5F - textHeight, colorArmor);
-                        drawString(guiGraphics, minecraft.font, armorToughness, widthArmor + 11.5F - (textWidthArmorToughness * 0.5F) - widthOffset, heightArmor + 14.5F, colorArmorToughness);
-                        break;
-                    default:
-                        drawString(guiGraphics, minecraft.font, armor, widthArmor + 11.5F - v1 - textWidthArmor - widthOffset, heightArmor + 9.5F - v2, colorArmor);
-                        drawString(guiGraphics, minecraft.font, armorToughness, widthArmor + 11.5F + v1 - widthOffset, heightArmor + 15.5F - v2, colorArmorToughness);
-                }
-            }
-        }
-
-        public abstract void render(GuiGraphics guiGraphics, Minecraft minecraft);
-
-        @Override
-        public Component getTranslatedName() {
-            return Component.translatable("confluence.configuration.armorStyle." + name().toLowerCase(Locale.ROOT));
-        }
-    }
-
-    public enum Mana implements TranslatableEnum {
-        LEGACY {
-            @Override
-            public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
-                int widthMana = guiGraphics.guiWidth() - 21;
-                int heightMana = 4;
-                int currentMana = ClientPacketHandler.getCurrentMana();
-                int maxManaCount = ClientPacketHandler.getMaxMana() / 20;
-                int currentManaToBlit;
-                float ts;
-                for (int i = 0; i < maxManaCount; i++) {
-                    currentManaToBlit = currentMana - (i + 1) * 20;
-                    guiGraphics.blit(LEGACY_TEXTURE, widthMana, heightMana + i * 12, 0, 34, 17, 16, LEGACY_SIZE, LEGACY_SIZE);
-                    if (currentManaToBlit >= 0) {
-                        guiGraphics.blit(LEGACY_TEXTURE, widthMana + 2, heightMana + i * 12, 18, 34, 13, 16, LEGACY_SIZE, LEGACY_SIZE);
-                    } else if (currentManaToBlit + 20 >= 0) {
-                        ts = ((float) (currentManaToBlit + 20)) / 20.0F;
-                        guiGraphics.pose().pushPose();
-                        guiGraphics.pose().translate(widthMana + 2 + 6.5F * (1 - ts), heightMana + i * 12 + 8.5F * (1 - ts), 0.0F);
-                        guiGraphics.pose().scale(ts, ts, 1.0F);
-                        guiGraphics.blit(LEGACY_TEXTURE, 0, 0, 18, 34, 13, 16, LEGACY_SIZE, LEGACY_SIZE);
-                        guiGraphics.pose().popPose();
-                    }
-                }
-            }
-        };
-
-        public abstract void render(GuiGraphics guiGraphics, Minecraft minecraft);
-
-        @Override
-        public Component getTranslatedName() {
-            return Component.translatable("confluence.configuration.manaStyle." + name().toLowerCase(Locale.ROOT));
-        }
     }
 
     public enum Health implements TranslatableEnum {
@@ -310,12 +177,18 @@ public class TerraStyleHud implements LayeredDraw.Layer {
                 int lineCount = heartCount / 20;
                 int drawCount;
                 int lineCountDraw = lineCount;
+                Vector3i color = new Vector3i(0, 0, 0);
                 for (int i = 0; i <= lineCount; i++) {
                     drawCount = (i == lineCount) ? (heartCount % 20) : 20;
                     if (i < HEALTH.length) {
-                        draw(widthHealth, heightHealth, guiGraphics, drawCount, HEALTH[i], HEALTH_HIGH[i], HEALTH_LOW[i]);
+                        if (lineCount - i < 3) {
+                            draw(widthHealth, heightHealth, guiGraphics, drawCount, HEALTH[i], HEALTH_HIGH[i], HEALTH_LOW[i]);
+                        }
                     } else {
-                        draw(widthHealth, heightHealth, guiGraphics, random, drawCount);
+                        color = COLOR.computeIfAbsent(i, k -> color(random));
+                        if (lineCount - i < 3) {
+                            draw(widthHealth, heightHealth, guiGraphics, drawCount, color.x, color.y, color.z);
+                        }
                     }
                     if (drawCount != 20 && drawCount != 0) {
                         lineCountDraw = lineCount + 1;
@@ -365,7 +238,7 @@ public class TerraStyleHud implements LayeredDraw.Layer {
                 return colorT;
             }
 
-            private static void draw(int x, int y, GuiGraphics guiGraphics, RandomSource random, int count) {
+            private static Vector3i color(RandomSource random) {
                 int R;
                 int G;
                 int B;
@@ -377,15 +250,7 @@ public class TerraStyleHud implements LayeredDraw.Layer {
                 int color = (R << 16) | (G << 8) | B;
                 int colorHigh = (colorHigh(R) << 16) | (colorHigh(G) << 8) | colorHigh(B);
                 int colorLow = (colorLow(R, random) << 16) | (colorLow(G, random) << 8) | colorLow(B, random);
-                int countT = count / 2;
-                int xT = x - 8;
-                for (int i = 0; i < countT; i++) {
-                    xT = x + i * 8;
-                    drawColor(guiGraphics, xT, y, 0, 0, OVERLAY_TEXTURE, color, colorHigh, colorLow);
-                }
-                if (count - countT * 2 == 1) {
-                    drawColor(guiGraphics, xT + 8, y, 10, 0, OVERLAY_TEXTURE, color, colorHigh, colorLow);
-                }
+                return new Vector3i(color, colorHigh, colorLow);
             }
 
             private static void draw(int x, int y, GuiGraphics guiGraphics, int count, int color, int colorHigh, int colorLow) {
@@ -400,6 +265,8 @@ public class TerraStyleHud implements LayeredDraw.Layer {
                 }
             }
         };
+
+        private static Map<Integer, Vector3i> COLOR = new HashMap<>();
 
         public abstract void render(GuiGraphics guiGraphics, Minecraft minecraft);
 

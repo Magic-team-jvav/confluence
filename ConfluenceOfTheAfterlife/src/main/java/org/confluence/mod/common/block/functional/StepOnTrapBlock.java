@@ -46,7 +46,7 @@ public class StepOnTrapBlock extends Block {
         @Override
         protected void onStep(Level level, BlockPos pos, BlockState state, Entity entity) {
             if (level.isClientSide) {
-                if (entity.getClass() == LocalPlayer.class) {
+                if (entity instanceof LocalPlayer) {
                     entity.addDeltaMovement(FLIGHT);
                 }
             }

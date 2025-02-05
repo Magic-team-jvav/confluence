@@ -4,8 +4,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.BowItem;
@@ -13,9 +11,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.level.Level;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.BaseArrowEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
@@ -32,10 +27,6 @@ public class TerraBowItem extends BowItem {
     public float baseDamage;
     public Consumer<BaseArrowEntity.Builder> modifyArrowBuilder;
 
-    /**
-     * 仅用来在客户端appendHoverText中显示信息颜色，实际的consumer作用于createArrowEntity
-      */
-    @OnlyIn(Dist.CLIENT)
     public BaseArrowEntity.Builder arrowModifier;
 
 

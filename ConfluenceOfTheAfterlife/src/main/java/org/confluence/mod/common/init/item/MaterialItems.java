@@ -136,7 +136,4 @@ public class MaterialItems {
     public static DeferredItem<Item> register(String id, ModRarity rarity) {
         return ITEMS.register(id, () -> new CustomRarityItem(rarity));
     }
-
-
-    public static void init() {}
 }

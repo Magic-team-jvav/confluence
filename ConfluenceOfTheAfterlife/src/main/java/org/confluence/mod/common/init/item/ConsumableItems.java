@@ -68,4 +68,7 @@ public class ConsumableItems {
     public static final Supplier<BossSummingItem> SLIME_CROWN = ITEMS.register("slime_crown", () -> new BossSummingItem(player -> true, KingSlime::new));
     public static final Supplier<BossSummingItem> WORM_FOOD = ITEMS.register("worm_food", () -> new BossSummingItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CORRUPTION), level -> new EaterOfWorlds(level, true)));
     public static final Supplier<BossSummingItem> BLOODY_SPINE = ITEMS.register("bloody_spine", () -> new BossSummingItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.TR_CRIMSON), BrainOfCthulhu::new));
+
+    public static final Supplier<ModBoneMealItem> DECAYED_BONE_MEAL = ITEMS.register("decayed_bone_meal", ModBoneMealItem::new);
+    public static final Supplier<ModBoneMealItem> BLOOD_BONE_MEAL = ITEMS.register("blood_bone_meal", ModBoneMealItem::new);
 }

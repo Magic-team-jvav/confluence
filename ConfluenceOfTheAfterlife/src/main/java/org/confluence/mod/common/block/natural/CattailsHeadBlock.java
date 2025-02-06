@@ -109,20 +109,19 @@ public class CattailsHeadBlock extends GrowingPlantHeadBlock implements LiquidBl
 
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+        BlockPos blockpos = pos.relative(this.growthDirection);
         int currentAge = state.getValue(AGE);
-        if (currentAge == 3) {
+        if (currentAge >= MAX_AGE) {
+            if (!level.getBlockState(pos.above()).isAir()) {
+                BlockState newState = state.setValue(AGE, 0);
+                level.setBlockAndUpdate(pos, newState);
+            }
             return;
         }
-        BlockPos blockpos = pos.relative(this.growthDirection);
-        int i = Math.min(currentAge + 1, MAX_AGE);
-        int j = this.getBlocksToGrowWhenBonemealed(random);
-        for (int k = 0; k < j && this.canGrowInto(level.getBlockState(blockpos)); k++) {
-            level.setBlockAndUpdate(blockpos, state.setValue(AGE, i));
-            blockpos = blockpos.relative(this.growthDirection);
-            i = Math.min(i + 1, MAX_AGE);
+        if (level.getBlockState(blockpos).is(Blocks.WATER) || canGrowInto(level.getBlockState(blockpos))) {
+            level.setBlockAndUpdate(blockpos, this.getGrowIntoState(state, random));
         }
     }
-
 
     @Override
     public boolean canPlaceLiquid(@Nullable Player player, BlockGetter level, BlockPos pos, BlockState state, Fluid fluid) {

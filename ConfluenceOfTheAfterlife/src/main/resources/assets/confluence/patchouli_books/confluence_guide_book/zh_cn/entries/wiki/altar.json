@@ -10,7 +10,7 @@
         {
             "type": "patchouli:image",
             "images": [
-                "confluence/textures/painting/the_corruption.png"
+                "confluence:textures/painting/the_corruption.png"
             ],
             "text": "恶魔祭坛通常出现在腐化之地的地下，在世界各地的地下少量出现。",
             "title": "恶魔祭坛"
@@ -18,7 +18,7 @@
         {
             "type": "patchouli:image",
             "images":[
-                "confluence/textures/painting/tr_crimson.png"
+                "confluence:textures/painting/tr_crimson.png"
             ],
             "text": "猩红祭坛通常出现在猩红之地的地下，在世界各地的地下少量出现。",
             "title": "猩红祭坛"

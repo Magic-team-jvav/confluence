@@ -1,0 +1,11 @@
+{
+    "name": "item.confluence.research_on_cloud_blocks_2",
+    "landing_text": "text.confluence.research_on_cloud_blocks_2",
+    "version": 0,
+    "creative_tab": "confluence:developer",
+    "use_resource_pack": false,
+    "model": "confluence:research_on_cloud_blocks_2",
+    "custom_book_item": "confluence:research_on_cloud_blocks_2",
+    "use_blocky_font": true,
+    "show_progress": false
+}

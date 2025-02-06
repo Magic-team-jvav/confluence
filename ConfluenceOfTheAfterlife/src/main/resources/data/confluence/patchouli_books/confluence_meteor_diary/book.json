@@ -1,0 +1,11 @@
+{
+    "name": "item.confluence.meteor_diary",
+    "landing_text": "text.confluence.meteor_diary",
+    "version": 0,
+    "creative_tab": "confluence:developer",
+    "use_resource_pack": false,
+    "model": "confluence:meteor_diary",
+    "custom_book_item": "confluence:meteor_diary",
+    "use_blocky_font": true,
+    "show_progress": false
+}

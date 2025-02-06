@@ -8,8 +8,12 @@
             "text": "夜晚，星星在坠落，洒满全世界。它们的用途极为广泛。如果你看到了，一定要拿到手，因为星星在日出后就会消失。"
         },
         {
-            "type": "patchouli:empty",
-            "draw_filler": false
+            "type": "patchouli:image",
+            "images":[
+                "confluence:textures/painting/falling_star.png"
+            ],
+            "text": "猩红祭坛通常出现在猩红之地的地下，在世界各地的地下少量出现。",
+            "title": "猩红祭坛"
         }
     ]
 }

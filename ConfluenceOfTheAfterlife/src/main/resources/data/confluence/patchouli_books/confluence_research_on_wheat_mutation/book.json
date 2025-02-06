@@ -1,0 +1,11 @@
+{
+    "name": "item.confluence.research_on_wheat_mutation",
+    "landing_text": "text.confluence.research_on_wheat_mutation",
+    "version": 0,
+    "creative_tab": "confluence:developer",
+    "use_resource_pack": false,
+    "model": "confluence:research_on_wheat_mutation",
+    "custom_book_item": "confluence:research_on_wheat_mutation",
+    "use_blocky_font": true,
+    "show_progress": false
+}

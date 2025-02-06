@@ -7,6 +7,7 @@ import net.neoforged.neoforge.common.ModConfigSpec.Builder;
 import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import org.confluence.mod.client.gui.hud.TerraStyleArmorHud;
+import org.confluence.mod.client.gui.hud.TerraStyleFoodHud;
 import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
 import org.confluence.mod.client.gui.hud.TerraStyleManaHud;
 
@@ -15,6 +16,8 @@ public final class ClientConfigs {
 
     public static boolean terraStyleHealth = true;
     public static TerraStyleHealthHud.Health healthStyle = TerraStyleHealthHud.Health.OVERLAY;
+    public static boolean terraStyleFood = true;
+    public static TerraStyleFoodHud.Food foodStyle = TerraStyleFoodHud.Food.OVERLAY;
     public static TerraStyleManaHud.Mana manaStyle = TerraStyleManaHud.Mana.OVERLAY;
     public static boolean terraStyleArmor = true;
     public static TerraStyleArmorHud.Armor armorStyle = TerraStyleArmorHud.Armor.OVERLAY;
@@ -29,6 +32,8 @@ public final class ClientConfigs {
 
     private static BooleanValue TERRA_STYLE_HEALTH;
     private static EnumValue<TerraStyleHealthHud.Health> HEALTH_STYLE;
+    private static BooleanValue TERRA_STYLE_FOOD;
+    private static EnumValue<TerraStyleFoodHud.Food> FOOD_STYLE;
     private static EnumValue<TerraStyleManaHud.Mana> MANA_STYLE;
     private static BooleanValue TERRA_STYLE_ARMOR;
     private static EnumValue<TerraStyleArmorHud.Armor> ARMOR_STYLE;
@@ -44,10 +49,12 @@ public final class ClientConfigs {
 
         terraStyleHealth = TERRA_STYLE_HEALTH.get();
         healthStyle = HEALTH_STYLE.get();
+        leftEffectIcon = LEFT_EFFECT_ICON.get();
+        foodStyle = FOOD_STYLE.get();
         manaStyle = MANA_STYLE.get();
         terraStyleArmor = TERRA_STYLE_ARMOR.get();
         armorStyle = ARMOR_STYLE.get();
-        leftEffectIcon = LEFT_EFFECT_ICON.get();
+        terraStyleFood = TERRA_STYLE_FOOD.get();
 
         hurtRedOverlay = HURT_RED_OVERLAY.get();
         bloodyEffect = BLOODY_EFFECT.get();
@@ -65,6 +72,11 @@ public final class ClientConfigs {
         BUILDER.push("Health");
         TERRA_STYLE_HEALTH = BUILDER.define("terraStyleHealth", true);
         HEALTH_STYLE = BUILDER.defineEnum("healthStyle", TerraStyleHealthHud.Health.OVERLAY);
+        BUILDER.pop();
+
+        BUILDER.push("Food");
+        TERRA_STYLE_FOOD = BUILDER.define("terraStyleFood", true);
+        FOOD_STYLE = BUILDER.defineEnum("foodStyle", TerraStyleFoodHud.Food.OVERLAY);
         BUILDER.pop();
 
         BUILDER.push("Mana");

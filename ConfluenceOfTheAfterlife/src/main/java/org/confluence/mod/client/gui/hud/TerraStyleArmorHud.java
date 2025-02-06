@@ -16,6 +16,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.util.ClientUtils;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3i;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
@@ -30,9 +31,9 @@ public class TerraStyleArmorHud implements LayeredDraw.Layer {
     private static final ResourceLocation OVERLAY_TEXTURE = Confluence.asResource("textures/gui/hud/overlay.png");
     private static final int LEGACY_SIZE = 128;
     private static final int OVERLAY_SIZE = 128;
-    private static final int[] ARMOR = new int[]{0x8097b8};
-    private static final int[] ARMOR_LOW = new int[]{0x515277};
-    private static final int[] ARMOR_HIGH = new int[]{0xf6d8eb};
+    private static final int[] ARMOR = new int[]{0x979191, 0xd8c849, 0x8097b8, 0x3b2754, 0xea5d39};
+    private static final int[] ARMOR_LOW = new int[]{0x5d4b4b, 0x645241, 0x515277, 0x201735, 0xb50000};
+    private static final int[] ARMOR_HIGH = new int[]{0xffffeb, 0xfff9b7, 0xf6d8eb, 0x5b3b6e, 0xffffeb};
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
@@ -74,11 +75,22 @@ public class TerraStyleArmorHud implements LayeredDraw.Layer {
                 if (player != null) {
                     armor = player.getArmorValue();
                 }
-                int widthHealth = guiGraphics.guiWidth() / 2 - 91;
-                int heightHealth = guiGraphics.guiHeight() - minecraft.gui.leftHeight;
+                int widthArmor = guiGraphics.guiWidth() / 2 - 91;
+                int heightArmor = guiGraphics.guiHeight() - minecraft.gui.leftHeight;
                 minecraft.gui.leftHeight += 10;
                 RandomSource random = RandomSource.create(59160153);
-                colorDraw(guiGraphics, minecraft, random, OVERLAY_TEXTURE, ARMOR, ARMOR_HIGH, ARMOR_LOW, armor, widthHealth, heightHealth, OVERLAY_SIZE, 20, true, 3);
+                colorDraw(guiGraphics, minecraft, random, OVERLAY_TEXTURE, ARMOR, ARMOR_HIGH, ARMOR_LOW, armor, widthArmor, heightArmor, OVERLAY_SIZE, 20, true, 3);
+
+                //RandomSource random = RandomSource.create(59160153);
+                //int widthArmor = guiGraphics.guiWidth() / 9;
+                //int heightArmor = guiGraphics.guiHeight() / 9;
+                //Vector3i color;
+                //for (int y = 0; y <= heightArmor; y++) {
+                //    for (int x = 0; x <= widthArmor; x++) {
+                //        color = ClientUtils.color(random);
+                //        ClientUtils.draw(x * 9, y * 9, guiGraphics, 2, color.x, color.y, color.z, OVERLAY_TEXTURE, OVERLAY_SIZE, 0, 20, true, 3, 40);
+                //    }
+                //}
             }
         };
 

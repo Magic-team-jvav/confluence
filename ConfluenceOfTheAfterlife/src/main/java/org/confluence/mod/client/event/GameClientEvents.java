@@ -102,6 +102,8 @@ public final class GameClientEvents {
     public static void renderGuiOverlay$Pre(RenderGuiLayerEvent.Pre event) {
         if (ClientConfigs.terraStyleHealth && VanillaGuiLayers.PLAYER_HEALTH.equals(event.getName())) {
             event.setCanceled(true);
+        } else if (ClientConfigs.terraStyleFood && VanillaGuiLayers.FOOD_LEVEL.equals(event.getName())) {
+            event.setCanceled(true);
         } else if (ClientConfigs.terraStyleArmor && VanillaGuiLayers.ARMOR_LEVEL.equals(event.getName())) {
             event.setCanceled(true);
         }

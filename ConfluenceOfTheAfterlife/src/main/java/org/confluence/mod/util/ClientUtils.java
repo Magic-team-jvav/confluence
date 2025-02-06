@@ -239,7 +239,7 @@ public final class ClientUtils {
         guiGraphics.drawString(font, text, x, y, color, false);
     }
 
-    public static void drawColor(GuiGraphics guiGraphics, int x, int y, int iconX, int iconY, ResourceLocation icon, int color, int colorHigh, int colorLow, int size) {
+    public static void drawColor(GuiGraphics guiGraphics, int x, int y, int iconX, int iconY, ResourceLocation icon, int color, int colorHigh, int colorLow, int size, int part, int partDis) {
         float red = ((color >> 16) & 0xFF) / 255.0F;
         float green = ((color >> 8) & 0xFF) / 255.0F;
         float blue = (color & 0xFF) / 255.0F;
@@ -249,12 +249,18 @@ public final class ClientUtils {
         float redLow = ((colorLow >> 16) & 0xFF) / 255.0F;
         float greenLow = ((colorLow >> 8) & 0xFF) / 255.0F;
         float blueLow = (colorLow & 0xFF) / 255.0F;
-        RenderSystem.setShaderColor(red, green, blue, 1.0F);
-        guiGraphics.blit(icon, x, y, iconX, iconY, 9, 9, size, size);
-        RenderSystem.setShaderColor(redLow, greenLow, blueLow, 1.0F);
-        guiGraphics.blit(icon, x, y, iconX + 20, iconY, 9, 9, size, size);
-        RenderSystem.setShaderColor(redHigh, greenHigh, blueHigh, 1.0F);
-        guiGraphics.blit(icon, x, y, iconX + 40, iconY, 9, 9, size, size);
+        if (part >= 1) {
+            RenderSystem.setShaderColor(red, green, blue, 1.0F);
+            guiGraphics.blit(icon, x, y, iconX, iconY, 9, 9, size, size);
+        }
+        if (part >= 2) {
+            RenderSystem.setShaderColor(redLow, greenLow, blueLow, 1.0F);
+            guiGraphics.blit(icon, x, y, iconX + partDis, iconY, 9, 9, size, size);
+        }
+        if (part >= 3) {
+            RenderSystem.setShaderColor(redHigh, greenHigh, blueHigh, 1.0F);
+            guiGraphics.blit(icon, x, y, iconX + partDis * 2, iconY, 9, 9, size, size);
+        }
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
@@ -284,19 +290,19 @@ public final class ClientUtils {
         return new Vector3i(color, colorHigh, colorLow);
     }
 
-    public static void draw(int x, int y, GuiGraphics guiGraphics, int count, int color, int colorHigh, int colorLow, ResourceLocation icon, int size, int uvY, boolean left) {
+    public static void draw(int x, int y, GuiGraphics guiGraphics, int count, int color, int colorHigh, int colorLow, ResourceLocation icon, int size, int uvX, int uvY, boolean left, int part, int partDis) {
         int countT = count / 2;
         int xT = left ? (x - 8) : (x + 80);
         for (int i = 0; i < countT; i++) {
             xT = left ? (x + i * 8) : (x + 72 - i * 8);
-            drawColor(guiGraphics, xT, y, 0, uvY, icon, color, colorHigh, colorLow, size);
+            drawColor(guiGraphics, xT, y, uvX, uvY, icon, color, colorHigh, colorLow, size, part, partDis);
         }
         if (count - countT * 2 == 1) {
-            drawColor(guiGraphics, xT + (left ? 8 : -8), y, 10, uvY, icon, color, colorHigh, colorLow, size);
+            drawColor(guiGraphics, xT + (left ? 8 : -8), y, uvX + partDis / 2, uvY, icon, color, colorHigh, colorLow, size, part, partDis);
         }
     }
 
-    private static Map<Long, Vector3i> COLOR_R = new HashMap<>();
+    private static Map<Integer, Vector3i> COLOR_R = new HashMap<>();
 
     public static void colorDraw(GuiGraphics guiGraphics, Minecraft minecraft, RandomSource random, ResourceLocation texture, int[] COLOR, int[] COLOR_HIGH, int[] COLOR_LOW, float max, float current, int x, int y, int size, int uvY, boolean left, int type) {
         colorDraw(guiGraphics, minecraft, random, texture, COLOR, COLOR_HIGH, COLOR_LOW, max, current, x, y, size, uvY, left, true, type);
@@ -323,15 +329,15 @@ public final class ClientUtils {
             colorJ = color;
             drawCount = (i == lineCount) ? (heartCount % 20) : 20;
             if (i < Math.min(COLOR.length, Math.min(COLOR_HIGH.length, COLOR_LOW.length))) {
-                color = COLOR_R.computeIfAbsent(Integer.toUnsignedLong(i) + 10000L * type, k -> color(random));
+                color = COLOR_R.computeIfAbsent(i + 10000 * type, k -> color(random));
                 color.x = COLOR[i];
                 if (lineCount - i < 3) {
-                    draw(x, y, guiGraphics, drawCount, COLOR[i], COLOR_HIGH[i], COLOR_LOW[i], texture, size, uvY, left);
+                    draw(x, y, guiGraphics, drawCount, COLOR[i], COLOR_HIGH[i], COLOR_LOW[i], texture, size, 0, uvY, left, 3, 20);
                 }
             } else {
-                color = COLOR_R.computeIfAbsent(Integer.toUnsignedLong(i) + 10000L * type, k -> color(random));
+                color = COLOR_R.computeIfAbsent(i + 10000 * type, k -> color(random));
                 if (lineCount - i < 3) {
-                    draw(x, y, guiGraphics, drawCount, color.x, color.y, color.z, texture, size, uvY, left);
+                    draw(x, y, guiGraphics, drawCount, color.x, color.y, color.z, texture, size, 0, uvY, left, 3, 20);
                 }
             }
             if (drawCount != 20 && drawCount != 0) {

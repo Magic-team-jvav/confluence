@@ -16,6 +16,7 @@ import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
+import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.util.ModUtils;
 import org.joml.Vector3d;
 
@@ -35,9 +36,11 @@ public class DemonicCaveCarver extends WorldCarver<DemonicCaveCarver.Config> {
         int x1 = chunkPos.getBlockX((int) config.verticalLength.sample(random1) * (random1.nextBoolean() ? -1 : 1));
         int y1 = config.y.sample(random1, context) + 8;
         int z1 = chunkPos.getBlockZ((int) config.verticalLength.sample(random1) * (random1.nextBoolean() ? -1 : 1));
+        if (!biomeAccessor.apply(new BlockPos(x1, y1, z1)).is(ModBiomes.THE_CORRUPTION)) return false;
         int x2 = chunkPos.getBlockX((int) config.verticalLength.sample(random1) * (random1.nextBoolean() ? -1 : 1));
         int y2 = config.y.sample(random1, context) + 8;
         int z2 = chunkPos.getBlockZ((int) config.verticalLength.sample(random1) * (random1.nextBoolean() ? -1 : 1));
+        if (!biomeAccessor.apply(new BlockPos(x2, y2, z2)).is(ModBiomes.THE_CORRUPTION)) return false;
         float yScale = config.yScale.sample(random1);
 
         List<Vector3d> positions = Lists.newArrayList(new Vector3d(x1, y1, z1), new Vector3d(x2, y2, z2));

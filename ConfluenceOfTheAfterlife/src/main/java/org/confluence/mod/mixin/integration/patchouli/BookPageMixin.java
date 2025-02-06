@@ -17,6 +17,6 @@ public abstract class BookPageMixin {
 
     @Inject(method = "isPageUnlocked", at = @At("RETURN"), cancellable = true)
     private void extra(CallbackInfoReturnable<Boolean> cir) {
-        if (cir.getReturnValue()) cir.setReturnValue(PatchouliHelper.isPageUnlocked(entry.getId()));
+        if (cir.getReturnValue()) cir.setReturnValue(PatchouliHelper.isEntityPageUnlocked(entry.getId()));
     }
 }

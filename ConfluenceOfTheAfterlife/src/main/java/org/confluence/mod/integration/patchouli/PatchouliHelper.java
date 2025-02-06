@@ -15,8 +15,12 @@ public class PatchouliHelper {
     public static final Set<ResourceLocation> UNLOCKED_ENTITY_ENTRIES = new HashSet<>();
     public static final String ENTITY = "entity/";
 
-    public static boolean isPageUnlocked(ResourceLocation id) {
-        if (IS_LOADED && id.getNamespace().equals(Confluence.MODID) && id.getPath().startsWith(ENTITY)) {
+    public static boolean isBookFromConfluence(ResourceLocation id) {
+        return IS_LOADED && id.getNamespace().equals(Confluence.MODID);
+    }
+
+    public static boolean isEntityPageUnlocked(ResourceLocation id) {
+        if (isBookFromConfluence(id) && id.getPath().startsWith(ENTITY)) {
             return UNLOCKED_ENTITY_ENTRIES.contains(id);
         }
         return true;

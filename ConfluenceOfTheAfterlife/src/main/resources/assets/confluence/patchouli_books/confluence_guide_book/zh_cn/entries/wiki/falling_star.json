@@ -6,6 +6,10 @@
         {
             "type": "patchouli:text",
             "text": "夜晚，星星在坠落，洒满全世界。它们的用途极为广泛。如果你看到了，一定要拿到手，因为星星在日出后就会消失。"
+        },
+        {
+            "type": "patchouli:empty",
+            "draw_filler": false
         }
     ]
 }

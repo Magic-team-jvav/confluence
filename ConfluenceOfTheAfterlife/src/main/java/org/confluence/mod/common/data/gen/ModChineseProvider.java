@@ -45,7 +45,6 @@ public class ModChineseProvider extends LanguageProvider {
 
 
         add("item.confluence.meteorite_ingot.tooltip", "摸起来是温的");
-        add("item.confluence.afterlife_notes", "来世手记");
         add("item.confluence.encumbering_stone.disable", "负重石：关闭");
         add("item.confluence.paint", "油漆");
         add("item.confluence.tokyo_teddy_bear.tooltip.1", "一位自卑的少女如破碎的泰迪熊般说到：");
@@ -55,8 +54,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("item.confluence.tokyo_teddy_bear.tooltip.5", "           已不再需要");
         add("item.confluence.tokyo_teddy_bear.tooltip.6", "——由一只蜘蛛讲述的故事");
         add("item.confluence.paradox_interlactifo_medal.tooltip.0", "同时玩过钢铁雄心、维多利亚、欧陆风云、十字军之王、都市天际线的证明。");
+        //  文本物品↓
+        add("item.confluence.afterlife_notes", "来世手记");
+        add("item.confluence.village_exploration", "村庄环游起源");
 
         add("text.confluence.afterlife_notes", "  冒险者，新的天地充满了无尽的挑战与机遇，这本手记将帮助你了解这个世界的奥秘，指引你面对怪物和困境，只有不断探索，你才能发现更多的力量与宝藏，你的旅途才刚刚开始。                            —— 向导");
+        add("text.confluence.village_exploration", "  世界异变悄然降临，生灵阴暗的邪念纷纷爆发，外界的肉体侵扰接踵而至。所有可用的资源，皆被唤醒。新世界的降临，既带来了毁灭的阴影，也打开了新的可能。建筑如腾飞的鸟儿，直抵苍穹，令人惊叹。曾经无法触及的云彩，如今化作实体的方块，映衬出人们心中的渴望。在探索的旅程中，他们掌握了前所未有的知识，发现了新的植物，仿佛在喧嚣中寻得了一隅宁静。在那片净土上，新的希望悄然滋生，带来了久违的安详。");
 
         add("worldgen.confluence.placing_traps", "正在放置机关");
         add("worldgen.confluence.generating_bees", "正在生成蜜蜂");
@@ -283,7 +286,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.bloodyEffect","血效果");
         add("confluence.configuration.goreEffect","血腥效果");
         add("confluence.configuration.damageIndicator","伤害数值显示");
-        //
+        // 分割
         add("confluence.configuration.Mana.button", "魔力值");
         add("confluence.configuration.Armor.tooltip", "护甲值");
         add("confluence.configuration.manaStyle.tooltip", "魔力值样式");

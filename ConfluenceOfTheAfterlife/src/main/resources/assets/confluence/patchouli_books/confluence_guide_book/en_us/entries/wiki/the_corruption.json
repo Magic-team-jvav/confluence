@@ -6,6 +6,10 @@
         {
             "type": "patchouli:text",
             "text": "The Corruption is a dangerous area filled with rifts and cliffs, emitting an aura of evil and death. It is a malignant tumor born from the wicked thoughts of living beings, giving rise to terrifying, twisted monsters that envy all life. The power of the Corruption relentlessly spreads, consuming everything in its path. You must race against time to avoid being swallowed by it!"
+        },
+        {
+            "type": "patchouli:empty",
+            "draw_filler": false
         }
     ]
 }

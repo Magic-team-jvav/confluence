@@ -39,7 +39,7 @@ public abstract class ClientEntityMixin implements SelfGetter<Entity>, IEntity {
             //中立生物
             if (self() instanceof NeutralMob) {
                 /*todo 添加愤怒颜色
-                if((self() instanceof EnderMan) && ((EnderMan) self()).isCreepy()){
+                if((te$getSelf() instanceof EnderMan) && ((EnderMan) te$getSelf()).isCreepy()){
                         cir.setReturnValue(helper.angerColor.getRGB());
                         return;
                 }*/

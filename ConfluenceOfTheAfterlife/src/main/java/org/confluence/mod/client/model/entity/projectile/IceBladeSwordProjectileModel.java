@@ -8,7 +8,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.projectile.SwordProjectile;
+import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
 
 public class IceBladeSwordProjectileModel extends EntityModel<SwordProjectile> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("ice_blade_sword_projectile"), "main");

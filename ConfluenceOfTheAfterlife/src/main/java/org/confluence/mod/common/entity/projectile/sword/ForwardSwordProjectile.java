@@ -1,12 +1,12 @@
-package org.confluence.mod.common.entity.projectile;
+package org.confluence.mod.common.entity.projectile.sword;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class LineSwordProjectile extends SwordProjectile {
+public class ForwardSwordProjectile extends SwordProjectile {
 
-    public LineSwordProjectile(EntityType<LineSwordProjectile> entityType, Level pLevel) {
+    public ForwardSwordProjectile(EntityType<ForwardSwordProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
     }
 

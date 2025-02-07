@@ -6,19 +6,19 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.mod.common.entity.projectile.LineSwordProjectile;
+import org.confluence.mod.common.entity.projectile.sword.ForwardSwordProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 
 
 public class ForwardProjContainer extends AbstractProjContainer {
 
-    private EntityType<LineSwordProjectile> entityType;
-    public ForwardProjContainer(EntityType<LineSwordProjectile> entityType, int damage, float knockBack, int cooldown, float velocity) {
+    private EntityType<ForwardSwordProjectile> entityType;
+    public ForwardProjContainer(EntityType<ForwardSwordProjectile> entityType, int damage, float knockBack, int cooldown, float velocity) {
         super(damage,knockBack,cooldown, velocity, ModSoundEvents.FROZEN_ARROW.get());
         this.entityType = entityType;
     }
 
-    public ForwardProjContainer(EntityType<LineSwordProjectile> entityType,int damage, float knockBack,int cooldown, float velocity, SoundEvent sound) {
+    public ForwardProjContainer(EntityType<ForwardSwordProjectile> entityType, int damage, float knockBack, int cooldown, float velocity, SoundEvent sound) {
         super(damage,knockBack,cooldown, velocity, sound);
         this.entityType = entityType;
     }

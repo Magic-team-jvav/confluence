@@ -1,5 +1,7 @@
-package org.confluence.mod.common.entity.projectile;
+package org.confluence.mod.common.entity.projectile.sword;
 
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -156,6 +158,10 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile {
         return 1;
     }
 
+    @Nullable
+    protected ParticleOptions getTrailParticle() {
+        return null;
+    }
 
     public SwordProjectile setExistTime(int time){
         TIME_EXISTENCE = time;

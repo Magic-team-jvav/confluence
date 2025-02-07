@@ -1,4 +1,4 @@
-package org.confluence.mod.common.entity.projectile;
+package org.confluence.mod.common.entity.projectile.sword;
 
 
 import net.minecraft.world.damagesource.DamageSource;

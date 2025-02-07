@@ -1,4 +1,4 @@
-package org.confluence.mod.common.entity.projectile;
+package org.confluence.mod.common.entity.projectile.sword;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.particles.ParticleOptions;
@@ -16,13 +16,13 @@ import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 
-public class StillSwordProjectile extends SwordProjectile {
+public class LightBaneProjectile extends SwordProjectile {
     int _tickInternal = 10;
     int tickInternal = 0;
     public Vec3 direction;
-    public static final EntityDataAccessor<Vector3f> DATA_DIRECTION = SynchedEntityData.defineId(StillSwordProjectile.class, EntityDataSerializers.VECTOR3);
+    public static final EntityDataAccessor<Vector3f> DATA_DIRECTION = SynchedEntityData.defineId(LightBaneProjectile.class, EntityDataSerializers.VECTOR3);
 
-    public StillSwordProjectile(EntityType<StillSwordProjectile> entityType, Level pLevel) {
+    public LightBaneProjectile(EntityType<LightBaneProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
         hitCount = 99999;
         if(!level().isClientSide()){
@@ -57,6 +57,7 @@ public class StillSwordProjectile extends SwordProjectile {
             }
         }
     }
+
 
     public DamageSource damageSource(){
         return damageSources().magic();

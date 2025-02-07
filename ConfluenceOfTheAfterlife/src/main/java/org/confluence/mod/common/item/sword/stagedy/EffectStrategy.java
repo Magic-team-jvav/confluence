@@ -7,7 +7,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import org.apache.commons.lang3.function.TriFunction;
-import org.confluence.mod.common.entity.projectile.SwordProjectile;
+import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.terraentity.utils.TEUtils;

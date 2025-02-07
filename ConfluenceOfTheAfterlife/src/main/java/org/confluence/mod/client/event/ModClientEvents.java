@@ -60,6 +60,9 @@ import org.confluence.mod.client.renderer.entity.fishing.HotlineFishingHookRende
 import org.confluence.mod.client.renderer.entity.hook.*;
 import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
+import org.confluence.mod.client.renderer.entity.projectile.sword.ForwardProjRenderer;
+import org.confluence.mod.client.renderer.entity.projectile.sword.LightsBaneProjectileRenderer;
+import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjectileRenderer;
 import org.confluence.mod.client.textures.GrayBlockModelSwapper;
 import org.confluence.mod.client.textures.GraySpriteShifterEntry;
 import org.confluence.mod.common.init.ModFluids;
@@ -190,10 +193,9 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BASE_MANA_STAFF_PROJECTILE.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(ARROW_PROJECTILE.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(EFFECT_THROWN_POTION.get(), ThrownItemRenderer::new);
-        event.registerEntityRenderer(ICE_BLADE_SWORD_PROJECTILE.get(), IceBladeSwordProjectileRenderer::new);
+        event.registerEntityRenderer(ICE_BLADE_SWORD_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, new IceBladeSwordProjectileModel(c.bakeLayer(IceBladeSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/ice_blade_sword_projectile.png"), 1, 0F));
         event.registerEntityRenderer(STAR_FURY_PROJECTILE.get(), StarFuryProjectileRenderer::new);
-        event.registerEntityRenderer(ENCHANTED_SWORD_PROJECTILE.get(), EnchantedSwordProjectileRenderer::new);
-        event.registerEntityRenderer(LIGHTS_BANE_PROJECTILE.get(), EnchantedSwordProjectileRenderer::new);
+        event.registerEntityRenderer(ENCHANTED_SWORD_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, new EnchantedSwordProjectileModel(c.bakeLayer(EnchantedSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1, 0.2F, 0.89f));
         event.registerEntityRenderer(LIGHTS_BANE_PROJECTILE.get(), LightsBaneProjectileRenderer::new);
 
         event.registerEntityRenderer(BOOMERANG_PROJECTILE.get(), BoomerangProjRenderer::new);

@@ -1,4 +1,4 @@
-package org.confluence.mod.client.renderer.entity.projectile;
+package org.confluence.mod.client.renderer.entity.projectile.sword;
 
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.projectile.SwordProjectile;
+import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 

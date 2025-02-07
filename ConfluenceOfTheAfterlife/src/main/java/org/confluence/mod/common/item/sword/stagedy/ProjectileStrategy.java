@@ -24,11 +24,11 @@ import java.util.function.Supplier;
 public class ProjectileStrategy {
 
 
-    public static final Supplier<AbstractProjContainer> ICE_PROJ = ()-> new ForwardProjContainer(ModEntities.ICE_BLADE_SWORD_PROJECTILE.get(),10,1,10,1.5f);
+    public static final Supplier<AbstractProjContainer> ICE_PROJ = ()-> new ForwardProjContainer(ModEntities.ICE_BLADE_SWORD_PROJECTILE.get(),10,1,10,0.6f);
 
     public static final Supplier<AbstractProjContainer> STAR_FURY_PROJ = ()-> new StarFuryProjContainer(10,1,10,1.5f, ModSoundEvents.STAR.get());
 
-    public static final Supplier<AbstractProjContainer> ENCHANTED_SWORD_PROJ = ()->new ForwardProjContainer(ModEntities.ENCHANTED_SWORD_PROJECTILE.get(),9,1,10,2.5f, TESounds.REGULAR_STAFF_SHOOT_2.get());
+    public static final Supplier<AbstractProjContainer> ENCHANTED_SWORD_PROJ = ()->new ForwardProjContainer(ModEntities.ENCHANTED_SWORD_PROJECTILE.get(),9,1,10,8f, TESounds.REGULAR_STAFF_SHOOT_2.get());
 
 
 

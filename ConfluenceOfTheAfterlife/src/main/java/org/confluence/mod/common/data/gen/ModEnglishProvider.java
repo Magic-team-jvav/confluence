@@ -2,6 +2,8 @@ package org.confluence.mod.common.data.gen;
 
 import com.google.common.collect.Iterables;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
@@ -536,9 +538,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("biome.confluence.the_hallow", "The Hallow");
         add("biome.confluence.the_hallow_desert", "The Hallow Desert");
         add("biome.confluence.the_hallow_tundra", "The Hallow Tundra");
-        add("biome.confluence.tr_crimson", "Tr Crimson");
-        add("biome.confluence.tr_crimson_desert", "Tr Crimson Desert");
-        add("biome.confluence.tr_crimson_tundra", "Tr Crimson Tundra");
+        add("biome.confluence.tr_crimson", "The Crimson");
+        add("biome.confluence.tr_crimson_desert", "The Crimson Desert");
+        add("biome.confluence.tr_crimson_tundra", "The Crimson Tundra");
 
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), toTitleCase(block.getId().getPath()));
         CrateBlocks.BLOCKS.getEntries().forEach(blockAction);
@@ -553,6 +555,7 @@ public class ModEnglishProvider extends LanguageProvider {
 
         Consumer<DeferredHolder<Item, ? extends Item>> itemAction = item -> add(item.get(), toTitleCase(item.getId().getPath()));
         add(AccessoryItems.PHILOSOPHERS_STONE.get(), "Philosopher's Stone");
+        add(AccessoryItems.CURSE_OF_BOREDOM_METEORITE.get(), "Curse of Boredom: Meteorite");
         AccessoryItems.ITEMS.getEntries().forEach(itemAction);
         ArmorItems.ITEMS.getEntries().forEach(itemAction);
         ArrowItems.ITEMS.getEntries().forEach(itemAction);
@@ -595,6 +598,22 @@ public class ModEnglishProvider extends LanguageProvider {
 
     @Override
     public void add(Item key, String name) {
+        String descriptionId = key.getDescriptionId();
+        if (!((LanguageProviderAccessor) this).getData().containsKey(descriptionId)) {
+            super.add(descriptionId, name);
+        }
+    }
+
+    @Override
+    public void add(MobEffect key, String name) {
+        String descriptionId = key.getDescriptionId();
+        if (!((LanguageProviderAccessor) this).getData().containsKey(descriptionId)) {
+            super.add(descriptionId, name);
+        }
+    }
+
+    @Override
+    public void add(EntityType<?> key, String name) {
         String descriptionId = key.getDescriptionId();
         if (!((LanguageProviderAccessor) this).getData().containsKey(descriptionId)) {
             super.add(descriptionId, name);

@@ -204,9 +204,9 @@ public final class LivingEntityEvents {
         Entity sourceEntity = damageSource.getEntity();
         ItemStack weapon = damageSource.getWeaponItem();
         if (sourceEntity instanceof LivingEntity livingEntity) {
-            if (weapon.getItem() instanceof BaseSwordItem sword) {
+            if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword) {
                 if (sword.modifier != null) {
-                    if(livingEntity instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.95f)
+                    if (livingEntity instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.95f)
                         sword.modifier.onHitEffects.forEach(effect -> effect.accept(livingEntity, damagingEntity));
                 }
             }

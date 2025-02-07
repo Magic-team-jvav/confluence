@@ -241,9 +241,10 @@ public final class LivingEntityEvents {
     @SubscribeEvent
     public static void livingGetProjectile(LivingGetProjectileEvent event) {
         LivingEntity living = event.getEntity();
-        ItemStack projectileItemStack = ExtraInventory.getProjectile(event.getProjectileItemStack(), event.getProjectileWeaponItemStack(), living);
-        if (!projectileItemStack.isEmpty() && living.hasEffect(ModEffects.AMMO_BOX) && living.getRandom().nextFloat() < 0.2F) {
-            event.setProjectileItemStack(projectileItemStack.copy());
+        ItemStack projectile = ExtraInventory.getProjectile(event.getProjectileItemStack(), event.getProjectileWeaponItemStack(), living);
+        event.setProjectileItemStack(projectile);
+        if (!projectile.isEmpty() && living.hasEffect(ModEffects.AMMO_BOX) && living.getRandom().nextFloat() < 0.2F) {
+            event.setProjectileItemStack(projectile.copy());
         }
     }
 }

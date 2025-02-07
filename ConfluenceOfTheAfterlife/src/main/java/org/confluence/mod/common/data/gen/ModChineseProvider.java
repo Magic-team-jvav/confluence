@@ -3,6 +3,7 @@ package org.confluence.mod.common.data.gen;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
@@ -54,7 +55,18 @@ public class ModChineseProvider extends LanguageProvider {
         add("item.confluence.tokyo_teddy_bear.tooltip.4", "           头脑以外的");
         add("item.confluence.tokyo_teddy_bear.tooltip.5", "           已不再需要");
         add("item.confluence.tokyo_teddy_bear.tooltip.6", "——由一只蜘蛛讲述的故事");
-        add("item.confluence.paradox_interlactifo_medal.tooltip.0", "同时玩过钢铁雄心、维多利亚、欧陆风云、十字军之王、都市天际线的证明。");
+        add("item.confluence.paradox_interactive_medal.tooltip.0", "同时玩过钢铁雄心、维多利亚、欧陆风云、十字军之王、都市天际线的证明。");
+
+        add("item.confluence.curse_of_boredom_meteorite.tooltip.0", "「无聊之咒·陨志」");
+        add("item.confluence.curse_of_boredom_meteorite.tooltip.1", "(Boredom's Pact - Falling Resolve)");
+        add("item.confluence.curse_of_boredom_meteorite.tooltip.2", "           ");
+        add("item.confluence.curse_of_boredom_meteorite.tooltip.3", "怠惰者的血浸透了星核，凝成这颗会呼吸的诅咒石。");
+        add("item.confluence.curse_of_boredom_meteorite.tooltip.4", "动，则岩脉奔涌，刃锋割裂长夜；静，则地心跳搏，苍穹睁开独眼。");
+        add("item.confluence.curse_of_boredom_meteorite.tooltip.5", "古神将惩罚编入契约：八次心跳的静止，便召来陨星审判。");
+        add("item.confluence.curse_of_boredom_meteorite.tooltip.6", "它不像魔像般沉默——巨石砸碎胫骨时会尖笑：");
+        add("item.confluence.curse_of_boredom_meteorite.tooltip.7", "'看啊，连石头都比你的双腿更懂生存之道。'");
+        add("item.confluence.curse_of_boredom_meteorite.tooltip.8", "佩戴者终将明白：所谓'不摧'，不过是逃得比死亡快一秒。");
+        add("item.confluence.curse_of_boredom_meteorite.tooltip.9", "而灵魂早被碾成岩缝里的尘，比魔像的空壳更荒芜。");
         //  文本物品↓
         add("item.confluence.afterlife_notes", "来世手记");
         add("item.confluence.village_exploration", "村庄环游起源");
@@ -733,6 +745,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(OreBlocks.HELLSTONE.get(), "下界狱石");
         add(OreBlocks.ASH_HELLSTONE.get(), "灰烬狱石");
         add(OreBlocks.HELLSTONE_BLOCK.get(), "狱石块");
+        add(OreBlocks.HELLSTONE_BRICKS.get(), "狱石砖");
         add(OreBlocks.RAW_HELLSTONE_BLOCK.get(), "狱石原矿块");
         add(OreBlocks.RAW_COBALT_BLOCK.get(), "钴原矿");
         add(OreBlocks.DEEPSLATE_COBALT_ORE.get(), "深层钴矿");
@@ -959,6 +972,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.ASH_BRANCHES.get(), "白蜡枝杈");
         add(NatureBlocks.AETHERIUM_BLOCK.get(), "以太块");
         add(NatureBlocks.DARK_AETHERIUM_BLOCK.get(), "黯淡以太块");
+        add(NatureBlocks.SHADOW_ORB.get(), "暗影珠");
+        add(NatureBlocks.CRIMSON_HEART.get(), "猩红心脏");
 
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getPlanks().get(), "阴森木板");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getPressurePlate().get(), "阴森木压力板");
@@ -1038,6 +1053,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.HALLOW_CATTAILS.get(), "神圣香蒲");
         add(ModItems.EBONY_CATTAILS.get(), "腐化香蒲");
         add(ModItems.TR_CRIMSON_CATTAILS.get(), "猩红香蒲");
+        add(LightPetItems.SHADOW_ORB.get(), "暗影珠");
+        add(LightPetItems.CRIMSON_HEART.get(), "猩红心脏");
 
         add(DecorativeBlocks.BIG_RUBY_BLOCK.get(), "大红玉块");
         add(DecorativeBlocks.BIG_AMBER_BLOCK.get(), "大琥珀块");
@@ -1097,23 +1114,23 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.CHISELED_LIVING_PLANKS.get(), "雕纹生命木板");
         add(DecorativeBlocks.TR_GRANITE_COLUMN.get(), "异域花岗岩梁");
         add(DecorativeBlocks.MARBLE_COLUMN.get(), "异域大理岩梁");
-        add(DecorativeBlocks.PURE_GLASS.get(), "纯净玻璃块");
-        add(DecorativeBlocks.WHITE_PURE_GLASS.get(), "白色纯净玻璃块");
-        add(DecorativeBlocks.LIGHT_GRAY_PURE_GLASS.get(), "淡灰色纯净玻璃块");
-        add(DecorativeBlocks.GRAY_PURE_GLASS.get(), "灰色纯净玻璃块");
-        add(DecorativeBlocks.BLACK_PURE_GLASS.get(), "黑色纯净玻璃块");
-        add(DecorativeBlocks.BROWN_PURE_GLASS.get(), "棕色纯净玻璃块");
-        add(DecorativeBlocks.RED_PURE_GLASS.get(), "红色纯净玻璃块");
-        add(DecorativeBlocks.ORANGE_PURE_GLASS.get(), "橙色纯净玻璃块");
-        add(DecorativeBlocks.YELLOW_PURE_GLASS.get(), "黄色纯净玻璃块");
-        add(DecorativeBlocks.LIME_PURE_GLASS.get(), "黄绿色纯净玻璃块");
-        add(DecorativeBlocks.GREEN_PURE_GLASS.get(), "绿色纯净玻璃块");
-        add(DecorativeBlocks.CYAN_PURE_GLASS.get(), "青色纯净玻璃块");
-        add(DecorativeBlocks.LIGHT_BLUE_PURE_GLASS.get(), "淡蓝色纯净玻璃块");
-        add(DecorativeBlocks.BLUE_PURE_GLASS.get(), "蓝色纯净玻璃块");
-        add(DecorativeBlocks.PURPLE_PURE_GLASS.get(), "紫色纯净玻璃块");
-        add(DecorativeBlocks.MAGENTA_PURE_GLASS.get(), "品红纯净玻璃块");
-        add(DecorativeBlocks.PINK_PURE_GLASS.get(), "品红纯净玻璃块");
+        add(DecorativeBlocks.PURE_GLASS.get(), "纯净玻璃");
+        add(DecorativeBlocks.WHITE_PURE_GLASS.get(), "白色纯净玻璃");
+        add(DecorativeBlocks.LIGHT_GRAY_PURE_GLASS.get(), "淡灰色纯净玻璃");
+        add(DecorativeBlocks.GRAY_PURE_GLASS.get(), "灰色纯净玻璃");
+        add(DecorativeBlocks.BLACK_PURE_GLASS.get(), "黑色纯净玻璃");
+        add(DecorativeBlocks.BROWN_PURE_GLASS.get(), "棕色纯净玻璃");
+        add(DecorativeBlocks.RED_PURE_GLASS.get(), "红色纯净玻璃");
+        add(DecorativeBlocks.ORANGE_PURE_GLASS.get(), "橙色纯净玻璃");
+        add(DecorativeBlocks.YELLOW_PURE_GLASS.get(), "黄色纯净玻璃");
+        add(DecorativeBlocks.LIME_PURE_GLASS.get(), "黄绿色纯净玻璃");
+        add(DecorativeBlocks.GREEN_PURE_GLASS.get(), "绿色纯净玻璃");
+        add(DecorativeBlocks.CYAN_PURE_GLASS.get(), "青色纯净玻璃");
+        add(DecorativeBlocks.LIGHT_BLUE_PURE_GLASS.get(), "淡蓝色纯净玻璃");
+        add(DecorativeBlocks.BLUE_PURE_GLASS.get(), "蓝色纯净玻璃");
+        add(DecorativeBlocks.PURPLE_PURE_GLASS.get(), "紫色纯净玻璃");
+        add(DecorativeBlocks.MAGENTA_PURE_GLASS.get(), "品红纯净玻璃");
+        add(DecorativeBlocks.PINK_PURE_GLASS.get(), "品红纯净玻璃");
         add(DecorativeBlocks.DISC_BLOCK.get(), "飞盘块");
         add(DecorativeBlocks.WOOD_STONE_SLATTED_BLOCKS.get(), "木石板条块");
         add(DecorativeBlocks.LIHZAHRD_BRICKS.get(), "丛林蜥蜴砖");
@@ -2266,6 +2283,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(AccessoryItems.CHROMATIC_CLOAK.get(), "炫彩斗篷");
         add(AccessoryItems.MUSIC_BOX.get(), "八音盒");
         add(AccessoryItems.PAINT_SPRAYER.get(), "喷漆器");
+        add(AccessoryItems.PARADOX_INTERACTIVE_MEDAL.get(), "帕拉多克斯·英特拉克缇福勋章");
+        add(AccessoryItems.CURSE_OF_BOREDOM_METEORITE.get(), "无聊之咒·陨志");
+
 
         // 染料
         add(PaintItems.PAINTBRUSH.get(), "漆刷");
@@ -2381,4 +2401,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.OBSIDIAN_SKIN.get(), "黑曜石皮");
 
     }
+
+
 }

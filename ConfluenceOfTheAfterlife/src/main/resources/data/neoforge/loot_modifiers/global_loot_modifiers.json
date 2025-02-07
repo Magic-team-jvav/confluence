@@ -11,6 +11,7 @@
         "confluence:entities/skeleton",
         "confluence:entities/bat",
         "confluence:entities/zombie",
+        "confluence:entities/slime",
         "confluence:entities/wither_skeleton",
         "confluence:entities/elder_guardian",
         "confluence:chests/shipwreck_supply",
@@ -21,6 +22,8 @@
         "confluence:chests/stronghold_crossing",
         "confluence:chests/spawn_bonus_chest",
         "confluence:chests/desert_pyramid",
-        "confluence:chests/jungle_temple"
+        "confluence:chests/jungle_temple",
+        "confluence:chests/abandoned_mineshaft",
+        "confluence:chests/village/village_savanna_house"
     ]
 }

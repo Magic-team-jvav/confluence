@@ -37,6 +37,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.confluence.mod.common.init.block.DecorativeBlocks.*;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
+import static org.confluence.mod.common.init.block.ModBlocks.*;
 import static org.confluence.mod.common.init.block.NatureBlocks.*;
 import static org.confluence.mod.common.init.block.OreBlocks.*;
 import static org.confluence.mod.common.init.item.ConsumableItems.LIFE_CRYSTAL;
@@ -243,6 +244,14 @@ public class ModLootTableProvider extends LootTableProvider {
 
             dropSelf(BASE_CHEST_BLOCK.get());
 
+            dropSelf(CRISPY_HONEY_BLOCK.get());
+            dropSelf(POO.get());
+
+            dropSelf(ROPE.get());
+            dropSelf(SILK_ROPE.get());
+            dropSelf(WEB_ROPE.get());
+            dropSelf(VINE_ROPE.get());
+
             dropOther(NATURES_GIFT.get(), AccessoryItems.NATURES_GIFT.get());
             add(JUNGLE_ROSE.get(), LootTable.lootTable().withPool(LootPool.lootPool()
                     .add(LootItem.lootTableItem(JUNGLE_ROSE.get()).when(LootItemRandomChanceCondition.randomChance(0.05f)))));
@@ -347,6 +356,7 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(SAPPHIRE_CHAIN.get());
             dropSelf(DIAMOND_CHAIN.get());
             dropSelf(AMETHYST_CHAIN.get());
+
 
             for (LogBlockSet logBlocks : LogBlockSet.LOG_BLOCK_SETS) {
                 dropSelf(logBlocks.getPlanks().get());

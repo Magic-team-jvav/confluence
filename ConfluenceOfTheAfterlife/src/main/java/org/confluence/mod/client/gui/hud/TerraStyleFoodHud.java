@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui.hud;
 
-import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -8,25 +7,17 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
-import org.confluence.mod.client.handler.ClientPacketHandler;
-import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.util.ClientUtils;
-import org.joml.Vector3i;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
-import static org.confluence.mod.util.ClientUtils.*;
+import static org.confluence.mod.util.ClientUtils.draw;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -99,7 +90,7 @@ public class TerraStyleFoodHud implements LayeredDraw.Layer {
 
         @Override
         public Component getTranslatedName() {
-            return Component.translatable("confluence.configuration.FoodStyle." + name().toLowerCase(Locale.ROOT));
+            return Component.translatable("confluence.configuration.foodStyle." + name().toLowerCase(Locale.ROOT));
         }
     }
 }

@@ -13,9 +13,9 @@ import org.confluence.terraentity.init.TEAttributes;
  * 获取：工匠作坊中1天界徽章+1喜庆弹射器Mk2+1万花筒+1黑斑+1生命果+1耀斑/星旋/星云/星尘床+1夜明块，当前版本可暂时设为隐藏物品
  * 文本：暂定
  */
-public class ParadoxInterlactifoMedal extends BaseCurioItem {
-    public ParadoxInterlactifoMedal() {
-        super(builder("paradox_interlactifo_medal")
+public class ParadoxInteractiveMedal extends BaseCurioItem {
+    public ParadoxInteractiveMedal() {
+        super(builder("paradox_interactive_medal")
                 .attribute(Attributes.ATTACK_DAMAGE, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                 .attribute(Attributes.ENTITY_INTERACTION_RANGE, 3, AttributeModifier.Operation.ADD_VALUE)
                 .attribute(TEAttributes.MINION_CAPACITY, 2, AttributeModifier.Operation.ADD_VALUE)

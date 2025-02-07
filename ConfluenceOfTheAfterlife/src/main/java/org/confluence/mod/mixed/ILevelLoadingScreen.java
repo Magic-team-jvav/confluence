@@ -11,5 +11,6 @@ public interface ILevelLoadingScreen {
     Component GENERATING_BEES = Component.translatable("worldgen.confluence.generating_bees");
     Component GENERATING_WAVY_CAVES = Component.translatable("worldgen.confluence.generating_wavy_caves");
     Component NOT_PLACING_TRAPS = Component.translatable("worldgen.confluence.not_placing_traps");
+    Component PLACING_BOULDERS = Component.translatable("worldgen.confluence.placing_boulders");
     int PINK = 0xFF96FF;
 }

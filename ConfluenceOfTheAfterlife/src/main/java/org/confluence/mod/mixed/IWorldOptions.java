@@ -42,6 +42,7 @@ public interface IWorldOptions {
     long NT_MASK = ModSecretSeeds.NO_TRAPS.getFlag();
     long DDU_MASK = ModSecretSeeds.DONT_DIG_UP.getFlag();
     long GFB_MASK = ModSecretSeeds.GET_FIXED_BOI.getFlag();
+    long BW_MASK = ModSecretSeeds.BOULDER_WORLD.getFlag();
 
     ResourceLocation UNKNOWN_WORLD_ICON = Confluence.asResource("textures/gui/world_icon/unknown.png");
     Long2ObjectMap<ResourceLocation> WORLD_ICON = Util.make(new Long2ObjectOpenHashMap<>(), map -> {
@@ -56,6 +57,7 @@ public interface IWorldOptions {
         registerWorldIcon(map, NT_MASK, "no_traps");
         registerWorldIcon(map, DDU_MASK, "dont_dig_up");
         registerWorldIcon(map, GFB_MASK, "get_fixed_boi");
+        registerWorldIcon(map, BW_MASK, "boulder_world");
 
         CustomWorldIconRegisterEvent event = new CustomWorldIconRegisterEvent(map);
         ModLoader.postEvent(event);

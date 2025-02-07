@@ -85,6 +85,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("worldgen.confluence.generating_bees", "正在生成蜜蜂");
         add("worldgen.confluence.generating_wavy_caves", "正在生成皱曲洞穴");
         add("worldgen.confluence.not_placing_traps", "不在放置机关");
+        add("worldgen.confluence.placing_boulders", "正在放置巨石");
 
         add("info.confluence.bait", "鱼饵力: %s%%");
         add("info.confluence.network", "#%s 信号: %s");

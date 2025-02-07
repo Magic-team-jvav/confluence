@@ -65,6 +65,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("worldgen.confluence.generating_bees", "Generating bees");
         add("worldgen.confluence.generating_wavy_caves", "Generating wavy caves");
         add("worldgen.confluence.not_placing_traps", "Not placing traps");
+        add("worldgen.confluence.placing_boulders", "Placing Boulders");
 
         add("info.confluence.weather_radio.clear", "Weather: Clear, Wind Speed: %s");
         add("info.confluence.weather_radio.cloudy", "Weather: Cloudy, Wind Speed: %s");

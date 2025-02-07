@@ -45,6 +45,7 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
+import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.mixed.IDamageSource;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
@@ -170,6 +171,7 @@ public final class LivingEntityEvents {
         amount = ArcheryEffect.apply(damagingEntity, damageSource, amount);
         amount = ManaSicknessEffect.apply(damageSource, amount);
         //amount = BreathingReed.consumer(damagingEntity, damageSource, amount);
+        amount = TheConstant.applyAttackDamage(causer, amount);
 
         // 暴击判定和伤害显示
         boolean crit = false;

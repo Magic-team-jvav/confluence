@@ -1,6 +1,11 @@
 package org.confluence.mod.common.init;
 
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.ServerStatsCounter;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.phys.Vec2;
 import org.confluence.mod.Confluence;
 
@@ -155,5 +160,37 @@ public final class ModAchievements {
 
     private static void offset(String path, float x, float y) {
         DISPLAY_OFFSET.put(Confluence.asResource("achievements/" + path), new Vec2(x, y));
+    }
+
+    public static void youCanDoIt(ServerPlayer serverPlayer, ServerLevel level) {
+        if (level.getDayTime() % 1200L == 0L) { // 每分钟检查一次
+            long firstNight = serverPlayer.getPersistentData().getLong("confluence:you_can_do_it");
+            if (firstNight != -1L) {
+                if (firstNight == 0L && level.isNight()) {
+                    serverPlayer.getPersistentData().putLong("confluence:you_can_do_it", level.getDayTime());
+                } else if (firstNight != 0L && level.getDayTime() - firstNight > 12000L) {
+                    AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource("achievements/you_can_do_it"));
+                    if (advancement != null) {
+                        serverPlayer.getAdvancements().award(advancement, "never");
+                    }
+                    serverPlayer.getPersistentData().putLong("confluence:you_can_do_it", -1L);
+                }
+            }
+        }
+    }
+
+    public static boolean marathonMedalist(ServerPlayer player, ServerStatsCounter stats, boolean marathon) {
+        if (marathon) return true;
+        int sprint = stats.getValue(Stats.CUSTOM.get(Stats.SPRINT_ONE_CM));
+        int crouch = stats.getValue(Stats.CUSTOM.get(Stats.CROUCH_ONE_CM));
+        int walk = stats.getValue(Stats.CUSTOM.get(Stats.WALK_ONE_CM));
+        if (sprint + crouch + walk > 46112_00) {
+            AdvancementHolder advancement = player.server.getAdvancements().get(Confluence.asResource("achievements/marathon_medalist"));
+            if (advancement != null) {
+                player.getAdvancements().award(advancement, "never");
+            }
+            return true;
+        }
+        return false;
     }
 }

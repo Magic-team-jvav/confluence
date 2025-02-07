@@ -46,6 +46,7 @@ import org.confluence.mod.common.item.common.BaseMinecartItem;
 import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.common.menu.FletchingTableMenu;
+import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.mixed.IAbstractMinecart;
 import org.confluence.mod.mixed.IFishingHook;
 import org.confluence.mod.mixed.IServerPlayer;
@@ -72,6 +73,7 @@ public final class PlayerEvents {
             PlayerUtils.syncSavedData(serverPlayer);
             FishingPowerInfoPacketS2C.sendToClient(serverPlayer);
             EchoVisibilityPacketS2C.sendToClient(serverPlayer);
+            BoulderWorld.forceSetCurseOfBoredomMeteorite(serverPlayer);
         }
     }
 
@@ -247,6 +249,7 @@ public final class PlayerEvents {
         if (event.isEndConquered()) {
             serverPlayer.setHealth(serverPlayer.getPersistentData().getFloat("confluence:cached_health"));
         }
+        BoulderWorld.forceSetCurseOfBoredomMeteorite(serverPlayer);
     }
 
     @SubscribeEvent

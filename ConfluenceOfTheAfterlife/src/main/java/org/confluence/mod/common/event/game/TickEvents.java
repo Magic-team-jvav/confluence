@@ -2,7 +2,6 @@ package org.confluence.mod.common.event.game;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
-import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -19,7 +18,9 @@ import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
+import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
@@ -55,21 +56,9 @@ public final class TickEvents {
             PlayerUtils.regenerateMana(serverPlayer);
             ((IServerPlayer) serverPlayer).confluence$setCouldPickupItem(true);
             serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).sync(serverPlayer);
-            Level level = serverPlayer.level();
-            if (level.getDayTime() % 1200L == 0L) { // 每分钟检查一次
-                long firstNight = serverPlayer.getPersistentData().getLong("confluence:you_can_do_it");
-                if (firstNight != -1L) {
-                    if (firstNight == 0L && level.isNight()) {
-                        serverPlayer.getPersistentData().putLong("confluence:you_can_do_it", level.getDayTime());
-                    } else if (firstNight != 0L && level.getDayTime() - firstNight > 12000L) {
-                        AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource("achievements/you_can_do_it"));
-                        if (advancement != null) {
-                            serverPlayer.getAdvancements().award(advancement, "never");
-                        }
-                        serverPlayer.getPersistentData().putLong("confluence:you_can_do_it", -1L);
-                    }
-                }
-            }
+            ServerLevel serverLevel = serverPlayer.serverLevel();
+            ModAchievements.youCanDoIt(serverPlayer, serverLevel);
+            TheConstant.applyDarkness(serverPlayer, serverLevel);
         }
     }
 

@@ -1,13 +1,12 @@
 package org.confluence.mod.mixin.entity;
 
-import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.ServerStatsCounter;
-import net.minecraft.stats.Stats;
-import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.mixed.IServerPlayer;
+import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -17,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayer.class)
-public abstract class ServerPlayerMixin implements IServerPlayer {
+public abstract class ServerPlayerMixin implements IServerPlayer, SelfGetter<ServerPlayer> {
     @Shadow
     @Final
     private ServerStatsCounter stats;
@@ -47,15 +46,6 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
     @Inject(method = "checkMovementStatistics", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;isSprinting()Z"))
     private void checkMarathon(double dx, double dy, double dz, CallbackInfo ci) {
         if (confluence$marathon) return;
-        int sprint = stats.getValue(Stats.CUSTOM.get(Stats.SPRINT_ONE_CM));
-        int crouch = stats.getValue(Stats.CUSTOM.get(Stats.CROUCH_ONE_CM));
-        int walk = stats.getValue(Stats.CUSTOM.get(Stats.WALK_ONE_CM));
-        if (sprint + crouch + walk > 46112_00) {
-            AdvancementHolder advancement = server.getAdvancements().get(Confluence.asResource("achievements/marathon_medalist"));
-            if (advancement != null) {
-                getAdvancements().award(advancement, "never");
-            }
-            this.confluence$marathon = true;
-        }
+        this.confluence$marathon = ModAchievements.marathonMedalist(self(), stats, confluence$marathon);
     }
 }

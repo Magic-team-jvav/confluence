@@ -5,6 +5,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.Unit;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -21,9 +23,11 @@ import org.confluence.mod.common.item.accessory.*;
 import org.confluence.mod.common.item.accessory.sponsor.CurseOfBoredomMeteorite;
 import org.confluence.mod.common.item.accessory.sponsor.ParadoxInteractiveMedal;
 import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.api.primitive.*;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
 import org.confluence.terra_curio.common.item.curio.health.BandOfRegeneration;
 import org.confluence.terra_curio.util.TCUtils;
@@ -178,6 +182,14 @@ public class AccessoryItems {
             ItemStack itemStack = item.getDefaultInstance();
             itemStack.setCount(randomSource.nextInt(1, 3));
             ModUtils.createItemEntity(itemStack, target.getX(), target.getY(), target.getZ(), player.level(), 0);
+        }
+    }
+
+    public static void applyHurtGetMana(ServerPlayer serverPlayer, DamageSource damageSource, int amount) {
+        if (TCUtils.hasAccessoriesType(serverPlayer, HURT$GET$MANA)) {
+            if (!damageSource.is(DamageTypes.DROWN) && !damageSource.is(TCTags.HARMFUL_EFFECT)) {
+                PlayerUtils.receiveMana(serverPlayer, () -> amount);
+            }
         }
     }
 }

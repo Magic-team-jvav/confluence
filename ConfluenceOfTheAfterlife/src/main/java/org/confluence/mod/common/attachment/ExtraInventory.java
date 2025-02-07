@@ -3,16 +3,21 @@ package org.confluence.mod.common.attachment;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ProjectileWeaponItem;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.apache.commons.lang3.stream.Streams;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.network.s2c.ExtraInventoryStackPacketS2C;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.TerraCurio;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
+
+import java.util.function.Predicate;
 
 public class ExtraInventory extends ItemStackHandler implements Container {
     public static final int SIZE_VANITY_ARMOR = 4;
@@ -213,5 +218,19 @@ public class ExtraInventory extends ItemStackHandler implements Container {
     @Override
     public void clearContent() {
         stacks.clear();
+    }
+
+    public static ItemStack getProjectile(ItemStack projectile, ItemStack weapon, LivingEntity living) {
+        if (projectile.isEmpty() && weapon.getItem() instanceof ProjectileWeaponItem weaponItem && living instanceof Player player) {
+            Predicate<ItemStack> predicate = weaponItem.getSupportedHeldProjectiles(weapon);
+            ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+            for (int i = 0; i < SIZE_AMMO; i++) {
+                ItemStack ammo = extraInventory.getAmmo(i);
+                if (predicate.test(ammo)) {
+                    return ammo;
+                }
+            }
+        }
+        return projectile;
     }
 }

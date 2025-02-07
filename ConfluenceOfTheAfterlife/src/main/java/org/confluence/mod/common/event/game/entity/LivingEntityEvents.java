@@ -1,19 +1,16 @@
 package org.confluence.mod.common.event.game.entity;
 
-import com.google.common.collect.Streams;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -21,7 +18,6 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -31,7 +27,6 @@ import net.neoforged.neoforge.event.entity.living.*;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.block.functional.DartTrapBlock;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
@@ -39,6 +34,7 @@ import org.confluence.mod.common.effect.beneficial.LuckEffect;
 import org.confluence.mod.common.effect.beneficial.ThornsEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
+import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.AccessoryItems;
@@ -53,14 +49,8 @@ import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
-import org.confluence.terra_curio.common.init.TCTags;
-import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.entity.ai.Boss;
 import org.confluence.terraentity.init.TEEntities;
-
-import java.util.function.Predicate;
-
-import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_VANITY_ARMOR;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class LivingEntityEvents {
@@ -142,11 +132,7 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             float amount = event.getAmount();
-            if (TCUtils.hasAccessoriesType(serverPlayer, AccessoryItems.HURT$GET$MANA)) {
-                if (!damageSource.is(DamageTypes.DROWN) && !damageSource.is(TCTags.HARMFUL_EFFECT)) {
-                    PlayerUtils.receiveMana(serverPlayer, () -> (int) amount);
-                }
-            }
+            AccessoryItems.applyHurtGetMana(serverPlayer, damageSource, (int) amount);
         }
         Immunity cause = ModUtils.getImmunityCause(event.getSource());
         if (((ILivingEntity) event.getEntity()).confluence$getImmunityTicks().containsKey(cause)) {
@@ -203,23 +189,12 @@ public final class LivingEntityEvents {
         LivingEntity damagingEntity = event.getEntity();
         Entity sourceEntity = damageSource.getEntity();
         ItemStack weapon = damageSource.getWeaponItem();
-        if (sourceEntity instanceof LivingEntity livingEntity) {
-            if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword) {
-                if (sword.modifier != null) {
-                    if (livingEntity instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.95f)
-                        sword.modifier.onHitEffects.forEach(effect -> effect.accept(livingEntity, damagingEntity));
-                }
+        if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword && sword.modifier != null) {
+            if (sourceEntity instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.95f) {
+                sword.modifier.onHitEffects.forEach(effect -> effect.accept(player, damagingEntity));
             }
         }
-        if (damagingEntity instanceof ServerPlayer serverPlayer) {
-            if (damagingEntity.isAlive()) {
-                if (damagingEntity.getHealth() / damagingEntity.getMaxHealth() < 0.1F && damageSource.is(DamageTypeTags.IS_FALL)) {
-                    PlayerUtils.awardAchievement(serverPlayer, "lucky_break");
-                }
-            } else if (sourceEntity != null && DartTrapBlock.NAME.equals(sourceEntity.getCustomName())) {
-                PlayerUtils.awardAchievement(serverPlayer, "watch_your_step");
-            }
-        }
+        ModAchievements.luckyBreak_watchYourStep(damagingEntity, damageSource, sourceEntity);
 
         Immunity cause = ModUtils.getImmunityCause(damageSource);
         if (cause != null) {
@@ -253,21 +228,7 @@ public final class LivingEntityEvents {
     public static void livingEquipmentChange(LivingEquipmentChangeEvent event) {
         LivingEntity living = event.getEntity();
         if (living.level().isClientSide) return;
-
-        if (event.getSlot().getType() == EquipmentSlot.Type.HUMANOID_ARMOR && living instanceof ServerPlayer serverPlayer) {
-            if (Streams.stream(serverPlayer.getArmorSlots()).noneMatch(ItemStack::isEmpty)) {
-                PlayerUtils.awardAchievement(serverPlayer, "matching_attire");
-                ExtraInventory extraInventory = serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY);
-                boolean fashionStatement = true;
-                for (int i = 0; i < SIZE_VANITY_ARMOR; i++) {
-                    if (extraInventory.getVanityArmor(i).isEmpty()) {
-                        fashionStatement = false;
-                        break;
-                    }
-                }
-                if (fashionStatement) PlayerUtils.awardAchievement(serverPlayer, "fashion_statement");
-            }
-        }
+        ModAchievements.matchingAttire_fashionStatement(event.getSlot(), living);
     }
 
     @SubscribeEvent
@@ -280,21 +241,7 @@ public final class LivingEntityEvents {
     @SubscribeEvent
     public static void livingGetProjectile(LivingGetProjectileEvent event) {
         LivingEntity living = event.getEntity();
-        if (event.getProjectileItemStack().isEmpty()) {
-            ItemStack weapon = event.getProjectileWeaponItemStack();
-            if (weapon.getItem() instanceof ProjectileWeaponItem weaponItem && living instanceof Player player) {
-                Predicate<ItemStack> predicate = weaponItem.getSupportedHeldProjectiles(weapon);
-                ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
-                for (int i = 0; i < ExtraInventory.SIZE_AMMO; i++) {
-                    ItemStack ammo = extraInventory.getAmmo(i);
-                    if (predicate.test(ammo)) {
-                        event.setProjectileItemStack(ammo);
-                        break;
-                    }
-                }
-            }
-        }
-        ItemStack projectileItemStack = event.getProjectileItemStack();
+        ItemStack projectileItemStack = ExtraInventory.getProjectile(event.getProjectileItemStack(), event.getProjectileWeaponItemStack(), living);
         if (!projectileItemStack.isEmpty() && living.hasEffect(ModEffects.AMMO_BOX) && living.getRandom().nextFloat() < 0.2F) {
             event.setProjectileItemStack(projectileItemStack.copy());
         }

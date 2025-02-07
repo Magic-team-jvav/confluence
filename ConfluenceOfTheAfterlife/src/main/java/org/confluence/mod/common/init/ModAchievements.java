@@ -1,15 +1,27 @@
 package org.confluence.mod.common.init;
 
+import com.google.common.collect.Streams;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.ServerStatsCounter;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec2;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.block.functional.DartTrapBlock;
+import org.confluence.mod.util.PlayerUtils;
 
 import java.util.Hashtable;
+
+import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_VANITY_ARMOR;
 
 public final class ModAchievements {
     public static final Hashtable<ResourceLocation, Vec2> DISPLAY_OFFSET = new Hashtable<>();
@@ -192,5 +204,34 @@ public final class ModAchievements {
             return true;
         }
         return false;
+    }
+
+    public static void luckyBreak_watchYourStep(LivingEntity damagingEntity, DamageSource damageSource, Entity sourceEntity) {
+        if (damagingEntity instanceof ServerPlayer serverPlayer) {
+            if (damagingEntity.isAlive()) {
+                if (damagingEntity.getHealth() / damagingEntity.getMaxHealth() < 0.1F && damageSource.is(DamageTypeTags.IS_FALL)) {
+                    PlayerUtils.awardAchievement(serverPlayer, "lucky_break");
+                }
+            } else if (sourceEntity != null && DartTrapBlock.NAME.equals(sourceEntity.getCustomName())) {
+                PlayerUtils.awardAchievement(serverPlayer, "watch_your_step");
+            }
+        }
+    }
+
+    public static void matchingAttire_fashionStatement(EquipmentSlot slot, LivingEntity living) {
+        if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR && living instanceof ServerPlayer serverPlayer) {
+            if (Streams.stream(serverPlayer.getArmorSlots()).noneMatch(ItemStack::isEmpty)) {
+                PlayerUtils.awardAchievement(serverPlayer, "matching_attire");
+                ExtraInventory extraInventory = serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+                boolean fashionStatement = true;
+                for (int i = 0; i < SIZE_VANITY_ARMOR; i++) {
+                    if (extraInventory.getVanityArmor(i).isEmpty()) {
+                        fashionStatement = false;
+                        break;
+                    }
+                }
+                if (fashionStatement) PlayerUtils.awardAchievement(serverPlayer, "fashion_statement");
+            }
+        }
     }
 }

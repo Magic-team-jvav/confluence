@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,19 +14,25 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.BoulderEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.terra_curio.api.primitive.ComponentsValue;
+import org.confluence.terra_curio.common.component.AccessoriesComponent;
 import org.confluence.terra_curio.common.init.TCAttributes;
+import org.confluence.terra_curio.common.init.TCDataMaps;
+import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.init.TEAttributes;
 import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 /*
  * 饰品：无聊之咒·陨志

@@ -8,6 +8,7 @@ import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.mixin.accessor.LanguageProviderAccessor;
@@ -164,7 +165,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.has_proj", "Has Projectile");
 
 
-
         add("jei.tooltip.item.confluence.bezoar.0", "It has a Chance to be dropped from Hornet，Moss Hornet and Toxic Sludge.");
         add("jei.tooltip.item.confluence.holy_water.0", "It has a Chance to be dropped from Wither Skeleton.");
         add("jei.tooltip.item.confluence.vitamins.0", "It has a Chance to be dropped from Corruptor or Floaty Gross.");
@@ -220,15 +220,15 @@ public class ModEnglishProvider extends LanguageProvider {
         add("jei.tooltip.item.confluence.sextant.0", "It can be obtained with a chance from the Angler quests.");
         add("jei.tooltip.item.confluence.step_stool.0", "It can be obtained with a chance from Wooden Crate/Pearlwood Crate, and Surface Chest.");
         add("jei.tooltip.item.confluence.flying_carpet.0", "It can be obtained with a chance from Pyramid and Desert Pyramids chest.");
-        add("jei.tooltip.item.confluence.aglet.0","It can be obtained with a chance from Wooden Crate/Pearlwood Crate, and Surface Chest.");
-        add("jei.tooltip.item.confluence.magiluminescence.0","Crafted from.");
-        add("jei.tooltip.item.confluence.lava_charm.0","It can be obtained with a chance from Obsidian Crate/Hellstone Crate and Cave Chest.");
-        add("jei.tooltip.item.confluence.climbing_claws.0","It can be obtained with a chance from Wooden Crate/Pearlwood Crate, and Surface Chest.");
-        add("jei.tooltip.item.confluence.shoe_spikes.0","It can be obtained with a chance from Cave Chest and Rich Mahogany Chest.");
-        add("jei.tooltip.item.confluence.tabi.0","It has a Chance to be dropped from Bone Lee.");
-        add("jei.tooltip.item.confluence.hermes_boots.0","It can be obtained with a chance from Underground Chest.");
-        add("jei.tooltip.item.confluence.flurry_boots.0","It can be obtained with a chance from Boreal Crate/Frozen Crate, Frozen Chest and Ice Mimic.");
-        add("jei.tooltip.item.confluence.sailfish_boots.0","It can be obtained with a chance from Wooden Crate/Iron Crate, Pearlwood Crate/Mythril Crate, Shipwreck Chest and Ocean Ruins Chest.");
+        add("jei.tooltip.item.confluence.aglet.0", "It can be obtained with a chance from Wooden Crate/Pearlwood Crate, and Surface Chest.");
+        add("jei.tooltip.item.confluence.magiluminescence.0", "Crafted from.");
+        add("jei.tooltip.item.confluence.lava_charm.0", "It can be obtained with a chance from Obsidian Crate/Hellstone Crate and Cave Chest.");
+        add("jei.tooltip.item.confluence.climbing_claws.0", "It can be obtained with a chance from Wooden Crate/Pearlwood Crate, and Surface Chest.");
+        add("jei.tooltip.item.confluence.shoe_spikes.0", "It can be obtained with a chance from Cave Chest and Rich Mahogany Chest.");
+        add("jei.tooltip.item.confluence.tabi.0", "It has a Chance to be dropped from Bone Lee.");
+        add("jei.tooltip.item.confluence.hermes_boots.0", "It can be obtained with a chance from Underground Chest.");
+        add("jei.tooltip.item.confluence.flurry_boots.0", "It can be obtained with a chance from Boreal Crate/Frozen Crate, Frozen Chest and Ice Mimic.");
+        add("jei.tooltip.item.confluence.sailfish_boots.0", "It can be obtained with a chance from Wooden Crate/Iron Crate, Pearlwood Crate/Mythril Crate, Shipwreck Chest and Ocean Ruins Chest.");
         add("jei.tooltip.item.confluence.dunerider_boots.0", "It can be obtained with a chance from Oasis Crate/Mirage Crate, Sandstone Chest and Desert Pyramids chest.");
         add("jei.tooltip.item.confluence.water_walking_boots.0", "It can be obtained with a chance from Ocean Crate/Seaside Crate, Water Chest and Ocean Ruins Chest.");
         add("jei.tooltip.item.confluence.cloud_in_a_bottle.0", "It can be obtained with a chance from Underground Chest and Cave Chest.");
@@ -240,24 +240,23 @@ public class ModEnglishProvider extends LanguageProvider {
         add("jei.tooltip.item.confluence.shiny_red_balloon.0", "It can be obtained with a chance from Azure Crate/Sky Crate and Skyware Chest.");
         add("jei.tooltip.item.confluence.lucky_horseshoe.0", "It can be obtained with a chance from Azure Crate/Sky Crate and Skyware Chest.");
         add("jei.tooltip.item.confluence.inner_tube.0", "It can be obtained with a chance from Ocean Crate/Seaside Crate and Water Chest.");
-        add("jei.tooltip.item.confluence.flipper.0","It can be obtained with a chance from Ocean Crate/Seaside Crate, Water Chest and Ocean Ruins Chest.");
-        add("jei.tooltip.item.confluence.jellyfish_necklace.0","It has a Chance to be dropped from Pink Jellyfish, Green Jellyfish and Blue Jellyfish.");
-        add("jei.tooltip.item.confluence.arctic_diving_gear.0","Crafted from.");
-        add("jei.tooltip.item.confluence.frog_leg.0","It can be obtained with a chance by fishing in any biome..");
-        add("jei.tooltip.item.confluence.treasure_magnet.0","It can be obtained with a chance from Obsidian Lock Box and Shadow Chest.");
-        add("jei.tooltip.item.confluence.flower_boots.0","It can be obtained with a chance from Ivy Chest, Jungle Crate/Bramble Crate and chest in Jungle Pyramids (Minecraft).");
-        add("jei.tooltip.item.confluence.angler_earring.0","It can be obtained with a chance from the Angler quests..");
-        add("jei.tooltip.item.confluence.royal_gel.0","It can be obtained by defeating the King Slime in Normal difficulty or Higher difficulty.");
-        add("jei.tooltip.item.confluence.shield_of_cthulhu.0","It can be obtained by defeating the Eye of Cthuhu in Normal difficulty or Higher difficulty.");
-        add("jei.tooltip.item.confluence.worm_scarf.0","It can be obtained by defeating the Eater of Worlds in Normal difficulty or Higher difficulty.");
-        add("jei.tooltip.item.confluence.brain_of_confusion.0","It can be obtained by defeating the Eye of Cthuhu in Normal difficulty or Higher difficulty.");
-        add("jei.tooltip.item.confluence.hive_pack.0","It can be obtained by defeating the Queen Bee in Normal difficulty or Higher difficulty.");
-        add("jei.tooltip.item.confluence.demon_heart.0","It can be obtained by defeating the Wall of Flesh in Normal difficulty or Higher difficulty.");
-        add("jei.tooltip.item.confluence.shiny_stone.0","It can be obtained by defeating the Golem in Normal difficulty or Higher difficulty.");
-        add("jei.tooltip.item.confluence.soaring_insignia.0","It can be obtained by defeating the Empress of Light in Normal difficulty or Higher difficulty.");
-        add("jei.tooltip.item.confluence.gravity_globe.0","It can be obtained by defeating the Moon Lord in Normal difficulty or Higher difficulty.");
-        add("jei.tooltip.item.confluence.celestial_starboard.0","It can be obtained by defeating the Moon Lord in Normal difficulty or Higher difficulty.");
-
+        add("jei.tooltip.item.confluence.flipper.0", "It can be obtained with a chance from Ocean Crate/Seaside Crate, Water Chest and Ocean Ruins Chest.");
+        add("jei.tooltip.item.confluence.jellyfish_necklace.0", "It has a Chance to be dropped from Pink Jellyfish, Green Jellyfish and Blue Jellyfish.");
+        add("jei.tooltip.item.confluence.arctic_diving_gear.0", "Crafted from.");
+        add("jei.tooltip.item.confluence.frog_leg.0", "It can be obtained with a chance by fishing in any biome..");
+        add("jei.tooltip.item.confluence.treasure_magnet.0", "It can be obtained with a chance from Obsidian Lock Box and Shadow Chest.");
+        add("jei.tooltip.item.confluence.flower_boots.0", "It can be obtained with a chance from Ivy Chest, Jungle Crate/Bramble Crate and chest in Jungle Pyramids (Minecraft).");
+        add("jei.tooltip.item.confluence.angler_earring.0", "It can be obtained with a chance from the Angler quests..");
+        add("jei.tooltip.item.confluence.royal_gel.0", "It can be obtained by defeating the King Slime in Normal difficulty or Higher difficulty.");
+        add("jei.tooltip.item.confluence.shield_of_cthulhu.0", "It can be obtained by defeating the Eye of Cthuhu in Normal difficulty or Higher difficulty.");
+        add("jei.tooltip.item.confluence.worm_scarf.0", "It can be obtained by defeating the Eater of Worlds in Normal difficulty or Higher difficulty.");
+        add("jei.tooltip.item.confluence.brain_of_confusion.0", "It can be obtained by defeating the Eye of Cthuhu in Normal difficulty or Higher difficulty.");
+        add("jei.tooltip.item.confluence.hive_pack.0", "It can be obtained by defeating the Queen Bee in Normal difficulty or Higher difficulty.");
+        add("jei.tooltip.item.confluence.demon_heart.0", "It can be obtained by defeating the Wall of Flesh in Normal difficulty or Higher difficulty.");
+        add("jei.tooltip.item.confluence.shiny_stone.0", "It can be obtained by defeating the Golem in Normal difficulty or Higher difficulty.");
+        add("jei.tooltip.item.confluence.soaring_insignia.0", "It can be obtained by defeating the Empress of Light in Normal difficulty or Higher difficulty.");
+        add("jei.tooltip.item.confluence.gravity_globe.0", "It can be obtained by defeating the Moon Lord in Normal difficulty or Higher difficulty.");
+        add("jei.tooltip.item.confluence.celestial_starboard.0", "It can be obtained by defeating the Moon Lord in Normal difficulty or Higher difficulty.");
 
 
         add("painting.confluence.magic_harp.title", "MAGIC_HARP");
@@ -395,42 +394,42 @@ public class ModEnglishProvider extends LanguageProvider {
         add("achievements.confluence.eye_on_you.title", "Eye on You");
         add("achievements.confluence.eye_on_you.description", "“Defeat the Eye of Cthulhu, an ocular menace who only appears at night.");
 
-        add("confluence.configuration.dropsMoney","Coin Drop");
-        add("confluence.configuration.autoStackGelsColor","Auto Stack Gels");
-        add("confluence.configuration.fletchingMenu","Fletching Menu");
-        add("confluence.configuration.shimmer_decompose","Shimmer Decompose");
-        add("confluence.configuration.fallingStarFrequency","Falling Star Frequency");
-        add("confluence.configuration.defaultRespawnTimeMin","Default Minimum Respawn Time");
-        add("confluence.configuration.defaultRespawnTimeMax","Default Maximum Respawn Time");
-        add("confluence.configuration.bossRespawnTimeMin","Minimum Respawn Time (Boss Fight)");
-        add("confluence.configuration.bossRespawnTimeMax","Maximum Respawn Time (Boss Fight)");
-        add("confluence.configuration.showWindParticles","Show Wind Particles");
-        add("confluence.configuration.HUD","HUD");
-        add("confluence.configuration.Health","Health");
-        add("confluence.configuration.Food","Hunger");
-        add("confluence.configuration.terraStyleHealth","Terra Style Health");
-        add("confluence.configuration.terraStyleArmor","Terra Style Armor");
-        add("confluence.configuration.terraStyleFood","Terra Style Hunger");
-        add("confluence.configuration.healthStyle","Health Style");
-        add("confluence.configuration.manaStyle","Mana Style");
-        add("confluence.configuration.armorStyle","Armor Style");
-        add("confluence.configuration.foodStyle","Hunger Style");
-        add("confluence.configuration.armorStyle.legacy_horizontal","Armor Style: Elegant - Horizontal");
-        add("confluence.configuration.armorStyle.legacy_diagonal","Armor Style: Elegant - Diagonal");
-        add("confluence.configuration.armorStyle.legacy_vertical","Armor Style: Elegant - Vertical");
-        add("confluence.configuration.manaStyle.legacy","Mana Style: Elegant");
-        add("confluence.configuration.healthStyle.legacy","Health Style: Elegant");
-        add("confluence.configuration.foodStyle.legacy","Hunger Style: Elegant");
-        add("confluence.configuration.healthStyle.overlay","Health Style: Overlay");
-        add("confluence.configuration.foodStyle.overlay","Hunger Style: Overlay");
-        add("confluence.configuration.Mana","Mana");
-        add("confluence.configuration.Armor","Armor");
-        add("confluence.configuration.leftEffectIcon","Left Potion Effect Icon");
-        add("confluence.configuration.Entity","Entity Effects");
-        add("confluence.configuration.hurtRedOverlay","Hurt Red Overlay");
-        add("confluence.configuration.bloodyEffect","Bloody Effect");
-        add("confluence.configuration.goreEffect","Gore Effect");
-        add("confluence.configuration.damageIndicator","Damage Indicator");
+        add("confluence.configuration.dropsMoney", "Coin Drop");
+        add("confluence.configuration.autoStackGelsColor", "Auto Stack Gels");
+        add("confluence.configuration.fletchingMenu", "Fletching Menu");
+        add("confluence.configuration.shimmer_decompose", "Shimmer Decompose");
+        add("confluence.configuration.fallingStarFrequency", "Falling Star Frequency");
+        add("confluence.configuration.defaultRespawnTimeMin", "Default Minimum Respawn Time");
+        add("confluence.configuration.defaultRespawnTimeMax", "Default Maximum Respawn Time");
+        add("confluence.configuration.bossRespawnTimeMin", "Minimum Respawn Time (Boss Fight)");
+        add("confluence.configuration.bossRespawnTimeMax", "Maximum Respawn Time (Boss Fight)");
+        add("confluence.configuration.showWindParticles", "Show Wind Particles");
+        add("confluence.configuration.HUD", "HUD");
+        add("confluence.configuration.Health", "Health");
+        add("confluence.configuration.Food", "Hunger");
+        add("confluence.configuration.terraStyleHealth", "Terra Style Health");
+        add("confluence.configuration.terraStyleArmor", "Terra Style Armor");
+        add("confluence.configuration.terraStyleFood", "Terra Style Hunger");
+        add("confluence.configuration.healthStyle", "Health Style");
+        add("confluence.configuration.manaStyle", "Mana Style");
+        add("confluence.configuration.armorStyle", "Armor Style");
+        add("confluence.configuration.foodStyle", "Hunger Style");
+        add("confluence.configuration.armorStyle.legacy_horizontal", "Armor Style: Elegant - Horizontal");
+        add("confluence.configuration.armorStyle.legacy_diagonal", "Armor Style: Elegant - Diagonal");
+        add("confluence.configuration.armorStyle.legacy_vertical", "Armor Style: Elegant - Vertical");
+        add("confluence.configuration.manaStyle.legacy", "Mana Style: Elegant");
+        add("confluence.configuration.healthStyle.legacy", "Health Style: Elegant");
+        add("confluence.configuration.foodStyle.legacy", "Hunger Style: Elegant");
+        add("confluence.configuration.healthStyle.overlay", "Health Style: Overlay");
+        add("confluence.configuration.foodStyle.overlay", "Hunger Style: Overlay");
+        add("confluence.configuration.Mana", "Mana");
+        add("confluence.configuration.Armor", "Armor");
+        add("confluence.configuration.leftEffectIcon", "Left Potion Effect Icon");
+        add("confluence.configuration.Entity", "Entity Effects");
+        add("confluence.configuration.hurtRedOverlay", "Hurt Red Overlay");
+        add("confluence.configuration.bloodyEffect", "Bloody Effect");
+        add("confluence.configuration.goreEffect", "Gore Effect");
+        add("confluence.configuration.damageIndicator", "Damage Indicator");
         //
         add("confluence.configuration.Mana.button", "Mana");
         add("confluence.configuration.Armor.tooltip", "Armor");
@@ -583,6 +582,7 @@ public class ModEnglishProvider extends LanguageProvider {
         ToolItems.ITEMS.getEntries().forEach(itemAction);
 
         ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), toTitleCase(effect.getId().getPath())));
+        ModEntities.ENTITIES.getEntries().forEach(entity -> add(entity.get(), toTitleCase(entity.getId().getPath())));
     }
 
     @Override

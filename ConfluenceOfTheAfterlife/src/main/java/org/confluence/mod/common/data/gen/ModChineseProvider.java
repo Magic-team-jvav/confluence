@@ -181,7 +181,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.has_proj", "剑气");
 
 
-
         add("jei.tooltip.item.confluence.bezoar.0", "有几率从黄蜂，青苔蜜蜂，毒泥身上掉落。");
         add("jei.tooltip.item.confluence.holy_water.0", "有几率从凋零骷髅身上掉落。");
         add("jei.tooltip.item.confluence.vitamins.0", "有几率从腐化者，恶心浮游怪身上掉落。");
@@ -237,15 +236,15 @@ public class ModChineseProvider extends LanguageProvider {
         add("jei.tooltip.item.confluence.sextant.0", "有几率从渔夫任务获得。");
         add("jei.tooltip.item.confluence.step_stool.0", "有几率从木匣/珍珠木匣，地表宝箱获得。");
         add("jei.tooltip.item.confluence.flying_carpet.0", "有几率从金字塔，沙漠神殿宝箱获得。");
-        add("jei.tooltip.item.confluence.aglet.0","有几率从木匣/珍珠木匣，地表宝箱获得。");
-        add("jei.tooltip.item.confluence.magiluminescence.0","合成获得。");
-        add("jei.tooltip.item.confluence.lava_charm.0","有几率从黑曜石匣/狱石匣，洞穴宝箱获得。");
-        add("jei.tooltip.item.confluence.climbing_claws.0","有几率从木匣/珍珠木匣，地表宝箱获得。");
-        add("jei.tooltip.item.confluence.shoe_spikes.0","有几率从洞穴宝箱，红木箱中获得。");
-        add("jei.tooltip.item.confluence.tabi.0","有几率从骷髅李小龙身上获得。");
-        add("jei.tooltip.item.confluence.hermes_boots.0","有几率从地下宝箱获得。");
-        add("jei.tooltip.item.confluence.flurry_boots.0","有几率从冰冻匣/针叶木匣，冰冻箱，冰雪宝箱怪中获得。");
-        add("jei.tooltip.item.confluence.sailfish_boots.0","有几率从木匣/铁匣，珍珠木匣/秘银匣，沉船宝箱，废墟宝箱中获得。");
+        add("jei.tooltip.item.confluence.aglet.0", "有几率从木匣/珍珠木匣，地表宝箱获得。");
+        add("jei.tooltip.item.confluence.magiluminescence.0", "合成获得。");
+        add("jei.tooltip.item.confluence.lava_charm.0", "有几率从黑曜石匣/狱石匣，洞穴宝箱获得。");
+        add("jei.tooltip.item.confluence.climbing_claws.0", "有几率从木匣/珍珠木匣，地表宝箱获得。");
+        add("jei.tooltip.item.confluence.shoe_spikes.0", "有几率从洞穴宝箱，红木箱中获得。");
+        add("jei.tooltip.item.confluence.tabi.0", "有几率从骷髅李小龙身上获得。");
+        add("jei.tooltip.item.confluence.hermes_boots.0", "有几率从地下宝箱获得。");
+        add("jei.tooltip.item.confluence.flurry_boots.0", "有几率从冰冻匣/针叶木匣，冰冻箱，冰雪宝箱怪中获得。");
+        add("jei.tooltip.item.confluence.sailfish_boots.0", "有几率从木匣/铁匣，珍珠木匣/秘银匣，沉船宝箱，废墟宝箱中获得。");
         add("jei.tooltip.item.confluence.dunerider_boots.0", "有几率从绿洲匣/幻象匣，砂岩箱，沙漠神殿宝箱获得。");
         add("jei.tooltip.item.confluence.water_walking_boots.0", "有几率从海洋匣/海边匣，水中箱，沉船宝箱，废墟宝箱中获得。");
         add("jei.tooltip.item.confluence.cloud_in_a_bottle.0", "有几率从地下宝箱，洞穴宝箱中获得。");
@@ -257,61 +256,61 @@ public class ModChineseProvider extends LanguageProvider {
         add("jei.tooltip.item.confluence.shiny_red_balloon.0", "有几率从天蓝匣/天域匣，天域箱中获得。");
         add("jei.tooltip.item.confluence.lucky_horseshoe.0", "有几率从天蓝匣/天域匣，天域箱中获得。");
         add("jei.tooltip.item.confluence.inner_tube.0", "有几率从海洋匣/海边匣，水中箱中获得。");
-        add("jei.tooltip.item.confluence.flipper.0","有几率从海洋匣/海边匣，水中箱，沉船宝箱，废墟宝箱中获得。");
-        add("jei.tooltip.item.confluence.jellyfish_necklace.0","有几率从粉水母，绿水母，蓝水母身上获得。");
-        add("jei.tooltip.item.confluence.arctic_diving_gear.0","合成获得。");
-        add("jei.tooltip.item.confluence.frog_leg.0","在任意群系钓鱼有几率获得。");
-        add("jei.tooltip.item.confluence.treasure_magnet.0","有几率从黑曜石锁盒，暗影箱中获得。");
-        add("jei.tooltip.item.confluence.flower_boots.0","有几率从常春藤箱、丛林匣/荆棘匣，以及丛林神庙（Minecraft）中的宝箱获得。");
-        add("jei.tooltip.item.confluence.angler_earring.0","有几率从渔夫任务获得。");
-        add("jei.tooltip.item.confluence.royal_gel.0","在普通模式或更高难度下，击败史莱姆之王获得。");
-        add("jei.tooltip.item.confluence.shield_of_cthulhu.0","在普通模式或更高难度下，击败克苏鲁之眼获得。");
-        add("jei.tooltip.item.confluence.worm_scarf.0","在普通模式或更高难度下，击败世界吞噬怪获得。");
-        add("jei.tooltip.item.confluence.brain_of_confusion.0","在普通模式或更高难度下，击败克苏鲁之脑获得。");
-        add("jei.tooltip.item.confluence.hive_pack.0","在普通模式或更高难度下，击败蜂王获得。");
-        add("jei.tooltip.item.confluence.demon_heart.0","在普通模式或更高难度下，击败血肉之墙获得。");
-        add("jei.tooltip.item.confluence.shiny_stone.0","在普通模式或更高难度下，击败石巨人获得。");
-        add("jei.tooltip.item.confluence.soaring_insignia.0","在普通模式或更高难度下，击败光之女皇获得。");
-        add("jei.tooltip.item.confluence.gravity_globe.0","在普通模式或更高难度下，击败月球领主获得。");
-        add("jei.tooltip.item.confluence.celestial_starboard.0","在普通模式或更高难度下，击败月球领主获得。");
+        add("jei.tooltip.item.confluence.flipper.0", "有几率从海洋匣/海边匣，水中箱，沉船宝箱，废墟宝箱中获得。");
+        add("jei.tooltip.item.confluence.jellyfish_necklace.0", "有几率从粉水母，绿水母，蓝水母身上获得。");
+        add("jei.tooltip.item.confluence.arctic_diving_gear.0", "合成获得。");
+        add("jei.tooltip.item.confluence.frog_leg.0", "在任意群系钓鱼有几率获得。");
+        add("jei.tooltip.item.confluence.treasure_magnet.0", "有几率从黑曜石锁盒，暗影箱中获得。");
+        add("jei.tooltip.item.confluence.flower_boots.0", "有几率从常春藤箱、丛林匣/荆棘匣，以及丛林神庙（Minecraft）中的宝箱获得。");
+        add("jei.tooltip.item.confluence.angler_earring.0", "有几率从渔夫任务获得。");
+        add("jei.tooltip.item.confluence.royal_gel.0", "在普通模式或更高难度下，击败史莱姆之王获得。");
+        add("jei.tooltip.item.confluence.shield_of_cthulhu.0", "在普通模式或更高难度下，击败克苏鲁之眼获得。");
+        add("jei.tooltip.item.confluence.worm_scarf.0", "在普通模式或更高难度下，击败世界吞噬怪获得。");
+        add("jei.tooltip.item.confluence.brain_of_confusion.0", "在普通模式或更高难度下，击败克苏鲁之脑获得。");
+        add("jei.tooltip.item.confluence.hive_pack.0", "在普通模式或更高难度下，击败蜂王获得。");
+        add("jei.tooltip.item.confluence.demon_heart.0", "在普通模式或更高难度下，击败血肉之墙获得。");
+        add("jei.tooltip.item.confluence.shiny_stone.0", "在普通模式或更高难度下，击败石巨人获得。");
+        add("jei.tooltip.item.confluence.soaring_insignia.0", "在普通模式或更高难度下，击败光之女皇获得。");
+        add("jei.tooltip.item.confluence.gravity_globe.0", "在普通模式或更高难度下，击败月球领主获得。");
+        add("jei.tooltip.item.confluence.celestial_starboard.0", "在普通模式或更高难度下，击败月球领主获得。");
 
 
-        add("confluence.configuration.dropsMoney","钱币掉落");
-        add("confluence.configuration.autoStackGelsColor","自动合并凝胶");
-        add("confluence.configuration.fletchingMenu","制箭台菜单");
-        add("confluence.configuration.shimmer_decompose","微光分解");
-        add("confluence.configuration.fallingStarFrequency","坠星频率");
-        add("confluence.configuration.defaultRespawnTimeMin","默认最小重生时间");
-        add("confluence.configuration.defaultRespawnTimeMax","默认最大重生时间");
-        add("confluence.configuration.bossRespawnTimeMin","最小重生时间（boss战时）");
-        add("confluence.configuration.bossRespawnTimeMax","最大重生时间（boss战时）");
-        add("confluence.configuration.showWindParticles","风粒子展示");
-        add("confluence.configuration.HUD","HUD");
-        add("confluence.configuration.Health","生命值");
-        add("confluence.configuration.Food","饱食度");
-        add("confluence.configuration.terraStyleHealth","泰拉样式生命值");
-        add("confluence.configuration.terraStyleArmor","泰拉样式护甲值");
-        add("confluence.configuration.terraStyleFood","泰拉样式饱食度");
-        add("confluence.configuration.healthStyle","生命值样式");
-        add("confluence.configuration.manaStyle","魔力值样式");
-        add("confluence.configuration.armorStyle","护甲值样式");
-        add("confluence.configuration.foodStyle","饱食度样式");
-        add("confluence.configuration.armorStyle.legacy_horizontal","护甲值样式:精致-水平");
-        add("confluence.configuration.armorStyle.legacy_diagonal","护甲值样式:精致-对角");
-        add("confluence.configuration.armorStyle.legacy_vertical","护甲值样式:精致-垂直");
-        add("confluence.configuration.manaStyle.legacy","魔力值样式:精致");
-        add("confluence.configuration.healthStyle.legacy","生命值样式:精致");
-        add("confluence.configuration.foodStyle.legacy","饱食度样式:精致");
-        add("confluence.configuration.healthStyle.overlay","生命值样式:叠加");
-        add("confluence.configuration.foodStyle.overlay","饱食度样式:叠加");
-        add("confluence.configuration.Mana","魔力值");
-        add("confluence.configuration.Armor","护甲值");
-        add("confluence.configuration.leftEffectIcon","左侧药水效果标识");
-        add("confluence.configuration.Entity","生物效果");
-        add("confluence.configuration.hurtRedOverlay","受击红色显示");
-        add("confluence.configuration.bloodyEffect","血效果");
-        add("confluence.configuration.goreEffect","血腥效果");
-        add("confluence.configuration.damageIndicator","伤害数值显示");
+        add("confluence.configuration.dropsMoney", "钱币掉落");
+        add("confluence.configuration.autoStackGelsColor", "自动合并凝胶");
+        add("confluence.configuration.fletchingMenu", "制箭台菜单");
+        add("confluence.configuration.shimmer_decompose", "微光分解");
+        add("confluence.configuration.fallingStarFrequency", "坠星频率");
+        add("confluence.configuration.defaultRespawnTimeMin", "默认最小重生时间");
+        add("confluence.configuration.defaultRespawnTimeMax", "默认最大重生时间");
+        add("confluence.configuration.bossRespawnTimeMin", "最小重生时间（boss战时）");
+        add("confluence.configuration.bossRespawnTimeMax", "最大重生时间（boss战时）");
+        add("confluence.configuration.showWindParticles", "风粒子展示");
+        add("confluence.configuration.HUD", "HUD");
+        add("confluence.configuration.Health", "生命值");
+        add("confluence.configuration.Food", "饱食度");
+        add("confluence.configuration.terraStyleHealth", "泰拉样式生命值");
+        add("confluence.configuration.terraStyleArmor", "泰拉样式护甲值");
+        add("confluence.configuration.terraStyleFood", "泰拉样式饱食度");
+        add("confluence.configuration.healthStyle", "生命值样式");
+        add("confluence.configuration.manaStyle", "魔力值样式");
+        add("confluence.configuration.armorStyle", "护甲值样式");
+        add("confluence.configuration.foodStyle", "饱食度样式");
+        add("confluence.configuration.armorStyle.legacy_horizontal", "护甲值样式:精致-水平");
+        add("confluence.configuration.armorStyle.legacy_diagonal", "护甲值样式:精致-对角");
+        add("confluence.configuration.armorStyle.legacy_vertical", "护甲值样式:精致-垂直");
+        add("confluence.configuration.manaStyle.legacy", "魔力值样式:精致");
+        add("confluence.configuration.healthStyle.legacy", "生命值样式:精致");
+        add("confluence.configuration.foodStyle.legacy", "饱食度样式:精致");
+        add("confluence.configuration.healthStyle.overlay", "生命值样式:叠加");
+        add("confluence.configuration.foodStyle.overlay", "饱食度样式:叠加");
+        add("confluence.configuration.Mana", "魔力值");
+        add("confluence.configuration.Armor", "护甲值");
+        add("confluence.configuration.leftEffectIcon", "左侧药水效果标识");
+        add("confluence.configuration.Entity", "生物效果");
+        add("confluence.configuration.hurtRedOverlay", "受击红色显示");
+        add("confluence.configuration.bloodyEffect", "血效果");
+        add("confluence.configuration.goreEffect", "血腥效果");
+        add("confluence.configuration.damageIndicator", "伤害数值显示");
         // 分割
         add("confluence.configuration.Mana.button", "魔力值");
         add("confluence.configuration.Armor.tooltip", "护甲值");
@@ -622,7 +621,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("entity.minecraft.villager.confluence.sky_miller", "天师");
         add("entity.minecraft.villager.confluence.banker", "银行家");
         add("entity.confluence.dart", "毒镖");
-
 
 
         //region blocks
@@ -1468,7 +1466,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(BoomerangItems.FLAMARANG.get(), "烈焰回旋镖");
         add(BoomerangItems.DEVELOPER_BOOMERANG.get(), "开发者回旋镖");
         add(BoomerangItems.BeiDou_BOOMERANG.get(), "北斗飞镖");
-
 
 
         add(AxeItems.COPPER_AXE.get(), "铜斧");

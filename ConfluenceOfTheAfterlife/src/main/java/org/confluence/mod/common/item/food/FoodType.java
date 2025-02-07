@@ -22,7 +22,7 @@ public class FoodType {
     public static final FoodProperties MEAT = new FoodProperties.Builder().nutrition(3).saturationModifier(2.5f).fast().alwaysEdible()
         .effect(() -> new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, 3000), 1f).build();
     //泰拉基础鱼
-    public static final FoodProperties FISH = new FoodProperties.Builder().nutrition(2).saturationModifier(2.5f).fast().alwaysEdible()
+    public static final FoodProperties FISH = new FoodProperties.Builder().nutrition(3).saturationModifier(1.5f).fast().alwaysEdible()
         .build();
     //金鲤鱼
     public static final FoodProperties GOLDEN_CARP = new FoodProperties.Builder().nutrition(6).saturationModifier(6.5f).fast().alwaysEdible()

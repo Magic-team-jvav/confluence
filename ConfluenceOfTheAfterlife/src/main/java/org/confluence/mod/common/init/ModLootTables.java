@@ -10,6 +10,7 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> IRON_CRATE = register("gameplay/crate/iron_crate");
     public static final ResourceKey<LootTable> GOLDEN_CRATE = register("gameplay/crate/golden_crate");
     public static final ResourceKey<LootTable> JUNGLE_CRATE = register("gameplay/crate/jungle_crate");
+    public static final ResourceKey<LootTable> SAVANNA_CRATE = register("gameplay/crate/savanna_crate");
     public static final ResourceKey<LootTable> SKY_CRATE = register("gameplay/crate/sky_crate");
     public static final ResourceKey<LootTable> CORRUPT_CRATE = register("gameplay/crate/corrupt_crate");
     public static final ResourceKey<LootTable> TR_CRIMSON_CRATE = register("gameplay/crate/tr_crimson_crate");
@@ -24,6 +25,7 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> MITHRIL_CRATE = register("gameplay/crate/mithril_crate");
     public static final ResourceKey<LootTable> TITANIUM_CRATE = register("gameplay/crate/titanium_crate");
     public static final ResourceKey<LootTable> THORNS_CRATE = register("gameplay/crate/thorns_crate");
+    public static final ResourceKey<LootTable> WILD_CRATE = register("gameplay/crate/wild_crate");
     public static final ResourceKey<LootTable> SPACE_CRATE = register("gameplay/crate/space_crate");
     public static final ResourceKey<LootTable> DEFACED_CRATE = register("gameplay/crate/defaced_crate");
     public static final ResourceKey<LootTable> BLOOD_CRATE = register("gameplay/crate/blood_crate");

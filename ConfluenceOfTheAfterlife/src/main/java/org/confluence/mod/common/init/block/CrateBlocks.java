@@ -19,6 +19,7 @@ public class CrateBlocks {
     public static final DeferredBlock<Block> IRON_CRATE = register("iron_crate", ModLootTables.IRON_CRATE);
     public static final DeferredBlock<Block> GOLDEN_CRATE = register("golden_crate", ModLootTables.GOLDEN_CRATE);
     public static final DeferredBlock<Block> JUNGLE_CRATE = register("jungle_crate", ModLootTables.JUNGLE_CRATE);
+    public static final DeferredBlock<Block> SAVANNA_CRATE = register("savanna_crate", ModLootTables.SAVANNA_CRATE);
     public static final DeferredBlock<Block> SKY_CRATE = register("sky_crate", ModLootTables.SKY_CRATE);
     public static final DeferredBlock<Block> CORRUPT_CRATE = register("corrupt_crate", ModLootTables.CORRUPT_CRATE);
     public static final DeferredBlock<Block> TR_CRIMSON_CRATE = register("tr_crimson_crate", ModLootTables.TR_CRIMSON_CRATE);
@@ -33,6 +34,7 @@ public class CrateBlocks {
     public static final DeferredBlock<Block> MITHRIL_CRATE = register("mithril_crate", ModLootTables.MITHRIL_CRATE);
     public static final DeferredBlock<Block> TITANIUM_CRATE = register("titanium_crate", ModLootTables.TITANIUM_CRATE);
     public static final DeferredBlock<Block> THORNS_CRATE = register("thorns_crate", ModLootTables.THORNS_CRATE);
+    public static final DeferredBlock<Block> WILD_CRATE = register("wild_crate", ModLootTables.WILD_CRATE);
     public static final DeferredBlock<Block> SPACE_CRATE = register("space_crate", ModLootTables.SPACE_CRATE);
     public static final DeferredBlock<Block> DEFACED_CRATE = register("defaced_crate", ModLootTables.DEFACED_CRATE);
     public static final DeferredBlock<Block> BLOOD_CRATE = register("blood_crate", ModLootTables.BLOOD_CRATE);

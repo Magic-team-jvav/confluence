@@ -933,18 +933,6 @@
                 {
                   "condition": "minecraft:location_check",
                   "predicate": {
-                    "biomes": "savanna"
-                  }
-                },
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
-                    "biomes": "savanna_plateau"
-                  }
-                },
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
                     "biomes": "stony_peaks"
                   }
                 },
@@ -988,12 +976,6 @@
                   "condition": "minecraft:location_check",
                   "predicate": {
                     "biomes": "windswept_hills"
-                  }
-                },
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
-                    "biomes": "windswept_savanna"
                   }
                 },
                 {
@@ -1083,18 +1065,6 @@
                 {
                   "condition": "minecraft:location_check",
                   "predicate": {
-                    "biomes": "savanna"
-                  }
-                },
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
-                    "biomes": "savanna_plateau"
-                  }
-                },
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
                     "biomes": "stony_peaks"
                   }
                 },
@@ -1138,12 +1108,6 @@
                   "condition": "minecraft:location_check",
                   "predicate": {
                     "biomes": "windswept_hills"
-                  }
-                },
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
-                    "biomes": "windswept_savanna"
                   }
                 },
                 {
@@ -1233,18 +1197,6 @@
                 {
                   "condition": "minecraft:location_check",
                   "predicate": {
-                    "biomes": "savanna"
-                  }
-                },
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
-                    "biomes": "savanna_plateau"
-                  }
-                },
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
                     "biomes": "stony_peaks"
                   }
                 },
@@ -1288,12 +1240,6 @@
                   "condition": "minecraft:location_check",
                   "predicate": {
                     "biomes": "windswept_hills"
-                  }
-                },
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
-                    "biomes": "windswept_savanna"
                   }
                 },
                 {
@@ -1383,18 +1329,6 @@
                 {
                   "condition": "minecraft:location_check",
                   "predicate": {
-                    "biomes": "savanna"
-                  }
-                },
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
-                    "biomes": "savanna_plateau"
-                  }
-                },
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
                     "biomes": "stony_peaks"
                   }
                 },
@@ -1440,12 +1374,7 @@
                     "biomes": "windswept_hills"
                   }
                 },
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
-                    "biomes": "windswept_savanna"
-                  }
-                },
+
                 {
                   "condition": "minecraft:location_check",
                   "predicate": {
@@ -1533,18 +1462,6 @@
                 {
                   "condition": "minecraft:location_check",
                   "predicate": {
-                    "biomes": "savanna"
-                  }
-                },
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
-                    "biomes": "savanna_plateau"
-                  }
-                },
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
                     "biomes": "stony_peaks"
                   }
                 },
@@ -1588,12 +1505,6 @@
                   "condition": "minecraft:location_check",
                   "predicate": {
                     "biomes": "windswept_hills"
-                  }
-                },
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
-                    "biomes": "windswept_savanna"
                   }
                 },
                 {
@@ -1683,18 +1594,6 @@
                 {
                   "condition": "minecraft:location_check",
                   "predicate": {
-                    "biomes": "savanna"
-                  }
-                },
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
-                    "biomes": "savanna_plateau"
-                  }
-                },
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
                     "biomes": "stony_peaks"
                   }
                 },
@@ -1738,12 +1637,6 @@
                   "condition": "minecraft:location_check",
                   "predicate": {
                     "biomes": "windswept_hills"
-                  }
-                },
-                {
-                  "condition": "minecraft:location_check",
-                  "predicate": {
-                    "biomes": "windswept_savanna"
                   }
                 },
                 {
@@ -2142,6 +2035,66 @@
           ],
           "name": "confluence:ebony_koi",
           "weight": 3000
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "minecraft:any_of",
+              "terms": [
+                {
+                  "condition": "minecraft:location_check",
+                  "predicate": {
+                    "biomes": "minecraft:savanna"
+                  }
+                },
+                {
+                  "condition": "minecraft:location_check",
+                  "predicate": {
+                    "biomes": "minecraft:savanna_plateau"
+                  }
+                },
+                {
+                  "condition": "minecraft:location_check",
+                  "predicate": {
+                    "biomes": "minecraft:windswept_savanna"
+                  }
+                }
+              ]
+            }
+          ],
+          "name": "confluence:yellow_eel",
+          "weight": 30
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "minecraft:any_of",
+              "terms": [
+                {
+                  "condition": "minecraft:location_check",
+                  "predicate": {
+                    "biomes": "minecraft:savanna"
+                  }
+                },
+                {
+                  "condition": "minecraft:location_check",
+                  "predicate": {
+                    "biomes": "minecraft:savanna_plateau"
+                  }
+                },
+                {
+                  "condition": "minecraft:location_check",
+                  "predicate": {
+                    "biomes": "minecraft:windswept_savanna"
+                  }
+                }
+              ]
+            }
+          ],
+          "name": "confluence:tilapia",
+          "weight": 30
         }
       ],
       "rolls": 1.0

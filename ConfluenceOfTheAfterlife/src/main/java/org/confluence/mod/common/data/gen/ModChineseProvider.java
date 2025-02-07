@@ -1269,6 +1269,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(CrateBlocks.IRON_CRATE.get(), "铁匣");
         add(CrateBlocks.GOLDEN_CRATE.get(), "金匣");
         add(CrateBlocks.JUNGLE_CRATE.get(), "丛林匣");
+        add(CrateBlocks.SAVANNA_CRATE.get(), "热带草原匣");
         add(CrateBlocks.SKY_CRATE.get(), "天空匣");
         add(CrateBlocks.CORRUPT_CRATE.get(), "腐化匣");
         add(CrateBlocks.TR_CRIMSON_CRATE.get(), "猩红匣");
@@ -1282,6 +1283,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(CrateBlocks.MITHRIL_CRATE.get(), "秘银匣");
         add(CrateBlocks.TITANIUM_CRATE.get(), "钛金匣");
         add(CrateBlocks.THORNS_CRATE.get(), "荆棘匣");
+        add(CrateBlocks.WILD_CRATE.get(), "野性匣");
         add(CrateBlocks.SPACE_CRATE.get(), "太空匣");
         add(CrateBlocks.DEFACED_CRATE.get(), "污损匣");
         add(CrateBlocks.BLOOD_CRATE.get(), "血匣");
@@ -1829,6 +1831,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(BowItems.TUNGSTEN_BOW.get(), "钨弓");
         add(BowItems.GOLDEN_BOW.get(), "金弓");
         add(BowItems.PLATINUM_BOW.get(), "铂金弓");
+        add(BowItems.HUNTING_BOW.get(), "猎手弓");
         add(BowItems.FOSSIL_BOW.get(), "石骸弓");
         add(BowItems.DEMON_BOW.get(), "恶魔弓");
         add(BowItems.TENDON_BOW.get(), "肌腱弓");
@@ -2123,6 +2126,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.STINKY_FISH.get(), "臭味鱼");
         add(FoodItems.TUNA.get(), "金枪鱼");
         add(FoodItems.MOTTLED_OILFISH.get(), "斑驳油鱼");
+        add(FoodItems.YELLOW_EEL.get(), "黄鳝");
+        add(FoodItems.TILAPIA.get(), "罗非鱼");
 
         add(FoodItems.WATERLEAF_SEED.get(), "幌菊种子");
         add(FoodItems.FIREBLOSSOM_SEED.get(), "火焰花种子");

@@ -135,6 +135,8 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> COLORFUL_MINERAL_FISH = registerNormalFood("colorful_mineral_fish",FoodType.FISH);
     public static final DeferredItem<BaseFoodItem> CHAOS_FISH = registerNormalFood("chaos_fish",FoodType.FISH);
     public static final DeferredItem<BaseFoodItem> MOTTLED_OILFISH = registerNormalFood("mottled_oilfish",FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> YELLOW_EEL = registerNormalFood("yellow_eel",FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> TILAPIA = registerNormalFood("tilapia",FoodType.FISH);
     public static final DeferredItem<BaseFoodItem> GOLDEN_CARP = registerNormalFood("golden_carp",FoodType.GOLDEN_CARP);
     public static final DeferredItem<BaseFoodItem> OBSIDIAN_FISH = registerFood("obsidian_fish", builder -> builder.initialize().food(FoodType.FISH).isFireResistant());
     public static final DeferredItem<BaseFoodItem> FLASHFIN_KOI = registerFood("flashfin_koi", builder -> builder.initialize().food(FoodType.FISH).isFireResistant());

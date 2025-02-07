@@ -49,7 +49,12 @@ public class BowItems {
     public static final DeferredItem<TerraBowItem> TUNGSTEN_BOW = register("tungsten_bow", 4.0F, 1280);
     public static final DeferredItem<TerraBowItem> GOLDEN_BOW = register("golden_bow", 4.5F, 1408);
     public static final DeferredItem<TerraBowItem> PLATINUM_BOW = register("platinum_bow", 4.5F, 1536);
-    public static final DeferredItem<TerraBowItem> FOSSIL_BOW = register("fossil_bow", 5F, 1536);
+    public static final DeferredItem<TerraBowItem> HUNTING_BOW = register("hunting_bow", () -> new TerraBowItem(3.5F, ModRarity.BLUE,
+            modifier->modifier.addFullPullHitEffect(EffectStrategy.LIGHTS_BANE_EFFECT)
+    ));
+    public static final DeferredItem<TerraBowItem> FOSSIL_BOW = register("fossil_bow", () -> new TerraBowItem(5.5F, ModRarity.BLUE,
+            modifier->modifier.addFullPullHitEffect(EffectStrategy.LIGHTS_BANE_EFFECT)
+    ));
     public static final DeferredItem<TerraBowItem> DEMON_BOW = register("demon_bow", () -> new TerraBowItem(5.5F, ModRarity.BLUE,
             modifier->modifier.addFullPullHitEffect(EffectStrategy.LIGHTS_BANE_EFFECT)
     ));

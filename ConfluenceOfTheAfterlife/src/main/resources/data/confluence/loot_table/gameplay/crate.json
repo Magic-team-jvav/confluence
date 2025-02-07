@@ -309,6 +309,36 @@
         }
       ],
       "rolls": 1.0
+    },
+    {
+      "type": "minecraft:item",
+      "conditions": [
+        {
+          "condition": "minecraft:any_of",
+          "terms": [
+            {
+              "condition": "minecraft:location_check",
+              "predicate": {
+                "biomes": "minecraft:savanna"
+              }
+            },
+            {
+              "condition": "minecraft:location_check",
+              "predicate": {
+                "biomes": "minecraft:savanna_plateau"
+              }
+            },
+            {
+              "condition": "minecraft:location_check",
+              "predicate": {
+                "biomes": "minecraft:windswept_savanna"
+              }
+            }
+          ]
+        }
+      ],
+      "name": "confluence:savanna_crate",
+      "weight": 93
     }
   ],
   "random_sequence": "confluence:gameplay/crate"

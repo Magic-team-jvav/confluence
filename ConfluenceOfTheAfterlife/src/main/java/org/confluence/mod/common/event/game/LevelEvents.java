@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.ItemAbilities;
@@ -20,6 +21,7 @@ import net.neoforged.neoforge.event.level.ExplosionEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.data.saved.BrushData;
+import org.confluence.mod.common.entity.projectile.BoulderEntity;
 import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.entity.projectile.bomb.ScarabBombEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
@@ -81,6 +83,15 @@ public final class LevelEvents {
                 BaseBombEntity bomb = new BaseBombEntity(ModEntities.BOMB_ENTITY.get(), level);
                 bomb.setPos(event.getPos().getCenter());
                 level.addFreshEntity(bomb);
+            }
+        }
+
+        if (ModSecretSeeds.BOULDER_WORLD.match()){
+            if (serverPlayer.serverLevel().random.nextDouble() <= 0.01D){
+                BoulderEntity entity = new BoulderEntity(serverPlayer.serverLevel(), event.getPos().getCenter(), blockState);
+                entity.targetTo(serverPlayer);
+                entity.getEntityData().set(BoulderEntity.DATA_VERTICAL, false);
+                serverPlayer.serverLevel().addFreshEntity(entity);
             }
         }
     }

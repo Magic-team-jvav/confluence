@@ -20,6 +20,7 @@ public final class ModSecretSeeds {
     public static final SecretSeed CELEBRATIONMK10 = register(Celebrationmk10::new);
     public static final SecretSeed THE_CONSTANT = register(TheConstant::new);
     public static final SecretSeed NO_TRAPS = register(NoTraps::new);
+    public static final SecretSeed BOULDER_WORLD = register(BoulderWorld::new);
     public static final SecretSeed DONT_DIG_UP = register(DontDigUp::new);
     public static final SecretSeed GET_FIXED_BOI = register(GetFixedBoi::new);
 

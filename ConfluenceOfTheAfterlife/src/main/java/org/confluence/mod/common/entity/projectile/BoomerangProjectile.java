@@ -24,7 +24,6 @@ import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.sword.Boomerang;
 import org.confluence.mod.common.item.sword.Boomerang.BoomerangModifier;
-import org.confluence.terra_curio.common.init.TCAttributes;
 
 public class BoomerangProjectile extends AbstractHurtingProjectile {
 
@@ -192,11 +191,11 @@ public class BoomerangProjectile extends AbstractHurtingProjectile {
     public void onRemovedFromLevel(){
         if(!level().isClientSide && !weapon.isEmpty() && getOwner() != null) {
             Boomerang.setBacked(weapon, SingleBooleanComponent.TRUE);
-            Integer count = getOwner().getData(ModAttachmentTypes.WEAPON_STORAGE).boomerangCounter.compute(weapon.getItem(), (k, c) -> c != null && c > 0? c - 1 : 0);
 
+            getOwner().getData(ModAttachmentTypes.WEAPON_STORAGE).tryReduce(weapon.getItem());
             //  提前部署
-            if(getOwner() instanceof Player player &&
-                    (modifier.shouldWaitForBack && !modifier.shouldApplyCd || modifier.maxCount - 1 == count)
+            if(getOwner() instanceof Player player
+//                    && (modifier.shouldWaitForBack && !modifier.shouldApplyCd || modifier.maxCount - 1 == count)
             ){
 
                 player.getCooldowns().removeCooldown(weapon.getItem());

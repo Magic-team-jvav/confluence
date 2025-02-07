@@ -78,8 +78,7 @@ public class Boomerang extends Item {
 //            if(usedHand == InteractionHand.OFF_HAND) stack.hurtAndBreak(1, player, EquipmentSlot.OFFHAND);
 //            else stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
         if(boomerangModifier.shouldApplyCd ) {
-            var map = player.getData(ModAttachmentTypes.WEAPON_STORAGE).boomerangCounter;
-            Integer count = map.compute(this, (k, v) -> v == null? 1 : v + 1);
+            int count = player.getData(ModAttachmentTypes.WEAPON_STORAGE).tryIncrease(this);
             if(count < boomerangModifier.maxCount) player.getCooldowns().addCooldown(this, boomerangModifier.cd);
             else player.getCooldowns().addCooldown(this, 100); //最大等待时间
         }

@@ -27,6 +27,7 @@
         "block.BaseContainerBlockEntityMixin",
         "block.BlockBehaviour$BlockStateBaseMixin",
         "block.BlockMixin",
+        "block.CropBlockMixin",
         "chunk.BlockCounterMixin",
         "chunk.ChunkSerializerMixin",
         "chunk.LevelChunkMixin",

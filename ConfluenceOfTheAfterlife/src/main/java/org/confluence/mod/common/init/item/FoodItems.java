@@ -164,7 +164,7 @@ public class FoodItems {
 
     public static DeferredItem<BaseFoodItem> registerFood(String name, Consumer<BaseFoodItem.Builder> consumer) {
         return ITEMS.register(name, () -> {
-            BaseFoodItem.Builder builder = BaseFoodItem.builder(name);
+            BaseFoodItem.Builder builder = BaseFoodItem.builder();
             consumer.accept(builder);
             return builder.build();
         });
@@ -172,14 +172,14 @@ public class FoodItems {
 
     public static DeferredItem<BaseFoodItem> registerNormalFood(String name, FoodProperties foodProperties) {
         return ITEMS.register(name, () -> {
-            BaseFoodItem.Builder builder = BaseFoodItem.builder(name).initialize().food(foodProperties).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT);
+            BaseFoodItem.Builder builder = BaseFoodItem.builder().initialize().food(foodProperties).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT);
             return builder.build();
         });
     }
 
     public static DeferredItem<BaseFoodItem> registerContainerFood(String name, FoodProperties foodProperties, Item craftRemainder, int duration, UseAnim useAnim, SoundEvent drinkingSoundType, SoundEvent eatingSoundType) {
         return ITEMS.register(name, () -> {
-            BaseFoodItem.Builder builder = BaseFoodItem.builder(name).initialize().food(foodProperties).craftRemainder(craftRemainder).duration(d -> duration).useAnim(u -> useAnim).drinkingSound(s -> drinkingSoundType).eatingSound(e -> eatingSoundType);
+            BaseFoodItem.Builder builder = BaseFoodItem.builder().initialize().food(foodProperties).craftRemainder(craftRemainder).duration(d -> duration).useAnim(u -> useAnim).drinkingSound(s -> drinkingSoundType).eatingSound(e -> eatingSoundType);
             return builder.build();
         });
     }

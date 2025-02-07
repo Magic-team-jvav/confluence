@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.food;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
@@ -7,6 +8,9 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
+import org.confluence.mod.common.init.ModSecretSeeds;
+import org.confluence.mod.common.init.item.FoodItems;
 
 import java.util.function.Function;
 
@@ -18,8 +22,8 @@ public class BaseFoodItem extends Item {
         this.builder = builder;
     }
 
-    public static Builder builder(String name) {
-        return new Builder(name, new Properties());
+    public static Builder builder() {
+        return new Builder(new Properties());
     }
 
     @Override
@@ -42,6 +46,13 @@ public class BaseFoodItem extends Item {
         return builder.eatingSoundType.apply(null);
     }
 
+    @Override
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
+        if (stack.is(FoodItems.CHERRY) && level instanceof ServerLevel serverLevel && ModSecretSeeds.NO_TRAPS.match(serverLevel) && level.random.nextFloat() < 0.7F) {
+            level.explode(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), 2.5F, false, Level.ExplosionInteraction.MOB);
+        }
+        return super.finishUsingItem(stack, level, livingEntity);
+    }
 
     public static class Builder {
         private final Properties properties;
@@ -50,7 +61,7 @@ public class BaseFoodItem extends Item {
         private Function<Void, SoundEvent> eatingSoundType = sound -> SoundEvents.EMPTY;
         private Function<ItemStack, UseAnim> useAnim = useAnim -> UseAnim.NONE;
 
-        Builder(String name, Properties properties) {
+        Builder(Properties properties) {
             this.properties = properties;
         }
 
@@ -59,16 +70,12 @@ public class BaseFoodItem extends Item {
         }
 
         public Builder food(FoodProperties foodProperties) {
-            if (foodProperties != null) {
-                properties.food(foodProperties);
-            }
+            properties.food(foodProperties);
             return this;
         }
 
         public Builder craftRemainder(Item item) {
-            if (item != null) {
-                properties.craftRemainder(item);
-            }
+            properties.craftRemainder(item);
             return this;
         }
 

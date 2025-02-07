@@ -88,6 +88,8 @@ public class FunctionalBlocks {
     public static final Supplier<GeyserBlock> GEYSER_BLOCK = registerWithEntity("geyser_block", GeyserBlock::new);
     public static final Supplier<BoulderBlock> NORMAL_BOULDER = registerWithEntity("normal_boulder", BoulderBlock::new);
     public static final Supplier<BoulderBlock> OAK_LOG_BOULDER = registerWithEntity("oak_log_boulder", BoulderBlock::new);
+    public static final Supplier<FollowerBoulderBlock> FOLLOWER_BOULDER = registerWithEntity("follower_boulder", FollowerBoulderBlock::new);
+    public static final Supplier<ExplodeBoulderBlock> EXPLODE_BOULDER = registerWithEntity("explode_boulder", ExplodeBoulderBlock::new);
     public static final Supplier<DetonatorBlock> DETONATOR = registerWithEntity("detonator", () -> new DetonatorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_TRAPDOOR)));
     public static final Supplier<MechanicalFragileBlock> MECHANICAL_FRAGILE_SANDSTONE = registerWithEntity("mechanical_fragile_sandstone", () -> new MechanicalFragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE), Blocks.SANDSTONE::defaultBlockState));
 

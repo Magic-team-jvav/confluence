@@ -4,6 +4,7 @@ import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terraentity.init.TEItems;
@@ -1622,9 +1623,15 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(TEItems.SLIME_STAFF.get(), "史莱姆召唤杖");
 
+        add(ModEntities.BOULDER.get(), "巨石");
+        add(ModEntities.FOLLOWER_BOULDER.get(), "跟踪巨石");
+        add(ModEntities.EXPLODE_BOULDER.get(), "爆炸巨石");
+
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");
         add(FunctionalBlocks.NORMAL_BOULDER.get(), "巨石");
+        add(FunctionalBlocks.FOLLOWER_BOULDER.get(), "跟踪巨石");
+        add(FunctionalBlocks.EXPLODE_BOULDER.get(), "爆炸巨石");
         add(FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get(), "瞬爆TNT");
         add(FunctionalBlocks.SWITCH.get(), "开关");
         add(FunctionalBlocks.SIGNAL_ADAPTER.get(), "信号适配器");

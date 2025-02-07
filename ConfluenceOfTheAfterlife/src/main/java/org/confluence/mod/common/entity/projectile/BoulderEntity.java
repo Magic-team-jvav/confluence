@@ -40,7 +40,7 @@ public class BoulderEntity extends Projectile {
     public float rotateO = 0.0F;
     public float rotate = 0.0F;
 
-    public BoulderEntity(EntityType<BoulderEntity> pEntityType, Level pLevel) {
+    public BoulderEntity(EntityType<? extends BoulderEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 

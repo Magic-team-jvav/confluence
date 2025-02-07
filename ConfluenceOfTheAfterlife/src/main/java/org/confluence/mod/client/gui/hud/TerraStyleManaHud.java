@@ -80,7 +80,7 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
                 int heightMana = guiGraphics.guiHeight() - minecraft.gui.rightHeight;
                 minecraft.gui.rightHeight += 10;
                 RandomSource random = RandomSource.create(1919810);
-                colorDraw(guiGraphics, minecraft, random, OVERLAY_TEXTURE, MANA, MANA_HIGH, MANA_LOW, maxMana, currentMana, widthMana, heightMana, OVERLAY_SIZE, 10, false, 2);
+                colorDraw(guiGraphics, minecraft, random, OVERLAY_TEXTURE, MANA, MANA_HIGH, MANA_LOW, maxMana, currentMana, widthMana, heightMana, OVERLAY_SIZE, 10, false);
             }
         };
 

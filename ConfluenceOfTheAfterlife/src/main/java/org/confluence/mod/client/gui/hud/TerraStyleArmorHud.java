@@ -79,7 +79,7 @@ public class TerraStyleArmorHud implements LayeredDraw.Layer {
                 int heightArmor = guiGraphics.guiHeight() - minecraft.gui.leftHeight;
                 minecraft.gui.leftHeight += 10;
                 RandomSource random = RandomSource.create(59160153);
-                colorDraw(guiGraphics, minecraft, random, OVERLAY_TEXTURE, ARMOR, ARMOR_HIGH, ARMOR_LOW, armor, widthArmor, heightArmor, OVERLAY_SIZE, 20, true, 3);
+                colorDraw(guiGraphics, minecraft, random, OVERLAY_TEXTURE, ARMOR, ARMOR_HIGH, ARMOR_LOW, armor, widthArmor, heightArmor, OVERLAY_SIZE, 20, true);
 
                 //RandomSource random = RandomSource.create(59160153);
                 //int widthArmor = guiGraphics.guiWidth() / 9;

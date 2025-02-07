@@ -168,7 +168,7 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                 int heightHealth = guiGraphics.guiHeight() - minecraft.gui.leftHeight;
                 minecraft.gui.leftHeight += 10;
                 RandomSource random = RandomSource.create(114514);
-                colorDraw(guiGraphics, minecraft, random, OVERLAY_TEXTURE, HEALTH, HEALTH_HIGH, HEALTH_LOW, maxHealth, currentHealth, widthHealth, heightHealth, OVERLAY_SIZE, 0, true, 0);
+                colorDraw(guiGraphics, minecraft, random, OVERLAY_TEXTURE, HEALTH, HEALTH_HIGH, HEALTH_LOW, maxHealth, currentHealth, widthHealth, heightHealth, OVERLAY_SIZE, 0, true);
             }
         };
 

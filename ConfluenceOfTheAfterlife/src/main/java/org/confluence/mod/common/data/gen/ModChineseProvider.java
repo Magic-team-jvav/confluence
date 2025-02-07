@@ -244,7 +244,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("jei.tooltip.item.confluence.tabi.0","有几率从骷髅李小龙身上获得。");
         add("jei.tooltip.item.confluence.hermes_boots.0","有几率从地下宝箱获得。");
         add("jei.tooltip.item.confluence.flurry_boots.0","有几率从冰冻匣/针叶木匣，冰冻箱，冰雪宝箱怪中获得。");
-        add("jei.tooltip.item.confluence.sailfish_boots.0","有几率从木匣/铁匣，铁匣/秘银匣，沉船宝箱，废墟宝箱中获得。");
+        add("jei.tooltip.item.confluence.sailfish_boots.0","有几率从木匣/铁匣，珍珠木匣/秘银匣，沉船宝箱，废墟宝箱中获得。");
         add("jei.tooltip.item.confluence.dunerider_boots.0", "有几率从绿洲匣/幻象匣，砂岩箱，沙漠神殿宝箱获得。");
         add("jei.tooltip.item.confluence.water_walking_boots.0", "有几率从海洋匣/海边匣，水中箱，沉船宝箱，废墟宝箱中获得。");
         add("jei.tooltip.item.confluence.cloud_in_a_bottle.0", "有几率从地下宝箱，洞穴宝箱中获得。");
@@ -252,7 +252,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("jei.tooltip.item.confluence.fart_in_a_jar.0", "合成获得。");
         add("jei.tooltip.item.confluence.diving_helmet.0", "有几率从鲨鱼身上获得。");
         add("jei.tooltip.item.confluence.diving_helmet.1", "有几率从溺尸身上获得。");
-        add("jei.tooltip.item.confluence.tsunami_in_a_bottle.0", "有几率从木匣/铁匣，铁匣/秘银匣，沉船宝箱，废墟宝箱中获得。");
+        add("jei.tooltip.item.confluence.tsunami_in_a_bottle.0", "有几率从木匣/铁匣，珍珠木匣/秘银匣，沉船宝箱，废墟宝箱中获得。");
         add("jei.tooltip.item.confluence.shiny_red_balloon.0", "有几率从天蓝匣/天域匣，天域箱中获得。");
         add("jei.tooltip.item.confluence.lucky_horseshoe.0", "有几率从天蓝匣/天域匣，天域箱中获得。");
         add("jei.tooltip.item.confluence.inner_tube.0", "有几率从海洋匣/海边匣，水中箱中获得。");

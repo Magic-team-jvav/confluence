@@ -47,12 +47,15 @@ import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
+import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.mixed.IAbstractMinecart;
 import org.confluence.mod.mixed.IFishingHook;
 import org.confluence.mod.mixed.IServerPlayer;
+import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.EchoVisibilityPacketS2C;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
+import org.confluence.mod.network.s2c.SecretFlagSyncPacketS2C;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -74,6 +77,8 @@ public final class PlayerEvents {
             FishingPowerInfoPacketS2C.sendToClient(serverPlayer);
             EchoVisibilityPacketS2C.sendToClient(serverPlayer);
             BoulderWorld.forceSetAccessory(serverPlayer);
+            TheConstant.PostEffectPacketS2C.sendToClient(serverPlayer);
+            SecretFlagSyncPacketS2C.sendToAll(IWorldOptions.getSecretFlag(serverPlayer.server));
         }
     }
 

@@ -91,6 +91,7 @@
         "client.WorldCreationUiStateMixin",
         "client.WorldSelectionList$WorldListEntryMixin",
         "client.accessor.FontAccessor",
+        "client.accessor.GameRendererAccessor",
         "client.accessor.ParticleAccessor",
         "client.entity.ClientEntityMixin",
         "client.entity.LocalPlayerMixin",

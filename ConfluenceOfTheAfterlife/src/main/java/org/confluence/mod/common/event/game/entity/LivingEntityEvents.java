@@ -104,6 +104,10 @@ public final class LivingEntityEvents {
             }
             DeathMotionPacketS2C.sendToAll(living.getId(), motion);
         }
+
+        if (living instanceof ServerPlayer serverPlayer) {
+            PlayerUtils.dropMoney(serverPlayer);
+        }
     }
 
     @SubscribeEvent

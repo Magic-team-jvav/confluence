@@ -229,8 +229,6 @@ public final class PlayerEvents {
         if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
         if (event.isFromEndFight()) {
             serverPlayer.getPersistentData().putFloat("confluence:cached_health", serverPlayer.getHealth());
-        } else {
-            PlayerUtils.dropMoney(serverPlayer);
         }
     }
 

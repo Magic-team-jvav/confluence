@@ -16,7 +16,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -26,6 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ArrowItems;
+import org.confluence.mod.common.item.bow.BaseArrowItem;
 import org.confluence.mod.common.item.sword.stagedy.EffectStrategy;
 
 import javax.annotation.Nullable;
@@ -59,14 +59,22 @@ public class BaseArrowEntity extends AbstractArrow {
                 .setDamage(4.5f).setCauseFire(10*20));
         static Tuple FROSTBURN_ARROW_ENTITY = create("textures/entity/arrow/frostburn_arrow.png",()->new Builder()
                 .setDamage(4.5f).addOnHitEffect(EffectStrategy.TIME_EFFECT.apply(ModEffects.FROST_BURN,10*20)));
+        static Tuple FOSSIL_ARROW_ENTITY = create("textures/entity/arrow/frostburn_arrow.png",()->new Builder()
+                .setDamage(4f).setPenetration(2));
+        static Tuple FLY_FISH_ENTITY = create("textures/entity/arrow/frostburn_arrow.png",()->new Builder()
+                .setDamage(2f).setDamageInRain(4).setSpeedUpInRain(1.5f).setSpeedInertiaInWater(0.8f));
     }
 
-    public static Map<Item, Tuple> selectArrowFromItemMap = Map.of(
+    // 箭的属性
+    public static Map<BaseArrowItem, Tuple> selectArrowFromItemMap = Map.of(
             ArrowItems.STAR_ARROW.get(), Tuple.STAR_ARROW_ENTITY,
             ArrowItems.UNHOLY_ARROW.get(), Tuple.UNHOLY_ARROW_ENTITY,
             ArrowItems.FLAMING_ARROW.get(), Tuple.FLAMING_ARROW_ENTITY,
-            ArrowItems.FROSTBURN_ARROW.get(), Tuple.FROSTBURN_ARROW_ENTITY
+            ArrowItems.FROSTBURN_ARROW.get(), Tuple.FROSTBURN_ARROW_ENTITY,
+            ArrowItems.FOSSIL_ARROW.get(), Tuple.FOSSIL_ARROW_ENTITY,
+            ArrowItems.FLY_FISH_ARROW.get(), Tuple.FLY_FISH_ENTITY
     );
+
 
         /*
         HELLFIRE_ARROW
@@ -85,15 +93,32 @@ public class BaseArrowEntity extends AbstractArrow {
     public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
-
-    public BaseArrowEntity(LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon) {
+    /**
+     * 自定义箭矢
+     * @param owner 发射者
+     * @param pickupItemStack 捡起的物品
+     * @param firedFromWeapon 发射的武器
+     * @param arrow 预定义的箭的类型
+     */
+    public BaseArrowEntity(LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, BaseArrowItem arrow) {
         super(ModEntities.ARROW_PROJECTILE.get(), owner, owner.level(), pickupItemStack, firedFromWeapon);
-        this.baseArrowTuple = selectArrowFromItemMap.get(pickupItemStack.getItem());
-        this.modify = baseArrowTuple.attr.get();
-
+        this.baseArrowTuple = selectArrowFromItemMap.get(arrow);
+        if(baseArrowTuple==null)// 不应该出现这种情况
+            this.modify = new Builder();
+        else
+            this.modify = baseArrowTuple.attr.get();
     }
-    public BaseArrowEntity(LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, Consumer<Builder> modifyConsumer) {
-        this(owner,pickupItemStack,firedFromWeapon);
+
+    /**
+     * 自定义箭矢
+     * @param owner 发射者
+     * @param pickupItemStack 捡起的物品
+     * @param firedFromWeapon 发射的武器
+     * @param arrow 预定义的箭的类型
+     * @param modifyConsumer 属性额外修饰
+     */
+    public BaseArrowEntity(LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, BaseArrowItem arrow, Consumer<Builder> modifyConsumer) {
+        this(owner,pickupItemStack,firedFromWeapon, arrow);
         if(modifyConsumer!=null) modifyConsumer.accept(modify);
     }
 
@@ -115,7 +140,7 @@ public class BaseArrowEntity extends AbstractArrow {
 
     public void shoot(double pX, double pY, double pZ, float pVelocity, float pInaccuracy) {
         super.shoot(pX, pY, pZ, pVelocity, pInaccuracy);
-        this.setDeltaMovement(getDeltaMovement().scale(modify.speedFactor));
+        this.setDeltaMovement(getDeltaMovement().scale(modify.speedFactor * (level().isRaining() ? modify.speedUpInRain : 1)));
     }
 
     protected void onHitEntity(EntityHitResult pResult) {
@@ -162,11 +187,14 @@ public class BaseArrowEntity extends AbstractArrow {
             long j = this.random.nextInt(i / 2 + 2);
             i = (int)Math.min(j + (long)i, 2147483647L);
         }
+        // 雨天伤害修正
+        float fi = this.level().isRaining()? modify.damageInRain + i : i;
 
+        // 重复穿透
         havenBeen.add((LivingEntity) pResult.getEntity());
 
         int k = entity.getRemainingFireTicks();
-        if(entity.hurt(damagesource, i + modify.base_damage)){
+        if(entity.hurt(damagesource, fi + modify.base_damage)){
             this.playSound(getSound(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
             LivingEntity livingentity = (LivingEntity)entity;
             this.doPostHurtEffects(livingentity);
@@ -280,6 +308,10 @@ public class BaseArrowEntity extends AbstractArrow {
         }
     }
 
+    @Override
+    protected float getWaterInertia() {
+        return modify.speedUpInWater * super.getWaterInertia();
+    }
 
 
 
@@ -301,6 +333,13 @@ public class BaseArrowEntity extends AbstractArrow {
         private float speedFactor = 1;
         private float knockBack = 0;
         private int causeFireTick = 0;
+
+        // 雨天增益
+        private float speedUpInRain = 1;
+        private float speedUpInWater = 1;
+        private float damageInRain = 0;
+
+        private BaseArrowItem transformArrow = null;
         public final List<BiConsumer<LivingEntity, LivingEntity>> onHitEffect = new ArrayList<>();
         public final List<BiConsumer<LivingEntity, LivingEntity>> fullPullHitEffect = new ArrayList<>();
 
@@ -321,7 +360,18 @@ public class BaseArrowEntity extends AbstractArrow {
             this.knockBack = factor;
             return this;
         }
-
+        public Builder setSpeedUpInRain(float speedUp){//水下和雨天加速
+            this.speedUpInRain = speedUp;
+            return this;
+        }
+        public Builder setSpeedInertiaInWater(float speedUp){//水下加速
+            this.speedUpInWater = speedUp;
+            return this;
+        }
+        public Builder setDamageInRain(float damage){//水下和雨天伤害修正
+            this.damageInRain = damage;
+            return this;
+        }
 
         public Builder setPenetration(int count){//穿透次数
             type|= Tag.penetration;
@@ -347,8 +397,15 @@ public class BaseArrowEntity extends AbstractArrow {
             this.causeFireTick = tick;
             return this;
         }
+        public Builder setTransformArrow(BaseArrowItem arrow){
+            this.transformArrow = arrow;
+            return this;
+        }
 
-
+        @Nullable
+        public BaseArrowItem getTransformArrow() {
+            return transformArrow;
+        }
     }
 
 

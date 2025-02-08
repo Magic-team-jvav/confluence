@@ -54,6 +54,7 @@ public class Boomerang extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+        if(usedHand == InteractionHand.OFF_HAND) return InteractionResultHolder.fail(player.getItemInHand(usedHand));
         ItemStack stack = player.getItemInHand(usedHand);
         // 等待返回且未到达最大等待时间
         if(boomerangModifier.shouldWaitForBack && !isBacked(stack)

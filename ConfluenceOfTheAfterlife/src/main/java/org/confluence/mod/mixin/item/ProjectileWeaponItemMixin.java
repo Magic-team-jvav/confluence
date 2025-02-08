@@ -26,9 +26,10 @@ public abstract class ProjectileWeaponItemMixin {
     private void modifyProjectile(ServerLevel level, LivingEntity shooter, InteractionHand hand, ItemStack weapon, List<ItemStack> projectileItems, float velocity, float inaccuracy, boolean isCrit, LivingEntity target, CallbackInfo ci, @Local Projectile projectile) {
         if (projectile instanceof AbstractArrow abstractArrow) {
             ShortBowItem.applyToArrow(weapon, abstractArrow);
+            // 激活弓箭满蓄力特殊效果
             if(abstractArrow instanceof BaseArrowEntity terraArrow){
                 WeaponStorage data = shooter.getData(ModAttachmentTypes.WEAPON_STORAGE);
-                if(data.bowFullPull){ // 激活弓箭满蓄力特殊效果
+                if(data.bowFullPull){
                     terraArrow.fullPull = true;
                     data.bowFullPull = false;
                 }

@@ -18,6 +18,9 @@ public class ArrowItems {
     public static final DeferredItem<BaseArrowItem> FROSTBURN_ARROW = ITEMS.register("frostburn_arrow", () -> new  BaseArrowItem(ModRarity.WHITE));
     public static final DeferredItem<BaseArrowItem> BONE_ARROW = ITEMS.register("bone_arrow", () -> new  BaseArrowItem(ModRarity.WHITE));
     public static final DeferredItem<BaseArrowItem> SHIMMER_ARROW = ITEMS.register("shimmer_arrow", () -> new BaseArrowItem(ModRarity.WHITE));
+    public static final DeferredItem<BaseArrowItem> FOSSIL_ARROW = ITEMS.register("fossil_arrow", () -> new BaseArrowItem(ModRarity.WHITE));
+    public static final DeferredItem<BaseArrowItem> FLY_FISH_ARROW = ITEMS.register("fly_fish_arrow", () -> new BaseArrowItem(ModRarity.WHITE));
+
 
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
         ITEMS.getEntries().forEach(item -> tag.add(item.get()));

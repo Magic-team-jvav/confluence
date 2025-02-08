@@ -50,7 +50,9 @@ import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.entity.ai.Boss;
+import org.confluence.terraentity.init.TEEffects;
 import org.confluence.terraentity.init.TEEntities;
+import org.confluence.terraentity.init.TETags;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class LivingEntityEvents {
@@ -163,6 +165,14 @@ public final class LivingEntityEvents {
         //amount = BreathingReed.consumer(damagingEntity, damageSource, amount);
         amount = TheConstant.applyAttackDamage(causer, amount);
 
+        // 召唤物集火伤害加成
+        if(damageSource.is(TETags.DamageTypes.SUMMONER)){
+            if(damagingEntity.hasEffect(TEEffects.SUMMON_FOCUS)){
+                amount = amount + 2;
+                event.setNewDamage(amount);
+            }
+        }
+
         // 暴击判定和伤害显示
         boolean crit = false;
         if (!TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE) && causer instanceof Player player) {
@@ -185,6 +195,8 @@ public final class LivingEntityEvents {
         Component component = Component.literal(text).withStyle(crit ? ChatFormatting.DARK_RED : ChatFormatting.GOLD, ChatFormatting.BOLD);
         level.sendParticles(new DamageIndicatorOptions(component, crit), pos.x, damagingEntity.getBoundingBoxForCulling().maxY, pos.z, 1, 0.1, 0.1, 0.1, 0);
         event.setNewDamage(amount);
+
+
     }
 
     @SubscribeEvent
@@ -210,6 +222,7 @@ public final class LivingEntityEvents {
             }
 
         }
+
     }
 
     @SubscribeEvent

@@ -166,6 +166,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.fly_speed", "Fly Speed");
         add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "Full Pull Effects");
         add("tooltip.item.confluence.has_proj", "Has Projectile");
+        add("tooltip.item.confluence.arrow_transform", "Wooden Arrow Transform");
+
+
         add("tooltip.item.confluence.radio_thing.0", "Allows the user to see the world differently");
         add("tooltip.item.terra_curio.radio_thing.1", "'Forbidden Knowledge echoes from the radio...'");
 

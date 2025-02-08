@@ -7,6 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.Unbreakable;
@@ -25,7 +26,8 @@ import java.util.function.Consumer;
 public class TerraBowItem extends BowItem {
 
     public float baseDamage;
-    public Consumer<BaseArrowEntity.Builder> modifyArrowBuilder;
+
+    public Consumer<BaseArrowEntity.Builder> modifyArrowBuilder = b->{};
 
     public BaseArrowEntity.Builder arrowModifier;
 
@@ -77,7 +79,7 @@ public class TerraBowItem extends BowItem {
 
     @Override
     public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remainingUseDuration) {
-        if(stack.is(ModTags.Items.FAST_BOW)) {
+        if(!this.arrowModifier.fullPullHitEffect.isEmpty()) {
             float f = getUseDuration(stack, entity) - remainingUseDuration;
             if (f < 16)
                 entity.getData(ModAttachmentTypes.WEAPON_STORAGE).bowFullPull = false;
@@ -101,6 +103,10 @@ public class TerraBowItem extends BowItem {
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.bow_full_pull_on_hit_effects").append(": ").append(String.valueOf(this.arrowModifier.fullPullHitEffect.size())).withColor(0xFF00FF));
         }
 
+        Item transformArrow = arrowModifier.getTransformArrow();
+        if(transformArrow!=null){
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.arrow_transform").append(": ").append(Component.translatable(transformArrow.getDescriptionId())).withColor(0xF1b0F4));
+        }
 
     }
 

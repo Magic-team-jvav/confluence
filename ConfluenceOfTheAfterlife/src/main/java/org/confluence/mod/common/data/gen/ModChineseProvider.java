@@ -191,6 +191,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.fly_speed", "飞行速度");
         add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "蓄满效果");
         add("tooltip.item.confluence.has_proj", "剑气");
+        add("tooltip.item.confluence.arrow_transform", "木箭转换");
+
         add("tooltip.item.confluence.radio_thing.0", "允许使用者以不同的方式看世界");
         add("tooltip.item.terra_curio.radio_thing.1", "“禁忌的知识在其中回响……”");
 
@@ -635,6 +637,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("entity.minecraft.villager.confluence.sky_miller", "天师");
         add("entity.minecraft.villager.confluence.banker", "银行家");
         add("entity.confluence.dart", "毒镖");
+        add(ModEntities.ARROW_PROJECTILE.get(), "泰拉箭");
+
 
 
         //region blocks
@@ -1326,6 +1330,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArrowItems.FROSTBURN_ARROW.get(), "寒霜箭");
         add(ArrowItems.BONE_ARROW.get(), "骨箭");
         add(ArrowItems.SHIMMER_ARROW.get(), "微光箭");
+        add(ArrowItems.FOSSIL_ARROW.get(), "化石箭");
+        add(ArrowItems.FLY_FISH_ARROW.get(), "飞鱼箭");
+
+
 
         //endregion blocks
 
@@ -1865,7 +1873,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(BowItems.DEMON_BOW.get(), "恶魔弓");
         add(BowItems.TENDON_BOW.get(), "肌腱弓");
 
-
+        add(BowItems.DAEDALUS_STORM_BOW.get(), "代达罗斯风暴弓");
         add(BowItems.DEVELOPER_BOW.get(), "开发者弓");
 
         // 盔甲

@@ -243,7 +243,15 @@ public final class PlayerUtils {
         int[] coins = decodeCoin(have - cost);
 
         for (int i = 0; i < SIZE_COINS; i++) {
-            player.getInventory().add(new ItemStack(INDEX_2_COIN.apply(i), coins[i]));
+            int coin = coins[i];
+            if (coin > 0) {
+                CoinItem coinItem = INDEX_2_COIN.apply(i);
+                while (coin > 99) {
+                    player.getInventory().add(new ItemStack(coinItem, 99));
+                    coin -= 99;
+                }
+                player.getInventory().add(new ItemStack(coinItem, coin));
+            }
         }
         return true;
     }

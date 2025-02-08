@@ -8,11 +8,7 @@
 	],
 	"key": {
 		"#": {
-			"type": "terra_curio:amount_ingredient",
-			"ingredient": {
-				"tag": "minecraft:stone_crafting_materials"
-			},
-			"count": 5
+			"tag": "minecraft:stone_crafting_materials"
 		}
 	},
 	"result": {

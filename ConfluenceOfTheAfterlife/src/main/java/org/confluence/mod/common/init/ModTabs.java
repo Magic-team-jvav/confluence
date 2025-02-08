@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init;
 
+import com.xiaohunao.terra_moment.common.init.TMCreativeModeTab;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -8,6 +9,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import nowebsite.makertechno.terra_furniture.common.init.TFTabs;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.functional.DeathChestBlock;
@@ -15,6 +17,8 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terra_curio.common.init.TCTabs;
+import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.TEItems;
 
 import java.util.function.Consumer;
@@ -24,15 +28,6 @@ import java.util.function.Supplier;
 public final class ModTabs {
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Confluence.MODID);
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> BUILDING_BLOCKS = TABS.register("building_blocks",
-            () -> CreativeModeTab.builder().icon(() -> IconItems.BLOCKS_ICON.get().getDefaultInstance())
-                    .title(Component.translatable("creativetab.confluence.building_blocks"))
-                    .displayItems((parameters, output) -> {
-                        LogBlockSet.acceptBuilding(output);
-                        DecorativeBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
-                        StatueBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
-                    }).build()
-    );
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> NATURAL_BLOCKS = TABS.register("natural_blocks",
             () -> CreativeModeTab.builder().icon(() -> IconItems.NATURE_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.natural_blocks"))
@@ -46,6 +41,45 @@ public final class ModTabs {
                         PotBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
                     }).build()
     );
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> BUILDING_BLOCKS = TABS.register("building_blocks",
+            () -> CreativeModeTab.builder().icon(() -> IconItems.BLOCKS_ICON.get().getDefaultInstance())
+                    .title(Component.translatable("creativetab.confluence.building_blocks"))
+                    .displayItems((parameters, output) -> {
+                        LogBlockSet.acceptBuilding(output);
+                        DecorativeBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
+                        StatueBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
+                    }).withTabsAfter(TFTabs.FURNITURE.getId()).withTabsBefore(NATURAL_BLOCKS.getId()).build()
+    );
+    /* 家具 */
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MECHANICAL = TABS.register("mechanical",
+            () -> CreativeModeTab.builder().icon(() -> IconItems.MECHANICAL_ICON.get().getDefaultInstance())
+                    .title(Component.translatable("creativetab.confluence.mechanical"))
+                    .displayItems((parameters, output) -> {
+                        output.accept(ToolItems.RED_WRENCH.get());
+                        output.accept(ToolItems.GREEN_WRENCH.get());
+                        output.accept(ToolItems.BLUE_WRENCH.get());
+                        output.accept(ToolItems.YELLOW_WRENCH.get());
+                        output.accept(ToolItems.WIRE_CUTTER.get());
+                        Item base = FunctionalBlocks.BASE_CHEST_BLOCK.get().asItem();
+                        Item death = FunctionalBlocks.DEATH_CHEST_BLOCK.get().asItem();
+                        for (BaseChestBlock.Variant variant : BaseChestBlock.Variant.values()) {
+                            output.accept(BaseChestBlock.setData(base.getDefaultInstance(), variant));
+                            if (variant.getSerializedName().startsWith("unlocked")) { // 只放解锁的
+                                output.accept(DeathChestBlock.setData(death.getDefaultInstance(), variant));
+                            }
+                        }
+                        FunctionalBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
+                    }).withTabsBefore(TFTabs.FURNITURE.getId()).build());
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MATERIALS = TABS.register("materials",
+            () -> CreativeModeTab.builder().icon(() -> IconItems.MATERIAL_ICON.get().getDefaultInstance())
+                    .title(Component.translatable("creativetab.confluence.materials"))
+                    .displayItems((parameters, output) -> {
+                        output.accept(ConsumableItems.MANA_CRYSTAL.get());
+                        output.accept(ConsumableItems.LIFE_CRYSTAL.get());
+                        output.accept(ConsumableItems.LIFE_FRUIT.get());
+                        MaterialItems.ITEMS.getEntries().forEach(item -> output.accept(item.get().getDefaultInstance()));
+                        output.accept(ModBlocks.POO.get());
+                    }).withTabsBefore(MECHANICAL.getId()).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MISC = TABS.register("misc",
             () -> CreativeModeTab.builder().icon(() -> IconItems.PRECIOUS_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.misc"))
@@ -58,20 +92,14 @@ public final class ModTabs {
                         CrateBlocks.BLOCKS.getEntries().forEach(action);
                         PaintItems.ITEMS.getEntries().forEach(action);
                         TreasureBagItems.ITEMS.getEntries().forEach(action);
-                    }).build()
-    );
-    // 材料
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MATERIALS = TABS.register("materials",
-            () -> CreativeModeTab.builder().icon(() -> IconItems.MATERIAL_ICON.get().getDefaultInstance())
-                    .title(Component.translatable("creativetab.confluence.materials"))
+                    }).withTabsBefore(MATERIALS.getId()).build());
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FOOD_AND_POTIONS = TABS.register("food_and_potions",
+            () -> CreativeModeTab.builder().icon(() -> IconItems.POTION_ICON.get().getDefaultInstance())
+                    .title(Component.translatable("creativetab.confluence.food_and_potions"))
                     .displayItems((parameters, output) -> {
-                        output.accept(ConsumableItems.MANA_CRYSTAL.get());
-                        output.accept(ConsumableItems.LIFE_CRYSTAL.get());
-                        output.accept(ConsumableItems.LIFE_FRUIT.get());
-                        MaterialItems.ITEMS.getEntries().forEach(item -> output.accept(item.get().getDefaultInstance()));
-                        output.accept(ModBlocks.POO.get());
-                    }).build());
-    // 工具
+                        PotionItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                        FoodItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                    }).withTabsBefore(MISC.getId()).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TOOLS = TABS.register("tools",
             () -> CreativeModeTab.builder().icon(() -> IconItems.TOOLS_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.tools"))
@@ -92,59 +120,8 @@ public final class ModTabs {
                         HookItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                         MinecartItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                         FishingPoleItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                    }).build());
-    // 战士武器
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> WARRIORS = TABS.register("warriors",
-            () -> CreativeModeTab.builder().icon(() -> IconItems.MELEE_ICON.get().getDefaultInstance())
-                    .title(Component.translatable("creativetab.confluence.warriors"))
-                    .displayItems((parameters, output) -> {
-                        SwordItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        BoomerangItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                    }).build());
-    // 射手武器
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SHOOTERS = TABS.register("shooters",
-            () -> CreativeModeTab.builder().icon(() -> IconItems.REMOTE_ICON.get().getDefaultInstance())
-                    .title(Component.translatable("creativetab.confluence.rangers"))
-                    .displayItems((parameters, output) -> {
-                        BowItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        ArrowItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                    }).build());
-    // 法师武器
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAGES = TABS.register("mages",
-            () -> CreativeModeTab.builder().icon(() -> IconItems.MAGIC_ICON.get().getDefaultInstance())
-                    .title(Component.translatable("creativetab.confluence.mages"))
-                    .displayItems((parameters, output) -> {
-                        ManaStaffItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                    }).build());
-    // 召唤武器
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SUMMONERS = TABS.register("summoners",
-            () -> CreativeModeTab.builder().icon(() -> IconItems.SUMMON_ICON.get().getDefaultInstance())
-                    .title(Component.translatable("creativetab.confluence.summoners"))
-                    .displayItems((parameters, output) -> {
-                        TEItems.SUMMON_ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        LightPetItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                    }).build());
-    // 开发者物品
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> DEVELOPER = TABS.register("developer",
-            () -> CreativeModeTab.builder().icon(() -> IconItems.DEVELOPER_ICON.get().getDefaultInstance())
-                    .title(Component.translatable("creativetab.confluence.developer"))
-                    .displayItems((parameters, output) -> {
-                        ModItems.HIDDEN.getEntries().forEach(item -> output.accept(item.get()));
-                        output.accept(FunctionalBlocks.ANDESITE_CASING.get());
-                        output.accept(ToolItems.DEV_BUG_NET.get());
-                        output.accept(SwordItems.DEVELOPER_SWORD.get());
-                        output.accept(BoomerangItems.DEVELOPER_BOOMERANG.get());
-                        output.accept(BowItems.DEVELOPER_BOW.get());
-                    }).build());
-    // 食物与药水
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FOOD_AND_POTIONS = TABS.register("food_and_potions",
-            () -> CreativeModeTab.builder().icon(() -> IconItems.POTION_ICON.get().getDefaultInstance())
-                    .title(Component.translatable("creativetab.confluence.food_and_potions"))
-                    .displayItems((parameters, output) -> {
-                        PotionItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        FoodItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                    }).build());
-    // 盔甲
+                    }).withTabsAfter(TCTabs.ACCESSORIES.getId()).withTabsBefore(FOOD_AND_POTIONS.getId()).build());
+    /* 饰品 */
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ARMORS = TABS.register("armors",
             () -> CreativeModeTab.builder().icon(() -> IconItems.ARMOR_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.armors"))
@@ -152,25 +129,49 @@ public final class ModTabs {
                         output.accept(TCItems.DIVING_HELMET.get());
                         ArmorItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                         VanityArmorItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                    }).build());
-    // 器械
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MECHANICAL = TABS.register("mechanical",
-            () -> CreativeModeTab.builder().icon(() -> IconItems.MECHANICAL_ICON.get().getDefaultInstance())
-                    .title(Component.translatable("creativetab.confluence.mechanical"))
+                    }).withTabsBefore(TCTabs.ACCESSORIES.getId()).build());
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> WARRIORS = TABS.register("warriors",
+            () -> CreativeModeTab.builder().icon(() -> IconItems.MELEE_ICON.get().getDefaultInstance())
+                    .title(Component.translatable("creativetab.confluence.warriors"))
                     .displayItems((parameters, output) -> {
-                        output.accept(ToolItems.RED_WRENCH.get());
-                        output.accept(ToolItems.GREEN_WRENCH.get());
-                        output.accept(ToolItems.BLUE_WRENCH.get());
-                        output.accept(ToolItems.YELLOW_WRENCH.get());
-                        output.accept(ToolItems.WIRE_CUTTER.get());
-                        Item base = FunctionalBlocks.BASE_CHEST_BLOCK.get().asItem();
-                        Item death = FunctionalBlocks.DEATH_CHEST_BLOCK.get().asItem();
-                        for (BaseChestBlock.Variant variant : BaseChestBlock.Variant.values()) {
-                            output.accept(BaseChestBlock.setData(base.getDefaultInstance(), variant));
-                            if (variant.getSerializedName().startsWith("unlocked")) { // 只放解锁的
-                                output.accept(DeathChestBlock.setData(death.getDefaultInstance(), variant));
-                            }
-                        }
-                        FunctionalBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
-                    }).build());
+                        SwordItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                        BoomerangItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                    }).withTabsBefore(ARMORS.getId()).build());
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SHOOTERS = TABS.register("rangers",
+            () -> CreativeModeTab.builder().icon(() -> IconItems.REMOTE_ICON.get().getDefaultInstance())
+                    .title(Component.translatable("creativetab.confluence.rangers"))
+                    .displayItems((parameters, output) -> {
+                        Consumer<DeferredHolder<Item, ? extends Item>> action = item -> output.accept(item.get());
+                        BowItems.ITEMS.getEntries().forEach(action);
+                        ArrowItems.ITEMS.getEntries().forEach(action);
+                        TGItems.ITEM_GUNS.getEntries().forEach(action);
+                        TGItems.ITEM_BULLETS.getEntries().forEach(action);
+                    }).withTabsBefore(WARRIORS.getId()).build());
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAGES = TABS.register("mages",
+            () -> CreativeModeTab.builder().icon(() -> IconItems.MAGIC_ICON.get().getDefaultInstance())
+                    .title(Component.translatable("creativetab.confluence.mages"))
+                    .displayItems((parameters, output) -> {
+                        ManaStaffItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                    }).withTabsBefore(SHOOTERS.getId()).build());
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SUMMONERS = TABS.register("summoners",
+            () -> CreativeModeTab.builder().icon(() -> IconItems.SUMMON_ICON.get().getDefaultInstance())
+                    .title(Component.translatable("creativetab.confluence.summoners"))
+                    .displayItems((parameters, output) -> {
+                        TEItems.SUMMON_ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                        LightPetItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                    }).withTabsAfter(TEItems.NEO_TERRA.getId()).withTabsBefore(MAGES.getId()).build());
+    /* 生物 */
+    /* 事件 */
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> DEVELOPER = TABS.register("developer",
+            () -> CreativeModeTab.builder().icon(() -> IconItems.DEVELOPER_ICON.get().getDefaultInstance())
+                    .title(Component.translatable("creativetab.confluence.developer"))
+                    .displayItems((parameters, output) -> {
+                        output.accept(FunctionalBlocks.ANDESITE_CASING.get());
+                        ModItems.HIDDEN.getEntries().forEach(item -> output.accept(item.get()));
+                        output.accept(BoomerangItems.BeiDou_BOOMERANG.get());
+                        output.accept(ToolItems.DEV_BUG_NET.get());
+                        output.accept(SwordItems.DEVELOPER_SWORD.get());
+                        output.accept(BoomerangItems.DEVELOPER_BOOMERANG.get());
+                        output.accept(BowItems.DEVELOPER_BOW.get());
+                    }).withTabsBefore(TMCreativeModeTab.TAB.getId()).build());
 }

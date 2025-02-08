@@ -555,7 +555,7 @@ public class ModEnglishProvider extends LanguageProvider {
 
         Consumer<DeferredHolder<Item, ? extends Item>> itemAction = item -> add(item.get(), toTitleCase(item.getId().getPath()));
         add(AccessoryItems.PHILOSOPHERS_STONE.get(), "Philosopher's Stone");
-        add(AccessoryItems.CURSE_OF_BOREDOM_METEORITE.get(), "Curse of Boredom: Meteorite");
+        add(ModItems.CURSE_OF_BOREDOM_METEORITE.get(), "Curse of Boredom: Meteorite");
         AccessoryItems.ITEMS.getEntries().forEach(itemAction);
         ArmorItems.ITEMS.getEntries().forEach(itemAction);
         ArrowItems.ITEMS.getEntries().forEach(itemAction);

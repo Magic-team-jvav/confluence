@@ -2,6 +2,7 @@ package org.confluence.mod.common.item.accessory.sponsor;
 
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
 import org.confluence.terraentity.init.TEAttributes;
 
@@ -15,7 +16,7 @@ import org.confluence.terraentity.init.TEAttributes;
  */
 public class ParadoxInteractiveMedal extends BaseCurioItem {
     public ParadoxInteractiveMedal() {
-        super(builder("paradox_interactive_medal")
+        super(builder("paradox_interactive_medal").rarity(ModRarity.MASTER)
                 .attribute(Attributes.ATTACK_DAMAGE, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                 .attribute(Attributes.ENTITY_INTERACTION_RANGE, 3, AttributeModifier.Operation.ADD_VALUE)
                 .attribute(TEAttributes.MINION_CAPACITY, 2, AttributeModifier.Operation.ADD_VALUE)

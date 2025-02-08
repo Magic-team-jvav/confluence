@@ -2,27 +2,28 @@ package org.confluence.mod.common.item.common;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import org.confluence.mod.common.item.CustomRarityItem;
+import org.confluence.terra_curio.common.component.ModRarity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TooltipItem extends Item {
+public class TooltipItem extends CustomRarityItem {
     private final List<Component> tooltips;
 
-    public TooltipItem(Properties properties, List<Component> tooltips) {
-        super(properties);
+    public TooltipItem(Properties properties, ModRarity rarity, List<Component> tooltips) {
+        super(properties, rarity);
         this.tooltips = tooltips;
     }
 
-    public TooltipItem(Properties properties, Component tooltip) {
-        this(properties, List.of(tooltip));
+    public TooltipItem(Properties properties, ModRarity rarity, Component tooltip) {
+        this(properties, rarity, List.of(tooltip));
     }
 
-    public TooltipItem(Properties properties, String tooltip) {
-        this(properties, List.of(Component.translatable(tooltip).withStyle(ChatFormatting.DARK_GRAY)));
+    public TooltipItem(Properties properties, ModRarity rarity, String tooltip) {
+        this(properties, rarity, List.of(Component.translatable(tooltip).withStyle(ChatFormatting.DARK_GRAY)));
     }
 
     public List<Component> getTooltips() {

@@ -60,7 +60,7 @@ public class BoomerangItems {
 
 
 
-    public static final DeferredItem<Boomerang> DEVELOPER_BOOMERANG = register("developer_boomerang",20, ModRarity.EPIC,
+    public static final DeferredItem<Boomerang> DEVELOPER_BOOMERANG = register("developer_boomerang",20, ModRarity.MASTER,
             new Boomerang.BoomerangModifier().setNotWaitForBack().setCd(10) // 不需要等待返回，设置cd
                     .setForwardTick(50)
                     .setFlySpeedFactor(1.5f) // 设置向前飞行速度
@@ -68,7 +68,7 @@ public class BoomerangItems {
     );
 
 
-    public static final DeferredItem<Boomerang> BeiDou_BOOMERANG = register("bei_dou_boomerang",10, ModRarity.EPIC,
+    public static final DeferredItem<Boomerang> BeiDou_BOOMERANG = register("bei_dou_boomerang",10, ModRarity.MASTER,
             MULTI_BOOMERANG_MODIFIER.apply(5, 4,
                     NORMAL_BOOMERANG_MODIFIER.apply(40, 3.0f, 3.0f)
                             .setMaxPenetration(7)

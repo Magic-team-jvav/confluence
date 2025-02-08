@@ -7,7 +7,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.entity.projectile.BoulderEntity;
 import org.confluence.mod.common.init.ModSecretSeeds;
-import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.util.CuriosUtils;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -37,10 +37,10 @@ public class BoulderWorld extends SecretSeed {
     public static void forceSetCurseOfBoredomMeteorite(ServerPlayer player) {
         if (ModSecretSeeds.BOULDER_WORLD.match(player.server)) {
             ItemStack stack = CuriosUtils.getSlot(player, TerraCurio.CURIO_SLOT, 0);
-            if (stack == null || !stack.is(AccessoryItems.CURSE_OF_BOREDOM_METEORITE.get())) {
+            if (stack == null || !stack.is(ModItems.CURSE_OF_BOREDOM_METEORITE.get())) {
                 Optional<ICuriosItemHandler> optional = CuriosApi.getCuriosInventory(player);
                 optional.ifPresent(iCuriosItemHandler -> {
-                    ItemStack itemStack = AccessoryItems.CURSE_OF_BOREDOM_METEORITE.get().getDefaultInstance();
+                    ItemStack itemStack = ModItems.CURSE_OF_BOREDOM_METEORITE.get().getDefaultInstance();
                     itemStack.enchant(player.server.registryAccess().holderOrThrow(Enchantments.BINDING_CURSE), 1);
                     iCuriosItemHandler.setEquippedCurio(TerraCurio.CURIO_SLOT, 0, itemStack);
                 });

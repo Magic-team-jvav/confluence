@@ -12,6 +12,8 @@ import org.confluence.mod.common.init.ModJukeboxSongs;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.CustomRarityItem;
+import org.confluence.mod.common.item.accessory.sponsor.CurseOfBoredomMeteorite;
+import org.confluence.mod.common.item.accessory.sponsor.ParadoxInteractiveMedal;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.terra_curio.common.component.ModRarity;
 
@@ -38,9 +40,12 @@ public final class ModItems {
     public static final Supplier<Item> CANDY_APPLE = HIDDEN.register("candy_apple", () -> new CustomRarityItem(new Item.Properties().stacksTo(1), ModRarity.MASTER));
     public static final Supplier<Item> CANDY_CANE = HIDDEN.register("candy_cane", () -> new CustomRarityItem(new Item.Properties().stacksTo(1), ModRarity.MASTER));
     public static final Supplier<EntityDisplayItem> ENTITY_DISPLAY = HIDDEN.register("entity_display", EntityDisplayItem::new);
-    public static final Supplier<TargetDummyItem> TARGET_DUMMY = HIDDEN.register("target_dummy", () -> new TargetDummyItem(new Item.Properties()));
+    public static final Supplier<TargetDummyItem> TARGET_DUMMY = HIDDEN.register("target_dummy", TargetDummyItem::new);
     // 赞助物品
-    public static final Supplier<TooltipItem> TOKYO_TEDDY_BEAR = HIDDEN.register("tokyo_teddy_bear", () -> new TooltipItem(new Item.Properties(), TooltipItem.getTooltipsFromString("tokyo_teddy_bear", 6)));
+    public static final Supplier<CurseOfBoredomMeteorite> CURSE_OF_BOREDOM_METEORITE = HIDDEN.register(CurseOfBoredomMeteorite.ID.getPath(), CurseOfBoredomMeteorite::new);
+    public static final Supplier<ParadoxInteractiveMedal> PARADOX_INTERACTIVE_MEDAL = HIDDEN.register("paradox_interactive_medal", ParadoxInteractiveMedal::new);
+    public static final Supplier<TooltipItem> TOKYO_TEDDY_BEAR = HIDDEN.register("tokyo_teddy_bear", () -> new TooltipItem(new Item.Properties(), ModRarity.MASTER, TooltipItem.getTooltipsFromString("tokyo_teddy_bear", 6)));
+    public static final Supplier<IceTofuBrickItem> ICE_TOFU_BRICK = HIDDEN.register("ice_tofu_brick", IceTofuBrickItem::new);
 
     public static final Supplier<CoinItem> COPPER_COIN = ITEMS.register("copper_coin", () -> new CoinItem(ModBlocks.COPPER_COIN_PILE.get(), ModRarity.WHITE, ModItems.SILVER_COIN));
     public static final Supplier<CoinItem> SILVER_COIN = ITEMS.register("silver_coin", () -> new CoinItem(ModBlocks.SILVER_COIN_PILE.get(), ModRarity.ORANGE, ModItems.GOLDEN_COIN));

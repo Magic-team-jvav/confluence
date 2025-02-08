@@ -20,8 +20,6 @@ import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.MusicBoxBlocks;
 import org.confluence.mod.common.item.accessory.*;
-import org.confluence.mod.common.item.accessory.sponsor.CurseOfBoredomMeteorite;
-import org.confluence.mod.common.item.accessory.sponsor.ParadoxInteractiveMedal;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.api.primitive.*;
@@ -147,9 +145,6 @@ public class AccessoryItems {
 
     public static final Supplier<MusicBoxItem> MUSIC_BOX = ITEMS.register("music_box", () -> new MusicBoxItem(null, MusicBoxBlocks.MUSIC_BOX.get()));
 
-    public static final Supplier<ParadoxInteractiveMedal> PARADOX_INTERACTIVE_MEDAL = ModItems.HIDDEN.register("paradox_interactive_medal", ParadoxInteractiveMedal::new);
-    public static final Supplier<CurseOfBoredomMeteorite> CURSE_OF_BOREDOM_METEORITE = ModItems.HIDDEN.register(CurseOfBoredomMeteorite.ID.getPath(), CurseOfBoredomMeteorite::new);
-
     private static Supplier<BaseCurioItem> registerCurio(String name, Consumer<BaseCurioItem.Builder> consumer) {
         return ITEMS.register(name, () -> {
             BaseCurioItem.Builder builder = BaseCurioItem.builder(name);
@@ -164,8 +159,8 @@ public class AccessoryItems {
 
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
         for (DeferredHolder<Item, ? extends Item> accessory : ITEMS.getEntries()) tag.add(accessory.get());
-        tag.add(PARADOX_INTERACTIVE_MEDAL.get());
-        tag.add(CURSE_OF_BOREDOM_METEORITE.get());
+        tag.add(ModItems.PARADOX_INTERACTIVE_MEDAL.get());
+        tag.add(ModItems.CURSE_OF_BOREDOM_METEORITE.get());
     }
 
     public static void applyLuckyCoin(ServerPlayer player, Entity target) {

@@ -8,15 +8,16 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileItem;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.projectile.IceTofuBrickProjectile;
+import org.confluence.mod.common.item.CustomRarityItem;
+import org.confluence.terra_curio.common.component.ModRarity;
 
-public class IceTofuBrickItem extends Item implements ProjectileItem {
-    public IceTofuBrickItem(Properties properties) {
-        super(properties);
+public class IceTofuBrickItem extends CustomRarityItem implements ProjectileItem {
+    public IceTofuBrickItem() {
+        super(new Properties(), ModRarity.MASTER);
     }
 
     @Override

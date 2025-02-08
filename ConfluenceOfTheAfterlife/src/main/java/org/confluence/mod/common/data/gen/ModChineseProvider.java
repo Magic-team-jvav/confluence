@@ -3,7 +3,6 @@ package org.confluence.mod.common.data.gen;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
@@ -1633,7 +1632,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.WEB_ROPE_COIL.get(), "蛛丝绳圈");
 
         add(ModItems.TOKYO_TEDDY_BEAR.get(), "东京泰迪熊");
-        add(ToolItems.ICE_TOFU_BRICK.get(), "冰豆腐砖");
+        add(ModItems.ICE_TOFU_BRICK.get(), "冰豆腐砖");
 
 
         add(TEItems.SLIME_STAFF.get(), "史莱姆召唤杖");
@@ -2283,8 +2282,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(AccessoryItems.CHROMATIC_CLOAK.get(), "炫彩斗篷");
         add(AccessoryItems.MUSIC_BOX.get(), "八音盒");
         add(AccessoryItems.PAINT_SPRAYER.get(), "喷漆器");
-        add(AccessoryItems.PARADOX_INTERACTIVE_MEDAL.get(), "帕拉多克斯·英特拉克缇福勋章");
-        add(AccessoryItems.CURSE_OF_BOREDOM_METEORITE.get(), "无聊之咒·陨志");
+        add(ModItems.PARADOX_INTERACTIVE_MEDAL.get(), "帕拉多克斯·英特拉克缇福勋章");
+        add(ModItems.CURSE_OF_BOREDOM_METEORITE.get(), "无聊之咒·陨志");
 
 
         // 染料

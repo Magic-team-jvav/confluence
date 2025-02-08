@@ -1,15 +1,16 @@
 package org.confluence.mod.common.item.common;
 
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.TargetDummyEntity;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.item.CustomRarityItem;
+import org.confluence.terra_curio.common.component.ModRarity;
 
-public class TargetDummyItem extends Item {
-    public TargetDummyItem(Properties properties) {
-        super(properties);
+public class TargetDummyItem extends CustomRarityItem {
+    public TargetDummyItem() {
+        super(new Properties(), ModRarity.MASTER);
     }
 
     @Override

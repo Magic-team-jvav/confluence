@@ -8,17 +8,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.util.ModUtils;
+import org.confluence.terra_curio.common.component.ModRarity;
 
 import java.util.function.Function;
 
-public class EntityDisplayItem extends Item {
+public class EntityDisplayItem extends CustomRarityItem {
     public EntityDisplayItem() {
-        super(new Properties());
+        super(new Properties(), ModRarity.MASTER);
     }
 
     @Override

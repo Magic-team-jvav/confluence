@@ -59,9 +59,9 @@ public class BaseArrowEntity extends AbstractArrow {
                 .setDamage(4.5f).setCauseFire(10*20));
         static Tuple FROSTBURN_ARROW_ENTITY = create("textures/entity/arrow/frostburn_arrow.png",()->new Builder()
                 .setDamage(4.5f).addOnHitEffect(EffectStrategy.TIME_EFFECT.apply(ModEffects.FROST_BURN,10*20)));
-        static Tuple FOSSIL_ARROW_ENTITY = create("textures/entity/arrow/frostburn_arrow.png",()->new Builder()
+        static Tuple FOSSIL_ARROW_ENTITY = create("textures/entity/arrow/fossil_arrow.png",()->new Builder()
                 .setDamage(4f).setPenetration(2));
-        static Tuple FLY_FISH_ENTITY = create("textures/entity/arrow/frostburn_arrow.png",()->new Builder()
+        static Tuple FLY_FISH_ENTITY = create("textures/entity/arrow/fly_fish_arrow.png",()->new Builder()
                 .setDamage(2f).setDamageInRain(4).setSpeedUpInRain(1.5f).setSpeedInertiaInWater(0.8f));
     }
 

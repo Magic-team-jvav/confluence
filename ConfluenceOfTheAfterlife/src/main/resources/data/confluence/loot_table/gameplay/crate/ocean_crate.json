@@ -13,6 +13,16 @@
           "type": "minecraft:item",
           "name": "terra_curio:water_walking_boots",
           "weight": 1000
+        },
+        {
+          "type": "minecraft:item",
+          "name": "terra_curio:inner_tube",
+          "weight": 2250
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:breathing_reed",
+          "weight": 2250
         }
       ],
       "rolls": 1

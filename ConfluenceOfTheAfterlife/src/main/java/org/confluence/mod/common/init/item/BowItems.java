@@ -55,7 +55,7 @@ public class BowItems {
             modifier->modifier.addOnHitEffect(EffectStrategy.TIME_EFFECT.apply(TEEffects.SUMMON_FOCUS, 80))
     ));
     public static final DeferredItem<TerraBowItem> FOSSIL_BOW = register("fossil_bow", () -> new TerraBowItem(5.5F, ModRarity.BLUE,
-            modifier->modifier.addFullPullHitEffect(EffectStrategy.LIGHTS_BANE_EFFECT)
+            modifier->modifier
                     .setTransformArrow(ArrowItems.FOSSIL_ARROW.get())
     ));
     public static final DeferredItem<TerraBowItem> DEMON_BOW = register("demon_bow", () -> new TerraBowItem(5.5F, ModRarity.BLUE,

@@ -306,9 +306,15 @@ public class ModEnglishProvider extends LanguageProvider {
         add("painting.confluence.emerald_shenyi.author", "BiliBili_Emerald_审翼");
         add("painting.confluence.chromatic.title", "CHROMATIC");
         add("painting.confluence.chromatic.author", "BiliBili_陌林_Chromatic");
+        add("painting.confluence.the_great_papyrus.title", "THE_GREAT_PAPYRUS");
+        add("painting.confluence.the_great_papyrus.author", "BiliBili_事伟大的papyrus呀");
+        add("painting.confluence.kulou_d.title", "KULOU_D");
+        add("painting.confluence.kulou_d.author", "BiliBili_KuLou_D");
+        add("painting.confluence.in_the_gap_of_the_cloud_sea.title", "云海隙间");
+        add("painting.confluence.in_the_gap_of_the_cloud_sea.author", "鹰角豆");
 
         add("painting.confluence.confluence.title", "CONFLUENCE");
-        add("painting.confluence.confluence.author", "汇流来世");
+        add("painting.confluence.confluence.author", "Confluence Of The Afterlife");
         add("painting.confluence.the_twilight_of_dawn.title", "The Twilight Of Dawn");
         add("painting.confluence.the_twilight_of_dawn.author", "The converging journey has reached a fork, and the moment to face powerful foes will inevitably arrive.");
 

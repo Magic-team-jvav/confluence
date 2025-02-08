@@ -1,0 +1,17 @@
+{
+    "type": "confluence:fletching_table",
+    "body": {
+        "type": "terra_curio:amount_ingredient",
+        "ingredient": {
+            "item": "minecraft:arrow"
+        },
+        "count": 10
+    },
+    "tail": {
+        "item": "confluence:filamentous_fin"
+    },
+    "result": {
+        "id": "confluence:fly_fish_arrow",
+        "count": 10
+    }
+}

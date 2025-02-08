@@ -403,6 +403,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("painting.confluence.emerald_shenyi.author", "BiliBili_Emerald_审翼");
         add("painting.confluence.chromatic.title", "CHROMATIC");
         add("painting.confluence.chromatic.author", "BiliBili_陌林_Chromatic");
+        add("painting.confluence.the_great_papyrus.title", "THE_GREAT_PAPYRUS");
+        add("painting.confluence.the_great_papyrus.author", "BiliBili_事伟大的papyrus呀");
+        add("painting.confluence.kulou_d.title", "KULOU_D");
+        add("painting.confluence.kulou_d.author", "BiliBili_KuLou_D");
+        add("painting.confluence.in_the_gap_of_the_cloud_sea.title", "云海隙间");
+        add("painting.confluence.in_the_gap_of_the_cloud_sea.author", "鹰角豆");
 
         add("painting.confluence.confluence.title", "CONFLUENCE");
         add("painting.confluence.confluence.author", "汇流来世");

@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -52,8 +53,7 @@ public final class PlayerUtils {
         case 0 -> ModItems.COPPER_COIN.get();
         case 1 -> ModItems.SILVER_COIN.get();
         case 2 -> ModItems.GOLDEN_COIN.get();
-        case 3 -> ModItems.PLATINUM_COIN.get();
-        default -> ModItems.EMERALD_COIN.get();
+        default -> ModItems.PLATINUM_COIN.get();
     };
 
     public static void syncMana2Client(ServerPlayer serverPlayer, ManaStorage manaStorage) {
@@ -224,7 +224,10 @@ public final class PlayerUtils {
     }
 
     public static boolean tryCostMoney(Player player, long cost) {
-        long have = getMoney(player);
+        return tryCostMoney(getMoney(player), player, cost);
+    }
+
+    public static boolean tryCostMoney(long have, Player player, long cost) {
         if (have < cost) return false;
 
         for (ItemStack itemStack : player.getInventory().items) {
@@ -247,15 +250,30 @@ public final class PlayerUtils {
 
     public static int[] decodeCoin(long money) {
         int[] coins = new int[SIZE_COINS];
-        int multiple = 99;
-        for (int i = 0; i < SIZE_COINS; i++) {
-            long num = money % multiple;
-            if (num > 0) {
-                coins[i] = (int) num;
-            }
-            money /= multiple;
+        while (money > 0x3F3F3F3F) {
+            int[] ints = decodeCoin(0x3F3F3F3F);
+            coins[0] += ints[0];
+            coins[1] += ints[1];
+            coins[2] += ints[2];
+            coins[3] += ints[3];
+            money -= 0x3F3F3F3F;
         }
+        int[] ints = decodeCoin((int) money);
+        coins[0] += ints[0];
+        coins[1] += ints[1];
+        coins[2] += ints[2];
+        coins[3] += ints[3];
         return coins;
+    }
+
+    public static int[] decodeCoin(int money) {
+        int copper_count = money % 99;
+        int i = ((money - copper_count) / 99);
+        int silver_count = i % 99;
+        int j = ((i - silver_count) / 99);
+        int golden_count = j % 99;
+        int k = (j - golden_count) / 99;
+        return new int[]{copper_count, silver_count, golden_count, k};
     }
 
     public static void sortCoins(Player player) {
@@ -264,14 +282,12 @@ public final class PlayerUtils {
         for (int i = 0; i < SIZE_COINS; i++) {
             ItemStack coins = extraInventory.getCoins(i);
             if (coins.isEmpty() || !coins.is(ModTags.Items.COINS)) continue;
-            int slot = i;
+            extraInventory.setItem(COINS_START + i, ItemStack.EMPTY);
             int index = COIN_2_INDEX.applyAsInt(coins.getItem());
             int count = coins.getCount();
             Supplier<CoinItem> upgrade;
             while (map.addTo(index, count) + count >= 99 && (upgrade = INDEX_2_COIN.apply(3 - index).upgrade) != null) {
-                extraInventory.setItem(COINS_START + slot, ItemStack.EMPTY);
                 map.addTo(index, -99);
-                slot = index;
                 index = COIN_2_INDEX.applyAsInt(upgrade.get());
                 count = 1;
             }
@@ -288,5 +304,18 @@ public final class PlayerUtils {
                 extraInventory.setItem(COINS_START + j++, new ItemStack(coinItem, count));
             }
         }
+    }
+
+    public static void dropMoney(Player player) {
+        long money = getMoney(player);
+        long drops;
+        if (player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
+            int ratio = ModUtils.switchByDifficulty(player.level(), 2, 3, 4);
+            drops = money * ratio / 4;
+        } else {
+            drops = money;
+        }
+        tryCostMoney(money, player, drops);
+        ModUtils.dropMoney(drops, player.getX(), player.getY(), player.getZ(), player.level());
     }
 }

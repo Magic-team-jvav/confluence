@@ -88,6 +88,14 @@ public final class ModUtils {
         createItemEntity(ModItems.PLATINUM_COIN.get(), k, x, y, z, level, 0);
     }
 
+    public static void dropMoney(long amount, double x, double y, double z, Level level) {
+        while (amount > 0x3F3F3F3F) {
+            dropMoney(0x3F3F3F3F, x, y, z, level);
+            amount -= 0x3F3F3F3F;
+        }
+        dropMoney((int) amount, x, y, z, level);
+    }
+
     @SuppressWarnings("unchecked")
     public static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> getTicker(BlockEntityType<A> a, BlockEntityType<E> b, BlockEntityTicker<? super E> ticker) {
         return a == b ? (BlockEntityTicker<A>) ticker : null;

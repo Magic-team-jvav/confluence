@@ -71,7 +71,7 @@ public class TheConstant extends SecretSeed {
         if (ModSecretSeeds.THE_CONSTANT.match(level)) {
             CompoundTag data = player.getPersistentData();
             int tick = data.getInt("confluence:in_darkness_tick");
-            if (level.getLightEngine().getRawBrightness(player.blockPosition().above(), 0) <= 3) {
+            if (level.getLightEngine().getRawBrightness(player.blockPosition().above(), 0) <= 5) {
                 if (tick < 100) {
                     if (++tick == 60) {
                         player.sendSystemMessage(Component.translatable("secret_seed.the_constant.in_darkness_for_3_second"), false);

@@ -1,7 +1,7 @@
 package org.confluence.mod.common.entity.projectile.sword;
 
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.jetbrains.annotations.Nullable;
@@ -137,6 +138,16 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile {
                 discard();
             }
         }
+    }
+
+    @Override
+    public void shootFromRotation(Entity shooter, float x, float y, float z, float velocity, float inaccuracy) {
+        float f = -Mth.sin(y * 0.017453292F) * Mth.cos(x * 0.017453292F);
+        float f1 = -Mth.sin((x + z) * 0.017453292F);
+        float f2 = Mth.cos(y * 0.017453292F) * Mth.cos(x * 0.017453292F);
+        this.shoot(f, f1, f2, velocity, inaccuracy);
+        Vec3 vec3 = shooter.getKnownMovement().scale(0.5f);
+        this.setDeltaMovement(this.getDeltaMovement().add(vec3.x, shooter.onGround() ? 0.0 : vec3.y, vec3.z));
     }
 
     @Override

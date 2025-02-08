@@ -1,6 +1,6 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "confluence:item/accessory/paradox_interactive_medal"
+		"layer0": "confluence:item/misc/paradox_interactive_medal"
 	}
 }

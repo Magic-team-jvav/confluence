@@ -37,10 +37,10 @@ public class ModBoneMealItem extends Item {
                 if (entity.isAlive()) {
                     EntityType<?> entityType = entity.getType();
                     LivingEntity newEntity = null;
-                    if (stack.is(ConsumableItems.BLOOD_BONE_MEAL.get()) && entityType == EntityType.CREEPER) {
+                    if (stack.is(ConsumableItems.BLOODSTAINED_POWDER.get()) && entityType == EntityType.CREEPER) {
                         entity.remove(Entity.RemovalReason.KILLED);
                         newEntity = TEEntities.BLOODY_SPORE.value().create(level);
-                    } else if (stack.is(ConsumableItems.DECAYED_BONE_MEAL.get()) && entityType == EntityType.SKELETON) {
+                    } else if (stack.is(ConsumableItems.ROTTEN_BONE_DUST.get()) && entityType == EntityType.SKELETON) {
                         entity.remove(Entity.RemovalReason.KILLED);
                         newEntity = TEEntities.DECAYEDER.value().create(level);
                     }
@@ -74,10 +74,10 @@ public class ModBoneMealItem extends Item {
             BlockState targetState = level.getBlockState(targetPos);
             if (targetState.isAir()) {
                 String blockType = null;
-                if (stack.is(ConsumableItems.BLOOD_BONE_MEAL.get()) &&
+                if (stack.is(ConsumableItems.BLOODSTAINED_POWDER.get()) &&
                         (state.is(NatureBlocks.TR_CRIMSON_GRASS_BLOCK) || state.is(NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK))) {
                     blockType = "tr_crimson";
-                } else if (stack.is(ConsumableItems.DECAYED_BONE_MEAL.get()) &&
+                } else if (stack.is(ConsumableItems.ROTTEN_BONE_DUST.get()) &&
                         (state.is(NatureBlocks.CORRUPT_GRASS_BLOCK) || state.is(NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK))) {
                     blockType = "corrupt";
                 }

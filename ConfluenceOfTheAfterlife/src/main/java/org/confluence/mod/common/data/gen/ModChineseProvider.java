@@ -56,16 +56,16 @@ public class ModChineseProvider extends LanguageProvider {
         add("item.confluence.tokyo_teddy_bear.tooltip.6", "——由一只蜘蛛讲述的故事");
         add("item.confluence.paradox_interactive_medal.tooltip.0", "同时玩过钢铁雄心、维多利亚、欧陆风云、十字军之王、都市天际线的证明。");
 
-        add("item.confluence.curse_of_boredom_meteorite.tooltip.0", "「无聊之咒·陨志」");
-        add("item.confluence.curse_of_boredom_meteorite.tooltip.1", "(Boredom's Pact - Falling Resolve)");
-        add("item.confluence.curse_of_boredom_meteorite.tooltip.2", "           ");
-        add("item.confluence.curse_of_boredom_meteorite.tooltip.3", "怠惰者的血浸透了星核，凝成这颗会呼吸的诅咒石。");
-        add("item.confluence.curse_of_boredom_meteorite.tooltip.4", "动，则岩脉奔涌，刃锋割裂长夜；静，则地心跳搏，苍穹睁开独眼。");
-        add("item.confluence.curse_of_boredom_meteorite.tooltip.5", "古神将惩罚编入契约：八次心跳的静止，便召来陨星审判。");
-        add("item.confluence.curse_of_boredom_meteorite.tooltip.6", "它不像魔像般沉默——巨石砸碎胫骨时会尖笑：");
-        add("item.confluence.curse_of_boredom_meteorite.tooltip.7", "'看啊，连石头都比你的双腿更懂生存之道。'");
-        add("item.confluence.curse_of_boredom_meteorite.tooltip.8", "佩戴者终将明白：所谓'不摧'，不过是逃得比死亡快一秒。");
-        add("item.confluence.curse_of_boredom_meteorite.tooltip.9", "而灵魂早被碾成岩缝里的尘，比魔像的空壳更荒芜。");
+        add("item.confluence.boredoms_pact_falling_resolve.tooltip.0", "「无聊之咒·陨志」");
+        add("item.confluence.boredoms_pact_falling_resolve.tooltip.1", "(Boredom's Pact - Falling Resolve)");
+        add("item.confluence.boredoms_pact_falling_resolve.tooltip.2", "           ");
+        add("item.confluence.boredoms_pact_falling_resolve.tooltip.3", "怠惰者的血浸透了星核，凝成这颗会呼吸的诅咒石。");
+        add("item.confluence.boredoms_pact_falling_resolve.tooltip.4", "动，则岩脉奔涌，刃锋割裂长夜；静，则地心跳搏，苍穹睁开独眼。");
+        add("item.confluence.boredoms_pact_falling_resolve.tooltip.5", "古神将惩罚编入契约：八次心跳的静止，便召来陨星审判。");
+        add("item.confluence.boredoms_pact_falling_resolve.tooltip.6", "它不像魔像般沉默——巨石砸碎胫骨时会尖笑：");
+        add("item.confluence.boredoms_pact_falling_resolve.tooltip.7", "'看啊，连石头都比你的双腿更懂生存之道。'");
+        add("item.confluence.boredoms_pact_falling_resolve.tooltip.8", "佩戴者终将明白：所谓'不摧'，不过是逃得比死亡快一秒。");
+        add("item.confluence.boredoms_pact_falling_resolve.tooltip.9", "而灵魂早被碾成岩缝里的尘，比魔像的空壳更荒芜。");
         //  文本物品↓
         add("item.confluence.afterlife_notes", "来世手记");
         add("item.confluence.village_exploration", "村庄环游起源");
@@ -170,7 +170,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.coin_ring.0", "击中敌人有时会掉落额外的钱币，扩大钱币的拾取范围");
         add("tooltip.item.confluence.greedy_ring.0", "击中敌人有时会掉落额外的钱币，扩大钱币的拾取范围，商店价格降低20%");
         add("tooltip.item.confluence.spectre_goggles.0", "提供幽灵视觉以与回声块交互");
-        add("tooltip.item.confluence.guide_to_plant_fiber_cordage.0", "可精准采集藤蔓");
+        add("tooltip.item.confluence.guide_to_plant_fiber_cordage.0", "可从藤蔓收集藤蔓绳");
         add("tooltip.item.confluence.summoner_emblem.0", "召唤伤害提高15%");
         add("tooltip.item.confluence.apprentices_scarf.0", "哨兵数量上限增加1，召唤伤害提高10%");
         add("tooltip.item.confluence.huntresss_buckler.0", "哨兵数量上限增加1，召唤伤害提高10%");
@@ -181,7 +181,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.papyrus_scarab.0", "仆从数量上限增加1，召唤伤害提高15%、提高仆从的击退力");
         add("tooltip.item.confluence.pygmy_necklace.0", "仆从数量上限增加1");
         add("tooltip.item.confluence.fledgling_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.chromatic_cloak.0", "对微光相位化免疫，当淹没在微光中时按住向下键可以相位化");
+        add("tooltip.item.confluence.chromatic_cloak.0", "对微光相位化免疫，当淹没在微光中时潜行可以相位化");
         add("tooltip.item.confluence.paint_scraper", "用于去除油漆或涂料，按下shift+右键仅去除一面");
         add("tooltip.item.confluence.paint_sprayer.0", "自动给放置的物体刷油漆或涂料");
         add("tooltip.item.confluence.coin", "潜行右键合并为上级钱币");
@@ -191,6 +191,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.fly_speed", "飞行速度");
         add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "蓄满效果");
         add("tooltip.item.confluence.has_proj", "剑气");
+        add("tooltip.item.confluence.radio_thing.0", "允许使用者以不同的方式看世界");
+        add("tooltip.item.terra_curio.radio_thing.1", "“禁忌的知识在其中回响……”");
 
 
         add("jei.tooltip.item.confluence.bezoar.0", "有几率从黄蜂，青苔蜜蜂，毒泥身上掉落。");
@@ -1601,8 +1603,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.MANA_CRYSTAL.get(), "魔力水晶");
         add(ConsumableItems.LIFE_CRYSTAL.get(), "生命水晶");
         add(ConsumableItems.LIFE_FRUIT.get(), "生命果");
-        add(ConsumableItems.DECAYED_BONE_MEAL.get(), "残骨粉");
-        add(ConsumableItems.BLOOD_BONE_MEAL.get(), "血凝粉");
+        add(ConsumableItems.ROTTEN_BONE_DUST.get(), "朽骨齑尘");
+        add(ConsumableItems.BLOODSTAINED_POWDER.get(), "血凝痂粉");
         add(TreasureBagItems.KING_SLIME_TREASURE_BAG.get(), "史莱姆之王宝藏袋");
         add(TreasureBagItems.EYE_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之眼宝藏袋");
         add(TreasureBagItems.EATER_OF_WORLDS_TREASURE_BAG.get(), "世界吞噬怪宝藏袋");
@@ -2283,6 +2285,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(AccessoryItems.CHROMATIC_CLOAK.get(), "炫彩斗篷");
         add(AccessoryItems.MUSIC_BOX.get(), "八音盒");
         add(AccessoryItems.PAINT_SPRAYER.get(), "喷漆器");
+        add(AccessoryItems.RADIO_THING.get(), "收音机");
         add(ModItems.PARADOX_INTERACTIVE_MEDAL.get(), "帕拉多克斯·英特拉克缇福勋章");
         add(ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get(), "「无聊之咒·陨志」");
 

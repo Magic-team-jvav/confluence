@@ -146,7 +146,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.coin_ring.0", "Hitting enemies may drop extra coins, increases coin pickup range");
         add("tooltip.item.confluence.greedy_ring.0", "Hitting enemies may drop extra coins, increases coin pickup range, reduces shop prices by 20%");
         add("tooltip.item.confluence.spectre_goggles.0", "Provides ghost vision to interact with echo blocks");
-        add("tooltip.item.confluence.guide_to_plant_fiber_cordage.0", "Can precisely collect vines");
+        add("tooltip.item.confluence.guide_to_plant_fiber_cordage.0", "Allows the collection of Vine Rope from vines");
         add("tooltip.item.confluence.summoner_emblem.0", "Increases summoner damage by 15%");
         add("tooltip.item.confluence.apprentices_scarf.0", "Increases sentry limit by 1, increases summoner damage by 10%");
         add("tooltip.item.confluence.huntresss_buckler.0", "Increases sentry limit by 1, increases summoner damage by 10%");
@@ -157,7 +157,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.papyrus_scarab.0", "Increases minion limit by 1, increases summoner damage by 15%, increases minion knockback");
         add("tooltip.item.confluence.pygmy_necklace.0", "Increases minion limit by 1");
         add("tooltip.item.confluence.fledgling_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.chromatic_cloak.0", "Immunity to Shimmer Phasing.Hold Down to Phase while submerged in Shimmer");
+        add("tooltip.item.confluence.chromatic_cloak.0", "Immunity to Shimmer Phasing.Hold Shift to Phase while submerged in Shimmer");
         add("tooltip.item.confluence.paint_scraper", "Used to remove paint or coatings.Press Shift + Right-click to remove only one side.");
         add("tooltip.item.confluence.coin", "Using it while crouch to upgrade tier");
         add("tooltip.item.confluence.penetration", "Penetrates Count");
@@ -166,6 +166,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.fly_speed", "Fly Speed");
         add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "Full Pull Effects");
         add("tooltip.item.confluence.has_proj", "Has Projectile");
+        add("tooltip.item.confluence.radio_thing.0", "Allows the user to see the world differently");
+        add("tooltip.item.terra_curio.radio_thing.1", "'Forbidden Knowledge echoes from the radio...'");
 
 
         add("jei.tooltip.item.confluence.bezoar.0", "It has a Chance to be dropped from Hornet，Moss Hornet and Toxic Sludge.");

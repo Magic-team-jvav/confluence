@@ -36,6 +36,7 @@ public class BaseGrenadeEntity extends BaseBombEntity {
     protected void onHitEntity(EntityHitResult result) {
         if (!level().isClientSide) {
             explodeFunction();
+            discard();
         }
     }
 

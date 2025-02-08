@@ -87,7 +87,7 @@ public class TheConstant extends SecretSeed {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static void postShader(boolean post) {
+    public static void postEffect(boolean post) {
         GameRenderer gameRenderer = Minecraft.getInstance().gameRenderer;
         PostChain postChain = gameRenderer.currentEffect();
         if (post) {
@@ -145,7 +145,7 @@ public class TheConstant extends SecretSeed {
         public void handle(IPayloadContext context) {
             context.enqueueWork(() -> {
                 if (context.player().isLocalPlayer()) {
-                    postShader(post);
+                    postEffect(post);
                 }
             }).exceptionally(e -> {
                 context.disconnect(Component.translatable("neoforge.network.invalid_flow", e.getMessage()));

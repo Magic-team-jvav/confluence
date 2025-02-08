@@ -20,6 +20,7 @@ import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.terra_curio.common.init.TCEffects;
@@ -46,7 +47,8 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @Unique
     private boolean confluence$breakingEasyCrashBlock = false;
 
-    @Unique private boolean confluence$deadO;
+    @Unique
+    private boolean confluence$deadO;
 
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
@@ -112,6 +114,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
 
     @ModifyVariable(method = "handleOnClimbable", at = @At(value = "NEW", target = "(DDD)Lnet/minecraft/world/phys/Vec3;"), ordinal = 2)
     private double checkRope(double d2, @Local(argsOnly = true) Vec3 deltaMovement) {
+        NoTraps.breakClimbable(self());
         if (deltaMovement.y < 0.0 && !isSuppressingSlidingDownLadder() && self() instanceof Player && getInBlockState().is(ModTags.Blocks.ROPE)) {
             return 0.0;
         }
@@ -119,8 +122,8 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     }
 
     @Override
-    public boolean confluence$deadO(boolean... dead){
-        if(dead != null && dead.length > 0){
+    public boolean confluence$deadO(boolean... dead) {
+        if (dead != null && dead.length > 0) {
             confluence$deadO = dead[0];
         }
         return confluence$deadO;

@@ -3,7 +3,6 @@ package org.confluence.mod.common.event.game;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -32,9 +31,8 @@ import org.confluence.terra_curio.util.TCUtils;
 public final class LevelEvents {
     @SubscribeEvent
     public static void explosion$Detonate(ExplosionEvent.Detonate event) {
-        if (event.getExplosion().getDirectSourceEntity() instanceof ScarabBombEntity) {
-            event.getAffectedEntities().removeIf(entity -> entity instanceof ItemEntity);
-        }
+        ScarabBombEntity.itemInvulnerableToExplosion(event.getExplosion().getDirectSourceEntity(), event.getAffectedEntities());
+        NoTraps.entityInvulnerableToExplosion(event.getLevel(), event.getAffectedEntities());
     }
 
     @SubscribeEvent

@@ -141,7 +141,9 @@ public class AccessoryItems {
             PAPYRUS_SCARAB = registerCurio("papyrus_scarab", builder -> builder.rarity(YELLOW).attribute(TEAttributes.MINION_CAPACITY, 1.0, ADD_VALUE).attribute(TEAttributes.SUMMON_DAMAGE, 0.15, ADD_MULTIPLIED_TOTAL).attribute(TEAttributes.SUMMON_KNOCKBACK, 2.0, ADD_VALUE)), // 甲虫莎草纸
             PYGMY_NECKLACE = registerCurio("pygmy_necklace", builder -> builder.rarity(LIME).attribute(TEAttributes.MINION_CAPACITY, 1.0, ADD_VALUE)); // 矮人项链
 
-    public static final Supplier<BaseCurioItem> FLEDGLING_WINGS = registerCurio("fledgling_wings", builder -> builder.rarity(WHITE).accessories(of(TCItems.MAY$FLY, new MayFlyAbilityValue.Storage(0.3F, 36, true, false))));
+    public static final Supplier<BaseCurioItem> FLEDGLING_WINGS = registerCurio("fledgling_wings", builder -> builder.rarity(WHITE)
+            .accessories(of(TCItems.MAY$FLY, new MayFlyAbilityValue.Storage(0.3F, 36, true, false)))
+            .attribute(Attributes.FALL_DAMAGE_MULTIPLIER, -100, ADD_VALUE));
 
     public static final Supplier<MusicBoxItem> MUSIC_BOX = ITEMS.register("music_box", () -> new MusicBoxItem(null, MusicBoxBlocks.MUSIC_BOX.get()));
 

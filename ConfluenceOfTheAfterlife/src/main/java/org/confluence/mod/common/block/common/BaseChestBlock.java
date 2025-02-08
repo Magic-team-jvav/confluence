@@ -20,6 +20,8 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -33,6 +35,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import org.confluence.mod.common.block.functional.DeathChestBlock;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.mixed.IBaseContainerBlockEntity;
@@ -222,6 +225,17 @@ public class BaseChestBlock extends ChestBlock {
         @Override
         public String getSerializedName() {
             return name;
+        }
+
+        public static void acceptTab(CreativeModeTab.Output output) {
+            Item base = FunctionalBlocks.BASE_CHEST_BLOCK.get().asItem();
+            Item death = FunctionalBlocks.DEATH_CHEST_BLOCK.get().asItem();
+            for (BaseChestBlock.Variant variant : BaseChestBlock.Variant.values()) {
+                output.accept(BaseChestBlock.setData(base.getDefaultInstance(), variant));
+                if (variant.getSerializedName().startsWith("unlocked")) { // 只放解锁的
+                    output.accept(DeathChestBlock.setData(death.getDefaultInstance(), variant));
+                }
+            }
         }
     }
 }

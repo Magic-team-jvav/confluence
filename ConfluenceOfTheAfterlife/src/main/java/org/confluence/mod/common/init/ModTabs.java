@@ -12,7 +12,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import nowebsite.makertechno.terra_furniture.common.init.TFTabs;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
-import org.confluence.mod.common.block.functional.DeathChestBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
@@ -60,14 +59,7 @@ public final class ModTabs {
                         output.accept(ToolItems.BLUE_WRENCH.get());
                         output.accept(ToolItems.YELLOW_WRENCH.get());
                         output.accept(ToolItems.WIRE_CUTTER.get());
-                        Item base = FunctionalBlocks.BASE_CHEST_BLOCK.get().asItem();
-                        Item death = FunctionalBlocks.DEATH_CHEST_BLOCK.get().asItem();
-                        for (BaseChestBlock.Variant variant : BaseChestBlock.Variant.values()) {
-                            output.accept(BaseChestBlock.setData(base.getDefaultInstance(), variant));
-                            if (variant.getSerializedName().startsWith("unlocked")) { // 只放解锁的
-                                output.accept(DeathChestBlock.setData(death.getDefaultInstance(), variant));
-                            }
-                        }
+                        BaseChestBlock.Variant.acceptTab(output);
                         FunctionalBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
                     }).withTabsBefore(TFTabs.FURNITURE.getId()).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MATERIALS = TABS.register("materials",
@@ -104,7 +96,8 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.TOOLS_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.tools"))
                     .displayItems((parameters, output) -> {
-                        ToolItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                        Consumer<DeferredHolder<Item, ? extends Item>> action = item -> output.accept(item.get());
+                        ToolItems.ITEMS.getEntries().forEach(action);
                         output.accept(TCItems.MAGIC_MIRROR.get());
                         output.accept(TCItems.CELL_PHONE.get());
                         output.accept(TCItems.DIVING_HELMET.get());
@@ -112,14 +105,14 @@ public final class ModTabs {
                         output.accept(ModBlocks.VINE_ROPE.get());
                         output.accept(ModBlocks.SILK_ROPE.get());
                         output.accept(ModBlocks.WEB_ROPE.get());
-                        AxeItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        PickaxeItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        PickaxeAxeItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        DrillItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        HammerItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        HookItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        MinecartItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        FishingPoleItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                        AxeItems.ITEMS.getEntries().forEach(action);
+                        PickaxeItems.ITEMS.getEntries().forEach(action);
+                        PickaxeAxeItems.ITEMS.getEntries().forEach(action);
+                        DrillItems.ITEMS.getEntries().forEach(action);
+                        HammerItems.ITEMS.getEntries().forEach(action);
+                        HookItems.ITEMS.getEntries().forEach(action);
+                        MinecartItems.ITEMS.getEntries().forEach(action);
+                        FishingPoleItems.ITEMS.getEntries().forEach(action);
                     }).withTabsAfter(TCTabs.ACCESSORIES.getId()).withTabsBefore(FOOD_AND_POTIONS.getId()).build());
     /* 饰品 */
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ARMORS = TABS.register("armors",

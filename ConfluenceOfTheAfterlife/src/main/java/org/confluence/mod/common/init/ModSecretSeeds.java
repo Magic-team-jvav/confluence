@@ -14,23 +14,23 @@ import java.util.function.Function;
 public final class ModSecretSeeds {
     public static final List<SecretSeed> VALUES = new ArrayList<>();
 
-    public static final SecretSeed DRUNK_WORLD = register(DrunkWorld::new);
-    public static final SecretSeed NOT_THE_BEES = register(NotTheBees::new);
-    public static final SecretSeed FOR_THE_WORTHY = register(ForTheWorthy::new);
-    public static final SecretSeed CELEBRATIONMK10 = register(Celebrationmk10::new);
-    public static final SecretSeed THE_CONSTANT = register(TheConstant::new);
-    public static final SecretSeed NO_TRAPS = register(NoTraps::new);
-    public static final SecretSeed DONT_DIG_UP = register(DontDigUp::new);
-    public static final SecretSeed GET_FIXED_BOI = register(GetFixedBoi::new);
+    public static final SecretSeed DRUNK_WORLD = register(DrunkWorld::new); // 0b1_00000000
+    public static final SecretSeed NOT_THE_BEES = register(NotTheBees::new); // 0b10_00000000
+    public static final SecretSeed FOR_THE_WORTHY = register(ForTheWorthy::new); // 0b100_00000000
+    public static final SecretSeed CELEBRATIONMK10 = register(Celebrationmk10::new); // 0b1000_00000000
+    public static final SecretSeed THE_CONSTANT = register(TheConstant::new); // 0b10000_00000000
+    public static final SecretSeed NO_TRAPS = register(NoTraps::new); // 0b100000_00000000
+    public static final SecretSeed DONT_DIG_UP = register(DontDigUp::new); // 0b1000000_00000000
+    public static final SecretSeed GET_FIXED_BOI = register(GetFixedBoi::new); // 0b10000000_00000000
 
     // 新增的
-    public static final SecretSeed BOULDER_WORLD = register(BoulderWorld::new);
+    public static final SecretSeed BOULDER_WORLD = register(BoulderWorld::new); // 0b100000000_00000000
 
     /**
-     * 1: 腐化<br>
-     * 2: 猩红<br>
-     * 3: 肉后<br>
-     * 4: 毕业<br>
+     * 0b00000001: 1.腐化<br>
+     * 0b00000010: 2.猩红<br>
+     * 0b00000100: 3.肉后<br>
+     * 0b00001000: 4.毕业<br>
      * 5 ~ 8: 暂无，也许附属模组可以利用这个空缺
      *
      * @see org.confluence.mod.mixed.IWorldOptions

@@ -36,6 +36,7 @@ public class Confluence {
         ModVillagers.register(eventBus);
         ModRecipes.register(eventBus);
         ModStructures.register(eventBus);
+        ModFeatures.register(eventBus);
         ModFluids.initialize();
         ModCriterionTriggers.TRIGGERS.register(eventBus);
         ModTabs.TABS.register(eventBus);
@@ -44,7 +45,6 @@ public class Confluence {
         ModSoundEvents.EVENTS.register(eventBus);
         ModAttachmentTypes.TYPES.register(eventBus);
         ModEffects.EFFECTS.register(eventBus);
-        ModFeatures.FEATURES.register(eventBus);
         ModJukeboxSongs.SONGS.register(eventBus);
         ModMenuTypes.TYPES.register(eventBus);
         ModParticleTypes.TYPES.register(eventBus);

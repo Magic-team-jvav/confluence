@@ -1,7 +1,0 @@
-{
-    "type": "confluence:secret_flag",
-    "config": {
-        "sub_feature": "confluence:shimmer_trap",
-        "flag": "&10000000000000"
-    }
-}

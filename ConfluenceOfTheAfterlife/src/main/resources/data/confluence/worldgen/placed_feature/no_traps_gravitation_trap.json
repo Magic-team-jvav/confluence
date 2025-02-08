@@ -1,6 +1,10 @@
 {
-    "feature": "confluence:no_traps_gravitation_trap",
+    "feature": "confluence:gravitation_trap",
     "placement": [
+        {
+            "type": "confluence:secret_flag",
+            "flag": "&10000000000000"
+        },
         {
             "type": "minecraft:rarity_filter",
             "chance": 14

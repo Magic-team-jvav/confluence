@@ -73,7 +73,7 @@ public final class PlayerEvents {
             PlayerUtils.syncSavedData(serverPlayer);
             FishingPowerInfoPacketS2C.sendToClient(serverPlayer);
             EchoVisibilityPacketS2C.sendToClient(serverPlayer);
-            BoulderWorld.forceSetCurseOfBoredomMeteorite(serverPlayer);
+            BoulderWorld.forceSetAccessory(serverPlayer);
         }
     }
 
@@ -249,7 +249,7 @@ public final class PlayerEvents {
         if (event.isEndConquered()) {
             serverPlayer.setHealth(serverPlayer.getPersistentData().getFloat("confluence:cached_health"));
         }
-        BoulderWorld.forceSetCurseOfBoredomMeteorite(serverPlayer);
+        BoulderWorld.forceSetAccessory(serverPlayer);
     }
 
     @SubscribeEvent

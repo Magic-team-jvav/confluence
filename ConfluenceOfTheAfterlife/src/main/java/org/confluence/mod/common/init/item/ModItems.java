@@ -12,7 +12,7 @@ import org.confluence.mod.common.init.ModJukeboxSongs;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.CustomRarityItem;
-import org.confluence.mod.common.item.accessory.sponsor.CurseOfBoredomMeteorite;
+import org.confluence.mod.common.item.accessory.sponsor.BoredomsPactFallingResolve;
 import org.confluence.mod.common.item.accessory.sponsor.ParadoxInteractiveMedal;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.terra_curio.common.component.ModRarity;
@@ -42,7 +42,7 @@ public final class ModItems {
     public static final Supplier<EntityDisplayItem> ENTITY_DISPLAY = HIDDEN.register("entity_display", EntityDisplayItem::new);
     public static final Supplier<TargetDummyItem> TARGET_DUMMY = HIDDEN.register("target_dummy", TargetDummyItem::new);
     // 赞助物品
-    public static final Supplier<CurseOfBoredomMeteorite> CURSE_OF_BOREDOM_METEORITE = HIDDEN.register(CurseOfBoredomMeteorite.ID.getPath(), CurseOfBoredomMeteorite::new);
+    public static final Supplier<BoredomsPactFallingResolve> BOREDOMS_PACT_FALLING_RESOLVE = HIDDEN.register(BoredomsPactFallingResolve.ID.getPath(), BoredomsPactFallingResolve::new);
     public static final Supplier<ParadoxInteractiveMedal> PARADOX_INTERACTIVE_MEDAL = HIDDEN.register("paradox_interactive_medal", ParadoxInteractiveMedal::new);
     public static final Supplier<TooltipItem> TOKYO_TEDDY_BEAR = HIDDEN.register("tokyo_teddy_bear", () -> new TooltipItem(new Item.Properties(), ModRarity.MASTER, TooltipItem.getTooltipsFromString("tokyo_teddy_bear", 6)));
     public static final Supplier<IceTofuBrickItem> ICE_TOFU_BRICK = HIDDEN.register("ice_tofu_brick", IceTofuBrickItem::new);

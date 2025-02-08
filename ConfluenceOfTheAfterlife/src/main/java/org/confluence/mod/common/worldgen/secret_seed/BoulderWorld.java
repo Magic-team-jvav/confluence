@@ -34,13 +34,13 @@ public class BoulderWorld extends SecretSeed {
         }
     }
 
-    public static void forceSetCurseOfBoredomMeteorite(ServerPlayer player) {
+    public static void forceSetAccessory(ServerPlayer player) {
         if (ModSecretSeeds.BOULDER_WORLD.match(player.server)) {
             ItemStack stack = CuriosUtils.getSlot(player, TerraCurio.CURIO_SLOT, 0);
-            if (stack == null || !stack.is(ModItems.CURSE_OF_BOREDOM_METEORITE.get())) {
+            if (stack == null || !stack.is(ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get())) {
                 Optional<ICuriosItemHandler> optional = CuriosApi.getCuriosInventory(player);
                 optional.ifPresent(iCuriosItemHandler -> {
-                    ItemStack itemStack = ModItems.CURSE_OF_BOREDOM_METEORITE.get().getDefaultInstance();
+                    ItemStack itemStack = ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get().getDefaultInstance();
                     itemStack.enchant(player.server.registryAccess().holderOrThrow(Enchantments.BINDING_CURSE), 1);
                     iCuriosItemHandler.setEquippedCurio(TerraCurio.CURIO_SLOT, 0, itemStack);
                 });

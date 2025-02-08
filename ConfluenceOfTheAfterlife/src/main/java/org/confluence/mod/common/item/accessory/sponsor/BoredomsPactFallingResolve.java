@@ -29,14 +29,14 @@ import top.theillusivec4.curios.api.SlotContext;
 import javax.annotation.Nullable;
 
 /*
- * 饰品：无聊之咒·陨志
+ * 饰品：「无聊之咒·陨志」
  * 每移动（竖直方向五格，水平移动6格），获得1层「地脉共鸣」（上限8层），每层+2%全属性攻击伤害与暴击率
  * 站立时每秒消耗1层，层数归零后触发巨石坠落（这是原地站立8
  */
-public class CurseOfBoredomMeteorite extends BaseCurioItem {
-    public static final ResourceLocation ID = Confluence.asResource("curse_of_boredom_meteorite");
+public class BoredomsPactFallingResolve extends BaseCurioItem {
+    public static final ResourceLocation ID = Confluence.asResource("boredoms_pact_falling_resolve");
 
-    public CurseOfBoredomMeteorite() {
+    public BoredomsPactFallingResolve() {
         super(builder(ID.getPath()).rarity(ModRarity.MASTER));
     }
 

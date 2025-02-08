@@ -160,7 +160,7 @@ public class AccessoryItems {
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
         for (DeferredHolder<Item, ? extends Item> accessory : ITEMS.getEntries()) tag.add(accessory.get());
         tag.add(ModItems.PARADOX_INTERACTIVE_MEDAL.get());
-        tag.add(ModItems.CURSE_OF_BOREDOM_METEORITE.get());
+        tag.add(ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get());
     }
 
     public static void applyLuckyCoin(ServerPlayer player, Entity target) {

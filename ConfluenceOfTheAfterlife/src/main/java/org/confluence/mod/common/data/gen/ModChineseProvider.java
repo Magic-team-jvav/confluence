@@ -2283,7 +2283,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(AccessoryItems.MUSIC_BOX.get(), "八音盒");
         add(AccessoryItems.PAINT_SPRAYER.get(), "喷漆器");
         add(ModItems.PARADOX_INTERACTIVE_MEDAL.get(), "帕拉多克斯·英特拉克缇福勋章");
-        add(ModItems.CURSE_OF_BOREDOM_METEORITE.get(), "无聊之咒·陨志");
+        add(ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get(), "「无聊之咒·陨志」");
 
 
         // 染料

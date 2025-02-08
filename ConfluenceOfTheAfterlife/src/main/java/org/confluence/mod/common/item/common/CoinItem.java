@@ -33,12 +33,10 @@ public class CoinItem extends BlockItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack stack = player.getItemInHand(usedHand);
-        if (player.isCrouching() && upgrade != null) {
+        if (player.isCrouching() && upgrade != null && stack.getCount() == 99) {
             if (!level.isClientSide) {
-                ItemStack coin = upgrade.get().getDefaultInstance();
-                player.getInventory().add(coin);
-                if (!coin.isEmpty()) {
-                    player.drop(coin, true);
+                if (!player.getInventory().add(upgrade.get().getDefaultInstance())) {
+                    player.drop(upgrade.get().getDefaultInstance(), true);
                 }
                 player.setItemInHand(usedHand, ItemStack.EMPTY);
             }

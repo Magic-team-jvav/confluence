@@ -78,8 +78,8 @@ public class FunctionalBlocks {
     public static final Supplier<SwitchBlock> SWITCH = registerWithEntity("switch", SwitchBlock::new);
     public static final Supplier<SignalAdapterBlock> SIGNAL_ADAPTER = registerWithEntity("signal_adapter", SignalAdapterBlock::new);
     public static final Supplier<DartTrapBlock> DART_TRAP = registerWithEntity("dart_trap", DartTrapBlock::new);
-    public static final Supplier<DartTrapBlock> DART_TRAP_STONE = registerWithEntity("dart_trap_stone", DartTrapBlock::new);
-    public static final Supplier<DartTrapBlock> DART_TRAP_DEEPSLATE = registerWithEntity("dart_trap_deepslate", DartTrapBlock::new);
+    public static final Supplier<DartTrapBlock> STONE_DART_TRAP = registerWithEntity("stone_dart_trap", DartTrapBlock::new);
+    public static final Supplier<DartTrapBlock> DEEPSLATE_DART_TRAP = registerWithEntity("deepslate_dart_trap", DartTrapBlock::new);
     public static final Supplier<TimersBlock> TIMERS_BLOCK_1_1 = registerWithEntity("timers_1_1", () -> new TimersBlock(20)); // 1s
     public static final Supplier<TimersBlock> TIMERS_BLOCK_3_1 = registerWithEntity("timers_3_1", () -> new TimersBlock(60)); // 3s
     public static final Supplier<TimersBlock> TIMERS_BLOCK_5_1 = registerWithEntity("timers_5_1", () -> new TimersBlock(100)); // 5s

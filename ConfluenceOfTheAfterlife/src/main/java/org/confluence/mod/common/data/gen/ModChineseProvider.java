@@ -1671,8 +1671,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.SWITCH.get(), "开关");
         add(FunctionalBlocks.SIGNAL_ADAPTER.get(), "信号适配器");
         add(FunctionalBlocks.DART_TRAP.get(), "毒镖陷阱");
-        add(FunctionalBlocks.DART_TRAP_STONE.get(), "石头毒镖陷阱");
-        add(FunctionalBlocks.DART_TRAP_DEEPSLATE.get(), "深板岩毒镖陷阱");
+        add(FunctionalBlocks.STONE_DART_TRAP.get(), "石头毒镖陷阱");
+        add(FunctionalBlocks.DEEPSLATE_DART_TRAP.get(), "深板岩毒镖陷阱");
         add(FunctionalBlocks.TIMERS_BLOCK_1_1.get(), "1秒计时器");
         add(FunctionalBlocks.TIMERS_BLOCK_3_1.get(), "3秒计时器");
         add(FunctionalBlocks.TIMERS_BLOCK_5_1.get(), "5秒计时器");

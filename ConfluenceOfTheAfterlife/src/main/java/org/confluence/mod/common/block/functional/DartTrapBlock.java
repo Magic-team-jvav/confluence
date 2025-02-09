@@ -21,6 +21,8 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
+import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModSecretSeeds;
 
 import static net.minecraft.world.level.block.DirectionalBlock.FACING;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.TRIGGERED;
@@ -75,6 +77,9 @@ public class DartTrapBlock extends AbstractMechanicalBlock {
         arrow.setCustomName(NAME);
         arrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
         arrow.addEffect(new MobEffectInstance(MobEffects.POISON, 600, 1));
+        if (ModSecretSeeds.NO_TRAPS.match(pLevel)) {
+            arrow.addEffect(new MobEffectInstance(ModEffects.BLEEDING, 1200, 1));
+        }
         arrow.setBaseDamage(5.0);
         arrow.shoot(direction.getStepX(), direction.getStepY(), direction.getStepZ(), 3.0F, 0.0F);
         pLevel.addFreshEntity(arrow);

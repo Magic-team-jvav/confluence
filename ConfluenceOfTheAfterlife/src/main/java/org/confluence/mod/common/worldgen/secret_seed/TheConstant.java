@@ -33,7 +33,6 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixin.client.accessor.GameRendererAccessor;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.jetbrains.annotations.NotNull;
@@ -154,7 +153,7 @@ public class TheConstant extends SecretSeed {
         }
 
         public static void sendToClient(ServerPlayer serverPlayer) {
-            boolean secretSeed = IMinecraftServer.matchesSecretFlag(serverPlayer.server, ModSecretSeeds.THE_CONSTANT.getFlag());
+            boolean secretSeed = ModSecretSeeds.THE_CONSTANT.match(serverPlayer.server);
             boolean accessory = CuriosUtils.hasCurio(serverPlayer, AccessoryItems.RADIO_THING.get());
             PacketDistributor.sendToAllPlayers(new PostEffectPacketS2C(secretSeed ^ accessory));
         }

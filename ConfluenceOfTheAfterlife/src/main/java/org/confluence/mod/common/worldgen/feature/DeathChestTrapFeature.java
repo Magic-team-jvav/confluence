@@ -13,7 +13,6 @@ import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.Column;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -129,7 +128,7 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
                     mutable.move(direction);
                 }
                 if (h >= 4 && !level.isStateAtPosition(mutable, blockState -> blockState.isAir() || blockState.getCollisionShape(level, mutable).isEmpty())) {
-                    BlockState dartTrap = FunctionalBlocks.DART_TRAP.get().defaultBlockState().setValue(BlockStateProperties.FACING, opposite);
+                    BlockState dartTrap = ModFeatures.getDartTrap(level, mutable, opposite);
                     if (ModFeatures.safeSetBlock(level, mutable, dartTrap, ModFeatures.IS_REPLACEABLE)) {
                         INetworkEntity dart = ModFeatures.getNetworkEntity(level, mutable);
 

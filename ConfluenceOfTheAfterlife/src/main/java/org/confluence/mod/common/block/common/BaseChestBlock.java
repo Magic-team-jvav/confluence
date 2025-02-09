@@ -197,7 +197,8 @@ public class BaseChestBlock extends ChestBlock {
         UNLOCKED_FROZEN(4, "unlocked_frozen"),
         UNLOCKED_LVY(5, "unlocked_lvy"),
         UNLOCKED_WATER(6, "unlocked_water"),
-        UNLOCKED_SKYWARE(7, "unlocked_skyware");
+        UNLOCKED_SKYWARE(7, "unlocked_skyware"),
+        UNLOCKED_NORMAL(8, "unlocked_normal");
 
         private static final IntFunction<Variant> BY_ID = ByIdMap.continuous(Variant::getId, values(), ByIdMap.OutOfBoundsStrategy.CLAMP);
         private final int id;

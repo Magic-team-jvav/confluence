@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.natural;
+package org.confluence.mod.common.block.natural.herbs;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
@@ -33,7 +33,7 @@ import java.util.Set;
 
 /** @author voila1106 */
 public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
-    public static final int MAX_AGE = 2;
+    public static final int MAX_AGE = BlockStateProperties.MAX_AGE_2;
     public static final int BRIGHTNESS = 3;
     public static final IntegerProperty AGE = BlockStateProperties.AGE_2;
     private static final VoxelShape[] SHAPE_BY_AGE = new VoxelShape[]{Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D)};

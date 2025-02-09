@@ -6,9 +6,27 @@
     "overrides": [
         {
             "predicate": {
+                "confluence:variant": 1
+            },
+            "model": "confluence:item/chest_unlocked_golden"
+        },
+        {
+            "predicate": {
                 "confluence:variant": 3
             },
             "model": "confluence:item/chest_death_shadow"
+        },
+        {
+            "predicate": {
+                "confluence:variant": 4
+            },
+            "model": "confluence:item/chest_death_frozen"
+        },
+        {
+            "predicate": {
+                "confluence:variant": 8
+            },
+            "model": "confluence:item/chest_death_normal"
         }
     ]
 }

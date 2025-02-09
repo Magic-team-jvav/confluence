@@ -1,7 +1,7 @@
 {
     "parent": "minecraft:block/orientable",
     "textures": {
-        "front": "confluence:block/dart_trap_deepslate",
+        "front": "confluence:block/deepslate_dart_trap",
         "side": "minecraft:block/deepslate",
         "top": "minecraft:block/deepslate_top"
     }

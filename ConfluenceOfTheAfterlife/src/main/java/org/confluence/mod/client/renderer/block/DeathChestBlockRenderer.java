@@ -28,6 +28,10 @@ public class DeathChestBlockRenderer extends ChestRenderer<DeathChestBlock.Entit
     public static final Material DEATH_GOLDEN_LEFT = chest("death_golden_left");
     public static final Material DEATH_GOLDEN_RIGHT = chest("death_golden_right");
 
+    public static final Material DEATH_SHADOW = chest("death_shadow");
+    public static final Material DEATH_SHADOW_LEFT = chest("death_shadow_left");
+    public static final Material DEATH_SHADOW_RIGHT = chest("death_shadow_right");
+
     public static final Material DEATH_FROZEN = chest("death_frozen");
     public static final Material DEATH_FROZEN_LEFT = chest("death_frozen_left");
     public static final Material DEATH_FROZEN_RIGHT = chest("death_frozen_right");
@@ -44,9 +48,9 @@ public class DeathChestBlockRenderer extends ChestRenderer<DeathChestBlock.Entit
     public static final Material DEATH_SKYWARE_LEFT = chest("death_skyware_left");
     public static final Material DEATH_SKYWARE_RIGHT = chest("death_skyware_right");
 
-    public static final Material DEATH_SHADOW = chest("death_shadow");
-    public static final Material DEATH_SHADOW_LEFT = chest("death_shadow_left");
-    public static final Material DEATH_SHADOW_RIGHT = chest("death_shadow_right");
+    public static final Material DEATH_NORMAL = chest("death_normal");
+    public static final Material DEATH_NORMAL_LEFT = chest("death_normal_left");
+    public static final Material DEATH_NORMAL_RIGHT = chest("death_normal_right");
 
     public DeathChestBlockRenderer(BlockEntityRendererProvider.Context pContext) {
         super(pContext);
@@ -65,8 +69,8 @@ public class DeathChestBlockRenderer extends ChestRenderer<DeathChestBlock.Entit
     @Override
     public boolean shouldRender(DeathChestBlock.Entity pBlockEntity, Vec3 pCameraPos) {
         return InformationHandler.hasMechanicalView()
-            ? pBlockEntity.getBlockPos().getCenter().multiply(1.0, 0.0, 1.0).closerThan(pCameraPos.multiply(1.0, 0.0, 1.0), getViewDistance())
-            : super.shouldRender(pBlockEntity, pCameraPos);
+                ? pBlockEntity.getBlockPos().getCenter().multiply(1.0, 0.0, 1.0).closerThan(pCameraPos.multiply(1.0, 0.0, 1.0), getViewDistance())
+                : super.shouldRender(pBlockEntity, pCameraPos);
     }
 
     @Override
@@ -101,6 +105,7 @@ public class DeathChestBlockRenderer extends ChestRenderer<DeathChestBlock.Entit
             case UNLOCKED_WATER -> chooseMaterial(chestType, DEATH_WATER, DEATH_WATER_LEFT, DEATH_WATER_RIGHT);
             case UNLOCKED_SKYWARE -> chooseMaterial(chestType, DEATH_SKYWARE, DEATH_SKYWARE_LEFT, DEATH_SKYWARE_RIGHT);
             case UNLOCKED_LVY -> chooseMaterial(chestType, DEATH_LVY, DEATH_LVY_LEFT, DEATH_LVY_RIGHT);
+            case UNLOCKED_NORMAL -> chooseMaterial(chestType, DEATH_NORMAL, DEATH_NORMAL_LEFT, DEATH_NORMAL_RIGHT);
             default -> chooseMaterial(chestType, DEATH_GOLDEN, DEATH_GOLDEN_LEFT, DEATH_GOLDEN_RIGHT);
         };
     }

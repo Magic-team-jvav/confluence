@@ -7,13 +7,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.ModFeatures;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.util.ModUtils;
 
 public class DartTrapFeature extends Feature<DartTrapFeature.Config> {
@@ -41,7 +39,7 @@ public class DartTrapFeature extends Feature<DartTrapFeature.Config> {
                     copy.move(direction);
                 }
                 if (h >= 4 && !level.isStateAtPosition(copy, blockState -> blockState.isAir() || blockState.getCollisionShape(level, copy).isEmpty())) {
-                    BlockState dartTrap = FunctionalBlocks.DART_TRAP.get().defaultBlockState().setValue(BlockStateProperties.FACING, direction.getOpposite());
+                    BlockState dartTrap = ModFeatures.getDartTrap(level, copy, direction.getOpposite());
                     boolean b = ModFeatures.safeSetBlock(level, copy, dartTrap, ModFeatures.IS_REPLACEABLE);
                     boolean b1 = ModFeatures.safeSetBlock(level, platePos, ModFeatures.getPressurePlate(level, mutablePos), ModFeatures.IS_REPLACEABLE);
                     if (b && b1) {

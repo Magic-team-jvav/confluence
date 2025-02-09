@@ -1,24 +1,38 @@
 package org.confluence.mod.common.block.natural.sapling;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.grower.TreeGrower;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BaseSaplingBlock extends SaplingBlock {
-    private final Block block;
+import java.util.Arrays;
 
-    public BaseSaplingBlock(TreeGrower pTreeGrower, Properties pProperties, Block block) {
-        super(pTreeGrower, pProperties);
+public class BaseSaplingBlock extends SaplingBlock {
+    private final Block[] block;
+    private final TagKey<Block> tags;
+
+    public BaseSaplingBlock(TreeGrower pTreeGrower, Block... block) {
+        super(pTreeGrower, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING));
         this.block = block;
+        this.tags = BlockTags.AIR;
+    }
+
+    public BaseSaplingBlock(TreeGrower pTreeGrower, TagKey<Block> tags, Block... block) {
+        super(pTreeGrower, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING));
+        this.block = block;
+        this.tags = tags;
     }
 
     @Override
     public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         BlockPos below = pPos.below();
         BlockState blockBelow = pLevel.getBlockState(below);
-        return blockBelow.is(block);
+        return blockBelow.is(tags) || Arrays.asList(block).contains(blockBelow.getBlock());
     }
 }

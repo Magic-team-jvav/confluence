@@ -2,14 +2,16 @@ package org.confluence.mod.common.block.natural.sapling;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.grower.TreeGrower;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
 public class AshSaplingBlock extends SaplingBlock {
-    public AshSaplingBlock(TreeGrower pTreeGrower, Properties pProperties) {
-        super(pTreeGrower, pProperties);
+    public AshSaplingBlock(TreeGrower pTreeGrower) {
+        super(pTreeGrower, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING));
     }
 
     @Override

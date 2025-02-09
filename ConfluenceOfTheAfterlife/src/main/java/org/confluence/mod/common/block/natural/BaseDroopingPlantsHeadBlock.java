@@ -98,10 +98,10 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock {
 
     @Override
     public boolean isRandomlyTicking(BlockState state) {
-        if (maxAge == 0) {
-            return isNaturalGrowth;
+        if (maxAge != DEFAULT_MAX_AGE) {
+            return state.getValue(AGE) < maxAge;
         }
-        return state.getValue(AGE) < maxAge || isNaturalGrowth;
+        return isNaturalGrowth;
     }
 
     @Override

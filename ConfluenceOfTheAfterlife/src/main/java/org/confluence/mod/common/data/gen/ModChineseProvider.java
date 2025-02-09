@@ -99,10 +99,20 @@ public class ModChineseProvider extends LanguageProvider {
         add("worldgen.confluence.placing_boulders", "正在放置巨石");
         add("secret_seed.the_constant.in_darkness_for_3_second", "非常黑暗……你觉得有危险……");
 
+        add("info.confluence.weather_radio.clear", "天气: 晴天, 风速: %s");
+        add("info.confluence.weather_radio.cloudy", "天气: 阴天, 风速: %s");
+        add("info.confluence.weather_radio.rain", "天气: 下雨, 风速: %s");
+        add("info.confluence.weather_radio.snow", "天气: 下雪, 风速: %s");
+        add("info.confluence.weather_radio.thunder", "天气: 雷暴, 风速: %s");
         add("info.confluence.bait", "鱼饵力: %s%%");
         add("info.confluence.network", "#%s 信号: %s");
         add("info.confluence.respawn_time", "复活剩余时间: ");
         add("info.confluence.second", "秒");
+        add("info.confluence.drops_money", "掉落");
+        add("info.confluence.drops_money.platinum", " %s 铂");
+        add("info.confluence.drops_money.gold", " %s 金");
+        add("info.confluence.drops_money.silver", " %s 银");
+        add("info.confluence.drops_money.copper", " %s 铜");
 
         add("key.confluence.hook", "使用钩爪");
 
@@ -607,12 +617,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("condition.confluence.requires_fuel", "需要燃料");
         add("container.confluence.fletching_table", "制箭台");
         add("title.confluence.fletching_table", "制箭台");
-
-        add("info.confluence.weather_radio.clear", "天气: 晴天, 风速: %s");
-        add("info.confluence.weather_radio.cloudy", "天气: 阴天, 风速: %s");
-        add("info.confluence.weather_radio.rain", "天气: 下雨, 风速: %s");
-        add("info.confluence.weather_radio.snow", "天气: 下雪, 风速: %s");
-        add("info.confluence.weather_radio.thunder", "天气: 雷暴, 风速: %s");
 
         add("block.confluence.base_chest_block.locked_golden", "§r上锁的金箱");
         add("block.confluence.base_chest_block.unlocked_golden", "§r金箱");

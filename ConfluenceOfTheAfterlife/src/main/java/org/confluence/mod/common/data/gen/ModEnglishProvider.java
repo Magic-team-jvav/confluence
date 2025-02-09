@@ -80,6 +80,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("info.confluence.network", "#%s Signal: %s");
         add("info.confluence.respawn_time", "Respawn Time: ");
         add("info.confluence.second", "s");
+        add("info.confluence.drops_money", "dropped");
+        add("info.confluence.drops_money.platinum", " %s platinum");
+        add("info.confluence.drops_money.gold", " %s gold");
+        add("info.confluence.drops_money.silver", " %s silver");
+        add("info.confluence.drops_money.copper", " %s copper");
 
         add("key.confluence.hook", "Throwing Hook");
 

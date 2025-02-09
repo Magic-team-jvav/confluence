@@ -20,13 +20,13 @@ public class SelectionsScreen extends Screen {
     );
     private static final int INTERVAL = 8;
     private final Component[] selections;
-    private final boolean[] enables;
+    private final Boolean[] enables;
     private int buttonWidth;
     private int buttonHeight;
     private int top;
     private int left;
 
-    public SelectionsScreen(Component[] selections, boolean[] enables) {
+    public SelectionsScreen(Component[] selections, Boolean[] enables) {
         super(Component.empty());
         this.selections = selections;
         this.enables = enables;

@@ -15,6 +15,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.GetCustomDiggingPowerEvent;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.data.saved.ConfluenceData;
@@ -325,5 +326,9 @@ public final class PlayerUtils {
         }
         tryCostMoney(money, player, drops);
         ModUtils.dropMoney(drops, player.getX(), player.getY(), player.getZ(), player.level());
+
+        if (CommonConfigs.SHOW_MONEY_DROPS.get()) {
+            player.getPersistentData().putLong("confluence:drops_money", drops);
+        }
     }
 }

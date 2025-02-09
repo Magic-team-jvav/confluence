@@ -1,16 +1,18 @@
 package org.confluence.mod.client.handler;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.protocol.game.ClientboundPlayerCombatKillPacket;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.worldgen.secret_seed.SecretSeed;
-import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
-import org.confluence.mod.network.s2c.GamePhasePacketS2C;
-import org.confluence.mod.network.s2c.ManaPacketS2C;
-import org.confluence.mod.network.s2c.SecretFlagSyncPacketS2C;
+import org.confluence.mod.mixed.IDeathScreen;
+import org.confluence.mod.network.s2c.*;
 import org.confluence.phase_journey.mixed.ILevelRenderer;
 
 @OnlyIn(Dist.CLIENT)
@@ -79,5 +81,27 @@ public final class ClientPacketHandler {
 
     public static void handleSecretFlag(SecretFlagSyncPacketS2C packet) {
         secretFlag = packet.flag();
+    }
+
+    public static void handleDeathInfo(PlayerDeathInfoPacketS2C packet, Player player) {
+        ((LocalPlayer) player).connection.handlePlayerCombatKill(new ClientboundPlayerCombatKillPacket(player.getId(), packet.deathMessage()));
+        if (!player.isCreative() && Minecraft.getInstance().screen instanceof IDeathScreen deathScreen) {
+            deathScreen.confluence$setDelayTicker(0);
+            deathScreen.confluence$setRespawnWaitTime(packet.respawnTime());
+            MutableComponent component = Component.translatable("info.confluence.drops_money");
+            if (packet.platinum() > 0) {
+                component.append(Component.translatable("info.confluence.drops_money.platinum", packet.platinum()));
+            }
+            if (packet.gold() > 0) {
+                component.append(Component.translatable("info.confluence.drops_money.gold", packet.gold()));
+            }
+            if (packet.silver() > 0) {
+                component.append(Component.translatable("info.confluence.drops_money.silver", packet.silver()));
+            }
+            if (packet.copper() > 0) {
+                component.append(Component.translatable("info.confluence.drops_money.copper", packet.copper()));
+            }
+            deathScreen.confluence$setDropsMoney(component);
+        }
     }
 }

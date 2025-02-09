@@ -111,6 +111,7 @@ public final class ModUtils {
 
     /**
      * 把向量转成角度
+     * @return [yaw, pitch]
      */
     public static float[] dirToRot(Vec3 vec) {
         double x = vec.x;

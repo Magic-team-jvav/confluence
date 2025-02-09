@@ -41,6 +41,7 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
+import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.mixed.IDamageSource;
 import org.confluence.mod.mixed.ILivingEntity;
@@ -105,10 +106,12 @@ public final class LivingEntityEvents {
                 motion = new Vec3(pos.x - living.xo, pos.y - living.yo, pos.z - living.zo);
             }
             DeathMotionPacketS2C.sendToAll(living.getId(), motion);
-        }
 
-        if (living instanceof ServerPlayer serverPlayer) {
-            PlayerUtils.dropMoney(serverPlayer);
+            if (living instanceof ServerPlayer serverPlayer) {
+                PlayerUtils.dropMoney(serverPlayer);
+            }
+
+            NoTraps.entityDropsGrenade(living);
         }
     }
 

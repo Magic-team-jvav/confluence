@@ -25,7 +25,7 @@ public final class ClientConfigs {
 
     public static boolean hurtRedOverlay = true;
     public static boolean bloodyEffect = true;
-    public static boolean goreEffect = true;
+    public static GoreEffect goreEffect = GoreEffect.CONFLUENCE_VANILLA;
     public static boolean damageIndicator = true;
 
     private static IntValue SHOW_WIND_PARTICLES;
@@ -41,7 +41,7 @@ public final class ClientConfigs {
 
     private static BooleanValue HURT_RED_OVERLAY;
     private static BooleanValue BLOODY_EFFECT;
-    private static BooleanValue GORE_EFFECT;
+    private static EnumValue<GoreEffect> GORE_EFFECT;
     private static BooleanValue DAMAGE_INDICATOR;
 
     public static void onLoad() {
@@ -95,11 +95,15 @@ public final class ClientConfigs {
         BUILDER.push("Entity");
         HURT_RED_OVERLAY = BUILDER.define("hurtRedOverlay", true);
         BLOODY_EFFECT = BUILDER.define("bloodyEffect", true);
-        GORE_EFFECT = BUILDER.define("goreEffect", true);
+        GORE_EFFECT = BUILDER.defineEnum("goreEffect", GoreEffect.CONFLUENCE_VANILLA);
         DAMAGE_INDICATOR = BUILDER.define("damageIndicator", true);
         BUILDER.pop();
 
 
         container.registerConfig(ModConfig.Type.CLIENT, BUILDER.build());
+    }
+
+    public enum GoreEffect{
+        OFF,CONFLUENCE,CONFLUENCE_VANILLA, ALL
     }
 }

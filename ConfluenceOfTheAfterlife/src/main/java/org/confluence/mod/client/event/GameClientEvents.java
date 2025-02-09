@@ -10,11 +10,16 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -44,8 +49,11 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
 import org.confluence.mod.mixed.*;
-import org.confluence.mod.mixin.accessor.LivingEntityAccessor;
+import org.confluence.mod.mixin.client.accessor.LivingEntityRendererAccessor;
+import org.confluence.mod.mixin.client.accessor.ModelPartAccessor;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
+import org.confluence.mod.util.DeathAnimUtils;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PerformJumpingEvent;
 import org.confluence.terraentity.client.boss.renderer.GeoBossRenderer;
@@ -58,10 +66,7 @@ import software.bernie.geckolib.cache.object.GeoCube;
 import software.bernie.geckolib.event.GeoRenderEvent;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
 
@@ -212,18 +217,29 @@ public final class GameClientEvents {
     public static void livingDeath(LivingEntity entity){
         if(!(entity.level() instanceof ClientLevel level)) return;
 //        DecimalFormat df = new DecimalFormat("#.####");
-        if(entity instanceof GeoAnimatable && Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity) instanceof GeoEntityRenderer renderer){
-            Minecraft.getInstance().tell(entity::discard);
+        Minecraft.getInstance().tell(entity::discard);
+        EntityRenderer<? super LivingEntity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
+        Vec3 deathMotion;
+        if(entity instanceof Mob mob && mob.isNoAi()){
+            deathMotion = Vec3.ZERO;
+        }else {
+            deathMotion = ((IEntity) (entity)).confluence$deathMotion();
+        }
+        if(deathMotion == null){
+            deathMotion = entity.getDeltaMovement();
+        }
+        float deathSpeed = (float) deathMotion.length();
+        Vec3 entityPos = entity.position();
+        if(entity instanceof GeoAnimatable && renderer instanceof GeoEntityRenderer geoRenderer){
             PoseStack poseStack = new PoseStack();
-            if(renderer instanceof GeoBossRenderer<?, ?> bossRenderer){
+            if(geoRenderer instanceof GeoBossRenderer<?, ?> bossRenderer){
                 float scale = bossRenderer.getScale();
                 poseStack.scale(scale, scale, scale);
             }
-            Vec3 entityPos = entity.position();
             poseStack.mulPose(Axis.XP.rotationDegrees(entity.getXRot()));
             poseStack.mulPose(Axis.YP.rotationDegrees(-entity.getYRot() + 180));
             Matrix4f pose = poseStack.last().pose();
-            Collection<GeoBone> bones = renderer.getGeoModel().getAnimationProcessor().getRegisteredBones();
+            Collection<GeoBone> bones = geoRenderer.getGeoModel().getAnimationProcessor().getRegisteredBones();
             for(GeoBone bone : bones){
                 if(bone.isHidden() || Boolean.TRUE.equals(bone.shouldNeverRender())) continue;
                 Vector3f boneOffset = new Vector3f(bone.getPosX(), bone.getPosY(), bone.getPosZ());
@@ -240,16 +256,8 @@ public final class GameClientEvents {
 //                    GeoCube copyCube = DeathAnimUtils.duplicateGeoCube(cube);
                     GeoCube copyCube = ((IGeoCube) (Object) cube).confluence$getCopy();
                     if(copyCube == null) continue;
-                    Vec3 deathMotion;
-                    if(entity instanceof Mob mob && mob.isNoAi()){
-                        deathMotion = Vec3.ZERO;
-                    }else {
-                        deathMotion = ((IEntity) (entity)).confluence$deathMotion();
-                    }
-                    if(deathMotion == null){
-                        deathMotion = entity.getDeltaMovement();
-                    }
-                    DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, copyCube, (float) deathMotion.length());
+
+                    DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, copyCube, deathSpeed);
 
                     float[] min = IGeoCube.of(copyCube).confluence$getMinCoords();
                     float[] max = IGeoCube.of(copyCube).confluence$getMaxCoords();
@@ -275,14 +283,83 @@ public final class GameClientEvents {
                     Minecraft.getInstance().tell(() -> level.addEntity(part));
                 }
             }
+        }else if(renderer instanceof LivingEntityRenderer<?,?> livingRenderer){
+            ModelPart rootModelPart = ((ILivingEntityRenderer) livingRenderer).confluence$getRootModelPart();
+            if(rootModelPart == null) return;
+            PoseStack poseStack = new PoseStack();
+            LivingEntityRendererAccessor rendererAccessor = (LivingEntityRendererAccessor) livingRenderer;
+            poseStack.translate(entityPos.x, entityPos.y, entityPos.z);
+            float scale = entity.getScale();
+            poseStack.scale(scale, scale, scale);
+            rendererAccessor.callSetupRotations(entity, poseStack, 0, entity.yBodyRot, 1, scale);
+            poseStack.scale(-1.0F, -1.0F, 1.0F);
+            rendererAccessor.callScale(entity, poseStack, 1);
+            poseStack.translate(0.0F, -1.501F, 0.0F);
+            Stack<Vector3f> rots = new Stack<>();
+            rots.push(new Vector3f());
+            makePartRecursively(rootModelPart, "root", poseStack, level, entity, deathSpeed, rots, deathMotion);
+        }
+    }
+
+    private static void makePartRecursively(ModelPart modelPart,String name, PoseStack poseStack, ClientLevel level, Entity entity, float deathSpeed,Stack<Vector3f> rots,Vec3 deathMotion){
+        if(!modelPart.visible || modelPart.skipDraw) return;
+        modelPart.translateAndRotate(poseStack);
+        Vector3f modelRot = rots.peek();
+//        System.out.println(name);
+        for(ModelPart.Cube cube : ((ModelPartAccessor) (Object) modelPart).getCubes()){
+            Matrix4f pose = poseStack.last().pose();
+            float centerY = ((cube.minY + cube.maxY) / 2) / 16;
+            float xSize=cube.maxX-cube.minX;
+            float ySize=cube.maxY-cube.minY;
+            float zSize=cube.maxZ-cube.minZ;
+            float min = Math.max(0.1f, Math.min(Math.min(xSize, ySize), zSize) / 16);
+            DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, cube, deathSpeed);
+            float xOffset=((cube.minX + cube.maxX) / 2) / 16;
+//            float yOffset = centerY + min / 2;
+            float zOffset=((cube.minZ + cube.maxZ) / 2) / 16;
+            Vector4f transformed = pose.transform(new Vector4f(0, 0, 0, 1));
+//            Vector4f transformed = pose.transform(new Vector4f(xOffset, yOffset, zOffset, 1));
+
+            Vector4f transformedCentroid = pose.transform(new Vector4f(xOffset, centerY, zOffset, 1));
+//            System.out.println("transformed pivot " + transformed.x + " " + transformed.y + " " + transformed.z);
+//            System.out.println("transformed centroid " + transformedCentroid.x + " " + transformedCentroid.y + " " + transformedCentroid.z);
+
+            part.setPos(transformedCentroid.x, transformedCentroid.y - min / 2, transformedCentroid.z);
+//            part.still();
+//            part.setDeltaMovement(new Vec3(0, 0.1, 0).offsetRandom(level.random, 0.6f));
+            part.setDeltaMovement(deathMotion.offsetRandom(level.random, (float) (deathMotion.length() * 0.4 + 0.1))/*.multiply(1, 1.05f, 1)*/);
+            modelRot.add(modelPart.xRot, modelPart.yRot, modelPart.zRot);
+            part.modelPartRot = modelRot;
+            part.xOffset = transformedCentroid.x - transformed.x;
+            part.yOffset = transformedCentroid.y - transformed.y - min / 2;
+            part.zOffset = transformedCentroid.z - transformed.z;
+
+            part.minSide = min;
+            DeathAnimUtils.tellAddEntity(level, part);
+        }
+//        System.out.println("--\n");
+
+        for(Map.Entry<String, ModelPart> entry : ((ModelPartAccessor)(Object) modelPart).getChildren().entrySet()){
+            String childName = entry.getKey();
+            ModelPart child = entry.getValue();
+            if("cloak".equals(childName))continue;
+            poseStack.pushPose();
+            Vector3f newRot = new Vector3f(modelRot);
+            rots.push(newRot);
+            makePartRecursively(child, childName, poseStack, level, entity, deathSpeed, rots, deathMotion);
+            rots.pop();
+            poseStack.popPose();
         }
     }
 
     @SubscribeEvent
-    public static void postRenderLiving(RenderLivingEvent.Post<?,?> event){
-        if(!ClientConfigs.goreEffect) return;
+    public static void postRenderLiving(RenderLivingEvent.Post<?, ?> event){
+        if(ClientConfigs.goreEffect == ClientConfigs.GoreEffect.OFF) return;
         LivingEntity entity = event.getEntity();
-        boolean dead = ((LivingEntityAccessor) entity).getDead();
+        if(ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE_VANILLA
+            && !ResourceLocation.DEFAULT_NAMESPACE.equals(BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).getNamespace()))
+            return;
+        boolean dead = entity.isDeadOrDying();
         if(dead != ((ILivingEntity) entity).confluence$deadO()){
             livingDeath(entity);
         }
@@ -291,11 +368,15 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void postRenderGeoLiving(GeoRenderEvent.Entity.Post event){
-        if(!ClientConfigs.goreEffect) return;
+        if(ClientConfigs.goreEffect== ClientConfigs.GoreEffect.OFF) return;
         Entity entity = event.getEntity();
+        if((ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE || ClientConfigs.goreEffect== ClientConfigs.GoreEffect.CONFLUENCE_VANILLA)
+            && !ModUtils.isFromConfluence(BuiltInRegistries.ENTITY_TYPE, entity.getType())){
+            return;
+        }
         // 渲染这个实体结束的时候检测是不是刚死，这时候方便获取到这个实体的姿势
-        if(entity instanceof LivingEntity living && entity instanceof ILivingEntity li && entity instanceof LivingEntityAccessor la){
-            boolean dead = la.getDead();
+        if(entity instanceof LivingEntity living && entity instanceof ILivingEntity li){
+            boolean dead = living.isDeadOrDying();
             if(dead != li.confluence$deadO()){
                 livingDeath(living);
             }

@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.client;
+package org.confluence.mod.mixin.client.gui;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.ChatFormatting;

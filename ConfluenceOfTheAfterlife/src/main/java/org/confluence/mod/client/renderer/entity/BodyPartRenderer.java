@@ -3,15 +3,19 @@ package org.confluence.mod.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
+import org.confluence.mod.mixin.client.accessor.LivingEntityRendererAccessor;
 import org.confluence.terraentity.client.boss.renderer.GeoBossRenderer;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
@@ -34,11 +38,13 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
     }
 
     @Override
-    public void render(@NotNull DeadBodyPartEntity entity, float entityYaw, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight) {
-        Object bone = entity.bone;
+    public void render(@NotNull DeadBodyPartEntity entity, float entityYaw, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight){
         Entity dying = entity.dyingEntity;
+        if(dying == null) return;
+        Object cube = entity.cube;
+        EntityRenderer<?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(dying);
         // Geo生物
-        if (dying != null && bone instanceof GeoCube geoCube && Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(dying) instanceof GeoEntityRenderer geoEntityRenderer) {
+        if(cube instanceof GeoCube geoCube && renderer instanceof GeoEntityRenderer geoEntityRenderer){
             // 把计算Y轴中心放到前面，如果cube有问题就提前返回
             GeoQuad[] twoQuads = new GeoQuad[2];
             for (GeoQuad quad : geoCube.quads()) {
@@ -92,25 +98,53 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
 
             // 模拟打飞的旋转
             poseStack.translate(0, centerY, 0);
-            if (entity.stop) {
-                poseStack.mulPose(Axis.ZP.rotationDegrees((entity.animTick + 1) * 10 * entity.rotZ));
-                poseStack.mulPose(Axis.YP.rotationDegrees((entity.animTick + 1) * 10 * entity.rotY));
-                poseStack.mulPose(Axis.XP.rotationDegrees((entity.animTick + 1) * 10 * entity.rotX));
-            } else {
-                poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTick, entity.animTick * 10 * entity.rotZ, (entity.animTick + 1) * 10 * entity.rotZ)));
-                poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick, entity.animTick * 10 * entity.rotY, (entity.animTick + 1) * 10 * entity.rotY)));
-                poseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(partialTick, entity.animTick * 10 * entity.rotX, (entity.animTick + 1) * 10 * entity.rotX)));
-            }
+            applyRandomRotation(entity, poseStack, partialTick);
             poseStack.translate(0, -centerY, 0);
 
             ResourceLocation textureLocation = geoEntityRenderer.getTextureLocation(dying);
             RenderType renderType = geoEntityRenderer.getRenderType(dying, textureLocation, bufferSource, partialTick);
             geoEntityRenderer.renderCube(poseStack, geoCube,
-                    bufferSource.getBuffer(renderType == null ? RenderType.entityCutoutNoCull(textureLocation) : renderType),
-                    packedLight,
-                    OverlayTexture.pack(OverlayTexture.u(0), OverlayTexture.v(false)),
-                    geoEntityRenderer.getRenderColor(dying, partialTick, packedLight).argbInt());
+                bufferSource.getBuffer(renderType == null ? RenderType.entityCutoutNoCull(textureLocation) : renderType),
+                packedLight,
+                OverlayTexture.pack(OverlayTexture.u(0), OverlayTexture.v(false)),
+                geoEntityRenderer.getRenderColor(dying, partialTick, packedLight).argbInt());
             poseStack.popPose();
+        }else if(cube instanceof ModelPart.Cube partCube && renderer instanceof LivingEntityRenderer livingRenderer && dying instanceof LivingEntity living){ // 原版生物
+            LivingEntityRendererAccessor ra=(LivingEntityRendererAccessor) livingRenderer;
+            boolean visible = ra.callIsBodyVisible(living);
+            boolean translucent = !visible && !entity.isInvisibleTo(Minecraft.getInstance().player);
+            boolean glowing = Minecraft.getInstance().shouldEntityAppearGlowing(entity);
+            poseStack.pushPose();
+            float halfMinSide = entity.minSide / 2;
+            poseStack.translate(0, halfMinSide, 0);
+            applyRandomRotation(entity, poseStack, partialTick);
+            poseStack.translate(-entity.xOffset, -entity.yOffset - halfMinSide, -entity.zOffset);
+            float scale = living.getScale();
+            poseStack.scale(scale, scale, scale);
+            ra.callSetupRotations(living, poseStack, 0, living.yBodyRot, 1, scale);
+            Vector3f modelPartRot = entity.modelPartRot;
+            poseStack.mulPose(Axis.ZP.rotation(modelPartRot.z));
+            poseStack.mulPose(Axis.YP.rotation(-modelPartRot.y));
+            poseStack.mulPose(Axis.XP.rotation(-modelPartRot.x));
+            poseStack.scale(-1.0F, -1.0F, 1.0F);
+            ra.callScale(living, poseStack, 1);
+
+            partCube.compile(poseStack.last(), bufferSource.getBuffer(ra.callGetRenderType(living, visible, translucent, glowing)),
+                packedLight, 655360, translucent ? 654311423 : -1);
+            poseStack.popPose();
+        }
+    }
+
+    private void applyRandomRotation(DeadBodyPartEntity entity, PoseStack poseStack, float partialTick){
+        if(entity.still)return;
+        if(entity.stop){
+            poseStack.mulPose(Axis.ZP.rotationDegrees((entity.animTick + 1) * 10 * entity.rotZ));
+            poseStack.mulPose(Axis.YP.rotationDegrees((entity.animTick + 1) * 10 * entity.rotY));
+            poseStack.mulPose(Axis.XP.rotationDegrees((entity.animTick + 1) * 10 * entity.rotX));
+        }else{
+            poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTick, entity.animTick * 10 * entity.rotZ, (entity.animTick + 1) * 10 * entity.rotZ)));
+            poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick, entity.animTick * 10 * entity.rotY, (entity.animTick + 1) * 10 * entity.rotY)));
+            poseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(partialTick, entity.animTick * 10 * entity.rotX, (entity.animTick + 1) * 10 * entity.rotX)));
         }
     }
 }

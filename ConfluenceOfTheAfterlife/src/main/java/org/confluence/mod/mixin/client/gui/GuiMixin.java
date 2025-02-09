@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.client;
+package org.confluence.mod.mixin.client.gui;
 
 import net.minecraft.client.gui.Gui;
 import org.confluence.mod.client.ClientConfigs;

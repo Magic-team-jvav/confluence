@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.client;
+package org.confluence.mod.mixin.client.gui;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;

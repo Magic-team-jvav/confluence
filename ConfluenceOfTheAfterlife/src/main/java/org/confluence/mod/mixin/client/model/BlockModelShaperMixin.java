@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.client;
+package org.confluence.mod.mixin.client.model;
 
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.resources.model.BakedModel;

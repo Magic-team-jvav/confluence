@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Unique;
 import software.bernie.geckolib.cache.object.GeoCube;
 
 @Mixin(value = GeoCube.class, remap = false)
-public class GeoCubeMixin implements IGeoCube, SelfGetter<GeoCube> {
+public abstract class GeoCubeMixin implements IGeoCube, SelfGetter<GeoCube> {
     @Unique GeoCube confluence$copy;
     @Unique float[] confluence$minCoords;
     @Unique float[] confluence$maxCoords;

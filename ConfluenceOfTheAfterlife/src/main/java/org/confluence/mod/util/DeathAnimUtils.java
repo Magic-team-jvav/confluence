@@ -1,12 +1,21 @@
 package org.confluence.mod.util;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HierarchicalModel;
+import net.minecraft.client.model.Model;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.mixed.IGeoCube;
+import org.confluence.mod.mixed.IModelPart;
 import org.confluence.terraentity.entity.util.DeathAnimOptions;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -14,7 +23,11 @@ import software.bernie.geckolib.cache.object.GeoCube;
 import software.bernie.geckolib.cache.object.GeoQuad;
 import software.bernie.geckolib.cache.object.GeoVertex;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InaccessibleObjectException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /** @author voila */
@@ -259,14 +272,40 @@ public final class DeathAnimUtils {
         float bezierValue = cubicBezier(t, p0, p1, p2, p3);
         return bezierValue * max;
     }
-//
-//    public static List<ModelPart> findAllModelPart(LivingEntityRenderer<?, ?> renderer){  // 用List是为了保证顺序
+
+    public static ModelPart findRootModelPart(LivingEntityRenderer<?, ?> renderer){
+        EntityModel<?> model = renderer.getModel();
+        ModelPart any = findAnyModelPart(model, model.getClass());
+        if(any == null) return null;
+        return ((IModelPart) (Object) (any)).confluence$root();
+    }
+    public static ModelPart findAnyModelPart(Object model, Class<?> finding){
+        if(model instanceof HierarchicalModel<?> hierarchicalModel){
+            return hierarchicalModel.root();
+        }
+        for(Field field : finding.getDeclaredFields()){
+            try{
+                field.setAccessible(true);
+                if(field.get(model) instanceof ModelPart part){
+                    return part;
+                }
+            }catch(IllegalAccessException | InaccessibleObjectException e){
+                Confluence.LOGGER.error("field.get: ", e);
+            }
+        }
+        if(Model.class.isAssignableFrom(finding.getSuperclass())){
+            return findAnyModelPart(model, finding.getSuperclass());
+        }
+        return null;
+    }
+
+    public static List<ModelPart> findAllModelPart(LivingEntityRenderer<?, ?> renderer){  // 用List是为了保证顺序
 //        List<ModelPart> cache = ((ILivingEntityRenderer) renderer).confluence$getPartsCache();
 //        if(!cache.isEmpty()){  // 要是有哪个Layer是中途加进去的而不是构造的时候就加的就会出问题
 //            return cache;
 //        }
-//        EntityModel<?> model = renderer.getModel();
-//        List<ModelPart> ret = findAllModelPart(model, model.getClass());
+        EntityModel<?> model = renderer.getModel();
+        List<ModelPart> ret = findAllModelPart(model, model.getClass());
 //        for(RenderLayer<LivingEntity, EntityModel<LivingEntity>> layer : ((LivingEntityRendererAccessor) renderer).getLayers()){
 //            for(Field field : layer.getClass().getDeclaredFields()){
 //                try{
@@ -288,28 +327,32 @@ public final class DeathAnimUtils {
 //            }
 //        }
 //        cache.addAll(ret);
-//        return ret;
-//    }
-//
-//    public static List<ModelPart> findAllModelPart(Object model, Class<?> finding){
-//        List<ModelPart> ret = new ArrayList<>();
-//        for(Field field : finding.getDeclaredFields()){
-//            try{
-//                field.setAccessible(true);
-//                if(field.get(model) instanceof IModelPart part){
-//                    ret.addAll(part.confluence$root().getAllParts().toList());
-//                    break;
-//                }
-//            }catch(IllegalAccessException | InaccessibleObjectException e){
-//                Confluence.LOGGER.error("field.get: ", e);
-//            }
-//        }
-//        if(ret.isEmpty() && Model.class.isAssignableFrom(finding.getSuperclass())){
-//            ret.addAll(findAllModelPart(model, finding.getSuperclass()));
-//        }
-//        return ret;
-//    }
-//
+        return ret;
+    }
+
+    public static List<ModelPart> findAllModelPart(Object model, Class<?> finding){
+        List<ModelPart> ret = new ArrayList<>();
+        if(model instanceof HierarchicalModel<?> hierarchicalModel){
+            ret.addAll(hierarchicalModel.root().getAllParts().toList());
+            return ret;
+        }
+        for(Field field : finding.getDeclaredFields()){
+            try{
+                field.setAccessible(true);
+                if(field.get(model) instanceof IModelPart part){
+                    ret.addAll(part.confluence$root().getAllParts().toList());
+                    break;
+                }
+            }catch(IllegalAccessException | InaccessibleObjectException e){
+                Confluence.LOGGER.error("field.get: ", e);
+            }
+        }
+        if(ret.isEmpty() && Model.class.isAssignableFrom(finding.getSuperclass())){
+            ret.addAll(findAllModelPart(model, finding.getSuperclass()));
+        }
+        return ret;
+    }
+
 //    public static List<CoreGeoBone> findAllBones(BakedGeoModel model){
 //        List<CoreGeoBone> ret = new ArrayList<>(/*model.topLevelBones()*/);
 //        for(GeoBone bone : model.topLevelBones()){
@@ -408,8 +451,9 @@ public final class DeathAnimUtils {
         Vec3 offset =  new Vec3(avCoords[0], avCoords[1], avCoords[2]);
         GeoCube newCube = new GeoCube(newQuads, geoCube.pivot().subtract(offset.scale(16)), geoCube.rotation(), geoCube.size(), geoCube.inflate(), geoCube.mirror());
         moveToOrigin(newCube, offset);
-        ((IGeoCube)(Object) newCube).confluence$setMaxCoords(maxCoords);
-        ((IGeoCube)(Object) newCube).confluence$setMinCoords(minCoords);
+        IGeoCube iGeoCube = IGeoCube.of(newCube);
+        iGeoCube.confluence$setMaxCoords(maxCoords);
+        iGeoCube.confluence$setMinCoords(minCoords);
         return newCube;
     }
 
@@ -421,6 +465,10 @@ public final class DeathAnimUtils {
                 pos.set(pos.x - centroid.x, pos.y - centroid.y, pos.z - centroid.z);
             }
         }
+    }
+
+    public static void tellAddEntity(ClientLevel level,Entity entity){
+        Minecraft.getInstance().tell(() -> level.addEntity(entity));
     }
 
 }

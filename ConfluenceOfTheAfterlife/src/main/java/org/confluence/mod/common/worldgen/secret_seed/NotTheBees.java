@@ -3,6 +3,7 @@ package org.confluence.mod.common.worldgen.secret_seed;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
@@ -20,8 +21,8 @@ public class NotTheBees extends SecretSeed {
         list.add(ModTags.Biomes.IS_CONFLUENCE);
     });
 
-    public NotTheBees(long flag) {
-        super(flag);
+    public NotTheBees(long flag, ResourceLocation id) {
+        super(flag, id);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.confluence.mod.common.worldgen.secret_seed;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
@@ -16,8 +17,8 @@ import org.confluence.mod.common.init.ModSecretSeeds;
 import java.util.List;
 
 public class NoTraps extends SecretSeed {
-    public NoTraps(long flag) {
-        super(flag);
+    public NoTraps(long flag, ResourceLocation id) {
+        super(flag, id);
     }
 
     @Override

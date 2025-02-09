@@ -1,6 +1,7 @@
 package org.confluence.mod.common.worldgen.secret_seed;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -16,8 +17,8 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import java.util.Optional;
 
 public class BoulderWorld extends SecretSeed {
-    public BoulderWorld(long flag) {
-        super(flag);
+    public BoulderWorld(long flag, ResourceLocation id) {
+        super(flag, id);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.worldgen.secret_seed;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -7,15 +8,21 @@ import org.confluence.mod.mixed.IMinecraftServer;
 
 public abstract class SecretSeed {
     private final long flag;
+    private final ResourceLocation id;
 
-    SecretSeed(long flag) {
+    public SecretSeed(long flag, ResourceLocation id) {
         this.flag = flag;
+        this.id = id;
     }
 
     public abstract boolean match(String seed);
 
     public long getFlag() {
         return flag;
+    }
+
+    public ResourceLocation getId() {
+        return id;
     }
 
     public boolean match(MinecraftServer server) {

@@ -1,30 +1,32 @@
 package org.confluence.mod.common.init;
 
 import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Codec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.WorldOptions;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.worldgen.secret_seed.*;
 import org.confluence.mod.mixed.IWorldOptions;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.OptionalLong;
-import java.util.function.Function;
+import java.util.*;
+import java.util.function.BiFunction;
 
 public final class ModSecretSeeds {
     public static final List<SecretSeed> VALUES = new ArrayList<>();
+    public static final Map<ResourceLocation, SecretSeed> BY_ID = new Hashtable<>();
+    public static final Codec<SecretSeed> CODEC = ResourceLocation.CODEC.xmap(BY_ID::get, SecretSeed::getId);
 
-    public static final SecretSeed DRUNK_WORLD = register(DrunkWorld::new); // 0b1_00000000
-    public static final SecretSeed NOT_THE_BEES = register(NotTheBees::new); // 0b10_00000000
-    public static final SecretSeed FOR_THE_WORTHY = register(ForTheWorthy::new); // 0b100_00000000
-    public static final SecretSeed CELEBRATIONMK10 = register(Celebrationmk10::new); // 0b1000_00000000
-    public static final SecretSeed THE_CONSTANT = register(TheConstant::new); // 0b10000_00000000
-    public static final SecretSeed NO_TRAPS = register(NoTraps::new); // 0b100000_00000000
-    public static final SecretSeed DONT_DIG_UP = register(DontDigUp::new); // 0b1000000_00000000
-    public static final SecretSeed GET_FIXED_BOI = register(GetFixedBoi::new); // 0b10000000_00000000
+    public static final SecretSeed DRUNK_WORLD = register(Confluence.asResource("drunk_world"), DrunkWorld::new); // 0b1_00000000
+    public static final SecretSeed NOT_THE_BEES = register(Confluence.asResource("not_the_bees"), NotTheBees::new); // 0b10_00000000
+    public static final SecretSeed FOR_THE_WORTHY = register(Confluence.asResource("for_the_worthy"), ForTheWorthy::new); // 0b100_00000000
+    public static final SecretSeed CELEBRATIONMK10 = register(Confluence.asResource("celebrationmk10"), Celebrationmk10::new); // 0b1000_00000000
+    public static final SecretSeed THE_CONSTANT = register(Confluence.asResource("the_constant"), TheConstant::new); // 0b10000_00000000
+    public static final SecretSeed NO_TRAPS = register(Confluence.asResource("no_traps"), NoTraps::new); // 0b100000_00000000
+    public static final SecretSeed DONT_DIG_UP = register(Confluence.asResource("dont_dig_up"), DontDigUp::new); // 0b1000000_00000000
+    public static final SecretSeed GET_FIXED_BOI = register(Confluence.asResource("get_fixed_boi"), GetFixedBoi::new); // 0b10000000_00000000
 
     // 新增的
-    public static final SecretSeed BOULDER_WORLD = register(BoulderWorld::new); // 0b100000000_00000000
+    public static final SecretSeed BOULDER_WORLD = register(Confluence.asResource("boulder_world"), BoulderWorld::new); // 0b100000000_00000000
 
     /**
      * 0b00000001: 1.腐化<br>
@@ -35,9 +37,10 @@ public final class ModSecretSeeds {
      *
      * @see org.confluence.mod.mixed.IWorldOptions
      */
-    private static SecretSeed register(Function<Long, SecretSeed> function) {
-        SecretSeed secretSeed = function.apply(1L << (VALUES.size() + 8));
+    private static SecretSeed register(ResourceLocation id, BiFunction<Long, ResourceLocation, SecretSeed> function) {
+        SecretSeed secretSeed = function.apply(1L << (VALUES.size() + 8), id);
         VALUES.add(secretSeed);
+        BY_ID.put(id, secretSeed);
         return secretSeed;
     }
 

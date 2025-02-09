@@ -1,8 +1,10 @@
 package org.confluence.mod.common.worldgen.secret_seed;
 
+import net.minecraft.resources.ResourceLocation;
+
 public class GetFixedBoi extends SecretSeed {
-    public GetFixedBoi(long flag) {
-        super(flag);
+    public GetFixedBoi(long flag, ResourceLocation id) {
+        super(flag, id);
     }
 
     @Override

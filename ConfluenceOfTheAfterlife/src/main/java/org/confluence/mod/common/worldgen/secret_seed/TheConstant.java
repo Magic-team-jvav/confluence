@@ -44,8 +44,8 @@ import java.util.function.Function;
 public class TheConstant extends SecretSeed {
     private static final ResourceLocation POST_EFFECT = Confluence.asResource("shaders/post/the_constant.json");
 
-    public TheConstant(long flag) {
-        super(flag);
+    public TheConstant(long flag, ResourceLocation id) {
+        super(flag, id);
     }
 
     @Override

@@ -36,14 +36,6 @@ public final class ClientPacketHandler {
         return gamePhase;
     }
 
-    public static boolean isHardcore() {
-        return gamePhase.ordinal() > 1;
-    }
-
-    public boolean isGraduated() {
-        return gamePhase.ordinal() == 6;
-    }
-
     public static float getFishingPower() {
         return fishingPower;
     }

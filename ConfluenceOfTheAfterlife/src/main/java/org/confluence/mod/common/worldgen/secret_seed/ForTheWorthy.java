@@ -1,6 +1,7 @@
 package org.confluence.mod.common.worldgen.secret_seed;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -8,8 +9,8 @@ import net.minecraft.world.level.block.state.BlockState;
 public class ForTheWorthy extends SecretSeed {
     public static final BlockState LAVA = Blocks.LAVA.defaultBlockState();
 
-    public ForTheWorthy(long flag) {
-        super(flag);
+    public ForTheWorthy(long flag, ResourceLocation id) {
+        super(flag, id);
     }
 
     @Override

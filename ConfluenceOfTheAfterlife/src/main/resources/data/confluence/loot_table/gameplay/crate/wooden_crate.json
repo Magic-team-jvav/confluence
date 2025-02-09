@@ -41,7 +41,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "terra_curio:guide_to_plant_fiber_cordage",
+          "name": "confluence:guide_to_plant_fiber_cordage",
           "weight": 1
         },
         {

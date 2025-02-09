@@ -325,6 +325,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.armorStyle.legacy_diagonal", "护甲值样式:精致-对角");
         add("confluence.configuration.armorStyle.legacy_vertical", "护甲值样式:精致-垂直");
         add("confluence.configuration.manaStyle.legacy", "魔力值样式:精致");
+        add("confluence.configuration.manaStyle.overlay", "魔力值样式:叠加");
+        add("confluence.configuration.armorStyle.overlay", "护甲值样式:叠加");
         add("confluence.configuration.healthStyle.legacy", "生命值样式:精致");
         add("confluence.configuration.foodStyle.legacy", "饱食度样式:精致");
         add("confluence.configuration.healthStyle.overlay", "生命值样式:叠加");

@@ -61,30 +61,30 @@ public class ModBoneMealItem extends Item {
         ItemStack stack = context.getItemInHand();
         BlockState state = level.getBlockState(context.getClickedPos());
         for (int i = 0; i < 128; i++) {
-            BlockPos targetPos = context.getClickedPos().above();
-            for (int j = 0; j < i / 16; j++) {
-                targetPos = targetPos.offset(level.random.nextInt(3) - 1,
-                        (level.random.nextInt(3) - 1) * level.random.nextInt(3) / 2,
-                        level.random.nextInt(3) - 1);
-                if (!level.getBlockState(targetPos.below()).is(state.getBlock()) ||
-                        level.getBlockState(targetPos).isCollisionShapeFullBlock(level, targetPos)) {
-                    break;
+            if (!level.isClientSide) {
+                BlockPos targetPos = context.getClickedPos().above();
+                for (int j = 0; j < i / 16; j++) {
+                    targetPos = targetPos.offset(level.random.nextInt(3) - 1, (level.random.nextInt(3) - 1) * level.random.nextInt(3) / 2, level.random.nextInt(3) - 1);
+                    if (!level.getBlockState(targetPos.below()).is(state.getBlock()) ||
+                            level.getBlockState(targetPos).isCollisionShapeFullBlock(level, targetPos)) {
+                        break;
+                    }
                 }
-            }
-            BlockState targetState = level.getBlockState(targetPos);
-            if (targetState.isAir()) {
-                String blockType = null;
-                if (stack.is(ConsumableItems.BLOODSTAINED_POWDER.get()) &&
-                        (state.is(NatureBlocks.TR_CRIMSON_GRASS_BLOCK) || state.is(NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK))) {
-                    blockType = "tr_crimson";
-                } else if (stack.is(ConsumableItems.ROTTEN_BONE_DUST.get()) &&
-                        (state.is(NatureBlocks.CORRUPT_GRASS_BLOCK) || state.is(NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK))) {
-                    blockType = "corrupt";
-                }
-                if (blockType != null) {
-                    BlockState randomPlant = getRandomPlantState(level, blockType);
-                    if (randomPlant.canSurvive(level, targetPos)) {
-                        level.setBlock(targetPos, randomPlant, 3);
+                BlockState targetState = level.getBlockState(targetPos);
+                if (targetState.isAir()) {
+                    String blockType = null;
+                    if (stack.is(ConsumableItems.BLOODSTAINED_POWDER.get()) &&
+                            (state.is(NatureBlocks.TR_CRIMSON_GRASS_BLOCK) || state.is(NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK))) {
+                        blockType = "tr_crimson";
+                    } else if (stack.is(ConsumableItems.ROTTEN_BONE_DUST.get()) &&
+                            (state.is(NatureBlocks.CORRUPT_GRASS_BLOCK) || state.is(NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK))) {
+                        blockType = "corrupt";
+                    }
+                    if (blockType != null) {
+                        BlockState randomPlant = getRandomPlantState(level, blockType);
+                        if (randomPlant.canSurvive(level, targetPos)) {
+                            level.setBlock(targetPos, randomPlant, 3);
+                        }
                     }
                 }
             }

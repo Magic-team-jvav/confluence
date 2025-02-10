@@ -1,5 +1,6 @@
 package org.confluence.mod.common.worldgen.secret_seed;
 
+import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -38,9 +39,12 @@ import org.confluence.mod.mixin.client.accessor.GameRendererAccessor;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3d;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 public class TheConstant extends SecretSeed {
     private static final ResourceLocation POST_EFFECT = Confluence.asResource("shaders/post/the_constant.json");
@@ -107,7 +111,6 @@ public class TheConstant extends SecretSeed {
         }
     }
 
-    // todo 世界中会生成“Wavy Caves”（皱曲洞穴）。它们会生成为上下尖锐起伏的之字形，或者斜向下的曲线形状。
     @ParametersAreNonnullByDefault
     public static class WavyCaveCarver extends WorldCarver<WavyCaveCarver.Config> {
         public WavyCaveCarver(Codec<Config> codec) {
@@ -116,11 +119,27 @@ public class TheConstant extends SecretSeed {
 
         @Override
         public boolean carve(CarvingContext context, Config config, ChunkAccess chunk, Function<BlockPos, Holder<Biome>> biomeAccessor, RandomSource random, Aquifer aquifer, ChunkPos chunkPos, CarvingMask carvingMask) {
-            return false;
+            BlockPos start = chunkPos.getBlockAt(random.nextInt(16, 32) * (random.nextBoolean() ? -1 : 1), config.y.sample(random, context) - random.nextInt(Math.abs(context.getMinGenY())), random.nextInt(16, 32) * (random.nextBoolean() ? -1 : 1));
+            BlockPos end = chunkPos.getBlockAt(random.nextInt(16, 32) * (random.nextBoolean() ? -1 : 1), config.y.sample(random, context) - random.nextInt(Math.abs(context.getMinGenY())), random.nextInt(16, 32) * (random.nextBoolean() ? -1 : 1));
+            BlockPos delta = end.subtract(start);
+            BlockPos middle = start.offset(delta.getX() / 2, delta.getY() / 2, delta.getZ() / 2);
+            delta = middle.subtract(start);
+            BlockPos a = start.offset(delta.getX() / 2, delta.getY() / 2 + random.nextInt(32, 48), delta.getZ() / 2);
+            delta = end.subtract(middle);
+            BlockPos b = start.offset(delta.getX() / 2, delta.getY() / 2 + random.nextInt(32, 48), delta.getZ() / 2);
+
+            List<Vector3d> positions = Lists.newArrayList(Stream.of(start, a, middle, b, end).map(ModUtils::toVector3d).toList());
+            ModUtils.lightningPathList(positions, 2.5, 8, random);
+            float yScale = config.yScale.sample(random);
+            for (Vector3d position : positions) {
+                carveEllipsoid(context, config, chunk, biomeAccessor, aquifer, position.x, position.y, position.z, 6, yScale, carvingMask, (context1, relativeX, relativeY, relativeZ, y) -> false);
+            }
+            return true;
         }
 
         @Override
         public boolean isStartChunk(Config config, RandomSource random) {
+            if (!ModSecretSeeds.THE_CONSTANT.match()) return false;
             return random.nextFloat() < config.probability;
         }
 

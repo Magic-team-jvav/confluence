@@ -18,7 +18,7 @@ public final class ModDamageTypes {
     public static final ResourceKey<DamageType> DARKNESS = register("darkness");
 
     private static ResourceKey<DamageType> register(String id) {
-        return ResourceKey.create(Registries.DAMAGE_TYPE, Confluence.asResource(id));
+        return Confluence.asResourceKey(Registries.DAMAGE_TYPE, id);
     }
 
     public static DamageSource of(Level level, ResourceKey<DamageType> key) {

@@ -189,7 +189,7 @@ public class TheConstant extends SecretSeed {
         public static void sendToClient(ServerPlayer serverPlayer) {
             boolean secretSeed = ModSecretSeeds.THE_CONSTANT.match(serverPlayer.server);
             boolean accessory = CuriosUtils.hasCurio(serverPlayer, AccessoryItems.RADIO_THING.get());
-            PacketDistributor.sendToAllPlayers(new PostEffectPacketS2C(secretSeed ^ accessory));
+            PacketDistributor.sendToPlayer(serverPlayer, new PostEffectPacketS2C(secretSeed ^ accessory));
         }
     }
 }

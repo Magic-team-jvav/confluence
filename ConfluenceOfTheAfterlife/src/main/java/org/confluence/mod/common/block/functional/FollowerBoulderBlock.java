@@ -6,6 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -35,7 +36,7 @@ public class FollowerBoulderBlock extends BoulderBlock {
 
     public static void summon(Level level, BlockPos pos, BlockState blockState, Function<BoulderEntity, Player> function) {
         Vec3 position = new Vec3(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-        FollowerBoulderEntity entity = new FollowerBoulderEntity(level, position, blockState);
+        FollowerBoulderEntity entity = new FollowerBoulderEntity(level, position, Blocks.OBSERVER.defaultBlockState());
         if (level.getBlockState(pos.below()).isAir()) {
             entity.getEntityData().set(FollowerBoulderEntity.DATA_VERTICAL, true);
         } else {

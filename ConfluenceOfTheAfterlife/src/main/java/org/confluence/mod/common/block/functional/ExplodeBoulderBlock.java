@@ -6,6 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -13,6 +14,7 @@ import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.entity.projectile.BoulderEntity;
 import org.confluence.mod.common.entity.projectile.ExplodeBoulderEntity;
 import org.confluence.mod.common.entity.projectile.FollowerBoulderEntity;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
@@ -36,7 +38,7 @@ public class ExplodeBoulderBlock extends BoulderBlock {
 
     public static void summon(Level level, BlockPos pos, BlockState blockState, Function<BoulderEntity, Player> function) {
         Vec3 position = new Vec3(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-        ExplodeBoulderEntity entity = new ExplodeBoulderEntity(level, position, blockState);
+        ExplodeBoulderEntity entity = new ExplodeBoulderEntity(level, position, FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get().defaultBlockState());
         if (level.getBlockState(pos.below()).isAir()) {
             entity.getEntityData().set(ExplodeBoulderEntity.DATA_VERTICAL, true);
         } else {

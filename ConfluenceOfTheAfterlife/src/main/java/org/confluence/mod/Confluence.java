@@ -49,7 +49,6 @@ public class Confluence {
         ModMenuTypes.TYPES.register(eventBus);
         ModParticleTypes.TYPES.register(eventBus);
         ModChunkGenerators.GENERATORS.register(eventBus);
-        ModPaintingVariants.VARIANTS.register(eventBus);
         ModEntityDataSerializers.SERIALIZERS.register(eventBus);
         ModCarvers.CARVERS.register(eventBus);
     }

@@ -15,6 +15,7 @@ public final class ModDamageTypes {
     public static final ResourceKey<DamageType> FROST_BURN = register("frost_burn");
     public static final ResourceKey<DamageType> BOULDER = register("boulder");
     public static final ResourceKey<DamageType> THORN = register("thorn");
+    public static final ResourceKey<DamageType> DARKNESS = register("darkness");
 
     private static ResourceKey<DamageType> register(String id) {
         return ResourceKey.create(Registries.DAMAGE_TYPE, Confluence.asResource(id));
@@ -29,6 +30,6 @@ public final class ModDamageTypes {
     }
 
     public static DamageSource of(Level level, ResourceKey<DamageType> key, Entity causing, Entity direct) {
-        return new DamageSource(level.registryAccess().registry(Registries.DAMAGE_TYPE).orElseThrow().getHolderOrThrow(key), causing, direct);
+        return new DamageSource(level.registryAccess().holderOrThrow(key), causing, direct);
     }
 }

@@ -36,6 +36,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.SwordItems;
+import org.confluence.mod.util.DateUtils;
 import org.confluence.terraentity.entity.monster.AbstractMonster;
 import org.confluence.terraentity.entity.monster.demoneye.DemonEye;
 import org.confluence.terraentity.entity.monster.prefab.FlyMonsterPrefab;
@@ -191,12 +192,12 @@ public class StatueBlocks {
         return itemEntity;
     }));
     public static final Supplier<BehaviourStatueBlock> HEART_STATUE = registerBehaviour("heart_statue", new BehaviourStatueBlock.SummonBehaviour<>(false, 200, (level, pos) -> {
-        ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, ModItems.HEART.get().getDefaultInstance());
+        ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, DateUtils.getHeartItem().getDefaultInstance());
         itemEntity.setPickUpDelay(0);
         return itemEntity;
     }));
     public static final Supplier<BehaviourStatueBlock> STAR_STATUE = registerBehaviour("star_statue", new BehaviourStatueBlock.SummonBehaviour<>(false, 200, (level, pos) -> {
-        ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, ModItems.STAR.get().getDefaultInstance());
+        ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, DateUtils.getStarItem().getDefaultInstance());
         itemEntity.setPickUpDelay(0);
         return itemEntity;
     }));

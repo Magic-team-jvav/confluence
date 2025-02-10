@@ -57,6 +57,7 @@ public class ConsumableItems {
     public static final Supplier<RightClickLootItem> RED_ENVELOPE = ITEMS.register("red_envelope", () -> new RightClickLootItem(ModRarity.RED, ModLootTables.RED_ENVELOPE));
     public static final Supplier<RightClickLootItem> SUGAR_TANGERINE = ITEMS.register("sugar_tangerine", () -> new RightClickLootItem(ModRarity.RED, ModLootTables.SUGAR_TANGERINE));
     public static final Supplier<RightClickLootItem> DELUXE_PACKAGE = ITEMS.register("deluxe_package", () -> new RightClickLootItem(ModRarity.RED, ModLootTables.DELUXE_PACKAGE));
+    public static final Supplier<RightClickLootItem> GOODIE_BAG = ITEMS.register("goodie_bag", () -> new RightClickLootItem(ModRarity.ORANGE, ModLootTables.GOODIE_GIFT));
     public static final Supplier<RightClickLootItem> CHRISTMAS_GIFT = ITEMS.register("christmas_gift", () -> new RightClickLootItem(ModRarity.BLUE, ModLootTables.CHRISTMAS_GIFT));
 
     public static final Supplier<ThrownPowderItem> PURIFICATION_POWDER = ITEMS.register("purification_powder", () -> new ThrownPowderItem(ISpreadable.Type.PURE));

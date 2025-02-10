@@ -7,10 +7,12 @@ import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Tuple;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.Confluence;
@@ -31,6 +33,7 @@ import org.confluence.mod.network.s2c.ManaPacketS2C;
 import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
 import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
+import org.confluence.terraentity.entity.ai.Boss;
 
 import java.util.List;
 import java.util.function.IntFunction;
@@ -329,6 +332,27 @@ public final class PlayerUtils {
 
         if (CommonConfigs.SHOW_MONEY_DROPS.get()) {
             player.getPersistentData().putLong("confluence:drops_money", drops);
+        }
+    }
+
+    /**
+     * 获取玩家复活时间
+     *
+     * @param player 玩家
+     * @return 复活时间
+     */
+    public static int getRespawnWaitTime(Player player) {
+        AABB aabb = new AABB(player.blockPosition()).inflate(Short.MAX_VALUE);
+        if (player.level().getEntitiesOfClass(LivingEntity.class, aabb, living -> living instanceof Boss).isEmpty()) {
+            return player.getRandom().nextInt(
+                    CommonConfigs.DEFAULT_RESPAWN_TIME_MIN.get(),
+                    CommonConfigs.DEFAULT_RESPAWN_TIME_MAX.get()
+            );
+        } else {
+            return player.getRandom().nextInt(
+                    CommonConfigs.BOSS_RESPAWN_TIME_MIN.get(),
+                    CommonConfigs.BOSS_RESPAWN_TIME_MAX.get()
+            );
         }
     }
 }

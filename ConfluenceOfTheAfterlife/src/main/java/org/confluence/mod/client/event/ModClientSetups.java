@@ -33,6 +33,7 @@ import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.color.IntegerRGB;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
@@ -173,6 +174,7 @@ public final class ModClientSetups {
         };
         ItemProperties.register(AccessoryItems.SPECTRE_GOGGLES.get(), enable, enableFunction);
         ItemProperties.register(AccessoryItems.MECHANICAL_LENS.get(), enable, enableFunction);
+        ItemProperties.register(ToolItems.ENCUMBERING_STONE.get(), enable, enableFunction);
         ResourceLocation variant = Confluence.asResource("variant");
         ItemPropertyFunction variantFunction = (itemStack, level, living, speed) -> {
             CompoundTag tag = ModUtils.getItemStackNbt(itemStack);

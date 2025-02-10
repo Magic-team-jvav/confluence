@@ -18,7 +18,6 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -41,10 +40,11 @@ import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ArrowItems;
 import org.confluence.mod.common.init.item.ConsumableItems;
-import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
+import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.jetbrains.annotations.Nullable;
@@ -259,7 +259,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                     if (level.random.nextBoolean()) amount++;
                     if (level.random.nextBoolean()) amount++;
                 }
-                ModUtils.createItemEntity(ModItems.HEART.get(), amount, center, level, 0);
+                ModUtils.createItemEntity(DateUtils.getHeartItem(), amount, center, level, 0);
             } else if (player.getInventory().hasAnyMatching(itemStack -> itemStack.getCount() < 20 && itemStack.is(ModTags.Items.TORCH))) {
                 return dropTorch(level, blockPos, center);
             } else {
@@ -350,7 +350,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         if (level.dimension() == Level.NETHER || ConfluenceData.get((ServerLevel) level).getGamePhase().isHardmode()) {
             return dropMoney(level, center);
         } else {
-            ModUtils.createItemEntity(Blocks.SCAFFOLDING.asItem(), level.random.nextInt(5, 11), center, level, 0);
+            ModUtils.createItemEntity(ModBlocks.ROPE.get().asItem(), level.random.nextInt(5, 11), center, level, 0);
             return true;
         }
     }

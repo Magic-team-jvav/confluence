@@ -77,14 +77,15 @@ public class BaseRopeBlock extends PipeBlock implements SimpleWaterloggedBlock {
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState state = defaultBlockState();
         BlockPos pos = context.getClickedPos();
-        BlockState belowState = context.getLevel().getBlockState(pos);
+        Level level = context.getLevel();
+        BlockState belowState = level.getBlockState(pos);
         if (belowState.getFluidState().is(Fluids.WATER)) {
             state = state.setValue(WATERLOGGED, true);
         }
         for (Direction direction : ModUtils.DIRECTIONS) {
             BlockPos neighborPos = pos.relative(direction);
-            BlockState neighborState = context.getLevel().getBlockState(neighborPos);
-            if (!neighborState.isAir()) {
+            BlockState neighborState = level.getBlockState(neighborPos);
+            if (!neighborState.isAir() && neighborState.isFaceSturdy(level, neighborPos, direction.getOpposite())) {
                 state = state.setValue(PROPERTY_BY_DIRECTION.get(direction), true);
             }
         }

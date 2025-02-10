@@ -38,6 +38,7 @@ public final class ModLootTables {
 
     public static final ResourceKey<LootTable> CLAM = register("gameplay/clam");
     public static final ResourceKey<LootTable> CHRISTMAS_GIFT = register("gameplay/christmas_gift");
+    public static final ResourceKey<LootTable> GOODIE_GIFT = register("gameplay/goodie_gift");
     public static final ResourceKey<LootTable> RED_ENVELOPE = register("gameplay/red_envelope");
     public static final ResourceKey<LootTable> SUGAR_TANGERINE = register("gameplay/sugar_tangerine");
     public static final ResourceKey<LootTable> DELUXE_PACKAGE = register("gameplay/deluxe_package");
@@ -57,7 +58,7 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> CAVE_CHESTS = register("chests/cave_chests");
 
 
-    public static ResourceKey<LootTable> register(String name) {
+    private static ResourceKey<LootTable> register(String name) {
         return ResourceKey.create(Registries.LOOT_TABLE, Confluence.asResource(name));
     }
 }

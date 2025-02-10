@@ -12,7 +12,6 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -48,7 +47,7 @@ public record PlayerDeathInfoPacketS2C(Component deathMessage, int respawnTime, 
         if (CommonConfigs.SHOW_MONEY_DROPS.get()) {
             long drops = player.getPersistentData().getLong("confluence:drops_money");
             int[] coins = PlayerUtils.decodeCoin(drops);
-            PacketDistributor.sendToPlayer(player, new PlayerDeathInfoPacketS2C(message, ModUtils.getRespawnWaitTime(player), (short) coins[3], (byte) coins[2], (byte) coins[1], (byte) coins[0]));
+            PacketDistributor.sendToPlayer(player, new PlayerDeathInfoPacketS2C(message, PlayerUtils.getRespawnWaitTime(player), (short) coins[3], (byte) coins[2], (byte) coins[1], (byte) coins[0]));
             return false;
         }
         return true;

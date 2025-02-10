@@ -17,7 +17,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -47,6 +49,7 @@ import org.confluence.mod.mixed.IDamageSource;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
+import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
@@ -99,19 +102,17 @@ public final class LivingEntityEvents {
         }
 
         if (!living.level().isClientSide) {
-            // 死前服务端把死亡时的速度发给客户端
-            Vec3 motion = living.getDeltaMovement();
-            if (motion.length() == 0) {
-                Vec3 pos = living.position();
-                motion = new Vec3(pos.x - living.xo, pos.y - living.yo, pos.z - living.zo);
-            }
-            DeathMotionPacketS2C.sendToAll(living.getId(), motion);
-
             if (living instanceof ServerPlayer serverPlayer) {
                 PlayerUtils.dropMoney(serverPlayer);
             }
-
+            DeathMotionPacketS2C.sendToAll(living);
             NoTraps.entityDropsGrenade(living);
+            if (living.getRandom().nextFloat() < 0.011F) {
+                Item holidayGift = DateUtils.getHolidayGift();
+                if (holidayGift != Items.AIR) {
+                    ModUtils.createItemEntity(holidayGift.getDefaultInstance(), living.position(), living.level(), 0);
+                }
+            }
         }
     }
 
@@ -169,8 +170,8 @@ public final class LivingEntityEvents {
         amount = TheConstant.applyAttackDamage(causer, amount);
 
         // 召唤物集火伤害加成
-        if(damageSource.is(TETags.DamageTypes.SUMMONER)){
-            if(damagingEntity.hasEffect(TEEffects.SUMMON_FOCUS)){
+        if (damageSource.is(TETags.DamageTypes.SUMMONER)) {
+            if (damagingEntity.hasEffect(TEEffects.SUMMON_FOCUS)) {
                 amount = amount + 2;
                 event.setNewDamage(amount);
             }

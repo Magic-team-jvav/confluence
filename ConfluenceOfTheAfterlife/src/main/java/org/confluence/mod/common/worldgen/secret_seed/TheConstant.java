@@ -31,9 +31,11 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.mixin.client.accessor.GameRendererAccessor;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -67,17 +69,21 @@ public class TheConstant extends SecretSeed {
     }
 
     public static void applyDarkness(ServerPlayer player, ServerLevel level) {
-        if (ModSecretSeeds.THE_CONSTANT.match(level)) {
+        if (!player.isCreative() && level.getGameTime() % 20 == 0 && ModSecretSeeds.THE_CONSTANT.match(level)) {
             CompoundTag data = player.getPersistentData();
             int tick = data.getInt("confluence:in_darkness_tick");
-            if (level.getLightEngine().getRawBrightness(player.blockPosition().above(), 0) <= 5) {
-                if (tick < 100) {
-                    if (++tick == 60) {
+            BlockPos eyePos = ModUtils.fromVec3(player.getEyePosition());
+            int brightness = level.getLevel().isThundering()
+                    ? level.getMaxLocalRawBrightness(eyePos, 10)
+                    : level.getMaxLocalRawBrightness(eyePos);
+            if (brightness <= 5) {
+                if (tick < 5) {
+                    if (++tick == 3) {
                         player.sendSystemMessage(Component.translatable("secret_seed.the_constant.in_darkness_for_3_second"), false);
                     }
                     data.putInt("confluence:in_darkness_tick", tick);
-                } else if (level.getGameTime() % 20 == 0) {
-                    player.hurt(player.damageSources().magic(), 50);
+                } else {
+                    player.hurt(ModDamageTypes.of(level, ModDamageTypes.DARKNESS), 50);
                 }
             } else if (tick != 0) {
                 data.putInt("confluence:in_darkness_tick", 0);

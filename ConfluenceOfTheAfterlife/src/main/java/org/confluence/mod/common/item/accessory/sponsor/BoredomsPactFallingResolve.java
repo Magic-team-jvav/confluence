@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.BoulderEntity;
+import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCAttributes;
@@ -25,6 +27,7 @@ import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.init.TEAttributes;
 import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.type.capability.ICurio;
 
 import javax.annotation.Nullable;
 
@@ -100,6 +103,11 @@ public class BoredomsPactFallingResolve extends BaseCurioItem {
                 TEAttributes.SUMMON_DAMAGE, modifier,
                 TCAttributes.getCriticalChance(), modifier
         );
+    }
+
+    @Override
+    public ICurio.DropRule getDropRule(SlotContext slotContext, DamageSource source, boolean recentlyHit, ItemStack stack) {
+        return ModSecretSeeds.BOULDER_WORLD.match() ? ICurio.DropRule.ALWAYS_KEEP : ICurio.DropRule.DEFAULT;
     }
 
     private static void savePos(CompoundTag tag, LivingEntity living) {

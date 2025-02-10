@@ -16,7 +16,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -26,10 +25,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.terra_curio.TerraCurio;
@@ -38,12 +35,10 @@ import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terra_guns.TerraGuns;
 import org.confluence.terraentity.TerraEntity;
-import org.confluence.terraentity.entity.ai.Boss;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
 import java.time.format.DateTimeParseException;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
@@ -101,16 +96,9 @@ public final class ModUtils {
         return a == b ? (BlockEntityTicker<A>) ticker : null;
     }
 
-    public static boolean isHalloween() {
-        Calendar calendar = Calendar.getInstance();
-        int month = calendar.get(Calendar.MONTH);
-        int date = calendar.get(Calendar.DATE);
-        return (month == Calendar.OCTOBER && date >= 15) || // 从 10月中旬
-                (month == Calendar.NOVEMBER && date <= 15); // 到 11月中旬
-    }
-
     /**
      * 把向量转成角度
+     *
      * @return [yaw, pitch]
      */
     public static float[] dirToRot(Vec3 vec) {
@@ -154,6 +142,23 @@ public final class ModUtils {
             case NORMAL -> expert;
             case HARD -> master;
         };
+    }
+
+    /**
+     * 根据游戏难度选择值，但是根据区域难度
+     *
+     * @param classic   经典难度的值
+     * @param expert    专家难度的值
+     * @param master    大师难度的值
+     * @param legendary 传奇难度的值
+     * @return 选择到的值
+     */
+    public static <T> T switchByDifficulty(Level level, BlockPos blockPos, T classic, T expert, T master, T legendary) {
+        float difficulty = level.getCurrentDifficultyAt(blockPos).getEffectiveDifficulty();
+        if (difficulty >= 4) return legendary;
+        if (difficulty >= 3) return master;
+        if (difficulty >= 2) return expert;
+        return classic;
     }
 
     /**
@@ -237,27 +242,6 @@ public final class ModUtils {
     }
 
     /**
-     * 获取玩家复活时间
-     *
-     * @param player 玩家
-     * @return 复活时间
-     */
-    public static int getRespawnWaitTime(Player player) {
-        AABB aabb = new AABB(player.blockPosition()).inflate(Short.MAX_VALUE);
-        if (player.level().getEntitiesOfClass(LivingEntity.class, aabb, living -> living instanceof Boss).isEmpty()) {
-            return player.getRandom().nextInt(
-                    CommonConfigs.DEFAULT_RESPAWN_TIME_MIN.get(),
-                    CommonConfigs.DEFAULT_RESPAWN_TIME_MAX.get()
-            );
-        } else {
-            return player.getRandom().nextInt(
-                    CommonConfigs.BOSS_RESPAWN_TIME_MIN.get(),
-                    CommonConfigs.BOSS_RESPAWN_TIME_MAX.get()
-            );
-        }
-    }
-
-    /**
      * 仅获取
      *
      * @see TCUtils#getItemStackNbt(ItemStack) 获取或创建
@@ -335,6 +319,10 @@ public final class ModUtils {
     }
 
     public static BlockPos fromVector3d(Vector3d vector3d) {
-        return new BlockPos((int) vector3d.x, (int) vector3d.y, (int) vector3d.z);
+        return new BlockPos(Mth.floor(vector3d.x), Mth.floor(vector3d.y), Mth.floor(vector3d.z));
+    }
+
+    public static BlockPos fromVec3(Vec3 vec3) {
+        return new BlockPos(Mth.floor(vec3.x), Mth.floor(vec3.y), Mth.floor(vec3.z));
     }
 }

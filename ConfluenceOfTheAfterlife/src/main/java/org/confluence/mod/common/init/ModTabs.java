@@ -98,13 +98,13 @@ public final class ModTabs {
                     .displayItems((parameters, output) -> {
                         Consumer<DeferredHolder<Item, ? extends Item>> action = item -> output.accept(item.get());
                         ToolItems.ITEMS.getEntries().forEach(action);
-                        output.accept(TCItems.MAGIC_MIRROR.get());
-                        output.accept(TCItems.CELL_PHONE.get());
-                        output.accept(TCItems.DIVING_HELMET.get());
                         output.accept(ModBlocks.ROPE.get());
                         output.accept(ModBlocks.VINE_ROPE.get());
                         output.accept(ModBlocks.SILK_ROPE.get());
                         output.accept(ModBlocks.WEB_ROPE.get());
+                        output.accept(TCItems.MAGIC_MIRROR.get());
+                        output.accept(TCItems.CELL_PHONE.get());
+                        output.accept(TCItems.DIVING_HELMET.get());
                         AxeItems.ITEMS.getEntries().forEach(action);
                         PickaxeItems.ITEMS.getEntries().forEach(action);
                         PickaxeAxeItems.ITEMS.getEntries().forEach(action);

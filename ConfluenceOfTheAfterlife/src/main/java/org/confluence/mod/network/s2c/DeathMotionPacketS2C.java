@@ -51,9 +51,15 @@ public record DeathMotionPacketS2C(int entityId, float x,float y, float z) imple
         });
     }
 
-    public static void sendToAll(int entityId, Vec3 motion) {
+    public static void sendToAll(LivingEntity living) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
-            PacketDistributor.sendToAllPlayers(new DeathMotionPacketS2C(entityId, motion));
+            // 死前服务端把死亡时的速度发给客户端
+            Vec3 motion = living.getDeltaMovement();
+            if (motion.length() == 0) {
+                Vec3 pos = living.position();
+                motion = new Vec3(pos.x - living.xo, pos.y - living.yo, pos.z - living.zo);
+            }
+            PacketDistributor.sendToAllPlayers(new DeathMotionPacketS2C(living.getId(), motion));
         }
     }
 

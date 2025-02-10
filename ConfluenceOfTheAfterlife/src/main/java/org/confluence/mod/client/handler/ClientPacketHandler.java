@@ -10,7 +10,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.worldgen.secret_seed.SecretSeed;
 import org.confluence.mod.mixed.IDeathScreen;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.phase_journey.mixed.ILevelRenderer;
@@ -44,8 +43,8 @@ public final class ClientPacketHandler {
         return echoVisible;
     }
 
-    public static boolean isSecretSeed(SecretSeed secretSeed) {
-        return secretSeed.match(secretFlag);
+    public static long getSecretFlag() {
+        return secretFlag;
     }
 
     public static void handleMana(ManaPacketS2C packet, Player player) {

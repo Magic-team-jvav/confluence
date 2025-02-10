@@ -1022,7 +1022,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         );
         tag(BlockTags.OVERWORLD_CARVER_REPLACEABLES).add(
                 NatureBlocks.EBONY_STONE.get(),
-                NatureBlocks.TR_CRIMSON_STONE.get()
+                NatureBlocks.TR_CRIMSON_STONE.get(),
+                NatureBlocks.HARDENED_SAND_BLOCK.get(),
+                NatureBlocks.RED_HARDENED_SAND_BLOCK.get()
         );
     }
 

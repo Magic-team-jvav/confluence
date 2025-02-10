@@ -23,6 +23,7 @@ import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.ModLootTables;
+import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.mixed.IBaseContainerBlockEntity;
 import org.confluence.mod.util.ModUtils;
@@ -51,7 +52,11 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
             RandomizableContainer.setBlockEntityLootTable(level, random, chestPos, config.lootTable);
             INetworkEntity chest = ModFeatures.getNetworkEntity(level, chestPos);
             if (chest != null && chest.getSelf() instanceof BaseChestBlock.Entity entity) {
-                entity.variant = BaseChestBlock.Variant.UNLOCKED_GOLDEN;
+                if (ModSecretSeeds.NO_TRAPS.match(level.getLevel().getServer()) && random.nextBoolean()) {
+                    entity.variant = BaseChestBlock.Variant.UNLOCKED_NORMAL;
+                } else {
+                    entity.variant = BaseChestBlock.Variant.UNLOCKED_GOLDEN;
+                }
                 ((IBaseContainerBlockEntity) entity).confluence$setCustomName(Component.translatable("block.confluence.base_chest_block." + entity.variant.getSerializedName()));
                 boolean b = placeDartTraps(config, level, chestPos, chest);
                 boolean b1 = placeBoulders(config, random, level, chestPos, chest);

@@ -138,10 +138,8 @@ public class TheConstant extends SecretSeed {
             for (int i = 0; i < size; i++) {
                 Vector3d position = positions.get(i);
                 float delta = Math.abs(i - size * 0.5F) / size;
-                for (int j = -4; j < 13; j++) {
-                    int radius = 8 - Mth.lerpInt(delta, 4, 8);
-                    carveEllipsoid(context, config, chunk, biomeAccessor, aquifer, position.x, position.y, position.z, radius, yScale, carvingMask, (context1, relativeX, relativeY, relativeZ, y) -> false);
-                }
+                int radius = 8 - Mth.lerpInt(delta, 4, 8);
+                carveEllipsoid(context, config, chunk, biomeAccessor, aquifer, position.x, position.y, position.z, radius, yScale, carvingMask, (context1, relativeX, relativeY, relativeZ, y) -> false);
             }
             return true;
         }

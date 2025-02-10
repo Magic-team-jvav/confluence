@@ -25,7 +25,7 @@ public class DeadBodyPartEntity extends Entity {
     public List<Vector3f> bonePivots;
     public Vector3f boneOffset;
     public Vector3f modelPartRot;
-    private int lifetime;
+    public int lifetime;
     public float rotX;
     public float rotY;
     public float rotZ;
@@ -37,6 +37,7 @@ public class DeadBodyPartEntity extends Entity {
     public boolean stop = false;
     /** true则停在原地不动，一般用来调试 */
     public boolean still = false;
+    public ModelPart modelPart;
 
     public DeadBodyPartEntity(EntityType<?> entityType, Level level){
         this(entityType, level, null, null, 0);
@@ -89,6 +90,8 @@ public class DeadBodyPartEntity extends Entity {
         }else {
             this.setDeltaMovement(this.getDeltaMovement().multiply(0.9, 1, 0.9));
         }
+        // TODO: 液体
+//        updateFluidHeightAndDoFluidPushing();
 
         // 撞墙停转
         if(tickCount > 3 && !stop && (onGround() || verticalCollision || verticalCollisionBelow || horizontalCollision)){

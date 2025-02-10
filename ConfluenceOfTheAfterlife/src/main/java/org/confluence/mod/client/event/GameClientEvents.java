@@ -3,6 +3,7 @@ package org.confluence.mod.client.event;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import com.mojang.math.Axis;
+import com.mojang.math.Transformation;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ImageButton;
@@ -33,6 +34,7 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.AntiPushPoseStack;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.DebugBlocksHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
@@ -49,6 +51,8 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
 import org.confluence.mod.mixed.*;
+import org.confluence.mod.mixin.client.accessor.AgeableHierarchicalModelAccessor;
+import org.confluence.mod.mixin.client.accessor.AgeableListModelAccessor;
 import org.confluence.mod.mixin.client.accessor.LivingEntityRendererAccessor;
 import org.confluence.mod.mixin.client.accessor.ModelPartAccessor;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
@@ -66,6 +70,7 @@ import software.bernie.geckolib.cache.object.GeoCube;
 import software.bernie.geckolib.event.GeoRenderEvent;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
@@ -183,11 +188,16 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void renderLevelStage(RenderLevelStageEvent event) {
+        ClientLevel level = Minecraft.getInstance().level;
+        level.getProfiler().push("Spelunker");
         SpelunkerHelper.renderLevel(event);
+        level.getProfiler().pop();
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_LEVEL) {
             DebugBlocksHelper.Singleton().render(event);
         } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
+            level.getProfiler().push("StarPhase");
             StarPhaseHandler.render(event);
+            level.getProfiler().pop();
             MeteorLandingHandler.render(event);
         }
     }
@@ -230,6 +240,7 @@ public final class GameClientEvents {
         }
         float deathSpeed = (float) deathMotion.length();
         Vec3 entityPos = entity.position();
+        // TODO: GeoRenderer.preRender
         if(entity instanceof GeoAnimatable && renderer instanceof GeoEntityRenderer geoRenderer){
             PoseStack poseStack = new PoseStack();
             if(geoRenderer instanceof GeoBossRenderer<?, ?> bossRenderer){
@@ -286,55 +297,111 @@ public final class GameClientEvents {
         }else if(renderer instanceof LivingEntityRenderer<?,?> livingRenderer){
             ModelPart rootModelPart = ((ILivingEntityRenderer) livingRenderer).confluence$getRootModelPart();
             if(rootModelPart == null) return;
-            PoseStack poseStack = new PoseStack();
+            AntiPushPoseStack poseStack = new AntiPushPoseStack();
             LivingEntityRendererAccessor rendererAccessor = (LivingEntityRendererAccessor) livingRenderer;
             poseStack.translate(entityPos.x, entityPos.y, entityPos.z);
-            float scale = entity.getScale();
-            poseStack.scale(scale, scale, scale);
-            rendererAccessor.callSetupRotations(entity, poseStack, 0, entity.yBodyRot, 1, scale);
-            poseStack.scale(-1.0F, -1.0F, 1.0F);
-            rendererAccessor.callScale(entity, poseStack, 1);
-            poseStack.translate(0.0F, -1.501F, 0.0F);
+//            float scale = entity.getScale();
+//            poseStack.scale(scale, scale, scale);
+//            rendererAccessor.callSetupRotations(entity, poseStack, 0, entity.yBodyRot, 1, scale);
+//            poseStack.scale(-1.0F, -1.0F, 1.0F);
+//            rendererAccessor.callScale(entity, poseStack, 1);
+//            poseStack.translate(0.0F, -1.501F, 0.0F);
+//            livingRenderer.render(entity, entity.getYRot(), 1, poseStack, DummyMultiBufferSource.INSTANCE, 0);
+            DeathAnimUtils.dummyRender(livingRenderer, entity, poseStack);
+            if(livingRenderer.getModel() instanceof AgeableHierarchicalModelAccessor ah && livingRenderer.getModel().young){
+                poseStack.scale(ah.getYoungScaleFactor(), ah.getYoungScaleFactor(), ah.getYoungScaleFactor());
+                poseStack.translate(0.0F, ah.getBodyYOffset() / 16.0F, 0.0F);
+            }
             Stack<Vector3f> rots = new Stack<>();
             rots.push(new Vector3f());
-            makePartRecursively(rootModelPart, "root", poseStack, level, entity, deathSpeed, rots, deathMotion);
+            makePartRecursively(rootModelPart, "root", poseStack,livingRenderer, level, entity, deathSpeed, rots, deathMotion);
         }
     }
 
-    private static void makePartRecursively(ModelPart modelPart,String name, PoseStack poseStack, ClientLevel level, Entity entity, float deathSpeed,Stack<Vector3f> rots,Vec3 deathMotion){
+    private static void makePartRecursively(ModelPart modelPart, String name, AntiPushPoseStack poseStack,LivingEntityRenderer<?,?> renderer, ClientLevel level, Entity entity, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion){
         if(!modelPart.visible || modelPart.skipDraw) return;
+        if(renderer.getModel().young && renderer.getModel() instanceof AgeableListModelAccessor model){
+            for(ModelPart bodyPart : model.callBodyParts()){
+                if(modelPart == bodyPart){
+                    float scale = 1.0F / model.getBabyBodyScale();
+                    poseStack.scale(scale, scale, scale);
+                    poseStack.translate(0.0F, model.getBodyYOffset() / 16.0F, 0.0F);
+                    break;
+                }
+            }
+            for(ModelPart headPart : model.callHeadParts()){
+                if(modelPart == headPart){
+                    if (model.getScaleHead()) {
+                        float scale = 1.5F / model.getBabyHeadScale();
+                        poseStack.scale(scale, scale, scale);
+                    }
+                    poseStack.translate(0.0F, model.getBabyYHeadOffset() / 16.0F, model.getBabyZHeadOffset() / 16.0F);
+                    break;
+                }
+            }
+        }
+
         modelPart.translateAndRotate(poseStack);
         Vector3f modelRot = rots.peek();
-//        System.out.println(name);
+        Matrix4f pose = poseStack.last().pose();
+        Transformation transformation = new Transformation(pose);
+        Vector3f scale = transformation.getScale();
+//        DecimalFormat df = new DecimalFormat("#.####");
         for(ModelPart.Cube cube : ((ModelPartAccessor) (Object) modelPart).getCubes()){
-            Matrix4f pose = poseStack.last().pose();
-            float centerY = ((cube.minY + cube.maxY) / 2) / 16;
-            float xSize=cube.maxX-cube.minX;
-            float ySize=cube.maxY-cube.minY;
-            float zSize=cube.maxZ-cube.minZ;
-            float min = Math.max(0.1f, Math.min(Math.min(xSize, ySize), zSize) / 16);
+            float minX = cube.minX;
+            float minY = cube.minY;
+            float minZ = cube.minZ;
+            float maxX = cube.maxX;
+            float maxY = cube.maxY;
+            float maxZ = cube.maxZ;
+            float centerY = ((minY + maxY) / 2) / 16;
+            float xSize = maxX - minX;
+            float ySize = maxY - minY;
+            float zSize = maxZ - minZ;
+//            float min = Math.min(Math.min(xSize, ySize), zSize) / 16;
+//            float min = Math.max(0.0625f, Math.min(Math.min(xSize, ySize), zSize) / 16);
+            float min = xSize;
+            float finalScale=scale.x;
+            if (ySize < min){
+                min = ySize;
+                finalScale = scale.y;
+            }
+            if (zSize < min){
+                min = zSize;
+                finalScale = scale.z;
+            }
+            min /= 16;
+            if (min < 0.0625f) {
+                min = 0.0625f;
+                finalScale = 1;
+            }
+            float scaledMin = min * finalScale;
+
             DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, cube, deathSpeed);
-            float xOffset=((cube.minX + cube.maxX) / 2) / 16;
+            float xOffset=((minX + maxX) / 2) / 16;
 //            float yOffset = centerY + min / 2;
-            float zOffset=((cube.minZ + cube.maxZ) / 2) / 16;
-            Vector4f transformed = pose.transform(new Vector4f(0, 0, 0, 1));
-//            Vector4f transformed = pose.transform(new Vector4f(xOffset, yOffset, zOffset, 1));
+            float zOffset=((minZ + maxZ) / 2) / 16;
+//            Vector4f transformed/*pivot*/ = pose.transform(new Vector4f(0, 0, 0, 1));
 
             Vector4f transformedCentroid = pose.transform(new Vector4f(xOffset, centerY, zOffset, 1));
 //            System.out.println("transformed pivot " + transformed.x + " " + transformed.y + " " + transformed.z);
 //            System.out.println("transformed centroid " + transformedCentroid.x + " " + transformedCentroid.y + " " + transformedCentroid.z);
-
-            part.setPos(transformedCentroid.x, transformedCentroid.y - min / 2, transformedCentroid.z);
+            float yOffset = (min / 2) - (scaledMin / 2);
+            Vector4f transformedOffset = pose.transform(new Vector4f(xOffset, centerY, zOffset, 0));
+            // transformedCentroid.y：实体碰撞箱底部中心和模型中心重合
+            // - min / 2：实体碰撞箱中心和模型中心重合
+            // + yOffset：补缩放前后的差值
+            part.setPos(transformedCentroid.x, transformedCentroid.y - min / 2 + yOffset, transformedCentroid.z);
 //            part.still();
 //            part.setDeltaMovement(new Vec3(0, 0.1, 0).offsetRandom(level.random, 0.6f));
             part.setDeltaMovement(deathMotion.offsetRandom(level.random, (float) (deathMotion.length() * 0.4 + 0.1))/*.multiply(1, 1.05f, 1)*/);
             modelRot.add(modelPart.xRot, modelPart.yRot, modelPart.zRot);
             part.modelPartRot = modelRot;
-            part.xOffset = transformedCentroid.x - transformed.x;
-            part.yOffset = transformedCentroid.y - transformed.y - min / 2;
-            part.zOffset = transformedCentroid.z - transformed.z;
-
-            part.minSide = min;
+            part.xOffset=transformedOffset.x;
+            part.yOffset = transformedOffset.y - scaledMin / 2;
+            part.zOffset=transformedOffset.z;
+            part.modelPart = modelPart;
+            part.minSide = scaledMin;
             DeathAnimUtils.tellAddEntity(level, part);
         }
 //        System.out.println("--\n");
@@ -343,18 +410,18 @@ public final class GameClientEvents {
             String childName = entry.getKey();
             ModelPart child = entry.getValue();
             if("cloak".equals(childName))continue;
-            poseStack.pushPose();
+            poseStack.pushPose(true);
             Vector3f newRot = new Vector3f(modelRot);
             rots.push(newRot);
-            makePartRecursively(child, childName, poseStack, level, entity, deathSpeed, rots, deathMotion);
+            makePartRecursively(child, childName, poseStack, renderer, level, entity, deathSpeed, rots, deathMotion);
             rots.pop();
-            poseStack.popPose();
+            poseStack.popPose(true);
         }
     }
 
     @SubscribeEvent
     public static void postRenderLiving(RenderLivingEvent.Post<?, ?> event){
-        if(ClientConfigs.goreEffect == ClientConfigs.GoreEffect.OFF) return;
+        if(event.getPoseStack() instanceof AntiPushPoseStack || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.OFF) return;
         LivingEntity entity = event.getEntity();
         if(ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE_VANILLA
             && !ResourceLocation.DEFAULT_NAMESPACE.equals(BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).getNamespace()))

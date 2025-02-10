@@ -15,6 +15,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
+import org.confluence.mod.mixin.client.accessor.AgeableHierarchicalModelAccessor;
+import org.confluence.mod.mixin.client.accessor.AgeableListModelAccessor;
 import org.confluence.mod.mixin.client.accessor.LivingEntityRendererAccessor;
 import org.confluence.terraentity.client.boss.renderer.GeoBossRenderer;
 import org.jetbrains.annotations.NotNull;
@@ -73,6 +75,7 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
 
             poseStack.pushPose();
 
+            // TODO: GeoRenderer.preRender
             if (geoEntityRenderer instanceof GeoBossRenderer<?, ?> bossRenderer) {
                 float scale = bossRenderer.getScale();
                 poseStack.scale(scale, scale, scale);
@@ -110,6 +113,7 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                 geoEntityRenderer.getRenderColor(dying, partialTick, packedLight).argbInt());
             poseStack.popPose();
         }else if(cube instanceof ModelPart.Cube partCube && renderer instanceof LivingEntityRenderer livingRenderer && dying instanceof LivingEntity living){ // 原版生物
+//            if(true)return;
             LivingEntityRendererAccessor ra=(LivingEntityRendererAccessor) livingRenderer;
             boolean visible = ra.callIsBodyVisible(living);
             boolean translucent = !visible && !entity.isInvisibleTo(Minecraft.getInstance().player);
@@ -118,7 +122,29 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
             float halfMinSide = entity.minSide / 2;
             poseStack.translate(0, halfMinSide, 0);
             applyRandomRotation(entity, poseStack, partialTick);
+//            poseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp((float) entity.tickCount / entity.lifetime, 0, 360)));
             poseStack.translate(-entity.xOffset, -entity.yOffset - halfMinSide, -entity.zOffset);
+
+            if(livingRenderer.getModel().young && livingRenderer.getModel() instanceof AgeableHierarchicalModelAccessor model){
+                poseStack.scale(model.getYoungScaleFactor(), model.getYoungScaleFactor(), model.getYoungScaleFactor());
+            }else if(livingRenderer.getModel().young && livingRenderer.getModel() instanceof AgeableListModelAccessor model){
+                for(ModelPart bodyPart : model.callBodyParts()){
+                    if(entity.modelPart == bodyPart){
+                        float scale = 1.0F / model.getBabyBodyScale();
+                        poseStack.scale(scale, scale, scale);
+                        break;
+                    }
+                }
+                for(ModelPart headPart : model.callHeadParts()){
+                    if(entity.modelPart == headPart){
+                        if (model.getScaleHead()) {
+                            float scale = 1.5F / model.getBabyHeadScale();
+                            poseStack.scale(scale, scale, scale);
+                        }
+                        break;
+                    }
+                }
+            }
             float scale = living.getScale();
             poseStack.scale(scale, scale, scale);
             ra.callSetupRotations(living, poseStack, 0, living.yBodyRot, 1, scale);

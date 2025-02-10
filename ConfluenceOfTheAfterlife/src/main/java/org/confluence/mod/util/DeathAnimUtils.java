@@ -1,5 +1,6 @@
 package org.confluence.mod.util;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HierarchicalModel;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.DummyMultiBufferSource;
 import org.confluence.mod.mixed.IGeoCube;
 import org.confluence.mod.mixed.IModelPart;
 import org.confluence.terraentity.entity.util.DeathAnimOptions;
@@ -470,5 +472,11 @@ public final class DeathAnimUtils {
     public static void tellAddEntity(ClientLevel level,Entity entity){
         Minecraft.getInstance().tell(() -> level.addEntity(entity));
     }
+
+    /** 让原版Renderer帮我变换，在model.renderToBuffer之前就会返回，就能保留变换的结果 */
+    public static <T extends LivingEntity> void dummyRender(LivingEntityRenderer<T, ?> livingRenderer, LivingEntity entity, PoseStack poseStack){
+        livingRenderer.render((T) entity, entity.getYRot(), 1, poseStack, DummyMultiBufferSource.INSTANCE, 0);
+    }
+
 
 }

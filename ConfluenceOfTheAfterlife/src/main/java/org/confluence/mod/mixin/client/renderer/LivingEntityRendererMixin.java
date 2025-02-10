@@ -1,18 +1,26 @@
 package org.confluence.mod.mixin.client.renderer;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.world.entity.LivingEntity;
+import org.confluence.mod.client.AntiPushPoseStack;
 import org.confluence.mod.mixed.ILivingEntityRenderer;
 import org.confluence.mod.util.DeathAnimUtils;
 import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(LivingEntityRenderer.class)
-public abstract class LivingEntityRendererMixin implements ILivingEntityRenderer, SelfGetter<LivingEntityRenderer<?,?>> {
+public abstract class LivingEntityRendererMixin<T extends LivingEntity,M extends EntityModel<T>> implements ILivingEntityRenderer, SelfGetter<LivingEntityRenderer<T,M>> {
 
     //    @Unique private LivingEntity confluence$rendering;
     @Unique private final List<ModelPart> confluence$partsCache = new ArrayList<>();
@@ -30,5 +38,13 @@ public abstract class LivingEntityRendererMixin implements ILivingEntityRenderer
             confluence$rootModelPart = DeathAnimUtils.findRootModelPart(self());
         }
         return confluence$rootModelPart;
+    }
+
+    @Inject(method = "render(Lnet/minecraft/world/entity/LivingEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;getInstance()Lnet/minecraft/client/Minecraft;"),cancellable = true)
+    private void postRender(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo ci){
+        if(poseStack instanceof AntiPushPoseStack){
+            ci.cancel();
+        }
     }
 }

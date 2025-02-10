@@ -79,6 +79,8 @@
         "client.MusicManagerMixin",
         "client.SpriteLoaderMixin",
         "client.WorldCreationUiStateMixin",
+        "client.accessor.AgeableHierarchicalModelAccessor",
+        "client.accessor.AgeableListModelAccessor",
         "client.accessor.CustomHeadLayerAccessor",
         "client.accessor.FontAccessor",
         "client.accessor.GameRendererAccessor",

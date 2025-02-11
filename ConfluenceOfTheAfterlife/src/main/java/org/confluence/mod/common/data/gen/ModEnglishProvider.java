@@ -209,6 +209,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("jei.tooltip.item.confluence.shark_tooth_necklace.0", "It has a Chance to be dropped from Blood Zombie and Drippler.");
         add("jei.tooltip.item.confluence.panic_necklace.0", "It can be obtained with a chance from Crimson Crate/Hematic Crate and Crimson Heart.");
         add("jei.tooltip.item.confluence.magic_quiver.0", "It has a Chance to be dropped from Skeleton Archer.");
+
         add("jei.tooltip.item.confluence.rifle_scope.0", "It has a Chance to be dropped from Skeleton Sniper.");
         add("jei.tooltip.item.confluence.magma_stone.0", "It has a Chance to be dropped from Hellbat and Lava Bat.");
         add("jei.tooltip.item.confluence.obsidian_rose.0", "It has a Chance to be dropped from Fire Imp.");
@@ -449,11 +450,14 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.bloodyEffect", "Bloody Effect");
         add("confluence.configuration.goreEffect", "Gore Effect");
         add("confluence.configuration.damageIndicator", "Damage Indicator");
+        add("confluence.configuration.Gameplay", "Game Mechanics");
+        add("confluence.configuration.PlayerDeath", "Player Death Mechanism");
+        add("confluence.configuration.showMoneyDrops", "Show Money Drop Count on Death Screen");
         //
         add("confluence.configuration.Mana.button", "Mana");
-        add("confluence.configuration.Armor.tooltip", "Armor");
         add("confluence.configuration.manaStyle.tooltip", "Mana Style");
         add("confluence.configuration.Mana.tooltip", "About Mana Display");
+        add("confluence.configuration.Food.tooltip", "About Food Display");
         add("confluence.configuration.section.confluence.client.toml", "Personal Display Settings");
         add("confluence.configuration.section.confluence.common.toml", "Game Mechanism Settings");
         add("confluence.configuration.leftEffectIcon.tooltip", "When enabled, potion effect icons will display on the left side of the screen");
@@ -470,7 +474,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.terraStyleArmor.tooltip", "When enabled, the armor display will use Terra Style");
         add("confluence.configuration.terraStyleHealth.tooltip", "When enabled, the health display will use Terra Style");
         add("confluence.configuration.Entity.tooltip", "Entity Related Visual Effects");
-        add("confluence.configuration.armorStyle.tooltip", "About Armor Display");
+        add("confluence.configuration.Armor.tooltip", "About Armor Display");
         add("prefix.confluence.tooltip.plus", "+%s%% %s");
         add("prefix.confluence.tooltip.take", "-%s%% %s");
         add("prefix.confluence.tooltip.add", "+%s %s");

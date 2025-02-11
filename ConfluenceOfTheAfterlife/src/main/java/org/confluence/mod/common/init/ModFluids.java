@@ -98,11 +98,11 @@ public final class ModFluids {
     public static void registerShimmerTransform() {
         // 黑名单
         blackList(ItemTags.STAIRS);
+        blackList(AccessoryItems.BAND_OF_STARPOWER.get());
         // 顶替
         addItem(ItemTags.WOOL, Items.WHITE_WOOL, 1);
         addItem(ItemTags.WOOL_CARPETS, Items.WHITE_CARPET, 1);
         addItem(Items.CRAFTING_TABLE, Items.OAK_PLANKS, 1);
-        addItem(AccessoryItems.BAND_OF_STARPOWER.get(), ConsumableItems.MANA_CRYSTAL.get(), 1);
         // 饰品转化
         addItem(BALLOON_PUFFERFISH.get(), SHINY_RED_BALLOON.get());
         addItem(MAGMA_STONE.get(), LAVA_CHARM.get());

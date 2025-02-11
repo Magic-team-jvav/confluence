@@ -34,7 +34,7 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> RUBY_SAPLING = registerWithItem("ruby_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.RUBY_GROWER, Blocks.DEEPSLATE, Blocks.STONE));
     public static final DeferredBlock<Block> AMBER_SAPLING = registerWithItem("amber_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.AMBER_GROWER, Blocks.DEEPSLATE, Blocks.STONE));
     public static final DeferredBlock<Block> TOPAZ_SAPLING = registerWithItem("topaz_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.TOPAZ_GROWER, Blocks.DEEPSLATE, Blocks.STONE));
-    public static final DeferredBlock<Block> EMERALD_SAPLING = registerWithItem("emerald_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.EBONY_GROWER, Blocks.DEEPSLATE, Blocks.STONE));
+    public static final DeferredBlock<Block> EMERALD_SAPLING = registerWithItem("emerald_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.EMERALD_GROWER, Blocks.DEEPSLATE, Blocks.STONE));
     public static final DeferredBlock<Block> DIAMOND_SAPLING = registerWithItem("diamond_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.DIAMOND_GROWER, Blocks.DEEPSLATE, Blocks.STONE));
     public static final DeferredBlock<Block> SAPPHIRE_SAPLING = registerWithItem("sapphire_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.SAPPHIRE_GROWER, Blocks.DEEPSLATE, Blocks.STONE));
     public static final DeferredBlock<Block> TR_AMETHYST_SAPLING = registerWithItem("tr_amethyst_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.TR_AMETHYST_GROWER, Blocks.DEEPSLATE, Blocks.STONE));

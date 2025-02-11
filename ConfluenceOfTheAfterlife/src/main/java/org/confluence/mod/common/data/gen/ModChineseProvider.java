@@ -339,11 +339,14 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.bloodyEffect", "血效果");
         add("confluence.configuration.goreEffect", "血腥效果");
         add("confluence.configuration.damageIndicator", "伤害数值显示");
+        add("confluence.configuration.Gameplay", "游戏机制");
+        add("confluence.configuration.PlayerDeath", "玩家死亡机制");
+        add("confluence.configuration.showMoneyDrops", "死亡界面显示掉落钱币数");
         // 分割
         add("confluence.configuration.Mana.button", "魔力值");
-        add("confluence.configuration.Armor.tooltip", "护甲值");
         add("confluence.configuration.manaStyle.tooltip", "魔力值样式");
         add("confluence.configuration.Mana.tooltip", "关于魔力值显示");
+        add("confluence.configuration.Food.tooltip", "关于饱食度显示");
         add("confluence.configuration.section.confluence.client.toml", "个人显示设定");
         add("confluence.configuration.section.confluence.common.toml", "游戏机制设定");
         add("confluence.configuration.leftEffectIcon.tooltip", "开启后，药水效果图标显示与屏幕左侧");
@@ -360,7 +363,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.terraStyleArmor.tooltip", "开启后，护甲值显示为泰拉样式");
         add("confluence.configuration.terraStyleHealth.tooltip", "开启后，生命值显示为泰拉样式");
         add("confluence.configuration.Entity.tooltip", "与生物有关的视觉效果");
-        add("confluence.configuration.armorStyle.tooltip", "关于护甲值显示");
+        add("confluence.configuration.Armor.tooltip", "关于护甲值显示");
 
         add("biome.confluence.the_corruption", "腐化之地");
         add("biome.confluence.the_corruption_desert", "腐化沙漠");
@@ -1702,6 +1705,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.GEYSER_BLOCK.get(), "热喷泉");
         add(FunctionalBlocks.FRAGILE_SANDSTONE.get(), "易碎砂岩");
         add(FunctionalBlocks.MECHANICAL_FRAGILE_SANDSTONE.get(), "机械易碎砂岩");
+        add(FunctionalBlocks.MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.get(), "机械易碎黑曜石砖");
         add(FunctionalBlocks.DETONATOR.get(), "引爆器");
         add(FunctionalBlocks.BASE_CHEST_BLOCK.get(), "箱子");
         add(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE.get(), "深板岩压力板");

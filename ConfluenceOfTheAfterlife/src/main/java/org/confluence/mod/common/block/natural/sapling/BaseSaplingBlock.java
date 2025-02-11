@@ -20,7 +20,7 @@ public class BaseSaplingBlock extends SaplingBlock {
     public BaseSaplingBlock(TreeGrower pTreeGrower, Block... block) {
         super(pTreeGrower, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING));
         this.block = block;
-        this.tags = BlockTags.AIR;
+        this.tags = null;
     }
 
     public BaseSaplingBlock(TreeGrower pTreeGrower, TagKey<Block> tags, Block... block) {
@@ -33,6 +33,6 @@ public class BaseSaplingBlock extends SaplingBlock {
     public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         BlockPos below = pPos.below();
         BlockState blockBelow = pLevel.getBlockState(below);
-        return blockBelow.is(tags) || Arrays.asList(block).contains(blockBelow.getBlock());
+        return Arrays.asList(block).contains(blockBelow.getBlock()) || (tags != null && blockBelow.is(tags));
     }
 }

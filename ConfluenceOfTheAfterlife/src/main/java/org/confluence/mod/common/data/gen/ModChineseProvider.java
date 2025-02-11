@@ -1108,6 +1108,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.SILVER_BRICKS.get(), "银砖块");
         add(DecorativeBlocks.SNOW_BRICKS.get(), "雪砖块");
         add(DecorativeBlocks.SUN_PLATE.get(), "日盘块");
+        add(DecorativeBlocks.SUN_PLATE_STAIRS.get(), "日盘楼梯");
+        add(DecorativeBlocks.SUN_PLATE_SLAB.get(), "日盘台阶");
+        add(DecorativeBlocks.SKYWARE_DOOR.get(), "天域门");
         add(DecorativeBlocks.TIN_BRICKS.get(), "锡砖块");
         add(DecorativeBlocks.TIN_PLATE.get(), "锡条板块");
         add(DecorativeBlocks.TUNGSTEN_BRICKS.get(), "钨砖块");
@@ -1117,6 +1120,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.TR_OBSIDIAN_BRICKS.get(), "异域黑曜石砖");
         add(DecorativeBlocks.TR_OBSIDIAN_PLATE.get(), "异域黑曜石条板块");
         add(DecorativeBlocks.TR_OBSIDIAN_SMALL_BRICKS.get(), "异域切制黑曜石砖");
+        add(DecorativeBlocks.OBSIDIAN_BRICKS_STAIRS.get(), "黑曜石砖楼梯");
+        add(DecorativeBlocks.OBSIDIAN_BRICKS_SLAB.get(), "黑曜石砖台阶");
+        add(DecorativeBlocks.OBSIDIAN_BRICKS_DOOR.get(), "黑曜石砖门");
         add(DecorativeBlocks.TR_SMOOTH_OBSIDIAN.get(), "异域光滑黑曜石块");
         add(DecorativeBlocks.CHISELED_TR_OBSIDIAN_BRICKS.get(), "雕纹异域黑曜石块");
         add(DecorativeBlocks.CRYSTAL_BLOCKS.get(), "水晶块");

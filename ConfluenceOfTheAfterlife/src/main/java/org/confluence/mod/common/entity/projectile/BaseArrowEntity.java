@@ -19,6 +19,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -27,6 +28,7 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ArrowItems;
 import org.confluence.mod.common.item.bow.BaseArrowItem;
 import org.confluence.mod.common.item.sword.stagedy.EffectStrategy;
+import org.confluence.mod.util.EnchantmentUtil;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -158,23 +160,15 @@ public class BaseArrowEntity extends AbstractArrow {
         float f = (float)this.getDeltaMovement().length();
 
         Entity entity1 = this.getOwner();
-        DamageSource damagesource;
-        if (entity1 == null) {
-            damagesource = this.damageSources().arrow(this, this);
-        } else {
-            damagesource = this.damageSources().arrow(this, entity1);
-            if (entity1 instanceof LivingEntity) {
-                ((LivingEntity)entity1).setLastHurtMob(entity);
-            }
-        }
+        DamageSource damagesource = this.damageSources().arrow(this, (Entity)(entity1 != null ? entity1 : this));
 
         // 附魔增伤
         double d0 = this.getBaseDamage();
         if (this.getWeaponItem() != null) {
             Level var9 = this.level();
             if (var9 instanceof ServerLevel) {
-                ServerLevel serverlevel = (ServerLevel)var9;
-                d0 = EnchantmentHelper.modifyDamage(serverlevel, this.getWeaponItem(), entity, damagesource, (float)d0);
+                int value = EnchantmentUtil.getEnchantmentLevel(Enchantments.POWER, this.getWeaponItem());
+                d0 += value * 0.5f;
             }
         }
 

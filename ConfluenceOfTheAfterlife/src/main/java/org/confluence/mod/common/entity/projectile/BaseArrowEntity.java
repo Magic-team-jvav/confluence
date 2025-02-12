@@ -23,12 +23,14 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ArrowItems;
 import org.confluence.mod.common.item.bow.BaseArrowItem;
-import org.confluence.mod.common.item.sword.stagedy.EffectStrategy;
+import org.confluence.mod.common.item.sword.stagedy.ModEffectStrategies;
 import org.confluence.mod.util.EnchantmentUtil;
+import org.confluence.terraentity.hit_effect.EffectStrategy;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -60,13 +62,13 @@ public class BaseArrowEntity extends AbstractArrow {
         static Tuple FLAMING_ARROW_ENTITY = create("textures/entity/arrow/flaming_arrow.png",()->new Builder()
                 .setDamage(4.5f).setCauseFire(10*20));
         static Tuple FROSTBURN_ARROW_ENTITY = create("textures/entity/arrow/frostburn_arrow.png",()->new Builder()
-                .setDamage(4.5f).addOnHitEffect(EffectStrategy.TIME_EFFECT.apply(ModEffects.FROST_BURN,10*20)));
+                .setDamage(4.5f).addOnHitEffect(ModEffectStrategies.FROST_BURN_EFFECT));
         static Tuple FOSSIL_ARROW_ENTITY = create("textures/entity/arrow/fossil_arrow.png",()->new Builder()
                 .setDamage(4f).setPenetration(2));
         static Tuple FLY_FISH_ENTITY = create("textures/entity/arrow/fly_fish_arrow.png",()->new Builder()
                 .setDamage(2f).setDamageInRain(4).setSpeedUpInRain(1.5f).setSpeedInertiaInWater(0.8f));
         static Tuple HELL_FIRE_ENTITY = create("textures/entity/arrow/flaming_arrow.png",()->new Builder()
-                .setDamage(5.5f).addOnHitEffect(EffectStrategy.TIME_EFFECT.apply(ModEffects.HELL_FIRE,10*20)));
+                .setDamage(5.5f).addOnHitEffect(ModEffectStrategies.VOLCANIC_EFFECT));
 
     }
 
@@ -246,8 +248,8 @@ public class BaseArrowEntity extends AbstractArrow {
     @Override
     protected void doPostHurtEffects(LivingEntity pLiving) {
         if(getOwner() instanceof LivingEntity owner){
-            modify.onHitEffect.forEach(m->m.accept(owner,pLiving));
-            if(fullPull) modify.fullPullHitEffect.forEach(m->m.accept(owner,pLiving));
+            modify.onHitEffect.forEach(m->m.get().getEffect().accept(owner,pLiving));
+            if(fullPull) modify.fullPullHitEffect.forEach(m->m.get().getEffect().accept(owner,pLiving));
         }
         super.doPostHurtEffects(pLiving);
     }
@@ -338,15 +340,15 @@ public class BaseArrowEntity extends AbstractArrow {
         private float damageInRain = 0;
 
         private BaseArrowItem transformArrow = null;
-        public final List<BiConsumer<LivingEntity, LivingEntity>> onHitEffect = new ArrayList<>();
-        public final List<BiConsumer<LivingEntity, LivingEntity>> fullPullHitEffect = new ArrayList<>();
+        public final List<DeferredHolder<EffectStrategy,EffectStrategy>> onHitEffect = new ArrayList<>();
+        public final List<DeferredHolder<EffectStrategy,EffectStrategy>> fullPullHitEffect = new ArrayList<>();
 
 
-        public Builder addFullPullHitEffect(BiConsumer<LivingEntity, LivingEntity> consumer){
+        public Builder addFullPullHitEffect(DeferredHolder<EffectStrategy,EffectStrategy> consumer){
             this.fullPullHitEffect.add(consumer);
             return this;
         }
-        public Builder addOnHitEffect(BiConsumer<LivingEntity, LivingEntity> consumer){
+        public Builder addOnHitEffect(DeferredHolder<EffectStrategy,EffectStrategy> consumer){
             this.onHitEffect.add(consumer);
             return this;
         }

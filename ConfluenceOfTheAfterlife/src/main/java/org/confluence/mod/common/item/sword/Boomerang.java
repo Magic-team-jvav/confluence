@@ -7,7 +7,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -16,20 +15,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SingleBooleanComponent;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModDataComponentTypes;
-import org.confluence.mod.common.item.sword.stagedy.EffectStrategy;
 import org.confluence.mod.common.item.sword.stagedy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.stagedy.projectile.BoomerangProjContainer;
 import org.confluence.mod.common.item.sword.stagedy.projectile.IProjContainer;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
+import org.confluence.terraentity.hit_effect.EffectStrategy;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 public class Boomerang extends Item {
 
@@ -112,7 +111,9 @@ public class Boomerang extends Item {
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.penetration").append(": ").append(String.valueOf(this.boomerangModifier.maxPenetration)).withColor(0x00FFFF));
         }
         if(!this.boomerangModifier.onHitEffects.isEmpty()){
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").append(String.valueOf(this.boomerangModifier.onHitEffects.size())).withColor(0xFF00FF));
+            EffectStrategy.appendDescription(tooltipComponents,
+                    this.boomerangModifier.onHitEffects.stream().map(DeferredHolder::get).toList(),
+                    Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").withColor(0x969811));
         }
     }
 
@@ -135,7 +136,7 @@ public class Boomerang extends Item {
 //调参后这是木回旋镖的数值
 
         private IProjContainer proj;
-        public List<BiConsumer<LivingEntity, LivingEntity>> onHitEffects = new ArrayList<>();
+        public List<DeferredHolder<EffectStrategy, EffectStrategy>> onHitEffects = new ArrayList<>();
         public BaseSwordItem.QuaConsumer<ItemStack, Level, Entity, Boolean> inventoryTick;
         public ItemAttributeModifiers.Builder attributeModifiersBuilder = ItemAttributeModifiers.builder();
         private int modifyCount = 0;
@@ -146,7 +147,7 @@ public class Boomerang extends Item {
          *
          * @see EffectStrategy
          */
-        public BoomerangModifier addOnHitEffect(BiConsumer<LivingEntity, LivingEntity> onHit) {
+        public BoomerangModifier addOnHitEffect(DeferredHolder<EffectStrategy, EffectStrategy> onHit) {
             this.onHitEffects.add(onHit);
             return this;
         }

@@ -18,15 +18,15 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.LightSaber;
-import org.confluence.mod.common.item.sword.stagedy.EffectStrategy;
 import org.confluence.mod.common.item.sword.stagedy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
 import org.confluence.mod.common.item.sword.stagedy.SwordPrefabs;
 import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.terraentity.hit_effect.EffectStrategy;
 
 import java.util.function.Supplier;
 
-import static org.confluence.mod.common.item.sword.stagedy.EffectStrategy.*;
+import static org.confluence.mod.common.item.sword.stagedy.ModEffectStrategies.*;
 import static org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy.*;
 import static org.confluence.mod.common.item.sword.stagedy.SwordPrefabs.*;
 
@@ -85,7 +85,7 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> BLOOD_BUTCHERER = register("blood_butchere",ModTiers.TITANIUM, 7, -2.7F,
             ModRarity.BLUE,     EFFECT_SWORD.apply(BLOOD_BUTCHERED_EFFECT));
     public static final DeferredItem<SwordItem> VOLCANO = register("volcano",ModTiers.TITANIUM, 13, -3F,
-            ModRarity.ORANGE,   EFFECT_SWORD.apply(TIME_EFFECT.apply(ModEffects.HELL_FIRE,5 * 20))
+            ModRarity.ORANGE,   EFFECT_SWORD.apply(VOLCANIC_EFFECT)
                     .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2f, AttributeModifier.Operation.ADD_VALUE)
                     .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.5f, AttributeModifier.Operation.ADD_VALUE)
     );
@@ -120,7 +120,7 @@ public class SwordItems {
             SwordPrefabs.BOARD_SWORD.apply(10.0f)                                //宽剑
                     .addAttributeModifier(Attributes.MOVEMENT_SPEED,1.5f,
                             AttributeModifier.Operation.ADD_MULTIPLIED_BASE)        //手持属性加成
-                    .addOnHitEffect(EffectStrategy.UNDEFINED_EFFECT)                //命中效果
+                    .addOnHitEffect(UNDEFINED)                //命中效果
                     .setProj(ENCHANTED_SWORD_PROJ)                                  //弹幕
                     .setInventoryTick(InventoryTickStrategy.INVINCIBLE)             //背包每刻效果
     );

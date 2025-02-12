@@ -13,6 +13,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.sword.stagedy.ModEffectStrategies;
 import org.confluence.mod.mixin.accessor.LanguageProviderAccessor;
 
 import java.util.Arrays;
@@ -607,6 +608,7 @@ public class ModEnglishProvider extends LanguageProvider {
 
         ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), toTitleCase(effect.getId().getPath())));
         ModEntities.ENTITIES.getEntries().forEach(entity -> add(entity.get(), toTitleCase(entity.getId().getPath())));
+        ModEffectStrategies.EFFECT_STRATEGY.getEntries().forEach(strategy -> add(strategy.get().getTranslationKey(), toTitleCase(strategy.get().getDescription_en_us())));
     }
 
     @Override

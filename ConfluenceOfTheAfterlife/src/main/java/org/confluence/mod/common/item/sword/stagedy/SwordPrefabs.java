@@ -2,8 +2,10 @@ package org.confluence.mod.common.item.sword.stagedy;
 
 
 import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.common.item.sword.BaseSwordItem.ModifierBuilder;
 import org.confluence.mod.common.item.sword.stagedy.projectile.IProjContainer;
+import org.confluence.terraentity.hit_effect.EffectStrategy;
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -33,7 +35,7 @@ public class SwordPrefabs {
             .setProj(strategy);
 
     /** 效果剑*/
-    public static final Function<BiConsumer<LivingEntity,LivingEntity>,ModifierBuilder>  EFFECT_SWORD = (effect)->new ModifierBuilder()
+    public static final Function<DeferredHolder<EffectStrategy,EffectStrategy> , ModifierBuilder>  EFFECT_SWORD = (effect)->new ModifierBuilder()
             .addOnHitEffect(effect);
 
 

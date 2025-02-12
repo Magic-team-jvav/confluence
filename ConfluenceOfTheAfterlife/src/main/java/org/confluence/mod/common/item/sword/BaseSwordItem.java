@@ -6,7 +6,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -16,19 +15,19 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.ItemAbility;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.item.sword.stagedy.EffectStrategy;
 import org.confluence.mod.common.item.sword.stagedy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
 import org.confluence.mod.common.item.sword.stagedy.SwordPrefabs;
 import org.confluence.mod.common.item.sword.stagedy.projectile.IProjContainer;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
+import org.confluence.terraentity.hit_effect.EffectStrategy;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -80,7 +79,7 @@ public class BaseSwordItem extends SwordItem {
         public float damage;
         public float speed;
         public Supplier<? extends IProjContainer>  proj;
-        public List<BiConsumer<LivingEntity,LivingEntity>> onHitEffects = new ArrayList<>();
+        public List<DeferredHolder<EffectStrategy,EffectStrategy>> onHitEffects = new ArrayList<>();
         public QuaConsumer<ItemStack,Level,Entity,Boolean> inventoryTick;
         public ItemAttributeModifiers.Builder attributeModifiersBuilder = ItemAttributeModifiers.builder();
         private int modifyCount = 0;
@@ -92,7 +91,7 @@ public class BaseSwordItem extends SwordItem {
         /**添加击中效果
          * @see EffectStrategy
          * */
-        public ModifierBuilder addOnHitEffect(BiConsumer<LivingEntity,LivingEntity> onHit){
+        public ModifierBuilder addOnHitEffect(DeferredHolder<EffectStrategy,EffectStrategy> onHit){
             this.onHitEffects.add(onHit);
             return this;
         }
@@ -144,7 +143,9 @@ public class BaseSwordItem extends SwordItem {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         if(!this.modifier.onHitEffects.isEmpty()){
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").append(String.valueOf(this.modifier.onHitEffects.size())).withColor(0xFF00FF));
+            EffectStrategy.appendDescription(tooltipComponents,
+                    this.modifier.onHitEffects.stream().map(DeferredHolder::get).toList(),
+                    Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").withColor(0x969811));
         }
         if(this.modifier.proj != null){
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj").withColor(0xAABB));

@@ -211,7 +211,7 @@ public final class LivingEntityEvents {
         ItemStack weapon = damageSource.getWeaponItem();
         if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword && sword.modifier != null) {
             if (sourceEntity instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.95f) {
-                sword.modifier.onHitEffects.forEach(effect -> effect.accept(player, damagingEntity));
+                sword.modifier.onHitEffects.forEach(effect -> effect.get().getEffect().accept(player, damagingEntity));
             }
         }
         ModAchievements.luckyBreak_watchYourStep(damagingEntity, damageSource, sourceEntity);

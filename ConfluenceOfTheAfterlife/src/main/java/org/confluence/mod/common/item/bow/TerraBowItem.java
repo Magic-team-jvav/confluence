@@ -12,12 +12,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.common.entity.projectile.BaseArrowEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
+import org.confluence.terraentity.hit_effect.EffectStrategy;
+import org.confluence.terraentity.registries.EffectStrategies;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -97,10 +100,14 @@ public class TerraBowItem extends BowItem {
         tooltipComponents.add(Component.translatable("attribute.name.generic.attack_damage").append(": ").append(String.format("%.1f", this.baseDamage)).withColor(0x00FF00));
 
         if(!this.arrowModifier.onHitEffect.isEmpty()){
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").append(String.valueOf(this.arrowModifier.onHitEffect.size())).withColor(0xFF00FF));
+            EffectStrategy.appendDescription(tooltipComponents,
+                    this.arrowModifier.onHitEffect.stream().map(DeferredHolder::get).toList(),
+                    Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").withColor(0xFF00FF));
         }
         if(!this.arrowModifier.fullPullHitEffect.isEmpty()){
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.bow_full_pull_on_hit_effects").append(": ").append(String.valueOf(this.arrowModifier.fullPullHitEffect.size())).withColor(0xFF00FF));
+            EffectStrategy.appendDescription(tooltipComponents,
+                    this.arrowModifier.fullPullHitEffect.stream().map(DeferredHolder::get).toList(),
+                    Component.translatable("tooltip.item.confluence.bow_full_pull_on_hit_effects").append(": ").withColor(0xFF00FF));
         }
 
         Item transformArrow = arrowModifier.getTransformArrow();

@@ -2,7 +2,6 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.Unbreakable;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -11,16 +10,14 @@ import org.apache.commons.lang3.function.TriFunction;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SingleBooleanComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
-import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.sword.Boomerang;
-import org.confluence.mod.common.item.sword.stagedy.EffectStrategy;
+import org.confluence.mod.common.item.sword.stagedy.ModEffectStrategies;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
+import org.confluence.terraentity.hit_effect.EffectStrategy;
 
 import java.util.Map;
 
-import static org.confluence.mod.common.item.sword.stagedy.EffectStrategy.SET_FIRE;
-import static org.confluence.mod.common.item.sword.stagedy.EffectStrategy.TIME_POSSIBILITY_EFFECT;
 
 public class BoomerangItems {
 
@@ -45,7 +42,7 @@ public class BoomerangItems {
     );
     public static final DeferredItem<Boomerang> ICE_BOOMERANG = register("ice_boomerang",5.5f,ModRarity.BLUE,
             NORMAL_BOOMERANG_MODIFIER.apply(16,1.6f,1.6f)
-                    .addOnHitEffect(TIME_POSSIBILITY_EFFECT.apply(ModEffects.FROST_BURN,3 * 20,0.5F))
+                    .addOnHitEffect(ModEffectStrategies.FROST_BURN_BOOMERANG_EFFECT)
     );   //50% 的几率造成 3 秒的霜冻。
 
     public static final DeferredItem<Boomerang> TRIMARANG = register("trimarang",5.5f,ModRarity.ORANGE,
@@ -55,9 +52,8 @@ public class BoomerangItems {
 
     public static final DeferredItem<Boomerang> FLAMARANG = register("flamarang",12.5f,ModRarity.ORANGE,
             NORMAL_BOOMERANG_MODIFIER.apply(18,1.85f,1.85f)
-                    .addOnHitEffect(TIME_POSSIBILITY_EFFECT.apply(ModEffects.HELL_FIRE,5 * 20,0.5f))
-    );   //50% 的几率造成 5 秒的狱炎效果。
-
+                    .addOnHitEffect(ModEffectStrategies.VOLCANIC_EFFECT)
+    );   //狱炎效果。
 
 
     public static final DeferredItem<Boomerang> DEVELOPER_BOOMERANG = register("developer_boomerang",20, ModRarity.MASTER,
@@ -72,16 +68,7 @@ public class BoomerangItems {
             MULTI_BOOMERANG_MODIFIER.apply(5, 4,
                     NORMAL_BOOMERANG_MODIFIER.apply(40, 3.0f, 3.0f)
                             .setMaxPenetration(7)
-                            .addOnHitEffect(EffectStrategy.RANDOM_POSSIBILITY_EFFECT.apply(Map.of(
-                                    EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(ModEffects.FROST_BURN, 200,3,3,1f), 5f,
-                                    EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(MobEffects.WITHER, 200,3,3,1f), 5f,
-                                    EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(MobEffects.POISON, 200,3,3,1f), 6f,
-                                    EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(MobEffects.HARM, 1,6,6,1f), 1f,
-
-
-                                    SET_FIRE.apply(200,1f), 9f
-                                    ))
-                            )
+                            .addOnHitEffect(ModEffectStrategies.BEI_DOU_EFFECT)
             )
     );
 

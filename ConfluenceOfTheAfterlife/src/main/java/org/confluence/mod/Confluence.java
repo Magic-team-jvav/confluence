@@ -16,6 +16,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.item.sword.stagedy.ModEffectStrategies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,6 +52,7 @@ public class Confluence {
         ModChunkGenerators.GENERATORS.register(eventBus);
         ModEntityDataSerializers.SERIALIZERS.register(eventBus);
         ModCarvers.CARVERS.register(eventBus);
+        ModEffectStrategies.EFFECT_STRATEGY.register(eventBus);
     }
 
     public static void registerGameRules() {

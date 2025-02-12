@@ -84,8 +84,11 @@ public class SwordItems {
             ModRarity.BLUE,     EFFECT_SWORD.apply(LIGHTS_BANE_EFFECT));
     public static final DeferredItem<SwordItem> BLOOD_BUTCHERER = register("blood_butchere",ModTiers.TITANIUM, 7, -2.7F,
             ModRarity.BLUE,     EFFECT_SWORD.apply(BLOOD_BUTCHERED_EFFECT));
-    public static final DeferredItem<SwordItem> VOLCANO = register("volcano",ModTiers.TITANIUM, 10, -1.4f,
-            ModRarity.ORANGE,   EFFECT_SWORD.apply(EffectStrategy.SET_FIRE.apply(5 * 20,1f)));
+    public static final DeferredItem<SwordItem> VOLCANO = register("volcano",ModTiers.TITANIUM, 13, -3F,
+            ModRarity.ORANGE,   EFFECT_SWORD.apply(TIME_EFFECT.apply(ModEffects.HELL_FIRE,5 * 20))
+                    .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2f, AttributeModifier.Operation.ADD_VALUE)
+                    .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.5f, AttributeModifier.Operation.ADD_VALUE)
+    );
     public static final DeferredItem<SwordItem> BAT_BAT = register("bat_bat", ModTiers.TITANIUM,12,-3.7f,
             ModRarity.ORANGE,   EFFECT_SWORD.apply(BAT_FANG_EFFECT));
     public static final DeferredItem<SwordItem> TENTACLE_MACE = register("tentacle_mace",ModTiers.TITANIUM, 5, -1.4F,
@@ -118,7 +121,7 @@ public class SwordItems {
                     .addAttributeModifier(Attributes.MOVEMENT_SPEED,1.5f,
                             AttributeModifier.Operation.ADD_MULTIPLIED_BASE)        //手持属性加成
                     .addOnHitEffect(EffectStrategy.UNDEFINED_EFFECT)                //命中效果
-                    .setProj(ProjectileStrategy.ICE_PROJ)                           //弹幕
+                    .setProj(ENCHANTED_SWORD_PROJ)                                  //弹幕
                     .setInventoryTick(InventoryTickStrategy.INVINCIBLE)             //背包每刻效果
     );
 

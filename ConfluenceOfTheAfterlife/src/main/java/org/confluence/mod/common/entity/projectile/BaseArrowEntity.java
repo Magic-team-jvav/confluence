@@ -65,6 +65,9 @@ public class BaseArrowEntity extends AbstractArrow {
                 .setDamage(4f).setPenetration(2));
         static Tuple FLY_FISH_ENTITY = create("textures/entity/arrow/fly_fish_arrow.png",()->new Builder()
                 .setDamage(2f).setDamageInRain(4).setSpeedUpInRain(1.5f).setSpeedInertiaInWater(0.8f));
+        static Tuple HELL_FIRE_ENTITY = create("textures/entity/arrow/flaming_arrow.png",()->new Builder()
+                .setDamage(5.5f).addOnHitEffect(EffectStrategy.TIME_EFFECT.apply(ModEffects.HELL_FIRE,10*20)));
+
     }
 
     // 箭的属性
@@ -74,7 +77,8 @@ public class BaseArrowEntity extends AbstractArrow {
             ArrowItems.FLAMING_ARROW.get(), Tuple.FLAMING_ARROW_ENTITY,
             ArrowItems.FROSTBURN_ARROW.get(), Tuple.FROSTBURN_ARROW_ENTITY,
             ArrowItems.FOSSIL_ARROW.get(), Tuple.FOSSIL_ARROW_ENTITY,
-            ArrowItems.FLY_FISH_ARROW.get(), Tuple.FLY_FISH_ENTITY
+            ArrowItems.FLY_FISH_ARROW.get(), Tuple.FLY_FISH_ENTITY,
+            ArrowItems.HELLFIRE_ARROW.get(), Tuple.HELL_FIRE_ENTITY
     );
 
 

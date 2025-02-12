@@ -3,7 +3,7 @@
     "placement": [
         {
             "type": "confluence:secret_flag",
-            "flag": "&10000000000000"
+            "flag": "confluence:no_traps"
         },
         {
             "type": "minecraft:rarity_filter",

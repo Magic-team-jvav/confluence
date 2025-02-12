@@ -1,7 +1,9 @@
 package org.confluence.mod.common.worldgen;
 
+import com.google.gson.JsonPrimitive;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -11,6 +13,8 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModFeatures;
+import org.confluence.mod.common.init.ModSecretSeeds;
+import org.confluence.mod.common.worldgen.secret_seed.SecretSeed;
 import org.confluence.mod.mixed.IMinecraftServer;
 
 import java.util.function.Function;
@@ -27,9 +31,13 @@ public class SecretFlagPlacementModifier extends PlacementModifier {
                 ret = Long.parseLong(str.substring(1), 2);
             } catch (NumberFormatException ignored) {}
         } else {
-            try {
-                ret = Long.parseLong(str);
-            } catch (NumberFormatException ignored) {}
+            ret = ModSecretSeeds.CODEC.parse(JsonOps.INSTANCE, new JsonPrimitive(str)).mapOrElse(SecretSeed::getFlag, err -> {
+                try {
+                    return Long.parseLong(str);
+                } catch (NumberFormatException ignored) {
+                    return 0;
+                }
+            }).longValue();
         }
         if (ret == 0) {
             Confluence.LOGGER.error("Can not decode '{}'!", str);

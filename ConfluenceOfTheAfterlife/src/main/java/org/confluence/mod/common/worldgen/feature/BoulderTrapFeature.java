@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,9 +35,10 @@ public class BoulderTrapFeature extends Feature<BoulderTrapFeature.Config> {
                 BlockPos supportPos = blockPos.atY(range.floor());
                 if (ModFeatures.isPosSturdy(level, supportPos, Direction.UP)) {
                     BlockPos boulderPos = blockPos.atY(range.ceiling());
-                    BlockPos platePos = blockPos.atY(range.floor() + 1);
+                    Tuple<BlockPos, BlockState> pressurePlate = ModFeatures.getPressurePlate(level, supportPos);
+                    BlockPos platePos = pressurePlate.getA();
                     boolean b = ModFeatures.safeSetBlock(level, boulderPos, ModFeatures.getBoulder(level, pContext.random(), config.boulder), ModFeatures.IS_REPLACEABLE);
-                    boolean b1 = ModFeatures.safeSetBlock(level, platePos, ModFeatures.getPressurePlate(level, supportPos), ModFeatures.IS_REPLACEABLE);
+                    boolean b1 = ModFeatures.safeSetBlock(level, platePos, pressurePlate.getB(), ModFeatures.IS_REPLACEABLE);
                     if (b && b1) {
                         INetworkEntity boulder = ModFeatures.getNetworkEntity(level, boulderPos);
                         INetworkEntity plate = ModFeatures.getNetworkEntity(level, platePos);

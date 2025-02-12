@@ -3,10 +3,7 @@ package org.confluence.mod.integration.jade;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
-import org.confluence.mod.common.block.functional.AbstractMechanicalBlock;
-import org.confluence.mod.common.block.functional.BehaviourPressurePlateBlock;
-import org.confluence.mod.common.block.functional.DeathChestBlock;
-import org.confluence.mod.common.block.functional.SignalPressurePlateBlock;
+import org.confluence.mod.common.block.functional.*;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import snownee.jade.api.*;
@@ -36,6 +33,9 @@ public class ModJadePlugin implements IWailaPlugin {
                 }
                 if (blockAccessor.getBlock() == FunctionalBlocks.OAK_LOG_BOULDER.get()) {
                     return registration.blockAccessor().from(blockAccessor).blockState(Blocks.OAK_LOG.defaultBlockState()).build();
+                }
+                if (blockAccessor.getBlock() instanceof ISimulatorBlock simulatorBlock) {
+                    return registration.blockAccessor().from(blockAccessor).blockState(simulatorBlock.getSimulatedBlock(true)).build();
                 }
             } else if (accessor instanceof EntityAccessor entityAccessor) {
                 if (entityAccessor.getEntity() instanceof TreasureBagItemEntity entity && !entity.isOwner(accessor.getPlayer())) {

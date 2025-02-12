@@ -10,7 +10,6 @@ import org.confluence.mod.common.init.item.ModItems;
 import java.util.Calendar;
 
 public final class DateUtils {
-
     public static boolean isXinNian(Lunar lunar) {
         return lunar.getMonth() == 1 && lunar.getDay() <= 15;
     }

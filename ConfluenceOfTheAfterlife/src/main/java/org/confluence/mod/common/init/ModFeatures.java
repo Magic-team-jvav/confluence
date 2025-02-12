@@ -7,6 +7,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -72,17 +73,23 @@ public final class ModFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> CONFIGURED_YELLOW_WILLOW = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("yellow_willow"));
     public static final ResourceKey<ConfiguredFeature<?, ?>> BAOBAB = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("baobab_tree"));
 
-    public static BlockState getPressurePlate(WorldGenLevel level, BlockPos supportPos) {
-        return level.isStateAtPosition(supportPos, blockState -> blockState.is(Blocks.DEEPSLATE))
-                ? FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE.get().defaultBlockState()
-                : FunctionalBlocks.STONE_PRESSURE_PLATE.get().defaultBlockState();
+    public static Tuple<BlockPos, BlockState> getPressurePlate(WorldGenLevel level, BlockPos supportPos) {
+        boolean isDeepslate = level.isStateAtPosition(supportPos, blockState -> blockState.is(Blocks.DEEPSLATE));
+        if (ModSecretSeeds.NO_TRAPS.match(level.getLevel().getServer())) {
+            return new Tuple<>(supportPos, (isDeepslate
+                    ? FunctionalBlocks.DEEPSLATE_PRESSURE_BLOCK
+                    : FunctionalBlocks.STONE_PRESSURE_BLOCK).get().defaultBlockState());
+        }
+        return new Tuple<>(supportPos.above(), (isDeepslate
+                ? FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE
+                : FunctionalBlocks.STONE_PRESSURE_PLATE).get().defaultBlockState());
     }
 
     public static BlockState getDartTrap(WorldGenLevel level, BlockPos pos, Direction facing) {
         if (ModSecretSeeds.NO_TRAPS.match(level.getLevel().getServer())) {
             return (level.isStateAtPosition(pos, blockState -> blockState.is(Blocks.DEEPSLATE))
-                    ? FunctionalBlocks.DEEPSLATE_DART_TRAP.get().defaultBlockState()
-                    : FunctionalBlocks.STONE_DART_TRAP.get().defaultBlockState()).setValue(BlockStateProperties.FACING, facing);
+                    ? FunctionalBlocks.DEEPSLATE_DART_TRAP
+                    : FunctionalBlocks.STONE_DART_TRAP).get().defaultBlockState().setValue(BlockStateProperties.FACING, facing);
         }
         return FunctionalBlocks.DART_TRAP.get().defaultBlockState().setValue(BlockStateProperties.FACING, facing);
     }

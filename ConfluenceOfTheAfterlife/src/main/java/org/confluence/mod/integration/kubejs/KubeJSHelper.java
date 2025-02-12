@@ -1,4 +1,4 @@
-package org.confluence.mod.integration;
+package org.confluence.mod.integration.kubejs;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.neoforged.api.distmarker.Dist;

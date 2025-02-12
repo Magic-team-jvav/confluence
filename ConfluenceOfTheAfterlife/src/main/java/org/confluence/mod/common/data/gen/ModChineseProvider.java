@@ -1691,7 +1691,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.TIMERS_BLOCK_1_2.get(), "1/2秒计时器");
         add(FunctionalBlocks.TIMERS_BLOCK_1_4.get(), "1/4秒计时器");
         add(FunctionalBlocks.EVER_POWERED_RAIL.get(), "永久动力铁轨");
+
+        add(FunctionalBlocks.PLAYER_PRESSURE_PLATE.get(), "玩家压力板");
         add(FunctionalBlocks.STONE_PRESSURE_PLATE.get(), "石质压力板");
+        add(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE.get(), "深板岩压力板");
+        add(FunctionalBlocks.STONE_PRESSURE_BLOCK.get(), "石头");
+        add(FunctionalBlocks.DEEPSLATE_PRESSURE_BLOCK.get(), "深板岩");
 
         add(FunctionalBlocks.CRIMSON_ALTAR.get(), "猩红祭坛");
         add(FunctionalBlocks.DEMON_ALTAR.get(), "恶魔祭坛");
@@ -1708,14 +1713,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.GRAVITATION_TRAP.get(), "重力陷阱");
         add(FunctionalBlocks.PNEUMATIC_TRAP.get(), "气压陷阱");
         add(FunctionalBlocks.SPIKE.get(), "尖刺");
-        add(FunctionalBlocks.PLAYER_PRESSURE_PLATE.get(), "玩家压力板");
         add(FunctionalBlocks.GEYSER_BLOCK.get(), "热喷泉");
         add(FunctionalBlocks.FRAGILE_SANDSTONE.get(), "易碎砂岩");
         add(FunctionalBlocks.MECHANICAL_FRAGILE_SANDSTONE.get(), "机械易碎砂岩");
         add(FunctionalBlocks.MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.get(), "机械易碎黑曜石砖");
         add(FunctionalBlocks.DETONATOR.get(), "引爆器");
         add(FunctionalBlocks.BASE_CHEST_BLOCK.get(), "箱子");
-        add(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE.get(), "深板岩压力板");
 
 
         add(MinecartItems.MECHANICAL_CART.get(), "机械矿车");

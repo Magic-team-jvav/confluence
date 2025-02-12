@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -31,7 +32,6 @@ public class DartTrapFeature extends Feature<DartTrapFeature.Config> {
         }
         if (ModFeatures.isPosSturdy(level, mutablePos, Direction.UP)) {
             BlockPos dartPos = mutablePos.offset(0, 2, 0);
-            BlockPos platePos = mutablePos.above();
             for (Direction direction : ModUtils.HORIZONTAL) {
                 BlockPos.MutableBlockPos copy = dartPos.mutable();
                 int h;
@@ -41,7 +41,9 @@ public class DartTrapFeature extends Feature<DartTrapFeature.Config> {
                 if (h >= 4 && !level.isStateAtPosition(copy, blockState -> blockState.isAir() || blockState.getCollisionShape(level, copy).isEmpty())) {
                     BlockState dartTrap = ModFeatures.getDartTrap(level, copy, direction.getOpposite());
                     boolean b = ModFeatures.safeSetBlock(level, copy, dartTrap, ModFeatures.IS_REPLACEABLE);
-                    boolean b1 = ModFeatures.safeSetBlock(level, platePos, ModFeatures.getPressurePlate(level, mutablePos), ModFeatures.IS_REPLACEABLE);
+                    Tuple<BlockPos, BlockState> pressurePlate = ModFeatures.getPressurePlate(level, mutablePos);
+                    BlockPos platePos = pressurePlate.getA();
+                    boolean b1 = ModFeatures.safeSetBlock(level, platePos, pressurePlate.getB(), ModFeatures.IS_REPLACEABLE);
                     if (b && b1) {
                         INetworkEntity dart = ModFeatures.getNetworkEntity(level, copy);
                         INetworkEntity plate = ModFeatures.getNetworkEntity(level, platePos);

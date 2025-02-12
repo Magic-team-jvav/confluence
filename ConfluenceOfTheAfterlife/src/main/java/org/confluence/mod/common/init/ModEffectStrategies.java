@@ -1,11 +1,9 @@
-package org.confluence.mod.common.item.sword.stagedy;
+package org.confluence.mod.common.init;
 
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModEntities;
 import org.confluence.terraentity.hit_effect.EffectStrategy;
 import org.confluence.terraentity.init.TEEffects;
 import org.confluence.terraentity.registries.EffectStrategies;

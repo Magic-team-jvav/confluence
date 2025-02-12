@@ -13,7 +13,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.item.sword.stagedy.ModEffectStrategies;
+import org.confluence.mod.common.init.ModEffectStrategies;
 import org.confluence.mod.mixin.accessor.LanguageProviderAccessor;
 
 import java.util.Arrays;
@@ -173,6 +173,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "Full Pull Effects");
         add("tooltip.item.confluence.has_proj", "Has Projectile");
         add("tooltip.item.confluence.arrow_transform", "Wooden Arrow Transform");
+        add("tooltip.item.confluence.additional_attack_damage", "Additional Attack Damage");
+        add("tooltip.item.confluence.no_gravity", "No Gravity");
+        add("tooltip.item.confluence.cause_fire", "Causes Fire");
+        add("tooltip.item.confluence.can_penetrate", "Can Penetrate");
+
 
 
         add("tooltip.item.confluence.radio_thing.0", "Allows the user to see the world differently");

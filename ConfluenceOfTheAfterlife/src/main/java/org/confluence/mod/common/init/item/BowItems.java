@@ -12,14 +12,11 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
-import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.bow.DaedalusStormbow;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.bow.TerraBowItem;
-import org.confluence.mod.common.item.sword.stagedy.ModEffectStrategies;
+import org.confluence.mod.common.init.ModEffectStrategies;
 import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terraentity.hit_effect.EffectStrategy;
-import org.confluence.terraentity.init.TEEffects;
 
 import java.util.function.Supplier;
 
@@ -54,6 +51,7 @@ public class BowItems {
     public static final DeferredItem<TerraBowItem> PLATINUM_BOW = register("platinum_bow", 4.5F, 1536);
 
     // DIY蓄力弓
+    /**如果需要速射，加上tag {@link org.confluence.mod.common.init.ModTags.Items#FAST_BOW}*/
 
     public static final DeferredItem<TerraBowItem> FOSSIL_BOW = register("fossil_bow", () -> new TerraBowItem(5.5F, ModRarity.BLUE,
             modifier->modifier.setTransformArrow(ArrowItems.FOSSIL_ARROW.get())
@@ -67,7 +65,7 @@ public class BowItems {
     public static final DeferredItem<TerraBowItem> TENDON_BOW = register("tendon_bow",  () -> new TerraBowItem(6F, ModRarity.BLUE,
             modifier->modifier.addFullPullHitEffect(ModEffectStrategies.BLOOD_BUTCHERED_EFFECT)
     ));
-    public static final DeferredItem<TerraBowItem> MOLTEN_FURY = register("molten_fury",  () -> new TerraBowItem(7F, ModRarity.BLUE,
+    public static final DeferredItem<TerraBowItem> MOLTEN_FURY = register("molten_fury",  () -> new TerraBowItem(7F, ModRarity.ORANGE,
             modifier->modifier.setTransformArrow(ArrowItems.HELLFIRE_ARROW.get())
     ));
 

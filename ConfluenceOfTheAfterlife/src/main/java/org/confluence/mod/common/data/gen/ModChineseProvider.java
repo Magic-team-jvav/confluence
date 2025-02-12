@@ -7,7 +7,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.item.sword.stagedy.ModEffectStrategies;
+import org.confluence.mod.common.init.ModEffectStrategies;
 import org.confluence.terraentity.init.TEItems;
 
 import static org.confluence.mod.common.init.item.PickaxeItems.MOLTEN_PICKAXE;
@@ -203,6 +203,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "蓄满效果");
         add("tooltip.item.confluence.has_proj", "剑气");
         add("tooltip.item.confluence.arrow_transform", "木箭转换");
+        add("tooltip.item.confluence.additional_attack_damage", "额外伤害");
+        add("tooltip.item.confluence.no_gravity", "无重力");
+        add("tooltip.item.confluence.cause_fire", "点燃");
+        add("tooltip.item.confluence.can_penetrate", "穿透");
 
         add("tooltip.item.confluence.radio_thing.0", "允许使用者以不同的方式看世界");
         add("tooltip.item.terra_curio.radio_thing.1", "“禁忌的知识在其中回响……”");

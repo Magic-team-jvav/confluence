@@ -11,12 +11,9 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SingleBooleanComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.sword.Boomerang;
-import org.confluence.mod.common.item.sword.stagedy.ModEffectStrategies;
+import org.confluence.mod.common.init.ModEffectStrategies;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.confluence.terraentity.hit_effect.EffectStrategy;
-
-import java.util.Map;
 
 
 public class BoomerangItems {

@@ -24,19 +24,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.init.item.ArrowItems;
 import org.confluence.mod.common.item.bow.BaseArrowItem;
-import org.confluence.mod.common.item.sword.stagedy.ModEffectStrategies;
 import org.confluence.mod.util.EnchantmentUtil;
 import org.confluence.terraentity.hit_effect.EffectStrategy;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -47,48 +42,14 @@ public class BaseArrowEntity extends AbstractArrow {
     public static class Tuple {
         public String path;
         public Supplier<Builder> attr;
-        static Tuple create(String path, Supplier<Builder> type){
+        Tuple(){}
+        public static Tuple create(String path, Supplier<Builder> type){
             Tuple t = new Tuple();
             t.path = path;
             t.attr = type;
             return t;
         }
-
-        //构建箭的默认属性   mc原版木箭：   setDamage：2f
-        static Tuple STAR_ARROW_ENTITY = create("textures/entity/arrow/star_arrow.png",()->new Builder()
-                .setDamage(4f).setPenetration(99).setKnockBack(2).setSpeedFactor(0.8f).setAutoDiscard(50).setGravity(0));
-        static Tuple UNHOLY_ARROW_ENTITY = create("textures/entity/arrow/unholy_arrow.png",()->new Builder()
-                .setDamage(4.5f).setPenetration(5).setKnockBack(1.5f));
-        static Tuple FLAMING_ARROW_ENTITY = create("textures/entity/arrow/flaming_arrow.png",()->new Builder()
-                .setDamage(4.5f).setCauseFire(10*20));
-        static Tuple FROSTBURN_ARROW_ENTITY = create("textures/entity/arrow/frostburn_arrow.png",()->new Builder()
-                .setDamage(4.5f).addOnHitEffect(ModEffectStrategies.FROST_BURN_EFFECT));
-        static Tuple FOSSIL_ARROW_ENTITY = create("textures/entity/arrow/fossil_arrow.png",()->new Builder()
-                .setDamage(4f).setPenetration(2));
-        static Tuple FLY_FISH_ENTITY = create("textures/entity/arrow/fly_fish_arrow.png",()->new Builder()
-                .setDamage(2f).setDamageInRain(4).setSpeedUpInRain(1.5f).setSpeedInertiaInWater(0.8f));
-        static Tuple HELL_FIRE_ENTITY = create("textures/entity/arrow/flaming_arrow.png",()->new Builder()
-                .setDamage(5.5f).addOnHitEffect(ModEffectStrategies.VOLCANIC_EFFECT));
-
     }
-
-    // 箭的属性
-    public static Map<BaseArrowItem, Tuple> selectArrowFromItemMap = Map.of(
-            ArrowItems.STAR_ARROW.get(), Tuple.STAR_ARROW_ENTITY,
-            ArrowItems.UNHOLY_ARROW.get(), Tuple.UNHOLY_ARROW_ENTITY,
-            ArrowItems.FLAMING_ARROW.get(), Tuple.FLAMING_ARROW_ENTITY,
-            ArrowItems.FROSTBURN_ARROW.get(), Tuple.FROSTBURN_ARROW_ENTITY,
-            ArrowItems.FOSSIL_ARROW.get(), Tuple.FOSSIL_ARROW_ENTITY,
-            ArrowItems.FLY_FISH_ARROW.get(), Tuple.FLY_FISH_ENTITY,
-            ArrowItems.HELLFIRE_ARROW.get(), Tuple.HELL_FIRE_ENTITY
-    );
-
-
-        /*
-        HELLFIRE_ARROW
-        BONE_ARROW
-        SHIMMER_ARROW
-        */
 
     private static final EntityDataAccessor<String> TEXTURE_PATH = SynchedEntityData.defineId(BaseArrowEntity.class, EntityDataSerializers.STRING);
     public String texturePath = "";
@@ -110,7 +71,7 @@ public class BaseArrowEntity extends AbstractArrow {
      */
     public BaseArrowEntity(LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, BaseArrowItem arrow) {
         super(ModEntities.ARROW_PROJECTILE.get(), owner, owner.level(), pickupItemStack, firedFromWeapon);
-        this.baseArrowTuple = selectArrowFromItemMap.get(arrow);
+        this.baseArrowTuple = arrow.getModifier();
         if(baseArrowTuple==null)// 不应该出现这种情况
             this.modify = new Builder();
         else
@@ -302,8 +263,8 @@ public class BaseArrowEntity extends AbstractArrow {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if(selectArrowFromItemMap.containsKey(getPickupItem().getItem())) {
-            texturePath = selectArrowFromItemMap.get(getPickupItem().getItem()).path;
+        if(getPickupItem().getItem() instanceof BaseArrowItem arrow && arrow.getModifier() != null) {
+            texturePath = arrow.getModifier().path;
             entityData.set(TEXTURE_PATH,texturePath);
         }
     }
@@ -317,19 +278,19 @@ public class BaseArrowEntity extends AbstractArrow {
 
 
     /** 能力表 **/
-    static class Tag{
-        static final int penetration = 1;//可穿透
-        static final int low_gravity = 2;//低重力
-        static final int auto_discard = 4;//超过时间自动消失
-        static final int cause_fire = 8;//火焰附加
+    public static class Tag{
+        public static final int penetration = 1;//可穿透
+        public static final int low_gravity = 2;//低重力
+        public static final int auto_discard = 4;//超过时间自动消失
+        public static final int cause_fire = 8;//火焰附加
 
     }
     public static class Builder{
         private int type = 0;
-        private int penetration_count = 0;
+        public int penetration_count = 0;
         private int gravity_count = 0;
         private int auto_discard_tick = 1200;
-        private float base_damage = 2;
+        public float base_damage = 2;
         private float speedFactor = 1;
         private float knockBack = 0;
         private int causeFireTick = 0;
@@ -400,6 +361,9 @@ public class BaseArrowEntity extends AbstractArrow {
         public Builder setTransformArrow(BaseArrowItem arrow){
             this.transformArrow = arrow;
             return this;
+        }
+        public int getType(){
+            return type;
         }
 
         @Nullable

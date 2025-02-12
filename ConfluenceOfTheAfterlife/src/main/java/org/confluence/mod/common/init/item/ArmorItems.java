@@ -87,7 +87,7 @@ public class ArmorItems {
     public static final Supplier<ArmorItem> ANGLER_HAT = registerNormalArmor("angler_hat", "angler_armor", ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
     public static final Supplier<ArmorItem> ANGLER_VEST = registerNormalArmor("angler_vest", "angler_armor", ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
     public static final Supplier<ArmorItem> ANGLER_PANTS = registerNormalArmor("angler_pants", "angler_armor", ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final Supplier<ArmorItem> ANGLER_BOOTS = registerNormalArmor("angler_boots", "angler_armor", ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
+
 
 
     public static final Supplier<ArmorItem> COPPER_HELMET = registerNormalArmor("copper_helmet", "copper_armor", ModArmorMaterials.COPPER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 120);

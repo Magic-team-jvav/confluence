@@ -42,8 +42,9 @@ public class MaterialItems {
     public static final DeferredItem<Item> DEMONITE_INGOT = register("demonite_ingot", ModRarity.BLUE);
     public static final DeferredItem<Item> RAW_TR_CRIMSON = register("raw_tr_crimson", ModRarity.BLUE);
     public static final DeferredItem<Item> TR_CRIMSON_INGOT = register("tr_crimson_ingot", ModRarity.BLUE);
-    public static final DeferredItem<Item> HELLSTONE_INGOT = ITEMS.registerSimpleItem("hellstone_ingot", new Item.Properties().fireResistant());
     public static final DeferredItem<Item> RAW_HELLSTONE = ITEMS.registerSimpleItem("raw_hellstone", new Item.Properties().fireResistant());
+    public static final DeferredItem<Item> HELLSTONE_INGOT = ITEMS.registerSimpleItem("hellstone_ingot", new Item.Properties().fireResistant());
+
 
     public static final DeferredItem<Item> RAW_COBALT = register("raw_cobalt", ModRarity.LIGHT_RED);
     public static final DeferredItem<Item> COBALT_INGOT = register("cobalt_ingot", ModRarity.LIGHT_RED);
@@ -58,8 +59,8 @@ public class MaterialItems {
     public static final DeferredItem<Item> RAW_TITANIUM = register("raw_titanium", ModRarity.LIGHT_RED);
     public static final DeferredItem<Item> TITANIUM_INGOT = register("titanium_ingot", ModRarity.LIGHT_RED);
     public static final DeferredItem<Item> HALLOWED_INGOT = register("hallowed_ingot", ModRarity.LIGHT_RED);
-    public static final DeferredItem<Item> CHLOROPHYTE_INGOT = register("chlorophyte_ingot", ModRarity.ORANGE);
     public static final DeferredItem<Item> RAW_CHLOROPHYTE = register("raw_chlorophyte", ModRarity.ORANGE);
+    public static final DeferredItem<Item> CHLOROPHYTE_INGOT = register("chlorophyte_ingot", ModRarity.ORANGE);
     public static final DeferredItem<Item> SHROOMITE_INGOT = register("shroomite_ingot", ModRarity.ORANGE);
     public static final DeferredItem<Item> SPECTRE_INGOT = register("spectre_ingot", ModRarity.ORANGE);
     public static final DeferredItem<Item> RAW_LUMINITE = register("raw_luminite", ModRarity.ORANGE);

@@ -94,14 +94,13 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
     private static boolean placeBoulders(Config config, RandomSource random, WorldGenLevel level, BlockPos chestPos, INetworkEntity chest) {
         boolean succeed = false;
         int maxBoulderHeight = config.maxBoulderHeight;
-        BlockState blockState = config.boulder;
         int amount = config.boulderAmount;
         int half = amount / 2;
         for (BlockPos pos : BlockPos.randomBetweenClosed(random, amount, chestPos.getX() - half, chestPos.getY(), chestPos.getZ() - half, chestPos.getX() + half, chestPos.getY(), chestPos.getZ() + half)) {
             Optional<Column> optionalColumn = Column.scan(level, pos, maxBoulderHeight, BlockBehaviour.BlockStateBase::isAir, ModFeatures.IS_BASE_STONE);
             if (optionalColumn.isPresent() && optionalColumn.get() instanceof Column.Range range && range.height() > 4) {
                 BlockPos boulderPos = pos.atY(range.ceiling());
-                if (ModFeatures.safeSetBlock(level, boulderPos, blockState, ModFeatures.IS_REPLACEABLE)) {
+                if (ModFeatures.safeSetBlock(level, boulderPos, ModFeatures.getBoulder(level, random, config.boulder), ModFeatures.IS_REPLACEABLE)) {
                     INetworkEntity boulder = ModFeatures.getNetworkEntity(level, boulderPos);
                     if (boulder != null) {
                         boulder.connectTo(0xFF0000, chestPos, chest);
@@ -116,6 +115,7 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
     private static boolean placeDartTraps(Config config, WorldGenLevel level, BlockPos chestPos, INetworkEntity chest) {
         boolean succeed = false;
         int maxDartDistance = config.maxDartDistance;
+        dir:
         for (Direction direction : ModUtils.HORIZONTAL) {
             BlockPos.MutableBlockPos copy = chestPos.mutable();
             Direction opposite = direction.getOpposite();
@@ -155,6 +155,8 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
                             dart.connectTo(0x00FF00, connectPos, connectEntity);
                             succeed = true;
                         }
+                    } else {
+                        continue dir;
                     }
                 }
             }
@@ -162,8 +164,7 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
         return succeed;
     }
 
-    public record Config(int maxDartDistance, BlockState boulder, int boulderAmount, int maxBoulderHeight, int tntAmount, int maxSearchDown,
-                         ResourceKey<LootTable> lootTable) implements FeatureConfiguration {
+    public record Config(int maxDartDistance, BlockState boulder, int boulderAmount, int maxBoulderHeight, int tntAmount, int maxSearchDown, ResourceKey<LootTable> lootTable) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_dart_distance", 24).forGetter(Config::maxDartDistance),
                 BlockState.CODEC.fieldOf("boulder").orElseGet(() -> FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState()).forGetter(Config::boulder),

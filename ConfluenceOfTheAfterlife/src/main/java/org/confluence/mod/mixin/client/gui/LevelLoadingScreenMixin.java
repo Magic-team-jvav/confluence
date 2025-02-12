@@ -51,6 +51,8 @@ public abstract class LevelLoadingScreenMixin implements ILevelLoadingScreen {
         } else if (progress >= 50) {
             if ((confluence$secretFlag & IWorldOptions.NT_MASK) != 0 || (confluence$secretFlag & IWorldOptions.GFB_MASK) != 0) {
                 cir.setReturnValue(NOT_PLACING_TRAPS);
+            } else if ((confluence$secretFlag & IWorldOptions.BW_MASK) != 0) {
+                cir.setReturnValue(PLACING_BOULDERS);
             } else {
                 cir.setReturnValue(PLACING_TRAPS);
             }

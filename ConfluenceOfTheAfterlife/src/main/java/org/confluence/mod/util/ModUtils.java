@@ -42,6 +42,9 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Set;
 
+import static org.confluence.mod.common.item.common.CoinItem.MAX_STACK_SIZE;
+import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
+
 public final class ModUtils {
     public static final Direction[] HORIZONTAL = new Direction[]{Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH};
     public static final Direction[] DIRECTIONS = Direction.values();
@@ -71,12 +74,12 @@ public final class ModUtils {
     }
 
     public static void dropMoney(int amount, double x, double y, double z, Level level) {
-        int copper_count = amount % 99;
-        int i = ((amount - copper_count) / 99);
-        int silver_count = i % 99;
-        int j = ((i - silver_count) / 99);
-        int golden_count = j % 99;
-        int k = (j - golden_count) / 99;
+        int copper_count = amount % UPGRADES_COUNT;
+        int i = ((amount - copper_count) / UPGRADES_COUNT);
+        int silver_count = i % UPGRADES_COUNT;
+        int j = ((i - silver_count) / UPGRADES_COUNT);
+        int golden_count = j % UPGRADES_COUNT;
+        int k = (j - golden_count) / UPGRADES_COUNT;
         createItemEntity(ModItems.COPPER_COIN.get(), copper_count, x, y, z, level, 0);
         createItemEntity(ModItems.SILVER_COIN.get(), silver_count, x, y, z, level, 0);
         createItemEntity(ModItems.GOLDEN_COIN.get(), golden_count, x, y, z, level, 0);
@@ -324,5 +327,10 @@ public final class ModUtils {
 
     public static BlockPos fromVec3(Vec3 vec3) {
         return new BlockPos(Mth.floor(vec3.x), Mth.floor(vec3.y), Mth.floor(vec3.z));
+    }
+
+    public static int getMaxStackSize(int original) {
+        if (original == 99) return MAX_STACK_SIZE;
+        return original;
     }
 }

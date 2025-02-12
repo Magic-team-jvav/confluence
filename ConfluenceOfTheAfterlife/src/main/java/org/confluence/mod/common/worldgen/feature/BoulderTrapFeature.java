@@ -35,7 +35,7 @@ public class BoulderTrapFeature extends Feature<BoulderTrapFeature.Config> {
                 if (ModFeatures.isPosSturdy(level, supportPos, Direction.UP)) {
                     BlockPos boulderPos = blockPos.atY(range.ceiling());
                     BlockPos platePos = blockPos.atY(range.floor() + 1);
-                    boolean b = ModFeatures.safeSetBlock(level, boulderPos, config.boulder, ModFeatures.IS_REPLACEABLE);
+                    boolean b = ModFeatures.safeSetBlock(level, boulderPos, ModFeatures.getBoulder(level, pContext.random(), config.boulder), ModFeatures.IS_REPLACEABLE);
                     boolean b1 = ModFeatures.safeSetBlock(level, platePos, ModFeatures.getPressurePlate(level, supportPos), ModFeatures.IS_REPLACEABLE);
                     if (b && b1) {
                         INetworkEntity boulder = ModFeatures.getNetworkEntity(level, boulderPos);

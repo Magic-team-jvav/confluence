@@ -1676,6 +1676,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");
         add(FunctionalBlocks.NORMAL_BOULDER.get(), "巨石");
+        add(FunctionalBlocks.OAK_LOG_BOULDER.get(), "橡木原木巨石");
         add(FunctionalBlocks.FOLLOWER_BOULDER.get(), "跟踪巨石");
         add(FunctionalBlocks.EXPLODE_BOULDER.get(), "爆炸巨石");
         add(FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get(), "瞬爆TNT");

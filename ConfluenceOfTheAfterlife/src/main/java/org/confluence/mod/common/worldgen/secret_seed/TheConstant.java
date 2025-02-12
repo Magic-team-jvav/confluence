@@ -49,6 +49,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class TheConstant extends SecretSeed {
+    @OnlyIn(Dist.CLIENT)
     private static final ResourceLocation POST_EFFECT = Confluence.asResource("shaders/post/the_constant.json");
 
     public TheConstant(long flag, ResourceLocation id) {

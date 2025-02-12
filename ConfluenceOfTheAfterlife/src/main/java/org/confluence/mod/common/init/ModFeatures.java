@@ -87,6 +87,15 @@ public final class ModFeatures {
         return FunctionalBlocks.DART_TRAP.get().defaultBlockState().setValue(BlockStateProperties.FACING, facing);
     }
 
+    public static BlockState getBoulder(WorldGenLevel level, RandomSource random, BlockState original) {
+        if (ModSecretSeeds.BOULDER_WORLD.match(level.getLevel().getServer())) {
+            int i = random.nextInt(3);
+            if (i == 0) return FunctionalBlocks.FOLLOWER_BOULDER.get().defaultBlockState();
+            if (i == 1) return FunctionalBlocks.EXPLODE_BOULDER.get().defaultBlockState();
+        }
+        return original;
+    }
+
     public static @Nullable INetworkEntity getNetworkEntity(WorldGenLevel level, BlockPos blockPos) {
         if (level.getBlockEntity(blockPos) instanceof INetworkEntity entity) {
             return entity;

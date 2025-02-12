@@ -1581,7 +1581,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.HONEY_BUCKET.get(), "蜂蜜桶");
         add(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get(), "无底微光桶");
         add(ToolItems.BOTTOMLESS_WATER_BUCKET.get(), "无底水桶");
-        add(ToolItems.BOTTOMLESS_LAVA_BUCKET.get(), "无底岩浆桶");
+        add(ToolItems.BOTTOMLESS_LAVA_BUCKET.get(), "无底熔岩桶");
         add(ToolItems.BOTTOMLESS_HONEY_BUCKET.get(), "无底蜂蜜桶");
         add(ToolItems.BUG_NET.get(), "虫网");
         add(ToolItems.DEV_BUG_NET.get(), "开发者虫网");
@@ -1787,7 +1787,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(BaitItems.LAVAFLY.get(), "熔岩萤火虫");
         add(BaitItems.LIGHTNING_BUG.get(), "荧光虫");
         add(BaitItems.MAGGOT.get(), "蝇蛆");
-        add(BaitItems.MAGMA_SNAIL.get(), "岩浆蜗牛");
+        add(BaitItems.MAGMA_SNAIL.get(), "熔岩蜗牛");
         add(BaitItems.MONARCH_BUTTERFLY.get(), "帝王蝶");
         add(BaitItems.ORANGE_DRAGONFLY.get(), "橙蜻蜓");
         add(BaitItems.PINK_JELLYFISH.get(), "粉水母");

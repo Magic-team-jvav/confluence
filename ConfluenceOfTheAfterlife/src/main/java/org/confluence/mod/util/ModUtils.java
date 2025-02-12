@@ -325,10 +325,6 @@ public final class ModUtils {
         return new BlockPos(Mth.floor(vector3d.x), Mth.floor(vector3d.y), Mth.floor(vector3d.z));
     }
 
-    public static BlockPos fromVec3(Vec3 vec3) {
-        return new BlockPos(Mth.floor(vec3.x), Mth.floor(vec3.y), Mth.floor(vec3.z));
-    }
-
     public static int getMaxStackSize(int original) {
         return Math.max(original, MAX_STACK_SIZE);
     }

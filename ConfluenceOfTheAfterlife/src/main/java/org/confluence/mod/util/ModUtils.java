@@ -330,7 +330,6 @@ public final class ModUtils {
     }
 
     public static int getMaxStackSize(int original) {
-        if (original == 99) return MAX_STACK_SIZE;
-        return original;
+        return Math.max(original, MAX_STACK_SIZE);
     }
 }

@@ -23,7 +23,7 @@ public class BoulderWorld extends SecretSeed {
 
     @Override
     public boolean match(String seed) {
-        return "boulder".equals(seed);
+        return "redigit".equals(seed);
     }
 
     public static void createBoulderWhenBlockDestroy(ServerPlayer serverPlayer, BlockState blockState, BlockPos pos) {

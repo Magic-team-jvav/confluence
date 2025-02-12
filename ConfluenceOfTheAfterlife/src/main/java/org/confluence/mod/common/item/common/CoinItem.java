@@ -18,10 +18,13 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class CoinItem extends BlockItem {
+    public static final int MAX_STACK_SIZE = 9999;
+    public static final int UPGRADES_COUNT = 100;
+
     public final Supplier<CoinItem> upgrade;
 
     public CoinItem(Block block, ModRarity rarity, @Nullable Supplier<CoinItem> upgrade) {
-        super(block, new Properties().fireResistant().stacksTo(99).component(TCDataComponentTypes.MOD_RARITY, rarity));
+        super(block, new Properties().fireResistant().stacksTo(MAX_STACK_SIZE).component(TCDataComponentTypes.MOD_RARITY, rarity));
         this.upgrade = upgrade;
     }
 
@@ -33,12 +36,12 @@ public class CoinItem extends BlockItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack stack = player.getItemInHand(usedHand);
-        if (player.isCrouching() && upgrade != null && stack.getCount() == 99) {
+        if (player.isCrouching() && upgrade != null && stack.getCount() >= UPGRADES_COUNT) {
             if (!level.isClientSide) {
                 if (!player.getInventory().add(upgrade.get().getDefaultInstance())) {
                     player.drop(upgrade.get().getDefaultInstance(), true);
                 }
-                player.setItemInHand(usedHand, ItemStack.EMPTY);
+                stack.shrink(UPGRADES_COUNT);
             }
             return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
         }
@@ -47,7 +50,7 @@ public class CoinItem extends BlockItem {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        if (upgrade != null && stack.getCount() == getMaxStackSize(stack)) {
+        if (upgrade != null && stack.getCount() >= UPGRADES_COUNT) {
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.coin").withColor(0xAAAAAA));
         }
     }

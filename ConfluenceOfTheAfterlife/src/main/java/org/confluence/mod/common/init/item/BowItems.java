@@ -51,12 +51,13 @@ public class BowItems {
     public static final DeferredItem<TerraBowItem> TUNGSTEN_BOW = register("tungsten_bow", 4.0F, 1280);
     public static final DeferredItem<TerraBowItem> GOLDEN_BOW = register("golden_bow", 4.5F, 1408);
     public static final DeferredItem<TerraBowItem> PLATINUM_BOW = register("platinum_bow", 4.5F, 1536);
+
+    // DIY蓄力弓
     public static final DeferredItem<TerraBowItem> HUNTING_BOW = register("hunting_bow", () -> new TerraBowItem(3.5F, ModRarity.BLUE, // 猎弓
             modifier->modifier.addOnHitEffect(EffectStrategy.TIME_EFFECT.apply(TEEffects.SUMMON_FOCUS, 80))
     ));
     public static final DeferredItem<TerraBowItem> FOSSIL_BOW = register("fossil_bow", () -> new TerraBowItem(5.5F, ModRarity.BLUE,
-            modifier->modifier
-                    .setTransformArrow(ArrowItems.FOSSIL_ARROW.get())
+            modifier->modifier.setTransformArrow(ArrowItems.FOSSIL_ARROW.get())
     ));
     public static final DeferredItem<TerraBowItem> DEMON_BOW = register("demon_bow", () -> new TerraBowItem(5.5F, ModRarity.BLUE,
             modifier->modifier.addFullPullHitEffect(EffectStrategy.LIGHTS_BANE_EFFECT)
@@ -64,6 +65,10 @@ public class BowItems {
     public static final DeferredItem<TerraBowItem> TENDON_BOW = register("tendon_bow",  () -> new TerraBowItem(6F, ModRarity.BLUE,
             modifier->modifier.addFullPullHitEffect(EffectStrategy.BLOOD_BUTCHERED_EFFECT)
     ));
+    public static final DeferredItem<TerraBowItem> MOLTEN_FURY = register("molten_fury",  () -> new TerraBowItem(7F, ModRarity.BLUE,
+            modifier->modifier.setTransformArrow(ArrowItems.HELLFIRE_ARROW.get())
+    ));
+
 
     // 代达罗斯风暴弓
     public static final DeferredItem<TerraBowItem> DAEDALUS_STORM_BOW = register("daedalus_storm_bow", ()->new DaedalusStormbow(10F, ModRarity.PURPLE));

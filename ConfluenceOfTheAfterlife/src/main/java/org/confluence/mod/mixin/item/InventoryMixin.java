@@ -22,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.function.Consumer;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.*;
+import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 
 @Mixin(Inventory.class)
 public abstract class InventoryMixin {
@@ -39,7 +40,8 @@ public abstract class InventoryMixin {
             if (confluence$insert2Extra(COINS_START, SIZE_COINS, extraInventory, stack, extraInventory1 -> {
                 for (int i = 0; i < SIZE_COINS; i++) {
                     ItemStack coins = extraInventory.getCoins(i);
-                    if (coins.getCount() == 99) {
+                    int count = coins.getCount();
+                    if (count >= UPGRADES_COUNT) {
                         Item coin = coins.getItem();
                         ItemStack itemStack = null;
                         if (coin == ModItems.COPPER_COIN.get()) {
@@ -50,7 +52,9 @@ public abstract class InventoryMixin {
                             itemStack = ModItems.PLATINUM_COIN.get().getDefaultInstance();
                         }
                         if (itemStack != null) {
-                            extraInventory1.setItem(COINS_START + i, ItemStack.EMPTY);
+                            coins.setCount(count % UPGRADES_COUNT);
+                            extraInventory1.setItem(COINS_START + i, coins);
+                            itemStack.setCount(count / UPGRADES_COUNT);
                             confluence$insert2Extra(COINS_START, SIZE_COINS, extraInventory1, itemStack, extraInventory2 -> {});
                         }
                     }

@@ -32,7 +32,7 @@ public class FrostburnEffect extends MobEffect { //霜冻：缓慢损失生命 �
 
     @Override
     public boolean applyEffectTick(LivingEntity living, int amplifier) {
-        living.hurt(ModDamageTypes.of(living.level(), ModDamageTypes.FROST_BURN), 2.0F);
+        living.hurt(ModDamageTypes.of(living.level(), ModDamageTypes.FROST_BURN), 2.0F * (amplifier + 1));
         return true;
     }
 

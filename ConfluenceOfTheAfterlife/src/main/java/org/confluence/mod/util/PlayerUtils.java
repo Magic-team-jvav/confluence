@@ -43,6 +43,8 @@ import java.util.function.ToIntFunction;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.COINS_START;
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_COINS;
+import static org.confluence.mod.common.item.common.CoinItem.MAX_STACK_SIZE;
+import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 import static org.confluence.mod.util.ModUtils.isWithinDayTime;
 
 public final class PlayerUtils {
@@ -222,7 +224,7 @@ public final class PlayerUtils {
         int[] coins = getCoins(player);
         long res = 0;
         for (int i = 0; i < SIZE_COINS; i++) {
-            res += (int) (coins[i] * Math.pow(99, 3 - i));
+            res += (int) (coins[i] * Math.pow(100, 3 - i));
         }
         return res;
     }
@@ -250,9 +252,9 @@ public final class PlayerUtils {
             int coin = coins[i];
             if (coin > 0) {
                 CoinItem coinItem = INDEX_2_COIN.apply(i);
-                while (coin > 99) {
-                    player.getInventory().add(new ItemStack(coinItem, 99));
-                    coin -= 99;
+                while (coin > UPGRADES_COUNT) {
+                    player.getInventory().add(new ItemStack(coinItem, UPGRADES_COUNT));
+                    coin -= UPGRADES_COUNT;
                 }
                 player.getInventory().add(new ItemStack(coinItem, coin));
             }
@@ -279,12 +281,12 @@ public final class PlayerUtils {
     }
 
     public static int[] decodeCoin(int money) {
-        int copper_count = money % 99;
-        int i = ((money - copper_count) / 99);
-        int silver_count = i % 99;
-        int j = ((i - silver_count) / 99);
-        int golden_count = j % 99;
-        int k = (j - golden_count) / 99;
+        int copper_count = money % 100;
+        int i = ((money - copper_count) / 100);
+        int silver_count = i % 100;
+        int j = ((i - silver_count) / 100);
+        int golden_count = j % 100;
+        int k = (j - golden_count) / 100;
         return new int[]{copper_count, silver_count, golden_count, k};
     }
 
@@ -298,8 +300,8 @@ public final class PlayerUtils {
             int index = COIN_2_INDEX.applyAsInt(coins.getItem());
             int count = coins.getCount();
             Supplier<CoinItem> upgrade;
-            while (map.addTo(index, count) + count >= 99 && (upgrade = INDEX_2_COIN.apply(3 - index).upgrade) != null) {
-                map.addTo(index, -99);
+            while (map.addTo(index, count) + count >= UPGRADES_COUNT && (upgrade = INDEX_2_COIN.apply(3 - index).upgrade) != null) {
+                map.addTo(index, -UPGRADES_COUNT);
                 index = COIN_2_INDEX.applyAsInt(upgrade.get());
                 count = 1;
             }
@@ -308,9 +310,9 @@ public final class PlayerUtils {
             int count = map.getInt(i);
             if (count <= 0) continue;
             CoinItem coinItem = INDEX_2_COIN.apply(3 - i);
-            while (count > 99) {
-                extraInventory.setItem(COINS_START + j++, new ItemStack(coinItem, 99));
-                count -= 99;
+            while (count > MAX_STACK_SIZE) {
+                extraInventory.setItem(COINS_START + j++, new ItemStack(coinItem, MAX_STACK_SIZE));
+                count -= MAX_STACK_SIZE;
             }
             if (count > 0) {
                 extraInventory.setItem(COINS_START + j++, new ItemStack(coinItem, count));

@@ -49,6 +49,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class TheConstant extends SecretSeed {
+    @OnlyIn(Dist.CLIENT)
     private static final ResourceLocation POST_EFFECT = Confluence.asResource("shaders/post/the_constant.json");
 
     public TheConstant(long flag, ResourceLocation id) {
@@ -79,7 +80,7 @@ public class TheConstant extends SecretSeed {
         if (mode != GameType.CREATIVE && mode != GameType.SPECTATOR && level.getGameTime() % 20 == 0 && ModSecretSeeds.THE_CONSTANT.match(level)) {
             CompoundTag data = player.getPersistentData();
             int tick = data.getInt("confluence:in_darkness_tick");
-            BlockPos eyePos = ModUtils.fromVec3(player.getEyePosition());
+            BlockPos eyePos = BlockPos.containing(player.getEyePosition());
             int brightness = level.getLevel().isThundering()
                     ? level.getMaxLocalRawBrightness(eyePos, 10)
                     : level.getMaxLocalRawBrightness(eyePos);

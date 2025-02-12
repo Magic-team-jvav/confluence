@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -81,8 +82,9 @@ public class FallingSandTrapFeature extends Feature<FallingSandTrapFeature.Confi
                 ModFeatures.safeSetBlock(level, pos, sand, ModFeatures.IS_REPLACEABLE);
             }
 
-            BlockPos platePos = supportPos.above();
-            level.setBlock(platePos, ModFeatures.getPressurePlate(level, supportPos), Block.UPDATE_ALL);
+            Tuple<BlockPos, BlockState> pressurePlate = ModFeatures.getPressurePlate(level, supportPos);
+            BlockPos platePos = pressurePlate.getA();
+            level.setBlock(platePos, pressurePlate.getB(), Block.UPDATE_ALL);
             INetworkEntity plateEntity = ModFeatures.getNetworkEntity(level, platePos);
             if (plateEntity != null) {
                 fragileEntity.connectTo(0xFFFF00, platePos, plateEntity);

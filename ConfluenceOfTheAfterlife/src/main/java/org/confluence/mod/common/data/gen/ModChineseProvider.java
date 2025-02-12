@@ -1581,7 +1581,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.HONEY_BUCKET.get(), "蜂蜜桶");
         add(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get(), "无底微光桶");
         add(ToolItems.BOTTOMLESS_WATER_BUCKET.get(), "无底水桶");
-        add(ToolItems.BOTTOMLESS_LAVA_BUCKET.get(), "无底岩浆桶");
+        add(ToolItems.BOTTOMLESS_LAVA_BUCKET.get(), "无底熔岩桶");
         add(ToolItems.BOTTOMLESS_HONEY_BUCKET.get(), "无底蜂蜜桶");
         add(ToolItems.BUG_NET.get(), "虫网");
         add(ToolItems.DEV_BUG_NET.get(), "开发者虫网");
@@ -1676,6 +1676,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");
         add(FunctionalBlocks.NORMAL_BOULDER.get(), "巨石");
+        add(FunctionalBlocks.OAK_LOG_BOULDER.get(), "橡木原木巨石");
         add(FunctionalBlocks.FOLLOWER_BOULDER.get(), "跟踪巨石");
         add(FunctionalBlocks.EXPLODE_BOULDER.get(), "爆炸巨石");
         add(FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get(), "瞬爆TNT");
@@ -1690,7 +1691,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.TIMERS_BLOCK_1_2.get(), "1/2秒计时器");
         add(FunctionalBlocks.TIMERS_BLOCK_1_4.get(), "1/4秒计时器");
         add(FunctionalBlocks.EVER_POWERED_RAIL.get(), "永久动力铁轨");
+
+        add(FunctionalBlocks.PLAYER_PRESSURE_PLATE.get(), "玩家压力板");
         add(FunctionalBlocks.STONE_PRESSURE_PLATE.get(), "石质压力板");
+        add(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE.get(), "深板岩压力板");
+        add(FunctionalBlocks.STONE_PRESSURE_BLOCK.get(), "石头");
+        add(FunctionalBlocks.DEEPSLATE_PRESSURE_BLOCK.get(), "深板岩");
 
         add(FunctionalBlocks.CRIMSON_ALTAR.get(), "猩红祭坛");
         add(FunctionalBlocks.DEMON_ALTAR.get(), "恶魔祭坛");
@@ -1707,14 +1713,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.GRAVITATION_TRAP.get(), "重力陷阱");
         add(FunctionalBlocks.PNEUMATIC_TRAP.get(), "气压陷阱");
         add(FunctionalBlocks.SPIKE.get(), "尖刺");
-        add(FunctionalBlocks.PLAYER_PRESSURE_PLATE.get(), "玩家压力板");
         add(FunctionalBlocks.GEYSER_BLOCK.get(), "热喷泉");
         add(FunctionalBlocks.FRAGILE_SANDSTONE.get(), "易碎砂岩");
         add(FunctionalBlocks.MECHANICAL_FRAGILE_SANDSTONE.get(), "机械易碎砂岩");
         add(FunctionalBlocks.MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.get(), "机械易碎黑曜石砖");
         add(FunctionalBlocks.DETONATOR.get(), "引爆器");
         add(FunctionalBlocks.BASE_CHEST_BLOCK.get(), "箱子");
-        add(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE.get(), "深板岩压力板");
 
 
         add(MinecartItems.MECHANICAL_CART.get(), "机械矿车");
@@ -1783,7 +1787,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(BaitItems.LAVAFLY.get(), "熔岩萤火虫");
         add(BaitItems.LIGHTNING_BUG.get(), "荧光虫");
         add(BaitItems.MAGGOT.get(), "蝇蛆");
-        add(BaitItems.MAGMA_SNAIL.get(), "岩浆蜗牛");
+        add(BaitItems.MAGMA_SNAIL.get(), "熔岩蜗牛");
         add(BaitItems.MONARCH_BUTTERFLY.get(), "帝王蝶");
         add(BaitItems.ORANGE_DRAGONFLY.get(), "橙蜻蜓");
         add(BaitItems.PINK_JELLYFISH.get(), "粉水母");
@@ -1894,6 +1898,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(BowItems.FOSSIL_BOW.get(), "石骸弓");
         add(BowItems.DEMON_BOW.get(), "恶魔弓");
         add(BowItems.TENDON_BOW.get(), "肌腱弓");
+        add(BowItems.MOLTEN_FURY.get(), "熔火之怒");
+
 
         add(BowItems.DAEDALUS_STORM_BOW.get(), "代达罗斯风暴弓");
         add(BowItems.DEVELOPER_BOW.get(), "开发者弓");

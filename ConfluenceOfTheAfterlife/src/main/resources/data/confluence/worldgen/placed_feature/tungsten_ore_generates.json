@@ -3,7 +3,7 @@
     "placement": [
         {
             "type": "confluence:secret_flag",
-            "flag": "&1000000000000",
+            "flag": "confluence:the_constant",
             "flip": true
         },
         {

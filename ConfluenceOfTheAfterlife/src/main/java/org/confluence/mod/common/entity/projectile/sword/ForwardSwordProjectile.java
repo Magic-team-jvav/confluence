@@ -3,6 +3,7 @@ package org.confluence.mod.common.entity.projectile.sword;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.terraentity.TerraEntity;
 
 public class ForwardSwordProjectile extends SwordProjectile {
 
@@ -14,6 +15,7 @@ public class ForwardSwordProjectile extends SwordProjectile {
     public void tick() {
         super.tick();
         Vec3 vec3 = getDeltaMovement();
+        TerraEntity.LOGGER.info("vec3: " + vec3);
         double offX = getX() + vec3.x;
         double offY = getY() + vec3.y;
         double offZ = getZ() + vec3.z;

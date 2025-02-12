@@ -18,21 +18,26 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
+import org.confluence.terraentity.entity.ai.ICollisionAttackEntity;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * 基础属性如伤害、击退、初始位置由弹幕容器设置，弹幕实体只定义运动、伤害公式、碰撞检测
  */
-public abstract class SwordProjectile extends AbstractHurtingProjectile {
+public abstract class SwordProjectile extends AbstractHurtingProjectile implements ICollisionAttackEntity<SwordProjectile> {
+
+    // 可调参数
     public int TIME_EXISTENCE = 40;
+    public int hitCount = 1;
     protected float attackDamage = 0.0F;
     protected float baseAttackDamage = 0;
     protected float criticalChance = 0.0F;
     protected float knockBack = 0.0F;
     protected float baseKnockBack = 0.0F;
-    protected ItemStack firedFromWeapon;
-    public int hitCount = 1;
+    protected boolean canPenalize = false;
 
+
+    protected ItemStack firedFromWeapon;
     public SwordProjectile(EntityType<? extends SwordProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
     }
@@ -90,16 +95,8 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile {
     public void tick() {
         super.tick();
         if (!level().isClientSide &&tickCount >= TIME_EXISTENCE) discard();
-        tickAttack();
-    }
-
-    protected void tickAttack() {
-        HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, entity -> entity != getOwner());
-        if (hitResult.getType() == HitResult.Type.ENTITY) {
-            onHitEntity((EntityHitResult) hitResult);
-        } else if (hitResult.getType() == HitResult.Type.BLOCK) {
-            onHitBlock((BlockHitResult) hitResult);
-        }
+        doCollisionAttack(this::canHitEntity,
+                this::doHurt);
     }
 
     @Override
@@ -123,13 +120,26 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile {
         }
     }
 
+    @Override
+    protected void onHitBlock(BlockHitResult result) {
+        super.onHitBlock(result);
+        if(!canPenalize && !level().isClientSide) discard();
+    }
+
+
     public DamageSource damageSource(){
         if(getOwner() instanceof LivingEntity living)
             return damageSources().mobProjectile(this, living);
         else return damageSources().magic();
     }
 
-    protected void doHurt(LivingEntity living){
+    CollisionProperties collisionProperties = new CollisionProperties(1,1,0);
+    public CollisionProperties getCollisionProperties() {
+        return collisionProperties;
+    }
+
+    protected boolean doHurt(Entity living){
+        if(!(living instanceof LivingEntity)) return false;
         float damage = getBaseDamage() * (attackDamage);
         if (living.hurt(damageSource(), damage)) {
             float attackKnockBack = getBaseKnockBack() + knockBack;
@@ -138,6 +148,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile {
                 discard();
             }
         }
+        return true;
     }
 
     @Override

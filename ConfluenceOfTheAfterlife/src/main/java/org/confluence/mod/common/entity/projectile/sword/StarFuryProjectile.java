@@ -12,13 +12,12 @@ public class StarFuryProjectile extends SwordProjectile implements Immunity {
     public StarFuryProjectile(EntityType<? extends SwordProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         hitCount = 2;
+        canPenalize = true;
     }
 
     @Override
     protected void onHitBlock(BlockHitResult pResult) {
         super.onHitBlock(pResult);
-        if(!this.level().isClientSide())
-            discard();
     }
 
     @Override

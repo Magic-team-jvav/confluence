@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -17,8 +18,7 @@ import org.joml.Vector3f;
 import javax.annotation.Nullable;
 
 public class LightBaneProjectile extends SwordProjectile {
-    int _tickInternal = 10;
-    int tickInternal = 0;
+
     public Vec3 direction;
     public static final EntityDataAccessor<Vector3f> DATA_DIRECTION = SynchedEntityData.defineId(LightBaneProjectile.class, EntityDataSerializers.VECTOR3);
 
@@ -30,34 +30,27 @@ public class LightBaneProjectile extends SwordProjectile {
 //            direction = new Vec3(1,0,0);
             this.entityData.set(DATA_DIRECTION, direction.toVector3f());
         }
-
     }
 
-
     @Override
-    protected void tickAttack() {
+    public void tick() {
+        super.tick();
         if(direction!=null) {
             float f = 10;
             float control = Math.min(Math.abs(tickCount - f), f) * (tickCount < f? -0.02f : 0.02f);
             this.setDeltaMovement(direction.normalize().scale(control));
             lookAt(EntityAnchorArgument.Anchor.EYES , getEyePosition().subtract(direction));
         }
-        if(!level().isClientSide ){
-            if(--tickInternal<0){
-                tickInternal = _tickInternal;
-                var entities = level().getEntities(this,this.getBoundingBox());
-                if(!entities.isEmpty()){
-                    for (var e:entities) {
-                        if(e instanceof LivingEntity living && canHitEntity(living)) {
-                            doHurt(living);
-                            ((ServerLevel) level()).sendParticles(ModParticleTypes.LIGHT_BANE.get(),getX(),getY(),getZ(),1,0,0,0,0);
-                        }
-                    }
-                }
-            }
-        }
     }
 
+    @Override
+    protected boolean doHurt(Entity living) {
+        if(super.doHurt(living)){
+            ((ServerLevel) level()).sendParticles(ModParticleTypes.LIGHT_BANE.get(),getX(),getY(),getZ(),1,0,0,0,0);
+            return true;
+        }
+        return false;
+    }
 
     public DamageSource damageSource(){
         return damageSources().magic();

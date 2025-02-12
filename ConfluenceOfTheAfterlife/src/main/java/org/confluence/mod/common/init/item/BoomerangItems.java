@@ -55,8 +55,8 @@ public class BoomerangItems {
 
     public static final DeferredItem<Boomerang> FLAMARANG = register("flamarang",12.5f,ModRarity.ORANGE,
             NORMAL_BOOMERANG_MODIFIER.apply(18,1.85f,1.85f)
-                    .addOnHitEffect(SET_FIRE.apply(5 * 20,0.5f))
-    );   //50% 的几率造成 5 秒的火焰。
+                    .addOnHitEffect(TIME_POSSIBILITY_EFFECT.apply(ModEffects.HELL_FIRE,5 * 20,0.5f))
+    );   //50% 的几率造成 5 秒的狱炎效果。
 
 
 

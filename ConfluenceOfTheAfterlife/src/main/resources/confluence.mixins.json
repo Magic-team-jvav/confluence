@@ -95,6 +95,7 @@
         "client.gui.AdvancementWidgetMixin",
         "client.gui.ClientAdvancementsMixin",
         "client.gui.DeathScreenMixin",
+        "client.gui.GuiGraphicsMixin",
         "client.gui.GuiMixin",
         "client.gui.InventoryScreenMixin",
         "client.gui.LevelLoadingScreenMixin",

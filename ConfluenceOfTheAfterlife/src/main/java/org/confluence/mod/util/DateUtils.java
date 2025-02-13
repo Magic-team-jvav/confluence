@@ -7,6 +7,7 @@ import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.FoodItems;
 import org.confluence.mod.common.init.item.ModItems;
 
+import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 
 public final class DateUtils {
@@ -55,5 +56,35 @@ public final class DateUtils {
         if (isHalloween(calendar)) return ModItems.SOUL_CAKE.get();
         if (isChristmas(calendar)) return ModItems.SUGAR_PLUM.get();
         return ModItems.STAR.get();
+    }
+
+    /**
+     * 映射到游戏内的dayTime
+     */
+    public static int getDayTime(int hour, int minute) {
+        if (hour < 0 || hour > 23) throw new DateTimeParseException("hour bounds is [0, 23], currently is " + hour, "", 0);
+        if (minute < 0 || minute > 59) throw new DateTimeParseException("minute bounds is [0, 59], currently is " + minute, "", 0);
+        int i = (hour - 6) * 1000;
+        int j = (int) (minute / 0.06F);
+        if (i < 0) i += 24000;
+        return i + j;
+    }
+
+    /**
+     * @param start 开始的dayTime
+     * @param end 结束的dayTime
+     * @param time 判断的dayTime
+     * @return start <= time <= end
+     */
+    public static boolean isWithinDayTime(int start, int end, long time) {
+        time %= 24000L;
+        if (start > end) {
+            return time >= start || time <= end;
+        }
+        return time >= start && time <= end;
+    }
+
+    public static boolean isWithinDayTime(int startHour, int startMinute, int endHour, int endMinute, long time) {
+        return isWithinDayTime(getDayTime(startHour, startMinute), getDayTime(endHour, endMinute), time);
     }
 }

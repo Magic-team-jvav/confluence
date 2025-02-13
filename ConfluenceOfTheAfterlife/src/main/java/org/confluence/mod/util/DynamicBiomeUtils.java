@@ -14,9 +14,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public final class DynamicBiomeUtils {
-    public static Holder<Biome> BIOME_CRIMSON;
-    public static Holder<Biome> BIOME_CORRUPT;
-    public static Holder<Biome> BIOME_HALLOW;
     public static final int BIOME_THRESHOLD = 256;
 
     /**

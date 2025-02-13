@@ -108,6 +108,7 @@
         "client.model.ModelPartMixin",
         "client.renderer.GameRendererMixin",
         "client.renderer.ItemRendererMixin",
+        "client.renderer.LevelRendererMixin",
         "client.renderer.LivingEntityRendererMixin",
         "client.renderer.ModelBlockRendererMixin",
         "entity.LocalPlayerMixin",

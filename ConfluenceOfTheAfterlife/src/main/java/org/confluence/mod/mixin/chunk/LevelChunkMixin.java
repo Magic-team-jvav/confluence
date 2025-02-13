@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.SectionPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -18,7 +17,6 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.UpgradeData;
 import net.minecraft.world.level.levelgen.blending.BlendingData;
 import net.minecraft.world.ticks.LevelChunkTicks;
-import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.mixed.IChunkSection;
 import org.confluence.mod.mixed.IPalettedContainer;
 import org.jetbrains.annotations.Nullable;
@@ -53,13 +51,8 @@ public abstract class LevelChunkMixin extends ChunkAccess {
 
     @Inject(method = "<init>(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/level/ChunkPos;Lnet/minecraft/world/level/chunk/UpgradeData;Lnet/minecraft/world/ticks/LevelChunkTicks;Lnet/minecraft/world/ticks/LevelChunkTicks;J[Lnet/minecraft/world/level/chunk/LevelChunkSection;Lnet/minecraft/world/level/chunk/LevelChunk$PostLoadProcessor;Lnet/minecraft/world/level/levelgen/blending/BlendingData;)V", at = @At("RETURN"))
     private void constr(Level pLevel, ChunkPos pPos, UpgradeData pData, LevelChunkTicks pBlockTicks, LevelChunkTicks pFluidTicks, long pInhabitedTime, LevelChunkSection[] pSections, LevelChunk.PostLoadProcessor pPostLoad, BlendingData pBlendingData, CallbackInfo ci) {
-        if (!(level instanceof ServerLevel)) return;
-        confluence$serverLevel = (ServerLevel) level;
-        if (BIOME_CORRUPT == null) {
-            BIOME_CRIMSON = level.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(ModBiomes.TR_CRIMSON);
-            BIOME_CORRUPT = level.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(ModBiomes.THE_CORRUPTION);
-            BIOME_HALLOW = level.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(ModBiomes.THE_HALLOW);
-        }
+        if (!(level instanceof ServerLevel serverLevel)) return;
+        this.confluence$serverLevel = serverLevel;
     }
 
     @Inject(method = "setBlockState", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getBlock()Lnet/minecraft/world/level/block/Block;"))

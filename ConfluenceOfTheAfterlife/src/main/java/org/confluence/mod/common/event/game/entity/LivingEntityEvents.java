@@ -84,7 +84,7 @@ public final class LivingEntityEvents {
                 data.getKillBoard().defeated(type, data);
                 boolean isEaterOfWorlds = type == TEEntities.EATER_OF_WORLDS.get();
                 if (isEaterOfWorlds || type == TEEntities.BRAIN_OF_CTHULHU.get()) {
-                    if (ModUtils.isWithinDayTime(0, 0, 4, 30, level.getDayTime())) { // 00:00 -> 04:30
+                    if (DateUtils.isWithinDayTime(0, 0, 4, 30, level.getDayTime())) { // 00:00 -> 04:30
                         MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
                     } else if (!MeteoriteTracker.INSTANCE.spawnAtNextNight) {
                         MeteoriteTracker.INSTANCE.spawnAtNextNight = level.random.nextBoolean();
@@ -278,6 +278,7 @@ public final class LivingEntityEvents {
         if (living.hasEffect(ModEffects.SHIMMER)) {
             event.setCanBreathe(true);
         } else if (ModUtils.anyHandHasItem(living, itemStack -> itemStack.is(SwordItems.BREATHING_REED))) {
+            // todo 管子在水面上时允许呼吸
             event.setConsumeAirAmount(living.getRandom().nextInt(3) > 0 ? 0 : 1);
         }
     }

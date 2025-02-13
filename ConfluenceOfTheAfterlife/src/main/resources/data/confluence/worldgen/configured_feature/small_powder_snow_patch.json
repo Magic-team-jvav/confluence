@@ -4,8 +4,12 @@
         "block": {
             "type": "minecraft:simple_state_provider",
             "state": {
-                "Name": "confluence:thin_ice_block"
+                "Name": "minecraft:powder_snow"
             }
-        }
+        },
+        "step_height": 0,
+        "radius": 2,
+        "max_depth": 10,
+        "success_ratio": 0.3
     }
 }

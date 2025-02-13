@@ -1,37 +1,36 @@
 {
-  "type": "neoforge:add_features",
-  "biomes": {
-    "type": "neoforge:any"
-  },
-  "features":
-  [
-    "confluence:deepslate_adamantite_ore_step0",
-    "confluence:deepslate_adamantite_ore_step1",
-    "confluence:deepslate_adamantite_ore_step2",
-    "confluence:deepslate_mithril_ore_step0",
-    "confluence:deepslate_mithril_ore_step1",
-    "confluence:deepslate_mithril_ore_step2",
-    "confluence:deepslate_orichalcum_ore_step0",
-    "confluence:deepslate_orichalcum_ore_step1",
-    "confluence:deepslate_orichalcum_ore_step2",
-    "confluence:deepslate_palladium_ore_step0",
-    "confluence:deepslate_palladium_ore_step1",
-    "confluence:deepslate_palladium_ore_step2",
-    "confluence:deepslate_titanium_ore_step0",
-    "confluence:deepslate_titanium_ore_step1",
-    "confluence:deepslate_titanium_ore_step2",
-    "confluence:demonite_ore_generates",
-    "confluence:tr_crimson_ore_generates",
-    "confluence:platinum_ore_generates",
-    "confluence:tungsten_ore_generates",
-    "confluence:silver_ore_generates",
-    "confluence:ruby_ore_generates",
-    "confluence:topaz_ore_generates",
-    "confluence:tr_amethyst_ore_generates",
-    "confluence:tr_emerald_ore_generates",
-    "confluence:sapphire_ore_generates",
-    "confluence:lead_ore_generates",
-    "confluence:tin_ore_generates"
-  ],
-  "step": "surface_structures"
+    "type": "neoforge:add_features",
+    "biomes": {
+        "type": "neoforge:any"
+    },
+    "features": [
+        "confluence:deepslate_adamantite_ore_step0",
+        "confluence:deepslate_adamantite_ore_step1",
+        "confluence:deepslate_adamantite_ore_step2",
+        "confluence:deepslate_mithril_ore_step0",
+        "confluence:deepslate_mithril_ore_step1",
+        "confluence:deepslate_mithril_ore_step2",
+        "confluence:deepslate_orichalcum_ore_step0",
+        "confluence:deepslate_orichalcum_ore_step1",
+        "confluence:deepslate_orichalcum_ore_step2",
+        "confluence:deepslate_palladium_ore_step0",
+        "confluence:deepslate_palladium_ore_step1",
+        "confluence:deepslate_palladium_ore_step2",
+        "confluence:deepslate_titanium_ore_step0",
+        "confluence:deepslate_titanium_ore_step1",
+        "confluence:deepslate_titanium_ore_step2",
+        "confluence:demonite_ore_generates",
+        "confluence:tr_crimson_ore_generates",
+        "confluence:platinum_ore_generates",
+        "confluence:tungsten_ore_generates",
+        "confluence:silver_ore_generates",
+        "confluence:ruby_ore_generates",
+        "confluence:topaz_ore_generates",
+        "confluence:tr_amethyst_ore_generates",
+        "confluence:tr_emerald_ore_generates",
+        "confluence:sapphire_ore_generates",
+        "confluence:lead_ore_generates",
+        "confluence:tin_ore_generates"
+    ],
+    "step": "surface_structures"
 }

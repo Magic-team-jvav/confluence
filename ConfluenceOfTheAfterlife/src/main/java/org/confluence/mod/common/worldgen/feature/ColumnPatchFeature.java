@@ -7,22 +7,23 @@ import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import org.confluence.mod.common.init.ModFeatures;
-import org.confluence.mod.common.init.block.NatureBlocks;
 
 import java.util.HashSet;
 import java.util.function.Predicate;
 
-public class ThinIcePatchFeature extends Feature<ThinIcePatchFeature.Config> {
+public class ColumnPatchFeature extends Feature<ColumnPatchFeature.Config> {
     public static final Predicate<BlockState> PREDICATE = blockState -> !blockState.isAir() && !blockState.is(BlockTags.FEATURES_CANNOT_REPLACE);
 
-    public ThinIcePatchFeature(Codec<Config> pCodec) {
+    public ColumnPatchFeature(Codec<Config> pCodec) {
         super(pCodec);
     }
 
@@ -30,6 +31,7 @@ public class ThinIcePatchFeature extends Feature<ThinIcePatchFeature.Config> {
     public boolean place(FeaturePlaceContext<Config> pContext) {
         Config config = pContext.config();
         WorldGenLevel level = pContext.level();
+        RandomSource random = pContext.random();
         BlockPos blockPos = pContext.origin();
         if (ModFeatures.isPosAir(level, blockPos)) {
             BlockPos.MutableBlockPos mutablePos = blockPos.mutable();
@@ -37,18 +39,18 @@ public class ThinIcePatchFeature extends Feature<ThinIcePatchFeature.Config> {
                 if (v == config.maxSearchHeight) return false;
                 mutablePos.move(Direction.DOWN);
             }
-            return carvePatch(config, level, mutablePos, pContext.chunkGenerator().getMinY());
+            return carvePatch(config, level, random, mutablePos, pContext.chunkGenerator().getMinY());
         } else {
             BlockPos.MutableBlockPos mutablePos = blockPos.mutable();
             for (int v = 1; v <= config.maxSearchHeight && !ModFeatures.isPosAir(level, mutablePos); v++) {
                 if (v == config.maxSearchHeight) return false;
                 mutablePos.move(Direction.UP);
             }
-            return carvePatch(config, level, mutablePos, pContext.chunkGenerator().getMinY());
+            return carvePatch(config, level, random, mutablePos, pContext.chunkGenerator().getMinY());
         }
     }
 
-    private boolean carvePatch(Config config, WorldGenLevel level, BlockPos.MutableBlockPos mutablePos, int minY) {
+    private boolean carvePatch(Config config, WorldGenLevel level, RandomSource random, BlockPos.MutableBlockPos mutablePos, int minY) {
         int radiusSqr = config.radius * config.radius;
         int ox = mutablePos.getX();
         int oy = mutablePos.getY();
@@ -74,21 +76,21 @@ public class ThinIcePatchFeature extends Feature<ThinIcePatchFeature.Config> {
         }
         if ((air.size() + ice.size()) / (config.maxDepth * config.radius * config.radius * Mth.PI) > config.successRatio) {
             BlockState airState = Blocks.AIR.defaultBlockState();
-            BlockState iceState = NatureBlocks.THIN_ICE_BLOCK.get().defaultBlockState();
             air.forEach(blockPos -> level.setBlock(blockPos, airState, 3));
-            ice.forEach(blockPos -> level.setBlock(blockPos, iceState, 3));
+            ice.forEach(blockPos -> level.setBlock(blockPos, config.blockStateProvider.getState(random, blockPos), 3));
             return true;
         }
         return false;
     }
 
-    public record Config(int stepHeight, int radius, int maxDepth, int maxSearchHeight, float successRatio) implements FeatureConfiguration {
+    public record Config(int stepHeight, int radius, int maxDepth, int maxSearchHeight, float successRatio, BlockStateProvider blockStateProvider) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                ExtraCodecs.POSITIVE_INT.fieldOf("step_height").orElse(3).forGetter(Config::stepHeight),
-                ExtraCodecs.POSITIVE_INT.fieldOf("radius").orElse(4).forGetter(Config::radius),
-                ExtraCodecs.POSITIVE_INT.fieldOf("max_depth").orElse(32).forGetter(Config::maxDepth),
-                ExtraCodecs.POSITIVE_INT.fieldOf("max_search_height").orElse(32).forGetter(Config::maxDepth),
-                ExtraCodecs.POSITIVE_FLOAT.fieldOf("success_ratio").orElse(0.5F).forGetter(Config::successRatio)
+                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("step_height", 3).forGetter(Config::stepHeight),
+                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("radius", 4).forGetter(Config::radius),
+                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_depth", 32).forGetter(Config::maxDepth),
+                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_search_height", 32).forGetter(Config::maxDepth),
+                ExtraCodecs.POSITIVE_FLOAT.lenientOptionalFieldOf("success_ratio", 0.5F).forGetter(Config::successRatio),
+                BlockStateProvider.CODEC.fieldOf("block").forGetter(Config::blockStateProvider)
         ).apply(instance, Config::new));
     }
 }

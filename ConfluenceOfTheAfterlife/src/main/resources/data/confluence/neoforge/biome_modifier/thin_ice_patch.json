@@ -1,8 +1,0 @@
-{
-    "type": "neoforge:add_features",
-    "biomes": "#neoforge:is_cold/overworld",
-    "features": [
-        "confluence:normal_thin_ice_patch"
-    ],
-    "step": "underground_decoration"
-}

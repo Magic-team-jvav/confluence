@@ -27,16 +27,13 @@ import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.saved.ConfluenceCommand;
-import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.effect.beneficial.HeartReachEffect;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.network.s2c.EchoVisibilityPacketS2C;
@@ -51,7 +48,6 @@ import org.confluence.terra_curio.util.TCUtils;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
@@ -75,21 +71,6 @@ public final class GameEvents {
         if (ItemStack.isSameItem(onSlot, carried)) {
             if (item instanceof ColoredItem) {
                 ColoredItem.setColor(carried, ColoredItem.getColor(onSlot));
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void shimmerTransmutation$Post(ShimmerItemTransmutationEvent.Post event) {
-        if (ConfluenceData.get((ServerLevel) event.getSource().level()).getGamePhase().isGraduated()) {
-            ItemStack itemStack = event.getSource().getItem();
-            Item item = itemStack.getItem();
-            if (item == ToolItems.BOTTOMLESS_WATER_BUCKET.get()) {
-                event.setShrink(1);
-                event.setTargets(Collections.singletonList(new ItemStack(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get())));
-            } else if (item == ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get()) {
-                event.setShrink(1);
-                event.setTargets(Collections.singletonList(new ItemStack(ToolItems.BOTTOMLESS_WATER_BUCKET.get())));
             }
         }
     }
@@ -186,7 +167,6 @@ public final class GameEvents {
         if (!level.isClientSide && itemStack.is(ModTags.Items.CROP_FORTUNE)) {
             BaseAxeItem.dropAndPlaceOnRightClick(event.getEntity(), event.getItemStack(), event.getPos());
         }
-
     }
 
     @SubscribeEvent

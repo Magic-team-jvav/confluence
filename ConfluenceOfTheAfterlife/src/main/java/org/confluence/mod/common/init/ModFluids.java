@@ -11,11 +11,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PointedDripstoneBlock;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.FluidInteractionRegistry;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.fluid.FluidTriple;
 import org.confluence.mod.common.init.block.CrateBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -209,6 +209,9 @@ public final class ModFluids {
         addItem(ConsumableItems.CAN_OF_WORMS.get(), ConsumableItems.HERB_BAG.get());
         addItem(ConsumableItems.VILE_POWDER.get(), ConsumableItems.PURIFICATION_POWDER.get());
         addItem(ConsumableItems.VICIOUS_POWDER.get(), ConsumableItems.PURIFICATION_POWDER.get());
+
+        addItem(ToolItems.BOTTOMLESS_WATER_BUCKET.get(), ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get(), GamePhase.MOON_LORD);
+        addItem(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get(), ToolItems.BOTTOMLESS_WATER_BUCKET.get(), GamePhase.MOON_LORD);
 
         addEntity(EntityType.WITCH, EntityType.VILLAGER);
         addEntity(entity -> {

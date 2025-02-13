@@ -120,7 +120,7 @@ public abstract class ShimmerItemTransmutationEvent extends Event {
     }
 
     public static void addItem(TagKey<Item> source, Item target, int shrink) {
-        ITEM_TRANSMUTATION.add(new ItemTransmutation(Ingredient.of(source), Collections.singletonList(new ItemStack(target)), shrink, GamePhase.BEFORE_SKELETRON));
+        ITEM_TRANSMUTATION.add(new ItemTransmutation(Ingredient.of(source), Collections.singletonList(target.getDefaultInstance()), shrink, GamePhase.BEFORE_SKELETRON));
     }
 
     public static void addItem(Ingredient source, List<ItemStack> target, int shrink) {
@@ -128,11 +128,11 @@ public abstract class ShimmerItemTransmutationEvent extends Event {
     }
 
     public static void addItem(Item source, Item target, int shrink) {
-        ITEM_TRANSMUTATION.add(new ItemTransmutation(Ingredient.of(source), Collections.singletonList(new ItemStack(target)), shrink, GamePhase.BEFORE_SKELETRON));
+        ITEM_TRANSMUTATION.add(new ItemTransmutation(Ingredient.of(source), Collections.singletonList(target.getDefaultInstance()), shrink, GamePhase.BEFORE_SKELETRON));
     }
 
     public static void addItem(Item source, Item target) {
-        ITEM_TRANSMUTATION.add(new ItemTransmutation(Ingredient.of(source), Collections.singletonList(new ItemStack(target)), 1, GamePhase.BEFORE_SKELETRON));
+        ITEM_TRANSMUTATION.add(new ItemTransmutation(Ingredient.of(source), Collections.singletonList(target.getDefaultInstance()), 1, GamePhase.BEFORE_SKELETRON));
     }
 
     public static void addItem(TagKey<Item> source, List<ItemStack> target, int shrink, GamePhase gamePhase) {
@@ -144,15 +144,15 @@ public abstract class ShimmerItemTransmutationEvent extends Event {
     }
 
     public static void addItem(Item source, Item target, int shrink, GamePhase gamePhase) {
-        ITEM_TRANSMUTATION.add(new ItemTransmutation(Ingredient.of(source), Collections.singletonList(new ItemStack(target)), shrink, gamePhase));
+        ITEM_TRANSMUTATION.add(new ItemTransmutation(Ingredient.of(source), Collections.singletonList(target.getDefaultInstance()), shrink, gamePhase));
     }
 
     public static void addItem(Item source, Item target, GamePhase gamePhase) {
-        ITEM_TRANSMUTATION.add(new ItemTransmutation(Ingredient.of(source), Collections.singletonList(new ItemStack(target)), 1, gamePhase));
+        ITEM_TRANSMUTATION.add(new ItemTransmutation(Ingredient.of(source), Collections.singletonList(target.getDefaultInstance()), 1, gamePhase));
     }
 
     public static void addItem(TagKey<Item> source, Item target, int shrink, GamePhase gamePhase) {
-        ITEM_TRANSMUTATION.add(new ItemTransmutation(Ingredient.of(source), Collections.singletonList(new ItemStack(target)), shrink, gamePhase));
+        ITEM_TRANSMUTATION.add(new ItemTransmutation(Ingredient.of(source), Collections.singletonList(target.getDefaultInstance()), shrink, gamePhase));
     }
 
     public record ItemTransmutation(Ingredient source, List<ItemStack> target, int shrink, GamePhase gamePhase) {}

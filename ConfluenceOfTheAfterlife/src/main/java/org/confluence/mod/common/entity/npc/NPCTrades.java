@@ -23,20 +23,26 @@ import java.util.List;
 import java.util.Map;
 
 public record NPCTrades(List<Trade> trades) {
-
     public static final String KEY = "npc_shop";
+    public static final Codec<NPCTrades> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Trade.CODEC.listOf().fieldOf("trades").forGetter(NPCTrades::trades)
+    ).apply(instance, NPCTrades::new));
+    public static final StreamCodec<RegistryFriendlyByteBuf, NPCTrades> STREAM_CODEC = StreamCodec.composite(
+            Trade.LIST_STREAM_CODEC, NPCTrades::trades,
+            NPCTrades::new
+    );
+    private static final Map<ResourceLocation, NPCTrades> TRADE_MAP = new HashMap<>();
 
-    private static Map<ResourceLocation, NPCTrades> TRADE_MAP = new HashMap<>();
-    public static NPCTrades getTrade(ResourceLocation id){
+    public static NPCTrades getTrade(ResourceLocation id) {
         return TRADE_MAP.get(id);
     }
 
     public static void readTradesFromJson(ResourceManager manager) {
         Map<ResourceLocation, Resource> jsons = manager.listResources(KEY, r -> r.getPath().endsWith(".json"));
-        jsons.forEach((k,v)->{
+        jsons.forEach((k, v) -> {
             try {
                 ResourceLocation id = ResourceLocation.fromNamespaceAndPath(k.getNamespace(),
-                        k.getPath().replace(".json", "").replace(KEY+"/", ""));
+                        k.getPath().replace(".json", "").replace(KEY + "/", ""));
                 Reader reader = manager.openAsReader(k);
                 JsonObject jsonobject = GsonHelper.parse(reader);
                 TRADE_MAP.put(id, NPCTrades.CODEC.decode(JsonOps.INSTANCE, jsonobject).result().get().getFirst());
@@ -46,28 +52,15 @@ public record NPCTrades(List<Trade> trades) {
         });
     }
 
-    public static Codec<NPCTrades> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Trade.CODEC.listOf().fieldOf("trades").forGetter(NPCTrades::trades)
-    ).apply(instance, NPCTrades::new));
-    public static StreamCodec<RegistryFriendlyByteBuf, NPCTrades> STREAM_CODEC = StreamCodec.composite(
-            Trade.LIST_STREAM_CODEC, NPCTrades::trades,
-            NPCTrades::new
-    );
-
-
-    /**
-     *
-     */
     public record Trade(ItemStack result, long cost) {
-
         public boolean canTrade(Player player) {
             return PlayerUtils.getMoney(player) >= cost;
         }
 
-        public static Codec<Trade> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        public static final Codec<Trade> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 ItemStack.CODEC.fieldOf("result").forGetter(Trade::result),
                 Codec.LONG.fieldOf("cost").forGetter(Trade::cost)
-                ).apply(instance, Trade::new));
+        ).apply(instance, Trade::new));
 
         public static StreamCodec<RegistryFriendlyByteBuf, Trade> STREAM_CODEC = StreamCodec.composite(
                 ItemStack.STREAM_CODEC, Trade::result,

@@ -1,76 +1,71 @@
 package org.confluence.mod.common.data.saved;
 
+import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
+import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.common.util.INBTSerializable;
-import org.confluence.terraentity.init.TEEntities;
-import org.jetbrains.annotations.UnknownNullability;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Arrays;
 
 @ParametersAreNonnullByDefault
-public class KillBoard implements INBTSerializable<CompoundTag> {
-    private boolean kingSlime = false;
-    private boolean eyeOfCthulhu = false;
-    private boolean eaterOfWorlds_brainOfCthulhu = false;
+public class KillBoard implements INBTSerializable<ListTag> {
+    private final Object2BooleanMap<EntityType<?>> defeatedMap = new Object2BooleanOpenHashMap<>();
 
-    public void defeatedKingSlime(ConfluenceData data) {
-        if (!kingSlime) {
-            this.kingSlime = true;
-            data.setDirty();
+    public boolean isDefeated(EntityType<?> entityType) {
+        return defeatedMap.getBoolean(entityType);
+    }
+
+    public boolean isAnyDefeated(EntityType<?>... entityTypes) {
+        return Arrays.stream(entityTypes).anyMatch(this::isDefeated);
+    }
+
+    public int countDefeated(EntityType<?>... entityTypes) {
+        int count = 0;
+        for (EntityType<?> entityType : entityTypes) {
+            if (isDefeated(entityType)) count++;
         }
+        return count;
     }
 
-    public boolean isKingSlimeDefeated() {
-        return kingSlime;
+    public boolean defeat(EntityType<?> entityType) {
+        return !defeatedMap.put(entityType, true);
     }
 
-    public void defeatedEyeOfCthulhu(ConfluenceData data) {
-        if (!eyeOfCthulhu) {
-            this.eyeOfCthulhu = true;
+    public void defeated(EntityType<?> entityType, ConfluenceData data) {
+        if (defeat(entityType)) {
             data.setDirty();
-        }
-    }
-
-    public boolean isEyeOfCthulhuDefeated() {
-        return eyeOfCthulhu;
-    }
-
-    public void defeatedEaterOfWorlds_BrainOfCthulhu(ConfluenceData data) {
-        if (!eaterOfWorlds_brainOfCthulhu) {
-            this.eaterOfWorlds_brainOfCthulhu = true;
-            data.setDirty();
-        }
-    }
-
-    public boolean isEaterOfWorlds_BrainOfCthulhuDefeated() {
-        return eaterOfWorlds_brainOfCthulhu;
-    }
-
-    public void defeated(EntityType<?> type, ConfluenceData data) {
-        if (type == TEEntities.KING_SLIME.get()) {
-            defeatedKingSlime(data);
-        } else if (type == TEEntities.EYE_OF_CTHULHU.get()) {
-            defeatedEyeOfCthulhu(data);
-        } else if (type == TEEntities.EATER_OF_WORLDS.get() || type == TEEntities.BRAIN_OF_CTHULHU.get()) {
-            defeatedEaterOfWorlds_BrainOfCthulhu(data);
         }
     }
 
     @Override
-    public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
-        CompoundTag tag = new CompoundTag();
-        tag.putBoolean("KingSlime", kingSlime);
-        tag.putBoolean("EyeOfCthulhu", eyeOfCthulhu);
-        tag.putBoolean("EaterOfWorlds_BrainOfCthulhu", eaterOfWorlds_brainOfCthulhu);
-        return tag;
+    public ListTag serializeNBT(HolderLookup.Provider provider) {
+        ListTag list = new ListTag();
+        for (Object2BooleanMap.Entry<EntityType<?>> entry : defeatedMap.object2BooleanEntrySet()) {
+            CompoundTag nbt = new CompoundTag();
+            nbt.putString("Id", BuiltInRegistries.ENTITY_TYPE.getKey(entry.getKey()).toString());
+            nbt.putBoolean("Defeated", entry.getBooleanValue());
+            list.add(nbt);
+        }
+        return list;
     }
 
     @Override
-    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
-        this.kingSlime = nbt.getBoolean("KingSlime");
-        this.eyeOfCthulhu = nbt.getBoolean("EyeOfCthulhu");
-        this.eaterOfWorlds_brainOfCthulhu = nbt.getBoolean("EaterOfWorlds_BrainOfCthulhu");
+    public void deserializeNBT(HolderLookup.Provider provider, ListTag list) {
+        defeatedMap.clear();
+        for (Tag tag : list) {
+            if (tag instanceof CompoundTag nbt) {
+                try {
+                    EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(nbt.getString("Id")));
+                    defeatedMap.put(entityType, nbt.getBoolean("Defeated"));
+                } catch (Exception ignored) {}
+            }
+        }
     }
 }

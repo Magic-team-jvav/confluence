@@ -50,14 +50,13 @@ public class ConfluenceData extends SavedData {
         this.gamePhase = GamePhase.getById(nbt.getInt("gamePhase"));
         this.windSpeed.x = nbt.getFloat("windSpeedX");
         this.windSpeed.z = nbt.getFloat("windSpeedZ");
-        ListTag listTag = nbt.getList("starPhases", Tag.TAG_COMPOUND);
-        for (Tag tag : listTag) {
+        for (Tag tag : nbt.getList("starPhases", Tag.TAG_COMPOUND)) {
             CompoundTag phase = (CompoundTag) tag;
             starPhases.put(phase.getInt("index"), new StarPhase(phase));
         }
         this.revealStep = nbt.getInt("revealStep");
         this.meteoriteTracker.deserialize(nbt);
-        this.killBoard.deserializeNBT(registries, nbt);
+        this.killBoard.deserializeNBT(registries, nbt.getList("killBoard", Tag.TAG_COMPOUND));
         this.evilBrokenCount = nbt.getInt("evilBrokenCount");
     }
 

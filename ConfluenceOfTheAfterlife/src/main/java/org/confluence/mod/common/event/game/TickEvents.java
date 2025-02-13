@@ -25,6 +25,7 @@ import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.PlayerUtils;
+import org.confluence.terraentity.init.TEEntities;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class TickEvents {
@@ -43,7 +44,7 @@ public final class TickEvents {
             float factorZ = Mth.nextFloat(random, -1.0F, 1.0F);
             ConfluenceData.get(serverLevel).setWindSpeed(factorX, factorZ);
         } else if (dayTime == 13500L) { // 19:30
-            if (random.nextFloat() < 0.02F && ConfluenceData.get(serverLevel).getKillBoard().isEaterOfWorlds_BrainOfCthulhuDefeated()) {
+            if (random.nextFloat() < 0.02F && ConfluenceData.get(serverLevel).getKillBoard().isAnyDefeated(TEEntities.EATER_OF_WORLDS.get(), TEEntities.BRAIN_OF_CTHULHU.get())) {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
             }
         }

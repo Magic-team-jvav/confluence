@@ -34,7 +34,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.CoinPortalEntity;
 import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.init.ModEntities;
@@ -47,6 +46,7 @@ import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_guns.common.init.TGItems;
+import org.confluence.terraentity.init.TEEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -388,9 +388,13 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                 ratio *= 1.75F;
             }
         }
-        KillBoard killBoard = ConfluenceData.get((ServerLevel) level).getKillBoard();
-        if (killBoard.isEyeOfCthulhuDefeated() || killBoard.isEaterOfWorlds_BrainOfCthulhuDefeated()) {
-            ratio *= 1.1F; // todo 剩下的
+        int defeated = ConfluenceData.get((ServerLevel) level).getKillBoard().countDefeated(
+                TEEntities.EYE_OF_CTHULHU.get(),
+                TEEntities.EATER_OF_WORLDS.get(),
+                TEEntities.BRAIN_OF_CTHULHU.get()
+        );
+        for (int i = 0; i < defeated; i++) {
+            ratio *= 1.1F; // todo 剩下的Boss
         }
         ratio *= moneyRatio;
         int amount = (int) Math.ceil(level.random.nextInt(80, 358) * ratio);

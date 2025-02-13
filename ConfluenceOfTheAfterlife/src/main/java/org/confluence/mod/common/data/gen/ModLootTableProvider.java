@@ -242,7 +242,6 @@ public class ModLootTableProvider extends LootTableProvider {
 //            dropSelf(LIFE_LOG.get());
             dropSelf(STONY_LOG.get());
 
-            dropSelf(BASE_CHEST_BLOCK.get());
 
             dropSelf(CRISPY_HONEY_BLOCK.get());
             dropSelf(POO.get());

@@ -40,6 +40,7 @@ import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
@@ -155,24 +156,28 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void livingDamage$Pre(LivingDamageEvent.Pre event) {
-        LivingEntity damagingEntity = event.getEntity();
-        if (!(damagingEntity.level() instanceof ServerLevel level)) return;
+        LivingEntity living = event.getEntity();
+        if (!(living.level() instanceof ServerLevel level)) return;
         DamageSource damageSource = event.getSource();
-        Entity sourceEntity = damageSource.getEntity();
         if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) return;
 
         float amount = event.getNewDamage();
-        Entity causer = damageSource.getEntity();
+        Entity attacker = damageSource.getEntity();
 
-        ThornsEffect.apply(damagingEntity, causer, amount);
-        amount = ArcheryEffect.apply(damagingEntity, damageSource, amount);
+        ThornsEffect.apply(living, attacker, amount);
+        amount = ArcheryEffect.apply(living, damageSource, amount);
         amount = ManaSicknessEffect.apply(damageSource, amount);
-        //amount = BreathingReed.consumer(damagingEntity, damageSource, amount);
-        amount = TheConstant.applyAttackDamage(causer, amount);
+        amount = TheConstant.applyAttackDamage(attacker, amount);
 
+        // 芦苇呼吸管对溺水伤害减半
+        if (damageSource.is(DamageTypes.DROWN)) {
+            if (ModUtils.anyHandHasItem(living, itemStack -> itemStack.is(SwordItems.BREATHING_REED))) {
+                amount *= 0.5F;
+            }
+        }
         // 召唤物集火伤害加成
         if (damageSource.is(TETags.DamageTypes.SUMMONER)) {
-            if (damagingEntity.hasEffect(TEEffects.SUMMON_FOCUS)) {
+            if (living.hasEffect(TEEffects.SUMMON_FOCUS)) {
                 amount = amount + 2;
                 event.setNewDamage(amount);
             }
@@ -180,17 +185,17 @@ public final class LivingEntityEvents {
         // 剑命中效果
         ItemStack weapon = damageSource.getWeaponItem();
         if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword && sword.modifier != null) {
-            if (sourceEntity instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.95f) {
-                sword.modifier.onHitEffects.forEach(effect -> effect.get().getEffect().accept(player, damagingEntity));
+            if (attacker instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.95f) {
+                sword.modifier.onHitEffects.forEach(effect -> effect.get().getEffect().accept(player, living));
             }
         }
         // 暴击判定和伤害显示
         boolean crit = false;
-        if (!TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE) && causer instanceof Player player) {
+        if (!TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE) && attacker instanceof Player player) {
             double chance = player.getAttributeValue(TCAttributes.CRIT_CHANCE);
-            if (damagingEntity.level().random.nextFloat() < chance) {
-                amount *= 2;
-                player.crit(damagingEntity);
+            if (living.level().random.nextFloat() < chance) {
+                amount *= 1.5F;
+                player.crit(living);
                 crit = true;
             }
         }
@@ -202,12 +207,10 @@ public final class LivingEntityEvents {
         int intAmount = (int) roundedAmount;
         if (roundedAmount == 0F) return;
         String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
-        Vec3 pos = damagingEntity.position();
+        Vec3 pos = living.position();
         Component component = Component.literal(text).withStyle(crit ? ChatFormatting.DARK_RED : ChatFormatting.GOLD, ChatFormatting.BOLD);
-        level.sendParticles(new DamageIndicatorOptions(component, crit), pos.x, damagingEntity.getBoundingBoxForCulling().maxY, pos.z, 1, 0.1, 0.1, 0.1, 0);
+        level.sendParticles(new DamageIndicatorOptions(component, crit), pos.x, living.getBoundingBoxForCulling().maxY, pos.z, 1, 0.1, 0.1, 0.1, 0);
         event.setNewDamage(amount);
-
-
     }
 
     @SubscribeEvent
@@ -215,7 +218,6 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
         LivingEntity damagingEntity = event.getEntity();
         Entity sourceEntity = damageSource.getEntity();
-        ItemStack weapon = damageSource.getWeaponItem();
 
         ModAchievements.luckyBreak_watchYourStep(damagingEntity, damageSource, sourceEntity);
 
@@ -223,13 +225,10 @@ public final class LivingEntityEvents {
         if (cause != null) {
             Object2IntMap<Immunity> invTicks = ((ILivingEntity) damagingEntity).confluence$getImmunityTicks();
             int time = cause.confluence$getImmunityDuration(damageSource);
-//            System.out.println(event.getNewDamage());
             if (time != 0) {
                 invTicks.put(cause, time);
             }
-
         }
-
     }
 
     @SubscribeEvent
@@ -269,6 +268,17 @@ public final class LivingEntityEvents {
         event.setProjectileItemStack(projectile);
         if (!projectile.isEmpty() && living.hasEffect(ModEffects.AMMO_BOX) && living.getRandom().nextFloat() < 0.2F) {
             event.setProjectileItemStack(projectile.copy());
+        }
+    }
+
+    @SubscribeEvent
+    public static void livingBreathe(LivingBreatheEvent event) {
+        if (event.canBreathe()) return;
+        LivingEntity living = event.getEntity();
+        if (living.hasEffect(ModEffects.SHIMMER)) {
+            event.setCanBreathe(true);
+        } else if (ModUtils.anyHandHasItem(living, itemStack -> itemStack.is(SwordItems.BREATHING_REED))) {
+            event.setConsumeAirAmount(living.getRandom().nextInt(3) > 0 ? 0 : 1);
         }
     }
 }

@@ -31,11 +31,7 @@ public class VilethronProjectile extends Projectile {
     }
 
     public VilethronProjectile(LivingEntity living) {
-        super(ModEntities.VILETHRON_PROJECTILE.get(), living.level());
-        setOwner(living);
-        setNoGravity(true);
-        setPos(living.getX(), living.getEyeY() - 0.1, living.getZ());
-        this.startPos = blockPosition();
+        this(living, new Vec3(living.getX(), living.getEyeY() - 0.1, living.getZ()));
     }
 
     public VilethronProjectile(LivingEntity living, Vec3 pos) {

@@ -41,6 +41,7 @@ import org.joml.Vector3d;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import static org.confluence.mod.common.item.common.CoinItem.MAX_STACK_SIZE;
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
@@ -329,5 +330,9 @@ public final class ModUtils {
 
     public static int getMaxStackSize(int original) {
         return Math.max(original, MAX_STACK_SIZE);
+    }
+
+    public static boolean anyHandHasItem(LivingEntity living, Predicate<ItemStack> predicate) {
+        return predicate.test(living.getMainHandItem()) || predicate.test(living.getOffhandItem());
     }
 }

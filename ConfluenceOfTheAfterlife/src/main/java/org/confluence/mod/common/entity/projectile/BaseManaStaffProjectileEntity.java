@@ -184,7 +184,7 @@ public class BaseManaStaffProjectileEntity extends Projectile {
         public static final Variant DIAMOND = register("diamond", 9.2F, -1.0, 5.5F, Confluence.asResource("diamond_projectile"));
         public static final Variant FROST = register("frost", 3.0F, 0.04, 0.0F, Confluence.asResource("frost_projectile"));
         public static final Variant SPARK = register("spark", 2.6F, 0.2, 0.0F, Confluence.asResource("spark_projectile"));
-        public static final Variant THUNDER_ZAPPER = register("thunder_zapper", 4.0F, -1.0, 0.0F, Confluence.asResource("thunder_zapper"));
+        public static final Variant THUNDER_ZAPPER = register("thunder_zapper", 7.8F, -1.0, 0.0F, Confluence.asResource("thunder_zapper"));
 
         public static final Codec<Variant> CODEC = StringRepresentable.fromValues(() -> VALUES.toArray(Variant[]::new));
 

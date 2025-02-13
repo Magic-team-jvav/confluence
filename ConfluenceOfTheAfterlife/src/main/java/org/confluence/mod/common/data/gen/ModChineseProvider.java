@@ -1850,6 +1850,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaStaffItems.AMETHYST_STAFF.get(), "紫晶法杖");
         add(ManaStaffItems.WAND_OF_SPARKING.get(), "火花魔棒");
         add(ManaStaffItems.WAND_OF_FROSTING.get(), "霜冻魔棒");
+        add(ManaStaffItems.THUNDER_ZAPPER.get(), "霹雳法杖");
+        add(ManaStaffItems.VILETHRON.get(), "魔刺");
         /*
         add(ManaWeapons.THUNDER_ZAPPER.get(), "雷霆法杖");
         add(ManaWeapons.VILETHORN.get(), "魔刺");

@@ -9,17 +9,17 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.model.entity.projectile.ThrownKnivesProjectileModel;
+import org.confluence.mod.client.model.entity.projectile.VilethronProjectileModel;
 import org.confluence.mod.common.entity.projectile.VilethronProjectile;
 import org.confluence.mod.util.ClientUtils;
 
 public class VilethronProjectileRenderer extends EntityRenderer<VilethronProjectile> {
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/thrown_knives_projectile.png");
-    private final ThrownKnivesProjectileModel model;
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/vilethron_projectile.png");
+    private final VilethronProjectileModel model;
 
     public VilethronProjectileRenderer(EntityRendererProvider.Context context) {
         super(context);
-        this.model = new ThrownKnivesProjectileModel(context.bakeLayer(ThrownKnivesProjectileModel.LAYER_LOCATION));
+        this.model = new VilethronProjectileModel(context.bakeLayer(VilethronProjectileModel.LAYER_LOCATION));
     }
 
     @Override

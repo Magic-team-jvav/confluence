@@ -40,10 +40,7 @@ import org.confluence.mod.client.model.entity.fishing.HotlineFishingHookModel;
 import org.confluence.mod.client.model.entity.hook.BaseHookModel;
 import org.confluence.mod.client.model.entity.hook.SkeletronHandModel;
 import org.confluence.mod.client.model.entity.hook.WebSlingerModel;
-import org.confluence.mod.client.model.entity.projectile.EnchantedSwordProjectileModel;
-import org.confluence.mod.client.model.entity.projectile.IceBladeSwordProjectileModel;
-import org.confluence.mod.client.model.entity.projectile.ShurikenProjectileModel;
-import org.confluence.mod.client.model.entity.projectile.ThrownKnivesProjectileModel;
+import org.confluence.mod.client.model.entity.projectile.*;
 import org.confluence.mod.client.particle.BiomeColorParticle;
 import org.confluence.mod.client.particle.DamageIndicatorParticle;
 import org.confluence.mod.client.particle.LightBaneParticle;
@@ -171,6 +168,7 @@ public final class ModClientEvents {
         event.registerLayerDefinition(EnchantedSwordProjectileModel.LAYER_LOCATION, EnchantedSwordProjectileModel::createBodyLayer);
         event.registerLayerDefinition(ShurikenProjectileModel.LAYER_LOCATION, ShurikenProjectileModel::createBodyLayer);
         event.registerLayerDefinition(ThrownKnivesProjectileModel.LAYER_LOCATION, ThrownKnivesProjectileModel::createBodyLayer);
+        event.registerLayerDefinition(VilethronProjectileModel.LAYER_LOCATION, VilethronProjectileModel::createBodyLayer);
 
         event.registerLayerDefinition(BaseHookModel.LAYER_LOCATION, BaseHookModel::createBodyLayer);
         event.registerLayerDefinition(WebSlingerModel.LAYER_LOCATION, WebSlingerModel::createBodyLayer);

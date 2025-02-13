@@ -58,7 +58,7 @@ public class VilethronProjectile extends Projectile {
                 EntityHitResult entityHitResult = (EntityHitResult) hitresult;
                 if (level().isClientSide) return;
                 Entity entity = entityHitResult.getEntity();
-                if (entity.hurt(damageSources().indirectMagic(this, getOwner()), 2)) {
+                if (entity.hurt(damageSources().indirectMagic(this, getOwner()), 2.5f)) {
                     ModUtils.knockBackA2B(this, entity, 0.5, 0.2);
                 }
             }
@@ -67,7 +67,7 @@ public class VilethronProjectile extends Projectile {
                 double distSqr = blockPosition().distSqr(startPos);
                 double delta = distSqr - distSqrO;
                 if (delta >= 1.0) {
-                    if (delta > 100.0) {
+                    if (delta > 25.0) {
                         discard();
                     } else {
                         VilethronProjectile vilethron = new VilethronProjectile(living, position());
@@ -89,7 +89,7 @@ public class VilethronProjectile extends Projectile {
             AABB boundingBox = getBoundingBox().inflate(1.0);
             EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F);
             if (hitResult != null) {
-                hitResult.getEntity().hurt(damageSources().indirectMagic(this, getOwner()), 2);
+                hitResult.getEntity().hurt(damageSources().indirectMagic(this, getOwner()), 2.5f);
             }
         }
     }

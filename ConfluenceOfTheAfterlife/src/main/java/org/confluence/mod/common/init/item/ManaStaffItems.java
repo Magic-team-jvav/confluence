@@ -18,7 +18,7 @@ public class ManaStaffItems {
 
     public static final Supplier<ManaStaffItem> WAND_OF_SPARKING = ITEMS.register("wand_of_sparking", () -> new ManaStaffItem(ModRarity.BLUE, BaseManaStaffProjectileEntity.Spark::new, 2, 7.0F, 26, 0.14));
     public static final Supplier<ManaStaffItem> WAND_OF_FROSTING = ITEMS.register("wand_of_frosting", () -> new ManaStaffItem(ModRarity.BLUE, BaseManaStaffProjectileEntity.Frost::new, 2, 7.0F, 26, 0.14));
-    public static final Supplier<ManaStaffItem> THUNDER_ZAPPER = ITEMS.register("thunder_zapper", () -> new ManaStaffItem(ModRarity.BLUE, ThunderZapperProjectile::new, 7, 16, 17, 0.04));
+    public static final Supplier<ManaStaffItem> THUNDER_ZAPPER = ITEMS.register("thunder_zapper", () -> new ManaStaffItem(ModRarity.BLUE, ThunderZapperProjectile::new, 7, 16, 6, 0.04));
     public static final Supplier<ManaStaffItem> RUBY_STAFF = ITEMS.register("ruby_staff", () -> new ManaStaffItem(ModRarity.BLUE, (player, level) -> new BaseManaStaffProjectileEntity(player, level, Variant.RUBY), 7, 9.0F, 28, 0.04));
     public static final Supplier<ManaStaffItem> AMBER_STAFF = ITEMS.register("amber_staff", () -> new ManaStaffItem(ModRarity.BLUE, (player, level) -> new BaseManaStaffProjectileEntity(player, level, Variant.AMBER), 7, 9.0F, 28, 0.04));
     public static final Supplier<ManaStaffItem> TOPAZ_STAFF = ITEMS.register("topaz_staff", () -> new ManaStaffItem(ModRarity.BLUE, (player, level) -> new BaseManaStaffProjectileEntity(player, level, Variant.TOPAZ), 5, 6.5F, 36, 0.04));

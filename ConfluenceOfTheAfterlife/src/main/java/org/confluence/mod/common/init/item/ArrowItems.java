@@ -27,7 +27,7 @@ public class ArrowItems {
     ));
     public static final DeferredItem<BaseArrowItem> HELLFIRE_ARROW = ITEMS.register("hellfire_arrow", () -> new  BaseArrowItem(ModRarity.GREEN,
             BaseArrowEntity.Tuple.create("textures/entity/arrow/hellfire_arrow.png",()->new BaseArrowEntity.Builder()
-                    .setDamage(5.5f).setCauseFire(5*20).addOnHitEffect(ModEffectStrategies.VOLCANIC_EFFECT))
+                    .setDamage(5.5f).setCauseFire(5*20).addOnHitEffect(ModEffectStrategies.HELL_FIRE_EFFECT))
     ));
     public static final DeferredItem<BaseArrowItem> FROSTBURN_ARROW = ITEMS.register("frostburn_arrow", () -> new  BaseArrowItem(ModRarity.WHITE,
             BaseArrowEntity.Tuple.create("textures/entity/arrow/frostburn_arrow.png",()->new BaseArrowEntity.Builder()

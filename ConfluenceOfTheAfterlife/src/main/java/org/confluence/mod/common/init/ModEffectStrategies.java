@@ -40,7 +40,7 @@ public class ModEffectStrategies {
             TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(ModEffects.BLOOD_BUTCHERED, 180, 0, 4, 0.5f));
 
     /**蝙蝠棍*/
-    public static final  DeferredHolder<EffectStrategy, EffectStrategy> BAT_FANG_EFFECT = createEffect("bat", "blood absorb", "吸血",
+    public static final  DeferredHolder<EffectStrategy, EffectStrategy> BAT_FANG_EFFECT = createEffect("bat", "blood absorb +1 hp", "吸血 +1 hp",
             (owner, entity)-> owner.heal(1));
 
     /** 魔光剑*/
@@ -48,22 +48,25 @@ public class ModEffectStrategies {
             ON_HIT_PROJECTILE.apply((level)->ModEntities.LIGHTS_BANE_PROJECTILE.get().create(level).addAttackDamage(7f)));
 
     /**触手钉锤*/
-    public static final DeferredHolder<EffectStrategy, EffectStrategy> TENTACLE_SPIKES_EFFECT =createEffect("tentacle_spikes",
+    public static final DeferredHolder<EffectStrategy, EffectStrategy> TENTACLE_SPIKES_EFFECT =createEffect("tentacle_spikes","tentacle spikes", "触手钉锤",
             TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(ModEffects.TENTACLE_SPIKES, 180, 0, 4, 0.5f));
 
     /**猎弓*/
-    public static final DeferredHolder<EffectStrategy, EffectStrategy> HUNTING_RIFLE_EFFECT = createEffect("hunting_4_sec",
+    public static final DeferredHolder<EffectStrategy, EffectStrategy> HUNTING_RIFLE_EFFECT = createEffect("hunting_4_sec","hunting 4 seconds","狩猎 4秒",
             EffectStrategy.TIME_EFFECT.apply(TEEffects.SUMMON_FOCUS, 80));
 
     /**火山*/
-    public static final DeferredHolder<EffectStrategy, EffectStrategy> VOLCANIC_EFFECT = createEffect("hell_fire_5_sec",
+    public static final DeferredHolder<EffectStrategy, EffectStrategy> HELL_FIRE_EFFECT = createEffect("hell_fire_5_sec","hell fire 5 seconds", "烈火焚身 5秒",
             TIME_EFFECT.apply(ModEffects.HELL_FIRE,5 * 20));
+    /**着火*/
+    public static final DeferredHolder<EffectStrategy, EffectStrategy> SET_FIRE_EFFECT = createEffect("set_fire_5_sec","set fire 5 seconds", "着火啦 5秒",
+            SET_FIRE.apply(5 * 20, 1f));
 
     /**霜冻*/
-    public static final DeferredHolder<EffectStrategy, EffectStrategy> FROST_BURN_EFFECT = createEffect("frozen_burn_10_sec","frozen_burn_10_sec", "10秒霜冻",
+    public static final DeferredHolder<EffectStrategy, EffectStrategy> FROST_BURN_EFFECT = createEffect("frozen_burn_10_sec","frozen burn 10 seconds", "霜冻 10秒",
             EffectStrategy.TIME_EFFECT.apply(ModEffects.FROST_BURN,10*20));
 
-    public static final DeferredHolder<EffectStrategy, EffectStrategy> FROST_BURN_BOOMERANG_EFFECT = createEffect("frozen_burn_3_sec_50_chance",
+    public static final DeferredHolder<EffectStrategy, EffectStrategy> FROST_BURN_BOOMERANG_EFFECT = createEffect("frozen_burn_3_sec_50_chance","50% chance frozen burn 3 seconds", "50%几率 霜冻 3秒",
             TIME_POSSIBILITY_EFFECT.apply(ModEffects.FROST_BURN,3 * 20,0.5F));
 
 

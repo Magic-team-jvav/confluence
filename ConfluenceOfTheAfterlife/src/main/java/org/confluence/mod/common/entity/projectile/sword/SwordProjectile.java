@@ -116,7 +116,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         if (!level().isClientSide && entity instanceof LivingEntity living && getOwner() instanceof LivingEntity owner && owner != entity) {
             // 事件统一暴击判定 org.confluence.mod.common.event.game.entity.LivingEntityEvents.livingDamage$Pre
 //            if (random.nextFloat() < criticalChance) damage *= 1.5F;
-            doHurt(living);
+//            doHurt(living);
         }
     }
 

@@ -49,7 +49,7 @@ public class BoomerangItems {
 
     public static final DeferredItem<Boomerang> FLAMARANG = register("flamarang",12.5f,ModRarity.ORANGE,
             NORMAL_BOOMERANG_MODIFIER.apply(18,1.85f,1.85f)
-                    .addOnHitEffect(ModEffectStrategies.VOLCANIC_EFFECT)
+                    .addOnHitEffect(ModEffectStrategies.HELL_FIRE_EFFECT)
     );   //狱炎效果。
 
 

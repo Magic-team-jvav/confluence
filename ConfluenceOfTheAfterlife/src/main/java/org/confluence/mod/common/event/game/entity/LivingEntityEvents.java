@@ -158,6 +158,7 @@ public final class LivingEntityEvents {
         LivingEntity damagingEntity = event.getEntity();
         if (!(damagingEntity.level() instanceof ServerLevel level)) return;
         DamageSource damageSource = event.getSource();
+        Entity sourceEntity = damageSource.getEntity();
         if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) return;
 
         float amount = event.getNewDamage();
@@ -176,7 +177,13 @@ public final class LivingEntityEvents {
                 event.setNewDamage(amount);
             }
         }
-
+        // 剑命中效果
+        ItemStack weapon = damageSource.getWeaponItem();
+        if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword && sword.modifier != null) {
+            if (sourceEntity instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.95f) {
+                sword.modifier.onHitEffects.forEach(effect -> effect.get().getEffect().accept(player, damagingEntity));
+            }
+        }
         // 暴击判定和伤害显示
         boolean crit = false;
         if (!TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE) && causer instanceof Player player) {
@@ -209,11 +216,7 @@ public final class LivingEntityEvents {
         LivingEntity damagingEntity = event.getEntity();
         Entity sourceEntity = damageSource.getEntity();
         ItemStack weapon = damageSource.getWeaponItem();
-        if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword && sword.modifier != null) {
-            if (sourceEntity instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.95f) {
-                sword.modifier.onHitEffects.forEach(effect -> effect.get().getEffect().accept(player, damagingEntity));
-            }
-        }
+
         ModAchievements.luckyBreak_watchYourStep(damagingEntity, damageSource, sourceEntity);
 
         Immunity cause = ModUtils.getImmunityCause(damageSource);

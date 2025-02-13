@@ -3,9 +3,13 @@ package org.confluence.mod.common.event.game;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -19,8 +23,10 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.entity.projectile.bomb.ScarabBombEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
@@ -73,5 +79,15 @@ public final class LevelEvents {
         BlockPos pos = event.getPos();
         NoTraps.dropBombWhenLeavesDestroy(serverPlayer, blockState, pos);
         BoulderWorld.createBoulderWhenBlockDestroy(serverPlayer, blockState, pos);
+    }
+
+    @SubscribeEvent
+    public static void PlaceOpalBlock(BlockEvent.EntityPlaceEvent event) {
+        BlockState state = event.getPlacedBlock();
+        LevelAccessor level = event.getLevel();
+        BlockPos pos = event.getPos();
+        if (!level.isClientSide() && state.is(OreBlocks.OPAL_ORE.get())) {
+            level.getBlockEntity(pos, BlockEntityType.BRUSHABLE_BLOCK).ifPresent(entity -> entity.setLootTable(ModLootTables.OPAL_BLOCK, pos.asLong()));
+        }
     }
 }

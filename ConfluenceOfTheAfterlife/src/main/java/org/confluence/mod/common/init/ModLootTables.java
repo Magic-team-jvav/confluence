@@ -57,6 +57,8 @@ public final class ModLootTables {
 
     public static final ResourceKey<LootTable> CAVE_CHESTS = register("chests/cave_chests");
 
+    public static final ResourceKey<LootTable> OPAL_BLOCK = register("archaeology/opal_ore");
+
 
     private static ResourceKey<LootTable> register(String name) {
         return ResourceKey.create(Registries.LOOT_TABLE, Confluence.asResource(name));

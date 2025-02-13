@@ -14,13 +14,12 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
+import org.confluence.mod.util.ClientUtils;
 import org.joml.Matrix4f;
-import org.joml.Quaternionf;
 
 public final class MeteorLandingHandler {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/environment/meteor.png");
     private static final float RADIUS = 5.0F;
-    private static final Quaternionf ANGLE_45 = Axis.YP.rotation(Mth.HALF_PI * 0.5F);
     private static Vec3 location = null;
     private static int tickUntilLanding = 0;
 
@@ -86,7 +85,7 @@ public final class MeteorLandingHandler {
         RenderSystem.enableBlend();
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        Matrix4f matrix4f = poseStack.last().pose().rotate(ANGLE_45);
+        Matrix4f matrix4f = poseStack.last().pose().rotate(ClientUtils.ANGLE_45);
         BufferBuilder bufferBuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
         bufferBuilder.addVertex(matrix4f, -RADIUS, 100, -RADIUS).setUv(0.0F, v1).setColor(1.0F, 1.0F, 1.0F, alpha);
         bufferBuilder.addVertex(matrix4f, RADIUS, 100, -RADIUS).setUv(1.0F, v1).setColor(1.0F, 1.0F, 1.0F, alpha);

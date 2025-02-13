@@ -104,15 +104,17 @@ public final class ModUtils {
      *
      * @return [yaw, pitch]
      */
-    public static float[] dirToRot(Vec3 vec) {
+    public static float[] dirToRot(Vec3 vec, boolean toDeg) {
         double x = vec.x;
         double y = vec.y;
         double z = vec.z;
         double h = vec.horizontalDistance();
-        return new float[]{
-                (float) Mth.atan2(-x, z) * Mth.RAD_TO_DEG,
-                (float) Mth.atan2(-y, h) * Mth.RAD_TO_DEG
-        };
+        float yaw = (float) Mth.atan2(-x, z);
+        float pitch = (float) Mth.atan2(-y, h);
+        if (toDeg) {
+            return new float[]{yaw * Mth.RAD_TO_DEG, pitch * Mth.RAD_TO_DEG};
+        }
+        return new float[]{yaw, pitch};
     }
 
     /**

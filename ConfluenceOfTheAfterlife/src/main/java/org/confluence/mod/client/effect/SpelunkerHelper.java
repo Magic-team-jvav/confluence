@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -335,8 +336,8 @@ public class SpelunkerHelper extends AbstractBufferManager {
                         poseStack.scale(-1/scale,-1/scale,-1/scale);
 
                         if(textDir==0){
-                            var fs = ModUtils.dirToRot(dir.scale(-1));
-                            Matrix4f m = new Matrix4f().rotate(Axis.YP.rotationDegrees(180-fs[0])).rotate(Axis.XN.rotationDegrees(fs[1]));
+                            var fs = ModUtils.dirToRot(dir.scale(-1), false);
+                            Matrix4f m = new Matrix4f().rotate(Axis.YP.rotation(Mth.PI-fs[0])).rotate(Axis.XN.rotation(fs[1]));
                             poseStack.mulPose(m);
 
                         }else{

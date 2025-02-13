@@ -3,6 +3,7 @@ package org.confluence.mod.util;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Function4;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -23,6 +24,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
 import org.joml.Vector3i;
 
 import javax.imageio.ImageIO;
@@ -31,13 +33,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 @OnlyIn(Dist.CLIENT)
 public final class ClientUtils {
     public static final String GRAY_SUFFIX = ".gray";
     public static final String NEGATIVE_SUFFIX = ".negative";
-    public static final float HALF_SQRT_3 = Mth.sqrt(3.0F) / 2.0F;
+    public static final float HALF_SQRT_3 = 0.8660254F;
+    public static final Quaternionf ANGLE_45 = Axis.YP.rotation(Mth.PI * 0.25F);
+    public static final Quaternionf ANGLE_180 = Axis.ZP.rotation(Mth.PI);
+    public static final Quaternionf ANGLE_N90 = Axis.YP.rotation(-Mth.HALF_PI);
 
     public static void drawImage(ResourceLocation loc, GuiGraphics g, int x, int y, int wid, int hig, int imWid, int imHig) {
         g.blit(loc, x, y, 0, 0, wid, hig, imWid, imHig);

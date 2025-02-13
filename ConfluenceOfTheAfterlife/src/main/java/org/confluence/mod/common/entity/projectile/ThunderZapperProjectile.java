@@ -18,10 +18,11 @@ public class ThunderZapperProjectile extends BaseManaStaffProjectileEntity {
         if (dir == null) {
             this.dir = getDeltaMovement().normalize();
         }
-        if (level().getGameTime() % 10 < 5) {
+        int i = tickCount % 10;
+        if (i == 0) {
             this.flip = -flip;
             setDeltaMovement(dir);
-        } else {
+        } else if (i >= 5) {
             setDeltaMovement(dir.add(0, flip, 0));
         }
         super.tick();

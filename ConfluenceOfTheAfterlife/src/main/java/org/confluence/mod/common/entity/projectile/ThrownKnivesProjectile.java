@@ -58,6 +58,6 @@ public class ThrownKnivesProjectile extends ThrowableProjectile {
 
     @Override
     protected boolean canHitEntity(Entity pTarget) {
-        return pTarget != getOwner();
+        return pTarget.canBeHitByProjectile() && pTarget != getOwner();
     }
 }

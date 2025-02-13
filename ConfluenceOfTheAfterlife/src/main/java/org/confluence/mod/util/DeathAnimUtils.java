@@ -244,7 +244,7 @@ public final class DeathAnimUtils {
         if(motion.equals(Vec3.ZERO)){
             motion = Vec3.ZERO.offsetRandom(random, 1);
         }
-        float[] rots = ModUtils.dirToRot(motion);
+        float[] rots = ModUtils.dirToRot(motion, true);
         rots[0] += yRot;
         return Vec3.directionFromRotation(0, rots[0]).normalize().scale(1.2).toVector3f();
     }

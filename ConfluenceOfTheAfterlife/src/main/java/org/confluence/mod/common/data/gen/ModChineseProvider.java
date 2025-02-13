@@ -3,11 +3,11 @@ package org.confluence.mod.common.data.gen;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModEffectStrategies;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.init.ModEffectStrategies;
 import org.confluence.terraentity.init.TEItems;
 
 import static org.confluence.mod.common.init.item.PickaxeItems.MOLTEN_PICKAXE;
@@ -1700,8 +1700,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.PLAYER_PRESSURE_PLATE.get(), "玩家压力板");
         add(FunctionalBlocks.STONE_PRESSURE_PLATE.get(), "石质压力板");
         add(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE.get(), "深板岩压力板");
-        add(FunctionalBlocks.STONE_PRESSURE_BLOCK.get(), "石头");
-        add(FunctionalBlocks.DEEPSLATE_PRESSURE_BLOCK.get(), "深板岩");
+        add(FunctionalBlocks.STONE_PRESSURE_BLOCK.get(), "石头压力块");
+        add(FunctionalBlocks.DEEPSLATE_PRESSURE_BLOCK.get(), "深板岩压力块");
 
         add(FunctionalBlocks.CRIMSON_ALTAR.get(), "猩红祭坛");
         add(FunctionalBlocks.DEMON_ALTAR.get(), "恶魔祭坛");
@@ -1724,6 +1724,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.get(), "机械易碎黑曜石砖");
         add(FunctionalBlocks.DETONATOR.get(), "引爆器");
         add(FunctionalBlocks.BASE_CHEST_BLOCK.get(), "箱子");
+        add(FunctionalBlocks.SCULK_TRAP.get(), "幽匿陷阱");
 
 
         add(MinecartItems.MECHANICAL_CART.get(), "机械矿车");

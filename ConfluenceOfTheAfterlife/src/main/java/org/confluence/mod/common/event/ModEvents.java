@@ -41,6 +41,7 @@ import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.entity.TargetDummyEntity;
 import org.confluence.mod.common.fluid.FluidBuilder;
 import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
@@ -252,5 +253,6 @@ public final class ModEvents {
     public static void blockEntityTypeAddBlocks(BlockEntityTypeAddBlocksEvent event) {
         event.modify(BlockEntityType.BRUSHABLE_BLOCK, OreBlocks.OPAL_ORE.get());
         event.modify(BlockEntityType.SIGN, LogBlockSet.getSignBlocks());
+        event.modify(BlockEntityType.SCULK_SENSOR, FunctionalBlocks.SCULK_TRAP.get());
     }
 }

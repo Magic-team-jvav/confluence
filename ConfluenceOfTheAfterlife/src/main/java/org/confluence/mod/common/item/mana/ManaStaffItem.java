@@ -5,16 +5,20 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.BaseManaStaffProjectileEntity;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.terra_curio.common.init.TCAttributes;
 
 public class ManaStaffItem extends CustomRarityItem {
     private final BulletFactory factory;
@@ -22,19 +26,21 @@ public class ManaStaffItem extends CustomRarityItem {
     private final float velocity;
     private final int cooldown;
 
-    public ManaStaffItem(Properties properties, ModRarity rarity, BulletFactory factory, int manaCost, float velocity, int cooldown) {
+    public ManaStaffItem(Properties properties, ModRarity rarity, BulletFactory factory, int manaCost, float velocity, int cooldown, double critChance) {
         super(properties, rarity);
         this.factory = factory;
         this.manaCost = manaCost;
         this.velocity = velocity;
         this.cooldown = cooldown;
+        if (critChance == 0.0) return;
+        addAttributeModifiers(builder -> builder.add(TCAttributes.getCriticalChance(), new AttributeModifier(Confluence.asResource("mana_staff"), critChance, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND));
     }
 
     /**
      * @param rawVelocity 换算前的射弹速度
      */
-    public ManaStaffItem(ModRarity rarity, BulletFactory factory, int manaCost, float rawVelocity, int cooldown) {
-        this(new Properties().stacksTo(1), rarity, factory, manaCost, rawVelocity / 8.0F, cooldown);
+    public ManaStaffItem(ModRarity rarity, BulletFactory factory, int manaCost, float rawVelocity, int cooldown, double critChance) {
+        this(new Properties().stacksTo(1), rarity, factory, manaCost, rawVelocity / 8.0F, cooldown, critChance);
     }
 
     @Override

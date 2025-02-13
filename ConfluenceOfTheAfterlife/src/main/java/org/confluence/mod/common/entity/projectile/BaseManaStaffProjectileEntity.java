@@ -34,12 +34,16 @@ public class BaseManaStaffProjectileEntity extends Projectile {
 
     protected ParticleEmitter emitter;
 
-    public BaseManaStaffProjectileEntity(EntityType<BaseManaStaffProjectileEntity> entityType, Level level) {
+    public BaseManaStaffProjectileEntity(EntityType<? extends BaseManaStaffProjectileEntity> entityType, Level level) {
         super(entityType, level);
     }
 
     public BaseManaStaffProjectileEntity(LivingEntity living, Level level, Variant variant) {
-        super(ModEntities.BASE_MANA_STAFF_PROJECTILE.get(), level);
+        this(ModEntities.BASE_MANA_STAFF_PROJECTILE.get(), living, level, variant);
+    }
+
+    public BaseManaStaffProjectileEntity(EntityType<? extends BaseManaStaffProjectileEntity> entityType, LivingEntity living, Level level, Variant variant) {
+        super(entityType, level);
         setOwner(living);
         setNoGravity(variant.gravity <= 0.0);
         setVariant(variant);
@@ -96,7 +100,6 @@ public class BaseManaStaffProjectileEntity extends Projectile {
         Entity entity = entityHitResult.getEntity();
         if (canAttack(entity)) {
             float damage = getBaseDamage() * (1.0F + getAttackBonus());
-            if (random.nextFloat() < getCriticalChance()) damage *= 1.5F;
             if (entity.hurt(damageSources().indirectMagic(this, getOwner()), damage)) {
                 float attackKnockback = getBaseKnockBack() * (1.0F + getKnockbackBonus());
                 if (attackKnockback > 0.0F) {
@@ -110,10 +113,6 @@ public class BaseManaStaffProjectileEntity extends Projectile {
 
     protected float getAttackBonus() {
         return 0.0F;
-    }
-
-    protected float getCriticalChance() {
-        return getVariant().criticalChance;
     }
 
     protected float getKnockbackBonus() {
@@ -173,26 +172,27 @@ public class BaseManaStaffProjectileEntity extends Projectile {
         }
     }
 
-    public record Variant(int id, String name, float damage, double gravity, float knockBack, float criticalChance, ResourceLocation particleId) implements StringRepresentable {
+    public record Variant(int id, String name, float damage, double gravity, float knockBack, ResourceLocation particleId) implements StringRepresentable {
         public static final List<Variant> VALUES = new ArrayList<>();
 
-        public static final Variant AMETHYST = register("amethyst", 6.0F, -1.0, 3.25F, 0.04F, Confluence.asResource("amethyst_projectile")),
-                TOPAZ = register("topaz", 6.4F, -1.0, 3.5F, 0.04F, Confluence.asResource("topaz_projectile")),
-                SAPPHIRE = register("sapphire", 7.2F, -1.0, 4.0F, 0.04F, Confluence.asResource("sapphire_projectile")),
-                EMERALD = register("emerald", 7.6F, -1.0, 4.25F, 0.04F, Confluence.asResource("emerald_projectile")),
-                RUBY = register("ruby", 8.4F, -1.0, 4.75F, 0.04F, Confluence.asResource("ruby_projectile")),
-                AMBER = register("amber", 8.4F, -1.0, 4.75F, 0.04F, Confluence.asResource("amber_projectile")),
-                DIAMOND = register("diamond", 9.2F, -1.0, 5.5F, 0.04F, Confluence.asResource("diamond_projectile")),
-                FROST = register("frost", 3.0F, 0.04, 0.0F, 0.14F, Confluence.asResource("frost_projectile")),
-                SPARK = register("spark", 2.6F, 0.2, 0.0F, 0.14F, Confluence.asResource("spark_projectile"));
+        public static final Variant AMETHYST = register("amethyst", 6.0F, -1.0, 3.25F, Confluence.asResource("amethyst_projectile"));
+        public static final Variant TOPAZ = register("topaz", 6.4F, -1.0, 3.5F, Confluence.asResource("topaz_projectile"));
+        public static final Variant SAPPHIRE = register("sapphire", 7.2F, -1.0, 4.0F, Confluence.asResource("sapphire_projectile"));
+        public static final Variant EMERALD = register("emerald", 7.6F, -1.0, 4.25F, Confluence.asResource("emerald_projectile"));
+        public static final Variant RUBY = register("ruby", 8.4F, -1.0, 4.75F, Confluence.asResource("ruby_projectile"));
+        public static final Variant AMBER = register("amber", 8.4F, -1.0, 4.75F, Confluence.asResource("amber_projectile"));
+        public static final Variant DIAMOND = register("diamond", 9.2F, -1.0, 5.5F, Confluence.asResource("diamond_projectile"));
+        public static final Variant FROST = register("frost", 3.0F, 0.04, 0.0F, Confluence.asResource("frost_projectile"));
+        public static final Variant SPARK = register("spark", 2.6F, 0.2, 0.0F, Confluence.asResource("spark_projectile"));
+        public static final Variant THUNDER_ZAPPER = register("thunder_zapper", 4.0F, -1.0, 0.0F, Confluence.asResource("amethyst_projectile"));
 
         public static final Codec<Variant> CODEC = StringRepresentable.fromValues(() -> VALUES.toArray(Variant[]::new));
 
         /**
          * @param rawKnockBack 换算前的击退
          */
-        private static Variant register(String name, float damage, double gravity, float rawKnockBack, float criticalChance, ResourceLocation particleId) {
-            Variant variant = new Variant(VALUES.size(), name, damage, gravity, rawKnockBack / 8.0F, criticalChance, particleId);
+        private static Variant register(String name, float damage, double gravity, float rawKnockBack, ResourceLocation particleId) {
+            Variant variant = new Variant(VALUES.size(), name, damage, gravity, rawKnockBack / 8.0F, particleId);
             VALUES.add(variant);
             return variant;
         }

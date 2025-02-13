@@ -34,12 +34,8 @@ public class KillBoard implements INBTSerializable<ListTag> {
         return count;
     }
 
-    public boolean defeat(EntityType<?> entityType) {
-        return !defeatedMap.put(entityType, true);
-    }
-
-    public void defeated(EntityType<?> entityType, ConfluenceData data) {
-        if (defeat(entityType)) {
+    public void defeat(EntityType<?> entityType, ConfluenceData data) {
+        if (!defeatedMap.put(entityType, true)) {
             data.setDirty();
         }
     }

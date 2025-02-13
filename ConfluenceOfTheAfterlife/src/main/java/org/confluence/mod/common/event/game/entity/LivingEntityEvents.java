@@ -81,7 +81,7 @@ public final class LivingEntityEvents {
             if (living instanceof Boss boss && boss.shouldShowMessage()) {
                 EntityType<?> type = living.getType();
                 ConfluenceData data = ConfluenceData.get(level);
-                data.getKillBoard().defeated(type, data);
+                data.getKillBoard().defeat(type, data);
                 boolean isEaterOfWorlds = type == TEEntities.EATER_OF_WORLDS.get();
                 if (isEaterOfWorlds || type == TEEntities.BRAIN_OF_CTHULHU.get()) {
                     if (DateUtils.isWithinDayTime(0, 0, 4, 30, level.getDayTime())) { // 00:00 -> 04:30

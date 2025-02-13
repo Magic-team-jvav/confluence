@@ -5,7 +5,6 @@ import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -38,13 +37,12 @@ public final class TickEvents {
         MeteoriteTracker.INSTANCE.tick(serverLevel);
 
         long dayTime = serverLevel.getDayTime() % 24000L;
-        RandomSource random = serverLevel.random;
         if (dayTime == 0L) { // 6:00
-            float factorX = Mth.nextFloat(random, -1.0F, 1.0F);
-            float factorZ = Mth.nextFloat(random, -1.0F, 1.0F);
+            float factorX = Mth.nextFloat(serverLevel.random, -1.0F, 1.0F);
+            float factorZ = Mth.nextFloat(serverLevel.random, -1.0F, 1.0F);
             ConfluenceData.get(serverLevel).setWindSpeed(factorX, factorZ);
         } else if (dayTime == 13500L) { // 19:30
-            if (random.nextFloat() < 0.02F && ConfluenceData.get(serverLevel).getKillBoard().isAnyDefeated(TEEntities.EATER_OF_WORLDS.get(), TEEntities.BRAIN_OF_CTHULHU.get())) {
+            if (serverLevel.random.nextFloat() < 0.02F && ConfluenceData.get(serverLevel).getKillBoard().isAnyDefeated(TEEntities.EATER_OF_WORLDS.get(), TEEntities.BRAIN_OF_CTHULHU.get())) {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
             }
         }

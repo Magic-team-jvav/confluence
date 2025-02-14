@@ -269,5 +269,6 @@ public final class ModEvents {
         event.modify(BlockEntityType.BRUSHABLE_BLOCK, OreBlocks.OPAL_ORE.get());
         event.modify(BlockEntityType.SIGN, LogBlockSet.getSignBlocks());
         event.modify(BlockEntityType.SCULK_SENSOR, FunctionalBlocks.SCULK_TRAP.get());
+        event.modify(BlockEntityType.CAMPFIRE, FunctionalBlocks.LIFE_CAMPFIRE.get());
     }
 }

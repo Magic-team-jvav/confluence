@@ -123,8 +123,15 @@ public final class LivingEntityEvents {
         if (!(living.level() instanceof ServerLevel level)) return;
         if (living.hasEffect(ModEffects.FROST_BURN) || living.hasEffect(ModEffects.BLEEDING) || living.hasEffect(ModEffects.HELL_FIRE)) {
             event.setCanceled(true); // todo 有些怪物对其免疫
-        } else if (living.getData(ModAttachmentTypes.EVER_BENEFICIAL).isVitalCrystalUsed()) {
-            event.setAmount(event.getAmount() * 1.2F);
+        } else {
+            float amount = event.getAmount();
+            if (living.getData(ModAttachmentTypes.EVER_BENEFICIAL).isVitalCrystalUsed()) {
+                amount *= 1.2F;
+            }
+            if (living.hasEffect(ModEffects.COZY_FIRE)) {
+                amount *= 1.1F;
+            }
+            event.setAmount(amount);
         }
 
         // 治疗数字显示

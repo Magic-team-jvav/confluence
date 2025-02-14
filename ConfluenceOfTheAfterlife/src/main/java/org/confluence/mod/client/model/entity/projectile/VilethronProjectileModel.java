@@ -23,8 +23,8 @@ public class VilethronProjectileModel extends EntityModel<StripedProjectile> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition bone = partdefinition.addOrReplaceChild("bone", CubeListBuilder.create().texOffs(0, 26).addBox(-8.0F, -15.0F, 0.0F, 0.0F, 16.0F, 26.0F, new CubeDeformation(0.0F))
-                .texOffs(0, 0).addBox(-16.0F, -6.0F, 0.0F, 16.0F, 0.0F, 26.0F, new CubeDeformation(0.0F)), PartPose.offset(8.0F, 24.0F, -8.0F));
+        partdefinition.addOrReplaceChild("bone", CubeListBuilder.create().texOffs(0, 26).addBox(-8.0F, -15.0F, 0.0F, 0.0F, 16.0F, 26.0F, CubeDeformation.NONE)
+                .texOffs(0, 0).addBox(-16.0F, -6.0F, 0.0F, 16.0F, 0.0F, 26.0F, CubeDeformation.NONE), PartPose.offset(0, 0, 0));
 
         return LayerDefinition.create(meshdefinition, 96, 96);
     }

@@ -26,9 +26,9 @@ import org.confluence.mod.util.ModUtils;
  */
 public abstract class StripedProjectile extends Projectile {
     private static final EntityDataAccessor<Boolean> DATA_IS_HEAD = SynchedEntityData.defineId(StripedProjectile.class, EntityDataSerializers.BOOLEAN);
+    public double distForHeadRemove = 10.0;
     protected double distForCreateBody = 1.0;
-    protected double distForHeadRemove = 10.0;
-    protected int ticksForBodyRemove = 28;
+    public int ticksForBodyRemove = 28;
     protected int frequencyForBodyCheckTouch = 5;
     private BlockPos startPos = BlockPos.ZERO;
     private double distO = -0.5;
@@ -120,6 +120,7 @@ public abstract class StripedProjectile extends Projectile {
     public float[] getRot() {
         if (rot == null) {
             updateRotation();
+            setDeltaMovement(Vec3.ZERO);
             this.rot = new float[]{getYRot() * Mth.DEG_TO_RAD, getXRot() * Mth.DEG_TO_RAD};
         }
         return rot;

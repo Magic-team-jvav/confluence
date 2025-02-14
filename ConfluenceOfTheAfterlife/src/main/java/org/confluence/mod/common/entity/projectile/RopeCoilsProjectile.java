@@ -16,28 +16,27 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.block.common.BaseRopeBlock;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.util.ModUtils;
 
-public class RopeCoils extends ThrowableItemProjectile {
+public class RopeCoilsProjectile extends ThrowableItemProjectile {
     public static final int SIZE = 4;
     private final Item ropeCoil;
     private final Block rope;
 
-    public RopeCoils(EntityType<? extends RopeCoils> type, Level level) {
+    public RopeCoilsProjectile(EntityType<? extends RopeCoilsProjectile> type, Level level) {
         super(type, level);
         ropeCoil = ToolItems.ROPE_COIL.get();
         rope = ModBlocks.ROPE.get();
     }
 
-    public RopeCoils(double x, double y, double z, Level level) {
+    public RopeCoilsProjectile(double x, double y, double z, Level level) {
         super(ModEntities.ROPE_COILS.get(), x, y, z, level);
         ropeCoil = ToolItems.ROPE_COIL.get();
         rope = ModBlocks.ROPE.get();
     }
 
-    public RopeCoils(LivingEntity shooter, Level level, Item ropeCoil, Block rope) {
+    public RopeCoilsProjectile(LivingEntity shooter, Level level, Item ropeCoil, Block rope) {
         super(ModEntities.ROPE_COILS.get(), shooter, level);
         this.ropeCoil = ropeCoil;
         this.rope = rope;

@@ -14,9 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.projectile.RopeCoils;
+import org.confluence.mod.common.entity.projectile.RopeCoilsProjectile;
 
 public class RopeCoilItem extends Item implements ProjectileItem {
     private final Block rope;
@@ -30,7 +28,7 @@ public class RopeCoilItem extends Item implements ProjectileItem {
         ItemStack itemstack = player.getItemInHand(hand);
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
         if (!level.isClientSide) {
-            RopeCoils coils = new RopeCoils(player, level, this, rope);
+            RopeCoilsProjectile coils = new RopeCoilsProjectile(player, level, this, rope);
             coils.setItem(itemstack);
             coils.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
             level.addFreshEntity(coils);
@@ -43,7 +41,7 @@ public class RopeCoilItem extends Item implements ProjectileItem {
 
     @Override
     public Projectile asProjectile(Level level, Position pos, ItemStack stack, Direction direction) {
-        RopeCoils coils = new RopeCoils(pos.x(), pos.y(), pos.z(), level);
+        RopeCoilsProjectile coils = new RopeCoilsProjectile(pos.x(), pos.y(), pos.z(), level);
         coils.setItem(stack);
         return coils;
     }

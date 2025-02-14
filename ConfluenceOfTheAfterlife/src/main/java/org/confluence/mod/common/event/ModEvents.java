@@ -7,6 +7,8 @@ import net.minecraft.server.packs.PackSelectionConfig;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -19,6 +21,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
@@ -51,6 +54,7 @@ import org.confluence.mod.common.item.accessory.MusicBoxItem;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.integration.patchouli.PatchouliEntityEntriesPacketS2C;
 import org.confluence.mod.integration.patchouli.PatchouliHelper;
+import org.confluence.mod.mixin.accessor.RangedAttributeAccessor;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.ConfluenceResources;
@@ -74,9 +78,21 @@ public final class ModEvents {
             Confluence.registerGameRules();
             ModFluids.registerInteraction();
             ModFluids.registerShimmerTransform();
-
             ModAchievements.initialize();
             ModBiomes.registerRegionAndSurface();
+            NeoForgeMod.enableMergedAttributeTooltips();
+
+            if (!ModList.get().isLoaded("attributefix")) {
+                if (Attributes.ARMOR.value() instanceof RangedAttribute rangedAttribute) {
+                    ((RangedAttributeAccessor) rangedAttribute).setMaxValue(1024.0);
+                }
+                if (Attributes.ARMOR_TOUGHNESS.value() instanceof RangedAttribute rangedAttribute) {
+                    ((RangedAttributeAccessor) rangedAttribute).setMaxValue(1024.0);
+                }
+                if (Attributes.MAX_HEALTH.value() instanceof RangedAttribute rangedAttribute) {
+                    ((RangedAttributeAccessor) rangedAttribute).setMaxValue(8192.0);
+                }
+            }
         });
     }
 

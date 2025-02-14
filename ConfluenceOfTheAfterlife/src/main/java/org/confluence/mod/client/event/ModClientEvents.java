@@ -190,6 +190,7 @@ public final class ModClientEvents {
 
         event.registerEntityRenderer(BASE_MANA_STAFF_PROJECTILE.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(VILETHRON_PROJECTILE.get(), VilethronProjectileRenderer::new);
+        event.registerEntityRenderer(HURTNADO_PROJECTILE.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(ARROW_PROJECTILE.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(EFFECT_THROWN_POTION.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(ICE_BLADE_SWORD_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, new IceBladeSwordProjectileModel(c.bakeLayer(IceBladeSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/ice_blade_sword_projectile.png"), 1, 0F));

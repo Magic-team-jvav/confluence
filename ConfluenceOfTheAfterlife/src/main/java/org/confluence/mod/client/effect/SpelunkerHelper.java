@@ -17,7 +17,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.mixin.client.accessor.FontAccessor;
 import org.confluence.mod.util.ModUtils;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -350,7 +349,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
                         poseStack.translate(-component.getString().length()/5.0 * scale,0.7 * scale,0);//旋转后偏移
 
 
-                        ((FontAccessor) (Minecraft.getInstance().font)).callRenderText(Component.literal(component.getString()).withStyle(style -> style.withColor(map.get(block).color().getRGB())).getVisualOrderText(),
+                        Minecraft.getInstance().font.renderText(Component.literal(component.getString()).withStyle(style -> style.withColor(map.get(block).color().getRGB())).getVisualOrderText(),
                                 -5, -5f, map.get(block).color().getRGB(),
                                 false, poseStack.last().pose(), Minecraft.getInstance().renderBuffers().bufferSource(), Font.DisplayMode.SEE_THROUGH, 0, 15 << 20 | 15 << 4);
 

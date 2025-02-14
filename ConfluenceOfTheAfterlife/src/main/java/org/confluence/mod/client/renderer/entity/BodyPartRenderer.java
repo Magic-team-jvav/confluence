@@ -3,6 +3,7 @@ package org.confluence.mod.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.AgeableHierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -15,7 +16,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
-import org.confluence.mod.mixin.client.accessor.AgeableHierarchicalModelAccessor;
 import org.confluence.mod.mixin.client.accessor.AgeableListModelAccessor;
 import org.confluence.mod.mixin.client.accessor.LivingEntityRendererAccessor;
 import org.confluence.terraentity.client.boss.renderer.GeoBossRenderer;
@@ -125,8 +125,8 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
 //            poseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp((float) entity.tickCount / entity.lifetime, 0, 360)));
             poseStack.translate(-entity.xOffset, -entity.yOffset - halfMinSide, -entity.zOffset);
 
-            if(livingRenderer.getModel().young && livingRenderer.getModel() instanceof AgeableHierarchicalModelAccessor model){
-                poseStack.scale(model.getYoungScaleFactor(), model.getYoungScaleFactor(), model.getYoungScaleFactor());
+            if(livingRenderer.getModel() instanceof AgeableHierarchicalModel<?> model && model.young){
+                poseStack.scale(model.youngScaleFactor, model.youngScaleFactor, model.youngScaleFactor);
             }else if(livingRenderer.getModel().young && livingRenderer.getModel() instanceof AgeableListModelAccessor model){
                 for(ModelPart bodyPart : model.callBodyParts()){
                     if(entity.modelPart == bodyPart){

@@ -37,7 +37,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.mixin.client.accessor.GameRendererAccessor;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.jetbrains.annotations.NotNull;
@@ -107,10 +106,10 @@ public class TheConstant extends SecretSeed {
             if (postChain == null || !POST_EFFECT.toString().equals(postChain.getName())) {
                 gameRenderer.loadEffect(POST_EFFECT);
             }
-            ((GameRendererAccessor) gameRenderer).setEffectActive(true);
+            gameRenderer.effectActive = true;
         } else {
             if (postChain != null && POST_EFFECT.toString().equals(postChain.getName())) {
-                ((GameRendererAccessor) gameRenderer).setEffectActive(false);
+                gameRenderer.effectActive = false;
             }
         }
     }

@@ -16,7 +16,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
-import org.confluence.mod.mixin.client.accessor.FontAccessor;
 import org.confluence.mod.util.DeathAnimUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -64,11 +63,11 @@ public class DamageIndicatorParticle extends TextureSheetParticle {
         poseStack.scale(f, f, f);  // 文本大小
         int width = minecraft.font.width(text);
         Matrix4f matrix = new Matrix4f(poseStack.last().pose());
-        ((FontAccessor) (minecraft.font)).callRenderText(text.getVisualOrderText(),
+        minecraft.font.renderText(text.getVisualOrderText(),
             -width / 2f, 0, Mth.lerpInt(pPartialTicks, transparencyOld, transparency) << 24,
             false, matrix, bufferSource, Font.DisplayMode.NORMAL, 0, getLightColor(pPartialTicks));
         matrix.translate(0, 0, 0.03f);
-        ((FontAccessor) (minecraft.font)).callRenderText(text.getVisualOrderText(),
+        minecraft.font.renderText(text.getVisualOrderText(),
             -width / 2f, 0, Mth.lerpInt(pPartialTicks, transparencyOld, transparency) << 24,
             true, matrix, bufferSource, Font.DisplayMode.NORMAL, 0, getLightColor(pPartialTicks));
         bufferSource.endBatch();

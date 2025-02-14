@@ -54,7 +54,6 @@ import org.confluence.mod.common.item.accessory.MusicBoxItem;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.integration.patchouli.PatchouliEntityEntriesPacketS2C;
 import org.confluence.mod.integration.patchouli.PatchouliHelper;
-import org.confluence.mod.mixin.accessor.RangedAttributeAccessor;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.ConfluenceResources;
@@ -84,13 +83,13 @@ public final class ModEvents {
 
             if (!ModList.get().isLoaded("attributefix")) {
                 if (Attributes.ARMOR.value() instanceof RangedAttribute rangedAttribute) {
-                    ((RangedAttributeAccessor) rangedAttribute).setMaxValue(1024.0);
+                    rangedAttribute.maxValue = 1024.0;
                 }
                 if (Attributes.ARMOR_TOUGHNESS.value() instanceof RangedAttribute rangedAttribute) {
-                    ((RangedAttributeAccessor) rangedAttribute).setMaxValue(1024.0);
+                    rangedAttribute.maxValue = 1024.0;
                 }
                 if (Attributes.MAX_HEALTH.value() instanceof RangedAttribute rangedAttribute) {
-                    ((RangedAttributeAccessor) rangedAttribute).setMaxValue(8192.0);
+                    rangedAttribute.maxValue = 8192.0;
                 }
             }
         });

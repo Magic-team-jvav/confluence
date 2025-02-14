@@ -29,7 +29,6 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.mixin.client.accessor.ParticleAccessor;
 import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
@@ -75,8 +74,8 @@ public final class WeatherHandler {
             float windSpeedZ = getWindSpeedZ();
             particle.setParticleSpeed(windSpeedX * random.nextDouble() * 0.02, 0.0, windSpeedZ * random.nextDouble() * 0.02);
             float roll = Mth.nextFloat(random, -Mth.HALF_PI, Mth.HALF_PI);
-            ((ParticleAccessor) particle).setORoll(roll);
-            ((ParticleAccessor) particle).setRoll(roll);
+            particle.oRoll = roll;
+            particle.roll = roll;
         }
     }
 

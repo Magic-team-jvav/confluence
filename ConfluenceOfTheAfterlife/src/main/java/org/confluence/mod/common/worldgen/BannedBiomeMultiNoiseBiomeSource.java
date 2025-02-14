@@ -11,7 +11,6 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
-import org.confluence.mod.mixin.accessor.MultiNoiseBiomeSourceAccessor;
 
 public class BannedBiomeMultiNoiseBiomeSource extends MultiNoiseBiomeSource {
     private final ResourceKey<Biome> bannedBiome;
@@ -19,7 +18,7 @@ public class BannedBiomeMultiNoiseBiomeSource extends MultiNoiseBiomeSource {
     private Holder<Biome> target;
 
     public BannedBiomeMultiNoiseBiomeSource(MultiNoiseBiomeSource biomeSource, ResourceKey<Biome> bannedBiome, ResourceKey<Biome> targetBiome) {
-        super(((MultiNoiseBiomeSourceAccessor) biomeSource).getParameters());
+        super(biomeSource.parameters);
         this.bannedBiome = bannedBiome;
         this.targetBiome = targetBiome;
     }

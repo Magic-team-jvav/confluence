@@ -1,8 +1,10 @@
 package org.confluence.mod.mixin.item;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.projectile.BaseArrowEntity;
@@ -11,20 +13,27 @@ import org.confluence.mod.common.item.bow.TerraBowItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ArrowItem.class)
+@Mixin(value = ArrowItem.class, priority = 1100)
 public abstract class ArrowItemMixin {
+    @ModifyArg(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Item;<init>(Lnet/minecraft/world/item/Item$Properties;)V"))
+    private static Item.Properties maxStack(Item.Properties properties) {
+        int value = 9999;
+        if (properties.components != null) {
+            int size = (int) properties.components.map.get(DataComponents.MAX_STACK_SIZE);
+            if (size > value) value = size;
+        }
+        return properties.stacksTo(value);
+    }
 
     @Inject(method = "createArrow", at = @At("HEAD"), cancellable = true)
     public void createArrow(Level level, ItemStack ammo, LivingEntity shooter, ItemStack weapon, CallbackInfoReturnable<AbstractArrow> cir) {
-        // 木箭转化
-        if(weapon.getItem() instanceof TerraBowItem bow){
+        if (weapon.getItem() instanceof TerraBowItem bow) { // 木箭转化
             BaseArrowItem arrowItem = bow.arrowModifier.getTransformArrow();
-            if(arrowItem!= null) {
-                BaseArrowEntity arrow = new BaseArrowEntity(shooter, ammo.copyWithCount(1), weapon, arrowItem,  bow.modifyArrowBuilder);
-
-                cir.setReturnValue(arrow);
+            if (arrowItem != null) {
+                cir.setReturnValue(new BaseArrowEntity(shooter, ammo.copyWithCount(1), weapon, arrowItem, bow.modifyArrowBuilder));
             }
         }
     }

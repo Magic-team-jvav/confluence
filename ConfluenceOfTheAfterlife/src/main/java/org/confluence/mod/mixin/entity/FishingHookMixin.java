@@ -36,7 +36,6 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.fishing.IBait;
 import org.confluence.mod.mixed.IFishingHook;
-import org.confluence.mod.mixin.accessor.LootParamsAccessor;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.mixed.SelfGetter;
 import org.confluence.terra_curio.util.TCUtils;
@@ -182,7 +181,7 @@ public abstract class FishingHookMixin implements IFishingHook, SelfGetter<Fishi
             }
             if (confluence$bait != null) fishing *= bonus;
         }
-        ((LootParamsAccessor) pParams).setLuck(fishing);
+        pParams.luck = fishing;
         return pParams;
     }
 

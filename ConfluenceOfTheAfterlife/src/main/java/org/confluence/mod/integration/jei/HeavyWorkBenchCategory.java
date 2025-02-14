@@ -12,7 +12,6 @@ import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
-import org.confluence.mod.mixin.accessor.ShapedRecipePatternAccessor;
 import org.confluence.terra_curio.integration.jei.JeiBackGround;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -54,7 +53,7 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<HeavyWorkBenchRec
         ShapedRecipePattern pattern = recipe.pattern;
         int width = pattern.width();
         int height = pattern.height();
-        boolean symmetrical = ((ShapedRecipePatternAccessor) (Object) pattern).getSymmetrical();
+        boolean symmetrical = pattern.symmetrical;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (symmetrical) {

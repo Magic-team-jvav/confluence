@@ -11,6 +11,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.model.AgeableHierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.Input;
@@ -51,10 +52,8 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
 import org.confluence.mod.mixed.*;
-import org.confluence.mod.mixin.client.accessor.AgeableHierarchicalModelAccessor;
 import org.confluence.mod.mixin.client.accessor.AgeableListModelAccessor;
 import org.confluence.mod.mixin.client.accessor.LivingEntityRendererAccessor;
-import org.confluence.mod.mixin.client.accessor.ModelPartAccessor;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 import org.confluence.mod.util.DeathAnimUtils;
 import org.confluence.mod.util.ModUtils;
@@ -70,7 +69,6 @@ import software.bernie.geckolib.cache.object.GeoCube;
 import software.bernie.geckolib.event.GeoRenderEvent;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-import java.text.DecimalFormat;
 import java.util.*;
 
 import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
@@ -308,9 +306,9 @@ public final class GameClientEvents {
 //            poseStack.translate(0.0F, -1.501F, 0.0F);
 //            livingRenderer.render(entity, entity.getYRot(), 1, poseStack, DummyMultiBufferSource.INSTANCE, 0);
             DeathAnimUtils.dummyRender(livingRenderer, entity, poseStack);
-            if(livingRenderer.getModel() instanceof AgeableHierarchicalModelAccessor ah && livingRenderer.getModel().young){
-                poseStack.scale(ah.getYoungScaleFactor(), ah.getYoungScaleFactor(), ah.getYoungScaleFactor());
-                poseStack.translate(0.0F, ah.getBodyYOffset() / 16.0F, 0.0F);
+            if(livingRenderer.getModel() instanceof AgeableHierarchicalModel<?> model && model.young){
+                poseStack.scale(model.youngScaleFactor, model.youngScaleFactor, model.youngScaleFactor);
+                poseStack.translate(0.0F, model.bodyYOffset / 16.0F, 0.0F);
             }
             Stack<Vector3f> rots = new Stack<>();
             rots.push(new Vector3f());
@@ -347,7 +345,7 @@ public final class GameClientEvents {
         Transformation transformation = new Transformation(pose);
         Vector3f scale = transformation.getScale();
 //        DecimalFormat df = new DecimalFormat("#.####");
-        for(ModelPart.Cube cube : ((ModelPartAccessor) (Object) modelPart).getCubes()){
+        for(ModelPart.Cube cube : modelPart.cubes){
             float minX = cube.minX;
             float minY = cube.minY;
             float minZ = cube.minZ;
@@ -406,7 +404,7 @@ public final class GameClientEvents {
         }
 //        System.out.println("--\n");
 
-        for(Map.Entry<String, ModelPart> entry : ((ModelPartAccessor)(Object) modelPart).getChildren().entrySet()){
+        for(Map.Entry<String, ModelPart> entry : modelPart.children.entrySet()){
             String childName = entry.getKey();
             ModelPart child = entry.getValue();
             if("cloak".equals(childName))continue;

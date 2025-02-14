@@ -36,7 +36,6 @@ import org.confluence.mod.common.block.functional.network.NetworkNode;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.mixin.accessor.ChestBlockEntityAccessor;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -158,7 +157,7 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
         @Override
         public void startOpen(Player pPlayer) {
             super.startOpen(pPlayer);
-            if (((ChestBlockEntityAccessor) this).getOpenersCounter().getOpenerCount() == 1) {
+            if (openersCounter.getOpenerCount() == 1) {
                 ((INetworkBlock) getBlockState().getBlock()).execute(getBlockState(), (ServerLevel) getLevel(), getBlockPos(), true);
             }
         }
@@ -166,7 +165,7 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
         @Override
         public void stopOpen(Player pPlayer) {
             super.stopOpen(pPlayer);
-            if (((ChestBlockEntityAccessor) this).getOpenersCounter().getOpenerCount() == 0) {
+            if (openersCounter.getOpenerCount() == 0) {
                 ((INetworkBlock) getBlockState().getBlock()).execute(getBlockState(), (ServerLevel) getLevel(), getBlockPos(), false);
             }
         }

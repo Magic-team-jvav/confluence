@@ -24,7 +24,6 @@ import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.mixed.IPlayer;
-import org.confluence.mod.mixin.accessor.EntityAccessor;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.EQUIPMENT_START;
@@ -44,8 +43,8 @@ public final class EntityEvents {
             } else {
                 player.addItem(itemStack);
             }
-            ((EntityAccessor) player).setVehicle(null);
-            ((EntityAccessor) minecart).callRemovePassenger(player);
+            player.vehicle = null;
+            minecart.removePassenger(player);
             minecart.discard();
             event.setCanceled(true);
         }

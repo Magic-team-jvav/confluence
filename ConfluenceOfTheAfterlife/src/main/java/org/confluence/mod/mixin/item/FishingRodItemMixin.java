@@ -8,7 +8,6 @@ import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.accessory.FishingBobber;
 import org.confluence.mod.mixed.IFishingHook;
-import org.confluence.mod.mixin.accessor.FishingHookAccessor;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,8 +26,8 @@ public abstract class FishingRodItemMixin {
             fishingHook = new CurioFishingHook(
                     playerOwner,
                     fishingHook.level(),
-                    ((FishingHookAccessor) fishingHook).getLuck(),
-                    ((FishingHookAccessor) fishingHook).getLureSpeed(),
+                    fishingHook.luck,
+                    fishingHook.lureSpeed,
                     curio.variant
             );
         }

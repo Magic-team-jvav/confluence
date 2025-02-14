@@ -1,4 +1,4 @@
-package org.confluence.mod.common.entity.projectile;
+package org.confluence.mod.common.entity.projectile.boulder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

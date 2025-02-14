@@ -1,16 +1,14 @@
 package org.confluence.mod.common.entity.projectile;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class ThunderZapperProjectile extends BaseManaStaffProjectileEntity {
-    private float flip;
+    private float flip = 0.32F;
     private Vec3 dir;
 
-    public ThunderZapperProjectile(LivingEntity living, Level level) {
-        super(living, level, Variant.THUNDER_ZAPPER);
-        this.flip = 0.32F;
+    public ThunderZapperProjectile(LivingEntity living) {
+        super(living, Variant.THUNDER_ZAPPER);
     }
 
     @Override

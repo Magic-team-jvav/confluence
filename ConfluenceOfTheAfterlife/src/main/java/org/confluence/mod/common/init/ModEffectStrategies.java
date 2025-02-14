@@ -9,7 +9,7 @@ import org.confluence.terraentity.init.TEEffects;
 import org.confluence.terraentity.registries.EffectStrategies;
 
 import java.util.Map;
-import java.util.function.*;
+import java.util.function.BiConsumer;
 
 import static org.confluence.terraentity.hit_effect.EffectStrategy.*;
 
@@ -19,7 +19,7 @@ import static org.confluence.terraentity.hit_effect.EffectStrategy.*;
  *
  * @author coffee
  */
-public class ModEffectStrategies {
+public final class ModEffectStrategies {
     public static final EffectStrategies EFFECT_STRATEGY = EffectStrategies.create(Confluence.MODID);
 
     public static DeferredHolder<EffectStrategy, EffectStrategy> createEffect(String name, BiConsumer<LivingEntity, LivingEntity> effect) {

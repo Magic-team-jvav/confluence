@@ -6,7 +6,7 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Slime;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import org.confluence.mod.common.entity.projectile.BoulderEntity;
+import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
 
 import java.awt.*;
 import java.util.ArrayList;

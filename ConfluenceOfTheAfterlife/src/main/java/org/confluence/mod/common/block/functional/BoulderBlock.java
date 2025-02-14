@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
-import org.confluence.mod.common.entity.projectile.BoulderEntity;
+import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;

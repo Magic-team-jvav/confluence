@@ -6,14 +6,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
-import org.confluence.mod.common.entity.projectile.BoulderEntity;
-import org.confluence.mod.common.entity.projectile.ExplodeBoulderEntity;
-import org.confluence.mod.common.entity.projectile.FollowerBoulderEntity;
+import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
+import org.confluence.mod.common.entity.projectile.boulder.ExplodeBoulderEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
 

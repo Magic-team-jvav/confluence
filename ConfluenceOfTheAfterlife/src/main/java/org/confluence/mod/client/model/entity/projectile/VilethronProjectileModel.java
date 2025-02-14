@@ -8,10 +8,10 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.projectile.VilethronProjectile;
+import org.confluence.mod.common.entity.projectile.strip.StripedProjectile;
 import org.jetbrains.annotations.NotNull;
 
-public class VilethronProjectileModel extends EntityModel<VilethronProjectile> {
+public class VilethronProjectileModel extends EntityModel<StripedProjectile> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("vilethron_projectile"), "main");
     private final ModelPart root;
 
@@ -30,7 +30,7 @@ public class VilethronProjectileModel extends EntityModel<VilethronProjectile> {
     }
 
     @Override
-    public void setupAnim(@NotNull VilethronProjectile entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
+    public void setupAnim(@NotNull StripedProjectile entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 
     @Override
     public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {

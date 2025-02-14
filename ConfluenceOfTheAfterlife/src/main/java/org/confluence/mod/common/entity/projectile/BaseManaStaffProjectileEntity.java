@@ -7,7 +7,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,7 +17,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.util.ModUtils;
 import org.mesdag.particlestorm.PSGameClient;
@@ -38,8 +36,8 @@ public class BaseManaStaffProjectileEntity extends Projectile {
         super(entityType, level);
     }
 
-    public BaseManaStaffProjectileEntity(LivingEntity living, Level level, Variant variant) {
-        this(ModEntities.BASE_MANA_STAFF_PROJECTILE.get(), living, level, variant);
+    public BaseManaStaffProjectileEntity(LivingEntity living, Variant variant) {
+        this(ModEntities.BASE_MANA_STAFF_PROJECTILE.get(), living, living.level(), variant);
     }
 
     public BaseManaStaffProjectileEntity(EntityType<? extends BaseManaStaffProjectileEntity> entityType, LivingEntity living, Level level, Variant variant) {
@@ -143,33 +141,6 @@ public class BaseManaStaffProjectileEntity extends Projectile {
 
     protected float getBaseKnockBack() {
         return getVariant().knockBack;
-    }
-
-    public static class Spark extends BaseManaStaffProjectileEntity {
-        public Spark(LivingEntity living, Level level) {
-            super(living, level, Variant.SPARK);
-        }
-
-        @Override
-        protected void onHitEntity(EntityHitResult entityHitResult) {
-            super.onHitEntity(entityHitResult);
-            entityHitResult.getEntity().igniteForTicks(100);
-        }
-    }
-
-    public static class Frost extends BaseManaStaffProjectileEntity {
-        public Frost(LivingEntity living, Level level) {
-            super(living, level, Variant.FROST);
-        }
-
-        @Override
-        protected void onHitEntity(EntityHitResult entityHitResult) {
-            super.onHitEntity(entityHitResult);
-            if (entityHitResult.getEntity() instanceof LivingEntity living) {
-                int duration = living.getRandom().nextFloat() < 2.0F / 3.0F ? 40 : 60;
-                living.addEffect(new MobEffectInstance(ModEffects.FROST_BURN, duration));
-            }
-        }
     }
 
     public record Variant(int id, String name, float damage, double gravity, float knockBack, ResourceLocation particleId) implements StringRepresentable {

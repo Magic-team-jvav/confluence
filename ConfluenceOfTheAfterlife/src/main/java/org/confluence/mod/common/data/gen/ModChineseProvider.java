@@ -673,7 +673,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.ARROW_PROJECTILE.get(), "泰拉箭");
 
 
-
         //region blocks
         add(OreBlocks.SANCTIFICATION_COAL_ORE.get(), "圣化煤矿石");
         add(OreBlocks.CORRUPTION_COAL_ORE.get(), "腐化煤矿石");
@@ -1371,7 +1370,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArrowItems.SHIMMER_ARROW.get(), "微光箭");
         add(ArrowItems.FOSSIL_ARROW.get(), "化石箭");
         add(ArrowItems.FLY_FISH_ARROW.get(), "飞鱼箭");
-
 
 
         //endregion blocks
@@ -2459,9 +2457,5 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.OBSIDIAN_SKIN.get(), "黑曜石皮");
 
         ModEffectStrategies.EFFECT_STRATEGY.getEntries().forEach(strategy -> add(strategy.get().getTranslationKey(), strategy.get().getDescription_zh_cn()));
-
-
     }
-
-
 }

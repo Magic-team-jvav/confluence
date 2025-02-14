@@ -195,6 +195,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         IntrinsicTagAppender<Item> torch = tag(ModTags.Items.TORCH);
         torch.add(Items.TORCH, Items.SOUL_TORCH);
 //        for (Torches torches : Torches.values()) torch.add(torches.item.get());
+        tag(ModTags.Items.PROVIDE_LIGHT).addTag(ModTags.Items.TORCH).add(
+                Items.LANTERN,
+                Items.SOUL_LANTERN,
+                Items.LAVA_BUCKET,
+                ToolItems.BOTTOMLESS_LAVA_BUCKET.get()
+        );
         tag(ModTags.Items.BOTTOMLESS).add(
                 ToolItems.BOTTOMLESS_WATER_BUCKET.get(),
                 ToolItems.BOTTOMLESS_LAVA_BUCKET.get(),

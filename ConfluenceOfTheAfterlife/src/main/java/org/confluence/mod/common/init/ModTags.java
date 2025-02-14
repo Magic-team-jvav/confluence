@@ -63,6 +63,7 @@ public final class ModTags {
         public static final TagKey<Item> PROVIDE_MANA = register("provide_mana");
         public static final TagKey<Item> PROVIDE_LIFE = register("provide_life");
         public static final TagKey<Item> TORCH = register("torch");
+        public static final TagKey<Item> PROVIDE_LIGHT = register("provide_lide");
         public static final TagKey<Item> HARDMODE = register("hardmode");
         public static final TagKey<Item> BOTTOMLESS = register("bottomless");
         public static final TagKey<Item> FRUIT = register("fruit");

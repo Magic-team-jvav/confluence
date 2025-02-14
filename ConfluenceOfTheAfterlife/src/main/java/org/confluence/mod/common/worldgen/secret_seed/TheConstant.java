@@ -19,9 +19,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -35,7 +35,9 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDamageTypes;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.util.CuriosUtils;
@@ -75,8 +77,9 @@ public class TheConstant extends SecretSeed {
     }
 
     public static void applyDarkness(ServerPlayer player, ServerLevel level) {
-        GameType mode = player.gameMode.getGameModeForPlayer();
-        if (mode != GameType.CREATIVE && mode != GameType.SPECTATOR && level.getGameTime() % 20 == 0 && ModSecretSeeds.THE_CONSTANT.match(level)) {
+        if (player.gameMode.getGameModeForPlayer().isSurvival() && level.getGameTime() % 20 == 0 && ModSecretSeeds.THE_CONSTANT.match(level)) {
+            if (player.hasEffect(ModEffects.SHINE) || player.hasEffect(MobEffects.GLOWING)) return;
+            if (ModUtils.anyHandHasItem(player, itemStack -> itemStack.is(ModTags.Items.PROVIDE_LIGHT))) return;
             CompoundTag data = player.getPersistentData();
             int tick = data.getInt("confluence:in_darkness_tick");
             BlockPos eyePos = BlockPos.containing(player.getEyePosition());

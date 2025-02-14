@@ -654,6 +654,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("block.confluence.base_chest_block.unlocked_water", "§r水中箱");
         add("block.confluence.base_chest_block.death_water", "§r死人水中箱");
         add("block.confluence.base_chest_block.unlocked_skyware", "§r天域箱");
+        add("block.confluence.base_chest_block.unlocked_normal", "§r木箱");
+        add("block.confluence.base_chest_block.death_normal", "§r死人木箱");
 
         add("resourcepack.terraria_art", "泰拉艺术");
         add("resourcepack.terraria_armor", "泰拉盔甲样式材质");
@@ -1709,7 +1711,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.EVER_POWERED_RAIL.get(), "永久动力铁轨");
 
         add(FunctionalBlocks.PLAYER_PRESSURE_PLATE.get(), "玩家压力板");
-        add(FunctionalBlocks.STONE_PRESSURE_PLATE.get(), "石质压力板");
+        add(FunctionalBlocks.STONE_PRESSURE_PLATE.get(), "石头压力板");
         add(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE.get(), "深板岩压力板");
         add(FunctionalBlocks.STONE_PRESSURE_BLOCK.get(), "石头压力块");
         add(FunctionalBlocks.DEEPSLATE_PRESSURE_BLOCK.get(), "深板岩压力块");

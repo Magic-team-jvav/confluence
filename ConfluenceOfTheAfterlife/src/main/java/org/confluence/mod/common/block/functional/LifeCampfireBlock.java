@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import static net.minecraft.world.level.block.entity.CampfireBlockEntity.cookTick;
 import static net.minecraft.world.level.block.entity.CampfireBlockEntity.cooldownTick;
 
+// todo 电线控制
 public class LifeCampfireBlock extends CampfireBlock {
     public LifeCampfireBlock(Properties properties) {
         super(true, 1, properties);

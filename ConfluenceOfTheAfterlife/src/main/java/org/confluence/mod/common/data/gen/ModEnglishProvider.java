@@ -9,11 +9,11 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModEffectStrategies;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.init.ModEffectStrategies;
 import org.confluence.mod.mixin.accessor.LanguageProviderAccessor;
 
 import java.util.Arrays;
@@ -547,6 +547,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("block.confluence.base_chest_block.death_water", "§rDeath Water Chest");
         add("block.confluence.base_chest_block.unlocked_skyware", "§rSkyware Chest");
         add("block.confluence.base_chest_block.death_skyware", "§rDeath Skyware Chest");
+        add("block.confluence.base_chest_block.unlocked_normal", "§rWooden Chest");
+        add("block.confluence.base_chest_block.death_normal", "§rDeath Wooden Chest");
 
         add("resourcepack.terraria_art", "Terraria Art");
         add("resourcepack.terraria_armor", "Terraria-Like Armor");

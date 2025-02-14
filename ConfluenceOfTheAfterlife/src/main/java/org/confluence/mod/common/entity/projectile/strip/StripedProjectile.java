@@ -1,8 +1,7 @@
 package org.confluence.mod.common.entity.projectile.strip;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -27,10 +26,10 @@ import org.confluence.mod.util.ModUtils;
 public abstract class StripedProjectile extends Projectile {
     private static final EntityDataAccessor<Boolean> DATA_IS_HEAD = SynchedEntityData.defineId(StripedProjectile.class, EntityDataSerializers.BOOLEAN);
     public double distForHeadRemove = 10.0;
-    protected double distForCreateBody = 1.0;
+    protected double distForCreateBody = 0.95;
     public int ticksForBodyRemove = 28;
     protected int frequencyForBodyCheckTouch = 5;
-    private BlockPos startPos = BlockPos.ZERO;
+    private Vec3 startPos = Vec3.ZERO;
     private double distO = -0.5;
     @OnlyIn(Dist.CLIENT)
     public float[] rot;
@@ -48,7 +47,7 @@ public abstract class StripedProjectile extends Projectile {
         setOwner(living);
         setNoGravity(true);
         setPos(pos);
-        this.startPos = blockPosition();
+        this.startPos = pos;
     }
 
     @Override
@@ -62,16 +61,15 @@ public abstract class StripedProjectile extends Projectile {
         if (isHead()) {
             Vec3 vec3 = getDeltaMovement();
             HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-            checkInsideBlocks();
             if (hitresult.getType() == HitResult.Type.ENTITY) {
                 onHitEntity((EntityHitResult) hitresult);
             }
 
             if (!level().isClientSide && getOwner() instanceof LivingEntity living) {
-                double dist = Math.sqrt(blockPosition().distSqr(startPos));
+                double dist = position().distanceTo(startPos);
                 double delta = dist - distO;
                 if (delta >= distForCreateBody) {
-                    if (delta > distForHeadRemove) {
+                    if (dist > distForHeadRemove) {
                         onRemove();
                     } else {
                         StripedProjectile body = createBody(living);
@@ -83,6 +81,7 @@ public abstract class StripedProjectile extends Projectile {
                 }
             }
 
+            checkInsideBlocks();
             double offX = getX() + vec3.x;
             double offY = getY() + vec3.y;
             double offZ = getZ() + vec3.z;
@@ -142,7 +141,7 @@ public abstract class StripedProjectile extends Projectile {
     @Override
     protected void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.put("StartPos", NbtUtils.writeBlockPos(startPos));
+        compound.put("StartPos", Vec3.CODEC.encodeStart(NbtOps.INSTANCE, startPos).getOrThrow());
         compound.putInt("Age", tickCount);
         compound.putBoolean("IsHead", isHead());
     }
@@ -150,7 +149,7 @@ public abstract class StripedProjectile extends Projectile {
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        this.startPos = NbtUtils.readBlockPos(compound, "StartPos").orElse(blockPosition());
+        this.startPos = Vec3.CODEC.parse(NbtOps.INSTANCE, compound.get("StartPos")).getOrThrow();
         this.tickCount = compound.getInt("Age");
         setHead(compound.getBoolean("IsHead"));
     }

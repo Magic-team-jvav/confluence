@@ -21,6 +21,7 @@
         "accessor.LanguageProviderAccessor",
         "accessor.LootParamsAccessor",
         "accessor.MultiNoiseBiomeSourceAccessor",
+        "accessor.RangedAttributeAccessor",
         "accessor.ShapedRecipePatternAccessor",
         "accessor.UseOnContextAccessor",
         "block.AnvilBlockMixin",

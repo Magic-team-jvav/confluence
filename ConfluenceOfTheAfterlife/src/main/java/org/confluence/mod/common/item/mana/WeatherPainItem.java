@@ -19,11 +19,13 @@ public class WeatherPainItem extends ManaStaffItem<HurtnadoProjectile> {
 
     @Override
     protected void beforeShoot(ServerPlayer player, ItemStack itemStack, HurtnadoProjectile projectile) {
+        super.beforeShoot(player, itemStack, projectile);
         projectile.addDeltaMovement(new Vec3(0.0, 0.4, 0.0));
     }
 
     @Override
     protected void afterShoot(ServerPlayer player, ItemStack itemStack, HurtnadoProjectile projectile) {
+        super.afterShoot(player, itemStack, projectile);
         TCUtils.updateItemStackNbt(itemStack, tag -> {
             if (tag.hasUUID("UUID") && player.serverLevel().getEntity(tag.getUUID("UUID")) instanceof HurtnadoProjectile projectile1) {
                 projectile1.discard();

@@ -64,12 +64,9 @@ public class ManaStaffItem<E extends Projectile> extends CustomRarityItem {
         if (player instanceof ServerPlayer serverPlayer && couldShoot(serverPlayer, itemStack)) {
             serverPlayer.awardStat(Stats.ITEM_USED.get(this));
             E projectile = factory.create(serverPlayer);
-            projectile.shootFromRotation(serverPlayer, serverPlayer.getXRot(), serverPlayer.getYRot(), 0.0F, velocity, 0.0F);
             beforeShoot(serverPlayer, itemStack, projectile);
             level.addFreshEntity(projectile);
             afterShoot(serverPlayer, itemStack, projectile);
-            player.getCooldowns().addCooldown(this, cooldown);
-            level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundEvents.REGULAR_STAFF_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
         }
         return InteractionResultHolder.success(itemStack);
     }
@@ -78,9 +75,16 @@ public class ManaStaffItem<E extends Projectile> extends CustomRarityItem {
         return PlayerUtils.extractMana(player, () -> PrefixUtils.calculateManaCost(itemStack, manaCost));
     }
 
-    protected void beforeShoot(ServerPlayer player, ItemStack itemStack, E projectile) {}
+    protected void beforeShoot(ServerPlayer player, ItemStack itemStack, E projectile) {
+        projectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, velocity, 0.0F);
+    }
 
-    protected void afterShoot(ServerPlayer player, ItemStack itemStack, E projectile) {}
+    protected void afterShoot(ServerPlayer player, ItemStack itemStack, E projectile) {
+        if (cooldown > 0) {
+            player.getCooldowns().addCooldown(this, cooldown);
+        }
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundEvents.REGULAR_STAFF_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+    }
 
     @FunctionalInterface
     public interface ProjectileFactory<E extends Projectile> {

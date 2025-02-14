@@ -4,11 +4,8 @@ import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.projectile.BaseManaStaffProjectileEntity;
+import org.confluence.mod.common.entity.projectile.*;
 import org.confluence.mod.common.entity.projectile.BaseManaStaffProjectileEntity.Variant;
-import org.confluence.mod.common.entity.projectile.ThunderZapperProjectile;
-import org.confluence.mod.common.entity.projectile.WandOfFrostingProjectile;
-import org.confluence.mod.common.entity.projectile.WandOfSparkingProjectile;
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
 import org.confluence.mod.common.item.mana.ManaStaffItem;
 import org.confluence.mod.common.item.mana.WeatherPainItem;
@@ -33,6 +30,10 @@ public class ManaStaffItems {
     public static final Supplier<ManaStaffItem<?>> DIAMOND_STAFF = ITEMS.register("diamond_staff", () -> new ManaStaffItem<>(ModRarity.BLUE, player -> new BaseManaStaffProjectileEntity(player, Variant.DIAMOND), 8, 9.5F, 26, 0.04));
     public static final Supplier<ManaStaffItem<?>> VILETHRON = ITEMS.register("vilethron", () -> new ManaStaffItem<>(ModRarity.BLUE, VilethronProjectile::new, 10, 8.0F, 28, 0.04));
     public static final Supplier<ManaStaffItem<?>> WEATHER_PAIN = ITEMS.register("weather_pain", WeatherPainItem::new);
+    /* 魔法飞弹 */
+    public static final Supplier<ManaStaffItem<?>> AQUA_SCEPTER = ITEMS.register("aqua_scepter", () -> new ManaStaffItem<>(ModRarity.GREEN, WaterStreamProjectile::new, 7, 32.0F, 5, 0.04));
+    /* 火之花 */
+    /* 烈焰火鞭 */
 
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
         ITEMS.getEntries().forEach(item -> tag.add(item.get()));

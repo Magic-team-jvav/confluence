@@ -1,0 +1,71 @@
+package org.confluence.mod.common.entity.projectile;
+
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.util.ModUtils;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class WaterStreamProjectile extends Projectile {
+    private final Set<Entity> passThrough = new HashSet<>();
+
+    public WaterStreamProjectile(EntityType<WaterStreamProjectile> entityType, Level level) {
+        super(entityType, level);
+    }
+
+    public WaterStreamProjectile(LivingEntity living) {
+        this(ModEntities.WATER_STREAM_PROJECTILE.get(), living.level());
+        setOwner(living);
+        setPos(living.getX(), living.getEyeY() - 0.1, living.getZ());
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {}
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (getOwner() == null) {
+            discard();
+            return;
+        }
+
+        HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+        if (hitResult.getType() == HitResult.Type.BLOCK){
+            discard();
+        } else if (hitResult instanceof EntityHitResult entityHitResult) {
+            Entity entity = entityHitResult.getEntity();
+            if (passThrough.add(entity)) {
+                if (entity.hurt(damageSources().indirectMagic(getOwner(), this), 5.4F)) {
+                    ModUtils.knockBackA2B(this, entity, 3.5, 0.2);
+                }
+                if (passThrough.size() >= 5) {
+                    discard();
+                    return;
+                }
+            }
+        }
+
+        Vec3 vec3 = getDeltaMovement();
+        double offX = getX() + vec3.x;
+        double offY = getY() + vec3.y;
+        double offZ = getZ() + vec3.z;
+        setPos(offX, offY, offZ);
+        setDeltaMovement(vec3.add(0.0, -0.24, 0.0));
+    }
+
+    @Override
+    protected boolean canHitEntity(Entity target) {
+        return target.canBeHitByProjectile() && target != getOwner();
+    }
+}

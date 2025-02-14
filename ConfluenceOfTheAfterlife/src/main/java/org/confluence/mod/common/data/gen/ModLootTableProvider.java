@@ -256,12 +256,12 @@ public class ModLootTableProvider extends LootTableProvider {
                     .add(LootItem.lootTableItem(JUNGLE_ROSE.get()).when(LootItemRandomChanceCondition.randomChance(0.05f)))));
             // endregion natural
 
-            dropSelf(BIG_RUBY_BLOCK.get());
-            dropSelf(BIG_AMBER_BLOCK.get());
-            dropSelf(BIG_TOPAZ_BLOCK.get());
-            dropSelf(BIG_SAPPHIRE_BLOCK.get());
-            dropSelf(BIG_TR_AMETHYST_BLOCK.get());
-            dropSelf(BIG_TR_EMERALD_BLOCK.get());
+            dropSelf(RUBY_BLOCK.get());
+            dropSelf(AMBER_BLOCK.get());
+            dropSelf(TOPAZ_BLOCK.get());
+            dropSelf(SAPPHIRE_BLOCK.get());
+            dropSelf(TR_AMETHYST_BLOCK.get());
+            dropSelf(TR_EMERALD_BLOCK.get());
 
             // decorative block
             dropSelf(TR_OAK_BEAM.get());

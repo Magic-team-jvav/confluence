@@ -128,12 +128,12 @@ public class DecorativeBlocks {
     public static final Supplier<Block> RAINBOW_BRICKS = copyBlockRegister("rainbow_bricks", Blocks.STONE_BRICKS);
     public static final Supplier<CloudBlock> FLOATING_WHEAT_BALE = registerWithItem("floating_wheat_bale", CloudBlock::new);
     // 大宝石块
-    public static final Supplier<Block> BIG_RUBY_BLOCK = copyBlockRegister("big_ruby_block", Blocks.DIAMOND_BLOCK);
-    public static final Supplier<Block> BIG_AMBER_BLOCK = copyBlockRegister("big_amber_block", Blocks.DIAMOND_BLOCK);
-    public static final Supplier<Block> BIG_TOPAZ_BLOCK = copyBlockRegister("big_topaz_block", Blocks.DIAMOND_BLOCK);
-    public static final Supplier<Block> BIG_TR_EMERALD_BLOCK = copyBlockRegister("big_tr_emerald_block", Blocks.DIAMOND_BLOCK);
-    public static final Supplier<Block> BIG_SAPPHIRE_BLOCK = copyBlockRegister("big_sapphire_block", Blocks.DIAMOND_BLOCK);
-    public static final Supplier<Block> BIG_TR_AMETHYST_BLOCK = copyBlockRegister("big_tr_amethyst_block", Blocks.DIAMOND_BLOCK);
+    public static final Supplier<Block> RUBY_BLOCK = copyBlockRegister("ruby_block", Blocks.DIAMOND_BLOCK);
+    public static final Supplier<Block> AMBER_BLOCK = copyBlockRegister("amber_block", Blocks.DIAMOND_BLOCK);
+    public static final Supplier<Block> TOPAZ_BLOCK = copyBlockRegister("topaz_block", Blocks.DIAMOND_BLOCK);
+    public static final Supplier<Block> TR_EMERALD_BLOCK = copyBlockRegister("tr_emerald_block", Blocks.DIAMOND_BLOCK);
+    public static final Supplier<Block> SAPPHIRE_BLOCK = copyBlockRegister("sapphire_block", Blocks.DIAMOND_BLOCK);
+    public static final Supplier<Block> TR_AMETHYST_BLOCK = copyBlockRegister("tr_amethyst_block", Blocks.DIAMOND_BLOCK);
     public static final Supplier<Block> TR_POLISHED_GRANITE = copyBlockRegister("tr_polished_granite", Blocks.DIAMOND_BLOCK);
 
 

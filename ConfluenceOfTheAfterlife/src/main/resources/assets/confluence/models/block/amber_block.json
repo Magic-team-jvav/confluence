@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/big_ruby_block"
+    "all": "confluence:block/amber_block"
   }
 }

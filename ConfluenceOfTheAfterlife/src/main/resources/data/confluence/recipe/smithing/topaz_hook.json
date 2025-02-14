@@ -7,7 +7,7 @@
         "item": "confluence:topaz_chain"
     },
     "addition": {
-        "item": "confluence:big_topaz_block"
+        "item": "confluence:topaz_block"
     },
     "result": {
         "id": "confluence:topaz_hook"

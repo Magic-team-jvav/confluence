@@ -7,7 +7,7 @@
         "item": "confluence:ruby_chain"
     },
     "addition": {
-        "item": "confluence:big_ruby_block"
+        "item": "confluence:ruby_block"
     },
     "result": {
         "id": "confluence:ruby_hook"

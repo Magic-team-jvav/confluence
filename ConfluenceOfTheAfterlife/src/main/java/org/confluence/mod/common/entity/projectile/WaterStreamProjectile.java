@@ -47,7 +47,7 @@ public class WaterStreamProjectile extends Projectile {
             } else if (hitResult instanceof EntityHitResult entityHitResult) {
                 Entity entity = entityHitResult.getEntity();
                 if (passThrough.add(entity)) {
-                    if (entity.hurt(damageSources().indirectMagic(getOwner(), this), 5.4F)) {
+                    if (entity.hurt(damageSources().indirectMagic(getOwner(), this), 7F)) {
                         ModUtils.knockBackA2B(this, entity, 3.5, 0.2);
                     }
                     if (passThrough.size() >= 5) {

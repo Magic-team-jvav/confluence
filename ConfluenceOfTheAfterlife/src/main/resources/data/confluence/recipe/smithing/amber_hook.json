@@ -7,7 +7,7 @@
         "item": "confluence:amber_chain"
     },
     "addition": {
-        "item": "confluence:big_amber_block"
+        "item": "confluence:amber_block"
     },
     "result": {
         "id": "confluence:amber_hook"

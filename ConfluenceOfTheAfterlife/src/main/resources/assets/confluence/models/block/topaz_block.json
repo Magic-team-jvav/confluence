@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/big_topaz_block"
+    "all": "confluence:block/topaz_block"
   }
 }

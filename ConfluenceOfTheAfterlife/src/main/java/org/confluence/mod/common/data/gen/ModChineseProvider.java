@@ -307,16 +307,23 @@ public class ModChineseProvider extends LanguageProvider {
 
 
         add("confluence.configuration.dropsMoney", "钱币掉落");
+        add("confluence.configuration.dropsMoney.tooltip", "启用时，你的钱币死亡后会掉落");
         add("confluence.configuration.autoStackGelsColor", "自动合并凝胶");
+        add("confluence.configuration.autoStackGelsColor.tooltip", "启用时，你拾取的不同颜色的凝胶会合并堆叠");
         add("confluence.configuration.fletchingMenu", "制箭台菜单");
+        add("confluence.configuration.fletchingMenu.tooltip", "启用时，将使用汇流来世的修改制箭台");
         add("confluence.configuration.shimmer_decompose", "微光分解");
+        add("confluence.configuration.shimmer_decompose.tooltip", "启用时，微光液体能将物品分解为原材料");
         add("confluence.configuration.fallingStarFrequency", "坠星频率");
+        add("confluence.configuration.fallingStarFrequency.tooltip", "定义夜晚中坠星的生成频率");
         add("confluence.configuration.defaultRespawnTimeMin", "默认最小重生时间");
         add("confluence.configuration.defaultRespawnTimeMax", "默认最大重生时间");
         add("confluence.configuration.bossRespawnTimeMin", "最小重生时间（boss战时）");
         add("confluence.configuration.bossRespawnTimeMax", "最大重生时间（boss战时）");
         add("confluence.configuration.showWindParticles", "风粒子展示");
         add("confluence.configuration.HUD", "HUD");
+        add("confluence.configuration.Mana", "魔力值");
+        add("confluence.configuration.Armor", "护甲值");
         add("confluence.configuration.Health", "生命值");
         add("confluence.configuration.Food", "饱食度");
         add("confluence.configuration.terraStyleHealth", "泰拉样式生命值");
@@ -329,15 +336,13 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.armorStyle.legacy_horizontal", "护甲值样式:精致-水平");
         add("confluence.configuration.armorStyle.legacy_diagonal", "护甲值样式:精致-对角");
         add("confluence.configuration.armorStyle.legacy_vertical", "护甲值样式:精致-垂直");
+        add("confluence.configuration.armorStyle.overlay", "护甲值样式:叠加");
         add("confluence.configuration.manaStyle.legacy", "魔力值样式:精致");
         add("confluence.configuration.manaStyle.overlay", "魔力值样式:叠加");
-        add("confluence.configuration.armorStyle.overlay", "护甲值样式:叠加");
         add("confluence.configuration.healthStyle.legacy", "生命值样式:精致");
-        add("confluence.configuration.foodStyle.legacy", "饱食度样式:精致");
         add("confluence.configuration.healthStyle.overlay", "生命值样式:叠加");
+        add("confluence.configuration.foodStyle.legacy", "饱食度样式:精致");
         add("confluence.configuration.foodStyle.overlay", "饱食度样式:叠加");
-        add("confluence.configuration.Mana", "魔力值");
-        add("confluence.configuration.Armor", "护甲值");
         add("confluence.configuration.leftEffectIcon", "左侧药水效果标识");
         add("confluence.configuration.Entity", "生物效果");
         add("confluence.configuration.hurtRedOverlay", "受击红色显示");
@@ -345,10 +350,16 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.goreEffect", "血腥效果");
         add("confluence.configuration.damageIndicator", "伤害数值显示");
         add("confluence.configuration.Gameplay", "游戏机制");
+        add("confluence.configuration.Gameplay.button", "游戏机制定义");
         add("confluence.configuration.PlayerDeath", "玩家死亡机制");
+        add("confluence.configuration.PlayerDeath.button", "玩家死亡机制");
+        add("confluence.configuration.PlayerDeath.tooltip", "定义玩家死亡时的效果");
         add("confluence.configuration.showMoneyDrops", "死亡界面显示掉落钱币数");
         // 分割
         add("confluence.configuration.Mana.button", "魔力值");
+        add("confluence.configuration.Armor.button", "护甲值");
+        add("confluence.configuration.Health.button", "生命值");
+        add("confluence.configuration.Food.button", "饱食度");
         add("confluence.configuration.manaStyle.tooltip", "魔力值样式");
         add("confluence.configuration.Mana.tooltip", "关于魔力值显示");
         add("confluence.configuration.Food.tooltip", "关于饱食度显示");
@@ -358,17 +369,19 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.Entity.button", "与生物有关的视觉效果");
         add("confluence.configuration.HUD.tooltip", "关于HUD显示");
         add("confluence.configuration.showWindParticles.tooltip", "通过调整数值，来决定你能看见风粒子的数量");
-        add("confluence.configuration.healthStyle.tooltip", "生命值显示");
         add("confluence.configuration.HUD.button", "关于HUD显示");
-        add("confluence.configuration.Armor.button", "护甲值");
-        add("confluence.configuration.Health.tooltip", "关于生命值显示");
-        add("confluence.configuration.title", "配置界面");
-        add("confluence.configuration.section.confluence.client.toml.title", "配置界面");
-        add("confluence.configuration.Health.button", "生命值");
-        add("confluence.configuration.terraStyleArmor.tooltip", "开启后，护甲值显示为泰拉样式");
+
         add("confluence.configuration.terraStyleHealth.tooltip", "开启后，生命值显示为泰拉样式");
-        add("confluence.configuration.Entity.tooltip", "与生物有关的视觉效果");
+        add("confluence.configuration.healthStyle.tooltip", "生命值显示");
+        add("confluence.configuration.Health.tooltip", "关于生命值显示");
+        add("confluence.configuration.terraStyleArmor.tooltip", "开启后，护甲值显示为泰拉样式");
         add("confluence.configuration.Armor.tooltip", "关于护甲值显示");
+        add("confluence.configuration.title", "配置界面");
+        add("confluence.configuration.section.confluence.client.toml.title", "客户端配置");
+        add("confluence.configuration.Entity.tooltip", "与生物有关的视觉效果");
+
+        add("confluence.configuration.section.confluence.common.toml.title","服务端配置");
+
 
         add("biome.confluence.the_corruption", "腐化之地");
         add("biome.confluence.the_corruption_desert", "腐化沙漠");
@@ -745,7 +758,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(OreBlocks.SANCTIFICATION_EMERALD_ORE.get(), "圣化绿宝石矿石");
         add(OreBlocks.CORRUPTION_EMERALD_ORE.get(), "腐化绿宝石矿石");
         add(OreBlocks.FLESHIFICATION_EMERALD_ORE.get(), "血化绿宝石矿石");
-        add(OreBlocks.SANCTIFICATION_LAPIS_ORE.get(), "珍珠石青金石矿石");
+        add(OreBlocks.SANCTIFICATION_LAPIS_ORE.get(), "圣化青金石矿石");
         add(OreBlocks.CORRUPTION_LAPIS_ORE.get(), "腐化青金石矿石");
         add(OreBlocks.FLESHIFICATION_LAPIS_ORE.get(), "血化青金石矿石");
         add(OreBlocks.OPAL_ORE.get(), "欧泊矿石");
@@ -1082,12 +1095,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(LightPetItems.SHADOW_ORB.get(), "暗影珠");
         add(LightPetItems.CRIMSON_HEART.get(), "猩红心脏");
 
-        add(DecorativeBlocks.BIG_RUBY_BLOCK.get(), "大红玉块");
-        add(DecorativeBlocks.BIG_AMBER_BLOCK.get(), "大琥珀块");
-        add(DecorativeBlocks.BIG_TOPAZ_BLOCK.get(), "大黄玉块");
-        add(DecorativeBlocks.BIG_TR_EMERALD_BLOCK.get(), "大翡翠块");
-        add(DecorativeBlocks.BIG_SAPPHIRE_BLOCK.get(), "大蓝玉块");
-        add(DecorativeBlocks.BIG_TR_AMETHYST_BLOCK.get(), "大紫晶块");
+        add(DecorativeBlocks.RUBY_BLOCK.get(), "红玉块");
+        add(DecorativeBlocks.AMBER_BLOCK.get(), "琥珀块");
+        add(DecorativeBlocks.TOPAZ_BLOCK.get(), "黄玉块");
+        add(DecorativeBlocks.TR_EMERALD_BLOCK.get(), "翡翠块");
+        add(DecorativeBlocks.SAPPHIRE_BLOCK.get(), "蓝玉块");
+        add(DecorativeBlocks.TR_AMETHYST_BLOCK.get(), "紫晶块");
         add(DecorativeBlocks.TR_POLISHED_GRANITE.get(), "异域花岗岩块");
         add(DecorativeBlocks.POLISHED_MARBLE.get(), "异域大理石块");
         add(DecorativeBlocks.TR_COPPER_BRICKS.get(), "铜砖块");
@@ -1852,12 +1865,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaStaffItems.WAND_OF_FROSTING.get(), "霜冻魔棒");
         add(ManaStaffItems.THUNDER_ZAPPER.get(), "霹雳法杖");
         add(ManaStaffItems.VILETHRON.get(), "魔刺");
+        add(ManaStaffItems.WEATHER_PAIN.get(), "天候棒");
+        add(ManaStaffItems.AQUA_SCEPTER.get(), "海蓝权杖");
+        add(ManaStaffItems.FLOWER_OF_FIRE.get(), "火之花");
         /*
-        add(ManaWeapons.THUNDER_ZAPPER.get(), "雷霆法杖");
-        add(ManaWeapons.VILETHORN.get(), "魔刺");
-        add(ManaWeapons.WEATHER_PAIN.get(), "天候棒");
         add(ManaWeapons.MAGIC_MISSILE.get(), "魔法导弹");
-        add(ManaWeapons.FLOWER_OF_FIRE.get(), "火之花");
         add(ManaWeapons.FLAMELASH.get(), "烈焰火鞭");
         add(ManaWeapons.SKY_FRACTURE.get(), "裂天剑");
         add(ManaWeapons.CRYSTAL_SERPENT.get(), "水晶蛇");

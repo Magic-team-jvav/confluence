@@ -137,12 +137,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         // 镐子
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithPickaxe = tag(BlockTags.MINEABLE_WITH_PICKAXE);
         mineableWithPickaxe.add(
-                DecorativeBlocks.BIG_RUBY_BLOCK.get(),
-                DecorativeBlocks.BIG_AMBER_BLOCK.get(),
-                DecorativeBlocks.BIG_TOPAZ_BLOCK.get(),
-                DecorativeBlocks.BIG_SAPPHIRE_BLOCK.get(),
-                DecorativeBlocks.BIG_TR_AMETHYST_BLOCK.get(),
-                DecorativeBlocks.BIG_TR_EMERALD_BLOCK.get(),
+                DecorativeBlocks.RUBY_BLOCK.get(),
+                DecorativeBlocks.AMBER_BLOCK.get(),
+                DecorativeBlocks.TOPAZ_BLOCK.get(),
+                DecorativeBlocks.SAPPHIRE_BLOCK.get(),
+                DecorativeBlocks.TR_AMETHYST_BLOCK.get(),
+                DecorativeBlocks.TR_EMERALD_BLOCK.get(),
                 DecorativeBlocks.SNOW_BRICKS.get(),
                 DecorativeBlocks.TR_COPPER_BRICKS.get(),
                 DecorativeBlocks.TR_COPPER_PLATE.get(),
@@ -323,12 +323,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OreBlocks.CORRUPTION_TR_AMETHYST_ORE.get(),
                 OreBlocks.FLESHIFICATION_TR_AMETHYST_ORE.get(),
                 OreBlocks.TR_AMETHYST_ORE.get(),
-                DecorativeBlocks.BIG_RUBY_BLOCK.get(),
-                DecorativeBlocks.BIG_AMBER_BLOCK.get(),
-                DecorativeBlocks.BIG_TOPAZ_BLOCK.get(),
-                DecorativeBlocks.BIG_SAPPHIRE_BLOCK.get(),
-                DecorativeBlocks.BIG_TR_AMETHYST_BLOCK.get(),
-                DecorativeBlocks.BIG_TR_EMERALD_BLOCK.get(),
+                DecorativeBlocks.RUBY_BLOCK.get(),
+                DecorativeBlocks.AMBER_BLOCK.get(),
+                DecorativeBlocks.TOPAZ_BLOCK.get(),
+                DecorativeBlocks.SAPPHIRE_BLOCK.get(),
+                DecorativeBlocks.TR_AMETHYST_BLOCK.get(),
+                DecorativeBlocks.TR_EMERALD_BLOCK.get(),
                 DecorativeBlocks.SNOW_BRICKS.get(),
                 DecorativeBlocks.TR_COPPER_BRICKS.get(),
                 DecorativeBlocks.TR_COPPER_PLATE.get(),
@@ -1000,15 +1000,15 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OreBlocks.RAW_ORICHALCUM_BLOCK.get(),
                 OreBlocks.RAW_TITANIUM_BLOCK.get(),
                 DecorativeBlocks.FLOATING_WHEAT_BALE.get(),
-                DecorativeBlocks.BIG_AMBER_BLOCK.get(),
-                DecorativeBlocks.BIG_RUBY_BLOCK.get(),
-                DecorativeBlocks.BIG_SAPPHIRE_BLOCK.get(),
-                DecorativeBlocks.BIG_TOPAZ_BLOCK.get(),
-                DecorativeBlocks.BIG_TR_EMERALD_BLOCK.get(),
-                DecorativeBlocks.BIG_TR_AMETHYST_BLOCK.get()
+                DecorativeBlocks.AMBER_BLOCK.get(),
+                DecorativeBlocks.RUBY_BLOCK.get(),
+                DecorativeBlocks.SAPPHIRE_BLOCK.get(),
+                DecorativeBlocks.TOPAZ_BLOCK.get(),
+                DecorativeBlocks.TR_EMERALD_BLOCK.get(),
+                DecorativeBlocks.TR_AMETHYST_BLOCK.get()
         );
         tag(Tags.Blocks.STORAGE_BLOCKS_WHEAT).add(
-                DecorativeBlocks.BIG_TR_AMETHYST_BLOCK.get()
+                DecorativeBlocks.TR_AMETHYST_BLOCK.get()
         );
         tag(Tags.Blocks.STRIPPED_LOGS).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getStrippedLog().get(),

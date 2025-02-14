@@ -140,6 +140,9 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> GOLDEN_CARP = registerNormalFood("golden_carp",FoodType.GOLDEN_CARP);
     public static final DeferredItem<BaseFoodItem> OBSIDIAN_FISH = registerFood("obsidian_fish", builder -> builder.initialize().food(FoodType.FISH).isFireResistant());
     public static final DeferredItem<BaseFoodItem> FLASHFIN_KOI = registerFood("flashfin_koi", builder -> builder.initialize().food(FoodType.FISH).isFireResistant());
+
+    //赞助
+    public static final DeferredItem<BaseFoodItem> PINK_KOLA = registerFood("pink_kola", builder -> builder.initialize().food(FoodType.PINK_KOLA).drinkingSound(s -> SoundEvents.GENERIC_DRINK).duration(d -> 15).useAnim(u -> UseAnim.DRINK));
     //节日特有
     public static final DeferredItem<BaseFoodItem> ZONGZI = registerFood("zongzi", builder -> builder.food(FoodType.LOW).isFireResistant());
 

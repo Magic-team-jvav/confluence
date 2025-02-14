@@ -14,12 +14,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
@@ -27,9 +29,16 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BaseRopeBlock extends PipeBlock implements SimpleWaterloggedBlock {
     public static final MapCodec<BaseRopeBlock> CODEC = simpleCodec(BaseRopeBlock::new);
@@ -84,11 +93,26 @@ public class BaseRopeBlock extends PipeBlock implements SimpleWaterloggedBlock {
         for (Direction direction : ModUtils.DIRECTIONS) {
             BlockPos neighborPos = pos.relative(direction);
             BlockState neighborState = level.getBlockState(neighborPos);
-            if (!neighborState.isAir() && neighborState.isFaceSturdy(level, neighborPos, direction.getOpposite())) {
+            if (!neighborState.isAir() && neighborState.isFaceSturdy(level, neighborPos, direction.getOpposite()) && !isFluid(neighborState)) {
                 state = state.setValue(PROPERTY_BY_DIRECTION.get(direction), true);
             }
         }
         return state;
+    }
+
+    private static boolean isFluid(BlockState state) {
+        FluidState fluidState = state.getFluidState();
+        Set<Fluid> fluids = new HashSet<>(Arrays.asList(
+                Fluids.WATER.getFlowing(),
+                Fluids.WATER.getSource(),
+                Fluids.LAVA.getFlowing(),
+                Fluids.LAVA.getSource(),
+                ModFluids.HONEY.fluid().get().getFlowing(),
+                ModFluids.HONEY.fluid().get().getSource(),
+                ModFluids.SHIMMER.fluid().get().getFlowing(),
+                ModFluids.SHIMMER.fluid().get().getSource()
+        ));
+        return fluids.stream().anyMatch(fluidState::is);
     }
 
     @Override

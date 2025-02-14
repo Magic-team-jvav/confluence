@@ -8,11 +8,11 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.projectile.BaseManaStaffProjectileEntity;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.util.PlayerUtils;
@@ -21,12 +21,12 @@ import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCAttributes;
 
 public class ManaStaffItem extends CustomRarityItem {
-    private final BulletFactory factory;
+    private final ProjectileFactory factory;
     private final int manaCost;
     private final float velocity;
     private final int cooldown;
 
-    public ManaStaffItem(Properties properties, ModRarity rarity, BulletFactory factory, int manaCost, float velocity, int cooldown, double critChance) {
+    public ManaStaffItem(Properties properties, ModRarity rarity, ProjectileFactory factory, int manaCost, float velocity, int cooldown, double critChance) {
         super(properties, rarity);
         this.factory = factory;
         this.manaCost = manaCost;
@@ -39,7 +39,7 @@ public class ManaStaffItem extends CustomRarityItem {
     /**
      * @param rawVelocity 换算前的射弹速度
      */
-    public ManaStaffItem(ModRarity rarity, BulletFactory factory, int manaCost, float rawVelocity, int cooldown, double critChance) {
+    public ManaStaffItem(ModRarity rarity, ProjectileFactory factory, int manaCost, float rawVelocity, int cooldown, double critChance) {
         this(new Properties().stacksTo(1), rarity, factory, manaCost, rawVelocity / 8.0F, cooldown, critChance);
     }
 
@@ -53,9 +53,9 @@ public class ManaStaffItem extends CustomRarityItem {
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (player instanceof ServerPlayer serverPlayer && PlayerUtils.extractMana(serverPlayer, () -> PrefixUtils.calculateManaCost(itemStack, manaCost))) {
             serverPlayer.awardStat(Stats.ITEM_USED.get(this));
-            BaseManaStaffProjectileEntity baseBulletEntity = factory.create(serverPlayer, level);
-            baseBulletEntity.shootFromRotation(serverPlayer, serverPlayer.getXRot(), serverPlayer.getYRot(), 0.0F, velocity, 0.0F);
-            level.addFreshEntity(baseBulletEntity);
+            Projectile projectile = factory.create(serverPlayer);
+            projectile.shootFromRotation(serverPlayer, serverPlayer.getXRot(), serverPlayer.getYRot(), 0.0F, velocity, 0.0F);
+            level.addFreshEntity(projectile);
             player.getCooldowns().addCooldown(this, cooldown);
             level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundEvents.REGULAR_STAFF_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
         }
@@ -63,7 +63,7 @@ public class ManaStaffItem extends CustomRarityItem {
     }
 
     @FunctionalInterface
-    public interface BulletFactory {
-        BaseManaStaffProjectileEntity create(ServerPlayer serverPlayer, Level level);
+    public interface ProjectileFactory {
+        Projectile create(ServerPlayer serverPlayer);
     }
 }

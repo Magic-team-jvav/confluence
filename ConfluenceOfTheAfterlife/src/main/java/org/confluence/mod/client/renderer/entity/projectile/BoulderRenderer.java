@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.projectile.BoulderEntity;
+import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
 
 public class BoulderRenderer extends EntityRenderer<BoulderEntity> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/normal_boulder.png");

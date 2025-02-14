@@ -39,11 +39,11 @@ public class HurtnadoProjectile extends Projectile {
 
     @Override
     public void tick() {
-        super.tick();
         if (tickCount > 190 || getOwner() == null) {
             discard();
             return;
         }
+        super.tick();
 
         Vec3 vec3 = getDeltaMovement();
         move(MoverType.SELF, vec3.add(0.0, -0.04, 0.0));
@@ -53,7 +53,7 @@ public class HurtnadoProjectile extends Projectile {
             if (motion.y != vec3.y) motion = new Vec3(vec3.x, -vec3.y, vec3.z);
             if (motion.z != vec3.z) motion = new Vec3(vec3.x, vec3.y, -vec3.z);
         }
-        if (tickCount % 8 == 0) {
+        if (!level().isClientSide && tickCount % 8 == 0) {
             AABB boundingBox = getBoundingBox().inflate(1.0);
             if (ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F) instanceof EntityHitResult entityHitResult) {
                 Entity entity = entityHitResult.getEntity();

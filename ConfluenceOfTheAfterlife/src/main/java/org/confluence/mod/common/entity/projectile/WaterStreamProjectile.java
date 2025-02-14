@@ -34,24 +34,26 @@ public class WaterStreamProjectile extends Projectile {
 
     @Override
     public void tick() {
-        super.tick();
         if (getOwner() == null) {
             discard();
             return;
         }
+        super.tick();
 
-        HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-        if (hitResult.getType() == HitResult.Type.BLOCK){
-            discard();
-        } else if (hitResult instanceof EntityHitResult entityHitResult) {
-            Entity entity = entityHitResult.getEntity();
-            if (passThrough.add(entity)) {
-                if (entity.hurt(damageSources().indirectMagic(getOwner(), this), 5.4F)) {
-                    ModUtils.knockBackA2B(this, entity, 3.5, 0.2);
-                }
-                if (passThrough.size() >= 5) {
-                    discard();
-                    return;
+        if (!level().isClientSide) {
+            HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+            if (hitResult.getType() == HitResult.Type.BLOCK) {
+                discard();
+            } else if (hitResult instanceof EntityHitResult entityHitResult) {
+                Entity entity = entityHitResult.getEntity();
+                if (passThrough.add(entity)) {
+                    if (entity.hurt(damageSources().indirectMagic(getOwner(), this), 5.4F)) {
+                        ModUtils.knockBackA2B(this, entity, 3.5, 0.2);
+                    }
+                    if (passThrough.size() >= 5) {
+                        discard();
+                        return;
+                    }
                 }
             }
         }

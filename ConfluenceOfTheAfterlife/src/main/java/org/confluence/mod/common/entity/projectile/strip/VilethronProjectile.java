@@ -22,9 +22,7 @@ public class VilethronProjectile extends StripedProjectile {
 
     @Override
     protected void onTouchEntity(EntityHitResult result) {
-        if (!level().isClientSide) {
-            result.getEntity().hurt(damageSources().indirectMagic(this, getOwner()), 2.5f);
-        }
+        result.getEntity().hurt(damageSources().indirectMagic(this, getOwner()), 2.5f);
     }
 
     @Override

@@ -32,7 +32,7 @@ public class ManaStaffItems {
     public static final Supplier<ManaStaffItem<?>> WEATHER_PAIN = ITEMS.register("weather_pain", WeatherPainItem::new);
     /* 魔法飞弹 */
     public static final Supplier<ManaStaffItem<?>> AQUA_SCEPTER = ITEMS.register("aqua_scepter", () -> new ManaStaffItem<>(ModRarity.GREEN, WaterStreamProjectile::new, 7, 32.0F, 5, 0.04));
-    /* 火之花 */
+    public static final Supplier<ManaStaffItem<?>> FLOWER_OF_FIRE = ITEMS.register("flower_of_fire", () -> new ManaStaffItem<>(ModRarity.ORANGE, BallOfFireProjectile::new, 12, 7.5F, 16, 0.04));
     /* 烈焰火鞭 */
 
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {

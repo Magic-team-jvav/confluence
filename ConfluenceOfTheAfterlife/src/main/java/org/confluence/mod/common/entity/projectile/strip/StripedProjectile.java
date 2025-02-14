@@ -60,12 +60,12 @@ public abstract class StripedProjectile extends Projectile {
         super.tick();
         if (isHead()) {
             Vec3 vec3 = getDeltaMovement();
-            HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-            if (hitresult.getType() == HitResult.Type.ENTITY) {
-                onHitEntity((EntityHitResult) hitresult);
-            }
 
             if (!level().isClientSide && getOwner() instanceof LivingEntity living) {
+                HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+                if (hitresult.getType() == HitResult.Type.ENTITY) {
+                    onHitEntity((EntityHitResult) hitresult);
+                }
                 double dist = position().distanceTo(startPos);
                 double delta = dist - distO;
                 if (delta >= distForCreateBody) {
@@ -86,24 +86,24 @@ public abstract class StripedProjectile extends Projectile {
             double offY = getY() + vec3.y;
             double offZ = getZ() + vec3.z;
             setPos(offX, offY, offZ);
-        } else if (tickCount > ticksForBodyRemove) {
-            onRemove();
-        } else if (tickCount % frequencyForBodyCheckTouch == 0) {
-            AABB boundingBox = getBoundingBox().inflate(1.0);
-            EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F);
-            if (hitResult != null) {
-                onTouchEntity(hitResult);
+        } else if (!level().isClientSide) {
+            if (tickCount > ticksForBodyRemove) {
+                onRemove();
+            } else if (tickCount % frequencyForBodyCheckTouch == 0) {
+                AABB boundingBox = getBoundingBox().inflate(1.0);
+                EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F);
+                if (hitResult != null) {
+                    onTouchEntity(hitResult);
+                }
             }
         }
     }
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        if (!level().isClientSide) {
-            Entity entity = result.getEntity();
-            if (entity.hurt(damageSources().indirectMagic(this, getOwner()), 2.5f)) {
-                ModUtils.knockBackA2B(this, entity, 0.5, 0.2);
-            }
+        Entity entity = result.getEntity();
+        if (entity.hurt(damageSources().indirectMagic(this, getOwner()), 2.5f)) {
+            ModUtils.knockBackA2B(this, entity, 0.5, 0.2);
         }
     }
 

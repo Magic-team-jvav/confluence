@@ -6,11 +6,11 @@
             "ingredient": {
                 "item": "confluence:sun_plate"
             },
-            "count": 6
+            "count": 2
         }
     ],
     "result": {
         "id": "confluence:skyware_door",
-        "count": 3
+        "count": 1
     }
 }

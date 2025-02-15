@@ -13,6 +13,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -313,7 +314,7 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(TR_OBSIDIAN_BRICKS.get());
             dropSelf(OBSIDIAN_BRICKS_SLAB.get());
             dropSelf(OBSIDIAN_BRICKS_STAIRS.get());
-            dropSelf(OBSIDIAN_BRICKS_DOOR.get());
+
             dropSelf(TR_OBSIDIAN_PLATE.get());
             dropSelf(TR_OBSIDIAN_SMALL_BRICKS.get());
             dropSelf(TR_SMOOTH_OBSIDIAN.get());
@@ -395,6 +396,7 @@ public class ModLootTableProvider extends LootTableProvider {
             dropOther(NatureBlocks.LIFE_MUSHROOM.get(), MaterialItems.LIFE_MUSHROOM.get());
             add(NatureBlocks.JUNGLE_SPORE.get(), LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.JUNGLE_SPORE.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))));
         }
+
 
         @Override
         protected Iterable<Block> getKnownBlocks() {

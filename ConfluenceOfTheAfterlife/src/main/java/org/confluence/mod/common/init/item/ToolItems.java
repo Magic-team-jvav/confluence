@@ -1,6 +1,7 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -41,7 +42,7 @@ public class ToolItems {
     public static final Supplier<Item> HOUSE_DETECTOR = ITEMS.register("house_detector", () -> new HouseDetector(new Item.Properties().stacksTo(1)));
     public static final Supplier<BugNetItem> BUG_NET = ITEMS.register("bug_net", () -> new BugNetItem(ModRarity.BLUE, 0.5, living -> living instanceof Animal));
     public static final Supplier<BugNetItem> GOLDEN_BUG_NET = ITEMS.register("golden_bug_net", () -> new BugNetItem(ModRarity.QUEST, 1.1, living -> living instanceof Animal));
-    public static final Supplier<BugNetItem> DEV_BUG_NET = ITEMS.register("dev_bug_net", () -> new BugNetItem(ModRarity.MASTER, Double.MAX_VALUE, living -> true));
+    public static final Supplier<BugNetItem> DEV_BUG_NET = ITEMS.register("dev_bug_net", () -> new BugNetItem(ModRarity.MASTER, Double.MAX_VALUE, living -> !(living instanceof Player)));
 
     public static final Supplier<RopeCoilItem> ROPE_COIL = ITEMS.register("rope_coil", () -> new RopeCoilItem(new Item.Properties(), ModBlocks.ROPE.get()));
     public static final Supplier<RopeCoilItem> VINE_ROPE_COIL = ITEMS.register("vine_rope_coil", () -> new RopeCoilItem(new Item.Properties(), ModBlocks.VINE_ROPE.get()));

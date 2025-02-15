@@ -996,6 +996,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.EVAPORATIVE_CLOUD_BLOCK.get(), "蒸发云块");
         add(NatureBlocks.RAIN_CLOUD_BLOCK.get(), "雨云块");
         add(NatureBlocks.SNOW_CLOUD_BLOCK.get(), "雪云块");
+        add(DecorativeBlocks.BOUNCY_CLOUD_BLOCK.get(), "弹力云块");
         add(NatureBlocks.THIN_ICE_BLOCK.get(), "薄冰块");
         add(NatureBlocks.LIFE_CRYSTAL_BLOCK.get(), "生命水晶");
         add(NatureBlocks.JUNGLE_HIVE_BLOCK.get(), "丛林蜂巢");

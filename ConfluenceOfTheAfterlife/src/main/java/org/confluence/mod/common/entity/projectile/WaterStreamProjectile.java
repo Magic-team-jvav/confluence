@@ -10,14 +10,18 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.util.ModUtils;
+import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class WaterStreamProjectile extends Projectile {
     private final Set<Entity> passThrough = new HashSet<>();
+    private ParticleEmitter emitter;
 
     public WaterStreamProjectile(EntityType<WaterStreamProjectile> entityType, Level level) {
         super(entityType, level);
@@ -39,8 +43,17 @@ public class WaterStreamProjectile extends Projectile {
             return;
         }
         super.tick();
+        this.xo = getX();
+        this.yo = getY();
+        this.zo = getZ();
 
-        if (!level().isClientSide) {
+        if (level().isClientSide) {
+            if (emitter == null) {
+                this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("water_stream"));
+                emitter.attached = this;
+                PSGameClient.LOADER.addEmitter(emitter, false);
+            }
+        } else {
             HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
             if (hitResult.getType() == HitResult.Type.BLOCK) {
                 discard();

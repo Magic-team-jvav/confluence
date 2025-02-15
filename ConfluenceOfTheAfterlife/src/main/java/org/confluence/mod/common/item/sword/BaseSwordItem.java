@@ -79,7 +79,7 @@ public class BaseSwordItem extends SwordItem {
         public float damage;
         public float speed;
         public Supplier<? extends IProjContainer>  proj;
-        public List<DeferredHolder<EffectStrategy,EffectStrategy>> onHitEffects = new ArrayList<>();
+        public List<DeferredHolder<EffectStrategy,? extends EffectStrategy>> onHitEffects = new ArrayList<>();
         public QuaConsumer<ItemStack,Level,Entity,Boolean> inventoryTick;
         public ItemAttributeModifiers.Builder attributeModifiersBuilder = ItemAttributeModifiers.builder();
         private int modifyCount = 0;
@@ -91,7 +91,7 @@ public class BaseSwordItem extends SwordItem {
         /**添加击中效果
          * @see EffectStrategy
          * */
-        public ModifierBuilder addOnHitEffect(DeferredHolder<EffectStrategy,EffectStrategy> onHit){
+        public ModifierBuilder addOnHitEffect(DeferredHolder<EffectStrategy,? extends EffectStrategy> onHit){
             this.onHitEffects.add(onHit);
             return this;
         }

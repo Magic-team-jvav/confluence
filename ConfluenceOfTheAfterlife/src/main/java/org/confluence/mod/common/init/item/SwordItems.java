@@ -9,9 +9,11 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.component.Unbreakable;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModEffectStrategies;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.LightSaber;
@@ -20,6 +22,7 @@ import org.confluence.mod.common.item.sword.stagedy.SwordPrefabs;
 import org.confluence.terra_curio.common.component.ModRarity;
 
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import static org.confluence.mod.common.init.ModEffectStrategies.*;
 import static org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy.*;
@@ -112,14 +115,15 @@ public class SwordItems {
     // 特殊剑
     public static final DeferredItem<SwordItem> CROWBAR = register("crowbar",ModTiers.TITANIUM, 16, -1.0F,ModRarity.MASTER, BOARD_SWORD.apply(2.0f));
     public static final DeferredItem<SwordItem> DEVELOPER_SWORD = register("developer_sword",ModTiers.TITANIUM, 20, 20F, ModRarity.MASTER,
+            Stream.of(
             SwordPrefabs.BOARD_SWORD.apply(10.0f)                                //宽剑
                     .addAttributeModifier(Attributes.MOVEMENT_SPEED,1.5f,
                             AttributeModifier.Operation.ADD_MULTIPLIED_BASE)        //手持属性加成
-                    .addOnHitEffect(UNDEFINED)                //命中效果
+//                    .addOnHitEffect(UNDEFINED)                //命中效果
                     .setProj(ENCHANTED_SWORD_PROJ)                                  //弹幕
                     .setInventoryTick(InventoryTickStrategy.INVINCIBLE)             //背包每刻效果
+            ).peek(it-> EFFECT_STRATEGY.getEntries().stream().toList().forEach(it::addOnHitEffect)).findFirst().get()
     );
-
 
     public static DeferredItem<SwordItem> register(String name, Supplier<SwordItem> supplier) {
         return ITEMS.register(name, supplier);

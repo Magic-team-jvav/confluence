@@ -22,10 +22,22 @@ import static org.confluence.terraentity.hit_effect.EffectStrategy.*;
 public final class ModEffectStrategies {
     public static final EffectStrategies EFFECT_STRATEGY = EffectStrategies.create(Confluence.MODID);
 
+    /**
+     * 默认id的效果
+     * @param name id
+     * @param effect 效果
+     */
     public static DeferredHolder<EffectStrategy, EffectStrategy> createEffect(String name, BiConsumer<LivingEntity, LivingEntity> effect) {
         return EFFECT_STRATEGY.register(name, ()->new EffectStrategy(name, effect));
     }
 
+    /**
+     * 带翻译的效果
+     * @param name id
+     * @param en_us 英文
+     * @param zh_cn 中文
+     * @param effect 效果
+     */
     public static DeferredHolder<EffectStrategy, EffectStrategy> createEffect(String name, String en_us, String zh_cn, BiConsumer<LivingEntity, LivingEntity> effect) {
         return EFFECT_STRATEGY.register(name, ()->new EffectStrategy(name,en_us,zh_cn, effect));
     }
@@ -71,27 +83,29 @@ public final class ModEffectStrategies {
 
 
     // 北斗飞镖
-    public static final DeferredHolder<EffectStrategy, EffectStrategy> FROST_BURN_10_SEC_4_AMP = createEffect("frozen_burn_10_sec_4_amp",
+    public static final DeferredHolder<EffectStrategy, EffectStrategy> FROST_BURN_10_SEC_4_AMP = createEffect("frozen_burn_10_sec_4_amp","frozen burn Ⅳ 10 seconds","霜冻 Ⅳ 10秒 ",
             EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(ModEffects.FROST_BURN, 200,3,3,1f));
 
-    public static final DeferredHolder<EffectStrategy, EffectStrategy> HELL_FIRE_10_SEC_4_AMP = createEffect("hell_fire_10_sec_4_amp",
+    public static final DeferredHolder<EffectStrategy, EffectStrategy> HELL_FIRE_10_SEC_4_AMP = createEffect("hell_fire_10_sec_4_amp","hell fire Ⅳ 10 seconds", "烈火焚身 Ⅳ 10秒",
             EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(ModEffects.HELL_FIRE,  200,3,3,1f));
 
-    public static final DeferredHolder<EffectStrategy, EffectStrategy> WITHER_10_SEC_4_AMP = createEffect("wither_10_sec_4_amp",
+    public static final DeferredHolder<EffectStrategy, EffectStrategy> WITHER_10_SEC_4_AMP = createEffect("wither_10_sec_4_amp","wither Ⅳ 10 seconds", "凋零 Ⅳ 10秒",
             EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(MobEffects.WITHER, 200,3,3,1f));
 
-    public static final DeferredHolder<EffectStrategy, EffectStrategy> POISON_10_SEC_4_AMP = createEffect("poison_10_sec_4_amp",
+    public static final DeferredHolder<EffectStrategy, EffectStrategy> POISON_10_SEC_4_AMP = createEffect("poison_10_sec_4_amp","poison Ⅳ 10 seconds", "中毒 Ⅳ 10秒",
             EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(MobEffects.POISON, 200,3,3,1f));
 
-    public static final DeferredHolder<EffectStrategy, EffectStrategy> HARM_1_SEC_7_AMP = createEffect("harm_1_sec_7_amp",
+    public static final DeferredHolder<EffectStrategy, EffectStrategy> INSTANT_HARM_1_SEC_7_AMP = createEffect("instant_harm_1_sec_7_amp","instant harm Ⅷ", "瞬间伤害 Ⅷ",
             EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(MobEffects.HARM, 1,6,6,1f));
 
-    public static final DeferredHolder<EffectStrategy, EffectStrategy> BEI_DOU_EFFECT = createEffect("bei_dou", "random 5 effects", "随机5种效果",
+    public static final DeferredHolder<EffectStrategy, EffectStrategy> BEI_DOU_EFFECT = createEffect("bei_dou",
+            "random 5 effects:\nfrozen burn Ⅳ 10 seconds\nhell fire Ⅳ 10 seconds\nwither Ⅳ 10 seconds\npoison Ⅳ 10 seconds\ninstant harm Ⅷ",
+            "随机5种效果:\n霜冻 Ⅳ 10秒\n烈火焚身 Ⅳ 10秒\n凋零 Ⅳ 10秒\n中毒 Ⅳ 10秒\n瞬间伤害 Ⅷ",
             (owner, entity)->EffectStrategy.RANDOM_POSSIBILITY_EFFECT.apply(Map.of(
                     ModEffectStrategies.POISON_10_SEC_4_AMP, 6f,
                     ModEffectStrategies.HELL_FIRE_10_SEC_4_AMP, 5f,
                     ModEffectStrategies.WITHER_10_SEC_4_AMP, 5f,
-                    ModEffectStrategies.HARM_1_SEC_7_AMP, 1f,
+                    ModEffectStrategies.INSTANT_HARM_1_SEC_7_AMP, 1f,
                     ModEffectStrategies.FROST_BURN_10_SEC_4_AMP, 5f
             )).get().getEffect().accept(owner, entity));
 

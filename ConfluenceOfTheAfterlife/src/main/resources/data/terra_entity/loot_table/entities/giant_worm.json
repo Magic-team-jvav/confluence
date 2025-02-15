@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:entity",
+    "pools": [
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:whoopie_cushion",
+                    "weight": 2
+                },
+                {
+                    "type": "minecraft:empty",
+                    "weight": 98
+                }
+            ]
+        }
+    ],
+    "random_sequence": "terra_entity:entity/giant_worm"
+}

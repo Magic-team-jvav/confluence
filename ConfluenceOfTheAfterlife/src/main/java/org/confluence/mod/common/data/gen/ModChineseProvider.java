@@ -626,6 +626,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("fluid_type.confluence.shimmer", "微光");
         add("fluid_type.confluence.honey", "蜂蜜");
 
+        add("block.confluence.shimmer", "微光");
+        add("block.confluence.honey", "蜂蜜");
+
         add("title.confluence.shimmer_transmutation", "微光嬗变");
         add("condition.confluence.shimmer_transmutation", "需要的游戏阶段: %s");
         add("title.confluence.altar", "祭坛");
@@ -1026,6 +1029,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getSign().get(), "阴森告示牌");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getStairs().get(), "阴森楼梯");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getSlab().get(), "阴森台阶");
+
 
         add(NatureBlocks.STELLAR_BLOSSOM.get(), "星辰花");
         add(NatureBlocks.CLOUDWEAVER.get(), "云织草");

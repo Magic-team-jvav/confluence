@@ -1131,6 +1131,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.SUN_PLATE_STAIRS.get(), "日盘楼梯");
         add(DecorativeBlocks.SUN_PLATE_SLAB.get(), "日盘台阶");
         add(DecorativeBlocks.SKYWARE_DOOR.get(), "天域门");
+        add(DecorativeBlocks.SKYWARE_GLASS_DOOR.get(), "天域玻璃门");
         add(DecorativeBlocks.TIN_BRICKS.get(), "锡砖块");
         add(DecorativeBlocks.TIN_PLATE.get(), "锡条板块");
         add(DecorativeBlocks.TUNGSTEN_BRICKS.get(), "钨砖块");

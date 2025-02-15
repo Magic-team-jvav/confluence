@@ -306,7 +306,6 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(SUN_PLATE.get());
             dropSelf(SUN_PLATE_SLAB.get());
             dropSelf(SUN_PLATE_STAIRS.get());
-            dropSelf(SKYWARE_DOOR.get());
             dropSelf(DISC_BLOCK.get());
             dropSelf(TR_LAVA_BEAM.get());
             dropSelf(TR_LAVA_BRICKS.get());

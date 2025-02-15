@@ -1,0 +1,19 @@
+{
+    "type": "confluence:sky_mill",
+    "ingredients": [
+        {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:sun_plate"
+            },
+            "count": 6
+        },
+        {
+            "item": "confluence:pure_glass"
+        }
+    ],
+    "result": {
+        "id": "confluence:skyware_glass_door",
+        "count": 3
+    }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top_left_open",
+  "textures": {
+    "bottom": "confluence:block/skyware_door_bottom",
+    "top": "confluence:block/skyware_door_top"
+  }
+}

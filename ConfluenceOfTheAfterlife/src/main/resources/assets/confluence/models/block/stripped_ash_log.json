@@ -1,3 +1,7 @@
 {
-  "parent": "minecraft:block/cube_column"
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "confluence:block/stripped_ash_log_end",
+    "side": "confluence:block/stripped_ash_log_side"
+  }
 }

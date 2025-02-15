@@ -3,5 +3,6 @@
   "textures": {
     "bottom": "confluence:block/shadow_door_bottom",
     "top": "confluence:block/shadow_door_top"
-  }
+  },
+    "render_type": "cutout"
 }

@@ -27,6 +27,7 @@ public class TargetDummyEntity extends LivingEntity {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
+        if(!super.hurt(source, amount)) return false;
         if (source.getEntity() instanceof Player player){
             if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof PickaxeItem){
                 this.remove(RemovalReason.DISCARDED);
@@ -48,7 +49,7 @@ public class TargetDummyEntity extends LivingEntity {
                     this.getBbWidth() / 4.0F, 0.05
             );
         }  // showParticles
-        return super.hurt(source, amount);
+        return true;
     }
 
     @Override

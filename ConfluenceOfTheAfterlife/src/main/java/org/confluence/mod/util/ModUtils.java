@@ -264,19 +264,22 @@ public final class ModUtils {
         if (weaponItemStack != null) {
             Item weaponItem = weaponItemStack.getItem();
             boolean fromConfluence = isFromConfluence(BuiltInRegistries.ITEM, weaponItem);
-            if (fromConfluence && (weaponItem instanceof SwordItem) && directEntity instanceof Projectile projectile) {
+            if (fromConfluence && (weaponItem instanceof SwordItem) && directEntity instanceof Projectile projectile) { // 汇流剑气
                 return (Immunity) projectile;
-            } else if (weaponItem instanceof Immunity im) {
+            } else if (weaponItem instanceof Immunity im) { // 非汇流但是实现了Immunity
                 return switch (im.confluence$getImmunityType()) {
                     case STATIC -> im;
                     case LOCAL -> (Immunity) (Object) weaponItemStack;
                 };
-            } else if (fromConfluence) {
+            } else if (fromConfluence) { // 其他所有汇流武器
                 return (Immunity) (Object) weaponItemStack;
             }
         }
-        if (directEntity instanceof Projectile && isFromConfluence(BuiltInRegistries.ENTITY_TYPE, directEntity.getType())) {
-            return (Immunity) directEntity;
+        if (directEntity instanceof Projectile proj && directEntity instanceof Immunity im && isFromConfluence(BuiltInRegistries.ENTITY_TYPE, directEntity.getType())) { // 汇流射弹
+            return switch (im.confluence$getImmunityType()) {
+                case STATIC -> (Immunity) proj.getType();
+                case LOCAL -> im;
+            };
         }
         // TODO: 打表
         return null;

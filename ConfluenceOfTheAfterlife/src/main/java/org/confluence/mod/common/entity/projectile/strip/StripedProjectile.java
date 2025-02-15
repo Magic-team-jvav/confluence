@@ -6,6 +6,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,12 +19,13 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.ModUtils;
 
 /**
  * 长条形射弹
  */
-public abstract class StripedProjectile extends Projectile {
+public abstract class StripedProjectile extends Projectile implements Immunity {
     private static final EntityDataAccessor<Boolean> DATA_IS_HEAD = SynchedEntityData.defineId(StripedProjectile.class, EntityDataSerializers.BOOLEAN);
     public double distForHeadRemove = 10.0;
     protected double distForCreateBody = 0.95;
@@ -89,7 +91,7 @@ public abstract class StripedProjectile extends Projectile {
         } else if (!level().isClientSide) {
             if (tickCount > ticksForBodyRemove) {
                 onRemove();
-            } else if (tickCount % frequencyForBodyCheckTouch == 0) {
+            } else /*if (tickCount % frequencyForBodyCheckTouch == 0)*/ {
                 AABB boundingBox = getBoundingBox().inflate(1.0);
                 EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F);
                 if (hitResult != null) {
@@ -152,5 +154,15 @@ public abstract class StripedProjectile extends Projectile {
         this.startPos = Vec3.CODEC.parse(NbtOps.INSTANCE, compound.get("StartPos")).getOrThrow();
         this.tickCount = compound.getInt("Age");
         setHead(compound.getBoolean("IsHead"));
+    }
+
+    @Override
+    public Types confluence$getImmunityType(){
+        return Types.STATIC;
+    }
+
+    @Override
+    public int confluence$getImmunityDuration(DamageSource damageSource){
+        return frequencyForBodyCheckTouch;
     }
 }

@@ -30,7 +30,7 @@ public abstract class DamageSourceMixin implements IDamageSource, SelfGetter<Dam
 
     @Inject(method = "is(Lnet/minecraft/tags/TagKey;)Z", at = @At("HEAD"), cancellable = true)
     private void isTag(TagKey<DamageType> damageTypeKey, CallbackInfoReturnable<Boolean> cir){
-        if(ModUtils.getImmunityCause(self()) != null && damageTypeKey == DamageTypeTags.BYPASSES_COOLDOWN){
+        if(damageTypeKey == DamageTypeTags.BYPASSES_COOLDOWN && ModUtils.getImmunityCause(self()) != null){
             cir.setReturnValue(true);
         }
     }

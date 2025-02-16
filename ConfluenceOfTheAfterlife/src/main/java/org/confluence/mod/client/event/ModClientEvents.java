@@ -46,10 +46,7 @@ import org.confluence.mod.client.particle.DamageIndicatorParticle;
 import org.confluence.mod.client.particle.LightBaneParticle;
 import org.confluence.mod.client.particle.SimpleTextureSheetParticle;
 import org.confluence.mod.client.renderer.block.*;
-import org.confluence.mod.client.renderer.entity.BodyPartRenderer;
-import org.confluence.mod.client.renderer.entity.EmptyEntityRenderer;
-import org.confluence.mod.client.renderer.entity.FallingStarRenderer;
-import org.confluence.mod.client.renderer.entity.TreasureBagRenderer;
+import org.confluence.mod.client.renderer.entity.*;
 import org.confluence.mod.client.renderer.entity.fishing.BaseFishingHookRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.BloodyFishingHookRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.GlowingFishingHookRenderer;
@@ -258,7 +255,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(ICE_TOFU_BRICK_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(BODY_PART.get(), BodyPartRenderer::new);
 
-        event.registerEntityRenderer(TARGET_DUMMY.get(), EmptyEntityRenderer::new);
+        event.registerEntityRenderer(TARGET_DUMMY.get(), TargetDummyRenderer::new);
 
         // npc
         event.registerEntityRenderer(GUIDE.get(), c -> new GeoNormalRenderer<>(c, GUIDE.getId()));

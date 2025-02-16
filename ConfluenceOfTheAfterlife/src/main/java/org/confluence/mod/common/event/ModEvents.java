@@ -50,7 +50,6 @@ import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.accessory.MusicBoxItem;
-import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.integration.patchouli.PatchouliEntityEntriesPacketS2C;
 import org.confluence.mod.integration.patchouli.PatchouliHelper;
 import org.confluence.mod.network.c2s.*;
@@ -161,7 +160,7 @@ public final class ModEvents {
         if (PatchouliHelper.IS_LOADED) {
             registrar.playToClient(PatchouliEntityEntriesPacketS2C.TYPE, PatchouliEntityEntriesPacketS2C.STREAM_CODEC, PatchouliEntityEntriesPacketS2C::handle);
         }
-        registrar.playToClient(TheConstant.PostEffectPacketS2C.TYPE, TheConstant.PostEffectPacketS2C.STREAM_CODEC, TheConstant.PostEffectPacketS2C::handle);
+        registrar.playToClient(TheConstantPostEffectPacketS2C.TYPE, TheConstantPostEffectPacketS2C.STREAM_CODEC, TheConstantPostEffectPacketS2C::handle);
         registrar.playToClient(PlayerDeathInfoPacketS2C.TYPE, PlayerDeathInfoPacketS2C.STREAM_CODEC, PlayerDeathInfoPacketS2C::handle);
 
         registrar.playToServer(SwordShootingPacketC2S.TYPE, SwordShootingPacketC2S.STREAM_CODEC, SwordShootingPacketC2S::receive);

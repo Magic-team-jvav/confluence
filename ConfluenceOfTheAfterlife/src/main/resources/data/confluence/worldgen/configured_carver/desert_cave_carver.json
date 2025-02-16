@@ -1,0 +1,20 @@
+{
+    "type": "confluence:desert_cave_carver",
+    "config": {
+        "lava_level": {
+            "above_bottom": 8
+        },
+        "probability": 1,
+        "replaceable": "#minecraft:overworld_carver_replaceables",
+        "y": {
+            "type": "minecraft:uniform",
+            "max_inclusive": {
+                "absolute": 80
+            },
+            "min_inclusive": {
+                "absolute": -40
+            }
+        },
+        "yScale": 4.0
+    }
+}

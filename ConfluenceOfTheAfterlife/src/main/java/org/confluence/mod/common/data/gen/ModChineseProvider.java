@@ -181,15 +181,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.greedy_ring.0", "击中敌人有时会掉落额外的钱币，扩大钱币的拾取范围，商店价格降低20%");
         add("tooltip.item.confluence.spectre_goggles.0", "提供幽灵视觉以与回声块交互");
         add("tooltip.item.confluence.guide_to_plant_fiber_cordage.0", "可从藤蔓收集藤蔓绳");
-        add("tooltip.item.confluence.summoner_emblem.0", "召唤伤害提高15%");
-        add("tooltip.item.confluence.apprentices_scarf.0", "哨兵数量上限增加1，召唤伤害提高10%");
-        add("tooltip.item.confluence.huntresss_buckler.0", "哨兵数量上限增加1，召唤伤害提高10%");
-        add("tooltip.item.confluence.monks_belt.0", "哨兵数量上限增加1，召唤伤害提高10%");
-        add("tooltip.item.confluence.squires_shield.0", "哨兵数量上限增加1，召唤伤害提高10%");
-        add("tooltip.item.confluence.hercules_beetle.0", "召唤伤害提高15%，提高仆从的击退力");
-        add("tooltip.item.confluence.necromantic_scroll.0", "仆从数量上限增加1，召唤伤害提高10%");
-        add("tooltip.item.confluence.papyrus_scarab.0", "仆从数量上限增加1，召唤伤害提高15%、提高仆从的击退力");
-        add("tooltip.item.confluence.pygmy_necklace.0", "仆从数量上限增加1");
         add("tooltip.item.confluence.fledgling_wings.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.chromatic_cloak.0", "对微光相位化免疫，当淹没在微光中时潜行可以相位化");
         add("tooltip.item.confluence.paint_scraper", "用于去除油漆或涂料，按下shift+右键仅去除一面");

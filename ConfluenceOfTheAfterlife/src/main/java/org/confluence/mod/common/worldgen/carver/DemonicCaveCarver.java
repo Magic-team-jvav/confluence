@@ -20,11 +20,9 @@ import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.util.ModUtils;
 import org.joml.Vector3d;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.function.Function;
 
-@ParametersAreNonnullByDefault
 public class DemonicCaveCarver extends WorldCarver<DemonicCaveCarver.Config> {
     public DemonicCaveCarver(Codec<Config> codec) {
         super(codec);

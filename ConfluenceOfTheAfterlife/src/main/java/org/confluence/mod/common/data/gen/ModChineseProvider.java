@@ -1107,9 +1107,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.SAPPHIRE_BLOCK.get(), "蓝玉块");
         add(DecorativeBlocks.TR_AMETHYST_BLOCK.get(), "紫晶块");
         add(DecorativeBlocks.TR_POLISHED_GRANITE.get(), "异域花岗岩块");
-        add(DecorativeBlocks.POLISHED_MARBLE.get(), "异域大理石块");
         add(DecorativeBlocks.TR_COPPER_BRICKS.get(), "铜砖块");
-        add(DecorativeBlocks.TR_COPPER_PLATE.get(), "铜条板块");
         add(DecorativeBlocks.TR_CRIMSON_ORE_BRICKS.get(), "猩红矿砖");
         add(DecorativeBlocks.TR_CRIMSON_ROCK_BRICKS.get(), "猩红石砖");
         add(DecorativeBlocks.TR_GOLD_BRICKS.get(), "金砖块");
@@ -1136,13 +1134,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.SKYWARE_DOOR.get(), "天域门");
         add(DecorativeBlocks.SKYWARE_GLASS_DOOR.get(), "天域玻璃门");
         add(DecorativeBlocks.TIN_BRICKS.get(), "锡砖块");
-        add(DecorativeBlocks.TIN_PLATE.get(), "锡条板块");
         add(DecorativeBlocks.TUNGSTEN_BRICKS.get(), "钨砖块");
-        add(DecorativeBlocks.TR_LAVA_BEAM.get(), "异域熔岩梁");
         add(DecorativeBlocks.TR_LAVA_BRICKS.get(), "异域熔岩砖块");
-        add(DecorativeBlocks.TR_OBSIDIAN_BEAM.get(), "异域黑曜石梁");
         add(DecorativeBlocks.TR_OBSIDIAN_BRICKS.get(), "异域黑曜石砖");
-        add(DecorativeBlocks.TR_OBSIDIAN_PLATE.get(), "异域黑曜石条板块");
         add(DecorativeBlocks.TR_OBSIDIAN_SMALL_BRICKS.get(), "异域切制黑曜石砖");
         add(DecorativeBlocks.OBSIDIAN_BRICKS_STAIRS.get(), "黑曜石砖楼梯");
         add(DecorativeBlocks.OBSIDIAN_BRICKS_SLAB.get(), "黑曜石砖台阶");
@@ -1151,9 +1145,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.CHISELED_TR_OBSIDIAN_BRICKS.get(), "雕纹异域黑曜石块");
         add(DecorativeBlocks.CRYSTAL_BLOCKS.get(), "水晶块");
         add(DecorativeBlocks.RAINBOW_BRICKS.get(), "彩虹砖");
-        add(DecorativeBlocks.TR_OAK_BEAM.get(), "经典风情木梁");
         add(DecorativeBlocks.TR_OAK_PLANKS.get(), "经典风情木板");
-        add(DecorativeBlocks.TR_NORTHLAND_BEAM.get(), "北地风情木梁");
         add(DecorativeBlocks.TR_NORTHLAND_PLANKS.get(), "北地风情木板");
         add(DecorativeBlocks.CHISELED_EBONY_PLANKS.get(), "雕纹乌木木板");
         add(DecorativeBlocks.CHISELED_SHADOW_PLANKS.get(), "雕纹暗影木板");
@@ -1164,7 +1156,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.CHISELED_BAOBAB_PLANKS.get(), "雕纹猴面包木木板");
         add(DecorativeBlocks.CHISELED_LIVING_PLANKS.get(), "雕纹生命木板");
         add(DecorativeBlocks.TR_GRANITE_COLUMN.get(), "异域花岗岩梁");
-        add(DecorativeBlocks.MARBLE_COLUMN.get(), "异域大理岩梁");
         add(DecorativeBlocks.PURE_GLASS.get(), "纯净玻璃");
         add(DecorativeBlocks.WHITE_PURE_GLASS.get(), "白色纯净玻璃");
         add(DecorativeBlocks.LIGHT_GRAY_PURE_GLASS.get(), "淡灰色纯净玻璃");
@@ -1446,7 +1437,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SHADOW_SCALE.get(), "暗影鳞片");
         add(MaterialItems.TISSUE_SAMPLE.get(), "组织样本");
         add(MaterialItems.ROYAL_WAX.get(), "蜂王蜡");
-        add(MaterialItems.PURPLE_MUCUS.get(), "紫色黏液");
         add(MaterialItems.CURSED_FLAME.get(), "诅咒火");
         add(MaterialItems.ICHOR.get(), "灵液");
         add(MaterialItems.PIXIE_DUST.get(), "妖精尘");

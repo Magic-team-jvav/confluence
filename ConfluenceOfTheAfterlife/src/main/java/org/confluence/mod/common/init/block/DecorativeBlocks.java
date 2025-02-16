@@ -25,9 +25,7 @@ import static net.minecraft.world.level.block.Blocks.*;
 public class DecorativeBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
 
-    public static final Supplier<Block> TR_OAK_BEAM = copyBlockRegister("tr_oak_beam", Blocks.OAK_PLANKS);
     public static final Supplier<Block> TR_OAK_PLANKS = copyBlockRegister("tr_oak_planks", Blocks.OAK_PLANKS);
-    public static final Supplier<Block> TR_NORTHLAND_BEAM = copyBlockRegister("tr_northland_beam", Blocks.OAK_PLANKS);
     public static final Supplier<Block> TR_NORTHLAND_PLANKS = copyBlockRegister("tr_northland_planks", Blocks.OAK_PLANKS);
     public static final Supplier<Block> CHISELED_EBONY_PLANKS = copyBlockRegister("chiseled_ebony_planks", Blocks.OAK_PLANKS);
     public static final Supplier<Block> CHISELED_SHADOW_PLANKS = copyBlockRegister("chiseled_shadow_planks", Blocks.OAK_PLANKS);
@@ -63,9 +61,7 @@ public class DecorativeBlocks {
 
 
     public static final Supplier<Block> TR_COPPER_BRICKS = copyBlockRegister("tr_copper_bricks", Blocks.COPPER_BLOCK);
-    public static final Supplier<Block> TR_COPPER_PLATE = copyBlockRegister("tr_copper_plate", Blocks.COPPER_BLOCK);
     public static final Supplier<Block> TIN_BRICKS = copyBlockRegister("tin_bricks", Blocks.COPPER_BLOCK);
-    public static final Supplier<Block> TIN_PLATE = copyBlockRegister("tin_plate", Blocks.COPPER_BLOCK);
     public static final Supplier<Block> TR_IRON_BRICKS = copyBlockRegister("tr_iron_bricks", Blocks.IRON_BLOCK);
 
     public static final Supplier<Block> LEAD_BRICKS = copyBlockRegister("lead_bricks", Blocks.IRON_BLOCK);
@@ -91,12 +87,9 @@ public class DecorativeBlocks {
     public static final Supplier<DoorBlock> SKYWARE_GLASS_DOOR = registerWithItem("skyware_glass_door", () -> new DoorBlock(BlockSetType.STONE, BlockBehaviour.Properties.of().mapColor(BLUE_ICE.defaultMapColor()).instrument(NoteBlockInstrument.BASS).strength(4.0F).noOcclusion().pushReaction(PushReaction.DESTROY)));
     public static final Supplier<Block> SUN_PLATE = copyBlockRegister("sun_plate", Blocks.STONE_BRICKS);
     public static final Supplier<Block> DISC_BLOCK = copyBlockRegister("disc_block", Blocks.STONE_BRICKS);
-    public static final Supplier<Block> TR_LAVA_BEAM = copyBlockRegister("tr_lava_beam", Blocks.STONE_BRICKS);
     public static final Supplier<Block> TR_LAVA_BRICKS = copyBlockRegister("tr_lava_bricks", Blocks.STONE_BRICKS);
     // 黑曜石
-    public static final Supplier<Block> TR_OBSIDIAN_BEAM = copyBlockRegister("tr_obsidian_beam", Blocks.OBSIDIAN);
     public static final Supplier<Block> TR_OBSIDIAN_BRICKS = copyBlockRegister("tr_obsidian_bricks", Blocks.OBSIDIAN);
-    public static final Supplier<Block> TR_OBSIDIAN_PLATE = copyBlockRegister("tr_obsidian_plate", Blocks.OBSIDIAN);
     public static final Supplier<Block> TR_OBSIDIAN_SMALL_BRICKS = copyBlockRegister("tr_obsidian_small_bricks", Blocks.OBSIDIAN);
     public static final Supplier<StairBlock> OBSIDIAN_BRICKS_STAIRS = registerWithItem("obsidian_bricks_stairs", () -> new StairBlock(TUFF.defaultBlockState(),BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN)));
     public static final Supplier<SlabBlock> OBSIDIAN_BRICKS_SLAB = registerWithItem("obsidian_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN)));
@@ -113,9 +106,6 @@ public class DecorativeBlocks {
     //
     public static final Supplier<Block> TR_SMOOTH_OBSIDIAN = copyBlockRegister("tr_smooth_obsidian", Blocks.OBSIDIAN);
     public static final Supplier<Block> TR_GRANITE_COLUMN = copyBlockRegister("tr_granite_column", Blocks.STONE_BRICKS);
-    public static final Supplier<Block> MARBLE_COLUMN = copyBlockRegister("marble_column", Blocks.STONE_BRICKS);
-    public static final Supplier<Block> POLISHED_MARBLE = copyBlockRegister("polished_marble", Blocks.STONE_BRICKS);
-
 
     public static final Supplier<Block> CHISELED_TR_OBSIDIAN_BRICKS = copyBlockRegister("chiseled_tr_obsidian_bricks", Blocks.OBSIDIAN);
     public static final Supplier<Block> BLUE_BRICKS = copyBlockRegister("blue_bricks", Blocks.STONE_BRICKS);

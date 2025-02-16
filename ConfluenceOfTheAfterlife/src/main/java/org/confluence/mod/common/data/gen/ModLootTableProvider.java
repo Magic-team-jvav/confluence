@@ -265,9 +265,7 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(TR_EMERALD_BLOCK.get());
 
             // decorative block
-            dropSelf(TR_OAK_BEAM.get());
             dropSelf(TR_OAK_PLANKS.get());
-            dropSelf(TR_NORTHLAND_BEAM.get());
             dropSelf(TR_NORTHLAND_PLANKS.get());
             dropSelf(CHISELED_EBONY_PLANKS.get());
             dropSelf(CHISELED_SHADOW_PLANKS.get());
@@ -283,9 +281,7 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(SNOW_BRICKS.get());
             dropSelf(TR_STONE_BRICKS.get());
             dropSelf(TR_COPPER_BRICKS.get());
-            dropSelf(TR_COPPER_PLATE.get());
             dropSelf(TIN_BRICKS.get());
-            dropSelf(TIN_PLATE.get());
             dropSelf(TR_IRON_BRICKS.get());
 
             dropSelf(LEAD_BRICKS.get());
@@ -308,19 +304,14 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(SUN_PLATE_SLAB.get());
             dropSelf(SUN_PLATE_STAIRS.get());
             dropSelf(DISC_BLOCK.get());
-            dropSelf(TR_LAVA_BEAM.get());
             dropSelf(TR_LAVA_BRICKS.get());
-            dropSelf(TR_OBSIDIAN_BEAM.get());
             dropSelf(TR_OBSIDIAN_BRICKS.get());
             dropSelf(OBSIDIAN_BRICKS_SLAB.get());
             dropSelf(OBSIDIAN_BRICKS_STAIRS.get());
 
-            dropSelf(TR_OBSIDIAN_PLATE.get());
             dropSelf(TR_OBSIDIAN_SMALL_BRICKS.get());
             dropSelf(TR_SMOOTH_OBSIDIAN.get());
             dropSelf(TR_GRANITE_COLUMN.get());
-            dropSelf(MARBLE_COLUMN.get());
-            dropSelf(POLISHED_MARBLE.get());
 
             dropSelf(CHISELED_TR_OBSIDIAN_BRICKS.get());
             dropSelf(BLUE_BRICKS.get());

@@ -86,7 +86,6 @@ public class MaterialItems {
     public static final DeferredItem<Item> MAN_EATER_VINE = register("man_eater_vine",ModRarity.BLUE);
     public static final DeferredItem<Item> BLACK_INK = register("black_ink");
     public static final DeferredItem<Item> LEAD_NUGGET = register("lead_nugget");
-    public static final DeferredItem<Item> PURPLE_MUCUS = register("purple_mucus");
     public static final DeferredItem<Item> SHARK_FIN = register("shark_fin");
     public static final DeferredItem<Item> ANTLION_MANDIBLE = register("antlion_mandible");
     public static final DeferredItem<Item> HOOK = register("hook");

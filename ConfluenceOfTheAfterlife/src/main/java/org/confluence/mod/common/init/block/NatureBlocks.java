@@ -161,7 +161,7 @@ public class NatureBlocks {
     // 黄柳
     public static final LogBlockSet YELLOW_WILLOW_LOG_BLOCKS = LogBlockSet.builder("yellow_willow", true).createDefault(YELLOW_WILLOW, true).build();
     // 万圣节
-    public static final LogBlockSet SPOOKY_LOG_BLOCKS = LogBlockSet.builder("spooky", true).createDefault(SPOOKY, false).build();
+    public static final LogBlockSet SPOOKY_LOG_BLOCKS = LogBlockSet.builder("spooky", true).createDefault(SPOOKY, true).build();
     // 生命树
     public static final LogBlockSet LIVING_LOG_BLOCKS = LogBlockSet.builder("living", true)
             .log(RotatedPillarBlock::new)

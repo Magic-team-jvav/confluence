@@ -145,9 +145,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DecorativeBlocks.TR_EMERALD_BLOCK.get(),
                 DecorativeBlocks.SNOW_BRICKS.get(),
                 DecorativeBlocks.TR_COPPER_BRICKS.get(),
-                DecorativeBlocks.TR_COPPER_PLATE.get(),
                 DecorativeBlocks.TIN_BRICKS.get(),
-                DecorativeBlocks.TIN_PLATE.get(),
                 DecorativeBlocks.TR_IRON_BRICKS.get(),
                 DecorativeBlocks.LEAD_BRICKS.get(),
                 DecorativeBlocks.SILVER_BRICKS.get(),
@@ -167,18 +165,14 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DecorativeBlocks.SUN_PLATE_STAIRS.get(),
                 DecorativeBlocks.SKYWARE_DOOR.get(),
                 DecorativeBlocks.SKYWARE_GLASS_DOOR.get(),
-                DecorativeBlocks.TR_LAVA_BEAM.get(),
                 DecorativeBlocks.TR_LAVA_BRICKS.get(),
-                DecorativeBlocks.TR_OBSIDIAN_BEAM.get(),
                 DecorativeBlocks.TR_OBSIDIAN_BRICKS.get(),
                 DecorativeBlocks.OBSIDIAN_BRICKS_SLAB.get(),
                 DecorativeBlocks.OBSIDIAN_BRICKS_STAIRS.get(),
                 DecorativeBlocks.OBSIDIAN_BRICKS_DOOR.get(),
-                DecorativeBlocks.TR_OBSIDIAN_PLATE.get(),
                 DecorativeBlocks.TR_OBSIDIAN_SMALL_BRICKS.get(),
                 DecorativeBlocks.TR_SMOOTH_OBSIDIAN.get(),
                 DecorativeBlocks.TR_GRANITE_COLUMN.get(),
-                DecorativeBlocks.MARBLE_COLUMN.get(),
                 DecorativeBlocks.CHISELED_TR_OBSIDIAN_BRICKS.get(),
                 DecorativeBlocks.CRYSTAL_BLOCKS.get(),
                 DecorativeBlocks.BLUE_BRICKS.get(),
@@ -248,9 +242,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         // 斧头
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithAxe = tag(BlockTags.MINEABLE_WITH_AXE);
         mineableWithAxe.add(
-                DecorativeBlocks.TR_OAK_BEAM.get(),
                 DecorativeBlocks.TR_OAK_PLANKS.get(),
-                DecorativeBlocks.TR_NORTHLAND_BEAM.get(),
                 DecorativeBlocks.TR_NORTHLAND_PLANKS.get(),
                 DecorativeBlocks.CHISELED_EBONY_PLANKS.get(),
                 DecorativeBlocks.CHISELED_SHADOW_PLANKS.get(),
@@ -332,9 +324,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DecorativeBlocks.TR_EMERALD_BLOCK.get(),
                 DecorativeBlocks.SNOW_BRICKS.get(),
                 DecorativeBlocks.TR_COPPER_BRICKS.get(),
-                DecorativeBlocks.TR_COPPER_PLATE.get(),
                 DecorativeBlocks.TIN_BRICKS.get(),
-                DecorativeBlocks.TIN_PLATE.get(),
                 DecorativeBlocks.TR_IRON_BRICKS.get(),
                 DecorativeBlocks.LEAD_BRICKS.get(),
                 DecorativeBlocks.SILVER_BRICKS.get(),
@@ -354,15 +344,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DecorativeBlocks.SUN_PLATE_STAIRS.get(),
                 DecorativeBlocks.SKYWARE_DOOR.get(),
                 DecorativeBlocks.SKYWARE_GLASS_DOOR.get(),
-                DecorativeBlocks.TR_LAVA_BEAM.get(),
                 DecorativeBlocks.TR_LAVA_BRICKS.get(),
-                DecorativeBlocks.TR_OBSIDIAN_BEAM.get(),
                 DecorativeBlocks.TR_OBSIDIAN_BRICKS.get(),
-                DecorativeBlocks.TR_OBSIDIAN_PLATE.get(),
                 DecorativeBlocks.TR_OBSIDIAN_SMALL_BRICKS.get(),
                 DecorativeBlocks.TR_SMOOTH_OBSIDIAN.get(),
                 DecorativeBlocks.TR_GRANITE_COLUMN.get(),
-                DecorativeBlocks.MARBLE_COLUMN.get(),
                 DecorativeBlocks.CHISELED_TR_OBSIDIAN_BRICKS.get(),
                 DecorativeBlocks.CRYSTAL_BLOCKS.get(),
                 DecorativeBlocks.BLUE_BRICKS.get(),
@@ -426,14 +412,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 Blocks.OBSIDIAN,
                 Blocks.CRYING_OBSIDIAN,
                 OreBlocks.TR_CRIMSON_ORE.get(),
-                DecorativeBlocks.TR_LAVA_BEAM.get(),
                 DecorativeBlocks.TR_LAVA_BRICKS.get(),
-                DecorativeBlocks.TR_OBSIDIAN_BEAM.get(),
                 DecorativeBlocks.TR_OBSIDIAN_BRICKS.get(),
                 DecorativeBlocks.OBSIDIAN_BRICKS_SLAB.get(),
                 DecorativeBlocks.OBSIDIAN_BRICKS_STAIRS.get(),
                 DecorativeBlocks.OBSIDIAN_BRICKS_DOOR.get(),
-                DecorativeBlocks.TR_OBSIDIAN_PLATE.get(),
                 DecorativeBlocks.TR_OBSIDIAN_SMALL_BRICKS.get()
         );
         tag(ModTags.Blocks.NEEDS_4_LEVEL).add(
@@ -759,8 +742,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.MARINE_GRAVEL.get()
         );
         tag(Tags.Blocks.OBSIDIANS).add(
-                DecorativeBlocks.TR_OBSIDIAN_PLATE.get(),
-                DecorativeBlocks.TR_OBSIDIAN_BEAM.get(),
                 DecorativeBlocks.TR_OBSIDIAN_BRICKS.get(),
                 DecorativeBlocks.TR_OBSIDIAN_SMALL_BRICKS.get(),
                 DecorativeBlocks.CHISELED_TR_OBSIDIAN_BRICKS.get()
@@ -962,7 +943,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.EBONY_STONE.get(),
                 NatureBlocks.TR_CRIMSON_STONE.get(),
                 NatureBlocks.PEARL_STONE.get(),
-                DecorativeBlocks.POLISHED_MARBLE.get(),
                 DecorativeBlocks.TR_POLISHED_GRANITE.get()
         );
         tag(Tags.Blocks.STORAGE_BLOCKS).add(

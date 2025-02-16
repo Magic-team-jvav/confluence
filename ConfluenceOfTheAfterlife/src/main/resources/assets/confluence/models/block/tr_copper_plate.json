@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_top",
-  "textures": {
-    "side": "confluence:block/tr_copper_plate_side",
-    "top": "confluence:block/tr_copper_plate_top"
-  }
-}

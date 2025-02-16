@@ -3,6 +3,7 @@ package org.confluence.mod.client.event;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
+import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -46,7 +47,10 @@ import org.confluence.mod.client.particle.DamageIndicatorParticle;
 import org.confluence.mod.client.particle.LightBaneParticle;
 import org.confluence.mod.client.particle.SimpleTextureSheetParticle;
 import org.confluence.mod.client.renderer.block.*;
-import org.confluence.mod.client.renderer.entity.*;
+import org.confluence.mod.client.renderer.entity.BodyPartRenderer;
+import org.confluence.mod.client.renderer.entity.FallingStarRenderer;
+import org.confluence.mod.client.renderer.entity.TargetDummyRenderer;
+import org.confluence.mod.client.renderer.entity.TreasureBagRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.BaseFishingHookRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.BloodyFishingHookRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.GlowingFishingHookRenderer;
@@ -186,11 +190,11 @@ public final class ModClientEvents {
         event.registerEntityRenderer(DIRT_BOMB.get(), DirtBombEntityRenderer::new);
         event.registerEntityRenderer(STICKY_DIRT_BOMB.get(), StickyDirtBombEntityRenderer::new);
 
-        event.registerEntityRenderer(BASE_MANA_STAFF_PROJECTILE.get(), EmptyEntityRenderer::new);
+        event.registerEntityRenderer(BASE_MANA_STAFF_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(VILETHRON_PROJECTILE.get(), VilethronProjectileRenderer::new);
         event.registerEntityRenderer(HURTNADO_PROJECTILE.get(), HurtnadoProjectileRenderer::new);
-        event.registerEntityRenderer(WATER_STREAM_PROJECTILE.get(), EmptyEntityRenderer::new);
-        event.registerEntityRenderer(BALL_OF_FIRE_PROJECTILE.get(), EmptyEntityRenderer::new);
+        event.registerEntityRenderer(WATER_STREAM_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(BALL_OF_FIRE_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(ARROW_PROJECTILE.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(EFFECT_THROWN_POTION.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(ICE_BLADE_SWORD_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, new IceBladeSwordProjectileModel(c.bakeLayer(IceBladeSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/ice_blade_sword_projectile.png"), 1, 0F));
@@ -249,8 +253,8 @@ public final class ModClientEvents {
 
         event.registerEntityRenderer(FALLING_STAR_ITEM_ENTITY.get(), FallingStarRenderer::new);
         event.registerEntityRenderer(TREASURE_BAG_ITEM_ENTITY.get(), TreasureBagRenderer::new);
-        event.registerEntityRenderer(COIN_PORTAL.get(), EmptyEntityRenderer::new);
-        event.registerEntityRenderer(THROWN_POWDER.get(), EmptyEntityRenderer::new);
+        event.registerEntityRenderer(COIN_PORTAL.get(), NoopRenderer::new);
+        event.registerEntityRenderer(THROWN_POWDER.get(), NoopRenderer::new);
         event.registerEntityRenderer(ROPE_COILS.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(ICE_TOFU_BRICK_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(BODY_PART.get(), BodyPartRenderer::new);

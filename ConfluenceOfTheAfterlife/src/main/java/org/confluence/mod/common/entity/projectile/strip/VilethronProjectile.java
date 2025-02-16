@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile.strip;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -34,6 +35,6 @@ public class VilethronProjectile extends StripedProjectile {
 
     @OnlyIn(Dist.CLIENT)
     public int getAlpha() {
-        return 255 - tickCount * 255 / ticksForBodyRemove;
+        return Mth.clamp(255 - tickCount * 255 / ticksForBodyRemove, 0, 255);
     }
 }

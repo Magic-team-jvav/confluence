@@ -61,13 +61,6 @@ public class TheConstant extends SecretSeed {
         return "constant".equals(seed) || "theconstant".equals(seed) || "the constant".equals(seed) || "eye4aneye".equals(seed) || "eyeforaneye".equals(seed);
     }
 
-    public static float applyExhaustion(float exhaustion) {
-        if (ModSecretSeeds.THE_CONSTANT.match()) {
-            return exhaustion * 2;
-        }
-        return exhaustion;
-    }
-
     public static float applyAttackDamage(Entity causer, float amount) {
         if (causer instanceof ServerPlayer serverPlayer && serverPlayer.getFoodData().needsFood() && ModSecretSeeds.THE_CONSTANT.match(serverPlayer.server)) {
             return amount * 0.8F;

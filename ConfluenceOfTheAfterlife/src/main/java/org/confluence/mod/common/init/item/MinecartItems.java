@@ -1,8 +1,7 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.extensions.IAbstractMinecartExtension;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
@@ -51,42 +50,42 @@ public class MinecartItems {
     }
 
     public static class Types {
-        public static final Abilities<BaseMinecartEntity> WOODEN = register(ModEntities.WOODEN_MINECART, () -> Items.AIR, 0.308F, 0.16, 0.94);
-        public static final Abilities<MechanicalCartEntity> MECHANICAL = register(ModEntities.MECHANICAL_CART, MECHANICAL_CART, (float) MECHANICAL_CART_MAX_SPEED, MECHANICAL_CART_ACCELERATION, MECHANICAL_CART_DRAG_AIR);
-        public static final Abilities<GenericMinecartEntity> DESERT = registerGeneric(DESERT_MINECART);
-        public static final Abilities<MinecarpEntity> MINECARP = registerGeneric(ModEntities.MINECARP, MinecartItems.MINECARP);
-        public static final Abilities<GenericMinecartEntity> BEE = registerGeneric(BEE_MINECART);
-        public static final Abilities<GenericMinecartEntity> LADYBUG = registerGeneric(LADYBUG_MINECART);
-        public static final Abilities<GenericMinecartEntity> PIGRON = registerGeneric(PIGRON_MINECART);
-        public static final Abilities<GenericMinecartEntity> SUNFLOWER = registerGeneric(SUNFLOWER_MINECART);
-        public static final Abilities<DemonicHellcartEntity> DEMONIC = registerGeneric(ModEntities.DEMONIC_HELLCART, DEMONIC_HELLCART);
-        public static final Abilities<GenericMinecartEntity> SHROOM = registerGeneric(SHROOM_MINECART);
-        public static final Abilities<GenericMinecartEntity> AMETHYST = registerGeneric(AMETHYST_MINECART);
-        public static final Abilities<GenericMinecartEntity> TOPAZ = registerGeneric(TOPAZ_MINECART);
-        public static final Abilities<GenericMinecartEntity> SAPPHIRE = registerGeneric(SAPPHIRE_MINECART);
-        public static final Abilities<GenericMinecartEntity> EMERALD = registerGeneric(EMERALD_MINECART);
-        public static final Abilities<GenericMinecartEntity> RUBY = registerGeneric(RUBY_MINECART);
-        public static final Abilities<GenericMinecartEntity> DIAMOND = registerGeneric(DIAMOND_MINECART);
-        public static final Abilities<GenericMinecartEntity> AMBER = registerGeneric(AMBER_MINECART);
-        public static final Abilities<GenericMinecartEntity> BEETLE = registerGeneric(BEETLE_MINECART);
-        public static final Abilities<MeowmereMinecartEntity> MEOWMERE = registerGeneric(ModEntities.MEOWMERE_MINECART, MEOWMERE_MINECART);
-        public static final Abilities<GenericMinecartEntity> PARTY = registerGeneric(PARTY_WAGON);
-        public static final Abilities<GenericMinecartEntity> DUTCHMAN = registerGeneric(THE_DUTCHMAN);
-        public static final Abilities<GenericMinecartEntity> STEAMPUNK = registerGeneric(STEAMPUNK_MINECART);
-        public static final Abilities<GenericMinecartEntity> COFFIN = registerGeneric(COFFIN_MINECART);
-        public static final Abilities<DiggingMolecartEntity> MOLECART = register(ModEntities.DIGGING_MOLECART, DIGGING_MOLECART, 0.185F, 0.15, 0.93);
-        public static final Abilities<GenericMinecartEntity> FART = registerGeneric(FART_KART);
-        public static final Abilities<GenericMinecartEntity> TERRA_FART = registerGeneric(TERRA_FART_KART);
+        public static final Abilities<BaseMinecartEntity> WOODEN = register(ModEntities.WOODEN_MINECART, ResourceLocation.withDefaultNamespace("air"), 0.308F, 0.16, 0.94);
+        public static final Abilities<MechanicalCartEntity> MECHANICAL = register(ModEntities.MECHANICAL_CART, Confluence.asResource("mechanical_cart"), (float) MECHANICAL_CART_MAX_SPEED, MECHANICAL_CART_ACCELERATION, MECHANICAL_CART_DRAG_AIR);
+        public static final Abilities<GenericMinecartEntity> DESERT = registerGeneric(Confluence.asResource("desert_minecart"));
+        public static final Abilities<MinecarpEntity> MINECARP = registerGeneric(ModEntities.MINECARP, Confluence.asResource("minecarp"));
+        public static final Abilities<GenericMinecartEntity> BEE = registerGeneric(Confluence.asResource("bee_minecart"));
+        public static final Abilities<GenericMinecartEntity> LADYBUG = registerGeneric(Confluence.asResource("ladybug_minecart"));
+        public static final Abilities<GenericMinecartEntity> PIGRON = registerGeneric(Confluence.asResource("pigron_minecart"));
+        public static final Abilities<GenericMinecartEntity> SUNFLOWER = registerGeneric(Confluence.asResource("sunflower_minecart"));
+        public static final Abilities<DemonicHellcartEntity> DEMONIC = registerGeneric(ModEntities.DEMONIC_HELLCART, Confluence.asResource("demonic_hellcart"));
+        public static final Abilities<GenericMinecartEntity> SHROOM = registerGeneric(Confluence.asResource("shroom_minecart"));
+        public static final Abilities<GenericMinecartEntity> AMETHYST = registerGeneric(Confluence.asResource("amethyst_minecart"));
+        public static final Abilities<GenericMinecartEntity> TOPAZ = registerGeneric(Confluence.asResource("topaz_minecart"));
+        public static final Abilities<GenericMinecartEntity> SAPPHIRE = registerGeneric(Confluence.asResource("sapphire_minecart"));
+        public static final Abilities<GenericMinecartEntity> EMERALD = registerGeneric(Confluence.asResource("emerald_minecart"));
+        public static final Abilities<GenericMinecartEntity> RUBY = registerGeneric(Confluence.asResource("ruby_minecart"));
+        public static final Abilities<GenericMinecartEntity> DIAMOND = registerGeneric(Confluence.asResource("diamond_minecart"));
+        public static final Abilities<GenericMinecartEntity> AMBER = registerGeneric(Confluence.asResource("amber_minecart"));
+        public static final Abilities<GenericMinecartEntity> BEETLE = registerGeneric(Confluence.asResource("beetle_minecart"));
+        public static final Abilities<MeowmereMinecartEntity> MEOWMERE = registerGeneric(ModEntities.MEOWMERE_MINECART, Confluence.asResource("meowmere"));
+        public static final Abilities<GenericMinecartEntity> PARTY = registerGeneric(Confluence.asResource("party_wagon"));
+        public static final Abilities<GenericMinecartEntity> DUTCHMAN = registerGeneric(Confluence.asResource("the_dutchman"));
+        public static final Abilities<GenericMinecartEntity> STEAMPUNK = registerGeneric(Confluence.asResource("steampunk_minecart"));
+        public static final Abilities<GenericMinecartEntity> COFFIN = registerGeneric(Confluence.asResource("coffin_minecart"));
+        public static final Abilities<DiggingMolecartEntity> MOLECART = register(ModEntities.DIGGING_MOLECART, Confluence.asResource("digging_molecart"), 0.185F, 0.15, 0.93);
+        public static final Abilities<GenericMinecartEntity> FART = registerGeneric(Confluence.asResource("fart_kart"));
+        public static final Abilities<GenericMinecartEntity> TERRA_FART = registerGeneric(Confluence.asResource("terra_fart_kart"));
 
-        private static <E extends BaseMinecartEntity> Abilities<E> register(Supplier<EntityType<E>> entityType, Supplier<? extends Item> item, float maxSpeed, double acceleration, double dragAir) {
+        private static <E extends BaseMinecartEntity> Abilities<E> register(Supplier<EntityType<E>> entityType, ResourceLocation item, float maxSpeed, double acceleration, double dragAir) {
             return new Abilities<>(entityType, item, maxSpeed, acceleration, dragAir);
         }
 
-        private static <E extends BaseMinecartEntity> Abilities<E> registerGeneric(Supplier<EntityType<E>> entityType, Supplier<BaseMinecartItem> item) {
+        private static <E extends BaseMinecartEntity> Abilities<E> registerGeneric(Supplier<EntityType<E>> entityType, ResourceLocation item) {
             return new Abilities<>(entityType, item, 0.4F, 0.75, IAbstractMinecartExtension.DEFAULT_AIR_DRAG);
         }
 
-        private static Abilities<GenericMinecartEntity> registerGeneric(Supplier<BaseMinecartItem> item) {
+        private static Abilities<GenericMinecartEntity> registerGeneric(ResourceLocation item) {
             return new Abilities<>(ModEntities.GENERIC_MINECART, item, 0.4F, 0.75, IAbstractMinecartExtension.DEFAULT_AIR_DRAG);
         }
     }

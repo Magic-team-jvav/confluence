@@ -1754,6 +1754,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MinecartItems.PIGRON_MINECART.get(), "猪龙矿车");
         add(MinecartItems.SUNFLOWER_MINECART.get(), "向日葵矿车");
         add(MinecartItems.DEMONIC_HELLCART.get(), "恶魔地狱矿车");
+        add(MinecartItems.SHROOM_MINECART.get(), "蘑菇矿车");
         add(MinecartItems.AMETHYST_MINECART.get(), "紫晶矿车");
         add(MinecartItems.TOPAZ_MINECART.get(), "黄玉矿车");
         add(MinecartItems.SAPPHIRE_MINECART.get(), "蓝玉矿车");

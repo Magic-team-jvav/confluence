@@ -1,12 +1,14 @@
 package org.confluence.mod.common.entity.minecart;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -23,7 +25,7 @@ public class BaseMinecartEntity extends Minecart {
     public static final double MECHANICAL_CART_ACCELERATION = 2.5;
     public static final double MECHANICAL_CART_DRAG_AIR = 0.99;
 
-    protected Supplier<? extends Item> dropItem = () -> Items.AIR; // both
+    protected ResourceLocation dropItem = ResourceLocation.withDefaultNamespace("air"); // both
     protected float maxSpeed = 0.0F; // both
     protected double acceleration = 0.0; // both
     protected @Nullable LivingEntity driver; // server
@@ -102,7 +104,7 @@ public class BaseMinecartEntity extends Minecart {
 
     @Override
     public Item getDropItem() {
-        return dropItem.get();
+        return BuiltInRegistries.ITEM.get(dropItem);
     }
 
     @Override
@@ -121,5 +123,17 @@ public class BaseMinecartEntity extends Minecart {
         return super.getMaxSpeed() * 2.0;
     }
 
-    public record Abilities<E extends BaseMinecartEntity>(Supplier<EntityType<E>> entityType, Supplier<? extends Item> dropItem, float maxSpeed, double acceleration, double dragAir) {}
+    @Override
+    protected void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.dropItem = ResourceLocation.tryParse(compound.getString("DropItem"));
+    }
+
+    @Override
+    protected void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putString("DropItem", dropItem.toString());
+    }
+
+    public record Abilities<E extends BaseMinecartEntity>(Supplier<EntityType<E>> entityType, ResourceLocation dropItem, float maxSpeed, double acceleration, double dragAir) {}
 }

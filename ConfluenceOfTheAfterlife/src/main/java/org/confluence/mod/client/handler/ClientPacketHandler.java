@@ -79,20 +79,22 @@ public final class ClientPacketHandler {
         if (!player.isCreative() && Minecraft.getInstance().screen instanceof IDeathScreen deathScreen) {
             deathScreen.confluence$setDelayTicker(0);
             deathScreen.confluence$setRespawnWaitTime(packet.respawnTime());
-            MutableComponent component = Component.translatable("info.confluence.drops_money");
-            if (packet.platinum() > 0) {
-                component.append(Component.translatable("info.confluence.drops_money.platinum", packet.platinum()));
+            if (packet.platinum() != 0 || packet.gold() != 0 || packet.silver() != 0 || packet.copper() != 0) {
+                MutableComponent component = Component.translatable("info.confluence.drops_money");
+                if (packet.platinum() > 0) {
+                    component.append(Component.translatable("info.confluence.drops_money.platinum", packet.platinum()));
+                }
+                if (packet.gold() > 0) {
+                    component.append(Component.translatable("info.confluence.drops_money.gold", packet.gold()));
+                }
+                if (packet.silver() > 0) {
+                    component.append(Component.translatable("info.confluence.drops_money.silver", packet.silver()));
+                }
+                if (packet.copper() > 0) {
+                    component.append(Component.translatable("info.confluence.drops_money.copper", packet.copper()));
+                }
+                deathScreen.confluence$setDropsMoney(component);
             }
-            if (packet.gold() > 0) {
-                component.append(Component.translatable("info.confluence.drops_money.gold", packet.gold()));
-            }
-            if (packet.silver() > 0) {
-                component.append(Component.translatable("info.confluence.drops_money.silver", packet.silver()));
-            }
-            if (packet.copper() > 0) {
-                component.append(Component.translatable("info.confluence.drops_money.copper", packet.copper()));
-            }
-            deathScreen.confluence$setDropsMoney(component);
         }
     }
 }

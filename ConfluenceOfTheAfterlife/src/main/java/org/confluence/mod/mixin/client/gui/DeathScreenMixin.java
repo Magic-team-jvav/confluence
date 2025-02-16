@@ -25,9 +25,6 @@ public abstract class DeathScreenMixin extends Screen implements IDeathScreen {
     }
 
     @Shadow
-    protected abstract void exitToTitleScreen();
-
-    @Shadow
     private int delayTicker;
     @Shadow
     @Final
@@ -80,10 +77,7 @@ public abstract class DeathScreenMixin extends Screen implements IDeathScreen {
                 confluence$respawnButton.active = true;
             }
         }
-        this.confluence$respawnTimeComponent = Component.translatable("info.confluence.respawn_time")
-                .append(Component.literal(String.valueOf((confluence$respawnWaitTime * 20 - delayTicker) / 20)))
-                .append(Component.translatable("info.confluence.second"))
-                .withStyle(ChatFormatting.GRAY);
+        this.confluence$respawnTimeComponent = Component.translatable("info.confluence.respawn_time", (confluence$respawnWaitTime * 20 - delayTicker) / 20).withStyle(ChatFormatting.GRAY);
     }
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/DeathScreen;setButtonsActive(Z)V", shift = At.Shift.AFTER))

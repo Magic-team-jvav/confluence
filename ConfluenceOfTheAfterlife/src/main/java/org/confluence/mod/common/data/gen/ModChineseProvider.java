@@ -107,8 +107,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("info.confluence.weather_radio.thunder", "天气: 雷暴, 风速: %s");
         add("info.confluence.bait", "鱼饵力: %s%%");
         add("info.confluence.network", "#%s 信号: %s");
-        add("info.confluence.respawn_time", "复活剩余时间: ");
-        add("info.confluence.second", "秒");
+        add("info.confluence.respawn_time", "复活剩余时间: %s秒");
         add("info.confluence.drops_money", "掉落");
         add("info.confluence.drops_money.platinum", " %s 铂");
         add("info.confluence.drops_money.gold", " %s 金");
@@ -380,7 +379,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.section.confluence.client.toml.title", "客户端配置");
         add("confluence.configuration.Entity.tooltip", "与生物有关的视觉效果");
 
-        add("confluence.configuration.section.confluence.common.toml.title","服务端配置");
+        add("confluence.configuration.section.confluence.common.toml.title", "服务端配置");
 
 
         add("biome.confluence.the_corruption", "腐化之地");

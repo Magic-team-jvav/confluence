@@ -79,8 +79,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("info.confluence.weather_radio.thunder", "Weather: Thunder, Wind Speed: %s");
         add("info.confluence.bait", "Bait Power: %s%%");
         add("info.confluence.network", "#%s Signal: %s");
-        add("info.confluence.respawn_time", "Respawn Time: ");
-        add("info.confluence.second", "s");
+        add("info.confluence.respawn_time", "Respawn Time: %ss");
         add("info.confluence.drops_money", "dropped");
         add("info.confluence.drops_money.platinum", " %s platinum");
         add("info.confluence.drops_money.gold", " %s gold");
@@ -177,7 +176,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.no_gravity", "No Gravity");
         add("tooltip.item.confluence.cause_fire", "Causes Fire");
         add("tooltip.item.confluence.can_penetrate", "Can Penetrate");
-
 
 
         add("tooltip.item.confluence.radio_thing.0", "Allows the user to see the world differently");

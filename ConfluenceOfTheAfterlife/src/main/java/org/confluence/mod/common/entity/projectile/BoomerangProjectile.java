@@ -205,4 +205,9 @@ public class BoomerangProjectile extends AbstractHurtingProjectile {
         }
         super.onRemovedFromLevel();
     }
+
+    @Override
+    public boolean shouldRender(double x, double y, double z) {
+        return true;
+    }
 }

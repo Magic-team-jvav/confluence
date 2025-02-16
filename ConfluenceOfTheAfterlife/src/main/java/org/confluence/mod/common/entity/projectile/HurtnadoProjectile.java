@@ -66,13 +66,13 @@ public class HurtnadoProjectile extends Projectile {
                 }
             }
         }
-        setDeltaMovement(motion.scale(0.96).add(0.0, -0.04, 0.0));
+        setDeltaMovement(motion.add(0.0, -0.04, 0.0));
 
         if (target == null || target.isRemoved()) {
             this.target = getNearestEnemy();
         }
         if (target != null) {
-            addDeltaMovement(ModUtils.getVectorA2B(this, target).scale(0.05));
+            setDeltaMovement(getDeltaMovement().scale(0.96).add(ModUtils.getVectorA2B(this, target).scale(0.05)));
         }
     }
 

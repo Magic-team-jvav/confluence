@@ -43,9 +43,6 @@ public class WaterStreamProjectile extends Projectile {
             return;
         }
         super.tick();
-        this.xo = getX();
-        this.yo = getY();
-        this.zo = getZ();
 
         if (level().isClientSide) {
             if (emitter == null) {

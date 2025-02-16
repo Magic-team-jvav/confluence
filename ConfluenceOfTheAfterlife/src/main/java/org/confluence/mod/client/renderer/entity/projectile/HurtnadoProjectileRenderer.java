@@ -8,12 +8,10 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.projectile.HurtnadoProjectileModel;
 import org.confluence.mod.common.entity.projectile.HurtnadoProjectile;
-import org.confluence.mod.util.ClientUtils;
 
 public class HurtnadoProjectileRenderer extends EntityRenderer<HurtnadoProjectile> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/hurtnado_projectile.png");
@@ -32,11 +30,8 @@ public class HurtnadoProjectileRenderer extends EntityRenderer<HurtnadoProjectil
     @Override
     public void render(HurtnadoProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
         poseStack.pushPose();
-        poseStack.translate(0.0F, 0.125F, 0.0F);
-        poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - 90.0F));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTick, entity.xRotO, entity.getXRot())));
-        poseStack.mulPose(ClientUtils.ANGLE_N90);
-        model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY);
+        poseStack.mulPose(Axis.YP.rotation(Mth.lerp(partialTick, entity.rotateO, entity.rotate)));
+        model.renderToBuffer(poseStack, multiBufferSource.getBuffer(RenderType.entityTranslucent(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY);
         poseStack.popPose();
     }
 }

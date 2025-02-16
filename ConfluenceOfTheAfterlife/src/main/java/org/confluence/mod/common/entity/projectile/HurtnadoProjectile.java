@@ -2,6 +2,8 @@ package org.confluence.mod.common.entity.projectile;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,16 +16,18 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class HurtnadoProjectile extends Projectile {
+public class HurtnadoProjectile extends Projectile implements Immunity {
     private final Set<Entity> passThrough = new HashSet<>();
-    public int ticksForBodyRemove;
     private Entity target;
+    public float rotateO = 0.0F;
+    public float rotate = 0.0F;
 
     public HurtnadoProjectile(EntityType<HurtnadoProjectile> entityType, Level level) {
         super(entityType, level);
@@ -54,7 +58,12 @@ public class HurtnadoProjectile extends Projectile {
             if (motion.y != vec3.y) motion = new Vec3(vec3.x, -vec3.y, vec3.z);
             if (motion.z != vec3.z) motion = new Vec3(vec3.x, vec3.y, -vec3.z);
         }
-        if (!level().isClientSide && tickCount % 8 == 0) {
+
+        if (level().isClientSide) {
+            if (rotate > Mth.TWO_PI) this.rotate -= Mth.TWO_PI;
+            this.rotateO = rotate;
+            this.rotate += Mth.PI * 0.15F;
+        } else {
             AABB boundingBox = getBoundingBox().inflate(1.0);
             if (ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F) instanceof EntityHitResult entityHitResult) {
                 Entity entity = entityHitResult.getEntity();
@@ -109,7 +118,13 @@ public class HurtnadoProjectile extends Projectile {
         this.tickCount = compound.getInt("Age");
     }
 
-    public float[] getRot() {
-        return new float[0];
+    @Override
+    public Types confluence$getImmunityType(){
+        return Types.STATIC;
+    }
+
+    @Override
+    public int confluence$getImmunityDuration(DamageSource damageSource){
+        return 8;
     }
 }

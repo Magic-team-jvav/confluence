@@ -27,9 +27,9 @@ import org.confluence.mod.util.ModUtils;
  */
 public abstract class StripedProjectile extends Projectile implements Immunity {
     private static final EntityDataAccessor<Boolean> DATA_IS_HEAD = SynchedEntityData.defineId(StripedProjectile.class, EntityDataSerializers.BOOLEAN);
-    public double distForHeadRemove = 10.0;
+    protected double distForHeadRemove = 10.0;
     protected double distForCreateBody = 0.95;
-    public int ticksForBodyRemove = 28;
+    protected int ticksForBodyRemove = 28;
     protected int frequencyForBodyCheckTouch = 5;
     private Vec3 startPos = Vec3.ZERO;
     private double distO = -0.5;
@@ -91,7 +91,7 @@ public abstract class StripedProjectile extends Projectile implements Immunity {
         } else if (!level().isClientSide) {
             if (tickCount > ticksForBodyRemove) {
                 onRemove();
-            } else /*if (tickCount % frequencyForBodyCheckTouch == 0)*/ {
+            } else {
                 AABB boundingBox = getBoundingBox().inflate(1.0);
                 EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F);
                 if (hitResult != null) {
@@ -121,7 +121,6 @@ public abstract class StripedProjectile extends Projectile implements Immunity {
     public float[] getRot() {
         if (rot == null) {
             updateRotation();
-            setDeltaMovement(Vec3.ZERO);
             this.rot = new float[]{getYRot() * Mth.DEG_TO_RAD, getXRot() * Mth.DEG_TO_RAD};
         }
         return rot;

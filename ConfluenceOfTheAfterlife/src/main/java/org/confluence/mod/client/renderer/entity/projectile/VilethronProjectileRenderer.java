@@ -12,9 +12,9 @@ import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.projectile.VilethronProjectileModel;
-import org.confluence.mod.common.entity.projectile.strip.StripedProjectile;
+import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
 
-public class VilethronProjectileRenderer extends EntityRenderer<StripedProjectile> {
+public class VilethronProjectileRenderer extends EntityRenderer<VilethronProjectile> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/vilethron_projectile.png");
     private final VilethronProjectileModel model;
 
@@ -24,17 +24,17 @@ public class VilethronProjectileRenderer extends EntityRenderer<StripedProjectil
     }
 
     @Override
-    public ResourceLocation getTextureLocation(StripedProjectile entity) {
+    public ResourceLocation getTextureLocation(VilethronProjectile entity) {
         return TEXTURE;
     }
 
     @Override
-    public void render(StripedProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    public void render(VilethronProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
         float[] rot = entity.getRot();
         poseStack.mulPose(Axis.YP.rotation(rot[0] - Mth.HALF_PI));
         poseStack.mulPose(Axis.ZP.rotation(rot[1]));
-        int color = FastColor.ARGB32.color(255 - entity.tickCount * 255 / entity.ticksForBodyRemove, 0xFFFFFF);
+        int color = FastColor.ARGB32.color(entity.getAlpha(), 0xFFFFFF);
         model.renderToBuffer(poseStack, bufferSource.getBuffer(RenderType.entityTranslucent(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, color);
         poseStack.popPose();
     }

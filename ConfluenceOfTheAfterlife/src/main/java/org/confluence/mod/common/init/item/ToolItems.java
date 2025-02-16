@@ -49,4 +49,5 @@ public class ToolItems {
     public static final Supplier<RopeCoilItem> SILK_ROPE_COIL = ITEMS.register("silk_rope_coil", () -> new RopeCoilItem(new Item.Properties(), ModBlocks.SILK_ROPE.get()));
     public static final Supplier<RopeCoilItem> WEB_ROPE_COIL = ITEMS.register("web_rope_coil", () -> new RopeCoilItem(new Item.Properties(), ModBlocks.WEB_ROPE.get()));
 
+    public static final Supplier<TargetDummyItem> TARGET_DUMMY = ITEMS.register("target_dummy", TargetDummyItem::new);
 }

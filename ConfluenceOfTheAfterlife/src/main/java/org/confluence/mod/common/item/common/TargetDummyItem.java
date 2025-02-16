@@ -10,7 +10,7 @@ import org.confluence.terra_curio.common.component.ModRarity;
 
 public class TargetDummyItem extends CustomRarityItem {
     public TargetDummyItem() {
-        super(new Properties(), ModRarity.MASTER);
+        super(new Properties(), ModRarity.BLUE);
     }
 
     @Override

@@ -16,6 +16,7 @@ import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -24,6 +25,8 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
+
+import javax.tools.Tool;
 
 public class TargetDummyEntity extends LivingEntity implements GeoEntity {
 
@@ -39,7 +42,7 @@ public class TargetDummyEntity extends LivingEntity implements GeoEntity {
         if (source.getEntity() instanceof Player player){
             if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof PickaxeItem){
                 this.remove(RemovalReason.DISCARDED);
-                ModUtils.createItemEntity(ModItems.TARGET_DUMMY.get().getDefaultInstance(), position(), player.level(), 0);
+                ModUtils.createItemEntity(ToolItems.TARGET_DUMMY.get().getDefaultInstance(), position(), player.level(), 0);
                 return true;
             }
         }

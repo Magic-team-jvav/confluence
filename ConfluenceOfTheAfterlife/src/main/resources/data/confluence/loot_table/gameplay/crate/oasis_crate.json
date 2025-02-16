@@ -21,6 +21,11 @@
         },
         {
           "type": "minecraft:item",
+          "name": "confluence:thunder_zapper",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
           "name": "confluence:magic_conch",
           "weight": 1
         }

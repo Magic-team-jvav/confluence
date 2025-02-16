@@ -169,6 +169,7 @@ public final class ModClientEvents {
         event.registerLayerDefinition(ShurikenProjectileModel.LAYER_LOCATION, ShurikenProjectileModel::createBodyLayer);
         event.registerLayerDefinition(ThrownKnivesProjectileModel.LAYER_LOCATION, ThrownKnivesProjectileModel::createBodyLayer);
         event.registerLayerDefinition(VilethronProjectileModel.LAYER_LOCATION, VilethronProjectileModel::createBodyLayer);
+        event.registerLayerDefinition(HurtnadoProjectileModel.LAYER_LOCATION, HurtnadoProjectileModel::createBodyLayer);
 
         event.registerLayerDefinition(BaseHookModel.LAYER_LOCATION, BaseHookModel::createBodyLayer);
         event.registerLayerDefinition(WebSlingerModel.LAYER_LOCATION, WebSlingerModel::createBodyLayer);
@@ -190,7 +191,7 @@ public final class ModClientEvents {
 
         event.registerEntityRenderer(BASE_MANA_STAFF_PROJECTILE.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(VILETHRON_PROJECTILE.get(), VilethronProjectileRenderer::new);
-        event.registerEntityRenderer(HURTNADO_PROJECTILE.get(), EmptyEntityRenderer::new);
+        event.registerEntityRenderer(HURTNADO_PROJECTILE.get(), HurtnadoProjectileRenderer::new);
         event.registerEntityRenderer(WATER_STREAM_PROJECTILE.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(BALL_OF_FIRE_PROJECTILE.get(), EmptyEntityRenderer::new);
         event.registerEntityRenderer(ARROW_PROJECTILE.get(), TerraArrowRenderer::new);

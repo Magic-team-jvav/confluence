@@ -22,6 +22,7 @@ import java.util.Set;
 
 public class HurtnadoProjectile extends Projectile {
     private final Set<Entity> passThrough = new HashSet<>();
+    public int ticksForBodyRemove;
     private Entity target;
 
     public HurtnadoProjectile(EntityType<HurtnadoProjectile> entityType, Level level) {
@@ -106,5 +107,9 @@ public class HurtnadoProjectile extends Projectile {
     protected void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.tickCount = compound.getInt("Age");
+    }
+
+    public float[] getRot() {
+        return new float[0];
     }
 }

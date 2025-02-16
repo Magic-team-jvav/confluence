@@ -57,6 +57,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.BLOOD_CLOT_POWDER.get(),
                 MaterialItems.ROTTEN_BONE.get()
         );
+        tag(ModTags.Items.SHADOW_SCALE_AND_TISSUE_SAMPLE).add(
+                MaterialItems.SHADOW_SCALE.get(),
+                MaterialItems.TISSUE_SAMPLE.get()
+        );
 
         // 可烧的木材
         tag(ModTags.Items.WOODEN_COMBUSTIBLES).add(

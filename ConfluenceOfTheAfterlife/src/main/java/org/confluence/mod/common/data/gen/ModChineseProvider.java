@@ -814,7 +814,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks().get(), "乌木板");
         add(NatureBlocks.EBONY_LOG_BLOCKS.getLog().get(), "乌木原木");
         add(NatureBlocks.EBONY_LOG_BLOCKS.getStrippedLog().get(), "去皮乌木原木");
-        add(NatureBlocks.EBONY_LOG_BLOCKS.getStrippedWood().get(), "去皮乌木木");
+        add(NatureBlocks.EBONY_LOG_BLOCKS.getStrippedWood().get(), "去皮乌木");
         add(NatureBlocks.EBONY_LOG_BLOCKS.getDoor().get(), "乌木门");
         add(NatureBlocks.EBONY_LOG_BLOCKS.getSign().get(), "乌木告示牌");
         add(NatureBlocks.EBONY_LOG_BLOCKS.getStairs().get(), "乌木楼梯");
@@ -1009,7 +1009,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.SHADOW_ORB.get(), "暗影珠");
         add(NatureBlocks.CRIMSON_HEART.get(), "猩红心脏");
 
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getLog().get(), "阴森原木");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getWood().get(), "阴森木");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getPlanks().get(), "阴森木板");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getStrippedLog().get(), "去皮阴森木原木");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getStrippedWood().get(), "去皮阴森木");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getPressurePlate().get(), "阴森木压力板");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getFence().get(), "阴森木栅栏");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getFenceGate().get(), "阴森木栅栏门");
@@ -1852,7 +1856,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaStaffItems.WAND_OF_FROSTING.get(), "霜冻魔棒");
         add(ManaStaffItems.THUNDER_ZAPPER.get(), "霹雳法杖");
         add(ManaStaffItems.VILETHRON.get(), "魔刺");
-        add(ManaStaffItems.WEATHER_PAIN.get(), "天候棒");
+        add(ManaStaffItems.WEATHER_PAIN.get(), "天气棒");
         add(ManaStaffItems.AQUA_SCEPTER.get(), "海蓝权杖");
         add(ManaStaffItems.FLOWER_OF_FIRE.get(), "火之花");
         /*

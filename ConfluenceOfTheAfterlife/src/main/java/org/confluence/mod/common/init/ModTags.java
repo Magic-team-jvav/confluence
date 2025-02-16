@@ -37,6 +37,7 @@ public final class ModTags {
         public static final TagKey<Block> TOMBSTONE = register("tombstone");
         public static final TagKey<Block> ROPE = register("rope");
 
+
         private static TagKey<Block> c(String name) {
             return BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
         }
@@ -76,6 +77,7 @@ public final class ModTags {
         public static final TagKey<Item> WOODEN_COMBUSTIBLES = register("wooden_combustibles");  // 可燃木材系列
         public static final TagKey<Item> CHARCOAL_CAN_BE_BURNED = register("charcoal_can_be_burned");  // 可烧成木炭
         public static final TagKey<Item> LEAD_AND_IRON = register("lead_and_iron");
+        public static final TagKey<Item> SHADOW_SCALE_AND_TISSUE_SAMPLE = register("shadow_scale_and_tissue_sample");
         public static final TagKey<Item> DEMONITE_AND_CRIMSON_INGOT = register("demonite_and_crimson_ingot");
         public static final TagKey<Item> HAMMER = register("hammer");
         public static final TagKey<Item> MANA_WEAPON = register("mana_weapon");

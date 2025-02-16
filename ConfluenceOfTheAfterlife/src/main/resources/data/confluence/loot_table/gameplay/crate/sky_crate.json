@@ -32,6 +32,31 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "confluence:cloud_block",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 50,
+                "max": 100
+              }
+            }
+          ],
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 1
+        }
+      ],
+      "rolls": 1
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
           "name": "confluence:fledgling_wings",
           "weight": 1
         },

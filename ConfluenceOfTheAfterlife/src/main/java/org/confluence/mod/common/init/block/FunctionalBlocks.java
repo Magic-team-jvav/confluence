@@ -18,6 +18,9 @@ import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.functional.*;
 import org.confluence.mod.common.block.functional.crafting.*;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
+import org.confluence.mod.common.entity.projectile.boulder.ExplodeBoulderEntity;
+import org.confluence.mod.common.entity.projectile.boulder.FollowerBoulderEntity;
+import org.confluence.mod.common.entity.projectile.boulder.RollingCactusBoulderEntity;
 import org.confluence.mod.common.init.item.ModItems;
 
 import java.util.ArrayList;
@@ -93,8 +96,9 @@ public class FunctionalBlocks {
     public static final Supplier<GeyserBlock> GEYSER_BLOCK = registerWithEntity("geyser_block", GeyserBlock::new);
     public static final Supplier<BoulderBlock> NORMAL_BOULDER = registerWithEntity("normal_boulder", BoulderBlock::new);
     public static final Supplier<BoulderBlock> OAK_LOG_BOULDER = registerWithEntity("oak_log_boulder", BoulderBlock::new);
-    public static final Supplier<FollowerBoulderBlock> FOLLOWER_BOULDER = registerWithEntity("follower_boulder", FollowerBoulderBlock::new);
-    public static final Supplier<ExplodeBoulderBlock> EXPLODE_BOULDER = registerWithEntity("explode_boulder", ExplodeBoulderBlock::new);
+    public static final Supplier<BoulderBlock> FOLLOWER_BOULDER = registerWithEntity("follower_boulder", () -> new BoulderBlock(FollowerBoulderEntity::new));
+    public static final Supplier<BoulderBlock> EXPLODE_BOULDER = registerWithEntity("explode_boulder", () -> new BoulderBlock(ExplodeBoulderEntity::new));
+    public static final Supplier<BoulderBlock> ROLLING_CACTUS_BOULDER = registerWithEntity("rolling_cactus_boulder", () -> new BoulderBlock(RollingCactusBoulderEntity::new));
     public static final Supplier<DetonatorBlock> DETONATOR = registerWithEntity("detonator", () -> new DetonatorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_TRAPDOOR)));
     public static final Supplier<MechanicalFragileBlock> MECHANICAL_FRAGILE_SANDSTONE = registerWithEntity("mechanical_fragile_sandstone", () -> new MechanicalFragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE), Blocks.SANDSTONE::defaultBlockState));
     public static final Supplier<MechanicalFragileBlock> MECHANICAL_FRAGILE_OBSIDIAN_BRICKS = registerWithEntity("mechanical_fragile_obsidian_bricks", () -> new MechanicalFragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS), DecorativeBlocks.TR_OBSIDIAN_BRICKS.get()::defaultBlockState));

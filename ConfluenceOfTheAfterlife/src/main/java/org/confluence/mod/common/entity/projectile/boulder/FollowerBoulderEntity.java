@@ -7,6 +7,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.init.ModEntities;
 import org.jetbrains.annotations.Nullable;
 
 public class FollowerBoulderEntity extends BoulderEntity {
@@ -18,7 +19,7 @@ public class FollowerBoulderEntity extends BoulderEntity {
     }
 
     public FollowerBoulderEntity(Level level, Vec3 pos, BlockState blockState) {
-        super(level, pos, blockState);
+        super(ModEntities.FOLLOWER_BOULDER.get(), level, pos, blockState);
         tick = 0;
     }
 
@@ -31,18 +32,18 @@ public class FollowerBoulderEntity extends BoulderEntity {
         if (target != null) {
             Vec3 vec3 = target.position().subtract(position()).normalize();
             vec3 = new Vec3(vec3.x, 0.0, vec3.z);
-            setDeltaMovement(vec3.scale(SPEED / 1.75F));
+            setDeltaMovement(vec3.scale(speed / 1.75F));
             setYRot((float) (Mth.atan2(vec3.x, vec3.z) * Mth.RAD_TO_DEG));
             this.yRotO = getYRot();
-            if (this.distanceTo(target) >= 30) remove();
+            if (this.distanceTo(target) >= 30) onRemove();
         }
-        if (tick >= 20 * 20) remove();
+        if (tick >= 20 * 20) onRemove();
     }
 
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
         super.onHitEntity(entityHitResult);
-        remove();
+        onRemove();
     }
 
     @Override

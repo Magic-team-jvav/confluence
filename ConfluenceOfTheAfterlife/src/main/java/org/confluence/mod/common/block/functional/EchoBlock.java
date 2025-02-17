@@ -11,6 +11,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.block.StateProperties;
 
@@ -54,7 +55,7 @@ public class EchoBlock extends HalfTransparentBlock implements ISimulatorBlock {
 
     @Override
     public BlockState getSimulatedBlock(boolean isClient) {
-        if (isClient) {
+        if (isClient && FMLEnvironment.dist.isClient()) {
             return defaultBlockState().setValue(StateProperties.VISIBLE, ClientPacketHandler.hasEchoVisible());
         }
         return defaultBlockState();

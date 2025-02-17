@@ -2,13 +2,16 @@ package org.confluence.mod.common.event.game.entity;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -54,6 +57,7 @@ import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
+import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.entity.ai.Boss;
 import org.confluence.terraentity.init.TEEffects;
 import org.confluence.terraentity.init.TEEntities;
@@ -176,6 +180,45 @@ public final class LivingEntityEvents {
         amount = ManaSicknessEffect.apply(damageSource, amount);
         amount = TheConstant.applyAttackDamage(attacker, amount);
 
+        // 克苏鲁之脑和飞眼怪给的debuff
+        if (attacker != null && ModUtils.isAtLeastExpert(level)) {
+            EntityType<?> type = attacker.getType();
+            if (type == TEEntities.VISUAL_NEURON.get() || (type == TEEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
+                boolean master = ModUtils.isMaster(level);
+                Holder<MobEffect> debuff;
+                float min;
+                int i = attacker.getRandom().nextInt(81);
+                if (i < 11) {
+                    debuff = MobEffects.POISON;
+                    min = master ? 6.56F : 5.25F;
+                } else if (i < 22) {
+                    debuff = MobEffects.BLINDNESS;
+                    min = master ? 3.75F : 3.0F;
+                } else if (i < 24) {
+                    debuff = ModEffects.CURSED;
+                    min = master ? 0.94F : 0.75F;
+                } else if (i < 35) {
+                    debuff = ModEffects.BLEEDING;
+                    min = master ? 9.38F : 7.5F;
+                } else if (i < 37) {
+                    debuff = TCEffects.CONFUSED;
+                    min = master ? 1.88F : 1.5F;
+                } else if (i < 48) {
+                    debuff = MobEffects.MOVEMENT_SLOWDOWN;
+                    min = master ? 6.56F : 5.25F;
+                } else if (i < 59) {
+                    debuff = MobEffects.WEAKNESS;
+                    min = master ? 14.06F : 11.25F;
+                } else if (i < 70) {
+                    debuff = ModEffects.SILENCED;
+                    min = master ? 1.88F : 1.5F;
+                } else {
+                    debuff = ModEffects.BROKEN_ARMOR;
+                    min = master ? 12.19F : 9.75F;
+                }
+                living.addEffect(new MobEffectInstance(debuff, (int) (attacker.getRandom().nextFloat() * min + min) * 20));
+            }
+        }
         // 芦苇呼吸管对溺水伤害减半
         if (damageSource.is(DamageTypes.DROWN)) {
             if (ModUtils.anyHandHasItem(living, itemStack -> itemStack.is(SwordItems.BREATHING_REED))) {

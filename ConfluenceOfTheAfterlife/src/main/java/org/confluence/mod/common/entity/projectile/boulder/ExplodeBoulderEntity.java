@@ -6,6 +6,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.init.ModEntities;
 
 public class ExplodeBoulderEntity extends BoulderEntity {
     public ExplodeBoulderEntity(EntityType<ExplodeBoulderEntity> pEntityType, Level pLevel) {
@@ -13,7 +14,7 @@ public class ExplodeBoulderEntity extends BoulderEntity {
     }
 
     public ExplodeBoulderEntity(Level level, Vec3 pos, BlockState blockState) {
-        super(level, pos, blockState);
+        super(ModEntities.EXPLODE_BOULDER.get(), level, pos, blockState);
     }
 
     @Override
@@ -21,7 +22,7 @@ public class ExplodeBoulderEntity extends BoulderEntity {
         super.onHitEntity(entityHitResult);
         Entity entity = entityHitResult.getEntity();
         this.level().explode(this, entity.getX(), entity.getY(), entity.getZ(), 2.85F, true, Level.ExplosionInteraction.TNT);
-        remove();
+        onRemove();
     }
 
     /*    @Override

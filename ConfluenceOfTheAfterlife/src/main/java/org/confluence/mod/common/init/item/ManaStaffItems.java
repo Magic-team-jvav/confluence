@@ -11,10 +11,8 @@ import org.confluence.mod.common.item.mana.ManaStaffItem;
 import org.confluence.mod.common.item.mana.WeatherPainItem;
 import org.confluence.terra_curio.common.component.ModRarity;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.Supplier;
 
-@ParametersAreNonnullByDefault
 public class ManaStaffItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 

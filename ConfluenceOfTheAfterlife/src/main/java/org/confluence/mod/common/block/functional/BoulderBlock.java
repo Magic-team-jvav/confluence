@@ -19,8 +19,19 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Function;
 
 public class BoulderBlock extends AbstractMechanicalBlock {
+    private final BoulderFactory factory;
+
     public BoulderBlock() {
-        super(Properties.of());
+        this(BoulderEntity::new);
+    }
+
+    public BoulderBlock(BoulderFactory factory) {
+        this(Properties.of(), factory);
+    }
+
+    public BoulderBlock(Properties properties, BoulderFactory factory) {
+        super(properties);
+        this.factory = factory;
     }
 
     @Override
@@ -61,9 +72,8 @@ public class BoulderBlock extends AbstractMechanicalBlock {
         summon(pLevel, pPos, pState, entity -> pLevel.getNearestPlayer(entity, BoulderEntity.SEARCH_RANGE));
     }
 
-    public static void summon(Level level, BlockPos pos, BlockState blockState, Function<BoulderEntity, Player> function) {
-        Vec3 position = new Vec3(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-        BoulderEntity entity = new BoulderEntity(level, position, blockState);
+    protected void summon(Level level, BlockPos pos, BlockState blockState, Function<BoulderEntity, Player> function) {
+        BoulderEntity entity = factory.create(level, pos.getCenter(), blockState);
         if (level.getBlockState(pos.below()).isAir()) {
             entity.getEntityData().set(BoulderEntity.DATA_VERTICAL, true);
         } else {
@@ -71,5 +81,10 @@ public class BoulderBlock extends AbstractMechanicalBlock {
             entity.getEntityData().set(BoulderEntity.DATA_VERTICAL, false);
         }
         level.addFreshEntity(entity);
+    }
+
+    @FunctionalInterface
+    public interface BoulderFactory {
+        BoulderEntity create(Level level, Vec3 position, BlockState blockState);
     }
 }

@@ -20,7 +20,6 @@ import javax.annotation.Nullable;
 import static org.confluence.mod.common.block.StateProperties.REVERSE;
 import static org.confluence.mod.common.block.StateProperties.SIGNAL;
 
-@SuppressWarnings("deprecation")
 public class SignalAdapterBlock extends AbstractMechanicalBlock {
     public SignalAdapterBlock() {
         super(Properties.ofFullCopy(Blocks.REDSTONE_BLOCK));

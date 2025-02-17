@@ -34,9 +34,10 @@ import org.jetbrains.annotations.Nullable;
 public class BoulderEntity extends Projectile {
     public static final EntityDataAccessor<Boolean> DATA_VERTICAL = SynchedEntityData.defineId(BoulderEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<BlockState> DATA_BLOCK_STATE = SynchedEntityData.defineId(BoulderEntity.class, EntityDataSerializers.BLOCK_STATE);
-    public static final double SPEED = 0.7;
     public static final float DIAMETER = 1.0F;
     public static final float SEARCH_RANGE = 31.5F;
+    protected double speed = 0.7;
+    protected double minimumBreakSpeed = 0.007;
     public float rotateO = 0.0F;
     public float rotate = 0.0F;
 
@@ -45,7 +46,11 @@ public class BoulderEntity extends Projectile {
     }
 
     public BoulderEntity(Level level, Vec3 pos, BlockState blockState) {
-        super(ModEntities.BOULDER.get(), level);
+        this(ModEntities.BOULDER.get(), level, pos, blockState);
+    }
+
+    public BoulderEntity(EntityType<? extends BoulderEntity> pEntityType, Level level, Vec3 pos, BlockState blockState) {
+        super(pEntityType, level);
         setPos(pos);
         entityData.set(DATA_BLOCK_STATE, blockState);
     }
@@ -58,9 +63,9 @@ public class BoulderEntity extends Projectile {
         return entityData.get(DATA_BLOCK_STATE);
     }
 
-    public void remove() {
+    public void onRemove() {
         if (level() instanceof ServerLevel serverLevel) {
-            BlockPos pos = getOnPos().above();
+            BlockPos pos = blockPosition();
             serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.COBBLESTONE.defaultBlockState())
                     .setPos(pos), getX(), getY() + 0.5, getZ(), 175, 0.0, 0.0, 0.0, 0.15);
             serverLevel.playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 5.0F, 1.0F);
@@ -96,12 +101,12 @@ public class BoulderEntity extends Projectile {
         } else {
             onHitEntity((EntityHitResult) hitResult);
         }
-        if (getDeltaMovement().length() < 0.007) {
+        if (getDeltaMovement().length() < minimumBreakSpeed) {
             if (isVertical()) {
                 targetTo(level().getNearestPlayer(this, SEARCH_RANGE));
                 entityData.set(DATA_VERTICAL, false);
             } else {
-                remove();
+                onRemove();
             }
         }
     }
@@ -120,10 +125,10 @@ public class BoulderEntity extends Projectile {
     }
 
     public void targetTo(@Nullable Player player) {
-        Vec3 vec3 = player == null ? getDeltaMovement().normalize().scale(1.0 + SPEED) : player.position().subtract(position()).normalize();
+        Vec3 vec3 = player == null ? getDeltaMovement().normalize().scale(1.0 + speed) : player.position().subtract(position()).normalize();
         vec3 = new Vec3(vec3.x, 0.0, vec3.z);
         setYRot((float) (Mth.atan2(vec3.x, vec3.z) * Mth.RAD_TO_DEG));
-        setDeltaMovement(vec3.scale(SPEED));
+        setDeltaMovement(vec3.scale(speed));
         this.yRotO = getYRot();
     }
 

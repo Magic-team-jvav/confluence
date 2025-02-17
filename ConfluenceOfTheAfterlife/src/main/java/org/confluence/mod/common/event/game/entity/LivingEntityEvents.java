@@ -282,6 +282,23 @@ public final class LivingEntityEvents {
     }
 
     @SubscribeEvent
+    public static void mobEffect$Applicable(MobEffectEvent.Applicable event) {
+        Holder<MobEffect> effect = event.getEffectInstance().getEffect();
+        if (event.getEntity() instanceof Boss && effect == TCEffects.CONFUSED) {
+            event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
+        } else {
+            boolean flag = false;
+            EntityType<?> type = event.getEntity().getType();
+            if (type == TEEntities.KING_SLIME.get()) {
+                flag = effect == ModEffects.SHIMMER || effect == MobEffects.POISON;
+            } else if (type == TEEntities.QUEEN_BEE.get()) {
+                flag = effect == MobEffects.POISON;
+            }
+            if (flag) event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
+        }
+    }
+
+    @SubscribeEvent
     public static void mobEffect$Remove(MobEffectEvent.Remove event) {
         MobEffectInstance effectInstance = event.getEffectInstance();
         if (effectInstance != null) {
@@ -298,8 +315,9 @@ public final class LivingEntityEvents {
     @SubscribeEvent
     public static void livingEquipmentChange(LivingEquipmentChangeEvent event) {
         LivingEntity living = event.getEntity();
-        if (living.level().isClientSide) return;
-        ModAchievements.matchingAttire_fashionStatement(event.getSlot(), living);
+        if (!living.level().isClientSide) {
+            ModAchievements.matchingAttire_fashionStatement(event.getSlot(), living);
+        }
     }
 
     @SubscribeEvent

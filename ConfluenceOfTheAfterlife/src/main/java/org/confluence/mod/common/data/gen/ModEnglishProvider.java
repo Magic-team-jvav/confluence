@@ -408,6 +408,22 @@ public class ModEnglishProvider extends LanguageProvider {
         add("achievements.confluence.slippery_shinobi.description", "Defeat King Slime, the lord of all things slimy.");
         add("achievements.confluence.eye_on_you.title", "Eye on You");
         add("achievements.confluence.eye_on_you.description", "“Defeat the Eye of Cthulhu, an ocular menace who only appears at night.");
+        add("achievements.confluence.worm_fodder.title", "Worm Fodder");
+        add("achievements.confluence.worm_fodder.description", "Defeat the Eater of Worlds, a massive worm who dwells in the corruption.");
+        add("achievements.confluence.mastermind.title", "Mastermind ");
+        add("achievements.confluence.mastermind.description", "Defeat the Brain of Cthulhu, an enormous demon brain which haunts the creeping crimson.");
+        add("achievements.confluence.sting_operation.title", "Sting Operation ");
+        add("achievements.confluence.sting_operation.description", "Defeat the Queen Bee, the matriarch of the jungle hives.");
+        add("achievements.confluence.smashing_poppet.title", "Smashing, Poppet!");
+        add("achievements.confluence.smashing_poppet.description", "Using explosives or your trusty hammer, smash a Shadow Orb or Crimson Heart in the evil parts of your world.");
+        add("achievements.confluence.dye_hard.title", "Dye Hard");
+        add("achievements.confluence.dye_hard.description", "Equip a dye in every possible dye slot.");
+        add("achievements.confluence.fashion_statement.title", "Fashion Statement");
+        add("achievements.confluence.fashion_statement.description", "Equip armor or vanity clothing in all four social slots.");
+        add("achievements.confluence.the_cavalry.title", "The Cavalry");
+        add("achievements.confluence.the_cavalry.description", "Equip a mount.");
+
+
 
         add("confluence.configuration.dropsMoney", "Coin Drop");
         add("confluence.configuration.dropsMoney.tooltip", "When enabled, your coins will drop upon death.");
@@ -544,6 +560,10 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add("event.confluence.blood_moon", "The Blood Moon is rising...");
         add("event.confluence.meteorite", "A meteorite has landed!");
+        add("event.confluence.evil_broken.0", "A horrible chill goes down your spine...");
+        add("event.confluence.evil_broken.1", "Screams echo around you...");
+        add("event.confluence.evil_broken.2", "Eater of Worlds has awoken!");
+        add("event.confluence.evil_broken.3", "Brain of Cthulhu has awoken!");
 
         add("attribute.name.player.minion_capacity", "Minion Capacity");
         add("attribute.name.player.sentry_capacity", "Sentry Capacity");

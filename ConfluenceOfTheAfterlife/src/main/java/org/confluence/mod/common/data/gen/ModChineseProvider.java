@@ -498,6 +498,15 @@ public class ModChineseProvider extends LanguageProvider {
         add("achievements.confluence.bulldozer.description", "共破坏10,000个方块。");
         add("achievements.confluence.begone_evil.title", "滚开，恶魔！");
         add("achievements.confluence.begone_evil.description", "用强大而神圣的锤子砸碎恶魔或猩红祭坛。");
+        add("achievements.confluence.smashing_poppet.title", "碎得漂亮，小乖乖！");
+        add("achievements.confluence.smashing_poppet.description", "使用炸药或可靠的锤子，在世界的邪恶地带中粉碎暗影珠或猩红之心。");
+        add("achievements.confluence.dye_hard.title", "处处遍染");
+        add("achievements.confluence.dye_hard.description", "在每个可能的染料栏中都装备染料。");
+        add("achievements.confluence.fashion_statement.title", "时尚宣言");
+        add("achievements.confluence.fashion_statement.description", "在全部四个社交盔甲栏中都装备上盔甲或时装服饰。");
+        add("achievements.confluence.the_cavalry.title", "骑兵 ");
+        add("achievements.confluence.the_cavalry.description", "装备坐骑。");
+
 
         add("achievements.confluence.ooo_shinny.title", "哦！亮闪闪！");
         add("achievements.confluence.ooo_shinny.description", "用镐开采第一块矿石。");
@@ -526,6 +535,13 @@ public class ModChineseProvider extends LanguageProvider {
         add("achievements.confluence.slippery_shinobi.description", "打败史莱姆王，它是所有黏滑生物的首领。");
         add("achievements.confluence.eye_on_you.title", "盯着你");
         add("achievements.confluence.eye_on_you.description", "打败克苏鲁之眼，它是只在夜间出没的危险眼球怪。");
+        add("achievements.confluence.worm_fodder.title", "虫粮");
+        add("achievements.confluence.worm_fodder.description", "打败世界吞噬怪，它是居住在腐化之地的巨虫。");
+        add("achievements.confluence.mastermind.title", "最强大脑 ");
+        add("achievements.confluence.mastermind.description", "打败克苏鲁之脑，它是出没在让人毛骨悚然的猩红之地的巨大恶魔大脑。");
+        add("achievements.confluence.sting_operation.title", "蜇刺行动 ");
+        add("achievements.confluence.sting_operation.description", "打败蜂王，它是统治丛林蜂巢的女王。");
+
 
         add("prefix.confluence.tooltip.plus", "+%s%% %s");
         add("prefix.confluence.tooltip.take", "-%s%% %s");
@@ -655,6 +671,10 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("event.confluence.blood_moon", "血月正在升起...");
         add("event.confluence.meteorite", "陨石已落地！");
+        add("event.confluence.evil_broken.0", "不寒而栗，毛骨悚然……");
+        add("event.confluence.evil_broken.1", "四面回荡着尖叫声……");
+        add("event.confluence.evil_broken.2", "世界吞噬怪已苏醒！");
+        add("event.confluence.evil_broken.3", "克苏鲁之脑已苏醒！");
 
         add("attribute.name.player.minion_capacity", "仆从容量");
         add("attribute.name.player.sentry_capacity", "哨兵容量");
@@ -1620,6 +1640,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.SLIME_CROWN.get(), "史莱姆皇冠");
         add(ConsumableItems.WORM_FOOD.get(), "蠕虫诱饵");
         add(ConsumableItems.BLOODY_SPINE.get(), "血腥脊椎");
+        add(ConsumableItems.ABEEMINATION.get(), "憎恶之蜂");
         add(ConsumableItems.BOMB.get(), "炸弹");
         add(ConsumableItems.BOUNCY_BOMB.get(), "弹力炸弹");
         add(ConsumableItems.STICKY_BOMB.get(), "粘性炸弹");

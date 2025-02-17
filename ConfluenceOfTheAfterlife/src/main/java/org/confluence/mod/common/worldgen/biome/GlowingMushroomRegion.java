@@ -28,9 +28,9 @@ public class GlowingMushroomRegion extends Region {
                 .temperature(Climate.Parameter.point(0.5F))
                 .humidity(Climate.Parameter.point(0.0F))
                 .continentalness(Continentalness.FAR_INLAND)
-                .erosion(Erosion.EROSION_1, Erosion.EROSION_2)
-                .depth(Depth.UNDERGROUND, Depth.UNDERGROUND)
-                .weirdness(Weirdness.PEAK_NORMAL)
+                .erosion(Erosion.EROSION_0, Erosion.EROSION_2)
+                .depth(Climate.Parameter.span(0.7F, 1.0F))
+                .weirdness(Weirdness.FULL_RANGE)
                 .build().forEach(point -> builder.add(point, ModBiomes.GLOWING_MUSHROOM));
 
         // Add our points to the mapper

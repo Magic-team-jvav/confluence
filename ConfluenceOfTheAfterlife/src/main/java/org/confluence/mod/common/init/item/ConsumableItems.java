@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
@@ -10,10 +11,7 @@ import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.mana.ArcaneCrystalItem;
 import org.confluence.mod.common.item.mana.ManaCrystalItem;
 import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terraentity.entity.boss.BrainOfCthulhu;
-import org.confluence.terraentity.entity.boss.EaterOfWorlds;
-import org.confluence.terraentity.entity.boss.EyeOfCthulhu;
-import org.confluence.terraentity.entity.boss.KingSlime;
+import org.confluence.terraentity.entity.boss.*;
 
 import java.util.function.Supplier;
 
@@ -69,7 +67,7 @@ public class ConsumableItems {
     public static final Supplier<BossSummingItem> SLIME_CROWN = ITEMS.register("slime_crown", () -> new BossSummingItem(player -> true, KingSlime::new));
     public static final Supplier<BossSummingItem> WORM_FOOD = ITEMS.register("worm_food", () -> new BossSummingItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CORRUPTION), level -> new EaterOfWorlds(level, true)));
     public static final Supplier<BossSummingItem> BLOODY_SPINE = ITEMS.register("bloody_spine", () -> new BossSummingItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.TR_CRIMSON), BrainOfCthulhu::new));
-
+    public static final Supplier<BossSummingItem> ABEEMINATION = ITEMS.register("abeemination", () -> new BossSummingItem(player -> player.level().getBiome(player.blockPosition()).is(Biomes.JUNGLE), BrainOfCthulhu::new));
     public static final Supplier<ModBoneMealItem> ROTTEN_BONE_DUST = ITEMS.register("rotten_bone_dust", ModBoneMealItem::new);
     public static final Supplier<ModBoneMealItem> BLOODSTAINED_POWDER = ITEMS.register("bloodstained_powder", ModBoneMealItem::new);
 }

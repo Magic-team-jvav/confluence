@@ -112,7 +112,8 @@
     "air": [
       "minecraft:cave",
       "minecraft:cave_extra_underground",
-      "minecraft:canyon"
+      "minecraft:canyon",
+      "confluence:glowing_mushroom_cave_carver"
     ]
   },
   "features": [

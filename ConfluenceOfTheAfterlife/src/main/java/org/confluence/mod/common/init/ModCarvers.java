@@ -6,14 +6,17 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.worldgen.carver.DemonicCaveCarver;
 import org.confluence.mod.common.worldgen.carver.DesertCaveCarver;
+import org.confluence.mod.common.worldgen.carver.GlowingMushroomCaveCarver;
 import org.confluence.mod.common.worldgen.carver.WavyCaveCarver;
 
 import java.util.function.Supplier;
 
+@SuppressWarnings("unused")
 public final class ModCarvers {
     public static final DeferredRegister<WorldCarver<?>> CARVERS = DeferredRegister.create(BuiltInRegistries.CARVER, Confluence.MODID);
 
     public static final Supplier<DemonicCaveCarver> DEMONIC_CAVE_CARVER = CARVERS.register("demonic_cave_carver", () -> new DemonicCaveCarver(DemonicCaveCarver.Config.CODEC));
     public static final Supplier<WavyCaveCarver> WAVY_CAVE_CARVER = CARVERS.register("wavy_cave_carver", () -> new WavyCaveCarver(WavyCaveCarver.Config.CODEC));
     public static final Supplier<DesertCaveCarver> DESERT_CAVE_CARVER = CARVERS.register("desert_cave_carver", () -> new DesertCaveCarver(DesertCaveCarver.Config.CODEC));
+    public static final Supplier<GlowingMushroomCaveCarver> GLOWING_MUSHROOM_CAVE_CARVER = CARVERS.register("glowing_mushroom_cave_carver", () -> new GlowingMushroomCaveCarver(GlowingMushroomCaveCarver.Config.CODEC));
 }

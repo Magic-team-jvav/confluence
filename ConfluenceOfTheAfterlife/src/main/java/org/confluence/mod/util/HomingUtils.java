@@ -27,7 +27,7 @@ public final class HomingUtils {
                                          double maxSpeed, double minSpeed, Vec3 defaultDir) {
         // 若当前方向和目标方向的方向向量均不为0时才考虑进行方向调整
         // 为了方向的准确性，我们将不考虑长度 < 0.001 (即lengthSqr < 1e-9) 的向量
-        if (currDir.lengthSqr() > 1e-9 || targetDir.lengthSqr() > 1e-9) {
+        if (currDir.lengthSqr() > 1e-9 && targetDir.lengthSqr() > 1e-9) {
             Vec3 result = currDir.multiply(currDirScaleFactor, currDirScaleFactor, currDirScaleFactor);
             // normalize不会造成NaN，此处长度 > 0.001
             Vec3 targetComponent = targetDir.normalize().multiply(homingPower, homingPower, homingPower);

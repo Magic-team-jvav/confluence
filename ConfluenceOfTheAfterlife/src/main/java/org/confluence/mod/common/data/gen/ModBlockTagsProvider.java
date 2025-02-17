@@ -385,7 +385,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OreBlocks.FLESHIFICATION_PLATINUM_ORE.get(),
                 OreBlocks.PLATINUM_BLOCK.get(),
                 OreBlocks.PLATINUM_ORE.get(),
-                NatureBlocks.DESERT_FOSSIL.get()
+                NatureBlocks.DESERT_FOSSIL.get(),
+                OreBlocks.GELSTONE_ORE.get(),
+                OreBlocks.SPORE_ROOT_BLOCK.get(),
+                OreBlocks.WINTER_MARROW_BLOCK.get()
         );
         tag(ModTags.Blocks.NEEDS_2_LEVEL).add(
                 OreBlocks.METEORITE_ORE.get(),

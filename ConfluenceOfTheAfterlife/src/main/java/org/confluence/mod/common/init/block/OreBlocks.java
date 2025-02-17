@@ -3,10 +3,7 @@ package org.confluence.mod.common.init.block;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BrushableBlock;
-import net.minecraft.world.level.block.RedStoneOreBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.common.Tags;
@@ -21,6 +18,8 @@ import org.confluence.mod.common.data.gen.ModBlockTagsProvider;
 import org.confluence.mod.common.init.item.ModItems;
 
 import java.util.function.Supplier;
+
+import static org.confluence.mod.common.init.block.ModBlocks.registerWithItem;
 
 public class OreBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
@@ -171,7 +170,9 @@ public class OreBlocks {
 
     public static final Supplier<Block> OPAL_ORE = simpleBlockRegister("opal_ore", () -> new BrushableBlock(NatureBlocks.DIATOMACEOUS.get(), SoundEvents.BRUSH_SAND, SoundEvents.BRUSH_SAND_COMPLETED, BlockBehaviour.Properties.of().strength(3.0F, 3.0F).pushReaction(PushReaction.BLOCK)));
     public static final DeferredBlock<Block> GELSTONE_ORE = copyBlockRegister("gelstone_ore", Blocks.IRON_ORE);
-
+    public static final DeferredBlock<Block> SPORE_ROOT_BLOCK = copyBlockRegister("spore_root_block", Blocks.IRON_ORE);
+    public static final DeferredBlock<Block> WINTER_MARROW_BLOCK = copyBlockRegister("winter_marrow_block", Blocks.IRON_ORE);
+    public static final DeferredBlock<TransparentBlock> COLD_CRYSTAL_ORE = registerWithItem("cold_crystal_ore", () -> new TransparentBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PACKED_ICE)));
     public static final DeferredBlock<Block> HELLSTONE = simpleBlockRegister("hellstone", HellStoneBlock::new);
     public static final DeferredBlock<Block> ASH_HELLSTONE = simpleBlockRegister("ash_hellstone", HellStoneBlock::new);
     public static final DeferredBlock<Block> HELLSTONE_BRICKS = simpleBlockRegister("hellstone_bricks", HellStoneBlock::new);

@@ -22,6 +22,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.material.FluidState;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.util.HomingUtils;
 import org.confluence.mod.util.ModUtils;
 import org.joml.Vector3d;
 
@@ -124,21 +125,21 @@ public class CrimsonCaveStructure extends Structure {
             }
 
             BlockPos tunnelStart = pos.offset(random.nextInt(radius) - radius / 2, -radius + 4, random.nextInt(radius) - radius / 2);
-            List<Vector3d> tunnelNodes = Lists.newArrayList(ModUtils.toVector3d(tunnelStart));
+            List<Vector3d> tunnelNodes = Lists.newArrayList(HomingUtils.toVector3d(tunnelStart));
             int depth = pos.getY() / 16;
             if (depth % 2 == 0) depth++;
             int stepX = random.nextBoolean() ? -7 : 7;
             int stepZ = random.nextBoolean() ? -7 : 7;
             for (int i = 1; i < depth; i++) {
                 tunnelStart = tunnelStart.offset(i * stepX, -16, i * stepZ);
-                tunnelNodes.add(ModUtils.toVector3d(tunnelStart));
+                tunnelNodes.add(HomingUtils.toVector3d(tunnelStart));
                 stepX = -stepX;
                 stepZ = -stepZ;
             }
             ModUtils.lightningPathList(tunnelNodes, 2.5, 8, random);
             Vector3d delta = tunnelNodes.getLast().sub(tunnelNodes.get(tunnelNodes.size() - 2));
             this.tunnelEndFace = Direction.getNearest(delta.x, delta.y, delta.z);
-            List<BlockPos> list = Lists.newArrayList(tunnelNodes.stream().map(ModUtils::fromVector3d).toArray(BlockPos[]::new));
+            List<BlockPos> list = Lists.newArrayList(tunnelNodes.stream().map(HomingUtils::fromVector3d).toArray(BlockPos[]::new));
             list.removeLast();
             for (BlockPos nodePos : list) {
                 for (BlockPos blockPos : BlockPos.betweenClosed(nodePos.offset(-3, -2, -3), nodePos.offset(3, 2, 3))) {

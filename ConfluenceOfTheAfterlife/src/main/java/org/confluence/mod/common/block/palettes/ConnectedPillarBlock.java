@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.ticks.LevelTickAccess;
+import org.confluence.mod.util.HomingUtils;
 import org.confluence.mod.util.ModUtils;
 
 public class ConnectedPillarBlock extends LayeredBlock {
@@ -51,7 +52,7 @@ public class ConnectedPillarBlock extends LayeredBlock {
 				continue;
 
 			boolean connect = true;
-			Move: for (Direction movement : ModUtils.directionsInAxis(axis)) {
+			Move: for (Direction movement : HomingUtils.directionsInAxis(axis)) {
 				currentPos.set(pos);
 				for (int i = 0; i < 1000; i++) {
 					if (!level.isLoaded(currentPos))
@@ -116,7 +117,7 @@ public class ConnectedPillarBlock extends LayeredBlock {
 	public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
 		if (pIsMoving || pNewState.getBlock() == this)
 			return;
-		for (Direction d : ModUtils.directionsInAxis(pState.getValue(AXIS))) {
+		for (Direction d : HomingUtils.directionsInAxis(pState.getValue(AXIS))) {
 			BlockPos relative = pPos.relative(d);
 			BlockState adjacent = pLevel.getBlockState(relative);
 			if (canConnect(pState, adjacent))

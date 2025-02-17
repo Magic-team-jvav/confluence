@@ -17,7 +17,7 @@ import org.confluence.mod.common.entity.projectile.bomb.BaseGrenadeEntity;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.ConsumableItems;
-import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.HomingUtils;
 
 import java.util.List;
 
@@ -62,10 +62,10 @@ public class NoTraps extends SecretSeed {
             if (nearestPlayer != null) {
                 BaseGrenadeEntity grenade = new BaseGrenadeEntity(living);
                 grenade.setItem(ConsumableItems.GRENADE.get().getDefaultInstance());
-                Vec3 vectorA2B = ModUtils.getVectorA2B(living, nearestPlayer);
+                Vec3 vectorA2B = HomingUtils.getVectorA2B(living, nearestPlayer);
                 double size = living.getBoundingBox().getSize() + 1.5;
                 grenade.moveTo(living.position().add(vectorA2B.x * size, vectorA2B.y * size + 0.5, vectorA2B.z * size));
-                float[] rots = ModUtils.dirToRot(vectorA2B, true);
+                float[] rots = HomingUtils.dirToRot(vectorA2B, true);
                 grenade.shootFromRotation(living, rots[1], rots[0], 0.0F, living.distanceTo(nearestPlayer) / 4, 0);
                 serverLevel.addFreshEntity(grenade);
             }

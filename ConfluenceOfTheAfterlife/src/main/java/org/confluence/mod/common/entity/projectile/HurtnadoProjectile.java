@@ -17,7 +17,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.mixed.Immunity;
-import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.HomingUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
@@ -68,7 +68,7 @@ public class HurtnadoProjectile extends Projectile implements Immunity {
             if (ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F) instanceof EntityHitResult entityHitResult) {
                 Entity entity = entityHitResult.getEntity();
                 if (entity.hurt(damageSources().indirectMagic(getOwner(), this), 6.5F)) {
-                    ModUtils.knockBackA2B(this, entity, 0.5, 0.2);
+                    HomingUtils.knockBackA2B(this, entity, 0.5, 0.2);
                 }
                 if (passThrough.add(entity) && passThrough.size() >= 14) {
                     discard();
@@ -82,7 +82,7 @@ public class HurtnadoProjectile extends Projectile implements Immunity {
             this.target = getNearestEnemy();
         }
         if (target != null) {
-            setDeltaMovement(getDeltaMovement().scale(0.96).add(ModUtils.getVectorA2B(this, target).scale(0.05)));
+            setDeltaMovement(getDeltaMovement().scale(0.96).add(HomingUtils.getVectorA2B(this, target).scale(0.05)));
         }
     }
 

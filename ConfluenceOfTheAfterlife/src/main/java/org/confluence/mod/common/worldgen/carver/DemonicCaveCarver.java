@@ -21,6 +21,7 @@ import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.util.HomingUtils;
 import org.confluence.mod.util.ModUtils;
 import org.joml.Vector3d;
 
@@ -72,7 +73,7 @@ public class DemonicCaveCarver extends WorldCarver<DemonicCaveCarver.Config> {
                     position.add(0, -14 * yScale - 4, 0);
                     b = carveEllipsoid(context, config, chunk, biomeAccessor, noWater, position.x, position.y, position.z, 2, 2, carvingMask, (context1, relativeX, relativeY, relativeZ, y) -> relativeX * relativeX + relativeY * relativeY + relativeZ * relativeZ > 1.0);
                     if (b) {
-                        chunk.setBlockState(ModUtils.fromVector3d(position).above(), NatureBlocks.SHADOW_ORB.get().defaultBlockState(), false);
+                        chunk.setBlockState(HomingUtils.fromVector3d(position).above(), NatureBlocks.SHADOW_ORB.get().defaultBlockState(), false);
                     }
                 }
             }

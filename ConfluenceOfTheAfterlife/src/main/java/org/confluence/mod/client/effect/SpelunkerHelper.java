@@ -17,7 +17,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.HomingUtils;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.lwjgl.opengl.GL11;
@@ -335,7 +335,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
                         poseStack.scale(-1/scale,-1/scale,-1/scale);
 
                         if(textDir==0){
-                            var fs = ModUtils.dirToRot(dir.scale(-1), false);
+                            var fs = HomingUtils.dirToRot(dir.scale(-1), false);
                             Matrix4f m = new Matrix4f().rotate(Axis.YP.rotation(Mth.PI-fs[0])).rotate(Axis.XN.rotation(fs[1]));
                             poseStack.mulPose(m);
 

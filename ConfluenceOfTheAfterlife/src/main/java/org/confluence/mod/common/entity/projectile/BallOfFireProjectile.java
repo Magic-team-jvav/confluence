@@ -16,7 +16,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
-import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.HomingUtils;
 
 public class BallOfFireProjectile extends Projectile {
     private int collideCount = 0;
@@ -54,7 +54,7 @@ public class BallOfFireProjectile extends Projectile {
                 if (collideCount >= 6) {
                     discard();
                 } else {
-                    motion = ModUtils.relativeScale(vec3, axis, -1.0);
+                    motion = HomingUtils.relativeScale(vec3, axis, -1.0);
                     this.collideCount++;
                 }
             }
@@ -70,7 +70,7 @@ public class BallOfFireProjectile extends Projectile {
                 }
             }
             if (entity.hurt(damageSources().indirectMagic(getOwner(), this), ddu ? 17.0F : 9.6F)) {
-                ModUtils.knockBackA2B(this, entity, 0.6, 0.2);
+                HomingUtils.knockBackA2B(this, entity, 0.6, 0.2);
             }
         }
         setDeltaMovement(motion.scale(0.99).add(0.0, -0.04, 0.0));

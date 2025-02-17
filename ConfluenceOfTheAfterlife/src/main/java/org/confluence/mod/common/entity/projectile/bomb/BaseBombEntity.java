@@ -12,7 +12,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.HomingUtils;
 import org.joml.Vector3f;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
@@ -64,7 +64,7 @@ public class BaseBombEntity extends ThrowableItemProjectile {
     protected void onHitBlock(BlockHitResult pResult) {
         super.onHitBlock(pResult);
         blockHitCallBack(pResult);
-        Vec3 motion = ModUtils.relativeScale(getDeltaMovement(), pResult.getDirection().getAxis(), -bounceFactor);
+        Vec3 motion = HomingUtils.relativeScale(getDeltaMovement(), pResult.getDirection().getAxis(), -bounceFactor);
         if (Math.abs(motion.y) < 0.03) motion = new Vec3(motion.x, 0.0, motion.z);
         setDeltaMovement(motion.scale(frictionFactor));
     }

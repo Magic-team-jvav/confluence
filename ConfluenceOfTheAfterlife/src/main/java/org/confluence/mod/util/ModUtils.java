@@ -6,15 +6,12 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
@@ -100,24 +97,6 @@ public final class ModUtils {
     }
 
     /**
-     * 把向量转成角度
-     *
-     * @return [yaw, pitch]
-     */
-    public static float[] dirToRot(Vec3 vec, boolean toDeg) {
-        double x = vec.x;
-        double y = vec.y;
-        double z = vec.z;
-        double h = vec.horizontalDistance();
-        float yaw = (float) Mth.atan2(-x, z);
-        float pitch = (float) Mth.atan2(-y, h);
-        if (toDeg) {
-            return new float[]{yaw * Mth.RAD_TO_DEG, pitch * Mth.RAD_TO_DEG};
-        }
-        return new float[]{yaw, pitch};
-    }
-
-    /**
      * 为专家?在处理if...else if时应先使用:
      *
      * @see ModUtils#isMaster(Level)
@@ -164,62 +143,6 @@ public final class ModUtils {
         if (difficulty >= 3) return master;
         if (difficulty >= 2) return expert;
         return classic;
-    }
-
-    /**
-     * 获得从实体A到实体B的单位向量，即A→B
-     *
-     * @param a 实体A
-     * @param b 实体B
-     * @return A→B的单位向量
-     */
-    public static Vec3 getVectorA2B(Entity a, Entity b) {
-        return b.position().subtract(a.position()).normalize();
-    }
-
-    /**
-     * 给予实体B一个击退动量，方向为A→B
-     *
-     * @param a       实体A
-     * @param b       实体B
-     * @param scale   击退动量的缩放
-     * @param motionY 击退的Y轴动量
-     */
-    public static void knockBackA2B(Entity a, Entity b, double scale, double motionY) {
-        if (b instanceof LivingEntity living) {
-            AttributeInstance instance = living.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
-            if (instance != null) scale *= (1.0 - instance.getValue());
-        }
-        if (scale > 0.0) {
-            if (a instanceof LivingEntity living) {
-                AttributeInstance instance = living.getAttribute(Attributes.ATTACK_KNOCKBACK);
-                if (instance != null) scale *= (1.0 + instance.getValue());
-            }
-            b.addDeltaMovement(getVectorA2B(a, b).scale(scale).add(0.0, motionY, 0.0));
-        }
-    }
-
-    public static Direction[] directionsInAxis(Direction.Axis axis) {
-        return switch (axis) {
-            case X -> new Direction[]{Direction.EAST, Direction.WEST};
-            case Y -> new Direction[]{Direction.UP, Direction.DOWN};
-            default -> new Direction[]{Direction.SOUTH, Direction.NORTH};
-        };
-    }
-
-    /**
-     * 将输入的向量的某个轴乘一个缩放
-     *
-     * @param vec3  输入的向量
-     * @param axis  某个轴
-     * @param scale 缩放
-     * @return 新向量
-     */
-    public static Vec3 relativeScale(Vec3 vec3, Direction.Axis axis, double scale) {
-        double x = axis == Direction.Axis.X ? scale * vec3.x : vec3.x;
-        double y = axis == Direction.Axis.Y ? scale * vec3.y : vec3.y;
-        double z = axis == Direction.Axis.Z ? scale * vec3.z : vec3.z;
-        return new Vec3(x, y, z);
     }
 
     public static void lightningPathList(List<Vector3d> locationList, double dist, int move, RandomSource random) {
@@ -298,15 +221,6 @@ public final class ModUtils {
             case FEET -> 3;
             case null, default -> -1;
         };
-    }
-
-    public static Vector3d toVector3d(BlockPos blockPos) {
-        Vec3 center = blockPos.getCenter();
-        return new Vector3d(center.x, center.y, center.z);
-    }
-
-    public static BlockPos fromVector3d(Vector3d vector3d) {
-        return new BlockPos(Mth.floor(vector3d.x), Mth.floor(vector3d.y), Mth.floor(vector3d.z));
     }
 
     public static int getMaxStackSize(int original) {

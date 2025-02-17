@@ -12,7 +12,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.HomingUtils;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
@@ -58,7 +58,7 @@ public class WaterStreamProjectile extends Projectile {
                 Entity entity = entityHitResult.getEntity();
                 if (passThrough.add(entity)) {
                     if (entity.hurt(damageSources().indirectMagic(getOwner(), this), 7F)) {
-                        ModUtils.knockBackA2B(this, entity, 3.5, 0.2);
+                        HomingUtils.knockBackA2B(this, entity, 3.5, 0.2);
                     }
                     if (passThrough.size() >= 5) {
                         discard();

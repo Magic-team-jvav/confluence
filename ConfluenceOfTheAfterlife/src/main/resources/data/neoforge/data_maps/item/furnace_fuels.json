@@ -6,13 +6,7 @@
         "confluence:pink_gel": {
             "burn_time": 320
         },
-        "confluence:tr_oak_beam": {
-            "burn_time": 300
-        },
         "confluence:tr_oak_planks": {
-            "burn_time": 300
-        },
-        "confluence:tr_northland_beam": {
             "burn_time": 300
         },
         "confluence:tr_northland_planks": {

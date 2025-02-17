@@ -42,6 +42,13 @@ public final class ModSoundEvents {
     public static final Supplier<SoundEvent> USE_MOUNTS = register("use_mounts"); // 召唤坐骑
     public static final Supplier<SoundEvent> DECOUPLING = register("decoupling"); // 脱钩
     public static final Supplier<SoundEvent> ACHIEVEMENTS = register("achievements"); // 成就音效
+    //空音效
+    public static final Supplier<SoundEvent> ETERNAL_STARE_OF_THE_EYE_OF_CHAOS = register("eternal_stare_of_the_eye_of_chaos");
+    public static final Supplier<SoundEvent> GEL_CROWN_SOVEREIGN = register("gel_crown_sovereign");
+    public static final Supplier<SoundEvent> BRAIN_ABYSS_FLESH_ILLUSION= register("brain_abyss_flesh_illusion");
+    public static final Supplier<SoundEvent> WORLD_WORM_ABYSS = register("world_worm_abyss");
+    public static final Supplier<SoundEvent> CELESTIAL_HAMLET_MELODY = register("celestial_hamlet_melody");
+    public static final Supplier<SoundEvent> INFERNAL_SPIRE_MARCH = register("infernal_spire_march");
 
     private static Supplier<SoundEvent> register(String name) {
         return EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(Confluence.asResource(name)));

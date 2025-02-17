@@ -287,6 +287,7 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
         event.register((pStack, pTintIndex) -> ColoredItem.getColor(pStack), MaterialItems.GEL.get());
+        event.register((pStack, pTintIndex) -> GrassColor.getDefaultColor(), NatureBlocks.JUNGLE_GRASS_BLOCK.get());
         event.register((stack, tintIndex) -> tintIndex == 1 && stack.getItem() instanceof PaintItem paintItem ? FastColor.ARGB32.opaque(paintItem.getColor(stack)) : 0xFFFFFFFF, PaintItems.PAINT_ITEMS.toArray(PaintItem[]::new));
         event.register((stack, tintIndex) -> tintIndex == 1 && stack.getItem() instanceof BaseDyeItem dyeItem ? dyeItem.color : 0xFFFFFFFF, VanityArmorItems.DYE_ITEMS.toArray(BaseDyeItem[]::new));
     }

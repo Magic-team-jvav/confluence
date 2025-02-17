@@ -9,6 +9,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -26,18 +27,21 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 
 import javax.annotation.Nullable;
 
+import java.util.Objects;
+
 import static net.neoforged.neoforge.common.CommonHooks.canCropGrow;
 
 public class CattailsHeadBlock extends GrowingPlantHeadBlock implements LiquidBlockContainer {
     public static final MapCodec<CattailsHeadBlock> CODEC = simpleCodec(CattailsHeadBlock::new);
     public static final BooleanProperty UP = BlockStateProperties.UP;
     public static final IntegerProperty AGE = BlockStateProperties.AGE_25;
+    public static final BooleanProperty PLACE = BooleanProperty.create("place");
     protected static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 9.0, 16.0);
     private static final int MAX_AGE = 3;
 
     public CattailsHeadBlock(Properties properties) {
         super(properties, Direction.UP, SHAPE, false, 0.20);
-        registerDefaultState(stateDefinition.any().setValue(UP, true));
+        registerDefaultState(stateDefinition.any().setValue(UP, true).setValue(PLACE, false));
     }
 
     @Override
@@ -68,8 +72,15 @@ public class CattailsHeadBlock extends GrowingPlantHeadBlock implements LiquidBl
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
+        BlockState state = context.getLevel().getBlockState(context.getClickedPos());
+        if (state.is(this)) {
+            return state.setValue(PLACE, true);
+        }
         FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
-        return fluidstate.is(FluidTags.WATER) && fluidstate.getAmount() == 8 ? super.getStateForPlacement(context) : null;
+        if (fluidstate.is(FluidTags.WATER) && fluidstate.getAmount() == 8) {
+            return Objects.requireNonNull(super.getStateForPlacement(context)).setValue(PLACE, true);
+        }
+        return null;
     }
 
     @Override
@@ -140,6 +151,6 @@ public class CattailsHeadBlock extends GrowingPlantHeadBlock implements LiquidBl
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(UP, AGE);
+        builder.add(UP, AGE, PLACE);
     }
 }

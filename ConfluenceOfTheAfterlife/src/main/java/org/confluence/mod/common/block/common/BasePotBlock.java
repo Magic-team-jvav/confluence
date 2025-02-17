@@ -142,19 +142,19 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
             level.addFreshEntity(bomb);
             return;
         }
-        if (dropPotion(level, center)) return;
+        if (dropPotion(level, blockPos, center)) return;
         if (dropWormhole(level, center)) return;
         boolean flag = switch (level.random.nextInt(7)) {
             case 0 -> dropHeart(level, blockPos, center);
             case 1 -> dropTorch(level, blockPos, center);
             case 2 -> dropAmmo(level, center);
-            case 3 -> dropHeal(level, center);
-            case 4 -> dropBomb(level, center);
-            case 5 -> dropRope(level, center);
-            case 6 -> dropMoney(level, center);
+            case 3 -> dropHeal(level, blockPos, center);
+            case 4 -> dropBomb(level, blockPos, center);
+            case 5 -> dropRope(level, blockPos, center);
+            case 6 -> dropMoney(level, blockPos, center);
             default -> false;
         };
-        if (!flag) dropMoney(level, center);
+        if (!flag) dropMoney(level, blockPos, center);
     }
 
     private boolean summonHole(Level level, Vec3 center) {
@@ -167,8 +167,8 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         return false;
     }
 
-    private boolean dropPotion(Level level, Vec3 center) {
-        if (level.random.nextFloat() < (ModUtils.isAtLeastExpert(level) ? 0.0444F : 0.0222F)) {
+    private boolean dropPotion(Level level, BlockPos blockPos, Vec3 center) {
+        if (level.random.nextFloat() < (ModUtils.isAtLeastExpert(level, blockPos) ? 0.0444F : 0.0222F)) {
             double y = center.y;
             Item item = null;
             if (level.dimension() == Level.NETHER) {
@@ -255,7 +255,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
             if (player.getHealth() < player.getMaxHealth()) {
                 int amount = 1;
                 if (level.random.nextBoolean()) amount++;
-                if (ModUtils.isAtLeastExpert(level)) {
+                if (ModUtils.isAtLeastExpert(level, blockPos)) {
                     if (level.random.nextBoolean()) amount++;
                     if (level.random.nextBoolean()) amount++;
                 }
@@ -263,7 +263,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
             } else if (player.getInventory().hasAnyMatching(itemStack -> itemStack.getCount() < 20 && itemStack.is(ModTags.Items.TORCH))) {
                 return dropTorch(level, blockPos, center);
             } else {
-                return dropMoney(level, center);
+                return dropMoney(level, blockPos, center);
             }
         }
         return false;
@@ -318,7 +318,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         return true;
     }
 
-    private boolean dropHeal(Level level, Vec3 center) {
+    private boolean dropHeal(Level level, BlockPos blockPos, Vec3 center) {
         Item item;
         if (level.dimension() == Level.NETHER || ConfluenceData.get((ServerLevel) level).getGamePhase().isHardmode()) {
             item = PotionItems.HEALING_POTION.get();
@@ -326,36 +326,36 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
             item = PotionItems.LESSER_HEALING_POTION.get();
         }
         int amount = 1;
-        if (ModUtils.isAtLeastExpert(level) && level.random.nextFloat() < 0.3333F) {
+        if (ModUtils.isAtLeastExpert(level, blockPos) && level.random.nextFloat() < 0.3333F) {
             amount++;
         }
         ModUtils.createItemEntity(item, amount, center, level, 0);
         return true;
     }
 
-    private boolean dropBomb(Level level, Vec3 center) {
+    private boolean dropBomb(Level level, BlockPos blockPos, Vec3 center) {
         Item item;
         if (this == UNDERGROUND_DESERT_POT.get()) {
             item = ConsumableItems.SCARAB_BOMB.get();
         } else if (level.dimension() == Level.OVERWORLD) {
             item = ConsumableItems.BOMB.get();
         } else {
-            return dropRope(level, center);
+            return dropRope(level, blockPos, center);
         }
-        ModUtils.createItemEntity(item, level.random.nextInt(1, ModUtils.isAtLeastExpert(level) ? 5 : 8), center, level, 0);
+        ModUtils.createItemEntity(item, level.random.nextInt(1, ModUtils.isAtLeastExpert(level, blockPos) ? 5 : 8), center, level, 0);
         return true;
     }
 
-    private boolean dropRope(Level level, Vec3 center) {
+    private boolean dropRope(Level level, BlockPos blockPos, Vec3 center) {
         if (level.dimension() == Level.NETHER || ConfluenceData.get((ServerLevel) level).getGamePhase().isHardmode()) {
-            return dropMoney(level, center);
+            return dropMoney(level, blockPos, center);
         } else {
             ModUtils.createItemEntity(ModBlocks.ROPE.get().asItem(), level.random.nextInt(5, 11), center, level, 0);
             return true;
         }
     }
 
-    private boolean dropMoney(Level level, Vec3 center) {
+    private boolean dropMoney(Level level, BlockPos blockPos, Vec3 center) {
         if (!CommonConfigs.DROP_MONEY.get()) return false;
         float random = level.random.nextFloat();
         float ratio = 1.0F;
@@ -377,7 +377,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         } else if (random < 0.25F) {
             ratio = Mth.nextFloat(level.random, 1.05F, 1.1F);
         }
-        if (ModUtils.isAtLeastExpert(level)) {
+        if (ModUtils.isAtLeastExpert(level, blockPos)) {
             ratio *= 2.5F;
             random = level.random.nextFloat();
             if (random < 0.25F) {

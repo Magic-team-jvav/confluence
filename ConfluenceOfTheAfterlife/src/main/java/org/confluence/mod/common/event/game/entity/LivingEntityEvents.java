@@ -181,10 +181,10 @@ public final class LivingEntityEvents {
         amount = TheConstant.applyAttackDamage(attacker, amount);
 
         // 克苏鲁之脑和飞眼怪给的debuff
-        if (attacker != null && ModUtils.isAtLeastExpert(level)) {
+        if (attacker != null && ModUtils.isAtLeastExpert(level, living.blockPosition())) {
             EntityType<?> type = attacker.getType();
             if (type == TEEntities.VISUAL_NEURON.get() || (type == TEEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
-                boolean master = ModUtils.isMaster(level);
+                boolean master = ModUtils.isMaster(level, living.blockPosition());
                 Holder<MobEffect> debuff;
                 float min;
                 int i = attacker.getRandom().nextInt(81);

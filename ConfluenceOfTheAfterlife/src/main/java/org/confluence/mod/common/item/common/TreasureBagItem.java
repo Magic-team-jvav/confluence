@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.common;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -26,20 +27,20 @@ import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.init.TEEntities;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 public class TreasureBagItem extends CustomRarityItem {
     private final ResourceLocation lootTable;
-    private final Function<ServerLevel, String> suffix;
+    private final BiFunction<ServerLevel, BlockPos, String> suffix;
 
-    public TreasureBagItem(ResourceLocation lootTable, Function<ServerLevel, String> suffix) {
+    public TreasureBagItem(ResourceLocation lootTable, BiFunction<ServerLevel, BlockPos, String> suffix) {
         super(new Properties().fireResistant(), ModRarity.EXPERT);
         this.lootTable = lootTable;
         this.suffix = suffix;
     }
 
     public TreasureBagItem(ResourceLocation lootTable) {
-        this(lootTable, level -> ModUtils.switchByDifficulty(level, "/classic", "/expert", "/master"));
+        this(lootTable, (level, pos) -> ModUtils.switchByDifficulty(level, pos, "/classic", "/expert", "/master"));
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
@@ -81,7 +82,7 @@ public class TreasureBagItem extends CustomRarityItem {
         }
         if (item == null) return null;
         ItemStack itemStack = item.getDefaultInstance();
-        String lootTable = item.lootTable.withSuffix(item.suffix.apply(serverLevel)).toString();
+        String lootTable = item.lootTable.withSuffix(item.suffix.apply(serverLevel, living.blockPosition())).toString();
         TCUtils.updateItemStackNbt(itemStack, tag -> tag.putString("lootTable", lootTable));
         return itemStack;
     }

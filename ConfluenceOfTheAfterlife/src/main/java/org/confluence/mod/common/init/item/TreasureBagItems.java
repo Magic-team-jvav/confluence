@@ -12,8 +12,8 @@ public class TreasureBagItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
     public static final Supplier<TreasureBagItem> KING_SLIME_TREASURE_BAG = ITEMS.register("king_slime_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("entities/boss/king_slime")));
-    public static final Supplier<TreasureBagItem> EYE_OF_CTHULHU_TREASURE_BAG = ITEMS.register("eye_of_cthulhu_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("entities/boss/eye_of_cthulhu"), level -> {
-        String difficulty = ModUtils.switchByDifficulty(level, "/classic", "/expert", "/master");
+    public static final Supplier<TreasureBagItem> EYE_OF_CTHULHU_TREASURE_BAG = ITEMS.register("eye_of_cthulhu_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("entities/boss/eye_of_cthulhu"), (level, pos) -> {
+        String difficulty = ModUtils.switchByDifficulty(level, pos, "/classic", "/expert", "/master");
         long secretFlag = IWorldOptions.getSecretFlag(level.getServer());
         String biome;
         if ((secretFlag & IWorldOptions.DOUBLE_EVIL) == IWorldOptions.DOUBLE_EVIL || (secretFlag & IWorldOptions.DOUBLE_EVIL) == 0) {

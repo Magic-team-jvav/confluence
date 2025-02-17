@@ -99,17 +99,17 @@ public final class ModUtils {
     /**
      * 为专家?在处理if...else if时应先使用:
      *
-     * @see ModUtils#isMaster(Level)
+     * @see ModUtils#isMaster(Level, BlockPos)
      */
-    public static boolean isAtLeastExpert(Level level) {
-        return level.getDifficulty().getId() >= Difficulty.NORMAL.getId();
+    public static boolean isAtLeastExpert(Level level, BlockPos pos) {
+        return level.getCurrentDifficultyAt(pos).isHarderThan(Difficulty.NORMAL.getId());
     }
 
     /**
      * 为大师?在处理if...else if时应先使用此方法
      */
-    public static boolean isMaster(Level level) {
-        return level.getDifficulty() == Difficulty.HARD;
+    public static boolean isMaster(Level level, BlockPos pos) {
+        return level.getCurrentDifficultyAt(pos).isHard();
     }
 
     /**
@@ -120,16 +120,15 @@ public final class ModUtils {
      * @param master  大师难度的值
      * @return 选择到的值
      */
-    public static <T> T switchByDifficulty(Level level, T classic, T expert, T master) {
-        return switch (level.getDifficulty()) {
-            case PEACEFUL, EASY -> classic;
-            case NORMAL -> expert;
-            case HARD -> master;
-        };
+    public static <T> T switchByDifficulty(Level level, BlockPos blockPos, T classic, T expert, T master) {
+        float difficulty = level.getCurrentDifficultyAt(blockPos).getEffectiveDifficulty();
+        if (difficulty >= 3) return master;
+        if (difficulty >= 2) return expert;
+        return classic;
     }
 
     /**
-     * 根据游戏难度选择值，但是根据区域难度
+     * 根据游戏难度选择值
      *
      * @param classic   经典难度的值
      * @param expert    专家难度的值

@@ -26,7 +26,7 @@ public class SpikeBlock extends Block {
         if (!level.isClientSide) {
             entity.hurt(ModDamageTypes.of(level, ModDamageTypes.THORN), 12.0F);
             if (entity.isAlive() && entity instanceof LivingEntity living) {
-                living.addEffect(new MobEffectInstance(ModEffects.BLEEDING, ModUtils.switchByDifficulty(level, 200, 400, 500)));
+                living.addEffect(new MobEffectInstance(ModEffects.BLEEDING, ModUtils.switchByDifficulty(level, pos, 200, 400, 500)));
             }
         }
     }

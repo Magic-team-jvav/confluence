@@ -10,13 +10,17 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.FloatProvider;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Aquifer;
+import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import org.confluence.mod.common.init.ModBiomes;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.util.ModUtils;
 import org.joml.Vector3d;
 
@@ -40,6 +44,20 @@ public class DemonicCaveCarver extends WorldCarver<DemonicCaveCarver.Config> {
         if (!biomeAccessor.apply(new BlockPos(x2, y2, z2)).is(ModBiomes.THE_CORRUPTION)) return false;
         float yScale = config.yScale.sample(random);
 
+        Aquifer noWater = new Aquifer() {
+            final BlockState air = Blocks.AIR.defaultBlockState();
+
+            @Override
+            public BlockState computeSubstance(DensityFunction.FunctionContext context, double substance) {
+                return air;
+            }
+
+            @Override
+            public boolean shouldScheduleFluidUpdate() {
+                return false;
+            }
+        };
+
         List<Vector3d> positions = Lists.newArrayList(new Vector3d(x1, y1, z1), new Vector3d(x2, y2, z2));
         ModUtils.lightningPathList(positions, 2.5, 8, random);
         int size = positions.size();
@@ -49,7 +67,14 @@ public class DemonicCaveCarver extends WorldCarver<DemonicCaveCarver.Config> {
             for (int j = -4; j < 13; j++) {
                 int maxRadius = random.nextInt(9) + 4;
                 int radius = maxRadius - Mth.lerpInt(delta, 8, maxRadius);
-                carveEllipsoid(context, config, chunk, biomeAccessor, aquifer, position.x, position.y - j * yScale, position.z, radius, yScale + 4, carvingMask, (context1, relativeX, relativeY, relativeZ, y) -> false);
+                boolean b = carveEllipsoid(context, config, chunk, biomeAccessor, noWater, position.x, position.y - j * yScale, position.z, radius, yScale + 4, carvingMask, (context1, relativeX, relativeY, relativeZ, y) -> false);
+                if (b && j == 12 && random.nextFloat() < 0.25F) {
+                    position.add(0, -14 * yScale - 4, 0);
+                    b = carveEllipsoid(context, config, chunk, biomeAccessor, noWater, position.x, position.y, position.z, 2, 2, carvingMask, (context1, relativeX, relativeY, relativeZ, y) -> relativeX * relativeX + relativeY * relativeY + relativeZ * relativeZ > 1.0);
+                    if (b) {
+                        chunk.setBlockState(ModUtils.fromVector3d(position).above(), NatureBlocks.SHADOW_ORB.get().defaultBlockState(), false);
+                    }
+                }
             }
         }
         return true;

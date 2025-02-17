@@ -32,6 +32,18 @@ public class DesertCaveCarver extends WorldCarver<DesertCaveCarver.Config> {
 
     @Override
     public boolean carve(CarvingContext context, Config config, ChunkAccess chunk, Function<BlockPos, Holder<Biome>> biomeAccessor, RandomSource random, Aquifer aquifer, ChunkPos chunkPos, CarvingMask carvingMask) {
+        float y = config.y.sample(random, context);
+        float yScale = config.yScale.sample(random);
+        BlockPos position = chunkPos.getMiddleBlockPosition((int) y);
+        BlockState blockState = chunk.getBlockState(position);
+        if (blockState.isAir() || blockState.liquid()) {
+            return false;
+        }
+        blockState = chunk.getBlockState(position.above((int) yScale));
+        if (blockState.isAir() || blockState.liquid()) {
+            return false;
+        }
+
         Aquifer inner = new Aquifer() {
             final BlockState air = Blocks.AIR.defaultBlockState();
 
@@ -51,7 +63,8 @@ public class DesertCaveCarver extends WorldCarver<DesertCaveCarver.Config> {
 
             @Override
             public BlockState computeSubstance(DensityFunction.FunctionContext context, double substance) {
-                return chunk.getBlockState(pos.set(context.blockX(), context.blockY(), context.blockX())).isAir() ? null : stone;
+                if (chunk.getBlockState(pos.set(context.blockX(), context.blockY(), context.blockX())).isAir()) return null;
+                return context.getBlender().blendDensity(context, substance) < substance * 0.3 ? null : stone;
             }
 
             @Override
@@ -60,24 +73,22 @@ public class DesertCaveCarver extends WorldCarver<DesertCaveCarver.Config> {
             }
         };
         CarveSkipChecker ichecker = (context1, relativeX, relativeY, relativeZ, y1) -> {
-            double ry = Math.abs(relativeY);
-            return ry > 0.75 && relativeX * relativeX + relativeZ * relativeZ > ry * 0.6;
+            return relativeX * relativeX + relativeY * relativeY + relativeZ * relativeZ > 1.5;
         };
         CarveSkipChecker ochecker = (context1, relativeX, relativeY, relativeZ, y1) -> {
             double ry = Math.abs(relativeY);
             return ry > 1 && relativeX * relativeX + relativeZ * relativeZ > ry * 0.6;
         };
-        float y = config.y.sample(random, context);
-        int j = ((int) y - context.getMinGenY()) / 8;
+        int j = (int) ((y - context.getMinGenY()) / yScale);
 
         for (int k = 0; k < 4; k++) {
             List<Vec3> positions = new ArrayList<>();
             List<Vec2> radius = new ArrayList<>();
             for (int i = 0; i < j; i++) {
                 Vec3 vec3 = new Vec3(
-                        chunkPos.getMiddleBlockX() + Mth.nextDouble(random, -16, 17),
-                        y - i * 8 - Mth.nextDouble(random, -8, 9),
-                        chunkPos.getMiddleBlockZ() + Mth.nextDouble(random, -16, 17)
+                        chunkPos.getMiddleBlockX() + Mth.nextDouble(random, -16, 16),
+                        y - i * yScale - Mth.nextDouble(random, -yScale, yScale),
+                        chunkPos.getMiddleBlockZ() + Mth.nextDouble(random, -16, 16)
                 );
                 Vec2 vec2 = new Vec2(
                         Mth.nextFloat(random, 6, 8),

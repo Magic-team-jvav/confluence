@@ -249,9 +249,7 @@ public final class LivingEntityEvents {
     @SubscribeEvent
     public static void mobEffect$Added(MobEffectEvent.Added event) {
         MobEffectInstance effectInstance = event.getEffectInstance();
-        if (effectInstance != null) {
-            LoveEffect.onAdd(effectInstance.getEffect(), event.getEntity(), event.getEffectSource());
-        }
+        LoveEffect.onAdd(effectInstance.getEffect(), event.getEntity(), event.getEffectSource());
     }
 
     @SubscribeEvent

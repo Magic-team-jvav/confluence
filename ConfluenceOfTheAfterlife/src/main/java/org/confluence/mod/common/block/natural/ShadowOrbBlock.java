@@ -18,6 +18,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.LightPetItems;
+import org.confluence.mod.common.init.item.ManaStaffItems;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.color.IntegerRGB;
@@ -34,7 +35,7 @@ public class ShadowOrbBlock extends Block {
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         super.onRemove(state, level, pos, newState, movedByPiston);
-        if (level instanceof ServerLevel serverLevel) {
+        if (newState.isAir() && level instanceof ServerLevel serverLevel) {
             Vec3 center = pos.getCenter();
             ConfluenceData data = ConfluenceData.get(serverLevel);
             int count = data.getEvilBrokenCount() % 3;
@@ -48,16 +49,16 @@ public class ShadowOrbBlock extends Block {
                     ModUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 99, center.x, center.y, center.z, level, 0);
                 }
                 if (level.random.nextFloat() < 0.2F) {
-                    ModUtils.createItemEntity(LightPetItems.SHADOW_ORB.get().getDefaultInstance(), center.x, center.y, center.z, level, 0);
+                    ModUtils.createItemEntity(LightPetItems.SHADOW_ORB.get(), 1, center.x, center.y, center.z, level, 0);
                 }
                 if (level.random.nextFloat() < 0.2F) {
-                    // 毒刺
+                    ModUtils.createItemEntity(ManaStaffItems.VILETHRON.get(), 1, center.x, center.y, center.z, level, 0);
                 }
                 if (level.random.nextFloat() < 0.2F) {
                     // 链球
                 }
                 if (level.random.nextFloat() < 0.2F) {
-                    ModUtils.createItemEntity(AccessoryItems.BAND_OF_STARPOWER.get().getDefaultInstance(), center.x, center.y, center.z, level, 0);
+                    ModUtils.createItemEntity(AccessoryItems.BAND_OF_STARPOWER.get(), 1, center.x, center.y, center.z, level, 0);
                 }
             }
 

@@ -14,9 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.item.LightPetItems;
 import org.confluence.mod.util.ModUtils;
@@ -24,10 +22,13 @@ import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.color.IntegerRGB;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
+import org.confluence.terraentity.entity.boss.BrainOfCthulhu;
+import org.confluence.terraentity.init.TEEntities;
 import org.jetbrains.annotations.Nullable;
 
 public class CrimsonHeartBlock extends Block {
     private static final VoxelShape SHAPE = box(3, 3, 3, 13, 13, 13);
+
     public CrimsonHeartBlock() {
         super(Properties.ofFullCopy(Blocks.NETHER_WART_BLOCK));
     }
@@ -45,10 +46,10 @@ public class CrimsonHeartBlock extends Block {
                 ModUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 99, center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                ModUtils.createItemEntity(LightPetItems.CRIMSON_HEART.get().getDefaultInstance(), center.x, center.y, center.z, level, 0);
+                ModUtils.createItemEntity(LightPetItems.CRIMSON_HEART.get(), 1, center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                ModUtils.createItemEntity(TCItems.PANIC_NECKLACE.get().getDefaultInstance(), center.x, center.y, center.z, level, 0);
+                ModUtils.createItemEntity(TCItems.PANIC_NECKLACE.get(), 1, center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
                 // 猩红魔杖
@@ -65,9 +66,9 @@ public class CrimsonHeartBlock extends Block {
             serverLevel.getServer().getPlayerList().broadcastSystemMessage(component, false);
 
             if (data.updateEvilBrokenCount()) {
-//                EaterOfWorld eaterOfWorld = new EaterOfWorld(level, true);
-//                eaterOfWorld.setPos(center.x + level.random.nextInt(-50, 51), center.y, center.z + level.random.nextInt(-50, 51));
-//                level.addFreshEntity(eaterOfWorld);
+                BrainOfCthulhu brainOfCthulhu = new BrainOfCthulhu(TEEntities.BRAIN_OF_CTHULHU.get(), level);
+                brainOfCthulhu.setPos(center.x + level.random.nextInt(-50, 51), center.y, center.z + level.random.nextInt(-50, 51));
+                level.addFreshEntity(brainOfCthulhu);
             }
         }
     }

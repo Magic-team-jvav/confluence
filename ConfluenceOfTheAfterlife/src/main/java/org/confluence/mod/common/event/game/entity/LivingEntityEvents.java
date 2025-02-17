@@ -284,8 +284,10 @@ public final class LivingEntityEvents {
     @SubscribeEvent
     public static void mobEffect$Applicable(MobEffectEvent.Applicable event) {
         Holder<MobEffect> effect = event.getEffectInstance().getEffect();
-        if (event.getEntity() instanceof Boss && effect == TCEffects.CONFUSED) {
-            event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
+        if (effect == TCEffects.CONFUSED) {
+            if (event.getEntity() instanceof Boss) {
+                event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
+            }
         } else {
             boolean flag = false;
             EntityType<?> type = event.getEntity().getType();

@@ -311,10 +311,11 @@ public final class ModEvents {
         event.modify(TGItems.NANO_BULLET.get(), orange);
         event.modify(TGItems.EXPLODING_BULLET.get(), orange);
         event.modify(TGItems.GOLDEN_BULLET.get(), orange);
+        event.modify(TGItems.HIGH_VELOCITY_BULLET.get(), orange);
         Consumer<DataComponentPatch.Builder> lime = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.LIME);
         event.modify(TGItems.UZI.get(), lime);
         event.modify(TGItems.CHLOROPHYTE_BULLET.get(), lime);
-        Consumer<DataComponentPatch.Builder> cayn = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.CYAN);
-        event.modify(TGItems.LUMINITE_BULLET.get(), lime);
+        Consumer<DataComponentPatch.Builder> cyan = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.CYAN);
+        event.modify(TGItems.LUMINITE_BULLET.get(), cyan);
     }
 }

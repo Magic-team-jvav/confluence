@@ -97,14 +97,13 @@ public final class PlayerUtils {
 
     public static boolean extractMana(ServerPlayer serverPlayer, IntSupplier sup) {
         if (serverPlayer.gameMode.isCreative()) return true;
-        boolean success = false;
         ManaStorage manaStorage = serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE);
         if (manaStorage.extractMana(sup, serverPlayer)) {
-            success = true;
             manaStorage.setRegenerateDelay((int) Math.ceil(0.7F * ((1 - (float) manaStorage.getCurrentMana() / manaStorage.getMaxMana()) * 240 + 45)));
             syncMana2Client(serverPlayer, manaStorage);
+            return true;
         }
-        return success;
+        return false;
     }
 
     public static void receiveMana(ServerPlayer serverPlayer, IntSupplier sup) {

@@ -50,6 +50,7 @@
         "integration.terra_curio.WorkshopMenuMixin",
         "integration.terra_curio.WorkshopRecipeMixin",
         "integration.terra_guns.GunItemMixin",
+        "integration.terra_guns.ManaGunItemMixin",
         "integration.terrablender.MixinMultiNoiseBiomeSourceSquared",
         "item.ArrowItemMixin",
         "item.BowItemMixin",

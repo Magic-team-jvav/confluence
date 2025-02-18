@@ -183,6 +183,9 @@ tasks.withType(Copy).configureEach { duplicatesStrategy = DuplicatesStrategy.EXC
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
 
 tasks.register("genVoilaRun") {
+    dependsOn("prepareClientRun")
+    inputs.files(sourceSets.main.output)
+    inputs.files(configurations.runtimeClasspath)
     def runtimeClasspath = files({
         sourceSets.main.output + configurations.runtimeClasspath
     })

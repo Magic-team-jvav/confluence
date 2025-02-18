@@ -18,9 +18,10 @@ import net.minecraft.world.entity.LivingEntity;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
 import org.confluence.mod.mixin.client.accessor.AgeableListModelAccessor;
 import org.confluence.mod.mixin.client.accessor.LivingEntityRendererAccessor;
-import org.confluence.terraentity.client.boss.renderer.GeoBossRenderer;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoCube;
 import software.bernie.geckolib.cache.object.GeoQuad;
 import software.bernie.geckolib.cache.object.GeoVertex;
@@ -46,7 +47,7 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
         Object cube = entity.cube;
         EntityRenderer<?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(dying);
         // Geo生物
-        if(cube instanceof GeoCube geoCube && renderer instanceof GeoEntityRenderer geoEntityRenderer){
+        if(cube instanceof GeoCube geoCube && renderer instanceof GeoEntityRenderer geoRenderer && dying instanceof GeoAnimatable animatable){
             // 把计算Y轴中心放到前面，如果cube有问题就提前返回
             GeoQuad[] twoQuads = new GeoQuad[2];
             for (GeoQuad quad : geoCube.quads()) {
@@ -75,12 +76,8 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
 
             poseStack.pushPose();
 
-            // TODO: GeoRenderer.preRender
-            if (geoEntityRenderer instanceof GeoBossRenderer<?, ?> bossRenderer) {
-                float scale = bossRenderer.getScale();
-                poseStack.scale(scale, scale, scale);
-                poseStack.translate(0, bossRenderer.getYOffset(), 0);
-            }
+            BakedGeoModel bakedGeoModel = geoRenderer.getGeoModel().getBakedModel(geoRenderer.getGeoModel().getModelResource(animatable, geoRenderer));
+            geoRenderer.preRender(poseStack, dying, bakedGeoModel, null, null, false, 1, 0, 0, 0);
             // GeoGeo的奇妙Y轴旋转
             poseStack.mulPose(Axis.YP.rotationDegrees(-dying.getYRot() + 180));
             poseStack.mulPose(Axis.XP.rotationDegrees(dying.getXRot()));
@@ -104,13 +101,13 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
             applyRandomRotation(entity, poseStack, partialTick);
             poseStack.translate(0, -centerY, 0);
 
-            ResourceLocation textureLocation = geoEntityRenderer.getTextureLocation(dying);
-            RenderType renderType = geoEntityRenderer.getRenderType(dying, textureLocation, bufferSource, partialTick);
-            geoEntityRenderer.renderCube(poseStack, geoCube,
+            ResourceLocation textureLocation = geoRenderer.getTextureLocation(dying);
+            RenderType renderType = geoRenderer.getRenderType(dying, textureLocation, bufferSource, partialTick);
+            geoRenderer.renderCube(poseStack, geoCube,
                 bufferSource.getBuffer(renderType == null ? RenderType.entityCutoutNoCull(textureLocation) : renderType),
                 packedLight,
                 OverlayTexture.pack(OverlayTexture.u(0), OverlayTexture.v(false)),
-                geoEntityRenderer.getRenderColor(dying, partialTick, packedLight).argbInt());
+                geoRenderer.getRenderColor(dying, partialTick, packedLight).argbInt());
             poseStack.popPose();
         }else if(cube instanceof ModelPart.Cube partCube && renderer instanceof LivingEntityRenderer livingRenderer && dying instanceof LivingEntity living){ // 原版生物
 //            if(true)return;
@@ -129,7 +126,7 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                 poseStack.scale(model.youngScaleFactor, model.youngScaleFactor, model.youngScaleFactor);
             }else if(livingRenderer.getModel().young && livingRenderer.getModel() instanceof AgeableListModelAccessor model){
                 for(ModelPart bodyPart : model.callBodyParts()){
-                    if(entity.modelPart == bodyPart){
+                    if(entity.modelPart == bodyPart){  // FIXME: 父模型
                         float scale = 1.0F / model.getBabyBodyScale();
                         poseStack.scale(scale, scale, scale);
                         break;

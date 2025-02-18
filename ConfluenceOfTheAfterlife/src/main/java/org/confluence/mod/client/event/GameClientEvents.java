@@ -53,17 +53,16 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.mixin.client.accessor.AgeableListModelAccessor;
-import org.confluence.mod.mixin.client.accessor.LivingEntityRendererAccessor;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 import org.confluence.mod.util.DeathAnimUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PerformJumpingEvent;
-import org.confluence.terraentity.client.boss.renderer.GeoBossRenderer;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.cache.object.GeoCube;
 import software.bernie.geckolib.event.GeoRenderEvent;
@@ -238,13 +237,10 @@ public final class GameClientEvents {
         }
         float deathSpeed = (float) deathMotion.length();
         Vec3 entityPos = entity.position();
-        // TODO: GeoRenderer.preRender
-        if(entity instanceof GeoAnimatable && renderer instanceof GeoEntityRenderer geoRenderer){
+        if(entity instanceof GeoAnimatable animatable && renderer instanceof GeoEntityRenderer geoRenderer){
             PoseStack poseStack = new PoseStack();
-            if(geoRenderer instanceof GeoBossRenderer<?, ?> bossRenderer){
-                float scale = bossRenderer.getScale();
-                poseStack.scale(scale, scale, scale);
-            }
+            BakedGeoModel bakedGeoModel = geoRenderer.getGeoModel().getBakedModel(geoRenderer.getGeoModel().getModelResource(animatable, geoRenderer));
+            geoRenderer.preRender(poseStack, entity, bakedGeoModel, null, null, false, 1, 0, 0, 0);
             poseStack.mulPose(Axis.XP.rotationDegrees(entity.getXRot()));
             poseStack.mulPose(Axis.YP.rotationDegrees(-entity.getYRot() + 180));
             Matrix4f pose = poseStack.last().pose();
@@ -296,7 +292,7 @@ public final class GameClientEvents {
             ModelPart rootModelPart = ((ILivingEntityRenderer) livingRenderer).confluence$getRootModelPart();
             if(rootModelPart == null) return;
             AntiPushPoseStack poseStack = new AntiPushPoseStack();
-            LivingEntityRendererAccessor rendererAccessor = (LivingEntityRendererAccessor) livingRenderer;
+//            LivingEntityRendererAccessor rendererAccessor = (LivingEntityRendererAccessor) livingRenderer;
             poseStack.translate(entityPos.x, entityPos.y, entityPos.z);
 //            float scale = entity.getScale();
 //            poseStack.scale(scale, scale, scale);

@@ -6,8 +6,6 @@ import com.xiaohunao.terra_moment.common.init.TMMoments;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -15,15 +13,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.CropBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.ItemStackedOnOtherEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
-import net.neoforged.neoforge.event.level.BlockDropsEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.saved.ConfluenceCommand;
@@ -32,7 +27,6 @@ import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.network.s2c.EchoVisibilityPacketS2C;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
@@ -145,24 +139,12 @@ public final class GameEvents {
     }
 
     @SubscribeEvent
-    public static void dropBlock(BlockDropsEvent event) {
-        BlockState state = event.getState();
-        Entity breaker = event.getBreaker();
-        ItemStack tool = event.getTool();
-
-        // 再生法杖/再生之斧 时运
-        if (tool.is(ModTags.Items.CROP_FORTUNE) && breaker != null && (state.is(BlockTags.CROPS) || state.getBlock() instanceof CropBlock)) {
-            BaseAxeItem.increaseDropsOnBlockBreak(breaker, tool, event.getDrops());
-        }
-    }
-
-    @SubscribeEvent
-    public static void moment$Victory(MomentEvent.Victory event) {
+    public static void moment$End(MomentEvent.End event) {
         MomentInstance<?> momentInstance = event.getMomentInstance();
         if (momentInstance.getLevel() instanceof ServerLevel) {
             if (momentInstance.is(TMMoments.BLOOD_MOON)) {
                 for (Player player : momentInstance.getPlayers()) {
-                    PlayerUtils.awardAchievement((ServerPlayer) player, "");
+                    PlayerUtils.awardAchievement((ServerPlayer) player, "bloodbath");
                 }
             }
         }

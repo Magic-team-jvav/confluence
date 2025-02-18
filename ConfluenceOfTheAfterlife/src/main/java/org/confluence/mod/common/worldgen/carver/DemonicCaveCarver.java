@@ -55,7 +55,7 @@ public class DemonicCaveCarver extends WorldCarver<DemonicCaveCarver.Config> {
 
             @Override
             public boolean shouldScheduleFluidUpdate() {
-                return false;
+                return true;
             }
         };
 

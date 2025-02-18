@@ -52,6 +52,8 @@ public class GlowingMushroomCaveCarver extends WorldCarver<GlowingMushroomCaveCa
         };
         float y = config.y.sample(random, context);
         float yScale = config.yScale.sample(random);
+        BlockState air = Blocks.AIR.defaultBlockState();
+        BlockState grass = NatureBlocks.MUSHROOM_GRASS_BLOCK.get().defaultBlockState();
         for (int i = 0; i < 4; i++) {
             y += random.nextFloat() * yScale;
             Vec3 position = chunkPos.getMiddleBlockPosition((int) y).getCenter().add(
@@ -60,9 +62,6 @@ public class GlowingMushroomCaveCarver extends WorldCarver<GlowingMushroomCaveCa
                     Mth.nextDouble(random, -8, 8)
             );
             Aquifer inner = new Aquifer() {
-                final BlockState air = Blocks.AIR.defaultBlockState();
-                final BlockState grass = NatureBlocks.MUSHROOM_GRASS_BLOCK.get().defaultBlockState();
-
                 @Override
                 public BlockState computeSubstance(DensityFunction.FunctionContext context, double substance) {
                     return context.blockY() >= position.y + 2 ? air : grass;
@@ -70,7 +69,7 @@ public class GlowingMushroomCaveCarver extends WorldCarver<GlowingMushroomCaveCa
 
                 @Override
                 public boolean shouldScheduleFluidUpdate() {
-                    return false;
+                    return true;
                 }
             };
             double horizontalRadius = Mth.nextDouble(random, yScale + 2, (yScale + 2) * 2);

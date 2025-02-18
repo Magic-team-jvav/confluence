@@ -54,7 +54,7 @@ public class DesertCaveCarver extends WorldCarver<DesertCaveCarver.Config> {
 
             @Override
             public boolean shouldScheduleFluidUpdate() {
-                return false;
+                return true;
             }
         };
         Aquifer outer = new Aquifer() {

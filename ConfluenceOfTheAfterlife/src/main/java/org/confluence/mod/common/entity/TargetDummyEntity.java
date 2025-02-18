@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -15,7 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.NotNull;
@@ -25,8 +25,6 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
-
-import javax.tools.Tool;
 
 public class TargetDummyEntity extends LivingEntity implements GeoEntity {
 
@@ -45,6 +43,9 @@ public class TargetDummyEntity extends LivingEntity implements GeoEntity {
                 ModUtils.createItemEntity(ToolItems.TARGET_DUMMY.get().getDefaultInstance(), position(), player.level(), 0);
                 return true;
             }
+        }
+        if(source.is(DamageTypes.GENERIC_KILL)){
+            discard();
         }
 
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.ARMOR_STAND_BREAK, this.getSoundSource(), 1.0F, 1.0F); // playBrokenSound

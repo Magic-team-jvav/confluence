@@ -75,10 +75,10 @@ public class BoulderBlock extends AbstractMechanicalBlock {
     protected void summon(Level level, BlockPos pos, BlockState blockState, Function<BoulderEntity, Player> function) {
         BoulderEntity entity = factory.create(level, pos.getCenter(), blockState);
         if (level.getBlockState(pos.below()).isAir()) {
-            entity.getEntityData().set(BoulderEntity.DATA_VERTICAL, true);
+            entity.setVertical(true);
         } else {
             entity.targetTo(function.apply(entity));
-            entity.getEntityData().set(BoulderEntity.DATA_VERTICAL, false);
+            entity.setVertical(false);
         }
         level.addFreshEntity(entity);
     }

@@ -39,7 +39,7 @@ public class BoulderWorld extends SecretSeed {
         if (ModSecretSeeds.BOULDER_WORLD.match(serverPlayer.server) && serverPlayer.level().random.nextFloat() <= 0.01F) {
             BoulderEntity entity = new BoulderEntity(serverPlayer.serverLevel(), pos.getCenter(), blockState);
             entity.targetTo(serverPlayer);
-            entity.getEntityData().set(BoulderEntity.DATA_VERTICAL, false);
+            entity.setVertical(false);
             serverPlayer.serverLevel().addFreshEntity(entity);
         }
     }

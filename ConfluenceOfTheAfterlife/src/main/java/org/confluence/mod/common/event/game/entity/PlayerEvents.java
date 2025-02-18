@@ -42,6 +42,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.MinecartItems;
+import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
 import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
@@ -92,12 +93,13 @@ public final class PlayerEvents {
         if (player.isCrouching()) return;
         BlockPos blockPos = event.getPos();
         BlockState blockState = level.getBlockState(blockPos);
+        ItemStack itemStack = event.getItemStack();
 
-        if (!level.isClientSide && !event.getItemStack().is(ModTags.Items.MINECART) && blockState.getBlock() instanceof BaseRailBlock railBlock) {
+        if (!level.isClientSide && !itemStack.is(ModTags.Items.MINECART) && blockState.getBlock() instanceof BaseRailBlock railBlock) {
             player.swing(InteractionHand.MAIN_HAND, true);
             ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
-            ItemStack itemStack = extraInventory.getMinecart();
-            RightClickRailBlock e = NeoForge.EVENT_BUS.post(new RightClickRailBlock(player, itemStack, blockState, railBlock, blockPos));
+            ItemStack minecartItemStack = extraInventory.getMinecart();
+            RightClickRailBlock e = NeoForge.EVENT_BUS.post(new RightClickRailBlock(player, minecartItemStack, blockState, railBlock, blockPos));
             if (e.isCanceled()) return;
             AbstractMinecart minecart = e.getMinecart();
             if (minecart != null) {
@@ -114,6 +116,11 @@ public final class PlayerEvents {
                 player.openMenu(new FletchingTableMenu.Provider(level, blockPos));
             }
             event.setCanceled(true);
+        }
+
+        // 再生之斧/再生法杖 右键自动收获
+        if (!level.isClientSide && itemStack.is(ModTags.Items.CROP_FORTUNE)) {
+            BaseAxeItem.dropAndPlaceOnRightClick(event.getEntity(), event.getItemStack(), event.getPos());
         }
     }
 
@@ -200,7 +207,7 @@ public final class PlayerEvents {
         double z = blockPos.getZ() + 0.5;
         ItemStack minecartItem = event.getMinecartItem();
 
-        if (minecartItem == ItemStack.EMPTY) {
+        if (minecartItem.isEmpty()) {
             BaseMinecartEntity baseMinecart = new BaseMinecartEntity(level, x, y, z, MinecartItems.Types.WOODEN);
             event.setMinecart(baseMinecart);
         } else if (minecartItem.getItem() == Items.MINECART) {

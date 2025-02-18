@@ -13,13 +13,18 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.util.HomingUtils;
+import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 public class BallOfFireProjectile extends Projectile {
     private int collideCount = 0;
+    private ParticleEmitter emitter;
+    private ParticleEmitter trail;
 
     public BallOfFireProjectile(EntityType<BallOfFireProjectile> entityType, Level level) {
         super(entityType, level);
@@ -41,6 +46,15 @@ public class BallOfFireProjectile extends Projectile {
             return;
         }
         super.tick();
+
+        if (level().isClientSide && (emitter == null || trail == null)) {
+            this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_fire"));
+            this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_fire_trail"));
+            emitter.attached = this;
+            trail.attached = this;
+            PSGameClient.LOADER.addEmitter(emitter, false);
+            PSGameClient.LOADER.addEmitter(trail, false);
+        }
 
         Vec3 vec3 = getDeltaMovement();
         move(MoverType.SELF, vec3.add(0.0, -0.04, 0.0));

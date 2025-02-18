@@ -15,7 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -24,7 +23,6 @@ import net.neoforged.neoforge.event.ItemStackedOnOtherEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
@@ -155,17 +153,6 @@ public final class GameEvents {
         // 再生法杖/再生之斧 时运
         if (tool.is(ModTags.Items.CROP_FORTUNE) && breaker != null && (state.is(BlockTags.CROPS) || state.getBlock() instanceof CropBlock)) {
             BaseAxeItem.increaseDropsOnBlockBreak(breaker, tool, event.getDrops());
-        }
-    }
-
-    @SubscribeEvent
-    public static void rightClickBlock(PlayerInteractEvent.RightClickBlock event) {
-        Level level = event.getEntity().level();
-        ItemStack itemStack = event.getItemStack();
-
-        // 再生之斧/再生法杖 右键自动收获
-        if (!level.isClientSide && itemStack.is(ModTags.Items.CROP_FORTUNE)) {
-            BaseAxeItem.dropAndPlaceOnRightClick(event.getEntity(), event.getItemStack(), event.getPos());
         }
     }
 

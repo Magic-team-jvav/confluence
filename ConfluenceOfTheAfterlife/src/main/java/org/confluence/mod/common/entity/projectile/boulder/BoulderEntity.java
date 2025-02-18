@@ -32,7 +32,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
 
 public class BoulderEntity extends Projectile {
-    public static final EntityDataAccessor<Boolean> DATA_VERTICAL = SynchedEntityData.defineId(BoulderEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_VERTICAL = SynchedEntityData.defineId(BoulderEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<BlockState> DATA_BLOCK_STATE = SynchedEntityData.defineId(BoulderEntity.class, EntityDataSerializers.BLOCK_STATE);
     public static final float DIAMETER = 1.0F;
     public static final float SEARCH_RANGE = 31.5F;
@@ -53,6 +53,10 @@ public class BoulderEntity extends Projectile {
         super(pEntityType, level);
         setPos(pos);
         entityData.set(DATA_BLOCK_STATE, blockState);
+    }
+
+    public void setVertical(boolean is) {
+        entityData.set(DATA_VERTICAL, is);
     }
 
     public boolean isVertical() {
@@ -104,7 +108,7 @@ public class BoulderEntity extends Projectile {
         if (getDeltaMovement().length() < minimumBreakSpeed) {
             if (isVertical()) {
                 targetTo(level().getNearestPlayer(this, SEARCH_RANGE));
-                entityData.set(DATA_VERTICAL, false);
+                setVertical(false);
             } else {
                 onRemove();
             }

@@ -107,7 +107,7 @@ public final class ModAchievements {
         offset("eye_on_you", 0, 6);
         offset("worm_fodder", 1, 6);
         offset("mastermind", 2, 6);
-        /* Sting Operation 3, 6 */
+        offset("sting_operation", 3, 6);
         /* Boned 4, 6 */
         /* Still Hungry 0, 7 */
         /* Buckets of Bolts 1, 7 */

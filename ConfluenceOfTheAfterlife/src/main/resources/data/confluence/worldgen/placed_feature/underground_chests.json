@@ -45,7 +45,7 @@
       "type": "minecraft:surface_relative_threshold_filter",
       "heightmap": "OCEAN_FLOOR",
       "min_inclusive": -80,
-      "max_inclusive": -34
+      "max_inclusive": -23
     }
   ]
 }

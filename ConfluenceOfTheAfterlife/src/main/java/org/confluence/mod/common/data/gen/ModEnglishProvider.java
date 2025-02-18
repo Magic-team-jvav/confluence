@@ -91,6 +91,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("death.attack.falling_star", "%1$s got a response from a meteor");
         add("death.attack.boulder", "%1$s  is crushed by boulder");
         add("death.attack.thron", "%1$s  discovered that he had become a hedgehog.");
+        add("death.attack.darkness", "%1$s was killed by something in the dark!");
 
         add("selections.confluence.magic_conch", "Responding to the call of The Ocean [%s]");
         add("selections.confluence.demon_conch", "Responding to the call of The Lava [%s]");
@@ -155,6 +156,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.fledgling_wings.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.chromatic_cloak.0", "Immunity to Shimmer Phasing.Hold Shift to Phase while submerged in Shimmer");
         add("tooltip.item.confluence.paint_scraper", "Used to remove paint or coatings.Press Shift + Right-click to remove only one side.");
+        add("tooltip.item.confluence.paint_sprayer.0", "Automatically paints or coats placed objects.");
         add("tooltip.item.confluence.coin", "Using it while crouch to upgrade tier");
         add("tooltip.item.confluence.penetration", "Penetrates Count");
         add("tooltip.item.confluence.on_hit_effects", "Effects");

@@ -89,7 +89,7 @@ public final class ModAchievements {
         /* Big Booty (10, 2) */
         offset("bloodbath", 6, 3);
         /* Kill the Sun (7, 3) */
-        /* Sticky Situation (8, 3) */
+        offset("sticky_situation", 8, 3);
         /* Jeepers Creepers (9, 3) */
         /* Funkytown (10, 3) */
         offset("into_orbit", 6, 4);

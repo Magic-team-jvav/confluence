@@ -551,6 +551,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SILK_ROPE.get(),
                 WEB_ROPE.get()
         );
+        tag(ModTags.Blocks.MINEABLE_WITH_HAMMER).addTag(BlockTags.WALLS).add(
+                NatureBlocks.SHADOW_ORB.get(),
+                NatureBlocks.CRIMSON_HEART.get()
+        );
         // neoforge标签
         tag(Tags.Blocks.NEEDS_NETHERITE_TOOL).add(
                 NatureBlocks.EBONY_HARDENED_SAND_BLOCK.get(),

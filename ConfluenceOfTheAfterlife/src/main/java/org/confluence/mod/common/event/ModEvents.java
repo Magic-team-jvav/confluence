@@ -1,6 +1,7 @@
 package org.confluence.mod.common.event;
 
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackSelectionConfig;
@@ -24,6 +25,7 @@ import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
@@ -57,12 +59,16 @@ import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.ConfluenceResources;
 import org.confluence.phase_journey.api.PhaseJourneyEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
+import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
+import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.entity.monster.AbstractMonster;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import static org.confluence.mod.Confluence.MODID;
 
@@ -267,5 +273,48 @@ public final class ModEvents {
         event.modify(BlockEntityType.SIGN, LogBlockSet.getSignBlocks());
         event.modify(BlockEntityType.SCULK_SENSOR, FunctionalBlocks.SCULK_TRAP.get());
         event.modify(BlockEntityType.CAMPFIRE, FunctionalBlocks.LIFE_CAMPFIRE.get());
+    }
+
+    @SubscribeEvent
+    public static void modifyDefaultComponents(ModifyDefaultComponentsEvent event) {
+        Consumer<DataComponentPatch.Builder> green = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.GREEN);
+        event.modify(TGItems.BOOMSTICK.get(), green);
+        event.modify(TGItems.HANGGUN.get(), green);
+        event.modify(TGItems.MINISHARK.get(), green);
+        event.modify(TGItems.REVOLVER.get(), green);
+        event.modify(TGItems.BEE_GUN.get(), green);
+        event.modify(TGItems.SANDGUN.get(), green);
+        event.modify(TGItems.STAR_CANNON.get(), green);
+        event.modify(TGItems.ENDLESS_MUSKET_POUCH.get(), green);
+        Consumer<DataComponentPatch.Builder> yellow = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.YELLOW);
+        event.modify(TGItems.SNIPER_RIFLE.get(), yellow);
+        event.modify(TGItems.TACTICAL_SHOTGUN.get(), yellow);
+        Consumer<DataComponentPatch.Builder> light_red = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.LIGHT_RED);
+        event.modify(TGItems.ONYX_BLASTER.get(), light_red);
+        event.modify(TGItems.SHOTGUN.get(), light_red);
+        Consumer<DataComponentPatch.Builder> blue = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.BLUE);
+        event.modify(TGItems.FLINTLOCK_PISTOL.get(), blue);
+        event.modify(TGItems.MUSKET.get(), blue);
+        event.modify(TGItems.THE_UNDERTAKER.get(), blue);
+        event.modify(TGItems.FLARE_GUN.get(), blue);
+        event.modify(TGItems.SPACE_GUN.get(), blue);
+        event.modify(TGItems.SNOWBALL_CANNON.get(), blue);
+        event.modify(TGItems.METEOR_BULLET.get(), blue);
+        Consumer<DataComponentPatch.Builder> orange = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.ORANGE);
+        event.modify(TGItems.PHOENIX_BLASTER.get(), orange);
+        event.modify(TGItems.BLOWGUN.get(), orange);
+        event.modify(TGItems.CRYSTAL_BULLET.get(), orange);
+        event.modify(TGItems.CURSED_BULLET.get(), orange);
+        event.modify(TGItems.ICHOR_BULLET.get(), orange);
+        event.modify(TGItems.VENOM_BULLET.get(), orange);
+        event.modify(TGItems.PARTY_BULLET.get(), orange);
+        event.modify(TGItems.NANO_BULLET.get(), orange);
+        event.modify(TGItems.EXPLODING_BULLET.get(), orange);
+        event.modify(TGItems.GOLDEN_BULLET.get(), orange);
+        Consumer<DataComponentPatch.Builder> lime = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.LIME);
+        event.modify(TGItems.UZI.get(), lime);
+        event.modify(TGItems.CHLOROPHYTE_BULLET.get(), lime);
+        Consumer<DataComponentPatch.Builder> cayn = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.CYAN);
+        event.modify(TGItems.LUMINITE_BULLET.get(), lime);
     }
 }

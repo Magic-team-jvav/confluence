@@ -2,7 +2,6 @@ package org.confluence.mod.common.item.hammer;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -12,6 +11,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import org.confluence.mod.common.init.ModTags;
 
 import java.util.stream.Stream;
 
@@ -21,7 +21,7 @@ public class HammerItem extends DiggerItem {
     }
 
     public HammerItem(Tier tier, float rawDamage, float rawSpeed, Properties properties) {
-        super(tier, BlockTags.WALLS, properties.component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4)));
+        super(tier, ModTags.Blocks.MINEABLE_WITH_HAMMER, properties.component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4)));
     }
 
     @Override

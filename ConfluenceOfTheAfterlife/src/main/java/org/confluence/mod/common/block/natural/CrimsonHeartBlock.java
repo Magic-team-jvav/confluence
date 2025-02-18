@@ -62,8 +62,10 @@ public class CrimsonHeartBlock extends Block {
                 PlayerUtils.awardAchievement(player, "smashing_poppet");
             }
 
-            Component component = Component.translatable("event.confluence.evil_broken." + count).withColor(IntegerRGB.GREEN.get());
-            serverLevel.getServer().getPlayerList().broadcastSystemMessage(component, false);
+            if (count != 2) {
+                Component component = Component.translatable("event.confluence.crimson_heart_broken." + count).withColor(IntegerRGB.GREEN.get());
+                serverLevel.getServer().getPlayerList().broadcastSystemMessage(component, false);
+            }
 
             if (data.updateEvilBrokenCount()) {
                 BrainOfCthulhu brainOfCthulhu = new BrainOfCthulhu(TEEntities.BRAIN_OF_CTHULHU.get(), level);

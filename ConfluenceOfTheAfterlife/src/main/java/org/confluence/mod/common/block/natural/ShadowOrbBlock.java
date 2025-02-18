@@ -28,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class ShadowOrbBlock extends Block {
     private static final VoxelShape SHAPE = box(3, 3, 3, 13, 13, 13);
+
     public ShadowOrbBlock() {
         super(Properties.ofFullCopy(Blocks.BUDDING_AMETHYST));
     }
@@ -66,8 +67,10 @@ public class ShadowOrbBlock extends Block {
                 PlayerUtils.awardAchievement(player, "smashing_poppet");
             }
 
-            Component component = Component.translatable("event.confluence.evil_broken." + count).withColor(IntegerRGB.GREEN.get());
-            serverLevel.getServer().getPlayerList().broadcastSystemMessage(component, false);
+            if (count != 2) {
+                Component component = Component.translatable("event.confluence.shadow_orb_broken." + count).withColor(IntegerRGB.GREEN.get());
+                serverLevel.getServer().getPlayerList().broadcastSystemMessage(component, false);
+            }
 
             if (data.updateEvilBrokenCount()) {
                 EaterOfWorlds eaterOfWorlds = new EaterOfWorlds(level, true);

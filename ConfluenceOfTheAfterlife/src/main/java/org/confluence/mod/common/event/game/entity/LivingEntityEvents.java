@@ -1,5 +1,7 @@
 package org.confluence.mod.common.event.game.entity;
 
+import com.xiaohunao.heaven_destiny_moment.common.moment.MomentManager;
+import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -93,6 +95,9 @@ public final class LivingEntityEvents {
                     } else if (!MeteoriteTracker.INSTANCE.spawnAtNextNight) {
                         MeteoriteTracker.INSTANCE.spawnAtNextNight = level.random.nextBoolean();
                     }
+                }
+                if (type == TEEntities.KING_SLIME.get() && MomentManager.of(level).hasMoment(TMMoments.SLIME_RAIN)) {
+                    PlayerUtils.awardAchievement(serverPlayer, "sticky_situation");
                 }
                 ResourceKey<Level> dimension = living.level().dimension();
                 level.players().stream()

@@ -36,6 +36,7 @@ public final class ModTags {
         public static final TagKey<Block> DESERT_FOSSIL_REPLACEMENT = register("desert_fossil_replacement");
         public static final TagKey<Block> TOMBSTONE = register("tombstone");
         public static final TagKey<Block> ROPE = register("rope");
+        public static final TagKey<Block> MINEABLE_WITH_HAMMER = register("mineable_with_hammer"); // 使用锤子挖掘更快
 
 
         private static TagKey<Block> c(String name) {
@@ -64,7 +65,7 @@ public final class ModTags {
         public static final TagKey<Item> PROVIDE_MANA = register("provide_mana");
         public static final TagKey<Item> PROVIDE_LIFE = register("provide_life");
         public static final TagKey<Item> TORCH = register("torch");
-        public static final TagKey<Item> PROVIDE_LIGHT = register("provide_lide");
+        public static final TagKey<Item> PROVIDE_LIGHT = register("provide_light");
         public static final TagKey<Item> HARDMODE = register("hardmode");
         public static final TagKey<Item> BOTTOMLESS = register("bottomless");
         public static final TagKey<Item> FRUIT = register("fruit");

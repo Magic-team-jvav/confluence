@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "minecraft:chorus_flower"
+            "id": "confluence:falling_star"
         },
         "title": {
             "translate": "achievements.confluence.into_orbit.title"

@@ -335,9 +335,13 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.foodStyle.overlay", "饱食度样式:叠加");
         add("confluence.configuration.leftEffectIcon", "左侧药水效果标识");
         add("confluence.configuration.Entity", "生物效果");
-        add("confluence.configuration.hurtRedOverlay", "受击红色显示");
         add("confluence.configuration.bloodyEffect", "血效果");
-        add("confluence.configuration.goreEffect", "血腥效果");
+        add("confluence.configuration.goreEffect", "肢解效果");
+        add("confluence.configuration.goreEffect.off", "关");
+        add("confluence.configuration.goreEffect.confluence", "仅汇流生物");
+        add("confluence.configuration.goreEffect.confluence_vanilla", "汇流和原版生物");
+        add("confluence.configuration.goreEffect.all", "所有生物");
+        add("confluence.configuration.goreEffect.tooltip", "肢解效果会对汇流生物和原版生物特别适配，其他Mod的生物使用通用的方法，不保证效果。");
         add("confluence.configuration.damageIndicator", "伤害数值显示");
         add("confluence.configuration.Gameplay", "游戏机制");
         add("confluence.configuration.Gameplay.button", "游戏机制定义");

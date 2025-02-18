@@ -464,9 +464,13 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.foodStyle.overlay", "Food Saturation Style: Overlay");
         add("confluence.configuration.leftEffectIcon", "Left Effect Icon");
         add("confluence.configuration.Entity", "Entity Effects");
-        add("confluence.configuration.hurtRedOverlay", "Hurt Red Overlay");
         add("confluence.configuration.bloodyEffect", "Bloody Effect");
-        add("confluence.configuration.goreEffect", "Gore Effect");
+        add("confluence.configuration.goreEffect", "Dismemberment Effect");
+        add("confluence.configuration.goreEffect.off", "Off");
+        add("confluence.configuration.goreEffect.confluence", "Confluence Mobs Only");
+        add("confluence.configuration.goreEffect.confluence_vanilla", "Confluence and Vanilla Mobs");
+        add("confluence.configuration.goreEffect.all", "All");
+        add("confluence.configuration.goreEffect.tooltip", "Dismemberment effects are specially adapted for confluence mobs and vanilla mobs. Mobs from other mods use a generic method, the effects are not guaranteed.");
         add("confluence.configuration.damageIndicator", "Damage Indicator");
         add("confluence.configuration.Gameplay", "Gameplay Mechanics");
         add("confluence.configuration.Gameplay.button", "Gameplay Mechanics Definition");

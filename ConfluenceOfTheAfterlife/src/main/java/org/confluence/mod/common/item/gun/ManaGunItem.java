@@ -16,9 +16,12 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.util.PlayerUtils;
+import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_guns.TerraGuns;
 import org.confluence.terra_guns.api.IAmmo;
 import org.confluence.terra_guns.api.IGun;
@@ -36,14 +39,15 @@ import java.util.function.Predicate;
 
 @SuppressWarnings("unchecked")
 public abstract class ManaGunItem<T extends Projectile> extends GeoGunItem<T> implements IAmmo<T> {
+    protected ItemAttributeModifiers modifiers;
     private final float baseDamage;
     private final float ammoSpeed;
     private final float knockBack;
     private final float inaccuracy;
     private final int manaCost;
 
-    public ManaGunItem(Properties properties, float baseDamage, float ammoSpeed, float knockBack, float inaccuracy, int manaCost) {
-        super(properties);
+    public ManaGunItem(Properties properties, ModRarity rarity, float baseDamage, float ammoSpeed, float knockBack, float inaccuracy, int manaCost) {
+        super(properties.component(TCDataComponentTypes.MOD_RARITY, rarity));
         this.baseDamage = baseDamage;
         this.ammoSpeed = ammoSpeed;
         this.knockBack = knockBack;
@@ -51,8 +55,8 @@ public abstract class ManaGunItem<T extends Projectile> extends GeoGunItem<T> im
         this.manaCost = manaCost;
     }
 
-    public ManaGunItem(float baseDamage, float ammoSpeed, float knockBack, float inaccuracy, int manaCost) {
-        this(new Properties(), baseDamage, ammoSpeed, knockBack, inaccuracy, manaCost);
+    public ManaGunItem(ModRarity rarity, float baseDamage, float ammoSpeed, float knockBack, float inaccuracy, int manaCost) {
+        this(new Properties(), rarity, baseDamage, ammoSpeed, knockBack, inaccuracy, manaCost);
     }
 
     @Override
@@ -132,9 +136,6 @@ public abstract class ManaGunItem<T extends Projectile> extends GeoGunItem<T> im
     public void beforeAmmoShoot(Player shooter, T projectile, ItemStack gunStack, ItemStack ammoStack) {}
 
     @Override
-    public void clientShoot(ClientLevel level, Player shooter, ItemStack gunStack, ItemStack ammoStack) {}
-
-    @Override
     public void doPostHurtEffects(T projectile, Entity target) {}
 
     @Override
@@ -163,5 +164,21 @@ public abstract class ManaGunItem<T extends Projectile> extends GeoGunItem<T> im
                 return renderer;
             }
         });
+    }
+
+    public void addAttributeModifiers(Consumer<ItemAttributeModifiers.Builder> consumer) {
+        ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
+        consumer.accept(builder);
+        this.modifiers = builder.build();
+    }
+
+    @Override
+    public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
+        return modifiers == null ? super.getDefaultAttributeModifiers(stack) : modifiers;
+    }
+
+    @Override
+    public Component getName(ItemStack stack) {
+        return Component.translatable(getDescriptionId(stack)).withColor(stack.get(TCDataComponentTypes.MOD_RARITY).getColor());
     }
 }

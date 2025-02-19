@@ -494,7 +494,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         PickaxeAxeItems.acceptTag(axes);
 
         SwordItems.acceptTag(tag(Tags.Items.MELEE_WEAPON_TOOLS));
-        ManaStaffItems.acceptTag(tag(ModTags.Items.MANA_WEAPON));
+        ManaWeaponItems.acceptTag(tag(ModTags.Items.MANA_WEAPON));
         BowItems.acceptTag(tag(Tags.Items.RANGED_WEAPON_TOOLS));
         IntrinsicTagAppender<Item> mining_tool_tools = tag(Tags.Items.MINING_TOOL_TOOLS);
         PickaxeItems.acceptTag(mining_tool_tools);

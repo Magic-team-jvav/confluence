@@ -140,7 +140,7 @@ public final class ModAchievements {
 
         // Challenger [6, 7] -> [10, 12]
         /* Real Estate Agent 6, 7 */
-        /* Not the Bees! 7, 7 */
+        offset("not_the_bees", 7, 7);
         /* Mecha Mayhem 8, 7 */
         /* Gelatin World Tour 9, 7 */
         offset("bulldozer", 10, 7);

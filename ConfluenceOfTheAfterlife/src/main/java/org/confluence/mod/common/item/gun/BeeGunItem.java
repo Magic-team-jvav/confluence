@@ -1,13 +1,18 @@
 package org.confluence.mod.common.item.gun;
 
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.entity.projectile.BeeProjectile;
 import org.confluence.terra_curio.common.init.TCAttributes;
@@ -50,6 +55,25 @@ public class BeeGunItem extends ManaGunItem<BeeProjectile> {
             }
         }
         player.getCooldowns().addCooldown(this, getUseDelay(player, gunStack, ammoStack));
+
+        notTheBees(player);
+    }
+
+    private static void notTheBees(Player player) {
+        CompoundTag data = player.getPersistentData();
+        if (!data.getBoolean("confluence:not_the_bees")) {
+            if (player.getItemBySlot(EquipmentSlot.HEAD).is(ArmorItems.BEE_HELMET.get()) ||
+                    player.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.BEE_CHESTPLATE.get()) ||
+                    player.getItemBySlot(EquipmentSlot.LEGS).is(ArmorItems.BEE_LEGGINGS.get()) ||
+                    player.getItemBySlot(EquipmentSlot.FEET).is(ArmorItems.BEE_BOOTS.get())) {
+                ServerPlayer serverPlayer = (ServerPlayer) player;
+                AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource("achievements/not_the_bees"));
+                if (advancement != null) {
+                    serverPlayer.getAdvancements().award(advancement, "never");
+                }
+                data.putBoolean("confluence:not_the_bees", true);
+            }
+        }
     }
 
     @Override

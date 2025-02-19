@@ -25,7 +25,7 @@ import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_guns.TerraGuns;
 import org.confluence.terra_guns.api.IAmmo;
 import org.confluence.terra_guns.api.IGun;
-import org.confluence.terra_guns.common.entity.SimpleItemModelProjectile;
+import org.confluence.terra_guns.common.entity.SimpleTrailProjectile;
 import org.confluence.terra_guns.common.item.gun.GeoGunItem;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -153,7 +153,7 @@ public abstract class ManaGunItem<T extends Projectile> extends GeoGunItem<T> im
     @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {
-            private GeoItemRenderer<GeoGunItem<SimpleItemModelProjectile>> renderer;
+            private GeoItemRenderer<GeoGunItem<SimpleTrailProjectile>> renderer;
 
             @Override
             public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {

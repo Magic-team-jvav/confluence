@@ -296,7 +296,6 @@ public final class ModEvents {
         event.modify(TGItems.MUSKET.get(), blue);
         event.modify(TGItems.THE_UNDERTAKER.get(), blue);
         event.modify(TGItems.FLARE_GUN.get(), blue);
-        event.modify(TGItems.SPACE_GUN.get(), blue);
         event.modify(TGItems.SNOWBALL_CANNON.get(), blue);
         event.modify(TGItems.METEOR_BULLET.get(), blue);
         Consumer<DataComponentPatch.Builder> orange = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.ORANGE);

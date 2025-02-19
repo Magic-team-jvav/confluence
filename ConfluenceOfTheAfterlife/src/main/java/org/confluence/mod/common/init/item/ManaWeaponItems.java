@@ -7,13 +7,15 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.*;
 import org.confluence.mod.common.entity.projectile.BaseManaStaffProjectileEntity.Variant;
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
+import org.confluence.mod.common.item.gun.BeeGunItem;
+import org.confluence.mod.common.item.gun.SpaceGunItem;
 import org.confluence.mod.common.item.mana.ManaStaffItem;
 import org.confluence.mod.common.item.mana.WeatherPainItem;
 import org.confluence.terra_curio.common.component.ModRarity;
 
 import java.util.function.Supplier;
 
-public class ManaStaffItems {
+public class ManaWeaponItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
     public static final Supplier<ManaStaffItem<?>> WAND_OF_SPARKING = ITEMS.register("wand_of_sparking", () -> new ManaStaffItem<>(ModRarity.BLUE, WandOfSparkingProjectile::new, 2, 7.0F, 26, 0.14));
@@ -32,6 +34,9 @@ public class ManaStaffItems {
     public static final Supplier<ManaStaffItem<?>> AQUA_SCEPTER = ITEMS.register("aqua_scepter", () -> new ManaStaffItem<>(ModRarity.GREEN, WaterStreamProjectile::new, 7, 32.0F, 3, 0.04));
     public static final Supplier<ManaStaffItem<?>> FLOWER_OF_FIRE = ITEMS.register("flower_of_fire", () -> new ManaStaffItem<>(ModRarity.ORANGE, BallOfFireProjectile::new, 12, 7.5F, 16, 0.04));
     /* 烈焰火鞭 */
+
+    public static final Supplier<BeeGunItem> BEE_GUN = ITEMS.register("bee_gun", BeeGunItem::new);
+    public static final Supplier<SpaceGunItem> SPACE_GUN = ITEMS.register("space_gun", SpaceGunItem::new);
 
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
         ITEMS.getEntries().forEach(item -> tag.add(item.get()));

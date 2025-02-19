@@ -1941,20 +1941,20 @@ public class ModChineseProvider extends LanguageProvider {
         add(HookItems.TENDON_HOOK.get(), "肌腱钩");
 
         // 法杖
-        add(ManaStaffItems.RUBY_STAFF.get(), "红玉法杖");
-        add(ManaStaffItems.AMBER_STAFF.get(), "琥珀法杖");
-        add(ManaStaffItems.TOPAZ_STAFF.get(), "黄玉法杖");
-        add(ManaStaffItems.EMERALD_STAFF.get(), "翡翠法杖");
-        add(ManaStaffItems.SAPPHIRE_STAFF.get(), "蓝玉法杖");
-        add(ManaStaffItems.DIAMOND_STAFF.get(), "钻石法杖");
-        add(ManaStaffItems.AMETHYST_STAFF.get(), "紫晶法杖");
-        add(ManaStaffItems.WAND_OF_SPARKING.get(), "火花魔棒");
-        add(ManaStaffItems.WAND_OF_FROSTING.get(), "霜冻魔棒");
-        add(ManaStaffItems.THUNDER_ZAPPER.get(), "霹雳法杖");
-        add(ManaStaffItems.VILETHRON.get(), "魔刺");
-        add(ManaStaffItems.WEATHER_PAIN.get(), "天气棒");
-        add(ManaStaffItems.AQUA_SCEPTER.get(), "海蓝权杖");
-        add(ManaStaffItems.FLOWER_OF_FIRE.get(), "火之花");
+        add(ManaWeaponItems.RUBY_STAFF.get(), "红玉法杖");
+        add(ManaWeaponItems.AMBER_STAFF.get(), "琥珀法杖");
+        add(ManaWeaponItems.TOPAZ_STAFF.get(), "黄玉法杖");
+        add(ManaWeaponItems.EMERALD_STAFF.get(), "翡翠法杖");
+        add(ManaWeaponItems.SAPPHIRE_STAFF.get(), "蓝玉法杖");
+        add(ManaWeaponItems.DIAMOND_STAFF.get(), "钻石法杖");
+        add(ManaWeaponItems.AMETHYST_STAFF.get(), "紫晶法杖");
+        add(ManaWeaponItems.WAND_OF_SPARKING.get(), "火花魔棒");
+        add(ManaWeaponItems.WAND_OF_FROSTING.get(), "霜冻魔棒");
+        add(ManaWeaponItems.THUNDER_ZAPPER.get(), "霹雳法杖");
+        add(ManaWeaponItems.VILETHRON.get(), "魔刺");
+        add(ManaWeaponItems.WEATHER_PAIN.get(), "天气棒");
+        add(ManaWeaponItems.AQUA_SCEPTER.get(), "海蓝权杖");
+        add(ManaWeaponItems.FLOWER_OF_FIRE.get(), "火之花");
         /*
         add(ManaWeapons.MAGIC_MISSILE.get(), "魔法导弹");
         add(ManaWeapons.FLAMELASH.get(), "烈焰火鞭");
@@ -1981,8 +1981,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeapons.RAZORPINE.get(), "剃刀松");
         add(ManaWeapons.BETSYS_WRATH.get(), "双足翼龙怒气");
          */
-
-        add(ManaGunItems.BEE_GUN.get(), "蜜蜂枪");
+        add(ManaWeaponItems.BEE_GUN.get(), "蜜蜂枪");
+        add(ManaWeaponItems.BEE_GUN.get(), "太空枪");
 
         // 弓
         add(BowItems.WOODEN_SHORT_BOW.get(), "木短弓");

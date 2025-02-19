@@ -18,7 +18,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.LightPetItems;
-import org.confluence.mod.common.init.item.ManaStaffItems;
+import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.color.IntegerRGB;
@@ -53,7 +53,7 @@ public class ShadowOrbBlock extends Block {
                     ModUtils.createItemEntity(LightPetItems.SHADOW_ORB.get(), 1, center.x, center.y, center.z, level, 0);
                 }
                 if (level.random.nextFloat() < 0.2F) {
-                    ModUtils.createItemEntity(ManaStaffItems.VILETHRON.get(), 1, center.x, center.y, center.z, level, 0);
+                    ModUtils.createItemEntity(ManaWeaponItems.VILETHRON.get(), 1, center.x, center.y, center.z, level, 0);
                 }
                 if (level.random.nextFloat() < 0.2F) {
                     // 链球

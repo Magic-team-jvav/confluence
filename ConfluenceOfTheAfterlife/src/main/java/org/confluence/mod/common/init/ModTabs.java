@@ -138,14 +138,15 @@ public final class ModTabs {
                         BowItems.ITEMS.getEntries().forEach(action);
                         ArrowItems.ITEMS.getEntries().forEach(action);
                         TGItems.ITEM_GUNS.getEntries().forEach(action);
-                        ManaGunItems.ITEMS.getEntries().forEach(action);
+                        output.accept(ManaWeaponItems.BEE_GUN.get());
+                        output.accept(ManaWeaponItems.SPACE_GUN.get());
                         TGItems.ITEM_BULLETS.getEntries().forEach(action);
                     }).withTabsBefore(WARRIORS.getId()).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAGES = TABS.register("mages",
             () -> CreativeModeTab.builder().icon(() -> IconItems.MAGIC_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.mages"))
                     .displayItems((parameters, output) -> {
-                        ManaStaffItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                        ManaWeaponItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                     }).withTabsBefore(SHOOTERS.getId()).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SUMMONERS = TABS.register("summoners",
             () -> CreativeModeTab.builder().icon(() -> IconItems.SUMMON_ICON.get().getDefaultInstance())

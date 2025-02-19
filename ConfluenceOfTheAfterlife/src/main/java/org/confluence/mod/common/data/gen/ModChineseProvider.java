@@ -1982,7 +1982,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeapons.BETSYS_WRATH.get(), "双足翼龙怒气");
          */
         add(ManaWeaponItems.BEE_GUN.get(), "蜜蜂枪");
-        add(ManaWeaponItems.BEE_GUN.get(), "太空枪");
+        add(ManaWeaponItems.SPACE_GUN.get(), "太空枪");
 
         // 弓
         add(BowItems.WOODEN_SHORT_BOW.get(), "木短弓");

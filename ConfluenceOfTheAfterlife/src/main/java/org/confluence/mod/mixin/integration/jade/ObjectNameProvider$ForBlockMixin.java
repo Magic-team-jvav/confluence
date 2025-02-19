@@ -16,7 +16,7 @@ import snownee.jade.api.BlockAccessor;
 public abstract class ObjectNameProvider$ForBlockMixin {
     @ModifyArg(method = "appendTooltip(Lsnownee/jade/api/ITooltip;Lsnownee/jade/api/BlockAccessor;Lsnownee/jade/api/config/IPluginConfig;)V", at = @At(value = "INVOKE", target = "Lsnownee/jade/api/theme/IThemeHelper;title(Ljava/lang/Object;)Lnet/minecraft/network/chat/MutableComponent;"))
     private Object modify(Object o, @Local(argsOnly = true) BlockAccessor accessor) {
-        if (accessor.getBlockEntity() instanceof DeathChestBlock.Entity entity) {
+        if (!accessor.getPlayer().isCreative() && accessor.getBlockEntity() instanceof DeathChestBlock.Entity entity) {
             if (entity.variant == BaseChestBlock.Variant.UNLOCKED_NORMAL) {
                 return Blocks.CHEST.getName();
             }

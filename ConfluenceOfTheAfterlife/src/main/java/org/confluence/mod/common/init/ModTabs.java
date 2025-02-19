@@ -138,6 +138,7 @@ public final class ModTabs {
                         BowItems.ITEMS.getEntries().forEach(action);
                         ArrowItems.ITEMS.getEntries().forEach(action);
                         TGItems.ITEM_GUNS.getEntries().forEach(action);
+                        ManaGunItems.ITEMS.getEntries().forEach(action);
                         TGItems.ITEM_BULLETS.getEntries().forEach(action);
                     }).withTabsBefore(WARRIORS.getId()).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAGES = TABS.register("mages",

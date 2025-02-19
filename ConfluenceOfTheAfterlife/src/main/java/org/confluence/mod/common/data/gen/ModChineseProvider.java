@@ -8,7 +8,6 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.terraentity.init.TEItems;
 
 import static org.confluence.mod.common.init.item.PickaxeItems.MOLTEN_PICKAXE;
 
@@ -755,6 +754,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.WEB_SLINGER.get(), "网射手");
         add(ModEntities.WET_BOMB.get(), "湿炸弹");
         add(ModEntities.WOODEN_MINECART.get(), "木制矿车");
+        add(ModEntities.BOULDER.get(), "巨石");
+        add(ModEntities.FOLLOWER_BOULDER.get(), "跟踪巨石");
+        add(ModEntities.EXPLODE_BOULDER.get(), "爆炸巨石");
 
 
         //region blocks
@@ -1081,7 +1083,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.EVAPORATIVE_CLOUD_BLOCK.get(), "蒸发云块");
         add(NatureBlocks.RAIN_CLOUD_BLOCK.get(), "雨云块");
         add(NatureBlocks.SNOW_CLOUD_BLOCK.get(), "雪云块");
-        add(DecorativeBlocks.BOUNCY_CLOUD_BLOCK.get(), "弹力云块");
         add(NatureBlocks.THIN_ICE_BLOCK.get(), "薄冰块");
         add(NatureBlocks.LIFE_CRYSTAL_BLOCK.get(), "生命水晶");
         add(NatureBlocks.JUNGLE_HIVE_BLOCK.get(), "丛林蜂巢");
@@ -1177,13 +1178,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.HALLOW_CATTAILS_BODY.get(), "神圣香蒲");
         add(NatureBlocks.EBONY_CATTAILS_BODY.get(), "腐化香蒲");
         add(NatureBlocks.TR_CRIMSON_CATTAILS_BODY.get(), "猩红香蒲");
+        add(NatureBlocks.FLOATING_WHEAT.get(), "飘飘麦");
 
-        add(ModItems.CATTAILS.get(), "香蒲");
-        add(ModItems.JUNGLE_CATTAILS.get(), "丛林香蒲");
-        add(ModItems.GLOWING_MUSHROOM_CATTAILS.get(), "发光蘑菇香蒲");
-        add(ModItems.HALLOW_CATTAILS.get(), "神圣香蒲");
-        add(ModItems.EBONY_CATTAILS.get(), "腐化香蒲");
-        add(ModItems.TR_CRIMSON_CATTAILS.get(), "猩红香蒲");
         add(LightPetItems.SHADOW_ORB.get(), "暗影珠");
         add(LightPetItems.CRIMSON_HEART.get(), "猩红心脏");
 
@@ -1280,6 +1276,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.CHISELED_GREEN_BRICKS.get(), "雕纹绿色地牢砖");
         add(DecorativeBlocks.CHISELED_PINK_BRICKS.get(), "雕纹粉色地牢砖");
         add(DecorativeBlocks.AETHERIUM_BRICKS.get(), "以太砖");
+        add(DecorativeBlocks.BOUNCY_CLOUD_BLOCK.get(), "弹力云块");
 
         // 雕像
         add(StatueBlocks.A_STATUE.get(), "A字雕像");
@@ -1375,7 +1372,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModBlocks.SHIVERTHORN.get(), "寒颤棘");
         add(ModBlocks.DAYBLOOM.get(), "太阳花");
         add(ModBlocks.DEATHWEED.get(), "死亡草");
-        add(NatureBlocks.FLOATING_WHEAT.get(), "飘飘麦");
+        add(ModBlocks.ROPE.get(), "绳子");
+        add(ModBlocks.VINE_ROPE.get(), "藤蔓绳");
+        add(ModBlocks.SILK_ROPE.get(), "丝绸绳");
+        add(ModBlocks.WEB_ROPE.get(), "蛛丝绳");
 /*
         add(Torches.RED_TORCH.item.get(), "红火把");
         add(Torches.ORANGE_TORCH.item.get(), "橙火把");
@@ -1686,6 +1686,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.BUG_NET.get(), "虫网");
         add(ToolItems.DEV_BUG_NET.get(), "开发者虫网");
         add(ToolItems.GOLDEN_BUG_NET.get(), "金虫网");
+        add(ToolItems.ROPE_COIL.get(), "绳圈");
+        add(ToolItems.VINE_ROPE_COIL.get(), "藤蔓绳圈");
+        add(ToolItems.SILK_ROPE_COIL.get(), "丝绸绳圈");
+        add(ToolItems.WEB_ROPE_COIL.get(), "蛛丝绳圈");
 
 
         add(ConsumableItems.SHURIKEN.get(), "手里剑");
@@ -1735,6 +1739,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.LIFE_FRUIT.get(), "生命果");
         add(ConsumableItems.ROTTEN_BONE_DUST.get(), "朽骨齑尘");
         add(ConsumableItems.BLOODSTAINED_POWDER.get(), "血凝痂粉");
+
         add(TreasureBagItems.KING_SLIME_TREASURE_BAG.get(), "史莱姆之王宝藏袋");
         add(TreasureBagItems.EYE_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之眼宝藏袋");
         add(TreasureBagItems.EATER_OF_WORLDS_TREASURE_BAG.get(), "世界吞噬怪宝藏袋");
@@ -1754,25 +1759,23 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.CANDY_APPLE.get(), "糖葫芦");
         add(ModItems.WHOOPIE_CUSHION.get(), "整蛊坐垫");
         add(ModItems.DEAD_MANS_SWEATER.get(), "死人毛衣");
-
-        add(ModBlocks.ROPE.get(), "绳子");
-        add(ModBlocks.VINE_ROPE.get(), "藤蔓绳");
-        add(ModBlocks.SILK_ROPE.get(), "丝绸绳");
-        add(ModBlocks.WEB_ROPE.get(), "蛛丝绳");
-        add(ToolItems.ROPE_COIL.get(), "绳圈");
-        add(ToolItems.VINE_ROPE_COIL.get(), "藤蔓绳圈");
-        add(ToolItems.SILK_ROPE_COIL.get(), "丝绸绳圈");
-        add(ToolItems.WEB_ROPE_COIL.get(), "蛛丝绳圈");
-
+        add(ModItems.GRASS_SEED.get(), "草种子");
+        add(ModItems.JUNGLE_GRASS_SEED.get(), "丛林草种子");
+        add(ModItems.MUSHROOM_GRASS_SEED.get(), "蘑菇草种子");
+        add(ModItems.CORRUPT_SEED.get(), "腐化种子");
+        add(ModItems.TR_CRIMSON_SEED.get(), "猩红种子");
+        add(ModItems.HALLOWED_SEED.get(), "神圣种子");
+        add(ModItems.ASH_GRASS_SEED.get(), "灰烬草种子");
+        add(ModItems.PARADOX_INTERACTIVE_MEDAL.get(), "帕拉多克斯·英特拉克缇福勋章");
+        add(ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get(), "「无聊之咒·陨志」");
         add(ModItems.TOKYO_TEDDY_BEAR.get(), "东京泰迪熊");
         add(ModItems.ICE_TOFU_BRICK.get(), "冰豆腐砖");
-
-
-        add(TEItems.SLIME_STAFF.get(), "史莱姆召唤杖");
-
-        add(ModEntities.BOULDER.get(), "巨石");
-        add(ModEntities.FOLLOWER_BOULDER.get(), "跟踪巨石");
-        add(ModEntities.EXPLODE_BOULDER.get(), "爆炸巨石");
+        add(ModItems.CATTAILS.get(), "香蒲");
+        add(ModItems.JUNGLE_CATTAILS.get(), "丛林香蒲");
+        add(ModItems.GLOWING_MUSHROOM_CATTAILS.get(), "发光蘑菇香蒲");
+        add(ModItems.HALLOW_CATTAILS.get(), "神圣香蒲");
+        add(ModItems.EBONY_CATTAILS.get(), "腐化香蒲");
+        add(ModItems.TR_CRIMSON_CATTAILS.get(), "猩红香蒲");
 
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");
@@ -1979,6 +1982,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeapons.BETSYS_WRATH.get(), "双足翼龙怒气");
          */
 
+        add(ManaGunItems.BEE_GUN.get(), "蜜蜂枪");
+
         // 弓
         add(BowItems.WOODEN_SHORT_BOW.get(), "木短弓");
         add(BowItems.COPPER_SHORT_BOW.get(), "铜短弓");
@@ -2130,9 +2135,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.MOLTEN_HELMET.get(), "熔岩头盔");
         add(ArmorItems.MOLTEN_LEGGINGS.get(), "熔岩护腿");
         add(ArmorItems.MOLTEN_BOOTS.get(), "熔岩靴子");
-
-        add(VanityArmorItems.GOLD_CROWN.get(), "金冠");
-        add(VanityArmorItems.PLATINUM_CROWN.get(), "铂金冠");
 
         // 任务鱼
         add(QuestedFishes.AMANITA_FUNGIFIN.get(), "发光蘑菇鱼");
@@ -2306,13 +2308,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.SHIVERTHORN_SEED.get(), "寒颤棘种子");
         add(FoodItems.DAYBLOOM_SEED.get(), "太阳花种子");
         add(FoodItems.DEATHWEED_SEED.get(), "死亡草种子");
-        add(ModItems.GRASS_SEED.get(), "草种子");
-        add(ModItems.JUNGLE_GRASS_SEED.get(), "丛林草种子");
-        add(ModItems.MUSHROOM_GRASS_SEED.get(), "蘑菇草种子");
-        add(ModItems.CORRUPT_SEED.get(), "腐化种子");
-        add(ModItems.TR_CRIMSON_SEED.get(), "猩红种子");
-        add(ModItems.HALLOWED_SEED.get(), "神圣种子");
-        add(ModItems.ASH_GRASS_SEED.get(), "灰烬草种子");
         // 种子
         add(FoodItems.STELLAR_BLOSSOM_SEED.get(), "星辰花种子");
         add(FoodItems.CLOUDWEAVER_SEED.get(), "云织草种子");
@@ -2427,8 +2422,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(AccessoryItems.MUSIC_BOX.get(), "八音盒");
         add(AccessoryItems.PAINT_SPRAYER.get(), "喷漆器");
         add(AccessoryItems.RADIO_THING.get(), "收音机");
-        add(ModItems.PARADOX_INTERACTIVE_MEDAL.get(), "帕拉多克斯·英特拉克缇福勋章");
-        add(ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get(), "「无聊之咒·陨志」");
 
 
         // 染料
@@ -2469,6 +2462,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(PaintItems.ILLUMINANT_COATING.get(), "夜明漆");
         add(PaintItems.ECHO_COATING.get(), "回声漆");
 
+        add(VanityArmorItems.GOLD_CROWN.get(), "金冠");
+        add(VanityArmorItems.PLATINUM_CROWN.get(), "铂金冠");
         add(VanityArmorItems.RED_DYE.get(), "红染料");
         add(VanityArmorItems.BRIGHT_RED_DYE.get(), "淡红染料");
         add(VanityArmorItems.ORANGE_DYE.get(), "橙染料");

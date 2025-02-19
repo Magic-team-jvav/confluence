@@ -89,6 +89,7 @@ public final class ModItems {
         HookItems.ITEMS.register(eventBus);
         IconItems.ITEMS.register(eventBus);
         LightPetItems.ITEMS.register(eventBus);
+        ManaGunItems.ITEMS.register(eventBus);
         ManaStaffItems.ITEMS.register(eventBus);
         MaterialItems.ITEMS.register(eventBus);
         MinecartItems.ITEMS.register(eventBus);

@@ -282,7 +282,6 @@ public final class ModEvents {
         event.modify(TGItems.HANGGUN.get(), green);
         event.modify(TGItems.MINISHARK.get(), green);
         event.modify(TGItems.REVOLVER.get(), green);
-        event.modify(TGItems.BEE_GUN.get(), green);
         event.modify(TGItems.SANDGUN.get(), green);
         event.modify(TGItems.STAR_CANNON.get(), green);
         event.modify(TGItems.ENDLESS_MUSKET_POUCH.get(), green);

@@ -2013,6 +2013,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(BowItems.DAEDALUS_STORM_BOW.get(), "代达罗斯风暴弓");
         add(BowItems.DEVELOPER_BOW.get(), "开发者弓");
 
+
+
         // 盔甲
         add(ArmorItems.CACTUS_CHESTPLATE.get(), "仙人掌胸甲");
         add(ArmorItems.CACTUS_HELMET.get(), "仙人掌头盔");

@@ -31,11 +31,16 @@
         },
         {
           "type": "minecraft:item",
+          "name": "terra_guns:snowball_cannon",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
           "name": "confluence:extractinator",
           "weight": 5
         }
       ],
-      "rolls": 20
+      "rolls": 5
     },
     {
       "bonus_rolls": 0.0,

@@ -2,5 +2,5 @@
     "type": "neoforge:add_features",
     "biomes": "beach",
     "features": "confluence:palm_tree_checked",
-    "step": "surface_structures"
+    "step": "vegetal_decoration"
 }

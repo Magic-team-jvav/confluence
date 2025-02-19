@@ -28,6 +28,11 @@
           "type": "minecraft:item",
           "name": "confluence:staff_of_regrowth",
           "weight": 19
+        },
+        {
+          "type": "minecraft:item",
+          "name": "terra_guns:boomstick",
+          "weight": 19
         }
       ],
       "rolls": 1

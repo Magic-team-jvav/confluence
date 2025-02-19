@@ -29,7 +29,7 @@ public class SpaceGunItem extends ManaGunItem<SimpleTrailProjectile> {
 
     @Override
     protected int getUseDelay(Player shooter, ItemStack gunStack, ItemStack ammoStack) {
-        return 17;
+        return 8;
     }
 
     @Override

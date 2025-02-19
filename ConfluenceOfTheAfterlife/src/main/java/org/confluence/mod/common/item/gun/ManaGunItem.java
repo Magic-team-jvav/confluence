@@ -104,7 +104,7 @@ public abstract class ManaGunItem<T extends Projectile> extends GeoGunItem<T> im
 
     @Override
     public boolean isValidAmmo(ItemStack ammoStack) {
-        return true;
+        return false;
     }
 
     @Override

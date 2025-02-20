@@ -76,6 +76,7 @@ public class BaseArrowEntity extends AbstractArrow {
             this.modify = new Builder();
         else
             this.modify = baseArrowTuple.attr.get();
+
     }
 
     /**
@@ -89,6 +90,9 @@ public class BaseArrowEntity extends AbstractArrow {
     public BaseArrowEntity(LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, BaseArrowItem arrow, Consumer<Builder> modifyConsumer) {
         this(owner,pickupItemStack,firedFromWeapon, arrow);
         if(modifyConsumer!=null) modifyConsumer.accept(modify);
+        if((modify.type & Tag.auto_discard) != 0){
+            this.pickup = Pickup.DISALLOWED;
+        }
     }
 
 
@@ -337,6 +341,10 @@ public class BaseArrowEntity extends AbstractArrow {
         public Builder setPenetration(int count){//穿透次数
             type|= Tag.penetration;
             penetration_count = count;
+            if(count > 1){
+                type|= Tag.auto_discard;
+                auto_discard_tick = Math.min(auto_discard_tick, 120);
+            }
             return this;
         }
         public Builder setGravity(int gravity){//重力

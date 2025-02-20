@@ -1745,6 +1745,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(TreasureBagItems.EYE_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之眼宝藏袋");
         add(TreasureBagItems.EATER_OF_WORLDS_TREASURE_BAG.get(), "世界吞噬怪宝藏袋");
         add(TreasureBagItems.BRAIN_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之脑宝藏袋");
+        add(TreasureBagItems.QUEEN_BEE_TREASURE_BAG.get(), "蜂王宝藏袋");
 
         // 杂项
         add(ModItems.COPPER_COIN.get(), "铜币");

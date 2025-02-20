@@ -79,6 +79,8 @@ public class TreasureBagItem extends CustomRarityItem {
             item = TreasureBagItems.EATER_OF_WORLDS_TREASURE_BAG.get();
         } else if (type == TEEntities.BRAIN_OF_CTHULHU.get()) {
             item = TreasureBagItems.BRAIN_OF_CTHULHU_TREASURE_BAG.get();
+        } else if (type == TEEntities.QUEEN_BEE.get()) {
+            item = TreasureBagItems.QUEEN_BEE_TREASURE_BAG.get();
         }
         if (item == null) return null;
         ItemStack itemStack = item.getDefaultInstance();

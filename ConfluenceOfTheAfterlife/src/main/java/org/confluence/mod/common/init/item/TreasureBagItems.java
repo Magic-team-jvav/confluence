@@ -29,4 +29,5 @@ public class TreasureBagItems {
     }));
     public static final Supplier<TreasureBagItem> EATER_OF_WORLDS_TREASURE_BAG = ITEMS.register("eater_of_worlds_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("entities/boss/eater_of_worlds")));
     public static final Supplier<TreasureBagItem> BRAIN_OF_CTHULHU_TREASURE_BAG = ITEMS.register("brain_of_cthulhu_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("entities/boss/brain_of_cthulhu")));
+    public static final Supplier<TreasureBagItem> QUEEN_BEE_TREASURE_BAG = ITEMS.register("queen_bee_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("entities/boss/queen_bee")));
 }

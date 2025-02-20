@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init.item;
 
+import com.mojang.serialization.ListBuilder;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.food.FoodProperties;
@@ -142,7 +143,7 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> FLASHFIN_KOI = registerFood("flashfin_koi", builder -> builder.initialize().food(FoodType.FISH).isFireResistant());
 
     //赞助
-    public static final DeferredItem<BaseFoodItem> PINK_KOLA = registerFood("pink_kola", builder -> builder.initialize().food(FoodType.PINK_KOLA).drinkingSound(s -> SoundEvents.GENERIC_DRINK).duration(d -> 15).useAnim(u -> UseAnim.DRINK));
+    public static final DeferredItem<BaseFoodItem> PINK_KOLA = registerToolTipFood("pink_kola", builder -> builder.initialize().food(FoodType.PINK_KOLA).drinkingSound(s -> SoundEvents.GENERIC_DRINK).duration(d -> 15).useAnim(u -> UseAnim.DRINK), 1);
     //节日特有
     public static final DeferredItem<BaseFoodItem> ZONGZI = registerFood("zongzi", builder -> builder.food(FoodType.LOW).isFireResistant());
 
@@ -168,6 +169,14 @@ public class FoodItems {
     public static DeferredItem<BaseFoodItem> registerFood(String name, Consumer<BaseFoodItem.Builder> consumer) {
         return ITEMS.register(name, () -> {
             BaseFoodItem.Builder builder = BaseFoodItem.builder();
+            consumer.accept(builder);
+            return builder.build();
+        });
+    }
+
+    public static DeferredItem<BaseFoodItem> registerToolTipFood(String name, Consumer<BaseFoodItem.Builder> consumer, int line) {
+        return ITEMS.register(name, () -> {
+            BaseFoodItem.Builder builder = BaseFoodItem.builder().tooltip(name, line);
             consumer.accept(builder);
             return builder.build();
         });

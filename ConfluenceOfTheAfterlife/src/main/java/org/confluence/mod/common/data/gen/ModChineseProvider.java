@@ -1797,6 +1797,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.TIMERS_BLOCK_1_2.get(), "1/2秒计时器");
         add(FunctionalBlocks.TIMERS_BLOCK_1_4.get(), "1/4秒计时器");
         add(FunctionalBlocks.EVER_POWERED_RAIL.get(), "永久动力铁轨");
+        add(FunctionalBlocks.SHARPENING_STATION.get(), "利器站");
+        add(FunctionalBlocks.AMMO_BOX.get(), "弹药箱");
+        add(FunctionalBlocks.LIFE_CAMPFIRE.get(), "生命篝火");
+        add(FunctionalBlocks.SILLY_BALLOON_MACHINE.get(), "呆萌气球机");
 
         add(FunctionalBlocks.PLAYER_PRESSURE_PLATE.get(), "玩家压力板");
         add(FunctionalBlocks.STONE_PRESSURE_PLATE.get(), "石头压力板");
@@ -1826,6 +1830,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.DETONATOR.get(), "引爆器");
         add(FunctionalBlocks.BASE_CHEST_BLOCK.get(), "箱子");
         add(FunctionalBlocks.SCULK_TRAP.get(), "幽匿陷阱");
+        add(FunctionalBlocks.ROLLING_CACTUS_BOULDER.get(), "仙人球");
 
 
         add(MinecartItems.MECHANICAL_CART.get(), "机械矿车");

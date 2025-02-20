@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "minecraft:block/deepslate_top",
+    "side": "minecraft:block/deepslate",
+    "top": "confluence:block/pneumatic_trap"
+  }
+}

@@ -468,8 +468,8 @@
               "function": "set_count",
               "count": {
                 "type": "uniform",
-                "min": 5,
-                "max": 8
+                "min": 10,
+                "max": 29
               }
             }
           ],

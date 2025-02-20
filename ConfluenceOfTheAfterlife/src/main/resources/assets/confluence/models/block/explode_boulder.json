@@ -1,9 +1,9 @@
 {
-	"credit": "Made by Mesdag",
+	"credit": "Made with Blockbench",
 	"texture_size": [80, 80],
 	"textures": {
-		"1": "confluence:block/normal_boulder",
-		"particle": "confluence:block/normal_boulder"
+		"1": "confluence:block/explode_boulder",
+		"particle": "confluence:block/explode_boulder"
 	},
 	"elements": [
 		{

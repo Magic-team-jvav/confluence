@@ -158,5 +158,10 @@
         "sounds": [
             "confluence:achievements"
         ]
+    },
+    "transmutation_use": {
+        "sounds": [
+            "confluence:transmutation_use"
+        ]
     }
 }

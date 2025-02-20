@@ -22,8 +22,8 @@ public final class ModSoundEvents {
     public static final Supplier<SoundEvent> SHOES_FLY = register("shoes_fly");
     public static final Supplier<SoundEvent> SHOES_FLY_JET = register("shoes_fly_jet");
     public static final Supplier<SoundEvent> SHOES_WALK = register("shoes_walk");
-    public static final Supplier<SoundEvent> SHOOT = register("shoot");
-    public static final Supplier<SoundEvent> SPARKLE_SHOOT = register("sparkle_shoot");
+    public static final Supplier<SoundEvent> SHOOT = register("shoot"); // 枪射击
+    public static final Supplier<SoundEvent> SPARKLE_SHOOT = register("sparkle_shoot"); // 法杖发射1
     public static final Supplier<SoundEvent> LIFE_CRYSTAL_USE = register("life_crystal_use");
     public static final Supplier<SoundEvent> MANA_STAR_USE = register("mana_star_use");
     public static final Supplier<SoundEvent> COINS = register("coins");
@@ -31,7 +31,7 @@ public final class ModSoundEvents {
     public static final Supplier<SoundEvent> ROUTINE_DEATH = register("routine_death");
     public static final Supplier<SoundEvent> COOLDOWN_RECOVERY = register("cooldown_recovery"); // CD冷却
     public static final Supplier<SoundEvent> FROZEN_ARROW = register("frozen_arrow"); // 冰雪射弹
-    public static final Supplier<SoundEvent> FROZEN_BROKEN = register("frozen_broken");
+    public static final Supplier<SoundEvent> FROZEN_BROKEN = register("frozen_broken"); // 冰雪射弹消失
     public static final Supplier<SoundEvent> SHIMMER_DETACHMENT = register("shimmer_detachment"); // 脱离微光
     public static final Supplier<SoundEvent> SHIMMER_EVOLUTION = register("shimmer_evolution"); // 嬗变
     public static final Supplier<SoundEvent> SHIMMER_IMMERSION = register("shimmer_immersion"); // 生物入微光
@@ -42,6 +42,7 @@ public final class ModSoundEvents {
     public static final Supplier<SoundEvent> USE_MOUNTS = register("use_mounts"); // 召唤坐骑
     public static final Supplier<SoundEvent> DECOUPLING = register("decoupling"); // 脱钩
     public static final Supplier<SoundEvent> ACHIEVEMENTS = register("achievements"); // 成就音效
+    public static final Supplier<SoundEvent> TRANSMUTATION_USE = register("transmutation_use"); // 高级增益使用
     //空音效
     public static final Supplier<SoundEvent> ETERNAL_STARE_OF_THE_EYE_OF_CHAOS = register("eternal_stare_of_the_eye_of_chaos");
     public static final Supplier<SoundEvent> GEL_CROWN_SOVEREIGN = register("gel_crown_sovereign");

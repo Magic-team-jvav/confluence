@@ -1952,7 +1952,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeaponItems.WAND_OF_FROSTING.get(), "霜冻魔棒");
         add(ManaWeaponItems.THUNDER_ZAPPER.get(), "霹雳法杖");
         add(ManaWeaponItems.VILETHRON.get(), "魔刺");
-        add(ManaWeaponItems.WEATHER_PAIN.get(), "天气棒");
+        add(ManaWeaponItems.WEATHER_PAIN.get(), "天候棒");
         add(ManaWeaponItems.AQUA_SCEPTER.get(), "海蓝权杖");
         add(ManaWeaponItems.FLOWER_OF_FIRE.get(), "火之花");
         /*

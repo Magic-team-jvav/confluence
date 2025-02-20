@@ -15,7 +15,7 @@ public class LoveEffect extends MobEffect {
     }
 
     public static void onAdd(Holder<MobEffect> mobEffect, LivingEntity living, Entity entity) {
-        if (mobEffect == ModEffects.LOVE && living instanceof Animal animal) {
+        if (mobEffect == ModEffects.LOVE && living instanceof Animal animal && !animal.isBaby()) {
             animal.setInLove(entity instanceof Player player ? player : null);
         }
     }

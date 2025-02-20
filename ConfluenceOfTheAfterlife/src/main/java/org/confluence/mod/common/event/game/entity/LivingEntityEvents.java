@@ -221,7 +221,7 @@ public final class LivingEntityEvents {
                     debuff = ModEffects.BROKEN_ARMOR;
                     min = master ? 12.19F : 9.75F;
                 }
-                living.addEffect(new MobEffectInstance(debuff, (int) (attacker.getRandom().nextFloat() * min + min) * 20));
+                living.addEffect(new MobEffectInstance(debuff, (int) ((attacker.getRandom().nextFloat() * min + min) * 20)));
             }
         }
         // 芦苇呼吸管对溺水伤害减半

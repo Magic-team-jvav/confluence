@@ -2,7 +2,8 @@
     "type": "confluence:heavy_work_bench",
     "pattern": [
         "#A",
-        "E "
+        "Eb",
+        "cc"
     ],
     "key": {
         "#": {
@@ -13,6 +14,12 @@
         },
         "A": {
             "item": "minecraft:candle"
+        },
+        "c": {
+            "tag": "minecraft:planks"
+        },
+        "b": {
+            "item": "confluence:bottle"
         }
     },
     "result": {

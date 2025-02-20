@@ -1,6 +1,8 @@
 package org.confluence.mod.common.component.prefix;
 
+import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableListMultimap;
+import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -167,7 +169,8 @@ public interface ModPrefix {
                 SHAMEFUL = register("shameful", -0.1F, 0, 0, 0.1F, -0.2F, -2, -0.3727F), // 可耻
                 HEAVY = register("heavy", 0, -0.1F, 0, 0, 0.15F, 0, 0.0712F), // 重
                 LIGHT = register("light", 0, 0.15F, 0, 0, -0.1F, 0, 0.0712F), // 轻
-                LEGENDARY = register("legendary", 0.15F, 0.1F, 0.05F, 0.1F, 0.15F, 2, 2.0985F); // 传奇
+                LEGENDARY = register("legendary", 0.15F, 0.1F, 0.05F, 0.1F, 0.15F, 2, 2.0985F), // 传奇
+                LEGENDARY2 = new Melee("legendary2", 0.17F, 0.0F, 0.08F, 0.0F, 0.17F, 2, 2.0985F); // todo 泰拉悠悠球独享传奇
 
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
@@ -270,4 +273,91 @@ public interface ModPrefix {
             return magic;
         }
     }
+
+    HashBiMap<Integer, ModPrefix> ID_MAP = Util.make(HashBiMap.create(), map -> {
+        map.put(1, Melee.LARGE);
+        map.put(2, Melee.MASSIVE);
+        map.put(3, Melee.DANGEROUS);
+        map.put(4, Melee.SAVAGE);
+        map.put(5, Melee.SHARP);
+        map.put(6, Melee.POINTY);
+        map.put(7, Melee.TINY);
+        map.put(8, Melee.TERRIBLE);
+        map.put(9, Melee.SMALL);
+        map.put(10, Melee.DULL);
+        map.put(11, Melee.UNHAPPY);
+        map.put(12, Melee.BULKY);
+        map.put(13, Melee.SHAMEFUL);
+        map.put(14, Melee.HEAVY);
+        map.put(15, Melee.LIGHT);
+        map.put(16, Ranged.SIGHTED);
+        map.put(17, Ranged.RAPID);
+        map.put(18, Ranged.HASTY);
+        map.put(19, Ranged.INTIMIDATING);
+        map.put(20, Ranged.DEADLY);
+        map.put(21, Ranged.STAUNCH);
+        map.put(22, Ranged.AWFUL);
+        map.put(23, Ranged.LETHARGIC);
+        map.put(24, Ranged.AWKWARD);
+        map.put(25, Ranged.POWERFUL);
+        map.put(26, Magic.MYTHIC);
+        map.put(27, Magic.ADEPT);
+        map.put(28, Magic.MASTERFUL);
+        map.put(29, Magic.INEPT);
+        map.put(30, Magic.IGNORANT);
+        map.put(31, Magic.DERANGED);
+        map.put(32, Magic.INTENSE);
+        map.put(33, Magic.TABOO);
+        map.put(34, Magic.CELESTIAL);
+        map.put(35, Magic.FURIOUS);
+        map.put(36, Universal.KEEN);
+        map.put(37, Universal.SUPERIOR);
+        map.put(38, Universal.FORCEFUL);
+        map.put(39, Universal.BROKEN);
+        map.put(40, Universal.DAMAGED);
+        map.put(41, Universal.SHODDY);
+        map.put(42, Common.QUICK);
+        map.put(43, Common.DEADLY);
+        map.put(44, Common.AGILE);
+        map.put(45, Common.NIMBLE);
+        map.put(46, Common.MURDEROUS);
+        map.put(47, Common.SLOW);
+        map.put(48, Common.SLUGGISH);
+        map.put(49, Common.LAZY);
+        map.put(50, Common.ANNOYING);
+        map.put(51, Common.NASTY);
+        map.put(52, Magic.MANIC);
+        map.put(53, Universal.HURTFUL);
+        map.put(54, Universal.STRONG);
+        map.put(55, Universal.UNPLEASANT);
+        map.put(56, Universal.WEAK);
+        map.put(57, Universal.RUTHLESS);
+        map.put(58, Ranged.FRENZYING);
+        map.put(59, Universal.GODLY);
+        map.put(60, Universal.DEMONIC);
+        map.put(61, Universal.ZEALOUS);
+        map.put(62, Accessory.HARD);
+        map.put(63, Accessory.GUARDING);
+        map.put(64, Accessory.ARMORED);
+        map.put(65, Accessory.WARDING);
+        map.put(66, Accessory.ARCANE);
+        map.put(67, Accessory.PRECISE);
+        map.put(68, Accessory.LUCKY);
+        map.put(69, Accessory.JAGGED);
+        map.put(70, Accessory.SPIKED);
+        map.put(71, Accessory.ANGRY);
+        map.put(72, Accessory.MENACING);
+        map.put(73, Accessory.BRISK);
+        map.put(74, Accessory.FLEETING);
+        map.put(75, Accessory.HASTY);
+        map.put(76, Accessory.QUICK);
+        map.put(77, Accessory.WILD);
+        map.put(78, Accessory.RASH);
+        map.put(79, Accessory.INTREPID);
+        map.put(80, Accessory.VIOLENT);
+        map.put(81, Melee.LEGENDARY);
+        map.put(82, Ranged.UNREAL);
+        map.put(83, Magic.MYTHICAL);
+        map.put(84, Melee.LEGENDARY2);
+    });
 }

@@ -133,12 +133,12 @@ public final class GameClientEvents {
         List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
         if (tooltipElements.isEmpty()) return;
         Optional<FormattedText> displayName = tooltipElements.getFirst().left();
-        if (displayName.isPresent() && displayName.get() instanceof Component component) {
+        if (displayName.isPresent() && displayName.get() instanceof Component component && !component.getSiblings().isEmpty()) {
             PrefixComponent prefix = PrefixUtils.getPrefix(event.getItemStack());
             if (prefix != null && prefix.type() != PrefixType.UNKNOWN) {
-                ChatFormatting format = prefix.tier() >= 0 ? ChatFormatting.GREEN : ChatFormatting.RED;
+
                 tooltipElements.set(0, Either.left(
-                        Component.translatable("prefix.confluence." + prefix.name()).withStyle(format).append(" ").append(component)
+                        Component.translatable("prefix.confluence." + prefix.name()).setStyle(component.getSiblings().getFirst().getStyle()).append(" ").append(component)
                 ));
             }
         }
@@ -221,23 +221,23 @@ public final class GameClientEvents {
         }
     }
 
-    public static void livingDeath(LivingEntity entity){
-        if(!(entity.level() instanceof ClientLevel level)) return;
+    public static void livingDeath(LivingEntity entity) {
+        if (!(entity.level() instanceof ClientLevel level)) return;
 //        DecimalFormat df = new DecimalFormat("#.####");
         Minecraft.getInstance().tell(entity::discard);
         EntityRenderer<? super LivingEntity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
         Vec3 deathMotion;
-        if(entity instanceof Mob mob && mob.isNoAi()){
+        if (entity instanceof Mob mob && mob.isNoAi()) {
             deathMotion = Vec3.ZERO;
-        }else {
+        } else {
             deathMotion = ((IEntity) (entity)).confluence$deathMotion();
         }
-        if(deathMotion == null){
+        if (deathMotion == null) {
             deathMotion = entity.getDeltaMovement();
         }
         float deathSpeed = (float) deathMotion.length();
         Vec3 entityPos = entity.position();
-        if(entity instanceof GeoAnimatable animatable && renderer instanceof GeoEntityRenderer geoRenderer){
+        if (entity instanceof GeoAnimatable animatable && renderer instanceof GeoEntityRenderer geoRenderer) {
             PoseStack poseStack = new PoseStack();
             BakedGeoModel bakedGeoModel = geoRenderer.getGeoModel().getBakedModel(geoRenderer.getGeoModel().getModelResource(animatable, geoRenderer));
             geoRenderer.preRender(poseStack, entity, bakedGeoModel, null, null, false, 1, 0, 0, 0);
@@ -245,22 +245,22 @@ public final class GameClientEvents {
             poseStack.mulPose(Axis.YP.rotationDegrees(-entity.getYRot() + 180));
             Matrix4f pose = poseStack.last().pose();
             Collection<GeoBone> bones = geoRenderer.getGeoModel().getAnimationProcessor().getRegisteredBones();
-            for(GeoBone bone : bones){
-                if(bone.isHidden() || Boolean.TRUE.equals(bone.shouldNeverRender())) continue;
+            for (GeoBone bone : bones) {
+                if (bone.isHidden() || Boolean.TRUE.equals(bone.shouldNeverRender())) continue;
                 Vector3f boneOffset = new Vector3f(bone.getPosX(), bone.getPosY(), bone.getPosZ());
                 ArrayList<Vector3f> rots = new ArrayList<>();
                 rots.add(new Vector3f(bone.getRotX(), bone.getRotY(), bone.getRotZ()));
                 GeoBone parent = bone.getParent();
-                while(parent != null){
+                while (parent != null) {
                     rots.add(new Vector3f(parent.getRotX(), parent.getRotY(), parent.getRotZ()));
                     boneOffset.add(parent.getPosX(), parent.getPosY(), parent.getPosZ());
                     parent = parent.getParent();
                 }
                 boneOffset.div(16);
-                for(GeoCube cube : bone.getCubes()){
+                for (GeoCube cube : bone.getCubes()) {
 //                    GeoCube copyCube = DeathAnimUtils.duplicateGeoCube(cube);
                     GeoCube copyCube = ((IGeoCube) (Object) cube).confluence$getCopy();
-                    if(copyCube == null) continue;
+                    if (copyCube == null) continue;
 
                     DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, copyCube, deathSpeed);
 
@@ -273,8 +273,8 @@ public final class GameClientEvents {
                     ArrayList<Vector3f> bonePivots = new ArrayList<>();
                     bonePivots.add(new Vector3f(bone.getPivotX(), bone.getPivotY(), bone.getPivotZ()).sub(new Vector3f(xOffset, yOffset, zOffset).mul(16)).div(16));
                     parent = bone.getParent();
-                    while(parent != null){
-                        bonePivots.add(new Vector3f(parent.getPivotX(), parent.getPivotY(), parent.getPivotZ()).sub(new Vector3f(xOffset,yOffset, zOffset).mul(16)).div(16));
+                    while (parent != null) {
+                        bonePivots.add(new Vector3f(parent.getPivotX(), parent.getPivotY(), parent.getPivotZ()).sub(new Vector3f(xOffset, yOffset, zOffset).mul(16)).div(16));
                         parent = parent.getParent();
                     }
 
@@ -288,9 +288,9 @@ public final class GameClientEvents {
                     Minecraft.getInstance().tell(() -> level.addEntity(part));
                 }
             }
-        }else if(renderer instanceof LivingEntityRenderer<?,?> livingRenderer){
+        } else if (renderer instanceof LivingEntityRenderer<?, ?> livingRenderer) {
             ModelPart rootModelPart = ((ILivingEntityRenderer) livingRenderer).confluence$getRootModelPart();
-            if(rootModelPart == null) return;
+            if (rootModelPart == null) return;
             AntiPushPoseStack poseStack = new AntiPushPoseStack();
 //            LivingEntityRendererAccessor rendererAccessor = (LivingEntityRendererAccessor) livingRenderer;
             poseStack.translate(entityPos.x, entityPos.y, entityPos.z);
@@ -302,29 +302,29 @@ public final class GameClientEvents {
 //            poseStack.translate(0.0F, -1.501F, 0.0F);
 //            livingRenderer.render(entity, entity.getYRot(), 1, poseStack, DummyMultiBufferSource.INSTANCE, 0);
             DeathAnimUtils.dummyRender(livingRenderer, entity, poseStack);
-            if(livingRenderer.getModel() instanceof AgeableHierarchicalModel<?> model && model.young){
+            if (livingRenderer.getModel() instanceof AgeableHierarchicalModel<?> model && model.young) {
                 poseStack.scale(model.youngScaleFactor, model.youngScaleFactor, model.youngScaleFactor);
                 poseStack.translate(0.0F, model.bodyYOffset / 16.0F, 0.0F);
             }
             Stack<Vector3f> rots = new Stack<>();
             rots.push(new Vector3f());
-            makePartRecursively(rootModelPart, "root", poseStack,livingRenderer, level, entity, deathSpeed, rots, deathMotion);
+            makePartRecursively(rootModelPart, "root", poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion);
         }
     }
 
-    private static void makePartRecursively(ModelPart modelPart, String name, AntiPushPoseStack poseStack,LivingEntityRenderer<?,?> renderer, ClientLevel level, Entity entity, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion){
-        if(!modelPart.visible || modelPart.skipDraw) return;
-        if(renderer.getModel().young && renderer.getModel() instanceof AgeableListModelAccessor model){
-            for(ModelPart bodyPart : model.callBodyParts()){
-                if(modelPart == bodyPart){
+    private static void makePartRecursively(ModelPart modelPart, String name, AntiPushPoseStack poseStack, LivingEntityRenderer<?, ?> renderer, ClientLevel level, Entity entity, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion) {
+        if (!modelPart.visible || modelPart.skipDraw) return;
+        if (renderer.getModel().young && renderer.getModel() instanceof AgeableListModelAccessor model) {
+            for (ModelPart bodyPart : model.callBodyParts()) {
+                if (modelPart == bodyPart) {
                     float scale = 1.0F / model.getBabyBodyScale();
                     poseStack.scale(scale, scale, scale);
                     poseStack.translate(0.0F, model.getBodyYOffset() / 16.0F, 0.0F);
                     break;
                 }
             }
-            for(ModelPart headPart : model.callHeadParts()){
-                if(modelPart == headPart){
+            for (ModelPart headPart : model.callHeadParts()) {
+                if (modelPart == headPart) {
                     if (model.getScaleHead()) {
                         float scale = 1.5F / model.getBabyHeadScale();
                         poseStack.scale(scale, scale, scale);
@@ -341,7 +341,7 @@ public final class GameClientEvents {
         Transformation transformation = new Transformation(pose);
         Vector3f scale = transformation.getScale();
 //        DecimalFormat df = new DecimalFormat("#.####");
-        for(ModelPart.Cube cube : modelPart.cubes){
+        for (ModelPart.Cube cube : modelPart.cubes) {
             float minX = cube.minX;
             float minY = cube.minY;
             float minZ = cube.minZ;
@@ -355,12 +355,12 @@ public final class GameClientEvents {
 //            float min = Math.min(Math.min(xSize, ySize), zSize) / 16;
 //            float min = Math.max(0.0625f, Math.min(Math.min(xSize, ySize), zSize) / 16);
             float min = xSize;
-            float finalScale=scale.x;
-            if (ySize < min){
+            float finalScale = scale.x;
+            if (ySize < min) {
                 min = ySize;
                 finalScale = scale.y;
             }
-            if (zSize < min){
+            if (zSize < min) {
                 min = zSize;
                 finalScale = scale.z;
             }
@@ -372,9 +372,9 @@ public final class GameClientEvents {
             float scaledMin = min * finalScale;
 
             DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, cube, deathSpeed);
-            float xOffset=((minX + maxX) / 2) / 16;
+            float xOffset = ((minX + maxX) / 2) / 16;
 //            float yOffset = centerY + min / 2;
-            float zOffset=((minZ + maxZ) / 2) / 16;
+            float zOffset = ((minZ + maxZ) / 2) / 16;
 //            Vector4f transformed/*pivot*/ = pose.transform(new Vector4f(0, 0, 0, 1));
 
             Vector4f transformedCentroid = pose.transform(new Vector4f(xOffset, centerY, zOffset, 1));
@@ -391,19 +391,19 @@ public final class GameClientEvents {
             part.setDeltaMovement(deathMotion.offsetRandom(level.random, (float) (deathMotion.length() * 0.4 + 0.1))/*.multiply(1, 1.05f, 1)*/);
             modelRot.add(modelPart.xRot, modelPart.yRot, modelPart.zRot);
             part.modelPartRot = modelRot;
-            part.xOffset=transformedOffset.x;
+            part.xOffset = transformedOffset.x;
             part.yOffset = transformedOffset.y - scaledMin / 2;
-            part.zOffset=transformedOffset.z;
+            part.zOffset = transformedOffset.z;
             part.modelPart = modelPart;
             part.minSide = scaledMin;
             DeathAnimUtils.tellAddEntity(level, part);
         }
 //        System.out.println("--\n");
 
-        for(Map.Entry<String, ModelPart> entry : modelPart.children.entrySet()){
+        for (Map.Entry<String, ModelPart> entry : modelPart.children.entrySet()) {
             String childName = entry.getKey();
             ModelPart child = entry.getValue();
-            if("cloak".equals(childName))continue;
+            if ("cloak".equals(childName)) continue;
             poseStack.pushPose(true);
             Vector3f newRot = new Vector3f(modelRot);
             rots.push(newRot);
@@ -414,31 +414,31 @@ public final class GameClientEvents {
     }
 
     @SubscribeEvent
-    public static void postRenderLiving(RenderLivingEvent.Post<?, ?> event){
-        if(event.getPoseStack() instanceof AntiPushPoseStack || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.OFF) return;
+    public static void postRenderLiving(RenderLivingEvent.Post<?, ?> event) {
+        if (event.getPoseStack() instanceof AntiPushPoseStack || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.OFF) return;
         LivingEntity entity = event.getEntity();
-        if(ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE_VANILLA
-            && !ResourceLocation.DEFAULT_NAMESPACE.equals(BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).getNamespace()))
+        if (ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE_VANILLA
+                && !ResourceLocation.DEFAULT_NAMESPACE.equals(BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).getNamespace()))
             return;
         boolean dead = entity.isDeadOrDying();
-        if(dead != ((ILivingEntity) entity).confluence$deadO()){
+        if (dead != ((ILivingEntity) entity).confluence$deadO()) {
             livingDeath(entity);
         }
         ((ILivingEntity) entity).confluence$deadO(dead);
     }
 
     @SubscribeEvent
-    public static void postRenderGeoLiving(GeoRenderEvent.Entity.Post event){
-        if(ClientConfigs.goreEffect== ClientConfigs.GoreEffect.OFF) return;
+    public static void postRenderGeoLiving(GeoRenderEvent.Entity.Post event) {
+        if (ClientConfigs.goreEffect == ClientConfigs.GoreEffect.OFF) return;
         Entity entity = event.getEntity();
-        if((ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE || ClientConfigs.goreEffect== ClientConfigs.GoreEffect.CONFLUENCE_VANILLA)
-            && !ModUtils.isFromConfluence(BuiltInRegistries.ENTITY_TYPE, entity.getType())){
+        if ((ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE_VANILLA)
+                && !ModUtils.isFromConfluence(BuiltInRegistries.ENTITY_TYPE, entity.getType())) {
             return;
         }
         // 渲染这个实体结束的时候检测是不是刚死，这时候方便获取到这个实体的姿势
-        if(entity instanceof LivingEntity living && entity instanceof ILivingEntity li){
+        if (entity instanceof LivingEntity living && entity instanceof ILivingEntity li) {
             boolean dead = living.isDeadOrDying();
-            if(dead != li.confluence$deadO()){
+            if (dead != li.confluence$deadO()) {
                 livingDeath(living);
             }
             li.confluence$deadO(dead);

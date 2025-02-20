@@ -9,6 +9,8 @@ import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
+import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,6 +46,7 @@ public final class PrefixUtils {
                 unknown(itemStack);
             } else {
                 itemStack.set(ModDataComponentTypes.PREFIX, modPrefix.createComponent(prefixType));
+                updateRarity(itemStack, modPrefix);
             }
         }
     }
@@ -69,6 +72,7 @@ public final class PrefixUtils {
             unknown(itemStack);
         } else {
             itemStack.set(ModDataComponentTypes.PREFIX, modPrefix.createComponent(prefixType));
+            updateRarity(itemStack, modPrefix);
         }
     }
 
@@ -77,7 +81,9 @@ public final class PrefixUtils {
     }
 
     public static void random(RandomSource random, ItemStack itemStack, PrefixType prefixType) {
-        itemStack.set(ModDataComponentTypes.PREFIX, prefixType.randomPrefix(random).createComponent(prefixType));
+        ModPrefix modPrefix = prefixType.randomPrefix(random);
+        itemStack.set(ModDataComponentTypes.PREFIX, modPrefix.createComponent(prefixType));
+        updateRarity(itemStack, modPrefix);
     }
 
     public static void unknown(ItemStack itemStack) {
@@ -90,5 +96,299 @@ public final class PrefixUtils {
             return (int) (amount * (1.0F + prefix.manaCost()));
         }
         return amount;
+    }
+
+    private static void updateRarity(ItemStack itemStack, ModPrefix prefix) {
+        int num1 = ModPrefix.ID_MAP.inverse().get(prefix);
+        float num2 = 1;
+        float num3 = 1;
+        float num4 = 1;
+        float num5 = 1;
+        float num6 = 1;
+        float num7 = 1;
+        float num8 = 0;
+
+        switch (num1) {
+            case 1:
+                num5 = 1.12f;
+                break;
+            case 2:
+                num5 = 1.18f;
+                break;
+            case 3:
+                num2 = 1.05f;
+                num8 = 2;
+                num5 = 1.05f;
+                break;
+            case 4:
+                num2 = 1.1f;
+                num5 = 1.1f;
+                num3 = 1.1f;
+                break;
+            case 5:
+                num2 = 1.15f;
+                break;
+            case 6, 53:
+                num2 = 1.1f;
+                break;
+            case 7:
+                num5 = 0.82f;
+                break;
+            case 8:
+                num3 = 0.85f;
+                num2 = 0.85f;
+                num5 = 0.87f;
+                break;
+            case 9:
+                num5 = 0.9f;
+                break;
+            case 10, 40:
+                num2 = 0.85f;
+                break;
+            case 11:
+                num4 = 1.1f;
+                num3 = 0.9f;
+                num5 = 0.9f;
+                break;
+            case 12:
+                num3 = 1.1f;
+                num2 = 1.05f;
+                num5 = 1.1f;
+                num4 = 1.15f;
+                break;
+            case 13:
+                num3 = 0.8f;
+                num2 = 0.9f;
+                num5 = 1.1f;
+                break;
+            case 14:
+                num3 = 1.15f;
+                num4 = 1.1f;
+                break;
+            case 15:
+                num3 = 0.9f;
+                num4 = 0.85f;
+                break;
+            case 16:
+                num2 = 1.1f;
+                num8 = 3;
+                break;
+            case 17:
+                num4 = 0.85f;
+                num6 = 1.1f;
+                break;
+            case 18:
+                num4 = 0.9f;
+                num6 = 1.15f;
+                break;
+            case 19:
+                num3 = 1.15f;
+                num6 = 1.05f;
+                break;
+            case 20:
+                num3 = 1.05f;
+                num6 = 1.05f;
+                num2 = 1.1f;
+                num4 = 0.95f;
+                num8 = 2;
+                break;
+            case 21:
+                num3 = 1.15f;
+                num2 = 1.1f;
+                break;
+            case 22:
+                num3 = 0.9f;
+                num6 = 0.9f;
+                num2 = 0.85f;
+                break;
+            case 23:
+                num4 = 1.15f;
+                num6 = 0.9f;
+                break;
+            case 24:
+                num4 = 1.1f;
+                num3 = 0.8f;
+                break;
+            case 25:
+                num4 = 1.1f;
+                num2 = 1.15f;
+                num8 = 1;
+                break;
+            case 26:
+                num7 = 0.85f;
+                num2 = 1.1f;
+                break;
+            case 27:
+                num7 = 0.85f;
+                break;
+            case 28:
+                num7 = 0.85f;
+                num2 = 1.15f;
+                num3 = 1.05f;
+                break;
+            case 29:
+                num7 = 1.1f;
+                break;
+            case 30:
+                num7 = 1.2f;
+                num2 = 0.9f;
+                break;
+            case 31:
+                num3 = 0.9f;
+                num2 = 0.9f;
+                break;
+            case 32:
+                num7 = 1.15f;
+                num2 = 1.1f;
+                break;
+            case 33:
+                num7 = 1.1f;
+                num3 = 1.1f;
+                num4 = 0.9f;
+                break;
+            case 34:
+                num7 = 0.9f;
+                num3 = 1.1f;
+                num4 = 1.1f;
+                num2 = 1.1f;
+                break;
+            case 35:
+                num7 = 1.2f;
+                num2 = 1.15f;
+                num3 = 1.15f;
+                break;
+            case 36:
+                num8 = 3;
+                break;
+            case 37:
+                num2 = 1.1f;
+                num8 = 3;
+                num3 = 1.1f;
+                break;
+            case 38, 54:
+                num3 = 1.15f;
+                break;
+            case 39:
+                num2 = 0.7f;
+                num3 = 0.8f;
+                break;
+            case 41:
+                num3 = 0.85f;
+                num2 = 0.9f;
+                break;
+            case 42:
+                num4 = 0.9f;
+                break;
+            case 43:
+                num2 = 1.1f;
+                num4 = 0.9f;
+                break;
+            case 44:
+                num4 = 0.9f;
+                num8 = 3;
+                break;
+            case 45:
+                num4 = 0.95f;
+                break;
+            case 46:
+                num8 = 3;
+                num4 = 0.94f;
+                num2 = 1.07f;
+                break;
+            case 47:
+                num4 = 1.15f;
+                break;
+            case 48:
+                num4 = 1.2f;
+                break;
+            case 49:
+                num4 = 1.08f;
+                break;
+            case 50:
+                num2 = 0.8f;
+                num4 = 1.15f;
+                break;
+            case 51:
+                num3 = 0.9f;
+                num4 = 0.9f;
+                num2 = 1.05f;
+                num8 = 2;
+                break;
+            case 52:
+                num7 = 0.9f;
+                num2 = 0.9f;
+                num4 = 0.9f;
+                break;
+            case 55:
+                num3 = 1.15f;
+                num2 = 1.05f;
+                break;
+            case 56:
+                num3 = 0.8f;
+                break;
+            case 57:
+                num3 = 0.9f;
+                num2 = 1.18f;
+                break;
+            case 58:
+                num4 = 0.85f;
+                num2 = 0.85f;
+                break;
+            case 59:
+                num3 = 1.15f;
+                num2 = 1.15f;
+                num8 = 5;
+                break;
+            case 60:
+                num2 = 1.15f;
+                num8 = 5;
+                break;
+            case 61:
+                num8 = 5;
+                break;
+            case 81:
+                num3 = 1.15f;
+                num2 = 1.15f;
+                num8 = 5;
+                num4 = 0.9f;
+                num5 = 1.1f;
+                break;
+            case 82:
+                num3 = 1.15f;
+                num2 = 1.15f;
+                num8 = 5;
+                num4 = 0.9f;
+                num6 = 1.1f;
+                break;
+            case 83:
+                num3 = 1.15f;
+                num2 = 1.15f;
+                num8 = 5;
+                num4 = 0.9f;
+                num7 = 0.9f;
+                break;
+            case 84:
+                num3 = 1.17f;
+                num2 = 1.17f;
+                num8 = 8;
+                break;
+        }
+
+        float num14 = (float) (1.0 * (double) num2 * (2.0 - (double) num4) * (2.0 - (double) num7) * (double) num5 * (double) num3 * (double) num6 * (1.0 + (double) num8 * 0.0199999995529652));
+        if (num1 == 62 || num1 == 69 || num1 == 73 || num1 == 77) num14 *= 1.05f;
+        if (num1 == 63 || num1 == 70 || num1 == 74 || num1 == 78 || num1 == 67) num14 *= 1.1f;
+        if (num1 == 64 || num1 == 71 || num1 == 75 || num1 == 79 || num1 == 66) num14 *= 1.15f;
+        if (num1 == 65 || num1 == 72 || num1 == 76 || num1 == 80 || num1 == 68) num14 *= 1.2f;
+
+        int rarity = ModRarity.ID_MAP.inverse().getOrDefault(itemStack.get(TCDataComponentTypes.MOD_RARITY), 0);
+        if ((double) num14 >= 1.2) rarity += 2;
+        else if ((double) num14 >= 1.05) ++rarity;
+        else if ((double) num14 <= 0.8) rarity -= 2;
+        else if ((double) num14 <= 0.95) --rarity;
+        if (rarity > -11) {
+            if (rarity < -1) rarity = -1;
+            if (rarity > 11) rarity = 11;
+        }
+        itemStack.set(TCDataComponentTypes.MOD_RARITY, ModRarity.ID_MAP.getOrDefault(rarity, ModRarity.WHITE));
     }
 }

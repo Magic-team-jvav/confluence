@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.gun;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -15,14 +14,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.confluence.terra_guns.TerraGuns;
 import org.confluence.terra_guns.api.IAmmo;
 import org.confluence.terra_guns.api.IGun;
 import org.confluence.terra_guns.common.entity.SimpleTrailProjectile;
@@ -33,7 +30,6 @@ import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -141,13 +137,6 @@ public abstract class ManaGunItem<T extends Projectile> extends GeoGunItem<T> im
     @Override
     public float getFinalDamage(float damage, Player shooter, T projectile, ItemStack gunStack, ItemStack ammoStack) {
         return damage;
-    }
-
-    @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        if (!TerraGuns.IS_CONFLUENCE_LOADED) {
-            tooltipComponents.add(Component.translatable("tooltip.terra_guns.mana_unsupported").withStyle(ChatFormatting.GRAY));
-        }
     }
 
     @Override

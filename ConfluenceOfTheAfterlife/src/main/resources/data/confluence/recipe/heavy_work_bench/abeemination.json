@@ -1,0 +1,32 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        "#a",
+        "cb"
+    ],
+    "key": {
+        "#": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "minecraft:honey_block"
+            },
+            "count": 5
+        },
+        "a": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "minecraft:bee_nest"
+            },
+            "count": 5
+        },
+        "b": {
+             "item": "minecraft:honey_bottle"
+        },
+        "c": {
+            "item": "confluence:stinger"
+        }
+    },
+    "result": {
+        "id": "confluence:abeemination"
+    }
+}

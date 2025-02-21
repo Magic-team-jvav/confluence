@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.PotionItems;
 
@@ -48,17 +49,20 @@ public abstract class AbstractPotionItem extends Item {
         if (living instanceof Player player && !player.getAbilities().instabuild) {
             itemStack.shrink(1); // 创造模式不消耗
         }
-        if (itemStack.isEmpty()) {
-            return PotionItems.BOTTLE.toStack();
-        } else {
-            if (living instanceof Player player && !player.getAbilities().instabuild) {
-                ItemStack itemstack = PotionItems.BOTTLE.toStack();
-                if (!player.getInventory().add(itemstack)) {
-                    player.drop(itemstack, false);
+        if (CommonConfigs.RETURN_POTION_GLASS_BOTTLE.get()) {
+            if (itemStack.isEmpty()) {
+                return PotionItems.BOTTLE.toStack();
+            } else {
+                if (living instanceof Player player && !player.getAbilities().instabuild) {
+                    ItemStack itemstack = PotionItems.BOTTLE.toStack();
+                    if (!player.getInventory().add(itemstack)) {
+                        player.drop(itemstack, false);
+                    }
                 }
+                return itemStack;
             }
-            return itemStack;
         }
+        return itemStack.isEmpty() ? ItemStack.EMPTY : itemStack;
     }
 
     protected boolean canUse(Level level, Player player, InteractionHand hand) {
@@ -75,7 +79,7 @@ public abstract class AbstractPotionItem extends Item {
         BlockState state = level.getBlockState(pos);
         if (!level.isClientSide && player != null && stack.is(PotionItems.BOTTLED_WATER.get())) {
             level.playSound(null, pos, SoundEvents.GENERIC_SPLASH, SoundSource.BLOCKS, 1.0F, 1.0F);
-            player.setItemInHand(context.getHand(), ItemUtils.createFilledResult(stack, player, new ItemStack(PotionItems.BOTTLE.get())));
+            player.setItemInHand(context.getHand(), ItemUtils.createFilledResult(stack, player, PotionItems.BOTTLE.toStack()));
             player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
             Block block = state.getBlock();
             Block newBlock = null;

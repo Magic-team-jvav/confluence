@@ -12,6 +12,7 @@ public final class CommonConfigs {
     public static BooleanValue FLETCHING_MENU;
     public static BooleanValue SHIMMER_DECOMPOSE;
     private static IntValue FALLING_STAR_FREQUENCY;
+    public static BooleanValue RETURN_POTION_GLASS_BOTTLE;
 
     public static BooleanValue SHOW_MONEY_DROPS;
     public static IntValue DEFAULT_RESPAWN_TIME_MIN;
@@ -34,6 +35,7 @@ public final class CommonConfigs {
         FLETCHING_MENU = BUILDER.comment("Allows you to open menu through right click the Fletching Table").define("fletchingMenu", true);
         SHIMMER_DECOMPOSE = BUILDER.comment("Allows Shimmer fluid to decomposing items").define("shimmer_decompose", true);
         FALLING_STAR_FREQUENCY = BUILDER.comment("Determines how long the falling star spawning next time").defineInRange("fallingStarFrequency", 600, 20, 20000);
+        RETURN_POTION_GLASS_BOTTLE = BUILDER.define("returnPotionGlassBottle", true);
         BUILDER.pop();
 
         BUILDER.push("PlayerDeath");

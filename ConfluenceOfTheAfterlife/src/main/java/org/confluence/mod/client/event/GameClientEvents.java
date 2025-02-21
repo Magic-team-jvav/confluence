@@ -136,7 +136,6 @@ public final class GameClientEvents {
         if (displayName.isPresent() && displayName.get() instanceof Component component && !component.getSiblings().isEmpty()) {
             PrefixComponent prefix = PrefixUtils.getPrefix(event.getItemStack());
             if (prefix != null && prefix.type() != PrefixType.UNKNOWN) {
-
                 tooltipElements.set(0, Either.left(
                         Component.translatable("prefix.confluence." + prefix.name()).setStyle(component.getSiblings().getFirst().getStyle()).append(" ").append(component)
                 ));

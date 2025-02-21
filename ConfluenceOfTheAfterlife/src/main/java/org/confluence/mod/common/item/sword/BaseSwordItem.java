@@ -3,7 +3,6 @@ package org.confluence.mod.common.item.sword;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -173,7 +172,7 @@ public class BaseSwordItem extends SwordItem {
     }
 
     @Override
-    public @NotNull MutableComponent getName(@NotNull ItemStack pStack) {
-        return Component.translatable(getDescriptionId()).withStyle(style -> style.withColor(pStack.get(TCDataComponentTypes.MOD_RARITY).getColor()));
+    public @NotNull Component getName(@NotNull ItemStack pStack) {
+        return Component.translatable(getDescriptionId(pStack)).withColor(pStack.getOrDefault(TCDataComponentTypes.MOD_RARITY, ModRarity.WHITE).getColor());
     }
 }

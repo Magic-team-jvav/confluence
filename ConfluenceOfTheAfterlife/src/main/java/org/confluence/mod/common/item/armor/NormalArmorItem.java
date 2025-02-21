@@ -3,7 +3,7 @@ package org.confluence.mod.common.item.armor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,6 +12,9 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.renderer.item.NormalArmorItemRenderer;
+import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.terra_curio.common.init.TCDataComponentTypes;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
@@ -33,6 +36,11 @@ public class NormalArmorItem extends ArmorItem implements GeoItem {
     @Override
     public boolean isEnchantable(ItemStack stack) {
         return stack.getMaxStackSize() == 1;
+    }
+
+    @Override
+    public @NotNull Component getName(@NotNull ItemStack pStack) {
+        return Component.translatable(getDescriptionId(pStack)).withColor(pStack.getOrDefault(TCDataComponentTypes.MOD_RARITY, ModRarity.WHITE).getColor());
     }
 
     @Override

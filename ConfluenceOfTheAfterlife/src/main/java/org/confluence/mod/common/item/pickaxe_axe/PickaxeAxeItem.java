@@ -2,6 +2,7 @@ package org.confluence.mod.common.item.pickaxe_axe;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -18,6 +19,7 @@ import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -61,5 +63,10 @@ public class PickaxeAxeItem extends DiggerItem {
     @Override
     public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
         return ItemAbilities.DEFAULT_PICKAXE_ACTIONS.contains(itemAbility) || ItemAbilities.DEFAULT_AXE_ACTIONS.contains(itemAbility);
+    }
+
+    @Override
+    public @NotNull Component getName(@NotNull ItemStack pStack) {
+        return Component.translatable(getDescriptionId(pStack)).withColor(pStack.getOrDefault(TCDataComponentTypes.MOD_RARITY, ModRarity.WHITE).getColor());
     }
 }

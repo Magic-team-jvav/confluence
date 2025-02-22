@@ -3,6 +3,7 @@ package org.confluence.mod.common.init.block;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -15,10 +16,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
-import org.confluence.mod.common.block.common.BaseRopeBlock;
-import org.confluence.mod.common.block.common.HoneyCauldronBlock;
-import org.confluence.mod.common.block.common.PooBlock;
+import org.confluence.mod.common.block.common.*;
 import org.confluence.mod.common.block.natural.*;
 import org.confluence.mod.common.block.natural.herbs.*;
 import org.confluence.mod.common.fluid.EmptyPickupLiquidBlock;
@@ -69,6 +67,9 @@ public final class ModBlocks {
     public static final Supplier<BaseRopeBlock> VINE_ROPE = registerWithItem("vine_rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().noCollission().instabreak()), BaseRopeBlock.Item::new);
     public static final Supplier<BaseRopeBlock> SILK_ROPE = registerWithItem("silk_rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().noCollission().instabreak()), BaseRopeBlock.Item::new);
     public static final Supplier<BaseRopeBlock> WEB_ROPE = registerWithItem("web_rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().noCollission().instabreak()), BaseRopeBlock.Item::new);
+
+    public static final Supplier<Block> FAILED_SKULL_BLOCK = registerWithoutItem("failed_skull_block", () -> new ModSkullBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CREEPER).strength(1.0F).pushReaction(PushReaction.DESTROY)));
+    public static final Supplier<Block> FAILED_SKULL_WALL_BLOCK = registerWithoutItem("failed_skull_wall_block", () -> new ModSkullBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CREEPER).strength(1.0F).pushReaction(PushReaction.DESTROY)));
 
     // 楼梯
 

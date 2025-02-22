@@ -1771,6 +1771,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.PARADOX_INTERACTIVE_MEDAL.get(), "帕拉多克斯·英特拉克缇福勋章");
         add(ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get(), "「无聊之咒·陨志」");
         add(ModItems.TOKYO_TEDDY_BEAR.get(), "东京泰迪熊");
+        add(ModItems.FAILED_SKULL.get(), "失败品的头颅");
+        add(ModItems.KIND_MITA_RING.get(), "善良米塔的戒指");
         add(ModItems.ICE_TOFU_BRICK.get(), "冰豆腐砖");
         add(ModItems.CATTAILS.get(), "香蒲");
         add(ModItems.JUNGLE_CATTAILS.get(), "丛林香蒲");

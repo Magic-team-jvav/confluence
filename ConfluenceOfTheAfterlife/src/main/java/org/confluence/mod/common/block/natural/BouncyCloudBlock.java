@@ -43,14 +43,14 @@ public class BouncyCloudBlock extends Block {
 
     @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        AABB detectionArea = new AABB(pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 1, pos.getY() + 201, pos.getZ() + 1);
+        AABB detectionArea = new AABB(pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 1, pos.getY() + 513, pos.getZ() + 1);
         boolean hasPlayer = level.getEntitiesOfClass(LivingEntity.class, detectionArea)
                 .stream()
                 .anyMatch(LivingEntity::isAlive);
-
         if (!hasPlayer) {
             level.setBlockAndUpdate(pos, state.setValue(HIGH, 0));
         }
+        level.scheduleTick(pos, this, 20);
     }
 
     @Override

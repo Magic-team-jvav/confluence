@@ -1,0 +1,15 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        "#"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:iron_ingot"
+        }
+    },
+    "result": {
+        "id": "terra_guns:musket_bullet",
+        "count": 60
+    }
+}

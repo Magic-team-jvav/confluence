@@ -678,10 +678,10 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("event.confluence.blood_moon", "血月正在升起...");
         add("event.confluence.meteorite", "陨石已落地！");
-        add("event.confluence.evil_broken.0", "不寒而栗，毛骨悚然……");
-        add("event.confluence.evil_broken.1", "四面回荡着尖叫声……");
-        add("event.confluence.evil_broken.2", "世界吞噬怪已苏醒！");
-        add("event.confluence.evil_broken.3", "克苏鲁之脑已苏醒！");
+        add("event.confluence.shadow_orb_broken.0", "不寒而栗，毛骨悚然……");
+        add("event.confluence.shadow_orb_broken.1", "四面回荡着尖叫声……");
+        add("event.confluence.crimson_heart_broken.0", "不寒而栗，毛骨悚然……！");
+        add("event.confluence.crimson_heart_broken.1", "四面回荡着尖叫声……");
 
         add("attribute.name.player.minion_capacity", "仆从容量");
         add("attribute.name.player.sentry_capacity", "哨兵容量");

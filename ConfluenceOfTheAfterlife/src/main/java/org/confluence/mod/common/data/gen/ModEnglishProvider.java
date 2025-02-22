@@ -568,10 +568,10 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add("event.confluence.blood_moon", "The Blood Moon is rising...");
         add("event.confluence.meteorite", "A meteorite has landed!");
-        add("event.confluence.evil_broken.0", "A horrible chill goes down your spine...");
-        add("event.confluence.evil_broken.1", "Screams echo around you...");
-        add("event.confluence.evil_broken.2", "Eater of Worlds has awoken!");
-        add("event.confluence.evil_broken.3", "Brain of Cthulhu has awoken!");
+        add("event.confluence.shadow_orb_broken.0", "A horrible chill goes down your spine...");
+        add("event.confluence.shadow_orb_broken.1", "Screams echo around you...");
+        add("event.confluence.crimson_heart_broken.0", "A horrible chill goes down your spine...");
+        add("event.confluence.crimson_heart_broken.1", "Screams echo around you...");
 
         add("attribute.name.player.minion_capacity", "Minion Capacity");
         add("attribute.name.player.sentry_capacity", "Sentry Capacity");

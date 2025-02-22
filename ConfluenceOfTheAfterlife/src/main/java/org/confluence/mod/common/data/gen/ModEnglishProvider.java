@@ -437,6 +437,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.shimmer_decompose.tooltip", "When enabled, shimmer liquid can decompose items into materials.");
         add("confluence.configuration.fallingStarFrequency", "Falling Star Frequency");
         add("confluence.configuration.fallingStarFrequency.tooltip", "Defines the frequency of falling stars during the night.");
+        add("confluence.configuration.returnPotionGlassBottle", "Return Potion Glass Bottle");
+        add("confluence.configuration.returnPotionGlassBottle.tooltip", "Decides whether the bottle is returned after using the potion");
         add("confluence.configuration.defaultRespawnTimeMin", "Default Minimum Respawn Time");
         add("confluence.configuration.defaultRespawnTimeMax", "Default Maximum Respawn Time");
         add("confluence.configuration.bossRespawnTimeMin", "Minimum Respawn Time (during boss fights)");

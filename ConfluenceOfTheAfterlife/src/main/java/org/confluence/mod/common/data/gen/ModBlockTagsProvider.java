@@ -225,7 +225,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 FunctionalBlocks.TIMERS_BLOCK_1_2.get(),
                 FunctionalBlocks.TIMERS_BLOCK_1_4.get(),
                 FunctionalBlocks.EVER_POWERED_RAIL.get(),
-                FunctionalBlocks.SILLY_BALLOON_MACHINE.get()
+                FunctionalBlocks.SILLY_BALLOON_MACHINE.get(),
+                FunctionalBlocks.BASE_CHEST_BLOCK.get()
         );
         // 铲子
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithShovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);
@@ -241,6 +242,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.TR_CRIMSON_SAND_LAYER_BLOCK.get(),
                 NatureBlocks.ASH_BLOCK.get()
         );
+        // 锄头
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithHoe = tag(BlockTags.MINEABLE_WITH_HOE);
+        mineableWithShovel.add(
+                DecorativeBlocks.FLOATING_WHEAT_BALE.get(),
+                FunctionalBlocks.SCULK_TRAP.get()
+        );
         // 斧头
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithAxe = tag(BlockTags.MINEABLE_WITH_AXE);
         mineableWithAxe.add(
@@ -254,7 +261,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DecorativeBlocks.CHISELED_YELLOW_WILLOW_PLANKS.get(),
                 DecorativeBlocks.CHISELED_LIVING_PLANKS.get(),
                 DecorativeBlocks.CHISELED_ASH_PLANKS.get(),
-                DecorativeBlocks.WOOD_STONE_SLATTED_BLOCKS.get()
+                DecorativeBlocks.WOOD_STONE_SLATTED_BLOCKS.get(),
+                FunctionalBlocks.BASE_CHEST_BLOCK.get()
         );
         tag(ModTags.Blocks.NEEDS_1_LEVEL).add(
                 OreBlocks.RAW_TIN_BLOCK.get(),

@@ -330,6 +330,7 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(CRYSTAL_BLOCKS.get());
             dropSelf(RAINBOW_BRICKS.get());
             dropSelf(FLOATING_WHEAT_BALE.get());
+            dropSelf(BOUNCY_CLOUD_BLOCK.get());
 
             dropSelf(HARDENED_SAND_BLOCK.get());
             dropSelf(MOIST_SAND_BLOCK.get());

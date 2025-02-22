@@ -1,0 +1,14 @@
+{
+    "type": "confluence:sky_mill",
+    "ingredients": [
+        {
+            "item": "confluence:pink_gel"
+        },
+        {
+            "item": "confluence:cloud_block"
+        }
+    ],
+    "result": {
+        "id": "confluence:bouncy_cloud_block"
+    }
+}

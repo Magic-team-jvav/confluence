@@ -237,6 +237,7 @@ public class NatureBlocks {
     public static final Supplier<BaseMossBlock> ARGON_MOSS = registerWithItem("argon_moss", () -> new BaseMossBlock(5));
     public static final Supplier<BaseMossBlock> NEON_MOSS = registerWithItem("neon_moss", () -> new BaseMossBlock(5));
     public static final Supplier<BaseMossBlock> HELIUM_MOSS = registerWithItem("helium_moss", () -> new BaseMossBlock(5));
+    public static final Supplier<BaseMossBlock> GROWING_MUSHROOM_MOSS = registerWithItem("growing_mushroom_moss", () -> new BaseMossBlock(5));
 
 
     private static <B extends Block> DeferredBlock<B> registerWithoutItem(String id, Supplier<B> block) {

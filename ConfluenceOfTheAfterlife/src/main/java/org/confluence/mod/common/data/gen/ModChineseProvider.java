@@ -670,8 +670,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("block.confluence.base_chest_block.unlocked_water", "§r水中箱");
         add("block.confluence.base_chest_block.death_water", "§r死人水中箱");
         add("block.confluence.base_chest_block.unlocked_skyware", "§r天域箱");
+        add("block.confluence.base_chest_block.death_skyware", "§r死人天域箱");
         add("block.confluence.base_chest_block.unlocked_normal", "§r木箱");
         add("block.confluence.base_chest_block.death_normal", "§r死人木箱");
+        add("block.confluence.base_chest_block.unlocked_sandstone", "§r砂岩箱");
+        add("block.confluence.base_chest_block.death_sandstone", "§r死人砂岩箱");
+
 
         add("resourcepack.terraria_art", "泰拉艺术");
         add("resourcepack.terraria_armor", "泰拉盔甲样式材质");
@@ -1174,6 +1178,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.ARGON_MOSS.get(), "氩苔藓");
         add(NatureBlocks.NEON_MOSS.get(), "氖苔藓");
         add(NatureBlocks.HELIUM_MOSS.get(), "氦苔藓");
+        add(NatureBlocks.GROWING_MUSHROOM_MOSS.get(), "发光蘑菇苔藓");
 
         add(NatureBlocks.CATTAILS_BODY.get(), "香蒲");
         add(NatureBlocks.JUNGLE_CATTAILS_BODY.get(), "丛林香蒲");

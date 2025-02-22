@@ -581,7 +581,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.XENON_MOSS.get().asItem(),
                 NatureBlocks.ARGON_MOSS.get().asItem(),
                 NatureBlocks.NEON_MOSS.get().asItem(),
-                NatureBlocks.HELIUM_MOSS.get().asItem()
+                NatureBlocks.HELIUM_MOSS.get().asItem(),
+                NatureBlocks.GROWING_MUSHROOM_MOSS.get().asItem()
         );
         // 农作物掉落提升 再生法杖/再生之斧
         tag(ModTags.Items.CROP_FORTUNE).add(AxeItems.STAFF_OF_REGROWTH.get(), AxeItems.DRILL_OF_REGROWTH.get());

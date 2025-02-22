@@ -39,7 +39,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import static org.confluence.mod.common.item.common.CoinItem.MAX_STACK_SIZE;
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 
 public final class ModUtils {
@@ -47,6 +46,7 @@ public final class ModUtils {
     public static final Direction[] DIRECTIONS = Direction.values();
     public static final String NO_DROPS_TAG = "confluence:no_drops";
     public static final Set<String> CONFLUENCE_NAMESPACES = Set.of(Confluence.MODID, TerraCurio.MODID, TerraEntity.MODID, TerraGuns.MODID);
+    public static final int MAX_STACK_SIZE = 9999;
 
     public static void createItemEntity(ItemStack itemStack, double x, double y, double z, Level level, int pickUpDelay) {
         if (itemStack.isEmpty()) return;

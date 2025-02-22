@@ -7,20 +7,14 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.SimpleBakedModel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.TooltipFlag;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
@@ -34,7 +28,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 @OnlyIn(Dist.CLIENT)
@@ -45,49 +38,6 @@ public final class ClientUtils {
     public static final Quaternionf ANGLE_45 = Axis.YP.rotation(Mth.PI * 0.25F);
     public static final Quaternionf ANGLE_180 = Axis.ZP.rotation(Mth.PI);
     public static final Quaternionf ANGLE_N90 = Axis.YP.rotation(-Mth.HALF_PI);
-
-    public static void drawImage(ResourceLocation loc, GuiGraphics g, int x, int y, int wid, int hig, int imWid, int imHig) {
-        g.blit(loc, x, y, 0, 0, wid, hig, imWid, imHig);
-    }
-
-    public static void drawImage(ResourceLocation loc, GuiGraphics g, int x, int y, int imWid, int imHig) {
-        drawImage(loc, g, x, y, imWid, imHig, imWid, imHig);
-    }
-
-    public static Button buildIconButton(GuiGraphics g, ResourceLocation loc, int x, int y, int wid, int hig, int icWid, int icHig, Button.OnPress onPress) {
-        drawImage(loc, g, x + ((wid - icWid) / 2), y + ((hig - icHig) / 2), icWid, icHig);
-        return Button.builder(Component.empty(), onPress).bounds(x, y, wid, hig).build();
-    }
-
-    public static Button buildIconButton(GuiGraphics g, ResourceLocation loc, int x, int y, int wid, int hig, int icWid, int icHig, Button.OnPress onPress, Component hoverText) {
-        drawImage(loc, g, x + ((wid - icWid) / 2), y + ((hig - icHig) / 2), icWid, icHig);
-        return Button.builder(Component.empty(), onPress).bounds(x, y, wid, hig).tooltip(Tooltip.create(hoverText)).build();
-    }
-
-    public static Button buildItemButton(GuiGraphics g, Item it, int x, int y, int wid, int hig, int icWid, int icHig, Button.OnPress onPress, Component hoverText, Minecraft mc) {
-        BakedModel model = mc.getItemRenderer().getModel(it.getDefaultInstance(), null, null, 0);
-        if (model instanceof SimpleBakedModel simple) {
-            g.blit(x + ((wid - icWid) / 2), y + ((hig - icHig) / 2), 0, icWid, icHig, simple.getParticleIcon());
-        }
-        return Button.builder(Component.empty(), onPress).bounds(x, y, wid, hig).tooltip(Tooltip.create(hoverText)).build();
-    }
-
-
-    public static void drawItemWithoutTooltip(GuiGraphics guiGraphics, Item item, Minecraft mc, float x, float y, int w, int h, float scale) {
-        drawItem(guiGraphics, item, mc, x, y, w, h, scale, false, 0, 0);
-    }
-
-    public static void drawItem(GuiGraphics guiGraphics, Item item, Minecraft mc, float x, float y, int w, int h, float scale, boolean renderTooltip, int mouseX, int mouseY) {
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(x, y, 1);
-        guiGraphics.pose().scale(scale, scale, 0);
-        guiGraphics.renderItem(item.getDefaultInstance(), 0, 0);
-
-        guiGraphics.pose().popPose();
-        if (renderTooltip && mouseX >= x && mouseX <= x + w && mouseY >= y && mouseY <= y + h) {
-            guiGraphics.renderTooltip(mc.font, item.getDefaultInstance().getTooltipLines(Item.TooltipContext.EMPTY, mc.player, TooltipFlag.ADVANCED), Optional.empty(), mouseX, mouseY);
-        }
-    }
 
     public static void setupOverlayRenderState(boolean blend, boolean depthTest) {
         if (blend) {
@@ -142,13 +92,6 @@ public final class ClientUtils {
 
     public static void writeRawImageToFile(NativeImage nativeImage, Path path) {
         writeImageToFile(nativeImage, path, (a, r, g, b) -> a << 24 | r << 16 | g << 8 | b);
-    }
-
-    public static void writeGrayImageToFile(NativeImage nativeImage, Path path) {
-        writeImageToFile(nativeImage, path, (a, r, g, b) -> {
-            int avg = (r + g + b) / 3;
-            return a << 24 | avg << 16 | avg << 8 | avg;
-        });
     }
 
     public static NativeImage copyWithGray(NativeImage original) {

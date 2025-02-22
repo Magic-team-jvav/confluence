@@ -43,9 +43,9 @@ import java.util.function.ToIntFunction;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.COINS_START;
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_COINS;
-import static org.confluence.mod.common.item.common.CoinItem.MAX_STACK_SIZE;
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 import static org.confluence.mod.util.DateUtils.isWithinDayTime;
+import static org.confluence.mod.util.ModUtils.MAX_STACK_SIZE;
 
 public final class PlayerUtils {
     public static final ToIntFunction<Item> COIN_2_INDEX = coin -> {

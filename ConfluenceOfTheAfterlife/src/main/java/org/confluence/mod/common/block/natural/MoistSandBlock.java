@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
 import java.util.ArrayList;
@@ -50,12 +49,12 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
         super(properties.randomTicks().instrument(NoteBlockInstrument.SNARE).strength(0.5F).sound(SoundType.SAND));
         this.TargetBlock = TargetSand;
         registerDefaultState(stateDefinition.any()
-            .setValue(NORTH, true)
-            .setValue(EAST, true)
-            .setValue(SOUTH, true)
-            .setValue(WEST, true)
-            .setValue(UP, true)
-            .setValue(DOWN, true));
+                .setValue(NORTH, true)
+                .setValue(EAST, true)
+                .setValue(SOUTH, true)
+                .setValue(WEST, true)
+                .setValue(UP, true)
+                .setValue(DOWN, true));
     }
 
     @Override
@@ -68,12 +67,12 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
         BlockGetter blockgetter = context.getLevel();
         BlockPos blockpos = context.getClickedPos();
         return this.defaultBlockState()
-            .setValue(DOWN, !blockgetter.getBlockState(blockpos.below()).is(TargetBlock))
-            .setValue(UP, !blockgetter.getBlockState(blockpos.above()).is(TargetBlock))
-            .setValue(NORTH, !blockgetter.getBlockState(blockpos.north()).is(TargetBlock))
-            .setValue(EAST, !blockgetter.getBlockState(blockpos.east()).is(TargetBlock))
-            .setValue(SOUTH, !blockgetter.getBlockState(blockpos.south()).is(TargetBlock))
-            .setValue(WEST, !blockgetter.getBlockState(blockpos.west()).is(TargetBlock));
+                .setValue(DOWN, !blockgetter.getBlockState(blockpos.below()).is(TargetBlock))
+                .setValue(UP, !blockgetter.getBlockState(blockpos.above()).is(TargetBlock))
+                .setValue(NORTH, !blockgetter.getBlockState(blockpos.north()).is(TargetBlock))
+                .setValue(EAST, !blockgetter.getBlockState(blockpos.east()).is(TargetBlock))
+                .setValue(SOUTH, !blockgetter.getBlockState(blockpos.south()).is(TargetBlock))
+                .setValue(WEST, !blockgetter.getBlockState(blockpos.west()).is(TargetBlock));
     }
 
     @Override
@@ -87,21 +86,21 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
     @Override
     protected BlockState rotate(BlockState state, Rotation rot) {
         return state.setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.NORTH)), state.getValue(NORTH))
-            .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.SOUTH)), state.getValue(SOUTH))
-            .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.EAST)), state.getValue(EAST))
-            .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.WEST)), state.getValue(WEST))
-            .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.UP)), state.getValue(UP))
-            .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.DOWN)), state.getValue(DOWN));
+                .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.SOUTH)), state.getValue(SOUTH))
+                .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.EAST)), state.getValue(EAST))
+                .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.WEST)), state.getValue(WEST))
+                .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.UP)), state.getValue(UP))
+                .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.DOWN)), state.getValue(DOWN));
     }
 
     @Override
     protected BlockState mirror(BlockState state, Mirror mirror) {
         return state.setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.NORTH)), state.getValue(NORTH))
-            .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.SOUTH)), state.getValue(SOUTH))
-            .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.EAST)), state.getValue(EAST))
-            .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.WEST)), state.getValue(WEST))
-            .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.UP)), state.getValue(UP))
-            .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.DOWN)), state.getValue(DOWN));
+                .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.SOUTH)), state.getValue(SOUTH))
+                .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.EAST)), state.getValue(EAST))
+                .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.WEST)), state.getValue(WEST))
+                .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.UP)), state.getValue(UP))
+                .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.DOWN)), state.getValue(DOWN));
     }
 
     @Override
@@ -165,16 +164,15 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
         }
         return Blocks.AIR.defaultBlockState();
     }
+
     @Override
     protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
-        if (level.dimensionType().ultraWarm()) {
+        if (level.dimension() == Level.NETHER) {
             if (state.is(NatureBlocks.RED_MOIST_SAND_BLOCK.get())) {
                 level.setBlock(pos, Blocks.RED_SAND.defaultBlockState(), 3);
-            }
-            else if (state.is(NatureBlocks.MOIST_SAND_BLOCK.get())) {
+            } else if (state.is(NatureBlocks.MOIST_SAND_BLOCK.get())) {
                 level.setBlock(pos, Blocks.SAND.defaultBlockState(), 3);
             }
-
             level.levelEvent(2009, pos, 0);
             level.playSound(null, pos, SoundEvents.WET_SPONGE_DRIES, SoundSource.BLOCKS, 1.0F, (1.0F + level.getRandom().nextFloat() * 0.2F) * 0.7F);
         }

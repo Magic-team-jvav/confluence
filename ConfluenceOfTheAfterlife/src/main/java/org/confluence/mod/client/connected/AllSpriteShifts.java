@@ -9,7 +9,7 @@ public class AllSpriteShifts {
     public static final CTSpriteShiftEntry PURE_GLASS = omni("pure_glass");
     public static final CTSpriteShiftEntry WHITE_PURE_GLASS = omni("white_pure_glass");
     public static final CTSpriteShiftEntry LIGHT_GRAY_PURE_GLASS = omni("light_gray_pure_glass");
-    public static final CTSpriteShiftEntry GRAY_PURE_GLASS = omni("grey_pure_glass");
+    public static final CTSpriteShiftEntry GRAY_PURE_GLASS = omni("gray_pure_glass");
     public static final CTSpriteShiftEntry BLACK_PURE_GLASS = omni("black_pure_glass");
     public static final CTSpriteShiftEntry BROWN_PURE_GLASS = omni("brown_pure_glass");
     public static final CTSpriteShiftEntry RED_PURE_GLASS = omni("red_pure_glass");

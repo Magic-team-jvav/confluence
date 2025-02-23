@@ -2,6 +2,6 @@
   "parent": "block/cube_all",
   "render_type": "translucent",
   "textures": {
-    "all": "confluence:block/grey_pure_glass"
+    "all": "confluence:block/light_gray_pure_glass"
   }
 }

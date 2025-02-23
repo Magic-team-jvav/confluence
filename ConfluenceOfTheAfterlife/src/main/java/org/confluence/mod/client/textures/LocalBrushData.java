@@ -30,7 +30,8 @@ public final class LocalBrushData {
         return DATA.get(pos.asLong());
     }
 
-    public static int getColor(BlockPos pos, Direction facing) {
+    public static int getColor(BlockPos pos, @Nullable Direction facing) {
+        if (facing == null) return BrushData.EMPTY_COLOR;
         EnumMap<Direction, Integer> map = DATA.get(pos.asLong());
         return map == null ? BrushData.EMPTY_COLOR : map.getOrDefault(facing, BrushData.EMPTY_COLOR);
     }

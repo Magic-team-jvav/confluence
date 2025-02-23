@@ -154,6 +154,9 @@ dependencies {
     //runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
 
     compileOnly "curse.maven:better-advancements-272515:5850587"
+
+    compileOnly "curse.maven:sodium-394468:6211307"
+    //runtimeOnly "curse.maven:sodium-394468:6211307"
 }
 
 tasks.withType(ProcessResources).configureEach {

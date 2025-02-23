@@ -110,6 +110,7 @@
         "integration.jei.ScreenHelperMixin",
         "integration.patchouli.BookPageMixin",
         "integration.patchouli.GuiBookLandingMixin",
+        "integration.sodium.BlockRendererMixin",
         "integration.terra_curio.InformationHandlerMixin",
         "integration.terra_curio.TCClientPacketHandlerMixin"
     ],

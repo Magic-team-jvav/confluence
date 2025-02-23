@@ -38,6 +38,7 @@ import org.confluence.terra_curio.api.event.RangePickupItemEvent;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.confluence.terra_curio.util.TCUtils;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
+import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
 import java.util.Collection;
 import java.util.Map;
@@ -147,6 +148,13 @@ public final class GameEvents {
                     PlayerUtils.awardAchievement((ServerPlayer) player, "bloodbath");
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void curioChange(CurioChangeEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player && PrefixUtils.canInit(event.getTo())) {
+            PrefixUtils.initPrefix(player.getRandom(), event.getTo());
         }
     }
 }

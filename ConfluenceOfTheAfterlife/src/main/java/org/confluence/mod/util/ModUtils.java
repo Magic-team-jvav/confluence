@@ -3,6 +3,7 @@ package org.confluence.mod.util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +19,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -25,6 +28,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.common.component.NbtComponent;
@@ -228,5 +232,9 @@ public final class ModUtils {
 
     public static boolean anyHandHasItem(LivingEntity living, Predicate<ItemStack> predicate) {
         return predicate.test(living.getMainHandItem()) || predicate.test(living.getOffhandItem());
+    }
+
+    public static boolean isWaterBottle(ItemStack itemStack) {
+        return itemStack.is(PotionItems.BOTTLED_WATER) || itemStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).is(Potions.WATER);
     }
 }

@@ -3,12 +3,12 @@ package org.confluence.mod.common.event.game.entity;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Saddleable;
@@ -17,8 +17,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
@@ -42,6 +40,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.MinecartItems;
+import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
 import org.confluence.mod.common.item.common.ColoredItem;
@@ -53,6 +52,7 @@ import org.confluence.mod.mixed.IFishingHook;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.*;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -121,6 +121,24 @@ public final class PlayerEvents {
         // 再生之斧/再生法杖 右键自动收获
         if (!level.isClientSide && itemStack.is(ModTags.Items.CROP_FORTUNE)) {
             BaseAxeItem.dropAndPlaceOnRightClick(event.getEntity(), event.getItemStack(), event.getPos());
+        }
+
+        // 水瓶转换沙子
+        if (!level.isClientSide && ModUtils.isWaterBottle(itemStack)) {
+            level.playSound(null, blockPos, SoundEvents.GENERIC_SPLASH, SoundSource.BLOCKS, 1.0F, 1.0F);
+            ItemStack filledStack = itemStack.is(PotionItems.BOTTLED_WATER) ? PotionItems.BOTTLE.toStack() : Items.GLASS_BOTTLE.getDefaultInstance();
+            player.setItemInHand(event.getHand(), ItemUtils.createFilledResult(itemStack, player, filledStack));
+            player.awardStat(Stats.ITEM_USED.get(itemStack.getItem()));
+            Map<Block, Block> sandMapping = new HashMap<>();
+            sandMapping.put(Blocks.SAND, NatureBlocks.MOIST_SAND_BLOCK.get());
+            sandMapping.put(Blocks.RED_SAND, NatureBlocks.RED_MOIST_SAND_BLOCK.get());
+            sandMapping.put(NatureBlocks.EBONY_SAND.get(), NatureBlocks.EBONY_MOIST_SAND_BLOCK.get());
+            sandMapping.put(NatureBlocks.PEARL_SAND.get(), NatureBlocks.PEARL_MOIST_SAND_BLOCK.get());
+            sandMapping.put(NatureBlocks.TR_CRIMSON_SAND.get(), NatureBlocks.TR_CRIMSON_MOIST_SAND_BLOCK.get());
+            Block newBlock = sandMapping.get(blockState.getBlock());
+            if (newBlock != null) {
+                level.setBlockAndUpdate(blockPos, newBlock.defaultBlockState());
+            }
         }
     }
 
@@ -311,31 +329,6 @@ public final class PlayerEvents {
     public static void startTracking(PlayerEvent.StartTracking event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer && event.getTarget() instanceof ServerPlayer player) {
             ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, player, player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
-        }
-    }
-
-    @SubscribeEvent
-    public static void conversionSandEvent(PlayerInteractEvent.RightClickBlock event) {
-        Level level = event.getLevel();
-        BlockPos pos = event.getPos();
-        ItemStack stack = event.getItemStack();
-        BlockState state = level.getBlockState(pos);
-        Player player = event.getEntity();
-        PotionContents potioncontents = stack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
-        if (!level.isClientSide && potioncontents.is(Potions.WATER)) {
-            level.playSound(null, pos, SoundEvents.GENERIC_SPLASH, SoundSource.BLOCKS, 1.0F, 1.0F);
-            player.setItemInHand(event.getHand(), ItemUtils.createFilledResult(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
-            player.awardStat(net.minecraft.stats.Stats.ITEM_USED.get(stack.getItem()));
-            Map<Block, Block> sandMapping = new HashMap<>();
-            sandMapping.put(Blocks.SAND, NatureBlocks.MOIST_SAND_BLOCK.get());
-            sandMapping.put(Blocks.RED_SAND, NatureBlocks.RED_MOIST_SAND_BLOCK.get());
-            sandMapping.put(NatureBlocks.EBONY_SAND.get(), NatureBlocks.EBONY_MOIST_SAND_BLOCK.get());
-            sandMapping.put(NatureBlocks.PEARL_SAND.get(), NatureBlocks.PEARL_MOIST_SAND_BLOCK.get());
-            sandMapping.put(NatureBlocks.TR_CRIMSON_SAND.get(), NatureBlocks.TR_CRIMSON_MOIST_SAND_BLOCK.get());
-            Block newBlock = sandMapping.get(state.getBlock());
-            if (newBlock != null) {
-                level.setBlockAndUpdate(pos, newBlock.defaultBlockState());
-            }
         }
     }
 }

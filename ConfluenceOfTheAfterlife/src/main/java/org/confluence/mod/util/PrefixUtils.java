@@ -99,7 +99,7 @@ public final class PrefixUtils {
     }
 
     private static void updateRarity(ItemStack itemStack, ModPrefix prefix) {
-        int num1 = ModPrefix.ID_MAP.inverse().get(prefix);
+        int num1 = ModPrefix.ID_MAP.inverse().getOrDefault(prefix, 0);
         float num2 = 1;
         float num3 = 1;
         float num4 = 1;
@@ -381,11 +381,11 @@ public final class PrefixUtils {
         if (num1 == 65 || num1 == 72 || num1 == 76 || num1 == 80 || num1 == 68) num14 *= 1.2f;
 
         int rarity = ModRarity.ID_MAP.inverse().getOrDefault(itemStack.get(TCDataComponentTypes.MOD_RARITY), 0);
-        if ((double) num14 >= 1.2) rarity += 2;
-        else if ((double) num14 >= 1.05) ++rarity;
-        else if ((double) num14 <= 0.8) rarity -= 2;
-        else if ((double) num14 <= 0.95) --rarity;
         if (rarity > -11) {
+            if ((double) num14 >= 1.2) rarity += 2;
+            else if ((double) num14 >= 1.05) ++rarity;
+            else if ((double) num14 <= 0.8) rarity -= 2;
+            else if ((double) num14 <= 0.95) --rarity;
             if (rarity < -1) rarity = -1;
             if (rarity > 11) rarity = 11;
         }

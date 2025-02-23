@@ -123,6 +123,7 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         if (dirty) {
             boolean dyeHard = true;
             boolean fashionStatement = true;
+            boolean holdOnTight = true;
 
             for (int i = 0; i < getContainerSize(); i++) {
                 ItemStack itemStack = getItem(i);
@@ -137,6 +138,7 @@ public class ExtraInventory extends ItemStackHandler implements Container {
 
                 if (dyeHard && i >= DYE_START && itemStack.isEmpty()) dyeHard = false;
                 if (fashionStatement && i < COINS_START && itemStack.isEmpty()) fashionStatement = false;
+                if (holdOnTight && i == EQUIPMENT_START + 3 && itemStack.isEmpty()) holdOnTight = false;
             }
             this.dirty = false;
 
@@ -144,6 +146,7 @@ public class ExtraInventory extends ItemStackHandler implements Container {
             if (fashionStatement && Streams.of(serverPlayer.getArmorSlots()).noneMatch(ItemStack::isEmpty)) {
                 PlayerUtils.awardAchievement(serverPlayer, "fashion_statement");
             }
+            if (holdOnTight) PlayerUtils.awardAchievement(serverPlayer, "hold_on_tight");
         }
     }
 

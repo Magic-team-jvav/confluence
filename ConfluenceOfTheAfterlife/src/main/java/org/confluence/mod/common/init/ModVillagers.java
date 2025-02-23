@@ -115,7 +115,10 @@ public final class ModVillagers {
             tier1.add(new SkyVillagerItemListing(FoodItems.DAMSEL_FISH.get(), IntegerRange.of(8, 10), Items.EMERALD, 5, 25, 0.05F));
             tier1.add(new SkyVillagerItemListing(Items.PUFFERFISH, IntegerRange.of(8, 10), Items.EMERALD, 5, 25, 0.05F));
             tier3.add(new SkyVillagerItemListing(FoodItems.GOLDEN_CARP.get(), ModItems.EMERALD_COIN.get(), 20, 25, 0.05F));
-            tier5.add(new SkyVillagerItemListing(ModItems.EMERALD_COIN.get(), 8, FishingPoleItems.FIBERGLASS_FISHING_POLE.get(), 10, 25, 0.05F));
+            tier5.add(new SkyVillagerItemListing(ModItems.EMERALD_COIN.get(), 120, FishingPoleItems.FIBERGLASS_FISHING_POLE.get(), 10, 25, 0.05F));
+            tier5.add(new SkyVillagerItemListing(ModItems.EMERALD_COIN.get(), 120, TCItems.FISHERMANS_POCKET_GUIDE.get(), 10, 25, 0.05F));
+            tier5.add(new SkyVillagerItemListing(ModItems.EMERALD_COIN.get(), 120, TCItems.WEATHER_RADIO.get(), 10, 25, 0.05F));
+            tier5.add(new SkyVillagerItemListing(ModItems.EMERALD_COIN.get(), 120, TCItems.SEXTANT.get(), 10, 25, 0.05F));
         } else if (type == VillagerProfession.FLETCHER) {
             tier2.add(new SkyVillagerItemListing(Items.EMERALD, 2, ArrowItems.FLAMING_ARROW.get(), 15, 10, 25, 0.05F));
             tier3.add(new SkyVillagerItemListing(Items.EMERALD, 2, BowItems.WOODEN_SHORT_BOW.get(), 10, 25, 0.05F));

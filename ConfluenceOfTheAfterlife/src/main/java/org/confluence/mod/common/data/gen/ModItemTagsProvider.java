@@ -562,6 +562,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 AccessoryItems.FLEDGLING_WINGS.get(),
                 TCItems.CELESTIAL_STARBOARD.get()
         );
+        tag(ModTags.Items.HAMMER).add(
+                AccessoryItems.FLEDGLING_WINGS.get(),
+                TCItems.CELESTIAL_STARBOARD.get()
+        );
         tag(ModTags.Items.BOSS_SUMMING).add(
                 ConsumableItems.SUSPICIOUS_LOOKING_EYE.get(),
                 ConsumableItems.SLIME_CROWN.get()

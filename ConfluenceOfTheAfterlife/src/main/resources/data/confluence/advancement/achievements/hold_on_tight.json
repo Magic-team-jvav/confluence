@@ -16,13 +16,8 @@
     },
     "parent": "confluence:achievements/new_world",
     "criteria": {
-        "requirement": {
-            "trigger": "terra_curio:curios_equipped",
-            "conditions": {
-                "item": {
-                    "items": "#curios:hook"
-                }
-            }
+        "never": {
+            "trigger": "minecraft:impossible"
         }
     }
 }

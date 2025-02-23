@@ -23,7 +23,7 @@ import java.util.Map;
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class ItemEvents {
     @SubscribeEvent
-    public static void itemAttributeModifier(ItemAttributeModifierEvent event) {
+    public static void attributeModifier(ItemAttributeModifierEvent event) {
         ItemStack itemStack = event.getItemStack();
         PrefixComponent prefix = PrefixUtils.getPrefix(itemStack);
         if (prefix == null) return;
@@ -43,11 +43,11 @@ public final class ItemEvents {
     }
 
     @SubscribeEvent
-    public static void tossItem(ItemTossEvent event) {
+    public static void toss(ItemTossEvent event) {
         if (event.isCanceled()) return;
         ItemEntity itemEntity = event.getEntity();
         if (itemEntity.getItem().is(ModTags.Items.TREASURE_BAG)) {
-            TreasureBagItemEntity entity = new TreasureBagItemEntity(itemEntity.level(), itemEntity.position(), itemEntity.getItem(), event.getPlayer());
+            TreasureBagItemEntity entity = new TreasureBagItemEntity(itemEntity.level(), itemEntity.position(), itemEntity.getItem(), null);
             entity.setPickUpDelay(40);
             entity.setDeltaMovement(itemEntity.getDeltaMovement());
             itemEntity.level().addFreshEntity(entity);

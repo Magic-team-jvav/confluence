@@ -2,12 +2,14 @@ package org.confluence.mod.mixin.integration.terrablender;
 
 import com.bawnorton.mixinsquared.TargetHandler;
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
@@ -39,22 +41,32 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
     private List<Holder<Biome>> confluence$jungle;
     @Unique
     private Pair<Holder<Biome>, Holder<Biome>> confluence$biomePair;
+    @Unique
+    private Holder<Biome> confluence$protection;
 
     @TargetHandler(mixin = "terrablender.mixin.MixinMultiNoiseBiomeSource", name = "getNoiseBiome")
     @Inject(method = "@MixinSquared:Handler", at = @At("TAIL"))
     private void replaceBiome(int x, int y, int z, Climate.Sampler sampler, CallbackInfoReturnable<Holder<Biome>> cir, CallbackInfo ci) {
-        if (cir.getReturnValue() != null) {
+        Holder<Biome> replaced = cir.getReturnValue();
+        if (replaced != null) {
             if (ModSecretSeeds.NOT_THE_BEES.match()) {
                 List<Holder<Biome>> jungle = confluence$getJungle();
                 if (!jungle.isEmpty()) {
-                    cir.setReturnValue(NotTheBees.replaceBiome(x, y, z, cir.getReturnValue(), jungle));
+                    replaced = NotTheBees.replaceBiome(x, y, z, replaced, jungle);
                 }
             } else {
                 Pair<Holder<Biome>, Holder<Biome>> pair = confluence$getBiomePair();
-                if (pair != null && cir.getReturnValue() == pair.getFirst()) {
-                    cir.setReturnValue(pair.getSecond());
+                if (pair != null && replaced == pair.getFirst()) {
+                    replaced = pair.getSecond();
                 }
             }
+            if (replaced.is(ModBiomes.THE_CORRUPTION) || replaced.is(ModBiomes.TR_CRIMSON)) {
+                BlockPos spawnPos = ServerLifecycleHooks.getCurrentServer().getWorldData().overworldData().getSpawnPos();
+                if (Math.abs((spawnPos.getX() >> 2) - x) <= 50 || Math.abs((spawnPos.getZ() >> 2) - z) <= 50) {
+                    replaced = confluence$protection;
+                }
+            }
+            cir.setReturnValue(replaced);
         }
     }
 
@@ -103,6 +115,7 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
             }
             Registry<Biome> biomes = server.registryAccess().registryOrThrow(Registries.BIOME);
             this.confluence$biomePair = new Pair<>(biomes.getHolderOrThrow(from), biomes.getHolderOrThrow(to));
+            this.confluence$protection = biomes.getHolderOrThrow(Biomes.PLAINS);
         }
         return confluence$biomePair;
     }

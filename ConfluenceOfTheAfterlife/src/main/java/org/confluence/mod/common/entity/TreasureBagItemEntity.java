@@ -23,14 +23,16 @@ public class TreasureBagItemEntity extends ItemEntity {
         super(entityType, level);
     }
 
-    public TreasureBagItemEntity(Level level, Vec3 pos, ItemStack itemStack, Player player) {
+    public TreasureBagItemEntity(Level level, Vec3 pos, ItemStack itemStack, @Nullable Player player) {
         this(ModEntities.TREASURE_BAG_ITEM_ENTITY.get(), level);
         setPos(pos);
         setDeltaMovement(level.random.nextDouble() * 0.2 - 0.1, 0.2, level.random.nextDouble() * 0.2 - 0.1);
         setItem(itemStack);
         this.lifespan = itemStack.getEntityLifespan(level);
-        setThrower(player);
-        setOwner(player);
+        if (player != null) {
+            setThrower(player);
+            setOwner(player);
+        }
     }
 
     @Override
@@ -46,7 +48,7 @@ public class TreasureBagItemEntity extends ItemEntity {
     public boolean isOwner(@Nullable Player player) {
         if (player == null) return false;
         Optional<UUID> uuid = entityData.get(DATA_OWNER);
-        return uuid.isPresent() && uuid.get().equals(player.getUUID());
+        return uuid.isEmpty() || uuid.get().equals(player.getUUID());
     }
 
     @Override

@@ -42,4 +42,7 @@ public class FoodType {
             .effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 1200), 1.0f)
             .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 1200), 2.0f)
             .build();
+    //东东的大饼
+    public static final FoodProperties DONGDONGS_FLATBREAD = new FoodProperties.Builder().nutrition(3).saturationModifier(2f).fast().alwaysEdible()
+            .effect(() -> new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, 3000), 1.0f).build();
 }

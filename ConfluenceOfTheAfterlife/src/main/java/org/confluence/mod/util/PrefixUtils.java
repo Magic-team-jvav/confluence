@@ -392,7 +392,7 @@ public final class PrefixUtils {
             else if ((double) num14 <= 0.8) rarity -= 2;
             else if ((double) num14 <= 0.95) --rarity;
             if (rarity < -1) rarity = -1;
-            if (rarity > 11) rarity = 11;
+            else if (rarity > 11) rarity = 11;
         }
         itemStack.set(TCDataComponentTypes.MOD_RARITY, ModRarity.ID_MAP.getOrDefault(rarity, ModRarity.WHITE));
     }

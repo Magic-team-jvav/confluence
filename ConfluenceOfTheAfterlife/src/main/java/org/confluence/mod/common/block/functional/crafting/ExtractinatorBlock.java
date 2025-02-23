@@ -4,7 +4,6 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -165,11 +164,6 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
         @Override
         public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
             consumer.accept(new SimpleGeoItemRenderer<>(ExtractinatorBlockModel.MODEL, ExtractinatorBlockModel.TEXTURE, ExtractinatorBlockModel.ANIMATION));
-        }
-
-        @Override
-        public Component getName(ItemStack stack) {
-            return Component.translatable(getDescriptionId(stack)).withStyle(style -> style.withColor(ModRarity.WHITE.getColor()));
         }
 
         @Override

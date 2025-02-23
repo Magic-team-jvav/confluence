@@ -3,10 +3,7 @@ package org.confluence.mod.common.block.natural;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -107,11 +104,6 @@ public class LifeCrystalBlock extends HorizontalDirectionalBlock implements Enti
         @Override
         public AnimatableInstanceCache getAnimatableInstanceCache() {
             return CACHE;
-        }
-
-        @Override
-        public MutableComponent getName(ItemStack pStack) {
-            return Component.translatable(getDescriptionId(pStack)).withStyle(style -> style.withColor(ModRarity.GREEN.getColor()));
         }
     }
 }

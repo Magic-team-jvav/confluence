@@ -1,8 +1,6 @@
 package org.confluence.mod.common.item.fishing;
 
 import com.google.common.collect.ImmutableMultimap;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -99,15 +97,6 @@ public abstract class AbstractFishingPole extends FishingRodItem {
     }
 
     protected abstract FishingHook getHook(ItemStack itemStack, Player player, Level level, int luckBonus, int speedBonus);
-
-    @Override
-    public MutableComponent getName(ItemStack pStack) {
-        return withRarity(pStack, Component.translatable(getDescriptionId(pStack)));
-    }
-
-    protected MutableComponent withRarity(ItemStack pStack, MutableComponent component) {
-        return component.withColor(pStack.get(TCDataComponentTypes.MOD_RARITY).getColor());
-    }
 
     protected void addAttributeModifiers(Consumer<ItemAttributeModifiers.Builder> consumer) {
         ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();

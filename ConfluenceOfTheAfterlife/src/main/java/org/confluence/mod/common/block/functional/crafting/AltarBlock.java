@@ -344,11 +344,6 @@ public class AltarBlock extends BaseEntityBlock {
         }
 
         @Override
-        public Component getName(ItemStack stack) {
-            return Component.translatable(getDescriptionId(stack)).withStyle(style -> style.withColor(ModRarity.PURPLE.getColor()));
-        }
-
-        @Override
         public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
 
         @Override

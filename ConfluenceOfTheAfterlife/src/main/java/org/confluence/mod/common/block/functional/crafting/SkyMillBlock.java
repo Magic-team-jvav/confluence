@@ -135,11 +135,6 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
         }
 
         @Override
-        public Component getName(ItemStack stack) {
-            return Component.translatable(getDescriptionId(stack)).withStyle(style -> style.withColor(ModRarity.BLUE.getColor()));
-        }
-
-        @Override
         public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         }
 

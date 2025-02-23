@@ -2,7 +2,6 @@ package org.confluence.mod.common.item.bow;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -20,7 +19,6 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terraentity.hit_effect.EffectStrategy;
-import org.confluence.terraentity.registries.EffectStrategies;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -58,11 +56,6 @@ public class TerraBowItem extends BowItem {
         this(baseDamage, rarity);
         this.modifyArrowBuilder = modifyArrowBuilder;
         modifyArrowBuilder.accept(this.arrowModifier);
-    }
-
-    @Override
-    public @NotNull MutableComponent getName(@NotNull ItemStack pStack) {
-        return Component.translatable(getDescriptionId()).withStyle(style -> style.withColor(pStack.get(TCDataComponentTypes.MOD_RARITY).getColor()));
     }
 
     @Override

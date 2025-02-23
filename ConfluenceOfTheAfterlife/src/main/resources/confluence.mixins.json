@@ -49,7 +49,6 @@
         "integration.terra_curio.WorkshopBlockMixin",
         "integration.terra_curio.WorkshopMenuMixin",
         "integration.terra_curio.WorkshopRecipeMixin",
-        "integration.terra_guns.GunItemMixin",
         "integration.terrablender.MixinMultiNoiseBiomeSourceSquared",
         "item.ArrowItemMixin",
         "item.BowItemMixin",

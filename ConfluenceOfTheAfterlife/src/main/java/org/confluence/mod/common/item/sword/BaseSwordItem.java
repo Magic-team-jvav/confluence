@@ -170,9 +170,4 @@ public class BaseSwordItem extends SwordItem {
     public interface QuaConsumer<A,B,C,D> {
         void accept(A a,B b,C c,D d);
     }
-
-    @Override
-    public @NotNull Component getName(@NotNull ItemStack pStack) {
-        return Component.translatable(getDescriptionId(pStack)).withColor(pStack.getOrDefault(TCDataComponentTypes.MOD_RARITY, ModRarity.WHITE).getColor());
-    }
 }

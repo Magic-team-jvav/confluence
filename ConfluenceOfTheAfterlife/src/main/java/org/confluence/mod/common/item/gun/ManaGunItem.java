@@ -3,7 +3,6 @@ package org.confluence.mod.common.item.gun;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -164,10 +163,5 @@ public abstract class ManaGunItem<T extends Projectile> extends GeoGunItem<T> im
     @Override
     public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
         return modifiers == null ? super.getDefaultAttributeModifiers(stack) : modifiers;
-    }
-
-    @Override
-    public Component getName(ItemStack stack) {
-        return Component.translatable(getDescriptionId(stack)).withColor(stack.get(TCDataComponentTypes.MOD_RARITY).getColor());
     }
 }

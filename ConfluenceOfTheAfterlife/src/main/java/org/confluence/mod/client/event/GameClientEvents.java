@@ -29,6 +29,7 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
@@ -128,16 +129,16 @@ public final class GameClientEvents {
         ArrowInBowHud.render(event);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void gatherComponents(RenderTooltipEvent.GatherComponents event) {
         List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
         if (tooltipElements.isEmpty()) return;
         Optional<FormattedText> displayName = tooltipElements.getFirst().left();
-        if (displayName.isPresent() && displayName.get() instanceof Component component && !component.getSiblings().isEmpty()) {
+        if (displayName.isPresent() && displayName.get() instanceof Component component) {
             PrefixComponent prefix = PrefixUtils.getPrefix(event.getItemStack());
             if (prefix != null && prefix.type() != PrefixType.UNKNOWN) {
                 tooltipElements.set(0, Either.left(
-                        Component.translatable("prefix.confluence." + prefix.name()).setStyle(component.getSiblings().getFirst().getStyle()).append(" ").append(component)
+                        Component.translatable("prefix.confluence." + prefix.name()).setStyle(component.getStyle()).append(" ").append(component)
                 ));
             }
         }

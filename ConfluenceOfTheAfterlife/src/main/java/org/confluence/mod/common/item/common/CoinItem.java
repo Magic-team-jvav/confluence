@@ -1,7 +1,6 @@
 package org.confluence.mod.common.item.common;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -26,11 +25,6 @@ public class CoinItem extends BlockItem {
     public CoinItem(Block block, ModRarity rarity, @Nullable Supplier<CoinItem> upgrade, int maxStackSize) {
         super(block, new Properties().fireResistant().stacksTo(maxStackSize).component(TCDataComponentTypes.MOD_RARITY, rarity));
         this.upgrade = upgrade;
-    }
-
-    @Override
-    public MutableComponent getName(ItemStack pStack) {
-        return Component.translatable(getDescriptionId()).withStyle(style -> style.withColor(pStack.get(TCDataComponentTypes.MOD_RARITY).getColor()));
     }
 
     @Override

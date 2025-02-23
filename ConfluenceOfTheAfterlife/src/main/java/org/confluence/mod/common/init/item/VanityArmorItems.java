@@ -1,8 +1,9 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.Holder;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ArmorMaterials;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
@@ -20,8 +21,8 @@ public class VanityArmorItems {
 
     public static final Supplier<BaseVanityArmorItem> GOLD_CROWN = ITEMS.register("gold_crown", () -> new BaseVanityArmorItem(ArmorItem.Type.HELMET, ModRarity.WHITE) {
         @Override
-        public boolean makesPiglinsNeutral(@NotNull Player player, @NotNull ItemStack stack) {
-            return true;
+        public @NotNull Holder<ArmorMaterial> getMaterial() {
+            return ArmorMaterials.GOLD;
         }
     });
     public static final Supplier<BaseVanityArmorItem> PLATINUM_CROWN = ITEMS.register("platinum_crown", () -> new BaseVanityArmorItem(ArmorItem.Type.HELMET, ModRarity.WHITE));
@@ -54,6 +55,7 @@ public class VanityArmorItems {
     public static final Supplier<BaseDyeItem> GRAY_DYE = registerDye("gray_dye", ModRarity.BLUE, 0xFF676764);
     public static final Supplier<BaseDyeItem> SILVER_DYE = registerDye("silver_dye", ModRarity.BLUE, 0xFFfffef6);
     public static final Supplier<BaseDyeItem> BROWN_DYE = registerDye("brown_dye", ModRarity.BLUE, 0xFF8b653f);
+
     private static Supplier<BaseDyeItem> registerDye(String name, ModRarity rarity, int color) {
         return ITEMS.register(name, () -> {
             BaseDyeItem dyeItem = new BaseDyeItem(rarity, color);

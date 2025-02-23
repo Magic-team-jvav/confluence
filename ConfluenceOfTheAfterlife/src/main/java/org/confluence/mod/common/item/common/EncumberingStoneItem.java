@@ -24,6 +24,6 @@ public class EncumberingStoneItem extends CustomRarityItem implements IFunctionC
 
     @Override
     public Component getName(ItemStack pStack) {
-        return isEnabled(pStack, null) ? super.getName(pStack) : withRarity(pStack, Component.translatable(getDescriptionId(pStack) + ".disable"));
+        return isEnabled(pStack, null) ? super.getName(pStack) : Component.translatable(getDescriptionId(pStack) + ".disable");
     }
 }

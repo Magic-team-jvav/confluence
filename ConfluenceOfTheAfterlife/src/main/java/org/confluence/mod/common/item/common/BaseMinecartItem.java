@@ -1,7 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -21,11 +19,6 @@ public class BaseMinecartItem extends MinecartItem {
         super(AbstractMinecart.Type.RIDEABLE, properties.stacksTo(1).component(TCDataComponentTypes.MOD_RARITY, rarity));
         this.abilities = abilities;
         this.factory = factory;
-    }
-
-    @Override
-    public MutableComponent getName(ItemStack pStack) {
-        return Component.translatable(getDescriptionId()).withStyle(style -> style.withColor(pStack.get(TCDataComponentTypes.MOD_RARITY).getColor()));
     }
 
     public @Nullable AbstractMinecart createMinecart(ServerLevel level, double x, double y, double z, AbstractMinecart.Type type, ItemStack stack, @Nullable Player player) {

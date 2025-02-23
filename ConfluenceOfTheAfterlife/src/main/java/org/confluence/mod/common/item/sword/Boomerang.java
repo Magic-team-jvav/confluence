@@ -2,7 +2,6 @@ package org.confluence.mod.common.item.sword;
 
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -23,9 +22,7 @@ import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.sword.stagedy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.stagedy.projectile.BoomerangProjContainer;
 import org.confluence.mod.common.item.sword.stagedy.projectile.IProjContainer;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terraentity.hit_effect.EffectStrategy;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,11 +90,6 @@ public class Boomerang extends Item {
 
     @Override
     public boolean canContinueUsing(ItemStack oldStack, ItemStack newStack) {return false;}
-
-    @Override
-    public @NotNull MutableComponent getName(@NotNull ItemStack pStack) {
-        return Component.translatable(getDescriptionId()).withStyle(style -> style.withColor(pStack.get(TCDataComponentTypes.MOD_RARITY).getColor()));
-    }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {

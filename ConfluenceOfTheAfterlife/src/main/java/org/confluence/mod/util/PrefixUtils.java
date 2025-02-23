@@ -380,8 +380,13 @@ public final class PrefixUtils {
         if (num1 == 64 || num1 == 71 || num1 == 75 || num1 == 79 || num1 == 66) num14 *= 1.15f;
         if (num1 == 65 || num1 == 72 || num1 == 76 || num1 == 80 || num1 == 68) num14 *= 1.2f;
 
-        int rarity = ModRarity.ID_MAP.inverse().getOrDefault(itemStack.get(TCDataComponentTypes.MOD_RARITY), 0);
+        int rarity = ModRarity.ID_MAP.inverse().getOrDefault(ModRarity.getRarity(itemStack), 0);
         if (rarity > -11) {
+            if (rarity == -10) rarity = 0;
+            else if (rarity == -9) rarity = 2;
+            else if (rarity == -8) rarity = 4;
+            else if (rarity == -7) rarity = 6;
+
             if ((double) num14 >= 1.2) rarity += 2;
             else if ((double) num14 >= 1.05) ++rarity;
             else if ((double) num14 <= 0.8) rarity -= 2;

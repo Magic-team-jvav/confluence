@@ -562,6 +562,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("block.confluence.base_chest_block.death_skyware", "§rDeath Skyware Chest");
         add("block.confluence.base_chest_block.unlocked_normal", "§rWooden Chest");
         add("block.confluence.base_chest_block.death_normal", "§rDeath Wooden Chest");
+        add("block.confluence.base_chest_block.unlocked_sandstone", "§rSandstone Chest");
+        add("block.confluence.base_chest_block.death_sandstone", "§rDeath Sandstone Chest");
 
         add("resourcepack.terraria_art", "Terraria Art");
         add("resourcepack.terraria_armor", "Terraria-Like Armor");

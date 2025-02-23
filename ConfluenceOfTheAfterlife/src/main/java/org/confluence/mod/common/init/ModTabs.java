@@ -38,6 +38,7 @@ public final class ModTabs {
                             if (item != Items.AIR) output.accept(item);
                         });
                         PotBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
+                        output.accept(OreBlocks.COLD_CRYSTAL_ORE.get());
                     }).build()
     );
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> BUILDING_BLOCKS = TABS.register("building_blocks",

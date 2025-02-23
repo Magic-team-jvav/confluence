@@ -23,6 +23,10 @@
           "type": "minecraft:item",
           "name": "confluence:celestial_magnet",
           "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 4
         }
       ],
       "rolls": 1
@@ -37,7 +41,7 @@
         },
         {
           "type": "minecraft:empty",
-          "weight": 39
+          "weight": 79
         }
       ],
       "rolls": 1
@@ -52,7 +56,7 @@
         },
         {
           "type": "minecraft:empty",
-          "weight": 2
+          "weight": 5
         }
       ],
       "rolls": 1
@@ -68,8 +72,8 @@
               "function": "set_count",
               "count": {
                 "type": "uniform",
-                "min": 50,
-                "max": 100
+                "min": 25,
+                "max": 50
               }
             }
           ],

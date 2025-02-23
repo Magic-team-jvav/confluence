@@ -1,3 +1,7 @@
 {
-  "parent": "minecraft:block/cube_all"
+  "parent": "minecraft:block/cube_all",
+  "render_type": "translucent",
+  "textures": {
+    "all": "confluence:block/pink_ice"
+  }
 }

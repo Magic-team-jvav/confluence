@@ -24,9 +24,27 @@
         },
         {
             "predicate": {
+                "confluence:variant": 5
+            },
+            "model": "confluence:item/chest_death_lvy"
+        },
+        {
+            "predicate": {
+                "confluence:variant": 7
+            },
+            "model": "confluence:item/chest_death_skyware"
+        },
+        {
+            "predicate": {
                 "confluence:variant": 8
             },
             "model": "confluence:item/chest_death_normal"
+        },
+        {
+            "predicate": {
+                "confluence:variant": 9
+            },
+            "model": "confluence:item/chest_death_sandstone"
         }
     ]
 }

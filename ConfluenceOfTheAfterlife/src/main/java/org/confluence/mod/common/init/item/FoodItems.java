@@ -144,6 +144,7 @@ public class FoodItems {
 
     //赞助
     public static final DeferredItem<BaseFoodItem> PINK_KOLA = registerToolTipFood("pink_kola", builder -> builder.initialize().food(FoodType.PINK_KOLA).drinkingSound(s -> SoundEvents.GENERIC_DRINK).duration(d -> 15).useAnim(u -> UseAnim.DRINK), 1);
+    public static final DeferredItem<BaseFoodItem> DONGDONGS_FLATBREAD = registerToolTipFood("dongdongs_flatbread", builder -> builder.initialize().food(FoodType.DONGDONGS_FLATBREAD).eatingSound(s -> SoundEvents.GENERIC_EAT).duration(d -> 15).useAnim(u -> UseAnim.EAT), 1);
     //节日特有
     public static final DeferredItem<BaseFoodItem> ZONGZI = registerFood("zongzi", builder -> builder.food(FoodType.LOW).isFireResistant());
 

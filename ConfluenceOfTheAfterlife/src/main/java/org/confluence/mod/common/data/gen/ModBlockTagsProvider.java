@@ -561,7 +561,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SILK_ROPE.get(),
                 WEB_ROPE.get()
         );
-        tag(ModTags.Blocks.MINEABLE_WITH_HAMMER).addTag(BlockTags.WALLS).add(
+        tag(ModTags.Blocks.MINEABLE_WITH_HAMMER).addTag(BlockTags.WALLS).addTag(BlockTags.PLANKS).addTag(BlockTags.STONE_BRICKS).add(
                 NatureBlocks.SHADOW_ORB.get(),
                 NatureBlocks.CRIMSON_HEART.get()
         );

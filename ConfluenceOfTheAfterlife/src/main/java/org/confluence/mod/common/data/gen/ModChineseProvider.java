@@ -57,6 +57,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("item.confluence.tokyo_teddy_bear.tooltip.6", "——由一只蜘蛛讲述的故事");
         add("item.confluence.paradox_interactive_medal.tooltip.0", "同时玩过钢铁雄心、维多利亚、欧陆风云、十字军之王、都市天际线的证明。");
         add("item.confluence.pink_kola.tooltip.1", "一瓶普通的粉色可乐，或许原来有一整箱？");
+        add("item.confluence.dongdongs_flatbread.tooltip.1", "刚在地狱岩上考好的饼，快来尝尝吧！");
 
         add("item.confluence.boredoms_pact_falling_resolve.tooltip.0", "「无聊之咒·陨志」");
         add("item.confluence.boredoms_pact_falling_resolve.tooltip.1", "(Boredom's Pact - Falling Resolve)");
@@ -2291,6 +2292,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.COOKED_BAOBAB_FRUIT.get(), "烤猴面包果");
         //赞助
         add(FoodItems.PINK_KOLA.get(), "粉色可乐");
+        add(FoodItems.DONGDONGS_FLATBREAD.get(), "东东的大饼");
         // 鱼
         add(FoodItems.SEA_BASS.get(), "鲈鱼");
         add(FoodItems.ATLANTIC_COD.get(), "大西洋鳕鱼");

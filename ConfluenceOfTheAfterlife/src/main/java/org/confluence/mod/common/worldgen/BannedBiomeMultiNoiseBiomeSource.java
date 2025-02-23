@@ -1,10 +1,11 @@
 package org.confluence.mod.common.worldgen;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -16,6 +17,7 @@ public class BannedBiomeMultiNoiseBiomeSource extends MultiNoiseBiomeSource {
     private final ResourceKey<Biome> bannedBiome;
     private final ResourceKey<Biome> targetBiome;
     private Holder<Biome> target;
+    private Holder<Biome> protection;
 
     public BannedBiomeMultiNoiseBiomeSource(MultiNoiseBiomeSource biomeSource, ResourceKey<Biome> bannedBiome, ResourceKey<Biome> targetBiome) {
         super(biomeSource.parameters);
@@ -24,19 +26,24 @@ public class BannedBiomeMultiNoiseBiomeSource extends MultiNoiseBiomeSource {
     }
 
     @Override
-    public Holder<Biome> getNoiseBiome(int pX, int pY, int pZ, Climate.Sampler pSampler) {
-        Holder<Biome> biome = super.getNoiseBiome(pX, pY, pZ, pSampler);
+    public Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.Sampler sampler) {
+        Holder<Biome> biome = super.getNoiseBiome(x, y, z, sampler);
         if (target == null) {
             MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
             if (server == null) return biome;
-            this.target = server.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(targetBiome);
             if (targetBiome.equals(ModBiomes.THE_CORRUPTION)) {
                 ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.THE_CORRUPTION);
             } else if (targetBiome.equals(ModBiomes.TR_CRIMSON)) {
                 ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.TR_CRIMSON);
             }
+            this.target = server.registryAccess().holderOrThrow(targetBiome);
+            this.protection = server.registryAccess().holderOrThrow(Biomes.PLAINS);
         }
         if (biome.is(bannedBiome)) {
+            BlockPos spawnPos = ServerLifecycleHooks.getCurrentServer().getWorldData().overworldData().getSpawnPos();
+            if (Math.abs((spawnPos.getX() >> 2) - x) <= 50 || Math.abs((spawnPos.getZ() >> 2) - z) <= 50) {
+                return protection;
+            }
             return target;
         }
         return biome;

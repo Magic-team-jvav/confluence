@@ -280,12 +280,12 @@ public final class PlayerUtils {
     }
 
     public static int[] decodeCoin(int money) {
-        int copper_count = money % 100;
-        int i = ((money - copper_count) / 100);
-        int silver_count = i % 100;
-        int j = ((i - silver_count) / 100);
-        int golden_count = j % 100;
-        int k = (j - golden_count) / 100;
+        int copper_count = money % UPGRADES_COUNT;
+        int i = ((money - copper_count) / UPGRADES_COUNT);
+        int silver_count = i % UPGRADES_COUNT;
+        int j = ((i - silver_count) / UPGRADES_COUNT);
+        int golden_count = j % UPGRADES_COUNT;
+        int k = (j - golden_count) / UPGRADES_COUNT;
         return new int[]{copper_count, silver_count, golden_count, k};
     }
 

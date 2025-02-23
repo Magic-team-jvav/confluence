@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
@@ -12,10 +11,8 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.confluence.terra_curio.mixin.client.accessor.MinecraftAccessor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -26,8 +23,8 @@ public class CoinItem extends BlockItem {
 
     public final Supplier<CoinItem> upgrade;
 
-    public CoinItem(Block block, ModRarity rarity, @Nullable Supplier<CoinItem> upgrade) {
-        super(block, new Properties().fireResistant().stacksTo(ModUtils.MAX_STACK_SIZE).component(TCDataComponentTypes.MOD_RARITY, rarity));
+    public CoinItem(Block block, ModRarity rarity, @Nullable Supplier<CoinItem> upgrade, int maxStackSize) {
+        super(block, new Properties().fireResistant().stacksTo(maxStackSize).component(TCDataComponentTypes.MOD_RARITY, rarity));
         this.upgrade = upgrade;
     }
 
@@ -41,7 +38,6 @@ public class CoinItem extends BlockItem {
         ItemStack stack = player.getItemInHand(usedHand);
         if (player.isCrouching() && upgrade != null && stack.getCount() >= UPGRADES_COUNT) {
             if (level.isClientSide) {
-                ((MinecraftAccessor) Minecraft.getInstance()).setRightClickDelay(1);
                 player.playSound(ModSoundEvents.TERRA_OPERATION.get());
             } else {
                 if (!player.getInventory().add(upgrade.get().getDefaultInstance())) {

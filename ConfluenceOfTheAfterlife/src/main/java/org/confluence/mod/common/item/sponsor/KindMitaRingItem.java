@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.sponsor;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -32,7 +33,7 @@ public class KindMitaRingItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.literal("戒指会带你找到正确的方向，亲爱的。"));
+        tooltipComponents.add(Component.literal("戒指会带你找到正确的方向，亲爱的。").withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 }

@@ -4,6 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -18,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
 import java.util.ArrayList;
@@ -161,5 +164,19 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
             }
         }
         return Blocks.AIR.defaultBlockState();
+    }
+    @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
+        if (level.dimensionType().ultraWarm()) {
+            if (state.is(NatureBlocks.RED_MOIST_SAND_BLOCK.get())) {
+                level.setBlock(pos, Blocks.RED_SAND.defaultBlockState(), 3);
+            }
+            else if (state.is(NatureBlocks.MOIST_SAND_BLOCK.get())) {
+                level.setBlock(pos, Blocks.SAND.defaultBlockState(), 3);
+            }
+
+            level.levelEvent(2009, pos, 0);
+            level.playSound(null, pos, SoundEvents.WET_SPONGE_DRIES, SoundSource.BLOCKS, 1.0F, (1.0F + level.getRandom().nextFloat() * 0.2F) * 0.7F);
+        }
     }
 }

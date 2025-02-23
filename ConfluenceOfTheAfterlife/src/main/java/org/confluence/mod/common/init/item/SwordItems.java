@@ -45,6 +45,7 @@ public class SwordItems {
     // 初始速度4，攻击2
 
     public static final DeferredItem<SwordItem> BREATHING_REED = register("breathing_reed", ModTiers.TITANIUM, 0, -2.4F, SHORT_SWORD.get());
+    public static final DeferredItem<SwordItem> GLADIUS = register("gladius", ModTiers.TITANIUM, 4, -1F, SHORT_SWORD.get());
     public static final DeferredItem<SwordItem> UMBRELLA = register("umbrella", ModTiers.TITANIUM, 0, -2.4F,ModRarity.BLUE, UMBRELLA_SWORD.get());
     public static final DeferredItem<SwordItem> TRAGIC_UMBRELLA = register("tragic_umbrella", ModTiers.TITANIUM, 0, -2.4F,ModRarity.BLUE, UMBRELLA_SWORD.get());
 

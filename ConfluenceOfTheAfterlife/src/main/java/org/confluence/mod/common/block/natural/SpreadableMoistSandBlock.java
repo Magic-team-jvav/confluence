@@ -3,9 +3,12 @@ package org.confluence.mod.common.block.natural;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -14,6 +17,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
+import org.confluence.mod.common.init.block.NatureBlocks;
 
 import java.util.Map;
 
@@ -96,5 +100,22 @@ public class SpreadableMoistSandBlock extends Block implements ISpreadable {
     public void randomTick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
         if (!serverLevel.isAreaLoaded(blockPos, 3)) return;
         spread(blockState, serverLevel, blockPos, randomSource);
+    }
+    @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
+        if (level.dimensionType().ultraWarm()) {
+            if (state.is(NatureBlocks.EBONY_MOIST_SAND_BLOCK.get())) {
+                level.setBlock(pos, NatureBlocks.EBONY_SAND.get().defaultBlockState(), 3);
+            }
+            else if (state.is(NatureBlocks.TR_CRIMSON_MOIST_SAND_BLOCK.get())) {
+                level.setBlock(pos, NatureBlocks.TR_CRIMSON_SAND.get().defaultBlockState(), 3);
+            }
+            else if (state.is(NatureBlocks.PEARL_MOIST_SAND_BLOCK.get())) {
+                level.setBlock(pos, NatureBlocks.PEARL_SAND.get().defaultBlockState(), 3);
+            }
+
+            level.levelEvent(2009, pos, 0);
+            level.playSound(null, pos, SoundEvents.WET_SPONGE_DRIES, SoundSource.BLOCKS, 1.0F, (1.0F + level.getRandom().nextFloat() * 0.2F) * 0.7F);
+        }
     }
 }

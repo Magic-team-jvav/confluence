@@ -1,6 +1,7 @@
 package org.confluence.mod.common.data.gen;
 
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffectStrategies;
@@ -1583,6 +1584,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.MANDIBLE_BLADE.get(), "颌骨剑");
         add(SwordItems.STYLISH_SCISSORS.get(), "时尚剪刀");
         add(SwordItems.BONE_SWORD.get(), "骨剑");
+        add(SwordItems.GLADIUS.get(), "罗马短剑");
         add(SwordItems.PURPLE_CLUBBERFISH.get(), "紫挥棒鱼");
         add(SwordItems.UMBRELLA.get(), "雨伞");
         add(SwordItems.CANDY_CANE_SWORD.get(), "糖棒剑");

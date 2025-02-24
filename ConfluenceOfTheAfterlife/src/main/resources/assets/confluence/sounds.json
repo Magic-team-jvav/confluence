@@ -9,21 +9,6 @@
             "confluence:waving"
         ]
     },
-    "double_jump": {
-        "sounds": [
-            "confluence:double_jump"
-        ]
-    },
-    "lightsaber_quick": {
-        "sounds": [
-            "confluence:lightsaber_quick"
-        ]
-    },
-    "lightsaber_slow": {
-        "sounds": [
-            "confluence:lightsaber_slow"
-        ]
-    },
     "lightsaber_open": {
         "sounds": [
             "confluence:lightsaber_open"
@@ -32,16 +17,6 @@
     "regular_staff_shoot": {
         "sounds": [
             "confluence:regular_staff_shoot"
-        ]
-    },
-    "shoes_fly": {
-        "sounds": [
-            "confluence:shoes_fly"
-        ]
-    },
-    "shoes_fly_jet": {
-        "sounds": [
-            "confluence:shoes_fly_jet"
         ]
     },
     "shoes_walk": {
@@ -69,19 +44,9 @@
             "confluence:coins"
         ]
     },
-    "sparkle_shoot": {
+    "regular_staff_shoot_2": {
         "sounds": [
-            "confluence:sparkle_shoot"
-        ]
-    },
-    "routine_hurt": {
-        "sounds": [
-            "confluence:mob/routine_hurt"
-        ]
-    },
-    "routine_death": {
-        "sounds": [
-            "confluence:mob/routine_death"
+            "confluence:regular_staff_shoot_2"
         ]
     },
     "frozen_broken": {

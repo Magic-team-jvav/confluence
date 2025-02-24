@@ -73,6 +73,32 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.MUSHROOM_GRASS_BLOCK.get(),
                 NatureBlocks.JUNGLE_GRASS_BLOCK.get()
         );
+        tag(BlockTags.BEACON_BASE_BLOCKS).add(
+                OreBlocks.LEAD_BLOCK.get(),
+                OreBlocks.SILVER_BLOCK.get(),
+                OreBlocks.TUNGSTEN_BLOCK.get(),
+                OreBlocks.PLATINUM_BLOCK.get(),
+                OreBlocks.DEMONITE_BLOCK.get(),
+                OreBlocks.TR_CRIMSON_BLOCK.get(),
+                OreBlocks.HELLSTONE_BLOCK.get(),
+                OreBlocks.COBALT_BLOCK.get(),
+                OreBlocks.PALLADIUM_BLOCK.get(),
+                OreBlocks.ORICHALCUM_BLOCK.get(),
+                OreBlocks.ADAMANTITE_BLOCK.get(),
+                OreBlocks.TITANIUM_BLOCK.get(),
+                OreBlocks.HALLOWED_BLOCK.get(),
+                OreBlocks.CHLOROPHYTE_BLOCK.get(),
+                OreBlocks.SHROOMITE_BLOCK.get(),
+                OreBlocks.SPECTRE_BLOCK.get(),
+                OreBlocks.LUMINITE_BLOCK.get(),
+                DecorativeBlocks.AMBER_BLOCK.get(),
+                DecorativeBlocks.TR_AMETHYST_BLOCK.get(),
+                DecorativeBlocks.TR_EMERALD_BLOCK.get(),
+                DecorativeBlocks.RUBY_BLOCK.get(),
+                DecorativeBlocks.SAPPHIRE_BLOCK.get(),
+                DecorativeBlocks.TOPAZ_BLOCK.get()
+
+        );
         tag(BlockTags.SCULK_REPLACEABLE).add(
                 NatureBlocks.CORRUPT_GRASS_BLOCK.get(),
                 NatureBlocks.ASH_BLOCK.get(),

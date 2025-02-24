@@ -177,6 +177,31 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.LIVING_LOG_BLOCKS.getFenceGate().asItem(),
                 NatureBlocks.LIVING_LOG_BLOCKS.getPressurePlate().asItem()
         );
+        tag(ItemTags.BEACON_PAYMENT_ITEMS).add(
+                MaterialItems.LEAD_INGOT.get(),
+                MaterialItems.SILVER_INGOT.get(),
+                MaterialItems.TUNGSTEN_INGOT.get(),
+                MaterialItems.PLATINUM_INGOT.get(),
+                MaterialItems.DEMONITE_INGOT.get(),
+                MaterialItems.TR_CRIMSON_INGOT.get(),
+                MaterialItems.HELLSTONE_INGOT.get(),
+                MaterialItems.COBALT_INGOT.get(),
+                MaterialItems.PALLADIUM_INGOT.get(),
+                MaterialItems.ORICHALCUM_INGOT.get(),
+                MaterialItems.ADAMANTITE_INGOT.get(),
+                MaterialItems.TITANIUM_INGOT.get(),
+                MaterialItems.HALLOWED_INGOT.get(),
+                MaterialItems.CHLOROPHYTE_INGOT.get(),
+                MaterialItems.SHROOMITE_INGOT.get(),
+                MaterialItems.SPECTRE_INGOT.get(),
+                MaterialItems.LUMINITE_INGOT.get(),
+                MaterialItems.AMBER.get(),
+                MaterialItems.TR_AMETHYST.get(),
+                MaterialItems.TR_EMERALD.get(),
+                MaterialItems.RUBY.get(),
+                MaterialItems.SAPPHIRE.get(),
+                MaterialItems.TOPAZ.get()
+        );
         tag(ItemTags.SAPLINGS).add(
                 NatureBlocks.SHADOW_SAPLING.get().asItem(),
                 NatureBlocks.EBONY_SAPLING.get().asItem(),

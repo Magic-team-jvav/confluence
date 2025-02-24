@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.accessory.sponsor;
+package org.confluence.mod.common.item.sponsor;
 
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;

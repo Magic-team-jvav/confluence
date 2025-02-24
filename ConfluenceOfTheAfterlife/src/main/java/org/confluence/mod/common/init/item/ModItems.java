@@ -12,11 +12,11 @@ import org.confluence.mod.common.init.ModJukeboxSongs;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.CustomRarityItem;
-import org.confluence.mod.common.item.accessory.sponsor.BoredomsPactFallingResolve;
-import org.confluence.mod.common.item.accessory.sponsor.ParadoxInteractiveMedal;
-import org.confluence.mod.common.item.common.*;
-import org.confluence.mod.common.item.sponsor.FailedSkullItem;
-import org.confluence.mod.common.item.sponsor.KindMitaRingItem;
+import org.confluence.mod.common.item.common.CoinItem;
+import org.confluence.mod.common.item.common.EntityDisplayItem;
+import org.confluence.mod.common.item.common.GrassSeedItem;
+import org.confluence.mod.common.item.common.TooltipItem;
+import org.confluence.mod.common.item.sponsor.*;
 import org.confluence.terra_curio.common.component.ModRarity;
 
 import java.util.Map;
@@ -49,6 +49,8 @@ public final class ModItems {
     public static final Supplier<ParadoxInteractiveMedal> PARADOX_INTERACTIVE_MEDAL = HIDDEN.register("paradox_interactive_medal", ParadoxInteractiveMedal::new);
     public static final Supplier<TooltipItem> TOKYO_TEDDY_BEAR = HIDDEN.register("tokyo_teddy_bear", () -> new TooltipItem(new Item.Properties(), ModRarity.MASTER, TooltipItem.getTooltipsFromString("tokyo_teddy_bear", 6)));
     public static final Supplier<IceTofuBrickItem> ICE_TOFU_BRICK = HIDDEN.register("ice_tofu_brick", IceTofuBrickItem::new);
+    public static final Supplier<FailedSkullItem> FAILED_SKULL = HIDDEN.register("failed_skull", FailedSkullItem::new);
+    public static final Supplier<KindMitaRingItem> KIND_MITA_RING = HIDDEN.register("kind_mita_ring", KindMitaRingItem::new);
 
     public static final Supplier<CoinItem> COPPER_COIN = ITEMS.register("copper_coin", () -> new CoinItem(ModBlocks.COPPER_COIN_PILE.get(), ModRarity.WHITE, ModItems.SILVER_COIN, 100));
     public static final Supplier<CoinItem> SILVER_COIN = ITEMS.register("silver_coin", () -> new CoinItem(ModBlocks.SILVER_COIN_PILE.get(), ModRarity.ORANGE, ModItems.GOLDEN_COIN, 100));
@@ -73,9 +75,6 @@ public final class ModItems {
     public static final Supplier<BlockItem> HALLOW_CATTAILS = BLOCK_ITEMS.register("hallow_cattails", () -> new BlockItem(NatureBlocks.HALLOW_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
     public static final Supplier<BlockItem> EBONY_CATTAILS = BLOCK_ITEMS.register("ebony_cattails", () -> new BlockItem(NatureBlocks.EBONY_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
     public static final Supplier<BlockItem> TR_CRIMSON_CATTAILS = BLOCK_ITEMS.register("tr_crimson_cattails", () -> new BlockItem(NatureBlocks.TR_CRIMSON_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
-
-    public static final Supplier<FailedSkullItem> FAILED_SKULL = ITEMS.register("failed_skull", FailedSkullItem::new);
-    public static final Supplier<KindMitaRingItem> KIND_MITA_RING = ITEMS.register("kind_mita_ring", KindMitaRingItem::new);
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

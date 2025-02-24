@@ -2,6 +2,7 @@ package org.confluence.mod.mixin.integration.sodium;
 
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
+import net.caffeinemc.mods.sodium.client.model.quad.ModelQuadView;
 import net.caffeinemc.mods.sodium.client.render.frapi.mesh.MutableQuadViewImpl;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
@@ -27,37 +28,38 @@ public abstract class BlockRendererMixin {
     private BlockPos confluence$pos;
 
     @Inject(method = "renderModel", at = @At("HEAD"))
-    private void getPos(BakedModel model, BlockState state, BlockPos pos, BlockPos origin, CallbackInfo ci) {
+    private void cachePos(BakedModel model, BlockState state, BlockPos pos, BlockPos origin, CallbackInfo ci) {
         this.confluence$pos = pos;
     }
 
     @Inject(method = "processQuad", at = @At("HEAD"))
-    private void getColor(MutableQuadViewImpl quad, CallbackInfo ci, @Share("colorData") LocalIntRef colorData) {
-        colorData.set(LocalBrushData.getColor(confluence$pos, SodiumHelper.quad$nominalFace(quad)));
+    private void cacheColor(MutableQuadViewImpl quad, CallbackInfo ci, @Share("colorData") LocalIntRef colorData) {
+        colorData.set(LocalBrushData.getColor(confluence$pos, ((ModelQuadView) (Object) quad).getLightFace()));
     }
 
     @ModifyVariable(method = "processQuad", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/pipeline/BlockRenderer;colorizeQuad(Lnet/caffeinemc/mods/sodium/client/render/frapi/mesh/MutableQuadViewImpl;I)V"))
-    private boolean emissive(boolean emissive, @Share("colorData") LocalIntRef colorData) {
+    private boolean illuminant(boolean emissive, @Share("colorData") LocalIntRef colorData) {
+        //SodiumHelper.blockRenderer$br(this, illuminant);
         return emissive || colorData.get() == BrushData.ILLUMINANT_COLOR;
     }
 
     @Inject(method = "processQuad", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/pipeline/BlockRenderer;bufferQuad(Lnet/caffeinemc/mods/sodium/client/render/frapi/mesh/MutableQuadViewImpl;[FLnet/caffeinemc/mods/sodium/client/render/chunk/terrain/material/Material;)V"))
-    private void putColor(MutableQuadViewImpl quad, CallbackInfo ci, @Share("colorData") LocalIntRef colorData) {
+    private void setColor(MutableQuadViewImpl quad, CallbackInfo ci, @Share("colorData") LocalIntRef colorData) {
         int color = colorData.get();
         if (color == BrushData.NEGATIVE_COLOR) {
             for (int i = 0; i < 4; ++i) {
-                int color1 = SodiumHelper.quad$color(quad, i);
+                int color1 = ((ModelQuadView) (Object) quad).getColor(i);
                 if ((color1 & 0xFFFFFF) != 0xFFFFFF) {
                     int comp0 = 255 - (color1 & 255);
                     int comp1 = 255 - (color1 >>> 8 & 255);
                     int comp2 = 255 - (color1 >>> 16 & 255);
-                    int comp3 = 255 - (color1 >>> 24 & 255);
+                    int comp3 = color1 >>> 24 & 255;
                     SodiumHelper.quad$color(quad, i, comp0 | comp1 << 8 | comp2 << 16 | comp3 << 24);
                 }
             }
         } else if (color != BrushData.EMPTY_COLOR) {
             for (int i = 0; i < 4; i++) {
-                SodiumHelper.quad$color(quad, i, color);
+                SodiumHelper.quad$color(quad, i, color | 0xFF << 24);
             }
         }
     }

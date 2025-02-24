@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.common;
+package org.confluence.mod.common.item.sponsor;
 
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;

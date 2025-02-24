@@ -13,27 +13,27 @@ import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.EnumMap;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 @OnlyIn(Dist.CLIENT)
 public final class LocalBrushData {
-    private static final Long2ObjectMap<EnumMap<Direction, Integer>> DATA = new Long2ObjectOpenHashMap<>();
+    private static final Long2ObjectMap<int[]> DATA = new Long2ObjectOpenHashMap<>();
 
     public static void putData(BlockPos pos, Direction facing, int color) {
-        DATA.computeIfAbsent(pos.asLong(), pos1 -> new EnumMap<>(Direction.class)).put(facing, color);
+        DATA.computeIfAbsent(pos.asLong(), l -> BrushData.createColor(BrushData.EMPTY_COLOR))[facing.get3DDataValue()] = color;
     }
 
-    public static @Nullable EnumMap<Direction, Integer> getDirs(BlockPos pos) {
+    public static int @Nullable [] getDirs(BlockPos pos) {
         return DATA.get(pos.asLong());
     }
 
     public static int getColor(BlockPos pos, @Nullable Direction facing) {
         if (facing == null) return BrushData.EMPTY_COLOR;
-        EnumMap<Direction, Integer> map = DATA.get(pos.asLong());
-        return map == null ? BrushData.EMPTY_COLOR : map.getOrDefault(facing, BrushData.EMPTY_COLOR);
+        int[] colors = DATA.get(pos.asLong());
+        return colors == null ? BrushData.EMPTY_COLOR : colors[facing.get3DDataValue()];
     }
 
     public static boolean hasColor(BlockPos pos) {
@@ -45,10 +45,12 @@ public final class LocalBrushData {
     }
 
     public static void removeData(BlockPos pos, Direction facing) {
-        EnumMap<Direction, Integer> map = DATA.get(pos.asLong());
-        if (map != null) {
-            map.remove(facing);
-            if (map.isEmpty()) DATA.remove(pos.asLong());
+        int[] colors = DATA.get(pos.asLong());
+        if (colors != null) {
+            colors[facing.get3DDataValue()] = BrushData.EMPTY_COLOR;
+            if (Arrays.stream(colors).allMatch(i -> i == BrushData.EMPTY_COLOR)) {
+                DATA.remove(pos.asLong());
+            }
         }
     }
 

@@ -18,11 +18,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
 
 public class GrayBlockModelSwapper extends BakedModelWrapperWithData {
-    protected static final ModelProperty<EnumMap<Direction, Integer>> COLOR_PROPERTY = new ModelProperty<>();
+    protected static final ModelProperty<int[]> COLOR_PROPERTY = new ModelProperty<>();
 
     public GrayBlockModelSwapper(BakedModel originalModel) {
         super(originalModel);
@@ -30,9 +29,9 @@ public class GrayBlockModelSwapper extends BakedModelWrapperWithData {
 
     @Override
     protected ModelData.Builder gatherModelData(ModelData.Builder builder, BlockAndTintGetter world, BlockPos pos, BlockState state, ModelData blockEntityData) {
-        EnumMap<Direction, Integer> dirs = LocalBrushData.getDirs(pos);
-        if (dirs != null) {
-            return builder.with(COLOR_PROPERTY, dirs);
+        int @Nullable [] colors = LocalBrushData.getDirs(pos);
+        if (colors != null) {
+            return builder.with(COLOR_PROPERTY, colors);
         }
         return builder;
     }
@@ -40,9 +39,9 @@ public class GrayBlockModelSwapper extends BakedModelWrapperWithData {
     @Override
     public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData extraData, @Nullable RenderType renderType) {
         List<BakedQuad> quads = super.getQuads(state, side, rand, extraData, renderType);
-        EnumMap<Direction, Integer> dirs = extraData.get(COLOR_PROPERTY);
+        int[] dirs = extraData.get(COLOR_PROPERTY);
         if (dirs == null) return quads;
-        int color = dirs.getOrDefault(side == null ? Direction.WEST : side, BrushData.EMPTY_COLOR);
+        int color = dirs[(side == null ? Direction.WEST : side).get3DDataValue()];
         if (color == BrushData.EMPTY_COLOR || color == BrushData.ILLUMINANT_COLOR) return quads;
         quads = new ArrayList<>(quads);
 

@@ -336,7 +336,7 @@ public final class ModClientEvents {
         Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
         CustomBlockModels customBlockModels = ModConnectives.MODEL_SWAPPER.getCustomBlockModels();
         BuiltInRegistries.BLOCK.stream().forEach(block -> {
-            if (customBlockModels.containsBlock(block)) return;
+            if (customBlockModels.containsBlock(block) || ClientConfigs.bannedModForPaints.contains(BuiltInRegistries.BLOCK.getKey(block).getNamespace())) return;
             for (ModelResourceLocation modelLocation : ModelSwapper.getAllBlockStateModelLocations(block)) {
                 BakedModel bakedModel = modelRegistry.get(modelLocation);
                 if (bakedModel != null) {

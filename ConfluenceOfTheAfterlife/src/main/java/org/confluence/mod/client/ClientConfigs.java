@@ -3,10 +3,7 @@ package org.confluence.mod.client;
 import net.minecraft.network.chat.Component;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
-import net.neoforged.neoforge.common.ModConfigSpec.Builder;
-import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
-import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
+import net.neoforged.neoforge.common.ModConfigSpec.*;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.mod.client.gui.hud.TerraStyleArmorHud;
 import org.confluence.mod.client.gui.hud.TerraStyleFoodHud;
@@ -14,10 +11,14 @@ import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
 import org.confluence.mod.client.gui.hud.TerraStyleManaHud;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public final class ClientConfigs {
     public static int showWindParticles = 90;
+    public static Set<String> bannedModForPaints = Set.of("integrateddynamics", "ae2", "refinedstorage", "create");
 
     public static boolean terraStyleHealth = true;
     public static TerraStyleHealthHud.Health healthStyle = TerraStyleHealthHud.Health.OVERLAY;
@@ -33,6 +34,7 @@ public final class ClientConfigs {
     public static boolean damageIndicator = true;
 
     private static IntValue SHOW_WIND_PARTICLES;
+    private static ConfigValue<List<? extends String>> BANNED_MOD_FOR_PAINTS;
 
     private static BooleanValue TERRA_STYLE_HEALTH;
     private static EnumValue<TerraStyleHealthHud.Health> HEALTH_STYLE;
@@ -49,6 +51,7 @@ public final class ClientConfigs {
 
     public static void onLoad() {
         showWindParticles = SHOW_WIND_PARTICLES.get();
+        bannedModForPaints = new HashSet<>(BANNED_MOD_FOR_PAINTS.get());
 
         terraStyleHealth = TERRA_STYLE_HEALTH.get();
         healthStyle = HEALTH_STYLE.get();
@@ -68,6 +71,9 @@ public final class ClientConfigs {
         Builder BUILDER = new Builder();
 
         SHOW_WIND_PARTICLES = BUILDER.defineInRange("showWindParticles", 90, 0, 100);
+        BANNED_MOD_FOR_PAINTS = BUILDER.defineListAllowEmpty("bannedModForPaints", List.of(
+                "integrateddynamics", "ae2", "refinedstorage", "create"
+        ), o -> o instanceof String s && !s.contains(":"));
 
 
         BUILDER.push("HUD");
@@ -105,11 +111,11 @@ public final class ClientConfigs {
     }
 
     public enum GoreEffect implements TranslatableEnum {
-        OFF,CONFLUENCE,CONFLUENCE_VANILLA, ALL;
+        OFF, CONFLUENCE, CONFLUENCE_VANILLA, ALL;
 
         @Override
         @NotNull
-        public Component getTranslatedName(){
+        public Component getTranslatedName() {
             return Component.translatable("confluence.configuration.goreEffect." + name().toLowerCase(Locale.ROOT));
         }
     }

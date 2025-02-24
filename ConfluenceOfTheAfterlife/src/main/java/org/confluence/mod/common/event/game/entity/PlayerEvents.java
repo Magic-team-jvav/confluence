@@ -35,6 +35,7 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
+import org.confluence.mod.common.entity.npc.AbstractTerraNPC;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
@@ -47,10 +48,7 @@ import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
-import org.confluence.mod.mixed.IAbstractMinecart;
-import org.confluence.mod.mixed.IFishingHook;
-import org.confluence.mod.mixed.IServerPlayer;
-import org.confluence.mod.mixed.IWorldOptions;
+import org.confluence.mod.mixed.*;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
@@ -146,6 +144,11 @@ public final class PlayerEvents {
     public static void playerInteract$EntityInteract(PlayerInteractEvent.EntityInteract event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer && event.getTarget() instanceof Saddleable saddleable && saddleable.isSaddled()) {
             PlayerUtils.awardAchievement(serverPlayer, "the_cavalry");
+        }
+        // 打开商店
+        if (event.getTarget() instanceof AbstractTerraNPC npc) {
+            ((IPlayer) event.getEntity()).rhyme$setDaveTrades(npc.trades);
+            ((IPlayer) event.getEntity()).rhyme$setInteractingEntity(npc);
         }
     }
 

@@ -38,7 +38,7 @@ public class FoodType {
     //月饼块
     public static final FoodProperties MOONCAKES = new FoodProperties.Builder().nutrition(1).saturationModifier(1.5f).fast().alwaysEdible().build();
     //粉色可乐
-    public static final FoodProperties PINK_KOLA = new FoodProperties.Builder().nutrition(1).saturationModifier(1.0f).fast().alwaysEdible()
+    public static final FoodProperties PINK_COLA = new FoodProperties.Builder().nutrition(1).saturationModifier(1.0f).fast().alwaysEdible()
             .effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 1200), 1.0f)
             .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 1200), 2.0f)
             .build();

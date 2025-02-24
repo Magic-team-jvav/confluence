@@ -1,7 +1,6 @@
 package org.confluence.mod.common.data.gen;
 
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffectStrategies;
@@ -2291,7 +2290,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.BAOBAB_FRUIT.get(), "猴面包果");
         add(FoodItems.COOKED_BAOBAB_FRUIT.get(), "烤猴面包果");
         //赞助
-        add(FoodItems.PINK_KOLA.get(), "粉色可乐");
+        add(FoodItems.PINK_COLA.get(), "粉色可乐");
         add(FoodItems.DONGDONGS_FLATBREAD.get(), "东东的大饼");
         // 鱼
         add(FoodItems.SEA_BASS.get(), "鲈鱼");

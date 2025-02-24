@@ -2,6 +2,9 @@ package org.confluence.mod.common.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -27,12 +30,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class FallingStarItemEntity extends ItemEntity {
-    private boolean wasOnGround;
+    private static final EntityDataAccessor<Boolean> DATA_WAS_ON_GROUND = SynchedEntityData.defineId(FallingStarItemEntity.class, EntityDataSerializers.BOOLEAN);
     private ParticleEmitter emitter;
 
     public FallingStarItemEntity(EntityType<FallingStarItemEntity> entityType, Level level) {
         super(entityType, level);
-        this.wasOnGround = false;
     }
 
     public FallingStarItemEntity(Level level, Vec3 pos) {
@@ -42,6 +44,12 @@ public class FallingStarItemEntity extends ItemEntity {
         setItem(MaterialItems.FALLING_STAR.get().getDefaultInstance());
         this.lifespan = 12000;
         setNeverPickUp();
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_WAS_ON_GROUND, false);
     }
 
     @Override
@@ -57,11 +65,11 @@ public class FallingStarItemEntity extends ItemEntity {
             super.tick();
             if (onGround()) {
                 if (hasPickUpDelay()) setNoPickUpDelay();
-                if (!wasOnGround) {
-                    this.wasOnGround = true;
+                if (!wasOnGround()) {
+                    setWasOnGround(true);
                     level().playSound(null, getX(), getY(), getZ(), ModSoundEvents.STAR_LANDS.get(), SoundSource.AMBIENT, 2.0F, 1.0F);
                 }
-            } else if (!wasOnGround && !level().getBlockState(getOnPos().below(6)).isAir()) {
+            } else if (!wasOnGround() && !level().getBlockState(getOnPos().below(6)).isAir()) {
                 level().playSound(null, getX(), getY(), getZ(), ModSoundEvents.STAR.get(), SoundSource.AMBIENT, 2.0F, 1.0F);
             } else if (level() instanceof ServerLevel serverLevel && ModSecretSeeds.DONT_DIG_UP.match(serverLevel)) {
                 if (ProjectileUtil.getHitResultOnMoveVector(this, entity -> true) instanceof EntityHitResult entityHitResult) {
@@ -72,6 +80,14 @@ public class FallingStarItemEntity extends ItemEntity {
         }
     }
 
+    public void setWasOnGround(boolean was) {
+        entityData.set(DATA_WAS_ON_GROUND, was);
+    }
+
+    public boolean wasOnGround() {
+        return entityData.get(DATA_WAS_ON_GROUND);
+    }
+
     @Override
     public boolean shouldRender(double x, double y, double z) {
         return true;
@@ -80,13 +96,13 @@ public class FallingStarItemEntity extends ItemEntity {
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
-        pCompound.putBoolean("wasOnGround", wasOnGround);
+        pCompound.putBoolean("wasOnGround", wasOnGround());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
-        this.wasOnGround = pCompound.getBoolean("wasOnGround");
+        setWasOnGround(pCompound.getBoolean("wasOnGround"));
     }
 
     public static void summon(ServerLevel serverLevel) {

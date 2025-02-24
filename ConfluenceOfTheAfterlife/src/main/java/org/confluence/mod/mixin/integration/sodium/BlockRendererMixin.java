@@ -34,7 +34,7 @@ public abstract class BlockRendererMixin {
 
     @Inject(method = "processQuad", at = @At("HEAD"))
     private void cacheColor(MutableQuadViewImpl quad, CallbackInfo ci, @Share("colorData") LocalIntRef colorData) {
-        colorData.set(LocalBrushData.getColor(confluence$pos, ((ModelQuadView) (Object) quad).getLightFace()));
+        colorData.set(LocalBrushData.getColor(confluence$pos, ((ModelQuadView) (Object) quad).getLightFace())); // 并非冗余
     }
 
     @ModifyVariable(method = "processQuad", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/pipeline/BlockRenderer;colorizeQuad(Lnet/caffeinemc/mods/sodium/client/render/frapi/mesh/MutableQuadViewImpl;I)V"))
@@ -48,7 +48,7 @@ public abstract class BlockRendererMixin {
         int color = colorData.get();
         if (color == BrushData.NEGATIVE_COLOR) {
             for (int i = 0; i < 4; ++i) {
-                int color1 = ((ModelQuadView) (Object) quad).getColor(i);
+                int color1 = ((ModelQuadView) (Object) quad).getColor(i); // 并非冗余
                 if ((color1 & 0xFFFFFF) != 0xFFFFFF) {
                     int comp0 = 255 - (color1 & 255);
                     int comp1 = 255 - (color1 >>> 8 & 255);

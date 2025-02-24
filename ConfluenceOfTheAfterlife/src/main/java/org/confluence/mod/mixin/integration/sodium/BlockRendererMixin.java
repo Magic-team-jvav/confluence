@@ -9,7 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.client.textures.LocalBrushData;
 import org.confluence.mod.common.data.saved.BrushData;
-import org.confluence.mod.integration.SodiumHelper;
+import org.confluence.mod.integration.sodium.SodiumHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Unique;

@@ -1,4 +1,4 @@
-package org.confluence.mod.integration;
+package org.confluence.mod.integration.sodium;
 
 import net.caffeinemc.mods.sodium.client.model.light.data.QuadLightData;
 import net.caffeinemc.mods.sodium.client.render.frapi.mesh.MutableQuadViewImpl;

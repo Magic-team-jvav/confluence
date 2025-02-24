@@ -29,7 +29,7 @@ public class GrayBlockModelSwapper extends BakedModelWrapperWithData {
 
     @Override
     protected ModelData.Builder gatherModelData(ModelData.Builder builder, BlockAndTintGetter world, BlockPos pos, BlockState state, ModelData blockEntityData) {
-        int @Nullable [] colors = LocalBrushData.getDirs(pos);
+        int @Nullable [] colors = LocalBrushData.getColors(pos);
         if (colors != null) {
             return builder.with(COLOR_PROPERTY, colors);
         }

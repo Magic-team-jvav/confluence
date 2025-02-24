@@ -26,7 +26,7 @@ public final class LocalBrushData {
         DATA.computeIfAbsent(pos.asLong(), l -> BrushData.createColor(BrushData.EMPTY_COLOR))[facing.get3DDataValue()] = color;
     }
 
-    public static int @Nullable [] getDirs(BlockPos pos) {
+    public static int @Nullable [] getColors(BlockPos pos) {
         return DATA.get(pos.asLong());
     }
 

@@ -15,14 +15,10 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
@@ -367,13 +363,25 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void finalizeSpawn(FinalizeSpawnEvent event) {
-        if (event.getEntity() instanceof Zombie zombie && event.getLevel().getBiome(BlockPos.containing(event.getX(), event.getY(), event.getZ())).is(Tags.Biomes.IS_COLD_OVERWORLD)) {
-            boolean pink = zombie.getRandom().nextFloat() < 0.01F;
-            zombie.setItemSlot(EquipmentSlot.HEAD, (pink ? ArmorItems.PINK_SNOW_CAPS : ArmorItems.SNOW_CAPS).get().getDefaultInstance());
-            zombie.setItemSlot(EquipmentSlot.CHEST, (pink ? ArmorItems.PINK_SNOW_SUITS : ArmorItems.SNOW_SUITS).get().getDefaultInstance());
-            zombie.setItemSlot(EquipmentSlot.LEGS, (pink ? ArmorItems.PINK_INSULATED_PANTS : ArmorItems.INSULATED_PANTS).get().getDefaultInstance());
-            zombie.setItemSlot(EquipmentSlot.FEET, (pink ? ArmorItems.PINK_INSULATED_SHOES : ArmorItems.INSULATED_SHOES).get().getDefaultInstance());
-            Arrays.fill(((MobAccessor) zombie).getArmorDropChances(), 0.003F);
+        Mob mob = event.getEntity();
+        if (mob.getType() == EntityType.ZOMBIE) {
+            Level level = mob.level();
+            BlockPos blockPos = BlockPos.containing(event.getX(), event.getY(), event.getZ());
+            float[] chances = ((MobAccessor) mob).getArmorDropChances();
+            float chance = 0.003F;
+            if (level.getBiome(blockPos).is(Tags.Biomes.IS_COLD_OVERWORLD)) {
+                boolean pink = mob.getRandom().nextFloat() < 0.01F;
+                mob.setItemSlot(EquipmentSlot.HEAD, (pink ? ArmorItems.PINK_SNOW_CAPS : ArmorItems.SNOW_CAPS).get().getDefaultInstance());
+                mob.setItemSlot(EquipmentSlot.CHEST, (pink ? ArmorItems.PINK_SNOW_SUITS : ArmorItems.SNOW_SUITS).get().getDefaultInstance());
+                mob.setItemSlot(EquipmentSlot.LEGS, (pink ? ArmorItems.PINK_INSULATED_PANTS : ArmorItems.INSULATED_PANTS).get().getDefaultInstance());
+                mob.setItemSlot(EquipmentSlot.FEET, (pink ? ArmorItems.PINK_INSULATED_SHOES : ArmorItems.INSULATED_SHOES).get().getDefaultInstance());
+                Arrays.fill(chances, chance);
+            } else if (level.isRainingAt(blockPos)) {
+                mob.setItemSlot(EquipmentSlot.HEAD, ArmorItems.RAIN_CAP.get().getDefaultInstance());
+                mob.setItemSlot(EquipmentSlot.CHEST, ArmorItems.RAINCOAT.get().getDefaultInstance());
+                chances[EquipmentSlot.HEAD.getIndex()] = chance;
+                chances[EquipmentSlot.CHEST.getIndex()] = chance;
+            }
         }
     }
 }

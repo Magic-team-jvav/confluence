@@ -154,6 +154,17 @@ public final class ClientUtils {
         return image;
     }
 
+    public static NativeImage replaceWithBlueWhite(int width, int height) {
+        NativeImage blueWhite = new NativeImage(width, height, false);
+        for (int i = 0; i < height; i++) {
+            boolean blue = i % 4 < 2;
+            for (int j = 0; j < width; j++) {
+                blueWhite.setPixelRGBA(j, i, blue ? -256 : -1);
+            }
+        }
+        return blueWhite;
+    }
+
     private static final Set<ResourceLocation> failed = new HashSet<>();
     public static final Set<ResourceLocation> ORIGINAL = new HashSet<>();
 

@@ -14,7 +14,6 @@ public final class ModSoundEvents {
 
     public static final Supplier<SoundEvent> TRANSMISSION = register("transmission");
     public static final Supplier<SoundEvent> WAVING = register("waving");
-    public static final Supplier<SoundEvent> LASER = register("laser");
     public static final Supplier<SoundEvent> LIGHTSABER_QUICK = register("lightsaber_quick");
     public static final Supplier<SoundEvent> LIGHTSABER_SLOW = register("lightsaber_slow");
     public static final Supplier<SoundEvent> LIGHTSABER_OPEN = register("lightsaber_open");
@@ -22,7 +21,6 @@ public final class ModSoundEvents {
     public static final Supplier<SoundEvent> SHOES_FLY = register("shoes_fly");
     public static final Supplier<SoundEvent> SHOES_FLY_JET = register("shoes_fly_jet");
     public static final Supplier<SoundEvent> SHOES_WALK = register("shoes_walk");
-    public static final Supplier<SoundEvent> SHOOT = register("shoot"); // 枪射击
     public static final Supplier<SoundEvent> SPARKLE_SHOOT = register("sparkle_shoot"); // 法杖发射1
     public static final Supplier<SoundEvent> LIFE_CRYSTAL_USE = register("life_crystal_use");
     public static final Supplier<SoundEvent> MANA_STAR_USE = register("mana_star_use");

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.gun;
 
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -10,6 +11,7 @@ import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_guns.api.IGun;
 import org.confluence.terra_guns.common.entity.SimpleTrailProjectile;
+import org.confluence.terra_guns.common.init.TGSoundEvents;
 
 public class SpaceGunItem extends ManaGunItem<SimpleTrailProjectile> {
     public SpaceGunItem() {
@@ -36,5 +38,10 @@ public class SpaceGunItem extends ManaGunItem<SimpleTrailProjectile> {
     public void beforeAmmoShoot(Player shooter, SimpleTrailProjectile projectile, ItemStack gunStack, ItemStack ammoStack) {
         float damage = ((IGun<SimpleTrailProjectile>) gunStack.getItem()).getGunDamage(shooter, projectile, gunStack, ammoStack);
         projectile.damageAndKnockback(getFinalDamage(damage, shooter, projectile, gunStack, ammoStack), getKnockBack());
+    }
+
+    @Override
+    protected SoundEvent getShotSound() {
+        return TGSoundEvents.LASER.get();
     }
 }

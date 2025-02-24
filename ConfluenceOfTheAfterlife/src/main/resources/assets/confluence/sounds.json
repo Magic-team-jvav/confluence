@@ -14,11 +14,6 @@
             "confluence:double_jump"
         ]
     },
-    "laser": {
-        "sounds": [
-            "confluence:laser"
-        ]
-    },
     "lightsaber_quick": {
         "sounds": [
             "confluence:lightsaber_quick"
@@ -52,11 +47,6 @@
     "shoes_walk": {
         "sounds": [
             "confluence:shoes_walk"
-        ]
-    },
-    "shoot": {
-        "sounds": [
-            "confluence:shoot"
         ]
     },
     "fart_sound": {

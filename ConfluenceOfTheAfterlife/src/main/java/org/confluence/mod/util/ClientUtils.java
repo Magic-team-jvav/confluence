@@ -157,9 +157,9 @@ public final class ClientUtils {
     public static NativeImage replaceWithBlueWhite(int width, int height) {
         NativeImage blueWhite = new NativeImage(width, height, false);
         for (int i = 0; i < height; i++) {
-            boolean blue = i % 4 < 2;
+            int color = i % 4 < 2 ? -256 : -1;
             for (int j = 0; j < width; j++) {
-                blueWhite.setPixelRGBA(j, i, blue ? -256 : -1);
+                blueWhite.setPixelRGBA(j, i, color);
             }
         }
         return blueWhite;

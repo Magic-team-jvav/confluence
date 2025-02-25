@@ -4,6 +4,7 @@
     "features": [
         "confluence:no_traps_gravitation_trap",
         "confluence:no_traps_pneumatic_trap",
+        "confluence:no_traps_sculk_trap",
         "confluence:no_traps_shimmer_trap"
     ],
     "step": "underground_decoration"

@@ -303,8 +303,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.autoStackGelsColor", "自动合并凝胶");
         add("confluence.configuration.autoStackGelsColor.tooltip", "启用时，你拾取的不同颜色的凝胶会合并堆叠");
         add("confluence.configuration.bannedModForPaints", "模组油漆使用黑名单");
-        add("confluence.configuration.bannedModForPaints.button", "输入模组ID以使用黑名单");
-        add("confluence.configuration.bannedModForPaints.tooltip", "如果本模组的油漆为其他模组的部分方块带来渲染问题，启用以禁止该模组的方块使用油漆染色");
+        add("confluence.configuration.bannedModForPaints.button", "填入模组MODID以使用黑名单");
+        add("confluence.configuration.bannedModForPaints.tooltip", "如果本模组的油漆为其他模组的部分方块带来渲染问题，填入MODID以禁止该模组的方块使用油漆染色");
         add("confluence.configuration.fletchingMenu", "制箭台菜单");
         add("confluence.configuration.fletchingMenu.tooltip", "启用时，将使用汇流来世的修改制箭台");
         add("confluence.configuration.shimmer_decompose", "微光分解");

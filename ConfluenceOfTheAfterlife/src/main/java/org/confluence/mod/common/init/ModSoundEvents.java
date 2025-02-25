@@ -36,7 +36,7 @@ public final class ModSoundEvents {
     public static final Supplier<SoundEvent> TRANSMUTATION_USE = register("transmutation_use"); // 高级增益使用
     //空音效
     // 若干音乐包，都带上other_world
-    public static final Supplier<SoundEvent> OTHER_WORLD = register("other_world"); // 汇流常规主题曲
+   public static final Supplier<SoundEvent> OTHER_WORLD = register("other_world"); // 汇流常规主题曲
 
     // 音乐包
     public static final Supplier<SoundEvent> KING_SLIME_COMBAT = register("king_slime_combat"); // 史王，

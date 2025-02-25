@@ -19,16 +19,6 @@
             "confluence:regular_staff_shoot"
         ]
     },
-    "shoes_walk": {
-        "sounds": [
-            "confluence:shoes_walk"
-        ]
-    },
-    "fart_sound": {
-        "sounds": [
-            "confluence:fart_sound"
-        ]
-    },
     "life_crystal_use": {
         "sounds": [
             "confluence:life_crystal_use"

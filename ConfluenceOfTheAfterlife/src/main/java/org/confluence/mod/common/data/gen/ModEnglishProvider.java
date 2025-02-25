@@ -482,6 +482,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.PlayerDeath.button", "Player Death Mechanics");
         add("confluence.configuration.PlayerDeath.tooltip", "Defines the effects when a player dies.");
         add("confluence.configuration.showMoneyDrops", "Show Money Drops on Death Screen");
+        add("confluence.configuration.bannedModForPaints", "Mod Paint Usage Blacklist");
+        add("confluence.configuration.bannedModForPaints.button", "Enter Mod ID to Use Blacklist");
+        add("confluence.configuration.bannedModForPaints.tooltip", "Enable this if the paint from this mod causes rendering issues on blocks from other mods, to prevent blocks from this mod from using paint coloring.");
 // Separator
         add("confluence.configuration.Mana.button", "Mana");
         add("confluence.configuration.Armor.button", "Armor");

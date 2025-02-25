@@ -55,7 +55,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("item.confluence.tokyo_teddy_bear.tooltip.5", "           已不再需要");
         add("item.confluence.tokyo_teddy_bear.tooltip.6", "——由一只蜘蛛讲述的故事");
         add("item.confluence.paradox_interactive_medal.tooltip.0", "同时玩过钢铁雄心、维多利亚、欧陆风云、十字军之王、都市天际线的证明。");
-        add("item.confluence.pink_kola.tooltip.1", "一瓶普通的粉色可乐，或许原来有一整箱？");
+        add("item.confluence.pink_cola.tooltip.1", "一瓶普通的粉色可乐，或许原来有一整箱？");
         add("item.confluence.dongdongs_flatbread.tooltip.1", "刚在地狱岩上考好的饼，快来尝尝吧！");
 
         add("item.confluence.boredoms_pact_falling_resolve.tooltip.0", "「无聊之咒·陨志」");
@@ -302,6 +302,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.dropsMoney.tooltip", "启用时，你的钱币死亡后会掉落");
         add("confluence.configuration.autoStackGelsColor", "自动合并凝胶");
         add("confluence.configuration.autoStackGelsColor.tooltip", "启用时，你拾取的不同颜色的凝胶会合并堆叠");
+        add("confluence.configuration.bannedModForPaints", "模组油漆使用黑名单");
+        add("confluence.configuration.bannedModForPaints.button", "输入模组ID以使用黑名单");
+        add("confluence.configuration.bannedModForPaints.tooltip", "如果本模组的油漆为其他模组的部分方块带来渲染问题，启用以禁止该模组的方块使用油漆染色");
         add("confluence.configuration.fletchingMenu", "制箭台菜单");
         add("confluence.configuration.fletchingMenu.tooltip", "启用时，将使用汇流来世的修改制箭台");
         add("confluence.configuration.shimmer_decompose", "微光分解");

@@ -10,7 +10,7 @@
         {
             "type": "patchouli:image",
             "images": [
-                "confluence:textures/painting/the_corruption.png"
+                "confluence:textures/painting/demon_altar.png"
             ],
             "text": "The Demon Altar typically appears underground in the Corruption biome, appearing in small quantities across the underground world.",
             "title": "Demon Altar"

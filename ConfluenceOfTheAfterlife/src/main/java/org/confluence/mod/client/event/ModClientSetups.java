@@ -163,6 +163,7 @@ public final class ModClientSetups {
         ItemBlockRenderTypes.setRenderLayer(NatureBlocks.PALM_LOG_BLOCKS.getDoor().get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.EVER_POWERED_RAIL.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.PURE_GLASS.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.ECHO_BLOCK.get(), cutout);
         RenderType cutoutMipped = RenderType.cutoutMipped();
         ItemBlockRenderTypes.setRenderLayer(NatureBlocks.GREEN_MOSS.get(), cutoutMipped);
         ItemBlockRenderTypes.setRenderLayer(NatureBlocks.BROWN_MOSS.get(), cutoutMipped);

@@ -16,8 +16,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
-import net.minecraft.world.level.levelgen.structure.*;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.ScatteredFeaturePiece;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.material.FluidState;
 import org.confluence.mod.common.init.ModStructures;
@@ -46,10 +50,8 @@ public class CrimsonCaveStructure extends Structure {
             ChunkPos chunkPos = context.chunkPos();
             WorldgenRandom random = context.random();
 
-            HillPiece hillPiece = new HillPiece(chunkPos.getMinBlockX(), lowestY, chunkPos.getMinBlockZ(), Util.getRandom(ModUtils.HORIZONTAL, random));
+            HillPiece hillPiece = new HillPiece(chunkPos, lowestY, Util.getRandom(ModUtils.HORIZONTAL, random));
             builder.addPiece(hillPiece);
-
-            builder.addPiece(new PalmPiece(hillPiece));
         });
     }
 
@@ -59,19 +61,19 @@ public class CrimsonCaveStructure extends Structure {
     }
 
     public static class HillPiece extends ScatteredFeaturePiece {
+        private final ChunkPos startPos;
         private BlockPos tunnelEndPos;
         private Direction tunnelEndFace;
-        private boolean placed = false;
 
-        // [width, height, depth] -> [offsetX, offsetY, offsetZ]
-        public HillPiece(int x, int y, int z, Direction orientation) {
-            super(ModStructures.CRIMSON_CAVE_HILL.get(), x, y, z, 24, 24, 24, orientation);
+        public HillPiece(ChunkPos startPos, int y, Direction orientation) {
+            super(ModStructures.CRIMSON_CAVE_HILL.get(), startPos.getMinBlockX(), y, startPos.getMinBlockZ(), 64, 24, 64, orientation);
+            this.startPos = startPos;
         }
 
         public HillPiece(CompoundTag tag) {
             super(ModStructures.CRIMSON_CAVE_HILL.get(), tag);
-            this.placed = tag.getBoolean("Placed");
 
+            this.startPos = new ChunkPos(tag.getLong("StartPos"));
             this.tunnelEndPos = NbtUtils.readBlockPos(tag, "TunnelEndPos").orElseThrow();
             this.tunnelEndFace = Direction.byName(tag.getString("TunnelEndFace"));
         }
@@ -79,16 +81,18 @@ public class CrimsonCaveStructure extends Structure {
         @Override
         protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
             super.addAdditionalSaveData(context, tag);
-            tag.putBoolean("Placed", placed);
 
+            tag.putLong("StartPos", startPos.toLong());
             tag.put("TunnelEndPos", NbtUtils.writeBlockPos(tunnelEndPos));
             tag.putString("TunnelEndFace", tunnelEndFace.getSerializedName());
         }
 
         @Override
         public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator generator, RandomSource random, BoundingBox box, ChunkPos chunkPos, BlockPos pos) {
-            if (placed) return;
-            this.placed = true;
+            WorldgenRandom worldgenRandom = new WorldgenRandom(new LegacyRandomSource(20250225L));
+            worldgenRandom.setLargeFeatureSeed(level.getSeed(), startPos.x, startPos.z);
+            random = worldgenRandom;
+            pos = startPos.getMiddleBlockPosition(pos.getY());
 
             int radius = random.nextInt(12, 16);
             int diameter = radius * 2 + 1;
@@ -110,13 +114,14 @@ public class CrimsonCaveStructure extends Structure {
                             BlockState blockState = level.getBlockState(mutable.setWithOffset(pos, x, y, z));
                             if (isReplaceableByStructures(blockState) || blockState.is(BlockTags.OVERWORLD_CARVER_REPLACEABLES)) {
                                 if (sqr < airRadiusSqr) {
-                                    level.setBlock(mutable, air, 2);
-                                    FluidState fluidstate = level.getFluidState(mutable);
-                                    if (!fluidstate.isEmpty()) {
-                                        level.scheduleTick(mutable, fluidstate.getType(), 0);
-                                    }
+                                    if (level.setBlock(mutable, air, 2)) {
+                                        FluidState fluidstate = level.getFluidState(mutable);
+                                        if (!fluidstate.isEmpty()) {
+                                            level.scheduleTick(mutable, fluidstate.getType(), 0);
+                                        }
+                                    } else break;
                                 } else {
-                                    level.setBlock(mutable, stone, 2);
+                                    if (!level.setBlock(mutable, stone, 2)) break;
                                 }
                             }
                         }
@@ -126,7 +131,7 @@ public class CrimsonCaveStructure extends Structure {
 
             BlockPos tunnelStart = pos.offset(random.nextInt(radius) - radius / 2, -radius + 4, random.nextInt(radius) - radius / 2);
             List<Vector3d> tunnelNodes = Lists.newArrayList(HomingUtils.toVector3d(tunnelStart));
-            int depth = pos.getY() / 16;
+            int depth = pos.getY() / 16 - 1;
             if (depth % 2 == 0) depth++;
             int stepX = random.nextBoolean() ? -7 : 7;
             int stepZ = random.nextBoolean() ? -7 : 7;
@@ -136,6 +141,7 @@ public class CrimsonCaveStructure extends Structure {
                 stepX = -stepX;
                 stepZ = -stepZ;
             }
+            tunnelNodes.add(HomingUtils.toVector3d(startPos.getMiddleBlockPosition(0)));
             ModUtils.lightningPathList(tunnelNodes, 2.5, 8, random);
             Vector3d delta = tunnelNodes.getLast().sub(tunnelNodes.get(tunnelNodes.size() - 2));
             this.tunnelEndFace = Direction.getNearest(delta.x, delta.y, delta.z);
@@ -143,50 +149,26 @@ public class CrimsonCaveStructure extends Structure {
             list.removeLast();
             for (BlockPos nodePos : list) {
                 for (BlockPos blockPos : BlockPos.betweenClosed(nodePos.offset(-3, -2, -3), nodePos.offset(3, 2, 3))) {
-                    level.setBlock(blockPos, stone, 2);
+                    if (!level.setBlock(blockPos, stone, 2)) break;
                 }
             }
             for (BlockPos nodePos : list) {
                 for (BlockPos blockPos : BlockPos.betweenClosed(nodePos.offset(-2, -1, -2), nodePos.offset(2, 2, 2))) {
-                    level.setBlock(blockPos, air, 2);
+                    if (!level.setBlock(blockPos, air, 2)) break;
                 }
             }
 
             this.tunnelEndPos = list.getLast().relative(tunnelEndFace, 2);
-        }
-    }
 
-    public static class PalmPiece extends StructurePiece {
-        private HillPiece hillPiece;
-        private boolean placed = false;
-
-        public PalmPiece(HillPiece hillPiece) {
-            super(ModStructures.CRIMSON_CAVE_PALM.get(), 0, hillPiece.getBoundingBox().inflatedBy(32));
-            this.hillPiece = hillPiece;
-        }
-
-        public PalmPiece(CompoundTag tag) {
-            super(ModStructures.CRIMSON_CAVE_PALM.get(), tag);
-            this.placed = tag.getBoolean("Placed");
-        }
-
-        @Override
-        protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
-            tag.putBoolean("Placed", placed);
-        }
-
-        @Override
-        public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator generator, RandomSource random, BoundingBox box, ChunkPos chunkPos, BlockPos pos) {
-            if (placed || hillPiece == null || hillPiece.tunnelEndPos == null || hillPiece.tunnelEndFace == null) return;
-            this.placed = true;
-
-//            BlockState blockState = Blocks.AIR.defaultBlockState();
-//            for (int i = -63; i < 64; i++) {
-//                for (int k = -63; k < 64; k++) {
-//                    BlockPos offset = hillPiece.tunnelEndPos.offset(i, 0, k);
-//                    level.setBlock(offset, blockState, 2);
-//                }
-//            }
+            BlockState blockState = Blocks.AIR.defaultBlockState();
+            for (int i = -9; i < 55; i++) {
+                for (int j = -8; j < 40; j++) {
+                    for (int k = -9; k < 55; k++) {
+                        BlockPos offset = tunnelEndPos.offset(i, -j, k);
+                        if (!level.setBlock(offset, blockState, 2)) break;
+                    }
+                }
+            }
         }
     }
 }

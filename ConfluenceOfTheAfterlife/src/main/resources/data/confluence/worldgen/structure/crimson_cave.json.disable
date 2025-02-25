@@ -1,0 +1,6 @@
+{
+    "type": "confluence:crimson_cave",
+    "biomes": "confluence:tr_crimson",
+    "spawn_overrides": {},
+    "step": "surface_structures"
+}

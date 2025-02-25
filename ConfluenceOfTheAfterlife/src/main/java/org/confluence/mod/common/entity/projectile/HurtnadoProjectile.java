@@ -67,7 +67,7 @@ public class HurtnadoProjectile extends Projectile implements Immunity {
             AABB boundingBox = getBoundingBox().inflate(1.0);
             if (ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F) instanceof EntityHitResult entityHitResult) {
                 Entity entity = entityHitResult.getEntity();
-                if (entity.hurt(damageSources().indirectMagic(getOwner(), this), 6.5F)) {
+                if (entity.hurt(damageSources().indirectMagic(this, getOwner()), 6.5F)) {
                     HomingUtils.knockBackA2B(this, entity, 0.5, 0.2);
                 }
                 if (passThrough.add(entity) && passThrough.size() >= 14) {

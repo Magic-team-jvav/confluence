@@ -83,7 +83,7 @@ public class BallOfFireProjectile extends Projectile {
                     entity.setRemainingFireTicks(100);
                 }
             }
-            if (entity.hurt(damageSources().indirectMagic(getOwner(), this), ddu ? 17.0F : 9.6F)) {
+            if (entity.hurt(damageSources().indirectMagic(this, getOwner()), ddu ? 17.0F : 9.6F)) {
                 HomingUtils.knockBackA2B(this, entity, 0.6, 0.2);
             }
         }

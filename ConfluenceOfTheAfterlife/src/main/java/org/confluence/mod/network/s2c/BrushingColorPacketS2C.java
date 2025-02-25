@@ -94,7 +94,7 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
     }
 
     public static void sendToPlayersTrackingChunk(ServerLevel level, BlockPos pos, @Nullable Direction facing, int color, boolean save) {
-        if (!(level.getBlockState(pos)).isSolidRender(level, pos)) {
+        if (!level.getBlockState(pos).isSolidRender(level, pos)) {
             facing = null;
         }
         sendToPlayersTrackingChunk(level, new ChunkPos(pos), new BrushData(pos, facing, color), save);
@@ -104,7 +104,7 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
         if (ServerLifecycleHooks.getCurrentServer() != null) {
             BrushData brushData = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap().get(new ChunkPos(pos));
             if (brushData == null) return;
-            if ((level.getBlockState(pos)).isSolidRender(level, pos)) {
+            if (level.getBlockState(pos).isSolidRender(level, pos)) {
                 brushData.remove(pos, facing);
             } else {
                 brushData.remove(pos);

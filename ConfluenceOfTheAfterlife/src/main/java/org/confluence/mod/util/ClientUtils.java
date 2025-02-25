@@ -38,6 +38,8 @@ public final class ClientUtils {
     public static final Quaternionf ANGLE_45 = Axis.YP.rotation(Mth.PI * 0.25F);
     public static final Quaternionf ANGLE_180 = Axis.ZP.rotation(Mth.PI);
     public static final Quaternionf ANGLE_N90 = Axis.YP.rotation(-Mth.HALF_PI);
+    public static final int[] FULL_BRIGHT = {0xF000F0, 0xF000F0, 0xF000F0, 0xF000F0};
+    public static final float INV_255 = 1.0F / 255.0F;
 
     public static void setupOverlayRenderState(boolean blend, boolean depthTest) {
         if (blend) {

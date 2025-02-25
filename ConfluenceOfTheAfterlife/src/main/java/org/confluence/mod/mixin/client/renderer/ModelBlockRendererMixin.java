@@ -10,15 +10,12 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.core.BlockPos;
 import org.confluence.mod.client.textures.LocalBrushData;
 import org.confluence.mod.common.data.saved.BrushData;
+import org.confluence.mod.util.ClientUtils;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ModelBlockRenderer.class)
 public abstract class ModelBlockRendererMixin {
-    @Unique
-    private static final int[] FULL_BRIGHT = {0xF000F0, 0xF000F0, 0xF000F0, 0xF000F0};
-
     /**
      * @see org.confluence.mod.mixin.integration.sodium.BlockRendererMixin
      */
@@ -28,7 +25,7 @@ public abstract class ModelBlockRendererMixin {
         if (color == BrushData.EMPTY_COLOR) {
             original.call(instance, pose, quad, brightness, red, green, blue, alpha, lightmap, packedOverlay, readAlpha);
         } else if (color == BrushData.ILLUMINANT_COLOR) {
-            original.call(instance, pose, quad, brightness, red, green, blue, alpha, FULL_BRIGHT, packedOverlay, readAlpha);
+            original.call(instance, pose, quad, brightness, red, green, blue, alpha, ClientUtils.FULL_BRIGHT, packedOverlay, readAlpha);
         } else if (color == BrushData.NEGATIVE_COLOR) {
             if (red != 1.0F || green != 1.0F || blue != 1.0F) {
                 original.call(instance, pose, quad, brightness, 1.0F - red, 1.0F - green, 1.0F - blue, alpha, lightmap, packedOverlay, readAlpha);
@@ -36,9 +33,9 @@ public abstract class ModelBlockRendererMixin {
                 original.call(instance, pose, quad, brightness, red, green, blue, alpha, lightmap, packedOverlay, readAlpha);
             }
         } else {
-            float r = (float) (color >> 16 & 255) / 255.0F;
-            float g = (float) (color >> 8 & 255) / 255.0F;
-            float b = (float) (color & 255) / 255.0F;
+            float r = (float) (color >> 16 & 255) * ClientUtils.INV_255;
+            float g = (float) (color >> 8 & 255) * ClientUtils.INV_255;
+            float b = (float) (color & 255) * ClientUtils.INV_255;
             original.call(instance, pose, quad, brightness, r, g, b, alpha, lightmap, packedOverlay, readAlpha);
         }
     }

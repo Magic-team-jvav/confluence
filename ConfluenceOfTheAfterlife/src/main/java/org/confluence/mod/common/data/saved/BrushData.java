@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.function.Function;
@@ -76,7 +77,11 @@ public record BrushData(Map<BlockPos, int[]> colors) {
     }
 
     public void put(BlockPos pos, Direction facing, int color) {
-        colors.computeIfAbsent(pos, COMPUTE)[facing.get3DDataValue()] = color;
+        if (color == ECHO_COLOR) {
+            Arrays.fill(colors.computeIfAbsent(pos, COMPUTE), ECHO_COLOR);
+        } else {
+            colors.computeIfAbsent(pos, COMPUTE)[facing.get3DDataValue()] = color;
+        }
     }
 
     public void merge(BrushData data) {
@@ -104,9 +109,11 @@ public record BrushData(Map<BlockPos, int[]> colors) {
         if (list == null) return false;
         int index = facing.get3DDataValue();
         boolean b = list[index] != EMPTY_COLOR;
-        list[index] = EMPTY_COLOR;
-        for (int c : list) {
-            if (c != EMPTY_COLOR) return b;
+        if (list[index] != ECHO_COLOR) {
+            list[index] = EMPTY_COLOR;
+            for (int c : list) {
+                if (c != EMPTY_COLOR) return b;
+            }
         }
         colors.remove(pos);
         return b;

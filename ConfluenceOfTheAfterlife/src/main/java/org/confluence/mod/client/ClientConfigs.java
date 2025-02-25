@@ -72,7 +72,7 @@ public final class ClientConfigs {
 
         SHOW_WIND_PARTICLES = BUILDER.defineInRange("showWindParticles", 90, 0, 100);
         BANNED_MOD_FOR_PAINTS = BUILDER.defineListAllowEmpty("bannedModForPaints", () -> List.of(
-                "integrateddynamics", "ae2", "refinedstorage", "create", "mekanism", "immersiveengineering"
+                "integrateddynamics", "ae2", "refinedstorage", "create", "mekanism", "immersiveengineering", "enderio"
         ), () -> "modid", o -> o instanceof String s && !s.contains(":"));
 
 

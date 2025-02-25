@@ -150,6 +150,7 @@ dependencies {
     compileOnly "curse.maven:ftb-library-forge-404465:6016745"
     //runtimeOnly "curse.maven:ftb-chunks-forge-314906:5968500"
     //runtimeOnly "curse.maven:ftb-library-forge-404465:6016745"
+    //runtimeOnly "curse.maven:ftb-ultimine-forge-386134:5671703"
     //runtimeOnly "curse.maven:ftb-teams-forge-404468:5882217"
     //runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
 
@@ -157,6 +158,8 @@ dependencies {
 
     compileOnly "curse.maven:sodium-394468:6211307"
     //runtimeOnly "curse.maven:sodium-394468:6211307"
+
+    //runtimeOnly "curse.maven:ars-nouveau-401955:6228434"
 }
 
 tasks.withType(ProcessResources).configureEach {

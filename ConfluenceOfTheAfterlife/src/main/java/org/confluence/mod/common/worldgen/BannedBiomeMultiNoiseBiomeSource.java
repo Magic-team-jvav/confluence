@@ -28,7 +28,7 @@ public class BannedBiomeMultiNoiseBiomeSource extends MultiNoiseBiomeSource {
     @Override
     public Holder<Biome> getNoiseBiome(int x, int y, int z, Climate.Sampler sampler) {
         Holder<Biome> biome = super.getNoiseBiome(x, y, z, sampler);
-        if (target == null) {
+        if (target == null || protection == null) {
             MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
             if (server == null) return biome;
             if (targetBiome.equals(ModBiomes.THE_CORRUPTION)) {

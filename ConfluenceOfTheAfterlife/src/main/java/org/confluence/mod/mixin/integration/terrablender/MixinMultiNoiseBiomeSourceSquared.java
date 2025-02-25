@@ -60,9 +60,13 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
                     replaced = pair.getSecond();
                 }
             }
-            if (replaced.is(ModBiomes.THE_CORRUPTION) || replaced.is(ModBiomes.TR_CRIMSON)) {
-                BlockPos spawnPos = ServerLifecycleHooks.getCurrentServer().getWorldData().overworldData().getSpawnPos();
+            MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
+            if (currentServer != null && (replaced.is(ModBiomes.THE_CORRUPTION) || replaced.is(ModBiomes.TR_CRIMSON))) {
+                BlockPos spawnPos = currentServer.getWorldData().overworldData().getSpawnPos();
                 if (Math.abs((spawnPos.getX() >> 2) - x) <= 50 || Math.abs((spawnPos.getZ() >> 2) - z) <= 50) {
+                    if (confluence$protection == null) {
+                        this.confluence$protection = currentServer.registryAccess().holderOrThrow(Biomes.PLAINS);
+                    }
                     replaced = confluence$protection;
                 }
             }
@@ -89,7 +93,7 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
             long flag = ((IWorldOptions) worldOptions).confluence$getSecretFlag();
             ResourceKey<Biome> from;
             ResourceKey<Biome> to;
-            if (self() instanceof BannedBiomeMultiNoiseBiomeSource) {
+            if (self() instanceof BannedBiomeMultiNoiseBiomeSource banned) {
                 return this.confluence$biomePair = new Pair<>(null, null);
             } else if (ModSecretSeeds.DRUNK_WORLD.match(flag)) {
                 ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.DOUBLE_EVIL);
@@ -115,7 +119,6 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
             }
             Registry<Biome> biomes = server.registryAccess().registryOrThrow(Registries.BIOME);
             this.confluence$biomePair = new Pair<>(biomes.getHolderOrThrow(from), biomes.getHolderOrThrow(to));
-            this.confluence$protection = biomes.getHolderOrThrow(Biomes.PLAINS);
         }
         return confluence$biomePair;
     }

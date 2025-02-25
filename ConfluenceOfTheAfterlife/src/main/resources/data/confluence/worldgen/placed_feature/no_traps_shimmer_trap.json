@@ -7,7 +7,7 @@
         },
         {
             "type": "minecraft:rarity_filter",
-            "chance": 14
+            "chance": 1
         },
         {
             "type": "minecraft:in_square"
@@ -31,9 +31,14 @@
             "type": "minecraft:environment_scan",
             "allowed_search_condition": {
                 "type": "minecraft:matching_blocks",
-                "blocks": "minecraft:air"
+                "blocks": "minecraft:air",
+                "offset": [
+                    0,
+                    1,
+                    0
+                ]
             },
-            "direction_of_search": "up",
+            "direction_of_search": "down",
             "max_steps": 12,
             "target_condition": {
                 "type": "minecraft:has_sturdy_face",
@@ -42,7 +47,7 @@
                     0,
                     0
                 ],
-                "direction": "down"
+                "direction": "up"
             }
         }
     ]

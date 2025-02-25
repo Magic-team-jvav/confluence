@@ -7,7 +7,7 @@
         },
         {
             "type": "minecraft:rarity_filter",
-            "chance": 14
+            "chance": 1
         },
         {
             "type": "minecraft:in_square"
@@ -38,7 +38,7 @@
                     0
                 ]
             },
-            "direction_of_search": "up",
+            "direction_of_search": "down",
             "max_steps": 12,
             "target_condition": {
                 "type": "minecraft:has_sturdy_face",
@@ -47,7 +47,7 @@
                     0,
                     0
                 ],
-                "direction": "down"
+                "direction": "up"
             }
         }
     ]

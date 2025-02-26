@@ -47,8 +47,8 @@ public class RollingCactusBoulderEntity extends BoulderEntity {
                 float f = -Mth.sin(y) * cos;
                 float f1 = -Mth.sin(x);
                 float f2 = Mth.cos(y) * cos;
-                projectile.setPos(position().add(0.5, 1.5, 0.5));
-                projectile.shoot(f, f1, f2, 0.4F, 0);
+                projectile.setPos(position().add(0.5, 1.25, 0.5));
+                projectile.shoot(f, f1, f2, 0.4F, 0.1F);
                 level().addFreshEntity(projectile);
                 y += d;
             }
@@ -71,20 +71,20 @@ public class RollingCactusBoulderEntity extends BoulderEntity {
         @Override
         public void tick() {
             super.tick();
-            Vec3 vec3 = getDeltaMovement().add(0.0, -0.08, 0.0);
+            Vec3 vec3 = getDeltaMovement();
             move(MoverType.SELF, vec3);
-            Vec3 motion = getDeltaMovement().add(0.0, -0.08, 0.0);
+            Vec3 motion = getDeltaMovement();
             if (motion.x != vec3.x || motion.y != vec3.y || motion.z != vec3.z) {
                 discard();
             } else if (!level().isClientSide) {
                 if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
                     Entity entity = entityHitResult.getEntity();
-                    if (entity.hurt(damageSources().cactus(), 6.5F)) {
-                        HomingUtils.knockBackA2B(this, entity, 0.5, 0.2);
+                    if (entity.hurt(damageSources().cactus(), 8.0F)) {
+                        HomingUtils.knockBackA2B(this, entity, 1.0, 0.2);
                     }
                 }
             }
-            setDeltaMovement(motion);
+            setDeltaMovement(motion.add(0.0, -0.08, 0.0));
             if (tickCount > 200) discard();
         }
 

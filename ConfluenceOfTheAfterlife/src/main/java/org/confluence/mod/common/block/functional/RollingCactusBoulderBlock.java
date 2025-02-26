@@ -29,6 +29,6 @@ public class RollingCactusBoulderBlock extends BoulderBlock {
 
     @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, net.minecraft.world.entity.Entity entity) {
-        entity.hurt(level.damageSources().cactus(), 1.0F);
+        entity.hurt(level.damageSources().cactus(), 1.5F);
     }
 }

@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
-public abstract class ClientEntityMixin implements SelfGetter<Entity>, IEntity {
+public abstract class EntityClientMixin implements SelfGetter<Entity>, IEntity {
     @Unique private Vec3 confluence$deathMotion;
     @Inject(method = "getTeamColor", at = @At("HEAD"), cancellable = true)
     private void getTeamColor(CallbackInfoReturnable<Integer> cir) {

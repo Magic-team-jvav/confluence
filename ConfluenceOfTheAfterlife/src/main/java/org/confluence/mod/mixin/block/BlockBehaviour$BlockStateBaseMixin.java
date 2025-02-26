@@ -31,9 +31,12 @@ public abstract class BlockBehaviour$BlockStateBaseMixin {
     @Shadow
     public abstract Block getBlock();
 
+    @Shadow
+    protected abstract BlockState asState();
+
     @Inject(method = "getCollisionShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;", at = @At("RETURN"), cancellable = true)
     private void shimmer(BlockGetter pLevel, BlockPos pPos, CollisionContext pContext, CallbackInfoReturnable<VoxelShape> cir) {
-        if (pLevel.getBlockState(pPos).getDestroySpeed(pLevel, pPos) == -1.0F) return;
+        if (asState().getDestroySpeed(pLevel, pPos) < 0) return;
         if (pContext instanceof EntityCollisionContext context && context.getEntity() instanceof LivingEntity living && living.hasEffect(ModEffects.SHIMMER)) {
             cir.setReturnValue(Shapes.empty());
         }

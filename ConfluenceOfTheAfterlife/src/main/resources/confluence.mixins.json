@@ -70,6 +70,7 @@
         "level.WorldOptionsMixin"
     ],
     "client": [
+        "client.BlockClientMixin",
         "client.ClientLevelMixin",
         "client.MinecraftMixin",
         "client.MissingTextureAtlasSpriteMixin",
@@ -79,7 +80,7 @@
         "client.WorldCreationUiStateMixin",
         "client.accessor.AgeableListModelAccessor",
         "client.accessor.LivingEntityRendererAccessor",
-        "client.entity.ClientEntityMixin",
+        "client.entity.EntityClientMixin",
         "client.entity.LocalPlayerMixin",
         "client.gui.AdvancementWidgetMixin",
         "client.gui.ClientAdvancementsMixin",
@@ -100,6 +101,8 @@
         "client.renderer.LevelRendererMixin",
         "client.renderer.LivingEntityRendererMixin",
         "client.renderer.ModelBlockRendererMixin",
+        "client.renderer.ModelBlockRendererMixin$AmbientOcclusionFaceMixin",
+        "client.renderer.SectionCompilerMixin",
         "entity.LocalPlayerMixin",
         "integration.betteradvancements.BetterDisplayInfoMixin",
         "integration.ftbchunks.EntityMapIconMixin",

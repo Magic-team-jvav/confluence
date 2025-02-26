@@ -46,6 +46,7 @@ public abstract class BlockRendererMixin {
     @Inject(method = "processQuad", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/pipeline/BlockRenderer;bufferQuad(Lnet/caffeinemc/mods/sodium/client/render/frapi/mesh/MutableQuadViewImpl;[FLnet/caffeinemc/mods/sodium/client/render/chunk/terrain/material/Material;)V"))
     private void setColor(MutableQuadViewImpl quad, CallbackInfo ci, @Share("colorData") LocalIntRef colorData) {
         int color = colorData.get();
+        if (color == BrushData.EMPTY_COLOR || color == BrushData.ILLUMINANT_COLOR || color == BrushData.ECHO_COLOR) return;
         if (color == BrushData.NEGATIVE_COLOR) {
             for (int i = 0; i < 4; ++i) {
                 int color1 = ((ModelQuadView) (Object) quad).getColor(i); // 并非冗余
@@ -57,7 +58,7 @@ public abstract class BlockRendererMixin {
                     SodiumHelper.quad$color(quad, i, comp0 | comp1 << 8 | comp2 << 16 | comp3 << 24);
                 }
             }
-        } else if (color != BrushData.EMPTY_COLOR) {
+        } else {
             for (int i = 0; i < 4; i++) {
                 SodiumHelper.quad$color(quad, i, color | 0xFF << 24);
             }

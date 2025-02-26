@@ -30,6 +30,11 @@ public final class LocalBrushData {
         return DATA.get(pos.asLong());
     }
 
+    public static boolean hasEcho(BlockPos pos) {
+        int[] colors = DATA.get(pos.asLong());
+        return colors != null && colors[0] == BrushData.ECHO_COLOR;
+    }
+
     public static int getColor(BlockPos pos, @Nullable Direction facing) {
         if (facing == null) return BrushData.EMPTY_COLOR;
         int[] colors = DATA.get(pos.asLong());

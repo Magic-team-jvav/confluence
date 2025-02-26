@@ -39,10 +39,10 @@ public class GrayBlockModelSwapper extends BakedModelWrapperWithData {
     @Override
     public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData extraData, @Nullable RenderType renderType) {
         List<BakedQuad> quads = super.getQuads(state, side, rand, extraData, renderType);
-        int[] dirs = extraData.get(COLOR_PROPERTY);
-        if (dirs == null) return quads;
-        int color = dirs[(side == null ? Direction.WEST : side).get3DDataValue()];
-        if (color == BrushData.EMPTY_COLOR || color == BrushData.ILLUMINANT_COLOR) return quads;
+        int[] colors = extraData.get(COLOR_PROPERTY);
+        if (colors == null) return quads;
+        int color = colors[(side == null ? Direction.WEST : side).get3DDataValue()];
+        if (color == BrushData.EMPTY_COLOR || color == BrushData.ILLUMINANT_COLOR || color == BrushData.ECHO_COLOR) return quads;
         quads = new ArrayList<>(quads);
 
         for (int i = 0; i < quads.size(); i++) {

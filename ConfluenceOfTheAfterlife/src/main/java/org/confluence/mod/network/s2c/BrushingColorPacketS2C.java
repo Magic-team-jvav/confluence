@@ -94,7 +94,7 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
     }
 
     public static void sendToPlayersTrackingChunk(ServerLevel level, BlockPos pos, @Nullable Direction facing, int color, boolean save) {
-        if (!level.getBlockState(pos).isSolidRender(level, pos)) {
+        if (color == BrushData.ECHO_COLOR || !level.getBlockState(pos).isSolidRender(level, pos)) {
             facing = null;
         }
         sendToPlayersTrackingChunk(level, new ChunkPos(pos), new BrushData(pos, facing, color), save);

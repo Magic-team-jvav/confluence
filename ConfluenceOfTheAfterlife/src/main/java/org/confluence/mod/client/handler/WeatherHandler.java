@@ -46,6 +46,8 @@ public final class WeatherHandler {
     public static String windSpeedInfo = "0.00";
 
     public static void handleBlock(ClientLevel level, RandomSource random, BlockState blockState, BlockPos.MutableBlockPos blockPos, Map<Block, Context> data) {
+        if (getWindSpeedX() < 0.1 && getWindSpeedZ() < 0.1) return;
+
         Context context = data.get(blockState.getBlock());
         if (context != null && context.facing.isAvailable(level, random, blockPos, blockState, context)) {
             context.facing.apply(level, random, blockPos, blockState, context);
@@ -53,6 +55,8 @@ public final class WeatherHandler {
     }
 
     public static void handleFluid(ClientLevel level, RandomSource random, FluidState fluidState, BlockPos.MutableBlockPos blockPos, Map<FluidType, ParticleOptions> data) {
+        if (getWindSpeedX() < 0.1 && getWindSpeedZ() < 0.1) return;
+
         ParticleOptions particleOptions = data.get(fluidState.getType().getFluidType());
         if (particleOptions == null) return;
 

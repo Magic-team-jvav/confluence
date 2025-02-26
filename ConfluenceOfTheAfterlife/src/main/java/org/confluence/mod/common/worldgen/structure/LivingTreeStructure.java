@@ -1,6 +1,5 @@
 package org.confluence.mod.common.worldgen.structure;
 
-import com.google.common.collect.Lists;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
@@ -16,12 +15,10 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
-import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
-import net.minecraft.world.level.levelgen.structure.structures.EndCityPieces;
 import org.confluence.mod.common.init.ModStructures;
+import org.confluence.mod.common.init.block.ModBlocks;
 
-import java.util.List;
 import java.util.Optional;
 
 public class LivingTreeStructure extends Structure {
@@ -43,9 +40,7 @@ public class LivingTreeStructure extends Structure {
     }
 
     private void generatePieces(StructurePiecesBuilder builder, BlockPos startPos, Rotation rotation, Structure.GenerationContext context) {
-        List<StructurePiece> list = Lists.newArrayList();
-        EndCityPieces.startHouseTower(context.structureTemplateManager(), startPos, rotation, list, context.random());
-        list.forEach(builder::addPiece);
+        builder.addPiece(new TrunkPiece(0, BoundingBox.fromCorners(startPos.offset(-24, -24, -24), startPos.offset(23, 23, 23))));
     }
 
     @Override
@@ -54,8 +49,8 @@ public class LivingTreeStructure extends Structure {
     }
 
     public static class TrunkPiece extends StructurePiece {
-        public TrunkPiece(StructurePieceType type, int genDepth, BoundingBox boundingBox) {
-            super(type, genDepth, boundingBox);
+        public TrunkPiece(int genDepth, BoundingBox boundingBox) {
+            super(ModStructures.LIVING_TREE_TRUNK.get(), genDepth, boundingBox);
         }
 
         public TrunkPiece(StructurePieceSerializationContext context, CompoundTag tag) {
@@ -70,7 +65,7 @@ public class LivingTreeStructure extends Structure {
 
         @Override
         public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator generator, RandomSource random, BoundingBox box, ChunkPos chunkPos, BlockPos pos) {
-
+            level.setBlock(pos, ModBlocks.POO.get().defaultBlockState(), 3);
         }
     }
 }

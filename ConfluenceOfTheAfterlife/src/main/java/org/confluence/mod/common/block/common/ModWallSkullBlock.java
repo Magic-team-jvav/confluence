@@ -19,7 +19,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import java.util.Map;
 
 public class ModWallSkullBlock extends Block {
-
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     private static final Map<Direction, VoxelShape> AABBS = Maps.newEnumMap(
             ImmutableMap.of(
@@ -55,17 +54,15 @@ public class ModWallSkullBlock extends Block {
         BlockGetter blockgetter = context.getLevel();
         BlockPos blockpos = context.getClickedPos();
         Direction[] adirection = context.getNearestLookingDirections();
-
         for (Direction direction : adirection) {
             if (direction.getAxis().isHorizontal()) {
                 Direction direction1 = direction.getOpposite();
-                blockstate = blockstate.setValue(FACING, direction1);
+                if (blockstate != null) {blockstate = blockstate.setValue(FACING, direction1);}
                 if (!blockgetter.getBlockState(blockpos.relative(direction)).canBeReplaced(context)) {
                     return blockstate;
                 }
             }
         }
-
         return null;
     }
 

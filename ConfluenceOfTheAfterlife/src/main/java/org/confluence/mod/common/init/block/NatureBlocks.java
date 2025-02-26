@@ -136,6 +136,9 @@ public class NatureBlocks {
     // 蘑菇地
     public static final DeferredBlock<MushroomGrassBlock> MUSHROOM_GRASS_BLOCK = registerWithItem("mushroom_grass_block", MushroomGrassBlock::new);
     public static final DeferredBlock<Block> GLOWING_MUSHROOM = registerWithoutItem("glowing_mushroom", () -> new MushroomBlock(MUSHROOM_GRASS_BLOCK.get())); // 发光蘑菇
+    public static final DeferredBlock<IndusiumBlock> GLOWING_MUSHROOM_INDUSIUM_BLOCK = registerWithItem("glowing_mushroom_indusium_block", IndusiumBlock::new);
+    public static final DeferredBlock<Block> GLOWING_MUSHROOM_STEM_BLOCK = registerWithItem("glowing_mushroom_stem_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.MUSHROOM_STEM)));
+    public static final DeferredBlock<Block> GLOWING_MUSHROOM_PILEUS_BLOCK = registerWithItem("glowing_mushroom_pileus_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.MUSHROOM_STEM)));
 
     // 沙漠
     public static final DeferredBlock<Block> PALM_SAPLING = registerWithItem("palm_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.PALM_GROWER, Blocks.SAND, Blocks.RED_SAND, Blocks.GRASS_BLOCK));
@@ -238,7 +241,6 @@ public class NatureBlocks {
     public static final Supplier<BaseMossBlock> NEON_MOSS = registerWithItem("neon_moss", () -> new BaseMossBlock(5));
     public static final Supplier<BaseMossBlock> HELIUM_MOSS = registerWithItem("helium_moss", () -> new BaseMossBlock(5));
     public static final Supplier<BaseMossBlock> GROWING_MUSHROOM_MOSS = registerWithItem("growing_mushroom_moss", () -> new BaseMossBlock(5));
-
 
     private static <B extends Block> DeferredBlock<B> registerWithoutItem(String id, Supplier<B> block) {
         return BLOCKS.register(id, block);

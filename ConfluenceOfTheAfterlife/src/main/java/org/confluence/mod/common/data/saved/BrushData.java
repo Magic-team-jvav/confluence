@@ -77,10 +77,14 @@ public record BrushData(Map<BlockPos, int[]> colors) {
     }
 
     public void put(BlockPos pos, Direction facing, int color) {
+        int[] colors = this.colors.computeIfAbsent(pos, COMPUTE);
         if (color == ECHO_COLOR) {
-            Arrays.fill(colors.computeIfAbsent(pos, COMPUTE), ECHO_COLOR);
+            Arrays.fill(colors, ECHO_COLOR);
         } else {
-            colors.computeIfAbsent(pos, COMPUTE)[facing.get3DDataValue()] = color;
+            if (colors[0] == ECHO_COLOR) {
+                Arrays.fill(colors, EMPTY_COLOR);
+            }
+            colors[facing.get3DDataValue()] = color;
         }
     }
 
@@ -91,7 +95,10 @@ public record BrushData(Map<BlockPos, int[]> colors) {
             int[] color = entry.getValue();
             if (list == null) {
                 colors.put(pos, color);
-            } else {
+            } else if (Arrays.stream(color).anyMatch(c -> c != EMPTY_COLOR)) {
+                if (list[0] == ECHO_COLOR) {
+                    Arrays.fill(list, EMPTY_COLOR);
+                }
                 for (int i = 0; i < 6; i++) {
                     int c = color[i];
                     if (c != EMPTY_COLOR) list[i] = c;

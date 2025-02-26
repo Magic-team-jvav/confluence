@@ -1,6 +1,7 @@
 package org.confluence.mod.common.block.functional;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -29,6 +30,6 @@ public class RollingCactusBoulderBlock extends BoulderBlock {
 
     @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, net.minecraft.world.entity.Entity entity) {
-        entity.hurt(level.damageSources().cactus(), 1.5F);
+        entity.hurt(level.damageSources().cactus(), entity instanceof Player ? 19.0F : 1.5F);
     }
 }

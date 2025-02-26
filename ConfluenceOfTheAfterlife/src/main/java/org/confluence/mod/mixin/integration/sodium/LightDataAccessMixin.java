@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
  */
 @Pseudo
 @Mixin(targets = "net.caffeinemc.mods.sodium.client.model.light.data.LightDataAccess", remap = false)
-public abstract class LightDataAccessMixin {
+public class LightDataAccessMixin {
     @WrapOperation(method = "compute", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/BlockAndTintGetter;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
     private BlockState replace(BlockAndTintGetter instance, BlockPos pos, Operation<BlockState> original) {
         if (!ClientPacketHandler.hasEchoVisible() && LocalBrushData.hasEcho(pos)) {

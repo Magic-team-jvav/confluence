@@ -45,7 +45,7 @@ public abstract class ModelBlockRendererMixin {
     }
 
     @Mixin(targets = "net.minecraft.client.renderer.block.ModelBlockRenderer$AmbientOcclusionFace")
-    public static abstract class AmbientOcclusionFaceMixin {
+    public static class AmbientOcclusionFaceMixin {
         /**
          * @see org.confluence.mod.mixin.integration.sodium.LightDataAccessMixin
          */

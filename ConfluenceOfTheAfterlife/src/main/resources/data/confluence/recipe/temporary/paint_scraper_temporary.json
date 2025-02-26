@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "a"
+    ],
+    "key": {
+        "#": {
+            "tag": "confluence:lead_and_iron"
+        },
+        "a": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "id": "confluence:paint_scraper"
+    }
+}

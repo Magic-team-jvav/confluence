@@ -168,7 +168,7 @@ public final class ModFluids {
         addItem(MaterialItems.TR_CRIMSON_INGOT.get(), MaterialItems.RAW_TR_CRIMSON.get());
         addItem(MaterialItems.DEMONITE_INGOT.get(), MaterialItems.RAW_DEMONITE.get());
         addItem(MaterialItems.METEORITE_INGOT.get(), MaterialItems.RAW_METEORITE.get());
-        addItem(MaterialItems.PLATINUM_INGOT.get(), MaterialItems.RAW_PLATINUM.get());
+        addItem(ModTags.Items.INGOTS_PLATINUM, MaterialItems.RAW_PLATINUM.get(), 1);
         addItem(Items.GOLD_INGOT, Items.RAW_GOLD);
         addItem(ModTags.Items.INGOTS_TUNGSTEN, MaterialItems.RAW_TUNGSTEN.get(), 1);
         addItem(ModTags.Items.INGOTS_SILVER, MaterialItems.RAW_SILVER.get(), 1);

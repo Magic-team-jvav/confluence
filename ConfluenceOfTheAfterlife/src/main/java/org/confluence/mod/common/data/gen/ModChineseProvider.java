@@ -647,7 +647,13 @@ public class ModChineseProvider extends LanguageProvider {
         add("block.confluence.honey", "蜂蜜");
 
         add("title.confluence.shimmer_transmutation", "微光嬗变");
-        add("condition.confluence.shimmer_transmutation", "需要的游戏阶段: %s");
+        add("condition.confluence.shimmer_transmutation.before_skeletron", "需要的游戏阶段：骷髅王前");
+        add("condition.confluence.shimmer_transmutation.after_skeletron", "需要的游戏阶段：骷髅王后");
+        add("condition.confluence.shimmer_transmutation.wall_of_flesh", "需要的游戏阶段：肉后");
+        add("condition.confluence.shimmer_transmutation.mechanical_bosses", "需要的游戏阶段：新三王后");
+        add("condition.confluence.shimmer_transmutation.plantera", "需要的游戏阶段：世花后");
+        add("condition.confluence.shimmer_transmutation.golem", "需要的游戏阶段：石巨人后");
+        add("condition.confluence.shimmer_transmutation.moon_lord", "需要的游戏阶段：月后");
         add("title.confluence.altar", "祭坛");
         add("title.confluence.sky_mill", "天磨");
         add("container.confluence.sky_mill", "天磨");

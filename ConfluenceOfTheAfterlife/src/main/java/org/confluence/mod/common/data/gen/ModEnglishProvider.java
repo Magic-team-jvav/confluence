@@ -530,7 +530,13 @@ public class ModEnglishProvider extends LanguageProvider {
         add("fluid_type.confluence.honey", "Honey");
 
         add("title.confluence.shimmer_transmutation", "Shimmer Transmutation");
-        add("condition.confluence.shimmer_transmutation", "Required game phase: %s");
+        add("condition.confluence.shimmer_transmutation.before_skeletron", "Required game phase: Before Skeletron");
+        add("condition.confluence.shimmer_transmutation.after_skeletron", "Required game phase: After Skeletron");
+        add("condition.confluence.shimmer_transmutation.wall_of_flesh", "Required game phase: After Wall Of Flesh");
+        add("condition.confluence.shimmer_transmutation.mechanical_bosses", "Required game phase: After Mechanical Bosses");
+        add("condition.confluence.shimmer_transmutation.plantera", "Required game phase: After Plantera");
+        add("condition.confluence.shimmer_transmutation.golem", "Required game phase: After Golem");
+        add("condition.confluence.shimmer_transmutation.moon_lord", "Required game phase: After Moon Lord");
         add("title.confluence.altar", "Altar");
         add("title.confluence.sky_mill", "Sky Mill");
         add("container.confluence.sky_mill", "Sky Mill");

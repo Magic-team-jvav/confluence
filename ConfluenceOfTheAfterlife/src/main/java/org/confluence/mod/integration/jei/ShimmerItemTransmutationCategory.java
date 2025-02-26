@@ -71,7 +71,7 @@ public class ShimmerItemTransmutationCategory implements IRecipeCategory<Shimmer
         if (ClientPacketHandler.getGamePhase().ordinal() < recipe.gamePhase().ordinal()) {
             ModJeiPlugin.drawArrowDown(guiGraphics, 54, 46, false);
             if (mouseX >= 54 && mouseX <= 75 && mouseY >= 46 && mouseY <= 74) {
-                Component text = Component.translatable("condition.confluence.shimmer_transmutation", recipe.gamePhase()).withStyle(style -> style.withColor(ChatFormatting.RED));
+                Component text = Component.translatable("condition.confluence.shimmer_transmutation." + recipe.gamePhase().getSerializedName()).withStyle(style -> style.withColor(ChatFormatting.RED));
                 guiGraphics.renderTooltip(Minecraft.getInstance().font, text, (int) mouseX, (int) mouseY);
             }
         } else {

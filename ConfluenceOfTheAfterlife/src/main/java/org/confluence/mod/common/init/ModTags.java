@@ -50,6 +50,7 @@ public final class ModTags {
 
     public static class Items {
         public static final TagKey<Item> INGOTS_TIN = c("ingots/tin");
+        public static final TagKey<Item> INGOTS_LEAD = c("ingots/lead");
         public static final TagKey<Item> INGOTS_SILVER = c("ingots/silver");
         public static final TagKey<Item> INGOTS_TUNGSTEN = c("ingots/tungsten");
         public static final TagKey<Item> INGOTS_PLATINUM = c("ingots/platinum");

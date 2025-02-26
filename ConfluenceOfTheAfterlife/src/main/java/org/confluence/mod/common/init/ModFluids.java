@@ -170,11 +170,11 @@ public final class ModFluids {
         addItem(MaterialItems.METEORITE_INGOT.get(), MaterialItems.RAW_METEORITE.get());
         addItem(MaterialItems.PLATINUM_INGOT.get(), MaterialItems.RAW_PLATINUM.get());
         addItem(Items.GOLD_INGOT, Items.RAW_GOLD);
-        addItem(MaterialItems.TUNGSTEN_INGOT.get(), MaterialItems.RAW_TUNGSTEN.get());
-        addItem(MaterialItems.SILVER_INGOT.get(), MaterialItems.RAW_SILVER.get());
+        addItem(ModTags.Items.INGOTS_TUNGSTEN, MaterialItems.RAW_TUNGSTEN.get(), 1);
+        addItem(ModTags.Items.INGOTS_SILVER, MaterialItems.RAW_SILVER.get(), 1);
         addItem(Items.IRON_INGOT, Items.RAW_IRON);
-        addItem(MaterialItems.LEAD_INGOT.get(), MaterialItems.RAW_LEAD.get());
-        addItem(MaterialItems.TIN_INGOT.get(), MaterialItems.RAW_TIN.get());
+        addItem(ModTags.Items.INGOTS_LEAD, MaterialItems.RAW_LEAD.get(), 1);
+        addItem(ModTags.Items.INGOTS_TIN, MaterialItems.RAW_TIN.get(), 1);
         addItem(Items.COPPER_INGOT, Items.RAW_COPPER);
         addItem(Items.RAW_COPPER, Items.COBBLESTONE);
         addItem(Items.COBBLESTONE, Items.DIRT);

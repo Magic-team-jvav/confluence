@@ -14,8 +14,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Block.class)
 public abstract class BlockClientMixin {
+    /**
+     * @see org.confluence.mod.mixin.integration.sodium.BlockOcclusionCacheMixin
+     */
     @Inject(method = "shouldRenderFace", at = @At("HEAD"), cancellable = true)
-    private static void renderFace(BlockState state, BlockGetter level, BlockPos offset, Direction face, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+    private static void skip(BlockState state, BlockGetter level, BlockPos offset, Direction face, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         if (!ClientPacketHandler.hasEchoVisible() && LocalBrushData.hasEcho(pos)) {
             cir.setReturnValue(true);
         }

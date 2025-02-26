@@ -114,7 +114,10 @@
         "integration.jei.ScreenHelperMixin",
         "integration.patchouli.BookPageMixin",
         "integration.patchouli.GuiBookLandingMixin",
+        "integration.sodium.BlockOcclusionCacheMixin",
         "integration.sodium.BlockRendererMixin",
+        "integration.sodium.ChunkBuilderMeshingTaskMixin",
+        "integration.sodium.LightDataAccessMixin",
         "integration.terra_curio.InformationHandlerMixin",
         "integration.terra_curio.TCClientPacketHandlerMixin"
     ],

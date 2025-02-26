@@ -39,7 +39,6 @@ public abstract class BlockRendererMixin {
 
     @ModifyVariable(method = "processQuad", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/pipeline/BlockRenderer;colorizeQuad(Lnet/caffeinemc/mods/sodium/client/render/frapi/mesh/MutableQuadViewImpl;I)V"))
     private boolean illuminant(boolean emissive, @Share("colorData") LocalIntRef colorData) {
-        //SodiumHelper.blockRenderer$br(this, illuminant);
         return emissive || colorData.get() == BrushData.ILLUMINANT_COLOR;
     }
 

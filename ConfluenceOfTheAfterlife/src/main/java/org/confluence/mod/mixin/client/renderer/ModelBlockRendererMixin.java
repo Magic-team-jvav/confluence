@@ -45,7 +45,10 @@ public abstract class ModelBlockRendererMixin {
     }
 
     @Mixin(targets = "net.minecraft.client.renderer.block.ModelBlockRenderer$AmbientOcclusionFace")
-    public static abstract class AmbientOcclusionFaceMixin { // todo Sodium compatibility
+    public static abstract class AmbientOcclusionFaceMixin {
+        /**
+         * @see org.confluence.mod.mixin.integration.sodium.LightDataAccessMixin
+         */
         @WrapOperation(method = "calculate", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/BlockAndTintGetter;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
         private BlockState replace(BlockAndTintGetter instance, BlockPos blockPos, Operation<BlockState> original, @Local(argsOnly = true) BlockPos pos) {
             if (!ClientPacketHandler.hasEchoVisible() && !blockPos.equals(pos) && LocalBrushData.hasEcho(blockPos)) {

@@ -17,6 +17,7 @@ import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,6 +35,10 @@ public abstract class BlockBehaviour$BlockStateBaseMixin {
     @Shadow
     protected abstract BlockState asState();
 
+    @Shadow
+    @Final
+    private boolean isAir;
+
     @Inject(method = "getCollisionShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;", at = @At("RETURN"), cancellable = true)
     private void shimmer(BlockGetter pLevel, BlockPos pPos, CollisionContext pContext, CallbackInfoReturnable<VoxelShape> cir) {
         if (asState().getDestroySpeed(pLevel, pPos) < 0) return;
@@ -44,7 +49,7 @@ public abstract class BlockBehaviour$BlockStateBaseMixin {
 
     @Inject(method = "onRemove", at = @At("HEAD"))
     private void removeData(Level level, BlockPos pos, BlockState newState, boolean movedByPiston, CallbackInfo ci) {
-        if (!level.isClientSide && getBlock() != newState.getBlock() && level instanceof ServerLevel serverLevel) {
+        if (!level.isClientSide && !isAir && getBlock() != newState.getBlock() && level instanceof ServerLevel serverLevel) {
             Map<ChunkPos, BrushData> dataMap = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap();
             if (!dataMap.isEmpty()) {
                 BrushingColorPacketS2C.remove(serverLevel, pos);

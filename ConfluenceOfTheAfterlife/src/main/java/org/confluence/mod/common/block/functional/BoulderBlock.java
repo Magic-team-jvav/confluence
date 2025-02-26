@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
@@ -11,6 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
@@ -40,13 +42,29 @@ public class BoulderBlock extends AbstractMechanicalBlock {
     }
 
     @Override
+    protected void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile) {
+        level.destroyBlock(hit.getBlockPos(), false);
+        summon(level, hit.getBlockPos(), state, entity -> {
+            if (projectile.getOwner() instanceof Player player) {
+                return player;
+            }
+            return level.getNearestPlayer(entity, BoulderEntity.SEARCH_RANGE);
+        });
+    }
+
+    @Override
     public void playerDestroy(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState, @Nullable BlockEntity pBlockEntity, ItemStack pTool) {
         summon(pLevel, pPos, pState, entity -> pPlayer);
     }
 
     @Override
     public void wasExploded(Level pLevel, BlockPos pPos, Explosion pExplosion) {
-        summon(pLevel, pPos, defaultBlockState(), entity -> pLevel.getNearestPlayer(entity, BoulderEntity.SEARCH_RANGE));
+        summon(pLevel, pPos, defaultBlockState(), entity -> {
+            if (pExplosion.getIndirectSourceEntity() instanceof Player player) {
+                return player;
+            }
+            return pLevel.getNearestPlayer(entity, BoulderEntity.SEARCH_RANGE);
+        });
     }
 
     @Override

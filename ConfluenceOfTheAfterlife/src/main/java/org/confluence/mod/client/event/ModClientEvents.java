@@ -9,11 +9,14 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.core.DefaultedMappedRegistry;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -335,14 +338,17 @@ public final class ModClientEvents {
     public static void model$ModifyBakingResult(ModelEvent.ModifyBakingResult event) {
         Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
         CustomBlockModels customBlockModels = ModConnectives.MODEL_SWAPPER.getCustomBlockModels();
-        BuiltInRegistries.BLOCK.stream().forEach(block -> {
-            if (customBlockModels.containsBlock(block) || ClientConfigs.bannedModForPaints.contains(BuiltInRegistries.BLOCK.getKey(block).getNamespace())) return;
+        for (Map.Entry<Block, Holder.Reference<Block>> entry : ((DefaultedMappedRegistry<Block>) BuiltInRegistries.BLOCK).byValue.entrySet()) {
+            Block block = entry.getKey();
+            if (customBlockModels.containsBlock(block) || ClientConfigs.bannedModForPaints.contains(entry.getValue().key().location().getNamespace())) {
+                continue;
+            }
             for (ModelResourceLocation modelLocation : ModelSwapper.getAllBlockStateModelLocations(block)) {
                 BakedModel bakedModel = modelRegistry.get(modelLocation);
                 if (bakedModel != null) {
                     modelRegistry.put(modelLocation, new GrayBlockModelSwapper(bakedModel));
                 }
             }
-        });
+        }
     }
 }

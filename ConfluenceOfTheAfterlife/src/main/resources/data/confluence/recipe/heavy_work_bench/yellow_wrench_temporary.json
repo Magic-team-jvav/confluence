@@ -1,0 +1,35 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        " fba",
+        "  ec",
+        " g  ",
+        "#   "
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:yellow_dye"
+        },
+        "a": {
+            "item": "minecraft:copper_ingot"
+        },
+        "b": {
+            "item": "confluence:tin_ingot"
+        },
+        "c": {
+            "item": "confluence:silver_ingot"
+        },
+        "e": {
+            "item": "minecraft:redstone"
+        },
+        "f": {
+            "item": "minecraft:gold_ingot"
+        },
+        "g": {
+            "item": "minecraft:iron_ingot"
+        }
+    },
+    "result": {
+        "id": "confluence:yellow_wrench"
+    }
+}

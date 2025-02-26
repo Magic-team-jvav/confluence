@@ -18,9 +18,11 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.fluid.FluidTriple;
 import org.confluence.mod.common.init.block.CrateBlocks;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.paint.PaintItem;
 
 import static org.confluence.mod.api.event.ShimmerEntityTransmutationEvent.addEntity;
 import static org.confluence.mod.api.event.ShimmerItemTransmutationEvent.addItem;
@@ -125,6 +127,12 @@ public final class ModFluids {
         addItem(TACKLE_BOX.get(), HIGH_TEST_FISHING_LINE.get());
         addItem(STAR_CLOAK.get(), CHROMATIC_CLOAK.get());
         // todo 火把转化
+        // 临时转化
+        addItem(Blocks.SCULK.asItem(), FunctionalBlocks.ECHO_BLOCK.get().asItem());
+        addItem(PaintItems.ECHO_COATING.get(),PaintItems.ILLUMINANT_COATING.get());
+        addItem(PaintItems.ILLUMINANT_COATING.get(),PaintItems.NEGATIVE_PAINT.get());
+        addItem(PaintItems.NEGATIVE_PAINT.get(),PaintItems.SHADOW_PAINT.get());
+        addItem(PaintItems.SHADOW_PAINT.get(),PaintItems.ECHO_COATING.get());
         // 微光箭转化
         addItem(ArrowItems.FLAMING_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
         addItem(ArrowItems.UNHOLY_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());

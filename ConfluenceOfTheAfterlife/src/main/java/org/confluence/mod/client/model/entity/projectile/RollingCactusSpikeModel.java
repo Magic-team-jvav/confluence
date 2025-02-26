@@ -22,8 +22,8 @@ public class RollingCactusSpikeModel extends EntityModel<RollingCactusBoulderEnt
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 0).addBox(-3.0F, -5.5F, -6.0F, 6.0F, 0.0F, 11.0F, CubeDeformation.NONE)
-                .texOffs(0, 11).addBox(0.5F, -9.0F, -6.0F, 0.0F, 7.0F, 9.0F, CubeDeformation.NONE), PartPose.ZERO);
+        partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 0).addBox(-3.5F, 2F, -6.0F, 6.0F, 0.0F, 11.0F, CubeDeformation.NONE)
+                .texOffs(0, 11).addBox(0.0F, -1.5F, -6.0F, 0.0F, 7.0F, 9.0F, CubeDeformation.NONE), PartPose.ZERO);
 
         return LayerDefinition.create(meshdefinition, 48, 48);
     }

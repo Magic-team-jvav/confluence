@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "b#",
+        "a "
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:green_dye"
+        },
+        "a": {
+            "item": "minecraft:water_bucket"
+        },
+        "b": {
+            "item": "minecraft:orange_dye"
+        }
+    },
+    "result": {
+        "id": "confluence:teal_paint",
+        "count": 32
+    }
+}

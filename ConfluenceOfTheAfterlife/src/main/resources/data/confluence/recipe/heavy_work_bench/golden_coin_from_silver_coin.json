@@ -1,17 +1,15 @@
 {
     "type": "confluence:heavy_work_bench",
     "pattern": [
-        "###",
-        "###",
-        "###"
+        "#"
     ],
     "key": {
         "#": {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-            "item": "confluence:silver_coin"
+                "item": "confluence:silver_coin"
             },
-            "count": 11
+            "count": 100
         }
     },
     "result": {

@@ -1,10 +1,10 @@
 {
     "type": "confluence:heavy_work_bench",
     "pattern": [
-        "# ##",
-        " ###",
-        "##  ",
-        "##  "
+        "  ##",
+        " ## ",
+        "aa  ",
+        "  a "
     ],
     "key": {
         "#": {
@@ -13,6 +13,13 @@
                 "item": "confluence:meteorite_ingot"
             },
             "count": 2
+        },
+        "a": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:meteorite_ingot"
+            },
+            "count": 4
         }
     },
     "result": {

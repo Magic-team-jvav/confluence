@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        " a "
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:feather"
+        },
+        "a": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "id": "confluence:paintbrush"
+    }
+}

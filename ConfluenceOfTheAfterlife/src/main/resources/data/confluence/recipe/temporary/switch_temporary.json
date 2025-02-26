@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "##",
+        "#a"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:cobblestone"
+        },
+        "a": {
+            "item": "minecraft:redstone"
+        }
+    },
+    "result": {
+        "id": "confluence:switch"
+    }
+}

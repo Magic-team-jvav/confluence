@@ -107,6 +107,7 @@ public final class ModVillagers {
             tier2.add(new SkyVillagerItemListing(Items.EMERALD, 5, FoodItems.FISH_AND_MUSHROOM_SOUP.get(), 10, 25, 0.05F));
             tier3.add(new SkyVillagerItemListing(Items.RABBIT, 2, Items.EMERALD, 10, 25, 0.05F));
             tier3.add(new SkyVillagerItemListing(Items.CHICKEN, 10, Items.EMERALD, 2, 10, 25, 0.05F));
+            tier5.add(new SkyVillagerItemListing(ModItems.EMERALD_COIN.get(), 120, TCItems.SEXTANT.get(), 10, 25, 0.05F));
         } else if (type == VillagerProfession.CARTOGRAPHER) {
             //TODO 邪恶群系指南针，微光定位地图
         } else if (type == VillagerProfession.CLERIC) {
@@ -133,7 +134,7 @@ public final class ModVillagers {
             tier4.add(new SkyVillagerItemListing(Items.EMERALD, 5, ArmorItems.PINK_INSULATED_PANTS.get(), 10, 25, 0.05F));
             tier4.add(new SkyVillagerItemListing(Items.EMERALD, 5, ArmorItems.INSULATED_SHOES.get(), 10, 25, 0.05F));
             tier4.add(new SkyVillagerItemListing(Items.EMERALD, 5, ArmorItems.PINK_INSULATED_SHOES.get(), 10, 25, 0.05F));
-            tier5.add(new SkyVillagerItemListing(ModItems.EMERALD_COIN.get(), 4, TCItems.HAND_WARMER.get(), 10, 25, 0.05F));
+            tier5.add(new SkyVillagerItemListing(ModItems.EMERALD_COIN.get(), 60, ToolItems.GOLDEN_BUG_NET.get(), 10, 25, 0.05F));
         } else if (type == VillagerProfession.LIBRARIAN) {
             // 这个有待思考，暂时没东西
         } else if (type == VillagerProfession.MASON) {

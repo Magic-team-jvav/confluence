@@ -1,9 +1,7 @@
 {
     "type": "confluence:heavy_work_bench",
     "pattern": [
-        "###",
-        "###",
-        "###"
+        "#"
     ],
     "key": {
         "#": {
@@ -11,7 +9,7 @@
             "ingredient": {
             "item": "confluence:copper_coin"
             },
-            "count": 11
+            "count": 100
         }
     },
     "result": {

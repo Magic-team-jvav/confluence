@@ -1,0 +1,26 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        " ff ",
+        " ee ",
+        "#gg#",
+        "f  f"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:red_dye"
+        },
+        "e": {
+            "item": "confluence:tungsten_ingot"
+        },
+        "f": {
+            "item": "minecraft:iron_ingot"
+        },
+        "g": {
+            "item": "confluence:silver_ingot"
+        }
+    },
+    "result": {
+        "id": "confluence:wire_cutter"
+    }
+}

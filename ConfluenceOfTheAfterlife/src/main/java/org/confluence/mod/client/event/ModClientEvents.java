@@ -174,6 +174,7 @@ public final class ModClientEvents {
         event.registerLayerDefinition(ThrownKnivesProjectileModel.LAYER_LOCATION, ThrownKnivesProjectileModel::createBodyLayer);
         event.registerLayerDefinition(VilethronProjectileModel.LAYER_LOCATION, VilethronProjectileModel::createBodyLayer);
         event.registerLayerDefinition(HurtnadoProjectileModel.LAYER_LOCATION, HurtnadoProjectileModel::createBodyLayer);
+        event.registerLayerDefinition(RollingCactusSpikeModel.LAYER_LOCATION, RollingCactusSpikeModel::createBodyLayer);
 
         event.registerLayerDefinition(BaseHookModel.LAYER_LOCATION, BaseHookModel::createBodyLayer);
         event.registerLayerDefinition(WebSlingerModel.LAYER_LOCATION, WebSlingerModel::createBodyLayer);
@@ -210,6 +211,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(FOLLOWER_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(EXPLODE_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(ROLLING_CACTUS_BOULDER.get(), BoulderRenderer::new);
+        event.registerEntityRenderer(ROLLING_CACTUS_SPIKE.get(), RollingCactusSpikeRenderer::new);
         event.registerEntityRenderer(THROWN_KNIVES_PROJECTILE.get(), ThrownKnivesProjectileRenderer::new);
         event.registerEntityRenderer(SHURIKEN_PROJECTILE.get(), ShurikenProjectileRenderer::new);
         event.registerEntityRenderer(GRENADE.get(), BaseGrenadeEntityRenderer::new);

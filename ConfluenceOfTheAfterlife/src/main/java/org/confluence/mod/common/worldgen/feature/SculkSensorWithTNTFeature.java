@@ -29,7 +29,8 @@ public class SculkSensorWithTNTFeature extends Feature<SculkSensorWithTNTFeature
             mutablePos.move(0, -1, 0);
         }
         if (ModFeatures.safeSetBlock(level, mutablePos.above(), Blocks.SCULK_SENSOR.defaultBlockState(), ModFeatures.IS_REPLACEABLE)) {
-            return ModFeatures.safeSetBlock(level, mutablePos, FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get().defaultBlockState(), ModFeatures.IS_REPLACEABLE);
+            return ModFeatures.safeSetBlock(level, mutablePos, FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get().defaultBlockState(), ModFeatures.IS_REPLACEABLE)
+                    && ModFeatures.safeSetBlock(level, mutablePos.below(), Blocks.TNT.defaultBlockState(), ModFeatures.IS_REPLACEABLE);
         }
         return false;
     }

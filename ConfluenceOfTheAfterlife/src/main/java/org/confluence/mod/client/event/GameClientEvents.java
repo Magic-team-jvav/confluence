@@ -73,6 +73,7 @@ import java.util.*;
 
 import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT, modid = Confluence.MODID)
 public final class GameClientEvents {
     @SubscribeEvent
@@ -150,10 +151,11 @@ public final class GameClientEvents {
         PrefixComponent prefix = PrefixUtils.getPrefix(itemStack);
         if (prefix == null) return;
 
+        List<Component> toolTip = event.getToolTip();
         if (prefix.type() == PrefixType.MAGIC) {
             if (prefix.manaCost() != 0.0) {
                 boolean b = prefix.manaCost() > 0.0;
-                event.getToolTip().add(Component.translatable(
+                toolTip.add(toolTip.isEmpty() ? 0 : 1, Component.translatable(
                         "prefix.confluence.tooltip." + (b ? "plus" : "take"),
                         ATTRIBUTE_MODIFIER_FORMAT.format(prefix.manaCost() * (b ? 100.0 : -100.0)),
                         Component.translatable("prefix.confluence.tooltip.mana_cost")
@@ -161,7 +163,7 @@ public final class GameClientEvents {
             }
         } else if (prefix.type() == PrefixType.ACCESSORY) {
             if (prefix.additionalMana() > 0) {
-                event.getToolTip().add(Component.translatable(
+                toolTip.add(toolTip.isEmpty() ? 0 : 1, Component.translatable(
                         "prefix.confluence.tooltip.add",
                         prefix.additionalMana(),
                         Component.translatable("prefix.confluence.tooltip.additional_mana")

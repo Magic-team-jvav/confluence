@@ -11,7 +11,7 @@ plugins {
 }
 
 
-include ":ConfluenceOfTheAfterlife"
+include ":ConfluenceOtherworld"
 
 var projectName = ["TerraEntity","MineTeam","EquipmentBenediction",
                    "TerraCurio","ParticleStorm","HeavenDestinyMoment","PhaseJourney",

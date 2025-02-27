@@ -315,8 +315,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "决定你使用药水后是否返还瓶子");
         add("confluence.configuration.defaultRespawnTimeMin", "默认最小重生时间");
         add("confluence.configuration.defaultRespawnTimeMax", "默认最大重生时间");
+        add("confluence.configuration.defaultRespawnTimeMax.tooltip", "设置默认最大重生时间");
+        add("confluence.configuration.defaultRespawnTimeMax.tooltip", "设置默认最大重生时间");
         add("confluence.configuration.bossRespawnTimeMin", "最小重生时间（boss战时）");
         add("confluence.configuration.bossRespawnTimeMax", "最大重生时间（boss战时）");
+        add("confluence.configuration.bossRespawnTimeMax.tooltip", "最大重生时间（boss战时死亡的重生时间）");
+        add("confluence.configuration.bossRespawnTimeMin.tooltip", "最小重生时间（boss战时死亡的重生时间）");
         add("confluence.configuration.showWindParticles", "风粒子展示");
         add("confluence.configuration.HUD", "HUD");
         add("confluence.configuration.Mana", "魔力值");
@@ -343,6 +347,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.leftEffectIcon", "左侧药水效果标识");
         add("confluence.configuration.Entity", "生物效果");
         add("confluence.configuration.bloodyEffect", "血效果");
+        add("confluence.configuration.bloodyEffect.tooltip", "血的粒子飞溅");
         add("confluence.configuration.goreEffect", "肢解效果");
         add("confluence.configuration.goreEffect.off", "关");
         add("confluence.configuration.goreEffect.confluence", "仅汇流生物");
@@ -350,12 +355,15 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.goreEffect.all", "所有生物");
         add("confluence.configuration.goreEffect.tooltip", "肢解效果会对汇流生物和原版生物特别适配，其他Mod的生物使用通用的方法，不保证效果。");
         add("confluence.configuration.damageIndicator", "伤害数值显示");
+        add("confluence.configuration.damageIndicator.tooltip", "启用以观察伤害数值");
         add("confluence.configuration.Gameplay", "游戏机制");
         add("confluence.configuration.Gameplay.button", "游戏机制定义");
+        add("confluence.configuration.Gameplay.tooltip", "一些游戏机制可以由你决定");
         add("confluence.configuration.PlayerDeath", "玩家死亡机制");
         add("confluence.configuration.PlayerDeath.button", "玩家死亡机制");
         add("confluence.configuration.PlayerDeath.tooltip", "定义玩家死亡时的效果");
         add("confluence.configuration.showMoneyDrops", "死亡界面显示掉落钱币数");
+        add("confluence.configuration.showMoneyDrops.tooltip", "启用以在死亡界面显示掉落钱币数");
         // 分割
         add("confluence.configuration.Mana.button", "魔力值");
         add("confluence.configuration.Armor.button", "护甲值");

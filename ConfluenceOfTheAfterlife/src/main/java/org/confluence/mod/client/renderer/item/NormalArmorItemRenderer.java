@@ -1,22 +1,18 @@
 package org.confluence.mod.client.renderer.item;
 
-import com.xiaohunao.mine_team.common.team.Team;
-import com.xiaohunao.mine_team.common.team.TeamManager;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModAttachmentTypes;
-import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.mod.common.item.armor.NormalArmorItem;
-import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
 import org.confluence.mod.util.ClientUtils;
-import org.confluence.mod.util.ModUtils;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.specialty.DyeableGeoArmorRenderer;
 import software.bernie.geckolib.util.Color;
+
+import java.util.OptionalInt;
 
 import static org.confluence.mod.util.ModUtils.getSlotIndex;
 
@@ -32,19 +28,9 @@ public class NormalArmorItemRenderer extends DyeableGeoArmorRenderer<NormalArmor
 
     @Override
     protected Color getColorForBone(GeoBone bone) {
-        if (currentSlot != null && currentEntity instanceof AbstractClientPlayer) {
-            int index = ModUtils.getSlotIndex(currentSlot);
-            if (index != -1) {
-                ItemStack vanityArmorDye = currentEntity.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmorDye(index);
-                if (!vanityArmorDye.isEmpty()) {
-                    if (vanityArmorDye.getItem() instanceof BaseDyeItem dyeItem) {
-                        return dyeItem.colour;
-                    } else if (vanityArmorDye.is(VanityArmorItems.TEAM_DYE.get())) {
-                        Team team = TeamManager.getTeam(currentEntity);
-                        return team == null ? Color.WHITE : new Color(0xFF << 24 | team.getColor());
-                    }
-                }
-            }
+        if (currentSlot != null && currentEntity instanceof AbstractClientPlayer player) {
+            OptionalInt color = ClientUtils.getVanityDyeColor(currentEntity.getData(ModAttachmentTypes.EXTRA_INVENTORY), getSlotIndex(currentSlot), player);
+            if (color.isPresent()) return new Color(color.getAsInt());
         }
         return Color.WHITE;
     }

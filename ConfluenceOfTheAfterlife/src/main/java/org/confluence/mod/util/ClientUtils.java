@@ -4,6 +4,8 @@ import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Function4;
 import com.mojang.math.Axis;
+import com.xiaohunao.mine_team.common.team.Team;
+import com.xiaohunao.mine_team.common.team.TeamManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -15,8 +17,13 @@ import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.init.item.VanityArmorItems;
+import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3i;
@@ -28,6 +35,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
+import java.util.OptionalInt;
 import java.util.Set;
 
 @OnlyIn(Dist.CLIENT)
@@ -312,5 +320,23 @@ public final class ClientUtils {
         if (lineCountDraw > 1) {
             drawString(guiGraphics, minecraft.font, drawString, (left) ? (x - 3 - minecraft.font.width(Component.literal(drawString))) : (x + 85), y + 1, color.x);
         }
+    }
+
+    public static OptionalInt getVanityDyeColor(ExtraInventory extraInventory, int index, Player player) {
+        if (index != -1) {
+            ItemStack vanityArmorDye = extraInventory.getVanityArmorDye(index);
+            if (!vanityArmorDye.isEmpty()) {
+                Item item = vanityArmorDye.getItem();
+                if (item instanceof BaseDyeItem dyeItem) {
+                    return OptionalInt.of(dyeItem.color);
+                } else if (item == VanityArmorItems.TEAM_DYE.get()) {
+                    Team team = TeamManager.getTeam(player);
+                    if (team != null) {
+                        return OptionalInt.of(0xFF << 24 | team.getColor());
+                    }
+                }
+            }
+        }
+        return OptionalInt.empty();
     }
 }

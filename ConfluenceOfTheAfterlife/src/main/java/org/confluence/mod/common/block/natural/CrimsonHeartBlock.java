@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.item.LightPetItems;
@@ -43,7 +44,7 @@ public class CrimsonHeartBlock extends Block {
 
             if (level.random.nextFloat() < 0.2F) {
                 ModUtils.createItemEntity(TGItems.THE_UNDERTAKER.toStack(), center.x, center.y, center.z, level, 0);
-                ModUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 99, center.x, center.y, center.z, level, 0);
+                ModUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
                 ModUtils.createItemEntity(LightPetItems.CRIMSON_HEART.get(), 1, center.x, center.y, center.z, level, 0);
@@ -86,5 +87,10 @@ public class CrimsonHeartBlock extends Block {
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return SHAPE;
+    }
+
+    @Override
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return Shapes.block();
     }
 }

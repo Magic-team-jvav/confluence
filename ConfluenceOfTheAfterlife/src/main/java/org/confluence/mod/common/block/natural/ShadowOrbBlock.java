@@ -9,11 +9,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.item.AccessoryItems;
@@ -30,24 +34,29 @@ public class ShadowOrbBlock extends Block {
     private static final VoxelShape SHAPE = box(3, 3, 3, 13, 13, 13);
 
     public ShadowOrbBlock() {
-        super(Properties.ofFullCopy(Blocks.BUDDING_AMETHYST));
+        super(BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_PURPLE)
+                .strength(1.5F)
+                .sound(SoundType.AMETHYST)
+                .requiresCorrectToolForDrops()
+                .pushReaction(PushReaction.DESTROY));
     }
 
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         super.onRemove(state, level, pos, newState, movedByPiston);
-        if (newState.isAir() && level instanceof ServerLevel serverLevel) {
+        if (level instanceof ServerLevel serverLevel) {
             Vec3 center = pos.getCenter();
             ConfluenceData data = ConfluenceData.get(serverLevel);
             int count = data.getEvilBrokenCount() % 3;
 
             if (count == 0) {
                 ModUtils.createItemEntity(TGItems.MUSKET.toStack(), center.x, center.y, center.z, level, 0);
-                ModUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 99, center.x, center.y, center.z, level, 0);
+                ModUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
             } else {
                 if (level.random.nextFloat() < 0.2F) {
                     ModUtils.createItemEntity(TGItems.MUSKET.toStack(), center.x, center.y, center.z, level, 0);
-                    ModUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 99, center.x, center.y, center.z, level, 0);
+                    ModUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
                 }
                 if (level.random.nextFloat() < 0.2F) {
                     ModUtils.createItemEntity(LightPetItems.SHADOW_ORB.get(), 1, center.x, center.y, center.z, level, 0);
@@ -91,5 +100,10 @@ public class ShadowOrbBlock extends Block {
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return SHAPE;
+    }
+
+    @Override
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return Shapes.block();
     }
 }

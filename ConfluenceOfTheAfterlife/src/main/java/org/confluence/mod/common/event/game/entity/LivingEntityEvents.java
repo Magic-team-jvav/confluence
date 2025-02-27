@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
@@ -47,6 +48,7 @@ import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ArmorItems;
+import org.confluence.mod.common.init.item.PickaxeItems;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
@@ -62,13 +64,10 @@ import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.init.TCEffects;
-import org.confluence.terra_curio.mixin.accessor.MobAccessor;
 import org.confluence.terraentity.entity.ai.Boss;
 import org.confluence.terraentity.init.TEEffects;
 import org.confluence.terraentity.init.TEEntities;
 import org.confluence.terraentity.init.TETags;
-
-import java.util.Arrays;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class LivingEntityEvents {
@@ -364,23 +363,33 @@ public final class LivingEntityEvents {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void finalizeSpawn(FinalizeSpawnEvent event) {
         Mob mob = event.getEntity();
+        Level level = mob.level();
+        BlockPos blockPos = BlockPos.containing(event.getX(), event.getY(), event.getZ());
+        DifficultyInstance difficulty = event.getDifficulty();
         if (mob.getType() == EntityType.ZOMBIE) {
-            Level level = mob.level();
-            BlockPos blockPos = BlockPos.containing(event.getX(), event.getY(), event.getZ());
-            float[] chances = ((MobAccessor) mob).getArmorDropChances();
-            float chance = 0.003F;
             if (level.getBiome(blockPos).is(Tags.Biomes.IS_COLD_OVERWORLD)) {
                 boolean pink = mob.getRandom().nextFloat() < 0.01F;
-                mob.setItemSlot(EquipmentSlot.HEAD, (pink ? ArmorItems.PINK_SNOW_CAPS : ArmorItems.SNOW_CAPS).get().getDefaultInstance());
-                mob.setItemSlot(EquipmentSlot.CHEST, (pink ? ArmorItems.PINK_SNOW_SUITS : ArmorItems.SNOW_SUITS).get().getDefaultInstance());
-                mob.setItemSlot(EquipmentSlot.LEGS, (pink ? ArmorItems.PINK_INSULATED_PANTS : ArmorItems.INSULATED_PANTS).get().getDefaultInstance());
-                mob.setItemSlot(EquipmentSlot.FEET, (pink ? ArmorItems.PINK_INSULATED_SHOES : ArmorItems.INSULATED_SHOES).get().getDefaultInstance());
-                Arrays.fill(chances, chance);
+                ModUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, (pink ? ArmorItems.PINK_SNOW_CAPS : ArmorItems.SNOW_CAPS).get(), 0.003F);
+                ModUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, (pink ? ArmorItems.PINK_SNOW_SUITS : ArmorItems.SNOW_SUITS).get(), 0.003F);
+                ModUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.LEGS, (pink ? ArmorItems.PINK_INSULATED_PANTS : ArmorItems.INSULATED_PANTS).get(), 0.003F);
+                ModUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.FEET, (pink ? ArmorItems.PINK_INSULATED_SHOES : ArmorItems.INSULATED_SHOES).get(), 0.003F);
+                mob.setCustomName(Component.translatable("entity.confluence.frozen_zombie"));
+                event.setCanceled(true);
             } else if (level.isRainingAt(blockPos)) {
-                mob.setItemSlot(EquipmentSlot.HEAD, ArmorItems.RAIN_CAP.get().getDefaultInstance());
-                mob.setItemSlot(EquipmentSlot.CHEST, ArmorItems.RAINCOAT.get().getDefaultInstance());
-                chances[EquipmentSlot.HEAD.getIndex()] = chance;
-                chances[EquipmentSlot.CHEST.getIndex()] = chance;
+                ModUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, ArmorItems.RAIN_CAP.get(), 0.003F);
+                ModUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, ArmorItems.RAINCOAT.get(), 0.003F);
+                mob.setCustomName(Component.translatable("entity.confluence.raincoat_zombie"));
+                event.setCanceled(true);
+            }
+        } else if (mob.getType() == EntityType.SKELETON) {
+            if (!level.canSeeSky(blockPos) && mob.getRandom().nextFloat() < 0.01F) {
+                ModUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, ArmorItems.MINING_HELMET.get(), 1.0F);
+                ModUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, ArmorItems.MINING_CHESTPLATE.get(), 1.0F);
+                ModUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.LEGS, ArmorItems.MINING_LEGGINGS.get(), 1.0F);
+                ModUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.FEET, ArmorItems.MINING_BOOTS.get(), 1.0F);
+                ModUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.MAINHAND, PickaxeItems.BONE_PICKAXE.get(), 0.25F);
+                mob.setCustomName(Component.translatable("entity.confluence.undead_miner"));
+                event.setCanceled(true);
             }
         }
     }

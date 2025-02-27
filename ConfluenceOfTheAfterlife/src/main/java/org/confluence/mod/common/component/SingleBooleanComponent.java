@@ -32,8 +32,7 @@ public record SingleBooleanComponent(Boolean value) implements DataComponentType
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof SingleBooleanComponent component)) return false;
-        return component.value == value;
+        return object instanceof SingleBooleanComponent(Boolean value1) && value1 == value;
     }
 
 }

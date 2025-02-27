@@ -22,7 +22,6 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.item.paint.PaintItem;
 
 import static org.confluence.mod.api.event.ShimmerEntityTransmutationEvent.addEntity;
 import static org.confluence.mod.api.event.ShimmerItemTransmutationEvent.addItem;

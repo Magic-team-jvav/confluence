@@ -6,6 +6,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
+import com.xiaohunao.mine_team.common.team.Team;
+import com.xiaohunao.mine_team.common.team.TeamManager;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
@@ -17,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
 import org.confluence.mod.util.ClientUtils;
 import org.spongepowered.asm.mixin.Mixin;
@@ -46,8 +49,13 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
             int index = getSlotIndex(slot);
             if (index != -1) {
                 ItemStack vanityArmorDye = extra.get().getVanityArmorDye(index);
-                if (!vanityArmorDye.isEmpty() && vanityArmorDye.getItem() instanceof BaseDyeItem dyeItem) {
-                    return dyeItem.color;
+                if (!vanityArmorDye.isEmpty()) {
+                    if (vanityArmorDye.getItem() instanceof BaseDyeItem dyeItem) {
+                        return dyeItem.color;
+                    } else if (vanityArmorDye.is(VanityArmorItems.TEAM_DYE.get())) {
+                        Team team = TeamManager.getTeam(entity);
+                        return team == null ? -1 : 0xFF << 24 | team.getColor();
+                    }
                 }
             }
         }

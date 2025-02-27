@@ -1,11 +1,14 @@
 package org.confluence.mod.client.renderer.item;
 
+import com.xiaohunao.mine_team.common.team.Team;
+import com.xiaohunao.mine_team.common.team.TeamManager;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.mod.common.item.armor.NormalArmorItem;
 import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
 import org.confluence.mod.util.ClientUtils;
@@ -33,8 +36,13 @@ public class NormalArmorItemRenderer extends DyeableGeoArmorRenderer<NormalArmor
             int index = ModUtils.getSlotIndex(currentSlot);
             if (index != -1) {
                 ItemStack vanityArmorDye = currentEntity.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmorDye(index);
-                if (!vanityArmorDye.isEmpty() && vanityArmorDye.getItem() instanceof BaseDyeItem dyeItem) {
-                    return dyeItem.colour;
+                if (!vanityArmorDye.isEmpty()) {
+                    if (vanityArmorDye.getItem() instanceof BaseDyeItem dyeItem) {
+                        return dyeItem.colour;
+                    } else if (vanityArmorDye.is(VanityArmorItems.TEAM_DYE.get())) {
+                        Team team = TeamManager.getTeam(currentEntity);
+                        return team == null ? Color.WHITE : new Color(0xFF << 24 | team.getColor());
+                    }
                 }
             }
         }

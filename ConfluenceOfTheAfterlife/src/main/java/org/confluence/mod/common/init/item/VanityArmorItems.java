@@ -4,8 +4,10 @@ import net.minecraft.core.Holder;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ArmorMaterials;
+import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
 import org.confluence.mod.common.item.vanity_armor.BaseVanityArmorItem;
 import org.confluence.terra_curio.common.component.ModRarity;
@@ -55,6 +57,8 @@ public class VanityArmorItems {
     public static final Supplier<BaseDyeItem> GRAY_DYE = registerDye("gray_dye", ModRarity.BLUE, 0xFF676764);
     public static final Supplier<BaseDyeItem> SILVER_DYE = registerDye("silver_dye", ModRarity.BLUE, 0xFFfffef6);
     public static final Supplier<BaseDyeItem> BROWN_DYE = registerDye("brown_dye", ModRarity.BLUE, 0xFF8b653f);
+
+    public static final Supplier<Item> TEAM_DYE = ITEMS.register("team_dye", () -> new CustomRarityItem(ModRarity.BLUE));
 
     private static Supplier<BaseDyeItem> registerDye(String name, ModRarity rarity, int color) {
         return ITEMS.register(name, () -> {

@@ -627,6 +627,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         TGItems.ITEM_BULLETS.getEntries().forEach(item -> ammo.add(item.get()));
         IntrinsicTagAppender<Item> dye = tag(ModTags.Items.DYE);
         VanityArmorItems.DYE_ITEMS.forEach(dye::add);
+        dye.add(VanityArmorItems.TEAM_DYE.get());
 
         // Bow 附魔
         BowItems.ITEMS.getEntries().forEach(item -> {

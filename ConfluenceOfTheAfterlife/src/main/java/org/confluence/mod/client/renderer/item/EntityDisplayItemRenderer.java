@@ -33,7 +33,7 @@ public class EntityDisplayItemRenderer extends BlockEntityWithoutLevelRenderer {
         @Override
         public RemotePlayer apply(ClientLevel level) {
             if (cache == null) {
-                this.cache = new RemotePlayer(level, new GameProfile(UUID.fromString("bd27a953-8da4-44ca-a5cb-745d82a2b51f"), "MagicHarp2333")) {
+                this.cache = new RemotePlayer(level, new GameProfile(UUID.randomUUID(), "MagicHarp2333")) { // Our Leader
                     private PlayerSkin playerSkin;
 
                     @Override

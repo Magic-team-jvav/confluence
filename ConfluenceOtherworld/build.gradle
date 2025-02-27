@@ -6,6 +6,12 @@ var projectName = ["TerraEntity", "MineTeam", "EquipmentBenediction",
                    "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture"
 ]
 
+version = mod_version
+group = mod_group_id
+
+base {
+    archivesName = "ConfluenceOtherworld"
+}
 
 neoForge {
     version = project.neo_version

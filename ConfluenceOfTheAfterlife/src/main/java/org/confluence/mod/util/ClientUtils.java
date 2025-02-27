@@ -42,7 +42,7 @@ import java.util.Set;
 public final class ClientUtils {
     public static final String GRAY_SUFFIX = ".gray";
     public static final String NEGATIVE_SUFFIX = ".negative";
-    public static final float HALF_SQRT_3 = 0.8660254F;
+    public static final float HALF_SQRT_3 = (float) (Math.sqrt(3) / 2.0);
     public static final Quaternionf ANGLE_45 = Axis.YP.rotation(Mth.PI * 0.25F);
     public static final Quaternionf ANGLE_180 = Axis.ZP.rotation(Mth.PI);
     public static final Quaternionf ANGLE_N90 = Axis.YP.rotation(-Mth.HALF_PI);

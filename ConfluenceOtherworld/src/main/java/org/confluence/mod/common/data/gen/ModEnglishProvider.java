@@ -443,8 +443,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.returnPotionGlassBottle", "Return Glass Bottles for Potions");
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "Decides whether to return the glass bottle after using a potion");
         add("confluence.configuration.defaultRespawnTimeMin", "Default Minimum Respawn Time");
+        add("confluence.configuration.defaultRespawnTimeMin.tooltip", "Set the default minimum respawn time");
         add("confluence.configuration.defaultRespawnTimeMax", "Default Maximum Respawn Time");
-        add("confluence.configuration.defaultRespawnTimeMax.tooltip", "Set the default maximum respawn time");
         add("confluence.configuration.defaultRespawnTimeMax.tooltip", "Set the default maximum respawn time");
         add("confluence.configuration.bossRespawnTimeMin", "Minimum Respawn Time (Boss Battle)");
         add("confluence.configuration.bossRespawnTimeMax", "Maximum Respawn Time (Boss Battle)");

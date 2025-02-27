@@ -314,8 +314,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.returnPotionGlassBottle", "返还药水瓶");
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "决定你使用药水后是否返还瓶子");
         add("confluence.configuration.defaultRespawnTimeMin", "默认最小重生时间");
+        add("confluence.configuration.defaultRespawnTimeMin.tooltip", "设置默认最小重生时间");
         add("confluence.configuration.defaultRespawnTimeMax", "默认最大重生时间");
-        add("confluence.configuration.defaultRespawnTimeMax.tooltip", "设置默认最大重生时间");
         add("confluence.configuration.defaultRespawnTimeMax.tooltip", "设置默认最大重生时间");
         add("confluence.configuration.bossRespawnTimeMin", "最小重生时间（boss战时）");
         add("confluence.configuration.bossRespawnTimeMax", "最大重生时间（boss战时）");

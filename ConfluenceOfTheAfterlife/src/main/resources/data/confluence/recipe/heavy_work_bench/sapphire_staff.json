@@ -10,7 +10,7 @@
         "#": {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "item": "confluence:silver_ingot"
+                "tag": "c:ingots/silver"
             },
             "count": 2
         },

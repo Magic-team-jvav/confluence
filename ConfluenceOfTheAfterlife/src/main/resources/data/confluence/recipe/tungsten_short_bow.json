@@ -7,7 +7,7 @@
     ],
     "key": {
         "g": {
-            "item": "confluence:tungsten_ingot"
+            "tag": "c:ingots/tungsten"
         },
         "S": {
             "item": "minecraft:string"

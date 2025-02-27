@@ -6,7 +6,7 @@
       "item": "confluence:lead_block"
     },
     "i": {
-      "item": "confluence:lead_ingot"
+      "tag": "c:ingots/lead"
     }
   },
   "pattern": [

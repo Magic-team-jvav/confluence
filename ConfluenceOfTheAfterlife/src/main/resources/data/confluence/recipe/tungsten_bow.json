@@ -3,7 +3,7 @@
     "category": "equipment",
     "key": {
         "#": {
-            "item": "confluence:tungsten_ingot"
+            "tag": "c:ingots/tungsten"
         },
         "X": {
             "item": "minecraft:string"

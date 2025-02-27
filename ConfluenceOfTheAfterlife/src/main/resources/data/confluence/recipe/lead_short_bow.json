@@ -7,7 +7,7 @@
     ],
     "key": {
         "g": {
-            "item": "confluence:lead_ingot"
+            "tag": "c:ingots/lead"
         },
         "S": {
             "item": "minecraft:string"

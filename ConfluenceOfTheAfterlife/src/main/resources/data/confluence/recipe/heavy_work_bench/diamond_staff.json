@@ -10,7 +10,7 @@
         "#": {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "item": "confluence:platinum_ingot"
+                "tag": "c:ingots/platinum"
             },
             "count": 2
         },

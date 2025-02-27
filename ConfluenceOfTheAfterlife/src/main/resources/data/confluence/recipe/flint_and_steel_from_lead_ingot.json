@@ -3,7 +3,7 @@
   "category": "equipment",
   "ingredients": [
     {
-      "item": "confluence:lead_ingot"
+      "tag": "c:ingots/lead"
     },
     {
       "item": "minecraft:flint"

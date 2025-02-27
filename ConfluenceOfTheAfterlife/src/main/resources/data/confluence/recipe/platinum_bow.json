@@ -3,7 +3,7 @@
     "category": "equipment",
     "key": {
         "#": {
-            "item": "confluence:platinum_ingot"
+            "tag": "c:ingots/platinum"
         },
         "X": {
             "item": "minecraft:string"

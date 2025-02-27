@@ -6,7 +6,7 @@
       "tag": "minecraft:planks"
     },
     "@": {
-      "item": "confluence:lead_ingot"
+      "tag": "c:ingots/lead"
     }
   },
   "pattern": [

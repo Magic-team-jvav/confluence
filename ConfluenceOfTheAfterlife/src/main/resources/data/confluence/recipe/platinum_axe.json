@@ -7,7 +7,7 @@
     ],
     "key": {
         "#": {
-            "item": "confluence:platinum_ingot"
+            "tag": "c:ingots/platinum"
         },
         "/": {
             "item": "minecraft:stick"

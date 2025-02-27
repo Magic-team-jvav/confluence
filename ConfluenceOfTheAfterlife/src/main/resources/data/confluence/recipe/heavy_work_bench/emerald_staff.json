@@ -10,7 +10,7 @@
         "#": {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "item": "confluence:tungsten_ingot"
+                "tag": "c:ingots/tungsten"
             },
             "count": 2
         },

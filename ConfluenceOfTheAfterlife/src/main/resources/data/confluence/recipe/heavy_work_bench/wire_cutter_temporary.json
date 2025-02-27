@@ -11,13 +11,13 @@
             "item": "minecraft:red_dye"
         },
         "e": {
-            "item": "confluence:tungsten_ingot"
+            "tag": "c:ingots/tungsten"
         },
         "f": {
             "item": "minecraft:iron_ingot"
         },
         "g": {
-            "item": "confluence:silver_ingot"
+            "tag": "c:ingots/silver"
         }
     },
     "result": {

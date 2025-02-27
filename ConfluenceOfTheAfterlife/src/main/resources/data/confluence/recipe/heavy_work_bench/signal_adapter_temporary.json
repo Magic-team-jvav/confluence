@@ -16,10 +16,10 @@
             "item": "minecraft:iron_ingot"
         },
         "b": {
-            "item": "confluence:tin_ingot"
+            "tag": "c:ingots/tin"
         },
         "f": {
-            "item": "confluence:silver_ingot"
+            "tag": "c:ingots/silver"
         },
         "c": {
             "item": "minecraft:redstone_block"

@@ -10,7 +10,7 @@
         "#": {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "item": "confluence:tin_ingot"
+                "tag": "c:ingots/tin"
             },
             "count": 2
         },

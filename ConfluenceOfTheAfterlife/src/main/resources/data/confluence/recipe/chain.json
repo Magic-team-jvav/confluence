@@ -10,7 +10,7 @@
             "item": "confluence:lead_nugget"
         },
         "i": {
-            "item": "confluence:lead_ingot"
+            "tag": "c:ingots/lead"
         }
     },
     "result": {

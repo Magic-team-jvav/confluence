@@ -7,7 +7,7 @@
     ],
     "key": {
         "#": {
-            "item": "confluence:tin_ingot"
+            "tag": "c:ingots/tin"
         },
         "/": {
             "item": "minecraft:stick"

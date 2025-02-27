@@ -133,6 +133,7 @@ public final class ModFluids {
         addItem(PaintItems.ILLUMINANT_COATING.get(),PaintItems.NEGATIVE_PAINT.get());
         addItem(PaintItems.NEGATIVE_PAINT.get(),PaintItems.SHADOW_PAINT.get());
         addItem(PaintItems.SHADOW_PAINT.get(),PaintItems.ECHO_COATING.get());
+        addItem(AccessoryItems.MECHANICAL_LENS.get(),AccessoryItems.SPECTRE_GOGGLES.get());
         // 微光箭转化
         addItem(ArrowItems.FLAMING_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
         addItem(ArrowItems.UNHOLY_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());

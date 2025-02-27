@@ -1,0 +1,30 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        " b ",
+        "cec",
+        " b "
+    ],
+    "key": {
+        "b": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "minecraft:redstone"
+            },
+            "count": 2
+        },
+        "c": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "tag": "confluence:lead_and_iron"
+            },
+            "count": 2
+        },
+        "e": {
+            "item": "confluence:lens"
+        }
+    },
+    "result": {
+        "id": "confluence:mechanical_lens"
+    }
+}

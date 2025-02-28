@@ -123,8 +123,8 @@ public class LogBlockSet {
         return builder.DOOR;
     }
 
-    public List<DeferredBlock<? extends Block>> getAllBlocks() {
-        return builder.all;
+    public List<Supplier<? extends Item>> getAllItems() {
+        return builder.allItems;
     }
 
     public static void acceptTags(ModBlockTagsProvider provider) {
@@ -329,7 +329,8 @@ public class LogBlockSet {
         private DeferredItem<SignItem> SIGN_ITEM;
         private DeferredBlock<TrapDoorBlock> TRAPDOOR;
         private DeferredBlock<DoorBlock> DOOR;
-        private final List<DeferredBlock<? extends Block>> all = new ArrayList<>();
+        private List<DeferredBlock<? extends Block>> blockCache = new ArrayList<>();
+        private final List<Supplier<? extends Item>> allItems = new ArrayList<>();
 
         public Builder(String id, boolean ignitedByLava, Supplier<Block> planksSupplier) {
             this.id = id;
@@ -365,7 +366,7 @@ public class LogBlockSet {
         public Builder log(Function<BlockBehaviour.Properties, ? extends RotatedPillarBlock> function) {
             BlockBehaviour.Properties log = BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD);
             this.LOG = registerWithItem(id + "_log", () -> function.apply(ignitedByLava ? log.ignitedByLava() : log));
-            all.add(LOG);
+            blockCache.add(LOG);
             return this;
         }
 
@@ -373,21 +374,21 @@ public class LogBlockSet {
             if (LOG == null) log(function);
             this.STRIPPED_LOG = registerWithItem("stripped_" + id + "_log", () -> function.apply(BlockBehaviour.Properties.ofFullCopy(LOG.get())));
             STRIP_TABLE.put(LOG, STRIPPED_LOG);
-            all.add(STRIPPED_LOG);
+            blockCache.add(STRIPPED_LOG);
             return this;
         }
 
         public Builder leaves(Function<BlockBehaviour.Properties, ? extends LeavesBlock> function) {
             BlockBehaviour.Properties leaves = BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn(Builder::valid).isSuffocating(Builder::never).isViewBlocking(Builder::never).pushReaction(PushReaction.DESTROY).isRedstoneConductor(Builder::never);
             this.LEAVES = registerWithItem(id + "_leaves", () -> function.apply(ignitedByLava ? leaves.ignitedByLava() : leaves));
-            all.add(LEAVES);
+            blockCache.add(LEAVES);
             return this;
         }
 
         public Builder wood(Function<BlockBehaviour.Properties, ? extends RotatedPillarBlock> function) {
             BlockBehaviour.Properties wood = BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD);
             this.WOOD = registerWithItem(id + "_wood", () -> function.apply(ignitedByLava ? wood.ignitedByLava() : wood));
-            all.add(WOOD);
+            blockCache.add(WOOD);
             return this;
         }
 
@@ -395,48 +396,48 @@ public class LogBlockSet {
             if (WOOD == null) wood(function);
             this.STRIPPED_WOOD = registerWithItem("stripped_" + id + "_wood", () -> function.apply(BlockBehaviour.Properties.ofFullCopy(WOOD.get())));
             STRIP_TABLE.put(WOOD, STRIPPED_WOOD);
-            all.add(WOOD);
+            blockCache.add(WOOD);
             return this;
         }
 
         public Builder button(Function<BlockBehaviour.Properties, ? extends ButtonBlock> function) {
             BlockBehaviour.Properties button = BlockBehaviour.Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY);
             this.BUTTON = registerWithItem(id + "_button", () -> function.apply(button));
-            all.add(BUTTON);
+            blockCache.add(BUTTON);
             return this;
         }
 
         public Builder fence(Function<BlockBehaviour.Properties, ? extends FenceBlock> function) {
             BlockBehaviour.Properties fence = BlockBehaviour.Properties.of().forceSolidOn().instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).sound(SoundType.WOOD);
             this.FENCE = registerWithItem(id + "_fence", () -> function.apply(ignitedByLava ? fence.mapColor(PLANKS.get().defaultMapColor()).ignitedByLava() : fence.mapColor(PLANKS.get().defaultMapColor())));
-            all.add(FENCE);
+            blockCache.add(FENCE);
             return this;
         }
 
         public Builder fenceGate(Function<BlockBehaviour.Properties, ? extends FenceGateBlock> function) {
             BlockBehaviour.Properties fence_gate = BlockBehaviour.Properties.of().forceSolidOn().instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F);
             this.FENCE_GATE = registerWithItem(id + "_fence_gate", () -> function.apply(ignitedByLava ? fence_gate.mapColor(PLANKS.get().defaultMapColor()).ignitedByLava() : fence_gate.mapColor(PLANKS.get().defaultMapColor())));
-            all.add(FENCE_GATE);
+            blockCache.add(FENCE_GATE);
             return this;
         }
 
         public Builder pressurePlate(Function<BlockBehaviour.Properties, ? extends PressurePlateBlock> function) {
             BlockBehaviour.Properties pressure_plate = BlockBehaviour.Properties.of().forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY);
             this.PRESSURE_PLATE = registerWithItem(id + "_pressure_plate", () -> function.apply(ignitedByLava ? pressure_plate.mapColor(PLANKS.get().defaultMapColor()).ignitedByLava() : pressure_plate.mapColor(PLANKS.get().defaultMapColor())));
-            all.add(PRESSURE_PLATE);
+            blockCache.add(PRESSURE_PLATE);
             return this;
         }
 
         public Builder slab(Function<BlockBehaviour.Properties, ? extends SlabBlock> function) {
             BlockBehaviour.Properties slab = BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).sound(SoundType.WOOD);
             this.SLAB = registerWithItem(id + "_slab", () -> function.apply(ignitedByLava ? slab.ignitedByLava() : slab));
-            all.add(SLAB);
+            blockCache.add(SLAB);
             return this;
         }
 
         public Builder stair(BiFunction<BlockState, BlockBehaviour.Properties, ? extends StairBlock> function) {
             this.STAIRS = registerWithItem(id + "_stairs", () -> function.apply(PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(PLANKS.get())));
-            all.add(STAIRS);
+            blockCache.add(STAIRS);
             return this;
         }
 
@@ -446,28 +447,31 @@ public class LogBlockSet {
             BlockBehaviour.Properties wall_sign = BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(1.0F).lootFrom(SIGN);
             this.WALL_SIGN = registerWithoutItem(id + "_wall_sign", () -> wallSign.apply(ignitedByLava ? wall_sign.ignitedByLava() : wall_sign));
             this.SIGN_ITEM = ModItems.BLOCK_ITEMS.register(id + "_sign", () -> signItem.apply(new Item.Properties().stacksTo(16), SIGN.get(), WALL_SIGN.get()));
-            all.add(SIGN);
-            all.add(WALL_SIGN);
+            allItems.add(SIGN_ITEM);
             return this;
         }
 
         public Builder trapdoor(Function<BlockBehaviour.Properties, ? extends TrapDoorBlock> function) {
             BlockBehaviour.Properties trapdoor = BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(3.0F).noOcclusion().isValidSpawn(Builder::never).ignitedByLava();
             this.TRAPDOOR = registerWithItem(id + "_trapdoor", () -> function.apply(trapdoor));
-            all.add(TRAPDOOR);
+            blockCache.add(TRAPDOOR);
             return this;
         }
 
         public Builder door(Function<BlockBehaviour.Properties, ? extends DoorBlock> function) {
             BlockBehaviour.Properties door = BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASS).strength(3.0F).noOcclusion().pushReaction(PushReaction.DESTROY).ignitedByLava();
             this.DOOR = registerWithItem(id + "_door", () -> function.apply(door.mapColor(PLANKS.get().defaultMapColor())));
-            all.add(DOOR);
+            blockCache.add(DOOR);
             return this;
         }
 
         public LogBlockSet build() {
             LogBlockSet logBlockSet = new LogBlockSet(this);
             LOG_BLOCK_SETS.add(logBlockSet);
+            for (DeferredBlock<? extends Block> block : blockCache) {
+                allItems.add(block::asItem);
+            }
+            this.blockCache = null;
             return logBlockSet;
         }
 

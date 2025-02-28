@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.DeferredBlock;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
@@ -27,6 +26,7 @@ import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 
 public class ModItemTagsProvider extends ItemTagsProvider {
@@ -682,7 +682,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         tag(ModTags.Items.HARDMODE)
                 .addTag(ModTags.Items.HARDMODE_ORES)
-                .add(NatureBlocks.PEARL_LOG_BLOCKS.getAllBlocks().stream().map(DeferredBlock::asItem).toArray(Item[]::new))
-                .add(NatureBlocks.PEARL_LOG_BLOCKS.getSignItem().get());
+                .add(NatureBlocks.PEARL_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new));
     }
 }

@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.util.HomingUtils;
+import org.confluence.mod.util.VectorUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.entity.ai.ICollisionAttackEntity;
 import org.jetbrains.annotations.Nullable;
@@ -141,7 +141,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         float damage = getBaseDamage() * (attackDamage);
         if (living.hurt(damageSource(), damage)) {
             float attackKnockBack = getBaseKnockBack() + knockBack;
-            HomingUtils.knockBackA2B(this, living, attackKnockBack * 0.5, 0.2);
+            VectorUtils.knockBackA2B(this, living, attackKnockBack * 0.5, 0.2);
             if(--hitCount == 0){
                 discard();
             }

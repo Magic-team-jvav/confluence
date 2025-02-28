@@ -16,8 +16,7 @@ import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import org.confluence.mod.common.init.ModSecretSeeds;
-import org.confluence.mod.util.HomingUtils;
-import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.VectorUtils;
 import org.joml.Vector3d;
 
 import java.util.List;
@@ -40,8 +39,8 @@ public class WavyCaveCarver extends WorldCarver<WavyCaveCarver.Config> {
         deltaPos = end.subtract(middle);
         BlockPos b = start.offset(deltaPos.getX() / 2, deltaPos.getY() / 2 + random.nextInt(32, 48), deltaPos.getZ() / 2);
 
-        List<Vector3d> positions = Lists.newArrayList(Stream.of(start, a, middle, b, end).map(HomingUtils::toVector3d).toList());
-        ModUtils.lightningPathList(positions, 2.5, 8, random);
+        List<Vector3d> positions = Lists.newArrayList(Stream.of(start, a, middle, b, end).map(VectorUtils::toVector3d).toList());
+        VectorUtils.lightningPathList(positions, 2.5, 8, random);
         float yScale = config.yScale.sample(random);
         int size = positions.size();
         for (int i = 0; i < size; i++) {

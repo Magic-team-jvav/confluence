@@ -13,8 +13,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModAttachmentTypes;
-import org.confluence.mod.util.HomingUtils;
 import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.VectorUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -64,7 +64,7 @@ public class BaseMinecartEntity extends Minecart {
                     for (Entity entity : list) {
                         double distance = movement.horizontalDistance();
                         entity.hurt(damageSources().flyIntoWall(), (float) distance * 5.0F);
-                        HomingUtils.knockBackA2B(this, entity, distance * 0.5, 0.2);
+                        VectorUtils.knockBackA2B(this, entity, distance * 0.5, 0.2);
                         if (!entity.isAlive()) killed = true;
                     }
                     if (killed && driver instanceof ServerPlayer serverPlayer) {

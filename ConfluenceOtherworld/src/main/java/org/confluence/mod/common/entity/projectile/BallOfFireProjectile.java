@@ -17,7 +17,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
-import org.confluence.mod.util.HomingUtils;
+import org.confluence.mod.util.VectorUtils;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
@@ -68,7 +68,7 @@ public class BallOfFireProjectile extends Projectile {
                 if (collideCount >= 6) {
                     discard();
                 } else {
-                    motion = HomingUtils.relativeScale(vec3, axis, -1.0);
+                    motion = VectorUtils.relativeScale(vec3, axis, -1.0);
                     this.collideCount++;
                 }
             }
@@ -84,7 +84,7 @@ public class BallOfFireProjectile extends Projectile {
                 }
             }
             if (entity.hurt(damageSources().indirectMagic(this, getOwner()), ddu ? 17.0F : 9.6F)) {
-                HomingUtils.knockBackA2B(this, entity, 0.6, 0.2);
+                VectorUtils.knockBackA2B(this, entity, 0.6, 0.2);
             }
         }
         setDeltaMovement(motion.scale(0.99).add(0.0, -0.04, 0.0));

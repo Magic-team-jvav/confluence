@@ -11,7 +11,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.VectorUtils;
 import org.joml.Vector3d;
 
 import java.util.ArrayList;
@@ -167,7 +167,7 @@ public class LivingTreeFeature extends Feature<LivingTreeFeature.Config> {
             leavesListFirst.add(locationEnd);
             placeBlock(placeList(leavesListFirst, 30.0, 30.0, 0.5, 0.005, pContext), 4.0, 4.0, leavesBlockState, level, 0.5, 0.5, false, pContext);
 
-            ModUtils.lightningPathList(locationList1, 1.0, 8, pContext.random());
+            VectorUtils.lightningPathList(locationList1, 1.0, 8, pContext.random());
             placeBlock(locationList1, 6.0, 1.0, trunkBlockState, level, 1.0, 1.0, true, pContext);
 
             int stickCount = 5 + random.nextInt(5);
@@ -188,7 +188,7 @@ public class LivingTreeFeature extends Feature<LivingTreeFeature.Config> {
                 List<Vector3d> leavesList = new ArrayList<>();
                 stickList.add(stickStart);
                 stickList.add(stickEnd);
-                ModUtils.lightningPathList(stickList, 1.0, 8, pContext.random());
+                VectorUtils.lightningPathList(stickList, 1.0, 8, pContext.random());
                 placeBlock(stickList, 2.0 + random.nextInt(2), 1.0, trunkBlockState, level, 1.0, 1.0, true, pContext);
                 leavesList.add(stickEnd);
                 placeBlock(placeList(leavesList, 20.0, 20.0, 0.5, 0.005, pContext), 4.0, 4.0, leavesBlockState, level, 0.5, 0.5, false, pContext);
@@ -212,7 +212,7 @@ public class LivingTreeFeature extends Feature<LivingTreeFeature.Config> {
                     List<Vector3d> stickList = new ArrayList<>();
                     stickList.add(stickStart);
                     stickList.add(stickEnd);
-                    ModUtils.lightningPathList(stickList, 1.0, 8, pContext.random());
+                    VectorUtils.lightningPathList(stickList, 1.0, 8, pContext.random());
                     placeBlock(stickList, 2.0 + random.nextInt(2), 1.0, trunkBlockState, level, 1.0, 1.0, true, pContext);
                 }
             }

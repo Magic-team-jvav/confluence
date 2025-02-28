@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "confluence:amber_tree",
+    "features": [
+      {
+        "chance": 0.15,
+        "feature": "confluence:diamond_tree"
+      },
+      {
+        "chance": 0.15,
+        "feature": "confluence:emerald_tree"
+      },
+      {
+        "chance": 0.15,
+        "feature": "confluence:ruby_tree"
+      },
+      {
+        "chance": 0.15,
+        "feature": "confluence:sapphire_tree"
+      },
+      {
+        "chance": 0.15,
+        "feature": "confluence:topaz_tree"
+      },
+      {
+        "chance": 0.15,
+        "feature": "confluence:tr_amethyst_tree"
+      }
+    ]
+  }
+}

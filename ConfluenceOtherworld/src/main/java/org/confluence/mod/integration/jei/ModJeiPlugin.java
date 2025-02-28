@@ -4,6 +4,7 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.helpers.IJeiHelpers;
+import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
@@ -16,6 +17,7 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Blocks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
+import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -85,6 +87,15 @@ public final class ModJeiPlugin implements IModPlugin {
             registration.addRecipeCatalyst(new ItemStack(Blocks.FLETCHING_TABLE), FletchingTableCategory.TYPE);
         }
         registration.addRecipeCatalyst(FunctionalBlocks.LEAD_ANVIL.toStack(), RecipeTypes.ANVIL);
+    }
+
+    @Override
+    public void registerGuiHandlers(IGuiHandlerRegistration registration) {
+        registration.addRecipeClickArea(HeavyWorkBenchScreen.class, 95, 32, 28, 23, HeavyWorkBenchCategory.TYPE);
+        registration.addRecipeClickArea(FletchingTableScreen.class, 87, 31, 28, 23, FletchingTableCategory.TYPE);
+        registration.addRecipeClickArea(HellforgeScreen.class, 89, 31, 28, 23, HellforgeCategory.TYPE);
+        registration.addRecipeClickArea(SkyMillScreen.class, 34, 35, 18, 18, SkyMillCategory.TYPE);
+        registration.addRecipeClickArea(AlchemyTableScreen.class, 79, 38, 18, 20, AlchemyTableCategory.TYPE);
     }
 
     public static void drawArrowDown(GuiGraphics guiGraphics, int x, int y, boolean usable) {

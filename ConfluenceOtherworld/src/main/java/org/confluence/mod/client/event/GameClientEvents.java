@@ -18,7 +18,6 @@ import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -39,7 +38,6 @@ import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.AntiPushPoseStack;
 import org.confluence.mod.client.ClientConfigs;
-import org.confluence.mod.client.ModMusics;
 import org.confluence.mod.client.effect.DebugBlocksHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
@@ -451,10 +449,10 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void selectMusic(SelectMusicEvent event) {
-        if (event.isCanceled()) return;
-        SoundInstance playingMusic = event.getPlayingMusic();
-        if (playingMusic == null) {
-            event.setMusic(ModMusics.OVERWORLD_DAY);
-        }
+//        if (event.isCanceled()) return;
+//        SoundInstance playingMusic = event.getPlayingMusic();
+//        if (playingMusic == null) {
+//            event.setMusic(ModMusics.OVERWORLD_DAY);
+//        }
     }
 }

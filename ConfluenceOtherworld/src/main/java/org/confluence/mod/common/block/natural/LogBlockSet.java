@@ -24,10 +24,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.ModBlockTagsProvider;
 import org.confluence.mod.common.init.item.ModItems;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -329,7 +326,7 @@ public class LogBlockSet {
         private DeferredItem<SignItem> SIGN_ITEM;
         private DeferredBlock<TrapDoorBlock> TRAPDOOR;
         private DeferredBlock<DoorBlock> DOOR;
-        private List<DeferredBlock<? extends Block>> blockCache = new ArrayList<>();
+        private Set<DeferredBlock<? extends Block>> blockCache = new HashSet<>();
         private final List<Supplier<? extends Item>> allItems = new ArrayList<>();
 
         public Builder(String id, boolean ignitedByLava, Supplier<Block> planksSupplier) {
@@ -396,7 +393,7 @@ public class LogBlockSet {
             if (WOOD == null) wood(function);
             this.STRIPPED_WOOD = registerWithItem("stripped_" + id + "_wood", () -> function.apply(BlockBehaviour.Properties.ofFullCopy(WOOD.get())));
             STRIP_TABLE.put(WOOD, STRIPPED_WOOD);
-            blockCache.add(WOOD);
+            blockCache.add(STRIPPED_WOOD);
             return this;
         }
 

@@ -18,7 +18,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.util.VectorUtils;
 import org.joml.Vector3d;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -45,8 +45,8 @@ public class CrimsonCaveStructure extends Structure {
 
             generateHill(blockMap, radius, centerPos);
             Pair<BlockPos, Direction> armEndNode = generateArm(blockMap, centerPos, random, radius, startChunk);
-            Map<BlockPos, Vector3d> fingerMap = generatePalm(blockMap, random, armEndNode.getFirst(), armEndNode.getSecond());
-            fingerMap.forEach((startPos, facing) -> generateFinger(blockMap, random, startPos, facing));
+            List<Pair<BlockPos, Vector3d>> fingerList = generatePalm(blockMap, random, armEndNode.getFirst(), armEndNode.getSecond());
+            fingerList.forEach(pair -> generateFinger(blockMap, random, pair.getFirst(), pair.getSecond()));
 
             Map<ChunkPos, Object2BooleanMap<BlockPos>> gridMap = GridPiece.sliceChunks(blockMap, startChunk);
             for (Map.Entry<ChunkPos, Object2BooleanMap<BlockPos>> entry : gridMap.entrySet()) {
@@ -62,10 +62,10 @@ public class CrimsonCaveStructure extends Structure {
         // todo
     }
 
-    private static Map<BlockPos, Vector3d> generatePalm(Object2BooleanMap<BlockPos> blockMap, WorldgenRandom random, BlockPos armEndPos, Direction armEndFace) {
-        Map<BlockPos, Vector3d> map = new HashMap<>();
+    private static List<Pair<BlockPos, Vector3d>> generatePalm(Object2BooleanMap<BlockPos> blockMap, WorldgenRandom random, BlockPos armEndPos, Direction armEndFace) {
+        List<Pair<BlockPos, Vector3d>> fingerList = new ArrayList<>();
         // todo
-        return map;
+        return fingerList;
     }
 
     private static Pair<BlockPos, Direction> generateArm(Object2BooleanMap<BlockPos> blockMap, BlockPos startPos, WorldgenRandom random, int radius, ChunkPos startChunk) {

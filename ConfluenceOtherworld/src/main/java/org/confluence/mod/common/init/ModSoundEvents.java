@@ -69,7 +69,7 @@ public final class ModSoundEvents {
     public static final DeferredHolder<SoundEvent, SoundEvent> CRIMSON = register("crimson"); // 猩红地表
     public static final DeferredHolder<SoundEvent, SoundEvent> UNDERGROUND_CRIMSON = register("underground_crimson"); // 猩红地下 y40——y64可以触发
     public static final DeferredHolder<SoundEvent, SoundEvent> ICE = register("ice"); // 冰雪群系地表
-    public static final DeferredHolder<SoundEvent, SoundEvent> UNDERGROUND_ICE = register("underground_ice"); // 冰雪群系地表
+    public static final DeferredHolder<SoundEvent, SoundEvent> UNDERGROUND_ICE = register("underground_ice"); // 冰雪群系地下
     public static final DeferredHolder<SoundEvent, SoundEvent> UNDERWORLD = register("underworld"); // 灰烬群系，白蜡木林
     public static final DeferredHolder<SoundEvent, SoundEvent> SLIME_RAIN = register("slime_rain"); // 史莱姆雨事件使用
     public static final DeferredHolder<SoundEvent, SoundEvent> DESERT = register("desert"); // 沙漠

@@ -114,24 +114,29 @@
             "confluence:otherworld"
         ]
     },
-    "boss_1": {
+    "king_slime_combat": {
         "sounds": [
-            "confluence:boss_1"
+            "confluence:king_slime_combat"
         ]
     },
-    "boss_2": {
+    "eye_of_cthulhu_combat": {
         "sounds": [
-            "confluence:boss_2"
+            "confluence:eye_of_cthulhu_combat"
         ]
     },
-    "boss_3": {
+    "eater_of_worlds_combat": {
         "sounds": [
-            "confluence:boss_3"
+            "confluence:eater_of_worlds_combat"
         ]
     },
-    "queen_bee": {
+    "brain_of_cthulhu_combat": {
         "sounds": [
-            "confluence:queen_bee"
+            "confluence:brain_of_cthulhu_combat"
+        ]
+    },
+    "queen_bee_combat": {
+        "sounds": [
+            "confluence:queen_bee_combat"
         ]
     },
     "overworld_day": {

@@ -696,6 +696,7 @@ public class ModChineseProvider extends LanguageProvider {
 
 
         add("resourcepack.terraria_art", "泰拉艺术");
+        add("resourcepack.otherworldly_music", "来世音乐包");
         add("resourcepack.terraria_armor", "泰拉盔甲样式材质");
 
         add("event.confluence.blood_moon", "血月正在升起...");

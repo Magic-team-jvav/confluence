@@ -19,7 +19,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.init.item.ToolItems;
-import org.jetbrains.annotations.NotNull;
 
 public class ShimmerItemTransmutationCategory implements IRecipeCategory<ShimmerItemTransmutationEvent.ItemTransmutation> {
     public static final RecipeType<ShimmerItemTransmutationEvent.ItemTransmutation> TYPE = RecipeType.create(Confluence.MODID, "item_transmutation", ShimmerItemTransmutationEvent.ItemTransmutation.class);
@@ -31,27 +30,27 @@ public class ShimmerItemTransmutationCategory implements IRecipeCategory<Shimmer
     }
 
     @Override
-    public @NotNull RecipeType<ShimmerItemTransmutationEvent.ItemTransmutation> getRecipeType() {
+    public RecipeType<ShimmerItemTransmutationEvent.ItemTransmutation> getRecipeType() {
         return TYPE;
     }
 
     @Override
-    public @NotNull Component getTitle() {
+    public Component getTitle() {
         return SHIMMER_TRANSMUTATION_TITLE;
     }
 
     @Override
-    public @NotNull IDrawable getBackground() {
+    public IDrawable getBackground() {
         return ModJeiPlugin.FULL_BACKGROUND;
     }
 
     @Override
-    public @NotNull IDrawable getIcon() {
+    public IDrawable getIcon() {
         return icon;
     }
 
     @Override
-    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, ShimmerItemTransmutationEvent.@NotNull ItemTransmutation recipe, @NotNull IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, ShimmerItemTransmutationEvent.ItemTransmutation recipe, IFocusGroup focuses) {
         // input
         ItemStack[] items = recipe.source().getItems();
         IRecipeSlotBuilder inputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 56, 16);
@@ -67,7 +66,7 @@ public class ShimmerItemTransmutationCategory implements IRecipeCategory<Shimmer
     }
 
     @Override
-    public void draw(ShimmerItemTransmutationEvent.@NotNull ItemTransmutation recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(ShimmerItemTransmutationEvent.ItemTransmutation recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         if (ClientPacketHandler.getGamePhase().ordinal() < recipe.gamePhase().ordinal()) {
             ModJeiPlugin.drawArrowDown(guiGraphics, 54, 46, false);
             if (mouseX >= 54 && mouseX <= 75 && mouseY >= 46 && mouseY <= 74) {

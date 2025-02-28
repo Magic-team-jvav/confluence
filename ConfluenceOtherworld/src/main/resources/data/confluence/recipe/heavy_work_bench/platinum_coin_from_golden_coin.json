@@ -7,7 +7,7 @@
         "#": {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "item": "confluence:gold_coin"
+                "item": "confluence:golden_coin"
             },
             "count": 100
         }

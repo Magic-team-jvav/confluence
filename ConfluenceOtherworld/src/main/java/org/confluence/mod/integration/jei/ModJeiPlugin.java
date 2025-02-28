@@ -4,10 +4,7 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.helpers.IJeiHelpers;
-import mezz.jei.api.registration.IGuiHandlerRegistration;
-import mezz.jei.api.registration.IRecipeCatalystRegistration;
-import mezz.jei.api.registration.IRecipeCategoryRegistration;
-import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -23,7 +20,6 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.terra_curio.integration.jei.JeiBackGround;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -36,7 +32,7 @@ public final class ModJeiPlugin implements IModPlugin {
     public static final JeiBackGround QUARTER_BACKGROUND = new JeiBackGround(128, 32, null);
 
     @Override
-    public @NotNull ResourceLocation getPluginUid() {
+    public ResourceLocation getPluginUid() {
         return UID;
     }
 
@@ -55,7 +51,7 @@ public final class ModJeiPlugin implements IModPlugin {
     }
 
     @Override
-    public void registerRecipes(@NotNull IRecipeRegistration registration) {
+    public void registerRecipes(IRecipeRegistration registration) {
         registration.addRecipes(ShimmerItemTransmutationCategory.TYPE, ShimmerItemTransmutationEvent.ITEM_TRANSMUTATION);
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null) return;
@@ -92,10 +88,17 @@ public final class ModJeiPlugin implements IModPlugin {
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
         registration.addRecipeClickArea(HeavyWorkBenchScreen.class, 95, 32, 28, 23, HeavyWorkBenchCategory.TYPE);
-        registration.addRecipeClickArea(FletchingTableScreen.class, 87, 31, 28, 23, FletchingTableCategory.TYPE);
+        if (CommonConfigs.FLETCHING_MENU.get()) {
+            registration.addRecipeClickArea(FletchingTableScreen.class, 87, 31, 28, 23, FletchingTableCategory.TYPE);
+        }
         registration.addRecipeClickArea(HellforgeScreen.class, 89, 31, 28, 23, HellforgeCategory.TYPE);
         registration.addRecipeClickArea(SkyMillScreen.class, 34, 35, 18, 18, SkyMillCategory.TYPE);
         registration.addRecipeClickArea(AlchemyTableScreen.class, 79, 38, 18, 20, AlchemyTableCategory.TYPE);
+    }
+
+    @Override
+    public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
+        // todo
     }
 
     public static void drawArrowDown(GuiGraphics guiGraphics, int x, int y, boolean usable) {

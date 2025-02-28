@@ -14,7 +14,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.SkyMillRecipe;
 import org.confluence.terra_curio.integration.jei.JeiBackGround;
-import org.jetbrains.annotations.NotNull;
 
 import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
 
@@ -29,27 +28,27 @@ public class SkyMillCategory implements IRecipeCategory<SkyMillRecipe> {
     }
 
     @Override
-    public @NotNull RecipeType<SkyMillRecipe> getRecipeType() {
+    public RecipeType<SkyMillRecipe> getRecipeType() {
         return TYPE;
     }
 
     @Override
-    public @NotNull Component getTitle() {
+    public Component getTitle() {
         return TITLE;
     }
 
     @Override
-    public @NotNull IDrawable getBackground() {
+    public IDrawable getBackground() {
         return BACK_GROUND;
     }
 
     @Override
-    public @NotNull IDrawable getIcon() {
+    public IDrawable getIcon() {
         return icon;
     }
 
     @Override
-    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull SkyMillRecipe recipe, @NotNull IFocusGroup focusGroup) {
+    public void setRecipe(IRecipeLayoutBuilder builder, SkyMillRecipe recipe, IFocusGroup focusGroup) {
         // input
         NonNullList<Ingredient> ingredients = recipe.getIngredients();
         int size = ingredients.size();

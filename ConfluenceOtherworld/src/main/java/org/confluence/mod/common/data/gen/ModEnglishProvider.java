@@ -627,6 +627,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("biome.confluence.tr_crimson_tundra", "The Crimson Tundra");
 
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), toTitleCase(block.getId().getPath()));
+        add(ModBlocks.COPPER_COIN_PILE.get(), "Copper Coin");
+        add(ModBlocks.SILVER_COIN_PILE.get(), "Silver Coin");
+        add(ModBlocks.GOLDEN_COIN_PILE.get(), "Golden Coin");
+        add(ModBlocks.PLATINUM_COIN_PILE.get(), "Platinum Coin");
+        add(ModBlocks.EMERALD_COIN_PILE.get(), "Emerald Coin");
         CrateBlocks.BLOCKS.getEntries().forEach(blockAction);
         DecorativeBlocks.BLOCKS.getEntries().forEach(blockAction);
         FunctionalBlocks.BLOCKS.getEntries().forEach(blockAction);

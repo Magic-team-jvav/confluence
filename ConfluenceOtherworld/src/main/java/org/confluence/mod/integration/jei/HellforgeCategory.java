@@ -19,7 +19,6 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.HellforgeRecipe;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.integration.jei.JeiBackGround;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
@@ -35,17 +34,17 @@ public class HellforgeCategory implements IRecipeCategory<HellforgeRecipe> {
     }
 
     @Override
-    public @NotNull RecipeType<HellforgeRecipe> getRecipeType() {
+    public RecipeType<HellforgeRecipe> getRecipeType() {
         return TYPE;
     }
 
     @Override
-    public @NotNull Component getTitle() {
+    public Component getTitle() {
         return TITLE;
     }
 
     @Override
-    public @NotNull IDrawable getBackground() {
+    public IDrawable getBackground() {
         return BACKGROUND;
     }
 
@@ -55,7 +54,7 @@ public class HellforgeCategory implements IRecipeCategory<HellforgeRecipe> {
     }
 
     @Override
-    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull HellforgeRecipe recipe, @NotNull IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, HellforgeRecipe recipe, IFocusGroup focuses) {
         NonNullList<Ingredient> ingredients = recipe.ingredients;
         int i = 0;
         int j = 0;
@@ -72,7 +71,7 @@ public class HellforgeCategory implements IRecipeCategory<HellforgeRecipe> {
     }
 
     @Override
-    public void draw(@NotNull HellforgeRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(HellforgeRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         if (recipe.isRequiresFuel()) {
             guiGraphics.blit(HellforgeScreen.SUPER_LIT_PROGRESS, 54, 25, 0, 0, 14, 14, 14, 14);
             if (mouseX >= 54 && mouseX <= 68 && mouseY >= 25 && mouseY <= 39) {

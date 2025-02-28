@@ -2,19 +2,27 @@ package org.confluence.mod.integration.jei;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import mezz.jei.api.recipe.transfer.IRecipeTransferError;
+import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.menu.HeavyWorkBenchMenu;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 import org.confluence.terra_curio.integration.jei.JeiBackGround;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
 
@@ -29,17 +37,17 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<HeavyWorkBenchRec
     }
 
     @Override
-    public @NotNull RecipeType<HeavyWorkBenchRecipe> getRecipeType() {
+    public RecipeType<HeavyWorkBenchRecipe> getRecipeType() {
         return TYPE;
     }
 
     @Override
-    public @NotNull Component getTitle() {
+    public Component getTitle() {
         return TITLE;
     }
 
     @Override
-    public @NotNull IDrawable getBackground() {
+    public IDrawable getBackground() {
         return BACKGROUND;
     }
 
@@ -49,7 +57,7 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<HeavyWorkBenchRec
     }
 
     @Override
-    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, HeavyWorkBenchRecipe recipe, @NotNull IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, HeavyWorkBenchRecipe recipe, IFocusGroup focuses) {
         ShapedRecipePattern pattern = recipe.pattern;
         int width = pattern.width();
         int height = pattern.height();
@@ -64,5 +72,27 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<HeavyWorkBenchRec
             }
         }
         builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33).addItemStack(recipe.getResultItem(null));
+    }
+    
+    public static class RecipeTransfer implements IRecipeTransferHandler<HeavyWorkBenchMenu, HeavyWorkBenchRecipe> {
+        @Override
+        public Class<? extends HeavyWorkBenchMenu> getContainerClass() {
+            return HeavyWorkBenchMenu.class;
+        }
+
+        @Override
+        public Optional<MenuType<HeavyWorkBenchMenu>> getMenuType() {
+            return Optional.of(ModMenuTypes.HEAVY_WORK_BENCH.get());
+        }
+
+        @Override
+        public RecipeType<HeavyWorkBenchRecipe> getRecipeType() {
+            return TYPE;
+        }
+
+        @Override
+        public @Nullable IRecipeTransferError transferRecipe(HeavyWorkBenchMenu container, HeavyWorkBenchRecipe recipe, IRecipeSlotsView recipeSlots, Player player, boolean maxTransfer, boolean doTransfer) {
+            return null;
+        }
     }
 }

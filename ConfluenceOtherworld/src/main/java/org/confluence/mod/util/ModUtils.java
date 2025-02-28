@@ -8,7 +8,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -110,14 +109,14 @@ public final class ModUtils {
      * @see ModUtils#isMaster(Level, BlockPos)
      */
     public static boolean isAtLeastExpert(Level level, BlockPos pos) {
-        return level.getCurrentDifficultyAt(pos).isHarderThan(Difficulty.NORMAL.getId());
+        return level.getCurrentDifficultyAt(pos).getEffectiveDifficulty() >= 1;
     }
 
     /**
      * 为大师?在处理if...else if时应先使用此方法
      */
     public static boolean isMaster(Level level, BlockPos pos) {
-        return level.getCurrentDifficultyAt(pos).isHard();
+        return level.getCurrentDifficultyAt(pos).getEffectiveDifficulty() >= 2;
     }
 
     /**
@@ -130,8 +129,8 @@ public final class ModUtils {
      */
     public static <T> T switchByDifficulty(Level level, BlockPos blockPos, T classic, T expert, T master) {
         float difficulty = level.getCurrentDifficultyAt(blockPos).getEffectiveDifficulty();
-        if (difficulty >= 3) return master;
-        if (difficulty >= 2) return expert;
+        if (difficulty >= 2) return master;
+        if (difficulty >= 1) return expert;
         return classic;
     }
 
@@ -146,9 +145,9 @@ public final class ModUtils {
      */
     public static <T> T switchByDifficulty(Level level, BlockPos blockPos, T classic, T expert, T master, T legendary) {
         float difficulty = level.getCurrentDifficultyAt(blockPos).getEffectiveDifficulty();
-        if (difficulty >= 4) return legendary;
-        if (difficulty >= 3) return master;
-        if (difficulty >= 2) return expert;
+        if (difficulty >= 3) return legendary;
+        if (difficulty >= 2) return master;
+        if (difficulty >= 1) return expert;
         return classic;
     }
 

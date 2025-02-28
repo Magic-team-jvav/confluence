@@ -51,7 +51,11 @@ public class TreasureBagItem extends CustomRarityItem {
                     .withParameter(LootContextParams.THIS_ENTITY, player)
                     .withLuck(player.getLuck())
                     .create(LootContextParamSets.GIFT);
-            ResourceLocation table = ResourceLocation.parse(TCUtils.getItemStackNbt(itemStack).getString("lootTable"));
+            String string = TCUtils.getItemStackNbt(itemStack).getString("lootTable");
+            if (string.isEmpty() && player.isCreative()) {
+                string = lootTable.withSuffix(suffix.apply(serverLevel, player.blockPosition())).toString();
+            }
+            ResourceLocation table = ResourceLocation.parse(string);
             LootTable loottable = serverLevel.getServer().reloadableRegistries().getLootTable(ResourceKey.create(Registries.LOOT_TABLE, table));
             int count = 1;
             if (player.isCrouching()) count = itemStack.getCount();

@@ -74,15 +74,26 @@ public class BaseBombEntity extends ThrowableItemProjectile {
         super.tick();
         if (level().isClientSide) {
             float s = (float) getDeltaMovement().length();
-            float r = 2.0F * s / diameter;
-            if (rotate > Mth.TWO_PI) this.rotate -= Mth.TWO_PI;
-            this.rotateO = rotate;
-            this.rotate += r / Mth.PI;
-            rotation.set(0.0, 0.0, rotate);
+            if (s > Mth.EPSILON + Mth.EPSILON + getDefaultGravity()) {
+                float r = 2.0F * s / diameter;
+                if (rotate > Mth.TWO_PI) this.rotate -= Mth.TWO_PI;
+                this.rotateO = rotate;
+                this.rotate += r / Mth.PI;
+                rotation.set(0.0, 0.0, rotate);
+            } else {
+                this.rotateO = rotate;
+            }
             createEmitter();
         } else if (this.delay-- < 0) {
             explodeFunction();
             discard();
+        }
+    }
+
+    @Override
+    protected void updateRotation() {
+        if (rotate != rotateO) {
+            super.updateRotation();
         }
     }
 

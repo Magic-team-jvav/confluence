@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
@@ -678,5 +679,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         LightPetItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.LIGHT_PET).add(item.get()));
         TreasureBagItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.TREASURE_BAG).add(item.get()));
+
+        tag(ModTags.Items.HARDMODE)
+                .addTag(ModTags.Items.HARDMODE_ORES)
+                .add(NatureBlocks.PEARL_LOG_BLOCKS.getAllBlocks().stream().map(DeferredBlock::asItem).toArray(Item[]::new))
+                .add(NatureBlocks.PEARL_LOG_BLOCKS.getSignItem().get());
     }
 }

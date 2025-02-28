@@ -67,7 +67,7 @@ public final class ModTags {
         public static final TagKey<Item> PROVIDE_LIFE = register("provide_life");
         public static final TagKey<Item> TORCH = register("torch");
         public static final TagKey<Item> PROVIDE_LIGHT = register("provide_light");
-        public static final TagKey<Item> HARDMODE = register("hardmode");
+        public static final TagKey<Item> HARDMODE = register("hardmode"); // 用于防止微光分解出困难模式物品
         public static final TagKey<Item> BOTTOMLESS = register("bottomless");
         public static final TagKey<Item> FRUIT = register("fruit");
         public static final TagKey<Item> DESERT_FOSSIL = register("desert_fossil");

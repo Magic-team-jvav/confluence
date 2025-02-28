@@ -654,18 +654,21 @@ public class ModEnglishProvider extends LanguageProvider {
         HammerItems.ITEMS.getEntries().forEach(itemAction);
         HookItems.ITEMS.getEntries().forEach(itemAction);
         IconItems.ITEMS.getEntries().forEach(itemAction);
+        LightPetItems.ITEMS.getEntries().forEach(itemAction);
         ManaWeaponItems.ITEMS.getEntries().forEach(itemAction);
         MaterialItems.ITEMS.getEntries().forEach(itemAction);
         MinecartItems.ITEMS.getEntries().forEach(itemAction);
         ModItems.ITEMS.getEntries().forEach(itemAction);
         ModItems.HIDDEN.getEntries().forEach(itemAction);
         ModItems.BLOCK_ITEMS.getEntries().forEach(itemAction);
+        PaintItems.ITEMS.getEntries().forEach(itemAction);
         PickaxeAxeItems.ITEMS.getEntries().forEach(itemAction);
         PickaxeItems.ITEMS.getEntries().forEach(itemAction);
         PotionItems.ITEMS.getEntries().forEach(itemAction);
         QuestedFishes.ITEMS.getEntries().forEach(itemAction);
         SwordItems.ITEMS.getEntries().forEach(itemAction);
         ToolItems.ITEMS.getEntries().forEach(itemAction);
+        TreasureBagItems.ITEMS.getEntries().forEach(itemAction);
 
         ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), toTitleCase(effect.getId().getPath())));
         ModEntities.ENTITIES.getEntries().forEach(entity -> add(entity.get(), toTitleCase(entity.getId().getPath())));

@@ -27,6 +27,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public final class ModPonderPlugin implements PonderPlugin {
+    private static final ResourceLocation TAG_MECHANICAL = Confluence.asResource("ponder/functional");
     private static final ResourceLocation TAG_GAMEPLAY = Confluence.asResource("ponder/gameplay");
 
     @Override
@@ -40,12 +41,28 @@ public final class ModPonderPlugin implements PonderPlugin {
         HELPER.forComponents(FunctionalBlocks.DEMON_ALTAR.asItem(), FunctionalBlocks.CRIMSON_ALTAR.asItem())
                 .addStoryBoard(Confluence.asResource("functional/altar"), ModPonderPlugin::altar, TAG_GAMEPLAY);
         HELPER.forComponents(ToolItems.RED_WRENCH.get())
-                .addStoryBoard(Confluence.asResource("functional/connect"), ModPonderPlugin::connect, TAG_GAMEPLAY);
+                .addStoryBoard(Confluence.asResource("functional/connect"), ModPonderPlugin::connect, TAG_MECHANICAL)
+                .addStoryBoard(Confluence.asResource("functional/execute"), ModPonderPlugin::execute, TAG_MECHANICAL);
     }
 
     @Override
     public void registerTags(PonderTagRegistrationHelper<ResourceLocation> helper) {
-        helper.registerTag(TAG_GAMEPLAY).addToIndex();
+        PonderTagRegistrationHelper<Item> HELPER = helper.withKeyFunction(BuiltInRegistries.ITEM::getKey);
+        helper.registerTag(TAG_MECHANICAL)
+                .item(ToolItems.RED_WRENCH.get())
+                .title("Mechanical").description("Mechanical utils")
+                .addToIndex().register();
+        helper.registerTag(TAG_GAMEPLAY)
+                .item(FunctionalBlocks.DEMON_ALTAR.asItem())
+                .title("Gameplay").title("Gameplay utils")
+                .addToIndex().register();
+
+        HELPER.addToTag(TAG_MECHANICAL)
+                .add(ToolItems.RED_WRENCH.get())
+                .add(FunctionalBlocks.SWITCH.asItem());
+        HELPER.addToTag(TAG_GAMEPLAY)
+                .add(FunctionalBlocks.DEMON_ALTAR.asItem())
+                .add(FunctionalBlocks.CRIMSON_ALTAR.asItem());
     }
 
     private static void connect(SceneBuilder scene, SceneBuildingUtil util) {
@@ -60,17 +77,23 @@ public final class ModPonderPlugin implements PonderPlugin {
         scene.world().showSection(util.select().layers(1, 1), Direction.DOWN);
         scene.idle(20);
         scene.overlay().showControls(switchPoint, Pointing.DOWN, 20).withItem(wrench);
+        scene.overlay().showText(40).text("Select first mechanical block").pointAt(switchPoint).attachKeyFrame(); // 存物品
         scene.idle(40);
         scene.overlay().showControls(dartPoint, Pointing.DOWN, 20).withItem(wrench);
+        scene.overlay().showText(40).text("Select second mechanical block").pointAt(dartPoint).attachKeyFrame(); // 存物品
         scene.idle(5);
-        scene.world().modifyBlockEntity(new BlockPos(1,1,3), AbstractMechanicalBlock.Entity.class, blockEntity -> {
+        scene.world().modifyBlockEntity(new BlockPos(1, 1, 3), AbstractMechanicalBlock.Entity.class, blockEntity -> {
             BlockPos switchPos = new BlockPos(3, 1, 1);
             BlockEntity be = scene.getScene().getWorld().getBlockEntity(switchPos);
             if (be instanceof INetworkEntity entity) {
                 blockEntity.connectTo(0xFF0000, switchPos, entity);
             }
         });
-        scene.idle(40);
+        scene.idle(35);
+    }
+
+    private static void execute(SceneBuilder scene, SceneBuildingUtil util) {
+
     }
 
     public static void altar(SceneBuilder scene, SceneBuildingUtil util) {

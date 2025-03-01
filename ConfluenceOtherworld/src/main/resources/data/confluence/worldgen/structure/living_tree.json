@@ -1,6 +1,6 @@
 {
   "type": "confluence:living_tree",
-  "biomes": "confluence:tr_crimson",
+  "biomes": "minecraft:forest",
   "spawn_overrides": {},
   "step": "surface_structures"
 }

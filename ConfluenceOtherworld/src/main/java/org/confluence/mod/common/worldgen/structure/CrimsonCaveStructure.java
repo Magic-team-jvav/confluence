@@ -1,12 +1,9 @@
 package org.confluence.mod.common.worldgen.structure;
 
-import com.google.common.collect.Lists;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.MapCodec;
-import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
-import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
@@ -23,6 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static org.confluence.mod.util.StructureUtils.boll;
+import static org.confluence.mod.util.StructureUtils.lineSet;
 
 public class CrimsonCaveStructure extends Structure {
     public static final MapCodec<CrimsonCaveStructure> CODEC = simpleCodec(CrimsonCaveStructure::new);
@@ -60,7 +60,7 @@ public class CrimsonCaveStructure extends Structure {
             float fingerRotate = random.nextFloat() * (Mth.PI * 2);
             float fingerRotateStep = (Mth.PI * 2) / fingerCount;
             Vector3d posPoint;
-            Object2BooleanMap<BlockPos> blockMap = new Object2BooleanOpenHashMap<>();
+            Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
 
             boll(radius, 2, centerPos, blockMap, 0.05F, random);
             boll(radiusEnd, 4, endPos, blockMap, 0.01F, random);
@@ -69,8 +69,8 @@ public class CrimsonCaveStructure extends Structure {
                 VctList.add(posPoint);
             }
             VectorUtils.lightningPathList(VctList, 1, 5, random);
-            lineSet(VctList, 4, 8, true, false, blockMap);
-            lineSet(VctList, 2, 6, false, true, blockMap);
+            lineSet(VctList, 4, 8, 1, false, blockMap);
+            lineSet(VctList, 2, 6, 0, true, blockMap);
 
             VctList.clear();
             xDis = (radius * 2 + 2) * Mth.cos(rotate) / layer1;
@@ -79,83 +79,28 @@ public class CrimsonCaveStructure extends Structure {
                 posPoint = new Vector3d(xStart + i * xDis, yStart, zStart + i * zDis);
                 VctList.add(posPoint);
             }
-            lineSet(VctList, 3, 3, false, true, blockMap);
+            lineSet(VctList, 3, 3, 0, true, blockMap);
 
             for (int i = 0; i < fingerCount; i++) {
                 VctList.clear();
                 VctList.add(new Vector3d(endPos.getX() + (3.0D + 1.5D * random.nextDouble()) * radiusEnd * Mth.cos(fingerRotate + i * fingerRotateStep), endPos.getY() + (random.nextDouble() - 0.5D) * 4 * radiusEnd, endPos.getZ() + (3.0D + 1.5D * random.nextDouble()) * radiusEnd * Mth.sin(fingerRotate + i * fingerRotateStep)));
                 VctList.add(new Vector3d(endPos.getX(), endPos.getY(), endPos.getZ()));
                 VectorUtils.lightningPathList(VctList, 1, 5, random);
-                lineSet(VctList, 4, 8, true, false, blockMap);
-                lineSet(VctList, 2, 6, false, true, blockMap);
+                lineSet(VctList, 4, 8, 1, false, blockMap);
+                lineSet(VctList, 2, 6, 0, true, blockMap);
                 pos = new BlockPos((int) VctList.getFirst().x, (int) VctList.getFirst().y, (int) VctList.getFirst().z);
-                boll(4, pos, true, true, blockMap);
-                boll(2, pos, false, true, blockMap);
+                boll(4, pos, 1, true, blockMap);
+                boll(2, pos, 0, true, blockMap);
+                blockMap.put(pos, 2);
             }
 
-            Map<ChunkPos, Object2BooleanMap<BlockPos>> gridMap = GridPiece.sliceChunks(blockMap, startChunk);
-            for (Map.Entry<ChunkPos, Object2BooleanMap<BlockPos>> entry : gridMap.entrySet()) {
+            Map<ChunkPos, Object2IntMap<BlockPos>> gridMap = GridPiece.sliceChunks(blockMap, startChunk);
+            for (Map.Entry<ChunkPos, Object2IntMap<BlockPos>> entry : gridMap.entrySet()) {
                 GridPiece piece = new GridPiece(entry.getKey(), lowestY, entry.getValue());
-                piece.solid = NatureBlocks.TR_CRIMSON_STONE.get().defaultBlockState();
-                piece.avoid = Blocks.AIR.defaultBlockState();
+                piece.blockList = List.of(Blocks.AIR.defaultBlockState(), NatureBlocks.TR_CRIMSON_STONE.get().defaultBlockState(), NatureBlocks.CRIMSON_HEART.get().defaultBlockState());
                 builder.addPiece(piece);
             }
         });
-    }
-
-    private static boolean radiusCheck(double radius, BlockPos centerPos, BlockPos blockPos) {
-        int x = (centerPos.getX() - blockPos.getX());
-        int y = (centerPos.getY() - blockPos.getY());
-        int z = (centerPos.getZ() - blockPos.getZ());
-        float dis = x * x + y * y + z * z;
-        return ((radius * radius) >= dis);
-    }
-
-    private static void boll(double radiusD, BlockPos centerPos, boolean blockState, boolean replace, Object2BooleanMap<BlockPos> blockMap) {
-        int radius = (int) radiusD + 1;
-        BlockPos pos = centerPos.offset(-radius, -radius, -radius);
-        BlockPos posCheck;
-        for (int x = 0; x < (2 * radius); x++) {
-            for (int y = 0; y < (2 * radius); y++) {
-                for (int z = 0; z < (2 * radius); z++) {
-                    posCheck = pos.offset(x, y, z);
-                    if (radiusCheck(radiusD, centerPos, posCheck) && (replace || !blockMap.containsKey(posCheck))) {
-                        blockMap.put(posCheck, blockState);
-                    }
-                }
-            }
-        }
-    }
-
-    private static void boll(int radius, int wall, BlockPos centerPos, Object2BooleanMap<BlockPos> blockMap, float chance, WorldgenRandom random) {
-        BlockPos pos = centerPos.offset(-radius, -radius, -radius);
-        BlockPos posCheck;
-        List<BlockPos> posList = new ArrayList<>();
-        for (int x = 0; x < (2 * radius); x++) {
-            for (int y = 0; y < (2 * radius); y++) {
-                for (int z = 0; z < (2 * radius); z++) {
-                    posCheck = pos.offset(x, y, z);
-                    if (radiusCheck(radius, centerPos, posCheck) && (chance >= random.nextFloat())) {
-                        posList.add(posCheck);
-                    }
-                }
-            }
-        }
-        for (int i = 0; i < posList.size(); i++) {
-            boll(radius, posList.get(i), true, true, blockMap);
-        }
-        for (int i = 0; i < posList.size(); i++) {
-            boll(radius - wall, posList.get(i), false, true, blockMap);
-        }
-    }
-
-    private static void lineSet(List<Vector3d> VctList, double rStart, double rEnd, boolean blockstate, boolean replace, Object2BooleanMap<BlockPos> blockMap) {
-        Vector3d posPoint;
-        double step = (rEnd - rStart) / VctList.size();
-        for (int i = 0; i < VctList.size(); i++) {
-            posPoint = VctList.get(i);
-            boll(rStart + step * i, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate, replace, blockMap);
-        }
     }
 
     @Override

@@ -1,0 +1,99 @@
+{
+  "processors": [
+    {
+      "processor_type": "minecraft:rule",
+      "rules": [
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:stone"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:oak_stairs"
+          },
+          "output_state": {
+            "Name": "minecraft:stone"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:deepslate"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:oak_stairs"
+          },
+          "output_state": {
+            "Name": "minecraft:deepslate"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:stone"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:spruce_stairs"
+          },
+          "output_state": {
+            "Name": "minecraft:stone"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:deepslate"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:spruce_stairs"
+          },
+          "output_state": {
+            "Name": "minecraft:deepslate"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:stone"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:spruce_slab"
+          },
+          "output_state": {
+            "Name": "minecraft:stone"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:deepslate"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:spruce_slab"
+          },
+          "output_state": {
+            "Name": "minecraft:deepslate"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:waxed_oxidized_cut_copper_stairs"
+          },
+          "output_state": {
+            "Name": "minecraft:spruce_planks"
+          }
+        }
+      ]
+    }
+  ]
+}

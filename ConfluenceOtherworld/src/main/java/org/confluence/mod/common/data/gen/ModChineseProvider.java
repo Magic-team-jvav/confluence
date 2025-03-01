@@ -116,6 +116,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("info.confluence.drops_money.copper", " %s 铜");
 
         add("key.confluence.hook", "使用钩爪");
+        add("key.confluence.specular_detail", "视觉药水细节观测");
 
         add("death.attack.falling_star", "%1$s 得到了流星的回应");
         add("death.attack.boulder", "%1$s 被巨石均匀地涂抹在地上");

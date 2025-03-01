@@ -87,6 +87,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("info.confluence.drops_money.copper", " %s copper");
 
         add("key.confluence.hook", "Throwing Hook");
+        add("key.confluence.specular_detail", "Detail observation of visual potions");
 
         add("death.attack.falling_star", "%1$s got a response from a meteor");
         add("death.attack.boulder", "%1$s  is crushed by boulder");

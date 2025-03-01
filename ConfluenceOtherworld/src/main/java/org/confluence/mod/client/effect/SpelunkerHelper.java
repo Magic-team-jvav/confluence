@@ -47,7 +47,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
     public int textRenderType = 0;//0表示文字面向玩家,默认是摄像机方向
     public int centerInternal = 50;//中心块间距的平方
 
-    public Map<Block, Tuple> targets = new HashMap<>();
+    private final Map<Block, Tuple> targets = new HashMap<>();
     public Map<BlockPos,BlockPos> centerCache = new HashMap<>();
     public Map<BlockPos,Block> centerCacheFrame = new HashMap<>();//当前帧渲染的cache
     public Map<Block, ArrayList<BlockPos>> centers = new LinkedHashMap<>();

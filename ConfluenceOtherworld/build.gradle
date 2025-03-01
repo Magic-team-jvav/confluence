@@ -121,6 +121,10 @@ repositories {
         url = uri("https://maven.theillusivec4.top/")
     }
     maven { url = "https://maven.createmod.net" } // Create
+    maven {
+        name = "Fuzs Mod Resources"
+        url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+    }
 }
 
 dependencies {
@@ -138,6 +142,7 @@ dependencies {
     additionalRuntimeClasspath 'cn.6tail:lunar:1.4.0'
 
     compileOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
+    runtimeOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
 
     compileOnly "curse.maven:jade-324717:6011258"
     runtimeOnly "curse.maven:jade-324717:6011258"

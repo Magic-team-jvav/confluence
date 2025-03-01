@@ -120,14 +120,12 @@ repositories {
         name = "Curios"
         url = uri("https://maven.theillusivec4.top/")
     }
+    maven { url = "https://maven.createmod.net" } // Create
 }
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
 
-
-    //implementation jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: "[${registrate_version},)")
-//    implementation jarJar(group: 'software.bernie.geckolib', name: "geckolib-neoforge-${minecraft_version}", version: "[${geckolib_version},)")
     compileOnly group: 'software.bernie.geckolib', name: "geckolib-neoforge-${minecraft_version}", version: "[${geckolib_version},)"
 
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
@@ -138,6 +136,8 @@ dependencies {
 
     implementation(jarJar('cn.6tail:lunar:1.4.0')) // 农历
     additionalRuntimeClasspath 'cn.6tail:lunar:1.4.0'
+
+    compileOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
 
     compileOnly "curse.maven:jade-324717:6011258"
     runtimeOnly "curse.maven:jade-324717:6011258"

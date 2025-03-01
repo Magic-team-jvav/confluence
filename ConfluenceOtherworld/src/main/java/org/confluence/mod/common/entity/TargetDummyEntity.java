@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.Animation;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
@@ -38,7 +39,7 @@ public class TargetDummyEntity extends LivingEntity implements GeoEntity {
     public boolean hurt(DamageSource source, float amount) {
         if(!super.hurt(source, amount)) return false;
         if (source.getEntity() instanceof Player player){
-            if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof PickaxeItem){
+            if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof PickaxeItem && player.isShiftKeyDown()){
                 this.remove(RemovalReason.DISCARDED);
                 ModUtils.createItemEntity(ToolItems.TARGET_DUMMY.get().getDefaultInstance(), position(), player.level(), 0);
                 return true;
@@ -61,6 +62,7 @@ public class TargetDummyEntity extends LivingEntity implements GeoEntity {
                     this.getBbWidth() / 4.0F, 0.05
             );
         }  // showParticles
+        triggerAnim("controller", "f");
         return true;
     }
 
@@ -101,7 +103,10 @@ public class TargetDummyEntity extends LivingEntity implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, handle -> handle.setAndContinue(RawAnimation.begin().thenPlay("f"))));
+        controllers.add(new AnimationController<>(this, "controller", state ->
+                state.setAndContinue(RawAnimation.begin().thenLoop("head")))
+                .triggerableAnim("f", RawAnimation.begin().then("f", Animation.LoopType.PLAY_ONCE))
+        );
     }
 
     @Override

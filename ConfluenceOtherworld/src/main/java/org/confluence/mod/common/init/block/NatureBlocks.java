@@ -158,7 +158,8 @@ public class NatureBlocks {
             .sign(properties -> new StandingSignBlock(PALM.TYPE, properties), properties -> new WallSignBlock(PALM.TYPE, properties), SignItem::new)
             .trapdoor(properties -> new TrapDoorBlock(PALM.SET, properties))
             .door(properties -> new DoorBlock(PALM.SET, properties)).build();
-    public static final DeferredBlock<Block> DESERT_HIGH_CONE_BLOCK = registerWithItem("desert_high_cone_block", DesertHighConeBlock::new);
+    // 锥型方块
+    public static final DeferredBlock<Block> DESERT_TAPERED_BLOCK = registerWithItem("desert_tapered_block", TaperedTwoPartBlock::new);
 
     // 萨瓦纳草原
     public static final LogBlockSet BAOBAB_LOG_BLOCKS = LogBlockSet.builder("baobab", true).createDefault(BAOBAB, true).build();

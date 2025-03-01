@@ -450,7 +450,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.bossRespawnTimeMax", "Maximum Respawn Time (Boss Battle)");
         add("confluence.configuration.bossRespawnTimeMax.tooltip", "Maximum respawn time for when dying in a boss battle");
         add("confluence.configuration.bossRespawnTimeMin.tooltip", "Minimum respawn time for when dying in a boss battle");
-        add("confluence.configuration.showWindParticles", "Show Wind Particles");
+        add("confluence.configuration.showWindParticles", "Wind Particles Ratio");
         add("confluence.configuration.HUD", "HUD");
         add("confluence.configuration.Mana", "Mana");
         add("confluence.configuration.Armor", "Armor");

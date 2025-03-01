@@ -321,7 +321,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.bossRespawnTimeMax", "最大重生时间（boss战时）");
         add("confluence.configuration.bossRespawnTimeMax.tooltip", "最大重生时间（boss战时死亡的重生时间）");
         add("confluence.configuration.bossRespawnTimeMin.tooltip", "最小重生时间（boss战时死亡的重生时间）");
-        add("confluence.configuration.showWindParticles", "风粒子展示");
+        add("confluence.configuration.showWindParticles", "风粒子比率");
         add("confluence.configuration.HUD", "HUD");
         add("confluence.configuration.Mana", "魔力值");
         add("confluence.configuration.Armor", "护甲值");

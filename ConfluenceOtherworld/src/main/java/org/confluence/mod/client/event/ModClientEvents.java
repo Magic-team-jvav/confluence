@@ -36,6 +36,7 @@ import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.model.block.AltarBlockModel;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.model.block.WeatherVaneBlockModel;
+import org.confluence.mod.client.model.entity.TargetDummyModel;
 import org.confluence.mod.client.model.entity.bomb.*;
 import org.confluence.mod.client.model.entity.fishing.BaseFishingHookModel;
 import org.confluence.mod.client.model.entity.fishing.BloodyFishingHookModel;
@@ -171,6 +172,8 @@ public final class ModClientEvents {
         event.registerLayerDefinition(GlowingFishingHookModel.COMMON, GlowingFishingHookModel::createCommonLayer);
         event.registerLayerDefinition(GlowingFishingHookModel.GLOWING, GlowingFishingHookModel::createGlowingLayer);
 
+        event.registerLayerDefinition(TargetDummyModel.LAYER_LOCATION, () -> TargetDummyModel.createMesh(0, 64));
+
         event.registerLayerDefinition(IceBladeSwordProjectileModel.LAYER_LOCATION, IceBladeSwordProjectileModel::createBodyLayer);
         event.registerLayerDefinition(EnchantedSwordProjectileModel.LAYER_LOCATION, EnchantedSwordProjectileModel::createBodyLayer);
         event.registerLayerDefinition(ShurikenProjectileModel.LAYER_LOCATION, ShurikenProjectileModel::createBodyLayer);
@@ -268,7 +271,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(ICE_TOFU_BRICK_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(BODY_PART.get(), BodyPartRenderer::new);
 
-        event.registerEntityRenderer(TARGET_DUMMY.get(), TargetDummyRenderer::new);
+        event.registerEntityRenderer(TARGET_DUMMY.get(), c -> new TargetDummyRenderer(c, new TargetDummyModel<>(c.bakeLayer(TargetDummyModel.LAYER_LOCATION)), 0));
 
         // npc
         event.registerEntityRenderer(GUIDE.get(), c -> new GeoNormalRenderer<>(c, GUIDE.getId()));

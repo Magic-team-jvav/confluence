@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -243,10 +244,8 @@ public final class LivingEntityEvents {
         }
         // 剑命中效果
         ItemStack weapon = damageSource.getWeaponItem();
-        if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword && sword.modifier != null) {
-            if (attacker instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.95f) {
-                sword.modifier.onHitEffects.forEach(effect -> effect.get().getEffect().accept(player, living));
-            }
+        if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword) {
+            sword.applyHitEffects(weapon, attacker, living, damageSource, amount);
         }
         // 暴击判定和伤害显示
         boolean crit = false;

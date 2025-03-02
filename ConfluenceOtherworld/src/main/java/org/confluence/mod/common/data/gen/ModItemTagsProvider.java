@@ -622,9 +622,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
 
         AccessoryItems.acceptTag(tag(TCTags.ACCESSORY));
-        IntrinsicTagAppender<Item> ammo = tag(ModTags.Items.AMMO);
-        ammo.addTag(ItemTags.ARROWS);
-        ammo.add(Items.FIREWORK_ROCKET);
+        IntrinsicTagAppender<Item> ammo = tag(ModTags.Items.AMMO)
+                .addTag(ItemTags.ARROWS)
+                .add(Items.FIREWORK_ROCKET, MaterialItems.FALLING_STAR.get());
         TGItems.ITEM_BULLETS.getEntries().forEach(item -> ammo.add(item.get()));
         IntrinsicTagAppender<Item> dye = tag(ModTags.Items.DYE);
         VanityArmorItems.DYE_ITEMS.forEach(dye::add);

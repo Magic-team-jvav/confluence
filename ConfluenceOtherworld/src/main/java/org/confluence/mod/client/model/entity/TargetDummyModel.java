@@ -88,14 +88,15 @@ public class TargetDummyModel<T extends TargetDummyEntity> extends HumanoidModel
         }
 
         if (entity.shouldPlayAnimationBack){
-            head.xRot -= getXRot(entity) / 10;
-            body.xRot -= getXRot(entity) / 10;
-            leftLeg.xRot += getXRot(entity) / 10;
-            rightLeg.xRot += getXRot(entity) / 10;
-            leftLeg.z -= getXRot(entity);
-            rightLeg.z -= getXRot(entity);
-            leftArm.xRot += getXRot(entity) / 10;
-            rightArm.xRot += getXRot(entity) / 10;
+            float slow = getSlowSpeed(entity);
+            head.xRot -= getXRot(entity) / 10 / slow;
+            body.xRot -= getXRot(entity) / 10 / slow;
+            leftLeg.xRot += getXRot(entity) / 10 / slow;
+            rightLeg.xRot += getXRot(entity) / 10 / slow;
+            leftLeg.z -= getXRot(entity) / slow;
+            rightLeg.z -= getXRot(entity) / slow;
+            leftArm.xRot += getXRot(entity) / 10 / slow;
+            rightArm.xRot += getXRot(entity) / 10 / slow;
             if (head.xRot <= 0f){
                 head.xRot = 0f;
                 body.xRot = 0f;
@@ -108,6 +109,11 @@ public class TargetDummyModel<T extends TargetDummyEntity> extends HumanoidModel
                 entity.shouldPlayAnimationBack = false;
             }
         }
+    }
+
+    public static float getSlowSpeed(TargetDummyEntity entity) {
+        float speed = Math.max((entity.damage - 10f) / 7f, 1);
+        return Math.min(speed, 20f);
     }
 
     public static float getXRot(TargetDummyEntity entity){

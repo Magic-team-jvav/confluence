@@ -7,6 +7,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -73,14 +74,15 @@ public class LivingTreeStructure extends Structure {
             boll(4.9, centerPos, 0, true, blockMap);
             lineSet(locationList, 1.9, 0.9, 0, true, blockMap);
 
+            List<BlockState> blockList = Lists.newArrayList(
+                    Blocks.AIR.defaultBlockState(),
+                    NatureBlocks.LIVING_LOG_BLOCKS.getWood().get().defaultBlockState(),
+                    NatureBlocks.LIVING_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(PERSISTENT, Boolean.TRUE)
+            );
             Map<ChunkPos, Object2IntMap<BlockPos>> gridMap = GridPiece.sliceChunks(blockMap, startChunk);
             for (Map.Entry<ChunkPos, Object2IntMap<BlockPos>> entry : gridMap.entrySet()) {
                 GridPiece piece = new GridPiece(entry.getKey(), lowestY, entry.getValue());
-                piece.blockList = Lists.newLinkedList(List.of(
-                        Blocks.AIR.defaultBlockState(),
-                        NatureBlocks.LIVING_LOG_BLOCKS.getWood().get().defaultBlockState(),
-                        NatureBlocks.LIVING_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(PERSISTENT, Boolean.TRUE)
-                ));
+                piece.blockList = blockList;
                 builder.addPiece(piece);
             }
         });

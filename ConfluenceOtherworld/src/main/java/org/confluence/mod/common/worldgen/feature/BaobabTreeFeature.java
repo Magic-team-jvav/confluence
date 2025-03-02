@@ -31,17 +31,17 @@ public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
         super(pCodec);
     }
 
-    private static void setLeaves(BlockPos startPos, int size1, int size2, BlockState leaves, RandomSource random, WorldGenLevel level) {
+    private static void setLeaves(BlockPos startPos, int size1, BlockState leaves, RandomSource random, WorldGenLevel level) {
         int x = startPos.getX();
         int y = startPos.getY();
         int z = startPos.getZ();
-        int size = Math.max(size1, size2);
+        int size = Math.max(size1, 1);
         Set<BlockPos> rootSet = new HashSet<>();
         Set<BlockPos> trunkSet = new HashSet<>();
         Set<BlockPos> leavesSet = new HashSet<>();
         rootSet.add(startPos);
         BoundingBox boxDown = new BoundingBox(x - size1, y, z - size1, x + size1, y, z + size1);
-        BoundingBox boxUp = new BoundingBox(x - size2, y + 1, z - size2, x + size2, y + 1, z + size2);
+        BoundingBox boxUp = new BoundingBox(x - 1, y + 1, z - 1, x + 1, y + 1, z + 1);
         BoundingBox box = new BoundingBox(x - size, y, z - size, x + size, y + 1, z + size);
         ModFeatures.leaves(boxDown, leaves, true, random, level, Blocks.AIR.defaultBlockState(), false);
         ModFeatures.leaves(boxUp, leaves, true, random, level, Blocks.AIR.defaultBlockState(), false);
@@ -100,8 +100,8 @@ public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
         }
 
         if (placed) {
-            for (int i = 0; i < trunkPosList.size(); i++) {
-                level.setBlock(trunkPosList.get(i), trunkBlockState, 3);
+            for (BlockPos pos : trunkPosList) {
+                level.setBlock(pos, trunkBlockState, 3);
             }
             for (int y = 1; y < height - 1; y++) {
                 for (int x = 0; x < 2; x++) {
@@ -133,7 +133,7 @@ public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
                     rootPosList.add(rootPosPlace.offset(0, j, 0));
                     rootPlace = level.getBlockState(rootPosPlace.offset(0, j, 0)).canBeReplaced() && rootPlace;
                 }
-                transitionPos = rootPosList.get(rootPosList.size() - 1).offset(xOffset,  - (rootOrBranch ? 0 : rootHeight - 1), zOffset);
+                transitionPos = rootPosList.getLast().offset(xOffset,  - (rootOrBranch ? 0 : rootHeight - 1), zOffset);
                 transitionLength = Mth.abs(end - (Mth.abs(xOffset) == 1 ? transitionPos.getX() : transitionPos.getZ()));
                 if (transitionLength == 0) {
                     if (rootPlace) {
@@ -162,8 +162,8 @@ public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
                 }
                 rootPosList.clear();
             }
-            for (int i = 0; i < leavesPosList.size(); i++) {
-                setLeaves(leavesPosList.get(i), 2 + random.nextInt(2), 1, leavesBlockState, random, level);
+            for (BlockPos blockPos : leavesPosList) {
+                setLeaves(blockPos, 2 + random.nextInt(2), leavesBlockState, random, level);
             }
             return true;
         }

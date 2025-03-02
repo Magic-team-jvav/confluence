@@ -2,7 +2,6 @@ package org.confluence.mod.common.worldgen.structure;
 
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import net.minecraft.core.BlockPos;
@@ -66,13 +65,8 @@ public class GridPiece extends StructurePiece {
 
     @Override
     public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator generator, RandomSource random, BoundingBox box, ChunkPos chunkPos, BlockPos pos) {
-        if (!chunkPos.equals(startPos)) return;
-        ObjectIterator<Object2IntMap.Entry<BlockPos>> iterator = blockMap.object2IntEntrySet().iterator();
-        while (iterator.hasNext()) {
-            Object2IntMap.Entry<BlockPos> posEntry = iterator.next();
-            level.setBlock(posEntry.getKey(), blockList.get(posEntry.getIntValue()), 2);
-            iterator.remove();
-        }
+        if (blockList == null || !chunkPos.equals(startPos)) return;
+        blockMap.object2IntEntrySet().removeIf(posEntry -> level.setBlock(posEntry.getKey(), blockList.get(posEntry.getIntValue()), 2));
     }
 
     public static @NotNull Map<ChunkPos, Object2IntMap<BlockPos>> sliceChunks(Object2IntMap<BlockPos> blockMap, ChunkPos startChunk) {

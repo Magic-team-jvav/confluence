@@ -1,5 +1,6 @@
 package org.confluence.mod.common.worldgen.structure;
 
+import com.google.common.collect.Lists;
 import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -97,7 +98,11 @@ public class CrimsonCaveStructure extends Structure {
             Map<ChunkPos, Object2IntMap<BlockPos>> gridMap = GridPiece.sliceChunks(blockMap, startChunk);
             for (Map.Entry<ChunkPos, Object2IntMap<BlockPos>> entry : gridMap.entrySet()) {
                 GridPiece piece = new GridPiece(entry.getKey(), lowestY, entry.getValue());
-                piece.blockList = List.of(Blocks.AIR.defaultBlockState(), NatureBlocks.TR_CRIMSON_STONE.get().defaultBlockState(), NatureBlocks.CRIMSON_HEART.get().defaultBlockState());
+                piece.blockList = Lists.newLinkedList(List.of(
+                        Blocks.AIR.defaultBlockState(),
+                        NatureBlocks.TR_CRIMSON_STONE.get().defaultBlockState(),
+                        NatureBlocks.CRIMSON_HEART.get().defaultBlockState()
+                ));
                 builder.addPiece(piece);
             }
         });

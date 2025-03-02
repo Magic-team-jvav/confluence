@@ -446,4 +446,13 @@ public final class GameClientEvents {
             li.confluence$deadO(dead);
         }
     }
+
+    @SubscribeEvent
+    public static void selectMusic(SelectMusicEvent event) {
+//        if (event.isCanceled()) return;
+//        SoundInstance playingMusic = event.getPlayingMusic();
+//        if (playingMusic == null) {
+//            event.setMusic(ModMusics.OVERWORLD_DAY);
+//        }
+    }
 }

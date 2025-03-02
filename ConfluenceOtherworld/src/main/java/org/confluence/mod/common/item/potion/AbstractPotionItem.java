@@ -78,9 +78,6 @@ public abstract class AbstractPotionItem extends Item {
         ItemStack stack = context.getItemInHand();
         BlockState state = level.getBlockState(pos);
         if (!level.isClientSide && player != null && stack.is(PotionItems.BOTTLED_WATER.get())) {
-            level.playSound(null, pos, SoundEvents.GENERIC_SPLASH, SoundSource.BLOCKS, 1.0F, 1.0F);
-            player.setItemInHand(context.getHand(), ItemUtils.createFilledResult(stack, player, PotionItems.BOTTLE.toStack()));
-            player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
             Block block = state.getBlock();
             Block newBlock = null;
             if (block == Blocks.SAND) newBlock = NatureBlocks.MOIST_SAND_BLOCK.get();
@@ -89,6 +86,9 @@ public abstract class AbstractPotionItem extends Item {
             else if (block == NatureBlocks.PEARL_SAND.get()) newBlock = NatureBlocks.PEARL_MOIST_SAND_BLOCK.get();
             else if (block == NatureBlocks.TR_CRIMSON_SAND.get()) newBlock = NatureBlocks.TR_CRIMSON_MOIST_SAND_BLOCK.get();
             if (newBlock != null) {
+                level.playSound(null, pos, SoundEvents.GENERIC_SPLASH, SoundSource.BLOCKS, 1.0F, 1.0F);
+                player.setItemInHand(context.getHand(), ItemUtils.createFilledResult(stack, player, PotionItems.BOTTLE.toStack()));
+                player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
                 level.setBlockAndUpdate(pos, newBlock.defaultBlockState());
                 return InteractionResult.SUCCESS;
             }

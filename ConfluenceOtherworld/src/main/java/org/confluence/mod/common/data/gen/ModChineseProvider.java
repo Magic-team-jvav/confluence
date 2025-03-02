@@ -116,6 +116,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("info.confluence.drops_money.copper", " %s 铜");
 
         add("key.confluence.hook", "使用钩爪");
+        add("key.confluence.specular_detail", "视觉药水细节观测");
 
         add("death.attack.falling_star", "%1$s 得到了流星的回应");
         add("death.attack.boulder", "%1$s 被巨石均匀地涂抹在地上");
@@ -321,7 +322,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.bossRespawnTimeMax", "最大重生时间（boss战时）");
         add("confluence.configuration.bossRespawnTimeMax.tooltip", "最大重生时间（boss战时死亡的重生时间）");
         add("confluence.configuration.bossRespawnTimeMin.tooltip", "最小重生时间（boss战时死亡的重生时间）");
-        add("confluence.configuration.showWindParticles", "风粒子展示");
+        add("confluence.configuration.showWindParticles", "风粒子比率");
         add("confluence.configuration.HUD", "HUD");
         add("confluence.configuration.Mana", "魔力值");
         add("confluence.configuration.Armor", "护甲值");
@@ -696,6 +697,7 @@ public class ModChineseProvider extends LanguageProvider {
 
 
         add("resourcepack.terraria_art", "泰拉艺术");
+        add("resourcepack.otherworldly_music", "来世音乐包");
         add("resourcepack.terraria_armor", "泰拉盔甲样式材质");
 
         add("event.confluence.blood_moon", "血月正在升起...");

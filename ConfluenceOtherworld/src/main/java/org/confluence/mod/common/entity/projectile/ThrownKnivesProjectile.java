@@ -11,8 +11,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ConsumableItems;
-import org.confluence.mod.util.HomingUtils;
 import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.VectorUtils;
 
 public class ThrownKnivesProjectile extends ThrowableProjectile {
     int penetrate = 0;
@@ -36,7 +36,7 @@ public class ThrownKnivesProjectile extends ThrowableProjectile {
         super.onHitEntity(pResult);
         Entity entity = pResult.getEntity();
         if (entity.hurt(damageSources().mobProjectile(this, (LivingEntity) getOwner()), 6.0F)) {
-            HomingUtils.knockBackA2B(this, entity, 0.5, 0.2);
+            VectorUtils.knockBackA2B(this, entity, 0.5, 0.2);
             if (penetrate == maxPenetrate){
                 if (random.nextBoolean()) {
                     ModUtils.createItemEntity(ConsumableItems.THROWING_KNIVES.get().getDefaultInstance(), getX(), getY(), getZ(), level(), 0);

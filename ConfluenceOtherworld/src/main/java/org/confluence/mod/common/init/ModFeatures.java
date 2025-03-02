@@ -50,10 +50,10 @@ public final class ModFeatures {
     public static final Supplier<JewelryTreeFeature> JEWELRY_TREE = FEATURES.register("jewelry_tree", () -> new JewelryTreeFeature(JewelryTreeFeature.Config.CODEC));
     public static final Supplier<SimpleBlockNBTFeature> SIMPLE_BLOCK_NBT = FEATURES.register("simple_block_nbt", () -> new SimpleBlockNBTFeature(SimpleBlockNBTFeature.Config.CODEC));
     public static final Supplier<PalmTreeFeature> PALM_TREE = FEATURES.register("palm_tree", () -> new PalmTreeFeature(PalmTreeFeature.Config.CODEC));
-    public static final Supplier<LivingTreeFeature> LIVING_TREE = FEATURES.register("living_tree", () -> new LivingTreeFeature(LivingTreeFeature.Config.CODEC));
     public static final Supplier<QueenBeeHiveFeature> QUEEN_BEE_HIVE = FEATURES.register("queen_bee_hive", () -> new QueenBeeHiveFeature(QueenBeeHiveFeature.Config.CODEC));
     public static final Supplier<DroopingVineTreeFeature> DROOPING_VINE_TREE = FEATURES.register("drooping_vine_tree", () -> new DroopingVineTreeFeature(DroopingVineTreeFeature.Config.CODEC));
     public static final Supplier<BaobabTreeFeature> BAOBAB_TREE = FEATURES.register("baobab_tree", () -> new BaobabTreeFeature(BaobabTreeFeature.Config.CODEC));
+    public static final Supplier<BranchTreeFeature> BRANCH_TREE = FEATURES.register("branch_tree", () -> new BranchTreeFeature(BranchTreeFeature.Config.CODEC));
     public static final Supplier<MeteoriteFeature> METEORITE = FEATURES.register("meteorite", () -> new MeteoriteFeature(MeteoriteFeature.Config.CODEC));
 
     public static final Supplier<PlacementModifierType<SecretFlagPlacementModifier>> SECRET_FLAG_PLACEMENT_MODIFIER = MODIFIER_TYPES.register("secret_flag", () -> () -> SecretFlagPlacementModifier.CODEC);
@@ -179,24 +179,28 @@ public final class ModFeatures {
     }
 
     public static final class TreeGrowers {
-        public static final TreeGrower SHADOW_GROWER = register("shadow", SHADOW);
-        public static final TreeGrower EBONY_GROWER = register("ebony", EBONY);
-        public static final TreeGrower PALM_GROWER = register("palm", PALM);
-        public static final TreeGrower PEARL_GROWER = register("pearl", PEARL);
-        public static final TreeGrower RUBY_GROWER = register("ruby", RUBY);
-        public static final TreeGrower AMBER_GROWER = register("amber", AMBER);
-        public static final TreeGrower TOPAZ_GROWER = register("topaz", TOPAZ);
-        public static final TreeGrower EMERALD_GROWER = register("emerald", EMERALD);
-        public static final TreeGrower DIAMOND_GROWER = register("diamond", DIAMOND);
-        public static final TreeGrower SAPPHIRE_GROWER = register("sapphire", SAPPHIRE);
-        public static final TreeGrower TR_AMETHYST_GROWER = register("tr_amethyst", TR_AMETHYST);
-        public static final TreeGrower ASH_GROWER = register("ash", ASH);
-        public static final TreeGrower LIVING_GROWER = register("living", LIVING);
-        public static final TreeGrower YELLOW_WILLOW_GROWER = register("yellow_willow_grower", CONFIGURED_YELLOW_WILLOW);
-        public static final TreeGrower BAOBAB_GROWER = register("baobab_grower", BAOBAB);
+        public static final TreeGrower SHADOW_GROWER = registerSmallTree("shadow", SHADOW);
+        public static final TreeGrower EBONY_GROWER = registerSmallTree("ebony", EBONY);
+        public static final TreeGrower PALM_GROWER = registerSmallTree("palm", PALM);
+        public static final TreeGrower PEARL_GROWER = registerSmallTree("pearl", PEARL);
+        public static final TreeGrower RUBY_GROWER = registerSmallTree("ruby", RUBY);
+        public static final TreeGrower AMBER_GROWER = registerSmallTree("amber", AMBER);
+        public static final TreeGrower TOPAZ_GROWER = registerSmallTree("topaz", TOPAZ);
+        public static final TreeGrower EMERALD_GROWER = registerSmallTree("emerald", EMERALD);
+        public static final TreeGrower DIAMOND_GROWER = registerSmallTree("diamond", DIAMOND);
+        public static final TreeGrower SAPPHIRE_GROWER = registerSmallTree("sapphire", SAPPHIRE);
+        public static final TreeGrower TR_AMETHYST_GROWER = registerSmallTree("tr_amethyst", TR_AMETHYST);
+        public static final TreeGrower ASH_GROWER = registerSmallTree("ash", ASH);
+        public static final TreeGrower LIVING_GROWER = registerSmallTree("living", LIVING);
+        public static final TreeGrower YELLOW_WILLOW_GROWER = registerSmallTree("yellow_willow_grower", CONFIGURED_YELLOW_WILLOW);
+        public static final TreeGrower BAOBAB_GROWER = registerBigTree("baobab_grower", BAOBAB);
 
-        private static TreeGrower register(String name, ResourceKey<ConfiguredFeature<?, ?>> tree) {
+        private static TreeGrower registerSmallTree(String name, ResourceKey<ConfiguredFeature<?, ?>> tree) {
             return new TreeGrower(Confluence.MODID + ":" + name, Optional.empty(), Optional.of(tree), Optional.empty());
+        }
+
+        private static TreeGrower registerBigTree(String name, ResourceKey<ConfiguredFeature<?, ?>> tree) {
+            return new TreeGrower(Confluence.MODID + ":" + name, Optional.of(tree), Optional.empty(), Optional.empty());
         }
     }
 }

@@ -1,0 +1,14 @@
+{
+    "type": "neoforge:add_features",
+    "biomes": "#minecraft:is_overworld",
+    "features": [
+        "confluence:ruby_tree",
+        "confluence:amber_tree",
+        "confluence:topaz_tree",
+        "confluence:emerald_tree",
+        "confluence:tr_amethyst_tree",
+        "confluence:sapphire_tree",
+        "confluence:diamond_tree"
+    ],
+    "step": "vegetal_decoration"
+}

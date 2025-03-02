@@ -15,7 +15,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.AltarRecipe;
-import org.jetbrains.annotations.NotNull;
 
 import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
 
@@ -29,27 +28,27 @@ public class AltarCategory implements IRecipeCategory<AltarRecipe> {
     }
 
     @Override
-    public @NotNull RecipeType<AltarRecipe> getRecipeType() {
+    public RecipeType<AltarRecipe> getRecipeType() {
         return TYPE;
     }
 
     @Override
-    public @NotNull Component getTitle() {
+    public Component getTitle() {
         return TITLE;
     }
 
     @Override
-    public @NotNull IDrawable getBackground() {
+    public IDrawable getBackground() {
         return ModJeiPlugin.QUARTER_BACKGROUND;
     }
 
     @Override
-    public @NotNull IDrawable getIcon() {
+    public IDrawable getIcon() {
         return icon;
     }
 
     @Override
-    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull AltarRecipe recipe, @NotNull IFocusGroup focusGroup) {
+    public void setRecipe(IRecipeLayoutBuilder builder, AltarRecipe recipe, IFocusGroup focusGroup) {
         // input
         NonNullList<Ingredient> ingredients = recipe.getIngredients();
         int size = ingredients.size();
@@ -73,7 +72,7 @@ public class AltarCategory implements IRecipeCategory<AltarRecipe> {
     }
 
     @Override
-    public void draw(@NotNull AltarRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(AltarRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         ModJeiPlugin.drawArrowRight(guiGraphics, 50, 6, true);
     }
 }

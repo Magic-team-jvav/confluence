@@ -87,6 +87,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("info.confluence.drops_money.copper", " %s copper");
 
         add("key.confluence.hook", "Throwing Hook");
+        add("key.confluence.specular_detail", "Detail observation of visual potions");
 
         add("death.attack.falling_star", "%1$s got a response from a meteor");
         add("death.attack.boulder", "%1$s  is crushed by boulder");
@@ -450,7 +451,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.bossRespawnTimeMax", "Maximum Respawn Time (Boss Battle)");
         add("confluence.configuration.bossRespawnTimeMax.tooltip", "Maximum respawn time for when dying in a boss battle");
         add("confluence.configuration.bossRespawnTimeMin.tooltip", "Minimum respawn time for when dying in a boss battle");
-        add("confluence.configuration.showWindParticles", "Show Wind Particles");
+        add("confluence.configuration.showWindParticles", "Wind Particles Ratio");
         add("confluence.configuration.HUD", "HUD");
         add("confluence.configuration.Mana", "Mana");
         add("confluence.configuration.Armor", "Armor");
@@ -556,6 +557,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.alchemy_table", "Alchemy Table");
         add("condition.confluence.requires_fuel", "Requires Fuel");
         add("container.confluence.fletching_table", "Fletching Table");
+        add("title.confluence.fletching_table", "Fletching Table");
 
 
         add("block.confluence.timers_block_1_1", "1 Second Timer");
@@ -626,6 +628,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("biome.confluence.tr_crimson_tundra", "The Crimson Tundra");
 
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), toTitleCase(block.getId().getPath()));
+        add(ModBlocks.COPPER_COIN_PILE.get(), "Copper Coin");
+        add(ModBlocks.SILVER_COIN_PILE.get(), "Silver Coin");
+        add(ModBlocks.GOLDEN_COIN_PILE.get(), "Golden Coin");
+        add(ModBlocks.PLATINUM_COIN_PILE.get(), "Platinum Coin");
+        add(ModBlocks.EMERALD_COIN_PILE.get(), "Emerald Coin");
         CrateBlocks.BLOCKS.getEntries().forEach(blockAction);
         DecorativeBlocks.BLOCKS.getEntries().forEach(blockAction);
         FunctionalBlocks.BLOCKS.getEntries().forEach(blockAction);
@@ -654,18 +661,21 @@ public class ModEnglishProvider extends LanguageProvider {
         HammerItems.ITEMS.getEntries().forEach(itemAction);
         HookItems.ITEMS.getEntries().forEach(itemAction);
         IconItems.ITEMS.getEntries().forEach(itemAction);
+        LightPetItems.ITEMS.getEntries().forEach(itemAction);
         ManaWeaponItems.ITEMS.getEntries().forEach(itemAction);
         MaterialItems.ITEMS.getEntries().forEach(itemAction);
         MinecartItems.ITEMS.getEntries().forEach(itemAction);
         ModItems.ITEMS.getEntries().forEach(itemAction);
         ModItems.HIDDEN.getEntries().forEach(itemAction);
         ModItems.BLOCK_ITEMS.getEntries().forEach(itemAction);
+        PaintItems.ITEMS.getEntries().forEach(itemAction);
         PickaxeAxeItems.ITEMS.getEntries().forEach(itemAction);
         PickaxeItems.ITEMS.getEntries().forEach(itemAction);
         PotionItems.ITEMS.getEntries().forEach(itemAction);
         QuestedFishes.ITEMS.getEntries().forEach(itemAction);
         SwordItems.ITEMS.getEntries().forEach(itemAction);
         ToolItems.ITEMS.getEntries().forEach(itemAction);
+        TreasureBagItems.ITEMS.getEntries().forEach(itemAction);
 
         ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), toTitleCase(effect.getId().getPath())));
         ModEntities.ENTITIES.getEntries().forEach(entity -> add(entity.get(), toTitleCase(entity.getId().getPath())));

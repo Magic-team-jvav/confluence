@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.Blocks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.recipe.FletchingTableRecipe;
 import org.confluence.terra_curio.integration.jei.JeiBackGround;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
@@ -28,17 +27,17 @@ public class FletchingTableCategory implements IRecipeCategory<FletchingTableRec
     }
 
     @Override
-    public @NotNull RecipeType<FletchingTableRecipe> getRecipeType() {
+    public RecipeType<FletchingTableRecipe> getRecipeType() {
         return TYPE;
     }
 
     @Override
-    public @NotNull Component getTitle() {
+    public Component getTitle() {
         return TITLE;
     }
 
     @Override
-    public @NotNull IDrawable getBackground() {
+    public IDrawable getBackground() {
         return BACKGROUND;
     }
 
@@ -48,7 +47,7 @@ public class FletchingTableCategory implements IRecipeCategory<FletchingTableRec
     }
 
     @Override
-    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull FletchingTableRecipe recipe, @NotNull IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, FletchingTableRecipe recipe, IFocusGroup focuses) {
         addInput(builder, 7, 42, recipe.getTail());
         addInput(builder, 25, 24, recipe.getBody());
         addInput(builder, 43, 6, recipe.getHead());

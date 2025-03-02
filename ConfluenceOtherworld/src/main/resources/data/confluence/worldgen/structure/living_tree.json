@@ -1,0 +1,6 @@
+{
+  "type": "confluence:living_tree",
+  "biomes": "minecraft:forest",
+  "spawn_overrides": {},
+  "step": "surface_structures"
+}

@@ -23,6 +23,16 @@
                             "chance": 0.3
                         }
                     ]
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "terra_curio:flying_carpet",
+                    "conditions": [
+                        {
+                            "condition": "minecraft:random_chance",
+                            "chance": 0.3
+                        }
+                    ]
                 }
             ]
         }

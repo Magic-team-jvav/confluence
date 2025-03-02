@@ -3,6 +3,15 @@
     "placement": [
         {
             "type": "minecraft:count_on_every_layer",
+            "predicate": {
+                "type": "minecraft:would_survive",
+                "state": {
+                    "Name": "confluence:ash_sapling",
+                    "Properties": {
+                        "stage": "0"
+                    }
+                }
+            },
             "count": 4
         },
         {

@@ -3,6 +3,7 @@ package org.confluence.mod.util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -10,13 +11,10 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3d;
 
+import java.util.List;
 import java.util.function.ToDoubleFunction;
 
-/**
- * 该类将追踪机制单独提出处理。 <br>
- * 各追踪方法的用法和原理请详见方法说明。
- */
-public final class HomingUtils {
+public final class VectorUtils {
     /**
      * 最简单的追踪机制，计算过程如下：<br>
      * 1. 将当前的弹幕方向进行缩放 <br>
@@ -253,5 +251,29 @@ public final class HomingUtils {
 
     public static BlockPos fromVector3d(Vector3d vector3d) {
         return new BlockPos(Mth.floor(vector3d.x), Mth.floor(vector3d.y), Mth.floor(vector3d.z));
+    }
+
+    public static void lightningPathList(List<Vector3d> locationList, double dist, int move, RandomSource random) {
+        double distSqr = dist * dist;
+        boolean refined;
+        do {
+            refined = false;
+            for (int i = 0; i < locationList.size() - 1; i++) {
+                Vector3d point1 = locationList.get(i);
+                Vector3d point2 = locationList.get(i + 1);
+                double distanceSqr = point2.distanceSquared(point1);
+                if (distanceSqr > distSqr) {
+                    Vector3d midpoint = new Vector3d();
+                    point1.add(point2, midpoint).mul(0.5);
+                    double offset = Math.sqrt(distanceSqr) / move;
+                    double twoOffset = offset * 2;
+                    midpoint.x = midpoint.x + (random.nextDouble() - 0.5) * twoOffset;
+                    midpoint.y = midpoint.y + (random.nextDouble() - 0.5) * twoOffset;
+                    midpoint.z = midpoint.z + (random.nextDouble() - 0.5) * twoOffset;
+                    locationList.add(i + 1, midpoint);
+                    refined = true;
+                }
+            }
+        } while (refined);
     }
 }

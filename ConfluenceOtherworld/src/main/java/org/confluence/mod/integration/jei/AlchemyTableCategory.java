@@ -13,7 +13,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.AlchemyTableRecipe;
 import org.confluence.terra_curio.integration.jei.JeiBackGround;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
@@ -29,17 +28,17 @@ public class AlchemyTableCategory implements IRecipeCategory<AlchemyTableRecipe>
     }
 
     @Override
-    public @NotNull RecipeType<AlchemyTableRecipe> getRecipeType() {
+    public RecipeType<AlchemyTableRecipe> getRecipeType() {
         return TYPE;
     }
 
     @Override
-    public @NotNull Component getTitle() {
+    public Component getTitle() {
         return TITLE;
     }
 
     @Override
-    public @NotNull IDrawable getBackground() {
+    public IDrawable getBackground() {
         return BACKGROUND;
     }
 
@@ -49,7 +48,7 @@ public class AlchemyTableCategory implements IRecipeCategory<AlchemyTableRecipe>
     }
 
     @Override
-    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull AlchemyTableRecipe recipe, @NotNull IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, AlchemyTableRecipe recipe, IFocusGroup focuses) {
         int y = 1;
         int i = 0;
         for (Ingredient ingredient : recipe.getIngredients()) {

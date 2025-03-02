@@ -1,5 +1,6 @@
 package org.confluence.mod.util;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
@@ -7,8 +8,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -31,6 +30,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.mixed.Immunity;
@@ -41,9 +41,7 @@ import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terra_guns.TerraGuns;
 import org.confluence.terraentity.TerraEntity;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3d;
 
-import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -55,6 +53,16 @@ public final class ModUtils {
     public static final String NO_DROPS_TAG = "confluence:no_drops";
     public static final Set<String> CONFLUENCE_NAMESPACES = Set.of(Confluence.MODID, TerraCurio.MODID, TerraEntity.MODID, TerraGuns.MODID);
     public static final int MAX_STACK_SIZE = 9999;
+    public static final Codec<BlockPos> BLOCK_POS_CODEC = Codec.STRING.xmap(str -> {
+        String[] split = str.split(BrushData.POS_SPLIT);
+        int[] pos = new int[3];
+        for (int i = 0; i < 3; i++) {
+            if (i < split.length) {
+                pos[i] = Integer.parseInt(split[i]);
+            }
+        }
+        return new BlockPos(pos[0], pos[1], pos[2]);
+    }, pos -> pos.getX() + BrushData.POS_SPLIT + pos.getY() + BrushData.POS_SPLIT + pos.getZ());
 
     public static void createItemEntity(ItemStack itemStack, double x, double y, double z, Level level, int pickUpDelay) {
         if (itemStack.isEmpty()) return;
@@ -110,14 +118,14 @@ public final class ModUtils {
      * @see ModUtils#isMaster(Level, BlockPos)
      */
     public static boolean isAtLeastExpert(Level level, BlockPos pos) {
-        return level.getCurrentDifficultyAt(pos).isHarderThan(Difficulty.NORMAL.getId());
+        return level.getCurrentDifficultyAt(pos).getEffectiveDifficulty() >= 1;
     }
 
     /**
      * 为大师?在处理if...else if时应先使用此方法
      */
     public static boolean isMaster(Level level, BlockPos pos) {
-        return level.getCurrentDifficultyAt(pos).isHard();
+        return level.getCurrentDifficultyAt(pos).getEffectiveDifficulty() >= 2;
     }
 
     /**
@@ -130,8 +138,8 @@ public final class ModUtils {
      */
     public static <T> T switchByDifficulty(Level level, BlockPos blockPos, T classic, T expert, T master) {
         float difficulty = level.getCurrentDifficultyAt(blockPos).getEffectiveDifficulty();
-        if (difficulty >= 3) return master;
-        if (difficulty >= 2) return expert;
+        if (difficulty >= 2) return master;
+        if (difficulty >= 1) return expert;
         return classic;
     }
 
@@ -146,34 +154,10 @@ public final class ModUtils {
      */
     public static <T> T switchByDifficulty(Level level, BlockPos blockPos, T classic, T expert, T master, T legendary) {
         float difficulty = level.getCurrentDifficultyAt(blockPos).getEffectiveDifficulty();
-        if (difficulty >= 4) return legendary;
-        if (difficulty >= 3) return master;
-        if (difficulty >= 2) return expert;
+        if (difficulty >= 3) return legendary;
+        if (difficulty >= 2) return master;
+        if (difficulty >= 1) return expert;
         return classic;
-    }
-
-    public static void lightningPathList(List<Vector3d> locationList, double dist, int move, RandomSource random) {
-        double distSqr = dist * dist;
-        boolean refined;
-        do {
-            refined = false;
-            for (int i = 0; i < locationList.size() - 1; i++) {
-                Vector3d point1 = locationList.get(i);
-                Vector3d point2 = locationList.get(i + 1);
-                double distanceSqr = point2.distanceSquared(point1);
-                if (distanceSqr > distSqr) {
-                    Vector3d midpoint = new Vector3d();
-                    point1.add(point2, midpoint).mul(0.5);
-                    double offset = Math.sqrt(distanceSqr) / move;
-                    double twoOffset = offset * 2;
-                    midpoint.x = midpoint.x + (random.nextDouble() - 0.5) * twoOffset;
-                    midpoint.y = midpoint.y + (random.nextDouble() - 0.5) * twoOffset;
-                    midpoint.z = midpoint.z + (random.nextDouble() - 0.5) * twoOffset;
-                    locationList.add(i + 1, midpoint);
-                    refined = true;
-                }
-            }
-        } while (refined);
     }
 
     /**

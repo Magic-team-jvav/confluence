@@ -12,7 +12,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.util.HomingUtils;
+import org.confluence.mod.util.VectorUtils;
 import org.joml.Vector3f;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
@@ -64,7 +64,7 @@ public class BaseBombEntity extends ThrowableItemProjectile {
     protected void onHitBlock(BlockHitResult pResult) {
         super.onHitBlock(pResult);
         blockHitCallBack(pResult);
-        Vec3 motion = HomingUtils.relativeScale(getDeltaMovement(), pResult.getDirection().getAxis(), -bounceFactor);
+        Vec3 motion = VectorUtils.relativeScale(getDeltaMovement(), pResult.getDirection().getAxis(), -bounceFactor);
         if (Math.abs(motion.y) < 0.03) motion = new Vec3(motion.x, 0.0, motion.z);
         setDeltaMovement(motion.scale(frictionFactor));
     }
@@ -74,15 +74,26 @@ public class BaseBombEntity extends ThrowableItemProjectile {
         super.tick();
         if (level().isClientSide) {
             float s = (float) getDeltaMovement().length();
-            float r = 2.0F * s / diameter;
-            if (rotate > Mth.TWO_PI) this.rotate -= Mth.TWO_PI;
-            this.rotateO = rotate;
-            this.rotate += r / Mth.PI;
-            rotation.set(0.0, 0.0, rotate);
+            if (s > Mth.EPSILON + Mth.EPSILON + getDefaultGravity()) {
+                float r = 2.0F * s / diameter;
+                if (rotate > Mth.TWO_PI) this.rotate -= Mth.TWO_PI;
+                this.rotateO = rotate;
+                this.rotate += r / Mth.PI;
+                rotation.set(0.0, 0.0, rotate);
+            } else {
+                this.rotateO = rotate;
+            }
             createEmitter();
         } else if (this.delay-- < 0) {
             explodeFunction();
             discard();
+        }
+    }
+
+    @Override
+    protected void updateRotation() {
+        if (rotate != rotateO) {
+            super.updateRotation();
         }
     }
 

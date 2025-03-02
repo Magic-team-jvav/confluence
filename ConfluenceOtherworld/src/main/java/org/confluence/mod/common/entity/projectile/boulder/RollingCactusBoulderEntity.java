@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.util.HomingUtils;
+import org.confluence.mod.util.VectorUtils;
 
 public class RollingCactusBoulderEntity extends BoulderEntity {
     public RollingCactusBoulderEntity(EntityType<RollingCactusBoulderEntity> pEntityType, Level pLevel) {
@@ -80,7 +80,7 @@ public class RollingCactusBoulderEntity extends BoulderEntity {
                 if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
                     Entity entity = entityHitResult.getEntity();
                     if (entity.hurt(damageSources().cactus(), 8.0F)) {
-                        HomingUtils.knockBackA2B(this, entity, 1.0, 0.2);
+                        VectorUtils.knockBackA2B(this, entity, 1.0, 0.2);
                     }
                 }
             }

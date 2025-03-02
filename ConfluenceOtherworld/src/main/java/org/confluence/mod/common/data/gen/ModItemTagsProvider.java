@@ -26,6 +26,7 @@ import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 
 public class ModItemTagsProvider extends ItemTagsProvider {
@@ -678,5 +679,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         LightPetItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.LIGHT_PET).add(item.get()));
         TreasureBagItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.TREASURE_BAG).add(item.get()));
+
+        tag(ModTags.Items.HARDMODE)
+                .addTag(ModTags.Items.HARDMODE_ORES)
+                .add(NatureBlocks.PEARL_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new));
     }
 }

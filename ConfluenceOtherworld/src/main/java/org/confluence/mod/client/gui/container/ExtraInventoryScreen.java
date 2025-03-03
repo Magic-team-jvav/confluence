@@ -63,8 +63,10 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
                 guiGraphics.blit(BACKGROUND, leftPos + 81, topPos + (i - COINS_START) * 18 + 8, 177, 153, 16, 16);
             } else if (i < EQUIPMENT_START) {
                 guiGraphics.blit(BACKGROUND, leftPos + 99, topPos + (i - AMMO_START) * 18 + 8, 177, 136, 16, 16);
-            } else if (i < DYE_START) {
+            } else if (i < TRASH_START) {
                 renderEquipment(guiGraphics, i - EQUIPMENT_START);
+            } else if (i < DYE_START) {
+
             } else {
                 int j = i - DYE_START;
                 if (j < SIZE_VANITY_ARMOR) {

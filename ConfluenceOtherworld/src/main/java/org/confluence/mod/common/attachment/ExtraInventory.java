@@ -24,13 +24,15 @@ public class ExtraInventory extends ItemStackHandler implements Container {
     public static final int SIZE_COINS = 4;
     public static final int SIZE_AMMO = 4;
     public static final int SIZE_EQUIPMENT = 4;
+    public static final int SIZE_TRASH = 1;
     public static final int SIZE_DYE_EXCEPT_ACCESSORY_DYE = SIZE_VANITY_ARMOR + SIZE_EQUIPMENT;
-    public static final int SIZE_EXCEPT_ACCESSORY_DYE = SIZE_VANITY_ARMOR + SIZE_COINS + SIZE_AMMO + SIZE_EQUIPMENT + SIZE_DYE_EXCEPT_ACCESSORY_DYE;
+    public static final int SIZE_EXCEPT_ACCESSORY_DYE = SIZE_VANITY_ARMOR + SIZE_COINS + SIZE_AMMO + SIZE_EQUIPMENT + SIZE_TRASH + SIZE_DYE_EXCEPT_ACCESSORY_DYE;
 
     public static final int COINS_START = SIZE_VANITY_ARMOR;
     public static final int AMMO_START = COINS_START + SIZE_COINS;
     public static final int EQUIPMENT_START = AMMO_START + SIZE_AMMO;
-    public static final int DYE_START = EQUIPMENT_START + SIZE_EQUIPMENT;
+    public static final int TRASH_START = EQUIPMENT_START + SIZE_EQUIPMENT;
+    public static final int DYE_START = TRASH_START + SIZE_TRASH;
 
     private int sizeAccessoryDye = 0;
     private transient boolean initialized = false;
@@ -84,6 +86,10 @@ public class ExtraInventory extends ItemStackHandler implements Container {
 
     public ItemStack getHook() {
         return getItem(EQUIPMENT_START + 3);
+    }
+
+    public ItemStack getTrash() {
+        return getItem(TRASH_START);
     }
 
     public ItemStack getVanityArmorDye(int index) {

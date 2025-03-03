@@ -7,6 +7,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
@@ -27,6 +28,8 @@ import static org.confluence.mod.util.VectorUtils.lightningPathList;
 
 public class LivingTreeStructure extends Structure {
     public static final MapCodec<LivingTreeStructure> CODEC = simpleCodec(LivingTreeStructure::new);
+    public static BlockPos centerPos = new BlockPos(0, 0, 0);
+    public static int rotate = 0;
 
     protected LivingTreeStructure(StructureSettings settings) {
         super(settings);
@@ -41,7 +44,7 @@ public class LivingTreeStructure extends Structure {
         return onTopOfChunkCenter(context, Heightmap.Types.WORLD_SURFACE_WG, builder -> {
             ChunkPos startChunk = context.chunkPos();
             WorldgenRandom random = context.random();
-            BlockPos centerPos = startChunk.getMiddleBlockPosition(lowestY);
+            centerPos = startChunk.getMiddleBlockPosition(lowestY);
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
 
             List<Vector3d> locationList = new ArrayList<>();
@@ -73,6 +76,9 @@ public class LivingTreeStructure extends Structure {
             lineSet(locationList, 4.9, 1.0, 1, true, blockMap);
             boll(4.9, centerPos, 0, true, blockMap);
             lineSet(locationList, 1.9, 0.9, 0, true, blockMap);
+            Vector3d room = locationList.get(locationList.size() / 2 + random.nextInt(-20, 21));
+            centerPos = new BlockPos((int) room.x, (int) room.y, (int) room.z);
+            rotate = random.nextInt(4);
 
             List<BlockState> blockList = Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
@@ -84,6 +90,15 @@ public class LivingTreeStructure extends Structure {
                 GridPiece piece = new GridPiece(entry.getKey(), lowestY, entry.getValue());
                 piece.blockList = blockList;
                 builder.addPiece(piece);
+            }
+            if (rotate == 0) {
+                builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(1, 0, -5), true, true, Rotation.NONE));
+            } else if (rotate == 1) {
+                builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(5, 0, 1), true, true, Rotation.CLOCKWISE_90));
+            } else if (rotate == 2) {
+                builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(-1, 0, 5), true, true, Rotation.CLOCKWISE_180));
+            } else if (rotate == 3) {
+                builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(-5, 0, -1), true, true, Rotation.COUNTERCLOCKWISE_90));
             }
         });
     }
@@ -102,7 +117,7 @@ public class LivingTreeStructure extends Structure {
             Vector3d stickStart = locationList.get(branch ? (locationList.size() - (locationList.size() / 11 * 7) - random.nextInt(10)) : (random.nextInt(10)));
             Vector3d stickEnd = new Vector3d();
             stickEnd.x = branch ? (locationList.getLast().x + endX) : (locationList.getFirst().x + endX / 2);
-            stickEnd.y = branch ? (locationList.getLast().y + endY - 20) : (locationList.getFirst().y - endY);
+            stickEnd.y = branch ? (locationList.getLast().y + endY - 20) : (locationList.getFirst().y - endY -10);
             stickEnd.z = branch ? (locationList.getLast().z + endZ) : (locationList.getFirst().z + endZ / 2);
             List<Vector3d> stickList = new ArrayList<>();
             stickList.add(stickStart);

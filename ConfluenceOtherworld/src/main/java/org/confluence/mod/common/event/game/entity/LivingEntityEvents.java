@@ -10,7 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -89,6 +88,9 @@ public final class LivingEntityEvents {
                 int amount = (int) Math.min(Math.round((healthFactor + attackFactor + armorFactor + knockbackResistanceFactor) * difficultyFactor) * 7.0, 100000);
                 ModUtils.dropMoney(amount, living.getX(), living.getEyeY() - 0.3, living.getZ(), level);
             }
+        }
+
+        if (living.level() instanceof ServerLevel level) {
             if (living instanceof Boss boss && boss.shouldShowMessage()) {
                 EntityType<?> type = living.getType();
                 ConfluenceData data = ConfluenceData.get(level);
@@ -101,9 +103,7 @@ public final class LivingEntityEvents {
                         MeteoriteTracker.INSTANCE.spawnAtNextNight = level.random.nextBoolean();
                     }
                 }
-                if (type == TEEntities.KING_SLIME.get() && MomentManager.of(level).hasMoment(TMMoments.SLIME_RAIN)) {
-                    PlayerUtils.awardAchievement(serverPlayer, "sticky_situation");
-                }
+                boolean stickySituation = type == TEEntities.KING_SLIME.get() && MomentManager.of(level).hasMoment(TMMoments.SLIME_RAIN);
                 ResourceKey<Level> dimension = living.level().dimension();
                 level.players().stream()
                         .filter(player -> player.level().dimension() == dimension)
@@ -112,11 +112,12 @@ public final class LivingEntityEvents {
                             if (isEaterOfWorlds) {
                                 PlayerUtils.awardAchievement(player, "worm_fodder");
                             }
+                            if (stickySituation) {
+                                PlayerUtils.awardAchievement(player, "sticky_situation");
+                            }
                         });
             }
-        }
 
-        if (!living.level().isClientSide) {
             if (living instanceof ServerPlayer serverPlayer) {
                 PlayerUtils.dropMoney(serverPlayer);
             }

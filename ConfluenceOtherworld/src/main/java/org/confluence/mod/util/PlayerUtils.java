@@ -344,16 +344,14 @@ public final class PlayerUtils {
      */
     public static int getRespawnWaitTime(Player player) {
         AABB aabb = new AABB(player.blockPosition()).inflate(Short.MAX_VALUE);
+        int min, max;
         if (player.level().getEntitiesOfClass(LivingEntity.class, aabb, living -> living instanceof Boss).isEmpty()) {
-            return player.getRandom().nextInt(
-                    CommonConfigs.DEFAULT_RESPAWN_TIME_MIN.get(),
-                    CommonConfigs.DEFAULT_RESPAWN_TIME_MAX.get()
-            );
+            min = CommonConfigs.DEFAULT_RESPAWN_TIME_MIN.get();
+            max = CommonConfigs.DEFAULT_RESPAWN_TIME_MAX.get();
         } else {
-            return player.getRandom().nextInt(
-                    CommonConfigs.BOSS_RESPAWN_TIME_MIN.get(),
-                    CommonConfigs.BOSS_RESPAWN_TIME_MAX.get()
-            );
+            min = CommonConfigs.BOSS_RESPAWN_TIME_MIN.get();
+            max = CommonConfigs.BOSS_RESPAWN_TIME_MAX.get();
         }
+        return player.getRandom().nextInt(Math.min(min, max), Math.max(min, max));
     }
 }

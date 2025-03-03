@@ -352,6 +352,7 @@ public final class PlayerUtils {
             min = CommonConfigs.BOSS_RESPAWN_TIME_MIN.get();
             max = CommonConfigs.BOSS_RESPAWN_TIME_MAX.get();
         }
+        if (min == max) return min;
         return player.getRandom().nextInt(Math.min(min, max), Math.max(min, max));
     }
 }

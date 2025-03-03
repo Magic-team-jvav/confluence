@@ -19,6 +19,7 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ChunkWatchEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.entity.projectile.bomb.ScarabBombEntity;
@@ -75,6 +76,11 @@ public final class LevelEvents {
         if (event.isCanceled() || !(event.getPlayer() instanceof ServerPlayer serverPlayer)) return;
 
         BlockState blockState = event.getState();
+        if (blockState.getBlock() instanceof AltarBlock && serverPlayer.getMainHandItem().isEmpty()) {
+            event.setCanceled(true);
+            return;
+        }
+
         BlockPos pos = event.getPos();
         NoTraps.dropBombWhenLeavesDestroy(serverPlayer, blockState, pos);
         BoulderWorld.createBoulderWhenBlockDestroy(serverPlayer, blockState, pos);

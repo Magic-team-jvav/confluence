@@ -171,6 +171,8 @@ dependencies {
     //runtimeOnly "curse.maven:sodium-394468:6211307"
 
     //runtimeOnly "curse.maven:ars-nouveau-401955:6228434"
+
+    //runtimeOnly "curse.maven:carry-on-274259:5649344"
 }
 
 tasks.withType(ProcessResources).configureEach {

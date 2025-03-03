@@ -311,6 +311,22 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.REDSTONE_ORE_SMELTING).add(
                 OreBlocks.SANCTIFICATION_REDSTONE_ORE.asItem(), OreBlocks.CORRUPTION_REDSTONE_ORE.asItem(), OreBlocks.FLESHIFICATION_REDSTONE_ORE.get().asItem()
         );
+        tag(ModTags.Items.INITIAL_WOOD).add(
+              NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks().asItem(),
+              NatureBlocks.PALM_LOG_BLOCKS.getPlanks().asItem(),
+              NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().asItem(),
+              NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().asItem(),
+              NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks().asItem(),
+              Blocks.OAK_PLANKS.asItem(),
+              Blocks.ACACIA_PLANKS.asItem(),
+              Blocks.BAMBOO_PLANKS.asItem(),
+              Blocks.BIRCH_PLANKS.asItem(),
+              Blocks.CHERRY_PLANKS.asItem(),
+              Blocks.DARK_OAK_PLANKS.asItem(),
+              Blocks.JUNGLE_PLANKS.asItem(),
+              Blocks.MANGROVE_PLANKS.asItem(),
+              Blocks.SPRUCE_PLANKS.asItem()
+        );
         tag(ItemTags.DIRT).add(
                 NatureBlocks.CORRUPT_GRASS_BLOCK.get().asItem(),
                 NatureBlocks.ASH_BLOCK.get().asItem(),

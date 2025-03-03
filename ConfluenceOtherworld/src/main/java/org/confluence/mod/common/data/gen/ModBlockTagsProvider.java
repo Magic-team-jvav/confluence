@@ -38,6 +38,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.HARDENED_SAND_BLOCK.get(),
                 NatureBlocks.RED_HARDENED_SAND_BLOCK.get()
         );
+        tag(ModTags.Blocks.SLUSH_REPLACEMENT).add(
+                Blocks.PACKED_ICE,
+                Blocks.SNOW_BLOCK
+        );
         tag(BlockTags.ANVIL).add(
                 FunctionalBlocks.LEAD_ANVIL.get(),
                 FunctionalBlocks.CHIPPED_LEAD_ANVIL.get(),

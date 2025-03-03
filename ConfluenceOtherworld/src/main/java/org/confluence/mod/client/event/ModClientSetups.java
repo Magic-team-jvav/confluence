@@ -205,4 +205,11 @@ public final class ModClientSetups {
             if (eventBus != null) consumer.accept(eventBus);
         });
     }
+
+    public static final boolean SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE;
+
+    static {
+        ModList modList = ModList.get();
+        SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE = modList.isLoaded("ctm") || modList.isLoaded("fusion") || modList.isLoaded("continuity");
+    }
 }

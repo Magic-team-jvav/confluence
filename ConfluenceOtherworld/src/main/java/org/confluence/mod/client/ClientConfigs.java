@@ -17,8 +17,11 @@ import java.util.Locale;
 import java.util.Set;
 
 public final class ClientConfigs {
+    public static final List<String> DEFAULT_BANNED_MOD_FOR_PAINTS = List.of(
+            "integrateddynamics", "ae2", "refinedstorage", "create", "mekanism", "immersiveengineering", "enderio"
+    );
     public static int showWindParticles = 90;
-    public static Set<String> bannedModForPaints = Set.of();
+    public static Set<String> bannedModForPaints = new HashSet<>(DEFAULT_BANNED_MOD_FOR_PAINTS);
 
     public static boolean terraStyleHealth = true;
     public static TerraStyleHealthHud.Health healthStyle = TerraStyleHealthHud.Health.OVERLAY;
@@ -71,9 +74,7 @@ public final class ClientConfigs {
         Builder BUILDER = new Builder();
 
         SHOW_WIND_PARTICLES = BUILDER.defineInRange("showWindParticles", 90, 0, 100);
-        BANNED_MOD_FOR_PAINTS = BUILDER.defineListAllowEmpty("bannedModForPaints", () -> List.of(
-                "integrateddynamics", "ae2", "refinedstorage", "create", "mekanism", "immersiveengineering", "enderio"
-        ), () -> "modid", o -> o instanceof String s && !s.contains(":"));
+        BANNED_MOD_FOR_PAINTS = BUILDER.defineListAllowEmpty("bannedModForPaints", () -> DEFAULT_BANNED_MOD_FOR_PAINTS, () -> "modid", o -> o instanceof String s && !s.contains(":"));
 
 
         BUILDER.push("HUD");

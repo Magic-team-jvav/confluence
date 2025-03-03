@@ -6,6 +6,8 @@ import net.minecraft.client.renderer.texture.SpriteLoader;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.metadata.animation.FrameSize;
 import net.minecraft.resources.ResourceLocation;
+import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.util.ClientUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,13 +26,13 @@ public abstract class SpriteLoaderMixin {
 
     @ModifyVariable(method = "stitch", at = @At("HEAD"), argsOnly = true)
     private List<SpriteContents> generateGraySprites(List<SpriteContents> contents) {
-        if (location.equals(TextureAtlas.LOCATION_BLOCKS)) {
+        if (!ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE && location.equals(TextureAtlas.LOCATION_BLOCKS)) {
             ClientUtils.clearCache();
             List<SpriteContents> neoContents = new ArrayList<>();
             for (SpriteContents content : contents) {
                 neoContents.add(content);
                 ResourceLocation name = content.name();
-                if (!name.getPath().startsWith("block/")) continue;
+                if (!name.getPath().startsWith("block/") || ClientConfigs.bannedModForPaints.contains(name.getNamespace())) continue;
                 ClientUtils.ORIGINAL.add(name);
                 FrameSize frameSize = new FrameSize(content.width(), content.height());
 

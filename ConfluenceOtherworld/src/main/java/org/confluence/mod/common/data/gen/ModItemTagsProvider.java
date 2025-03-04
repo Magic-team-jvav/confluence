@@ -587,8 +587,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ModItems.COPPER_COIN.get(),
                 ModItems.SILVER_COIN.get(),
                 ModItems.GOLDEN_COIN.get(),
-                ModItems.PLATINUM_COIN.get(),
-                ModItems.EMERALD_COIN.get()
+                ModItems.PLATINUM_COIN.get()
+                // 不要加回来，会出bug。ModItems.EMERALD_COIN.get()
         );
         tag(TETags.Items.HONEY_TRANSLATION_BUCKET).add(ToolItems.HONEY_BUCKET.get());
         tag(TETags.Items.HONEY_TRANSLATION_NOT_CONSUMED).add(ToolItems.BOTTOMLESS_HONEY_BUCKET.get());

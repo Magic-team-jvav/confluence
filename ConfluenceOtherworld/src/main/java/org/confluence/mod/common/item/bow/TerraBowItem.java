@@ -110,6 +110,10 @@ public class TerraBowItem extends BowItem {
 
     }
 
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return true;
+    }
 
     public static float getFastBowPowerForTime(int pCharge) {
         float f = pCharge / 20.0f;

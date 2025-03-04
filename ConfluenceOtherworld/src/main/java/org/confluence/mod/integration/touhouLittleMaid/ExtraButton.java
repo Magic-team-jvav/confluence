@@ -26,15 +26,14 @@ public class ExtraButton {
     public static void addButton(ScreenEvent.Init.Post event) {
         Screen screen = event.getScreen();
         if (screen.getClass().getName().equals("com.github.tartaricacid.touhoulittlemaid.client.gui.entity.maid.backpack.EmptyBackpackContainerScreen")) {
-            int l = ((AbstractContainerScreen)screen).getGuiLeft();
-            int t = ((AbstractContainerScreen)screen).getGuiTop();
+            int l = ((AbstractContainerScreen<?>) screen).getGuiLeft();
+            int t = ((AbstractContainerScreen<?>) screen).getGuiTop();
             event.addListener(new ImageButton(l + 5, t + 30, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
-                Minecraft minecraft = Minecraft.getInstance();
-                LocalPlayer player = minecraft.player;
+                LocalPlayer player = Minecraft.getInstance().player;
                 if (player != null) {
                     ItemStack stack = player.containerMenu.getCarried();
                     player.containerMenu.setCarried(ItemStack.EMPTY);
-                    ((IPlayer)player).rhyme$setDaveTrades(NPCTrades.getTrade(BuiltInRegistries.ENTITY_TYPE.getKey(ModEntities.GUIDE.get())));
+                    ((IPlayer) player).rhyme$setDaveTrades(NPCTrades.getTrade(BuiltInRegistries.ENTITY_TYPE.getKey(ModEntities.GUIDE.get())));
                     OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.NPC_TRADE_MENU, stack);
                 }
             }));

@@ -23,8 +23,8 @@ import java.util.Optional;
 import static org.confluence.mod.common.attachment.ExtraInventory.*;
 
 public class ExtraInventoryMenu extends AbstractContainerMenu {
-    private final ExtraInventory extraInventory;
-    private final int invStart;
+    public final ExtraInventory extraInventory;
+    public final int invStart;
     private final int hotBar;
     private final int invEnd;
 
@@ -126,10 +126,6 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
         };
         slot.isActive = false;
         return slot;
-    }
-
-    public ExtraInventory getExtraInventory() {
-        return extraInventory;
     }
 
     @Override

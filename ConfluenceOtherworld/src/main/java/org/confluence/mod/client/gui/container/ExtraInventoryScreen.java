@@ -50,7 +50,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         guiGraphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-        ExtraInventory extraInventory = menu.getExtraInventory();
+        ExtraInventory extraInventory = menu.extraInventory;
         int containerSize = extraInventory.getContainerSize();
         int sizeAccessoryDye = extraInventory.getSizeAccessoryDye();
         int size = containerSize - sizeAccessoryDye;
@@ -97,7 +97,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
 
     @Override
     public int getSlotColor(int index) {
-        if (!buttonPressed && index > 30 && index <= 30 + menu.getExtraInventory().getSizeAccessoryDye()) {
+        if (!buttonPressed && index < menu.invStart && index >= menu.invStart - menu.extraInventory.getSizeAccessoryDye()) {
             return 0x80FF0000;
         }
         return super.getSlotColor(index);
@@ -135,7 +135,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     }
 
     private void toggleAllSlot() {
-        ExtraInventory extraInventory = menu.getExtraInventory();
+        ExtraInventory extraInventory = menu.extraInventory;
         int size = extraInventory.getContainerSize() + extraInventory.getSizeAccessoryDye();
         for (int i = 0; i < size; i++) {
             if (menu.getSlot(i) instanceof IToggleSlot toggleSlot) {

@@ -53,6 +53,7 @@ import org.confluence.mod.common.entity.npc.NPCTrades;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
+import org.confluence.mod.integration.touhouLittleMaid.ExtraButton;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.mixin.client.accessor.AgeableListModelAccessor;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
@@ -224,19 +225,8 @@ public final class GameClientEvents {
             event.addListener(extraInventoryButton);
         }
 
-        // 联动女仆
-        if (screen.getClass().getName().equals("com.github.tartaricacid.touhoulittlemaid.client.gui.entity.maid.backpack.EmptyBackpackContainerScreen")) {
-            event.addListener(new ImageButton(65, 20, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
-                Minecraft minecraft = Minecraft.getInstance();
-                LocalPlayer player = minecraft.player;
-                if (player != null) {
-                    ItemStack stack = player.containerMenu.getCarried();
-                    player.containerMenu.setCarried(ItemStack.EMPTY);
-                    ((IPlayer)player).rhyme$setDaveTrades(NPCTrades.getTrade(BuiltInRegistries.ENTITY_TYPE.getKey(ModEntities.GUIDE.get())));
-                    OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.NPC_TRADE_MENU, stack);
-                }
-            }));
-        }
+        // 联动车万女仆
+        ExtraButton.addButton(event);
     }
 
     public static void livingDeath(LivingEntity entity) {

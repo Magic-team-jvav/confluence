@@ -40,7 +40,6 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
 
     int scrollOff;
     private List<Item> coinItem = List.of(
-            ModItems.EMERALD_COIN.get(),
             ModItems.PLATINUM_COIN.get(),
             ModItems.GOLDEN_COIN.get(),
             ModItems.SILVER_COIN.get(),
@@ -175,7 +174,7 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
         y = jj + 21;
 
         for(int k = 0; k < coins.length; k++){
-            guiGraphics.renderItem(coinItem.get(4-k).getDefaultInstance(), x, y );
+            guiGraphics.renderItem(coinItem.get(3-k).getDefaultInstance(), x, y );
             guiGraphics.drawString(this.font, String.valueOf(coins[k]), x+4, y+16 , Color.orange.getRGB(), true);
             x+=20;
             if( k % 3 == 2){

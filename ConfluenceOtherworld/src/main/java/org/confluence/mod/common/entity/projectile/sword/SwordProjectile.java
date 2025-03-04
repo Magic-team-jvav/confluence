@@ -131,7 +131,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         else return damageSources().magic();
     }
 
-    CollisionProperties collisionProperties = new CollisionProperties(1,1,0);
+    CollisionProperties collisionProperties = new CollisionProperties(2,2,0);
     public CollisionProperties getCollisionProperties() {
         return collisionProperties;
     }
@@ -186,5 +186,10 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     public SwordProjectile setExistTime(int time){
         TIME_EXISTENCE = time;
         return this;
+    }
+
+    @Override
+    public boolean shouldDoCollision() {
+        return true;
     }
 }

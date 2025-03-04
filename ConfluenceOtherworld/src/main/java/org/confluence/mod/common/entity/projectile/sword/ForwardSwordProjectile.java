@@ -20,4 +20,6 @@ public class ForwardSwordProjectile extends SwordProjectile {
         setDeltaMovement(vec3.scale(0.8));
         setPos(offX, offY, offZ);
     }
+
+
 }

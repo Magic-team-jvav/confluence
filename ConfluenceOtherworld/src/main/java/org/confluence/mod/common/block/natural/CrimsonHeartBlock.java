@@ -72,6 +72,8 @@ public class CrimsonHeartBlock extends Block {
                 BrainOfCthulhu brainOfCthulhu = new BrainOfCthulhu(TEEntities.BRAIN_OF_CTHULHU.get(), level);
                 brainOfCthulhu.setPos(center.x + level.random.nextInt(-50, 51), center.y, center.z + level.random.nextInt(-50, 51));
                 level.addFreshEntity(brainOfCthulhu);
+                Player nearestPlayer = level.getNearestPlayer(brainOfCthulhu, 200);
+                if (nearestPlayer != null) brainOfCthulhu.setTarget(nearestPlayer);
             }
         }
     }

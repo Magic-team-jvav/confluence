@@ -95,6 +95,14 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         renderEntityInInventoryFollowsMouse(guiGraphics, leftPos + 26, topPos + 8, leftPos + 75, topPos + 78, 30, 0.0625F, xMouse, yMouse, minecraft.player);
     }
 
+    @Override
+    public int getSlotColor(int index) {
+        if (!buttonPressed && index > 30 && index <= 30 + menu.getExtraInventory().getSizeAccessoryDye()) {
+            return 0x80FF0000;
+        }
+        return super.getSlotColor(index);
+    }
+
     private void renderEquipment(GuiGraphics guiGraphics, int i) {
         int v = switch (i) {
             case 1 -> 102;

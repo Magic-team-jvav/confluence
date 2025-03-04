@@ -155,8 +155,6 @@ dependencies {
     compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
     runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
 
-    runtimeOnly "curse.maven:worldedit-225608:5830452"
-
     compileOnly "curse.maven:ftb-chunks-forge-314906:5968500"
     compileOnly "curse.maven:ftb-library-forge-404465:6016745"
     //runtimeOnly "curse.maven:ftb-chunks-forge-314906:5968500"
@@ -170,9 +168,10 @@ dependencies {
     compileOnly "curse.maven:sodium-394468:6211307"
     //runtimeOnly "curse.maven:sodium-394468:6211307"
 
+    runtimeOnly "curse.maven:worldedit-225608:5830452"
     //runtimeOnly "curse.maven:ars-nouveau-401955:6228434"
-
     //runtimeOnly "curse.maven:carry-on-274259:5649344"
+    runtimeOnly "curse.maven:spark-361579:6225208"
 }
 
 tasks.withType(ProcessResources).configureEach {

@@ -208,11 +208,10 @@ public final class GameClientEvents {
         Screen screen = event.getScreen();
         boolean isInventoryScreen = screen instanceof InventoryScreen;
         // 额外槽
-        if (isInventoryScreen || screen instanceof EffectRenderingInventoryScreen<?>) {
+        if (isInventoryScreen || screen instanceof CreativeModeInventoryScreen) {
             EffectRenderingInventoryScreen<?> screen1 = (EffectRenderingInventoryScreen<?>) screen;
             ImageButton extraInventoryButton = new ImageButton(screen1.getGuiLeft() - 16, screen1.getGuiTop() + 2, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
-                Minecraft minecraft = Minecraft.getInstance();
-                LocalPlayer player = minecraft.player;
+                LocalPlayer player = Minecraft.getInstance().player;
                 if (player != null) {
                     ItemStack stack = player.containerMenu.getCarried();
                     player.containerMenu.setCarried(ItemStack.EMPTY);

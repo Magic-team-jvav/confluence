@@ -49,7 +49,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-        guiGraphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        guiGraphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight + 24);
         ExtraInventory extraInventory = menu.extraInventory;
         int containerSize = extraInventory.getContainerSize();
         int sizeAccessoryDye = extraInventory.getSizeAccessoryDye();
@@ -66,7 +66,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
             } else if (i < TRASH_START) {
                 renderEquipment(guiGraphics, i - EQUIPMENT_START);
             } else if (i < DYE_START) {
-
+                guiGraphics.blit(BACKGROUND, leftPos + 152, topPos + 166, 177, 170, 16, 16);
             } else {
                 int j = i - DYE_START;
                 if (j < SIZE_VANITY_ARMOR) {

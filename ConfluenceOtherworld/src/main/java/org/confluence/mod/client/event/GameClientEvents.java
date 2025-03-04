@@ -49,6 +49,7 @@ import org.confluence.mod.client.textures.LocalBrushData;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
+import org.confluence.mod.common.entity.npc.NPCTrades;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
@@ -205,7 +206,8 @@ public final class GameClientEvents {
     public static void screen$Init$Post(ScreenEvent.Init.Post event) {
         Screen screen = event.getScreen();
         boolean isInventoryScreen = screen instanceof InventoryScreen;
-        if (isInventoryScreen || screen instanceof CreativeModeInventoryScreen) {
+        // 额外槽
+        if (isInventoryScreen || screen instanceof EffectRenderingInventoryScreen<?>) {
             EffectRenderingInventoryScreen<?> screen1 = (EffectRenderingInventoryScreen<?>) screen;
             ImageButton extraInventoryButton = new ImageButton(screen1.getGuiLeft() - 16, screen1.getGuiTop() + 2, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
                 Minecraft minecraft = Minecraft.getInstance();
@@ -220,6 +222,20 @@ public final class GameClientEvents {
                 ((IInventoryScreen) screen).confluence$setExtraInventoryButton(extraInventoryButton);
             }
             event.addListener(extraInventoryButton);
+        }
+
+        // 联动女仆
+        if (screen.getClass().getName().equals("com.github.tartaricacid.touhoulittlemaid.client.gui.entity.maid.backpack.EmptyBackpackContainerScreen")) {
+            event.addListener(new ImageButton(65, 20, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
+                Minecraft minecraft = Minecraft.getInstance();
+                LocalPlayer player = minecraft.player;
+                if (player != null) {
+                    ItemStack stack = player.containerMenu.getCarried();
+                    player.containerMenu.setCarried(ItemStack.EMPTY);
+                    ((IPlayer)player).rhyme$setDaveTrades(NPCTrades.getTrade(BuiltInRegistries.ENTITY_TYPE.getKey(ModEntities.GUIDE.get())));
+                    OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.NPC_TRADE_MENU, stack);
+                }
+            }));
         }
     }
 

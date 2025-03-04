@@ -37,7 +37,7 @@ import static org.confluence.mod.common.init.block.OreBlocks.*;
 /**
  * 实际上是渲染方块边框的类
  */
-@OnlyIn(Dist.CLIENT)
+//@OnlyIn(Dist.CLIENT)
 public class SpelunkerHelper extends AbstractBufferManager {
 /** 调参表 **/
 
@@ -62,7 +62,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         return blockGen;
     }
 
-    private SpelunkerHelper(int refreshTime) {
+    public SpelunkerHelper(int refreshTime) {
         super(refreshTime);
         this.player = Minecraft.getInstance().player;
         refreshBlocks();

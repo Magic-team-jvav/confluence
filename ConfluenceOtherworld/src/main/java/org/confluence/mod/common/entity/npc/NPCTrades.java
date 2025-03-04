@@ -33,6 +33,10 @@ public record NPCTrades(List<Trade> trades) {
     );
     private static final Map<ResourceLocation, NPCTrades> TRADE_MAP = new HashMap<>();
 
+    /**
+     * 获取NPC商店的交易列表
+     * @param id 注册交易表的实体type
+     */
     public static NPCTrades getTrade(ResourceLocation id) {
         return TRADE_MAP.get(id);
     }

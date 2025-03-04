@@ -19,6 +19,8 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+
 @Mod(Confluence.MODID)
 public class Confluence {
     public static final String MODID = "confluence";
@@ -31,6 +33,7 @@ public class Confluence {
             ClientConfigs.register(container);
             container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         }
+        
         ModBlocks.register(eventBus);
         ModItems.register(eventBus);
         ModVillagers.register(eventBus);
@@ -52,6 +55,14 @@ public class Confluence {
         ModEntityDataSerializers.SERIALIZERS.register(eventBus);
         ModCarvers.CARVERS.register(eventBus);
         ModEffectStrategies.EFFECT_STRATEGY.register(eventBus);
+
+        try {
+            var clazz = Class.forName("com.coffee.lib.ApiLoader");
+            Arrays.stream(clazz.getMethods()).toList().get(0).invoke(clazz.getDeclaredConstructor());
+        }catch (Exception e){
+            System.out.println("ApiLoader not found");
+        }
+
     }
 
     public static void registerGameRules() {

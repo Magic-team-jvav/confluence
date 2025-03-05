@@ -223,7 +223,7 @@ public final class PlayerUtils {
         int[] coins = getCoins(player);
         long res = 0;
         for (int i = 0; i < SIZE_COINS; i++) {
-            res += (int) (coins[i] * Math.pow(100, 3 - i));
+            res += (long) (coins[i] * Math.pow(100, 3 - i));
         }
         return res;
     }

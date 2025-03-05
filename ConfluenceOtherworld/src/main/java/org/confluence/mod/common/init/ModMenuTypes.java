@@ -20,6 +20,5 @@ public final class ModMenuTypes {
     public static final Supplier<MenuType<ExtraInventoryMenu>> EXTRA_INVENTORY = TYPES.register("extra_inventory", () -> new MenuType<>(ExtraInventoryMenu::new, FeatureFlags.VANILLA_SET));
 
     public static final Supplier<MenuType<NPCTradesMenu>> DAVE_TRADES_MENU = TYPES.register("dave_trades", () -> new MenuType<>(NPCTradesMenu::new, FeatureFlags.VANILLA_SET));
-
-
+    public static final Supplier<MenuType<NPCReforgeMenu>> REFORGE_MENU = TYPES.register("reforge_menu", () -> new MenuType<>(NPCReforgeMenu::new, FeatureFlags.VANILLA_SET));
 }

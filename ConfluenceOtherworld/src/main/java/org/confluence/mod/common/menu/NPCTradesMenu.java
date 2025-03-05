@@ -12,6 +12,7 @@ import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.mixed.IPlayer;
 import org.confluence.mod.network.c2s.NPCShopPacket;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class NPCTradesMenu extends AbstractContainerMenu {
     private final SimpleContainer container;
@@ -22,7 +23,7 @@ public class NPCTradesMenu extends AbstractContainerMenu {
         this(containerId, playerInventory, null);
     }
 
-    public NPCTradesMenu(int containerId, Inventory playerInventory, NPCTrades NPCTrades) {
+    public NPCTradesMenu(int containerId, Inventory playerInventory, @Nullable NPCTrades NPCTrades) {
         super(ModMenuTypes.DAVE_TRADES_MENU.get(), containerId);
         this.NPCTrades = NPCTrades;
         if(NPCTrades == null) this.NPCTrades = ((IPlayer)playerInventory.player).rhyme$getDaveTrades();

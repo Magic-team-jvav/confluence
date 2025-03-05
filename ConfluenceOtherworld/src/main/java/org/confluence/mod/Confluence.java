@@ -33,7 +33,7 @@ public class Confluence {
             ClientConfigs.register(container);
             container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         }
-        
+
         ModBlocks.register(eventBus);
         ModItems.register(eventBus);
         ModVillagers.register(eventBus);

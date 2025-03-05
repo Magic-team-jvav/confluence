@@ -122,6 +122,7 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.ALCHEMY_TABLE.get(), AlchemyTableScreen::new);
         event.register(ModMenuTypes.EXTRA_INVENTORY.get(), ExtraInventoryScreen::new);
         event.register(ModMenuTypes.DAVE_TRADES_MENU.get(), NPCTradeScreen::new);
+        event.register(ModMenuTypes.REFORGE_MENU.get(), NPCReforgeScreen::new);
 
     }
 

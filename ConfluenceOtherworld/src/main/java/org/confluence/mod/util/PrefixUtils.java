@@ -1,17 +1,21 @@
 package org.confluence.mod.util;
 
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.Tags;
+import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_curio.common.init.TCTags;
+import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
 
 public final class PrefixUtils {
@@ -19,6 +23,10 @@ public final class PrefixUtils {
 
     public static boolean canInit(ItemStack itemStack) {
         if (PrefixUtils.getPrefix(itemStack) != null) return false;
+        return couldReforge(itemStack);
+    }
+
+    public static boolean couldReforge(ItemStack itemStack) {
         return itemStack.is(Tags.Items.MELEE_WEAPON_TOOLS) ||
                 itemStack.is(Tags.Items.MINING_TOOL_TOOLS) ||
                 itemStack.is(Tags.Items.RANGED_WEAPON_TOOLS) ||
@@ -45,8 +53,7 @@ public final class PrefixUtils {
             if (modPrefix == null) {
                 unknown(itemStack);
             } else {
-                itemStack.set(ModDataComponentTypes.PREFIX, modPrefix.createComponent(prefixType));
-                updateRarity(itemStack, modPrefix);
+                setAndUpdate(itemStack, prefixType, modPrefix);
             }
         }
     }
@@ -71,8 +78,7 @@ public final class PrefixUtils {
         if (modPrefix.canBeMercy() && random.nextFloat() < MERCY) {
             unknown(itemStack);
         } else {
-            itemStack.set(ModDataComponentTypes.PREFIX, modPrefix.createComponent(prefixType));
-            updateRarity(itemStack, modPrefix);
+            setAndUpdate(itemStack, prefixType, modPrefix);
         }
     }
 
@@ -81,25 +87,12 @@ public final class PrefixUtils {
     }
 
     public static void random(RandomSource random, ItemStack itemStack, PrefixType prefixType) {
-        ModPrefix modPrefix = prefixType.randomPrefix(random);
+        setAndUpdate(itemStack, prefixType, prefixType.randomPrefix(random));
+    }
+
+    public static void setAndUpdate(ItemStack itemStack, PrefixType prefixType, ModPrefix modPrefix) {
         itemStack.set(ModDataComponentTypes.PREFIX, modPrefix.createComponent(prefixType));
-        updateRarity(itemStack, modPrefix);
-    }
-
-    public static void unknown(ItemStack itemStack) {
-        itemStack.set(ModDataComponentTypes.PREFIX, new PrefixComponent(PrefixType.UNKNOWN, "unknown", AttributeModifiersValue.EMPTY, 0.0F, 0, 0, 0.0F));
-    }
-
-    public static int calculateManaCost(ItemStack itemStack, int amount) {
-        PrefixComponent prefix = itemStack.get(ModDataComponentTypes.PREFIX);
-        if (prefix != null) {
-            return (int) (amount * (1.0F + prefix.manaCost()));
-        }
-        return amount;
-    }
-
-    private static void updateRarity(ItemStack itemStack, ModPrefix prefix) {
-        int num1 = ModPrefix.ID_MAP.inverse().getOrDefault(prefix, 0);
+        int num1 = ModPrefix.ID_MAP.inverse().getOrDefault(modPrefix, 0);
         float num2 = 1;
         float num3 = 1;
         float num4 = 1;
@@ -380,7 +373,8 @@ public final class PrefixUtils {
         if (num1 == 64 || num1 == 71 || num1 == 75 || num1 == 79 || num1 == 66) num14 *= 1.15f;
         if (num1 == 65 || num1 == 72 || num1 == 76 || num1 == 80 || num1 == 68) num14 *= 1.2f;
 
-        int rarity = ModRarity.ID_MAP.inverse().getOrDefault(ModRarity.getRarity(itemStack), 0);
+        ItemStack copy = itemStack.getItem().getDefaultInstance();
+        int rarity = ModRarity.ID_MAP.inverse().getOrDefault(ModRarity.getRarity(copy), 0);
         if (rarity > -11) {
             if (rarity == -10) rarity = 0;
             else if (rarity == -9) rarity = 2;
@@ -395,5 +389,24 @@ public final class PrefixUtils {
             else if (rarity > 11) rarity = 11;
         }
         itemStack.set(TCDataComponentTypes.MOD_RARITY, ModRarity.ID_MAP.getOrDefault(rarity, ModRarity.WHITE));
+        itemStack.set(ModDataComponentTypes.VALUE, new ValueComponent((int) (ValueComponent.getValue(copy) * num14 * num14)));
+    }
+
+    public static void unknown(ItemStack itemStack) {
+        itemStack.set(ModDataComponentTypes.PREFIX, new PrefixComponent(PrefixType.UNKNOWN, "unknown", AttributeModifiersValue.EMPTY, 0.0F, 0, 0, 0.0F));
+    }
+
+    public static int calculateManaCost(ItemStack itemStack, int amount) {
+        PrefixComponent prefix = itemStack.get(ModDataComponentTypes.PREFIX);
+        if (prefix != null) return (int) (amount * (1.0F + prefix.manaCost()));
+        return amount;
+    }
+
+    public static int getReforgeCost(Player player, ItemStack itemStack) {
+        int price = ValueComponent.getValue(itemStack);
+        if (TCUtils.getAccessoriesValue(player, AccessoryItems.SPECIAL$PRICE) > 0) {
+            price = (int) ((double) price * 0.8);
+        }
+        return (int) ((float) price /* todo Main#29095 ShoppingSettings */ / 3);
     }
 }

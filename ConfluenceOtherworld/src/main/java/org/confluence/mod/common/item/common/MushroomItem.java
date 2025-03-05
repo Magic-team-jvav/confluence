@@ -1,11 +1,13 @@
 package org.confluence.mod.common.item.common;
 
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -14,7 +16,6 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.MaterialItems;
 
 public class MushroomItem extends BlockItem {
-
     private final float amount;
 
     public MushroomItem(Block pBlock, float amount) {
@@ -25,6 +26,17 @@ public class MushroomItem extends BlockItem {
     @Override
     protected boolean canPlace(BlockPlaceContext pContext, BlockState pState) {
         return false;
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext context) {
+        InteractionResult interactionresult = place(new BlockPlaceContext(context));
+        if (!interactionresult.consumesAction()) {
+            InteractionResult interactionresult1 = super.use(context.getLevel(), context.getPlayer(), context.getHand()).getResult();
+            return interactionresult1 == InteractionResult.CONSUME ? InteractionResult.CONSUME_PARTIAL : interactionresult1;
+        } else {
+            return interactionresult;
+        }
     }
 
     @Override

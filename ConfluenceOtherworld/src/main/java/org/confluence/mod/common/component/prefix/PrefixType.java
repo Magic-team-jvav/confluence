@@ -29,7 +29,7 @@ public enum PrefixType implements StringRepresentable {
 
     public static final Codec<PrefixType> CODEC = StringRepresentable.fromEnum(PrefixType::values);
     public static final StreamCodec<ByteBuf, PrefixType> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.STRING_UTF8, PrefixType::name, PrefixType::valueOf);
-
+    private static final PrefixType[] VALUES = values();
     private ModPrefix[] available;
 
     PrefixType(ModPrefix[] available) {
@@ -75,5 +75,10 @@ public enum PrefixType implements StringRepresentable {
     @Override
     public @NotNull String getSerializedName() {
         return name().toLowerCase(Locale.ROOT);
+    }
+
+    public static PrefixType byId(int id) {
+        if (id < 0 || id >= VALUES.length) return UNKNOWN;
+        return VALUES[id];
     }
 }

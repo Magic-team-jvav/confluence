@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Saddleable;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.*;
@@ -43,6 +45,7 @@ import org.confluence.mod.common.item.common.BaseMinecartItem;
 import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.common.menu.FletchingTableMenu;
+import org.confluence.mod.common.menu.NPCReforgeMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.network.s2c.*;
@@ -114,6 +117,10 @@ public final class PlayerEvents {
         // 再生之斧/再生法杖 右键自动收获
         if (!level.isClientSide && itemStack.is(ModTags.Items.CROP_FORTUNE)) {
             BaseAxeItem.dropAndPlaceOnRightClick(event.getEntity(), event.getItemStack(), event.getPos());
+        }
+
+        if (!FMLEnvironment.production) {
+            player.openMenu(new SimpleMenuProvider((containerId, inventory, player1) -> new NPCReforgeMenu(containerId, inventory), Component.empty()));
         }
     }
 

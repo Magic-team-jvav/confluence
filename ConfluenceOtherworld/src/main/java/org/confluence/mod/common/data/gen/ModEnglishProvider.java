@@ -558,6 +558,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("condition.confluence.requires_fuel", "Requires Fuel");
         add("container.confluence.fletching_table", "Fletching Table");
         add("title.confluence.fletching_table", "Fletching Table");
+        add("title.confluence.touhoulittlemaid", "Touhou Little Maid Supplies");
+        add("title.confluence.npc_trade", "NPC Trading");
+
+
 
 
         add("block.confluence.timers_block_1_1", "1 Second Timer");

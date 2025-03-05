@@ -3,9 +3,14 @@ package org.confluence.mod.client.gui.container;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
@@ -14,10 +19,16 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.event.ModClientSetups;
+import org.confluence.mod.common.entity.npc.NPCTrades;
+import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.menu.NPCTradesMenu;
 import org.confluence.mod.mixed.IPlayer;
+import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 import org.confluence.mod.util.PlayerUtils;
+import org.confluence.terraentity.entity.ai.keyframe.KeyframeInterpolator;
+import org.confluence.terraentity.entity.ai.keyframe.interpolator.IInterpolator;
 
 import java.awt.*;
 import java.util.List;
@@ -28,7 +39,7 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
     private static final ResourceLocation SCROLLER_DISABLED_SPRITE = ResourceLocation.withDefaultNamespace("container/villager/scroller_disabled");
     private static final ResourceLocation MENU_LOCATION = Confluence.asResource("textures/gui/container/npc_shop.png");
     private static final int NUMBER_OF_LINES = 7;
-    private static final Component TRADES_LABEL = Component.translatable("npc.trades");
+    private static final Component TRADES_LABEL = Component.translatable("title.confluence.npc_trade");
 
     private int shopItem = -1;
     private int hoveredItem = -1;
@@ -37,8 +48,12 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
     private int offsetX;
     private int offsetY;
     private int intervalX = 20;
+    int tickCount;
 
     int scrollOff;
+    ImageButton forgeBt;
+
+    KeyframeInterpolator interpolator;
     private List<Item> coinItem = List.of(
             ModItems.PLATINUM_COIN.get(),
             ModItems.GOLDEN_COIN.get(),
@@ -49,6 +64,7 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
         super(menu, playerInventory, title);
         this.imageWidth = 290;
         this.inventoryLabelX = 107;
+
     }
 
     @Override
@@ -63,13 +79,38 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
         this.row = menu.NPCTrades.trades().size() / 3;
         if (menu.NPCTrades.trades().size() % 3 != 0)
             this.row++;
+        interpolator = KeyframeInterpolator.Builder(IInterpolator.cubicSpline)
+                .addKeyframe(5, 0)
+                .addKeyframe(20, 40)
+                .addKeyframe(30, 55)
+                .addKeyframe(40, 60)
+                .build();
+
+        if(menu.forge){
+            forgeBt = new ImageButton(leftPos + 2, topPos + 2, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
+                LocalPlayer player = Minecraft.getInstance().player;
+                if (player != null) {
+                    ItemStack stack = player.containerMenu.getCarried();
+                    player.containerMenu.setCarried(ItemStack.EMPTY);
+                    ((IPlayer) player).rhyme$setDaveTrades(NPCTrades.getTrade(BuiltInRegistries.ENTITY_TYPE.getKey(ModEntities.GUIDE.get())));
+                    OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.NPC_REFORGE_MENU, stack);
+                }
+            });
+            addRenderableWidget(forgeBt);
+        }
     }
 
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        guiGraphics.drawString(this.font, this.title, 49 + this.imageWidth / 2 - this.font.width(this.title) / 2, 6, 4210752, false);
+
+        guiGraphics.setColor(1, 1, 1, (float)(v / 60f));
+        int fy = 6 - (int)((60 - v) / 5);
+
+        guiGraphics.drawString(this.font, ((MutableComponent)this.title).withStyle(Style.EMPTY.withBold(true)), 49 + this.imageWidth / 2 - this.font.width(this.title) / 2, fy, 0xFF5656, false);
+        guiGraphics.setColor(1, 1, 1, 1);
         guiGraphics.drawString(this.font, this.playerInventoryTitle,90 + this.imageWidth / 2, this.inventoryLabelY, 4210752, false);
         int l = this.font.width(TRADES_LABEL);
+
         guiGraphics.drawString(this.font, TRADES_LABEL, 5 - l / 2 + 48, 6, 4210752, false);
     }
 
@@ -98,12 +139,24 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
     }
 
     @Override
+    protected void containerTick() {
+
+        this.tickCount++;
+    }
+
+    double v;
+    @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        v = interpolator.cal(this.tickCount + partialTick);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         if (menu.NPCTrades == null){
 //            menu.daveTrades = ((IPlayer)Minecraft.getInstance().player).rhyme$getDaveTrades();
             return;
         }
+        if(forgeBt != null){
+            forgeBt.render(guiGraphics, mouseX, mouseY, partialTick);
+        }
+
 
         int ii = (this.width - this.imageWidth) / 2;
         int jj = (this.height - this.imageHeight) / 2;
@@ -113,13 +166,13 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
         if(this.hoveredItem >= 0 && this.hoveredItem < menu.NPCTrades.trades().size()){
             int x = offsetX + hoveredItem % col * intervalX;
             int y = offsetY + hoveredItem / col * 20;
-            renderSlotHighlight(guiGraphics,x,y, 20);
+            renderSlotHighlight(guiGraphics,x ,y, 20);
         }
         // 左侧物品
         if(this.shopItem >= 0 && this.shopItem < menu.NPCTrades.trades().size()){
             int x = offsetX + shopItem % col * intervalX;
             int y = offsetY + shopItem / col * 20;
-            renderSlotHighlight(guiGraphics,x,y, 20);
+            renderSlotHighlight(guiGraphics,x ,y , 20);
         }
         var trades = menu.NPCTrades.trades();
         int x = offsetX;

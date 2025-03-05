@@ -675,6 +675,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("condition.confluence.requires_fuel", "需要燃料");
         add("container.confluence.fletching_table", "制箭台");
         add("title.confluence.fletching_table", "制箭台");
+        add("title.confluence.touhoulittlemaid", "女仆特供");
+        add("title.confluence.npc_trade", "汇流商店");
+
 
         add("block.confluence.base_chest_block.locked_golden", "§r上锁的金箱");
         add("block.confluence.base_chest_block.unlocked_golden", "§r金箱");

@@ -31,6 +31,7 @@ public class AbstractTerraNPC extends PathfinderMob implements GeoEntity {
 
     public NPCTrades trades;
     public Player tradingPlayer;
+    boolean forge;
 
     public AbstractTerraNPC(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -99,7 +100,7 @@ public class AbstractTerraNPC extends PathfinderMob implements GeoEntity {
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        player.openMenu(new SimpleMenuProvider((id, playerInventory, player1) -> new NPCTradesMenu(id,playerInventory, trades), Component.translatable("confluence.menu.npc_shop")));
+        player.openMenu(new SimpleMenuProvider((id, playerInventory, player1) -> new NPCTradesMenu(id,playerInventory, trades, forge), Component.translatable("confluence.menu.npc_shop")));
         tradingPlayer = player;
         return InteractionResult.PASS;
     }

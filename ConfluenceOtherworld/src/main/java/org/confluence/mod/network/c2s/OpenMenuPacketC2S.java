@@ -27,7 +27,7 @@ public record OpenMenuPacketC2S(int menuId, ItemStack stack) implements CustomPa
     public static final int NPC_REFORGE_MENU = 2;
     private static final Object2ObjectMap<Integer, Tuple<MenuConstructor, Component>> MENU_TYPES = Util.make(new Object2ObjectOpenHashMap<>(), map -> {
         map.put(EXTRA_INVENTORY, new Tuple<>((containerId, playerInventory, player) -> new ExtraInventoryMenu(containerId, playerInventory), Component.empty()));
-        map.put(NPC_TRADE_MENU, new Tuple<>((containerId, playerInventory, player) -> new NPCTradesMenu(containerId, playerInventory), Component.empty()));
+        map.put(NPC_TRADE_MENU, new Tuple<>((containerId, playerInventory, player) -> new NPCTradesMenu(containerId, playerInventory), Component.translatable("title.confluence.touhoulittlemaid")));
         map.put(NPC_REFORGE_MENU, new Tuple<>((containerId, playerInventory, player) -> new NPCReforgeMenu(containerId, playerInventory), Component.empty()));
     });
     public static final Type<OpenMenuPacketC2S> TYPE = new Type<>(Confluence.asResource("open_menu"));

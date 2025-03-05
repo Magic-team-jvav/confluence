@@ -1,6 +1,7 @@
 package org.confluence.mod.common.block.functional.crafting;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -26,6 +27,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.client.model.block.ExtractinatorBlockModel;
 import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
@@ -38,6 +40,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
+import org.confluence.terra_curio.mixin.client.accessor.MinecraftAccessor;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -130,6 +133,8 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
             }
 
             player.getItemInHand(hand).setCount(item.getCount() - 1);
+        } else if (FMLEnvironment.dist.isClient()) {
+            ((MinecraftAccessor) Minecraft.getInstance()).setRightClickDelay(1);
         }
         return ItemInteractionResult.SUCCESS;
     }

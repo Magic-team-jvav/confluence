@@ -172,6 +172,8 @@ dependencies {
     //runtimeOnly "curse.maven:ars-nouveau-401955:6228434"
     //runtimeOnly "curse.maven:carry-on-274259:5649344"
     runtimeOnly "curse.maven:spark-361579:6225208"
+    //runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"
+    //runtimeOnly "curse.maven:xaeros-world-map-317780:6212662"
 }
 
 tasks.withType(ProcessResources).configureEach {

@@ -84,7 +84,7 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
         if (mouseX >= leftPos + 120 && mouseX <= leftPos + 138 && mouseY >= topPos + 43 && mouseY <= topPos + 62 && menu.clickMenuButton(minecraft.player, 0)) {
             minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.SMITHING_TABLE_USE, minecraft.level.random.nextFloat() * 0.1F + 0.9F));
             minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 0);
-            ItemStack itemStack = menu.container.getItem(0);
+            ItemStack itemStack = menu.getReforgeItem();
             PrefixComponent prefix = PrefixUtils.getPrefix(itemStack);
             if (prefix != null) {
                 MutableComponent component = Component.translatable("prefix.confluence." + prefix.name());

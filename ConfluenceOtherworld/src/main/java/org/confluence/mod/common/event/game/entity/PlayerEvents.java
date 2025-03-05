@@ -119,8 +119,7 @@ public final class PlayerEvents {
         if (!level.isClientSide && itemStack.is(ModTags.Items.CROP_FORTUNE)) {
             BaseAxeItem.dropAndPlaceOnRightClick(event.getEntity(), event.getItemStack(), event.getPos());
         }
-
-        ModUtils.devRun(() -> player.openMenu(new SimpleMenuProvider((containerId, inventory, player1) -> new NPCReforgeMenu(containerId, inventory), Component.empty())));
+        if (false) ModUtils.devRun(() -> player.openMenu(new SimpleMenuProvider((containerId, inventory, player1) -> new NPCReforgeMenu(containerId, inventory), Component.empty())));
     }
 
     @SubscribeEvent

@@ -71,7 +71,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:scaffolding",
+          "name": "confluence:rope",
           "functions": [
             {
               "function": "set_count",

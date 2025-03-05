@@ -5,7 +5,7 @@
     ],
     "spawners": {
         "type": "terra_entity:spore_bat",
-        "weight": 340,
+        "weight": 80,
         "minCount": 1,
         "maxCount": 2
     }

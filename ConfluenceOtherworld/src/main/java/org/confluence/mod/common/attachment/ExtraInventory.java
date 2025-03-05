@@ -164,9 +164,6 @@ public class ExtraInventory extends ItemStackHandler implements Container {
             }).orElse(0);
             setAccessoryDyes(accessoryDye);
             this.previousStacks = NonNullList.withSize(SIZE_EXCEPT_ACCESSORY_DYE + accessoryDye, ItemStack.EMPTY);
-            for (int i = 0; i < stacks.size(); i++) {
-                previousStacks.set(i, stacks.get(i).copy());
-            }
             this.initialized = true;
         }
     }

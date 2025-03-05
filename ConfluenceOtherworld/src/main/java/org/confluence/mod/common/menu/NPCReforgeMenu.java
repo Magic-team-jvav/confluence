@@ -58,7 +58,7 @@ public class NPCReforgeMenu extends AbstractContainerMenu {
     public void slotsChanged(Container container) {
         // 提前决定下一个词条
         if (!player.level().isClientSide) {
-            ItemStack itemStack = container.getItem(0);
+            ItemStack itemStack = getReforgeItem();
             if (PrefixUtils.couldReforge(itemStack)) {
                 RandomSource randomSource = RandomSource.create(itemStack.hashCode() | player.getRandom().nextInt());
                 PrefixType prefixType = PrefixUtils.getPrefixType(itemStack);
@@ -81,7 +81,7 @@ public class NPCReforgeMenu extends AbstractContainerMenu {
         if (cost >= 0x3F3F3F3F) return false;
         PrefixType prefixType = PrefixType.byId(data[DATA_PREFIX_TYPE]);
         if (prefixType == PrefixType.UNKNOWN) return false;
-        ItemStack itemStack = container.getItem(0);
+        ItemStack itemStack = getReforgeItem();
         if (PrefixUtils.couldReforge(itemStack)) {
             ModPrefix modPrefix = ModPrefix.ID_MAP.get(data[DATA_PREFIX_ID]);
             if (modPrefix == null) return false;
@@ -96,6 +96,10 @@ public class NPCReforgeMenu extends AbstractContainerMenu {
             slotsChanged(container);
         }
         return true;
+    }
+
+    public ItemStack getReforgeItem() {
+        return container.getItem(0);
     }
 
     public int getCost() {

@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.*;
@@ -49,6 +48,7 @@ import org.confluence.mod.common.menu.NPCReforgeMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.network.s2c.*;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -69,6 +69,7 @@ public final class PlayerEvents {
             BoulderWorld.forceSetAccessory(serverPlayer);
             TheConstantPostEffectPacketS2C.sendToClient(serverPlayer);
             SecretFlagSyncPacketS2C.sendToAll(IWorldOptions.getSecretFlag(serverPlayer.server));
+            serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).setChanged();
         }
     }
 
@@ -89,7 +90,7 @@ public final class PlayerEvents {
         ItemStack itemStack = event.getItemStack();
         Block block = blockState.getBlock();
 
-        if (!itemStack.is(ModTags.Items.MINECART) && block instanceof BaseRailBlock railBlock) {
+        if (!(itemStack.getItem() instanceof BlockItem) && !itemStack.is(ModTags.Items.MINECART) && block instanceof BaseRailBlock railBlock) {
             player.swing(InteractionHand.MAIN_HAND);
             if (!level.isClientSide) {
                 ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
@@ -118,10 +119,7 @@ public final class PlayerEvents {
         if (!level.isClientSide && itemStack.is(ModTags.Items.CROP_FORTUNE)) {
             BaseAxeItem.dropAndPlaceOnRightClick(event.getEntity(), event.getItemStack(), event.getPos());
         }
-
-        if (!FMLEnvironment.production) {
-            player.openMenu(new SimpleMenuProvider((containerId, inventory, player1) -> new NPCReforgeMenu(containerId, inventory), Component.empty()));
-        }
+        if (false) ModUtils.devRun(() -> player.openMenu(new SimpleMenuProvider((containerId, inventory, player1) -> new NPCReforgeMenu(containerId, inventory), Component.empty())));
     }
 
     @SubscribeEvent

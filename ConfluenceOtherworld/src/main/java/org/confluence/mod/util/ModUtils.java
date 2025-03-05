@@ -29,6 +29,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
@@ -233,5 +234,11 @@ public final class ModUtils {
         }
         mob.setItemSlot(slot, itemStack);
         mob.setDropChance(slot, chance);
+    }
+
+    public static void devRun(Runnable runnable) {
+        if (!FMLEnvironment.production) {
+            runnable.run();
+        }
     }
 }

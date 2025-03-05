@@ -17,6 +17,7 @@ import org.confluence.mod.common.block.natural.MushroomBlock;
 import org.confluence.mod.common.block.natural.*;
 import org.confluence.mod.common.block.natural.sapling.AshSaplingBlock;
 import org.confluence.mod.common.block.natural.sapling.BaseSaplingBlock;
+import org.confluence.mod.common.block.natural.sapling.StoneSaplingBlock;
 import org.confluence.mod.common.block.natural.spreadable.*;
 import org.confluence.mod.common.block.natural.transparent.TransparentLeavesBlock;
 import org.confluence.mod.common.init.ModFeatures;
@@ -32,13 +33,13 @@ public class NatureBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
 
     // 非环境树苗
-    public static final DeferredBlock<Block> RUBY_SAPLING = registerWithItem("ruby_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.RUBY_GROWER, Blocks.DEEPSLATE, Blocks.STONE));
-    public static final DeferredBlock<Block> AMBER_SAPLING = registerWithItem("amber_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.AMBER_GROWER, Blocks.DEEPSLATE, Blocks.STONE));
-    public static final DeferredBlock<Block> TOPAZ_SAPLING = registerWithItem("topaz_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.TOPAZ_GROWER, Blocks.DEEPSLATE, Blocks.STONE));
-    public static final DeferredBlock<Block> EMERALD_SAPLING = registerWithItem("emerald_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.EMERALD_GROWER, Blocks.DEEPSLATE, Blocks.STONE));
-    public static final DeferredBlock<Block> DIAMOND_SAPLING = registerWithItem("diamond_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.DIAMOND_GROWER, Blocks.DEEPSLATE, Blocks.STONE));
-    public static final DeferredBlock<Block> SAPPHIRE_SAPLING = registerWithItem("sapphire_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.SAPPHIRE_GROWER, Blocks.DEEPSLATE, Blocks.STONE));
-    public static final DeferredBlock<Block> TR_AMETHYST_SAPLING = registerWithItem("tr_amethyst_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.TR_AMETHYST_GROWER, Blocks.DEEPSLATE, Blocks.STONE));
+    public static final DeferredBlock<Block> RUBY_SAPLING = registerWithItem("ruby_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.RUBY_GROWER));
+    public static final DeferredBlock<Block> AMBER_SAPLING = registerWithItem("amber_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.AMBER_GROWER));
+    public static final DeferredBlock<Block> TOPAZ_SAPLING = registerWithItem("topaz_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.TOPAZ_GROWER));
+    public static final DeferredBlock<Block> EMERALD_SAPLING = registerWithItem("emerald_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.EMERALD_GROWER));
+    public static final DeferredBlock<Block> DIAMOND_SAPLING = registerWithItem("diamond_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.DIAMOND_GROWER));
+    public static final DeferredBlock<Block> SAPPHIRE_SAPLING = registerWithItem("sapphire_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.SAPPHIRE_GROWER));
+    public static final DeferredBlock<Block> TR_AMETHYST_SAPLING = registerWithItem("tr_amethyst_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.TR_AMETHYST_GROWER));
     public static final DeferredBlock<Block> LIVING_SAPLING = registerWithItem("living_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.LIVING_GROWER, Blocks.GRASS_BLOCK, Blocks.DIRT));
     public static final DeferredBlock<Block> YELLOW_WILLOW_SAPLING = registerWithItem("yellow_willow_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.YELLOW_WILLOW_GROWER, Blocks.GRASS_BLOCK, Blocks.DIRT));
     public static final DeferredBlock<Block> BAOBAB_SAPLING = registerWithItem("baobab_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.BAOBAB_GROWER, Blocks.GRASS_BLOCK, Blocks.DIRT));

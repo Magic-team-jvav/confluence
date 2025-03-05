@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.*;
@@ -49,6 +48,7 @@ import org.confluence.mod.common.menu.NPCReforgeMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.network.s2c.*;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -120,9 +120,7 @@ public final class PlayerEvents {
             BaseAxeItem.dropAndPlaceOnRightClick(event.getEntity(), event.getItemStack(), event.getPos());
         }
 
-        if (!FMLEnvironment.production) {
-            player.openMenu(new SimpleMenuProvider((containerId, inventory, player1) -> new NPCReforgeMenu(containerId, inventory), Component.empty()));
-        }
+        ModUtils.devRun(() -> player.openMenu(new SimpleMenuProvider((containerId, inventory, player1) -> new NPCReforgeMenu(containerId, inventory), Component.empty())));
     }
 
     @SubscribeEvent

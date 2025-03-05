@@ -649,7 +649,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         // Bow 附魔
         BowItems.ITEMS.getEntries().forEach(item -> {
             tag(ItemTags.DURABILITY_ENCHANTABLE).add(item.get());
-            tag(ItemTags.WEAPON_ENCHANTABLE).add(item.get());
             tag(ItemTags.BOW_ENCHANTABLE).add(item.get());
         });
         //  FishingPole 附魔

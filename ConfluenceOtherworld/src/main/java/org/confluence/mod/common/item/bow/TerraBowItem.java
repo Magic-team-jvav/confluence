@@ -35,6 +35,7 @@ public class TerraBowItem extends BowItem {
 
     public TerraBowItem(float baseDamage, int durability, ModRarity rarity) {
         super(new Properties().durability(durability)
+                .stacksTo(1)
                 .component(TCDataComponentTypes.MOD_RARITY, rarity));
         this.baseDamage = baseDamage;
         this.arrowModifier = new BaseArrowEntity.Builder();

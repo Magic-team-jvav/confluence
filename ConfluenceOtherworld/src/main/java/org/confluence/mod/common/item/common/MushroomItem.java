@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.effect.harmful.PotionSicknessEffect;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.item.food.FoodType;
 
 public class MushroomItem extends BlockItem {
     private final float amount;
@@ -31,7 +32,7 @@ public class MushroomItem extends BlockItem {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         InteractionResult interactionresult = place(new BlockPlaceContext(context));
-        if (!interactionresult.consumesAction()) {
+        if (!interactionresult.consumesAction() && context.getPlayer() != null) {
             InteractionResult interactionresult1 = super.use(context.getLevel(), context.getPlayer(), context.getHand()).getResult();
             return interactionresult1 == InteractionResult.CONSUME ? InteractionResult.CONSUME_PARTIAL : interactionresult1;
         } else {
@@ -48,6 +49,7 @@ public class MushroomItem extends BlockItem {
         if (itemStack.is(MaterialItems.LIFE_MUSHROOM.get())) {
             pPlayer.startUsingItem(pUsedHand);
             pPlayer.heal(amount);
+            pPlayer.getFoodData().eat(FoodType.LIFE_MUSHROOM);
             itemStack.shrink(1);
             PotionSicknessEffect.addTo(pPlayer, 600);
             return InteractionResultHolder.consume(itemStack);

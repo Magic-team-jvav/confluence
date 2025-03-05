@@ -61,7 +61,9 @@ public class FoodType {
             .effect(() -> new MobEffectInstance(MobEffects.SATURATION, 200, 0, false, false), 1.0f)
             .build();
     //东东的大饼
-    public static final FoodProperties DONGDONGS_FLATBREAD = new FoodProperties.Builder().nutrition(3).saturationModifier(2f).fast().alwaysEdible()
+    public static final FoodProperties DONGDONGS_FLATBREAD = new FoodProperties.Builder().nutrition(3).saturationModifier(2.0f).fast().alwaysEdible()
             .effect(() -> new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, 3000), 1.0f)
             .effect(() -> new MobEffectInstance(MobEffects.SATURATION, 200, 0, false, false), 1.0f).build();
+    //生命蘑菇
+    public static final FoodProperties LIFE_MUSHROOM = new FoodProperties.Builder().nutrition(2).saturationModifier(0.25f).fast().alwaysEdible().build();
 }

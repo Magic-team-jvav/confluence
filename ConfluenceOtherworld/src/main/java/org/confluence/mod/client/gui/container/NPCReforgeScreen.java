@@ -12,6 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
+import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.menu.NPCReforgeMenu;
 import org.confluence.mod.util.PlayerUtils;
@@ -135,7 +136,7 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
             minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 0);
             ItemStack itemStack = menu.getReforgeItem();
             PrefixComponent prefix = PrefixUtils.getPrefix(itemStack);
-            if (prefix != null) {
+            if (prefix != null && prefix.type() != PrefixType.UNKNOWN) {
                 MutableComponent component = Component.translatable("prefix.confluence." + prefix.name());
                 ModRarity rarity = ModRarity.getRarity(itemStack);
                 if (rarity != null) {

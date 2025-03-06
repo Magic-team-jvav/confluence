@@ -1,6 +1,7 @@
 package org.confluence.mod.client.gui.container;
 
 import com.google.common.collect.EvictingQueue;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -17,12 +18,17 @@ import org.confluence.mod.common.menu.NPCReforgeMenu;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.terraentity.entity.ai.keyframe.KeyframeInterpolator;
+import org.confluence.terraentity.entity.ai.keyframe.interpolator.IInterpolator;
 import org.jetbrains.annotations.NotNull;
 
 public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/reforge.png");
     private boolean buttonClicked = false;
     private final EvictingQueue<Component> prefixBefore;
+    int clickTime = 500;
+    KeyframeInterpolator interpolator;
+
 
     public NPCReforgeScreen(NPCReforgeMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -69,6 +75,23 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
             guiGraphics.drawString(font, component, leftPos + 61, y += font.lineHeight, -1);
         }
     }
+    protected void containerTick() {
+        clickTime++;
+    }
+    protected void init() {
+        super.init();
+        interpolator = KeyframeInterpolator.Builder(IInterpolator.cubicSpline)
+                .addKeyframe(0, 0)
+                .addKeyframe(15, 55)
+                .addKeyframe(20, 60)
+                .addKeyframe(40, 60)
+                .addKeyframe(45, 65)
+                .addKeyframe(60, 100)
+                .addInterpolator(1, IInterpolator.linear.get())
+                .addInterpolator(2, IInterpolator.linear.get())
+                .addInterpolator(3, IInterpolator.linear.get())
+                .build();
+    }
 
     @Override
     protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {}
@@ -77,6 +100,34 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     public void render(@NotNull GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
+
+
+        ItemStack itemStack = menu.getReforgeItem();
+        if(!itemStack.isEmpty()) {
+            PrefixComponent prefix = PrefixUtils.getPrefix(itemStack);
+
+            if (prefix != null && clickTime > 0 && clickTime < 60) {
+
+                double v = interpolator.cal(clickTime + pPartialTick);
+                pGuiGraphics.pose().pushPose();
+
+                MutableComponent component = Component.translatable("prefix.confluence." + prefix.name()).append(" ").append(Component.translatable(itemStack.getItem().getDescriptionId()));
+                ModRarity rarity = ModRarity.getRarity(itemStack);
+                if (rarity != null) {
+                    component.withColor(rarity.getColor());
+
+                }
+                pGuiGraphics.pose().translate(0,-v * 0.5f,0);
+                float f = (clickTime / 60.0f);
+                f = f * ( 1 - f) * 4f;
+                f = Math.min(1, f);
+                pGuiGraphics.setColor(1,1,1, f);
+                pGuiGraphics.drawString(font, component, leftPos + 12 , topPos + 40, -1);
+                pGuiGraphics.setColor(1,1,1, 1);
+                pGuiGraphics.pose().popPose();
+            }
+        }
+
     }
 
     @Override
@@ -95,6 +146,7 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
                 prefixBefore.add(component);
             }
             this.buttonClicked = true;
+            clickTime = 0;
             return true;
         }
         return super.mouseClicked(mouseX, mouseY, button);

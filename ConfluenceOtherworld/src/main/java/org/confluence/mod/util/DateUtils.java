@@ -9,34 +9,32 @@ import org.confluence.mod.common.init.item.ModItems;
 
 import java.time.format.DateTimeParseException;
 import java.util.Calendar;
+import java.util.Date;
 
 public final class DateUtils {
     private static long lastCacheTime = 0;
-    private static Calendar calendar;
+    private static final Calendar calendar = Calendar.getInstance();
     private static Lunar lunar;
 
     public static Calendar getCalendar() {
-        if (System.currentTimeMillis() - lastCacheTime > 24 * 60 * 60 * 1000) {
-            lastCacheTime = System.currentTimeMillis();
-            calendar = null;
-        }
-        if (calendar == null) {
-            calendar = Calendar.getInstance();
-            lunar = new Lunar();
-        }
+        updateTime();
         return calendar;
     }
 
     public static Lunar getLunar() {
+        updateTime();
+        return lunar;
+    }
+
+    private static void updateTime() {
         if (System.currentTimeMillis() - lastCacheTime > 24 * 60 * 60 * 1000) {
             lastCacheTime = System.currentTimeMillis();
             lunar = null;
         }
         if (lunar == null) {
-            calendar = Calendar.getInstance();
-            lunar = new Lunar();
+            calendar.setTimeInMillis(lastCacheTime);
+            lunar = new Lunar(new Date(lastCacheTime));
         }
-        return lunar;
     }
 
     public static boolean isXinNian(Lunar lunar) {

@@ -64,8 +64,8 @@ public class CrimsonCaveStructure extends Structure {
             Vector3d posPoint;
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
 
-            boll(radius, 2, centerPos, blockMap, 0.05F, random);
-            boll(radiusEnd, 4, endPos, blockMap, 0.01F, random);
+            boll(radius, 2, centerPos, blockMap, 0.05F, random, 1, 0);
+            boll(radiusEnd, 4, endPos, blockMap, 0.01F, random, 1, 0);
             for (int i = 0; i < layer0; i++) {
                 posPoint = new Vector3d((i == 0) ? xStart : (xStart + i * xDis + random.nextInt(-20, 21)), yStart + i * yDis, (i == 0) ? zStart : (zStart + i * zDis + random.nextInt(-20, 21)));
                 VctList.add(posPoint);

@@ -61,7 +61,7 @@ public class LivingTreeStructure extends Structure {
             locationList.add(locationStart);
             locationList.add(locationEnd);
             List<Vector3d> leavesTop = ellipsoidPos(30, 15, 30, new BlockPos((int) locationEnd.x, (int) locationEnd.y, (int) locationEnd.z), 0.01F, random);
-            lineSetEllipsoid(leavesTop, 4, 2, 4, 2, false, blockMap, 0.75F, random);
+            lineSetEllipsoid(leavesTop, 4, 2, 4, 2, true, blockMap, 0.75F, random);
             lightningPathList(locationList, 1, 8, random);
             lineSet(locationList, 5.9, 1.0, 1, true, blockMap);
             stick(random, locationList, blockMap, true);

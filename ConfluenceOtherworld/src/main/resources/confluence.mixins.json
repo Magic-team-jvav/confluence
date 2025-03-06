@@ -21,6 +21,7 @@
         "block.BlockBehaviour$BlockStateBaseMixin",
         "block.BlockMixin",
         "block.CropBlockMixin",
+        "block.FarmBlockMixin",
         "chunk.BlockCounterMixin",
         "chunk.ChunkSerializerMixin",
         "chunk.LevelChunkMixin",

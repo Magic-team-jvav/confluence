@@ -1,7 +1,6 @@
 package org.confluence.mod.client.gui.container;
 
 import com.google.common.collect.EvictingQueue;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -70,17 +69,20 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
         if (buttonClicked) {
             guiGraphics.blit(BACKGROUND, leftPos + 120, topPos + 43, 177, 0, 18, 18);
         }
+        int x = leftPos + 61;
         int y = topPos + 21;
         for (Component component : prefixBefore) {
-            guiGraphics.drawString(font, component, leftPos + 61, y += font.lineHeight, -1);
+            guiGraphics.drawString(font, component, x, y += font.lineHeight, -1);
         }
     }
+
     protected void containerTick() {
         clickTime++;
     }
+
     protected void init() {
         super.init();
-        interpolator = KeyframeInterpolator.Builder(IInterpolator.cubicSpline)
+        this.interpolator = KeyframeInterpolator.Builder(IInterpolator.cubicSpline)
                 .addKeyframe(0, 0)
                 .addKeyframe(15, 55)
                 .addKeyframe(20, 60)
@@ -101,13 +103,11 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
 
-
         ItemStack itemStack = menu.getReforgeItem();
-        if(!itemStack.isEmpty()) {
+        if (!itemStack.isEmpty()) {
             PrefixComponent prefix = PrefixUtils.getPrefix(itemStack);
 
             if (prefix != null && clickTime > 0 && clickTime < 60) {
-
                 double v = interpolator.cal(clickTime + pPartialTick);
                 pGuiGraphics.pose().pushPose();
 
@@ -115,19 +115,17 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
                 ModRarity rarity = ModRarity.getRarity(itemStack);
                 if (rarity != null) {
                     component.withColor(rarity.getColor());
-
                 }
-                pGuiGraphics.pose().translate(0,-v * 0.5f,0);
+                pGuiGraphics.pose().translate(0, -v * 0.5f, 0);
                 float f = (clickTime / 60.0f);
-                f = f * ( 1 - f) * 4f;
+                f = f * (1 - f) * 4f;
                 f = Math.min(1, f);
-                pGuiGraphics.setColor(1,1,1, f);
-                pGuiGraphics.drawString(font, component, leftPos + 12 , topPos + 40, -1);
-                pGuiGraphics.setColor(1,1,1, 1);
+                pGuiGraphics.setColor(1, 1, 1, f);
+                pGuiGraphics.drawString(font, component, leftPos + 12, topPos + 40, -1);
+                pGuiGraphics.setColor(1, 1, 1, 1);
                 pGuiGraphics.pose().popPose();
             }
         }
-
     }
 
     @Override
@@ -146,7 +144,7 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
                 prefixBefore.add(component);
             }
             this.buttonClicked = true;
-            clickTime = 0;
+            this.clickTime = 0;
             return true;
         }
         return super.mouseClicked(mouseX, mouseY, button);

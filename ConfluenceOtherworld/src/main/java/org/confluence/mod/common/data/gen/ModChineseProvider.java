@@ -300,7 +300,7 @@ public class ModChineseProvider extends LanguageProvider {
 
 
         add("confluence.configuration.dropsMoney", "钱币掉落");
-        add("confluence.configuration.dropsMoney.tooltip", "启用时，你的钱币死亡后会掉落");
+        add("confluence.configuration.dropsMoney.tooltip", "启用时，生物死亡后会掉落钱币");
         add("confluence.configuration.autoStackGelsColor", "自动合并凝胶");
         add("confluence.configuration.autoStackGelsColor.tooltip", "启用时，你拾取的不同颜色的凝胶会合并堆叠");
         add("confluence.configuration.bannedModForPaints", "模组油漆使用黑名单");

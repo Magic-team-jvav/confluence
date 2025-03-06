@@ -429,7 +429,7 @@ public class ModEnglishProvider extends LanguageProvider {
 
 
         add("confluence.configuration.dropsMoney", "Coin Drops");
-        add("confluence.configuration.dropsMoney.tooltip", "When enabled, your coins will drop upon death");
+        add("confluence.configuration.dropsMoney.tooltip", "When enabled, characters will drop coins upon death.");
         add("confluence.configuration.autoStackGelsColor", "Auto Stack Gels by Color");
         add("confluence.configuration.autoStackGelsColor.tooltip", "When enabled, gels of different colors you pick up will stack together");
         add("confluence.configuration.bannedModForPaints", "Mod Paints Blacklist");

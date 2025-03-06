@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.gui.TooltipManager;
 import org.confluence.mod.common.init.ModEffectStrategies;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
@@ -630,6 +631,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("biome.confluence.tr_crimson", "The Crimson");
         add("biome.confluence.tr_crimson_desert", "The Crimson Desert");
         add("biome.confluence.tr_crimson_tundra", "The Crimson Tundra");
+
+        add(TooltipManager.prefix, "** Sponsor Item **");
 
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), toTitleCase(block.getId().getPath()));
         add(ModBlocks.COPPER_COIN_PILE.get(), "Copper Coin");

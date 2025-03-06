@@ -3,6 +3,7 @@ package org.confluence.mod.common.data.gen;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.gui.TooltipManager;
 import org.confluence.mod.common.init.ModEffectStrategies;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
@@ -2588,6 +2589,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.ARCHERY.get(), "箭术");
         add(ModEffects.HEART_REACH.get(), "拾心");
         add(ModEffects.OBSIDIAN_SKIN.get(), "黑曜石皮");
+
+        add(TooltipManager.prefix, "** 赞助者物品 **");
+
 
         ModEffectStrategies.EFFECT_STRATEGY.getEntries().forEach(strategy -> add(strategy.get().getTranslationKey(), strategy.get().getDescription_zh_cn()));
     }

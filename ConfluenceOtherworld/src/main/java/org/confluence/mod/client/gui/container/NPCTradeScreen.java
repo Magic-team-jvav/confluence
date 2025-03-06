@@ -6,7 +6,6 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -92,7 +91,7 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
                 if (player != null) {
                     ItemStack stack = player.containerMenu.getCarried();
                     player.containerMenu.setCarried(ItemStack.EMPTY);
-                    ((IPlayer) player).rhyme$setDaveTrades(NPCTrades.getTrade(BuiltInRegistries.ENTITY_TYPE.getKey(ModEntities.GUIDE.get())));
+                    ((IPlayer) player).rhyme$setDaveTrades(NPCTrades.getTrade(ModEntities.GUIDE.getId()));
                     OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.NPC_REFORGE_MENU, stack);
                 }
             });

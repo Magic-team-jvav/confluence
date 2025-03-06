@@ -22,6 +22,7 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_guns.common.init.TGItems;
+import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.Nullable;
 
@@ -698,5 +699,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.HARDMODE)
                 .addTag(ModTags.Items.HARDMODE_ORES)
                 .add(NatureBlocks.PEARL_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new));
+
+        TEItems.SUMMON_ITEMS.getEntries().forEach(item -> tag(ModTags.Items.SUMMONER_WEAPON).add(item.get()));
     }
 }

@@ -8,7 +8,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Saddleable;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -44,11 +43,9 @@ import org.confluence.mod.common.item.common.BaseMinecartItem;
 import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.common.menu.FletchingTableMenu;
-import org.confluence.mod.common.menu.NPCReforgeMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.network.s2c.*;
-import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -119,7 +116,6 @@ public final class PlayerEvents {
         if (!level.isClientSide && itemStack.is(ModTags.Items.CROP_FORTUNE)) {
             BaseAxeItem.dropAndPlaceOnRightClick(event.getEntity(), event.getItemStack(), event.getPos());
         }
-        if (false) ModUtils.devRun(() -> player.openMenu(new SimpleMenuProvider((containerId, inventory, player1) -> new NPCReforgeMenu(containerId, inventory), Component.empty())));
     }
 
     @SubscribeEvent

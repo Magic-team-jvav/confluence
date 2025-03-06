@@ -11,6 +11,34 @@ import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 
 public final class DateUtils {
+    private static long lastCacheTime = 0;
+    private static Calendar calendar;
+    private static Lunar lunar;
+
+    public static Calendar getCalendar() {
+        if (System.currentTimeMillis() - lastCacheTime > 24 * 60 * 60 * 1000) {
+            lastCacheTime = System.currentTimeMillis();
+            calendar = null;
+        }
+        if (calendar == null) {
+            calendar = Calendar.getInstance();
+            lunar = new Lunar();
+        }
+        return calendar;
+    }
+
+    public static Lunar getLunar() {
+        if (System.currentTimeMillis() - lastCacheTime > 24 * 60 * 60 * 1000) {
+            lastCacheTime = System.currentTimeMillis();
+            lunar = null;
+        }
+        if (lunar == null) {
+            calendar = Calendar.getInstance();
+            lunar = new Lunar();
+        }
+        return lunar;
+    }
+
     public static boolean isXinNian(Lunar lunar) {
         return lunar.getMonth() == 1 && lunar.getDay() <= 15;
     }
@@ -34,25 +62,25 @@ public final class DateUtils {
     }
 
     public static Item getHolidayGift() {
-        Lunar lunar = new Lunar();
+        Lunar lunar = getLunar();
         if (isXinNian(lunar)) return ConsumableItems.RED_ENVELOPE.get();
         if (isDuanWu(lunar)) return FoodItems.ZONGZI.get();
         if (isZhongQiu(lunar)) return FoodItems.EGG_YOLK_MOONCAKES.get();
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = getCalendar();
         if (isHalloween(calendar)) return ConsumableItems.GOODIE_BAG.get();
         if (isChristmas(calendar)) return ConsumableItems.CHRISTMAS_GIFT.get();
         return Items.AIR;
     }
 
     public static Item getHeartItem() {
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = getCalendar();
         if (isHalloween(calendar)) return ModItems.CANDY_APPLE.get();
         if (isChristmas(calendar)) return ModItems.CANDY_CANE.get();
         return ModItems.HEART.get();
     }
 
     public static Item getStarItem() {
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = getCalendar();
         if (isHalloween(calendar)) return ModItems.SOUL_CAKE.get();
         if (isChristmas(calendar)) return ModItems.SUGAR_PLUM.get();
         return ModItems.STAR.get();
@@ -72,8 +100,8 @@ public final class DateUtils {
 
     /**
      * @param start 开始的dayTime
-     * @param end 结束的dayTime
-     * @param time 判断的dayTime
+     * @param end   结束的dayTime
+     * @param time  判断的dayTime
      * @return start <= time <= end
      */
     public static boolean isWithinDayTime(int start, int end, long time) {

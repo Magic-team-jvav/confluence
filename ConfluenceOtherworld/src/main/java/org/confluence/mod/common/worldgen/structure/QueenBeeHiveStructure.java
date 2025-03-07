@@ -14,6 +14,7 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.mod.common.init.ModStructures;
+import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.util.VectorUtils;
 import org.joml.Vector3d;
@@ -23,8 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.confluence.mod.util.StructureUtils.boll;
-import static org.confluence.mod.util.StructureUtils.lineSet;
+import static org.confluence.mod.util.StructureUtils.*;
 
 public class QueenBeeHiveStructure extends Structure {
     public static final MapCodec<QueenBeeHiveStructure> CODEC = simpleCodec(QueenBeeHiveStructure::new);
@@ -43,26 +43,44 @@ public class QueenBeeHiveStructure extends Structure {
             ChunkPos startChunk = context.chunkPos();
             WorldgenRandom random = context.random();
             int radius = random.nextInt(12, 15);
-            BlockPos centerPos = startChunk.getMiddleBlockPosition(lowestY).offset(0, 20, 0);
+            int radius2 = 2 * radius;
+            int block;
+            BlockPos centerPos = startChunk.getMiddleBlockPosition(lowestY).offset(0, random.nextInt(-50, -40), 0);
+            BlockPos.MutableBlockPos pillarEndPos = centerPos.mutable();
+            BlockPos.MutableBlockPos pillarStartPos = centerPos.mutable();
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
             double r1 = ((double) random.nextInt(360) / 180) * Math.PI;
             double r2 = ((double) random.nextInt(30) + 165) / 180 * Math.PI + r1;
+            float chance;
 
             BlockPos hight1 = new BlockPos((int) (radius * Math.sin(r1)), centerPos.getY(), (int) (radius * Math.cos(r1)));
             BlockPos hight2 = new BlockPos((int) (radius * Math.sin(r2)), centerPos.getY(), (int) (radius * Math.cos(r2)));
 
-            boll(radius, 3, centerPos, blockMap, 0.02F, random, 1, 0);
+            boll(radius, 3, centerPos, blockMap, 0.02F, random, 1, 0, 3, centerPos.getY() - radius + 1);
 
-            for (int xPos = -radius * 2 - 1; xPos <= radius * 2; xPos++) {
-                for (int zPos = -radius * 2 - 1; zPos <= radius * 2; zPos++) {
+            for (int xPos = -radius2 - 1; xPos <= radius2; xPos++) {
+                for (int zPos = -radius2 - 1; zPos <= radius2; zPos++) {
                     if ((xPos + zPos * 4) % 15 == 0) {
                         double dis1 = 2 * (radius - Math.sqrt(Math.pow(xPos - hight1.getX(), 2) + Math.pow(zPos - hight1.getZ(), 2))) / radius - 1;
                         double dis2 = 2 * (radius - Math.sqrt(Math.pow(xPos - hight2.getX(), 2) + Math.pow(zPos - hight2.getZ(), 2))) / radius - 1;
                         double uDis1 = (Math.sqrt(Math.abs(dis1)) * dis1 / Math.abs(dis1) + 1) * radius * 0.4;
                         double uDis2 = (Math.sqrt(Math.abs(dis2)) * dis2 / Math.abs(dis2) + 1) * radius * 0.4;
-                        BlockPos newPos = new BlockPos(xPos + centerPos.getX(), centerPos.getY() - radius + (int) uDis1 + (int) uDis2 + random.nextInt(2), zPos + centerPos.getZ());
-                        if (blockMap.containsKey(newPos)) {
-                            blockMap.put(newPos, 2);
+                        pillarEndPos.set(xPos + centerPos.getX(), centerPos.getY() - radius + (int) uDis1 + (int) uDis2 + random.nextInt(2), zPos + centerPos.getZ());
+                        pillarStartPos.set(pillarEndPos.immutable());
+                        pillarStartPos.setY(centerPos.getY() - radius2);
+                        block = blockMap.getInt(pillarEndPos.immutable());
+                        if (block == 0 || block == 3) {
+                            rectangular(pillarStartPos.offset(-2, 0, -1).immutable(), pillarEndPos.offset(2, 0, 1), 1, blockMap, 1);
+                            rectangular(pillarStartPos.offset(-1, 0, -2).immutable(), pillarEndPos.offset(1, 0, -1), 1, blockMap, 1);
+                            rectangular(pillarStartPos.offset(-1, 0, 1).immutable(), pillarEndPos.offset(1, 0, 2), 1, blockMap, 1);
+                            chance = random.nextFloat();
+                            if (chance <= 0.5F) {
+                                rectangular(pillarEndPos.offset(-1, 0, -1).immutable(), pillarEndPos.offset(1, 0, 1).immutable(), 0, blockMap, 1);
+                            } else if (chance <= 0.75F) {
+                                rectangular(pillarEndPos.offset(-1, 0, -1).immutable(), pillarEndPos.offset(1, 0, 1).immutable(), 2, blockMap, 1);
+                            } else {
+                                rectangular(pillarEndPos.offset(-1, 0, -1).immutable(), pillarEndPos.offset(1, 0, 1).immutable(), 3, blockMap, 1);
+                            }
                         }
                     }
                 }
@@ -71,7 +89,8 @@ public class QueenBeeHiveStructure extends Structure {
             List<BlockState> blockList = Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
                     NatureBlocks.JUNGLE_HIVE_BLOCK.get().defaultBlockState(),
-                    Blocks.RED_CONCRETE.defaultBlockState()
+                    Blocks.HONEY_BLOCK.defaultBlockState(),
+                    ModBlocks.HONEY.get().defaultBlockState()
             );
             Map<ChunkPos, Object2IntMap<BlockPos>> gridMap = GridPiece.sliceChunks(blockMap, startChunk);
             for (Map.Entry<ChunkPos, Object2IntMap<BlockPos>> entry : gridMap.entrySet()) {

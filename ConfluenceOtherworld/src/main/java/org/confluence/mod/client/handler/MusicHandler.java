@@ -2,9 +2,12 @@ package org.confluence.mod.client.handler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.client.sounds.ChannelAccess;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.sounds.Music;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.biome.Biome;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -13,12 +16,15 @@ import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.client.ModMusics;
 import org.confluence.mod.common.init.ModTags;
 
+import java.util.Map;
+
 @OnlyIn(Dist.CLIENT)
 public class MusicHandler {
     private static Music nextSong;
     private static int nextSongDelay = 1200;
     private static Holder<Biome> lastBiome;
-    private static int nextBiomeCheck = 200;
+    private static int nextBiomeCheck = 100;
+    private static float volume = 1.0F;
 
     public static void handle(SelectMusicEvent event, LocalPlayer player) {
         if (nextBiomeCheck-- <= 0) {
@@ -28,7 +34,7 @@ public class MusicHandler {
                 nextSongDelay = 0;
                 nextSong = null;
             }
-            nextBiomeCheck = 200;
+            nextBiomeCheck = 100;
         }
         if (nextSong == null) {
             BlockPos pos = player.blockPosition();
@@ -54,10 +60,26 @@ public class MusicHandler {
                 nextSong = ModMusics.OVERWORLD_DAY;
             }
         }
-        if (event.getPlayingMusic() == null && nextSongDelay-- <= 0) {
-            Minecraft.getInstance().getMusicManager().stopPlaying();
-            event.setMusic(nextSong);
-            nextSongDelay = 1200;
+        if (nextSongDelay-- <= 0) {
+            if (volume > 0.0F) {
+                volume -= 0.01F;
+                Map<SoundInstance, ChannelAccess.ChannelHandle> instanceToChannel = Minecraft.getInstance().getSoundManager().soundEngine.instanceToChannel;
+                for (Map.Entry<SoundInstance, ChannelAccess.ChannelHandle> entry : instanceToChannel.entrySet()) {
+                    if (entry.getKey().getSource() != SoundSource.MUSIC) continue;
+                    entry.getValue().execute(channel -> {
+                        if (volume <= 0.0F) {
+                            channel.stop();
+                        } else {
+                            channel.setVolume(volume);
+                        }
+                    });
+                }
+            } else {
+                Minecraft.getInstance().getMusicManager().stopPlaying();
+                event.setMusic(nextSong);
+                nextSongDelay = 1200;
+                volume = 1.0F;
+            }
         }
     }
 }

@@ -20,7 +20,7 @@ public final class CommonConfigs {
     public static IntValue BOSS_RESPAWN_TIME_MIN;
     public static IntValue BOSS_RESPAWN_TIME_MAX;
 
-    public static long fallingStarFrequency = 600L;
+    public static long fallingStarFrequency = 2400;
 
     public static void onLoad() {
         fallingStarFrequency = FALLING_STAR_FREQUENCY.get();
@@ -34,7 +34,7 @@ public final class CommonConfigs {
         AUTO_STACK_GELS_COLOR = BUILDER.comment("Auto stack when pickup colorful gels").define("autoStackGelsColor", true);
         FLETCHING_MENU = BUILDER.comment("Allows you to open menu through right click the Fletching Table").define("fletchingMenu", true);
         SHIMMER_DECOMPOSE = BUILDER.comment("Allows Shimmer fluid to decomposing items").define("shimmer_decompose", true);
-        FALLING_STAR_FREQUENCY = BUILDER.comment("Determines how long the falling star spawning next time").defineInRange("fallingStarFrequency", 600, 20, 20000);
+        FALLING_STAR_FREQUENCY = BUILDER.comment("Determines how long the falling star spawning next time").defineInRange("fallingStarFrequency", 2400, 20, 20000);
         RETURN_POTION_GLASS_BOTTLE = BUILDER.define("returnPotionGlassBottle", true);
         BUILDER.pop();
 

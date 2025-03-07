@@ -170,12 +170,12 @@ public final class ModVillagers {
             tier4.add(new RandomItemListing(Items.EMERALD, IntegerRange.of(9, 11), PickaxeItems.PLATINUM_PICKAXE.get(), 10, 25, 0.05F));
             tier4.add(new RandomItemListing(Items.EMERALD, IntegerRange.of(7, 7), HammerItems.PLATINUM_HAMMER.get(), 10, 25, 0.05F));
         } else if (type == BANKER.get()) {
-            tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD), new ItemStack(Blocks.CHEST), 3, 25, 0.05F));
-            tier1.add(new BasicItemListing(new ItemStack(ModItems.SILVER_COIN.get(), 20), new ItemStack(Items.EMERALD), 3, 15, 0.05F));
-            tier2.add(new BasicItemListing(new ItemStack(ModItems.GOLDEN_COIN.get(), 3), new ItemStack(ModItems.EMERALD_COIN.get()), 3, 15, 0.05F));
-            tier2.add(new BasicItemListing(new ItemStack(Items.EMERALD, 20), new ItemStack(ModItems.EMERALD_COIN.get()), 3, 25, 0.05F));
-            tier4.add(new BasicItemListing(new ItemStack(ModItems.EMERALD_COIN.get()), new ItemStack(Items.EMERALD, 20), 3, 25, 0.05F));
-            tier4.add(new BasicItemListing(new ItemStack(ModItems.EMERALD_COIN.get()), new ItemStack(ModItems.GOLDEN_COIN.get(), 3), 3, 25, 0.05F));
+            tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD), new ItemStack(Blocks.CHEST), 30, 15, 0.05F));
+            tier1.add(new BasicItemListing(new ItemStack(ModItems.SILVER_COIN.get(), 20), new ItemStack(Items.EMERALD), 30, 15, 0.05F));
+            tier2.add(new BasicItemListing(new ItemStack(ModItems.GOLDEN_COIN.get(), 3), new ItemStack(ModItems.EMERALD_COIN.get()), 30, 15, 0.05F));
+            tier3.add(new BasicItemListing(new ItemStack(Items.EMERALD, 20), new ItemStack(ModItems.EMERALD_COIN.get()), 30, 15, 0.05F));
+            tier4.add(new BasicItemListing(new ItemStack(ModItems.SILVER_COIN.get(), 15), new ItemStack(Items.EMERALD), 45, 10, 0.05F));
+            tier5.add(new BasicItemListing(new ItemStack(ModItems.GOLDEN_COIN.get(), 2), new ItemStack(ModItems.EMERALD_COIN.get()),  45, 10, 0.05F));
         }
     }
 

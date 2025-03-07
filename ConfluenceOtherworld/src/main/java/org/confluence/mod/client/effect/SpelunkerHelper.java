@@ -17,6 +17,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.util.VectorUtils;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -71,82 +73,152 @@ public class SpelunkerHelper extends AbstractBufferManager {
             mc = Minecraft.getInstance();
             //远古残骸
             putTarget(Blocks.ANCIENT_DEBRIS,Color.MAGENTA,true, ShowType.SPELUNKER);//这个还必须放这个位置
+
             //钻石矿
             putTarget(Blocks.DIAMOND_ORE,  Color.CYAN,true, ShowType.SPELUNKER);
             putTarget(Blocks.DEEPSLATE_DIAMOND_ORE, Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(CORRUPTION_DIAMOND_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(SANCTIFICATION_DIAMOND_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(FLESHIFICATION_DIAMOND_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
 
 
             //红玉矿
             putTarget(RUBY_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
             putTarget(DEEPSLATE_RUBY_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(CORRUPTION_RUBY_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(SANCTIFICATION_RUBY_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(FLESHIFICATION_RUBY_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
 
             //琥珀矿
             putTarget(AMBER_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(CORRUPTION_AMBER_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(SANCTIFICATION_AMBER_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(FLESHIFICATION_AMBER_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
 //            putTarget(DEEPSLATE_AMBER_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
 
             //黄玉矿
             putTarget(TOPAZ_ORE.get(),  Color.CYAN,true, ShowType.SPELUNKER);
             putTarget(DEEPSLATE_TOPAZ_ORE.get(),  Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(CORRUPTION_TOPAZ_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(SANCTIFICATION_TOPAZ_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(FLESHIFICATION_TOPAZ_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
 
             //翡翠矿
             putTarget(TR_EMERALD_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
             putTarget(DEEPSLATE_TR_EMERALD_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(CORRUPTION_TR_EMERALD_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(SANCTIFICATION_TR_EMERALD_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(FLESHIFICATION_TR_EMERALD_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
 
-            //蓝玉矿
+
+        //蓝玉矿
             putTarget(SAPPHIRE_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
             putTarget(DEEPSLATE_SAPPHIRE_ORE.get(),Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(CORRUPTION_SAPPHIRE_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(SANCTIFICATION_SAPPHIRE_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(FLESHIFICATION_SAPPHIRE_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
 
             //紫晶矿
             putTarget(TR_AMETHYST_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
             putTarget(DEEPSLATE_TR_AMETHYST_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(CORRUPTION_TR_AMETHYST_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(SANCTIFICATION_TR_AMETHYST_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
+            putTarget(FLESHIFICATION_TR_AMETHYST_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
 
 
             //绿宝石矿
             putTarget(Blocks.EMERALD_ORE,Color.green,true, ShowType.SPELUNKER);
             putTarget(Blocks.DEEPSLATE_EMERALD_ORE,Color.green,true, ShowType.SPELUNKER);
+            putTarget(CORRUPTION_EMERALD_ORE.get(), Color.green,true, ShowType.SPELUNKER);
+            putTarget(SANCTIFICATION_EMERALD_ORE.get(), Color.green,true, ShowType.SPELUNKER);
+            putTarget(FLESHIFICATION_EMERALD_ORE.get(), Color.green,true, ShowType.SPELUNKER);
 
-            //铁矿
+
+
+        //铁矿
             putTarget(Blocks.IRON_ORE, Color.PINK,true, ShowType.SPELUNKER);
             putTarget(Blocks.DEEPSLATE_IRON_ORE, Color.PINK,true, ShowType.SPELUNKER);
+            putTarget(CORRUPTION_IRON_ORE.get(), Color.PINK,true, ShowType.SPELUNKER);
+            putTarget(SANCTIFICATION_IRON_ORE.get(), Color.PINK,true, ShowType.SPELUNKER);
+            putTarget(FLESHIFICATION_IRON_ORE.get(), Color.PINK,true, ShowType.SPELUNKER);
 
-            //金矿
+
+        //金矿
             putTarget(Blocks.GOLD_ORE, Color.ORANGE,true, ShowType.SPELUNKER);
             putTarget(Blocks.DEEPSLATE_GOLD_ORE, Color.ORANGE,true, ShowType.SPELUNKER);
+            putTarget(CORRUPTION_GOLD_ORE.get(), Color.ORANGE,true, ShowType.SPELUNKER);
+            putTarget(SANCTIFICATION_GOLD_ORE.get(), Color.ORANGE,true, ShowType.SPELUNKER);
+            putTarget(FLESHIFICATION_GOLD_ORE.get(), Color.ORANGE,true, ShowType.SPELUNKER);
 
             //煤矿
             putTarget(Blocks.COAL_ORE, Color.BLACK,false, ShowType.SPELUNKER);
             putTarget(Blocks.DEEPSLATE_COAL_ORE, Color.BLACK,false, ShowType.SPELUNKER);
+            putTarget(CORRUPTION_COAL_ORE.get(), Color.BLACK,true, ShowType.SPELUNKER);
+            putTarget(SANCTIFICATION_COAL_ORE.get(), Color.BLACK,true, ShowType.SPELUNKER);
+            putTarget(FLESHIFICATION_COAL_ORE.get(), Color.BLACK,true, ShowType.SPELUNKER);
 
             //铜矿
             putTarget(Blocks.COPPER_ORE, Color.LIGHT_GRAY,false, ShowType.SPELUNKER);
             putTarget(Blocks.DEEPSLATE_COPPER_ORE, Color.LIGHT_GRAY,false, ShowType.SPELUNKER);
+            putTarget(CORRUPTION_COPPER_ORE.get(), Color.LIGHT_GRAY,true, ShowType.SPELUNKER);
+            putTarget(SANCTIFICATION_COPPER_ORE.get(), Color.LIGHT_GRAY,true, ShowType.SPELUNKER);
+            putTarget(FLESHIFICATION_COPPER_ORE.get(), Color.LIGHT_GRAY,true, ShowType.SPELUNKER);
 
             //锡矿
             putTarget(TIN_ORE.get(), Color.LIGHT_GRAY,false, ShowType.SPELUNKER);
             putTarget(DEEPSLATE_TIN_ORE.get(), Color.LIGHT_GRAY,false, ShowType.SPELUNKER);
+            putTarget(CORRUPTION_TIN_ORE.get(), Color.LIGHT_GRAY,true, ShowType.SPELUNKER);
+            putTarget(SANCTIFICATION_TIN_ORE.get(), Color.LIGHT_GRAY,true, ShowType.SPELUNKER);
+            putTarget(FLESHIFICATION_TIN_ORE.get(), Color.LIGHT_GRAY,true, ShowType.SPELUNKER);
 
             //铅矿
             putTarget(LEAD_ORE.get(), Color.PINK,false, ShowType.SPELUNKER);
             putTarget(DEEPSLATE_LEAD_ORE.get(), Color.PINK,false, ShowType.SPELUNKER);
+            putTarget(CORRUPTION_LEAD_ORE.get(), Color.PINK,true, ShowType.SPELUNKER);
+            putTarget(SANCTIFICATION_LEAD_ORE.get(), Color.PINK,true, ShowType.SPELUNKER);
+            putTarget(FLESHIFICATION_LEAD_ORE.get(), Color.PINK,true, ShowType.SPELUNKER);
 
-            //铂金矿
+            // 银矿
+            putTarget(SILVER_ORE.get(), Color.WHITE,false, ShowType.SPELUNKER);
+            putTarget(DEEPSLATE_SILVER_ORE.get(), Color.WHITE,false, ShowType.SPELUNKER);
+            putTarget(CORRUPTION_SILVER_ORE.get(), Color.WHITE,true, ShowType.SPELUNKER);
+            putTarget(SANCTIFICATION_SILVER_ORE.get(), Color.WHITE,true, ShowType.SPELUNKER);
+            putTarget(FLESHIFICATION_SILVER_ORE.get(), Color.WHITE,true, ShowType.SPELUNKER);
+
+            //绿宝石矿
+            putTarget(TUNGSTEN_ORE.get(),Color.green,true, ShowType.SPELUNKER);
+            putTarget(DEEPSLATE_TUNGSTEN_ORE.get() ,Color.green,true, ShowType.SPELUNKER);
+            putTarget(CORRUPTION_TUNGSTEN_ORE.get(), Color.green,true, ShowType.SPELUNKER);
+            putTarget(SANCTIFICATION_TUNGSTEN_ORE.get(), Color.green,true, ShowType.SPELUNKER);
+            putTarget(FLESHIFICATION_TUNGSTEN_ORE.get(), Color.green,true, ShowType.SPELUNKER);
+
+            // 铂金矿
             putTarget(PLATINUM_ORE.get(), Color.ORANGE,true, ShowType.SPELUNKER);
             putTarget(DEEPSLATE_PLATINUM_ORE.get(), Color.ORANGE,true, ShowType.SPELUNKER);
+            putTarget(CORRUPTION_PLATINUM_ORE.get(), Color.ORANGE,true, ShowType.SPELUNKER);
+            putTarget(SANCTIFICATION_PLATINUM_ORE.get(), Color.ORANGE,true, ShowType.SPELUNKER);
+            putTarget(FLESHIFICATION_PLATINUM_ORE.get(), Color.ORANGE,true, ShowType.SPELUNKER);
 
-            //生命水晶
+            // 生命水晶
             putTarget(LIFE_CRYSTAL_BLOCK.get(), Color.RED,true, ShowType.SPELUNKER);
-            //箱子
+            // 箱子
             putTarget(BASE_CHEST_BLOCK.get(), Color.ORANGE,true, ShowType.SPELUNKER);
 
 
 
-            //青金石
+            // 青金石
             putTarget(Blocks.LAPIS_ORE, Color.blue,false, ShowType.SPELUNKER);
             putTarget(Blocks.DEEPSLATE_LAPIS_ORE, Color.blue,false, ShowType.SPELUNKER);
+            putTarget(CORRUPTION_LAPIS_ORE.get(), Color.blue,true, ShowType.SPELUNKER);
+            putTarget(SANCTIFICATION_LAPIS_ORE.get(), Color.blue,true, ShowType.SPELUNKER);
+            putTarget(FLESHIFICATION_LAPIS_ORE.get(), Color.blue,true, ShowType.SPELUNKER);
 
-            //红石
+            // 红石
             putTarget(Blocks.REDSTONE_ORE, Color.red,false, ShowType.SPELUNKER);
             putTarget(Blocks.DEEPSLATE_REDSTONE_ORE, Color.red,false, ShowType.SPELUNKER);
+            putTarget(CORRUPTION_REDSTONE_ORE.get(), Color.red,true, ShowType.SPELUNKER);
+            putTarget(SANCTIFICATION_REDSTONE_ORE.get(), Color.red,true, ShowType.SPELUNKER);
+            putTarget(FLESHIFICATION_REDSTONE_ORE.get(), Color.red,true, ShowType.SPELUNKER);
 
 
             // tip 危险感知
@@ -179,6 +251,18 @@ public class SpelunkerHelper extends AbstractBufferManager {
             putTarget(Blocks.MANGROVE_PRESSURE_PLATE, Color.MAGENTA,true, ShowType.DANGER);
             putTarget(Blocks.POLISHED_BLACKSTONE_PRESSURE_PLATE, Color.MAGENTA,true, ShowType.DANGER);
             putTarget(PLAYER_PRESSURE_PLATE.get(), Color.MAGENTA,true, ShowType.DANGER);
+            putTarget(NORMAL_BOULDER.get(), Color.MAGENTA,true, ShowType.DANGER);
+            putTarget(OAK_LOG_BOULDER.get(), Color.MAGENTA,true, ShowType.DANGER);
+            putTarget(FOLLOWER_BOULDER.get(), Color.MAGENTA,true, ShowType.DANGER);
+            putTarget(EXPLODE_BOULDER.get(), Color.MAGENTA,true, ShowType.DANGER);
+            putTarget(ROLLING_CACTUS_BOULDER.get(), Color.MAGENTA,true, ShowType.DANGER);
+            putTarget(MECHANICAL_FRAGILE_SANDSTONE.get(), Color.MAGENTA,true, ShowType.DANGER);
+            putTarget(MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.get(), Color.MAGENTA,true, ShowType.DANGER);
+            putTarget(SCULK_TRAP.get(), Color.MAGENTA,true, ShowType.DANGER);
+            putTarget(SHIMMER_TRAP.get(), Color.MAGENTA,true, ShowType.DANGER);
+            putTarget(GRAVITATION_TRAP.get(), Color.MAGENTA,true, ShowType.DANGER);
+            putTarget(PNEUMATIC_TRAP.get(), Color.MAGENTA,true, ShowType.DANGER);
+            putTarget(SPIKE.get(), Color.MAGENTA,true, ShowType.DANGER);
 
     }
 

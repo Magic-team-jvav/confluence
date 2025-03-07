@@ -177,7 +177,23 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.LIVING_LOG_BLOCKS.getWood().asItem(),
                 NatureBlocks.LIVING_LOG_BLOCKS.getFence().asItem(),
                 NatureBlocks.LIVING_LOG_BLOCKS.getFenceGate().asItem(),
-                NatureBlocks.LIVING_LOG_BLOCKS.getPressurePlate().asItem()
+                NatureBlocks.LIVING_LOG_BLOCKS.getPressurePlate().asItem(),
+
+                // 阴森木
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getButton().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getPlanks().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getStrippedWood().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getDoor().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getTrapdoor().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getSign().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getStairs().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getSlab().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getFence().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getFenceGate().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getPressurePlate().asItem()
         );
         tag(ItemTags.BEACON_PAYMENT_ITEMS).add(
                 MaterialItems.LEAD_INGOT.get(),
@@ -387,8 +403,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
         tag(ModTags.Items.CHARCOAL_CAN_BE_BURNED).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getLog().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getLog().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getLog().asItem(),
-                NatureBlocks.ASH_LOG_BLOCKS.getLog().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getLog().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getLog().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().asItem()
+                NatureBlocks.ASH_LOG_BLOCKS.getLog().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getLog().asItem(),NatureBlocks.SPOOKY_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getLog().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getStrippedLog().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedLog().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.ASH_LOG_BLOCKS.getStrippedLog().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getStrippedLog().asItem(),NatureBlocks.SPOOKY_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedLog().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getStrippedLog().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getStrippedWood().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedWood().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getStrippedWood().asItem(),
+                NatureBlocks.ASH_LOG_BLOCKS.getStrippedWood().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getStrippedWood().asItem(),NatureBlocks.SPOOKY_LOG_BLOCKS.getStrippedWood().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedWood().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getStrippedWood().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedWood().asItem(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getWood().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getWood().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.ASH_LOG_BLOCKS.getWood().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getWood().asItem(),NatureBlocks.SPOOKY_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getWood().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getWood().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().asItem()
         );
         // neoforge
         tag(Tags.Items.BONES).add(

@@ -2062,7 +2062,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(BowItems.DEVELOPER_BOW.get(), "开发者弓");
 
 
-
         // 盔甲
         add(ArmorItems.CACTUS_CHESTPLATE.get(), "仙人掌胸甲");
         add(ArmorItems.CACTUS_HELMET.get(), "仙人掌头盔");
@@ -2589,6 +2588,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.ARCHERY.get(), "箭术");
         add(ModEffects.HEART_REACH.get(), "拾心");
         add(ModEffects.OBSIDIAN_SKIN.get(), "黑曜石皮");
+        add(ModEffects.HELLFIRE.get(), "狱炎");
+        add(ModEffects.COZY_FIRE.get(), "温馨之火");
 
         add(TooltipManager.prefix, "** 赞助者物品 **");
 

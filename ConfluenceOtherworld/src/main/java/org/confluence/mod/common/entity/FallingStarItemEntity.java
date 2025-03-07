@@ -105,19 +105,19 @@ public class FallingStarItemEntity extends ItemEntity {
         setWasOnGround(pCompound.getBoolean("wasOnGround"));
     }
 
-    public static void summon(ServerLevel serverLevel) {
-        if (serverLevel.getDayTime() % 24000 > 12000 && serverLevel.getGameTime() % CommonConfigs.fallingStarFrequency == 0) {
-            RandomSource random = serverLevel.random;
+    public static void summon(ServerLevel level) {
+        if (level.getDayTime() % 24000 > 12000 && level.getGameTime() % CommonConfigs.fallingStarFrequency == 0) {
+            RandomSource random = level.random;
             Set<Vec3> cache = new HashSet<>();
-            for (ServerPlayer serverPlayer : serverLevel.players()) {
+            for (ServerPlayer serverPlayer : level.players()) {
                 if (cache.stream().anyMatch(pos -> serverPlayer.distanceToSqr(pos) < Mth.square(serverPlayer.requestedViewDistance() * 16))) {
                     continue;
                 }
                 int offsetX = (random.nextBoolean() ? 1 : -1) * random.nextInt(2);
                 int offsetZ = (random.nextBoolean() ? 1 : -1) * random.nextInt(2);
                 BlockPos pos = serverPlayer.getOnPos().offset(offsetX, 0, offsetZ).atY(256);
-                if (serverLevel.isLoaded(pos)) {
-                    serverLevel.addFreshEntity(new FallingStarItemEntity(serverLevel, pos.getCenter()));
+                if (level.isLoaded(pos)) {
+                    level.addFreshEntity(new FallingStarItemEntity(level, pos.getCenter()));
                     cache.add(serverPlayer.position());
                 }
             }

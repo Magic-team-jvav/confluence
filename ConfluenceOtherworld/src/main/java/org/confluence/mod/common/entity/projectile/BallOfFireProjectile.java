@@ -78,7 +78,7 @@ public class BallOfFireProjectile extends Projectile {
             boolean ddu = ModSecretSeeds.DONT_DIG_UP.match(serverLevel);
             if (random.nextBoolean()) {
                 if (ddu && entity instanceof LivingEntity living) {
-                    living.addEffect(new MobEffectInstance(ModEffects.HELL_FIRE, 100));
+                    living.addEffect(new MobEffectInstance(ModEffects.HELLFIRE, 100));
                 } else {
                     entity.setRemainingFireTicks(100);
                 }

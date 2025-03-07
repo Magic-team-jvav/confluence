@@ -64,6 +64,6 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> THE_BAST_DEFENSE = EFFECTS.register("the_bast_defense", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x000000).addAttributeModifier(Attributes.ARMOR, Confluence.asResource("the_bast_defense"), 5.0, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> SHARPENED = EFFECTS.register("sharpened", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xDDDDDD).addAttributeModifier(TCAttributes.getArmorPass(), Confluence.asResource("sharpened"), 12.0, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> AMMO_BOX = EFFECTS.register("ammo_box", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x119911));
-    public static final DeferredHolder<MobEffect, MobEffect> HELL_FIRE = EFFECTS.register("hell_fire", () -> new HellFireEffect(MobEffectCategory.HARMFUL, 0xAB1122));
+    public static final DeferredHolder<MobEffect, MobEffect> HELLFIRE = EFFECTS.register("hellfire", () -> new HellFireEffect(MobEffectCategory.HARMFUL, 0xAB1122));
     public static final DeferredHolder<MobEffect, MobEffect> COZY_FIRE = EFFECTS.register("cozy_fire", CozyFireEffect::new);
 }

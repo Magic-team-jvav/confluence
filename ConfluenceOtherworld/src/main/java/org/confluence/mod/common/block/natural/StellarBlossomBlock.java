@@ -22,7 +22,7 @@ public class StellarBlossomBlock extends BaseCropBlock {
 
     @Override
     public Set<Block> getCanPlaceBlocks() {
-        return Set.of(NatureBlocks.CLOUD_BLOCK.get());
+        return Set.of(NatureBlocks.CLOUD_BLOCK.get(), NatureBlocks.RAIN_CLOUD_BLOCK.get());
     }
 
     @Override

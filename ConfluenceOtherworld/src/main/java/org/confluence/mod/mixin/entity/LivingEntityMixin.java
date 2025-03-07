@@ -1,5 +1,7 @@
 package org.confluence.mod.mixin.entity;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -32,7 +34,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -89,27 +90,27 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
         }
     }
 
-    @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V", ordinal = 0))
-    private Vec3 waterWalk(Vec3 par1) {
+    @WrapOperation(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;multiply(DDD)Lnet/minecraft/world/phys/Vec3;"))
+    private Vec3 waterWalk(Vec3 instance, double factorX, double factorY, double factorZ, Operation<Vec3> original) {
         LivingEntity self = self();
         FluidType fluidType = self.getBlockStateOn().getFluidState().getType().getFluidType();
         if (fluidType == ModFluids.HONEY.type().get()) {
             if ((!self.level().isClientSide && self instanceof Animal) || self instanceof ServerPlayer) {
                 self.addEffect(new MobEffectInstance(TCEffects.HONEY, 600));
             }
-            par1 = par1.scale(0.6);
+            instance = instance.scale(0.8);
         } else if (fluidType == ModFluids.SHIMMER.type().get()) {
             if (!self.level().isClientSide && self.getEyeInFluidType() == ModFluids.SHIMMER.type().get() && !self.hasEffect(ModEffects.SHIMMER)) {
                 if (self.isCrouching() || !TCUtils.getAccessoriesValue(self, TCItems.EFFECT$IMMUNITIES).contains(ModEffects.SHIMMER)) {
                     self.addEffect(new MobEffectInstance(ModEffects.SHIMMER, MobEffectInstance.INFINITE_DURATION));
                 }
             }
-            par1 = par1.add(0.0, -0.003, 0.0);
+            instance = instance.add(0, -0.03, 0);
         }
         if (self.hasEffect(ModEffects.FLIPPER)) {
-            return new Vec3(0.96, par1.y, 0.96);
+            return original.call(instance, 0.96, 0.96, 0.96);
         }
-        return par1;
+        return original.call(instance, factorX, factorY, factorZ);
     }
 
     @ModifyVariable(method = "handleOnClimbable", at = @At(value = "NEW", target = "(DDD)Lnet/minecraft/world/phys/Vec3;"), ordinal = 2)

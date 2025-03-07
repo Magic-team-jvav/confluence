@@ -43,15 +43,11 @@ import org.confluence.mod.client.effect.DebugBlocksHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.gui.TooltipManager;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
-import org.confluence.mod.client.handler.HookThrowingHandler;
-import org.confluence.mod.client.handler.MeteorLandingHandler;
-import org.confluence.mod.client.handler.StarPhaseHandler;
-import org.confluence.mod.client.handler.WeatherHandler;
+import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.textures.LocalBrushData;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
-import org.confluence.mod.common.entity.npc.NPCTrades;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
@@ -74,9 +70,7 @@ import software.bernie.geckolib.cache.object.GeoCube;
 import software.bernie.geckolib.event.GeoRenderEvent;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
 
@@ -154,7 +148,7 @@ public final class GameClientEvents {
         }
         // 捐赠者物品
         var ins = TooltipManager.getInstance();
-        if(ins.contains(item)) {
+        if (ins.contains(item)) {
             tooltipElements.add(Either.left(
                     Component.empty()
             ));
@@ -473,10 +467,10 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void selectMusic(SelectMusicEvent event) {
-//        if (event.isCanceled()) return;
-//        SoundInstance playingMusic = event.getPlayingMusic();
-//        if (playingMusic == null) {
-//            event.setMusic(ModMusics.OVERWORLD_DAY);
-//        }
+        if (event.isCanceled()) return;
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player != null) {
+            MusicHandler.handle(event, player);
+        }
     }
 }

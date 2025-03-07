@@ -12,7 +12,7 @@
             "ingredient": {
                 "item": "confluence:demonite_ingot"
             },
-            "count": 3
+            "count": 4
         },
         "a": {
             "type": "terra_curio:amount_ingredient",

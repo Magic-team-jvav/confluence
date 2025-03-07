@@ -1819,7 +1819,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.HALLOW_CATTAILS.get(), "神圣香蒲");
         add(ModItems.EBONY_CATTAILS.get(), "腐化香蒲");
         add(ModItems.TR_CRIMSON_CATTAILS.get(), "猩红香蒲");
-
+        add(ModItems.LIVING_WOOD_WAND.get(), "生命木魔棒");
+        add(ModItems.LEAVES_WAND.get(), "树叶魔棒");
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");
         add(FunctionalBlocks.NORMAL_BOULDER.get(), "巨石");

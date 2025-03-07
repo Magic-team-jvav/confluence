@@ -23,7 +23,7 @@ public class StarFuryProjectileRenderer extends EntityRenderer<SwordProjectile> 
         return  TEXTURE_LOCATION;
     }
     private int frame = 0;
-    private float getScale(){return 1;}
+    private float getScale(){return 2;}
     @Override
     protected int getBlockLightLevel(SwordProjectile entity, BlockPos pos) {
         return 10;

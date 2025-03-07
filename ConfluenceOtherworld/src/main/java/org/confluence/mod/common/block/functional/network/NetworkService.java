@@ -1,5 +1,7 @@
 package org.confluence.mod.common.block.functional.network;
 
+import org.mesdag.particlestorm.api.IntAllocator;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,7 +28,7 @@ public class NetworkService {
     }
 
     public void createNetworkNode(INetworkEntity blockEntity) {
-        NetworkNode node = new NetworkNode(nodeID.insert(), blockEntity);
+        NetworkNode node = new NetworkNode(nodeID.allocate(), blockEntity);
         blockEntity.setNetworkNode(node);
 //        Confluence.LOGGER.debug("Create network node#{}", node.getId());
     }
@@ -39,7 +41,7 @@ public class NetworkService {
 
     public void removeNetworkNode(NetworkNode node) {
 //        Confluence.LOGGER.debug("Remove network node#{}", node.getId());
-        nodeID.remove(node.getId());
+        nodeID.release(node.getId());
     }
 
     public void addNodeToNetwork(NetworkNode node, Network network) {

@@ -37,12 +37,13 @@ public class BoulderWorld extends SecretSeed {
     }
 
     public static void createBoulderWhenBlockDestroy(ServerPlayer serverPlayer, BlockState blockState, BlockPos pos) {
-        if (blockState.getCollisionShape(serverPlayer.level(), pos) != Shapes.block()) return;
         if (ModSecretSeeds.BOULDER_WORLD.match(serverPlayer.server) && serverPlayer.level().random.nextFloat() <= 0.01F) {
-            BoulderEntity entity = new BoulderEntity(serverPlayer.serverLevel(), pos.getCenter(), blockState);
-            entity.targetTo(serverPlayer);
-            entity.setVertical(false);
-            serverPlayer.serverLevel().addFreshEntity(entity);
+            if (blockState.getCollisionShape(serverPlayer.level(), pos) == Shapes.block()) {
+                BoulderEntity entity = new BoulderEntity(serverPlayer.serverLevel(), pos.getCenter(), blockState);
+                entity.targetTo(serverPlayer);
+                entity.setVertical(false);
+                serverPlayer.serverLevel().addFreshEntity(entity);
+            }
         }
     }
 

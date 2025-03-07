@@ -1,7 +1,6 @@
 package org.confluence.mod.common.component;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -14,9 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public record ValueComponent(int value) implements DataComponentType<ValueComponent> {
-    public static final Codec<ValueComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.INT.fieldOf("value").forGetter(ValueComponent::value)
-    ).apply(instance, ValueComponent::new));
+    public static final Codec<ValueComponent> CODEC = Codec.INT.xmap(ValueComponent::new, ValueComponent::value);
     public static final StreamCodec<ByteBuf, ValueComponent> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.INT, ValueComponent::value,
             ValueComponent::new

@@ -7,11 +7,11 @@
                 {
                     "type": "minecraft:item",
                     "name": "terra_curio:magma_stone",
-                    "weight": 67
+                    "weight": 34
                 },
                 {
                     "type": "minecraft:empty",
-                    "weight": 933
+                    "weight": 966
                 }
             ]
         },

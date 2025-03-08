@@ -38,21 +38,21 @@ public class ExquisitelyStuffedEffect extends MobEffect {   //吃得好/很满�
         });
         addAttributeModifier(Attributes.ATTACK_DAMAGE, ID, ADD_MULTIPLIED_TOTAL, v -> switch (v) {
             case 1 -> 0.075;
-            case 2 -> 0.1;
+            case 2 -> 0.10;
             default -> 0.05;
         });
         addAttributeModifier(TCAttributes.getRangedDamage(), ID, ADD_MULTIPLIED_TOTAL, v -> switch (v) {
             case 1 -> 0.075;
-            case 2 -> 0.1;
+            case 2 -> 0.10;
             default -> 0.05;
         });
         addAttributeModifier(TEAttributes.SUMMON_DAMAGE, ID, ADD_MULTIPLIED_TOTAL, v -> switch (v) {
             case 1 -> 0.075;
-            case 2 -> 0.1;
+            case 2 -> 0.10;
             default -> 0.05;
         });
         addAttributeModifier(Attributes.BLOCK_BREAK_SPEED, ID, ADD_MULTIPLIED_TOTAL, v -> switch (v) {
-            case 2 -> 0.3;
+            case 2 -> 0.10;
             case 3 -> 0.15;
             default -> 0.05;
         });

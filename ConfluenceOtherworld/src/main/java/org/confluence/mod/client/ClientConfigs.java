@@ -36,6 +36,7 @@ public final class ClientConfigs {
     public static boolean bloodyEffect = true;
     public static GoreEffect goreEffect = GoreEffect.CONFLUENCE_VANILLA;
     public static boolean damageIndicator = true;
+    public static boolean healIndicator = true;
 
     private static IntValue SHOW_WIND_PARTICLES;
     private static ConfigValue<List<? extends String>> BANNED_MOD_FOR_PAINTS;
@@ -53,6 +54,7 @@ public final class ClientConfigs {
     private static BooleanValue BLOODY_EFFECT;
     private static EnumValue<GoreEffect> GORE_EFFECT;
     private static BooleanValue DAMAGE_INDICATOR;
+    private static BooleanValue HEAL_INDICATOR;
 
     public static void onLoad() {
         showWindParticles = SHOW_WIND_PARTICLES.get();
@@ -71,6 +73,7 @@ public final class ClientConfigs {
         bloodyEffect = BLOODY_EFFECT.get();
         goreEffect = GORE_EFFECT.get();
         damageIndicator = DAMAGE_INDICATOR.get();
+        healIndicator = HEAL_INDICATOR.get();
     }
 
     public static void register(ModContainer container) {
@@ -109,6 +112,7 @@ public final class ClientConfigs {
         BLOODY_EFFECT = BUILDER.define("bloodyEffect", true);
         GORE_EFFECT = BUILDER.defineEnum("goreEffect", GoreEffect.CONFLUENCE_VANILLA);
         DAMAGE_INDICATOR = BUILDER.define("damageIndicator", true);
+        HEAL_INDICATOR = BUILDER.define("healIndicator", true);
         BUILDER.pop();
 
 

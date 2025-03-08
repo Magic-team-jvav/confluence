@@ -156,7 +156,7 @@ public final class LivingEntityEvents {
             float amount = Math.round(event.getAmount() * 10.0F) / 10.0F;
             String text = amount % 1 == 0 ? Integer.toString((int) amount) : Float.toString(amount);
             Component component = Component.literal(text).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD);
-            level.sendParticles(new DamageIndicatorOptions(component, false), pos.x, y, pos.z, 1, 0.1, 0.1, 0.1, 0.0);
+            level.sendParticles(new DamageIndicatorOptions(component, false, DamageIndicatorOptions.Type.HEAL), pos.x, y, pos.z, 1, 0.1, 0.1, 0.1, 0.0);
         }
     }
 
@@ -262,13 +262,7 @@ public final class LivingEntityEvents {
             crit |= arrow.isCritArrow();
         }
         crit |= ((IDamageSource) damageSource).confluence$isCritical();
-        float roundedAmount = Math.round(amount * 10) / 10f;
-        int intAmount = (int) roundedAmount;
-        if (roundedAmount == 0F) return;
-        String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
-        Vec3 pos = living.position();
-        Component component = Component.literal(text).withStyle(crit ? ChatFormatting.DARK_RED : ChatFormatting.GOLD, ChatFormatting.BOLD);
-        level.sendParticles(new DamageIndicatorOptions(component, crit), pos.x, living.getBoundingBoxForCulling().maxY, pos.z, 1, 0.1, 0.1, 0.1, 0);
+        ((IDamageSource) damageSource).confluence$setCritical(crit);
         event.setNewDamage(amount);
     }
 
@@ -277,6 +271,7 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
         LivingEntity damagingEntity = event.getEntity();
         Entity sourceEntity = damageSource.getEntity();
+        if(!(damagingEntity.level() instanceof ServerLevel serverLevel)) return;
 
         ModAchievements.luckyBreak_watchYourStep(damagingEntity, damageSource, sourceEntity);
 
@@ -288,6 +283,16 @@ public final class LivingEntityEvents {
                 invTicks.put(cause, time);
             }
         }
+
+        float amount = event.getNewDamage();
+        float roundedAmount = Math.round(amount * 10) / 10f;
+        int intAmount = (int) roundedAmount;
+        if (roundedAmount == 0F) return;
+        String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
+        Vec3 pos = damagingEntity.position();
+        boolean crit = ((IDamageSource) damageSource).confluence$isCritical();
+        Component component = Component.literal(text).withStyle(crit ? ChatFormatting.DARK_RED : ChatFormatting.GOLD, ChatFormatting.BOLD);
+        serverLevel.sendParticles(new DamageIndicatorOptions(component, crit, DamageIndicatorOptions.Type.DAMAGE), pos.x, damagingEntity.getBoundingBoxForCulling().maxY, pos.z, 1, 0.1, 0.1, 0.1, 0);
     }
 
     @SubscribeEvent

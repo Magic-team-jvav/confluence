@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.util.DeathAnimUtils;
 import org.jetbrains.annotations.NotNull;
@@ -103,6 +104,10 @@ public class DamageIndicatorParticle extends TextureSheetParticle {
         @Nullable
         @Override
         public Particle createParticle(@NotNull DamageIndicatorOptions options, @NotNull ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed){
+            if(!ClientConfigs.damageIndicator && options.type() == DamageIndicatorOptions.Type.DAMAGE
+                || !ClientConfigs.healIndicator && options.type() == DamageIndicatorOptions.Type.HEAL){
+                return null;
+            }
             return new DamageIndicatorParticle(pLevel, pX, pY, pZ, options.text(), options.big());
         }
     }

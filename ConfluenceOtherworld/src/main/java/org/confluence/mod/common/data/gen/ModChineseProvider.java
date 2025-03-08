@@ -357,7 +357,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.goreEffect.all", "所有生物");
         add("confluence.configuration.goreEffect.tooltip", "肢解效果会对汇流生物和原版生物特别适配，其他Mod的生物使用通用的方法，不保证效果。");
         add("confluence.configuration.damageIndicator", "伤害数值显示");
+        add("confluence.configuration.healIndicator", "治疗数值显示");
         add("confluence.configuration.damageIndicator.tooltip", "启用以观察伤害数值");
+        add("confluence.configuration.healIndicator.tooltip", "启用以观察治疗数值");
         add("confluence.configuration.Gameplay", "游戏机制");
         add("confluence.configuration.Gameplay.button", "游戏机制定义");
         add("confluence.configuration.Gameplay.tooltip", "一些游戏机制可以由你决定");

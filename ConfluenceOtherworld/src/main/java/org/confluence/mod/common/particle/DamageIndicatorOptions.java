@@ -14,7 +14,7 @@ import org.confluence.mod.common.init.ModParticleTypes;
 import org.jetbrains.annotations.NotNull;
 
 // 除了显示数字还能显示“美味...” “致命失误！”
-public record DamageIndicatorOptions(Component text, boolean big) implements ParticleOptions {
+public record DamageIndicatorOptions(Component text, boolean big,Type type) implements ParticleOptions {
     @Override
     @NotNull
     public ParticleType<?> getType(){
@@ -24,14 +24,20 @@ public record DamageIndicatorOptions(Component text, boolean big) implements Par
     public static final MapCodec<DamageIndicatorOptions> CODEC = RecordCodecBuilder.mapCodec(
         (thisOptionsInstance) -> thisOptionsInstance.group(
             ComponentSerialization.CODEC.fieldOf("text").forGetter((thisOptions) -> thisOptions.text),
-            Codec.BOOL.fieldOf("big").forGetter(options -> options.big)
-        ).apply(thisOptionsInstance, DamageIndicatorOptions::new)
+            Codec.BOOL.fieldOf("big").forGetter(options -> options.big),
+            Codec.INT.fieldOf("type").forGetter(options -> options.type.ordinal())
+        ).apply(thisOptionsInstance, (text,big,type)-> new DamageIndicatorOptions(text, big, Type.values()[type]))
     );
 
     public static final StreamCodec<RegistryFriendlyByteBuf, DamageIndicatorOptions> STREAM_CODEC = StreamCodec.composite(
         ComponentSerialization.STREAM_CODEC, opt -> opt.text,
         ByteBufCodecs.BOOL, opt -> opt.big,
-        DamageIndicatorOptions::new
+        ByteBufCodecs.VAR_INT, opt -> opt.type.ordinal(),
+        (text, big, type) -> new DamageIndicatorOptions(text, big, Type.values()[type])
     );
+
+    public enum Type{
+        DAMAGE,HEAL,OTHER
+    }
 
 }

@@ -486,7 +486,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.goreEffect.all", "All Entities");
         add("confluence.configuration.goreEffect.tooltip", "The gore effect will be specially adapted to Conflux and Vanilla entities, while other mod entities will use a generic method with no guaranteed effect.");
         add("confluence.configuration.damageIndicator", "Damage Indicator");
+        add("confluence.configuration.healIndicator", "Heal Indicator");
         add("confluence.configuration.damageIndicator.tooltip", "Enable to display damage numbers");
+        add("confluence.configuration.healIndicator.tooltip", "Enable to display heal numbers");
         add("confluence.configuration.Gameplay", "Gameplay Mechanics");
         add("confluence.configuration.Gameplay.button", "Define Gameplay Mechanics");
         add("confluence.configuration.Gameplay.tooltip", "Some gameplay mechanics can be defined by you");

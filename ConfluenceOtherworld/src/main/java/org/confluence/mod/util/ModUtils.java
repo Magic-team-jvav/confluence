@@ -1,6 +1,9 @@
 package org.confluence.mod.util;
 
 import com.mojang.serialization.Codec;
+import net.createmod.catnip.net.packets.ClientboundSimpleActionPacket;
+import net.createmod.ponder.foundation.PonderIndex;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
@@ -28,6 +31,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.loading.FMLEnvironment;
 import org.confluence.mod.Confluence;
@@ -240,5 +244,28 @@ public final class ModUtils {
         if (!FMLEnvironment.production) {
             runnable.run();
         }
+    }
+
+    public static void openPonderScene(BlockState blockState, LocalPlayer player) {
+        ModUtils.openPonderScene(ModUtils.getMinecraftId(BuiltInRegistries.ITEM, blockState.getBlock().asItem()), player);
+    }
+
+    public static void openPonderScene(String sceneId, LocalPlayer player) {
+        if (hasPonderScene(sceneId)){
+            new ClientboundSimpleActionPacket("openPonder", sceneId).handle(player);
+        }
+    }
+
+    public static boolean hasPonderScene(BlockState blockState){
+        return PonderIndex.getSceneAccess().doScenesExistForId(ResourceLocation.parse(ModUtils.getMinecraftId(BuiltInRegistries.ITEM, blockState.getBlock().asItem())));
+    }
+
+    public static boolean hasPonderScene(String sceneId){
+        return PonderIndex.getSceneAccess().doScenesExistForId(ResourceLocation.parse(sceneId));
+    }
+
+    public static<T> String getMinecraftId(Registry<T> registry, T obj){
+        ResourceLocation location = registry.getKey(obj);
+        return location.getNamespace() + ":" + location.getPath();
     }
 }

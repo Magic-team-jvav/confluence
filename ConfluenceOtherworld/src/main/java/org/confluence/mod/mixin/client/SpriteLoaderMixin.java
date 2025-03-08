@@ -26,7 +26,7 @@ public abstract class SpriteLoaderMixin {
 
     @ModifyVariable(method = "stitch", at = @At("HEAD"), argsOnly = true)
     private List<SpriteContents> generateGraySprites(List<SpriteContents> contents) {
-        if (!ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE && location.equals(TextureAtlas.LOCATION_BLOCKS)) {
+        if ((!ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE) && location.equals(TextureAtlas.LOCATION_BLOCKS)) {
             ClientUtils.clearCache();
             List<SpriteContents> neoContents = new ArrayList<>();
             for (SpriteContents content : contents) {

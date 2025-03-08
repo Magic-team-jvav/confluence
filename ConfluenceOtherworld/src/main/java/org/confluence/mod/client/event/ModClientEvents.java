@@ -345,7 +345,7 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void model$ModifyBakingResult(ModelEvent.ModifyBakingResult event) {
-        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE) return;
+        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !ClientConfigs.paintsReplaceGray) return;
 
         Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
         CustomBlockModels customBlockModels = ModConnectives.MODEL_SWAPPER.getCustomBlockModels();

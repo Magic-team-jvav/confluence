@@ -1,13 +1,13 @@
 {
     "type": "minecraft:smithing_transform",
     "template": {
-        "item": "minecraft:golden_helmet"
+        "item": "confluence:ruby"
     },
     "base": {
-        "item": "minecraft:gold_ingot"
+        "item": "minecraft:golden_helmet"
     },
     "addition": {
-        "item": "confluence:ruby"
+        "item": "minecraft:gold_ingot"
     },
     "result": {
         "id": "confluence:golden_helmet"

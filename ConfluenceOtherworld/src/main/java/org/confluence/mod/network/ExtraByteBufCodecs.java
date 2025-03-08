@@ -74,27 +74,4 @@ public interface ExtraByteBufCodecs {
             }
         };
     }
-
-    @SuppressWarnings("unchecked")
-    static <V, B extends ByteBuf> StreamCodec<B, V[]> arrayOf(StreamCodec<B, V> codec) {
-        return new StreamCodec<>() {
-            @Override
-            public V[] decode(B buffer) {
-                int size = buffer.readInt();
-                V[] array = (V[]) new Object[size];
-                for (int i = 0; i < size; i++) {
-                    array[i] = codec.decode(buffer);
-                }
-                return array;
-            }
-
-            @Override
-            public void encode(B buffer, V[] value) {
-                buffer.writeInt(value.length);
-                for (V v : value) {
-                    codec.encode(buffer, v);
-                }
-            }
-        };
-    }
 }

@@ -18,7 +18,6 @@ import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -29,7 +28,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
@@ -53,7 +51,6 @@ import org.confluence.mod.common.entity.DeadBodyPartEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
-import org.confluence.mod.integration.jade.PonderComponentProvider;
 import org.confluence.mod.integration.touhouLittleMaid.ExtraButton;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.mixin.client.accessor.AgeableListModelAccessor;
@@ -96,27 +93,6 @@ public final class GameClientEvents {
         MeteorLandingHandler.handle(minecraft, player);
         ProjectileStrategy.handle(minecraft, player);
         HookThrowingHandler.handle(player);
-
-        if (PonderComponentProvider.ponderKeybind().consumeClick()) {
-            Vec3 vec3 = player.getViewVector(1.0F).normalize();
-            for (int i = 0; i <= 5; i++){
-                Vec3 vec31 = player.getEyePosition().add(vec3.x * i, vec3.y * i, vec3.z * i);
-                BlockState state = player.level().getBlockState(BlockPos.containing(vec31));
-                if (!state.isAir()){
-                    if (ModUtils.hasPonderScene(state)){
-                        if (player.getPersistentData().getInt("ponderTime") >= 20){
-                            player.getPersistentData().putInt("ponderTime", 0);
-                            ModUtils.openPonderScene(state, player);
-                        }
-                        player.getPersistentData().putInt("ponderTime", player.getPersistentData().getInt("ponderTime") + 1);
-                        break;
-                    }
-                }
-            }
-        } else {
-            int ponderTime = player.getPersistentData().getInt("ponderTime");
-            player.getPersistentData().putInt("ponderTime", ponderTime > 0 ? --ponderTime : ponderTime);
-        }
     }
 
     @SubscribeEvent

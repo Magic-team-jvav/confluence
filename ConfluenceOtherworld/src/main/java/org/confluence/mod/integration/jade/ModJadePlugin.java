@@ -1,14 +1,11 @@
 package org.confluence.mod.integration.jade;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.confluence.mod.common.block.functional.*;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.integration.ponder.PonderHelper;
 import snownee.jade.api.*;
 
 @WailaPlugin
@@ -25,7 +22,7 @@ public class ModJadePlugin implements IWailaPlugin {
         registration.registerBlockComponent(NetworkComponentProvider.INSTANCE, DeathChestBlock.class);
         registration.registerBlockComponent(NetworkComponentProvider.INSTANCE, SignalPressurePlateBlock.class);
         registration.registerBlockComponent(NetworkComponentProvider.INSTANCE, BehaviourPressurePlateBlock.class);
-        registration.registerBlockComponent(PonderComponentProvider.INSTANCE, Block.class);
+        PonderHelper.registerComponent(registration);
         registration.addRayTraceCallback((hitResult, accessor, originalAccessor) -> {
             if (accessor instanceof BlockAccessor blockAccessor) {
                 Player player = accessor.getPlayer();
@@ -36,6 +33,7 @@ public class ModJadePlugin implements IWailaPlugin {
                 if (blockAccessor.getBlock() instanceof ISimulatorBlock simulatorBlock) {
                     return registration.blockAccessor().from(blockAccessor).blockState(simulatorBlock.getSimulatedBlock(true)).build();
                 }
+
             } else if (accessor instanceof EntityAccessor entityAccessor) {
                 if (entityAccessor.getEntity() instanceof TreasureBagItemEntity entity && !entity.isOwner(accessor.getPlayer())) {
                     return null;

@@ -115,6 +115,7 @@
         "integration.jei.ScreenHelperMixin",
         "integration.patchouli.BookPageMixin",
         "integration.patchouli.GuiBookLandingMixin",
+        "integration.ponder.PonderTooltipHandlerMixin",
         "integration.sodium.BlockOcclusionCacheMixin",
         "integration.sodium.BlockRendererMixin",
         "integration.sodium.ChunkBuilderMeshingTaskMixin",

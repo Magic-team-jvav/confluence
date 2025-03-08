@@ -78,7 +78,6 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
-import org.confluence.mod.integration.jade.PonderComponentProvider;
 import org.confluence.mod.integration.ponder.PonderHelper;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.terraentity.client.entity.renderer.GeoNormalRenderer;

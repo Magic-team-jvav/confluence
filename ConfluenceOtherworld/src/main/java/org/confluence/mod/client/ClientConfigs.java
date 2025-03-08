@@ -22,6 +22,7 @@ public final class ClientConfigs {
     );
     public static int showWindParticles = 90;
     public static Set<String> bannedModForPaints = new HashSet<>(DEFAULT_BANNED_MOD_FOR_PAINTS);
+    public static boolean achievementToast = true;
 
     public static boolean terraStyleHealth = true;
     public static TerraStyleHealthHud.Health healthStyle = TerraStyleHealthHud.Health.OVERLAY;
@@ -38,6 +39,7 @@ public final class ClientConfigs {
 
     private static IntValue SHOW_WIND_PARTICLES;
     private static ConfigValue<List<? extends String>> BANNED_MOD_FOR_PAINTS;
+    private static BooleanValue ACHIEVEMENT_TOAST;
 
     private static BooleanValue TERRA_STYLE_HEALTH;
     private static EnumValue<TerraStyleHealthHud.Health> HEALTH_STYLE;
@@ -55,6 +57,7 @@ public final class ClientConfigs {
     public static void onLoad() {
         showWindParticles = SHOW_WIND_PARTICLES.get();
         bannedModForPaints = new HashSet<>(BANNED_MOD_FOR_PAINTS.get());
+        achievementToast = ACHIEVEMENT_TOAST.get();
 
         terraStyleHealth = TERRA_STYLE_HEALTH.get();
         healthStyle = HEALTH_STYLE.get();
@@ -75,6 +78,7 @@ public final class ClientConfigs {
 
         SHOW_WIND_PARTICLES = BUILDER.defineInRange("showWindParticles", 90, 0, 100);
         BANNED_MOD_FOR_PAINTS = BUILDER.defineListAllowEmpty("bannedModForPaints", () -> DEFAULT_BANNED_MOD_FOR_PAINTS, () -> "modid", o -> o instanceof String s && !s.contains(":"));
+        ACHIEVEMENT_TOAST = BUILDER.define("achievementToast", true);
 
 
         BUILDER.push("HUD");

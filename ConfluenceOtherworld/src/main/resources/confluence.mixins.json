@@ -104,6 +104,7 @@
         "client.renderer.ModelBlockRendererMixin",
         "client.renderer.SectionCompilerMixin",
         "entity.LocalPlayerMixin",
+        "integration.advancement_plaque.AdvancementPlaqueMixin",
         "integration.betteradvancements.BetterDisplayInfoMixin",
         "integration.ftbchunks.EntityMapIconMixin",
         "integration.ftbchunks.TrackedPlayerMapIconMixin",

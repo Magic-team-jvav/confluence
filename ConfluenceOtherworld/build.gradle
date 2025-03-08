@@ -168,14 +168,19 @@ dependencies {
     //runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
 
     compileOnly "curse.maven:better-advancements-272515:5850587"
+    //runtimeOnly "curse.maven:better-advancements-272515:5850587"
 
     compileOnly "curse.maven:sodium-394468:6211307"
     //runtimeOnly "curse.maven:sodium-394468:6211307"
 
+    compileOnly "curse.maven:advancement-plaques-499826:5905995"
+    //runtimeOnly "curse.maven:advancement-plaques-499826:5905995"
+    //runtimeOnly "curse.maven:iceberg-520110:6118329"
+
     runtimeOnly "curse.maven:worldedit-225608:5830452"
     //runtimeOnly "curse.maven:ars-nouveau-401955:6228434"
     //runtimeOnly "curse.maven:carry-on-274259:5649344"
-    runtimeOnly "curse.maven:spark-361579:6225208"
+    //runtimeOnly "curse.maven:spark-361579:6225208"
     //runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"
     //runtimeOnly "curse.maven:xaeros-world-map-317780:6212662"
     runtimeOnly "curse.maven:touhou-little-maid-355044:6266244"
@@ -192,7 +197,8 @@ tasks.withType(ProcessResources).configureEach {
                              mod_license            : mod_license,
                              mod_version            : mod_version,
                              mod_authors            : mod_authors,
-                             mod_description        : mod_description]
+                             mod_description        : mod_description,
+                             curios_version         : curios_version]
     inputs.properties replaceProperties
 
     filesMatching(['META-INF/neoforge.mods.toml']) {

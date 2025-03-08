@@ -21,8 +21,8 @@ import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class AchievementToast implements Toast {
+    public static final Component DISPLAY = Component.translatable("achievements.toast.complete");
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/achievement/toast.png");
-    private static final Component DISPLAY = Component.translatable("achievements.toast.complete");
     private static final Hashtable<ResourceLocation, AchievementToast> ACHIEVEMENTS = new Hashtable<>();
     private final ResourceLocation icon;
     private final Display display;

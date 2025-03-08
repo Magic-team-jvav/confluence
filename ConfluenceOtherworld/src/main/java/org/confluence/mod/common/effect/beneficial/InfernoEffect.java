@@ -4,6 +4,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.phys.AABB;
 
 public class InfernoEffect extends MobEffect {  //狱火 点燃周围的怪物 （以玩家为中心的5×5×5范围内）
@@ -14,7 +15,8 @@ public class InfernoEffect extends MobEffect {  //狱火 点燃周围的怪物 �
     @Override
     public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
         for (Entity entity : livingEntity.level().getEntities(livingEntity, new AABB(livingEntity.blockPosition()).inflate(5.0))) {
-            entity.igniteForTicks((amplifier + 1) * 100);
+            if(entity instanceof Enemy && entity instanceof LivingEntity)
+                entity.igniteForTicks((amplifier + 1) * 100);
         }
         return true;
     }

@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -37,7 +36,7 @@ public class BlockPlacingWandItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack heldItem = player.getItemInHand(usedHand);
-        BlockHitResult hitResult = getPlayerPickedBlock(player, 5.0);
+        BlockHitResult hitResult = getPlayerPickedBlock(player);
         if (hitResult.getType() != HitResult.Type.BLOCK) {
             return InteractionResultHolder.pass(heldItem);
         }
@@ -59,7 +58,12 @@ public class BlockPlacingWandItem extends Item {
 
     private boolean tryPlaceBlock(Level level, Player player, BlockPos placePos, ItemStack itemStack, ItemStack heldItem) {
         if (isValidBlockItem(itemStack, heldItem)) {
-            level.setBlock(placePos, blacklistBlock.defaultBlockState(), 3);
+            BlockState state = ((BlockItem) itemStack.getItem()).getBlock().defaultBlockState();
+            if (blacklistBlock == Blocks.AIR) {
+                level.setBlock(placePos, state, 3);
+            } else {
+                level.setBlock(placePos, blacklistBlock.defaultBlockState(), 3);
+            }
             if (!player.isCreative()) {
                 itemStack.shrink(1);
             }
@@ -68,10 +72,10 @@ public class BlockPlacingWandItem extends Item {
         return false;
     }
 
-    private BlockHitResult getPlayerPickedBlock(Player player, double reachDistance) {
+    private BlockHitResult getPlayerPickedBlock(Player player) {
         Vec3 playerEyePos = player.getEyePosition(1.0f);
         Vec3 lookDirection = player.getLookAngle();
-        Vec3 targetPos = playerEyePos.add(lookDirection.scale(reachDistance));
+        Vec3 targetPos = playerEyePos.add(lookDirection.scale(5.0));
         ClipContext clipContext = new ClipContext(playerEyePos, targetPos, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player);
         return player.level().clip(clipContext);
     }

@@ -28,7 +28,7 @@
     ],
     "spawners": {
         "type": "terra_entity:demon_eye",
-        "weight": 70,
+        "weight": 65,
         "minCount": 1,
         "maxCount": 2
     }

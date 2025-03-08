@@ -211,7 +211,8 @@ public class BaseChestBlock extends ChestBlock {
         UNLOCKED_WATER(6, "unlocked_water"),
         UNLOCKED_SKYWARE(7, "unlocked_skyware"),
         UNLOCKED_NORMAL(8, "unlocked_normal"),
-        UNLOCKED_SANDSTONE(9, "unlocked_sandstone");
+        UNLOCKED_SANDSTONE(9, "unlocked_sandstone"),
+        UNLOCKED_LIVING_WOOD(10, "unlocked_living_wood");
 
         private static final IntFunction<Variant> BY_ID = ByIdMap.continuous(Variant::getId, values(), ByIdMap.OutOfBoundsStrategy.CLAMP);
         private final int id;

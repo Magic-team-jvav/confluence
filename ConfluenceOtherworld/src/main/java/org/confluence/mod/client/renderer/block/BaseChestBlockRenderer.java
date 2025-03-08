@@ -48,6 +48,10 @@ public class BaseChestBlockRenderer extends ChestRenderer<BaseChestBlock.Entity>
     public static final Material UNLOCKED_SANDSTONE_LEFT = chest("unlocked_sandstone_left");
     public static final Material UNLOCKED_SANDSTONE_RIGHT = chest("unlocked_sandstone_right");
 
+    public static final Material UNLOCKED_LIVING_WOOD = chest("unlocked_living_wood");
+    public static final Material UNLOCKED_LIVING_WOOD_LEFT = chest("unlocked_living_wood_left");
+    public static final Material UNLOCKED_LIVING_WOOD_RIGHT = chest("unlocked_living_wood_right");
+
 
     public BaseChestBlockRenderer(BlockEntityRendererProvider.Context pContext) {
         super(pContext);
@@ -65,6 +69,7 @@ public class BaseChestBlockRenderer extends ChestRenderer<BaseChestBlock.Entity>
             case UNLOCKED_SKYWARE -> chooseMaterial(chestType, UNLOCKED_SKYWARE, UNLOCKED_SKYWARE_LEFT, UNLOCKED_SKYWARE_RIGHT);
             case UNLOCKED_NORMAL -> chooseMaterial(chestType, UNLOCKED_NORMAL, UNLOCKED_NORMAL_LEFT, UNLOCKED_NORMAL_RIGHT);
             case UNLOCKED_SANDSTONE -> chooseMaterial(chestType, UNLOCKED_SANDSTONE, UNLOCKED_SANDSTONE_LEFT, UNLOCKED_SANDSTONE_RIGHT);
+            case UNLOCKED_LIVING_WOOD -> chooseMaterial(chestType, UNLOCKED_LIVING_WOOD, UNLOCKED_LIVING_WOOD_LEFT, UNLOCKED_LIVING_WOOD_RIGHT);
             default -> chooseMaterial(chestType, LOCKED_GOLDEN, LOCKED_GOLDEN_LEFT, LOCKED_GOLDEN_RIGHT);
         };
     }

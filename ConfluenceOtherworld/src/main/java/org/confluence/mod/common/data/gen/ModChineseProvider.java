@@ -302,6 +302,11 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("confluence.configuration.dropsMoney", "钱币掉落");
         add("confluence.configuration.dropsMoney.tooltip", "启用时，生物死亡后会掉落钱币");
+        add("confluence.configuration.Paints", "油漆功能设置");
+        add("confluence.configuration.Paints.tooltip", "部分兼容问题可能由油漆功能引发，因此你需要在此调整相关选项");
+        add("confluence.configuration.Paints.button", "关于油漆");
+        add("confluence.configuration.paintsReplaceTexture", "油漆替换贴图");
+        add("confluence.configuration.paintsReplaceTexture.tooltip", "开启时，油漆将使用替换灰度图贴图，在材质上的表现会更自然");
         add("confluence.configuration.autoStackGelsColor", "自动合并凝胶");
         add("confluence.configuration.autoStackGelsColor.tooltip", "启用时，你拾取的不同颜色的凝胶会合并堆叠");
         add("confluence.configuration.bannedModForPaints", "模组油漆使用黑名单");
@@ -700,6 +705,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("block.confluence.base_chest_block.death_normal", "§r死人木箱");
         add("block.confluence.base_chest_block.unlocked_sandstone", "§r砂岩箱");
         add("block.confluence.base_chest_block.death_sandstone", "§r死人砂岩箱");
+        add("block.confluence.base_chest_block.unlocked_living_wood", "§r生命木箱");
+        add("block.confluence.base_chest_block.death_living_wood", "§r死人生命木箱");
 
 
         add("resourcepack.terraria_art", "泰拉艺术");
@@ -2252,7 +2259,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.STAR_FRUIT.get(), "杨桃");
         add(FoodItems.POMEGRANATE.get(), "番石榴");
         add(FoodItems.RAMBUTAN.get(), "红毛丹");
-        add(FoodItems.PEELED_SUGAR_TANGERINE.get(), "拨开的砂糖桔");
+        add(FoodItems.PEELED_SUGAR_TANGERINE.get(), "拨开的砂糖橘");
         add(FoodItems.COOKED_SHRIMP.get(), "熟虾");
         add(FoodItems.ESCARGOT.get(), "法式蜗牛");
         add(FoodItems.FROGGLE_BUNWICH.get(), "面包夹田鸡");

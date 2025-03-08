@@ -33,6 +33,7 @@ public class KindMitaRingItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        tooltipComponents.add(Component.literal("-------赞助者物品--------").withStyle(ChatFormatting.GRAY));
         tooltipComponents.add(Component.literal("戒指会带你找到正确的方向，亲爱的。").withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }

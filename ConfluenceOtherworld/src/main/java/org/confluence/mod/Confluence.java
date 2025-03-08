@@ -26,6 +26,7 @@ public class Confluence {
     public static GameRules.Key<GameRules.IntegerValue> SPREADABLE_CHANCE;
 
     public Confluence(IEventBus eventBus, ModContainer container) {
+        StartupConfigs.register(container);
         CommonConfigs.register(container);
         if (FMLEnvironment.dist.isClient()) {
             ClientConfigs.register(container);

@@ -26,6 +26,7 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.connected.CustomBlockModels;
 import org.confluence.mod.client.connected.ModConnectives;
@@ -83,7 +84,9 @@ import org.confluence.mod.util.ClientUtils;
 import org.confluence.terraentity.client.entity.renderer.GeoNormalRenderer;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static org.confluence.mod.common.init.ModEntities.*;
 
@@ -345,13 +348,14 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void model$ModifyBakingResult(ModelEvent.ModifyBakingResult event) {
-        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !ClientConfigs.paintsReplaceGray) return;
+        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !StartupConfigs.PAINTS_REPLACE_TEXTURE.get()) return;
 
         Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
         CustomBlockModels customBlockModels = ModConnectives.MODEL_SWAPPER.getCustomBlockModels();
+        Set<String> bannedModForPaints = new HashSet<>(StartupConfigs.BANNED_MOD_FOR_PAINTS.get());
         for (Map.Entry<Block, Holder.Reference<Block>> entry : ((DefaultedMappedRegistry<Block>) BuiltInRegistries.BLOCK).byValue.entrySet()) {
             Block block = entry.getKey();
-            if (customBlockModels.containsBlock(block) || ClientConfigs.bannedModForPaints.contains(entry.getValue().key().location().getNamespace())) {
+            if (customBlockModels.containsBlock(block) || bannedModForPaints.contains(entry.getValue().key().location().getNamespace())) {
                 continue;
             }
             for (ModelResourceLocation modelLocation : ModelSwapper.getAllBlockStateModelLocations(block)) {

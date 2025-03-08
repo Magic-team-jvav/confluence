@@ -3,7 +3,10 @@ package org.confluence.mod.client;
 import net.minecraft.network.chat.Component;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.common.ModConfigSpec.*;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec.Builder;
+import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.mod.client.gui.hud.TerraStyleArmorHud;
 import org.confluence.mod.client.gui.hud.TerraStyleFoodHud;
@@ -11,20 +14,11 @@ import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
 import org.confluence.mod.client.gui.hud.TerraStyleManaHud;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 public final class ClientConfigs {
-    public static final List<String> DEFAULT_BANNED_MOD_FOR_PAINTS = List.of(
-            "integrateddynamics", "ae2", "refinedstorage", "create", "mekanism", "immersiveengineering", "enderio"
-    );
     public static int showWindParticles = 90;
     public static boolean achievementToast = true;
-
-    public static boolean paintsReplaceGray = false;
-    public static Set<String> bannedModForPaints = new HashSet<>(DEFAULT_BANNED_MOD_FOR_PAINTS);
 
     public static boolean terraStyleHealth = true;
     public static TerraStyleHealthHud.Health healthStyle = TerraStyleHealthHud.Health.OVERLAY;
@@ -43,9 +37,6 @@ public final class ClientConfigs {
     private static IntValue SHOW_WIND_PARTICLES;
     private static BooleanValue ACHIEVEMENT_TOAST;
 
-    private static BooleanValue PAINTS_REPLACE_GRAY;
-    private static ConfigValue<List<? extends String>> BANNED_MOD_FOR_PAINTS;
-
     private static BooleanValue TERRA_STYLE_HEALTH;
     private static EnumValue<TerraStyleHealthHud.Health> HEALTH_STYLE;
     private static BooleanValue TERRA_STYLE_FOOD;
@@ -63,9 +54,6 @@ public final class ClientConfigs {
     public static void onLoad() {
         showWindParticles = SHOW_WIND_PARTICLES.get();
         achievementToast = ACHIEVEMENT_TOAST.get();
-
-        paintsReplaceGray = PAINTS_REPLACE_GRAY.get();
-        bannedModForPaints = new HashSet<>(BANNED_MOD_FOR_PAINTS.get());
 
         terraStyleHealth = TERRA_STYLE_HEALTH.get();
         healthStyle = HEALTH_STYLE.get();
@@ -87,11 +75,6 @@ public final class ClientConfigs {
 
         SHOW_WIND_PARTICLES = BUILDER.defineInRange("showWindParticles", 90, 0, 100);
         ACHIEVEMENT_TOAST = BUILDER.define("achievementToast", true);
-
-        BUILDER.push("Paints");
-        PAINTS_REPLACE_GRAY = BUILDER.define("paintsReplaceGray", false);
-        BANNED_MOD_FOR_PAINTS = BUILDER.defineListAllowEmpty("bannedModForPaints", () -> DEFAULT_BANNED_MOD_FOR_PAINTS, () -> "modid", o -> o instanceof String s && !s.contains(":"));
-        BUILDER.pop();
 
         BUILDER.push("HUD");
         BUILDER.push("Health");

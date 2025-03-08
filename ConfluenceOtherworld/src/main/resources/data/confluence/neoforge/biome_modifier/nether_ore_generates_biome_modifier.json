@@ -13,5 +13,5 @@
     "confluence:hellstone_generates",
     "confluence:ore_ancient_debris_add"
   ],
-  "step": "surface_structures"
+  "step": "underground_ores"
 }

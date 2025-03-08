@@ -5,7 +5,7 @@
   "type": "minecraft:jigsaw",
   "start_pool": "confluence:shimmer_lake/main",
   "size": 7,
-  "step": "underground_structures",
+  "step": "top_layer_modification",
   "start_height": {
     "type": "uniform",
     "min_inclusive": {

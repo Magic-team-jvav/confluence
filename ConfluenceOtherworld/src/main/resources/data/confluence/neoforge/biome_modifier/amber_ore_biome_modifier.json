@@ -4,5 +4,5 @@
     "minecraft:desert"
   ],
   "features": "confluence:amber_ore_generates",
-  "step": "surface_structures"
+  "step": "underground_ores"
 }

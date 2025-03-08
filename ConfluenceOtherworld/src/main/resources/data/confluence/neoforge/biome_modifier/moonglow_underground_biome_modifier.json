@@ -4,5 +4,5 @@
     "minecraft:lush_caves"
   ],
   "features": "confluence:moonglow_underground",
-  "step": "vegetal_decoration"
+  "step": "underground_decoration"
 }

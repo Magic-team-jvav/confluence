@@ -12,5 +12,5 @@
     "minecraft:snowy_taiga"
   ],
   "features": "confluence:slush",
-  "step": "surface_structures"
+  "step": "underground_ores"
 }

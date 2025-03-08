@@ -15,5 +15,5 @@
         "confluence:marine_gravel",
         "confluence:ore_opal_small"
     ],
-    "step": "surface_structures"
+    "step": "underground_ores"
 }

@@ -48,7 +48,7 @@ public final class MusicHandler {
             selectMusic(player);
         }
         SoundInstance playingMusic = event.getPlayingMusic();
-        if ((playingMusic == null || !nextSong.getLocation().equals(playingMusic.getLocation())) && nextSongDelay-- <= 0) {
+        if ((playingMusic == null || (nextSong != null && !nextSong.getLocation().equals(playingMusic.getLocation())) && nextSongDelay-- <= 0)) {
             if (volume > 0.0F) {
                 volume -= 0.01F;
                 Map<SoundInstance, ChannelAccess.ChannelHandle> instanceToChannel = Minecraft.getInstance().getSoundManager().soundEngine.instanceToChannel;
@@ -67,6 +67,7 @@ public final class MusicHandler {
                 event.setMusic(nextSong);
                 nextSongDelay = 1200;
                 volume = 1.0F;
+                nextSong = null;
             }
         }
     }

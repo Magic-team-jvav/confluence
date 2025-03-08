@@ -2545,7 +2545,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(VanityArmorItems.BROWN_DYE.get(), "棕染料");
 
         // 药水效果
-        add(ModEffects.MANA_SICKNESS.get(), "魔力病");
+        add(ModEffects.MANA_SICKNESS.get(), "耐魔性");
         add(ModEffects.SHINE.get(), "发光");
         add(ModEffects.SHIMMER.get(), "闪烁");
         add(ModEffects.EXQUISITELY_STUFFED.get(), "膳食");

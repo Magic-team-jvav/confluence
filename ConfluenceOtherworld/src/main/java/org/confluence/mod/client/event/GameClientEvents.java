@@ -469,7 +469,9 @@ public final class GameClientEvents {
     public static void selectMusic(SelectMusicEvent event) {
         if (event.isCanceled()) return;
         LocalPlayer player = Minecraft.getInstance().player;
-        if (player != null) {
+        if (player == null) {
+            MusicHandler.clear();
+        } else {
             MusicHandler.handle(event, player);
         }
     }

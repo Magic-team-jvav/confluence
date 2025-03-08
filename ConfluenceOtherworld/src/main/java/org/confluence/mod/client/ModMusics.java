@@ -7,8 +7,6 @@ import net.minecraft.sounds.SoundEvent;
 import org.confluence.mod.common.init.ModSoundEvents;
 
 public final class ModMusics {
-    public static final CachedLocationMusic OTHERWORLD = register(ModSoundEvents.OTHERWORLD);
-
     public static final CachedLocationMusic KING_SLIME = register(ModSoundEvents.KING_SLIME_COMBAT);
     public static final CachedLocationMusic EYE_OF_CTHULHU = register(ModSoundEvents.EYE_OF_CTHULHU_COMBAT);
     public static final CachedLocationMusic EATER_OF_WORLDS = register(ModSoundEvents.EATER_OF_WORLDS_COMBAT);
@@ -18,8 +16,8 @@ public final class ModMusics {
     public static final CachedLocationMusic OVERWORLD_DAY = register(ModSoundEvents.OVERWORLD_DAY);
     public static final CachedLocationMusic OVERWORLD_NIGHT = register(ModSoundEvents.OVERWORLD_NIGHT);
     public static final CachedLocationMusic UNDERGROUND = register(ModSoundEvents.UNDERGROUND);
-    public static final CachedLocationMusic ALTERNATE_DAY = register(ModSoundEvents.ALTERNATE_DAY);
-    public static final CachedLocationMusic ALTERNATE_UNDERGROUND = register(ModSoundEvents.UNDERGROUND);
+    public static final CachedLocationMusic ALTERNATE_DAY = register(ModSoundEvents.ALTERNATE_DAY); // todo
+    public static final CachedLocationMusic ALTERNATE_UNDERGROUND = register(ModSoundEvents.UNDERGROUND); // todo
     public static final CachedLocationMusic DESERT = register(ModSoundEvents.DESERT);
     public static final CachedLocationMusic ICE = register(ModSoundEvents.ICE);
     public static final CachedLocationMusic UNDERGROUND_ICE = register(ModSoundEvents.UNDERGROUND_ICE);

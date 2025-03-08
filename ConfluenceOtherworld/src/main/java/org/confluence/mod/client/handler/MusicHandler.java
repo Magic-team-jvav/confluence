@@ -25,7 +25,7 @@ import java.util.Map;
 import static org.confluence.mod.client.ModMusics.*;
 
 @OnlyIn(Dist.CLIENT)
-public class MusicHandler {
+public final class MusicHandler {
     private static CachedLocationMusic nextSong;
     private static int nextSongDelay = 1200;
     private static Holder<Biome> lastBiome;
@@ -69,6 +69,15 @@ public class MusicHandler {
                 volume = 1.0F;
             }
         }
+    }
+
+    public static void clear() {
+        nextSong = null;
+        nextSongDelay = 1200;
+        lastBiome = null;
+        nextBiomeCheck = 100;
+        volume = 1.0F;
+        hasBossMusic = false;
     }
 
     private static void selectBossMusic(Player player) {
@@ -119,7 +128,7 @@ public class MusicHandler {
             nextSong = STORM;
         } else if (biome.is(ModBiomes.GLOWING_MUSHROOM)) {
             nextSong = MUSHROOMS;
-        } else if (biome.is(Tags.Biomes.IS_COLD_OVERWORLD)) {
+        } else if (biome.is(Tags.Biomes.IS_ICY) || biome.is(Tags.Biomes.IS_SNOWY)) {
             switchMusic(y, ICE, UNDERGROUND_ICE);
         } else if (biome.is(ModTags.Biomes.THE_CORRUPTION)) {
             switchMusic(y, CORRUPTION, UNDERGROUND_CORRUPTION);
@@ -140,9 +149,9 @@ public class MusicHandler {
                 nextSong = UNDERGROUND_JUNGLE;
             } else {
                 if (level.getDayTime() % 24000 < 12000) {
-                    nextSong = JUNGLE_NIGHT;
-                } else {
                     nextSong = JUNGLE;
+                } else {
+                    nextSong = JUNGLE_NIGHT;
                 }
             }
         } else {
@@ -150,9 +159,9 @@ public class MusicHandler {
                 nextSong = player.getRandom().nextBoolean() ? UNDERGROUND : ALTERNATE_UNDERGROUND;
             } else {
                 if (level.getDayTime() % 24000 < 12000) {
-                    nextSong = OVERWORLD_NIGHT;
-                } else {
                     nextSong = player.getRandom().nextBoolean() ? OVERWORLD_DAY : ALTERNATE_DAY;
+                } else {
+                    nextSong = OVERWORLD_NIGHT;
                 }
             }
         }

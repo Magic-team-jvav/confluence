@@ -14,6 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
@@ -83,7 +84,7 @@ public class BallOfFireProjectile extends Projectile {
                     entity.setRemainingFireTicks(100);
                 }
             }
-            if (entity.hurt(damageSources().indirectMagic(this, getOwner()), ddu ? 17.0F : 9.6F)) {
+            if (entity.hurt(ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner()), ddu ? 17.0F : 9.6F)) {
                 VectorUtils.knockBackA2B(this, entity, 0.6, 0.2);
             }
         }

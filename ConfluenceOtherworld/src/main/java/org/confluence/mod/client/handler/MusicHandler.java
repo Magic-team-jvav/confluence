@@ -7,6 +7,7 @@ import net.minecraft.client.sounds.ChannelAccess;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -17,7 +18,7 @@ import net.neoforged.neoforge.client.event.SelectMusicEvent;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
+import org.confluence.terraentity.entity.ai.Boss;
 import org.confluence.terraentity.init.TEEntities;
 
 import java.util.Map;
@@ -27,7 +28,7 @@ import static org.confluence.mod.client.ModMusics.*;
 @OnlyIn(Dist.CLIENT)
 public final class MusicHandler {
     private static CachedLocationMusic nextSong;
-    private static int nextSongDelay = 1200;
+    private static int nextSongDelay = 2400;
     private static Holder<Biome> lastBiome;
     private static int nextBiomeCheck = 100;
     private static float volume = 1.0F;
@@ -48,7 +49,7 @@ public final class MusicHandler {
             selectMusic(player);
         }
         SoundInstance playingMusic = event.getPlayingMusic();
-        if ((playingMusic == null || (nextSong != null && !nextSong.getLocation().equals(playingMusic.getLocation())) && nextSongDelay-- <= 0)) {
+        if ((playingMusic == null || (nextSong != null && !nextSong.getLocation().equals(playingMusic.getLocation()))) && nextSongDelay-- <= 0) {
             if (volume > 0.0F) {
                 volume -= 0.01F;
                 Map<SoundInstance, ChannelAccess.ChannelHandle> instanceToChannel = Minecraft.getInstance().getSoundManager().soundEngine.instanceToChannel;
@@ -65,7 +66,7 @@ public final class MusicHandler {
             } else {
                 Minecraft.getInstance().getMusicManager().stopPlaying();
                 event.setMusic(nextSong);
-                nextSongDelay = 1200;
+                nextSongDelay = 2400;
                 volume = 1.0F;
                 nextSong = null;
             }
@@ -84,7 +85,7 @@ public final class MusicHandler {
     private static void selectBossMusic(Player player) {
         if (Minecraft.getInstance().gui.getBossOverlay().shouldPlayMusic()) {
             AABB area = new AABB(player.blockPosition()).inflate(Minecraft.getInstance().levelRenderer.getLastViewDistance());
-            for (AbstractTerraBossBase<?> boss : player.level().getEntitiesOfClass(AbstractTerraBossBase.class, area)) {
+            for (Entity boss : player.level().getEntities((Entity) null, area, entity -> entity instanceof Boss)) {
                 if (boss.getType() == TEEntities.KING_SLIME.get()) {
                     nextSong = KING_SLIME;
                 } else if (boss.getType() == TEEntities.EYE_OF_CTHULHU.get()) {

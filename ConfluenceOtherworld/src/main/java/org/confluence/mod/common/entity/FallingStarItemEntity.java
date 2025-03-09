@@ -113,8 +113,8 @@ public class FallingStarItemEntity extends ItemEntity {
                 if (cache.stream().anyMatch(pos -> serverPlayer.distanceToSqr(pos) < Mth.square(serverPlayer.requestedViewDistance() * 16))) {
                     continue;
                 }
-                int offsetX = (random.nextBoolean() ? 1 : -1) * random.nextInt(2);
-                int offsetZ = (random.nextBoolean() ? 1 : -1) * random.nextInt(2);
+                int offsetX = Mth.nextInt(random, -16, 16);
+                int offsetZ = Mth.nextInt(random, -16, 16);
                 BlockPos pos = serverPlayer.getOnPos().offset(offsetX, 0, offsetZ).atY(256);
                 if (level.isLoaded(pos)) {
                     level.addFreshEntity(new FallingStarItemEntity(level, pos.getCenter()));

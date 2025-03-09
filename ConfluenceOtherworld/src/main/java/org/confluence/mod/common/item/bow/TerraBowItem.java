@@ -49,7 +49,7 @@ public class TerraBowItem extends BowItem {
     // 无法破坏
     public TerraBowItem(float baseDamage, ModRarity rarity) {
         super(new Properties().component(DataComponents.UNBREAKABLE, new Unbreakable(true))
-                .component(TCDataComponentTypes.MOD_RARITY, rarity));
+                .component(TCDataComponentTypes.MOD_RARITY, rarity).stacksTo(1));
         this.baseDamage = baseDamage;
         this.arrowModifier = new BaseArrowEntity.Builder();
     }

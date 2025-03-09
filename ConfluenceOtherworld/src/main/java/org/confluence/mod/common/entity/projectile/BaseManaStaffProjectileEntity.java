@@ -17,6 +17,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.util.VectorUtils;
 import org.mesdag.particlestorm.PSGameClient;
@@ -98,7 +99,7 @@ public class BaseManaStaffProjectileEntity extends Projectile {
         Entity entity = entityHitResult.getEntity();
         if (canAttack(entity)) {
             float damage = getBaseDamage() * (1.0F + getAttackBonus());
-            if (entity.hurt(damageSources().indirectMagic(this, getOwner()), damage)) {
+            if (entity.hurt(ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner()), damage)) {
                 float attackKnockback = getBaseKnockBack() * (1.0F + getKnockbackBonus());
                 if (attackKnockback > 0.0F) {
                     VectorUtils.knockBackA2B(this, entity, attackKnockback * 0.5, 0.2);

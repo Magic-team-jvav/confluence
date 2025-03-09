@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.VectorUtils;
@@ -67,7 +68,7 @@ public class HurtnadoProjectile extends Projectile implements Immunity {
             AABB boundingBox = getBoundingBox().inflate(1.0);
             if (ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F) instanceof EntityHitResult entityHitResult) {
                 Entity entity = entityHitResult.getEntity();
-                if (entity.hurt(damageSources().indirectMagic(this, getOwner()), 6.5F)) {
+                if (entity.hurt(ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner()), 6.5F)) {
                     VectorUtils.knockBackA2B(this, entity, 0.5, 0.2);
                 }
                 if (passThrough.add(entity) && passThrough.size() >= 14) {

@@ -43,7 +43,7 @@
     },
     {
       "type": "minecraft:surface_relative_threshold_filter",
-      "heightmap": "MOTION_BLOCKING_NO_LEAVES",
+      "heightmap": "WORLD_SURFACE_WG",
       "min_inclusive": -110,
       "max_inclusive": -2
     }

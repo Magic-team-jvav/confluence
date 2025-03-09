@@ -317,8 +317,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.fletchingMenu.tooltip", "启用时，将使用汇流来世的修改制箭台");
         add("confluence.configuration.shimmer_decompose", "微光分解");
         add("confluence.configuration.shimmer_decompose.tooltip", "启用时，微光液体能将物品分解为原材料");
-        add("confluence.configuration.fallingStarFrequency", "坠星频率");
-        add("confluence.configuration.fallingStarFrequency.tooltip", "定义夜晚中坠星的生成频率");
+        add("confluence.configuration.fallingStarInterval", "坠星间隔");
+        add("confluence.configuration.fallingStarInterval.tooltip", "定义夜晚中坠星的生成间隔");
         add("confluence.configuration.returnPotionGlassBottle", "返还药水瓶");
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "决定你使用药水后是否返还瓶子");
         add("confluence.configuration.defaultRespawnTimeMin", "默认最小重生时间");

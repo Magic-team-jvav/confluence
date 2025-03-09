@@ -301,6 +301,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("jei.tooltip.item.confluence.celestial_starboard.0", "在普通模式或更高难度下，击败月球领主获得。");
 
 
+        add("confluence.configuration.achievementToast", "启用泰拉样式成就");
+        add("confluence.configuration.achievementToast.tooltip", "如果想使用原版样式进度的话就关闭它");
         add("confluence.configuration.dropsMoney", "钱币掉落");
         add("confluence.configuration.dropsMoney.tooltip", "启用时，生物死亡后会掉落钱币");
         add("confluence.configuration.Paints", "油漆功能设置");

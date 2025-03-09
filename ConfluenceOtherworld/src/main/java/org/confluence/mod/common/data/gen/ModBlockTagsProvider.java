@@ -257,7 +257,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 FunctionalBlocks.TIMERS_BLOCK_1_4.get(),
                 FunctionalBlocks.EVER_POWERED_RAIL.get(),
                 FunctionalBlocks.SILLY_BALLOON_MACHINE.get(),
-                FunctionalBlocks.BASE_CHEST_BLOCK.get()
+                FunctionalBlocks.BASE_CHEST_BLOCK.get(),
+                NatureBlocks.JUNGLE_HIVE_BLOCK.get()
         );
         // 铲子
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithShovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);

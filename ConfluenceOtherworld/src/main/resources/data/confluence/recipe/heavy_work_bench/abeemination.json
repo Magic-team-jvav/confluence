@@ -15,7 +15,7 @@
         "a": {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "item": "minecraft:bee_nest"
+                "item": "confluence:jungle_hive_block"
             },
             "count": 5
         },

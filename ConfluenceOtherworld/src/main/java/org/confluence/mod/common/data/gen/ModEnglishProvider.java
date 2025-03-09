@@ -429,7 +429,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("achievements.confluence.the_cavalry.description", "Equip a mount.");
 
 
-
+        add("confluence.configuration.achievementToast", "Enable Terra Style Achievements");
+        add("confluence.configuration.achievementToast.tooltip", "Disable it if you want to use the default progress style.");
         add("confluence.configuration.dropsMoney", "Coin Drops");
         add("confluence.configuration.dropsMoney.tooltip", "When enabled, characters will drop coins upon death.");
         add("confluence.configuration.Paints", "Paint Function Settings");

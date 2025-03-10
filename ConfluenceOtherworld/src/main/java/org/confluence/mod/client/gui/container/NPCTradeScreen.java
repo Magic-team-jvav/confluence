@@ -146,6 +146,7 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
     double v;
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        if(interpolator == null) return;
         v = interpolator.cal(this.tickCount + partialTick);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         if (menu.NPCTrades == null){

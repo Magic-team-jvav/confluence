@@ -87,7 +87,7 @@ public abstract class MinecraftMixin {
                 }
             }
 
-            cir.setReturnValue(false);
+            //cir.setReturnValue(false);
         }
     }
 }

@@ -50,6 +50,7 @@ public final class ItemEvents {
             TreasureBagItemEntity entity = new TreasureBagItemEntity(itemEntity.level(), itemEntity.position(), itemEntity.getItem(), null);
             entity.setPickUpDelay(40);
             entity.setDeltaMovement(itemEntity.getDeltaMovement());
+            entity.setGlowingTag(true);
             itemEntity.level().addFreshEntity(entity);
             itemEntity.discard();
             event.setCanceled(true);

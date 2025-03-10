@@ -186,6 +186,7 @@ dependencies {
     runtimeOnly "curse.maven:touhou-little-maid-355044:6266244"
     //runtimeOnly "curse.maven:applied-energistics-2-223794:6237438" // requires guideme
     //runtimeOnly "curse.maven:guideme-1173950:6283609"
+    //runtimeOnly "curse.maven:probejs-585406:5820894"
 }
 
 tasks.withType(ProcessResources).configureEach {

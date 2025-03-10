@@ -46,7 +46,6 @@ public class ExtraInventory extends ItemStackHandler implements Container {
 
     public void setAccessoryDyes(int size) {
         int all = SIZE_EXCEPT_ACCESSORY_DYE + size;
-        if (stacks.size() == all) return;
         NonNullList<ItemStack> itemStacks = NonNullList.withSize(all, ItemStack.EMPTY);
         for (int i = 0; i < stacks.size(); i++) {
             itemStacks.set(i, stacks.get(i));

@@ -112,7 +112,7 @@ public final class ModTiers {
         if (power >= 51) return !blockState.is(ModTags.Blocks.NEEDS_4_LEVEL);
         if (power >= 46) return !blockState.is(ModTags.Blocks.NEEDS_3_LEVEL);
         if (power >= 34) return !blockState.is(ModTags.Blocks.NEEDS_2_LEVEL);
-        return false;
+        return !blockState.is(ModTags.Blocks.NEEDS_1_LEVEL);
     }
 
     public static class PoweredTier extends SimpleTier {

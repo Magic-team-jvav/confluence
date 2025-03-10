@@ -113,6 +113,7 @@ public final class ModTags {
         public static final TagKey<Item> CROP_FORTUNE = register("crop_fortune");
         public static final TagKey<Item> TREASURE_BAG = register("treasure_bag");
         public static final TagKey<Item> FAST_BOW = register("fast_bow");
+        public static final TagKey<Item> ABLE_TO_DESTROY_ALTAR = register("able_to_destroy_altar");
 
         private static TagKey<Item> c(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));

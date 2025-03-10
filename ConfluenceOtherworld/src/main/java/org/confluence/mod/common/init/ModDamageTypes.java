@@ -31,6 +31,6 @@ public final class ModDamageTypes {
     }
 
     public static DamageSource of(Level level, ResourceKey<DamageType> key, Entity direct, Entity causing) {
-        return new DamageSource(level.registryAccess().holderOrThrow(key), direct, causing);
+        return level.damageSources().source(key, direct, causing);
     }
 }

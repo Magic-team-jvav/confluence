@@ -726,5 +726,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 .add(NatureBlocks.PEARL_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new));
 
         TEItems.SUMMON_ITEMS.getEntries().forEach(item -> tag(ModTags.Items.SUMMONER_WEAPON).add(item.get()));
+
+        tag(ModTags.Items.ABLE_TO_DESTROY_ALTAR).add(
+                HammerItems.PWNHAMMER.get()
+        );
     }
 }

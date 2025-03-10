@@ -1,6 +1,7 @@
 package org.confluence.mod.common.item.common;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -12,6 +13,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -57,19 +59,27 @@ public class BlockPlacingWandItem extends Item {
     }
 
     private boolean tryPlaceBlock(Level level, Player player, BlockPos placePos, ItemStack itemStack, ItemStack heldItem) {
-        if (isValidBlockItem(itemStack, heldItem)) {
-            BlockState state = ((BlockItem) itemStack.getItem()).getBlock().defaultBlockState();
-            if (blacklistBlock == Blocks.AIR) {
-                level.setBlock(placePos, state, 3);
-            } else {
-                level.setBlock(placePos, blacklistBlock.defaultBlockState(), 3);
-            }
-            if (!player.isCreative()) {
-                itemStack.shrink(1);
-            }
-            return true;
+        if (!isValidBlockItem(itemStack, heldItem)) {
+            return false;
         }
-        return false;
+        BlockState state = ((BlockItem) itemStack.getItem()).getBlock().defaultBlockState();
+        boolean isLeaves = state.is(BlockTags.LEAVES);
+        if (blacklistBlock == Blocks.AIR) {
+            if (isLeaves) {
+                state = state.setValue(LeavesBlock.PERSISTENT, true);
+            }
+        } else {
+            if (isLeaves) {
+                state = blacklistBlock.defaultBlockState().setValue(LeavesBlock.PERSISTENT, true);
+            } else {
+                state = blacklistBlock.defaultBlockState();
+            }
+        }
+        level.setBlock(placePos, state, 3);
+        if (!player.isCreative()) {
+            itemStack.shrink(1);
+        }
+        return true;
     }
 
     private BlockHitResult getPlayerPickedBlock(Player player) {

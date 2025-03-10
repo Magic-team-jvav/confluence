@@ -1,20 +1,27 @@
 package org.confluence.mod.common.worldgen.structure;
 
 import com.google.common.collect.Lists;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.worldgen.BannedBiomeMultiNoiseBiomeSource;
+import org.confluence.mod.mixed.IMultiNoiseBiomeSource;
 import org.confluence.mod.util.VectorUtils;
 import org.joml.Vector3d;
 
@@ -35,6 +42,18 @@ public class CrimsonCaveStructure extends Structure {
 
     @Override
     protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
+        if (context.chunkGenerator().getBiomeSource() instanceof MultiNoiseBiomeSource multi) {
+            if (multi instanceof BannedBiomeMultiNoiseBiomeSource banned) {
+                if (banned.getBannedBiome() == ModBiomes.TR_CRIMSON) {
+                    return Optional.empty();
+                }
+            } else {
+                Pair<Holder<Biome>, Holder<Biome>> pair = ((IMultiNoiseBiomeSource) multi).confluence$getBiomePair();
+                if (pair != null && pair.getFirst().is(ModBiomes.TR_CRIMSON)) {
+                    return Optional.empty();
+                }
+            }
+        }
         int lowestY = getLowestY(context, 16, 16);
         if (lowestY < context.chunkGenerator().getSeaLevel() - 16) {
             return Optional.empty();

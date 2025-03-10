@@ -1644,13 +1644,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.VOLCANO.get(), "火山");
         add(SwordItems.DEVELOPER_SWORD.get(), "开发者剑");
         // 光剑
-        add(SwordItems.RED_LIGHT_SABER.get(), "陨石红光剑");
-        add(SwordItems.ORANGE_LIGHT_SABER.get(), "陨石橙光剑");
-        add(SwordItems.YELLOW_LIGHT_SABER.get(), "陨石黄光剑");
-        add(SwordItems.GREEN_LIGHT_SABER.get(), "陨石绿光剑");
-        add(SwordItems.BLUE_LIGHT_SABER.get(), "陨石蓝光剑");
-        add(SwordItems.PURPLE_LIGHT_SABER.get(), "陨石紫光剑");
-        add(SwordItems.WHITE_LIGHT_SABER.get(), "陨石白光剑");
+        add(SwordItems.RED_LIGHT_SABER.get(), "红陨石光剑");
+        add(SwordItems.ORANGE_LIGHT_SABER.get(), "橙陨石光剑");
+        add(SwordItems.YELLOW_LIGHT_SABER.get(), "黄陨石光剑");
+        add(SwordItems.GREEN_LIGHT_SABER.get(), "绿陨石光剑");
+        add(SwordItems.BLUE_LIGHT_SABER.get(), "蓝陨石光剑");
+        add(SwordItems.PURPLE_LIGHT_SABER.get(), "紫陨石光剑");
+        add(SwordItems.WHITE_LIGHT_SABER.get(), "白陨石光剑");
         //剑气
         add(SwordItems.ENCHANTED_SWORD.get(), "附魔剑");
         //快攻

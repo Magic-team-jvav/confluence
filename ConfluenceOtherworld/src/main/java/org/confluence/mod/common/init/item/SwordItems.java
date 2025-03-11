@@ -39,7 +39,7 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> SILVER_SHORT_SWORD = register("silver_short_sword", ModTiers.SILVER, 1, -1, SHORT_SWORD.get());
     public static final DeferredItem<SwordItem> TUNGSTEN_SHORT_SWORD = register("tungsten_short_sword", ModTiers.TUNGSTEN, 2, -1, SHORT_SWORD.get());
     public static final DeferredItem<SwordItem> GOLDEN_SHORT_SWORD = register("golden_short_sword", ModTiers.GOLD, 2, -1, SHORT_SWORD.get());
-    public static final DeferredItem<SwordItem> PLATINUM_SHORT_SWORD = register("platinum_short_sword", Tiers.DIAMOND, 3, -1, SHORT_SWORD.get());
+    public static final DeferredItem<SwordItem> PLATINUM_SHORT_SWORD = register("platinum_short_sword", ModTiers.PLATINUM, 3, -1, SHORT_SWORD.get());
     // 初始速度4，攻击2
 
     public static final DeferredItem<SwordItem> BREATHING_REED = register("breathing_reed", ModTiers.TITANIUM, 0, -2.4F, SHORT_SWORD.get());

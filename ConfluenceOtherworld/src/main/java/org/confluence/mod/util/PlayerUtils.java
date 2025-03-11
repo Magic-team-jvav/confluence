@@ -366,7 +366,6 @@ public final class PlayerUtils {
             float actualExhaustionReduction = Math.max(exhaustionLevel * reductionFactor, 0.0F);
             exhaustionLevel = Math.max(exhaustionLevel - actualExhaustionReduction, 0.0F);
             player.getFoodData().setExhaustion(exhaustionLevel);
-            player.sendSystemMessage(Component.literal("当前消耗度: " + exhaustionLevel));
         }
     }
 }

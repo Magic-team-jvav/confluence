@@ -78,11 +78,15 @@ public class BaseSwordItem extends SwordItem {
 
     public void applyHitEffects(ItemStack weapon, Entity attacker, LivingEntity hurter, DamageSource damageSource, float damage){
         if (modifier != null &&
-                damageSource.is(DamageTypeTags.IS_PLAYER_ATTACK) &&
-                damageSource.is(DamageTypeTags.CAN_BREAK_ARMOR_STAND) &&
+//                damageSource.is(DamageTypeTags.IS_PLAYER_ATTACK) &&
                 damageSource.is(DamageTypeTags.PANIC_CAUSES)) {
-            if (attacker instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.95f) {
+            if (attacker instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.95f
+                    && damageSource.is(DamageTypeTags.CAN_BREAK_ARMOR_STAND)
+                    && damageSource.is(DamageTypeTags.IS_PLAYER_ATTACK)
+            ) {
                 modifier.onHitEffects.forEach(effect -> effect.get().getEffect().accept(player, hurter));
+            }else if(attacker instanceof LivingEntity livingEntity){
+                modifier.onHitEffects.forEach(effect -> effect.get().getEffect().accept(livingEntity, hurter));
             }
         }
     }

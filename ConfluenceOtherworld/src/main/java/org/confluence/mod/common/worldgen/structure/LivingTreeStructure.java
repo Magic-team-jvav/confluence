@@ -73,7 +73,7 @@ public class LivingTreeStructure extends Structure {
             locationList.add(locationEnd);
             lightningPathList(locationList, 1, 12, random);
             lineSet(locationList, 4.9, 1.0, 1, true, blockMap);
-            boll(4.9, centerPos, 0, true, blockMap);
+            ball(4.9, centerPos, 0, true, blockMap);
             lineSet(locationList, 1.9, 0.9, 0, true, blockMap);
             Vector3d room = locationList.get(locationList.size() / 2 + random.nextInt(-20, 21));
             centerPos = new BlockPos((int) room.x, (int) room.y, (int) room.z);

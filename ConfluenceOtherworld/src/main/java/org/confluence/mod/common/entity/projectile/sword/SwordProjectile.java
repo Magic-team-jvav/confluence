@@ -107,7 +107,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         Entity entity = this.getOwner();
         // 防止击中仆从
         if(
-                entity != null && !(
+                entity != null && (
                         target instanceof TamableAnimal animal &&
                         entity instanceof LivingEntity living &&
                         animal.isOwnedBy(living)

@@ -87,6 +87,8 @@ public class BaseSwordItem extends SwordItem {
                 modifier.onHitEffects.forEach(effect -> effect.get().getEffect().accept(player, hurter));
             }else if(attacker instanceof LivingEntity livingEntity){
                 modifier.onHitEffects.forEach(effect -> effect.get().getEffect().accept(livingEntity, hurter));
+                if(modifier.proj != null)
+                    modifier.proj.get().genProjectile(livingEntity, weapon);
             }
         }
     }

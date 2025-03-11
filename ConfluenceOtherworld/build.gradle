@@ -180,13 +180,16 @@ dependencies {
     compileOnly "curse.maven:journeymap-32274:6213329"
     //runtimeOnly "curse.maven:journeymap-32274:6213329"
 
+    compileOnly "curse.maven:touhou-little-maid-355044:6266244"
+
+/****************/
+
     runtimeOnly "curse.maven:worldedit-225608:5830452"
     //runtimeOnly "curse.maven:ars-nouveau-401955:6228434"
     //runtimeOnly "curse.maven:carry-on-274259:5649344"
     //runtimeOnly "curse.maven:spark-361579:6225208"
     //runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"
     //runtimeOnly "curse.maven:xaeros-world-map-317780:6212662"
-    compileOnly "curse.maven:touhou-little-maid-355044:6266244"
     runtimeOnly "curse.maven:touhou-little-maid-355044:6266244"
     //runtimeOnly "curse.maven:applied-energistics-2-223794:6237438" // requires guideme
     //runtimeOnly "curse.maven:guideme-1173950:6283609"

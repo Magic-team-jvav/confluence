@@ -249,6 +249,7 @@ public final class LivingEntityEvents {
         if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword) {
             sword.applyHitEffects(weapon, attacker, living, damageSource, amount);
         }
+
         // 暴击判定和伤害显示
         boolean crit = false;
         if (!TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE) && attacker instanceof Player player) {

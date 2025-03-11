@@ -45,14 +45,14 @@ public class StarFuryProjContainer extends AbstractProjContainer {
 
 
     @Override
-    public Projectile getProjectile(Player player, ItemStack weapon) {
-        Projectile proj = ModEntities.STAR_FURY_PROJECTILE.get().create(player.level()).addKnockBack(knockBack).addAttackDamage(damage);
-        proj.setOwner(player);
+    public Projectile getProjectile(LivingEntity owner, ItemStack weapon) {
+        Projectile proj = ModEntities.STAR_FURY_PROJECTILE.get().create(owner.level()).addKnockBack(knockBack).addAttackDamage(damage);
+        proj.setOwner(owner);
         return proj;
     }
 
     @Override
-    public void genProjectile(Player owner, ItemStack weapon) {
+    public void genProjectile(LivingEntity owner, ItemStack weapon) {
         owner.level().playSound(null, owner.getX(), owner.getY(), owner.getZ(), getSound(), SoundSource.AMBIENT, 1.0F, 1.0F);
         Vec3 eye = owner.getEyePosition();
         LivingEntity target = getTargets(eye,eye.add(owner.getForward().normalize().scale(range)),owner.level(), owner);

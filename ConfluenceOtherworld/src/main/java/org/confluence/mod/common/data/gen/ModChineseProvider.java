@@ -2016,6 +2016,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeaponItems.WEATHER_PAIN.get(), "天候棒");
         add(ManaWeaponItems.AQUA_SCEPTER.get(), "海蓝权杖");
         add(ManaWeaponItems.FLOWER_OF_FIRE.get(), "火之花");
+        add(ManaWeaponItems.WATER_BOLT.get(), "水矢");
         /*
         add(ManaWeapons.MAGIC_MISSILE.get(), "魔法导弹");
         add(ManaWeapons.FLAMELASH.get(), "烈焰火鞭");

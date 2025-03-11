@@ -8,7 +8,7 @@ import org.joml.Vector3d;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StructureUtils {
+public final class StructureUtils {
     private static void boll8(BlockPos.MutableBlockPos posCheck, boolean replace, int x, int y, int z, int blockState, BlockPos centerPos, Object2IntMap<BlockPos> blockMap) {
         for (int i = 0; i < 8; i++) {
             posCheck.set(centerPos.getX() + (x * ((i < 4) ? 1 : -1)), centerPos.getY() + (y * ((i % 4 < 2) ? 1 : -1)), centerPos.getZ() + (z * ((i % 2 < 1) ? 1 : -1)));
@@ -231,8 +231,8 @@ public class StructureUtils {
 
     public static void lineSetEllipsoid(List<Vector3d> VctList, double radiusDX, double radiusDY, double radiusDZ, int blockstate, boolean replace, Object2IntMap<BlockPos> blockMap) {
         Vector3d posPoint;
-        for (int i = 0; i < VctList.size(); i++) {
-            posPoint = VctList.get(i);
+        for (Vector3d vector3d : VctList) {
+            posPoint = vector3d;
             ellipsoid(radiusDX, radiusDY, radiusDZ, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate, replace, blockMap);
         }
     }
@@ -248,8 +248,8 @@ public class StructureUtils {
 
     public static void lineSetEllipsoid(List<Vector3d> VctList, double radiusDX, double radiusDY, double radiusDZ, int blockstate, boolean replace, Object2IntMap<BlockPos> blockMap, float placePer, WorldgenRandom random) {
         Vector3d posPoint;
-        for (int i = 0; i < VctList.size(); i++) {
-            posPoint = VctList.get(i);
+        for (Vector3d vector3d : VctList) {
+            posPoint = vector3d;
             ellipsoid(radiusDX, radiusDY, radiusDZ, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate, replace, blockMap, placePer, random);
         }
     }

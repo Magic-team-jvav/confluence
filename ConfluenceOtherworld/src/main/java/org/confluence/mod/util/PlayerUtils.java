@@ -5,14 +5,17 @@ import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodData;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.Confluence;
@@ -34,6 +37,7 @@ import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
 import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.entity.ai.Boss;
+import oshi.hardware.platform.mac.MacHardwareAbstractionLayer;
 
 import java.util.List;
 import java.util.function.IntFunction;
@@ -354,5 +358,18 @@ public final class PlayerUtils {
         }
         if (min == max) return min;
         return player.getRandom().nextInt(Math.min(min, max), Math.max(min, max));
+    }
+
+    public static void hungerDelayed(Player player) {
+        if (player.hasEffect(ModEffects.HUNGER_DELAYED)) {
+            int effectLeave = player.getEffect(ModEffects.HUNGER_DELAYED).getAmplifier();
+            float exhaustionLevel = player.getFoodData().getExhaustionLevel();
+            if (effectLeave > 5) effectLeave = 5;
+            float reductionFactor = 1 - 0.2F * effectLeave;
+            float actualExhaustionReduction = Math.max(exhaustionLevel * reductionFactor, 0.0F);
+            exhaustionLevel = Math.max(exhaustionLevel - actualExhaustionReduction, 0.0F);
+            player.getFoodData().setExhaustion(exhaustionLevel);
+            player.sendSystemMessage(Component.literal("当前消耗度: " + exhaustionLevel));
+        }
     }
 }

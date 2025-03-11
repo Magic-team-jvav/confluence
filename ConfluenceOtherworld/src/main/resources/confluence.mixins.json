@@ -114,6 +114,7 @@
         "integration.jade.ObjectNameProvider$ForBlockMixin",
         "integration.jei.FurnaceFuelCategory$RecipeWidgetMixin",
         "integration.jei.ScreenHelperMixin",
+        "integration.journeymap.EffectMixin",
         "integration.patchouli.BookPageMixin",
         "integration.patchouli.GuiBookLandingMixin",
         "integration.ponder.PonderTooltipHandlerMixin",

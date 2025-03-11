@@ -177,6 +177,9 @@ dependencies {
     //runtimeOnly "curse.maven:advancement-plaques-499826:5905995"
     //runtimeOnly "curse.maven:iceberg-520110:6118329"
 
+    compileOnly "curse.maven:journeymap-32274:6213329"
+    //runtimeOnly "curse.maven:journeymap-32274:6213329"
+
     runtimeOnly "curse.maven:worldedit-225608:5830452"
     //runtimeOnly "curse.maven:ars-nouveau-401955:6228434"
     //runtimeOnly "curse.maven:carry-on-274259:5649344"

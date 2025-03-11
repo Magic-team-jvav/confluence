@@ -5,6 +5,8 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -12,6 +14,8 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.terraentity.entity.ai.Boss;
+import org.confluence.terraentity.entity.summon.ISummonMob;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,12 +83,12 @@ public class StarFuryProjContainer extends AbstractProjContainer {
     }
 
 
-    private LivingEntity getTargets(Vec3 ori, Vec3 end, Level level, Entity entity){
+    private LivingEntity getTargets(Vec3 ori, Vec3 end, Level level, Entity owner){
         //扩大包围盒
-        AABB range = entity.getBoundingBox().inflate(this.range);
+        AABB range = owner.getBoundingBox().inflate(this.range);
         List<HitResult> hits = new ArrayList<>();
         List<HitResult> subHits = new ArrayList<>();
-        List<? extends Entity> entities = level.getEntities(entity,range,entity1 -> entity1.isPickable() && entity1.isAlive());
+        List<? extends Entity> entities = level.getEntities(owner,range, entity1 -> entity1.isPickable() && entity1.isAlive());
         for(var e : entities){
             //获取视线交点
             Vec3 vec3 = e.getBoundingBox().clip(ori,end).orElse(null);
@@ -104,10 +108,15 @@ public class StarFuryProjContainer extends AbstractProjContainer {
         if(!hits.isEmpty()){
             //射线命中的目标 按距离排序
             hits.sort((o1,o2)->o1.getLocation().distanceToSqr(ori) < o2.getLocation().distanceToSqr(ori)?-1:1);
-            HitResult hitResult = hits.get(0);
-            if(hitResult instanceof  EntityHitResult entityHitResult &&
-                    entityHitResult.getEntity() instanceof LivingEntity livingEntity){
-                return livingEntity;
+            for(HitResult hitResult : hits) {
+                if (hitResult instanceof EntityHitResult entityHitResult &&
+                        (
+                                entityHitResult.getEntity() instanceof LivingEntity livingEntity &&
+                                livingEntity instanceof Enemy &&
+                                !(livingEntity instanceof ISummonMob<?>)
+                        )) {
+                    return livingEntity;
+                }
             }
         }else if(!subHits.isEmpty()){
             //未命中的目标 按距离排序

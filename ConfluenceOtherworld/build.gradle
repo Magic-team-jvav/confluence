@@ -186,11 +186,15 @@ dependencies {
     //runtimeOnly "curse.maven:spark-361579:6225208"
     //runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"
     //runtimeOnly "curse.maven:xaeros-world-map-317780:6212662"
+    compileOnly "curse.maven:touhou-little-maid-355044:6266244"
     runtimeOnly "curse.maven:touhou-little-maid-355044:6266244"
     //runtimeOnly "curse.maven:applied-energistics-2-223794:6237438" // requires guideme
     //runtimeOnly "curse.maven:guideme-1173950:6283609"
     //runtimeOnly "curse.maven:probejs-585406:5820894"
     runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
+
+
+
 }
 
 tasks.withType(ProcessResources).configureEach {

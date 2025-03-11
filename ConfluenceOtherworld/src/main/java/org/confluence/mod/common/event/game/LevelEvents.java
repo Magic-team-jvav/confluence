@@ -22,7 +22,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.data.saved.BrushData;
-import org.confluence.mod.common.entity.projectile.bomb.ScarabBombEntity;
+import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -38,7 +38,7 @@ import org.confluence.terra_curio.util.TCUtils;
 public final class LevelEvents {
     @SubscribeEvent
     public static void explosion$Detonate(ExplosionEvent.Detonate event) {
-        ScarabBombEntity.itemInvulnerableToExplosion(event.getExplosion().getDirectSourceEntity(), event.getAffectedEntities());
+        BaseBombEntity.itemInvulnerableToExplosion(event.getExplosion().getDirectSourceEntity(), event.getAffectedEntities());
         NoTraps.entityInvulnerableToExplosion(event.getLevel(), event.getAffectedEntities());
     }
 

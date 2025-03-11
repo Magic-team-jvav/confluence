@@ -20,10 +20,14 @@ jobs:
           distribution: "temurin"
           java-version: 21
           cache: "gradle"
+      - name: Generate assets
+        run: |
+          git submodule foreach '../gradlew runData'
+          cd ./ConfluenceOtherworld && ./gradlew runData
       - name: Build Confluence
         working-directory: ./ConfluenceOtherworld
         run: ./gradlew build
-      - name: Create Nightly Release
+      - name: Create nightly release
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}

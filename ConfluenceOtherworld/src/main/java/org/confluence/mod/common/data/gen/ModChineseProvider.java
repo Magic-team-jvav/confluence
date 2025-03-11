@@ -1852,6 +1852,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.TIMERS_BLOCK_1_4.get(), "1/4秒计时器");
         add(FunctionalBlocks.EVER_POWERED_RAIL.get(), "永久动力铁轨");
         add(FunctionalBlocks.SHARPENING_STATION.get(), "利器站");
+        add(FunctionalBlocks.SHARPENING_STATION.get(), "施法桌");
         add(FunctionalBlocks.AMMO_BOX.get(), "弹药箱");
         add(FunctionalBlocks.LIFE_CAMPFIRE.get(), "生命篝火");
         add(FunctionalBlocks.SILLY_BALLOON_MACHINE.get(), "呆萌气球机");
@@ -2604,6 +2605,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.OBSIDIAN_SKIN.get(), "黑曜石皮");
         add(ModEffects.HELLFIRE.get(), "狱炎");
         add(ModEffects.COZY_FIRE.get(), "温馨之火");
+        add(ModEffects.BEWITCHED.get(), "着魔");
 
         add(TooltipManager.prefix, "** 赞助者物品 **");
 

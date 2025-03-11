@@ -3,7 +3,6 @@ package org.confluence.mod.common.worldgen.structure;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
@@ -19,7 +18,6 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.util.ModUtils;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
@@ -69,11 +67,9 @@ public class GridPiece extends StructurePiece {
         blockMap.object2IntEntrySet().removeIf(posEntry -> level.setBlock(posEntry.getKey(), blockList.get(posEntry.getIntValue()), 2));
     }
 
-    public static @NotNull Map<ChunkPos, Object2IntMap<BlockPos>> sliceChunks(Object2IntMap<BlockPos> blockMap, ChunkPos startChunk) {
+    public static Map<ChunkPos, Object2IntMap<BlockPos>> sliceChunks(Object2IntMap<BlockPos> blockMap, ChunkPos startChunk) {
         Map<ChunkPos, Object2IntMap<BlockPos>> gridMap = new HashMap<>();
-        ObjectIterator<Object2IntMap.Entry<BlockPos>> iterator = blockMap.object2IntEntrySet().iterator();
-        while (iterator.hasNext()) {
-            Object2IntMap.Entry<BlockPos> posEntry = iterator.next();
+        for (Object2IntMap.Entry<BlockPos> posEntry : blockMap.object2IntEntrySet()) {
             BlockPos blockPos = posEntry.getKey();
             int cx = SectionPos.blockToSectionCoord(blockPos.getX());
             int cz = SectionPos.blockToSectionCoord(blockPos.getZ());
@@ -81,7 +77,6 @@ public class GridPiece extends StructurePiece {
             int regionZ = (cz - startChunk.z + 1) / 3;
 
             gridMap.computeIfAbsent(new ChunkPos(cx + regionX, cz + regionZ), map -> new Object2IntOpenHashMap<>()).put(blockPos, posEntry.getIntValue());
-            iterator.remove();
         }
         return gridMap;
     }

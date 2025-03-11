@@ -1,6 +1,28 @@
 {
     "type": "neoforge:add_features",
-    "biomes": "#minecraft:is_overworld",
+    "biomes": [
+        "minecraft:birch_forest",
+        "minecraft:cherry_grove",
+        "minecraft:dark_forest",
+        "minecraft:flower_forest",
+        "minecraft:forest",
+        "minecraft:mangrove_swamp",
+        "minecraft:old_growth_birch_forest",
+        "minecraft:old_growth_spruce_taiga",
+        "minecraft:river",
+        "minecraft:plains",
+        "minecraft:savanna",
+        "minecraft:savanna_plateau",
+        "minecraft:stony_peaks",
+        "minecraft:stony_shore",
+        "minecraft:sunflower_plains",
+        "minecraft:taiga",
+        "minecraft:windswept_forest",
+        "minecraft:windswept_gravelly_hills",
+        "minecraft:windswept_hills",
+        "minecraft:windswept_savanna",
+        "minecraft:old_growth_pine_taiga"
+    ],
     "features": [
         "confluence:ruby_tree",
         "confluence:amber_tree",
@@ -10,5 +32,5 @@
         "confluence:sapphire_tree",
         "confluence:diamond_tree"
     ],
-    "step": "vegetal_decoration"
+    "step": "underground_decoration"
 }

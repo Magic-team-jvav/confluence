@@ -71,7 +71,7 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
                 OpenSelectionsScreenPacketS2C.sendToClient(serverPlayer, new Component[]{
                         getMessage(pos1),
                         getMessage(pos2)
-                }, new Boolean[]{
+                }, new boolean[]{
                         pos1.isPresent(),
                         pos2.isPresent()
                 });

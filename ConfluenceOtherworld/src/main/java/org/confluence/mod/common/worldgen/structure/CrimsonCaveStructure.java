@@ -1,19 +1,27 @@
 package org.confluence.mod.common.worldgen.structure;
 
 import com.google.common.collect.Lists;
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.worldgen.BannedBiomeMultiNoiseBiomeSource;
+import org.confluence.mod.mixed.IMultiNoiseBiomeSource;
 import org.confluence.mod.util.VectorUtils;
 import org.joml.Vector3d;
 
@@ -34,6 +42,18 @@ public class CrimsonCaveStructure extends Structure {
 
     @Override
     protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
+        if (context.chunkGenerator().getBiomeSource() instanceof MultiNoiseBiomeSource multi) {
+            if (multi instanceof BannedBiomeMultiNoiseBiomeSource banned) {
+                if (banned.getBannedBiome() == ModBiomes.TR_CRIMSON) {
+                    return Optional.empty();
+                }
+            } else {
+                Pair<Holder<Biome>, Holder<Biome>> pair = ((IMultiNoiseBiomeSource) multi).confluence$getBiomePair();
+                if (pair != null && pair.getFirst().is(ModBiomes.TR_CRIMSON)) {
+                    return Optional.empty();
+                }
+            }
+        }
         int lowestY = getLowestY(context, 16, 16);
         if (lowestY < context.chunkGenerator().getSeaLevel() - 16) {
             return Optional.empty();
@@ -63,8 +83,8 @@ public class CrimsonCaveStructure extends Structure {
             Vector3d posPoint;
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
 
-            boll(radius, 2, centerPos, blockMap, 0.05F, random);
-            boll(radiusEnd, 4, endPos, blockMap, 0.01F, random);
+            boll(radius, 2, centerPos, blockMap, 0.05F, random, 1, 0);
+            boll(radiusEnd, 4, endPos, blockMap, 0.01F, random, 1, 0);
             for (int i = 0; i < layer0; i++) {
                 posPoint = new Vector3d((i == 0) ? xStart : (xStart + i * xDis + random.nextInt(-20, 21)), yStart + i * yDis, (i == 0) ? zStart : (zStart + i * zDis + random.nextInt(-20, 21)));
                 VctList.add(posPoint);
@@ -95,16 +115,18 @@ public class CrimsonCaveStructure extends Structure {
                 blockMap.put(pos, 2);
             }
 
+            List<BlockState> blockList = Lists.newArrayList(
+                    Blocks.AIR.defaultBlockState(),
+                    NatureBlocks.TR_CRIMSON_STONE.get().defaultBlockState(),
+                    NatureBlocks.CRIMSON_HEART.get().defaultBlockState()
+            );
             Map<ChunkPos, Object2IntMap<BlockPos>> gridMap = GridPiece.sliceChunks(blockMap, startChunk);
             for (Map.Entry<ChunkPos, Object2IntMap<BlockPos>> entry : gridMap.entrySet()) {
                 GridPiece piece = new GridPiece(entry.getKey(), lowestY, entry.getValue());
-                piece.blockList = Lists.newLinkedList(List.of(
-                        Blocks.AIR.defaultBlockState(),
-                        NatureBlocks.TR_CRIMSON_STONE.get().defaultBlockState(),
-                        NatureBlocks.CRIMSON_HEART.get().defaultBlockState()
-                ));
+                piece.blockList = blockList;
                 builder.addPiece(piece);
             }
+            //builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "test", startChunk.getMiddleBlockPosition(-40), false, true, Rotation.NONE));
         });
     }
 

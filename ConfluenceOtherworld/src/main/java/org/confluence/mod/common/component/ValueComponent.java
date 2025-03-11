@@ -1,0 +1,45 @@
+package org.confluence.mod.common.component;
+
+import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.item.ItemStack;
+import org.confluence.mod.common.init.ModDataComponentTypes;
+import org.confluence.mod.common.init.ModDataMaps;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+public record ValueComponent(int value) implements DataComponentType<ValueComponent> {
+    public static final Codec<ValueComponent> CODEC = Codec.INT.xmap(ValueComponent::new, ValueComponent::value);
+    public static final StreamCodec<ByteBuf, ValueComponent> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.INT, ValueComponent::value,
+            ValueComponent::new
+    );
+
+    @Override
+    public @Nullable Codec<ValueComponent> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, ValueComponent> streamCodec() {
+        return STREAM_CODEC;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof ValueComponent(int value1) && value1 == value;
+    }
+
+    public static int getValue(ItemStack itemStack) {
+        ValueComponent value = itemStack.get(ModDataComponentTypes.VALUE);
+        if (value == null) {
+            value = itemStack.getItemHolder().getData(ModDataMaps.VALUE);
+            return value == null ? 5000 : value.value();
+        }
+        return value.value();
+    }
+}

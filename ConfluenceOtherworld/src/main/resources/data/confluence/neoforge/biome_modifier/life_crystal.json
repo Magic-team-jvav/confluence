@@ -2,5 +2,5 @@
     "type": "neoforge:add_features",
     "biomes": "#minecraft:is_overworld",
     "features": "confluence:life_crystal",
-    "step": "vegetal_decoration"
+    "step": "underground_decoration"
 }

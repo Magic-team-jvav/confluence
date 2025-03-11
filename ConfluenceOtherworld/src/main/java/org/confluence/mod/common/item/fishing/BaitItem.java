@@ -16,7 +16,7 @@ public class BaitItem extends Item implements IBait {
     private final float bonus;
 
     public BaitItem(ModRarity rarity, float bonus) {
-        super(new Properties().component(TCDataComponentTypes.MOD_RARITY, rarity));
+        super(new Properties().component(TCDataComponentTypes.MOD_RARITY, rarity).stacksTo(9999));
         this.bonus = bonus;
     }
 

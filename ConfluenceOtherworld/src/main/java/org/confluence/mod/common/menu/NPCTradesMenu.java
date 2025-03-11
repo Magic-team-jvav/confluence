@@ -12,18 +12,22 @@ import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.mixed.IPlayer;
 import org.confluence.mod.network.c2s.NPCShopPacket;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class NPCTradesMenu extends AbstractContainerMenu {
     private final SimpleContainer container;
     public NPCTrades NPCTrades;
     public int selectedMerchantIndex = -1;
+    public boolean forge;
 
     public NPCTradesMenu(int containerId, Inventory playerInventory) {
-        this(containerId, playerInventory, null);
+        this(containerId, playerInventory, null, false);
+
     }
 
-    public NPCTradesMenu(int containerId, Inventory playerInventory, NPCTrades NPCTrades) {
-        super(ModMenuTypes.DAVE_TRADES_MENU.get(), containerId);
+    public NPCTradesMenu(int containerId, Inventory playerInventory, @Nullable NPCTrades NPCTrades, boolean forge) {
+        super(ModMenuTypes.MAID_TRADES_MENU.get(), containerId);
+        this.forge = forge;
         this.NPCTrades = NPCTrades;
         if(NPCTrades == null) this.NPCTrades = ((IPlayer)playerInventory.player).rhyme$getDaveTrades();
 
@@ -38,7 +42,6 @@ public class NPCTradesMenu extends AbstractContainerMenu {
                 var d  = ((IPlayer)playerInventory.player).rhyme$getDaveTrades();
                 if(selectedMerchantIndex >= 0 && selectedMerchantIndex < d.trades().size()){
                     PacketDistributor.sendToServer(new NPCShopPacket(d.trades().get(selectedMerchantIndex)));
-
                 }
                 super.onTake(player, stack);
             }

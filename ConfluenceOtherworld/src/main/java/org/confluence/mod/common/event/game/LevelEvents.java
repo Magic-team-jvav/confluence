@@ -19,6 +19,7 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ChunkWatchEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.entity.projectile.bomb.ScarabBombEntity;
@@ -29,6 +30,7 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
+import org.confluence.mod.integration.carryon.CarryOnHelper;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -73,8 +75,19 @@ public final class LevelEvents {
     @SubscribeEvent
     public static void block$Break(BlockEvent.BreakEvent event) {
         if (event.isCanceled() || !(event.getPlayer() instanceof ServerPlayer serverPlayer)) return;
-
         BlockState blockState = event.getState();
+
+        if (CarryOnHelper.shouldDeny(blockState)) {
+            event.setCanceled(true);
+            return;
+        }
+
+        if (blockState.getBlock() instanceof AltarBlock && !serverPlayer.getMainHandItem().is(ModTags.Items.ABLE_TO_DESTROY_ALTAR)) {
+            serverPlayer.hurt(serverPlayer.damageSources().fellOutOfWorld(), serverPlayer.getMaxHealth() / 2);
+            event.setCanceled(true);
+            return;
+        }
+
         BlockPos pos = event.getPos();
         NoTraps.dropBombWhenLeavesDestroy(serverPlayer, blockState, pos);
         BoulderWorld.createBoulderWhenBlockDestroy(serverPlayer, blockState, pos);

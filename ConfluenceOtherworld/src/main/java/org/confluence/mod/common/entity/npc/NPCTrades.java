@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -31,8 +32,24 @@ public record NPCTrades(List<Trade> trades) {
             Trade.LIST_STREAM_CODEC, NPCTrades::trades,
             NPCTrades::new
     );
+
+    public static final Codec<Map<ResourceLocation,NPCTrades>> MAP_CODEC = Codec.unboundedMap(ResourceLocation.CODEC, CODEC);
+    public static final StreamCodec<ByteBuf, Map<ResourceLocation, NPCTrades>> MAP_STREAM_CODEC = ByteBufCodecs.fromCodec(MAP_CODEC);
+
     private static final Map<ResourceLocation, NPCTrades> TRADE_MAP = new HashMap<>();
 
+    public static void reset(Map<ResourceLocation, NPCTrades> tradeMap){
+        TRADE_MAP.clear();
+        TRADE_MAP.putAll(tradeMap);
+    }
+
+    public static Map<ResourceLocation, NPCTrades> getTradeMap() {
+        return TRADE_MAP;
+    }
+    /**
+     * 获取NPC商店的交易列表
+     * @param id 注册交易表的实体type
+     */
     public static NPCTrades getTrade(ResourceLocation id) {
         return TRADE_MAP.get(id);
     }

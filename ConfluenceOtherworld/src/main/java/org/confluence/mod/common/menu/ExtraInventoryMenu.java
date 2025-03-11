@@ -4,6 +4,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
@@ -21,8 +23,8 @@ import java.util.Optional;
 import static org.confluence.mod.common.attachment.ExtraInventory.*;
 
 public class ExtraInventoryMenu extends AbstractContainerMenu {
-    private final ExtraInventory extraInventory;
-    private final int invStart;
+    public final ExtraInventory extraInventory;
+    public final int invStart;
     private final int hotBar;
     private final int invEnd;
 
@@ -32,7 +34,7 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
         this.extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
         int count = extraInventory.getContainerSize();
         for (int i = 0; i < count; i++) {
-            if (i < COINS_START) {
+            if (i < COINS_START) { // 0, 1, 2, 3
                 addSlot(new ToggleSlot(extraInventory, i, 8, i * 18 + 8) { // vanity armor
                     @Override
                     public boolean mayPlace(ItemStack stack) {
@@ -47,21 +49,21 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                         return false;
                     }
                 });
-            } else if (i < AMMO_START) {
+            } else if (i < AMMO_START) { // 4, 5, 6 ,7
                 addSlot(new Slot(extraInventory, i, 81, (i - COINS_START) * 18 + 8) { // coins
                     @Override
                     public boolean mayPlace(ItemStack stack) {
                         return stack.is(ModTags.Items.COINS);
                     }
                 });
-            } else if (i < EQUIPMENT_START) {
+            } else if (i < EQUIPMENT_START) { // 8, 9, 10, 11
                 addSlot(new Slot(extraInventory, i, 99, (i - AMMO_START) * 18 + 8) { // ammo
                     @Override
                     public boolean mayPlace(ItemStack stack) {
                         return stack.is(ModTags.Items.AMMO);
                     }
                 });
-            } else if (i < DYE_START) {
+            } else if (i < TRASH_START) { // 12, 13, 14, 15
                 addSlot(new ToggleSlot(extraInventory, i, 121, (i - EQUIPMENT_START) * 18 + 8) { // equipment
                     @Override
                     public boolean mayPlace(ItemStack stack) {
@@ -73,6 +75,8 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                         });
                     }
                 });
+            } else if (i < DYE_START) { // 16
+                addSlot(new Slot(extraInventory, i, 152, 166));
             } else {
                 addSlot(getDyeSlot(i));
             }
@@ -124,10 +128,6 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
         return slot;
     }
 
-    public ExtraInventory getExtraInventory() {
-        return extraInventory;
-    }
-
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
@@ -163,6 +163,33 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
         }
 
         return itemstack;
+    }
+
+    @Override
+    public void clicked(int slotId, int button, ClickType clickType, Player player) {
+        if (slotId == TRASH_START) {
+            Slot slot = slots.get(slotId);
+            ItemStack carried = getCarried();
+            ItemStack slotItem = slot.getItem();
+            if (carried.isEmpty()) {
+                ClickAction clickaction = button == 0 ? ClickAction.PRIMARY : ClickAction.SECONDARY;
+                int j3 = clickaction == ClickAction.PRIMARY ? slotItem.getCount() : (slotItem.getCount() + 1) / 2;
+                Optional<ItemStack> optional = slot.tryRemove(j3, Integer.MAX_VALUE, player);
+                if (optional.isPresent()) {
+                    ItemStack itemStack = optional.get();
+                    setCarried(itemStack);
+                    slot.onTake(player, itemStack);
+                }
+            } else if (ItemStack.isSameItemSameComponents(carried, slotItem)) {
+                slotItem.grow(Math.min(slot.getMaxStackSize(slotItem) - slotItem.getCount(), carried.getCount()));
+                setCarried(ItemStack.EMPTY);
+            } else {
+                slot.setByPlayer(carried);
+                setCarried(ItemStack.EMPTY);
+            }
+        } else {
+            super.clicked(slotId, button, clickType, player);
+        }
     }
 
     @Override

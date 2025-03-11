@@ -40,14 +40,14 @@ public class AlchemyTableMenu extends AbstractContainerMenu {
     public final AlchemyTableRecipe.Input input = new AlchemyTableRecipe.Input(this);
     public final ResultContainer result = new ResultContainer();
 
-    public AlchemyTableMenu(int pContainerId, Inventory inventory) {
-        this(pContainerId, inventory, ContainerLevelAccess.NULL);
+    public AlchemyTableMenu(int containerId, Inventory inventory) {
+        this(containerId, inventory, ContainerLevelAccess.NULL);
     }
 
-    public AlchemyTableMenu(int pContainerId, Inventory pPlayerInventory, ContainerLevelAccess pAccess) {
-        super(ModMenuTypes.ALCHEMY_TABLE.get(), pContainerId);
-        this.player = pPlayerInventory.player;
-        this.access = pAccess;
+    public AlchemyTableMenu(int containerId, Inventory inventory, ContainerLevelAccess access) {
+        super(ModMenuTypes.ALCHEMY_TABLE.get(), containerId);
+        this.player = inventory.player;
+        this.access = access;
 
         addSlot(new ResultSlot(input, result, 0, 80, 62));
         addSlot(new Slot(input, 0, 80, 17)); // 基底药水
@@ -58,11 +58,11 @@ public class AlchemyTableMenu extends AbstractContainerMenu {
 
         for (int k = 0; k < 3; k++) {
             for (int l = 0; l < 9; l++) {
-                addSlot(new Slot(pPlayerInventory, l + k * 9 + 9, 8 + l * 18, 84 + k * 18));
+                addSlot(new Slot(inventory, l + k * 9 + 9, 8 + l * 18, 84 + k * 18));
             }
         }
         for (int m = 0; m < 9; m++) {
-            addSlot(new Slot(pPlayerInventory, m, 8 + m * 18, 142));
+            addSlot(new Slot(inventory, m, 8 + m * 18, 142));
         }
     }
 

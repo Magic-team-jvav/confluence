@@ -38,6 +38,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.HARDENED_SAND_BLOCK.get(),
                 NatureBlocks.RED_HARDENED_SAND_BLOCK.get()
         );
+        tag(ModTags.Blocks.SLUSH_REPLACEMENT).add(
+                Blocks.PACKED_ICE,
+                Blocks.SNOW_BLOCK
+        );
         tag(BlockTags.ANVIL).add(
                 FunctionalBlocks.LEAD_ANVIL.get(),
                 FunctionalBlocks.CHIPPED_LEAD_ANVIL.get(),
@@ -191,6 +195,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DecorativeBlocks.SUN_PLATE_STAIRS.get(),
                 DecorativeBlocks.SKYWARE_DOOR.get(),
                 DecorativeBlocks.SKYWARE_GLASS_DOOR.get(),
+                DecorativeBlocks.DISC_BLOCK.get(),
                 DecorativeBlocks.TR_LAVA_BRICKS.get(),
                 DecorativeBlocks.TR_OBSIDIAN_BRICKS.get(),
                 DecorativeBlocks.OBSIDIAN_BRICKS_SLAB.get(),
@@ -252,7 +257,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 FunctionalBlocks.TIMERS_BLOCK_1_4.get(),
                 FunctionalBlocks.EVER_POWERED_RAIL.get(),
                 FunctionalBlocks.SILLY_BALLOON_MACHINE.get(),
-                FunctionalBlocks.BASE_CHEST_BLOCK.get()
+                FunctionalBlocks.BASE_CHEST_BLOCK.get(),
+                NatureBlocks.JUNGLE_HIVE_BLOCK.get()
         );
         // 铲子
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithShovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);
@@ -379,6 +385,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DecorativeBlocks.SUN_PLATE_SLAB.get(),
                 DecorativeBlocks.SUN_PLATE_STAIRS.get(),
                 DecorativeBlocks.SKYWARE_DOOR.get(),
+                DecorativeBlocks.DISC_BLOCK.get(),
                 DecorativeBlocks.SKYWARE_GLASS_DOOR.get(),
                 DecorativeBlocks.TR_LAVA_BRICKS.get(),
                 DecorativeBlocks.TR_OBSIDIAN_BRICKS.get(),
@@ -589,7 +596,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         );
         tag(ModTags.Blocks.MINEABLE_WITH_HAMMER).addTag(BlockTags.WALLS).addTag(BlockTags.PLANKS).addTag(BlockTags.STONE_BRICKS).add(
                 NatureBlocks.SHADOW_ORB.get(),
-                NatureBlocks.CRIMSON_HEART.get()
+                NatureBlocks.CRIMSON_HEART.get(),
+                FunctionalBlocks.DEMON_ALTAR.get(),
+                FunctionalBlocks.CRIMSON_ALTAR.get()
         );
         // neoforge标签
         tag(Tags.Blocks.NEEDS_NETHERITE_TOOL).add(

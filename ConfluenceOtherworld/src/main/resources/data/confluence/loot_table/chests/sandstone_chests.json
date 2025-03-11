@@ -83,7 +83,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:scaffolding",
+          "name": "confluence:rope",
           "functions": [
             {
               "function": "set_count",
@@ -129,8 +129,8 @@
               "function": "set_count",
               "count": {
                 "type": "uniform",
-                "min": 50,
-                "max": 89
+                "min": 4,
+                "max": 7
               }
             }
           ],
@@ -414,8 +414,8 @@
               "function": "set_count",
               "count": {
                 "type": "uniform",
-                "min": 5,
-                "max": 8
+                "min": 50,
+                "max": 89
               }
             }
           ],

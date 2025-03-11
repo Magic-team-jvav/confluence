@@ -96,7 +96,9 @@ public class TreasureBagItem extends CustomRarityItem {
     public static void createItemEntity(LivingEntity living, ServerPlayer owner) {
         ItemStack itemStack = getTreasureBag(living);
         if (itemStack != null) {
-            living.level().addFreshEntity(new TreasureBagItemEntity(living.level(), living.position(), itemStack, owner));
+            TreasureBagItemEntity entity = new TreasureBagItemEntity(living.level(), living.position(), itemStack, owner);
+            entity.setGlowingTag(true);
+            living.level().addFreshEntity(entity);
         }
     }
 }

@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
@@ -64,6 +65,7 @@ public abstract class InventoryMixin {
                 cir.setReturnValue(true);
             }
         } else if (stack.is(ModTags.Items.AMMO)) {
+            if (stack.is(MaterialItems.FALLING_STAR.get())) return;
             ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
             if (confluence$insert2Extra(AMMO_START, SIZE_AMMO, extraInventory, stack, extraInventory2 -> {})) {
                 cir.setReturnValue(true);

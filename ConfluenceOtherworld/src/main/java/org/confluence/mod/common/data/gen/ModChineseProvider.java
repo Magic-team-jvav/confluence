@@ -3,6 +3,7 @@ package org.confluence.mod.common.data.gen;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.gui.TooltipManager;
 import org.confluence.mod.common.init.ModEffectStrategies;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
@@ -19,6 +20,7 @@ public class ModChineseProvider extends LanguageProvider {
     @Override
     protected void addTranslations() {
         add("config.jade.plugin_confluence.jade_network_component", "机械信息");
+        add("config.jade.plugin_confluence.jade_ponder_component", "思索信息");
 
         add("creativetab.confluence.building_blocks", "汇流来世 | 建筑方块");
         add("creativetab.confluence.natural_blocks", "汇流来世 | 自然方块");
@@ -299,8 +301,15 @@ public class ModChineseProvider extends LanguageProvider {
         add("jei.tooltip.item.confluence.celestial_starboard.0", "在普通模式或更高难度下，击败月球领主获得。");
 
 
+        add("confluence.configuration.achievementToast", "启用泰拉样式成就");
+        add("confluence.configuration.achievementToast.tooltip", "如果想使用原版样式进度的话就关闭它");
         add("confluence.configuration.dropsMoney", "钱币掉落");
-        add("confluence.configuration.dropsMoney.tooltip", "启用时，你的钱币死亡后会掉落");
+        add("confluence.configuration.dropsMoney.tooltip", "启用时，生物死亡后会掉落钱币");
+        add("confluence.configuration.Paints", "油漆功能设置");
+        add("confluence.configuration.Paints.tooltip", "部分兼容问题可能由油漆功能引发，因此你需要在此调整相关选项");
+        add("confluence.configuration.Paints.button", "关于油漆");
+        add("confluence.configuration.paintsReplaceTexture", "油漆替换贴图");
+        add("confluence.configuration.paintsReplaceTexture.tooltip", "开启时，油漆将使用替换灰度图贴图，在材质上的表现会更自然");
         add("confluence.configuration.autoStackGelsColor", "自动合并凝胶");
         add("confluence.configuration.autoStackGelsColor.tooltip", "启用时，你拾取的不同颜色的凝胶会合并堆叠");
         add("confluence.configuration.bannedModForPaints", "模组油漆使用黑名单");
@@ -310,8 +319,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.fletchingMenu.tooltip", "启用时，将使用汇流来世的修改制箭台");
         add("confluence.configuration.shimmer_decompose", "微光分解");
         add("confluence.configuration.shimmer_decompose.tooltip", "启用时，微光液体能将物品分解为原材料");
-        add("confluence.configuration.fallingStarFrequency", "坠星频率");
-        add("confluence.configuration.fallingStarFrequency.tooltip", "定义夜晚中坠星的生成频率");
+        add("confluence.configuration.fallingStarInterval", "坠星间隔");
+        add("confluence.configuration.fallingStarInterval.tooltip", "定义夜晚中坠星的生成间隔");
         add("confluence.configuration.returnPotionGlassBottle", "返还药水瓶");
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "决定你使用药水后是否返还瓶子");
         add("confluence.configuration.defaultRespawnTimeMin", "默认最小重生时间");
@@ -356,7 +365,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.goreEffect.all", "所有生物");
         add("confluence.configuration.goreEffect.tooltip", "肢解效果会对汇流生物和原版生物特别适配，其他Mod的生物使用通用的方法，不保证效果。");
         add("confluence.configuration.damageIndicator", "伤害数值显示");
+        add("confluence.configuration.healIndicator", "治疗数值显示");
         add("confluence.configuration.damageIndicator.tooltip", "启用以观察伤害数值");
+        add("confluence.configuration.healIndicator.tooltip", "启用以观察治疗数值");
         add("confluence.configuration.Gameplay", "游戏机制");
         add("confluence.configuration.Gameplay.button", "游戏机制定义");
         add("confluence.configuration.Gameplay.tooltip", "一些游戏机制可以由你决定");
@@ -675,6 +686,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("condition.confluence.requires_fuel", "需要燃料");
         add("container.confluence.fletching_table", "制箭台");
         add("title.confluence.fletching_table", "制箭台");
+        add("title.confluence.touhoulittlemaid", "女仆特供");
+        add("title.confluence.npc_trade", "汇流商店");
+
 
         add("block.confluence.base_chest_block.locked_golden", "§r上锁的金箱");
         add("block.confluence.base_chest_block.unlocked_golden", "§r金箱");
@@ -694,6 +708,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("block.confluence.base_chest_block.death_normal", "§r死人木箱");
         add("block.confluence.base_chest_block.unlocked_sandstone", "§r砂岩箱");
         add("block.confluence.base_chest_block.death_sandstone", "§r死人砂岩箱");
+        add("block.confluence.base_chest_block.unlocked_living_wood", "§r生命木箱");
+        add("block.confluence.base_chest_block.death_living_wood", "§r死人生命木箱");
 
 
         add("resourcepack.terraria_art", "泰拉艺术");
@@ -1628,13 +1644,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.VOLCANO.get(), "火山");
         add(SwordItems.DEVELOPER_SWORD.get(), "开发者剑");
         // 光剑
-        add(SwordItems.RED_LIGHT_SABER.get(), "陨石红光剑");
-        add(SwordItems.ORANGE_LIGHT_SABER.get(), "陨石橙光剑");
-        add(SwordItems.YELLOW_LIGHT_SABER.get(), "陨石黄光剑");
-        add(SwordItems.GREEN_LIGHT_SABER.get(), "陨石绿光剑");
-        add(SwordItems.BLUE_LIGHT_SABER.get(), "陨石蓝光剑");
-        add(SwordItems.PURPLE_LIGHT_SABER.get(), "陨石紫光剑");
-        add(SwordItems.WHITE_LIGHT_SABER.get(), "陨石白光剑");
+        add(SwordItems.RED_LIGHT_SABER.get(), "红陨石光剑");
+        add(SwordItems.ORANGE_LIGHT_SABER.get(), "橙陨石光剑");
+        add(SwordItems.YELLOW_LIGHT_SABER.get(), "黄陨石光剑");
+        add(SwordItems.GREEN_LIGHT_SABER.get(), "绿陨石光剑");
+        add(SwordItems.BLUE_LIGHT_SABER.get(), "蓝陨石光剑");
+        add(SwordItems.PURPLE_LIGHT_SABER.get(), "紫陨石光剑");
+        add(SwordItems.WHITE_LIGHT_SABER.get(), "白陨石光剑");
         //剑气
         add(SwordItems.ENCHANTED_SWORD.get(), "附魔剑");
         //快攻
@@ -1815,7 +1831,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.HALLOW_CATTAILS.get(), "神圣香蒲");
         add(ModItems.EBONY_CATTAILS.get(), "腐化香蒲");
         add(ModItems.TR_CRIMSON_CATTAILS.get(), "猩红香蒲");
-
+        add(ModItems.LIVING_WOOD_WAND.get(), "生命木魔棒");
+        add(ModItems.LEAVES_WAND.get(), "树叶魔棒");
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");
         add(FunctionalBlocks.NORMAL_BOULDER.get(), "巨石");
@@ -2058,7 +2075,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(BowItems.DEVELOPER_BOW.get(), "开发者弓");
 
 
-
         // 盔甲
         add(ArmorItems.CACTUS_CHESTPLATE.get(), "仙人掌胸甲");
         add(ArmorItems.CACTUS_HELMET.get(), "仙人掌头盔");
@@ -2246,7 +2262,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.STAR_FRUIT.get(), "杨桃");
         add(FoodItems.POMEGRANATE.get(), "番石榴");
         add(FoodItems.RAMBUTAN.get(), "红毛丹");
-        add(FoodItems.PEELED_SUGAR_TANGERINE.get(), "拨开的砂糖桔");
+        add(FoodItems.PEELED_SUGAR_TANGERINE.get(), "拨开的砂糖橘");
         add(FoodItems.COOKED_SHRIMP.get(), "熟虾");
         add(FoodItems.ESCARGOT.get(), "法式蜗牛");
         add(FoodItems.FROGGLE_BUNWICH.get(), "面包夹田鸡");
@@ -2541,7 +2557,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(VanityArmorItems.BROWN_DYE.get(), "棕染料");
 
         // 药水效果
-        add(ModEffects.MANA_SICKNESS.get(), "魔力病");
+        add(ModEffects.MANA_SICKNESS.get(), "耐魔性");
         add(ModEffects.SHINE.get(), "发光");
         add(ModEffects.SHIMMER.get(), "闪烁");
         add(ModEffects.EXQUISITELY_STUFFED.get(), "膳食");
@@ -2585,6 +2601,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.ARCHERY.get(), "箭术");
         add(ModEffects.HEART_REACH.get(), "拾心");
         add(ModEffects.OBSIDIAN_SKIN.get(), "黑曜石皮");
+        add(ModEffects.HELLFIRE.get(), "狱炎");
+        add(ModEffects.COZY_FIRE.get(), "温馨之火");
+
+        add(TooltipManager.prefix, "** 赞助者物品 **");
+
 
         ModEffectStrategies.EFFECT_STRATEGY.getEntries().forEach(strategy -> add(strategy.get().getTranslationKey(), strategy.get().getDescription_zh_cn()));
     }

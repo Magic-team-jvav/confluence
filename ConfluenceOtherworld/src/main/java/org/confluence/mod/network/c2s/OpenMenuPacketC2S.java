@@ -17,12 +17,18 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.menu.ExtraInventoryMenu;
+import org.confluence.mod.common.menu.NPCReforgeMenu;
+import org.confluence.mod.common.menu.NPCTradesMenu;
 import top.theillusivec4.curios.common.network.server.SPacketGrabbedItem;
 
 public record OpenMenuPacketC2S(int menuId, ItemStack stack) implements CustomPacketPayload {
     public static final int EXTRA_INVENTORY = 0;
+    public static final int NPC_TRADE_MENU = 1;
+    public static final int NPC_REFORGE_MENU = 2;
     private static final Object2ObjectMap<Integer, Tuple<MenuConstructor, Component>> MENU_TYPES = Util.make(new Object2ObjectOpenHashMap<>(), map -> {
         map.put(EXTRA_INVENTORY, new Tuple<>((containerId, playerInventory, player) -> new ExtraInventoryMenu(containerId, playerInventory), Component.empty()));
+        map.put(NPC_TRADE_MENU, new Tuple<>((containerId, playerInventory, player) -> new NPCTradesMenu(containerId, playerInventory), Component.translatable("title.confluence.touhoulittlemaid")));
+        map.put(NPC_REFORGE_MENU, new Tuple<>((containerId, playerInventory, player) -> new NPCReforgeMenu(containerId, playerInventory), Component.empty()));
     });
     public static final Type<OpenMenuPacketC2S> TYPE = new Type<>(Confluence.asResource("open_menu"));
     public static final StreamCodec<RegistryFriendlyByteBuf, OpenMenuPacketC2S> STREAM_CODEC = StreamCodec.composite(
@@ -41,12 +47,12 @@ public record OpenMenuPacketC2S(int menuId, ItemStack stack) implements CustomPa
             if (context.player() instanceof ServerPlayer serverPlayer) {
                 Tuple<MenuConstructor, Component> tuple = MENU_TYPES.get(menuId);
                 if (tuple != null) {
-                    ItemStack stack = serverPlayer.isCreative() ? stack() : serverPlayer.containerMenu.getCarried();
+                    ItemStack itemStack = serverPlayer.isCreative() ? stack : serverPlayer.containerMenu.getCarried();
                     serverPlayer.containerMenu.setCarried(ItemStack.EMPTY);
                     serverPlayer.openMenu(new SimpleMenuProvider(tuple.getA(), tuple.getB()));
-                    if (!stack.isEmpty()) {
-                        serverPlayer.containerMenu.setCarried(stack);
-                        PacketDistributor.sendToPlayer(serverPlayer, new SPacketGrabbedItem(stack));
+                    if (!itemStack.isEmpty()) {
+                        serverPlayer.containerMenu.setCarried(itemStack);
+                        PacketDistributor.sendToPlayer(serverPlayer, new SPacketGrabbedItem(itemStack));
                     }
                 }
             }

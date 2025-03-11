@@ -64,10 +64,10 @@ public class PotionItems {
     public static final DeferredItem<AbstractPotionItem> TITAN_POTION = ITEMS.register("titan_potion", () -> new EffectPotionItem(ModEffects.TITAN, 9600));
     public static final DeferredItem<AbstractPotionItem> WATER_WALKING_POTION = ITEMS.register("water_walking_potion", () -> new EffectPotionItem(ModEffects.WATER_WALKING, 12000));
     public static final DeferredItem<AbstractPotionItem> WRATH_POTION = ITEMS.register("wrath_potion", () -> new EffectPotionItem(ModEffects.WRATH, 4800));
-    public static final DeferredItem<AbstractPotionItem> LESSER_HEALING_POTION = ITEMS.register("lesser_healing_potion", () -> new HealingPotionItem(50, Rarity.COMMON));
-    public static final DeferredItem<AbstractPotionItem> HEALING_POTION = ITEMS.register("healing_potion", () -> new HealingPotionItem(100, Rarity.UNCOMMON));
-    public static final DeferredItem<AbstractPotionItem> GREATER_HEALING_POTION = ITEMS.register("greater_healing_potion", () -> new HealingPotionItem(200, Rarity.RARE));
-    public static final DeferredItem<AbstractPotionItem> SUPER_HEALING_POTION = ITEMS.register("super_healing_potion", () -> new HealingPotionItem(300, Rarity.EPIC));
+    public static final DeferredItem<AbstractPotionItem> LESSER_HEALING_POTION = ITEMS.register("lesser_healing_potion", () -> new HealingPotionItem(10, Rarity.COMMON));
+    public static final DeferredItem<AbstractPotionItem> HEALING_POTION = ITEMS.register("healing_potion", () -> new HealingPotionItem(20, Rarity.UNCOMMON));
+    public static final DeferredItem<AbstractPotionItem> GREATER_HEALING_POTION = ITEMS.register("greater_healing_potion", () -> new HealingPotionItem(40, Rarity.RARE));
+    public static final DeferredItem<AbstractPotionItem> SUPER_HEALING_POTION = ITEMS.register("super_healing_potion", () -> new HealingPotionItem(60, Rarity.EPIC));
     public static final DeferredItem<AbstractPotionItem> LESSER_MANA_POTION = ITEMS.register("lesser_mana_potion", () -> new ManaPotionItem(50, Rarity.COMMON));
     public static final DeferredItem<AbstractPotionItem> MANA_POTION = ITEMS.register("mana_potion", () -> new ManaPotionItem(100, Rarity.UNCOMMON));
     public static final DeferredItem<AbstractPotionItem> GREATER_MANA_POTION = ITEMS.register("greater_mana_potion", () -> new ManaPotionItem(200, Rarity.RARE));

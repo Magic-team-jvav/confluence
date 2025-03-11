@@ -17,6 +17,10 @@ public class HealingPotionItem extends AbstractPotionItem {
         super(new Properties().rarity(rarity));
         this.amount = amount;
     }
+    @Override
+    public int getUseDuration(ItemStack itemStack, LivingEntity livingEntity) {
+        return 4;
+    }
 
     @Override
     protected boolean canUse(Level level, Player player, InteractionHand hand) {

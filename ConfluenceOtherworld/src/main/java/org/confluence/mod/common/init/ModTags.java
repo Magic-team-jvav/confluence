@@ -34,6 +34,7 @@ public final class ModTags {
         public static final TagKey<Block> JEWELLERY_BRANCHES_ATTACHABLE = register("jewellery_branches_attachable");
         public static final TagKey<Block> ASH_LOG_BRANCHES_ATTACHABLE = register("ash_log_branches_attachable");
         public static final TagKey<Block> DESERT_FOSSIL_REPLACEMENT = register("desert_fossil_replacement");
+        public static final TagKey<Block> SLUSH_REPLACEMENT = register("slush_replacement");
         public static final TagKey<Block> TOMBSTONE = register("tombstone");
         public static final TagKey<Block> ROPE = register("rope");
         public static final TagKey<Block> MINEABLE_WITH_HAMMER = register("mineable_with_hammer"); // 使用锤子挖掘更快
@@ -77,6 +78,7 @@ public final class ModTags {
         public static final TagKey<Item> CORALS = register("corals");
         public static final TagKey<Item> EVIL_MATERIAL = register("evil_material");
         public static final TagKey<Item> WOODEN_COMBUSTIBLES = register("wooden_combustibles");  // 可燃木材系列
+        public static final TagKey<Item> INITIAL_WOOD = register("initial_wood");  // 木套tag
         public static final TagKey<Item> CHARCOAL_CAN_BE_BURNED = register("charcoal_can_be_burned");  // 可烧成木炭
         public static final TagKey<Item> LEAD_AND_IRON = register("lead_and_iron");
         public static final TagKey<Item> SHADOW_SCALE_AND_TISSUE_SAMPLE = register("shadow_scale_and_tissue_sample");
@@ -111,6 +113,7 @@ public final class ModTags {
         public static final TagKey<Item> CROP_FORTUNE = register("crop_fortune");
         public static final TagKey<Item> TREASURE_BAG = register("treasure_bag");
         public static final TagKey<Item> FAST_BOW = register("fast_bow");
+        public static final TagKey<Item> ABLE_TO_DESTROY_ALTAR = register("able_to_destroy_altar");
 
         private static TagKey<Item> c(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));

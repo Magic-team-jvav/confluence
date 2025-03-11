@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui.container;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -112,6 +111,7 @@ public class SkyMillScreen extends AbstractContainerScreen<SkyMillMenu> {
         }
     }
 
+    @Override
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
         this.scrolling = false;
         if (displayRecipes) {
@@ -124,7 +124,7 @@ public class SkyMillScreen extends AbstractContainerScreen<SkyMillMenu> {
                 double d0 = pMouseX - (double) (i + i1 % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH);
                 double d1 = pMouseY - (double) (j + i1 / RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_HEIGHT);
                 if (d0 >= 0.0D && d1 >= 0.0D && d0 < RECIPES_IMAGE_SIZE_WIDTH && d1 < RECIPES_IMAGE_SIZE_HEIGHT && menu.clickMenuButton(minecraft.player, l)) {
-                    Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
+                    minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
                     minecraft.gameMode.handleInventoryButtonClick(menu.containerId, l);
                     return true;
                 }
@@ -139,6 +139,7 @@ public class SkyMillScreen extends AbstractContainerScreen<SkyMillMenu> {
         return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
 
+    @Override
     public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
         if (scrolling && isScrollBarActive()) {
             int i = topPos + RECIPES_Y;

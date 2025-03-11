@@ -1,28 +1,133 @@
+// Made with Blockbench 4.12.2
+// Exported for Minecraft version 1.17 or later with Mojang mappings
+// Paste this class into your mod and generate all required imports
 package org.confluence.mod.client.model.entity;
 
-import net.minecraft.resources.ResourceLocation;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.TargetDummyEntity;
-import software.bernie.geckolib.model.GeoModel;
 
-@SuppressWarnings("removal")
-public class TargetDummyModel extends GeoModel<TargetDummyEntity> {
-    private static final ResourceLocation MODEL = Confluence.asResource("geo/entity/target_dummy.geo.json");
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/target_dummy.png");
-    private static final ResourceLocation ANIMATION = Confluence.asResource("animations/entity/target_dummy.animation.json");
+public class TargetDummyModel<T extends TargetDummyEntity> extends HumanoidModel<T> {
+    // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("target_dummy"), "main");
+    private final ModelPart head;
+    private final ModelPart body;
+    private final ModelPart rightArm;
+    private final ModelPart leftArm;
+    private final ModelPart rightLeg;
+    private final ModelPart leftLeg;
 
+    public TargetDummyModel(ModelPart root) {
+        super(root);
+        this.head = root.getChild("head");
+        this.body = root.getChild("body");
+        this.rightArm = root.getChild("rightArm");
+        this.leftArm = root.getChild("leftArm");
+        this.rightLeg = root.getChild("rightLeg");
+        this.leftLeg = root.getChild("leftLeg");
+    }
+
+    public static LayerDefinition createMesh(float size, int textHeight) {
+        CubeDeformation deformation = new CubeDeformation(size);
+        MeshDefinition meshdefinition = HumanoidModel.createMesh(deformation, 0.0F);;
+        PartDefinition partdefinition = meshdefinition.getRoot();
+
+        PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F))
+                .texOffs(32, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.5F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+        PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(16, 32).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, new CubeDeformation(0.25F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+
+        PartDefinition rightArm = partdefinition.addOrReplaceChild("rightArm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(40, 32).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.25F)), PartPose.offset(-5.0F, 2.0F, 0.0F));
+
+        PartDefinition leftArm = partdefinition.addOrReplaceChild("leftArm", CubeListBuilder.create().texOffs(32, 48).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(48, 48).addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.25F)), PartPose.offset(5.0F, 2.0F, 0.0F));
+
+        PartDefinition rightLeg = partdefinition.addOrReplaceChild("rightLeg", CubeListBuilder.create().texOffs(0, 16).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 32).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.25F)), PartPose.offset(-1.9F, 12.0F, 0.0F));
+
+        PartDefinition leftLeg = partdefinition.addOrReplaceChild("leftLeg", CubeListBuilder.create().texOffs(16, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 48).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.25F)), PartPose.offset(1.9F, 12.0F, 0.0F));
+
+        return LayerDefinition.create(meshdefinition, 64, textHeight);
+    }
+
+    //TODO: 量子纠缠.mp4
     @Override
-    public ResourceLocation getModelResource(TargetDummyEntity animatable) {
-        return MODEL;
+    public void setupAnim(TargetDummyEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        if (!entity.shouldPlayAnimation && !entity.shouldPlayAnimationBack){
+            head.xRot = 0f;
+            body.xRot = 0f;
+            leftLeg.xRot = 0f;
+            leftLeg.z = 0f;
+            rightLeg.xRot = 0f;
+            rightLeg.z = 0f;
+            leftArm.xRot = 0f;
+            rightArm.xRot = 0f;
+        }
+        if (entity.shouldPlayAnimation){
+            head.xRot += getXRot(entity) / 10;
+            body.xRot += getXRot(entity) / 10;
+            leftLeg.xRot -= getXRot(entity) / 10;
+            rightLeg.xRot -= getXRot(entity) / 10;
+            leftLeg.z += getXRot(entity);
+            rightLeg.z += getXRot(entity);
+            leftArm.xRot -= getXRot(entity) / 10;
+            rightArm.xRot -= getXRot(entity) / 10;
+            if (head.xRot >= getXRot(entity)) {
+                entity.shouldPlayAnimation = false;
+                entity.shouldPlayAnimationBack = true;
+            }
+        }
+
+        if (entity.shouldPlayAnimationBack){
+            float slow = getSlowSpeed(entity);
+            head.xRot -= getXRot(entity) / 10 / slow;
+            body.xRot -= getXRot(entity) / 10 / slow;
+            leftLeg.xRot += getXRot(entity) / 10 / slow;
+            rightLeg.xRot += getXRot(entity) / 10 / slow;
+            leftLeg.z -= getXRot(entity) / slow;
+            rightLeg.z -= getXRot(entity) / slow;
+            leftArm.xRot += getXRot(entity) / 10 / slow;
+            rightArm.xRot += getXRot(entity) / 10 / slow;
+            if (head.xRot <= 0f){
+                head.xRot = 0f;
+                body.xRot = 0f;
+                leftLeg.xRot = 0f;
+                leftLeg.z = 0f;
+                rightLeg.xRot = 0f;
+                rightLeg.z = 0f;
+                leftArm.xRot = 0f;
+                rightArm.xRot = 0f;
+                entity.shouldPlayAnimationBack = false;
+            }
+        }
+    }
+
+    public static float getSlowSpeed(TargetDummyEntity entity) {
+        float speed = Math.max((entity.damage - 10f) / 7f, 1);
+        return Math.min(speed, 20f);
+    }
+
+    public static float getXRot(TargetDummyEntity entity){
+        float rot = Math.max((entity.damage - 10f) / 27f, 0.1f);
+        return Math.min(rot, 1f);
     }
 
     @Override
-    public ResourceLocation getTextureResource(TargetDummyEntity animatable) {
-        return TEXTURE;
-    }
-
-    @Override
-    public ResourceLocation getAnimationResource(TargetDummyEntity animatable) {
-        return ANIMATION;
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+        head.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        body.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        rightArm.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        leftArm.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        rightLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        leftLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 }

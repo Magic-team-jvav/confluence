@@ -49,6 +49,7 @@ public final class HookThrowingHandler {
                 Input input = localPlayer.input;
                 if (input.jumping) {
                     HookThrowingPacketC2S.pop(id);
+                    PlayerJumpHandler.multiJump(localPlayer, 1.25);
                     return;
                 }
 

@@ -3,8 +3,11 @@ package org.confluence.mod.common.item.sword;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -73,6 +76,16 @@ public class BaseSwordItem extends SwordItem {
         modifier.speed = rawSpeed + tier.getSpeed();
     }
 
+    public void applyHitEffects(ItemStack weapon, Entity attacker, LivingEntity hurter, DamageSource damageSource, float damage){
+        if (modifier != null &&
+                damageSource.is(DamageTypeTags.IS_PLAYER_ATTACK) &&
+                damageSource.is(DamageTypeTags.CAN_BREAK_ARMOR_STAND) &&
+                damageSource.is(DamageTypeTags.PANIC_CAUSES)) {
+            if (attacker instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.95f) {
+                modifier.onHitEffects.forEach(effect -> effect.get().getEffect().accept(player, hurter));
+            }
+        }
+    }
 
     public static class ModifierBuilder {
         public float damage;

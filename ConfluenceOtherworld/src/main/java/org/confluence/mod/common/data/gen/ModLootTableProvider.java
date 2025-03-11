@@ -128,6 +128,7 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(AMMO_BOX.get());
             dropSelf(SILLY_BALLOON_MACHINE.get());
             dropSelf(ECHO_BLOCK.get());
+            dropSelf(JUNGLE_HIVE_BLOCK.get());
 
             add(SANCTIFICATION_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));
             add(CORRUPTION_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));

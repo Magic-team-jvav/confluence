@@ -29,8 +29,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.mixed.Immunity;
@@ -54,7 +54,7 @@ public final class ModUtils {
     public static final Set<String> CONFLUENCE_NAMESPACES = Set.of(Confluence.MODID, TerraCurio.MODID, TerraEntity.MODID, TerraGuns.MODID);
     public static final int MAX_STACK_SIZE = 9999;
     public static final Codec<BlockPos> BLOCK_POS_CODEC = Codec.STRING.xmap(str -> {
-        String[] split = str.split(BrushData.POS_SPLIT);
+        String[] split = str.split(", ");
         int[] pos = new int[3];
         for (int i = 0; i < 3; i++) {
             if (i < split.length) {
@@ -62,7 +62,7 @@ public final class ModUtils {
             }
         }
         return new BlockPos(pos[0], pos[1], pos[2]);
-    }, pos -> pos.getX() + BrushData.POS_SPLIT + pos.getY() + BrushData.POS_SPLIT + pos.getZ());
+    }, pos -> pos.getX() + ", " + pos.getY() + ", " + pos.getZ());
 
     public static void createItemEntity(ItemStack itemStack, double x, double y, double z, Level level, int pickUpDelay) {
         if (itemStack.isEmpty()) return;
@@ -234,5 +234,11 @@ public final class ModUtils {
         }
         mob.setItemSlot(slot, itemStack);
         mob.setDropChance(slot, chance);
+    }
+
+    public static void devRun(Runnable runnable) {
+        if (!FMLEnvironment.production) {
+            runnable.run();
+        }
     }
 }

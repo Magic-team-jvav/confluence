@@ -6,9 +6,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.worldgen.structure.CrimsonCaveStructure;
-import org.confluence.mod.common.worldgen.structure.GridPiece;
-import org.confluence.mod.common.worldgen.structure.LivingTreeStructure;
+import org.confluence.mod.common.worldgen.structure.*;
 
 import java.util.function.Supplier;
 
@@ -18,8 +16,10 @@ public final class ModStructures {
 
     public static final Supplier<StructureType<LivingTreeStructure>> LIVING_TREE = TYPES.register("living_tree", () -> () -> LivingTreeStructure.CODEC);
     public static final Supplier<StructureType<CrimsonCaveStructure>> CRIMSON_CAVE = TYPES.register("crimson_cave", () -> () -> CrimsonCaveStructure.CODEC);
+    public static final Supplier<StructureType<QueenBeeHiveStructure>> QUEEN_BEE_HIVE = TYPES.register("queen_bee_hive", () -> () -> QueenBeeHiveStructure.CODEC);
 
     public static final Supplier<StructurePieceType.ContextlessType> GRID_PIECE = PIECE_TYPES.register("grid_piece", () -> GridPiece::new);
+    public static final Supplier<StructurePieceType.StructureTemplateType> SIMPLE_TEMPLATE_PIECE = PIECE_TYPES.register("simple_template_piece", () -> SimpleTemplatePiece::new);
 
     public static void register(IEventBus bus) {
         TYPES.register(bus);

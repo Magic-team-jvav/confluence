@@ -8,12 +8,18 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.confluence.mod.common.entity.npc.NPCTrades;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.data.gen.AbstractRecipeProvider;
+import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terra_guns.common.init.TGItems;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -33,13 +39,34 @@ public class NPCShopProvider extends AbstractRecipeProvider {
     protected void run() {
 
         gen(ModEntities.GUIDE)
-                .add(MaterialItems.BLACK_INK,10,10)
-                .add(MaterialItems.AMBER,20,9)
-                .add(MaterialItems.BLOOD_CLOT_POWDER,30,8)
-                .add(MaterialItems.FLOATING_WHEAT_HEADS,40,7)
+                .add(new ItemStack(TGItems.MUSKET_BULLET.get(),100),80)
+                .add(new ItemStack(ConsumableItems.GRENADE.get(), 1), 75)
+                .add(new ItemStack(ConsumableItems.BOMB.get(), 1), 300)
+                .add(new ItemStack(ConsumableItems.DYNAMITE.get(), 1), 2000)
+                .add(new ItemStack(ConsumableItems.PURIFICATION_POWDER.get(), 1), 75)
+                .add(new ItemStack(NatureBlocks.YELLOW_WILLOW_SAPLING.asItem(), 1), 10000)
+                .add(new ItemStack(Blocks.OAK_SAPLING.asItem(), 1), 50)
+                .add(new ItemStack(Blocks.TORCH.asItem(), 10), 500)
+                .add(new ItemStack(Items.ARROW.asItem(), 10), 50)
+                .add(new ItemStack(ModBlocks.ROPE.get(), 10), 50)
+                .add(new ItemStack(ConsumableItems.SHURIKEN.get(), 10), 150)
+                .add(new ItemStack(HookItems.GRAPPLING_HOOK.asItem(), 1), 10000)
+                .add(new ItemStack(TCItems.ROCKET_BOOTS.get(), 1), 50000)
+                .add(new ItemStack(TCItems.TOOLBELT.get(), 1), 100000)
+                .add(new ItemStack(TCItems.WORKSHOP.get(), 1), 100000)
+                .add(new ItemStack(PickaxeItems.COPPER_PICKAXE.get(), 1), 500)
+                .add(new ItemStack(AxeItems.COPPER_AXE.get(), 1), 400)
+                .add(new ItemStack(PotionItems.LESSER_HEALING_POTION.get(), 1), 300)
+                .add(new ItemStack(AccessoryItems.PAINT_SPRAYER.get(), 1), 100000)
+                .add(new ItemStack(TCItems.PORTABLE_CEMENT_MIXER.get(), 1), 100000)
+                .add(new ItemStack(TCItems.EXTENDO_GRIP.get(), 1), 100000)
+                .add(new ItemStack(TCItems.BRICK_LAYER.get(), 1), 100000)
+                .add(new ItemStack(TCItems.STOPWATCH.get(), 1), 50000)
+                .add(new ItemStack(TCItems.LIFE_FORM_ANALYZER.get(), 1), 50000)
+                .add(new ItemStack(TCItems.DPS_METER.get(), 1), 50000)
+                .add(new ItemStack(SwordItems.KATANA.get(), 1), 100000)
+                .add(new ItemStack(FoodItems.PAD_THAI.get(), 1), 750)
                 .build();
-
-
     }
 
     private <T extends Entity>Builder gen(DeferredHolder<EntityType<?>,EntityType<T>> entityType){
@@ -71,6 +98,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         public void build(){
             genRecipe(new NPCTrades(trades),location);
         }
+
     }
 
 

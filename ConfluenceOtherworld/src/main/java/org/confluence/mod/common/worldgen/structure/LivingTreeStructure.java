@@ -4,9 +4,12 @@ import com.google.common.collect.Lists;
 import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -57,7 +60,7 @@ public class LivingTreeStructure extends Structure {
             locationList.add(locationStart);
             locationList.add(locationEnd);
             List<Vector3d> leavesTop = ellipsoidPos(30, 15, 30, new BlockPos((int) locationEnd.x, (int) locationEnd.y, (int) locationEnd.z), 0.01F, random);
-            lineSetEllipsoid(leavesTop, 4, 2, 4, 2, false, blockMap, 0.75F, random);
+            lineSetEllipsoid(leavesTop, 4, 2, 4, 2, true, blockMap, 0.75F, random);
             lightningPathList(locationList, 1, 8, random);
             lineSet(locationList, 5.9, 1.0, 1, true, blockMap);
             stick(random, locationList, blockMap, true);
@@ -72,16 +75,26 @@ public class LivingTreeStructure extends Structure {
             lineSet(locationList, 4.9, 1.0, 1, true, blockMap);
             boll(4.9, centerPos, 0, true, blockMap);
             lineSet(locationList, 1.9, 0.9, 0, true, blockMap);
+            Vector3d room = locationList.get(locationList.size() / 2 + random.nextInt(-20, 21));
+            centerPos = new BlockPos((int) room.x, (int) room.y, (int) room.z);
+            Rotation rotation = Util.getRandom(Rotation.values(), random);
 
+            List<BlockState> blockList = Lists.newArrayList(
+                    Blocks.AIR.defaultBlockState(),
+                    NatureBlocks.LIVING_LOG_BLOCKS.getWood().get().defaultBlockState(),
+                    NatureBlocks.LIVING_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(PERSISTENT, Boolean.TRUE)
+            );
             Map<ChunkPos, Object2IntMap<BlockPos>> gridMap = GridPiece.sliceChunks(blockMap, startChunk);
             for (Map.Entry<ChunkPos, Object2IntMap<BlockPos>> entry : gridMap.entrySet()) {
                 GridPiece piece = new GridPiece(entry.getKey(), lowestY, entry.getValue());
-                piece.blockList = Lists.newLinkedList(List.of(
-                        Blocks.AIR.defaultBlockState(),
-                        NatureBlocks.LIVING_LOG_BLOCKS.getWood().get().defaultBlockState(),
-                        NatureBlocks.LIVING_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(PERSISTENT, Boolean.TRUE)
-                ));
+                piece.blockList = blockList;
                 builder.addPiece(piece);
+            }
+            switch (rotation) {
+                case CLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(5, 0, 1), true, true, Rotation.CLOCKWISE_90));
+                case CLOCKWISE_180 -> builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(-1, 0, 5), true, true, Rotation.CLOCKWISE_180));
+                case COUNTERCLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(-5, 0, -1), true, true, Rotation.COUNTERCLOCKWISE_90));
+                default -> builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(1, 0, -5), true, true, Rotation.NONE));
             }
         });
     }
@@ -100,7 +113,7 @@ public class LivingTreeStructure extends Structure {
             Vector3d stickStart = locationList.get(branch ? (locationList.size() - (locationList.size() / 11 * 7) - random.nextInt(10)) : (random.nextInt(10)));
             Vector3d stickEnd = new Vector3d();
             stickEnd.x = branch ? (locationList.getLast().x + endX) : (locationList.getFirst().x + endX / 2);
-            stickEnd.y = branch ? (locationList.getLast().y + endY - 20) : (locationList.getFirst().y - endY);
+            stickEnd.y = branch ? (locationList.getLast().y + endY - 20) : (locationList.getFirst().y - endY - 10);
             stickEnd.z = branch ? (locationList.getLast().z + endZ) : (locationList.getFirst().z + endZ / 2);
             List<Vector3d> stickList = new ArrayList<>();
             stickList.add(stickStart);

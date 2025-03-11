@@ -26,6 +26,7 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.connected.CustomBlockModels;
 import org.confluence.mod.client.connected.ModConnectives;
@@ -36,6 +37,7 @@ import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.model.block.AltarBlockModel;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.model.block.WeatherVaneBlockModel;
+import org.confluence.mod.client.model.entity.TargetDummyModel;
 import org.confluence.mod.client.model.entity.bomb.*;
 import org.confluence.mod.client.model.entity.fishing.BaseFishingHookModel;
 import org.confluence.mod.client.model.entity.fishing.BloodyFishingHookModel;
@@ -82,7 +84,9 @@ import org.confluence.mod.util.ClientUtils;
 import org.confluence.terraentity.client.entity.renderer.GeoNormalRenderer;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static org.confluence.mod.common.init.ModEntities.*;
 
@@ -120,7 +124,8 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.FLETCHING_TABLE.get(), FletchingTableScreen::new);
         event.register(ModMenuTypes.ALCHEMY_TABLE.get(), AlchemyTableScreen::new);
         event.register(ModMenuTypes.EXTRA_INVENTORY.get(), ExtraInventoryScreen::new);
-        event.register(ModMenuTypes.DAVE_TRADES_MENU.get(), NPCTradeScreen::new);
+        event.register(ModMenuTypes.MAID_TRADES_MENU.get(), NPCTradeScreen::new);
+        event.register(ModMenuTypes.REFORGE_MENU.get(), NPCReforgeScreen::new);
 
     }
 
@@ -170,6 +175,8 @@ public final class ModClientEvents {
         event.registerLayerDefinition(GlowingFishingHookModel.MOSS, GlowingFishingHookModel::createMossLayer);
         event.registerLayerDefinition(GlowingFishingHookModel.COMMON, GlowingFishingHookModel::createCommonLayer);
         event.registerLayerDefinition(GlowingFishingHookModel.GLOWING, GlowingFishingHookModel::createGlowingLayer);
+
+        event.registerLayerDefinition(TargetDummyModel.LAYER_LOCATION, () -> TargetDummyModel.createMesh(0, 64));
 
         event.registerLayerDefinition(IceBladeSwordProjectileModel.LAYER_LOCATION, IceBladeSwordProjectileModel::createBodyLayer);
         event.registerLayerDefinition(EnchantedSwordProjectileModel.LAYER_LOCATION, EnchantedSwordProjectileModel::createBodyLayer);
@@ -268,7 +275,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(ICE_TOFU_BRICK_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(BODY_PART.get(), BodyPartRenderer::new);
 
-        event.registerEntityRenderer(TARGET_DUMMY.get(), TargetDummyRenderer::new);
+        event.registerEntityRenderer(TARGET_DUMMY.get(), c -> new TargetDummyRenderer(c, new TargetDummyModel<>(c.bakeLayer(TargetDummyModel.LAYER_LOCATION)), 0));
 
         // npc
         event.registerEntityRenderer(GUIDE.get(), c -> new GeoNormalRenderer<>(c, GUIDE.getId()));
@@ -341,11 +348,14 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void model$ModifyBakingResult(ModelEvent.ModifyBakingResult event) {
+        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !StartupConfigs.PAINTS_REPLACE_TEXTURE.get()) return;
+
         Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
         CustomBlockModels customBlockModels = ModConnectives.MODEL_SWAPPER.getCustomBlockModels();
+        Set<String> bannedModForPaints = new HashSet<>(StartupConfigs.BANNED_MOD_FOR_PAINTS.get());
         for (Map.Entry<Block, Holder.Reference<Block>> entry : ((DefaultedMappedRegistry<Block>) BuiltInRegistries.BLOCK).byValue.entrySet()) {
             Block block = entry.getKey();
-            if (customBlockModels.containsBlock(block) || ClientConfigs.bannedModForPaints.contains(entry.getValue().key().location().getNamespace())) {
+            if (customBlockModels.containsBlock(block) || bannedModForPaints.contains(entry.getValue().key().location().getNamespace())) {
                 continue;
             }
             for (ModelResourceLocation modelLocation : ModelSwapper.getAllBlockStateModelLocations(block)) {

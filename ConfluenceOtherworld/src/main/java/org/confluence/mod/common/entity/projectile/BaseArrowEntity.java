@@ -178,7 +178,7 @@ public class BaseArrowEntity extends AbstractArrow {
 
             //箭药水效果
             if (!this.level().isClientSide && entity1 instanceof LivingEntity) {
-                EnchantmentHelper.doPostAttackEffects((ServerLevel) level(),entity1,damagesource);
+                EnchantmentHelper.doPostAttackEffects((ServerLevel) level(),entity,damagesource);
                 //
             }
 

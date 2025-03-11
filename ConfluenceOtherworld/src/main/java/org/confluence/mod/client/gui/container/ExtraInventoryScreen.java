@@ -49,8 +49,8 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-        guiGraphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-        ExtraInventory extraInventory = menu.getExtraInventory();
+        guiGraphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight + 24);
+        ExtraInventory extraInventory = menu.extraInventory;
         int containerSize = extraInventory.getContainerSize();
         int sizeAccessoryDye = extraInventory.getSizeAccessoryDye();
         int size = containerSize - sizeAccessoryDye;
@@ -63,8 +63,10 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
                 guiGraphics.blit(BACKGROUND, leftPos + 81, topPos + (i - COINS_START) * 18 + 8, 177, 153, 16, 16);
             } else if (i < EQUIPMENT_START) {
                 guiGraphics.blit(BACKGROUND, leftPos + 99, topPos + (i - AMMO_START) * 18 + 8, 177, 136, 16, 16);
-            } else if (i < DYE_START) {
+            } else if (i < TRASH_START) {
                 renderEquipment(guiGraphics, i - EQUIPMENT_START);
+            } else if (i < DYE_START) {
+                guiGraphics.blit(BACKGROUND, leftPos + 152, topPos + 166, 177, 170, 16, 16);
             } else {
                 int j = i - DYE_START;
                 if (j < SIZE_VANITY_ARMOR) {
@@ -91,6 +93,14 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
             guiGraphics.blit(BACKGROUND, leftPos + 147, topPos + 33, 194, 0, 18, 20);
         }
         renderEntityInInventoryFollowsMouse(guiGraphics, leftPos + 26, topPos + 8, leftPos + 75, topPos + 78, 30, 0.0625F, xMouse, yMouse, minecraft.player);
+    }
+
+    @Override
+    public int getSlotColor(int index) {
+        if (!buttonPressed && index < menu.invStart && index >= menu.invStart - menu.extraInventory.getSizeAccessoryDye()) {
+            return 0x80FF0000;
+        }
+        return super.getSlotColor(index);
     }
 
     private void renderEquipment(GuiGraphics guiGraphics, int i) {
@@ -125,7 +135,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     }
 
     private void toggleAllSlot() {
-        ExtraInventory extraInventory = menu.getExtraInventory();
+        ExtraInventory extraInventory = menu.extraInventory;
         int size = extraInventory.getContainerSize() + extraInventory.getSizeAccessoryDye();
         for (int i = 0; i < size; i++) {
             if (menu.getSlot(i) instanceof IToggleSlot toggleSlot) {

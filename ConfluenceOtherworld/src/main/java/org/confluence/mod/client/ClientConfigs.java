@@ -3,7 +3,10 @@ package org.confluence.mod.client;
 import net.minecraft.network.chat.Component;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.common.ModConfigSpec.*;
+import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
+import net.neoforged.neoforge.common.ModConfigSpec.Builder;
+import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
+import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.mod.client.gui.hud.TerraStyleArmorHud;
 import org.confluence.mod.client.gui.hud.TerraStyleFoodHud;
@@ -11,14 +14,11 @@ import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
 import org.confluence.mod.client.gui.hud.TerraStyleManaHud;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 public final class ClientConfigs {
     public static int showWindParticles = 90;
-    public static Set<String> bannedModForPaints = Set.of();
+    public static boolean achievementToast = true;
 
     public static boolean terraStyleHealth = true;
     public static TerraStyleHealthHud.Health healthStyle = TerraStyleHealthHud.Health.OVERLAY;
@@ -32,9 +32,10 @@ public final class ClientConfigs {
     public static boolean bloodyEffect = true;
     public static GoreEffect goreEffect = GoreEffect.CONFLUENCE_VANILLA;
     public static boolean damageIndicator = true;
+    public static boolean healIndicator = true;
 
     private static IntValue SHOW_WIND_PARTICLES;
-    private static ConfigValue<List<? extends String>> BANNED_MOD_FOR_PAINTS;
+    private static BooleanValue ACHIEVEMENT_TOAST;
 
     private static BooleanValue TERRA_STYLE_HEALTH;
     private static EnumValue<TerraStyleHealthHud.Health> HEALTH_STYLE;
@@ -48,10 +49,11 @@ public final class ClientConfigs {
     private static BooleanValue BLOODY_EFFECT;
     private static EnumValue<GoreEffect> GORE_EFFECT;
     private static BooleanValue DAMAGE_INDICATOR;
+    private static BooleanValue HEAL_INDICATOR;
 
     public static void onLoad() {
         showWindParticles = SHOW_WIND_PARTICLES.get();
-        bannedModForPaints = new HashSet<>(BANNED_MOD_FOR_PAINTS.get());
+        achievementToast = ACHIEVEMENT_TOAST.get();
 
         terraStyleHealth = TERRA_STYLE_HEALTH.get();
         healthStyle = HEALTH_STYLE.get();
@@ -65,16 +67,14 @@ public final class ClientConfigs {
         bloodyEffect = BLOODY_EFFECT.get();
         goreEffect = GORE_EFFECT.get();
         damageIndicator = DAMAGE_INDICATOR.get();
+        healIndicator = HEAL_INDICATOR.get();
     }
 
     public static void register(ModContainer container) {
         Builder BUILDER = new Builder();
 
         SHOW_WIND_PARTICLES = BUILDER.defineInRange("showWindParticles", 90, 0, 100);
-        BANNED_MOD_FOR_PAINTS = BUILDER.defineListAllowEmpty("bannedModForPaints", () -> List.of(
-                "integrateddynamics", "ae2", "refinedstorage", "create", "mekanism", "immersiveengineering", "enderio"
-        ), () -> "modid", o -> o instanceof String s && !s.contains(":"));
-
+        ACHIEVEMENT_TOAST = BUILDER.define("achievementToast", true);
 
         BUILDER.push("HUD");
         BUILDER.push("Health");
@@ -104,6 +104,7 @@ public final class ClientConfigs {
         BLOODY_EFFECT = BUILDER.define("bloodyEffect", true);
         GORE_EFFECT = BUILDER.defineEnum("goreEffect", GoreEffect.CONFLUENCE_VANILLA);
         DAMAGE_INDICATOR = BUILDER.define("damageIndicator", true);
+        HEAL_INDICATOR = BUILDER.define("healIndicator", true);
         BUILDER.pop();
 
 

@@ -26,6 +26,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
@@ -40,11 +41,9 @@ import org.confluence.mod.client.AntiPushPoseStack;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.DebugBlocksHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
+import org.confluence.mod.client.gui.TooltipManager;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
-import org.confluence.mod.client.handler.HookThrowingHandler;
-import org.confluence.mod.client.handler.MeteorLandingHandler;
-import org.confluence.mod.client.handler.StarPhaseHandler;
-import org.confluence.mod.client.handler.WeatherHandler;
+import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.textures.LocalBrushData;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
@@ -52,6 +51,7 @@ import org.confluence.mod.common.entity.DeadBodyPartEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
+import org.confluence.mod.integration.touhouLittleMaid.ExtraButton;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.mixin.client.accessor.AgeableListModelAccessor;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
@@ -59,6 +59,7 @@ import org.confluence.mod.util.DeathAnimUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PerformJumpingEvent;
+import org.confluence.terra_curio.common.component.ModRarity;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -132,6 +133,8 @@ public final class GameClientEvents {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void gatherComponents(RenderTooltipEvent.GatherComponents event) {
+        ItemStack itemStack = event.getItemStack();
+        Item item = itemStack.getItem();
         List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
         if (tooltipElements.isEmpty()) return;
         Optional<FormattedText> displayName = tooltipElements.getFirst().left();
@@ -142,6 +145,18 @@ public final class GameClientEvents {
                         Component.translatable("prefix.confluence." + prefix.name()).setStyle(component.getStyle()).append(" ").append(component)
                 ));
             }
+        }
+        // 捐赠者物品
+        var ins = TooltipManager.getInstance();
+        if (ins.contains(item)) {
+            tooltipElements.add(Either.left(
+                    Component.empty()
+            ));
+            tooltipElements.add(Either.left(
+                    Component.translatable(TooltipManager.prefix).withColor(ModRarity.EXPERT.getColor())
+                            .append("  ")
+                            .append(Component.literal(ins.getTooltip(item))))
+            );
         }
     }
 
@@ -205,11 +220,11 @@ public final class GameClientEvents {
     public static void screen$Init$Post(ScreenEvent.Init.Post event) {
         Screen screen = event.getScreen();
         boolean isInventoryScreen = screen instanceof InventoryScreen;
+        // 额外槽
         if (isInventoryScreen || screen instanceof CreativeModeInventoryScreen) {
             EffectRenderingInventoryScreen<?> screen1 = (EffectRenderingInventoryScreen<?>) screen;
             ImageButton extraInventoryButton = new ImageButton(screen1.getGuiLeft() - 16, screen1.getGuiTop() + 2, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
-                Minecraft minecraft = Minecraft.getInstance();
-                LocalPlayer player = minecraft.player;
+                LocalPlayer player = Minecraft.getInstance().player;
                 if (player != null) {
                     ItemStack stack = player.containerMenu.getCarried();
                     player.containerMenu.setCarried(ItemStack.EMPTY);
@@ -221,6 +236,9 @@ public final class GameClientEvents {
             }
             event.addListener(extraInventoryButton);
         }
+
+        // 联动车万女仆
+        ExtraButton.addButton(event);
     }
 
     public static void livingDeath(LivingEntity entity) {
@@ -449,10 +467,12 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void selectMusic(SelectMusicEvent event) {
-//        if (event.isCanceled()) return;
-//        SoundInstance playingMusic = event.getPlayingMusic();
-//        if (playingMusic == null) {
-//            event.setMusic(ModMusics.OVERWORLD_DAY);
-//        }
+        if (event.isCanceled()) return;
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player == null) {
+            MusicHandler.clear();
+        } else {
+            MusicHandler.handle(event, player);
+        }
     }
 }

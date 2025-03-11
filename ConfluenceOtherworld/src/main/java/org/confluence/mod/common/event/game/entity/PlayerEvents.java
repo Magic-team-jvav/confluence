@@ -66,6 +66,7 @@ public final class PlayerEvents {
             BoulderWorld.forceSetAccessory(serverPlayer);
             TheConstantPostEffectPacketS2C.sendToClient(serverPlayer);
             SecretFlagSyncPacketS2C.sendToAll(IWorldOptions.getSecretFlag(serverPlayer.server));
+            serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).setChanged();
         }
     }
 
@@ -86,17 +87,19 @@ public final class PlayerEvents {
         ItemStack itemStack = event.getItemStack();
         Block block = blockState.getBlock();
 
-        if (!level.isClientSide && !itemStack.is(ModTags.Items.MINECART) && block instanceof BaseRailBlock railBlock) {
-            player.swing(InteractionHand.MAIN_HAND, true);
-            ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
-            ItemStack minecartItemStack = extraInventory.getMinecart();
-            RightClickRailBlock e = NeoForge.EVENT_BUS.post(new RightClickRailBlock(player, minecartItemStack, blockState, railBlock, blockPos));
-            if (e.isCanceled()) return;
-            AbstractMinecart minecart = e.getMinecart();
-            if (minecart != null) {
-                extraInventory.setItem(EQUIPMENT_START + 2, ItemStack.EMPTY);
-                level.addFreshEntity(minecart);
-                player.startRiding(minecart, true);
+        if (!(itemStack.getItem() instanceof BlockItem) && !itemStack.is(ModTags.Items.MINECART) && block instanceof BaseRailBlock railBlock) {
+            player.swing(InteractionHand.MAIN_HAND);
+            if (!level.isClientSide) {
+                ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+                ItemStack minecartItemStack = extraInventory.getMinecart();
+                RightClickRailBlock e = NeoForge.EVENT_BUS.post(new RightClickRailBlock(player, minecartItemStack, blockState, railBlock, blockPos));
+                if (e.isCanceled()) return;
+                AbstractMinecart minecart = e.getMinecart();
+                if (minecart != null) {
+                    extraInventory.setItem(EQUIPMENT_START + 2, ItemStack.EMPTY);
+                    level.addFreshEntity(minecart);
+                    player.startRiding(minecart, true);
+                }
             }
             event.setCanceled(true);
         }
@@ -151,7 +154,7 @@ public final class PlayerEvents {
         Level level = player.level();
 
         if (!TCUtils.hasAccessoriesType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && level.random.nextFloat() < 0.1429F) {
-            level.playSound(null, player.blockPosition(), ModSoundEvents.DECOUPLING.get(), SoundSource.PLAYERS);
+            level.playSound(null, event.getHookEntity().blockPosition(), ModSoundEvents.DECOUPLING.get(), SoundSource.AMBIENT);
             event.setCanceled(true);
             return;
         }

@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.gui.TooltipManager;
 import org.confluence.mod.common.init.ModEffectStrategies;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
@@ -36,6 +37,7 @@ public class ModEnglishProvider extends LanguageProvider {
     @Override
     protected void addTranslations() {
         add("config.jade.plugin_confluence.jade_network_component", "Mechanical Info");
+        add("config.jade.plugin_confluence.jade_ponder_component", "Ponder Info");
 
         add("creativetab.confluence.building_blocks", "Confluence | Buildings");
         add("creativetab.confluence.natural_blocks", "Confluence | Naturals");
@@ -427,9 +429,15 @@ public class ModEnglishProvider extends LanguageProvider {
         add("achievements.confluence.the_cavalry.description", "Equip a mount.");
 
 
-
+        add("confluence.configuration.achievementToast", "Enable Terra Style Achievements");
+        add("confluence.configuration.achievementToast.tooltip", "Disable it if you want to use the default progress style.");
         add("confluence.configuration.dropsMoney", "Coin Drops");
-        add("confluence.configuration.dropsMoney.tooltip", "When enabled, your coins will drop upon death");
+        add("confluence.configuration.dropsMoney.tooltip", "When enabled, characters will drop coins upon death.");
+        add("confluence.configuration.Paints", "Paint Function Settings");
+        add("confluence.configuration.Paints.tooltip", "Some compatibility issues may be caused by the paint function, so you need to adjust the relevant options here.");
+        add("confluence.configuration.Paints.button", "About Paint");
+        add("confluence.configuration.paintsReplaceTexture", "Paint Replace Texture");
+        add("confluence.configuration.paintsReplaceTexture.tooltip", "When enabled, the paint will use a replacement grayscale texture, making the appearance on materials more natural.");
         add("confluence.configuration.autoStackGelsColor", "Auto Stack Gels by Color");
         add("confluence.configuration.autoStackGelsColor.tooltip", "When enabled, gels of different colors you pick up will stack together");
         add("confluence.configuration.bannedModForPaints", "Mod Paints Blacklist");
@@ -439,8 +447,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.fletchingMenu.tooltip", "When enabled, the fletching table will be modified by Conflux");
         add("confluence.configuration.shimmer_decompose", "Shimmer Decompose");
         add("confluence.configuration.shimmer_decompose.tooltip", "When enabled, Shimmer liquid can decompose items into raw materials");
-        add("confluence.configuration.fallingStarFrequency", "Falling Star Frequency");
-        add("confluence.configuration.fallingStarFrequency.tooltip", "Defines the frequency of falling stars appearing at night");
+        add("confluence.configuration.fallingStarInterval", "Falling Star Interval");
+        add("confluence.configuration.fallingStarInterval.tooltip", "Defines the interval of falling stars appearing at night");
         add("confluence.configuration.returnPotionGlassBottle", "Return Glass Bottles for Potions");
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "Decides whether to return the glass bottle after using a potion");
         add("confluence.configuration.defaultRespawnTimeMin", "Default Minimum Respawn Time");
@@ -485,7 +493,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.goreEffect.all", "All Entities");
         add("confluence.configuration.goreEffect.tooltip", "The gore effect will be specially adapted to Conflux and Vanilla entities, while other mod entities will use a generic method with no guaranteed effect.");
         add("confluence.configuration.damageIndicator", "Damage Indicator");
+        add("confluence.configuration.healIndicator", "Heal Indicator");
         add("confluence.configuration.damageIndicator.tooltip", "Enable to display damage numbers");
+        add("confluence.configuration.healIndicator.tooltip", "Enable to display heal numbers");
         add("confluence.configuration.Gameplay", "Gameplay Mechanics");
         add("confluence.configuration.Gameplay.button", "Define Gameplay Mechanics");
         add("confluence.configuration.Gameplay.tooltip", "Some gameplay mechanics can be defined by you");
@@ -558,6 +568,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("condition.confluence.requires_fuel", "Requires Fuel");
         add("container.confluence.fletching_table", "Fletching Table");
         add("title.confluence.fletching_table", "Fletching Table");
+        add("title.confluence.touhoulittlemaid", "Touhou Little Maid Supplies");
+        add("title.confluence.npc_trade", "NPC Trading");
+
+
 
 
         add("block.confluence.timers_block_1_1", "1 Second Timer");
@@ -583,6 +597,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("block.confluence.base_chest_block.death_normal", "§rDeath Wooden Chest");
         add("block.confluence.base_chest_block.unlocked_sandstone", "§rSandstone Chest");
         add("block.confluence.base_chest_block.death_sandstone", "§rDeath Sandstone Chest");
+        add("block.confluence.base_chest_block.unlocked_living_wood", "§rLiving Wood Chest");
+        add("block.confluence.base_chest_block.death_living_wood", "§rDeath Living Wood Chest");
+
 
         add("resourcepack.terraria_art", "Terraria Art");
         add("resourcepack.terraria_armor", "Terraria-Like Armor");
@@ -626,6 +643,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("biome.confluence.tr_crimson", "The Crimson");
         add("biome.confluence.tr_crimson_desert", "The Crimson Desert");
         add("biome.confluence.tr_crimson_tundra", "The Crimson Tundra");
+
+        add(TooltipManager.prefix, "** Sponsor Item **");
 
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), toTitleCase(block.getId().getPath()));
         add(ModBlocks.COPPER_COIN_PILE.get(), "Copper Coin");

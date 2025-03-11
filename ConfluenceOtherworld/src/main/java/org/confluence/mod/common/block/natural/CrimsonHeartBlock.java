@@ -9,9 +9,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -31,7 +34,12 @@ public class CrimsonHeartBlock extends Block {
     private static final VoxelShape SHAPE = box(3, 3, 3, 13, 13, 13);
 
     public CrimsonHeartBlock() {
-        super(Properties.ofFullCopy(Blocks.NETHER_WART_BLOCK));
+        super(BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_RED)
+                .strength(1.5F)
+                .sound(SoundType.AMETHYST)
+                .requiresCorrectToolForDrops()
+                .pushReaction(PushReaction.DESTROY));
     }
 
     @Override
@@ -72,6 +80,8 @@ public class CrimsonHeartBlock extends Block {
                 BrainOfCthulhu brainOfCthulhu = new BrainOfCthulhu(TEEntities.BRAIN_OF_CTHULHU.get(), level);
                 brainOfCthulhu.setPos(center.x + level.random.nextInt(-50, 51), center.y, center.z + level.random.nextInt(-50, 51));
                 level.addFreshEntity(brainOfCthulhu);
+                Player nearestPlayer = level.getNearestPlayer(brainOfCthulhu, 200);
+                if (nearestPlayer != null) brainOfCthulhu.setTarget(nearestPlayer);
             }
         }
     }

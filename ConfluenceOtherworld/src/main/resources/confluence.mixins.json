@@ -21,6 +21,7 @@
         "block.BlockBehaviour$BlockStateBaseMixin",
         "block.BlockMixin",
         "block.CropBlockMixin",
+        "block.FarmBlockMixin",
         "chunk.BlockCounterMixin",
         "chunk.ChunkSerializerMixin",
         "chunk.LevelChunkMixin",
@@ -45,6 +46,7 @@
         "integration.curios.CuriosServerPayloadHandlerMixin",
         "integration.ftbchunks.LongRangePlayerTrackerMixin",
         "integration.terra_curio.AccessoriesAttachmentMixin",
+        "integration.terra_curio.DemonHeartMixin",
         "integration.terra_curio.StarClockEntityMixin",
         "integration.terra_curio.WorkshopBlockMixin",
         "integration.terra_curio.WorkshopMenuMixin",
@@ -103,6 +105,7 @@
         "client.renderer.ModelBlockRendererMixin",
         "client.renderer.SectionCompilerMixin",
         "entity.LocalPlayerMixin",
+        "integration.advancement_plaque.AdvancementPlaqueMixin",
         "integration.betteradvancements.BetterDisplayInfoMixin",
         "integration.ftbchunks.EntityMapIconMixin",
         "integration.ftbchunks.TrackedPlayerMapIconMixin",
@@ -111,13 +114,15 @@
         "integration.jade.ObjectNameProvider$ForBlockMixin",
         "integration.jei.FurnaceFuelCategory$RecipeWidgetMixin",
         "integration.jei.ScreenHelperMixin",
+        "integration.journeymap.EffectMixin",
         "integration.patchouli.BookPageMixin",
         "integration.patchouli.GuiBookLandingMixin",
+        "integration.ponder.PonderTooltipHandlerMixin",
         "integration.sodium.BlockOcclusionCacheMixin",
         "integration.sodium.BlockRendererMixin",
         "integration.sodium.ChunkBuilderMeshingTaskMixin",
         "integration.terra_curio.InformationHandlerMixin",
-        "integration.terra_curio.TCClientPacketHandlerMixin"
+        "integration.terra_curio.TCUtilsMixin"
     ],
     "server": [
         "DedicatedServerPropertiesMixin"

@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -37,7 +38,7 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
     @Override
     @NotNull
     public ResourceLocation getTextureLocation(@NotNull DeadBodyPartEntity entity) {
-        return Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity).getTextureLocation(entity);
+        return TextureAtlas.LOCATION_BLOCKS;
     }
 
     @Override

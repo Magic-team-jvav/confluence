@@ -45,11 +45,20 @@ public final class ModSecretSeeds {
     }
 
     public static Pair<SecretSeed, WorldOptions> matchSeed(String seed, WorldOptions worldOptions) {
-        String s = seed.trim().toLowerCase(Locale.ROOT);
+        String s = seed;
+        String[] split = seed.split("\\|");
+        OptionalLong l = OptionalLong.empty();
+        if (split.length > 1) {
+            s = split[0];
+            try {
+                l = OptionalLong.of(Long.parseLong(split[1].trim()));
+            } catch (Exception ignored) {}
+        }
+        s = s.trim().toLowerCase(Locale.ROOT);
         for (SecretSeed secretSeed : VALUES) {
             if (secretSeed.match(s)) {
                 ((IWorldOptions) worldOptions).confluence$withSecretFlag(secretSeed.getFlag());
-                return new Pair<>(secretSeed, worldOptions.withSeed(OptionalLong.of(WorldOptions.randomSeed())));
+                return new Pair<>(secretSeed, worldOptions.withSeed(l.isPresent() ? l : OptionalLong.of(WorldOptions.randomSeed())));
             }
         }
         return new Pair<>(null, worldOptions);

@@ -56,6 +56,10 @@ public class DeathChestBlockRenderer extends ChestRenderer<DeathChestBlock.Entit
     public static final Material DEATH_SANDSTONE_LEFT = chest("death_sandstone_left");
     public static final Material DEATH_SANDSTONE_RIGHT = chest("death_sandstone_right");
 
+    public static final Material DEATH_LIVING_WOOD = chest("death_living_wood");
+    public static final Material DEATH_LIVING_WOOD_LEFT = chest("death_living_wood_left");
+    public static final Material DEATH_LIVING_WOOD_RIGHT = chest("death_living_wood_right");
+
 
     public DeathChestBlockRenderer(BlockEntityRendererProvider.Context pContext) {
         super(pContext);
@@ -112,6 +116,7 @@ public class DeathChestBlockRenderer extends ChestRenderer<DeathChestBlock.Entit
             case UNLOCKED_LVY -> chooseMaterial(chestType, DEATH_LVY, DEATH_LVY_LEFT, DEATH_LVY_RIGHT);
             case UNLOCKED_NORMAL -> chooseMaterial(chestType, DEATH_NORMAL, DEATH_NORMAL_LEFT, DEATH_NORMAL_RIGHT);
             case UNLOCKED_SANDSTONE -> chooseMaterial(chestType, DEATH_SANDSTONE, DEATH_SANDSTONE_LEFT, DEATH_SANDSTONE_RIGHT);
+            case UNLOCKED_LIVING_WOOD -> chooseMaterial(chestType, DEATH_LIVING_WOOD, DEATH_LIVING_WOOD_LEFT, DEATH_LIVING_WOOD_RIGHT);
             default -> chooseMaterial(chestType, DEATH_GOLDEN, DEATH_GOLDEN_LEFT, DEATH_GOLDEN_RIGHT);
         };
     }

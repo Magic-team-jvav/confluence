@@ -301,10 +301,10 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
         @Override
         public void setItem(int index, ItemStack stack) {
             ItemStack itemstack = getItem(index);
-            boolean flag = !stack.isEmpty() && ItemStack.isSameItemSameComponents(itemstack, stack);
+            boolean flag = stack.isEmpty() || !ItemStack.isSameItemSameComponents(itemstack, stack);
             getItems().set(index, stack);
             stack.limitSize(getMaxStackSize(stack));
-            if (index < 4 && !flag) {
+            if (index < 4 && flag) {
                 resetCookTime(this);
                 setChanged();
             } else if (index == FUEL_SLOT) {
@@ -370,7 +370,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
 
         private static boolean canHellforgeBurn(RegistryAccess registryAccess, RecipeHolder<HellforgeRecipe> recipe, NonNullList<ItemStack> inventory, int maxStackSize, HellforgeBlock.Entity furnace) {
             ItemStack[] inputs = furnace.inputs;
-            if ((!recipe.value().isRequiresFuel() || (furnace.useFuel() || !furnace.getItem(FUEL_SLOT).isEmpty())) && Arrays.stream(inputs).anyMatch(itemStack -> !itemStack.isEmpty())) {
+            if ((!recipe.value().isRequiresFuel() || (furnace.useFuel() || furnace.isLit() || !furnace.getItem(FUEL_SLOT).isEmpty())) && Arrays.stream(inputs).anyMatch(itemStack -> !itemStack.isEmpty())) {
                 ItemStack neoResult = recipe.value().getResultItem(registryAccess);
                 return canResultInsert(inventory, maxStackSize, neoResult);
             } else {

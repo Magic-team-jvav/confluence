@@ -6,5 +6,5 @@
     "minecraft:wooded_badlands"
   ],
   "features": "confluence:rolling_cactus",
-  "step": "surface_structures"
+  "step": "underground_decoration"
 }

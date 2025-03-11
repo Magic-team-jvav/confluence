@@ -69,7 +69,7 @@ public final class ModEffectStrategies {
 
     /**火山*/
     public static final DeferredHolder<EffectStrategy, EffectStrategy> HELL_FIRE_EFFECT = createEffect("hell_fire_5_sec","hell fire 5 seconds", "烈火焚身 5秒",
-            TIME_EFFECT.apply(ModEffects.HELL_FIRE,5 * 20));
+            TIME_EFFECT.apply(ModEffects.HELLFIRE,5 * 20));
     /**着火*/
     public static final DeferredHolder<EffectStrategy, EffectStrategy> SET_FIRE_EFFECT = createEffect("set_fire_5_sec","set fire 5 seconds", "着火啦 5秒",
             SET_FIRE.apply(5 * 20, 1f));
@@ -87,7 +87,7 @@ public final class ModEffectStrategies {
             EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(ModEffects.FROST_BURN, 200,3,3,1f));
 
     public static final DeferredHolder<EffectStrategy, EffectStrategy> HELL_FIRE_10_SEC_4_AMP = createEffect("hell_fire_10_sec_4_amp","hell fire Ⅳ 10 seconds", "烈火焚身 Ⅳ 10秒",
-            EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(ModEffects.HELL_FIRE,  200,3,3,1f));
+            EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(ModEffects.HELLFIRE,  200,3,3,1f));
 
     public static final DeferredHolder<EffectStrategy, EffectStrategy> WITHER_10_SEC_4_AMP = createEffect("wither_10_sec_4_amp","wither Ⅳ 10 seconds", "凋零 Ⅳ 10秒",
             EffectStrategy.TIME_POSSIBILITY_AMPLIFIER_EFFECT.apply(MobEffects.WITHER, 200,3,3,1f));

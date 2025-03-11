@@ -27,6 +27,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -88,6 +89,9 @@ public final class LivingEntityEvents {
                 int amount = (int) Math.min(Math.round((healthFactor + attackFactor + armorFactor + knockbackResistanceFactor) * difficultyFactor) * 7.0, 100000);
                 ModUtils.dropMoney(amount, living.getX(), living.getEyeY() - 0.3, living.getZ(), level);
             }
+        }
+
+        if (living.level() instanceof ServerLevel level) {
             if (living instanceof Boss boss && boss.shouldShowMessage()) {
                 EntityType<?> type = living.getType();
                 ConfluenceData data = ConfluenceData.get(level);
@@ -100,9 +104,7 @@ public final class LivingEntityEvents {
                         MeteoriteTracker.INSTANCE.spawnAtNextNight = level.random.nextBoolean();
                     }
                 }
-                if (type == TEEntities.KING_SLIME.get() && MomentManager.of(level).hasMoment(TMMoments.SLIME_RAIN)) {
-                    PlayerUtils.awardAchievement(serverPlayer, "sticky_situation");
-                }
+                boolean stickySituation = type == TEEntities.KING_SLIME.get() && MomentManager.of(level).hasMoment(TMMoments.SLIME_RAIN);
                 ResourceKey<Level> dimension = living.level().dimension();
                 level.players().stream()
                         .filter(player -> player.level().dimension() == dimension)
@@ -111,11 +113,12 @@ public final class LivingEntityEvents {
                             if (isEaterOfWorlds) {
                                 PlayerUtils.awardAchievement(player, "worm_fodder");
                             }
+                            if (stickySituation) {
+                                PlayerUtils.awardAchievement(player, "sticky_situation");
+                            }
                         });
             }
-        }
 
-        if (!living.level().isClientSide) {
             if (living instanceof ServerPlayer serverPlayer) {
                 PlayerUtils.dropMoney(serverPlayer);
             }
@@ -134,7 +137,7 @@ public final class LivingEntityEvents {
     public static void livingHeal(LivingHealEvent event) {
         LivingEntity living = event.getEntity();
         if (!(living.level() instanceof ServerLevel level)) return;
-        if (living.hasEffect(ModEffects.FROST_BURN) || living.hasEffect(ModEffects.BLEEDING) || living.hasEffect(ModEffects.HELL_FIRE)) {
+        if (living.hasEffect(ModEffects.FROST_BURN) || living.hasEffect(ModEffects.BLEEDING) || living.hasEffect(ModEffects.HELLFIRE)) {
             event.setCanceled(true); // todo 有些怪物对其免疫
         } else {
             float amount = event.getAmount();
@@ -154,7 +157,7 @@ public final class LivingEntityEvents {
             float amount = Math.round(event.getAmount() * 10.0F) / 10.0F;
             String text = amount % 1 == 0 ? Integer.toString((int) amount) : Float.toString(amount);
             Component component = Component.literal(text).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD);
-            level.sendParticles(new DamageIndicatorOptions(component, false), pos.x, y, pos.z, 1, 0.1, 0.1, 0.1, 0.0);
+            level.sendParticles(new DamageIndicatorOptions(component, false, DamageIndicatorOptions.Type.HEAL), pos.x, y, pos.z, 1, 0.1, 0.1, 0.1, 0.0);
         }
     }
 
@@ -243,10 +246,8 @@ public final class LivingEntityEvents {
         }
         // 剑命中效果
         ItemStack weapon = damageSource.getWeaponItem();
-        if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword && sword.modifier != null) {
-            if (attacker instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.95f) {
-                sword.modifier.onHitEffects.forEach(effect -> effect.get().getEffect().accept(player, living));
-            }
+        if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword) {
+            sword.applyHitEffects(weapon, attacker, living, damageSource, amount);
         }
         // 暴击判定和伤害显示
         boolean crit = false;
@@ -262,13 +263,7 @@ public final class LivingEntityEvents {
             crit |= arrow.isCritArrow();
         }
         crit |= ((IDamageSource) damageSource).confluence$isCritical();
-        float roundedAmount = Math.round(amount * 10) / 10f;
-        int intAmount = (int) roundedAmount;
-        if (roundedAmount == 0F) return;
-        String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
-        Vec3 pos = living.position();
-        Component component = Component.literal(text).withStyle(crit ? ChatFormatting.DARK_RED : ChatFormatting.GOLD, ChatFormatting.BOLD);
-        level.sendParticles(new DamageIndicatorOptions(component, crit), pos.x, living.getBoundingBoxForCulling().maxY, pos.z, 1, 0.1, 0.1, 0.1, 0);
+        ((IDamageSource) damageSource).confluence$setCritical(crit);
         event.setNewDamage(amount);
     }
 
@@ -277,6 +272,7 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
         LivingEntity damagingEntity = event.getEntity();
         Entity sourceEntity = damageSource.getEntity();
+        if(!(damagingEntity.level() instanceof ServerLevel serverLevel)) return;
 
         ModAchievements.luckyBreak_watchYourStep(damagingEntity, damageSource, sourceEntity);
 
@@ -288,6 +284,16 @@ public final class LivingEntityEvents {
                 invTicks.put(cause, time);
             }
         }
+
+        float amount = event.getNewDamage();
+        float roundedAmount = Math.round(amount * 10) / 10f;
+        int intAmount = (int) roundedAmount;
+        if (roundedAmount == 0F) return;
+        String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
+        Vec3 pos = damagingEntity.position();
+        boolean crit = ((IDamageSource) damageSource).confluence$isCritical();
+        Component component = Component.literal(text).withStyle(crit ? ChatFormatting.DARK_RED : ChatFormatting.GOLD, ChatFormatting.BOLD);
+        serverLevel.sendParticles(new DamageIndicatorOptions(component, crit, DamageIndicatorOptions.Type.DAMAGE), pos.x, damagingEntity.getBoundingBoxForCulling().maxY, pos.z, 1, 0.1, 0.1, 0.1, 0);
     }
 
     @SubscribeEvent
@@ -367,7 +373,8 @@ public final class LivingEntityEvents {
         BlockPos blockPos = BlockPos.containing(event.getX(), event.getY(), event.getZ());
         DifficultyInstance difficulty = event.getDifficulty();
         if (mob.getType() == EntityType.ZOMBIE) {
-            if (level.getBiome(blockPos).is(Tags.Biomes.IS_COLD_OVERWORLD)) {
+            Holder<Biome> biome = level.getBiome(blockPos);
+            if (biome.is(Tags.Biomes.IS_ICY) || biome.is(Tags.Biomes.IS_SNOWY)) {
                 boolean pink = mob.getRandom().nextFloat() < 0.01F;
                 ModUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, (pink ? ArmorItems.PINK_SNOW_CAPS : ArmorItems.SNOW_CAPS).get(), 0.003F);
                 ModUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, (pink ? ArmorItems.PINK_SNOW_SUITS : ArmorItems.SNOW_SUITS).get(), 0.003F);

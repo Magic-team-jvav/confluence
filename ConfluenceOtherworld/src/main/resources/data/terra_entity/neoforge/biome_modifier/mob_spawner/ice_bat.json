@@ -13,7 +13,7 @@
     ],
     "spawners": {
         "type": "terra_entity:ice_bat",
-        "weight": 340,
+        "weight": 80,
         "minCount": 1,
         "maxCount": 2
     }

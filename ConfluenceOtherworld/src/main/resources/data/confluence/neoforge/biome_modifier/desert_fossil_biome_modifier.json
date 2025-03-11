@@ -6,5 +6,5 @@
     "minecraft:wooded_badlands"
   ],
   "features": "confluence:desert_fossil",
-  "step": "surface_structures"
+  "step": "underground_ores"
 }

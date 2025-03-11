@@ -69,15 +69,19 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
     @Override
     protected void init() {
         super.init();
-        if (menu.NPCTrades == null)
-            menu.NPCTrades = ((IPlayer)Minecraft.getInstance().player).rhyme$getDaveTrades();
+        if (menu.NPCTrades == null) {
+            menu.NPCTrades = ((IPlayer) Minecraft.getInstance().player).rhyme$getDaveTrades();
+            if (menu.NPCTrades == null){
+                return;
+            }
+        }
+        this.row = menu.NPCTrades.trades().size() / 3;
+        if (menu.NPCTrades.trades().size() % 3 != 0)
+            this.row++;
 
         offsetX = (this.width - this.imageWidth) / 2 + 10;
         offsetY = (this.height - this.imageHeight) / 2 + 20;
 
-        this.row = menu.NPCTrades.trades().size() / 3;
-        if (menu.NPCTrades.trades().size() % 3 != 0)
-            this.row++;
         interpolator = KeyframeInterpolator.Builder(IInterpolator.cubicSpline)
                 .addKeyframe(5, 0)
                 .addKeyframe(20, 40)
@@ -147,12 +151,21 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         if(interpolator == null) return;
+
+        if (menu.NPCTrades == null) {
+            menu.NPCTrades = ((IPlayer) Minecraft.getInstance().player).rhyme$getDaveTrades();
+            if (menu.NPCTrades == null){
+                return;
+            }
+        }
+        this.row = menu.NPCTrades.trades().size() / 3;
+        if (menu.NPCTrades.trades().size() % 3 != 0)
+            this.row++;
+
+
         v = interpolator.cal(this.tickCount + partialTick);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
-        if (menu.NPCTrades == null){
-//            menu.daveTrades = ((IPlayer)Minecraft.getInstance().player).rhyme$getDaveTrades();
-            return;
-        }
+
         if(forgeBt != null){
             forgeBt.render(guiGraphics, mouseX, mouseY, partialTick);
         }

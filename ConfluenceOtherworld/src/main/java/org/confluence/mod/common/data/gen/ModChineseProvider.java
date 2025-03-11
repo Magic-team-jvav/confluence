@@ -2266,8 +2266,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.RAMBUTAN.get(), "红毛丹");
         add(FoodItems.PEELED_SUGAR_TANGERINE.get(), "拨开的砂糖橘");
         add(FoodItems.COOKED_SHRIMP.get(), "熟虾");
-        add(FoodItems.ESCARGOT.get(), "法式蜗牛");
-        add(FoodItems.FROGGLE_BUNWICH.get(), "面包夹田鸡");
+        add(FoodItems.ESCARGOT.get(), "食用蜗牛");
+        add(FoodItems.FROGGLE_BUNWICH.get(), "蛙腿三明治");
         add(FoodItems.GOLDEN_DELIGHT.get(), "金美味");
         add(FoodItems.GRILLED_SQUIRREL.get(), "松鼠尾");
         add(FoodItems.LOBSTER_TAIL.get(), "龙虾尾");
@@ -2279,16 +2279,16 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.SEAFOOD_DINNER.get(), "海鲜大餐");
         add(FoodItems.BACON.get(), "培根");
         add(FoodItems.BANANA_SPLIT.get(), "香蕉船");
-        add(FoodItems.BBQ_RIBS.get(), "炭烧排骨");
+        add(FoodItems.BBQ_RIBS.get(), "烧烤肋排");
         add(FoodItems.BURGER.get(), "汉堡");
         add(FoodItems.CHICKEN_NUGGET.get(), "鸡块");
         add(FoodItems.CHOCOLATE_CHIP_COOKIE.get(), "巧克力大曲奇");
         add(FoodItems.FRIED_EGG.get(), "煎蛋");
-        add(FoodItems.FRIES.get(), "薯条");
+        add(FoodItems.FRIES.get(), "炸薯条");
         add(FoodItems.HOTDOG.get(), "热狗");
         add(FoodItems.PIZZA.get(), "披萨");
         add(FoodItems.POTATO_CHIPS.get(), "薯片");
-        add(FoodItems.SHRIMP_PO_BOY.get(), "鲨宝男孩");
+        add(FoodItems.SHRIMP_PO_BOY.get(), "鲜虾三明治");
         add(FoodItems.SHUCKED_OYSTER.get(), "去壳牡蛎");
         add(FoodItems.SPAGHETTI.get(), "意大利面");
         add(FoodItems.SURPER_STEAK.get(), "超大肉排");
@@ -2606,6 +2606,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.HELLFIRE.get(), "狱炎");
         add(ModEffects.COZY_FIRE.get(), "温馨之火");
         add(ModEffects.BEWITCHED.get(), "着魔");
+        add(ModEffects.HUNGER_DELAYED.get(), "饥饿延缓");
 
         add(TooltipManager.prefix, "** 赞助者物品 **");
 

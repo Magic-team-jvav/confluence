@@ -5,6 +5,7 @@ import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.LivingEntity;
@@ -354,5 +355,17 @@ public final class PlayerUtils {
         }
         if (min == max) return min;
         return player.getRandom().nextInt(Math.min(min, max), Math.max(min, max));
+    }
+
+    public static void hungerDelayed(Player player) {
+        if (player.hasEffect(ModEffects.HUNGER_DELAYED)) {
+            int effectLeave = player.getEffect(ModEffects.HUNGER_DELAYED).getAmplifier();
+            float exhaustionLevel = player.getFoodData().getExhaustionLevel();
+            if (effectLeave > 5) effectLeave = 5;
+            float reductionFactor = 1 - 0.2F * effectLeave;
+            float actualExhaustionReduction = Math.max(exhaustionLevel * reductionFactor, 0.0F);
+            exhaustionLevel = Math.max(exhaustionLevel - actualExhaustionReduction, 0.0F);
+            player.getFoodData().setExhaustion(exhaustionLevel);
+        }
     }
 }

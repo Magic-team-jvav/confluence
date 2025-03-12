@@ -91,6 +91,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("key.confluence.hook", "Throwing Hook");
         add("key.confluence.specular_detail", "Detail observation of visual potions");
 
+
+        add("key.confluence.gameplay", "Confluence Key Settings");
+        add("key.confluence.healing", "Quick Use Health Potion");
+        add("key.confluence.mana", "Quick Use Mana Potion");
+        add("key.confluence.extra_inventory", "Quick Open Extra Slot");
+
         add("death.attack.falling_star", "%1$s got a response from a meteor");
         add("death.attack.boulder", "%1$s  is crushed by boulder");
         add("death.attack.thron", "%1$s  discovered that he had become a hedgehog.");

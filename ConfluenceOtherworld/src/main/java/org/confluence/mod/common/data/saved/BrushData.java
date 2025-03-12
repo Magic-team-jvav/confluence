@@ -23,7 +23,8 @@ public record BrushData(Map<BlockPos, int[]> colors) {
     public static final int ILLUMINANT_COLOR = -4;
     public static final int ECHO_COLOR = -5;
     public static final Function<BlockPos, int[]> COMPUTE = pos -> createColor(EMPTY_COLOR);
-    public static final MapCodec<BrushData> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final MapCodec<BrushData> MAP_CODEC =
+            RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.unboundedMap(
                     ModUtils.BLOCK_POS_CODEC,
                     Codec.INT.listOf().xmap(list -> new IntArrayList(list).elements(), IntArrayList::new)

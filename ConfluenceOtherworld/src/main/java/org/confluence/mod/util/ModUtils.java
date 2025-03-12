@@ -55,16 +55,7 @@ public final class ModUtils {
     public static final String NO_DROPS_TAG = "confluence:no_drops";
     public static final Set<String> CONFLUENCE_NAMESPACES = Set.of(Confluence.MODID, TerraCurio.MODID, TerraEntity.MODID, TerraGuns.MODID);
     public static final int MAX_STACK_SIZE = 9999;
-    public static final Codec<BlockPos> BLOCK_POS_CODEC = Codec.STRING.xmap(str -> {
-        String[] split = str.split(", ");
-        int[] pos = new int[3];
-        for (int i = 0; i < 3; i++) {
-            if (i < split.length) {
-                pos[i] = Integer.parseInt(split[i]);
-            }
-        }
-        return new BlockPos(pos[0], pos[1], pos[2]);
-    }, pos -> pos.getX() + ", " + pos.getY() + ", " + pos.getZ());
+    public static final Codec<BlockPos> BLOCK_POS_CODEC = Codec.STRING.xmap(str -> BlockPos.of(Long.parseLong(str)), pos -> Long.toString(pos.asLong()));
 
     public static void createItemEntity(ItemStack itemStack, double x, double y, double z, Level level, int pickUpDelay) {
         if (itemStack.isEmpty()) return;

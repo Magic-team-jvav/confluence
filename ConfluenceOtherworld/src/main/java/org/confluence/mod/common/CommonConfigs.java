@@ -35,7 +35,7 @@ public final class CommonConfigs {
         FLETCHING_MENU = BUILDER.comment("Allows you to open menu through right click the Fletching Table").define("fletchingMenu", true);
         SHIMMER_DECOMPOSE = BUILDER.comment("Allows Shimmer fluid to decomposing items").define("shimmer_decompose", true);
         FALLING_STAR_INTERVAL = BUILDER.comment("Defines the interval of falling stars appearing at night").defineInRange("fallingStarInterval", 2400, 20, 20000);
-        RETURN_POTION_GLASS_BOTTLE = BUILDER.define("returnPotionGlassBottle", true);
+        RETURN_POTION_GLASS_BOTTLE = BUILDER.define("returnPotionGlassBottle", false);
         BUILDER.pop();
 
         BUILDER.push("PlayerDeath");

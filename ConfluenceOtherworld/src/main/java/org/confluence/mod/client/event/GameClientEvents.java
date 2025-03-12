@@ -93,6 +93,7 @@ public final class GameClientEvents {
         MeteorLandingHandler.handle(minecraft, player);
         ProjectileStrategy.handle(minecraft, player);
         HookThrowingHandler.handle(player);
+        KeyRequestHandler.handle();
     }
 
     @SubscribeEvent

@@ -45,7 +45,8 @@ public class ExtraInventory extends ItemStackHandler implements Container {
     }
 
     public void setAccessoryDyes(int size) {
-        NonNullList<ItemStack> itemStacks = NonNullList.withSize(SIZE_EXCEPT_ACCESSORY_DYE + size, ItemStack.EMPTY);
+        int all = SIZE_EXCEPT_ACCESSORY_DYE + size;
+        NonNullList<ItemStack> itemStacks = NonNullList.withSize(all, ItemStack.EMPTY);
         for (int i = 0; i < stacks.size(); i++) {
             itemStacks.set(i, stacks.get(i));
         }
@@ -158,14 +159,18 @@ public class ExtraInventory extends ItemStackHandler implements Container {
 
     public void initialize(ServerPlayer serverPlayer) {
         if (!initialized) {
-            int accessoryDye = CuriosApi.getCuriosInventory(serverPlayer).map(handler -> {
-                ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);
-                return accessory == null ? 0 : accessory.getSlots();
-            }).orElse(0);
-            setAccessoryDyes(accessoryDye);
-            this.previousStacks = NonNullList.withSize(SIZE_EXCEPT_ACCESSORY_DYE + accessoryDye, ItemStack.EMPTY);
+            updateAccessorySize(serverPlayer);
             this.initialized = true;
         }
+    }
+
+    public void updateAccessorySize(ServerPlayer serverPlayer) {
+        int accessoryDye = CuriosApi.getCuriosInventory(serverPlayer).map(handler -> {
+            ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);
+            return accessory == null ? 0 : accessory.getSlots();
+        }).orElse(0);
+        setAccessoryDyes(accessoryDye);
+        this.previousStacks = NonNullList.withSize(SIZE_EXCEPT_ACCESSORY_DYE + accessoryDye, ItemStack.EMPTY);
     }
 
     @Override

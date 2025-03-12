@@ -2,8 +2,10 @@ package org.confluence.mod.common.entity.projectile.bomb;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -13,9 +15,12 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.util.VectorUtils;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
+
+import java.util.List;
 
 public class BaseBombEntity extends ThrowableItemProjectile {
     public static final ResourceLocation PARTICLE = Confluence.asResource("bomb_lead");
@@ -115,5 +120,11 @@ public class BaseBombEntity extends ThrowableItemProjectile {
 
     protected ResourceLocation getLeadParticle() {
         return PARTICLE;
+    }
+
+    public static void itemInvulnerableToExplosion(@Nullable Entity directSourceEntity, List<Entity> affectedEntities) {
+        if (directSourceEntity instanceof BaseBombEntity) {
+            affectedEntities.removeIf(entity -> entity instanceof ItemEntity);
+        }
     }
 }

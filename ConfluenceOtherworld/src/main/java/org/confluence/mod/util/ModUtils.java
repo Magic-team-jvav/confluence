@@ -1,6 +1,7 @@
 package org.confluence.mod.util;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
@@ -8,6 +9,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -53,16 +55,7 @@ public final class ModUtils {
     public static final String NO_DROPS_TAG = "confluence:no_drops";
     public static final Set<String> CONFLUENCE_NAMESPACES = Set.of(Confluence.MODID, TerraCurio.MODID, TerraEntity.MODID, TerraGuns.MODID);
     public static final int MAX_STACK_SIZE = 9999;
-    public static final Codec<BlockPos> BLOCK_POS_CODEC = Codec.STRING.xmap(str -> {
-        String[] split = str.split(", ");
-        int[] pos = new int[3];
-        for (int i = 0; i < 3; i++) {
-            if (i < split.length) {
-                pos[i] = Integer.parseInt(split[i]);
-            }
-        }
-        return new BlockPos(pos[0], pos[1], pos[2]);
-    }, pos -> pos.getX() + ", " + pos.getY() + ", " + pos.getZ());
+    public static final Codec<BlockPos> BLOCK_POS_CODEC = Codec.STRING.xmap(str -> BlockPos.of(Long.parseLong(str)), pos -> Long.toString(pos.asLong()));
 
     public static void createItemEntity(ItemStack itemStack, double x, double y, double z, Level level, int pickUpDelay) {
         if (itemStack.isEmpty()) return;
@@ -240,5 +233,12 @@ public final class ModUtils {
         if (!FMLEnvironment.production) {
             runnable.run();
         }
+    }
+
+    public static <A, B> Codec<Tuple<A, B>> tupleCodec(Codec<A> aCodec, Codec<B> bCodec) {
+        return RecordCodecBuilder.create(instance -> instance.group(
+                aCodec.fieldOf("a").forGetter(Tuple::getA),
+                bCodec.fieldOf("b").forGetter(Tuple::getB)
+        ).apply(instance, Tuple::new));
     }
 }

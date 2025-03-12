@@ -53,6 +53,7 @@ public final class TickEvents {
         Player player = event.getEntity();
         if (player instanceof ServerPlayer serverPlayer) {
             PlayerUtils.regenerateMana(serverPlayer);
+            PlayerUtils.hungerDelayed(serverPlayer);
             ((IServerPlayer) serverPlayer).confluence$setCouldPickupItem(true);
             serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).sync(serverPlayer);
             ServerLevel serverLevel = serverPlayer.serverLevel();

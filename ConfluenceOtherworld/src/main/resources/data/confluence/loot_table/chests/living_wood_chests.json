@@ -503,8 +503,8 @@
               "function": "set_count",
               "count": {
                 "type": "uniform",
-                "min": 10,
-                "max": 29
+                "min": 50,
+                "max": 89
               }
             }
           ],

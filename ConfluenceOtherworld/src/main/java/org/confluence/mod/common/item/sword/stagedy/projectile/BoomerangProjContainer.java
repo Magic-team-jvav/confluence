@@ -2,7 +2,7 @@ package org.confluence.mod.common.item.sword.stagedy.projectile;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.entity.projectile.BoomerangProjectile;
@@ -33,17 +33,16 @@ public class BoomerangProjContainer extends AbstractProjContainer {
         return ModSoundEvents.WAVING.get();
     }
 
-    //todo 生成弹幕
-    public Projectile getProjectile(Player player, ItemStack weapon){
-        return new BoomerangProjectile(player,modifier,weapon);
+    public Projectile getProjectile(LivingEntity living, ItemStack weapon){
+        return new BoomerangProjectile(living,modifier,weapon);
     }
 
-    public void genProjectile(Player owner, ItemStack weapon){
-        owner.level().playSound(owner, owner.getX(), owner.getY(), owner.getZ(), getSound(), SoundSource.AMBIENT, 1.0F, 1.0F);
-        Projectile projectile = getProjectile(owner,weapon);
-        projectile.setPos(owner.position().add(0,1.5,0));
-        projectile.shootFromRotation(owner, owner.getXRot(), owner.getYRot(), 0.0F, getVelocity(owner), 0.0F);
-        owner.level().addFreshEntity(projectile);
+    public void genProjectile(LivingEntity living, ItemStack weapon){
+        living.level().playSound(living, living.blockPosition(), getSound(), SoundSource.AMBIENT, 1.0F, 1.0F);
+        Projectile projectile = getProjectile(living,weapon);
+        projectile.setPos(living.position().add(0,1.5,0));
+        projectile.shootFromRotation(living, living.getXRot(), living.getYRot(), 0.0F, getVelocity(living), 0.0F);
+        living.level().addFreshEntity(projectile);
     }
 
 }

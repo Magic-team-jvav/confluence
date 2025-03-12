@@ -52,8 +52,9 @@ public class LightBaneProjectile extends SwordProjectile {
     }
 
     public DamageSource damageSource(){
-        return damageSources().magic();
+        return super.damageSource();
     }
+
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);

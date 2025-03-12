@@ -1,7 +1,5 @@
-package org.confluence.mod.common.entity.projectile;
+package org.confluence.mod.common.entity.projectile.mana;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -9,13 +7,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.VectorUtils;
@@ -24,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class HurtnadoProjectile extends Projectile implements Immunity {
+public class HurtnadoProjectile extends AbstractManaProjectile implements Immunity {
     private final Set<Entity> passThrough = new HashSet<>();
     private Entity target;
     public float rotateO = 0.0F;
@@ -41,15 +37,12 @@ public class HurtnadoProjectile extends Projectile implements Immunity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {}
-
-    @Override
-    public void tick() {
-        if (tickCount > 190 || getOwner() == null) {
+    public void baseTick() {
+        if (tickCount > 190) {
             discard();
             return;
         }
-        super.tick();
+        super.baseTick();
 
         Vec3 vec3 = getDeltaMovement();
         move(MoverType.SELF, vec3.add(0.0, -0.04, 0.0));
@@ -59,6 +52,7 @@ public class HurtnadoProjectile extends Projectile implements Immunity {
             if (motion.y != vec3.y) motion = new Vec3(vec3.x, -vec3.y, vec3.z);
             if (motion.z != vec3.z) motion = new Vec3(vec3.x, vec3.y, -vec3.z);
         }
+        setDeltaMovement(motion.add(0.0, -0.04, 0.0));
 
         if (level().isClientSide) {
             if (rotate > Mth.TWO_PI) this.rotate -= Mth.TWO_PI;
@@ -68,7 +62,7 @@ public class HurtnadoProjectile extends Projectile implements Immunity {
             AABB boundingBox = getBoundingBox().inflate(1.0);
             if (ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F) instanceof EntityHitResult entityHitResult) {
                 Entity entity = entityHitResult.getEntity();
-                if (entity.hurt(ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner()), 6.5F)) {
+                if (entity.hurt(getDamagesource(), 6.5F)) {
                     VectorUtils.knockBackA2B(this, entity, 0.5, 0.2);
                 }
                 if (passThrough.add(entity) && passThrough.size() >= 14) {
@@ -77,7 +71,6 @@ public class HurtnadoProjectile extends Projectile implements Immunity {
                 }
             }
         }
-        setDeltaMovement(motion.add(0.0, -0.04, 0.0));
 
         if (target == null || target.isRemoved()) {
             this.target = getNearestEnemy();
@@ -85,11 +78,6 @@ public class HurtnadoProjectile extends Projectile implements Immunity {
         if (target != null) {
             setDeltaMovement(getDeltaMovement().scale(0.96).add(VectorUtils.getVectorA2B(this, target).scale(0.05)));
         }
-    }
-
-    @Override
-    protected boolean canHitEntity(Entity target) {
-        return target.canBeHitByProjectile() && target != getOwner();
     }
 
     private @Nullable Entity getNearestEnemy() {
@@ -108,24 +96,12 @@ public class HurtnadoProjectile extends Projectile implements Immunity {
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        compound.putInt("Age", tickCount);
-    }
-
-    @Override
-    protected void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        this.tickCount = compound.getInt("Age");
-    }
-
-    @Override
-    public Types confluence$getImmunityType(){
+    public Types confluence$getImmunityType() {
         return Types.STATIC;
     }
 
     @Override
-    public int confluence$getImmunityDuration(DamageSource damageSource){
+    public int confluence$getImmunityDuration(DamageSource damageSource) {
         return 8;
     }
 }

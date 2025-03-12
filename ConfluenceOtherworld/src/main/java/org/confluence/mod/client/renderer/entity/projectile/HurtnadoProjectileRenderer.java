@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.projectile.HurtnadoProjectileModel;
-import org.confluence.mod.common.entity.projectile.HurtnadoProjectile;
+import org.confluence.mod.common.entity.projectile.mana.HurtnadoProjectile;
 
 public class HurtnadoProjectileRenderer extends EntityRenderer<HurtnadoProjectile> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/hurtnado_projectile.png");

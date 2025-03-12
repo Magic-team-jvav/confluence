@@ -177,6 +177,7 @@ public final class ModEvents {
         }
         registrar.playToClient(TheConstantPostEffectPacketS2C.TYPE, TheConstantPostEffectPacketS2C.STREAM_CODEC, TheConstantPostEffectPacketS2C::handle);
         registrar.playToClient(PlayerDeathInfoPacketS2C.TYPE, PlayerDeathInfoPacketS2C.STREAM_CODEC, PlayerDeathInfoPacketS2C::handle);
+        registrar.playToClient(NPCTradesPacketS2C.TYPE, NPCTradesPacketS2C.STREAM_CODEC, NPCTradesPacketS2C::handle);
 
         registrar.playToServer(SwordShootingPacketC2S.TYPE, SwordShootingPacketC2S.STREAM_CODEC, SwordShootingPacketC2S::receive);
         registrar.playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle);

@@ -6,8 +6,10 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -99,12 +101,24 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        if (!target.canBeHitByProjectile()) {
+        if (!target.canBeHitByProjectile() || target instanceof Villager) {
             return false;
         }
         Entity entity = this.getOwner();
-        if(entity == null || !entity.isPassengerOfSameVehicle(target))
+        // 防止击中仆从
+        if(
+                entity != null && (
+                        target instanceof TamableAnimal animal &&
+                        entity instanceof LivingEntity living &&
+                        animal.isOwnedBy(living)
+                )
+        ){
+            return false;
+        }
+
+        if(entity == null || !entity.isPassengerOfSameVehicle(target)) {
             return true;
+        }
         return target != entity;
     }
 

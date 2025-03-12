@@ -21,6 +21,7 @@ import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.BannedBiomeMultiNoiseBiomeSource;
 import org.confluence.mod.common.worldgen.secret_seed.NotTheBees;
 import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.mixed.IMultiNoiseBiomeSource;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,7 +37,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Mixin(value = MultiNoiseBiomeSource.class, priority = 1100)
-public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<MultiNoiseBiomeSource> {
+public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<MultiNoiseBiomeSource>, IMultiNoiseBiomeSource {
     @Unique
     private List<Holder<Biome>> confluence$jungle;
     @Unique
@@ -84,8 +85,7 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
         return confluence$jungle;
     }
 
-    @Unique
-    private Pair<Holder<Biome>, Holder<Biome>> confluence$getBiomePair() {
+    public Pair<Holder<Biome>, Holder<Biome>> confluence$getBiomePair() {
         if (confluence$biomePair == null) {
             MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
             if (server == null) return null;
@@ -93,7 +93,7 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
             long flag = ((IWorldOptions) worldOptions).confluence$getSecretFlag();
             ResourceKey<Biome> from;
             ResourceKey<Biome> to;
-            if (self() instanceof BannedBiomeMultiNoiseBiomeSource banned) {
+            if (self() instanceof BannedBiomeMultiNoiseBiomeSource) {
                 return this.confluence$biomePair = new Pair<>(null, null);
             } else if (ModSecretSeeds.DRUNK_WORLD.match(flag)) {
                 ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.DOUBLE_EVIL);

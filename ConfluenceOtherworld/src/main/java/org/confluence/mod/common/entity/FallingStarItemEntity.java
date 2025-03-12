@@ -106,7 +106,7 @@ public class FallingStarItemEntity extends ItemEntity {
     }
 
     public static void summon(ServerLevel level) {
-        if (level.getDayTime() % 24000 > 12000 && level.getGameTime() % CommonConfigs.fallingStarFrequency == 0) {
+        if (level.getDayTime() % 24000 > 12000 && level.getGameTime() % CommonConfigs.fallingStarInterval == 0) {
             RandomSource random = level.random;
             Set<Vec3> cache = new HashSet<>();
             for (ServerPlayer serverPlayer : level.players()) {

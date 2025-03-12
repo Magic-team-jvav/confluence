@@ -257,7 +257,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 FunctionalBlocks.TIMERS_BLOCK_1_4.get(),
                 FunctionalBlocks.EVER_POWERED_RAIL.get(),
                 FunctionalBlocks.SILLY_BALLOON_MACHINE.get(),
-                FunctionalBlocks.BASE_CHEST_BLOCK.get()
+                FunctionalBlocks.BASE_CHEST_BLOCK.get(),
+                NatureBlocks.JUNGLE_HIVE_BLOCK.get()
         );
         // 铲子
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithShovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);
@@ -595,7 +596,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         );
         tag(ModTags.Blocks.MINEABLE_WITH_HAMMER).addTag(BlockTags.WALLS).addTag(BlockTags.PLANKS).addTag(BlockTags.STONE_BRICKS).add(
                 NatureBlocks.SHADOW_ORB.get(),
-                NatureBlocks.CRIMSON_HEART.get()
+                NatureBlocks.CRIMSON_HEART.get(),
+                FunctionalBlocks.DEMON_ALTAR.get(),
+                FunctionalBlocks.CRIMSON_ALTAR.get()
         );
         // neoforge标签
         tag(Tags.Blocks.NEEDS_NETHERITE_TOOL).add(

@@ -301,6 +301,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("jei.tooltip.item.confluence.celestial_starboard.0", "在普通模式或更高难度下，击败月球领主获得。");
 
 
+        add("confluence.configuration.achievementToast", "启用泰拉样式成就");
+        add("confluence.configuration.achievementToast.tooltip", "如果想使用原版样式进度的话就关闭它");
         add("confluence.configuration.dropsMoney", "钱币掉落");
         add("confluence.configuration.dropsMoney.tooltip", "启用时，生物死亡后会掉落钱币");
         add("confluence.configuration.Paints", "油漆功能设置");
@@ -317,8 +319,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.fletchingMenu.tooltip", "启用时，将使用汇流来世的修改制箭台");
         add("confluence.configuration.shimmer_decompose", "微光分解");
         add("confluence.configuration.shimmer_decompose.tooltip", "启用时，微光液体能将物品分解为原材料");
-        add("confluence.configuration.fallingStarFrequency", "坠星频率");
-        add("confluence.configuration.fallingStarFrequency.tooltip", "定义夜晚中坠星的生成频率");
+        add("confluence.configuration.fallingStarInterval", "坠星间隔");
+        add("confluence.configuration.fallingStarInterval.tooltip", "定义夜晚中坠星的生成间隔");
         add("confluence.configuration.returnPotionGlassBottle", "返还药水瓶");
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "决定你使用药水后是否返还瓶子");
         add("confluence.configuration.defaultRespawnTimeMin", "默认最小重生时间");
@@ -1642,13 +1644,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.VOLCANO.get(), "火山");
         add(SwordItems.DEVELOPER_SWORD.get(), "开发者剑");
         // 光剑
-        add(SwordItems.RED_LIGHT_SABER.get(), "陨石红光剑");
-        add(SwordItems.ORANGE_LIGHT_SABER.get(), "陨石橙光剑");
-        add(SwordItems.YELLOW_LIGHT_SABER.get(), "陨石黄光剑");
-        add(SwordItems.GREEN_LIGHT_SABER.get(), "陨石绿光剑");
-        add(SwordItems.BLUE_LIGHT_SABER.get(), "陨石蓝光剑");
-        add(SwordItems.PURPLE_LIGHT_SABER.get(), "陨石紫光剑");
-        add(SwordItems.WHITE_LIGHT_SABER.get(), "陨石白光剑");
+        add(SwordItems.RED_LIGHT_SABER.get(), "红陨石光剑");
+        add(SwordItems.ORANGE_LIGHT_SABER.get(), "橙陨石光剑");
+        add(SwordItems.YELLOW_LIGHT_SABER.get(), "黄陨石光剑");
+        add(SwordItems.GREEN_LIGHT_SABER.get(), "绿陨石光剑");
+        add(SwordItems.BLUE_LIGHT_SABER.get(), "蓝陨石光剑");
+        add(SwordItems.PURPLE_LIGHT_SABER.get(), "紫陨石光剑");
+        add(SwordItems.WHITE_LIGHT_SABER.get(), "白陨石光剑");
         //剑气
         add(SwordItems.ENCHANTED_SWORD.get(), "附魔剑");
         //快攻
@@ -1850,6 +1852,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.TIMERS_BLOCK_1_4.get(), "1/4秒计时器");
         add(FunctionalBlocks.EVER_POWERED_RAIL.get(), "永久动力铁轨");
         add(FunctionalBlocks.SHARPENING_STATION.get(), "利器站");
+        add(FunctionalBlocks.BEWITCHING_TABLE.get(), "施法桌");
         add(FunctionalBlocks.AMMO_BOX.get(), "弹药箱");
         add(FunctionalBlocks.LIFE_CAMPFIRE.get(), "生命篝火");
         add(FunctionalBlocks.SILLY_BALLOON_MACHINE.get(), "呆萌气球机");
@@ -2014,6 +2017,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeaponItems.WEATHER_PAIN.get(), "天候棒");
         add(ManaWeaponItems.AQUA_SCEPTER.get(), "海蓝权杖");
         add(ManaWeaponItems.FLOWER_OF_FIRE.get(), "火之花");
+        add(ManaWeaponItems.WATER_BOLT.get(), "水矢");
         /*
         add(ManaWeapons.MAGIC_MISSILE.get(), "魔法导弹");
         add(ManaWeapons.FLAMELASH.get(), "烈焰火鞭");
@@ -2262,8 +2266,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.RAMBUTAN.get(), "红毛丹");
         add(FoodItems.PEELED_SUGAR_TANGERINE.get(), "拨开的砂糖橘");
         add(FoodItems.COOKED_SHRIMP.get(), "熟虾");
-        add(FoodItems.ESCARGOT.get(), "法式蜗牛");
-        add(FoodItems.FROGGLE_BUNWICH.get(), "面包夹田鸡");
+        add(FoodItems.ESCARGOT.get(), "食用蜗牛");
+        add(FoodItems.FROGGLE_BUNWICH.get(), "蛙腿三明治");
         add(FoodItems.GOLDEN_DELIGHT.get(), "金美味");
         add(FoodItems.GRILLED_SQUIRREL.get(), "松鼠尾");
         add(FoodItems.LOBSTER_TAIL.get(), "龙虾尾");
@@ -2275,16 +2279,16 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.SEAFOOD_DINNER.get(), "海鲜大餐");
         add(FoodItems.BACON.get(), "培根");
         add(FoodItems.BANANA_SPLIT.get(), "香蕉船");
-        add(FoodItems.BBQ_RIBS.get(), "炭烧排骨");
+        add(FoodItems.BBQ_RIBS.get(), "烧烤肋排");
         add(FoodItems.BURGER.get(), "汉堡");
         add(FoodItems.CHICKEN_NUGGET.get(), "鸡块");
         add(FoodItems.CHOCOLATE_CHIP_COOKIE.get(), "巧克力大曲奇");
         add(FoodItems.FRIED_EGG.get(), "煎蛋");
-        add(FoodItems.FRIES.get(), "薯条");
+        add(FoodItems.FRIES.get(), "炸薯条");
         add(FoodItems.HOTDOG.get(), "热狗");
         add(FoodItems.PIZZA.get(), "披萨");
         add(FoodItems.POTATO_CHIPS.get(), "薯片");
-        add(FoodItems.SHRIMP_PO_BOY.get(), "鲨宝男孩");
+        add(FoodItems.SHRIMP_PO_BOY.get(), "鲜虾三明治");
         add(FoodItems.SHUCKED_OYSTER.get(), "去壳牡蛎");
         add(FoodItems.SPAGHETTI.get(), "意大利面");
         add(FoodItems.SURPER_STEAK.get(), "超大肉排");
@@ -2601,6 +2605,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.OBSIDIAN_SKIN.get(), "黑曜石皮");
         add(ModEffects.HELLFIRE.get(), "狱炎");
         add(ModEffects.COZY_FIRE.get(), "温馨之火");
+        add(ModEffects.BEWITCHED.get(), "着魔");
+        add(ModEffects.HUNGER_DELAYED.get(), "饥饿延缓");
 
         add(TooltipManager.prefix, "** 赞助者物品 **");
 

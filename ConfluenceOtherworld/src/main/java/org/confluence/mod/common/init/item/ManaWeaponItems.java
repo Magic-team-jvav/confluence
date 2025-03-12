@@ -4,8 +4,8 @@ import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.projectile.*;
-import org.confluence.mod.common.entity.projectile.BaseManaStaffProjectileEntity.Variant;
+import org.confluence.mod.common.entity.projectile.mana.*;
+import org.confluence.mod.common.entity.projectile.mana.BaseManaStaffProjectileEntity.Variant;
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
 import org.confluence.mod.common.item.gun.BeeGunItem;
 import org.confluence.mod.common.item.gun.SpaceGunItem;
@@ -34,6 +34,7 @@ public class ManaWeaponItems {
     public static final Supplier<ManaStaffItem<?>> AQUA_SCEPTER = ITEMS.register("aqua_scepter", () -> new ManaStaffItem<>(ModRarity.GREEN, WaterStreamProjectile::new, 7, 32.0F, 3, 0.04));
     public static final Supplier<ManaStaffItem<?>> FLOWER_OF_FIRE = ITEMS.register("flower_of_fire", () -> new ManaStaffItem<>(ModRarity.ORANGE, BallOfFireProjectile::new, 12, 7.5F, 16, 0.04));
     /* 烈焰火鞭 */
+    public static final Supplier<ManaStaffItem<?>> WATER_BOLT = ITEMS.register("water_bolt", () -> new ManaStaffItem<>(ModRarity.GREEN, WaterBoltProjectile::new, 10, 4.5F, 17, 0.04));
 
     public static final Supplier<BeeGunItem> BEE_GUN = ITEMS.register("bee_gun", BeeGunItem::new);
     public static final Supplier<SpaceGunItem> SPACE_GUN = ITEMS.register("space_gun", SpaceGunItem::new);

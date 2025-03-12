@@ -48,4 +48,8 @@ public class BannedBiomeMultiNoiseBiomeSource extends MultiNoiseBiomeSource {
         }
         return biome;
     }
+
+    public ResourceKey<Biome> getBannedBiome() {
+        return bannedBiome;
+    }
 }

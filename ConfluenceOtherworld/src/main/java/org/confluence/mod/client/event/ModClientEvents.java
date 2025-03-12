@@ -208,6 +208,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(VILETHRON_PROJECTILE.get(), VilethronProjectileRenderer::new);
         event.registerEntityRenderer(HURTNADO_PROJECTILE.get(), HurtnadoProjectileRenderer::new);
         event.registerEntityRenderer(WATER_STREAM_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(WATER_BOLT_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(BALL_OF_FIRE_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(ARROW_PROJECTILE.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(EFFECT_THROWN_POTION.get(), ThrownItemRenderer::new);

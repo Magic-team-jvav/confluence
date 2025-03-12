@@ -429,7 +429,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("achievements.confluence.the_cavalry.description", "Equip a mount.");
 
 
-
+        add("confluence.configuration.achievementToast", "Enable Terra Style Achievements");
+        add("confluence.configuration.achievementToast.tooltip", "Disable it if you want to use the default progress style.");
         add("confluence.configuration.dropsMoney", "Coin Drops");
         add("confluence.configuration.dropsMoney.tooltip", "When enabled, characters will drop coins upon death.");
         add("confluence.configuration.Paints", "Paint Function Settings");
@@ -446,8 +447,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.fletchingMenu.tooltip", "When enabled, the fletching table will be modified by Conflux");
         add("confluence.configuration.shimmer_decompose", "Shimmer Decompose");
         add("confluence.configuration.shimmer_decompose.tooltip", "When enabled, Shimmer liquid can decompose items into raw materials");
-        add("confluence.configuration.fallingStarFrequency", "Falling Star Frequency");
-        add("confluence.configuration.fallingStarFrequency.tooltip", "Defines the frequency of falling stars appearing at night");
+        add("confluence.configuration.fallingStarInterval", "Falling Star Interval");
+        add("confluence.configuration.fallingStarInterval.tooltip", "Defines the interval of falling stars appearing at night");
         add("confluence.configuration.returnPotionGlassBottle", "Return Glass Bottles for Potions");
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "Decides whether to return the glass bottle after using a potion");
         add("confluence.configuration.defaultRespawnTimeMin", "Default Minimum Respawn Time");

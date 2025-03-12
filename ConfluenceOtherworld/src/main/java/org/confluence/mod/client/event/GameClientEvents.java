@@ -51,7 +51,7 @@ import org.confluence.mod.common.entity.DeadBodyPartEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
-import org.confluence.mod.integration.touhoulittleMaid.ExtraButton;
+import org.confluence.mod.integration.touhou_little_maid.ExtraButton;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.mixin.client.accessor.AgeableListModelAccessor;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;

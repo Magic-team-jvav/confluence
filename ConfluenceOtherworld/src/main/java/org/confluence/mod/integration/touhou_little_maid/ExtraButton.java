@@ -1,4 +1,4 @@
-package org.confluence.mod.integration.touhoulittleMaid;
+package org.confluence.mod.integration.touhou_little_maid;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ImageButton;
@@ -22,12 +22,11 @@ import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
  */
 @OnlyIn(Dist.CLIENT)
 public class ExtraButton {
-
     public static void addButton(ScreenEvent.Init.Post event) {
         Screen screen = event.getScreen();
         String interfaceName = "com.github.tartaricacid.touhoulittlemaid.client.gui.entity.maid.backpack.IBackpackContainerScreen";
         try {
-            if(screen instanceof AbstractContainerScreen<?> screen1 && Class.forName(interfaceName).isAssignableFrom(screen1.getClass())) {
+            if (screen instanceof AbstractContainerScreen<?> screen1 && Class.forName(interfaceName).isAssignableFrom(screen1.getClass())) {
                 int l = screen1.getGuiLeft();
                 int t = screen1.getGuiTop();
                 event.addListener(new ImageButton(l + 5, t + 30, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
@@ -40,9 +39,6 @@ public class ExtraButton {
                     }
                 }));
             }
-        }
-        catch (ClassNotFoundException ignored) {
-
-        }
+        } catch (ClassNotFoundException ignored) {}
     }
 }

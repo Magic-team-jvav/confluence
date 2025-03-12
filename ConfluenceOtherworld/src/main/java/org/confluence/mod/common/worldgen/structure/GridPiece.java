@@ -1,6 +1,7 @@
 package org.confluence.mod.common.worldgen.structure;
 
 import com.mojang.serialization.Codec;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -8,6 +9,7 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
@@ -19,20 +21,18 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.util.ModUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 public class GridPiece extends StructurePiece {
-    public static final Codec<Object2IntMap<BlockPos>> BLOCK_MAP_CODEC = Codec.unboundedMap(ModUtils.BLOCK_POS_CODEC, Codec.INT).xmap(map -> {
-        Object2IntMap<BlockPos> ret = new Object2IntOpenHashMap<>();
-        ret.putAll(map);
-        return ret;
-    }, Function.identity());
+    public static final Codec<List<Tuple<Integer, LongArrayList>>> BLOCK_MAP_CODEC = ModUtils.tupleCodec(Codec.INT, Codec.LONG.listOf().xmap(LongArrayList::new, Function.identity())).listOf();
+
     private final ChunkPos startPos;
     private final int y;
-    private final Object2IntMap<BlockPos> blockMap;
+    private final List<Tuple<Integer, LongArrayList>> blockMap;
     public List<BlockState> blockList;
 
     public GridPiece(ChunkPos startPos, int y, Object2IntMap<BlockPos> blockMap) {
@@ -42,7 +42,14 @@ public class GridPiece extends StructurePiece {
         ));
         this.startPos = startPos;
         this.y = y;
-        this.blockMap = blockMap;
+        this.blockMap = new ArrayList<>();
+        Map<Integer, LongArrayList> map = new HashMap<>();
+        for (Object2IntMap.Entry<BlockPos> posEntry : blockMap.object2IntEntrySet()) {
+            map.computeIfAbsent(posEntry.getIntValue(), index -> new LongArrayList()).add(posEntry.getKey().asLong());
+        }
+        for (Map.Entry<Integer, LongArrayList> entry : map.entrySet()) {
+            this.blockMap.add(new Tuple<>(entry.getKey(), entry.getValue()));
+        }
     }
 
     public GridPiece(CompoundTag tag) {
@@ -64,7 +71,10 @@ public class GridPiece extends StructurePiece {
     @Override
     public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator generator, RandomSource random, BoundingBox box, ChunkPos chunkPos, BlockPos pos) {
         if (blockList == null || !chunkPos.equals(startPos)) return;
-        blockMap.object2IntEntrySet().removeIf(posEntry -> level.setBlock(posEntry.getKey(), blockList.get(posEntry.getIntValue()), 2));
+        for (Tuple<Integer, LongArrayList> pair : blockMap) {
+            BlockState blockState = blockList.get(pair.getA());
+            pair.getB().removeIf(blockPos -> level.setBlock(BlockPos.of(blockPos), blockState, 2));
+        }
     }
 
     public static Map<ChunkPos, Object2IntMap<BlockPos>> sliceChunks(Object2IntMap<BlockPos> blockMap, ChunkPos startChunk) {

@@ -24,32 +24,32 @@ public final class ModKeyBindings {
     public static final Lazy<KeyMapping> HOOK = Lazy.of(() -> new KeyMapping(
             "key.confluence.hook",
             KeyConflictContext.IN_GAME,
-            InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_R,
+            InputConstants.Type.SCANCODE,
+            InputConstants.KEY_R,
             "key.confluence.gameplay"
     ));
 
     public static final Lazy<KeyMapping> SHOW_DETAIL_SPECULAR = Lazy.of(() -> new KeyMapping(
             "key.confluence.specular_detail",
             KeyConflictContext.IN_GAME,
-            InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_TAB,
+            InputConstants.Type.SCANCODE,
+            InputConstants.KEY_TAB,
             "key.confluence.gameplay"
     ));
 
     public static final Lazy<KeyMapping> HEALING = Lazy.of(() -> new KeyMapping(
             "key.confluence.healing",
             KeyConflictContext.IN_GAME,
-            InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_H,
+            InputConstants.Type.SCANCODE,
+            InputConstants.KEY_H,
             "key.confluence.gameplay"
     ));
 
     public static final Lazy<KeyMapping> MANA = Lazy.of(() -> new KeyMapping(
             "key.confluence.mana",
             KeyConflictContext.IN_GAME,
-            InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_B,
+            InputConstants.Type.SCANCODE,
+            GLFW.GLFW_MOUSE_BUTTON_4,
             "key.confluence.gameplay"
     ));
 }

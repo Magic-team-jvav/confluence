@@ -7,14 +7,14 @@ import org.confluence.mod.common.init.ModEffects;
 
 public class FoodType {
     //常规肉
-    public static final FoodProperties MEAT = new FoodProperties.Builder().nutrition(3).saturationModifier(2.5f).fast().alwaysEdible()
+    public static final FoodProperties MEAT = new FoodProperties.Builder().nutrition(3).saturationModifier(1f).fast().alwaysEdible()
             .effect(() -> new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, 3000), 1.0f)
             .build();
     //泰拉基础鱼
     public static final FoodProperties FISH = new FoodProperties.Builder().nutrition(3).saturationModifier(1.5f).fast().alwaysEdible().build();
     //金鲤鱼
-    public static final FoodProperties GOLDEN_CARP = new FoodProperties.Builder().nutrition(6).saturationModifier(6.5f).fast().alwaysEdible()
-            .effect(() -> new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, 24000,2), 1.0f)
+    public static final FoodProperties GOLDEN_CARP = new FoodProperties.Builder().nutrition(6).saturationModifier(3.5f).fast().alwaysEdible()
+            .effect(() -> new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, 24000,3), 1.0f)
             .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 100, 1), 1.0F)
             .effect(() -> new MobEffectInstance(MobEffects.ABSORPTION, 2400, 0), 1.0F)
             .build();

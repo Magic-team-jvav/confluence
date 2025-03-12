@@ -3,7 +3,6 @@ package org.confluence.mod.common.data.gen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
@@ -574,41 +573,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         DrillItems.acceptTag(prefix_universal_only);
         BoomerangItems.acceptTag(prefix_universal_only);
 
-        copy(BlockTags.RAILS, ItemTags.RAILS);
-        copy(Tags.Blocks.ORES, Tags.Items.ORES);
-        copy(Tags.Blocks.ORE_RATES_DENSE, Tags.Items.ORE_RATES_DENSE);
-        copy(Tags.Blocks.ORE_BEARING_GROUND_NETHERRACK, Tags.Items.ORE_BEARING_GROUND_NETHERRACK);
-        copy(Tags.Blocks.OBSIDIANS, Tags.Items.OBSIDIANS);
-        copy(Tags.Blocks.HIDDEN_FROM_RECIPE_VIEWERS, Tags.Items.HIDDEN_FROM_RECIPE_VIEWERS);
-        copy(Tags.Blocks.GRAVELS, Tags.Items.GRAVELS);
-        copy(Tags.Blocks.GLASS_BLOCKS_CHEAP, Tags.Items.GLASS_BLOCKS_CHEAP);
-        copy(Tags.Blocks.GLASS_BLOCKS_COLORLESS, Tags.Items.GLASS_BLOCKS_COLORLESS);
-        copy(Tags.Blocks.GLASS_BLOCKS, Tags.Items.GLASS_BLOCKS);
-        copy(Tags.Blocks.FENCE_GATES_WOODEN, Tags.Items.FENCE_GATES_WOODEN);
-        copy(Tags.Blocks.FENCE_GATES, Tags.Items.FENCE_GATES);
-        copy(Tags.Blocks.FENCES_WOODEN, Tags.Items.FENCES_WOODEN);
-        copy(Tags.Blocks.FENCES, Tags.Items.FENCES);
-        copy(Tags.Blocks.CHAINS, Tags.Items.CHAINS);
-        copy(Tags.Blocks.DYED, Tags.Items.DYED);
-        copy(Tags.Blocks.COBBLESTONES_NORMAL, Tags.Items.COBBLESTONES_NORMAL);
-        copy(Tags.Blocks.COBBLESTONES, Tags.Items.COBBLESTONES);
-        copy(Tags.Blocks.ORES_COAL, Tags.Items.ORES_COAL);
-        copy(Tags.Blocks.ORES_COPPER, Tags.Items.ORES_COPPER);
-        copy(Tags.Blocks.ORES_DIAMOND, Tags.Items.ORES_DIAMOND);
-        copy(Tags.Blocks.ORES_EMERALD, Tags.Items.ORES_EMERALD);
-        copy(Tags.Blocks.ORES_GOLD, Tags.Items.ORES_GOLD);
-        copy(Tags.Blocks.ORES_IRON, Tags.Items.ORES_IRON);
-        copy(Tags.Blocks.ORES_LAPIS, Tags.Items.ORES_LAPIS);
-        copy(Tags.Blocks.ORES_REDSTONE, Tags.Items.ORES_REDSTONE);
-        copy(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE, Tags.Items.ORES_IN_GROUND_DEEPSLATE);
-        copy(Tags.Blocks.ORES_IN_GROUND_NETHERRACK, Tags.Items.ORES_IN_GROUND_NETHERRACK);
-        copy(Tags.Blocks.ORES_IN_GROUND_STONE, Tags.Items.ORES_IN_GROUND_STONE);
-        copy(Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES, Tags.Items.PLAYER_WORKSTATIONS_CRAFTING_TABLES);
-        copy(Tags.Blocks.PLAYER_WORKSTATIONS_FURNACES, Tags.Items.PLAYER_WORKSTATIONS_FURNACES);
-        copy(Tags.Blocks.ROPES, Tags.Items.ROPES);
-        copy(Tags.Blocks.SANDS, Tags.Items.SANDS);
-        copy(Tags.Blocks.SANDSTONE_BLOCKS, Tags.Items.SANDSTONE_BLOCKS);
-        copy(Tags.Blocks.SANDSTONE_RED_BLOCKS, Tags.Items.SANDSTONE_RED_BLOCKS);
         tag(ModTags.Items.COINS).add(
                 ModItems.COPPER_COIN.get(),
                 ModItems.SILVER_COIN.get(),

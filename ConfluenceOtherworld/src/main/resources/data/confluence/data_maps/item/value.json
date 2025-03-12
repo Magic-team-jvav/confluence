@@ -1,5 +1,42 @@
 {
     "values": {
-        "minecraft:netherite_sword": 10000
+        "minecraft:netherite_sword": 6000,
+        "minecraft:netherite_pickaxe": 6000,
+        "minecraft:netherite_axe": 6000,
+
+        "confluence:volcano": 5400,
+        "confluence:blood_butcherer": 2700,
+        "confluence:lights_bane": 2700,
+        "confluence:enchanted_sword": 30000,
+        "confluence:terragrim": 50000,
+        "confluence:ice_blade": 4000,
+
+        "confluence:flamarang": 5400,
+        "confluence:molten_fury": 5400,
+        "confluence:tendon_bow": 3600,
+
+        "confluence:molten_pickaxe": 5400,
+        "confluence:deathbringer_pickaxe": 3600,
+        "confluence:nightmare_pickaxe": 3600,
+        "confluence:platinum_pickaxe": 3000,
+        "confluence:golden_pickaxe": 2000,
+        "confluence:tungsten_pickaxe": 1500,
+        "confluence:silver_pickaxe": 1000,
+        "confluence:lead_pickaxe": 600,
+        "minecraft:iron_pickaxe": 400,
+        "confluence:tin_pickaxe": 150,
+        "confluence:copper_pickaxe": 50,
+
+        "confluence:the_breaker": 3000,
+        "confluence:flesh_grinder": 3000,
+        "confluence:platinum_hammer": 2400,
+        "confluence:golden_hammer": 1600,
+        "confluence:tungsten_hammer": 1200,
+        "confluence:silver_hammer": 800,
+        "confluence:lead_hammer": 480,
+        "confluence:iron_hammer": 320,
+        "confluence:tin_hammer": 120,
+        "confluence:copper_hammer": 80,
+        "confluence:wooden_hammer": 10
     }
 }

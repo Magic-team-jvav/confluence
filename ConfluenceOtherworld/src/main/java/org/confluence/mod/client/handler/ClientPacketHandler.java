@@ -78,7 +78,7 @@ public final class ClientPacketHandler {
         ((LocalPlayer) player).connection.handlePlayerCombatKill(new ClientboundPlayerCombatKillPacket(player.getId(), packet.deathMessage()));
         if (!player.isCreative() && Minecraft.getInstance().screen instanceof IDeathScreen deathScreen) {
             deathScreen.confluence$setDelayTicker(0);
-            deathScreen.confluence$setRespawnWaitTime(packet.respawnTime());
+            deathScreen.confluence$setRespawnWaitTime(packet.respawnTime() * 20);
             if (packet.platinum() != 0 || packet.gold() != 0 || packet.silver() != 0 || packet.copper() != 0) {
                 MutableComponent component = Component.translatable("info.confluence.drops_money");
                 if (packet.platinum() > 0) {

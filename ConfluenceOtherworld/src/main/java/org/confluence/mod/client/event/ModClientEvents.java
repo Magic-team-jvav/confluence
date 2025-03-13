@@ -69,6 +69,7 @@ import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjec
 import org.confluence.mod.client.textures.GrayBlockModelSwapper;
 import org.confluence.mod.client.textures.GraySpriteShifterEntry;
 import org.confluence.mod.common.init.ModFluids;
+import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -100,6 +101,7 @@ public final class ModClientEvents {
             FishingPoleItems.registerCast();
             ArrowInBowHud.initAdaptionMap();
             AchievementToast.registerAll();
+            ModLootTables.registerDataForClient();
 
             ModClientSetups.registerItemProperties();
             ModClientSetups.setRenderLayers();

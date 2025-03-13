@@ -47,7 +47,7 @@ Confluence: Now with SOUND
 Confluence: Press alt-f4
 Confluence: You sand bro?
 Confluence: A good day to dig hard
-Confluence: Can You Re-Dig-It?
+Confluence: Can You Use Magic-Harp?
 Confluence: I don't know that-- aaaaa!
 Confluence: What's that purple spiked thing?
 Confluence: I wanna be the guide
@@ -77,3 +77,4 @@ Confluence: For the worthy!
 Confluence: Now with even more Ocram!
 Confluence: Shut Up and Dig Gaiden!
 Confluence: Also try Don't Starve!
+Confluence: I have 20 iron!

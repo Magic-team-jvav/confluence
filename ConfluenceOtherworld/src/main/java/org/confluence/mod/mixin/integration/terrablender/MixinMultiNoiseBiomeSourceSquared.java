@@ -85,6 +85,7 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
         return confluence$jungle;
     }
 
+    @Override
     public Pair<Holder<Biome>, Holder<Biome>> confluence$getBiomePair() {
         if (confluence$biomePair == null) {
             MinecraftServer server = ServerLifecycleHooks.getCurrentServer();

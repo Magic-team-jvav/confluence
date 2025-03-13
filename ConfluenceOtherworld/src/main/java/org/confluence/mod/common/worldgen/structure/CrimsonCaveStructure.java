@@ -49,7 +49,7 @@ public class CrimsonCaveStructure extends Structure {
                 }
             } else {
                 Pair<Holder<Biome>, Holder<Biome>> pair = ((IMultiNoiseBiomeSource) multi).confluence$getBiomePair();
-                if (pair != null && pair.getFirst().is(ModBiomes.TR_CRIMSON)) {
+                if (pair != null && pair.getFirst() != null && pair.getFirst().is(ModBiomes.TR_CRIMSON)) {
                     return Optional.empty();
                 }
             }

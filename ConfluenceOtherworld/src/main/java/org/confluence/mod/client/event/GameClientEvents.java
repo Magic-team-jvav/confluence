@@ -266,6 +266,7 @@ public final class GameClientEvents {
             poseStack.mulPose(Axis.YP.rotationDegrees(-entity.getYRot() + 180));
             Matrix4f pose = poseStack.last().pose();
             Collection<GeoBone> bones = geoRenderer.getGeoModel().getAnimationProcessor().getRegisteredBones();
+            skipBone:
             for (GeoBone bone : bones) {
                 if (bone.isHidden() || Boolean.TRUE.equals(bone.shouldNeverRender())) continue;
                 Vector3f boneOffset = new Vector3f(bone.getPosX(), bone.getPosY(), bone.getPosZ());
@@ -273,6 +274,9 @@ public final class GameClientEvents {
                 rots.add(new Vector3f(bone.getRotX(), bone.getRotY(), bone.getRotZ()));
                 GeoBone parent = bone.getParent();
                 while (parent != null) {
+                    if (parent.isHidingChildren()) {
+                        continue skipBone;
+                    }
                     rots.add(new Vector3f(parent.getRotX(), parent.getRotY(), parent.getRotZ()));
                     boneOffset.add(parent.getPosX(), parent.getPosY(), parent.getPosZ());
                     parent = parent.getParent();

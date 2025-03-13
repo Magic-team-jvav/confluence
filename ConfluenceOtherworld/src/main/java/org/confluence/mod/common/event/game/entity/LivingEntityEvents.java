@@ -347,6 +347,7 @@ public final class LivingEntityEvents {
         } else if (living instanceof Player player && !living.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
             ExtraInventory data = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
             for (int i = 0; i < data.getContainerSize(); i++) {
+                if (i >= ExtraInventory.COINS_START && i < ExtraInventory.COINS_START + ExtraInventory.SIZE_COINS) continue;
                 ItemStack itemStack = data.getItem(i);
                 if (!itemStack.isEmpty()) {
                     data.setItem(i, ItemStack.EMPTY);

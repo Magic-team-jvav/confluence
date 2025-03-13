@@ -45,6 +45,12 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     }
 
     @Override
+    protected void init() {
+        super.init();
+
+    }
+
+    @Override
     protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {}
 
     @Override

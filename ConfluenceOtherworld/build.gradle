@@ -84,7 +84,6 @@ repositories {
             includeGroup "dev.architectury"
         }
     }
-
     maven {
         // saps.dev Maven (KubeJS and Rhino)
         url = "https://maven.saps.dev/minecraft"
@@ -100,7 +99,6 @@ repositories {
         name = 'Forge'
         url = "https://maven.minecraftforge.net"
     }
-
     maven {
         // saps.dev Maven (KubeJS and Rhino)
         url = "https://maven.saps.dev/releases"
@@ -109,7 +107,6 @@ repositories {
             includeGroup "dev.latvian.apps"
         }
     }
-
     maven {
         url = 'https://jitpack.io'
         content {
@@ -194,7 +191,7 @@ dependencies {
     //runtimeOnly "curse.maven:applied-energistics-2-223794:6237438" // requires guideme
     //runtimeOnly "curse.maven:guideme-1173950:6283609"
     //runtimeOnly "curse.maven:probejs-585406:5820894"
-    runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
+    //runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -215,10 +212,7 @@ tasks.withType(ProcessResources).configureEach {
     filesMatching(['META-INF/neoforge.mods.toml']) {
         expand replaceProperties
     }
-
-
 }
-
 
 tasks.withType(Copy).configureEach { duplicatesStrategy = DuplicatesStrategy.EXCLUDE }
 
@@ -243,8 +237,7 @@ tasks.register("genVoilaRun") {
     def ideaRt = "D:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.3\\lib\\idea_rt.jar"
 //    return;
 
-    def runConfig =
-            """
+    def runConfig = """
 <component name="ProjectRunConfigurationManager">
     <configuration default="false" name="Confluence" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="false">
         <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />

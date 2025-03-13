@@ -77,9 +77,9 @@ public class CrimsonCaveStructure extends Structure {
             double xStart = centerPos.getX();
             double yStart = centerPos.getY();
             double zStart = centerPos.getZ();
-            float rotate = random.nextFloat() * (Mth.PI * 2);
-            float fingerRotate = random.nextFloat() * (Mth.PI * 2);
-            float fingerRotateStep = (Mth.PI * 2) / fingerCount;
+            float rotate = random.nextFloat() * Mth.TWO_PI;
+            float fingerRotate = random.nextFloat() * Mth.TWO_PI;
+            float fingerRotateStep = Mth.TWO_PI / fingerCount;
             Vector3d posPoint;
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
 

@@ -35,6 +35,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     protected float knockBack = 0.0F;
     protected float baseKnockBack = 0.0F;
     protected boolean canPenalize = false;
+    protected CollisionProperties collisionProperties = new CollisionProperties(1,1,0);
 
 
     protected ItemStack firedFromWeapon;
@@ -145,7 +146,6 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         else return damageSources().magic();
     }
 
-    CollisionProperties collisionProperties = new CollisionProperties(2,2,0);
     public CollisionProperties getCollisionProperties() {
         return collisionProperties;
     }
@@ -169,7 +169,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         float f1 = -Mth.sin((x + z) * 0.017453292F);
         float f2 = Mth.cos(y * 0.017453292F) * Mth.cos(x * 0.017453292F);
         this.shoot(f, f1, f2, velocity, inaccuracy);
-        Vec3 vec3 = shooter.getKnownMovement().scale(0.5f);
+        Vec3 vec3 = shooter.getKnownMovement().scale(0.25f);
         this.setDeltaMovement(this.getDeltaMovement().add(vec3.x, shooter.onGround() ? 0.0 : vec3.y, vec3.z));
     }
 

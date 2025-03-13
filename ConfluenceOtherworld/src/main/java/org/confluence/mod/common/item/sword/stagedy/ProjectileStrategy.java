@@ -2,6 +2,7 @@ package org.confluence.mod.common.item.sword.stagedy;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Item;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -46,7 +47,7 @@ public class ProjectileStrategy {
         ) {
             PacketDistributor.sendToServer((new SwordShootingPacketC2S()));
             player.getCooldowns().addCooldown(sword,sword.modifier.proj.get().getAttackSpeed(player));
-//            player.swing(InteractionHand.MAIN_HAND);
+            player.swing(InteractionHand.MAIN_HAND);
         }
     }
 }

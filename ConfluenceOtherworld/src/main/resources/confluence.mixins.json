@@ -53,6 +53,7 @@
     "integration.terra_curio.WorkshopRecipeMixin",
     "integration.terrablender.MixinMultiNoiseBiomeSourceSquared",
     "integration.touhoulittlemaid.MaidFishingHookMixin",
+    "integration.touhoulittlemaid.TouhouLittleMaidMixin",
     "item.ArrowItemMixin",
     "item.BowItemMixin",
     "item.ContainerMixin",

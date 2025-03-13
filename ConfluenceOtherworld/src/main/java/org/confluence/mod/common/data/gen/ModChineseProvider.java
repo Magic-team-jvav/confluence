@@ -2616,6 +2616,11 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(TooltipManager.prefix, "** 赞助者物品 **");
 
+        // 车万女仆
+        add("task.confluence.boomerang_attack", "回旋镖攻击");
+        add("task.confluence.boomerang_attack.desc", "女仆会主动用回旋镖攻击周围的敌对生物");
+        add("task.confluence.boomerang_attack.condition.has_boomerang", "主手持有回旋镖");
+
 
         ModEffectStrategies.EFFECT_STRATEGY.getEntries().forEach(strategy -> add(strategy.get().getTranslationKey(), strategy.get().getDescription_zh_cn()));
     }

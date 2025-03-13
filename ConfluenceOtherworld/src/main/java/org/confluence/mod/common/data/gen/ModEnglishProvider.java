@@ -650,6 +650,13 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add(TooltipManager.prefix, "** Sponsor Item **");
 
+        // TouhouLittleMaid
+        add("task.confluence.boomerang_attack", "Boomerang Attack");
+        add("task.confluence.boomerang_attack.desc", "Mail will use a boomerang to attack surrounding hostile mobs");
+        add("task.confluence.boomerang_attack.condition.has_boomerang", "Mainhand holds a boomerang");
+
+
+
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), toTitleCase(block.getId().getPath()));
         add(ModBlocks.COPPER_COIN_PILE.get(), "Copper Coin");
         add(ModBlocks.SILVER_COIN_PILE.get(), "Silver Coin");

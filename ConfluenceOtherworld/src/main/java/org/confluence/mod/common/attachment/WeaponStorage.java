@@ -19,6 +19,9 @@ public class WeaponStorage implements INBTSerializable<CompoundTag> {
     public int tryIncrease(Item item){
         return boomerangCounter.compute(item, (k, v) -> v == null? 1 : v + 1);
     }
+    public int getCount(Item item){
+        return boomerangCounter.getOrDefault(item, 0);
+    }
     @Override
     public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
 //        CompoundTag tag = new CompoundTag();

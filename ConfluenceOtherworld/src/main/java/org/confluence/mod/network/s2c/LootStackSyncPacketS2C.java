@@ -60,7 +60,7 @@ public record LootStackSyncPacketS2C(ResourceLocation item, Stack[] stacks) impl
         );
     }
 
-    public static Stack[] syncStacks(MinecraftServer server, ResourceKey<LootTable> lootTableKey) {
+    public static Stack[] calculateStacks(MinecraftServer server, ResourceKey<LootTable> lootTableKey) {
         Map<ResourceLocation, int[]> map = new Hashtable<>();
         LootTable lootTable = server.reloadableRegistries().getLootTable(lootTableKey);
         for (LootPool pool : lootTable.pools) {

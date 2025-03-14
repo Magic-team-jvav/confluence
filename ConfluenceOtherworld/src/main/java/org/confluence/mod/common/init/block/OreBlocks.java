@@ -2,6 +2,8 @@ package org.confluence.mod.common.init.block;
 
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RedStoneOreBlock;
@@ -19,9 +21,8 @@ import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.data.gen.ModBlockTagsProvider;
 import org.confluence.mod.common.init.item.ModItems;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
-
-import static org.confluence.mod.common.init.block.ModBlocks.registerWithItem;
 
 public class OreBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
@@ -174,12 +175,12 @@ public class OreBlocks {
     public static final DeferredBlock<Block> GELSTONE_ORE = copyBlockRegister("gelstone_ore", Blocks.IRON_ORE);
     public static final DeferredBlock<Block> SPORE_ROOT_BLOCK = copyBlockRegister("spore_root_block", Blocks.IRON_ORE);
     public static final DeferredBlock<Block> WINTER_MARROW_BLOCK = copyBlockRegister("winter_marrow_block", Blocks.IRON_ORE);
-    public static final DeferredBlock<TransparentBlock> COLD_CRYSTAL_ORE = registerWithItem("cold_crystal_ore", () -> new TransparentBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PACKED_ICE).noOcclusion()));
-    public static final DeferredBlock<Block> HELLSTONE = simpleBlockRegister("hellstone", HellStoneBlock::new);
-    public static final DeferredBlock<Block> ASH_HELLSTONE = simpleBlockRegister("ash_hellstone", HellStoneBlock::new);
-    public static final DeferredBlock<Block> HELLSTONE_BRICKS = simpleBlockRegister("hellstone_bricks", HellStoneBlock::new);
-    public static final DeferredBlock<Block> RAW_HELLSTONE_BLOCK = simpleBlockRegister("raw_hellstone_block", BlockBehaviour.Properties.of().requiresCorrectToolForDrops());
-    public static final DeferredBlock<Block> HELLSTONE_BLOCK = simpleBlockRegister("hellstone_block", BlockBehaviour.Properties.of().requiresCorrectToolForDrops());
+    public static final DeferredBlock<Block> COLD_CRYSTAL_ORE = registerWithItem("cold_crystal_ore", () -> new TransparentBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PACKED_ICE).noOcclusion()));
+    public static final DeferredBlock<Block> HELLSTONE = registerWithItem("hellstone", HellStoneBlock::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
+    public static final DeferredBlock<Block> ASH_HELLSTONE = registerWithItem("ash_hellstone", HellStoneBlock::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
+    public static final DeferredBlock<Block> HELLSTONE_BRICKS = registerWithItem("hellstone_bricks", HellStoneBlock::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
+    public static final DeferredBlock<Block> RAW_HELLSTONE_BLOCK = registerWithItem("raw_hellstone_block", HellStoneBlock::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
+    public static final DeferredBlock<Block> HELLSTONE_BLOCK = registerWithItem("hellstone_block", HellStoneBlock::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
 
     // 红石矿
     public static final DeferredBlock<Block> SANCTIFICATION_REDSTONE_ORE = simpleBlockRegister("sanctification_redstone_ore", () -> new RedStoneOreBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_REDSTONE_ORE)));
@@ -225,6 +226,18 @@ public class OreBlocks {
     private static DeferredBlock<Block> simpleBlockRegister(String name, BlockBehaviour.Properties props) {
         DeferredBlock<Block> block = BLOCKS.registerSimpleBlock(name, props);
         ModItems.BLOCK_ITEMS.registerSimpleBlockItem(name, block);
+        return block;
+    }
+
+    private static DeferredBlock<Block> registerWithItem(String name, Supplier<Block> blockSupplier, Function<Block, BlockItem> function) {
+        DeferredBlock<Block> block = BLOCKS.register(name, blockSupplier);
+        ModItems.BLOCK_ITEMS.register(name, () -> function.apply(block.get()));
+        return block;
+    }
+
+    private static DeferredBlock<Block> registerWithItem(String name, Supplier<Block> blockSupplier) {
+        DeferredBlock<Block> block = BLOCKS.register(name, blockSupplier);
+        ModItems.BLOCK_ITEMS.registerSimpleBlockItem(block);
         return block;
     }
 

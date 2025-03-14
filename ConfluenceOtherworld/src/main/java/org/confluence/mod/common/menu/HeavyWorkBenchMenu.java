@@ -56,8 +56,8 @@ public class HeavyWorkBenchMenu extends AbstractContainerMenu {
 
             @Override
             public void onTake(Player pPlayer, ItemStack pStack) {
-                if (recipe != null) {
-                    AbstractAmountRecipe.extractInput(input, recipe.getIngredients(), true);
+                if (recipe instanceof HeavyWorkBenchRecipe shaped) {
+                    AbstractAmountRecipe.consumeShaped(input, 4, 4, shaped.pattern);
                     input.setChanged();
                     updateMenu();
                 }

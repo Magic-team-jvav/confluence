@@ -27,7 +27,7 @@ public class ContainerResultSlot extends Slot {
     @Override
     public void onTake(Player pPlayer, ItemStack pStack) {
         if (recipe != null) {
-            AbstractAmountRecipe.extractContainer(container, recipe.getIngredients(), false);
+            AbstractAmountRecipe.consumeShapeless(container.getContainerSize(), container::getItem, recipe.getIngredients());
             container.setChanged();
             updateMenu();
         }

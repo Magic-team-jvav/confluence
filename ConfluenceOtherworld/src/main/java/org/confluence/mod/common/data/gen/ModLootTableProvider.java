@@ -237,6 +237,7 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(TR_CRIMSON_COBBLESTONE.get());
             dropSelf(TR_CRIMSON_SAND.get());
             dropSelf(ASH_BLOCK.get());
+            dropSelf(ASH_GRASS_BLOCK.get());
             dropOther(TR_CRIMSON_GRASS_BLOCK.get(), Items.DIRT);
             dropOther(CORRUPT_GRASS_BLOCK.get(), Items.DIRT);
             dropOther(HALLOW_GRASS_BLOCK.get(), Items.DIRT);

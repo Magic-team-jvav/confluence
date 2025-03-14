@@ -272,7 +272,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.EBONY_SAND_LAYER_BLOCK.get(),
                 NatureBlocks.PEARL_SAND_LAYER_BLOCK.get(),
                 NatureBlocks.TR_CRIMSON_SAND_LAYER_BLOCK.get(),
-                NatureBlocks.ASH_BLOCK.get()
+                NatureBlocks.ASH_BLOCK.get(),
+                NatureBlocks.MUSHROOM_GRASS_BLOCK.get(),
+                NatureBlocks.JUNGLE_GRASS_BLOCK.get()
         );
         // 锄头
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithHoe = tag(BlockTags.MINEABLE_WITH_HOE);

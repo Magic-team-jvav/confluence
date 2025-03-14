@@ -95,12 +95,12 @@ public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
         if (getEyeInFluidType() == ModFluids.SHIMMER.type().get()) {
             if (!confluence$isInShimmer) { // 入微光
                 this.confluence$isInShimmer = true;
-                self.level().playSound(null, self.getX(), self.getY(), self.getZ(), isItem ? ModSoundEvents.SHIMMER_ITEM_INTERACTIONS.get() : ModSoundEvents.SHIMMER_IMMERSION.get(), SoundSource.AMBIENT, 1.0F, 1.0F);
+                self.level().playSound(null, self.getX(), self.getY(), self.getZ(), isItem ? ModSoundEvents.SHIMMER_ITEM_INTERACTIONS.get() : ModSoundEvents.SHIMMER_IMMERSION.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
             }
         } else {
             if (confluence$isInShimmer) { // 出微光
                 this.confluence$isInShimmer = false;
-                self.level().playSound(null, self.getX(), self.getY(), self.getZ(), ModSoundEvents.SHIMMER_DETACHMENT.get(), SoundSource.AMBIENT, 1.0F, 1.0F);
+                self.level().playSound(null, self.getX(), self.getY(), self.getZ(), ModSoundEvents.SHIMMER_DETACHMENT.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
             }
         }
 
@@ -121,7 +121,7 @@ public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
                         discard();
                         confluence$setup(target, post.getCoolDown(), post.getSpeedY());
                         self.level().addFreshEntity(target);
-                        self.level().playSound(null, self.getX(), self.getY(), self.getZ(), ModSoundEvents.SHIMMER_EVOLUTION.get(), SoundSource.AMBIENT, 1.0F, 1.0F);
+                        self.level().playSound(null, self.getX(), self.getY(), self.getZ(), ModSoundEvents.SHIMMER_EVOLUTION.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
                         return;
                     }
                 }

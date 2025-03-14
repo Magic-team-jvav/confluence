@@ -159,7 +159,7 @@ dependencies {
     //runtimeOnly "curse.maven:ftb-library-forge-404465:6016745"
     //runtimeOnly "curse.maven:ftb-ultimine-forge-386134:5671703"
     //runtimeOnly "curse.maven:ftb-teams-forge-404468:5882217"
-    runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
+    //runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
 
     compileOnly "curse.maven:better-advancements-272515:5850587"
     //runtimeOnly "curse.maven:better-advancements-272515:5850587"

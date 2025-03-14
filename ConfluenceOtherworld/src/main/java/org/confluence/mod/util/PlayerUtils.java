@@ -5,7 +5,6 @@ import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,6 +32,7 @@ import org.confluence.mod.network.s2c.GamePhasePacketS2C;
 import org.confluence.mod.network.s2c.ManaPacketS2C;
 import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
 import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
+import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.entity.ai.Boss;
 
@@ -122,6 +122,7 @@ public final class PlayerUtils {
     public static float getFishingPower(ServerPlayer player) {
         float base = TCUtils.getAccessoriesValue(player, AccessoryItems.FISHING$POWER);
         if (player.getData(ModAttachmentTypes.EVER_BENEFICIAL).isGummyWormUsed()) base += 3.0F;
+        if (player.isInFluidType() && TCUtils.hasAccessoriesType(player, TCItems.FLOAT$ON$LIQUID$SURFACE)) base += 5.0F;
         Level level = player.level();
         long dayTime = level.dayTime();
         if (level.isRaining()) base *= 1.1F;
@@ -140,7 +141,7 @@ public final class PlayerUtils {
         if (MomentManager.of(level).hasMoment(TMMoments.BLOOD_MOON)) {
             base *= 1.1F;
         }
-        return base + player.getLuck();
+        return base;
     }
 
     public static Tuple<ItemStack, Integer> getMaxDiggingPowerItem(Player player) {

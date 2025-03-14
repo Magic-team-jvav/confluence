@@ -192,6 +192,7 @@ dependencies {
     //runtimeOnly "curse.maven:guideme-1173950:6283609"
     //runtimeOnly "curse.maven:probejs-585406:5820894"
     //runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
+    //runtimeOnly "curse.maven:lootr-361276:6294335"
 }
 
 tasks.withType(ProcessResources).configureEach {

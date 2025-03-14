@@ -16,12 +16,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
 import org.jetbrains.annotations.Nullable;
@@ -338,5 +343,18 @@ public final class ClientUtils {
             }
         }
         return OptionalInt.empty();
+    }
+
+    public static int getLuminance(Entity entity, int returnValue) {
+        int luminance = 0;
+        if (entity instanceof LivingEntity living) {
+            if (living.getItemBySlot(EquipmentSlot.HEAD).is(ArmorItems.MINING_HELMET.get())) {
+                luminance += 10;
+            }
+            if (living.hasEffect(ModEffects.SHINE)) {
+                luminance += 10;
+            }
+        }
+        return returnValue >= 0 ? Math.min(returnValue + luminance, 15) : Math.max(returnValue - luminance, -15);
     }
 }

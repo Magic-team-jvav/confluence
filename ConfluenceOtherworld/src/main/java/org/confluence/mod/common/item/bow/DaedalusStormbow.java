@@ -35,12 +35,12 @@ public class DaedalusStormbow extends TerraBowItem {
             return 1.5f;
         }
         @Override
-        public Projectile getProjectile(Player player,ItemStack weapon) {
-            ItemStack itemstack = player.getProjectile(weapon);
+        public Projectile getProjectile(LivingEntity owner, ItemStack weapon) {
+            ItemStack itemstack = owner.getProjectile(weapon);
 //            if(player.getRandom().nextFloat() < 0.66f)
                 itemstack.shrink(1);
-            Projectile projectile = createProjectile(player.level(), player, weapon, itemstack, true);
-            projectile.setOwner(player);
+            Projectile projectile = createProjectile(owner.level(), owner, weapon, itemstack, true);
+            projectile.setOwner(owner);
 
             return projectile;
         }

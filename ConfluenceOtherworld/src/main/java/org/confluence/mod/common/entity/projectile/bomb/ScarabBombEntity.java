@@ -27,8 +27,6 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 public class ScarabBombEntity extends StickyBombEntity {
     private static final EntityDataAccessor<Integer> DATA_OWNER_ID = SynchedEntityData.defineId(ScarabBombEntity.class, EntityDataSerializers.INT);
     private Vec3 facingDir = new Vec3(0, -1, 0);
@@ -131,11 +129,5 @@ public class ScarabBombEntity extends StickyBombEntity {
             }
         }
         return owner;
-    }
-
-    public static void itemInvulnerableToExplosion(@Nullable Entity directSourceEntity, List<Entity> affectedEntities) {
-        if (directSourceEntity instanceof ScarabBombEntity) {
-            affectedEntities.removeIf(entity -> entity instanceof ItemEntity);
-        }
     }
 }

@@ -72,6 +72,7 @@ public class TimersBlock extends AbstractMechanicalBlock {
                 Block.box(0.0, 0.0, 0.0, 16.0, 4.0, 16.0)
         );
     }
+
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {

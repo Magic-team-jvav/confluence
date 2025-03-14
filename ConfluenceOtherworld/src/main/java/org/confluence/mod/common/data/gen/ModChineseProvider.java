@@ -117,7 +117,13 @@ public class ModChineseProvider extends LanguageProvider {
         add("info.confluence.drops_money.silver", " %s 银");
         add("info.confluence.drops_money.copper", " %s 铜");
 
+        add("key.confluence.gameplay", "汇流来世按键设置");
+        add("key.confluence.healing", "快捷喝药（生命）");
+        add("key.confluence.mana", "快捷喝药（魔力）");
+        add("key.confluence.extra_inventory", "快捷打开额外栏");
+
         add("key.confluence.hook", "使用钩爪");
+
         add("key.confluence.specular_detail", "视觉药水细节观测");
 
         add("death.attack.falling_star", "%1$s 得到了流星的回应");
@@ -688,7 +694,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.fletching_table", "制箭台");
         add("title.confluence.touhoulittlemaid", "女仆特供");
         add("title.confluence.npc_trade", "汇流商店");
-
+        add("title.confluence.loot_table", "战利品");
 
         add("block.confluence.base_chest_block.locked_golden", "§r上锁的金箱");
         add("block.confluence.base_chest_block.unlocked_golden", "§r金箱");
@@ -1852,6 +1858,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.TIMERS_BLOCK_1_4.get(), "1/4秒计时器");
         add(FunctionalBlocks.EVER_POWERED_RAIL.get(), "永久动力铁轨");
         add(FunctionalBlocks.SHARPENING_STATION.get(), "利器站");
+        add(FunctionalBlocks.BEWITCHING_TABLE.get(), "施法桌");
         add(FunctionalBlocks.AMMO_BOX.get(), "弹药箱");
         add(FunctionalBlocks.LIFE_CAMPFIRE.get(), "生命篝火");
         add(FunctionalBlocks.SILLY_BALLOON_MACHINE.get(), "呆萌气球机");
@@ -2016,6 +2023,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeaponItems.WEATHER_PAIN.get(), "天候棒");
         add(ManaWeaponItems.AQUA_SCEPTER.get(), "海蓝权杖");
         add(ManaWeaponItems.FLOWER_OF_FIRE.get(), "火之花");
+        add(ManaWeaponItems.WATER_BOLT.get(), "水矢");
         /*
         add(ManaWeapons.MAGIC_MISSILE.get(), "魔法导弹");
         add(ManaWeapons.FLAMELASH.get(), "烈焰火鞭");
@@ -2264,8 +2272,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.RAMBUTAN.get(), "红毛丹");
         add(FoodItems.PEELED_SUGAR_TANGERINE.get(), "拨开的砂糖橘");
         add(FoodItems.COOKED_SHRIMP.get(), "熟虾");
-        add(FoodItems.ESCARGOT.get(), "法式蜗牛");
-        add(FoodItems.FROGGLE_BUNWICH.get(), "面包夹田鸡");
+        add(FoodItems.ESCARGOT.get(), "食用蜗牛");
+        add(FoodItems.FROGGLE_BUNWICH.get(), "蛙腿三明治");
         add(FoodItems.GOLDEN_DELIGHT.get(), "金美味");
         add(FoodItems.GRILLED_SQUIRREL.get(), "松鼠尾");
         add(FoodItems.LOBSTER_TAIL.get(), "龙虾尾");
@@ -2277,32 +2285,32 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.SEAFOOD_DINNER.get(), "海鲜大餐");
         add(FoodItems.BACON.get(), "培根");
         add(FoodItems.BANANA_SPLIT.get(), "香蕉船");
-        add(FoodItems.BBQ_RIBS.get(), "炭烧排骨");
+        add(FoodItems.BBQ_RIBS.get(), "烧烤肋排");
         add(FoodItems.BURGER.get(), "汉堡");
         add(FoodItems.CHICKEN_NUGGET.get(), "鸡块");
         add(FoodItems.CHOCOLATE_CHIP_COOKIE.get(), "巧克力大曲奇");
         add(FoodItems.FRIED_EGG.get(), "煎蛋");
-        add(FoodItems.FRIES.get(), "薯条");
+        add(FoodItems.FRIES.get(), "炸薯条");
         add(FoodItems.HOTDOG.get(), "热狗");
         add(FoodItems.PIZZA.get(), "披萨");
         add(FoodItems.POTATO_CHIPS.get(), "薯片");
-        add(FoodItems.SHRIMP_PO_BOY.get(), "鲨宝男孩");
+        add(FoodItems.SHRIMP_PO_BOY.get(), "鲜虾三明治");
         add(FoodItems.SHUCKED_OYSTER.get(), "去壳牡蛎");
         add(FoodItems.SPAGHETTI.get(), "意大利面");
-        add(FoodItems.SURPER_STEAK.get(), "超大肉排");
+        add(FoodItems.SURPER_STEAK.get(), "超大牛排");
         add(FoodItems.CHRISTMAS_PUDDING.get(), "圣诞布丁");
         add(FoodItems.GINGERBREAD_COOKIE.get(), "姜饼人");
-        add(FoodItems.SUGAR_COOKIE.get(), "糖曲奇");
+        add(FoodItems.SUGAR_COOKIE.get(), "蜜糖饼干");
         add(FoodItems.MARSHMALLOW.get(), "棉花糖");
         add(FoodItems.COOKED_MARSHMALLOW.get(), "烤棉花糖");
-        add(FoodItems.PAD_THAI.get(), "泰式炒河粉");
+        add(FoodItems.PAD_THAI.get(), "泰式炒面");
         add(FoodItems.GRAPE.get(), "葡萄");
-        add(FoodItems.FROZEN_BANANA_DAIQUIRI.get(), "香蕉圣代");
+        add(FoodItems.FROZEN_BANANA_DAIQUIRI.get(), "冰冻香蕉代基里");
         add(FoodItems.GRAPE_JUICE.get(), "葡萄汁");
         add(FoodItems.LEMONADE.get(), "柠檬水");
-        add(FoodItems.PEACH_SANGRIA.get(), "桃子桑格利亚汽酒");
-        add(FoodItems.PIÑA_COLADA.get(), "皮尼亚·科拉达");
-        add(FoodItems.PRISMATIC_PUNCH.get(), "味蕾冲击者");
+        add(FoodItems.PEACH_SANGRIA.get(), "桃子果酒");
+        add(FoodItems.PIÑA_COLADA.get(), "椰林飘香");
+        add(FoodItems.PRISMATIC_PUNCH.get(), "七彩潘趣酒");
         add(FoodItems.TROPICAL_SMOOTHIE.get(), "热带冰沙");
         add(FoodItems.SMOOTHIE_OF_DARKNESS.get(), "黑暗奶昔");
         add(FoodItems.CREAM_SODA.get(), "奶油苏打");
@@ -2603,8 +2611,15 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.OBSIDIAN_SKIN.get(), "黑曜石皮");
         add(ModEffects.HELLFIRE.get(), "狱炎");
         add(ModEffects.COZY_FIRE.get(), "温馨之火");
+        add(ModEffects.BEWITCHED.get(), "着魔");
+        add(ModEffects.HUNGER_DELAYED.get(), "饥饿延缓");
 
         add(TooltipManager.prefix, "** 赞助者物品 **");
+
+        // 车万女仆
+        add("task.confluence.boomerang_attack", "回旋镖攻击");
+        add("task.confluence.boomerang_attack.desc", "女仆会主动用回旋镖攻击周围的敌对生物");
+        add("task.confluence.boomerang_attack.condition.has_boomerang", "主手持有回旋镖");
 
 
         ModEffectStrategies.EFFECT_STRATEGY.getEntries().forEach(strategy -> add(strategy.get().getTranslationKey(), strategy.get().getDescription_zh_cn()));

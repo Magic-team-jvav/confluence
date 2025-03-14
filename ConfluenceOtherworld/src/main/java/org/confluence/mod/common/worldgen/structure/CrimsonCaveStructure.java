@@ -22,6 +22,7 @@ import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.worldgen.BannedBiomeMultiNoiseBiomeSource;
 import org.confluence.mod.mixed.IMultiNoiseBiomeSource;
+import org.confluence.mod.util.StructureUtils;
 import org.confluence.mod.util.VectorUtils;
 import org.joml.Vector3d;
 
@@ -30,7 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.confluence.mod.util.StructureUtils.boll;
 import static org.confluence.mod.util.StructureUtils.lineSet;
 
 public class CrimsonCaveStructure extends Structure {
@@ -49,7 +49,7 @@ public class CrimsonCaveStructure extends Structure {
                 }
             } else {
                 Pair<Holder<Biome>, Holder<Biome>> pair = ((IMultiNoiseBiomeSource) multi).confluence$getBiomePair();
-                if (pair != null && pair.getFirst().is(ModBiomes.TR_CRIMSON)) {
+                if (pair != null && pair.getFirst() != null && pair.getFirst().is(ModBiomes.TR_CRIMSON)) {
                     return Optional.empty();
                 }
             }
@@ -77,14 +77,14 @@ public class CrimsonCaveStructure extends Structure {
             double xStart = centerPos.getX();
             double yStart = centerPos.getY();
             double zStart = centerPos.getZ();
-            float rotate = random.nextFloat() * (Mth.PI * 2);
-            float fingerRotate = random.nextFloat() * (Mth.PI * 2);
-            float fingerRotateStep = (Mth.PI * 2) / fingerCount;
+            float rotate = random.nextFloat() * Mth.TWO_PI;
+            float fingerRotate = random.nextFloat() * Mth.TWO_PI;
+            float fingerRotateStep = Mth.TWO_PI / fingerCount;
             Vector3d posPoint;
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
 
-            boll(radius, 2, centerPos, blockMap, 0.05F, random, 1, 0);
-            boll(radiusEnd, 4, endPos, blockMap, 0.01F, random, 1, 0);
+            StructureUtils.ball(radius, 2, centerPos, blockMap, 0.05F, random, 1, 0);
+            StructureUtils.ball(radiusEnd, 4, endPos, blockMap, 0.01F, random, 1, 0);
             for (int i = 0; i < layer0; i++) {
                 posPoint = new Vector3d((i == 0) ? xStart : (xStart + i * xDis + random.nextInt(-20, 21)), yStart + i * yDis, (i == 0) ? zStart : (zStart + i * zDis + random.nextInt(-20, 21)));
                 VctList.add(posPoint);
@@ -110,8 +110,8 @@ public class CrimsonCaveStructure extends Structure {
                 lineSet(VctList, 4, 8, 1, false, blockMap);
                 lineSet(VctList, 2, 6, 0, true, blockMap);
                 pos = new BlockPos((int) VctList.getFirst().x, (int) VctList.getFirst().y, (int) VctList.getFirst().z);
-                boll(4, pos, 1, true, blockMap);
-                boll(2, pos, 0, true, blockMap);
+                StructureUtils.ball(4, pos, 1, true, blockMap);
+                StructureUtils.ball(2, pos, 0, true, blockMap);
                 blockMap.put(pos, 2);
             }
 
@@ -126,7 +126,6 @@ public class CrimsonCaveStructure extends Structure {
                 piece.blockList = blockList;
                 builder.addPiece(piece);
             }
-            //builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "test", startChunk.getMiddleBlockPosition(-40), false, true, Rotation.NONE));
         });
     }
 

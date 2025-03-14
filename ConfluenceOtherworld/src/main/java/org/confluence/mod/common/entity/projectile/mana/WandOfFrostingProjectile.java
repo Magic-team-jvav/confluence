@@ -1,4 +1,4 @@
-package org.confluence.mod.common.entity.projectile;
+package org.confluence.mod.common.entity.projectile.mana;
 
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;

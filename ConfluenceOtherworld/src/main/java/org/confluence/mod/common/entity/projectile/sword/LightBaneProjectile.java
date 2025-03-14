@@ -15,10 +15,13 @@ import org.confluence.mod.common.init.ModParticleTypes;
 import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LightBaneProjectile extends SwordProjectile {
 
     public Vec3 direction;
+    List<Entity> hits = new ArrayList<>();
     public static final EntityDataAccessor<Vector3f> DATA_DIRECTION = SynchedEntityData.defineId(LightBaneProjectile.class, EntityDataSerializers.VECTOR3);
 
     public LightBaneProjectile(EntityType<LightBaneProjectile> entityType, Level pLevel) {
@@ -43,8 +46,14 @@ public class LightBaneProjectile extends SwordProjectile {
     }
 
     @Override
+    protected boolean canHitEntity(Entity target) {
+        return  !hits.contains(target) && super.canHitEntity(target);
+    }
+
+    @Override
     protected boolean doHurt(Entity living) {
         if(super.doHurt(living)){
+            hits.add(living);
             ((ServerLevel) level()).sendParticles(ModParticleTypes.LIGHT_BANE.get(),getX(),getY(),getZ(),1,0,0,0,0);
             return true;
         }
@@ -52,8 +61,9 @@ public class LightBaneProjectile extends SwordProjectile {
     }
 
     public DamageSource damageSource(){
-        return damageSources().magic();
+        return super.damageSource();
     }
+
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);

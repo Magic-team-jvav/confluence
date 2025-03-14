@@ -84,7 +84,6 @@ repositories {
             includeGroup "dev.architectury"
         }
     }
-
     maven {
         // saps.dev Maven (KubeJS and Rhino)
         url = "https://maven.saps.dev/minecraft"
@@ -100,7 +99,6 @@ repositories {
         name = 'Forge'
         url = "https://maven.minecraftforge.net"
     }
-
     maven {
         // saps.dev Maven (KubeJS and Rhino)
         url = "https://maven.saps.dev/releases"
@@ -109,7 +107,6 @@ repositories {
             includeGroup "dev.latvian.apps"
         }
     }
-
     maven {
         url = 'https://jitpack.io'
         content {
@@ -165,7 +162,7 @@ dependencies {
     //runtimeOnly "curse.maven:ftb-library-forge-404465:6016745"
     //runtimeOnly "curse.maven:ftb-ultimine-forge-386134:5671703"
     //runtimeOnly "curse.maven:ftb-teams-forge-404468:5882217"
-    //runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
+    runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
 
     compileOnly "curse.maven:better-advancements-272515:5850587"
     //runtimeOnly "curse.maven:better-advancements-272515:5850587"
@@ -180,16 +177,21 @@ dependencies {
     compileOnly "curse.maven:journeymap-32274:6213329"
     //runtimeOnly "curse.maven:journeymap-32274:6213329"
 
+    compileOnly "curse.maven:touhou-little-maid-355044:6266244"
+    runtimeOnly "curse.maven:touhou-little-maid-355044:6266244"
+
+    /**********************************************************/
+
     runtimeOnly "curse.maven:worldedit-225608:5830452"
     //runtimeOnly "curse.maven:ars-nouveau-401955:6228434"
     //runtimeOnly "curse.maven:carry-on-274259:5649344"
     //runtimeOnly "curse.maven:spark-361579:6225208"
     //runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"
     //runtimeOnly "curse.maven:xaeros-world-map-317780:6212662"
-    runtimeOnly "curse.maven:touhou-little-maid-355044:6266244"
     //runtimeOnly "curse.maven:applied-energistics-2-223794:6237438" // requires guideme
     //runtimeOnly "curse.maven:guideme-1173950:6283609"
     //runtimeOnly "curse.maven:probejs-585406:5820894"
+    //runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -210,10 +212,7 @@ tasks.withType(ProcessResources).configureEach {
     filesMatching(['META-INF/neoforge.mods.toml']) {
         expand replaceProperties
     }
-
-
 }
-
 
 tasks.withType(Copy).configureEach { duplicatesStrategy = DuplicatesStrategy.EXCLUDE }
 
@@ -238,8 +237,7 @@ tasks.register("genVoilaRun") {
     def ideaRt = "D:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.3\\lib\\idea_rt.jar"
 //    return;
 
-    def runConfig =
-            """
+    def runConfig = """
 <component name="ProjectRunConfigurationManager">
     <configuration default="false" name="Confluence" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="false">
         <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />

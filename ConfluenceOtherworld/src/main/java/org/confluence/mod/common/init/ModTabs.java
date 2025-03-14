@@ -92,7 +92,7 @@ public final class ModTabs {
                     .displayItems((parameters, output) -> {
                         PotionItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                         FoodItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                    }).withTabsBefore(MISC.getId()).build());
+                    }).withTabsBefore(MISC.getId()).withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "tools")).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TOOLS = TABS.register("tools",
             () -> CreativeModeTab.builder().icon(() -> IconItems.TOOLS_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.tools"))

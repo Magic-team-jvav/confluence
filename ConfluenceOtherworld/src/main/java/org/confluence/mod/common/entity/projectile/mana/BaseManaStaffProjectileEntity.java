@@ -1,4 +1,4 @@
-package org.confluence.mod.common.entity.projectile;
+package org.confluence.mod.common.entity.projectile.mana;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -10,14 +10,12 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.util.VectorUtils;
 import org.mesdag.particlestorm.PSGameClient;
@@ -26,7 +24,7 @@ import org.mesdag.particlestorm.particle.ParticleEmitter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseManaStaffProjectileEntity extends Projectile {
+public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     private static final EntityDataAccessor<Integer> DATA_VARIANT_ID = SynchedEntityData.defineId(BaseManaStaffProjectileEntity.class, EntityDataSerializers.INT);
     protected int penetrateCount = 2;
     protected List<Entity> penetrateList = new ArrayList<>();
@@ -63,8 +61,8 @@ public class BaseManaStaffProjectileEntity extends Projectile {
     }
 
     @Override
-    public void tick() {
-        super.tick();
+    public void baseTick() {
+        super.baseTick();
         Vec3 vec3 = getDeltaMovement();
 
         HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
@@ -99,7 +97,7 @@ public class BaseManaStaffProjectileEntity extends Projectile {
         Entity entity = entityHitResult.getEntity();
         if (canAttack(entity)) {
             float damage = getBaseDamage() * (1.0F + getAttackBonus());
-            if (entity.hurt(ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner()), damage)) {
+            if (entity.hurt(getDamagesource(), damage)) {
                 float attackKnockback = getBaseKnockBack() * (1.0F + getKnockbackBonus());
                 if (attackKnockback > 0.0F) {
                     VectorUtils.knockBackA2B(this, entity, attackKnockback * 0.5, 0.2);

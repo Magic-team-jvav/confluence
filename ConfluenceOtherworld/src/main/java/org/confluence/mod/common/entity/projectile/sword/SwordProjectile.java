@@ -6,8 +6,10 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -33,6 +35,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     protected float knockBack = 0.0F;
     protected float baseKnockBack = 0.0F;
     protected boolean canPenalize = false;
+    protected CollisionProperties collisionProperties = new CollisionProperties(1,1,0);
 
 
     protected ItemStack firedFromWeapon;
@@ -99,12 +102,24 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        if (!target.canBeHitByProjectile()) {
+        if (!target.canBeHitByProjectile() || target instanceof Villager) {
             return false;
         }
         Entity entity = this.getOwner();
-        if(entity == null || !entity.isPassengerOfSameVehicle(target))
+        // 防止击中仆从
+        if(
+                entity != null && (
+                        target instanceof TamableAnimal animal &&
+                        entity instanceof LivingEntity living &&
+                        animal.isOwnedBy(living)
+                )
+        ){
+            return false;
+        }
+
+        if(entity == null || !entity.isPassengerOfSameVehicle(target)) {
             return true;
+        }
         return target != entity;
     }
 
@@ -131,7 +146,6 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         else return damageSources().magic();
     }
 
-    CollisionProperties collisionProperties = new CollisionProperties(2,2,0);
     public CollisionProperties getCollisionProperties() {
         return collisionProperties;
     }
@@ -155,7 +169,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         float f1 = -Mth.sin((x + z) * 0.017453292F);
         float f2 = Mth.cos(y * 0.017453292F) * Mth.cos(x * 0.017453292F);
         this.shoot(f, f1, f2, velocity, inaccuracy);
-        Vec3 vec3 = shooter.getKnownMovement().scale(0.5f);
+        Vec3 vec3 = shooter.getKnownMovement().scale(0.25f);
         this.setDeltaMovement(this.getDeltaMovement().add(vec3.x, shooter.onGround() ? 0.0 : vec3.y, vec3.z));
     }
 

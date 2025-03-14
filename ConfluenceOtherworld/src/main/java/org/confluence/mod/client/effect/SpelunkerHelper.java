@@ -59,8 +59,11 @@ public class SpelunkerHelper extends AbstractBufferManager {
     private final Player player;
     private final Minecraft mc;
     private record Tuple(Color color,Boolean showText,ShowType showType) { }
-    private static final SpelunkerHelper blockGen = new SpelunkerHelper(100);
+    private static SpelunkerHelper blockGen;
     public static SpelunkerHelper getSingleton(){
+        if(blockGen == null){
+            blockGen = new SpelunkerHelper(100);
+        }
         return blockGen;
     }
 
@@ -469,6 +472,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
             blockGen.centers.clear();;
             blockGen.blockMap.clear();
             blockGen.centerCacheFrame.clear();
+            return;
         }
 
         blockGen.render(event);

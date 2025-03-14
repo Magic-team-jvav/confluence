@@ -49,7 +49,9 @@ public final class MusicHandler {
             selectMusic(player);
         }
         SoundInstance playingMusic = event.getPlayingMusic();
-        if ((playingMusic == null || (nextSong != null && !nextSong.getLocation().equals(playingMusic.getLocation()))) && nextSongDelay-- <= 0) {
+        if ((playingMusic == null || (
+                nextSong != null && !nextSong.getLocation().equals(playingMusic.getLocation())
+        )) && nextSongDelay-- <= 0) {
             if (volume > 0.0F) {
                 volume -= 0.01F;
                 Map<SoundInstance, ChannelAccess.ChannelHandle> instanceToChannel = Minecraft.getInstance().getSoundManager().soundEngine.instanceToChannel;
@@ -103,7 +105,7 @@ public final class MusicHandler {
                     break;
                 }
             }
-        } else if (hasBossMusic && nextSong.getLocation().getPath().endsWith("_combat")) {
+        } else if (hasBossMusic && (nextSong == null || nextSong.getLocation().getPath().endsWith("_combat"))) {
             hasBossMusic = false;
             nextSong = null;
             nextSongDelay = 0;

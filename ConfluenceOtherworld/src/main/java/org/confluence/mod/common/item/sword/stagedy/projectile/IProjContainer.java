@@ -21,9 +21,9 @@ public interface IProjContainer { // 剑气
 
     SoundEvent getSound();
 
-    Projectile getProjectile(Player player, ItemStack weapon);
+    Projectile getProjectile(LivingEntity player, ItemStack weapon);
 
-    void genProjectile(Player owner, ItemStack weapon);
+    void genProjectile(LivingEntity owner, ItemStack weapon);
 
     default float getVelocity(LivingEntity living) {
         float velocity = getBaseVelocity();

@@ -19,6 +19,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -249,6 +250,7 @@ public final class LivingEntityEvents {
         if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword) {
             sword.applyHitEffects(weapon, attacker, living, damageSource, amount);
         }
+
         // 暴击判定和伤害显示
         boolean crit = false;
         if (!TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE) && attacker instanceof Player player) {
@@ -272,7 +274,7 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
         LivingEntity damagingEntity = event.getEntity();
         Entity sourceEntity = damageSource.getEntity();
-        if(!(damagingEntity.level() instanceof ServerLevel serverLevel)) return;
+        if (!(damagingEntity.level() instanceof ServerLevel serverLevel)) return;
 
         ModAchievements.luckyBreak_watchYourStep(damagingEntity, damageSource, sourceEntity);
 
@@ -339,8 +341,19 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void livingDrops(LivingDropsEvent event) {
-        if (event.getEntity().getTags().contains(ModUtils.NO_DROPS_TAG)) {
+        LivingEntity living = event.getEntity();
+        if (living.getTags().contains(ModUtils.NO_DROPS_TAG)) {
             event.setCanceled(true);
+        } else if (living instanceof Player player && !living.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
+            ExtraInventory data = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+            for (int i = 0; i < data.getContainerSize(); i++) {
+                if (i >= ExtraInventory.COINS_START && i < ExtraInventory.COINS_START + ExtraInventory.SIZE_COINS) continue;
+                ItemStack itemStack = data.getItem(i);
+                if (!itemStack.isEmpty()) {
+                    data.setItem(i, ItemStack.EMPTY);
+                }
+                event.getDrops().add(new ItemEntity(living.level(), living.getX(), living.getY(), living.getZ(), itemStack));
+            }
         }
     }
 

@@ -69,6 +69,7 @@ import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjec
 import org.confluence.mod.client.textures.GrayBlockModelSwapper;
 import org.confluence.mod.client.textures.GraySpriteShifterEntry;
 import org.confluence.mod.common.init.ModFluids;
+import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -100,6 +101,7 @@ public final class ModClientEvents {
             FishingPoleItems.registerCast();
             ArrowInBowHud.initAdaptionMap();
             AchievementToast.registerAll();
+            ModLootTables.registerDataForClient();
 
             ModClientSetups.registerItemProperties();
             ModClientSetups.setRenderLayers();
@@ -208,6 +210,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(VILETHRON_PROJECTILE.get(), VilethronProjectileRenderer::new);
         event.registerEntityRenderer(HURTNADO_PROJECTILE.get(), HurtnadoProjectileRenderer::new);
         event.registerEntityRenderer(WATER_STREAM_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(WATER_BOLT_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(BALL_OF_FIRE_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(ARROW_PROJECTILE.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(EFFECT_THROWN_POTION.get(), ThrownItemRenderer::new);

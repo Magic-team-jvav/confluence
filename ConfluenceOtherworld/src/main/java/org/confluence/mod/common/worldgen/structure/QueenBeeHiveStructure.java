@@ -5,7 +5,6 @@ import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -16,15 +15,13 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.util.VectorUtils;
-import org.joml.Vector3d;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.confluence.mod.util.StructureUtils.*;
+import static org.confluence.mod.util.StructureUtils.ball;
+import static org.confluence.mod.util.StructureUtils.rectangular;
 
 public class QueenBeeHiveStructure extends Structure {
     public static final MapCodec<QueenBeeHiveStructure> CODEC = simpleCodec(QueenBeeHiveStructure::new);
@@ -56,7 +53,7 @@ public class QueenBeeHiveStructure extends Structure {
             BlockPos hight1 = new BlockPos((int) (radius * Math.sin(r1)), centerPos.getY(), (int) (radius * Math.cos(r1)));
             BlockPos hight2 = new BlockPos((int) (radius * Math.sin(r2)), centerPos.getY(), (int) (radius * Math.cos(r2)));
 
-            boll(radius, 3, centerPos, blockMap, 0.02F, random, 1, 0, 3, centerPos.getY() - radius + 1);
+            ball(radius, 3, centerPos, blockMap, 0.02F, random, 1, 0, 3, centerPos.getY() - radius + 1);
 
             for (int xPos = -radius2 - 1; xPos <= radius2; xPos++) {
                 for (int zPos = -radius2 - 1; zPos <= radius2; zPos++) {

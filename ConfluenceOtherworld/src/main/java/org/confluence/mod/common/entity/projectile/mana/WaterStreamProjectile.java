@@ -1,10 +1,8 @@
-package org.confluence.mod.common.entity.projectile;
+package org.confluence.mod.common.entity.projectile.mana;
 
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
@@ -19,7 +17,7 @@ import org.mesdag.particlestorm.particle.ParticleEmitter;
 import java.util.HashSet;
 import java.util.Set;
 
-public class WaterStreamProjectile extends Projectile {
+public class WaterStreamProjectile extends AbstractManaProjectile {
     private final Set<Entity> passThrough = new HashSet<>();
     private ParticleEmitter emitter;
 
@@ -34,16 +32,8 @@ public class WaterStreamProjectile extends Projectile {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {}
-
-    @Override
-    public void tick() {
-        if (getOwner() == null) {
-            discard();
-            return;
-        }
-        super.tick();
-
+    public void baseTick() {
+        super.baseTick();
         if (level().isClientSide) {
             if (emitter == null) {
                 this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("water_stream"));
@@ -57,7 +47,7 @@ public class WaterStreamProjectile extends Projectile {
             } else if (hitResult instanceof EntityHitResult entityHitResult) {
                 Entity entity = entityHitResult.getEntity();
                 if (passThrough.add(entity)) {
-                    if (entity.hurt(damageSources().indirectMagic(this, getOwner()), 7F)) {
+                    if (entity.hurt(getDamagesource(), 7F)) {
                         VectorUtils.knockBackA2B(this, entity, 3.5, 0.2);
                     }
                     if (passThrough.size() >= 5) {
@@ -74,10 +64,5 @@ public class WaterStreamProjectile extends Projectile {
         double offZ = getZ() + vec3.z;
         setPos(offX, offY, offZ);
         setDeltaMovement(vec3.add(0.0, -0.24, 0.0));
-    }
-
-    @Override
-    protected boolean canHitEntity(Entity target) {
-        return target.canBeHitByProjectile() && target != getOwner();
     }
 }

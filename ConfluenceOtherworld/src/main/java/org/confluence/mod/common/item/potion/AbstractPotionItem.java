@@ -39,7 +39,7 @@ public abstract class AbstractPotionItem extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        if (canUse(level, player, hand)) return ItemUtils.startUsingInstantly(level, player, hand);
+        if (canUse(player.getItemInHand(hand), level, player)) return ItemUtils.startUsingInstantly(level, player, hand);
         return InteractionResultHolder.fail(player.getItemInHand(hand));
     }
 
@@ -65,7 +65,7 @@ public abstract class AbstractPotionItem extends Item {
         return itemStack.isEmpty() ? ItemStack.EMPTY : itemStack;
     }
 
-    protected boolean canUse(Level level, Player player, InteractionHand hand) {
+    protected boolean canUse(ItemStack itemStack, Level level, Player player) {
         return true;
     }
 

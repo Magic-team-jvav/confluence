@@ -8,7 +8,7 @@ import org.joml.Vector3d;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StructureUtils {
+public final class StructureUtils {
     private static void boll8(BlockPos.MutableBlockPos posCheck, boolean replace, int x, int y, int z, int blockState, BlockPos centerPos, Object2IntMap<BlockPos> blockMap) {
         for (int i = 0; i < 8; i++) {
             posCheck.set(centerPos.getX() + (x * ((i < 4) ? 1 : -1)), centerPos.getY() + (y * ((i % 4 < 2) ? 1 : -1)), centerPos.getZ() + (z * ((i % 2 < 1) ? 1 : -1)));
@@ -50,7 +50,7 @@ public class StructureUtils {
         }
     }
 
-    public static void boll(double radiusD, BlockPos centerPos, int blockState, boolean replace, Object2IntMap<BlockPos> blockMap) {
+    public static void ball(double radiusD, BlockPos centerPos, int blockState, boolean replace, Object2IntMap<BlockPos> blockMap) {
         int radius = (int) radiusD + 1;
         double radius2 = radiusD * radiusD;
         int x2;
@@ -69,7 +69,7 @@ public class StructureUtils {
         }
     }
 
-    public static void boll(double radiusD, BlockPos centerPos, int blockState1, int blockState2, boolean replace, Object2IntMap<BlockPos> blockMap, int checkY) {
+    public static void ball(double radiusD, BlockPos centerPos, int blockState1, int blockState2, boolean replace, Object2IntMap<BlockPos> blockMap, int checkY) {
         int radius = (int) radiusD + 1;
         double radius2 = radiusD * radiusD;
         int x2;
@@ -111,7 +111,7 @@ public class StructureUtils {
         }
     }
 
-    public static void boll(double radiusD, BlockPos centerPos, int blockState, boolean replace, Object2IntMap<BlockPos> blockMap, float placePer, WorldgenRandom random) {
+    public static void ball(double radiusD, BlockPos centerPos, int blockState, boolean replace, Object2IntMap<BlockPos> blockMap, float placePer, WorldgenRandom random) {
         int radius = (int) radiusD + 1;
         double radius2 = radiusD * radiusD;
         int x2;
@@ -199,13 +199,13 @@ public class StructureUtils {
         return list;
     }
 
-    public static void boll(int radius, int wall, BlockPos centerPos, Object2IntMap<BlockPos> blockMap, float chance, WorldgenRandom random, int wallBlock, int airBlock) {
+    public static void ball(int radius, int wall, BlockPos centerPos, Object2IntMap<BlockPos> blockMap, float chance, WorldgenRandom random, int wallBlock, int airBlock) {
         List<Vector3d> list = bollPos(radius, centerPos, chance, random);
         lineSet(list, radius, radius, wallBlock, true, blockMap);
         lineSet(list, radius - wall, radius - wall, airBlock, true, blockMap);
     }
 
-    public static void boll(int radius, int wall, BlockPos centerPos, Object2IntMap<BlockPos> blockMap, float chance, WorldgenRandom random, int wallBlock, int airBlock1, int airBlock2, int checkY) {
+    public static void ball(int radius, int wall, BlockPos centerPos, Object2IntMap<BlockPos> blockMap, float chance, WorldgenRandom random, int wallBlock, int airBlock1, int airBlock2, int checkY) {
         List<Vector3d> list = bollPos(radius, centerPos, chance, random);
         lineSet(list, radius, radius, wallBlock, true, blockMap);
         lineSet(list, radius - wall, radius - wall, airBlock1, airBlock2, true, blockMap, checkY);
@@ -216,7 +216,7 @@ public class StructureUtils {
         double step = (rEnd - rStart) / VctList.size();
         for (int i = 0; i < VctList.size(); i++) {
             posPoint = VctList.get(i);
-            boll(rStart + step * i, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate, replace, blockMap);
+            ball(rStart + step * i, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate, replace, blockMap);
         }
     }
 
@@ -225,14 +225,14 @@ public class StructureUtils {
         double step = (rEnd - rStart) / VctList.size();
         for (int i = 0; i < VctList.size(); i++) {
             posPoint = VctList.get(i);
-            boll(rStart + step * i, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate1, blockstate2, replace, blockMap, checkY);
+            ball(rStart + step * i, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate1, blockstate2, replace, blockMap, checkY);
         }
     }
 
     public static void lineSetEllipsoid(List<Vector3d> VctList, double radiusDX, double radiusDY, double radiusDZ, int blockstate, boolean replace, Object2IntMap<BlockPos> blockMap) {
         Vector3d posPoint;
-        for (int i = 0; i < VctList.size(); i++) {
-            posPoint = VctList.get(i);
+        for (Vector3d vector3d : VctList) {
+            posPoint = vector3d;
             ellipsoid(radiusDX, radiusDY, radiusDZ, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate, replace, blockMap);
         }
     }
@@ -242,14 +242,14 @@ public class StructureUtils {
         double step = (rEnd - rStart) / VctList.size();
         for (int i = 0; i < VctList.size(); i++) {
             posPoint = VctList.get(i);
-            boll(rStart + step * i, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate, replace, blockMap, placePer, random);
+            ball(rStart + step * i, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate, replace, blockMap, placePer, random);
         }
     }
 
     public static void lineSetEllipsoid(List<Vector3d> VctList, double radiusDX, double radiusDY, double radiusDZ, int blockstate, boolean replace, Object2IntMap<BlockPos> blockMap, float placePer, WorldgenRandom random) {
         Vector3d posPoint;
-        for (int i = 0; i < VctList.size(); i++) {
-            posPoint = VctList.get(i);
+        for (Vector3d vector3d : VctList) {
+            posPoint = vector3d;
             ellipsoid(radiusDX, radiusDY, radiusDZ, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate, replace, blockMap, placePer, random);
         }
     }

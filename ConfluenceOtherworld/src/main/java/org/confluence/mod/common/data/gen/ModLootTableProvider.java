@@ -125,6 +125,7 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(TIMERS_BLOCK_1_4.get());
             dropSelf(EVER_POWERED_RAIL.get());
             dropSelf(SHARPENING_STATION.get());
+            dropSelf(BEWITCHING_TABLE.get());
             dropSelf(AMMO_BOX.get());
             dropSelf(SILLY_BALLOON_MACHINE.get());
             dropSelf(ECHO_BLOCK.get());

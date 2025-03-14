@@ -1,5 +1,6 @@
 package org.confluence.mod.client.handler;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
@@ -28,6 +29,7 @@ import static org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S.RESET_F
 @OnlyIn(Dist.CLIENT)
 public final class HookThrowingHandler {
     public static void handle(LocalPlayer localPlayer) {
+        if (Minecraft.getInstance().isPaused()) return;
         boolean isDown = false;
         while (ModKeyBindings.HOOK.get().consumeClick()) isDown = true;
         if (isDown) HookThrowingPacketC2S.push();
@@ -39,11 +41,12 @@ public final class HookThrowingHandler {
         ListTag list = tag.getList("hooks", Tag.TAG_COMPOUND);
         Iterator<Tag> iterator = list.iterator();
         Level level = localPlayer.level();
+        boolean shouldSync = false;
         while (iterator.hasNext()) {
             int id = ((CompoundTag) iterator.next()).getInt("id");
             if (!(level.getEntity(id) instanceof AbstractHookEntity hookEntity)) {
                 iterator.remove();
-                return;
+                continue;
             }
             if (hookEntity.getHookState() == AbstractHookEntity.HookState.HOOKED) {
                 Input input = localPlayer.input;
@@ -80,11 +83,11 @@ public final class HookThrowingHandler {
                         localPlayer.setDeltaMovement(localPlayer.getDeltaMovement().scale(0.96).add(motion));
                     }
                 }
-                if (localPlayer.fallDistance > 3.0F) {
-                    localPlayer.fallDistance = 0.0F;
-                    PacketDistributor.sendToServer(new PlayerJumpPacketC2S(RESET_FALL_DISTANCE, (float) localPlayer.getDeltaMovement().y));
-                }
+                shouldSync = true;
             }
+        }
+        if (shouldSync) {
+            PacketDistributor.sendToServer(new PlayerJumpPacketC2S(RESET_FALL_DISTANCE, (float) localPlayer.getDeltaMovement().y));
         }
     }
 }

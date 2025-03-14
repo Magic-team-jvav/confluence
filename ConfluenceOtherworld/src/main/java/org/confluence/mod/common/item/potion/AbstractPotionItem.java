@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -21,6 +22,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.PotionItems;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.ToIntFunction;
 
 public abstract class AbstractPotionItem extends Item {
     public AbstractPotionItem(Properties properties) {
@@ -94,5 +100,41 @@ public abstract class AbstractPotionItem extends Item {
             }
         }
         return InteractionResult.PASS;
+    }
+
+    public static <T extends AbstractPotionItem> void use(Player player, float required, Class<T> type, ToIntFunction<T> function) {
+        if (required <= 0.0F) return;
+        List<Tuple<ItemStack, Integer>> potions = new ArrayList<>();
+        Item item = player.getOffhandItem().getItem();
+        if (type.isInstance(item)) {
+            potions.add(new Tuple<>(player.getOffhandItem(), function.applyAsInt(type.cast(item))));
+        }
+        for (ItemStack itemStack : player.getInventory().items) {
+            item = itemStack.getItem();
+            if (type.isInstance(item)) {
+                potions.add(new Tuple<>(itemStack, function.applyAsInt(type.cast(item))));
+            }
+        }
+        if (potions.isEmpty()) return;
+        potions.sort(Comparator.comparingInt(Tuple::getB));
+        Level level = player.level();
+        for (int i = 0; i < potions.size(); i++) {
+            Tuple<ItemStack, Integer> left = potions.get(i);
+            if (required <= left.getB()) {
+                left.getA().finishUsingItem(level, player);
+                return;
+            }
+            if (i == potions.size() - 1) {
+                left.getA().finishUsingItem(level, player);
+                return;
+            } else {
+                Tuple<ItemStack, Integer> right = potions.get(i + 1);
+                if (right.getB() >= required) {
+                    right.getA().finishUsingItem(level, player);
+                    return;
+                }
+            }
+        }
+        potions.getLast().getA().finishUsingItem(level, player);
     }
 }

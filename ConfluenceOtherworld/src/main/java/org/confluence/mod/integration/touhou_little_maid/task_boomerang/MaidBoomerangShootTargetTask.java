@@ -1,4 +1,4 @@
-package org.confluence.mod.integration.touhou_little_maid;
+package org.confluence.mod.integration.touhou_little_maid.task_boomerang;
 
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.google.common.collect.ImmutableMap;

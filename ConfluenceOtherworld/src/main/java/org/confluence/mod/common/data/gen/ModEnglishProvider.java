@@ -655,6 +655,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("task.confluence.boomerang_attack.desc", "Mail will use a boomerang to attack surrounding hostile mobs");
         add("task.confluence.boomerang_attack.condition.has_boomerang", "Mainhand holds a boomerang");
 
+        add("task.confluence.use_life_crystal", "Use Life Crystal");
+        add("task.confluence.use_life_crystal.desc", "Mail will use life crystal to heal herself");
+        add("task.confluence.use_life_crystal.condition.has_life_crystal", "Mainhand holds life crystal");
 
 
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), toTitleCase(block.getId().getPath()));

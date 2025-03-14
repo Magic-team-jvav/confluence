@@ -202,11 +202,37 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> JUNGLE_ROSE = registerWithItem("jungle_rose", NaturesGiftBlock::new);
 
     // 空岛
-    public static final DeferredBlock<CloudBlock> CLOUD_BLOCK = registerWithItem("cloud_block", CloudBlock::new);
-    public static final DeferredBlock<EvaporativeCloudBlock> EVAPORATIVE_CLOUD_BLOCK = registerWithItem("evaporative_cloud_block", () -> new EvaporativeCloudBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).sound(SoundType.SNOW).randomTicks()));
+    public static final DeferredBlock<CloudBlock> CLOUD_BLOCK = registerWithItem("cloud_block", () -> new CloudBlock(BlockBehaviour.Properties.of()
+            .mapColor(MapColor.SNOW)
+            .strength(0.3F)
+            .sound(SoundType.SNOW)
+            .noOcclusion()
+            .isValidSpawn(Blocks::never)
+            .isRedstoneConductor((blockState, blockGetter, blockPos) -> false)
+            .isSuffocating((blockState, blockGetter, blockPos) -> false)));
+    public static final DeferredBlock<EvaporativeCloudBlock> EVAPORATIVE_CLOUD_BLOCK = registerWithItem("evaporative_cloud_block", () -> new EvaporativeCloudBlock(BlockBehaviour.Properties.of()
+            .sound(SoundType.SNOW)
+            .noOcclusion()
+            .randomTicks()));
     public static final Supplier<BlockEntityType<EvaporativeCloudBlock.Entity>> EVAPORATIVE_CLOUD_BLOCK_ENTITY = ModBlocks.BLOCK_ENTITIES.register("evaporative_cloud_block", () -> BlockEntityType.Builder.of(EvaporativeCloudBlock.Entity::new, EVAPORATIVE_CLOUD_BLOCK.get()).build(DSL.remainderType()));
-    public static final DeferredBlock<ParticleCloudBlock> RAIN_CLOUD_BLOCK = registerWithItem("rain_cloud_block", () -> new ParticleCloudBlock(ParticleTypes.FALLING_WATER));
-    public static final DeferredBlock<ParticleCloudBlock> SNOW_CLOUD_BLOCK = registerWithItem("snow_cloud_block", () -> new ParticleCloudBlock(ParticleTypes.SNOWFLAKE));
+    public static final DeferredBlock<ParticleCloudBlock> RAIN_CLOUD_BLOCK = registerWithItem("rain_cloud_block", () -> new ParticleCloudBlock(BlockBehaviour.Properties.of()
+            .mapColor(MapColor.COLOR_GRAY)
+            .strength(0.3F)
+            .sound(SoundType.SNOW)
+            .noOcclusion()
+            .isValidSpawn(Blocks::never)
+            .isRedstoneConductor((blockState, blockGetter, blockPos) -> false)
+            .isSuffocating((blockState, blockGetter, blockPos) -> false)
+            ,ParticleTypes.FALLING_WATER));
+    public static final DeferredBlock<ParticleCloudBlock> SNOW_CLOUD_BLOCK = registerWithItem("snow_cloud_block", () -> new ParticleCloudBlock(BlockBehaviour.Properties.of()
+            .mapColor(MapColor.COLOR_GRAY)
+            .strength(0.3F)
+            .sound(SoundType.SNOW)
+            .noOcclusion()
+            .isValidSpawn(Blocks::never)
+            .isRedstoneConductor((blockState, blockGetter, blockPos) -> false)
+            .isSuffocating((blockState, blockGetter, blockPos) -> false)
+            ,ParticleTypes.SNOWFLAKE));
     public static final DeferredBlock<Block> STELLAR_BLOSSOM = registerWithItem("stellar_blossom", () -> new StellarBlossomBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION).offsetType(BlockBehaviour.OffsetType.NONE)));
     public static final DeferredBlock<Block> CLOUDWEAVER = registerWithItem("cloudweaver", () -> new CloudWeaverBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION).offsetType(BlockBehaviour.OffsetType.NONE)));
     public static final DeferredBlock<Block> FLOATING_WHEAT = registerWithItem("floating_wheat", () -> new FloatingWheatBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).offsetType(BlockBehaviour.OffsetType.NONE)));

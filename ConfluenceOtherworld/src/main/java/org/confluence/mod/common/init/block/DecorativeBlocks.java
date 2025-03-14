@@ -77,9 +77,9 @@ public class DecorativeBlocks {
     public static final Supplier<Block> PEARL_ROCK_BRICKS = copyBlockRegister("pearl_rock_bricks", Blocks.STONE_BRICKS);
     public static final Supplier<Block> GREEN_CANDY_BLOCK = copyBlockRegister("green_candy_block", Blocks.STONE_BRICKS);
     public static final Supplier<Block> RED_CANDY_BLOCK = copyBlockRegister("red_candy_block", Blocks.STONE_BRICKS);
-    public static final Supplier<Block> FROZEN_GEL_BLOCK = copyBlockRegister("frozen_gel_block", Blocks.SLIME_BLOCK);
-    public static final Supplier<Block> BLUE_GEL_BLOCK = copyBlockRegister("blue_gel_block", Blocks.SLIME_BLOCK);
-    public static final Supplier<Block> PINK_GEL_BLOCK = copyBlockRegister("pink_gel_block", Blocks.SLIME_BLOCK);
+    public static final Supplier<Block> FROZEN_GEL_BLOCK = registerWithItem("frozen_gel_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_BLUE).sound(SoundType.SLIME_BLOCK)));
+    public static final Supplier<Block> BLUE_GEL_BLOCK = registerWithItem("blue_gel_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).sound(SoundType.SLIME_BLOCK)));
+    public static final Supplier<Block> PINK_GEL_BLOCK = registerWithItem("pink_gel_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).sound(SoundType.SLIME_BLOCK)));
     // 天域
     public static final Supplier<StairBlock> SUN_PLATE_STAIRS = registerWithItem("sun_plate_stairs", () -> new StairBlock(TUFF.defaultBlockState(),BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN)));
     public static final Supplier<SlabBlock> SUN_PLATE_SLAB = registerWithItem("sun_plate_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE)));
@@ -117,8 +117,21 @@ public class DecorativeBlocks {
     public static final Supplier<Block> AETHERIUM_BRICKS = copyBlockRegister("aetherium_bricks", Blocks.STONE_BRICKS);
     public static final Supplier<Block> CRYSTAL_BLOCKS = copyBlockRegister("crystal_blocks", Blocks.AMETHYST_BLOCK);
     public static final Supplier<Block> RAINBOW_BRICKS = copyBlockRegister("rainbow_bricks", Blocks.STONE_BRICKS);
-    public static final Supplier<CloudBlock> FLOATING_WHEAT_BALE = registerWithItem("floating_wheat_bale", CloudBlock::new);
-    public static final Supplier<Block> BOUNCY_CLOUD_BLOCK = registerWithItem("bouncy_cloud_block", BouncyCloudBlock::new);
+    public static final Supplier<CloudBlock> FLOATING_WHEAT_BALE = registerWithItem("floating_wheat_bale", () -> new CloudBlock(BlockBehaviour.Properties.of()
+            .mapColor(MapColor.COLOR_LIGHT_BLUE)
+            .strength(0.3F)
+            .sound(SoundType.SNOW)
+            .isValidSpawn(Blocks::never)
+            .isRedstoneConductor((blockState, blockGetter, blockPos) -> false)
+            .isSuffocating((blockState, blockGetter, blockPos) -> false)));
+    public static final Supplier<BouncyCloudBlock> BOUNCY_CLOUD_BLOCK = registerWithItem("bouncy_cloud_block", () -> new BouncyCloudBlock(BlockBehaviour.Properties.of()
+            .mapColor(MapColor.COLOR_PINK)
+            .strength(0.3F)
+            .sound(SoundType.SNOW)
+            .noOcclusion()
+            .isValidSpawn(Blocks::never)
+            .isRedstoneConductor((blockState, blockGetter, blockPos) -> false)
+            .isSuffocating((blockState, blockGetter, blockPos) -> false)));
     // 大宝石块
     public static final Supplier<Block> RUBY_BLOCK = copyBlockRegister("ruby_block", Blocks.DIAMOND_BLOCK);
     public static final Supplier<Block> AMBER_BLOCK = copyBlockRegister("amber_block", Blocks.DIAMOND_BLOCK);

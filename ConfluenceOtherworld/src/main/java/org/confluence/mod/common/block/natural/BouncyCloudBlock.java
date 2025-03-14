@@ -7,19 +7,15 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.AABB;
 
-public class BouncyCloudBlock extends Block {
+public class BouncyCloudBlock extends CloudBlock {
     public static final IntegerProperty HIGH = IntegerProperty.create("high", 0, 10);
-
-    public BouncyCloudBlock() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).sound(SoundType.SNOW));
+    public BouncyCloudBlock(Properties properties) {
+        super(properties);
         this.registerDefaultState(defaultBlockState().setValue(HIGH, 0));
     }
 
@@ -51,13 +47,6 @@ public class BouncyCloudBlock extends Block {
             level.setBlockAndUpdate(pos, state.setValue(HIGH, 0));
         }
         level.scheduleTick(pos, this, 20);
-    }
-
-    @Override
-    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
-        if (entity.isSuppressingBounce()) {
-            super.fallOn(level, state, pos, entity, fallDistance);
-        }
     }
 
     @Override

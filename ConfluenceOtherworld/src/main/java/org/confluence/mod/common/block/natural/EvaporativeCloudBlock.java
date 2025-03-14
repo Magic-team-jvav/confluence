@@ -2,6 +2,7 @@ package org.confluence.mod.common.block.natural;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -43,6 +44,13 @@ public class EvaporativeCloudBlock extends BaseEntityBlock {
             level.updateNeighborsAt(blockPos, blockState.getBlock());
             level.removeBlock(blockPos, false);
         });
+    }
+
+    protected float getShadeBrightness(BlockState p_308911_, BlockGetter p_308952_, BlockPos p_308918_) {
+        return 1.0F;
+    }
+    protected boolean propagatesSkylightDown(BlockState p_309084_, BlockGetter p_309133_, BlockPos p_309097_) {
+        return true;
     }
 
     public static class Entity extends BlockEntity {

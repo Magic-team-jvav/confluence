@@ -35,7 +35,7 @@ public class BoxBlockItem extends BlockItem {
                 LootParams lootparams = new LootParams.Builder(serverLevel)
                         .withParameter(LootContextParams.ORIGIN, player.position())
                         .withParameter(LootContextParams.THIS_ENTITY, player)
-                        .withLuck(fishingPower + player.getLuck())
+                        .withLuck(fishingPower)
                         .create(LootContextParamSets.GIFT);
                 LootTable loottable = serverLevel.getServer().reloadableRegistries().getLootTable(itemStack.get(ModDataComponentTypes.LOOT).lootTable());
                 for (ItemStack loot : loottable.getRandomItems(lootparams)) {

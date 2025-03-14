@@ -84,8 +84,8 @@ public abstract class ItemEntityMixin implements IItemEntity {
                         ItemEntity itemEntity = new ItemEntity(level, self.getX(), self.getY(), self.getZ(), target);
                         confluence$setup(itemEntity, post.getCoolDown(), post.getSpeedY());
                         level.addFreshEntity(itemEntity);
-                        level.playSound(null, self.getX(), self.getY(), self.getZ(), ModSoundEvents.SHIMMER_EVOLUTION.get(), SoundSource.AMBIENT, 1.0F, 1.0F);
                     }
+                    level.playSound(null, self.getX(), self.getY(), self.getZ(), ModSoundEvents.SHIMMER_EVOLUTION.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
                     if (self.getOwner() instanceof ServerPlayer serverPlayer) {
                         ModCriterionTriggers.SHIMMER_TRANSMUTATION.get().trigger(serverPlayer, self);
                     }

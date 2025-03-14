@@ -35,6 +35,7 @@ public class HellFireEffect extends MobEffect {
 
     public void onEffectStarted(LivingEntity livingEntity, int amplifier) {
         super.onEffectStarted(livingEntity, amplifier);
+        livingEntity.setRemainingFireTicks(1);
         livingEntity.level().explode(
                 livingEntity,
                 Explosion.getDefaultDamageSource(livingEntity.level(), livingEntity),

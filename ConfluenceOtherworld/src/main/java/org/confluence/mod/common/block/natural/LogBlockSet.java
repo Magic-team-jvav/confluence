@@ -306,6 +306,68 @@ public class LogBlockSet {
         return SIGN_BLOCKS;
     }
 
+    public static void setFlammable() {
+        FireBlock fireblock = (FireBlock)Blocks.FIRE;
+        for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
+            Builder builder1 = logBlocks.builder;
+            fireblock.setFlammable(builder1.PLANKS.get(), 5, 20);
+            if (builder1.LOG != null) {
+                RotatedPillarBlock value = builder1.LOG.get();
+                if (builder1.ignitedByLava) {
+                    fireblock.setFlammable(value, 5, 5);
+                }
+            }
+            if (builder1.STRIPPED_LOG != null) {
+                RotatedPillarBlock value = builder1.STRIPPED_LOG.get();
+                if (builder1.ignitedByLava) {
+                    fireblock.setFlammable(value, 5, 5);
+                }
+            }
+            if (builder1.WOOD != null) {
+                RotatedPillarBlock value = builder1.WOOD.get();
+                if (builder1.ignitedByLava) {
+                    fireblock.setFlammable(value, 5, 5);
+                }
+            }
+            if (builder1.STRIPPED_WOOD != null) {
+                RotatedPillarBlock value = builder1.STRIPPED_WOOD.get();
+                if (builder1.ignitedByLava) {
+                    fireblock.setFlammable(value, 5, 5);
+                }
+            }
+            if (builder1.LEAVES != null) {
+                LeavesBlock value = builder1.LEAVES.get();
+                if (builder1.ignitedByLava) {
+                    fireblock.setFlammable(value, 30, 60);
+                }
+            }
+            if (builder1.FENCE != null) {
+                FenceBlock value = builder1.FENCE.get();
+                if (builder1.ignitedByLava) {
+                    fireblock.setFlammable(value, 5, 20);
+                }
+            }
+            if (builder1.FENCE_GATE != null) {
+                FenceGateBlock value = builder1.FENCE_GATE.get();
+                if (builder1.ignitedByLava) {
+                    fireblock.setFlammable(value, 5, 20);
+                }
+            }
+            if (builder1.SLAB != null) {
+                SlabBlock value = builder1.SLAB.get();
+                if (builder1.ignitedByLava) {
+                    fireblock.setFlammable(value, 5, 20);
+                }
+            }
+            if (builder1.STAIRS != null) {
+                StairBlock value = builder1.STAIRS.get();
+                if (builder1.ignitedByLava) {
+                    fireblock.setFlammable(value, 5, 20);
+                }
+            }
+        }
+    }
+
     public static class Builder {
         private final String id;
         private final boolean ignitedByLava;

@@ -45,7 +45,7 @@ public class HeavyWorkBenchRecipe extends AbstractAmountRecipe {
 
     @Override
     public ItemStack assembleAndExtract(RecipeInput input, HolderLookup.Provider registries) {
-        extractInput(input, ingredients, true);
+        consumeShaped(input, 4, 4, pattern);
         return assemble(input, registries);
     }
 

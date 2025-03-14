@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile;
 
+import com.github.tartaricacid.touhoulittlemaid.entity.ai.brain.task.MaidHealSelfTask;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -92,8 +93,8 @@ public class BoomerangProjectile extends AbstractHurtingProjectile {
                 owner.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(new AttributeModifier(temp, modifier.damage - 1, AttributeModifier.Operation.ADD_VALUE));
                 float damage = (float) owner.getAttributeValue(Attributes.ATTACK_DAMAGE);
                 owner.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(temp);
-                living.hurt(this.damageSources().mobProjectile(this,owner), damage);
                 modifier.onHitEffects.forEach(effect -> effect.get().getEffect().accept((LivingEntity) this.getOwner(), living));
+                living.hurt(this.damageSources().mobProjectile(this,owner), damage);
                 //击退
                 doKnockback(living);
             }

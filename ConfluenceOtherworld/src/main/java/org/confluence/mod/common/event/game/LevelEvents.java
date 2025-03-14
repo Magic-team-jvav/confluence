@@ -55,11 +55,18 @@ public final class LevelEvents {
 
     @SubscribeEvent
     public static void blockDrops(BlockDropsEvent event) {
-        if (event.getBreaker() instanceof LivingEntity living && !living.getMainHandItem().is(Items.SHEARS)) {
-            if (event.getState().is(ModTags.Blocks.VINES) && TCUtils.hasAccessoriesType(living, AccessoryItems.VINE$ROPE)) {
+        ItemStack tool = event.getTool();
+        Entity breaker = event.getBreaker();
+        BlockState state = event.getState();
+        if (breaker instanceof LivingEntity living && !tool.is(Items.SHEARS)) {
+            if (state.is(ModTags.Blocks.VINES) && TCUtils.hasAccessoriesType(living, AccessoryItems.VINE$ROPE)) {
                 event.setCanceled(true);
                 Block.popResource(event.getLevel(), event.getPos(), ModBlocks.VINE_ROPE.get().asItem().getDefaultInstance());
             }
+        }
+        // 再生法杖/再生之斧 时运
+        if (tool.is(ModTags.Items.CROP_FORTUNE) && breaker != null && (state.is(BlockTags.CROPS) || state.getBlock() instanceof CropBlock)) {
+            BaseAxeItem.increaseDropsOnBlockBreak(breaker, tool, event.getDrops());
         }
     }
 
@@ -91,17 +98,5 @@ public final class LevelEvents {
         BlockPos pos = event.getPos();
         NoTraps.dropBombWhenLeavesDestroy(serverPlayer, blockState, pos);
         BoulderWorld.createBoulderWhenBlockDestroy(serverPlayer, blockState, pos);
-    }
-
-    @SubscribeEvent
-    public static void dropBlock(BlockDropsEvent event) {
-        BlockState state = event.getState();
-        Entity breaker = event.getBreaker();
-        ItemStack tool = event.getTool();
-
-        // 再生法杖/再生之斧 时运
-        if (tool.is(ModTags.Items.CROP_FORTUNE) && breaker != null && (state.is(BlockTags.CROPS) || state.getBlock() instanceof CropBlock)) {
-            BaseAxeItem.increaseDropsOnBlockBreak(breaker, tool, event.getDrops());
-        }
     }
 }

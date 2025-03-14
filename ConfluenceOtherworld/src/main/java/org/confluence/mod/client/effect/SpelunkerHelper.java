@@ -56,7 +56,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
     public Map<Block, List<BlockPos>> blockMap = new HashMap<>();
 
     enum ShowType {SPELUNKER, DANGER}
-    private final Player player;
+    private Player player;
     private final Minecraft mc;
     private record Tuple(Color color,Boolean showText,ShowType showType) { }
     private static SpelunkerHelper blockGen;
@@ -309,6 +309,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         //重新加载缓存，提速
         centers.clear();
         centerCacheFrame.clear();
+        player = Minecraft.getInstance().player;
 
         refreshBlocks();
 

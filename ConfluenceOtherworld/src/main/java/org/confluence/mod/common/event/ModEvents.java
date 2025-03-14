@@ -102,6 +102,7 @@ public final class ModEvents {
     public static void loadComplete(FMLLoadCompleteEvent event) {
         event.enqueueWork(() -> {
             LogBlockSet.wrapStrip();
+            LogBlockSet.setFlammable();
             ISpreadable.Type.buildMap();
             MusicBoxItem.initialize();
             ModRecipes.Brewing.initialize();

@@ -453,7 +453,6 @@ public interface ISpreadable {
                 NatureBlocks.PALM_LOG_BLOCKS.getLeaves(), NatureBlocks.EBONY_LOG_BLOCKS.getLeaves(),
                 NatureBlocks.PEARL_LOG_BLOCKS.getLeaves(), NatureBlocks.EBONY_LOG_BLOCKS.getLeaves(),
 
-
                 // 原版环境方块
                 getSupplier(GRASS_BLOCK), NatureBlocks.CORRUPT_GRASS_BLOCK,
                 getSupplier(STONE), NatureBlocks.EBONY_STONE,
@@ -495,20 +494,15 @@ public interface ISpreadable {
 
                 // 邪恶环境方块
                 NatureBlocks.HALLOW_GRASS_BLOCK, NatureBlocks.CORRUPT_GRASS_BLOCK,
-
                 NatureBlocks.PEARL_STONE, NatureBlocks.EBONY_STONE,
-
                 NatureBlocks.PEARL_COBBLESTONE, NatureBlocks.EBONY_COBBLESTONE,
-
                 NatureBlocks.HARDENED_SAND_BLOCK, NatureBlocks.EBONY_HARDENED_SAND_BLOCK,
                 NatureBlocks.RED_HARDENED_SAND_BLOCK, NatureBlocks.EBONY_HARDENED_SAND_BLOCK,
                 NatureBlocks.MOIST_SAND_BLOCK, NatureBlocks.EBONY_MOIST_SAND_BLOCK,
                 NatureBlocks.RED_MOIST_SAND_BLOCK, NatureBlocks.EBONY_MOIST_SAND_BLOCK,
                 NatureBlocks.PEARL_HARDENED_SAND_BLOCK, NatureBlocks.EBONY_HARDENED_SAND_BLOCK,
                 NatureBlocks.PEARL_MOIST_SAND_BLOCK, NatureBlocks.EBONY_MOIST_SAND_BLOCK,
-
                 NatureBlocks.PEARL_SANDSTONE, NatureBlocks.EBONY_SANDSTONE,
-
                 NatureBlocks.PINK_ICE, NatureBlocks.PURPLE_ICE,
                 NatureBlocks.PINK_PACKED_ICE, NatureBlocks.PURPLE_PACKED_ICE,
 
@@ -523,8 +517,17 @@ public interface ISpreadable {
         ),
 
         GLOWING(
+            NatureBlocks.JUNGLE_GRASS_BLOCK, NatureBlocks.MUSHROOM_GRASS_BLOCK,
+            NatureBlocks.JUNGLE_SPORE, NatureBlocks.GLOWING_MUSHROOM,
+            NatureBlocks.JUNGLE_DROOPING_VINE, NatureBlocks.GLOWING_MUSHROOM_DROOPING_VINE,
+            NatureBlocks.JUNGLE_THORN, getSupplier(Blocks.AIR),
+            getSupplier(SHORT_GRASS), NatureBlocks.GLOWING_MUSHROOM,
+            getSupplier(TALL_GRASS), NatureBlocks.GLOWING_MUSHROOM
         ),
         JUNGLE(
+            NatureBlocks.MUSHROOM_GRASS_BLOCK, NatureBlocks.JUNGLE_GRASS_BLOCK,
+            NatureBlocks.GLOWING_MUSHROOM, getSupplier(SHORT_GRASS),
+            NatureBlocks.GLOWING_MUSHROOM_DROOPING_VINE, NatureBlocks.JUNGLE_DROOPING_VINE
         ),
 
         PURE(

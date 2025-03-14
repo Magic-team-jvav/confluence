@@ -180,7 +180,7 @@ public class AlchemyTableMenu extends AbstractContainerMenu {
                         itemStacks.add(new Tuple<>(i + 1, materials.getItem(i).copy()));
                     }
                 }
-                AbstractAmountRecipe.consumeIngredients(size, materials::getItem, recipe.getIngredients(), false);
+                AbstractAmountRecipe.consumeShapeless(size, materials::getItem, recipe.getIngredients());
                 for (Tuple<Integer, ItemStack> back : itemStacks) {
                     input.setItem(back.getA(), back.getB());
                 }

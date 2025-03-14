@@ -4,6 +4,7 @@ import com.xiaohunao.heaven_destiny_moment.common.event.MomentEvent;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstance;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
 import net.minecraft.core.Holder;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,8 +20,9 @@ import net.neoforged.neoforge.event.ItemStackedOnOtherEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.saved.ConfluenceCommand;
 import org.confluence.mod.common.effect.beneficial.HeartReachEffect;
@@ -28,7 +30,10 @@ import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.item.common.ColoredItem;
+import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.EchoVisibilityPacketS2C;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
@@ -42,7 +47,9 @@ import org.confluence.terra_curio.util.TCUtils;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
@@ -101,7 +108,7 @@ public final class GameEvents {
     public static void afterAccessoryAbilitiesFlushed(AfterAccessoryAbilitiesFlushedEvent event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).flushAbility(serverPlayer);
-            FishingPowerInfoPacketS2C.sendToClient(serverPlayer);
+            FishingPowerInfoPacketS2C.sendAndGet(serverPlayer);
             EchoVisibilityPacketS2C.sendToClient(serverPlayer);
         }
     }
@@ -159,6 +166,28 @@ public final class GameEvents {
     public static void curioChange(CurioChangeEvent event) {
         if (event.getEntity() instanceof ServerPlayer player && PrefixUtils.canInit(event.getTo())) {
             PrefixUtils.initPrefix(player.getRandom(), event.getTo());
+        }
+    }
+
+    @SubscribeEvent
+    public static void shimmerItemTransmutation$Post(ShimmerItemTransmutationEvent.Post event) {
+        MinecraftServer currentServer;
+        if (event.getTargets() != null && (currentServer = ServerLifecycleHooks.getCurrentServer()) != null) {
+            boolean corruption = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CORRUPTION);
+            boolean crimson = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.TR_CRIMSON);
+            if (corruption != crimson) {
+                List<ItemStack> targets = new ArrayList<>();
+                for (ItemStack target : event.getTargets()) {
+                    if (corruption && target.is(MaterialItems.TR_CRIMSON_INGOT)) {
+                        targets.add(MaterialItems.DEMONITE_INGOT.toStack(target.getCount()));
+                    } else if (crimson && target.is(MaterialItems.DEMONITE_INGOT)) {
+                        targets.add(MaterialItems.TR_CRIMSON_INGOT.toStack(target.getCount()));
+                    } else {
+                        targets.add(target);
+                    }
+                }
+                event.setTargets(targets);
+            }
         }
     }
 }

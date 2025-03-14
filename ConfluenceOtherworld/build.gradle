@@ -35,6 +35,12 @@ neoForge {
         configureEach {
             systemProperty 'forge.logging.markers', 'REGISTRIES'
             logLevel = org.slf4j.event.Level.DEBUG
+            jvmArguments.addAll([
+                    // 忽略无效指令，避免有的人没安装 JetBrain Runtime 无法启动游戏
+                    "-XX:+IgnoreUnrecognizedVMOptions",
+                    // 启用 JetBrain Runtime 热重载功能
+                    "-XX:+AllowEnhancedClassRedefinition"
+            ])
         }
     }
 
@@ -139,9 +145,6 @@ dependencies {
     compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.2.0"))
     implementation(jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-neoforge', version: '[0.2.0,)'))
 
-    implementation(jarJar('cn.6tail:lunar:1.4.0')) // 农历
-    additionalRuntimeClasspath 'cn.6tail:lunar:1.4.0'
-
     compileOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
     runtimeOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
 
@@ -162,7 +165,7 @@ dependencies {
     //runtimeOnly "curse.maven:ftb-library-forge-404465:6016745"
     //runtimeOnly "curse.maven:ftb-ultimine-forge-386134:5671703"
     //runtimeOnly "curse.maven:ftb-teams-forge-404468:5882217"
-    runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
+    //runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
 
     compileOnly "curse.maven:better-advancements-272515:5850587"
     //runtimeOnly "curse.maven:better-advancements-272515:5850587"
@@ -192,6 +195,7 @@ dependencies {
     //runtimeOnly "curse.maven:guideme-1173950:6283609"
     //runtimeOnly "curse.maven:probejs-585406:5820894"
     //runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
+    //runtimeOnly "curse.maven:lootr-361276:6294335"
 }
 
 tasks.withType(ProcessResources).configureEach {

@@ -1,6 +1,7 @@
 package org.confluence.mod.util;
 
-import com.nlf.calendar.Lunar;
+import com.ibm.icu.util.Calendar;
+import com.ibm.icu.util.ChineseCalendar;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import org.confluence.mod.common.init.item.ConsumableItems;
@@ -8,79 +9,75 @@ import org.confluence.mod.common.init.item.FoodItems;
 import org.confluence.mod.common.init.item.ModItems;
 
 import java.time.format.DateTimeParseException;
-import java.util.Calendar;
-import java.util.Date;
 
 public final class DateUtils {
     private static long lastCacheTime = 0;
     private static final Calendar calendar = Calendar.getInstance();
-    private static Lunar lunar;
+    private static final ChineseCalendar chineseCalendar = new ChineseCalendar();
+
+    private static void updateTime() {
+        if (System.currentTimeMillis() - lastCacheTime > 24 * 60 * 60 * 1000) {
+            lastCacheTime = System.currentTimeMillis();
+            calendar.setTimeInMillis(lastCacheTime);
+            chineseCalendar.setTimeInMillis(lastCacheTime);
+        }
+    }
 
     public static Calendar getCalendar() {
         updateTime();
         return calendar;
     }
 
-    public static Lunar getLunar() {
+    public static ChineseCalendar getChineseCalendar() {
         updateTime();
-        return lunar;
+        return chineseCalendar;
     }
 
-    private static void updateTime() {
-        if (System.currentTimeMillis() - lastCacheTime > 24 * 60 * 60 * 1000) {
-            lastCacheTime = System.currentTimeMillis();
-            lunar = null;
-        }
-        if (lunar == null) {
-            calendar.setTimeInMillis(lastCacheTime);
-            lunar = new Lunar(new Date(lastCacheTime));
-        }
+    public static boolean isXinNian() {
+        updateTime();
+        return chineseCalendar.get(Calendar.MONTH) == Calendar.FEBRUARY && chineseCalendar.get(Calendar.DATE) <= 15;
     }
 
-    public static boolean isXinNian(Lunar lunar) {
-        return lunar.getMonth() == 1 && lunar.getDay() <= 15;
+    public static boolean isDuanWu() {
+        updateTime();
+        return chineseCalendar.get(Calendar.MONTH) == Calendar.JUNE && chineseCalendar.get(Calendar.DATE) == 5;
     }
 
-    public static boolean isDuanWu(Lunar lunar) {
-        return lunar.getMonth() == 5 && lunar.getDay() == 5;
+    public static boolean isZhongQiu() {
+        updateTime();
+        return chineseCalendar.get(Calendar.MONTH) == Calendar.AUGUST && chineseCalendar.get(Calendar.DATE) == 15;
     }
 
-    public static boolean isZhongQiu(Lunar lunar) {
-        return lunar.getMonth() == 8 && lunar.getDay() == 15;
-    }
-
-    public static boolean isHalloween(Calendar calendar) {
+    public static boolean isHalloween() {
+        updateTime();
         int month = calendar.get(Calendar.MONTH);
         int date = calendar.get(Calendar.DATE);
         return (month == Calendar.OCTOBER && date >= 10) || (month == Calendar.NOVEMBER && date == 1);
     }
 
-    public static boolean isChristmas(Calendar calendar) {
+    public static boolean isChristmas() {
+        updateTime();
         return calendar.get(Calendar.MONTH) == Calendar.DECEMBER && calendar.get(Calendar.DATE) >= 15;
     }
 
     public static Item getHolidayGift() {
-        Lunar lunar = getLunar();
-        if (isXinNian(lunar)) return ConsumableItems.RED_ENVELOPE.get();
-        if (isDuanWu(lunar)) return FoodItems.ZONGZI.get();
-        if (isZhongQiu(lunar)) return FoodItems.EGG_YOLK_MOONCAKES.get();
-        Calendar calendar = getCalendar();
-        if (isHalloween(calendar)) return ConsumableItems.GOODIE_BAG.get();
-        if (isChristmas(calendar)) return ConsumableItems.CHRISTMAS_GIFT.get();
+        if (isXinNian()) return ConsumableItems.RED_ENVELOPE.get();
+        if (isDuanWu()) return FoodItems.ZONGZI.get();
+        if (isZhongQiu()) return FoodItems.EGG_YOLK_MOONCAKES.get();
+        if (isHalloween()) return ConsumableItems.GOODIE_BAG.get();
+        if (isChristmas()) return ConsumableItems.CHRISTMAS_GIFT.get();
         return Items.AIR;
     }
 
     public static Item getHeartItem() {
-        Calendar calendar = getCalendar();
-        if (isHalloween(calendar)) return ModItems.CANDY_APPLE.get();
-        if (isChristmas(calendar)) return ModItems.CANDY_CANE.get();
+        if (isHalloween()) return ModItems.CANDY_APPLE.get();
+        if (isChristmas()) return ModItems.CANDY_CANE.get();
         return ModItems.HEART.get();
     }
 
     public static Item getStarItem() {
-        Calendar calendar = getCalendar();
-        if (isHalloween(calendar)) return ModItems.SOUL_CAKE.get();
-        if (isChristmas(calendar)) return ModItems.SUGAR_PLUM.get();
+        if (isHalloween()) return ModItems.SOUL_CAKE.get();
+        if (isChristmas()) return ModItems.SUGAR_PLUM.get();
         return ModItems.STAR.get();
     }
 

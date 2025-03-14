@@ -19,7 +19,6 @@ import net.neoforged.neoforge.event.ItemStackedOnOtherEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.saved.ConfluenceCommand;
@@ -101,7 +100,7 @@ public final class GameEvents {
     public static void afterAccessoryAbilitiesFlushed(AfterAccessoryAbilitiesFlushedEvent event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).flushAbility(serverPlayer);
-            FishingPowerInfoPacketS2C.sendToClient(serverPlayer);
+            FishingPowerInfoPacketS2C.sendAndGet(serverPlayer);
             EchoVisibilityPacketS2C.sendToClient(serverPlayer);
         }
     }

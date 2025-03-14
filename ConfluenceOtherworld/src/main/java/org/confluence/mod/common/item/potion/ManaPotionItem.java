@@ -68,6 +68,7 @@ public class ManaPotionItem extends AbstractPotionItem {
             }
             if (i == potions.size() - 1) {
                 left.getA().finishUsingItem(level, player);
+                return;
             } else {
                 Tuple<ItemStack, Integer> right = potions.get(i + 1);
                 if (right.getB() >= required) {

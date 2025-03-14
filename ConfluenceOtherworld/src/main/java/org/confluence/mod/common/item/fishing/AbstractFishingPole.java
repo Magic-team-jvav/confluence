@@ -2,6 +2,7 @@ package org.confluence.mod.common.item.fishing;
 
 import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -24,6 +25,7 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.FishingPoleItems;
 import org.confluence.mod.common.item.accessory.FishingBobber;
 import org.confluence.mod.mixed.IFishingHook;
+import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_curio.util.CuriosUtils;
@@ -63,7 +65,7 @@ public abstract class AbstractFishingPole extends FishingRodItem {
         } else {
             pLevel.playSound(null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), getThrowSound(), SoundSource.NEUTRAL, 0.5F, 0.4F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));
             if (pLevel instanceof ServerLevel serverLevel) {
-                int luckBonus = EnchantmentHelper.getFishingLuckBonus(serverLevel, itemstack, pPlayer);
+                int luckBonus = EnchantmentHelper.getFishingLuckBonus(serverLevel, itemstack, pPlayer) + (int) FishingPowerInfoPacketS2C.sendAndGet((ServerPlayer) pPlayer);
                 int speedBonus = (int) (EnchantmentHelper.getFishingTimeReduction(serverLevel, itemstack, pPlayer) * 20.0F);
                 FishingHook fishingHook;
                 FishingBobber curio = CuriosUtils.findCurio(pPlayer, FishingBobber.class);

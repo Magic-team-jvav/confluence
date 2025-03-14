@@ -136,7 +136,9 @@ public abstract class StripedProjectile extends Projectile implements Immunity {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return target.canBeHitByProjectile() && target != getOwner();
+        if (!target.canBeHitByProjectile()) return false;
+        Entity entity = getOwner();
+        return entity == null || (entity != target && !entity.isPassengerOfSameVehicle(target));
     }
 
     @Override

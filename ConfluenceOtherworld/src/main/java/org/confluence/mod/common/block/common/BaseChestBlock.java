@@ -38,6 +38,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.confluence.mod.common.block.functional.DeathChestBlock;
+import org.confluence.mod.common.block.natural.CrimsonHeartBlock;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.mixed.IBaseContainerBlockEntity;
@@ -56,6 +57,7 @@ public class BaseChestBlock extends ChestBlock {
 
     public BaseChestBlock(Properties properties, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier) {
         super(properties, supplier);
+
     }
 
     @Override

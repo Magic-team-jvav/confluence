@@ -38,7 +38,7 @@ public class DartTrapFeature extends Feature<DartTrapFeature.Config> {
                 for (h = 1; h <= config.maxDartDistance && ModFeatures.isPosAir(level, copy); ++h) {
                     copy.move(direction);
                 }
-                if (h >= 4 && !level.isStateAtPosition(copy, blockState -> blockState.isAir() || blockState.getCollisionShape(level, copy).isEmpty())) {
+                if (h >= 16 && !level.isStateAtPosition(copy, blockState -> blockState.isAir() || blockState.getCollisionShape(level, copy).isEmpty())) {
                     BlockState dartTrap = ModFeatures.getDartTrap(level, copy, direction.getOpposite());
                     boolean b = ModFeatures.safeSetBlock(level, copy, dartTrap, ModFeatures.IS_REPLACEABLE);
                     Tuple<BlockPos, BlockState> pressurePlate = ModFeatures.getPressurePlate(level, mutablePos);

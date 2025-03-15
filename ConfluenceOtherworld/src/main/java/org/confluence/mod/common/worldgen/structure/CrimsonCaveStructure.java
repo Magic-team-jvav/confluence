@@ -12,7 +12,6 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -28,7 +27,6 @@ import org.joml.Vector3d;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static org.confluence.mod.util.StructureUtils.lineSet;
@@ -115,17 +113,11 @@ public class CrimsonCaveStructure extends Structure {
                 blockMap.put(pos, 2);
             }
 
-            List<BlockState> blockList = Lists.newArrayList(
+            GridPiece.addPieces(blockMap, startChunk, lowestY, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
                     NatureBlocks.TR_CRIMSON_STONE.get().defaultBlockState(),
                     NatureBlocks.CRIMSON_HEART.get().defaultBlockState()
-            );
-            Map<ChunkPos, Object2IntMap<BlockPos>> gridMap = GridPiece.sliceChunks(blockMap, startChunk);
-            for (Map.Entry<ChunkPos, Object2IntMap<BlockPos>> entry : gridMap.entrySet()) {
-                GridPiece piece = new GridPiece(entry.getKey(), lowestY, entry.getValue());
-                piece.blockList = blockList;
-                builder.addPiece(piece);
-            }
+            ), builder);
         });
     }
 

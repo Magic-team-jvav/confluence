@@ -16,7 +16,7 @@ public class DebugBlocksHelper extends AbstractBufferManager{
     List<BlockPos> blocks = new java.util.ArrayList<>();
     private final int continueTick;
     private Long lastTime;
-    private static final DebugBlocksHelper instance = new DebugBlocksHelper(50,100);
+    private static DebugBlocksHelper instance;
 
     public void addDebugBlock(BlockPos pos) {
         blocks.add(pos);
@@ -33,6 +33,9 @@ public class DebugBlocksHelper extends AbstractBufferManager{
     }
 
     public static DebugBlocksHelper Singleton() {
+        if (instance == null) {
+            instance = new DebugBlocksHelper(50,100);
+        }
         return instance;
     }
 

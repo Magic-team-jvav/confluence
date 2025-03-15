@@ -9,6 +9,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.integration.ponder.PonderHelper;
 
 import static org.confluence.mod.common.init.item.PickaxeItems.MOLTEN_PICKAXE;
 
@@ -2621,6 +2622,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("task.confluence.boomerang_attack.desc", "女仆会主动用回旋镖攻击周围的敌对生物");
         add("task.confluence.boomerang_attack.condition.has_boomerang", "主手持有回旋镖");
 
+        add("task.confluence.use_life_crystal", "生命水晶");
+        add("task.confluence.use_life_crystal.desc", "女仆会主动使用生命水晶增加最大生命值");
+        add("task.confluence.use_life_crystal.condition.has_life_crystal", "主手持有生命水晶");
+
+        PonderHelper.addTranslateKeys(this::add, false);
 
         ModEffectStrategies.EFFECT_STRATEGY.getEntries().forEach(strategy -> add(strategy.get().getTranslationKey(), strategy.get().getDescription_zh_cn()));
     }

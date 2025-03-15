@@ -96,8 +96,6 @@ public class TargetDummyEntity extends Mob {
             } else if (equipmentSlot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
                 if (level.isClientSide) return InteractionResult.CONSUME;
                 this.swapItem(player, equipmentSlot, itemstack, hand);
-            } else {
-                this.swapItem(player, hand.equals(InteractionHand.MAIN_HAND) ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND, itemstack, hand);
             }
         }
 

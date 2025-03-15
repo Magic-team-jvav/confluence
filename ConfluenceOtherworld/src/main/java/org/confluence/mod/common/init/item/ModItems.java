@@ -103,6 +103,8 @@ public final class ModItems {
         PaintItems.ITEMS.register(eventBus);
         PickaxeAxeItems.ITEMS.register(eventBus);
         PickaxeItems.ITEMS.register(eventBus);
+        HoeItems.ITEMS.register(eventBus);
+        ShovelItems.ITEMS.register(eventBus);
         PotionItems.ITEMS.register(eventBus);
         QuestedFishes.ITEMS.register(eventBus);
         SwordItems.ITEMS.register(eventBus);

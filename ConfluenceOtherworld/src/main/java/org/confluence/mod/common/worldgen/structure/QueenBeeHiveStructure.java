@@ -7,7 +7,6 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -16,8 +15,6 @@ import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static org.confluence.mod.util.StructureUtils.ball;
@@ -83,18 +80,12 @@ public class QueenBeeHiveStructure extends Structure {
                 }
             }
 
-            List<BlockState> blockList = Lists.newArrayList(
+            GridPiece.addPieces(blockMap, startChunk, lowestY, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
                     NatureBlocks.JUNGLE_HIVE_BLOCK.get().defaultBlockState(),
                     Blocks.HONEY_BLOCK.defaultBlockState(),
                     ModBlocks.HONEY.get().defaultBlockState()
-            );
-            Map<ChunkPos, Object2IntMap<BlockPos>> gridMap = GridPiece.sliceChunks(blockMap, startChunk);
-            for (Map.Entry<ChunkPos, Object2IntMap<BlockPos>> entry : gridMap.entrySet()) {
-                GridPiece piece = new GridPiece(entry.getKey(), lowestY, entry.getValue());
-                piece.blockList = blockList;
-                builder.addPiece(piece);
-            }
+            ), builder);
         });
     }
 

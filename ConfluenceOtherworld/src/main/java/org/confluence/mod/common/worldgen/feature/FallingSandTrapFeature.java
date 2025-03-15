@@ -5,7 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.ExtraCodecs;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -82,12 +81,14 @@ public class FallingSandTrapFeature extends Feature<FallingSandTrapFeature.Confi
                 ModFeatures.safeSetBlock(level, pos, sand, ModFeatures.IS_REPLACEABLE);
             }
 
-            Tuple<BlockPos, BlockState> pressurePlate = ModFeatures.getPressurePlate(level, supportPos);
-            BlockPos platePos = pressurePlate.getA();
-            level.setBlock(platePos, pressurePlate.getB(), Block.UPDATE_ALL);
-            INetworkEntity plateEntity = ModFeatures.getNetworkEntity(level, platePos);
+            boolean isDeepslate = level.isStateAtPosition(supportPos, blockState -> blockState.is(Blocks.DEEPSLATE));
+            BlockState pressureBlock = (isDeepslate
+                    ? FunctionalBlocks.DEEPSLATE_PRESSURE_BLOCK
+                    : FunctionalBlocks.STONE_PRESSURE_BLOCK).get().defaultBlockState();
+            level.setBlock(supportPos, pressureBlock, Block.UPDATE_ALL);
+            INetworkEntity plateEntity = ModFeatures.getNetworkEntity(level, supportPos);
             if (plateEntity != null) {
-                fragileEntity.connectTo(0xFFFF00, platePos, plateEntity);
+                fragileEntity.connectTo(0xFFFF00, supportPos, plateEntity);
                 return true;
             }
         }

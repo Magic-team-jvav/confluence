@@ -88,7 +88,7 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                 ToggleCurioSlot.WrappedContainer container = new ToggleCurioSlot.WrappedContainer(accessory);
                 count += accessory.getSlots();
                 for (int j = 0; j < accessory.getSlots(); j++) {
-                    addSlot(new ToggleCurioSlot(container, j, -25, j * 18 + 8));
+                    addSlot(new ToggleCurioSlot(player, container, j, -25, j * 18 + 8));
                 }
             }
         }
@@ -135,7 +135,11 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
         if (slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
-            if (index < extraInventory.getContainerSize()) {
+            if (index >= invStart - extraInventory.getSizeAccessoryDye() && index < invStart) {
+                if (!moveItemStackTo(itemstack1, invStart, invEnd, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (index < extraInventory.getContainerSize()) {
                 if (!moveItemStackTo(itemstack1, invStart, invEnd, true)) {
                     return ItemStack.EMPTY;
                 }
@@ -166,12 +170,25 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
     }
 
     @Override
+    protected boolean moveItemStackTo(ItemStack stack, int startIndex, int endIndex, boolean reverseDirection) {
+        if (startIndex <= TRASH_START && endIndex >= TRASH_START) {
+            return super.moveItemStackTo(stack, startIndex, TRASH_START, reverseDirection) ||
+                    super.moveItemStackTo(stack, DYE_START, endIndex, reverseDirection);
+        }
+        return super.moveItemStackTo(stack, startIndex, endIndex, reverseDirection);
+    }
+
+    @Override
     public void clicked(int slotId, int button, ClickType clickType, Player player) {
-        if (slotId == TRASH_START) {
-            Slot slot = slots.get(slotId);
-            ItemStack carried = getCarried();
+        boolean isThrow = clickType == ClickType.THROW;
+        if (slotId == TRASH_START || isThrow) {
+            Slot slot = slots.get(isThrow ? TRASH_START : slotId);
+            ItemStack carried = isThrow ? slots.get(slotId).getItem() : getCarried();
             ItemStack slotItem = slot.getItem();
-            if (carried.isEmpty()) {
+            if (isThrow) {
+                slot.setByPlayer(carried);
+                slots.get(slotId).setByPlayer(ItemStack.EMPTY);
+            } else if (carried.isEmpty()) {
                 ClickAction clickaction = button == 0 ? ClickAction.PRIMARY : ClickAction.SECONDARY;
                 int j3 = clickaction == ClickAction.PRIMARY ? slotItem.getCount() : (slotItem.getCount() + 1) / 2;
                 Optional<ItemStack> optional = slot.tryRemove(j3, Integer.MAX_VALUE, player);

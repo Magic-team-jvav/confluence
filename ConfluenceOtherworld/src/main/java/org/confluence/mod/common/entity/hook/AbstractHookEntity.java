@@ -63,15 +63,6 @@ public abstract class AbstractHookEntity extends Projectile {
         return 0.15;
     }
 
-    protected void onHooked(BlockHitResult hitResult, ItemStack itemStack) {
-        BlockPos blockPos = hitResult.getBlockPos();
-        level().gameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Context.of(this, level().getBlockState(blockPos)));
-        setDeltaMovement(Vec3.ZERO);
-        setHookState(HookState.HOOKED);
-        this.hookedPos = blockPos;
-        this.hasImpulse = true;
-    }
-
     @Override
     public void tick() {
         super.tick();
@@ -89,8 +80,8 @@ public abstract class AbstractHookEntity extends Projectile {
 
         HookState hookState = getHookState();
         if (hookState == HookState.POP) {
-            setDeltaMovement(getDeltaMovement().scale(0.95).add(owner.position().subtract(position()).normalize().scale(0.1)));
-            if (distanceToSqr(owner) < 2.0) {
+            setDeltaMovement(getDeltaMovement().scale(0.95).add(owner.position().subtract(position()).normalize().scale(0.2)));
+            if (distanceToSqr(owner) < 4.0) {
                 discard();
                 return;
             }
@@ -101,17 +92,12 @@ public abstract class AbstractHookEntity extends Projectile {
                 setHookState(HookState.POP);
             } else if (hookState == HookState.PUSH) {
                 Vec3 pos = position();
-                Vec3 nextPos = pos.add(motion);
+                Vec3 nextPos = pos.add(getDeltaMovement());
                 BlockHitResult hitResult = level().clip(new ClipContext(pos, nextPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
-                if (hitResult.getType() != HitResult.Type.BLOCK) return;
-                motion = motion.scale(0.5);
-                if (hitResult.isInside()) {
-                    setPos(getX() - motion.x, getY() - motion.y, getZ() - motion.z);
-                } else {
-                    setPos(getX() + motion.x, getY() + motion.y, getZ() + motion.z);
+                if (hitResult.getType() == HitResult.Type.BLOCK) {
+                    onHitBlock(hitResult);
+                    onHooked(hitResult, hook);
                 }
-                onHitBlock(hitResult);
-                onHooked(hitResult, hook);
             } else if (hookState == HookState.HOOKED && hookedPos != null && level().getBlockState(hookedPos).canBeReplaced()) {
                 setHookState(HookState.POP);
             }
@@ -119,10 +105,31 @@ public abstract class AbstractHookEntity extends Projectile {
     }
 
     @Override
+    protected void onHitBlock(BlockHitResult result) {
+        super.onHitBlock(result);
+        Vec3 vec3 = result.getLocation().subtract(position());
+        setDeltaMovement(vec3);
+        Vec3 vec31 = vec3.normalize().scale(0.05F);
+        setPosRaw(getX() - vec31.x, getY() - vec31.y, getZ() - vec31.z);
+        setPos(getX() + vec3.x, getY() + vec3.y, getZ() + vec3.z);
+    }
+
+    protected void onHooked(BlockHitResult hitResult, ItemStack itemStack) {
+        BlockPos blockPos = hitResult.getBlockPos();
+        level().gameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Context.of(this, level().getBlockState(blockPos)));
+        setDeltaMovement(Vec3.ZERO);
+        setHookState(HookState.HOOKED);
+        this.hookedPos = blockPos;
+        this.hasImpulse = true;
+    }
+
+    @Override
     public void shootFromRotation(Entity pShooter, float pX, float pY, float pZ, float pVelocity, float pInaccuracy) {
-        float x = -Mth.sin(pY * Mth.DEG_TO_RAD) * Mth.cos(pX * Mth.DEG_TO_RAD);
+        float cos = Mth.cos(pX * Mth.DEG_TO_RAD);
+        float ry = pY * Mth.DEG_TO_RAD;
+        float x = -Mth.sin(ry) * cos;
         float y = -Mth.sin((pX + pZ) * Mth.DEG_TO_RAD);
-        float z = Mth.cos(pY * Mth.DEG_TO_RAD) * Mth.cos(pX * Mth.DEG_TO_RAD);
+        float z = Mth.cos(ry) * cos;
         shoot(x, y, z, pVelocity, pInaccuracy);
         Vec3 motion = pShooter.getDeltaMovement();
         setDeltaMovement(getDeltaMovement().add(motion.x, 0.0, motion.z));

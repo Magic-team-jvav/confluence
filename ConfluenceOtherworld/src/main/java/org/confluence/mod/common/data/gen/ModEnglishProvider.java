@@ -15,6 +15,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.integration.ponder.PonderHelper;
 import org.confluence.mod.mixin.accessor.LanguageProviderAccessor;
 
 import java.util.Arrays;
@@ -658,6 +659,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("task.confluence.use_life_crystal", "Use Life Crystal");
         add("task.confluence.use_life_crystal.desc", "Mail will use life crystal to heal herself");
         add("task.confluence.use_life_crystal.condition.has_life_crystal", "Mainhand holds life crystal");
+
+        PonderHelper.addTranslateKeys(this::add, true);
 
 
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), toTitleCase(block.getId().getPath()));

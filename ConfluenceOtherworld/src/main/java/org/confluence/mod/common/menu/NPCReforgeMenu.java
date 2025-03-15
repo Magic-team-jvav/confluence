@@ -108,7 +108,41 @@ public class NPCReforgeMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
-        return ItemStack.EMPTY; // todo 快速移动
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = slots.get(index);
+        if (slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
+            itemstack = itemstack1.copy();
+            if (index == 0) {
+                if (!moveItemStackTo(itemstack1, 1, 37, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (PrefixUtils.couldReforge(itemstack1)) {
+                if (!moveItemStackTo(itemstack1, 0, 1, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (index >= 1 && index < 28) {
+                if (!moveItemStackTo(itemstack1, 28, 37, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (index >= 28 && index < 38 && !moveItemStackTo(itemstack1, 1, 28, false)) {
+                return ItemStack.EMPTY;
+            }
+
+            if (itemstack1.isEmpty()) {
+                slot.setByPlayer(ItemStack.EMPTY);
+            }
+
+            slot.setChanged();
+            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(player, itemstack1);
+            broadcastChanges();
+        }
+
+        return itemstack;
     }
 
     @Override

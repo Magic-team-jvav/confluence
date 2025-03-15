@@ -43,6 +43,7 @@
         "entity.ProjectileMixin",
         "entity.ServerPlayerMixin",
         "entity.VillagerMixin",
+        "entity.ZombieMixin",
         "integration.carryon.PickupHandlerMixin",
         "integration.curios.CuriosServerPayloadHandlerMixin",
         "integration.ftbchunks.LongRangePlayerTrackerMixin",

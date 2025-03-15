@@ -1686,6 +1686,22 @@ public class ModChineseProvider extends LanguageProvider {
         add(AxeItems.STAFF_OF_REGROWTH.get(), "再生法杖");
         add(AxeItems.DRILL_OF_REGROWTH.get(), "再生之斧");
 
+        add(HoeItems.COPPER_HOE.get(), "铜锄");
+        add(HoeItems.TIN_HOE.get(), "锡锄");
+        add(HoeItems.LEAD_HOE.get(), "铅锄");
+        add(HoeItems.SILVER_HOE.get(), "银锄");
+        add(HoeItems.TUNGSTEN_HOE.get(), "钨锄");
+        add(HoeItems.GOLDEN_HOE.get(), "金锄");
+        add(HoeItems.PLATINUM_HOE.get(), "铂金锄");
+
+        add(ShovelItems.COPPER_SHOVEL.get(), "铜锹");
+        add(ShovelItems.TIN_SHOVEL.get(), "锡锹");
+        add(ShovelItems.LEAD_SHOVEL.get(), "铅锹");
+        add(ShovelItems.SILVER_SHOVEL.get(), "银锹");
+        add(ShovelItems.TUNGSTEN_SHOVEL.get(), "钨锹");
+        add(ShovelItems.GOLDEN_SHOVEL.get(), "金锹");
+        add(ShovelItems.PLATINUM_SHOVEL.get(), "铂金锹");
+
 
         add(PickaxeItems.COPPER_PICKAXE.get(), "铜镐");
         add(PickaxeItems.CACTUS_PICKAXE.get(), "仙人掌镐");

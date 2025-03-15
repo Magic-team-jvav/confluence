@@ -117,6 +117,7 @@ public final class ModTabs {
                         MinecartItems.ITEMS.getEntries().forEach(action);
                         FishingPoleItems.ITEMS.getEntries().forEach(action);
                         HoeItems.ITEMS.getEntries().forEach(action);
+                        ShovelItems.ITEMS.getEntries().forEach(action);
                         SwordItems.ITEMS.getEntries().forEach(action);
                     }).withTabsAfter(TCTabs.ACCESSORIES.getId()).withTabsBefore(FOOD_AND_POTIONS.getId()).build());
     /* 饰品 */

@@ -24,16 +24,6 @@ public class ToggleCurioSlot extends Slot implements IToggleSlot {
     }
 
     @Override
-    public boolean mayPlace(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public boolean mayPickup(Player player) {
-        return false;
-    }
-
-    @Override
     public void setEnable(boolean enable) {
         this.isActive = enable;
     }

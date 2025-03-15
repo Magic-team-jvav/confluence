@@ -120,6 +120,11 @@ public class TerraBowItem extends BowItem {
         return true;
     }
 
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return false;
+    }
+
     public static float getFastBowPowerForTime(int pCharge) {
         float f = pCharge / 20.0f;
         f = (f * f + f * 2.0F) / 3 * 0.5f + 0.5f; // 0.5f< f < 0.7+0.5

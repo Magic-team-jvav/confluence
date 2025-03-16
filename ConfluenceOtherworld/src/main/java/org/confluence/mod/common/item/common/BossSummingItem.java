@@ -20,6 +20,7 @@ public class BossSummingItem extends CustomRarityItem {
     private final Predicate<Player> condition;
     private final Factory factory;
     private List<Component> tooltips;
+    private static ChatFormatting color;
 
     public BossSummingItem(ModRarity rarity, Predicate<Player> condition, Factory factory) {
         super(new Properties(), rarity);
@@ -27,9 +28,10 @@ public class BossSummingItem extends CustomRarityItem {
         this.factory = factory;
     }
 
-    public BossSummingItem(Predicate<Player> condition, Factory factory, List<Component> tooltips) {
+    public BossSummingItem(Predicate<Player> condition, Factory factory, List<Component> tooltips, ChatFormatting color) {
         this(ModRarity.BLUE, condition, factory);
         this.tooltips = tooltips;
+        this.color = color;
     }
 
     @Override
@@ -61,7 +63,7 @@ public class BossSummingItem extends CustomRarityItem {
     public static List<Component> getTooltipsFromString(String id, int lineCount){
         List<Component> components = new ArrayList<>();
         for (int i = 1; i <= lineCount; i++){
-            components.add(Component.translatable("item.confluence." + id + ".tooltip." + i).withStyle(ChatFormatting.DARK_GRAY));
+            components.add(Component.translatable("item.confluence." + id + ".tooltip." + i).withStyle(color));
         }
         return components;
     }

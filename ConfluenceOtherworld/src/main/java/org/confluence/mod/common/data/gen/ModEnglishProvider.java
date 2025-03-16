@@ -611,6 +611,7 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add("event.confluence.blood_moon", "The Blood Moon is rising...");
         add("event.confluence.meteorite", "A meteorite has landed!");
+        add("event.confluence.meteorite.ready", "A meteorite will falling!");
         add("event.confluence.shadow_orb_broken.0", "A horrible chill goes down your spine...");
         add("event.confluence.shadow_orb_broken.1", "Screams echo around you...");
         add("event.confluence.crimson_heart_broken.0", "A horrible chill goes down your spine...");

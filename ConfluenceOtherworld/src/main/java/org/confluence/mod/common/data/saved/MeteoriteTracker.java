@@ -35,6 +35,8 @@ public class MeteoriteTracker {
         if (spawnAtNextNight && level.getDayTime() % 24000L == 18000L) { // midnight
             this.spawnAtNextNight = false;
             generateLandingDetail(level);
+            Component message = Component.translatable("event.confluence.meteorite.ready").withStyle(ChatFormatting.DARK_PURPLE);
+            level.getServer().getPlayerList().broadcastSystemMessage(message, false);
         }
         if (tickUntilLanding.get() == 0) {
             this.location = BlockPos.ZERO;

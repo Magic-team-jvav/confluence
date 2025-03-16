@@ -238,6 +238,7 @@ public class ExtraInventory extends ItemStackHandler implements Container {
             for (int i = 0; i < SIZE_AMMO; i++) {
                 ItemStack ammo = extraInventory.getAmmo(i);
                 if (predicate.test(ammo)) {
+                    extraInventory.setChanged();
                     return ammo;
                 }
             }

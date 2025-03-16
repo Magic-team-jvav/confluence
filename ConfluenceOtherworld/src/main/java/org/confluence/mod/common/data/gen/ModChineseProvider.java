@@ -725,6 +725,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("event.confluence.blood_moon", "血月正在升起...");
         add("event.confluence.meteorite", "陨石已落地！");
+        add("event.confluence.meteorite.ready", "陨石即将落下！");
         add("event.confluence.shadow_orb_broken.0", "不寒而栗，毛骨悚然……");
         add("event.confluence.shadow_orb_broken.1", "四面回荡着尖叫声……");
         add("event.confluence.crimson_heart_broken.0", "不寒而栗，毛骨悚然……！");

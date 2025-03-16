@@ -503,7 +503,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.HELLSTONE_INGOT.get(),
                 MaterialItems.COBALT_INGOT.get(),
                 MaterialItems.PALLADIUM_INGOT.get(),
-                MaterialItems.MITHRIL_INGOT.get(),
+                MaterialItems.MYTHRIL_INGOT.get(),
                 MaterialItems.ORICHALCUM_INGOT.get(),
                 MaterialItems.ADAMANTITE_INGOT.get(),
                 MaterialItems.TITANIUM_INGOT.get(),
@@ -538,7 +538,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.RAW_HELLSTONE.get(),
                 MaterialItems.RAW_LUMINITE.get(),
                 MaterialItems.RAW_METEORITE.get(),
-                MaterialItems.RAW_MITHRIL.get(),
+                MaterialItems.RAW_MYTHRIL.get(),
                 MaterialItems.RAW_ORICHALCUM.get(),
                 MaterialItems.RAW_DEMONITE.get(),
                 MaterialItems.RAW_PALLADIUM.get(),
@@ -585,7 +585,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.HARDMODE_ORES).add(
                 MaterialItems.RAW_COBALT.get(),
                 MaterialItems.RAW_PALLADIUM.get(),
-                MaterialItems.RAW_MITHRIL.get(),
+                MaterialItems.RAW_MYTHRIL.get(),
                 MaterialItems.RAW_ORICHALCUM.get(),
                 MaterialItems.RAW_ADAMANTITE.get(),
                 MaterialItems.RAW_TITANIUM.get()

@@ -31,7 +31,7 @@ public class CrateBlocks {
     public static final DeferredBlock<Block> OCEAN_CRATE = register("ocean_crate", ModLootTables.OCEAN_CRATE);
 
     public static final DeferredBlock<Block> PEARLWOOD_CRATE = register("pearlwood_crate", ModLootTables.PEARLWOOD_CRATE);
-    public static final DeferredBlock<Block> MITHRIL_CRATE = register("mithril_crate", ModLootTables.MITHRIL_CRATE);
+    public static final DeferredBlock<Block> MYTHRIL_CRATE = register("mythril_crate", ModLootTables.MYTHRIL_CRATE);
     public static final DeferredBlock<Block> TITANIUM_CRATE = register("titanium_crate", ModLootTables.TITANIUM_CRATE);
     public static final DeferredBlock<Block> THORNS_CRATE = register("thorns_crate", ModLootTables.THORNS_CRATE);
     public static final DeferredBlock<Block> WILD_CRATE = register("wild_crate", ModLootTables.WILD_CRATE);

@@ -867,9 +867,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(OreBlocks.RAW_PALLADIUM_BLOCK.get(), "粗钯金块");
         add(OreBlocks.DEEPSLATE_PALLADIUM_ORE.get(), "深层钯金矿");
         add(OreBlocks.PALLADIUM_BLOCK.get(), "钯金块");
-        add(OreBlocks.RAW_MITHRIL_BLOCK.get(), "粗秘银块");
-        add(OreBlocks.DEEPSLATE_MITHRIL_ORE.get(), "深层秘银矿");
-        add(OreBlocks.MITHRIL_BLOCK.get(), "秘银块");
+        add(OreBlocks.RAW_MYTHRIL_BLOCK.get(), "粗秘银块");
+        add(OreBlocks.DEEPSLATE_MYTHRIL_ORE.get(), "深层秘银矿");
+        add(OreBlocks.MYTHRIL_BLOCK.get(), "秘银块");
         add(OreBlocks.RAW_ORICHALCUM_BLOCK.get(), "粗山铜块");
         add(OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get(), "深层山铜矿");
         add(OreBlocks.ORICHALCUM_BLOCK.get(), "山铜块");
@@ -1422,7 +1422,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(CrateBlocks.OBSIDIAN_CRATE.get(), "黑曜石匣");
         add(CrateBlocks.OCEAN_CRATE.get(), "海洋匣");
         add(CrateBlocks.PEARLWOOD_CRATE.get(), "珍珠木匣");
-        add(CrateBlocks.MITHRIL_CRATE.get(), "秘银匣");
+        add(CrateBlocks.MYTHRIL_CRATE.get(), "秘银匣");
         add(CrateBlocks.TITANIUM_CRATE.get(), "钛金匣");
         add(CrateBlocks.THORNS_CRATE.get(), "荆棘匣");
         add(CrateBlocks.WILD_CRATE.get(), "野性匣");
@@ -1473,8 +1473,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.COBALT_INGOT.get(), "钴锭");
         add(MaterialItems.RAW_PALLADIUM.get(), "粗钯金");
         add(MaterialItems.PALLADIUM_INGOT.get(), "钯金锭");
-        add(MaterialItems.RAW_MITHRIL.get(), "粗秘银");
-        add(MaterialItems.MITHRIL_INGOT.get(), "秘银锭");
+        add(MaterialItems.RAW_MYTHRIL.get(), "粗秘银");
+        add(MaterialItems.MYTHRIL_INGOT.get(), "秘银锭");
         add(MaterialItems.RAW_ORICHALCUM.get(), "粗山铜");
         add(MaterialItems.ORICHALCUM_INGOT.get(), "山铜锭");
         add(MaterialItems.RAW_ADAMANTITE.get(), "粗精金");

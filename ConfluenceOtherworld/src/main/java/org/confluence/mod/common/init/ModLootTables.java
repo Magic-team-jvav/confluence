@@ -34,7 +34,7 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> OCEAN_CRATE = register("gameplay/crate/ocean_crate");
 
     public static final ResourceKey<LootTable> PEARLWOOD_CRATE = register("gameplay/crate/pearlwood_crate");
-    public static final ResourceKey<LootTable> MITHRIL_CRATE = register("gameplay/crate/mithril_crate");
+    public static final ResourceKey<LootTable> MYTHRIL_CRATE = register("gameplay/crate/mythril_crate");
     public static final ResourceKey<LootTable> TITANIUM_CRATE = register("gameplay/crate/titanium_crate");
     public static final ResourceKey<LootTable> THORNS_CRATE = register("gameplay/crate/thorns_crate");
     public static final ResourceKey<LootTable> WILD_CRATE = register("gameplay/crate/wild_crate");

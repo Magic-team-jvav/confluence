@@ -493,8 +493,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OreBlocks.RAW_PALLADIUM_BLOCK.get()
         );
         tag(ModTags.Blocks.NEEDS_6_LEVEL).add(
-                OreBlocks.DEEPSLATE_MITHRIL_ORE.get(),
-                OreBlocks.RAW_MITHRIL_BLOCK.get(),
+                OreBlocks.DEEPSLATE_MYTHRIL_ORE.get(),
+                OreBlocks.RAW_MYTHRIL_BLOCK.get(),
                 OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get(),
                 OreBlocks.RAW_ORICHALCUM_BLOCK.get()
         );
@@ -565,9 +565,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OreBlocks.PALLADIUM_BLOCK.get()
         );
         tag(ModTags.Blocks.NEEDS_6_LEVEL).add(
-                OreBlocks.DEEPSLATE_MITHRIL_ORE.get(),
-                OreBlocks.RAW_MITHRIL_BLOCK.get(),
-                OreBlocks.MITHRIL_BLOCK.get(),
+                OreBlocks.DEEPSLATE_MYTHRIL_ORE.get(),
+                OreBlocks.RAW_MYTHRIL_BLOCK.get(),
+                OreBlocks.MYTHRIL_BLOCK.get(),
                 OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get(),
                 OreBlocks.RAW_ORICHALCUM_BLOCK.get(),
                 OreBlocks.ORICHALCUM_BLOCK.get()
@@ -782,8 +782,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OreBlocks.RAW_COBALT_BLOCK.get(),
                 OreBlocks.DEEPSLATE_PALLADIUM_ORE.get(),
                 OreBlocks.RAW_PALLADIUM_BLOCK.get(),
-                OreBlocks.DEEPSLATE_MITHRIL_ORE.get(),
-                OreBlocks.RAW_MITHRIL_BLOCK.get(),
+                OreBlocks.DEEPSLATE_MYTHRIL_ORE.get(),
+                OreBlocks.RAW_MYTHRIL_BLOCK.get(),
                 OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get(),
                 OreBlocks.RAW_ORICHALCUM_BLOCK.get(),
                 OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get(),
@@ -889,8 +889,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OreBlocks.RAW_COBALT_BLOCK.get(),
                 OreBlocks.DEEPSLATE_PALLADIUM_ORE.get(),
                 OreBlocks.RAW_PALLADIUM_BLOCK.get(),
-                OreBlocks.DEEPSLATE_MITHRIL_ORE.get(),
-                OreBlocks.RAW_MITHRIL_BLOCK.get(),
+                OreBlocks.DEEPSLATE_MYTHRIL_ORE.get(),
+                OreBlocks.RAW_MYTHRIL_BLOCK.get(),
                 OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get(),
                 OreBlocks.RAW_ORICHALCUM_BLOCK.get(),
                 OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get(),
@@ -950,7 +950,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OreBlocks.DEEPSLATE_SAPPHIRE_ORE.get(),
                 OreBlocks.DEEPSLATE_COBALT_ORE.get(),
                 OreBlocks.DEEPSLATE_PALLADIUM_ORE.get(),
-                OreBlocks.DEEPSLATE_MITHRIL_ORE.get(),
+                OreBlocks.DEEPSLATE_MYTHRIL_ORE.get(),
                 OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get(),
                 OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get(),
                 OreBlocks.DEEPSLATE_TITANIUM_ORE.get(),

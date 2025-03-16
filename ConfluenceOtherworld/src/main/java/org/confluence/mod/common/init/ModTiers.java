@@ -41,7 +41,7 @@ public final class ModTiers {
     public static final Tier HELLSTONE = new PoweredTier(100, ModTags.Blocks.NEEDS_6_LEVEL, 1661, 14, 6, 14, () -> Ingredient.of(MaterialItems.HELLSTONE_INGOT.get()));
     public static final Tier COBALT = new PoweredTier(110, ModTags.Blocks.NEEDS_7_LEVEL, 1661, 16, 1, 15, () -> Ingredient.of(MaterialItems.COBALT_INGOT.get()));
     public static final Tier PALLADIUM = new PoweredTier(130, ModTags.Blocks.NEEDS_7_LEVEL, 1661, 16, 1, 15, () -> Ingredient.of(MaterialItems.PALLADIUM_INGOT.get()));
-    public static final Tier MITHRIL = new PoweredTier(150, ModTags.Blocks.NEEDS_7_LEVEL, 1661, 20, 1, 16, () -> Ingredient.of(MaterialItems.MITHRIL_INGOT.get()));
+    public static final Tier MYTHRIL = new PoweredTier(150, ModTags.Blocks.NEEDS_7_LEVEL, 1661, 20, 1, 16, () -> Ingredient.of(MaterialItems.MYTHRIL_INGOT.get()));
     public static final Tier ORICHALCUM = new PoweredTier(165, ModTags.Blocks.NEEDS_7_LEVEL, 1661, 20, 1, 16, () -> Ingredient.of(MaterialItems.ORICHALCUM_INGOT.get()));
     public static final Tier ADAMANTITE = new PoweredTier(180, ModTags.Blocks.NEEDS_8_LEVEL, 1661, 24, 1, 17, () -> Ingredient.of(MaterialItems.ADAMANTITE_INGOT.get()));
     public static final Tier TITANIUM = new PoweredTier(190, ModTags.Blocks.NEEDS_8_LEVEL, 1661, 24, 1, 17, () -> Ingredient.of(MaterialItems.TITANIUM_INGOT.get()));

@@ -269,7 +269,7 @@ public final class ModEvents {
                 context.blockReplacement(OreBlocks.DEEPSLATE_PALLADIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), target);
             });
             event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
-                context.blockReplacement(OreBlocks.DEEPSLATE_MITHRIL_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), target);
+                context.blockReplacement(OreBlocks.DEEPSLATE_MYTHRIL_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), target);
                 context.blockReplacement(OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), target);
             });
             event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {

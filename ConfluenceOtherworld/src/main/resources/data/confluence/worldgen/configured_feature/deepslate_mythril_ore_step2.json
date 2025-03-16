@@ -10,9 +10,9 @@
                     "tag": "deepslate_ore_replaceables"
                 },
                 "state": {
-                    "Name": "confluence:deepslate_mithril_ore",
+                    "Name": "confluence:deepslate_mythril_ore",
                     "Properties": {
-                        "reveal_step": 1
+                        "reveal_step": 2
                     }
                 }
             }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/deepslate_mithril_ore"
+    "all": "confluence:block/deepslate_mythril_ore"
   }
 }

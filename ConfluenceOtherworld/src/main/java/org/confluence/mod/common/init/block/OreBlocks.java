@@ -195,9 +195,9 @@ public class OreBlocks {
     public static final DeferredBlock<Block> RAW_PALLADIUM_BLOCK = simpleBlockRegister("raw_palladium_block");
     public static final DeferredBlock<Block> PALLADIUM_BLOCK = simpleBlockRegister("palladium_block");
 
-    public static final DeferredBlock<Block> DEEPSLATE_MITHRIL_ORE = simpleBlockRegister("deepslate_mithril_ore", () -> new StepRevealingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE)));
-    public static final DeferredBlock<Block> RAW_MITHRIL_BLOCK = simpleBlockRegister("raw_mithril_block");
-    public static final DeferredBlock<Block> MITHRIL_BLOCK = simpleBlockRegister("mithril_block");
+    public static final DeferredBlock<Block> DEEPSLATE_MYTHRIL_ORE = simpleBlockRegister("deepslate_mythril_ore", () -> new StepRevealingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE)));
+    public static final DeferredBlock<Block> RAW_MYTHRIL_BLOCK = simpleBlockRegister("raw_mythril_block");
+    public static final DeferredBlock<Block> MYTHRIL_BLOCK = simpleBlockRegister("mythril_block");
 
     public static final DeferredBlock<Block> DEEPSLATE_ORICHALCUM_ORE = simpleBlockRegister("deepslate_orichalcum_ore", () -> new StepRevealingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE)));
     public static final DeferredBlock<Block> RAW_ORICHALCUM_BLOCK = simpleBlockRegister("raw_orichalcum_block");

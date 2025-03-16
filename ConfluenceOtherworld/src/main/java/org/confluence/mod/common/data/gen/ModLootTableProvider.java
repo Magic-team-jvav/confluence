@@ -76,8 +76,8 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(RAW_COBALT_BLOCK.get());
             dropSelf(PALLADIUM_BLOCK.get());
             dropSelf(RAW_PLATINUM_BLOCK.get());
-            dropSelf(MITHRIL_BLOCK.get());
-            dropSelf(RAW_MITHRIL_BLOCK.get());
+            dropSelf(MYTHRIL_BLOCK.get());
+            dropSelf(RAW_MYTHRIL_BLOCK.get());
             dropSelf(ORICHALCUM_BLOCK.get());
             dropSelf(RAW_ORICHALCUM_BLOCK.get());
             dropSelf(ADAMANTITE_BLOCK.get());
@@ -220,7 +220,7 @@ public class ModLootTableProvider extends LootTableProvider {
             add(DEEPSLATE_TR_CRIMSON_ORE.get(), block -> createOreDrop(block, RAW_TR_CRIMSON.get()));
             add(DEEPSLATE_COBALT_ORE.get(), block -> createOreDrop(block, RAW_COBALT.get()));
             add(DEEPSLATE_PALLADIUM_ORE.get(), block -> createOreDrop(block, RAW_PALLADIUM.get()));
-            add(DEEPSLATE_MITHRIL_ORE.get(), block -> createOreDrop(block, RAW_MITHRIL.get()));
+            add(DEEPSLATE_MYTHRIL_ORE.get(), block -> createOreDrop(block, RAW_MYTHRIL.get()));
             add(DEEPSLATE_ORICHALCUM_ORE.get(), block -> createOreDrop(block, RAW_ORICHALCUM.get()));
             add(DEEPSLATE_ADAMANTITE_ORE.get(), block -> createOreDrop(block, RAW_ADAMANTITE.get()));
             add(DEEPSLATE_TITANIUM_ORE.get(), block -> createOreDrop(block, RAW_TITANIUM.get()));

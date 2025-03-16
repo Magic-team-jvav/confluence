@@ -143,7 +143,7 @@ public final class ModFluids {
         addItem(Items.ARROW, ArrowItems.SHIMMER_ARROW.get());
         // 匣子转化
         addItem(CrateBlocks.PEARLWOOD_CRATE.get().asItem(), CrateBlocks.WOODEN_CRATE.get().asItem());
-        addItem(CrateBlocks.MITHRIL_CRATE.get().asItem(), CrateBlocks.IRON_CRATE.get().asItem());
+        addItem(CrateBlocks.MYTHRIL_CRATE.get().asItem(), CrateBlocks.IRON_CRATE.get().asItem());
         addItem(CrateBlocks.TITANIUM_CRATE.get().asItem(), CrateBlocks.GOLDEN_CRATE.get().asItem());
         addItem(CrateBlocks.THORNS_CRATE.get().asItem(), CrateBlocks.JUNGLE_CRATE.get().asItem());
         addItem(CrateBlocks.WILD_CRATE.get().asItem(), CrateBlocks.SAVANNA_CRATE.get().asItem());
@@ -168,7 +168,7 @@ public final class ModFluids {
         addItem(MaterialItems.TITANIUM_INGOT.get(), MaterialItems.RAW_TITANIUM.get());
         addItem(MaterialItems.ADAMANTITE_INGOT.get(), MaterialItems.RAW_ADAMANTITE.get());
         addItem(MaterialItems.ORICHALCUM_INGOT.get(), MaterialItems.RAW_ORICHALCUM.get());
-        addItem(MaterialItems.MITHRIL_INGOT.get(), MaterialItems.RAW_MITHRIL.get());
+        addItem(MaterialItems.MYTHRIL_INGOT.get(), MaterialItems.RAW_MYTHRIL.get());
         addItem(MaterialItems.PALLADIUM_INGOT.get(), MaterialItems.RAW_PALLADIUM.get());
         addItem(MaterialItems.COBALT_INGOT.get(), MaterialItems.RAW_COBALT.get());
         addItem(MaterialItems.HELLSTONE_INGOT.get(), MaterialItems.RAW_HELLSTONE.get());
@@ -189,7 +189,7 @@ public final class ModFluids {
         // 矿的下级转化（陨石，魔矿，猩红矿不参与这一过程）
         addItem(MaterialItems.RAW_TITANIUM.get(), MaterialItems.RAW_ADAMANTITE.get());
         addItem(MaterialItems.RAW_ADAMANTITE.get(), MaterialItems.RAW_ORICHALCUM.get());
-        addItem(MaterialItems.RAW_ORICHALCUM.get(), MaterialItems.RAW_MITHRIL.get());
+        addItem(MaterialItems.RAW_ORICHALCUM.get(), MaterialItems.RAW_MYTHRIL.get());
         addItem(MaterialItems.RAW_PALLADIUM.get(), MaterialItems.RAW_COBALT.get());
         addItem(MaterialItems.RAW_COBALT.get(), MaterialItems.RAW_PLATINUM.get());
         addItem(MaterialItems.RAW_PLATINUM.get(), Items.RAW_GOLD);

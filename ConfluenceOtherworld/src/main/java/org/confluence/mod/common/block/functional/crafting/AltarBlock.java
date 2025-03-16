@@ -176,6 +176,17 @@ public class AltarBlock extends BaseEntityBlock {
         return new Entity(pPos, pState).setVariant(variant);
     }
 
+    public static boolean hurtPlayerIfBrokenNotAllowed(Player player, BlockState blockState) {
+        if (!player.getAbilities().instabuild &&
+                blockState.getBlock() instanceof AltarBlock &&
+                !player.getMainHandItem().is(ModTags.Items.ABLE_TO_DESTROY_ALTAR)
+        ) {
+            player.hurt(player.damageSources().fellOutOfWorld(), player.getMaxHealth() / 2);
+            return true;
+        }
+        return false;
+    }
+
     public static class Entity extends BlockEntity implements GeoBlockEntity {
         public static final int CONTAINER_SIZE = 6;
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);

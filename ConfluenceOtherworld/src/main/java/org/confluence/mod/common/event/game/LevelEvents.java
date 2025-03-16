@@ -83,11 +83,7 @@ public final class LevelEvents {
         if (event.isCanceled() || !(event.getPlayer() instanceof ServerPlayer serverPlayer)) return;
         BlockState blockState = event.getState();
 
-        if (!serverPlayer.getAbilities().instabuild &&
-                blockState.getBlock() instanceof AltarBlock &&
-                !serverPlayer.getMainHandItem().is(ModTags.Items.ABLE_TO_DESTROY_ALTAR)
-        ) {
-            serverPlayer.hurt(serverPlayer.damageSources().fellOutOfWorld(), serverPlayer.getMaxHealth() / 2);
+        if (AltarBlock.hurtPlayerIfBrokenNotAllowed(serverPlayer, blockState)) {
             event.setCanceled(true);
             return;
         }

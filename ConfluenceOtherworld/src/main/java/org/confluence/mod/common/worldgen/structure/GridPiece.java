@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
@@ -60,7 +62,8 @@ public class GridPiece extends StructurePiece {
         for (Map.Entry<Integer, LongArrayList> entry : map.entrySet()) {
             this.blockMap.add(new Tuple<>(entry.getKey(), entry.getValue()));
         }
-        features.entrySet().stream().sorted().forEachOrdered(entry -> this.features.add(new Tuple<>(entry.getKey(), entry.getValue())));
+        features.entrySet().stream().sorted(Map.Entry.comparingByValue())
+                .forEachOrdered(entry -> this.features.add(new Tuple<>(entry.getKey(), entry.getValue())));
     }
 
     public GridPiece(CompoundTag tag) {
@@ -91,9 +94,11 @@ public class GridPiece extends StructurePiece {
             }
             pair.getB().clear();
         }
+        Registry<ConfiguredFeature<?, ?>> configuredFeatures = level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE);
         for (Tuple<BlockPos, ResourceLocation> pair : features) {
-            level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).getHolder(pair.getB())
-                    .ifPresent(feature -> feature.value().place(level, generator, random, pair.getA()));
+            configuredFeatures.getHolder(pair.getB()).ifPresent(feature -> {
+                feature.value().place(level, generator, random, pair.getA());
+            });
         }
     }
 

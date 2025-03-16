@@ -50,26 +50,21 @@ public class ShadowOrbBlock extends Block {
             ConfluenceData data = ConfluenceData.get(serverLevel);
             int count = data.getEvilBrokenCount() % 3;
 
-            if (count == 0) {
+            if (count == 0 || level.random.nextFloat() < 0.2F) {
                 ModUtils.createItemEntity(TGItems.MUSKET.toStack(), center.x, center.y, center.z, level, 0);
                 ModUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
-            } else {
-                if (level.random.nextFloat() < 0.2F) {
-                    ModUtils.createItemEntity(TGItems.MUSKET.toStack(), center.x, center.y, center.z, level, 0);
-                    ModUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
-                }
-                if (level.random.nextFloat() < 0.2F) {
-                    ModUtils.createItemEntity(LightPetItems.SHADOW_ORB.get(), 1, center.x, center.y, center.z, level, 0);
-                }
-                if (level.random.nextFloat() < 0.2F) {
-                    ModUtils.createItemEntity(ManaWeaponItems.VILETHRON.get(), 1, center.x, center.y, center.z, level, 0);
-                }
-                if (level.random.nextFloat() < 0.2F) {
-                    // 链球
-                }
-                if (level.random.nextFloat() < 0.2F) {
-                    ModUtils.createItemEntity(AccessoryItems.BAND_OF_STARPOWER.get(), 1, center.x, center.y, center.z, level, 0);
-                }
+            }
+            if (level.random.nextFloat() < 0.2F) {
+                ModUtils.createItemEntity(LightPetItems.SHADOW_ORB.get(), 1, center.x, center.y, center.z, level, 0);
+            }
+            if (level.random.nextFloat() < 0.2F) {
+                ModUtils.createItemEntity(ManaWeaponItems.VILETHRON.get(), 1, center.x, center.y, center.z, level, 0);
+            }
+            if (level.random.nextFloat() < 0.2F) {
+                // 链球
+            }
+            if (level.random.nextFloat() < 0.2F) {
+                ModUtils.createItemEntity(AccessoryItems.BAND_OF_STARPOWER.get(), 1, center.x, center.y, center.z, level, 0);
             }
 
             for (ServerPlayer player : serverLevel.getPlayers(serverPlayer -> serverPlayer.distanceToSqr(center) <= 32 * 32)) {

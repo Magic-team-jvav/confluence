@@ -50,7 +50,7 @@ public class CrimsonHeartBlock extends Block {
             ConfluenceData data = ConfluenceData.get(serverLevel);
             int count = data.getEvilBrokenCount() % 3;
 
-            if (level.random.nextFloat() < 0.2F) {
+            if (count == 0 || level.random.nextFloat() < 0.2F) {
                 ModUtils.createItemEntity(TGItems.THE_UNDERTAKER.toStack(), center.x, center.y, center.z, level, 0);
                 ModUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
             }

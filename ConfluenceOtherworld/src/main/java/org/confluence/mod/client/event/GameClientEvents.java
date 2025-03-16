@@ -135,6 +135,7 @@ public final class GameClientEvents {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void gatherComponents(RenderTooltipEvent.GatherComponents event) {
         ItemStack itemStack = event.getItemStack();
+        if (itemStack.isEmpty()) return;
         Item item = itemStack.getItem();
         List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
         if (tooltipElements.isEmpty()) return;

@@ -46,11 +46,14 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.menu.HellforgeMenu;
 import org.confluence.mod.common.recipe.ArrayRecipeInput;
 import org.confluence.mod.common.recipe.HellforgeRecipe;
+import org.confluence.mod.mixed.IRecipeManager;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BooleanSupplier;
 
 import static org.confluence.mod.common.menu.HellforgeMenu.*;
@@ -197,7 +200,38 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
 
         public Entity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.HELLFORGE_ENTITY.get(), pos, blockState);
-            this.hellforge = RecipeManager.createCheck(ModRecipes.HELLFORGE_TYPE.get());
+            this.hellforge = new RecipeManager.CachedCheck<>() {
+                @Nullable
+                private RecipeHolder<HellforgeRecipe> lastRecipe;
+                private int lastIngredientCount = 0;
+
+                @Override
+                public Optional<RecipeHolder<HellforgeRecipe>> getRecipeFor(RecipeInput recipeInput, Level level) {
+                    if (recipeInput.isEmpty()) {
+                        return Optional.empty();
+                    } else if (lastRecipe != null && lastRecipe.value().matches(recipeInput, level)) {
+                        int count = 0;
+                        for (int i = 0; i < recipeInput.size(); i++) {
+                            if (!recipeInput.getItem(i).isEmpty()) count++;
+                        }
+                        if (count == lastIngredientCount) {
+                            return Optional.of(lastRecipe);
+                        }
+                        this.lastIngredientCount = count;
+                    }
+                    IRecipeManager recipemanager = (IRecipeManager) level.getRecipeManager();
+                    Optional<RecipeHolder<HellforgeRecipe>> recipes = recipemanager.confluence$byType(ModRecipes.HELLFORGE_TYPE.get()).stream()
+                            .filter(holder -> holder.value().matches(recipeInput, level))
+                            .max(Comparator.comparingInt(holder -> holder.value().ingredients.size()));
+                    if (recipes.isPresent()) {
+                        RecipeHolder<HellforgeRecipe> recipeholder = recipes.get();
+                        this.lastRecipe = recipeholder;
+                        return Optional.of(recipeholder);
+                    } else {
+                        return Optional.empty();
+                    }
+                }
+            };
             this.blasting = RecipeManager.createCheck(RecipeType.BLASTING);
         }
 
@@ -432,7 +466,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
         }
 
         @Override
-        public int [] getSlotsForFace(Direction side) {
+        public int[] getSlotsForFace(Direction side) {
             if (side == Direction.DOWN) {
                 return SLOTS_FOR_DOWN;
             } else {

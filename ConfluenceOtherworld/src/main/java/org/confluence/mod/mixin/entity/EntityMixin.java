@@ -11,6 +11,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.mod.api.event.ShimmerEntityTransmutationEvent;
 import org.confluence.mod.common.data.saved.ConfluenceData;
@@ -88,9 +89,11 @@ public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
 
     @Inject(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;pop()V"))
     private void shimmerTick(CallbackInfo ci) {
+        Entity self = self();
+        if (self instanceof PartEntity<?>) return;
+
         if (confluence$entity_coolDown < 0) this.confluence$entity_coolDown = 0;
 
-        Entity self = self();
         boolean isItem = self instanceof ItemEntity;
         if (getEyeInFluidType() == ModFluids.SHIMMER.type().get()) {
             if (!confluence$isInShimmer) { // 入微光

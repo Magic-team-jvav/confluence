@@ -357,16 +357,4 @@ public final class PlayerUtils {
         if (min == max) return min;
         return player.getRandom().nextInt(Math.min(min, max), Math.max(min, max));
     }
-
-    public static void hungerDelayed(Player player) {
-        if (player.hasEffect(ModEffects.HUNGER_DELAYED)) {
-            int effectLeave = player.getEffect(ModEffects.HUNGER_DELAYED).getAmplifier();
-            float exhaustionLevel = player.getFoodData().getExhaustionLevel();
-            if (effectLeave > 5) effectLeave = 5;
-            float reductionFactor = 1 - 0.2F * effectLeave;
-            float actualExhaustionReduction = Math.max(exhaustionLevel * reductionFactor, 0.0F);
-            exhaustionLevel = Math.max(exhaustionLevel - actualExhaustionReduction, 0.0F);
-            player.getFoodData().setExhaustion(exhaustionLevel);
-        }
-    }
 }

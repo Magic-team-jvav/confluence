@@ -305,11 +305,15 @@ public final class LivingEntityEvents {
             if (event.getEntity() instanceof Boss) {
                 event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
             }
+        } else if (effect == ModEffects.SHIMMER) {
+            if (!(event.getEntity() instanceof Player)) {
+                event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
+            }
         } else {
             boolean flag = false;
             EntityType<?> type = event.getEntity().getType();
             if (type == TEEntities.KING_SLIME.get()) {
-                flag = effect == ModEffects.SHIMMER || effect == MobEffects.POISON;
+                flag = effect == MobEffects.POISON;
             } else if (type == TEEntities.QUEEN_BEE.get()) {
                 flag = effect == MobEffects.POISON;
             }

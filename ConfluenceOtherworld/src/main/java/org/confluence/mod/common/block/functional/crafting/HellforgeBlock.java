@@ -52,7 +52,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
 
@@ -197,6 +196,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
         private final RecipeManager.CachedCheck<RecipeInput, HellforgeRecipe> hellforge;
         private final RecipeManager.CachedCheck<SingleRecipeInput, BlastingRecipe> blasting;
         private final ItemStack[] inputs = new ItemStack[4];
+        private int lastCheckSlot = 0;
 
         public Entity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.HELLFORGE_ENTITY.get(), pos, blockState);
@@ -220,8 +220,8 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
                         this.lastIngredientCount = count;
                     }
 
-                    IRecipeManager recipemanager = (IRecipeManager) level.getRecipeManager();
-                    Optional<RecipeHolder<HellforgeRecipe>> recipe = recipemanager.confluence$byType(ModRecipes.HELLFORGE_TYPE.get()).stream()
+                    Optional<RecipeHolder<HellforgeRecipe>> recipe = ((IRecipeManager) level.getRecipeManager())
+                            .confluence$byType(ModRecipes.HELLFORGE_TYPE.get()).stream()
                             .filter(holder -> holder.value().matches(recipeInput, level))
                             .max(Comparator.comparingInt(holder -> holder.value().ingredients.size()));
                     if (recipe.isPresent()) {
@@ -244,8 +244,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
 
             ItemStack[] inputs = blockEntity.getInputs();
             ItemStack fuel = blockEntity.items.get(FUEL_SLOT);
-            List<ItemStack> list = Arrays.stream(inputs).filter(itemStack -> !itemStack.isEmpty()).toList();
-            boolean hasInput = !list.isEmpty();
+            boolean hasInput = Arrays.stream(inputs).anyMatch(itemStack -> !itemStack.isEmpty());
             boolean hellforgeMatched = false;
 
             if (hasInput) {
@@ -266,20 +265,44 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
 
             boolean blastingMatched = false;
             if (hasInput && !hellforgeMatched) {
-                for (ItemStack input : list) {
-                    RecipeHolder<BlastingRecipe> recipeholder = blockEntity.blasting.getRecipeFor(new SingleRecipeInput(input), level).orElse(null);
-                    if (recipeholder != null) {
-                        int maxStackSize = blockEntity.getMaxStackSize();
-                        if (!blockEntity.isLit() && canBlastingBurn(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, input)) {
-                            update = doUpdateStatus(blockEntity, fuel);
+                ItemStack lastInput = inputs[blockEntity.lastCheckSlot];
+                RecipeHolder<BlastingRecipe> recipeholder;
+                SingleRecipeInput recipeInput;
+                if (!lastInput.isEmpty() &&
+                        (recipeholder = blockEntity.blasting.getRecipeFor(recipeInput=new SingleRecipeInput(lastInput), level).orElse(null)) != null &&
+                        recipeholder.value().matches(recipeInput, level)
+                ) {
+                    int maxStackSize = blockEntity.getMaxStackSize();
+                    if (!blockEntity.isLit() && canBlastingBurn(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, lastInput)) {
+                        update = doUpdateStatus(blockEntity, fuel);
+                    }
+                    if (canBlastingBurn(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, lastInput)) {
+                        RecipeHolder<BlastingRecipe> finalRecipeholder1 = recipeholder;
+                        if (doUpdateProgress(blockEntity, level, recipeholder, () -> burnBlasting(level.registryAccess(), finalRecipeholder1, blockEntity.items, maxStackSize, lastInput))) {
+                            update = true;
                         }
-                        if (canBlastingBurn(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, input)) {
-                            if (doUpdateProgress(blockEntity, level, recipeholder, () -> burnBlasting(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, input))) {
-                                update = true;
+                    }
+                    blastingMatched = true;
+                } else {
+                    for (int i = 0; i < inputs.length; i++) {
+                        ItemStack input = inputs[i];
+                        if (input.isEmpty()) continue;
+                        recipeholder = blockEntity.blasting.getRecipeFor(new SingleRecipeInput(input), level).orElse(null);
+                        if (recipeholder != null) {
+                            int maxStackSize = blockEntity.getMaxStackSize();
+                            if (!blockEntity.isLit() && canBlastingBurn(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, input)) {
+                                update = doUpdateStatus(blockEntity, fuel);
                             }
+                            if (canBlastingBurn(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, input)) {
+                                RecipeHolder<BlastingRecipe> finalRecipeholder = recipeholder;
+                                if (doUpdateProgress(blockEntity, level, recipeholder, () -> burnBlasting(level.registryAccess(), finalRecipeholder, blockEntity.items, maxStackSize, input))) {
+                                    update = true;
+                                }
+                            }
+                            blastingMatched = true;
+                            blockEntity.lastCheckSlot = i;
+                            break;
                         }
-                        blastingMatched = true;
-                        break;
                     }
                 }
             }

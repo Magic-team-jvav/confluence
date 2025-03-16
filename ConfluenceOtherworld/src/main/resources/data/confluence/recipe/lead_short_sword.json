@@ -6,10 +6,10 @@
     ],
     "key": {
         "a": {
-            "item": "confluence:lead_nugget"
+            "tag": "c:ingots/lead"
         },
         "c": {
-            "tag": "c:ingots/lead"
+            "item": "minecraft:stick"
         }
     },
     "result": {

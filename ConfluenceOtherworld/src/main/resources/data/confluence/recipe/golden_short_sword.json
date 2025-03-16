@@ -1,12 +1,15 @@
 {
     "type": "minecraft:crafting_shaped",
     "pattern": [
-        " c",
+        " a",
         "c "
     ],
     "key": {
-        "c": {
+        "a": {
             "item": "minecraft:gold_ingot"
+        },
+        "c": {
+            "item": "minecraft:stick"
         }
     },
     "result": {

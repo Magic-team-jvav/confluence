@@ -15,6 +15,9 @@ public class TerraArrowRenderer extends ArrowRenderer<BaseArrowEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(BaseArrowEntity baseArrowEntity) {
+        if(baseArrowEntity.texturePath.isEmpty()){
+            return ResourceLocation.withDefaultNamespace("textures/entity/projectiles/arrow.png");
+        }
         //默认为黑色
         return Confluence.asResource(baseArrowEntity.texturePath);
     }

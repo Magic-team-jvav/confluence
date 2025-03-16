@@ -2,10 +2,12 @@ package org.confluence.mod.common.item.sponsor;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -14,6 +16,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -30,6 +33,8 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * 饰品：「无聊之咒·陨志」
@@ -66,7 +71,8 @@ public class BoredomsPactFallingResolve extends BaseCurioItem {
                                 mutable.move(0, 1, 0);
                             }
                             BlockState blockState = level.getBlockState(living.blockPosition().below());
-                            if (blockState.isAir()) blockState = FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState();
+                            if (blockState.isAir())
+                                blockState = FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState();
                             level.addFreshEntity(new BoulderEntity(level, currentPos.add(0, i, 0), blockState));
                             tag.putBoolean("summoned", true);
                         }
@@ -116,5 +122,19 @@ public class BoredomsPactFallingResolve extends BaseCurioItem {
 
     private static @Nullable Vec3 readPos(CompoundTag tag) {
         return Vec3.CODEC.parse(NbtOps.INSTANCE, tag.get("currentPos")).result().orElse(null);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        tooltipComponents.addAll(getTooltipsFromString(ID.getPath(), 9));
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+    }
+
+    public static List<Component> getTooltipsFromString(String id, int lineCount) {
+        List<Component> components = new ArrayList<>();
+        for (int i = 1; i <= lineCount; i++) {
+            components.add(Component.translatable("item.confluence." + id + ".tooltip." + i).withStyle(ChatFormatting.DARK_GRAY));
+        }
+        return components;
     }
 }

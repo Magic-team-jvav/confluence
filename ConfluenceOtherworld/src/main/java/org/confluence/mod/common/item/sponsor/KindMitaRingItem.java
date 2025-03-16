@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class KindMitaRingItem extends Item {
@@ -33,8 +34,15 @@ public class KindMitaRingItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.literal("-------赞助者物品--------").withStyle(ChatFormatting.GRAY));
-        tooltipComponents.add(Component.literal("戒指会带你找到正确的方向，亲爱的。").withStyle(ChatFormatting.GRAY));
+        tooltipComponents.addAll(getTooltipsFromString("kind_mita_ring", 2));
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+    }
+
+    public static List<Component> getTooltipsFromString(String id, int lineCount){
+        List<Component> components = new ArrayList<>();
+        for (int i = 1; i <= lineCount; i++){
+            components.add(Component.translatable("item.confluence." + id + ".tooltip." + i).withStyle(ChatFormatting.DARK_GRAY));
+        }
+        return components;
     }
 }

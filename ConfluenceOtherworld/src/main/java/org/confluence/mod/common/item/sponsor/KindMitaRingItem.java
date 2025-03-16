@@ -15,7 +15,7 @@ import java.util.List;
 public class KindMitaRingItem extends TooltipItem {
 
     public KindMitaRingItem() {
-        super(new Properties(), ModRarity.COMMON, TooltipItem.getTooltipsFromString("kind_mita_ring", 2));
+        super(new Properties(), ModRarity.COMMON, TooltipItem.getTooltipsFromString("kind_mita_ring", 1));
     }
 
     @Override

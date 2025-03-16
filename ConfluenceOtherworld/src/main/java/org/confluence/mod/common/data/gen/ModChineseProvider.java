@@ -51,26 +51,48 @@ public class ModChineseProvider extends LanguageProvider {
         add("item.confluence.meteorite_ingot.tooltip", "摸起来是温的");
         add("item.confluence.encumbering_stone.disable", "负重石：关闭");
         add("item.confluence.paint", "油漆");
+        add("item.confluence.slime_crown.tooltip.1", "右键使用以召唤史莱姆王");
+        add("item.confluence.slime_crown.tooltip.2", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");
+        add("item.confluence.slime_crown.tooltip.3", "“戴上它可能不是个好选择”");
+        add("item.confluence.suspicious_looking_eye.tooltip.1", "右键使用以召唤克苏鲁之眼，它只在夜间出没");
+        add("item.confluence.suspicious_looking_eye.tooltip.2", "一颗死气沉沉，目光呆滞的眼球，尽管它不具备攻击性，但它似乎比它们那些夜间会在半空中飞来飞去的同僚们更为危险。");
+        add("item.confluence.suspicious_looking_eye.tooltip.3", "“它好像在看着你…”");
+        add("item.confluence.worm_food.tooltip.1", "右键使用以召唤世界吞噬者，它会在充满腐化毒雾的巨大裂谷中穿梭");
+        add("item.confluence.worm_food.tooltip.2", "闻起来像一块烂掉了的排骨，似乎对那些病变了的泰拉生物有极强的吸引力。");
+        add("item.confluence.worm_food.tooltip.3", "“它还要吞噬更多…更多更多更多更多…”");
+        add("item.confluence.bloody_spine.tooltip.1", "右键使用以召唤克苏鲁之脑，它会在嗅到猩红之地血肉与脓浆的气息后方才苏醒");
+        add("item.confluence.bloody_spine.tooltip.2", "一截被剥离下来了的身体组织，上面斑驳着血痂块与肌肉组织，很难想象它是从哪种生物体内，以何种方式取出来的。");
+        add("item.confluence.bloody_spine.tooltip.3", "“它似乎在尝试着与你对话…要不蘨睈錗㧴氓旳義厡…”");
+        add("item.confluence.abeemination.tooltip.1", "右键使用以召唤蜂王，只有热带阔叶雨林间的污浊瘴气才能压制住她的狂怒");
+        add("item.confluence.abeemination.tooltip.2", "她似乎极度那些厌恶荧光真菌孢子的气息");
+        add("item.confluence.abeemination.tooltip.3", "一团尚未成型的幼蜂，摸上去感觉像黏稠的蜂蜜……蜂王与她的下属们对它们甜蜜领地的保护欲不知何时渐渐发展为对非同类生物的极度排斥与憎恶。");
+        add("item.confluence.abeemination.tooltip.4", "“群蜂振翅之声憾动了丛林中最为厚重的叶片”");
+
         add("item.confluence.tokyo_teddy_bear.tooltip.1", "一位自卑的少女如破碎的泰迪熊般说到：");
         add("item.confluence.tokyo_teddy_bear.tooltip.2", "           来让你听听");
         add("item.confluence.tokyo_teddy_bear.tooltip.3", "           全智全能的话吧");
         add("item.confluence.tokyo_teddy_bear.tooltip.4", "           头脑以外的");
         add("item.confluence.tokyo_teddy_bear.tooltip.5", "           已不再需要");
         add("item.confluence.tokyo_teddy_bear.tooltip.6", "——由一只蜘蛛讲述的故事");
-        add("item.confluence.paradox_interactive_medal.tooltip.0", "同时玩过钢铁雄心、维多利亚、欧陆风云、十字军之王、都市天际线的证明。");
+        add("item.confluence.paradox_interactive_medal.0", "同时玩过钢铁雄心、维多利亚、欧陆风云、十字军之王、都市天际线的证明。");
+        add("item.confluence.kind_mita_ring.tooltip.1", "“戒指会带你找到正确的方向，亲爱的”");
+        add("item.confluence.failed_skull.tooltip.1", "一只苦力怕被猪灵强制改造了身体，可以多次自爆。猪灵想用它作为入侵主世界的生物兵器，却被其意外逃脱");
         add("item.confluence.pink_cola.tooltip.1", "一瓶普通的粉色可乐，或许原来有一整箱？");
         add("item.confluence.dongdongs_flatbread.tooltip.1", "刚在地狱岩上考好的饼，快来尝尝吧！");
 
-        add("item.confluence.boredoms_pact_falling_resolve.tooltip.0", "「无聊之咒·陨志」");
-        add("item.confluence.boredoms_pact_falling_resolve.tooltip.1", "(Boredom's Pact - Falling Resolve)");
-        add("item.confluence.boredoms_pact_falling_resolve.tooltip.2", "           ");
-        add("item.confluence.boredoms_pact_falling_resolve.tooltip.3", "怠惰者的血浸透了星核，凝成这颗会呼吸的诅咒石。");
-        add("item.confluence.boredoms_pact_falling_resolve.tooltip.4", "动，则岩脉奔涌，刃锋割裂长夜；静，则地心跳搏，苍穹睁开独眼。");
-        add("item.confluence.boredoms_pact_falling_resolve.tooltip.5", "古神将惩罚编入契约：八次心跳的静止，便召来陨星审判。");
-        add("item.confluence.boredoms_pact_falling_resolve.tooltip.6", "它不像魔像般沉默——巨石砸碎胫骨时会尖笑：");
-        add("item.confluence.boredoms_pact_falling_resolve.tooltip.7", "'看啊，连石头都比你的双腿更懂生存之道。'");
-        add("item.confluence.boredoms_pact_falling_resolve.tooltip.8", "佩戴者终将明白：所谓'不摧'，不过是逃得比死亡快一秒。");
-        add("item.confluence.boredoms_pact_falling_resolve.tooltip.9", "而灵魂早被碾成岩缝里的尘，比魔像的空壳更荒芜。");
+
+
+        add("tooltip.item.confluence.boredoms_pact_falling_resolve.0", "「无聊之咒·陨志」");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.1", "(Boredom's Pact - Falling Resolve)");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.2", "           ");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.3", "怠惰者的血浸透了星核，凝成这颗会呼吸的诅咒石。");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.4", "动，则岩脉奔涌，刃锋割裂长夜；静，则地心跳搏，苍穹睁开独眼。");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.5", "古神将惩罚编入契约：八次心跳的静止，便召来陨星审判。");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.6", "它不像魔像般沉默——巨石砸碎胫骨时会尖笑：");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.7", "'看啊，连石头都比你的双腿更懂生存之道。'");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.8", "佩戴者终将明白：所谓'不摧'，不过是逃得比死亡快一秒。");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.9", "而灵魂早被碾成岩缝里的尘，比魔像的空壳更荒芜。");
+
         //  文本物品↓
         add("item.confluence.afterlife_notes", "来世手记");
         add("item.confluence.village_exploration", "村庄环游起源");
@@ -97,6 +119,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("author.confluence.lorissa", "洛丽莎");
         add("author.confluence.annaleigh", "安娜莉");
 
+        add("item.confluence.mysterious_note_blessing.tooltip.1", "希望看到这张字条的玩家可以学习顺心，工作顺利，生活事事如意，不管什么阴霾都会很快过去的因为我们都要向着明天前进。");
+        add("item.confluence.mysterious_note_urgency.tooltip.1", "汇流乐事什么时候才开始制作啊，我都已经等的变成傻子了。");
+        add("item.confluence.mysterious_note_explanation.tooltip.1", "“冷知识：其实召唤师要和召唤物进行心灵沟通，盔甲防护不能太厚否则会影响沟通。”");
+        add("item.confluence.mysterious_note_warning.tooltip.1", "呱！快跑吔！是牢镜病毒！");
+        // 世界机制
         add("worldgen.confluence.placing_traps", "正在放置机关");
         add("worldgen.confluence.generating_bees", "正在生成蜜蜂");
         add("worldgen.confluence.generating_wavy_caves", "正在生成皱曲洞穴");
@@ -212,100 +239,6 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("tooltip.item.confluence.radio_thing.0", "允许使用者以不同的方式看世界");
         add("tooltip.item.terra_curio.radio_thing.1", "“禁忌的知识在其中回响……”");
-
-
-        add("jei.tooltip.item.confluence.bezoar.0", "有几率从黄蜂，青苔蜜蜂，毒泥身上掉落。");
-        add("jei.tooltip.item.confluence.holy_water.0", "有几率从凋灵骷髅身上掉落。");
-        add("jei.tooltip.item.confluence.vitamins.0", "有几率从腐化者，恶心浮游怪身上掉落。");
-        add("jei.tooltip.item.confluence.energy_bar.0", "有几率从僵尸猪灵身上掉落。");
-        add("jei.tooltip.item.confluence.blindfold.0", "有几率从血木乃伊，暗黑木乃伊，猩红史莱姆，腐化史莱姆，恶翅史莱姆身上掉落。");
-        add("jei.tooltip.item.confluence.flashlight.0", "有几率从要塞宝箱中获得。");
-        add("jei.tooltip.item.confluence.fast_clock.0", "有几率从木乃伊，妖精，幻灵身上掉落。");
-        add("jei.tooltip.item.confluence.trifold_map.0", "有几率从小丑，巨型蝙蝠，光明木乃伊身上掉落。");
-        add("jei.tooltip.item.confluence.hand_drill.0", "从远古守卫者身上掉落。");
-        add("jei.tooltip.item.confluence.shot_put.0", "有几率从要塞宝箱中获得。");
-        add("jei.tooltip.item.confluence.star_cloak.0", "有几率从宝箱怪中获得。");
-        add("jei.tooltip.item.confluence.black_belt.0", "有几率从骷髅李小龙身上获得。");
-        add("jei.tooltip.item.confluence.sun_stone.0", "有几率从石巨人身上获得。");
-        add("jei.tooltip.item.confluence.moon_stone.0", "有几率从吸血鬼身上获得。");
-        add("jei.tooltip.item.confluence.moon_charm.0", "有几率从狼人身上获得。");
-        add("jei.tooltip.item.confluence.neptunes_shell.0", "有几率从水月怪身上获得。");
-        add("jei.tooltip.item.confluence.cobalt_shield.0", "有几率从地牢箱、地牢匣/围栏匣（金锁盒）中获得。");
-        add("jei.tooltip.item.confluence.cross_necklace.0", "有几率从宝箱怪中获得。");
-        add("jei.tooltip.item.confluence.ranger_emblem.0", "有几率从血肉墙身上获得。");
-        add("jei.tooltip.item.confluence.warrior_emblem.0", "有几率从血肉墙身上获得。");
-        add("jei.tooltip.item.confluence.sorcerer_emblem.0", "有几率从血肉墙身上获得。");
-        add("jei.tooltip.item.confluence.eye_of_the_golem.0", "有几率从石巨人身上获得。");
-        add("jei.tooltip.item.confluence.feral_claws.0", "有几率从常春藤箱、丛林匣/荆棘匣，以及丛林神庙（Minecraft）中的宝箱获得。");
-        add("jei.tooltip.item.confluence.titan_glove.0", "有几率从宝箱怪中获得。");
-        add("jei.tooltip.item.confluence.flesh_knuckles.0", "有几率从猩红宝箱怪身上获得。");
-        add("jei.tooltip.item.confluence.paladins_shield.0", "有几率从圣骑士身上获得。");
-        add("jei.tooltip.item.confluence.frozen_turtle_shell.0", "有几率从冰雪陆龟身上获得。");
-        add("jei.tooltip.item.confluence.honey_comb.0", "有几率从蜂王身上获得。");
-        add("jei.tooltip.item.confluence.shark_tooth_necklace.0", "有几率从血腥僵尸，滴滴怪身上获得。");
-        add("jei.tooltip.item.confluence.panic_necklace.0", "有几率从猩红匣/血匣，猩红心脏获得。");
-        add("jei.tooltip.item.confluence.magic_quiver.0", "有几率从骷髅弓箭手身上获得。");
-        add("jei.tooltip.item.confluence.rifle_scope.0", "有几率从骷髅狙击手身上获得。");
-        add("jei.tooltip.item.confluence.magma_stone.0", "有几率从地狱蝙蝠，熔岩蝙蝠身上获得。");
-        add("jei.tooltip.item.confluence.obsidian_rose.0", "有几率从火焰小鬼身上获得。");
-        add("jei.tooltip.item.confluence.putrid_scent.0", "有几率从腐化宝箱怪身上获得。");
-        add("jei.tooltip.item.confluence.shackle.0", "有几率从僵尸身上获得。");
-        add("jei.tooltip.item.confluence.toolbelt.0", "在哥布林工匠处购买。");
-        add("jei.tooltip.item.confluence.toolbox.0", "有几率从礼物中获得。");
-        add("jei.tooltip.item.confluence.extendo_grip.0", "在旅商处购买。");
-        add("jei.tooltip.item.confluence.portable_cement_mixer.0", "在旅商处购买。");
-        add("jei.tooltip.item.confluence.brick_layer.0", "在旅商处购买。");
-        add("jei.tooltip.item.confluence.ancient_chisel.0", "有几率从绿洲匣/幻象匣，砂岩箱获得。");
-        add("jei.tooltip.item.confluence.band_of_regeneration.0", "有几率从地下层箱子获得。");
-        add("jei.tooltip.item.confluence.depth_meter.0", "有几率从洞穴蝙蝠，巨型蝙蝠，冰雪蝙蝠，丛林蝙蝠，龙虾，巨型卷壳怪，蝾螈怪身上获得。");
-        add("jei.tooltip.item.confluence.compass.0", "有几率从装甲维京海盗，亡灵维京海盗，史莱姆之母，食人鱼，小雪怪，龙虾，巨型卷壳怪，蝾螈怪身上获得。");
-        add("jei.tooltip.item.confluence.radar.0", "在骷髅商人处购买。有几率从木匣/珍珠木匣，地表宝箱获得。");
-        add("jei.tooltip.item.confluence.life_form_analyzer.0", "在旅商处购买。");
-        add("jei.tooltip.item.confluence.tally_counter.0", "有几率从愤怒骷髅怪，诅咒骷髅头，暗黑法师身上获得。");
-        add("jei.tooltip.item.confluence.metal_detector.0", "有几率从宁芙身上获得。");
-        add("jei.tooltip.item.confluence.dps_meter.0", "有几率从愤怒骷髅怪，诅咒骷髅头，暗黑法师身上获得。");
-        add("jei.tooltip.item.confluence.fishermans_pocket_guide.0", "有几率从渔夫任务获得。");
-        add("jei.tooltip.item.confluence.weather_radio.0", "有几率从渔夫任务获得。");
-        add("jei.tooltip.item.confluence.sextant.0", "有几率从渔夫任务获得。");
-        add("jei.tooltip.item.confluence.step_stool.0", "有几率从木匣/珍珠木匣，地表宝箱获得。");
-        add("jei.tooltip.item.confluence.flying_carpet.0", "有几率从金字塔，沙漠神殿宝箱获得。");
-        add("jei.tooltip.item.confluence.aglet.0", "有几率从木匣/珍珠木匣，地表宝箱获得。");
-        add("jei.tooltip.item.confluence.magiluminescence.0", "合成获得。");
-        add("jei.tooltip.item.confluence.lava_charm.0", "有几率从黑曜石匣/狱石匣，洞穴宝箱获得。");
-        add("jei.tooltip.item.confluence.climbing_claws.0", "有几率从木匣/珍珠木匣，地表宝箱获得。");
-        add("jei.tooltip.item.confluence.shoe_spikes.0", "有几率从洞穴宝箱，红木箱中获得。");
-        add("jei.tooltip.item.confluence.tabi.0", "有几率从骷髅李小龙身上获得。");
-        add("jei.tooltip.item.confluence.hermes_boots.0", "有几率从地下宝箱获得。");
-        add("jei.tooltip.item.confluence.flurry_boots.0", "有几率从冰冻匣/针叶木匣，冰冻箱，冰雪宝箱怪中获得。");
-        add("jei.tooltip.item.confluence.sailfish_boots.0", "有几率从木匣/珍珠木匣，铁匣/秘银匣，沉船宝箱，废墟宝箱中获得。");
-        add("jei.tooltip.item.confluence.dunerider_boots.0", "有几率从绿洲匣/幻象匣，砂岩箱，沙漠神殿宝箱获得。");
-        add("jei.tooltip.item.confluence.water_walking_boots.0", "有几率从海洋匣/海边匣，水中箱，沉船宝箱，废墟宝箱中获得。");
-        add("jei.tooltip.item.confluence.cloud_in_a_bottle.0", "有几率从地下宝箱，洞穴宝箱中获得。");
-        add("jei.tooltip.item.confluence.sandstorm_in_a_bottle.0", "有几率从绿洲匣/幻象匣，金字塔宝箱，沙漠神殿宝箱获得。");
-        add("jei.tooltip.item.confluence.fart_in_a_jar.0", "合成获得。");
-        add("jei.tooltip.item.confluence.diving_helmet.0", "有几率从鲨鱼身上获得。");
-        add("jei.tooltip.item.confluence.diving_helmet.1", "有几率从溺尸身上获得。");
-        add("jei.tooltip.item.confluence.tsunami_in_a_bottle.0", "有几率从木匣/珍珠木匣，铁匣/秘银匣，沉船宝箱，废墟宝箱中获得。");
-        add("jei.tooltip.item.confluence.shiny_red_balloon.0", "有几率从天蓝匣/天域匣，天域箱中获得。");
-        add("jei.tooltip.item.confluence.lucky_horseshoe.0", "有几率从天蓝匣/天域匣，天域箱中获得。");
-        add("jei.tooltip.item.confluence.inner_tube.0", "有几率从海洋匣/海边匣，水中箱中获得。");
-        add("jei.tooltip.item.confluence.flipper.0", "有几率从海洋匣/海边匣，水中箱，沉船宝箱，废墟宝箱中获得。");
-        add("jei.tooltip.item.confluence.jellyfish_necklace.0", "有几率从粉水母，绿水母，蓝水母身上获得。");
-        add("jei.tooltip.item.confluence.arctic_diving_gear.0", "合成获得。");
-        add("jei.tooltip.item.confluence.frog_leg.0", "在任意群系钓鱼有几率获得。");
-        add("jei.tooltip.item.confluence.treasure_magnet.0", "有几率从黑曜石锁盒，暗影箱中获得。");
-        add("jei.tooltip.item.confluence.flower_boots.0", "有几率从常春藤箱、丛林匣/荆棘匣，以及丛林神庙（Minecraft）中的宝箱获得。");
-        add("jei.tooltip.item.confluence.angler_earring.0", "有几率从渔夫任务获得。");
-        add("jei.tooltip.item.confluence.royal_gel.0", "在普通模式或更高难度下，击败史莱姆之王获得。");
-        add("jei.tooltip.item.confluence.shield_of_cthulhu.0", "在普通模式或更高难度下，击败克苏鲁之眼获得。");
-        add("jei.tooltip.item.confluence.worm_scarf.0", "在普通模式或更高难度下，击败世界吞噬怪获得。");
-        add("jei.tooltip.item.confluence.brain_of_confusion.0", "在普通模式或更高难度下，击败克苏鲁之脑获得。");
-        add("jei.tooltip.item.confluence.hive_pack.0", "在普通模式或更高难度下，击败蜂王获得。");
-        add("jei.tooltip.item.confluence.demon_heart.0", "在普通模式或更高难度下，击败血肉之墙获得。");
-        add("jei.tooltip.item.confluence.shiny_stone.0", "在普通模式或更高难度下，击败石巨人获得。");
-        add("jei.tooltip.item.confluence.soaring_insignia.0", "在普通模式或更高难度下，击败光之女皇获得。");
-        add("jei.tooltip.item.confluence.gravity_globe.0", "在普通模式或更高难度下，击败月球领主获得。");
-        add("jei.tooltip.item.confluence.celestial_starboard.0", "在普通模式或更高难度下，击败月球领主获得。");
 
 
         add("confluence.configuration.achievementToast", "启用泰拉样式成就");
@@ -1843,12 +1776,16 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.TR_CRIMSON_SEED.get(), "猩红种子");
         add(ModItems.HALLOWED_SEED.get(), "神圣种子");
         add(ModItems.ASH_GRASS_SEED.get(), "灰烬草种子");
+
         add(ModItems.PARADOX_INTERACTIVE_MEDAL.get(), "帕拉多克斯·英特拉克缇福勋章");
         add(ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get(), "「无聊之咒·陨志」");
         add(ModItems.TOKYO_TEDDY_BEAR.get(), "东京泰迪熊");
         add(ModItems.FAILED_SKULL.get(), "失败品的头颅");
         add(ModItems.KIND_MITA_RING.get(), "善良米塔的戒指");
         add(ModItems.ICE_TOFU_BRICK.get(), "冰豆腐砖");
+        add(ModItems.MYSTERIOUS_NOTE.get(), "神秘纸条");
+
+
         add(ModItems.CATTAILS.get(), "香蒲");
         add(ModItems.JUNGLE_CATTAILS.get(), "丛林香蒲");
         add(ModItems.GLOWING_MUSHROOM_CATTAILS.get(), "发光蘑菇香蒲");

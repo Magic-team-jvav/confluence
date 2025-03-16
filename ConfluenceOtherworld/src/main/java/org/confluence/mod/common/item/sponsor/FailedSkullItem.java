@@ -15,6 +15,7 @@ import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.item.common.TooltipItem;
 
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class FailedSkullItem extends StandingAndWallBlockItem implements Equipab
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.literal("-------赞助者物品--------").withStyle(ChatFormatting.GRAY));
+        tooltipComponents.addAll(TooltipItem.getTooltipsFromString("failed_skull", 2));
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 }

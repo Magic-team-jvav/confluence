@@ -2,7 +2,6 @@ package org.confluence.mod.common.item.sponsor;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
@@ -24,6 +23,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.item.common.TooltipItem;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
@@ -33,7 +33,6 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -126,15 +125,7 @@ public class BoredomsPactFallingResolve extends BaseCurioItem {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.addAll(getTooltipsFromString(ID.getPath(), 9));
+        tooltipComponents.addAll(TooltipItem.getTooltipsFromString(ID.getPath(), 9));
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
-    }
-
-    public static List<Component> getTooltipsFromString(String id, int lineCount) {
-        List<Component> components = new ArrayList<>();
-        for (int i = 1; i <= lineCount; i++) {
-            components.add(Component.translatable("item.confluence." + id + ".tooltip." + i).withStyle(ChatFormatting.DARK_GRAY));
-        }
-        return components;
     }
 }

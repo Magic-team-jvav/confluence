@@ -56,7 +56,7 @@ public final class ModKeyBindings {
 
     public static final Lazy<KeyMapping> EXTRA_INVENTORY = Lazy.of(() -> new KeyMapping(
             "key.confluence.extra_inventory",
-            KeyConflictContext.UNIVERSAL,
+            KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
             InputConstants.UNKNOWN.getValue(),
             "key.confluence.gameplay"

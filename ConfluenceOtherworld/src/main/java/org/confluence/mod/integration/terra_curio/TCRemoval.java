@@ -20,5 +20,6 @@ public final class TCRemoval {
         list.add(TerraCurio.asResource("avenger_emblem"));
         list.add(TerraCurio.asResource("architect_gizmo_pack"));
         list.add(TerraCurio.asResource("anklet_of_the_wind"));
+        list.add(TerraCurio.asResource("ankh_charm"));
     });
 }

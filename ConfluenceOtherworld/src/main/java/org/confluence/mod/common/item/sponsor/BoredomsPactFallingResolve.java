@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -15,7 +14,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -23,7 +21,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.item.common.TooltipItem;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
@@ -33,7 +30,6 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 /*
  * 饰品：「无聊之咒·陨志」
@@ -44,7 +40,7 @@ public class BoredomsPactFallingResolve extends BaseCurioItem {
     public static final ResourceLocation ID = Confluence.asResource("boredoms_pact_falling_resolve");
 
     public BoredomsPactFallingResolve() {
-        super(builder(ID.getPath()).rarity(ModRarity.MASTER));
+        super(builder(ID.getPath()).rarity(ModRarity.MASTER).tooltips(8));
     }
 
     @Override
@@ -121,11 +117,5 @@ public class BoredomsPactFallingResolve extends BaseCurioItem {
 
     private static @Nullable Vec3 readPos(CompoundTag tag) {
         return Vec3.CODEC.parse(NbtOps.INSTANCE, tag.get("currentPos")).result().orElse(null);
-    }
-
-    @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.addAll(TooltipItem.getTooltipsFromString(ID.getPath(), 9));
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 }

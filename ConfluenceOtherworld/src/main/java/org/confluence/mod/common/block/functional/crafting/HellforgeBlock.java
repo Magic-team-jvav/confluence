@@ -268,7 +268,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
 
         private static boolean doUpdateProgress(Entity blockEntity, Level level, RecipeHolder<?> recipeholder, BooleanSupplier supplier) {
             blockEntity.cookingProgress++;
-            if (blockEntity.cookingProgress == blockEntity.cookingTotalTime) {
+            if (blockEntity.cookingProgress >= blockEntity.cookingTotalTime) {
                 blockEntity.cookingProgress = 0;
                 if (!blockEntity.isLit()) {
                     blockEntity.cookingTotalTime = getTotalCookTime(level, blockEntity);

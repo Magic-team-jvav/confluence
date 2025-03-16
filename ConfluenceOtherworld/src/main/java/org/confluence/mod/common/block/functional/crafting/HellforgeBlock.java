@@ -207,29 +207,28 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
 
                 @Override
                 public Optional<RecipeHolder<HellforgeRecipe>> getRecipeFor(RecipeInput recipeInput, Level level) {
-                    if (recipeInput.isEmpty()) {
-                        return Optional.empty();
-                    } else if (lastRecipe != null && lastRecipe.value().matches(recipeInput, level)) {
-                        int count = 0;
-                        for (int i = 0; i < recipeInput.size(); i++) {
-                            if (!recipeInput.getItem(i).isEmpty()) count++;
-                        }
+                    int count = 0;
+                    for (int i = 0; i < recipeInput.size(); i++) {
+                        if (!recipeInput.getItem(i).isEmpty()) count++;
+                    }
+                    if (count == 0) return Optional.empty();
+
+                    if (lastRecipe != null && lastRecipe.value().matches(recipeInput, level)) {
                         if (count == lastIngredientCount) {
                             return Optional.of(lastRecipe);
                         }
                         this.lastIngredientCount = count;
                     }
+
                     IRecipeManager recipemanager = (IRecipeManager) level.getRecipeManager();
-                    Optional<RecipeHolder<HellforgeRecipe>> recipes = recipemanager.confluence$byType(ModRecipes.HELLFORGE_TYPE.get()).stream()
+                    Optional<RecipeHolder<HellforgeRecipe>> recipe = recipemanager.confluence$byType(ModRecipes.HELLFORGE_TYPE.get()).stream()
                             .filter(holder -> holder.value().matches(recipeInput, level))
                             .max(Comparator.comparingInt(holder -> holder.value().ingredients.size()));
-                    if (recipes.isPresent()) {
-                        RecipeHolder<HellforgeRecipe> recipeholder = recipes.get();
-                        this.lastRecipe = recipeholder;
-                        return Optional.of(recipeholder);
-                    } else {
-                        return Optional.empty();
+                    if (recipe.isPresent()) {
+                        this.lastRecipe = recipe.get();
+                        return recipe;
                     }
+                    return Optional.empty();
                 }
             };
             this.blasting = RecipeManager.createCheck(RecipeType.BLASTING);

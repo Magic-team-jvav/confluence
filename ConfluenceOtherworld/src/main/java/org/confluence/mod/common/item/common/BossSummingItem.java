@@ -7,30 +7,28 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.terra_curio.common.component.ModRarity;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class BossSummingItem extends CustomRarityItem {
+public class BossSummingItem extends TooltipItem {
     private final Predicate<Player> condition;
     private final Factory factory;
-    private List<Component> tooltips;
-    private static ChatFormatting color;
+    private ChatFormatting color;
 
     public BossSummingItem(ModRarity rarity, Predicate<Player> condition, Factory factory) {
-        super(new Properties(), rarity);
+        super(new Properties(), rarity, List.of());
         this.condition = condition;
         this.factory = factory;
     }
 
-    public BossSummingItem(Predicate<Player> condition, Factory factory, List<Component> tooltips, ChatFormatting color) {
-        this(ModRarity.BLUE, condition, factory);
-        this.tooltips = tooltips;
+    public BossSummingItem(Predicate<Player> condition, Factory factory, List<Component> tooltips) {
+        super(new Properties(), ModRarity.BLUE, tooltips);
+        this.condition = condition;
+        this.factory = factory;
         this.color = color;
     }
 
@@ -54,15 +52,9 @@ public class BossSummingItem extends CustomRarityItem {
         LivingEntity create(Level level);
     }
 
-    @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.addAll(tooltips);
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
-    }
-
-    public static List<Component> getTooltipsFromString(String id, int lineCount){
+    public static List<Component> getTooltipsFromString(String id, int lineCount, ChatFormatting color) {
         List<Component> components = new ArrayList<>();
-        for (int i = 1; i <= lineCount; i++){
+        for (int i = 1; i <= lineCount; i++) {
             components.add(Component.translatable("item.confluence." + id + ".tooltip." + i).withStyle(color));
         }
         return components;

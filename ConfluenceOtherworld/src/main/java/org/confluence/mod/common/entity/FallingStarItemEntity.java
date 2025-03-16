@@ -60,7 +60,7 @@ public class FallingStarItemEntity extends ItemEntity {
             PSGameClient.LOADER.addEmitter(emitter, false);
         }
         if (level().getDayTime() % 24000 < 12000) {
-            discard();
+            onRemove();
         } else {
             super.tick();
             if (onGround()) {
@@ -74,9 +74,16 @@ public class FallingStarItemEntity extends ItemEntity {
             } else if (level() instanceof ServerLevel serverLevel && ModSecretSeeds.DONT_DIG_UP.match(serverLevel)) {
                 if (ProjectileUtil.getHitResultOnMoveVector(this, entity -> true) instanceof EntityHitResult entityHitResult) {
                     entityHitResult.getEntity().hurt(ModDamageTypes.of(level(), ModDamageTypes.FALLING_STAR), 100);
-                    discard();
+                    onRemove();
                 }
             }
+        }
+    }
+
+    private void onRemove() {
+        discard();
+        if (level().isClientSide && emitter != null) {
+            PSGameClient.LOADER.removeEmitter(emitter, false);
         }
     }
 

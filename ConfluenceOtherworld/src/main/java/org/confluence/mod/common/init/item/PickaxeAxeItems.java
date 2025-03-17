@@ -17,11 +17,11 @@ import java.util.function.Supplier;
 public class PickaxeAxeItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
-    public static final Supplier<PickaxeAxeItem> PICKAXE_AXE = ITEMS.registerItem("pickaxe_axe", properties -> new PickaxeAxeItem(ModTiers.HALLOWED, 35, 7, ModRarity.LIGHT_RED, Map.of(
+    public static final Supplier<PickaxeAxeItem> PICKAXE_AXE = ITEMS.registerItem("pickaxe_axe", properties -> new PickaxeAxeItem(ModTiers.HALLOWED, 35, 7, true, ModRarity.LIGHT_RED, Map.of(
             Attributes.ATTACK_KNOCKBACK, new AttributeModifier(ModItems.BASE_ATTACK_KNOCKBACK_ID, -0.25, AttributeModifier.Operation.ADD_VALUE),
             TCAttributes.getCriticalChance(), new AttributeModifier(ModItems.BASE_CRITICAL_CHANCE_ID, 0.04, AttributeModifier.Operation.ADD_VALUE)
     )));
-    public static final Supplier<PickaxeAxeItem> PICKSAW = ITEMS.registerItem("picksaw", properties -> new PickaxeAxeItem(ModTiers.LIHZAHRD, 34, 6, ModRarity.LIME, Map.of(
+    public static final Supplier<PickaxeAxeItem> PICKSAW = ITEMS.registerItem("picksaw", properties -> new PickaxeAxeItem(ModTiers.LIHZAHRD, 34, 6, true, ModRarity.LIME, Map.of(
             Attributes.ATTACK_KNOCKBACK, new AttributeModifier(ModItems.BASE_ATTACK_KNOCKBACK_ID, 0.5, AttributeModifier.Operation.ADD_VALUE),
             TCAttributes.getCriticalChance(), new AttributeModifier(ModItems.BASE_CRITICAL_CHANCE_ID, 0.04, AttributeModifier.Operation.ADD_VALUE),
             Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(ModItems.BASE_BLOCK_INTERACTION_RANGE_ID, 1.0, AttributeModifier.Operation.ADD_VALUE)

@@ -38,7 +38,7 @@ public final class ModTags {
         public static final TagKey<Block> TOMBSTONE = register("tombstone");
         public static final TagKey<Block> ROPE = register("rope");
         public static final TagKey<Block> MINEABLE_WITH_HAMMER = register("mineable_with_hammer"); // 使用锤子挖掘更快
-
+        public static final TagKey<Block> UNBREAKABLE_IF_CANNOT_HARVEST = register("unbreakable_if_cannot_harvest");
 
         private static TagKey<Block> c(String name) {
             return BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", name));

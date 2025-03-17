@@ -14,15 +14,15 @@ import java.util.Map;
 
 public class DrillItem extends PickaxeAxeItem {
     public DrillItem(Tier tier, float rawDamage, float rawSpeed) {
-        super(tier, rawDamage, rawSpeed);
+        super(tier, rawDamage, rawSpeed, true);
     }
 
     public DrillItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity) {
-        super(tier, rawDamage, rawSpeed, rarity);
+        super(tier, rawDamage, rawSpeed, true, rarity);
     }
 
     public DrillItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity, Map<Holder<Attribute>, AttributeModifier> modifiers) {
-        super(tier, rawDamage, rawSpeed, rarity, modifiers);
+        super(tier, rawDamage, rawSpeed, true, rarity, modifiers);
     }
 
     @Override

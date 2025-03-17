@@ -16,24 +16,30 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 
 import java.util.Map;
 
 public class PickaxeAxeItem extends DiggerItem {
-    public PickaxeAxeItem(Tier tier, float rawDamage, float rawSpeed) {
-        this(tier, rawDamage, rawSpeed, ModRarity.WHITE);
+    public PickaxeAxeItem(Tier tier, float rawDamage, float rawSpeed, boolean unbreakable) {
+        this(tier, rawDamage, rawSpeed, unbreakable, ModRarity.WHITE);
     }
 
-    public PickaxeAxeItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity) {
-        super(tier, ModTags.Blocks.MINEABLE_WITH_PICKAXE_AXE, new Properties().component(TCDataComponentTypes.MOD_RARITY, rarity)
+    public PickaxeAxeItem(Tier tier, float rawDamage, float rawSpeed, boolean unbreakable, ModRarity rarity) {
+        super(tier, ModTags.Blocks.MINEABLE_WITH_PICKAXE_AXE, unbreakable(new Properties(), unbreakable).component(TCDataComponentTypes.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4)));
     }
 
-    public PickaxeAxeItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity, Map<Holder<Attribute>, AttributeModifier> modifiers) {
-        super(tier, ModTags.Blocks.MINEABLE_WITH_PICKAXE_AXE, new Properties().component(TCDataComponentTypes.MOD_RARITY, rarity)
+    public PickaxeAxeItem(Tier tier, float rawDamage, float rawSpeed, boolean unbreakable, ModRarity rarity, Map<Holder<Attribute>, AttributeModifier> modifiers) {
+        super(tier, ModTags.Blocks.MINEABLE_WITH_PICKAXE_AXE, unbreakable(new Properties(), unbreakable).component(TCDataComponentTypes.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, getAttributeModifiers(tier, rawDamage, rawSpeed, modifiers)));
+    }
+
+    private static Properties unbreakable(Properties properties, boolean unbreakable) {
+        if (unbreakable) properties.component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE);
+        return properties;
     }
 
     private static ItemAttributeModifiers getAttributeModifiers(Tier tier, float rawDamage, float rawSpeed, Map<Holder<Attribute>, AttributeModifier> modifiers) {

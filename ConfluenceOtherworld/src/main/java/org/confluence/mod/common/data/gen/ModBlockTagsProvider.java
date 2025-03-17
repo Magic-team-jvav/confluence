@@ -1085,6 +1085,17 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 HARDENED_SAND_BLOCK.get(),
                 RED_HARDENED_SAND_BLOCK.get()
         );
+        tag(ModTags.Blocks.UNBREAKABLE_IF_CANNOT_HARVEST).add(
+                EBONY_STONE.get(),
+                TR_CRIMSON_STONE.get(),
+                METEORITE_ORE.get(),
+                DEEPSLATE_COBALT_ORE.get(),
+                DEEPSLATE_PALLADIUM_ORE.get(),
+                DEEPSLATE_MYTHRIL_ORE.get(),
+                DEEPSLATE_ORICHALCUM_ORE.get(),
+                DEEPSLATE_ADAMANTITE_ORE.get(),
+                DEEPSLATE_TITANIUM_ORE.get()
+        );
     }
 
     @Override

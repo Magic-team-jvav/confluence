@@ -23,13 +23,18 @@ import org.confluence.terra_guns.api.IGun;
 
 public class BeeGunItem extends ManaGunItem<BeeProjectile> {
     public BeeGunItem() {
-        super(ModRarity.GREEN, 1.8F, 0, 0.25F, 1.5F, 5);
+        super(ModRarity.GREEN, 1.8F, 32, 12, 0, 0.04F, 1.5F, 5);
         addAttributeModifiers(builder -> builder.add(TCAttributes.getCriticalChance(), new AttributeModifier(Confluence.asResource("bee_gun"), 0.04, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND));
     }
 
     @Override
     public BeeProjectile createAmmo(Level level, Player shooter, ItemStack gunStack, ItemStack ammoStack) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public float getVelocityMultiplier(Player shooter, BeeProjectile ammoEntity, ItemStack gunStack) {
+        return 1;
     }
 
     @Override
@@ -81,8 +86,4 @@ public class BeeGunItem extends ManaGunItem<BeeProjectile> {
         return 0.4F;
     }
 
-    @Override
-    protected int getUseDelay(Player shooter, ItemStack gunStack, ItemStack ammoStack) {
-        return 12;
-    }
 }

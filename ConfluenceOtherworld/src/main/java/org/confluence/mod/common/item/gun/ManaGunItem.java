@@ -35,23 +35,15 @@ import java.util.function.Predicate;
 @SuppressWarnings("unchecked")
 public abstract class ManaGunItem<T extends Projectile> extends GeoGunItem<T> implements IAmmo<T> {
     protected ItemAttributeModifiers modifiers;
-    private final float baseDamage;
-    private final float ammoSpeed;
-    private final float knockBack;
-    private final float inaccuracy;
     private final int manaCost;
 
-    public ManaGunItem(Properties properties, ModRarity rarity, float baseDamage, float ammoSpeed, float knockBack, float inaccuracy, int manaCost) {
-        super(properties.component(TCDataComponentTypes.MOD_RARITY, rarity));
-        this.baseDamage = baseDamage;
-        this.ammoSpeed = ammoSpeed;
-        this.knockBack = knockBack;
-        this.inaccuracy = Math.max(0, inaccuracy);
+    public ManaGunItem(Properties properties, ModRarity rarity, float damage, float weaponSpeed, int useDelay, float knockBack, float crit, float inaccuracy, int manaCost) {
+        super(properties.component(TCDataComponentTypes.MOD_RARITY, rarity), damage, weaponSpeed, useDelay, knockBack, crit, inaccuracy);
         this.manaCost = manaCost;
     }
 
-    public ManaGunItem(ModRarity rarity, float baseDamage, float ammoSpeed, float knockBack, float inaccuracy, int manaCost) {
-        this(new Properties(), rarity, baseDamage, ammoSpeed, knockBack, inaccuracy, manaCost);
+    public ManaGunItem(ModRarity rarity, float damage, float weaponSpeed, int useDelay, float knockBack, float crit, float inaccuracy, int manaCost) {
+        this(new Properties(), rarity, damage, weaponSpeed, useDelay, knockBack, crit, inaccuracy, manaCost);
     }
 
     @Override
@@ -104,7 +96,7 @@ public abstract class ManaGunItem<T extends Projectile> extends GeoGunItem<T> im
 
     @Override
     public float getAmmoSpeed(Player shooter, T projectile, ItemStack gunStack) {
-        return ammoSpeed;
+        return 0;
     }
 
     @Override
@@ -119,7 +111,7 @@ public abstract class ManaGunItem<T extends Projectile> extends GeoGunItem<T> im
 
     @Override
     public float getBaseDamage(Player shooter, T projectile, ItemStack gunStack) {
-        return baseDamage;
+        return 0;
     }
 
     @Override

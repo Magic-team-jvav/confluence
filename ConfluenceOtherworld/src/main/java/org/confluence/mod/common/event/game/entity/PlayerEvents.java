@@ -3,6 +3,8 @@ package org.confluence.mod.common.event.game.entity;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -234,6 +236,18 @@ public final class PlayerEvents {
         }
     }
 
+    @SubscribeEvent // 复制一份data
+    public static void clone(PlayerEvent.Clone event) {
+        CompoundTag old = event.getOriginal().getPersistentData();
+        CompoundTag neo = event.getEntity().getPersistentData();
+        for (String key : old.getAllKeys()) {
+            if (key.startsWith(Confluence.MODID)) {
+                Tag value = old.get(key);
+                if (value != null) neo.put(key, value);
+            }
+        }
+    }
+
     @SubscribeEvent
     public static void respawn(PlayerEvent.PlayerRespawnEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
@@ -254,7 +268,8 @@ public final class PlayerEvents {
             EverBeneficialItem.GALAXY_PEARL.post().accept(EverBeneficialItem.GALAXY_PEARL.id(), serverPlayer, everBeneficial, true);
         }
         if (event.isEndConquered()) {
-            serverPlayer.setHealth(serverPlayer.getPersistentData().getFloat("confluence:cached_health"));
+            float health = serverPlayer.getPersistentData().getFloat("confluence:cached_health");
+            serverPlayer.setHealth(health <= 0.0F ? 20.0F : health);
         }
         BoulderWorld.forceSetAccessory(serverPlayer);
     }

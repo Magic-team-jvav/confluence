@@ -1,5 +1,5 @@
 {
-  "type": "confluence:shimmer_lake",
+  "type": "confluence:dungeon",
   "biomes": "#confluence:has_structure/shimmer_lake",
   "spawn_overrides": {},
   "step": "top_layer_modification"

@@ -1269,6 +1269,16 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.BLUE_BRICKS.get(), "蓝色地牢砖");
         add(DecorativeBlocks.GREEN_BRICKS.get(), "绿色地牢砖");
         add(DecorativeBlocks.PINK_BRICKS.get(), "粉色地牢砖");
+        add(DecorativeBlocks.BLUE_BRICK_STAIRS.get(), "蓝色地牢砖楼梯");
+        add(DecorativeBlocks.GREEN_BRICK_STAIRS.get(), "绿色地牢砖楼梯");
+        add(DecorativeBlocks.PINK_BRICK_STAIRS.get(), "粉色地牢砖楼梯");
+        add(DecorativeBlocks.BLUE_BRICK_SLAB.get(), "蓝色地牢砖台阶");
+        add(DecorativeBlocks.GREEN_BRICK_SLAB.get(), "绿色地牢砖台阶");
+        add(DecorativeBlocks.PINK_BRICK_SLAB.get(), "粉色地牢砖台阶");
+        add(DecorativeBlocks.BLUE_BRICKS_DOOR.get(), "蓝色地牢砖门");
+        add(DecorativeBlocks.GREEN_BRICKS_DOOR.get(), "绿色地牢砖门");
+        add(DecorativeBlocks.PINK_BRICKS_DOOR.get(), "粉色地牢砖门");
+        add(DecorativeBlocks.DUNGEON_DOOR.get(), "地牢门");
         add(DecorativeBlocks.CHISELED_BLUE_BRICKS.get(), "雕纹蓝色地牢砖");
         add(DecorativeBlocks.CHISELED_GREEN_BRICKS.get(), "雕纹绿色地牢砖");
         add(DecorativeBlocks.CHISELED_PINK_BRICKS.get(), "雕纹粉色地牢砖");

@@ -102,7 +102,7 @@ public class DecorativeBlocks {
     public static final Supplier<Block> PINK_GEL_BLOCK = registerWithItem("pink_gel_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).sound(SoundType.SLIME_BLOCK)));
 
     // 天域
-    public static final Supplier<StairBlock> SUN_PLATE_STAIRS = registerWithItem("sun_plate_stairs", () -> new StairBlock(TUFF.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN)));
+    public static final Supplier<StairBlock> SUN_PLATE_STAIRS = registerWithItem("sun_plate_stairs", () -> new StairBlock(TUFF.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));
     public static final Supplier<SlabBlock> SUN_PLATE_SLAB = registerWithItem("sun_plate_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE)));
     public static final Supplier<DoorBlock> SKYWARE_DOOR = registerWithItem("skyware_door", () -> new DoorBlock(BlockSetType.STONE, BlockBehaviour.Properties.of().mapColor(BLUE_ICE.defaultMapColor()).instrument(NoteBlockInstrument.BASS).strength(4.0F).noOcclusion().pushReaction(PushReaction.DESTROY)));
     public static final Supplier<DoorBlock> SKYWARE_GLASS_DOOR = registerWithItem("skyware_glass_door", () -> new DoorBlock(BlockSetType.STONE, BlockBehaviour.Properties.of().mapColor(BLUE_ICE.defaultMapColor()).instrument(NoteBlockInstrument.BASS).strength(4.0F).noOcclusion().pushReaction(PushReaction.DESTROY)));
@@ -142,6 +142,54 @@ public class DecorativeBlocks {
     public static final Supplier<Block> CHISELED_GREEN_BRICKS = copyBlockRegister("chiseled_green_bricks", Blocks.STONE_BRICKS);
     public static final Supplier<Block> CHISELED_PINK_BRICKS = copyBlockRegister("chiseled_pink_bricks", Blocks.STONE_BRICKS);
 
+    public static final Supplier<StairBlock> BLUE_BRICK_STAIRS = registerWithItem("blue_brick_stairs", () -> new StairBlock(TUFF.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS)));
+    public static final Supplier<StairBlock> GREEN_BRICK_STAIRS = registerWithItem("green_brick_stairs", () -> new StairBlock(TUFF.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS)));
+    public static final Supplier<StairBlock> PINK_BRICK_STAIRS = registerWithItem("pink_brick_stairs", () -> new StairBlock(TUFF.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS)));
+
+    public static final Supplier<SlabBlock> BLUE_BRICK_SLAB = registerWithItem("blue_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS)));
+    public static final Supplier<SlabBlock> GREEN_BRICK_SLAB = registerWithItem("green_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS)));
+    public static final Supplier<SlabBlock> PINK_BRICK_SLAB = registerWithItem("pink_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS)));
+
+    public static final Supplier<DoorBlock> BLUE_BRICKS_DOOR = registerWithItem("blue_bricks_door", () -> new DoorBlock(
+            BlockSetType.STONE,
+            BlockBehaviour.Properties.of()
+                    .mapColor(BLUE_BRICKS.get().defaultMapColor())
+                    .instrument(NoteBlockInstrument.BASS)
+                    .strength(5.0F)
+                    .noOcclusion()
+                    .ignitedByLava()
+                    .pushReaction(PushReaction.DESTROY)
+    ));
+    public static final Supplier<DoorBlock> GREEN_BRICKS_DOOR = registerWithItem("green_bricks_door", () -> new DoorBlock(
+            BlockSetType.STONE,
+            BlockBehaviour.Properties.of()
+                    .mapColor(GREEN_BRICKS.get().defaultMapColor())
+                    .instrument(NoteBlockInstrument.BASS)
+                    .strength(5.0F)
+                    .noOcclusion()
+                    .ignitedByLava()
+                    .pushReaction(PushReaction.DESTROY)
+    ));
+    public static final Supplier<DoorBlock> PINK_BRICKS_DOOR = registerWithItem("pink_bricks_door", () -> new DoorBlock(
+            BlockSetType.STONE,
+            BlockBehaviour.Properties.of()
+                    .mapColor(PINK_BRICKS.get().defaultMapColor())
+                    .instrument(NoteBlockInstrument.BASS)
+                    .strength(5.0F)
+                    .noOcclusion()
+                    .ignitedByLava()
+                    .pushReaction(PushReaction.DESTROY)
+    ));
+    public static final Supplier<DoorBlock> DUNGEON_DOOR = registerWithItem("dungeon_door", () -> new DoorBlock(
+            BlockSetType.OAK,
+            BlockBehaviour.Properties.of()
+                    .mapColor(OAK_PLANKS.defaultMapColor())
+                    .instrument(NoteBlockInstrument.BASS)
+                    .strength(3.0F)
+                    .noOcclusion()
+                    .ignitedByLava()
+                    .pushReaction(PushReaction.DESTROY)
+    ));
     // 大宝石块
     public static final Supplier<Block> RUBY_BLOCK = copyBlockRegister("ruby_block", Blocks.DIAMOND_BLOCK);
     public static final Supplier<Block> AMBER_BLOCK = copyBlockRegister("amber_block", Blocks.DIAMOND_BLOCK);

@@ -333,6 +333,12 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(BLUE_BRICKS.get());
             dropSelf(GREEN_BRICKS.get());
             dropSelf(PINK_BRICKS.get());
+            dropSelf(BLUE_BRICK_STAIRS.get());
+            dropSelf(GREEN_BRICK_STAIRS.get());
+            dropSelf(PINK_BRICK_STAIRS.get());
+            dropSelf(BLUE_BRICK_SLAB.get());
+            dropSelf(GREEN_BRICK_SLAB.get());
+            dropSelf(PINK_BRICK_SLAB.get());
             dropSelf(CHISELED_BLUE_BRICKS.get());
             dropSelf(CHISELED_GREEN_BRICKS.get());
             dropSelf(CHISELED_PINK_BRICKS.get());

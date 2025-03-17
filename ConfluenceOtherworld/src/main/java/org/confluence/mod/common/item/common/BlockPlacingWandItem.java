@@ -1,6 +1,7 @@
 package org.confluence.mod.common.item.common;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.init.ModSoundEvents;
 
 public class BlockPlacingWandItem extends Item {
     private final TagKey<Block> blockTags;
@@ -76,6 +78,7 @@ public class BlockPlacingWandItem extends Item {
             }
         }
         level.setBlock(placePos, state, 3);
+        player.playSound(ModSoundEvents.WAVING.get());
         if (!player.isCreative()) {
             itemStack.shrink(1);
         }

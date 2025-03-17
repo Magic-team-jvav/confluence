@@ -192,19 +192,26 @@ dependencies {
     runtimeOnly "curse.maven:worldedit-225608:5830452"
     //runtimeOnly "curse.maven:ars-nouveau-401955:6228434"
     //runtimeOnly "curse.maven:spark-361579:6225208"
-    //runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"
-    //runtimeOnly "curse.maven:xaeros-world-map-317780:6212662"
-    //runtimeOnly "curse.maven:applied-energistics-2-223794:6237438" // requires guideme
-    //runtimeOnly "curse.maven:guideme-1173950:6283609"
-    //runtimeOnly "curse.maven:probejs-585406:5820894"
+    //runtimeOnly "curse.maven:lithium-360438:6290413"
     //runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
     //runtimeOnly "curse.maven:lootr-361276:6294335"
-    //runtimeOnly "curse.maven:supplementaries-412082:6284266" // requires selene
-    //runtimeOnly "curse.maven:selene-499980:6302654" // moonlight lib
-    //runtimeOnly "curse.maven:lithium-360438:6290413"
-    //runtimeOnly "curse.maven:oh-the-biomes-weve-gone-1070751:6298837" // requires corgilib, oh the trees toull grow
-    //runtimeOnly "curse.maven:corgilib-693313:6002859"
-    //runtimeOnly "curse.maven:oh-the-trees-youll-grow-962544:6294221"
+    if (false) {
+        runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"
+        runtimeOnly "curse.maven:xaeros-world-map-317780:6212662"
+    }
+    if (false) {
+        runtimeOnly "curse.maven:applied-energistics-2-223794:6237438"
+        runtimeOnly "curse.maven:guideme-1173950:6283609"
+    }
+    if (false) {
+        runtimeOnly "curse.maven:supplementaries-412082:6284266"
+        runtimeOnly "curse.maven:selene-499980:6302654"
+    }
+    if (false) {
+        runtimeOnly "curse.maven:oh-the-biomes-weve-gone-1070751:6298837"
+        runtimeOnly "curse.maven:corgilib-693313:6002859"
+        runtimeOnly "curse.maven:oh-the-trees-youll-grow-962544:6294221"
+    }
 }
 
 tasks.withType(ProcessResources).configureEach {

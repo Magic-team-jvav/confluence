@@ -229,14 +229,6 @@ public final class PlayerEvents {
     }
 
     @SubscribeEvent // 可以拿到复制前的玩家
-    public static void respawnPosition(PlayerRespawnPositionEvent event) {
-        if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
-        if (event.isFromEndFight()) {
-            serverPlayer.getPersistentData().putFloat("confluence:cached_health", serverPlayer.getHealth());
-        }
-    }
-
-    @SubscribeEvent // 复制一份data
     public static void clone(PlayerEvent.Clone event) {
         CompoundTag old = event.getOriginal().getPersistentData();
         CompoundTag neo = event.getEntity().getPersistentData();
@@ -245,6 +237,9 @@ public final class PlayerEvents {
                 Tag value = old.get(key);
                 if (value != null) neo.put(key, value);
             }
+        }
+        if (!event.isWasDeath()) {
+            neo.putFloat("confluence:cached_health", event.getOriginal().getHealth());
         }
     }
 

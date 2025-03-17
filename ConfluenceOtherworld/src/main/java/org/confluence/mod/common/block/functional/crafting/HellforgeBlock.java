@@ -236,7 +236,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
 
         public static void serverTick(Level level, BlockPos pos, BlockState state, HellforgeBlock.Entity blockEntity) {
             boolean isLit = blockEntity.isLit();
-            boolean update = false;
+            boolean[] data = new boolean[2];
             if (blockEntity.isLit()) {
                 blockEntity.litTime--;
                 resetCookTime(blockEntity);
@@ -252,54 +252,33 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
                 if (recipeholder != null) {
                     int maxStackSize = blockEntity.getMaxStackSize();
                     if (!blockEntity.isLit() && canHellforgeBurn(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, blockEntity)) {
-                        update = doUpdateStatus(blockEntity, fuel);
+                        data[0] = doUpdateStatus(blockEntity, fuel);
                     }
                     if (canHellforgeBurn(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, blockEntity)) {
                         if (doUpdateProgress(blockEntity, level, recipeholder, () -> burnHellforge(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, blockEntity))) {
-                            update = true;
+                            data[0] = true;
                         }
                     }
                     hellforgeMatched = true;
                 }
             }
 
-            boolean blastingMatched = false;
             if (hasInput && !hellforgeMatched) {
                 ItemStack lastInput = inputs[blockEntity.lastCheckSlot];
                 RecipeHolder<BlastingRecipe> recipeholder;
                 SingleRecipeInput recipeInput;
                 if (!lastInput.isEmpty() &&
-                        (recipeholder = blockEntity.blasting.getRecipeFor(recipeInput=new SingleRecipeInput(lastInput), level).orElse(null)) != null &&
+                        (recipeholder = blockEntity.blasting.getRecipeFor(recipeInput = new SingleRecipeInput(lastInput), level).orElse(null)) != null &&
                         recipeholder.value().matches(recipeInput, level)
                 ) {
-                    int maxStackSize = blockEntity.getMaxStackSize();
-                    if (!blockEntity.isLit() && canBlastingBurn(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, lastInput)) {
-                        update = doUpdateStatus(blockEntity, fuel);
-                    }
-                    if (canBlastingBurn(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, lastInput)) {
-                        RecipeHolder<BlastingRecipe> finalRecipeholder1 = recipeholder;
-                        if (doUpdateProgress(blockEntity, level, recipeholder, () -> burnBlasting(level.registryAccess(), finalRecipeholder1, blockEntity.items, maxStackSize, lastInput))) {
-                            update = true;
-                        }
-                    }
-                    blastingMatched = true;
+                    doBlasting(level, blockEntity, recipeholder, lastInput, data, fuel);
                 } else {
                     for (int i = 0; i < inputs.length; i++) {
                         ItemStack input = inputs[i];
                         if (input.isEmpty()) continue;
                         recipeholder = blockEntity.blasting.getRecipeFor(new SingleRecipeInput(input), level).orElse(null);
                         if (recipeholder != null) {
-                            int maxStackSize = blockEntity.getMaxStackSize();
-                            if (!blockEntity.isLit() && canBlastingBurn(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, input)) {
-                                update = doUpdateStatus(blockEntity, fuel);
-                            }
-                            if (canBlastingBurn(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, input)) {
-                                RecipeHolder<BlastingRecipe> finalRecipeholder = recipeholder;
-                                if (doUpdateProgress(blockEntity, level, recipeholder, () -> burnBlasting(level.registryAccess(), finalRecipeholder, blockEntity.items, maxStackSize, input))) {
-                                    update = true;
-                                }
-                            }
-                            blastingMatched = true;
+                            doBlasting(level, blockEntity, recipeholder, input, data, fuel);
                             blockEntity.lastCheckSlot = i;
                             break;
                         }
@@ -307,19 +286,32 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
                 }
             }
 
-            if (!blastingMatched && !hellforgeMatched) {
+            if (!data[1] && !hellforgeMatched) {
                 blockEntity.cookingProgress = 0;
             }
 
             if (isLit != blockEntity.isLit()) {
-                update = true;
+                data[0] = true;
                 state = state.setValue(AbstractFurnaceBlock.LIT, blockEntity.useFuel());
                 level.setBlockAndUpdate(pos, state);
             }
 
-            if (update) {
+            if (data[0]) {
                 setChanged(level, pos, state);
             }
+        }
+
+        private static void doBlasting(Level level, Entity blockEntity, RecipeHolder<BlastingRecipe> recipeholder, ItemStack lastInput, boolean[] data, ItemStack fuel) {
+            int maxStackSize = blockEntity.getMaxStackSize();
+            if (!blockEntity.isLit() && canBlastingBurn(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, lastInput)) {
+                data[0] = doUpdateStatus(blockEntity, fuel);
+            }
+            if (canBlastingBurn(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, lastInput)) {
+                if (doUpdateProgress(blockEntity, level, recipeholder, () -> burnBlasting(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, lastInput))) {
+                    data[0] = true;
+                }
+            }
+            data[1] = true;
         }
 
         private static boolean doUpdateProgress(Entity blockEntity, Level level, RecipeHolder<?> recipeholder, BooleanSupplier supplier) {

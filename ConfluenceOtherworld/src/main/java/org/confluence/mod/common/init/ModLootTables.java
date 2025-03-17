@@ -61,19 +61,13 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> FISH = register("gameplay/fishing");
     public static final ResourceKey<LootTable> CRATE = register("gameplay/crate");
 
-    public static final ResourceKey<LootTable> EXTRACT_DESERT_FOSSIL = register("gameplay/extract/with_desert_fossil");
-    public static final ResourceKey<LootTable> EXTRACT_GRAVEL = register("gameplay/extract/with_gravel");
-    public static final ResourceKey<LootTable> EXTRACT_JUNK = register("gameplay/extract/with_junk");
-    public static final ResourceKey<LootTable> EXTRACT_SLUSH = register("gameplay/extract/with_slush");
-    public static final ResourceKey<LootTable> EXTRACT_MARINE_GRAVEL = register("gameplay/extract/with_marine_gravel");
-
     public static final ResourceKey<LootTable> CAVE_CHESTS = register("chests/cave_chests");
 
     public static final ResourceKey<LootTable> OPAL_BLOCK = register("archaeology/opal_ore");
 
 
     private static ResourceKey<LootTable> register(String name) {
-        return ResourceKey.create(Registries.LOOT_TABLE, Confluence.asResource(name));
+        return Confluence.asResourceKey(Registries.LOOT_TABLE, name);
     }
 
     public static void registerDataForClient() {

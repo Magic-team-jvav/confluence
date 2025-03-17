@@ -4,8 +4,9 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -14,8 +15,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -28,15 +27,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.client.model.block.ExtractinatorBlockModel;
 import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.block.HorizontalDirectionalWithHorizontalTwoPartBlock;
 import org.confluence.mod.common.block.StateProperties;
-import org.confluence.mod.common.init.ModLootTables;
-import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.data.map.ExtractinatorData;
+import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
@@ -95,35 +92,16 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (level instanceof ServerLevel serverLevel) {
-            ItemStack item = player.getItemInHand(hand);
-            ResourceKey<LootTable> path;
-            Block block;
-            if (item.is(ModTags.Items.DESERT_FOSSIL)) {
-                path = ModLootTables.EXTRACT_DESERT_FOSSIL;
-                block = NatureBlocks.DESERT_FOSSIL.get();
-            } else if (item.is(Tags.Items.GRAVELS)) {
-                path = ModLootTables.EXTRACT_GRAVEL;
-                block = Blocks.GRAVEL;
-            } else if (item.is(ModTags.Items.JUNK)) {
-                path = ModLootTables.EXTRACT_JUNK;
-                block = Blocks.LILY_PAD;
-            } else if (item.is(ModTags.Items.SLUSH)) {
-                path = ModLootTables.EXTRACT_SLUSH;
-                block = NatureBlocks.SLUSH.get();
-            } else if (item.is(ModTags.Items.MARINE_GRAVEL)) {
-                path = ModLootTables.EXTRACT_MARINE_GRAVEL;
-                block = NatureBlocks.MARINE_GRAVEL.get();
-            } else {
-                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-            }
+            ItemStack itemStack = player.getItemInHand(hand);
+            ExtractinatorData data = itemStack.getItemHolder().getData(ModDataMaps.EXTRACTINATOR);
+            if (data == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
-            serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, block.defaultBlockState()),
-                    pos.getX() + 0.5F,
-                    pos.getY() + 0.75F,
-                    pos.getZ() + 0.5F,
-                    100, 0F, 0.0625F, 0F, 0.25F);
+            ParticleOptions options = itemStack.getItem() instanceof BlockItem blockItem
+                    ? new BlockParticleOption(ParticleTypes.BLOCK, blockItem.getBlock().defaultBlockState())
+                    : new ItemParticleOption(ParticleTypes.ITEM, itemStack);
+            serverLevel.sendParticles(options, pos.getX() + 0.5F, pos.getY() + 0.75F, pos.getZ() + 0.5F, 100, 0F, 0.0625F, 0F, 0.25F);
 
-            LootTable lootTable = level.getServer().reloadableRegistries().getLootTable(path);
+            LootTable lootTable = level.getServer().reloadableRegistries().getLootTable(data.lootTable());
             LootParams lootparams = new LootParams.Builder(serverLevel)
                     .withParameter(LootContextParams.ORIGIN, player.position())
                     .withParameter(LootContextParams.THIS_ENTITY, player)
@@ -132,7 +110,8 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
                 ModUtils.createItemEntity(loot, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, level, 40);
             }
 
-            player.getItemInHand(hand).setCount(item.getCount() - 1);
+            itemStack.shrink(1);
+            if (itemStack.isEmpty()) player.setItemInHand(hand, ItemStack.EMPTY);
         } else if (FMLEnvironment.dist.isClient()) {
             ((MinecraftAccessor) Minecraft.getInstance()).setRightClickDelay(1);
         }

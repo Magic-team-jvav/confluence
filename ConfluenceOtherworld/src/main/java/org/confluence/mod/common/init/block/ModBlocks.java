@@ -18,9 +18,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.*;
 import org.confluence.mod.common.block.natural.CoinPileBlock;
-import org.confluence.mod.common.block.natural.CrackedBrickBlock;
-import org.confluence.mod.common.block.natural.CrispyHoneyBlock;
-import org.confluence.mod.common.block.natural.SwordInStoneBlock;
 import org.confluence.mod.common.block.natural.herbs.*;
 import org.confluence.mod.common.fluid.EmptyPickupLiquidBlock;
 import org.confluence.mod.common.init.ModFluids;
@@ -38,12 +35,6 @@ public final class ModBlocks {
     public static final DeferredBlock<CoinPileBlock> GOLDEN_COIN_PILE = registerWithoutItem("golden_coin_pile", CoinPileBlock::new);
     public static final DeferredBlock<CoinPileBlock> PLATINUM_COIN_PILE = registerWithoutItem("platinum_coin_pile", CoinPileBlock::new);
     public static final DeferredBlock<CoinPileBlock> EMERALD_COIN_PILE = registerWithoutItem("emerald_coin_pile", CoinPileBlock::new);
-
-    public static final Supplier<SwordInStoneBlock> SWORD_IN_STONE = registerWithItem("sword_in_stone", SwordInStoneBlock::new);
-    public static final Supplier<CrackedBrickBlock> CRACKED_BLUE_BRICK = registerWithItem("cracked_blue_block", CrackedBrickBlock::new);
-    public static final Supplier<CrackedBrickBlock> CRACKED_GREEN_BRICK = registerWithItem("cracked_green_block", CrackedBrickBlock::new);
-    public static final Supplier<CrackedBrickBlock> CRACKED_PINK_BRICK = registerWithItem("cracked_pink_block", CrackedBrickBlock::new);
-    public static final Supplier<CrispyHoneyBlock> CRISPY_HONEY_BLOCK = registerWithItem("crispy_honey_block", CrispyHoneyBlock::new);
 
     // 流体
     public static final Supplier<LiquidBlock> HONEY = registerWithoutItem("honey", () -> new LiquidBlock(ModFluids.HONEY.fluid().get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_YELLOW)));

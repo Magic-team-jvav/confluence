@@ -1268,6 +1268,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.CHISELED_PINK_BRICKS.get(), "雕纹粉色地牢砖");
         add(DecorativeBlocks.AETHERIUM_BRICKS.get(), "以太砖");
         add(DecorativeBlocks.BOUNCY_CLOUD_BLOCK.get(), "弹力云块");
+        add(DecorativeBlocks.CRISPY_HONEY_BLOCK.get(), "松脆蜂蜜块");
+        add(DecorativeBlocks.CRACKED_BLUE_BRICK.get(), "碎裂蓝色地牢砖");
+        add(DecorativeBlocks.CRACKED_GREEN_BRICK.get(), "碎裂绿色地牢砖");
+        add(DecorativeBlocks.CRACKED_PINK_BRICK.get(), "碎裂粉色地牢砖");
+        add(DecorativeBlocks.SWORD_IN_STONE.get(), "石中剑");
 
         // 雕像
         add(StatueBlocks.A_STATUE.get(), "A字雕像");
@@ -1351,11 +1356,6 @@ public class ModChineseProvider extends LanguageProvider {
 
 
         add(ModBlocks.POO.get(), "臭臭");
-        add(ModBlocks.CRISPY_HONEY_BLOCK.get(), "松脆蜂蜜块");
-        add(ModBlocks.CRACKED_BLUE_BRICK.get(), "碎裂蓝色地牢砖");
-        add(ModBlocks.CRACKED_GREEN_BRICK.get(), "碎裂绿色地牢砖");
-        add(ModBlocks.CRACKED_PINK_BRICK.get(), "碎裂粉色地牢砖");
-        add(ModBlocks.SWORD_IN_STONE.get(), "石中剑");
         add(ModBlocks.WATERLEAF.get(), "幌菊");
         add(ModBlocks.FIREBLOSSOM.get(), "火焰花");
         add(ModBlocks.MOONGLOW.get(), "月光草");

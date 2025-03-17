@@ -201,6 +201,10 @@ dependencies {
     //runtimeOnly "curse.maven:lootr-361276:6294335"
     //runtimeOnly "curse.maven:supplementaries-412082:6284266" // requires selene
     //runtimeOnly "curse.maven:selene-499980:6302654" // moonlight lib
+    //runtimeOnly "curse.maven:lithium-360438:6290413"
+    //runtimeOnly "curse.maven:oh-the-biomes-weve-gone-1070751:6298837" // requires corgilib, oh the trees toull grow
+    //runtimeOnly "curse.maven:corgilib-693313:6002859"
+    //runtimeOnly "curse.maven:oh-the-trees-youll-grow-962544:6294221"
 }
 
 tasks.withType(ProcessResources).configureEach {

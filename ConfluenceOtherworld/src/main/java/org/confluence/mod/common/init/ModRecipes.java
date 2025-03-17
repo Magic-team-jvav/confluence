@@ -18,7 +18,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.brewing.IBrewingRecipe;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.BaitItems;
 import org.confluence.mod.common.init.item.FoodItems;
@@ -82,7 +82,7 @@ public final class ModRecipes {
             registerMaterial(Items.COBWEB);
             registerMaterial(FoodItems.ARMORED_CAVE_FISH.get());
             registerMaterial(Items.FEATHER);
-            registerMaterial(ModBlocks.CRISPY_HONEY_BLOCK.get().asItem());
+            registerMaterial(DecorativeBlocks.CRISPY_HONEY_BLOCK.get().asItem());
             registerMaterial(Items.FIRE_CORAL);
             registerMaterial(BaitItems.LADYBUG.get());
             registerMaterial(FoodItems.FLASHFIN_KOI.get());
@@ -141,7 +141,7 @@ public final class ModRecipes {
             }, PotionItems.FEATHERFALL_POTION.toStack());
             // 钓鱼
             registerMix(new Item[]{
-                    ModBlocks.CRISPY_HONEY_BLOCK.get().asItem(),
+                    DecorativeBlocks.CRISPY_HONEY_BLOCK.get().asItem(),
                     MaterialItems.WATERLEAF.get(),
             }, PotionItems.FISHING_POTION.toStack());
             // 脚蹼

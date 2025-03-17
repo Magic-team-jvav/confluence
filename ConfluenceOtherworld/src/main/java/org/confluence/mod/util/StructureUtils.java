@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class StructureUtils {
-    private static void boll8(BlockPos.MutableBlockPos posCheck, boolean replace, int x, int y, int z, int blockState, BlockPos centerPos, Object2IntMap<BlockPos> blockMap) {
+    private static void ball8(BlockPos.MutableBlockPos posCheck, boolean replace, int x, int y, int z, int blockState, BlockPos centerPos, Object2IntMap<BlockPos> blockMap) {
         for (int i = 0; i < 8; i++) {
             posCheck.set(centerPos.getX() + (x * ((i < 4) ? 1 : -1)), centerPos.getY() + (y * ((i % 4 < 2) ? 1 : -1)), centerPos.getZ() + (z * ((i % 2 < 1) ? 1 : -1)));
             if (replace || !blockMap.containsKey(posCheck)) {
@@ -18,7 +18,7 @@ public final class StructureUtils {
         }
     }
 
-    private static void boll8(BlockPos.MutableBlockPos posCheck, boolean replace, int x, int y, int z, int blockState1, int blockState2, BlockPos centerPos, Object2IntMap<BlockPos> blockMap, int checkY) {
+    private static void ball8(BlockPos.MutableBlockPos posCheck, boolean replace, int x, int y, int z, int blockState1, int blockState2, BlockPos centerPos, Object2IntMap<BlockPos> blockMap, int checkY) {
         for (int i = 0; i < 8; i++) {
             posCheck.set(centerPos.getX() + (x * ((i < 4) ? 1 : -1)), centerPos.getY() + (y * ((i % 4 < 2) ? 1 : -1)), centerPos.getZ() + (z * ((i % 2 < 1) ? 1 : -1)));
             if (replace || !blockMap.containsKey(posCheck)) {
@@ -31,7 +31,7 @@ public final class StructureUtils {
         }
     }
 
-    private static void boll8(BlockPos.MutableBlockPos posCheck, boolean replace, int x, int y, int z, int blockState, BlockPos centerPos, Object2IntMap<BlockPos> blockMap, float placePer, WorldgenRandom random) {
+    private static void ball8(BlockPos.MutableBlockPos posCheck, boolean replace, int x, int y, int z, int blockState, BlockPos centerPos, Object2IntMap<BlockPos> blockMap, float placePer, WorldgenRandom random) {
         for (int i = 0; i < 8; i++) {
             if (placePer >= random.nextFloat()) {
                 posCheck.set(centerPos.getX() + (x * ((i < 4) ? 1 : -1)), centerPos.getY() + (y * ((i % 4 < 2) ? 1 : -1)), centerPos.getZ() + (z * ((i % 2 < 1) ? 1 : -1)));
@@ -62,7 +62,7 @@ public final class StructureUtils {
                 y2 = y * y;
                 for (int z = 0; z < radius; z++) {
                     if ((x2 + y2 + z * z <= radius2)) {
-                        boll8(posCheck, replace, x, y, z, blockState, centerPos, blockMap);
+                        ball8(posCheck, replace, x, y, z, blockState, centerPos, blockMap);
                     }
                 }
             }
@@ -81,7 +81,7 @@ public final class StructureUtils {
                 y2 = y * y;
                 for (int z = 0; z < radius; z++) {
                     if ((x2 + y2 + z * z <= radius2)) {
-                        boll8(posCheck, replace, x, y, z, blockState1, blockState2, centerPos, blockMap, checkY);
+                        ball8(posCheck, replace, x, y, z, blockState1, blockState2, centerPos, blockMap, checkY);
                     }
                 }
             }
@@ -104,7 +104,7 @@ public final class StructureUtils {
                 y2 = y * y;
                 for (int z = 0; z < radiusZ; z++) {
                     if ((x2 / rX + y2 / rY + (z * z) / rZ) <= 1) {
-                        boll8(posCheck, replace, x, y, z, blockState, centerPos, blockMap);
+                        ball8(posCheck, replace, x, y, z, blockState, centerPos, blockMap);
                     }
                 }
             }
@@ -123,7 +123,7 @@ public final class StructureUtils {
                 y2 = y * y;
                 for (int z = 0; z < radius; z++) {
                     if ((x2 + y2 + z * z <= radius2)) {
-                        boll8(posCheck, replace, x, y, z, blockState, centerPos, blockMap, placePer, random);
+                        ball8(posCheck, replace, x, y, z, blockState, centerPos, blockMap, placePer, random);
                     }
                 }
             }
@@ -146,14 +146,14 @@ public final class StructureUtils {
                 y2 = y * y;
                 for (int z = 0; z < radiusZ; z++) {
                     if ((x2 / rX + y2 / rY + (z * z) / rZ) <= 1) {
-                        boll8(posCheck, replace, x, y, z, blockState, centerPos, blockMap, placePer, random);
+                        ball8(posCheck, replace, x, y, z, blockState, centerPos, blockMap, placePer, random);
                     }
                 }
             }
         }
     }
 
-    public static List<Vector3d> bollPos(double radiusD, BlockPos centerPos, float chance, WorldgenRandom random) {
+    public static List<Vector3d> ballPos(double radiusD, BlockPos centerPos, float chance, WorldgenRandom random) {
         List<Vector3d> list = new ArrayList<>();
         int radius = (int) radiusD + 1;
         double radius2 = radiusD * radiusD;
@@ -200,13 +200,13 @@ public final class StructureUtils {
     }
 
     public static void ball(int radius, int wall, BlockPos centerPos, Object2IntMap<BlockPos> blockMap, float chance, WorldgenRandom random, int wallBlock, int airBlock) {
-        List<Vector3d> list = bollPos(radius, centerPos, chance, random);
+        List<Vector3d> list = ballPos(radius, centerPos, chance, random);
         lineSet(list, radius, radius, wallBlock, true, blockMap);
         lineSet(list, radius - wall, radius - wall, airBlock, true, blockMap);
     }
 
     public static void ball(int radius, int wall, BlockPos centerPos, Object2IntMap<BlockPos> blockMap, float chance, WorldgenRandom random, int wallBlock, int airBlock1, int airBlock2, int checkY) {
-        List<Vector3d> list = bollPos(radius, centerPos, chance, random);
+        List<Vector3d> list = ballPos(radius, centerPos, chance, random);
         lineSet(list, radius, radius, wallBlock, true, blockMap);
         lineSet(list, radius - wall, radius - wall, airBlock1, airBlock2, true, blockMap, checkY);
     }

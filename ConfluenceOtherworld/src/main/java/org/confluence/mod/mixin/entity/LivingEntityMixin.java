@@ -16,7 +16,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModFluids;
@@ -25,7 +24,6 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
-import org.confluence.terra_curio.client.handler.TCClientPacketHandler;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.mixed.SelfGetter;
@@ -75,13 +73,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     private void fall(double motionY, boolean onGround, BlockState blockState, BlockPos blockPos, CallbackInfo ci) {
         LivingEntity self = self();
         if (fallDistance >= 2.5F && blockState.is(NatureBlocks.THIN_ICE_BLOCK)) {
-            boolean isIceSafe;
-            if (FMLEnvironment.dist.isClient()) {
-                isIceSafe = TCClientPacketHandler.isIceSafe();
-            } else {
-                isIceSafe = TCUtils.hasAccessoriesType(self, TCItems.ICE$SAFE);
-            }
-            if (isIceSafe) return;
+            if (TCUtils.isIceSafe(self)) return;
             if (!level().isClientSide) {
                 BlockPos.betweenClosedStream(getBoundingBox().move(0.0, -0.5, 0.0)).forEach(pos -> {
                     if (pos.equals(blockPos) || level().getBlockState(pos).is(NatureBlocks.THIN_ICE_BLOCK)) {

@@ -281,7 +281,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 EVER_POWERED_RAIL.get(),
                 SILLY_BALLOON_MACHINE.get(),
                 BASE_CHEST_BLOCK.get(),
-                JUNGLE_HIVE_BLOCK.get()
+                JUNGLE_HIVE_BLOCK.get(),
+                THIN_ICE_BLOCK.get()
         );
         // 铲子
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithShovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);
@@ -453,7 +454,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DESERT_FOSSIL.get(),
                 GELSTONE_ORE.get(),
                 SPORE_ROOT_BLOCK.get(),
-                WINTER_MARROW_BLOCK.get()
+                WINTER_MARROW_BLOCK.get(),
+                THIN_ICE_BLOCK.get()
         );
         tag(ModTags.Blocks.NEEDS_2_LEVEL).add(
                 METEORITE_ORE.get(),
@@ -1128,7 +1130,22 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DEEPSLATE_MYTHRIL_ORE.get(),
                 DEEPSLATE_ORICHALCUM_ORE.get(),
                 DEEPSLATE_ADAMANTITE_ORE.get(),
-                DEEPSLATE_TITANIUM_ORE.get()
+                DEEPSLATE_TITANIUM_ORE.get(),
+                TR_CRIMSON_HARDENED_SAND_BLOCK.get(),
+                EBONY_HARDENED_SAND_BLOCK.get(),
+                PEARL_HARDENED_SAND_BLOCK.get(),
+                BLUE_BRICKS.get(),
+                PINK_BRICKS.get(),
+                GREEN_BRICKS.get(),
+                BLUE_BRICK_STAIRS.get(),
+                PINK_BRICK_STAIRS.get(),
+                GREEN_BRICK_STAIRS.get(),
+                BLUE_BRICKS_DOOR.get(),
+                PINK_BRICKS_DOOR.get(),
+                GREEN_BRICKS_DOOR.get(),
+                BLUE_BRICK_SLAB.get(),
+                PINK_BRICK_SLAB.get(),
+                GREEN_BRICK_SLAB.get()
         );
     }
 

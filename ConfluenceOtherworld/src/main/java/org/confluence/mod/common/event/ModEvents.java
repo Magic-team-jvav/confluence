@@ -202,7 +202,6 @@ public final class ModEvents {
     public static void registerUnitType(RegisterAccessoriesComponentUpdateEvent.UnitType event) {
         event.register(AccessoryItems.LUCKY$COIN);
         event.register(AccessoryItems.VINE$ROPE);
-        event.register(AccessoryItems.ICE$SAFE);
         event.register(AccessoryItems.AUTO$GET$MANA);
         event.register(AccessoryItems.HURT$GET$MANA);
         event.register(AccessoryItems.FAST$MANA$GENERATION);

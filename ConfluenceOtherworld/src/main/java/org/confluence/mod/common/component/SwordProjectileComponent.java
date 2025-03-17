@@ -1,0 +1,109 @@
+package org.confluence.mod.common.component;
+
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import org.confluence.terra_curio.common.init.TCAttributes;
+import org.confluence.terraentity.entity.proj.generation.IGeneration;
+import org.confluence.terraentity.entity.proj.track.ITrackType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
+
+/**
+ * <h1>弹幕组件</h1>
+ * @param damageFactor 伤害系数
+ * @param baseSpeed 基础速度
+ * @param acceleration 加速度
+ * @param existTicks 存在时间
+ * @param gravity 重力
+ * @param cooldown 冷却时间
+ * @param soundEvent 音效
+ * @param trackType 轨迹类型
+ * @param generation 生成器
+ */
+public record SwordProjectileComponent (
+        float damageFactor,
+        float baseSpeed,
+        float acceleration,
+        int existTicks,
+        float gravity,
+        int cooldown,
+        ResourceLocation soundEvent,
+        ResourceLocation projType,
+        Optional<ITrackType> trackType,
+        IGeneration generation
+) implements DataComponentType<SwordProjectileComponent> {
+    public static final Codec<SwordProjectileComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.FLOAT.fieldOf("damageFactor").forGetter(SwordProjectileComponent::damageFactor),
+            Codec.FLOAT.fieldOf("baseSpeed").forGetter(SwordProjectileComponent::baseSpeed),
+            Codec.FLOAT.fieldOf("acceleration").forGetter(SwordProjectileComponent::acceleration),
+            Codec.INT.fieldOf("existTicks").forGetter(SwordProjectileComponent::existTicks),
+            Codec.FLOAT.fieldOf("gravity").forGetter(SwordProjectileComponent::gravity),
+            Codec.INT.fieldOf("cooldown").forGetter(SwordProjectileComponent::cooldown),
+            ResourceLocation.CODEC.fieldOf("soundEvent").forGetter(SwordProjectileComponent::soundEvent),
+            ResourceLocation.CODEC.fieldOf("projType").forGetter(SwordProjectileComponent::projType),
+            ITrackType.TYPED_CODEC.optionalFieldOf("trackType").forGetter(SwordProjectileComponent::trackType),
+            IGeneration.TYPED_CODEC.fieldOf("generation").forGetter(SwordProjectileComponent::generation)
+    ).apply(instance, SwordProjectileComponent::new));
+
+    public SoundEvent getSoundEvent() {
+        return BuiltInRegistries.SOUND_EVENT.get(soundEvent);
+    }
+
+    public static final StreamCodec<ByteBuf, SwordProjectileComponent> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
+
+    @Override
+    public @Nullable Codec<SwordProjectileComponent> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, SwordProjectileComponent> streamCodec() {
+        return STREAM_CODEC;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == this) return true;
+//        if(obj instanceof SwordProjectileComponent other){
+//            return damageFactor == other.damageFactor &&
+//                    baseSpeed == other.baseSpeed &&
+//                    acceleration == other.acceleration &&
+//                    existTicks == other.existTicks&&
+//                    gravity == other.gravity &&
+//                    cooldown == other.cooldown &&
+//                    soundEvent.equals(other.soundEvent) &&
+//                    trackType.equals(other.trackType) &&
+//                    generation.equals(other.generation);
+//        }
+        return false;
+    }
+
+
+    public float getVelocity(LivingEntity living) {
+        float velocity = baseSpeed();
+        AttributeInstance attributeInstance = living.getAttribute(TCAttributes.getRangedVelocity());
+        if (attributeInstance != null) return velocity * (float) attributeInstance.getValue();
+        return velocity;
+    }
+
+    public int getAttackSpeed(LivingEntity living){
+        int cooldown = cooldown();
+        AttributeInstance attributeInstance = living.getAttribute(Attributes.ATTACK_SPEED);
+        if (attributeInstance != null) return Math.max(cooldown - (int) (attributeInstance.getValue() / 3.0), 0);
+        return cooldown;
+    }
+
+}

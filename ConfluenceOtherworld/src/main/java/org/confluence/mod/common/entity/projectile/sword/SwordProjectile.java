@@ -1,6 +1,9 @@
 package org.confluence.mod.common.entity.projectile.sword;
 
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -11,15 +14,21 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.component.SwordProjectileComponent;
+import org.confluence.mod.util.ComputerUtils;
 import org.confluence.mod.util.VectorUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.entity.ai.ICollisionAttackEntity;
+import org.confluence.terraentity.utils.TEUtils;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 /**
  * 基础属性如伤害、击退、初始位置由弹幕容器设置，弹幕实体只定义运动、伤害公式、碰撞检测
@@ -35,29 +44,55 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     protected float knockBack = 0.0F;
     protected float baseKnockBack = 0.0F;
     protected boolean canPenalize = false;
-    protected CollisionProperties collisionProperties = new CollisionProperties(1,1,0);
-
+    protected CollisionProperties collisionProperties = new CollisionProperties(1, 1, 0);
+    protected SwordProjectileComponent component;
 
     protected ItemStack firedFromWeapon;
+
     public SwordProjectile(EntityType<? extends SwordProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
     }
 
+    // 数据同步
+    float gravity = 0;
+    Vec3 initSpeed = new Vec3(0, 0, 0);
+    protected static final EntityDataAccessor<Vector3f> DATA_INIT_SPEED = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.VECTOR3);
+    protected static final EntityDataAccessor<Float> DATA_INIT_GRAVITY = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.FLOAT);
+
+    public void onSyncedDataUpdated(EntityDataAccessor<?> data){
+        super.onSyncedDataUpdated(data);
+        if(level().isClientSide) {
+            if (data == DATA_INIT_SPEED) {
+                this.initSpeed = new Vec3(this.entityData.get(DATA_INIT_SPEED));
+                this.setDeltaMovement(initSpeed);
+            }
+            if (data == DATA_INIT_GRAVITY) {
+                this.gravity = this.entityData.get(DATA_INIT_GRAVITY);
+            }
+        }
+    }
+
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_INIT_SPEED, new Vector3f(0, 0, 0));
+        builder.define(DATA_INIT_GRAVITY, 0.0F);
+    }
+
     @Override
     @Nullable
-    public ItemStack getWeaponItem(){
+    public ItemStack getWeaponItem() {
         return firedFromWeapon;
     }
 
-    public void setWeapon(ItemStack weapon){
+    public void setWeapon(ItemStack weapon) {
         firedFromWeapon = weapon;
     }
 
-    protected float getBaseDamage(){
+    protected float getBaseDamage() {
         return baseAttackDamage;
     }
 
-    protected float getBaseKnockBack(){
+    protected float getBaseKnockBack() {
         return baseKnockBack;
     }
 
@@ -71,6 +106,14 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         return this;
     }
 
+    public void setComponent(SwordProjectileComponent component) {
+        this.component = component;
+        this.gravity = component.gravity();
+        this.entityData.set(DATA_INIT_GRAVITY, gravity);
+    }
+
+    LivingEntity target;
+
     public void onAddedToLevel(){
         super.onAddedToLevel();
         var owner1 = getOwner();
@@ -78,6 +121,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
             AttributeInstance attributeInstance = owner.getAttribute(Attributes.ATTACK_KNOCKBACK);
 
             if (attributeInstance != null) {
+
                 this.knockBack += (float) attributeInstance.getValue();
             }
             attributeInstance = owner.getAttribute(TCAttributes.getRangedDamage());
@@ -89,15 +133,59 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
             if (attributeInstance != null) {
                 this.criticalChance = (float) attributeInstance.getValue();
             }
+
+            var entities = level().getEntities(this, getBoundingBox().inflate(50), e-> e instanceof LivingEntity living && living.isAlive() && e != owner1);
+            entities.sort((a, b) -> (int) (a.distanceToSqr(this) - b.distanceToSqr(this)));
+            for (Entity entity : entities) {
+                if(entity instanceof LivingEntity living){
+                    target = living;
+                    break;
+                }
+            }
         }
+
+    }
+
+    @Override
+    protected double getDefaultGravity() {
+        return gravity;
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (!level().isClientSide &&tickCount >= TIME_EXISTENCE) discard();
+        if(component!= null){
+            if(!level().isClientSide() && tickCount >= component.existTicks())
+                discard();
+            this.applyGravity();
+            if(target != null && target.isAlive()) {
+
+                Vec3 dir = target.position().add(0, target.getEyeHeight() * 0.5f, 0).subtract(this.position()).normalize();
+                Vec3 motion = getDeltaMovement();
+                double angle = TEUtils.angleBetween(motion, dir);
+
+                if (component.trackType().isPresent()) {
+                    this.setDeltaMovement(component.trackType().get().calDeltaMovement(motion, dir, angle));
+                }
+            }
+        }
+        if (!level().isClientSide &&tickCount >= TIME_EXISTENCE)
+            discard();
+//        this.applyGravity();
         doCollisionAttack(this::canHitEntity,
                 this::doHurt);
+        if (target != null) {
+//            this.setDeltaMovement(
+//                    VectorUtils.interpolateSimple(this.getDeltaMovement(), target.position().subtract(this.position()),
+//                            0.5f, 0.1f, getDeltaMovement().length() * 0.5f,1, getDeltaMovement()));
+
+
+
+//            this.setDeltaMovement(
+//                        VectorUtils.interpolateBasis(motion, dir,
+//                                d -> d * 0.1, d -> 0));
+
+        }
     }
 
     @Override
@@ -171,6 +259,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         this.shoot(f, f1, f2, velocity, inaccuracy);
         Vec3 vec3 = shooter.getKnownMovement().scale(0.25f);
         this.setDeltaMovement(this.getDeltaMovement().add(vec3.x, shooter.onGround() ? 0.0 : vec3.y, vec3.z));
+        this.entityData.set(DATA_INIT_SPEED, getDeltaMovement().toVector3f());
     }
 
     @Override

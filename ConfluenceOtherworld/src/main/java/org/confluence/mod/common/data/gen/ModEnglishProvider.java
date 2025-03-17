@@ -174,6 +174,14 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.fly_speed", "Fly Speed");
         add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "Full Pull Effects");
         add("tooltip.item.confluence.has_proj", "Has Projectile");
+        add("tooltip.item.confluence.has_proj.damage", "- Damage");
+        add("tooltip.item.confluence.has_proj.speed", "- Speed");
+        add("tooltip.item.confluence.has_proj.cooldown", "- Cooldown");
+        add("tooltip.item.confluence.has_proj.track_type", "- Track Type");
+
+
+
+
         add("tooltip.item.confluence.arrow_transform", "Wooden Arrow Transform");
         add("tooltip.item.confluence.additional_attack_damage", "Additional Attack Damage");
         add("tooltip.item.confluence.no_gravity", "No Gravity");

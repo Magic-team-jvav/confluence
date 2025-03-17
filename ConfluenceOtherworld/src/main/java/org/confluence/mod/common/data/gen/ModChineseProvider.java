@@ -231,6 +231,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.fly_speed", "飞行速度");
         add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "蓄满效果");
         add("tooltip.item.confluence.has_proj", "剑气");
+        add("tooltip.item.confluence.has_proj.damage", "- 伤害");
+        add("tooltip.item.confluence.has_proj.speed", "- 速度");
+        add("tooltip.item.confluence.has_proj.cooldown", "- 冷却");
+        add("tooltip.item.confluence.has_proj.track_type", "- 追踪");
+
+
         add("tooltip.item.confluence.arrow_transform", "木箭转换");
         add("tooltip.item.confluence.additional_attack_damage", "额外伤害");
         add("tooltip.item.confluence.no_gravity", "无重力");

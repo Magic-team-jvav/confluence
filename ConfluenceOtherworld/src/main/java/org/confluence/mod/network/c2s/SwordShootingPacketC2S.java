@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 
 public class SwordShootingPacketC2S implements CustomPacketPayload {
@@ -23,10 +24,14 @@ public class SwordShootingPacketC2S implements CustomPacketPayload {
         context.enqueueWork(() -> {
             ServerPlayer player = (ServerPlayer) context.player();
             ItemStack mainHandItem = player.getMainHandItem();
-            if (mainHandItem.getItem() instanceof BaseSwordItem item) {
-                if(item.modifier.proj!=null){
-                    item.modifier.proj.get().genProjectile(player,mainHandItem);
+            if (mainHandItem.getItem() instanceof BaseSwordItem sword) {
+                var data = mainHandItem.get(ModDataComponentTypes.SWORD_PROJECTILE);
+                if(data!=null){
+                    sword.genProjectile(player, mainHandItem);
                 }
+//                if(item.modifier.proj!=null){
+//                    item.modifier.proj.get().genProjectile(player,mainHandItem);
+//                }
             }
         });
     }

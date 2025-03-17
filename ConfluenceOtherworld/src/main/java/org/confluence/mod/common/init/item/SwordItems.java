@@ -7,18 +7,24 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.component.Unbreakable;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.component.SwordProjectileComponent;
+import org.confluence.mod.common.init.ModDataComponentTypes;
+import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.LightSaber;
 import org.confluence.mod.common.item.sword.stagedy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.stagedy.SwordPrefabs;
 import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.terraentity.entity.proj.generation.ForwardGeneration;
+import org.confluence.terraentity.entity.proj.track.SimpleTrack;
+import org.confluence.terraentity.init.TESounds;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -114,14 +120,19 @@ public class SwordItems {
     // 特殊剑
     public static final DeferredItem<SwordItem> CROWBAR = register("crowbar",ModTiers.TITANIUM, 16, -1.0F,ModRarity.MASTER, BOARD_SWORD.apply(2.0f));
     public static final DeferredItem<SwordItem> DEVELOPER_SWORD = register("developer_sword",ModTiers.TITANIUM, 20, 20F, ModRarity.MASTER,
-            Stream.of(
+//            Stream.of(
             SwordPrefabs.BOARD_SWORD.apply(10.0f)                                //宽剑
                     .addAttributeModifier(Attributes.MOVEMENT_SPEED,1.5f,
                             AttributeModifier.Operation.ADD_MULTIPLIED_BASE)        //手持属性加成
 //                    .addOnHitEffect(UNDEFINED)                //命中效果
                     .setProj(ENCHANTED_SWORD_PROJ)                                  //弹幕
                     .setInventoryTick(InventoryTickStrategy.INVINCIBLE)             //背包每刻效果
-            ).peek(it-> EFFECT_STRATEGY.getEntries().stream().toList().forEach(it::addOnHitEffect)).findFirst().get()
+//            ).peek(it-> EFFECT_STRATEGY.getEntries().stream().toList().forEach(it::addOnHitEffect)).findFirst().get()
+                    .modifyProperties(p->p.component(ModDataComponentTypes.SWORD_PROJECTILE, new SwordProjectileComponent(
+                            1,1,1,50,0.05f,20, TESounds.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
+                            Optional.of(new SimpleTrack(Math.PI/2,0.5f, 0.1f, Optional.empty(), 0.1)),
+                            ForwardGeneration.of(0,0)
+                    )))
     );
 
     public static DeferredItem<SwordItem> register(String name, Supplier<SwordItem> supplier) {

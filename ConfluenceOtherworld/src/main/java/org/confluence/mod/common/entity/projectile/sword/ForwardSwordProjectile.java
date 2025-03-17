@@ -17,7 +17,14 @@ public class ForwardSwordProjectile extends SwordProjectile {
         double offX = getX() + vec3.x;
         double offY = getY() + vec3.y;
         double offZ = getZ() + vec3.z;
-        setDeltaMovement(vec3.scale(0.8));
+        float accelerate;
+        if(component != null){
+            accelerate = component.acceleration();
+        }else{
+            accelerate = 0.8f;
+        }
+
+        setDeltaMovement(vec3.scale(accelerate));
         setPos(offX, offY, offZ);
     }
 

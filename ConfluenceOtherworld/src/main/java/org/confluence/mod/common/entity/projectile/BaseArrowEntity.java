@@ -27,7 +27,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.bow.BaseArrowItem;
 import org.confluence.mod.util.EnchantmentUtil;
-import org.confluence.terraentity.hit_effect.EffectStrategy;
+import org.confluence.terraentity.entity.proj.hit_effect.EffectStrategy;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -51,10 +51,14 @@ public class BaseArrowEntity extends AbstractArrow {
         }
     }
 
+    public void test(){
+
+    }
+
     private static final EntityDataAccessor<String> TEXTURE_PATH = SynchedEntityData.defineId(BaseArrowEntity.class, EntityDataSerializers.STRING);
     public String texturePath = "";
     private int penetrate = 0;
-    private List<LivingEntity> havenBeen = new ArrayList<>();//标记不能重复穿透
+    private final List<LivingEntity> havenBeen = new ArrayList<>();//标记不能重复穿透
     public Builder modify = new Builder();
     private Tuple baseArrowTuple;
     public boolean fullPull = false;

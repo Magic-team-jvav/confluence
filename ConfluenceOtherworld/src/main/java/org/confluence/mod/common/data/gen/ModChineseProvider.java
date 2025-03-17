@@ -1289,6 +1289,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.CRACKED_GREEN_BRICK.get(), "碎裂绿色地牢砖");
         add(DecorativeBlocks.CRACKED_PINK_BRICK.get(), "碎裂粉色地牢砖");
         add(DecorativeBlocks.SWORD_IN_STONE.get(), "石中剑");
+        add(DecorativeBlocks.REMAINS_BLOCK.get(), "遗骸");
 
         // 雕像
         add(StatueBlocks.A_STATUE.get(), "A字雕像");

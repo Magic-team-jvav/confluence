@@ -218,6 +218,9 @@ public class DecorativeBlocks {
             .strength(100.0F, ModBlocks.getObsidianBasedExplosionResistance(1000.0F))
     ));
 
+    public static final Supplier<Block> REMAINS_BLOCK = registerWithItem("remains_block", () -> new RemainsBlock(BlockBehaviour.Properties.of().strength(1.0f).pushReaction(PushReaction.DESTROY)));
+
+
     private static Supplier<Block> copyBlockRegister(String newName, Block originalBlock) {
         DeferredBlock<Block> block = BLOCKS.registerSimpleBlock(newName, BlockBehaviour.Properties.ofFullCopy(originalBlock));
         ModItems.BLOCK_ITEMS.registerSimpleBlockItem(newName, block);

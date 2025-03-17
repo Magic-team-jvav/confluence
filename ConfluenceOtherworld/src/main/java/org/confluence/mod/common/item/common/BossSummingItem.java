@@ -17,7 +17,6 @@ import java.util.function.Predicate;
 public class BossSummingItem extends TooltipItem {
     private final Predicate<Player> condition;
     private final Factory factory;
-    private ChatFormatting color;
 
     public BossSummingItem(ModRarity rarity, Predicate<Player> condition, Factory factory) {
         super(new Properties(), rarity, List.of());
@@ -29,7 +28,6 @@ public class BossSummingItem extends TooltipItem {
         super(new Properties(), ModRarity.BLUE, tooltips);
         this.condition = condition;
         this.factory = factory;
-        this.color = color;
     }
 
     @Override

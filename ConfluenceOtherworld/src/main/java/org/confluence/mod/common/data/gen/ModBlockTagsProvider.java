@@ -12,6 +12,7 @@ import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
 import org.jetbrains.annotations.Nullable;
 
@@ -1145,7 +1146,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GREEN_BRICKS_DOOR.get(),
                 BLUE_BRICK_SLAB.get(),
                 PINK_BRICK_SLAB.get(),
-                GREEN_BRICK_SLAB.get()
+                GREEN_BRICK_SLAB.get(),
+                FunctionalBlocks.HELLFORGE.get()
         );
     }
 

@@ -181,7 +181,7 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
     @Override
     public void clicked(int slotId, int button, ClickType clickType, Player player) {
         boolean isThrow = clickType == ClickType.THROW;
-        if (slotId == TRASH_START || isThrow) {
+        if ((slotId >= 0 && slotId < slots.size()) && (slotId == TRASH_START || isThrow)) {
             Slot slot = slots.get(isThrow ? TRASH_START : slotId);
             ItemStack carried = isThrow ? slots.get(slotId).getItem() : getCarried();
             ItemStack slotItem = slot.getItem();

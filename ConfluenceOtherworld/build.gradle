@@ -145,6 +145,9 @@ dependencies {
     compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.2.0"))
     implementation(jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-neoforge', version: '[0.2.0,)'))
 
+    implementation(jarJar('cn.6tail:lunar:1.4.0')) // 农历
+    additionalRuntimeClasspath 'cn.6tail:lunar:1.4.0'
+
     compileOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
     runtimeOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
 

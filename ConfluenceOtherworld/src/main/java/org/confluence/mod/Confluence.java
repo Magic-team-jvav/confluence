@@ -54,6 +54,8 @@ public class Confluence {
         ModEntityDataSerializers.SERIALIZERS.register(eventBus);
         ModCarvers.CARVERS.register(eventBus);
         ModEffectStrategies.EFFECT_STRATEGY.register(eventBus);
+
+        ModEquipmentSets.EQUIPMENT_SET.register(eventBus);
     }
 
     public static void registerGameRules() {

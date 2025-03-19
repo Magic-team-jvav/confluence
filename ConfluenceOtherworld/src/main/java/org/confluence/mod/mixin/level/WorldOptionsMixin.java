@@ -21,10 +21,6 @@ import java.util.function.Function;
 
 @Mixin(WorldOptions.class)
 public abstract class WorldOptionsMixin implements IWorldOptions {
-    @Mutable
-    @Shadow
-    @Final
-    private Optional<String> legacyCustomOptions;
     @Shadow
     @Final
     private long seed;
@@ -34,6 +30,10 @@ public abstract class WorldOptionsMixin implements IWorldOptions {
     @Shadow
     @Final
     private boolean generateBonusChest;
+    @Mutable
+    @Shadow
+    @Final
+    private Optional<String> legacyCustomOptions;
     @Unique
     private long confluence$secretFlag = 0L;
 

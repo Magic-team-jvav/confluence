@@ -198,7 +198,7 @@ dependencies {
     //runtimeOnly "curse.maven:lithium-360438:6290413"
     //runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
     //runtimeOnly "curse.maven:lootr-361276:6294335"
-    //runtimeOnly "curse.maven:the-twilight-forest-227639:6087105"
+    runtimeOnly "curse.maven:the-twilight-forest-227639:6087105"
     if (false) {
         runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"
         runtimeOnly "curse.maven:xaeros-world-map-317780:6212662"

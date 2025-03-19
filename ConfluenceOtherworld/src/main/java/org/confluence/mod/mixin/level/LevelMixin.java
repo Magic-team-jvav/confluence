@@ -1,7 +1,6 @@
 package org.confluence.mod.mixin.level;
 
 import net.minecraft.world.level.Level;
-import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.secret_seed.DrunkWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,8 +14,6 @@ public abstract class LevelMixin {
      */
     @Inject(method = "getSeaLevel", at = @At("RETURN"), cancellable = true)
     private void modify(CallbackInfoReturnable<Integer> cir) {
-        if (ModSecretSeeds.DRUNK_WORLD.match()) {
-            cir.setReturnValue(DrunkWorld.SEA_LEVEL);
-        }
+        cir.setReturnValue(DrunkWorld.decreaseSeaLevel(cir.getReturnValue()));
     }
 }

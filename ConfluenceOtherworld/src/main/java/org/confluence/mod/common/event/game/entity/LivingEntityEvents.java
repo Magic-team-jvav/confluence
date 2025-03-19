@@ -287,6 +287,7 @@ public final class LivingEntityEvents {
             }
         }
 
+        if (damageSource.is(DamageTypes.GENERIC_KILL)) return;
         float amount = event.getNewDamage();
         float roundedAmount = Math.round(amount * 10) / 10f;
         int intAmount = (int) roundedAmount;

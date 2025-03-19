@@ -260,6 +260,7 @@ public final class GameClientEvents {
         float deathSpeed = (float) deathMotion.length();
         Vec3 entityPos = entity.position();
         if (entity instanceof GeoAnimatable animatable && renderer instanceof GeoEntityRenderer geoRenderer) {
+            // TODO: 用reRender帮我变换
             PoseStack poseStack = new PoseStack();
             BakedGeoModel bakedGeoModel = geoRenderer.getGeoModel().getBakedModel(geoRenderer.getGeoModel().getModelResource(animatable, geoRenderer));
             geoRenderer.preRender(poseStack, entity, bakedGeoModel, null, null, false, 1, 0, 0, 0);

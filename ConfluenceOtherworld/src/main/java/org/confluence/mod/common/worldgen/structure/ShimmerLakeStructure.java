@@ -51,8 +51,7 @@ public class ShimmerLakeStructure extends Structure {
             ChunkPos startChunk = context.chunkPos();
             WorldgenRandom random = context.random();
             BlockPos centerPos = startChunk.getMiddleBlockPosition(lowestY);
-            centerPos = new BlockPos(centerPos.getX(), random.nextInt(-10, 20), centerPos.getZ());
-            //todo ---------------------------------------------------↑↑↑↑↑↑↑↑↑↑ y轴绝对范围
+            centerPos = new BlockPos(centerPos.getX(), random.nextInt(-40, 10), centerPos.getZ());
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
             Map<BlockPos, ResourceLocation> featureMap = new HashMap<>();
 

@@ -103,7 +103,7 @@ public final class ModTiers {
     public static boolean isCorrectToolForDrops(int power, ItemStack pickaxeItem, BlockState blockState) {
         if (!blockState.requiresCorrectToolForDrops()) return true;
         if (!pickaxeItem.isCorrectToolForDrops(blockState)) return false;
-        if (power >= 201) return true;
+        if (power == -1 || power >= 201) return true;
         if (power >= 191) return !blockState.is(ModTags.Blocks.NEEDS_9_LEVEL);
         if (power >= 166) return !blockState.is(ModTags.Blocks.NEEDS_8_LEVEL);
         if (power >= 101) return !blockState.is(ModTags.Blocks.NEEDS_7_LEVEL);

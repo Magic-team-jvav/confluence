@@ -145,7 +145,7 @@ public final class PlayerUtils {
     }
 
     public static Tuple<ItemStack, Integer> getMaxDiggingPowerItem(Player player) {
-        int max = 0;
+        int max = -1;
         ItemStack ret = ItemStack.EMPTY;
         for (ItemStack itemStack : player.getInventory().items) {
             if (itemStack.isEmpty()) continue;

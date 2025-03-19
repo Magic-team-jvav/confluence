@@ -273,7 +273,7 @@ public final class PlayerEvents {
     public static void harvestCheck(PlayerEvent.HarvestCheck event) {
         ItemStack itemStack = event.getEntity().getMainHandItem();
         if (!itemStack.isEmpty() && itemStack.getItem() instanceof DiggerItem diggerItem) {
-            int power = 0;
+            int power = -1;
             Tier tier = diggerItem.getTier();
             if (tier instanceof ModTiers.PoweredTier poweredTier) {
                 power = poweredTier.getPower();

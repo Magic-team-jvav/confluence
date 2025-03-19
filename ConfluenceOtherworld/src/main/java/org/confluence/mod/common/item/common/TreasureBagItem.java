@@ -17,14 +17,14 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import org.confluence.mod.common.data.map.TreasureBagDrop;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
+import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.init.item.TreasureBagItems;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.util.TCUtils;
-import org.confluence.terraentity.init.TEEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiFunction;
@@ -74,19 +74,8 @@ public class TreasureBagItem extends CustomRarityItem {
     public static @Nullable ItemStack getTreasureBag(LivingEntity living) {
         if (!(living.level() instanceof ServerLevel serverLevel)) return null;
         EntityType<?> type = living.getType();
-        TreasureBagItem item = null;
-        if (type == TEEntities.KING_SLIME.get()) {
-            item = TreasureBagItems.KING_SLIME_TREASURE_BAG.get();
-        } else if (type == TEEntities.EYE_OF_CTHULHU.get()) {
-            item = TreasureBagItems.EYE_OF_CTHULHU_TREASURE_BAG.get();
-        } else if (type == TEEntities.EATER_OF_WORLDS.get()) {
-            item = TreasureBagItems.EATER_OF_WORLDS_TREASURE_BAG.get();
-        } else if (type == TEEntities.BRAIN_OF_CTHULHU.get()) {
-            item = TreasureBagItems.BRAIN_OF_CTHULHU_TREASURE_BAG.get();
-        } else if (type == TEEntities.QUEEN_BEE.get()) {
-            item = TreasureBagItems.QUEEN_BEE_TREASURE_BAG.get();
-        }
-        if (item == null) return null;
+        TreasureBagDrop data = type.builtInRegistryHolder().getData(ModDataMaps.TREASURE_BAG);
+        if (data == null || !(data.item() instanceof TreasureBagItem item)) return null;
         ItemStack itemStack = item.getDefaultInstance();
         String lootTable = item.lootTable.withSuffix(item.suffix.apply(serverLevel, living.blockPosition())).toString();
         TCUtils.updateItemStackNbt(itemStack, tag -> tag.putString("lootTable", lootTable));

@@ -48,7 +48,7 @@ public final class ModJeiPlugin implements IModPlugin {
         if (CommonConfigs.FLETCHING_MENU.get()) {
             registration.addRecipeCategories(new FletchingTableCategory(jeiHelpers));
         }
-        registration.addRecipeCategories(new LootTableCategory(jeiHelpers));
+        //registration.addRecipeCategories(new LootTableCategory(jeiHelpers));
     }
 
     @Override
@@ -65,7 +65,7 @@ public final class ModJeiPlugin implements IModPlugin {
         if (CommonConfigs.FLETCHING_MENU.get()) {
             registration.addRecipes(FletchingTableCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.FLETCHING_TABLE_TYPE.get()));
         }
-        LootTableCategory.registerLootTables(registration);
+        //LootTableCategory.registerLootTables(registration);
     }
 
     private static <I extends RecipeInput, T extends Recipe<I>> List<T> getAllRecipesFor(RecipeManager recipeManager, RecipeType<T> recipeType) {
@@ -85,7 +85,7 @@ public final class ModJeiPlugin implements IModPlugin {
             registration.addRecipeCatalyst(new ItemStack(Blocks.FLETCHING_TABLE), FletchingTableCategory.TYPE);
         }
         registration.addRecipeCatalyst(FunctionalBlocks.LEAD_ANVIL.toStack(), RecipeTypes.ANVIL);
-        LootTableCategory.registerLootTableCatalysts(registration);
+        //LootTableCategory.registerLootTableCatalysts(registration);
     }
 
     @Override
@@ -106,7 +106,7 @@ public final class ModJeiPlugin implements IModPlugin {
 
     @Override
     public void registerIngredients(IModIngredientRegistration registration) {
-        LootTableCategory.registerStacks(registration);
+        //LootTableCategory.registerStacks(registration);
     }
 
     public static void drawArrowDown(GuiGraphics guiGraphics, int x, int y, boolean usable) {

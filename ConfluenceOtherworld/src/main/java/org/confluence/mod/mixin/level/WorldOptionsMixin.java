@@ -25,6 +25,15 @@ public abstract class WorldOptionsMixin implements IWorldOptions {
     @Shadow
     @Final
     private Optional<String> legacyCustomOptions;
+    @Shadow
+    @Final
+    private long seed;
+    @Shadow
+    @Final
+    private boolean generateStructures;
+    @Shadow
+    @Final
+    private boolean generateBonusChest;
     @Unique
     private long confluence$secretFlag = 0L;
 
@@ -41,6 +50,13 @@ public abstract class WorldOptionsMixin implements IWorldOptions {
     @Override
     public void confluence$setLegacyCustomOptions(Optional<String> legacyCustomOptions) {
         this.legacyCustomOptions = legacyCustomOptions;
+    }
+
+    @Override
+    public WorldOptions confluence$copyWithoutSecretFlag() {
+        WorldOptions worldOptions = new WorldOptions(seed, generateStructures, generateBonusChest);
+        ((IWorldOptions) worldOptions).confluence$setLegacyCustomOptions(legacyCustomOptions);
+        return worldOptions;
     }
 
     @SuppressWarnings("unchecked")

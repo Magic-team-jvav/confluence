@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.level.levelgen.WorldOptions;
 import net.neoforged.fml.ModLoader;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.CustomWorldIconRegisterEvent;
@@ -23,6 +24,8 @@ public interface IWorldOptions {
     long confluence$getSecretFlag();
 
     void confluence$setLegacyCustomOptions(Optional<String> legacyCustomOptions);
+
+    WorldOptions confluence$copyWithoutSecretFlag();
 
     static long getSecretFlag(MinecraftServer server) {
         return ((IWorldOptions) server.getWorldData().worldGenOptions()).confluence$getSecretFlag();

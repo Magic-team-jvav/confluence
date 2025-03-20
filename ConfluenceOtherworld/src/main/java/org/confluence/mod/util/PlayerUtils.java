@@ -140,6 +140,7 @@ public final class PlayerUtils {
         if (MomentManager.of(level).hasMoment(TMMoments.BLOOD_MOON)) {
             base *= 1.1F;
         }
+        base = HookMapManager.postHooks(ModHookTypes.FISHING_POWER.get(), (owner, hook, original) -> hook.modifyFishingPower(owner, player, original), player, base);
         return base;
     }
 

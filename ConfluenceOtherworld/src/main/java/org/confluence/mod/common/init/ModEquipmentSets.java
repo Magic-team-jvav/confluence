@@ -21,4 +21,5 @@ public final class ModEquipmentSets {
     public static final EBDeferredHolder<EquipmentSet> GLADIATOR_SET = EQUIPMENT_SET.register("gladiator_set", GladiatorSet::new);
     public static final EBDeferredHolder<EquipmentSet> SPORE_ROOT_SET = EQUIPMENT_SET.register("spore_root_set", SporeRootSet::new);
     public static final EBDeferredHolder<EquipmentSet> BEE_SET = EQUIPMENT_SET.register("bee_set", BeeSet::new);
+    public static final EBDeferredHolder<EquipmentSet> FOSSIL_SET = EQUIPMENT_SET.register("fossil_set", FossilSet::new);
 }

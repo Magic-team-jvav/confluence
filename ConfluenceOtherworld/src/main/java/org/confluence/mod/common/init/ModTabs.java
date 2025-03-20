@@ -108,6 +108,8 @@ public final class ModTabs {
                         output.accept(TCItems.DIVING_HELMET.get());
                         output.accept(ModItems.LIVING_WOOD_WAND.get());
                         output.accept(ModItems.LEAVES_WAND.get());
+                        output.accept(ModItems.LIVING_MAHOGANY_WAND.get());
+                        output.accept(ModItems.RICH_MAHOGANY_LEAF_WAND.get());
                         AxeItems.ITEMS.getEntries().forEach(action);
                         PickaxeItems.ITEMS.getEntries().forEach(action);
                         PickaxeAxeItems.ITEMS.getEntries().forEach(action);

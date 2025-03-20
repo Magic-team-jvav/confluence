@@ -99,7 +99,9 @@ public class EverBeneficialItem extends CustomRarityItem {
             if (beneficial.pre.apply(data)) {
                 beneficial.post.accept(beneficial.id, serverPlayer, data, false);
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
-                itemStack.shrink(1);
+                if(!player.isCreative()){
+                    itemStack.shrink(1);
+                }
             }
             if (data.isLifeCrystalsMaximum() && data.isLifeFruitsMaximum() && player.getData(ModAttachmentTypes.MANA_STORAGE).isStarMaximum()) {
                 PlayerUtils.awardAchievement(serverPlayer, "topped_off");

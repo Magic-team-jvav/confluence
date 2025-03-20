@@ -25,17 +25,15 @@ import static org.confluence.mod.util.StructureUtils.*;
 
 public class ShimmerLakeStructure extends Structure {
     public static final MapCodec<ShimmerLakeStructure> CODEC = simpleCodec(ShimmerLakeStructure::new);
-    public static final Map<Integer, ResourceLocation> feature = new HashMap<>(
-            Map.of(
-                    0, Confluence.asResource("amber_tree"),
-                    1, Confluence.asResource("diamond_tree"),
-                    2, Confluence.asResource("emerald_tree"),
-                    3, Confluence.asResource("ruby_tree"),
-                    4, Confluence.asResource("sapphire_tree"),
-                    5, Confluence.asResource("topaz_tree"),
-                    6, Confluence.asResource("tr_amethyst_tree")
-            )
-    );
+    public static final ResourceLocation[] feature = new ResourceLocation[]{
+            Confluence.asResource("amber_tree"),
+            Confluence.asResource("diamond_tree"),
+            Confluence.asResource("emerald_tree"),
+            Confluence.asResource("ruby_tree"),
+            Confluence.asResource("sapphire_tree"),
+            Confluence.asResource("topaz_tree"),
+            Confluence.asResource("tr_amethyst_tree")
+    };
 
     protected ShimmerLakeStructure(StructureSettings settings) {
         super(settings);
@@ -54,13 +52,15 @@ public class ShimmerLakeStructure extends Structure {
             centerPos = new BlockPos(centerPos.getX(), random.nextInt(-40, 10), centerPos.getZ());
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
             Map<BlockPos, ResourceLocation> featureMap = new HashMap<>();
+            List<Vector3d> vctPosList = new ArrayList<>();
 
             List<Vector3d> posOut = ellipsoidPos(36, 12, 36, centerPos, 0.03F, random);
             List<Vector3d> posIn = ellipsoidPos(24, 9, 24, centerPos, 0.03F, random);
             lineSet(posOut, 11.5, 11.5, 1, true, blockMap);
             lineSet(posOut, 8.5, 8.5, 0, 1, true, blockMap, centerPos.getY() - 2);
             lineSet(posIn, 6.5, 6.5, 0, 2, true, blockMap, centerPos.getY() - 2);
-            treeSet(centerPos.offset(0, -1, 0), 34, random, featureMap);
+            roundPos(centerPos.offset(0, -1, 0), 34, random, vctPosList, 3, random.nextInt(14, 17), 0.0F);
+            lineSetFeature(vctPosList, featureMap, feature, random);
 
             GridPiece.addPieces(blockMap, startChunk, lowestY, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
@@ -73,13 +73,5 @@ public class ShimmerLakeStructure extends Structure {
     @Override
     public StructureType<?> type() {
         return ModStructures.SHIMMER_LAKE.get();
-    }
-
-    private static void treeSet(BlockPos centerPos, double radius, WorldgenRandom random, Map<BlockPos, ResourceLocation> featureMap) {
-        int rotate = random.nextInt(14, 17);
-        float rStep = Mth.PI * 2 / rotate;
-        for (int i = 0; i < rotate; i++) {
-            featureMap.put(centerPos.offset(((int) (Mth.cos(rStep * i) * radius) + random.nextInt(-3, 4)), 0, ((int) (Mth.sin(rStep * i) * radius) + random.nextInt(-3, 4))), feature.get(random.nextInt(7)));
-        }
     }
 }

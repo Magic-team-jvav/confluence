@@ -19,6 +19,7 @@ public final class ModStructures {
     public static final Supplier<StructureType<QueenBeeHiveStructure>> QUEEN_BEE_HIVE = TYPES.register("queen_bee_hive", () -> () -> QueenBeeHiveStructure.CODEC);
     public static final Supplier<StructureType<ShimmerLakeStructure>> SHIMMER_LAKE = TYPES.register("shimmer_lake", () -> () -> ShimmerLakeStructure.CODEC);
     public static final Supplier<StructureType<DungeonStructure>> DUNGEON = TYPES.register("dungeon", () -> () -> DungeonStructure.CODEC);
+    public static final Supplier<StructureType<HeavenIslandsStructure>> HEAVEN_ISLANDS = TYPES.register("heaven_islands", () -> () -> HeavenIslandsStructure.CODEC);
 
     public static final Supplier<StructurePieceType.ContextlessType> GRID_PIECE = PIECE_TYPES.register("grid_piece", () -> GridPiece::new);
     public static final Supplier<StructurePieceType.StructureTemplateType> SIMPLE_TEMPLATE_PIECE = PIECE_TYPES.register("simple_template_piece", () -> SimpleTemplatePiece::new);

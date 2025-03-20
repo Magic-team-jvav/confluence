@@ -127,10 +127,9 @@ public final class GameClientEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void renderHandEvent(RenderHandEvent event) {
-        ArrowInBowHud.render(event);
-    }
+//    @SubscribeEvent
+//    public static void renderHandEvent(RenderHandEvent event) {
+//    }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void gatherComponents(RenderTooltipEvent.GatherComponents event) {
@@ -452,6 +451,11 @@ public final class GameClientEvents {
             livingDeath(entity);
         }
         ((ILivingEntity) entity).confluence$deadO(dead);
+    }
+
+    @SubscribeEvent
+    public static void postRenderPlayer(RenderPlayerEvent.Post event) {
+        LashRendererHandler.render(event);
     }
 
     @SubscribeEvent

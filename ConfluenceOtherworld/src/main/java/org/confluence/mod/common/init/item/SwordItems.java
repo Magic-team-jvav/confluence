@@ -29,7 +29,6 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.confluence.mod.common.init.ModEffectStrategies.*;
-import static org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy.*;
 import static org.confluence.mod.common.item.sword.stagedy.SwordPrefabs.*;
 
 
@@ -101,11 +100,11 @@ public class SwordItems {
 
     //弹幕剑
     public static final DeferredItem<SwordItem> ICE_BLADE = register("ice_blade",ModTiers.TITANIUM, 5, -1.0F,
-            ModRarity.BLUE,     PROJ_SWORD.apply(ICE_PROJ));
+            ModRarity.BLUE,     PROJ_SWORD.apply(SwordProjectileComponent.ICE_PROJ));
     public static final DeferredItem<SwordItem>STARFURY = register("starfury",ModTiers.TITANIUM, 6, -1.1F,
-            ModRarity.GREEN,    PROJ_SWORD.apply(STAR_FURY_PROJ));
+            ModRarity.GREEN,    PROJ_SWORD.apply(SwordProjectileComponent.STAR_FURY_PROJ));
     public static final DeferredItem<SwordItem> ENCHANTED_SWORD = register("enchanted_sword",ModTiers.TITANIUM, 7, -1.1F,
-            ModRarity.ORANGE,   PROJ_SWORD.apply(ENCHANTED_SWORD_PROJ));
+            ModRarity.ORANGE,   PROJ_SWORD.apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ));
 
     // 光剑
     public static final DeferredItem<SwordItem> RED_LIGHT_SABER = register("red_light_saber", ()->new LightSaber.Red(ModTiers.TITANIUM, ModRarity.BLUE,10, -2));
@@ -125,7 +124,6 @@ public class SwordItems {
                     .addAttributeModifier(Attributes.MOVEMENT_SPEED,1.5f,
                             AttributeModifier.Operation.ADD_MULTIPLIED_BASE)        //手持属性加成
 //                    .addOnHitEffect(UNDEFINED)                //命中效果
-                    .setProj(ENCHANTED_SWORD_PROJ)                                  //弹幕
                     .setInventoryTick(InventoryTickStrategy.INVINCIBLE)             //背包每刻效果
 //            ).peek(it-> EFFECT_STRATEGY.getEntries().stream().toList().forEach(it::addOnHitEffect)).findFirst().get()
                     .modifyProperties(p->p.component(ModDataComponentTypes.SWORD_PROJECTILE, new SwordProjectileComponent(

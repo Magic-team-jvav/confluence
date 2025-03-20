@@ -13,13 +13,19 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.terra_curio.common.init.TCAttributes;
+import org.confluence.terraentity.entity.proj.generation.AboveFallenGeneration;
+import org.confluence.terraentity.entity.proj.generation.ForwardGeneration;
 import org.confluence.terraentity.entity.proj.generation.IGeneration;
 import org.confluence.terraentity.entity.proj.track.ITrackType;
+import org.confluence.terraentity.init.TESounds;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * <h1>弹幕组件</h1>
@@ -45,6 +51,24 @@ public record SwordProjectileComponent (
         Optional<ITrackType> trackType,
         IGeneration generation
 ) implements DataComponentType<SwordProjectileComponent> {
+
+    public static final Supplier<SwordProjectileComponent> ICE_PROJ =
+            ()->new SwordProjectileComponent(2,0.6f,0.9f,40, 0, 10,
+                    ModSoundEvents.FROZEN_ARROW.getId(), ModEntities.ICE_BLADE_SWORD_PROJECTILE.getId(),
+                    Optional.empty(), ForwardGeneration.of(0,0));
+
+    public static final Supplier<SwordProjectileComponent> STAR_FURY_PROJ =
+            ()->new SwordProjectileComponent(1.5f,1.5f,0.9f,100, 0, 10,
+                    ModSoundEvents.STAR.getId(),ModEntities.STAR_FURY_PROJECTILE.getId(),
+                    Optional.empty(), new AboveFallenGeneration(30,30,10,0.5f,20,5));
+
+    public static final Supplier<SwordProjectileComponent> ENCHANTED_SWORD_PROJ =
+            ()->new SwordProjectileComponent(1,0.8f,0.9f,40, 0, 10,
+                    TESounds.REGULAR_STAFF_SHOOT_2.getId(),ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
+                    Optional.empty(), ForwardGeneration.of(0,0));
+
+
+
     public static final Codec<SwordProjectileComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.FLOAT.fieldOf("damageFactor").forGetter(SwordProjectileComponent::damageFactor),
             Codec.FLOAT.fieldOf("baseSpeed").forGetter(SwordProjectileComponent::baseSpeed),
@@ -77,17 +101,18 @@ public record SwordProjectileComponent (
     @Override
     public boolean equals(Object obj) {
         if(obj == this) return true;
-//        if(obj instanceof SwordProjectileComponent other){
-//            return damageFactor == other.damageFactor &&
-//                    baseSpeed == other.baseSpeed &&
-//                    acceleration == other.acceleration &&
-//                    existTicks == other.existTicks&&
-//                    gravity == other.gravity &&
-//                    cooldown == other.cooldown &&
-//                    soundEvent.equals(other.soundEvent) &&
-//                    trackType.equals(other.trackType) &&
-//                    generation.equals(other.generation);
-//        }
+        if(obj instanceof SwordProjectileComponent other){
+            return damageFactor == other.damageFactor &&
+                    baseSpeed == other.baseSpeed &&
+                    acceleration == other.acceleration &&
+                    existTicks == other.existTicks&&
+                    gravity == other.gravity &&
+                    cooldown == other.cooldown &&
+                    soundEvent.equals(other.soundEvent) &&
+                    trackType.equals(other.trackType) &&
+                    generation.equals(other.generation) &&
+                    projType.equals(other.projType);
+        }
         return false;
     }
 

@@ -22,17 +22,15 @@ import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SwordProjectileComponent;
-import org.confluence.mod.common.entity.projectile.sword.StarFuryProjectile;
 import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
 import org.confluence.mod.common.init.ModDataComponentTypes;
-import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.sword.stagedy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
 import org.confluence.mod.common.item.sword.stagedy.SwordPrefabs;
 import org.confluence.mod.common.item.sword.stagedy.projectile.IProjContainer;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.confluence.terraentity.entity.proj.hit_effect.EffectStrategy;
+import org.confluence.terraentity.api.hit_effect.EffectStrategy;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -206,7 +204,7 @@ public class BaseSwordItem extends SwordItem {
         var data = stack.get(ModDataComponentTypes.SWORD_PROJECTILE);
         if(data != null){
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj").withColor(0x57cdfb));
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.damage").append(": "+data.damageFactor()).withColor(0x57cdfb));
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.damage").append(": x"+data.damageFactor()).withColor(0x57cdfb));
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.speed").append(": "+data.baseSpeed()).withColor(0x57cdfb));
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.cooldown").append(": "+data.cooldown()).withColor(0x57cdfb));
             if(data.trackType().isPresent()){

@@ -11,7 +11,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.common.entity.projectile.BaseArrowEntity;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.confluence.terraentity.entity.proj.hit_effect.EffectStrategy;
+import org.confluence.terraentity.api.hit_effect.EffectStrategy;
 
 import javax.annotation.Nullable;
 import java.util.List;

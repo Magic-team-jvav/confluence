@@ -160,6 +160,7 @@ public final class ModTabs {
                     .title(Component.translatable("creativetab.confluence.summoners"))
                     .displayItems((parameters, output) -> {
                         TEItems.SUMMON_ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                        WhipItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                         LightPetItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                     }).withTabsAfter(TEItems.NEO_TERRA.getId()).withTabsBefore(MAGES.getId()).build());
     /* 生物 */

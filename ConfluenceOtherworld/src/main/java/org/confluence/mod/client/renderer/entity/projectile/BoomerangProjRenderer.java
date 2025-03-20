@@ -19,7 +19,7 @@ public class BoomerangProjRenderer extends EntityRenderer<BoomerangProjectile> {
     }
 
     public void render(BoomerangProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        int pack = OverlayTexture.pack((int) (partialTick*Math.sin(partialTick/10)), (int) (partialTick*Math.cos(partialTick/10)));
+//        int pack = OverlayTexture.pack((int) (partialTick*Math.sin(partialTick/10)), (int) (partialTick*Math.cos(partialTick/10)));
 
         // 位置插值
         Vec3 v = entity.getDeltaMovement();

@@ -4,14 +4,14 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.Confluence;
-import org.confluence.terraentity.entity.proj.hit_effect.EffectStrategy;
+import org.confluence.terraentity.api.hit_effect.EffectStrategy;
 import org.confluence.terraentity.init.TEEffects;
 import org.confluence.terraentity.registries.EffectStrategies;
 
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-import static org.confluence.terraentity.entity.proj.hit_effect.EffectStrategy.*;
+import static org.confluence.terraentity.api.hit_effect.EffectStrategy.*;
 
 /**
  * <h1>攻击时给敌人施加的效果或回调</h1>

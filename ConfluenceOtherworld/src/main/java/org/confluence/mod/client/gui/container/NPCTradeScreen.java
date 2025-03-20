@@ -26,8 +26,7 @@ import org.confluence.mod.common.menu.NPCTradesMenu;
 import org.confluence.mod.mixed.IPlayer;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terraentity.entity.ai.keyframe.KeyframeInterpolator;
-import org.confluence.terraentity.entity.ai.keyframe.interpolator.IInterpolator;
+import org.confluence.terraentity.entity.ai.keyframe.animation.KeyframeAnimation;
 
 import java.awt.*;
 import java.util.List;
@@ -52,7 +51,7 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
     int scrollOff;
     ImageButton forgeBt;
 
-    KeyframeInterpolator interpolator;
+    KeyframeAnimation interpolator;
     private List<Item> coinItem = List.of(
             ModItems.PLATINUM_COIN.get(),
             ModItems.GOLDEN_COIN.get(),
@@ -82,7 +81,7 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
         offsetX = (this.width - this.imageWidth) / 2 + 10;
         offsetY = (this.height - this.imageHeight) / 2 + 20;
 
-        interpolator = KeyframeInterpolator.Builder(IInterpolator.cubicSpline)
+        interpolator = KeyframeAnimation.Builder()
                 .addKeyframe(5, 0)
                 .addKeyframe(20, 40)
                 .addKeyframe(30, 55)

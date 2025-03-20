@@ -23,7 +23,7 @@ import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.sword.stagedy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.stagedy.projectile.BoomerangProjContainer;
 import org.confluence.mod.common.item.sword.stagedy.projectile.IProjContainer;
-import org.confluence.terraentity.entity.proj.hit_effect.EffectStrategy;
+import org.confluence.terraentity.api.hit_effect.EffectStrategy;
 
 import java.util.ArrayList;
 import java.util.List;

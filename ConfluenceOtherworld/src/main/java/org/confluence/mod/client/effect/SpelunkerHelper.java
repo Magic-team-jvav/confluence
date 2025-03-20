@@ -311,7 +311,8 @@ public class SpelunkerHelper extends AbstractBufferManager {
         centers.clear();
         centerCacheFrame.clear();
         player = Minecraft.getInstance().player;
-
+        if(player == null)
+            return;
         refreshBlocks();
 
         for (var n : blockMap.entrySet()) {//每种矿石
@@ -335,7 +336,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
                 /* 相近同种方块禁止渲染 */
                 boolean ifNear = false;
-                if (Minecraft.getInstance().level.getBlockState(blockProps).is(Blocks.AIR)) {//已被挖掘，取消缓存
+                if (player.level().getBlockState(blockProps).is(Blocks.AIR)) {//已被挖掘，取消缓存
 
 //                        System.out.println("block break");
                     centerCache.remove(blockProps);
@@ -372,7 +373,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
 
                 //距离越远透明度越低
-                a = (int) ((255 - Math.min(Minecraft.getInstance().getCameraEntity().distanceToSqr(blockProps.getX(), blockProps.getY(), blockProps.getZ()) / (blockGen.range * blockGen.range) * 255, 255)) * blockGen.maxAlpha);
+                a = (int) ((255 - Math.min(player.distanceToSqr(blockProps.getX(), blockProps.getY(), blockProps.getZ()) / (blockGen.range * blockGen.range) * 255, 255)) * blockGen.maxAlpha);
                 if (a <= 0) continue;
 
                 renderDebugBlock(buffer, blockProps, size, r, g, b, a);

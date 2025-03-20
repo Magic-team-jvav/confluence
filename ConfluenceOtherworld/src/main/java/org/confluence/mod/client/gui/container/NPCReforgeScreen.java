@@ -18,8 +18,7 @@ import org.confluence.mod.common.menu.NPCReforgeMenu;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terraentity.entity.ai.keyframe.KeyframeInterpolator;
-import org.confluence.terraentity.entity.ai.keyframe.interpolator.IInterpolator;
+import org.confluence.terraentity.entity.ai.keyframe.animation.KeyframeAnimation;
 import org.jetbrains.annotations.NotNull;
 
 public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
@@ -27,7 +26,7 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     private boolean buttonClicked = false;
     private final EvictingQueue<Component> prefixBefore;
     int clickTime = 500;
-    KeyframeInterpolator interpolator;
+    KeyframeAnimation interpolator;
 
 
     public NPCReforgeScreen(NPCReforgeMenu menu, Inventory playerInventory, Component title) {
@@ -83,16 +82,13 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
 
     protected void init() {
         super.init();
-        this.interpolator = KeyframeInterpolator.Builder(IInterpolator.cubicSpline)
-                .addKeyframe(0, 0)
+        this.interpolator = KeyframeAnimation.Builder()
+                .addKeyframe(0,0)
                 .addKeyframe(15, 55)
                 .addKeyframe(20, 60)
                 .addKeyframe(40, 60)
                 .addKeyframe(45, 65)
                 .addKeyframe(60, 100)
-                .addInterpolator(1, IInterpolator.linear.get())
-                .addInterpolator(2, IInterpolator.linear.get())
-                .addInterpolator(3, IInterpolator.linear.get())
                 .build();
     }
 

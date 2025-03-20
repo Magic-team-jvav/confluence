@@ -6,6 +6,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -13,14 +14,18 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.animation.LashAnimation;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.util.ClientUtils;
+import org.joml.Vector3f;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
+import java.util.Vector;
 
 import static org.confluence.mod.util.ClientUtils.colorDraw;
 
@@ -53,7 +58,21 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
                 int widthHealth = guiGraphics.guiWidth() - 128;
-                int heightHealth = 4;
+
+
+                var bone = LashAnimation.animation.boneAnimations().get("bone1");
+                var k = bone.getFirst().keyframes();
+                float vv = (float) (System.currentTimeMillis()/100000.0 % 1.0f * 100 % 2.5f);
+                System.out.println(vv);
+                Vector3f v =
+                    k[0].interpolation().apply(Vec3.ZERO.toVector3f(),vv , k, 0, 1, 1);
+                System.out.println(v);
+
+                widthHealth += v.x();
+
+
+                int heightHealth = (int) (4 + 10 + v.y());
+
                 float maxHealth = 0.0F;
                 float currentHealth = 0.0F;
                 int heartBuff = 0;

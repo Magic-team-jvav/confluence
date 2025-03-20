@@ -42,7 +42,7 @@ public class ColdCrystalSet extends EquipmentSet {
                         VanillaEquippable.LEGS, ArmorItems.COLD_CRYSTAL_LEGGINGS,
                         VanillaEquippable.FEET, ArmorItems.COLD_CRYSTAL_BOOTS
                 )
-                .bindHook(EBHookTypes.BEFORE_LIVING_DAMAGE.get(), (owner, victim, damageSource) -> victim.addEffect(new MobEffectInstance(ModEffects.FROST_BURN, 100)))
+                .bindHook(EBHookTypes.BEFORE_LIVING_DAMAGE.get(), (owner, event) -> event.getEntity().addEffect(new MobEffectInstance(ModEffects.FROST_BURN, 100)))
                 .build());
     }
 }

@@ -132,9 +132,9 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
     public void flushAbility(ServerPlayer serverPlayer) {
         this.fastManaRegeneration = TCUtils.hasAccessoriesType(serverPlayer, AccessoryItems.FAST$MANA$GENERATION);
         int value = TCUtils.getAccessoriesValue(serverPlayer, AccessoryItems.ADDITIONAL$MANA);
-        Integer posted = HookMapManager.postHooks(ModHookTypes.ADDITIONAL_MANA.get(), (owner, hook, original) -> hook.additional(owner, serverPlayer, original), serverPlayer, value);
-        if (posted == null || posted != additionalMana) {
-            this.additionalMana = posted == null ? value : posted;
+        int posted = HookMapManager.postHooks(ModHookTypes.ADDITIONAL_MANA.get(), (owner, hook, original) -> hook.additional(owner, serverPlayer, original), serverPlayer, value);
+        if (posted != additionalMana) {
+            this.additionalMana = posted;
             freshMaxMana();
             PlayerUtils.syncMana2Client(serverPlayer, this);
         }

@@ -17,4 +17,5 @@ public final class ModEquipmentSets {
     public static final EBDeferredHolder<EquipmentSet> CRIMSON_SET = EQUIPMENT_SET.register("crimson_set", CrimsonSet::new);
     public static final EBDeferredHolder<EquipmentSet> COLD_CRYSTAL_SET = EQUIPMENT_SET.register("cold_crystal_set", ColdCrystalSet::new);
     public static final EBDeferredHolder<EquipmentSet> MOLTEN_SET = EQUIPMENT_SET.register("molten_set", MoltenSet::new);
+    public static final EBDeferredHolder<EquipmentSet> GLADIATOR_SET = EQUIPMENT_SET.register("gladiator_set", GladiatorSet::new);
 }

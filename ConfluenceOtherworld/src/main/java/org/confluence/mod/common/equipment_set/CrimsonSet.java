@@ -28,7 +28,9 @@ public class CrimsonSet extends EquipmentSet {
                         VanillaEquippable.CHEST, ArmorItems.CRIMSON_CHESTPLATE,
                         VanillaEquippable.LEGS, ArmorItems.CRIMSON_LEGGINGS,
                         VanillaEquippable.FEET, ArmorItems.CRIMSON_BOOTS
-                ).bindHook(EBHookTypes.LIVING_HEAL.get(), (owner, original) -> original.setAmount(original.getAmount() * 1.5F)).build());
+                )
+                .bindHook(EBHookTypes.LIVING_HEAL.get(), (owner, original) -> original.setAmount(original.getAmount() * 1.5F))
+                .build());
     }
 
     private static EquippableSetData attackDamageBonus(VanillaEquippable slot, DeferredItem<ArmorItem> item) {

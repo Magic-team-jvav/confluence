@@ -5,37 +5,23 @@ import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableSetData;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
-import com.xiaohunao.equipment_benediction.common.init.EBHookTypes;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ArmorItem;
+import net.neoforged.neoforge.registries.DeferredItem;
 import org.confluence.mod.common.init.item.ArmorItems;
 
 public class MiningSet extends EquipmentSet {
     @Override
     protected void init(HookMap.Builder hook, EquippableGroup.Builder equippableGroup) {
-        EquippableSetData setData1 = new EquippableSetData.Builder()
-                .addEquippable(
-                        VanillaEquippable.CHEST , Ingredient.of(ArmorItems.MINING_CHESTPLATE.get())
-                )
-                .bindHook(EBHookTypes.BREAK_SPEED.get(), (owner, entity, state, originalSpeed) -> originalSpeed * 1.15F)
+        equippableGroup.addEquippableSet("chestplate", blockBreakSpeedBonus(VanillaEquippable.CHEST, ArmorItems.SHADOW_CHESTPLATE));
+        equippableGroup.addEquippableSet("leggings", blockBreakSpeedBonus(VanillaEquippable.LEGS, ArmorItems.SHADOW_LEGGINGS));
+        equippableGroup.addEquippableSet("boots", blockBreakSpeedBonus(VanillaEquippable.FEET, ArmorItems.SHADOW_BOOTS));
+    }
+
+    private static EquippableSetData blockBreakSpeedBonus(VanillaEquippable slot, DeferredItem<ArmorItem> item) {
+        return new EquippableSetData.Builder().addEquippable(slot, item)
+                .bindHook(builder -> builder.addBonus(Attributes.BLOCK_BREAK_SPEED, new AttributeModifier(item.getId(), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .build();
-
-        EquippableSetData setData2 = new EquippableSetData.Builder()
-                .addEquippable(
-                        VanillaEquippable.LEGS , Ingredient.of(ArmorItems.MINING_LEGGINGS.get())
-                )
-                .bindHook(EBHookTypes.BREAK_SPEED.get(), (owner, entity, state,originalSpeed) -> originalSpeed * 1.15F)
-                .build();
-
-        EquippableSetData setData3 = new EquippableSetData.Builder()
-                .addEquippable(
-                        VanillaEquippable.FEET , Ingredient.of(ArmorItems.MINING_BOOTS.get())
-                )
-                .bindHook(EBHookTypes.BREAK_SPEED.get(), (owner, entity, state,originalSpeed) -> originalSpeed * 1.15F)
-                .build();
-
-        equippableGroup.addEquippableSet("chest", setData1)
-                .addEquippableSet("legs", setData2)
-                .addEquippableSet("feet", setData3);
-
     }
 }

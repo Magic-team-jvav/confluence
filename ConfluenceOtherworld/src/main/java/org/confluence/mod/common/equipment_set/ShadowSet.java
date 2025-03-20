@@ -8,7 +8,6 @@ import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.ArmorItems;
@@ -34,7 +33,7 @@ public class ShadowSet extends EquipmentSet {
     }
 
     private static EquippableSetData critChanceBonus(VanillaEquippable slot, DeferredItem<ArmorItem> item) {
-        return new EquippableSetData.Builder().addEquippable(slot, Ingredient.of(item))
+        return new EquippableSetData.Builder().addEquippable(slot, item)
                 .bindHook(builder -> builder.addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(item.getId(), 0.035, AttributeModifier.Operation.ADD_VALUE)))
                 .build();
     }

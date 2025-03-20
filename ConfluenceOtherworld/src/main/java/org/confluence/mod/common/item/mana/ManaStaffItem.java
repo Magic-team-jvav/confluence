@@ -72,7 +72,7 @@ public class ManaStaffItem<E extends Projectile> extends CustomRarityItem {
     }
 
     protected boolean couldShoot(ServerPlayer player, ItemStack itemStack) {
-        return PlayerUtils.extractMana(player, () -> PrefixUtils.calculateManaCost(itemStack, manaCost));
+        return PlayerUtils.extractMana(player, itemStack, () -> PrefixUtils.calculateManaCost(itemStack, manaCost));
     }
 
     protected void beforeShoot(ServerPlayer player, ItemStack itemStack, E projectile) {

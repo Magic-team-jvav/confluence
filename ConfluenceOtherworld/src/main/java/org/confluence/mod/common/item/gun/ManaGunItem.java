@@ -17,6 +17,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_guns.api.IAmmo;
@@ -52,7 +53,7 @@ public abstract class ManaGunItem<T extends Projectile> extends GeoGunItem<T> im
         if (hand != InteractionHand.MAIN_HAND) {
             return InteractionResultHolder.pass(itemInHand);
         }
-        if (player instanceof ServerPlayer serverPlayer && PlayerUtils.extractMana(serverPlayer, () -> manaCost)) {
+        if (player instanceof ServerPlayer serverPlayer && PlayerUtils.extractMana(serverPlayer, itemInHand, () -> PrefixUtils.calculateManaCost(itemInHand, manaCost))) {
             return ItemUtils.startUsingInstantly(level, player, hand);
         }
         return InteractionResultHolder.fail(itemInHand);

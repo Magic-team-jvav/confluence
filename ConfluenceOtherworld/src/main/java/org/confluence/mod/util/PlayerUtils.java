@@ -1,5 +1,6 @@
 package org.confluence.mod.util;
 
+import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentManager;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -21,10 +22,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.init.ModAttachmentTypes;
-import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.ModTiers;
+import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
@@ -96,10 +94,11 @@ public final class PlayerUtils {
         if (manaStorage.receiveMana(receive)) syncMana2Client(serverPlayer, manaStorage);
     }
 
-    public static boolean extractMana(ServerPlayer serverPlayer, IntSupplier sup) {
+    public static boolean extractMana(ServerPlayer serverPlayer, ItemStack itemStack, IntSupplier sup) {
         if (serverPlayer.gameMode.isCreative()) return true;
+        IntSupplier posted = HookMapManager.postHooks(ModHookTypes.MANA_CONSUME.get(), (owner, hook) -> hook.onManaConsume(owner, itemStack, sup), serverPlayer);
         ManaStorage manaStorage = serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE);
-        if (manaStorage.extractMana(sup, serverPlayer)) {
+        if (manaStorage.extractMana(posted, serverPlayer)) {
             manaStorage.setRegenerateDelay((int) Math.ceil(0.7F * ((1 - (float) manaStorage.getCurrentMana() / manaStorage.getMaxMana()) * 240 + 45)));
             syncMana2Client(serverPlayer, manaStorage);
             return true;

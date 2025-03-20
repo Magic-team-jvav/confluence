@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:ore",
+  "config": {
+    "discard_chance_on_air_exposure": 0.0,
+    "size": 33,
+    "targets": [
+      {
+        "target": {
+          "predicate_type": "tag_match",
+          "tag": "stone_ore_replaceables"
+        },
+        "state": {
+          "Name": "confluence:silt_block"
+        }
+      },
+      {
+        "target": {
+          "predicate_type": "tag_match",
+          "tag": "deepslate_ore_replaceables"
+        },
+        "state": {
+          "Name": "confluence:silt_block"
+        }
+      }
+    ]
+  }
+}

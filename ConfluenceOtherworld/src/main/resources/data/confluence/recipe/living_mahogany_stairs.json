@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#  ",
+        "## ",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:living_mahogany_planks"
+        }
+    },
+    "result": {
+        "id": "confluence:living_mahogany_stairs",
+        "count": 4
+    },
+    "group": "wooden_stairs"
+}

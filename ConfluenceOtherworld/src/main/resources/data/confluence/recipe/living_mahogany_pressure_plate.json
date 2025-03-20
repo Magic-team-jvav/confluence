@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "##"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:living_mahogany_planks"
+        }
+    },
+    "result": {
+        "id": "confluence:living_mahogany_pressure_plate"
+    },
+    "group": "wooden_pressure_plate"
+}

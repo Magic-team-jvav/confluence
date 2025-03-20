@@ -1025,6 +1025,22 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.LIVING_LOG_BLOCKS.getFenceGate().get(), "生命木栅栏门");
         add(NatureBlocks.LIVING_LOG_BLOCKS.getPressurePlate().get(), "生命木压力板");
 
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getButton().get(), "生命红木按钮");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().get(), "生命红木板");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLog().get(), "生命红木原木");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStrippedLog().get(), "去皮生命红原木");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStrippedWood().get(), "去皮生命红木");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getDoor().get(), "生命红木门");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getTrapdoor().get(), "生命红木活板门");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getSign().get(), "生命红木告示牌");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStairs().get(), "生命红木楼梯");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getSlab().get(), "生命红木台阶");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getWood().get(), "生命红木");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLeaves().get(), "生命红木树叶");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getFence().get(), "生命红木栅栏");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getFenceGate().get(), "生命红木栅栏门");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPressurePlate().get(), "生命红木压力板");
+
         add(NatureBlocks.DESERT_FOSSIL.get(), "沙漠化石");
         add(NatureBlocks.HARDENED_SAND_BLOCK.get(), "硬化沙块");
         add(NatureBlocks.MOIST_SAND_BLOCK.get(), "湿润沙块");
@@ -1034,6 +1050,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.RED_MOIST_SAND_BLOCK.get(), "湿润红沙块");
         add(NatureBlocks.DIATOMACEOUS.get(), "硅藻土");
         add(NatureBlocks.SLUSH.get(), "雪泥块");
+        add(NatureBlocks.SILT_BLOCK.get(), "泥沙块");
         add(NatureBlocks.MARINE_GRAVEL.get(), "海洋砂砾");
         add(NatureBlocks.EBONY_STONE.get(), "黑檀石块");
         add(NatureBlocks.EBONY_COBBLESTONE.get(), "黑檀圆石");
@@ -1235,6 +1252,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.CHISELED_YELLOW_WILLOW_PLANKS.get(), "雕纹黄柳木板");
         add(DecorativeBlocks.CHISELED_BAOBAB_PLANKS.get(), "雕纹猴面包木木板");
         add(DecorativeBlocks.CHISELED_LIVING_PLANKS.get(), "雕纹生命木板");
+        add(DecorativeBlocks.CHISELED_LIVING_MAHOGANY_PLANKS.get(), "雕纹生命红木板");
         add(DecorativeBlocks.TR_GRANITE_COLUMN.get(), "异域花岗岩梁");
         add(DecorativeBlocks.PURE_GLASS.get(), "纯净玻璃");
         add(DecorativeBlocks.WHITE_PURE_GLASS.get(), "白色纯净玻璃");

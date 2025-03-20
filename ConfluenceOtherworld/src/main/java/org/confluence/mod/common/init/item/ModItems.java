@@ -79,6 +79,8 @@ public final class ModItems {
 
     public static final Supplier<BlockPlacingWandItem> LIVING_WOOD_WAND = ITEMS.register("living_wood_wand", () -> new BlockPlacingWandItem(BlockTags.LOGS, NatureBlocks.LIVING_LOG_BLOCKS.getLog().get()));
     public static final Supplier<BlockPlacingWandItem> LEAVES_WAND = ITEMS.register("leaves_wand", () -> new BlockPlacingWandItem(BlockTags.LEAVES, NatureBlocks.LIVING_LOG_BLOCKS.getLeaves().get()));
+    public static final Supplier<BlockPlacingWandItem> LIVING_MAHOGANY_WAND= ITEMS.register("living_mahogany_wand", () -> new BlockPlacingWandItem(BlockTags.LOGS, NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLog().get()));
+    public static final Supplier<BlockPlacingWandItem> RICH_MAHOGANY_LEAF_WAND= ITEMS.register("rich_mahogany_leaf_wand", () -> new BlockPlacingWandItem(BlockTags.LEAVES, NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLeaves().get()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

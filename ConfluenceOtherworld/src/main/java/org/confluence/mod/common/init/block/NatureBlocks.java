@@ -76,6 +76,7 @@ public class NatureBlocks {
     public static final DeferredBlock<SandLayerBlock> RED_SAND_LAYER_BLOCK = registerWithItem("red_sand_layer_block", SandLayerBlock::new);
     public static final DeferredBlock<Block> DESERT_FOSSIL = registerWithItem("desert_fossil", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE)));
     public static final DeferredBlock<Block> SLUSH = registerWithItem("slush", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SAND)));
+    public static final DeferredBlock<Block> SILT_BLOCK = registerWithItem("silt_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SAND)));
     public static final DeferredBlock<Block> MARINE_GRAVEL = registerWithItem("marine_gravel", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SAND)));
     public static final DeferredBlock<RotatedPillarBlock> STONY_LOG = registerWithItem("stony_log", () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));
     public static final DeferredBlock<LifeCrystalBlock> LIFE_CRYSTAL_BLOCK = registerWithItem("life_crystal_block", () -> new LifeCrystalBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_CLUSTER).mapColor(MapColor.COLOR_RED).lightLevel(state -> 5)), LifeCrystalBlock.Item::new);
@@ -184,6 +185,22 @@ public class NatureBlocks {
             .sign(properties -> new StandingSignBlock(LIVING.TYPE, properties), properties -> new WallSignBlock(LIVING.TYPE, properties), SignItem::new)
             .trapdoor(properties -> new TrapDoorBlock(LIVING.SET, properties))
             .door(properties -> new DoorBlock(LIVING.SET, properties)).build();
+    // 生命红木
+    public static final LogBlockSet LIVING_MAHOGANY_BLOCKS = LogBlockSet.builder("living_mahogany", true)
+            .log(RotatedPillarBlock::new)
+            .strippedLog(RotatedPillarBlock::new)
+            .wood(RotatedPillarBlock::new)
+            .strippedWood(RotatedPillarBlock::new)
+            .leaves(properties -> new TransparentLeavesBlock(properties.noOcclusion()))
+            .button(properties -> new ButtonBlock(LIVING_MAHOGANY.SET, 30, properties))
+            .fence(FenceBlock::new)
+            .fenceGate(properties -> new FenceGateBlock(LIVING_MAHOGANY.TYPE, properties))
+            .pressurePlate(properties -> new PressurePlateBlock(LIVING_MAHOGANY.SET, properties))
+            .slab(SlabBlock::new)
+            .stair(StairBlock::new)
+            .sign(properties -> new StandingSignBlock(LIVING_MAHOGANY.TYPE, properties), properties -> new WallSignBlock(LIVING_MAHOGANY.TYPE, properties), SignItem::new)
+            .trapdoor(properties -> new TrapDoorBlock(LIVING_MAHOGANY.SET, properties))
+            .door(properties -> new DoorBlock(LIVING_MAHOGANY.SET, properties)).build();
     // 灰烬
     public static final DeferredBlock<Block> ASH_SAPLING = registerWithItem("ash_sapling", () -> new AshSaplingBlock(ModFeatures.TreeGrowers.ASH_GROWER));
     public static final LogBlockSet ASH_LOG_BLOCKS = LogBlockSet.builder("ash", false).createDefault(ASH, true).build();

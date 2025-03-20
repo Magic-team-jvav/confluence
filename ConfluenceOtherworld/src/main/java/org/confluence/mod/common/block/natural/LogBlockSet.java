@@ -555,6 +555,7 @@ public class LogBlockSet {
         BAOBAB("baobab"),
         YELLOW_WILLOW("yellow_willow"),
         LIVING("living"),
+        LIVING_MAHOGANY("living_mahogany"),
         ASH("ash"),
         SPOOKY("spooky");
 

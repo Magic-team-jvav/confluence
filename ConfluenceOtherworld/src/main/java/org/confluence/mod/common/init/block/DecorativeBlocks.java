@@ -34,6 +34,7 @@ public class DecorativeBlocks {
     public static final Supplier<Block> CHISELED_BAOBAB_PLANKS = copyBlockRegister("chiseled_baobab_planks", Blocks.OAK_PLANKS);
     public static final Supplier<Block> CHISELED_YELLOW_WILLOW_PLANKS = copyBlockRegister("chiseled_yellow_willow_planks", Blocks.OAK_PLANKS);
     public static final Supplier<Block> CHISELED_LIVING_PLANKS = copyBlockRegister("chiseled_living_planks", Blocks.OAK_PLANKS);
+    public static final Supplier<Block> CHISELED_LIVING_MAHOGANY_PLANKS = copyBlockRegister("chiseled_living_mahogany_planks", Blocks.OAK_PLANKS);
     public static final Supplier<Block> CHISELED_ASH_PLANKS = copyBlockRegister("chiseled_ash_planks", Blocks.OAK_PLANKS);
     public static final Supplier<Block> WOOD_STONE_SLATTED_BLOCKS = copyBlockRegister("wood_stone_slatted_blocks", Blocks.OAK_PLANKS);
     public static final Supplier<Block> BLUE_ICE_BRICKS = copyBlockRegister("blue_ice_bricks", Blocks.BLUE_ICE);

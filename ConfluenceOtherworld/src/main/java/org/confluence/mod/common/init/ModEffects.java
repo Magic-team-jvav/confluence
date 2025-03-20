@@ -21,7 +21,7 @@ public final class ModEffects {
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(BuiltInRegistries.MOB_EFFECT, Confluence.MODID);
 
     public static final DeferredHolder<MobEffect, MobEffect> EXQUISITELY_STUFFED = EFFECTS.register("exquisitely_stuffed", ExquisitelyStuffedEffect::new);
-    public static final DeferredHolder<MobEffect, MobEffect> IRON_SKIN = EFFECTS.register("iron_skin", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x184F5).addAttributeModifier(Attributes.ARMOR, Confluence.asResource("iron_skin"), 8, AttributeModifier.Operation.ADD_VALUE));
+    public static final DeferredHolder<MobEffect, MobEffect> IRON_SKIN = EFFECTS.register("iron_skin", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x184F5).addAttributeModifier(Attributes.ARMOR, Confluence.asResource("iron_skin"), 4, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> ENDURANCE = EFFECTS.register("endurance", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x708090).addAttributeModifier(Attributes.KNOCKBACK_RESISTANCE, Confluence.asResource("endurance"), 1, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> INFERNO = EFFECTS.register("inferno", InfernoEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> LIFE_FORCE = EFFECTS.register("life_force", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFC0CB).addAttributeModifier(Attributes.MAX_HEALTH, Confluence.asResource("life_force"), 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));

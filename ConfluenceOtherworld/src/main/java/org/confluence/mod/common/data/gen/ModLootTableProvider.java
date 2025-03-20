@@ -92,6 +92,7 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(RAW_HELLSTONE_BLOCK.get());
             dropSelf(DESERT_FOSSIL.get());
             dropSelf(SLUSH.get());
+            dropSelf(SILT_BLOCK.get());
             dropSelf(MARINE_GRAVEL.get());
             dropSelf(DIATOMACEOUS.get());
             dropSelf(CLOUD_BLOCK.get());
@@ -251,6 +252,7 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(YELLOW_WILLOW_LOG_BLOCKS.getLog().get());
             dropSelf(BAOBAB_LOG_BLOCKS.getLog().get());
             dropSelf(LIVING_LOG_BLOCKS.getLog().get());
+            dropSelf(LIVING_MAHOGANY_BLOCKS.getLog().get());
             dropSelf(SHADOW_LOG_BLOCKS.getLog().get());
             dropSelf(PEARL_LOG_BLOCKS.getLog().get());
             dropSelf(PALM_LOG_BLOCKS.getLog().get());

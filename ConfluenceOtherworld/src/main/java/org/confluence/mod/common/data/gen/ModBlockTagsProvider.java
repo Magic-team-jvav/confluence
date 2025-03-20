@@ -13,6 +13,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
 import org.jetbrains.annotations.Nullable;
 
@@ -139,6 +140,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 PEARL_LOG_BLOCKS.getStrippedLog().get(),
                 YELLOW_WILLOW_LOG_BLOCKS.getStrippedLog().get(),
                 LIVING_LOG_BLOCKS.getStrippedLog().get(),
+                LIVING_MAHOGANY_BLOCKS.getStrippedLog().get(),
                 BAOBAB_LOG_BLOCKS.getStrippedLog().get(),
                 EBONY_LOG_BLOCKS.getLog().get(),
                 SHADOW_LOG_BLOCKS.getLog().get(),
@@ -147,6 +149,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 PEARL_LOG_BLOCKS.getLog().get(),
                 YELLOW_WILLOW_LOG_BLOCKS.getLog().get(),
                 LIVING_LOG_BLOCKS.getLog().get(),
+                LIVING_MAHOGANY_BLOCKS.getLog().get(),
                 BAOBAB_LOG_BLOCKS.getLog().get(),
                 EBONY_LOG_BLOCKS.getWood().get(),
                 SHADOW_LOG_BLOCKS.getWood().get(),
@@ -155,6 +158,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 PEARL_LOG_BLOCKS.getWood().get(),
                 YELLOW_WILLOW_LOG_BLOCKS.getWood().get(),
                 LIVING_LOG_BLOCKS.getWood().get(),
+                LIVING_MAHOGANY_BLOCKS.getWood().get(),
                 BAOBAB_LOG_BLOCKS.getWood().get(),
                 EBONY_LOG_BLOCKS.getStrippedWood().get(),
                 SHADOW_LOG_BLOCKS.getStrippedWood().get(),
@@ -163,6 +167,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 PEARL_LOG_BLOCKS.getStrippedWood().get(),
                 YELLOW_WILLOW_LOG_BLOCKS.getStrippedWood().get(),
                 LIVING_LOG_BLOCKS.getStrippedWood().get(),
+                LIVING_MAHOGANY_BLOCKS.getStrippedWood().get(),
                 BAOBAB_LOG_BLOCKS.getStrippedWood().get(),
                 OAK_LOG_BOULDER.get()
         );
@@ -283,12 +288,14 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SILLY_BALLOON_MACHINE.get(),
                 BASE_CHEST_BLOCK.get(),
                 JUNGLE_HIVE_BLOCK.get(),
-                THIN_ICE_BLOCK.get()
+                THIN_ICE_BLOCK.get(),
+                WINTER_MARROW_BLOCK.get()
         );
         // 铲子
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithShovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);
         mineableWithShovel.add(
                 SLUSH.get(),
+                SILT_BLOCK.get(),
                 MARINE_GRAVEL.get(),
                 DIATOMACEOUS.get(),
                 EBONY_SAND.get(),
@@ -321,7 +328,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CHISELED_LIVING_PLANKS.get(),
                 CHISELED_ASH_PLANKS.get(),
                 WOOD_STONE_SLATTED_BLOCKS.get(),
-                BASE_CHEST_BLOCK.get()
+                BASE_CHEST_BLOCK.get(),
+                SPORE_ROOT_BLOCK.get()
         );
         tag(ModTags.Blocks.NEEDS_1_LEVEL).add(
                 RAW_TIN_BLOCK.get(),
@@ -583,6 +591,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 PEARL_LOG_BLOCKS.getLeaves().get(),
                 YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get(),
                 LIVING_LOG_BLOCKS.getLeaves().get(),
+                LIVING_MAHOGANY_BLOCKS.getLeaves().get(),
                 BAOBAB_LOG_BLOCKS.getLeaves().get(),
                 YELLOW_WILLOW_DROOPING_LEAVES.get()
         );
@@ -740,6 +749,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 PEARL_LOG_BLOCKS.getFence().get(),
                 YELLOW_WILLOW_LOG_BLOCKS.getFence().get(),
                 LIVING_LOG_BLOCKS.getFence().get(),
+                LIVING_MAHOGANY_BLOCKS.getFence().get(),
                 BAOBAB_LOG_BLOCKS.getFence().get()
         );
         tag(Tags.Blocks.FENCES_WOODEN).add(
@@ -751,6 +761,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 PEARL_LOG_BLOCKS.getFence().get(),
                 YELLOW_WILLOW_LOG_BLOCKS.getFence().get(),
                 LIVING_LOG_BLOCKS.getFence().get(),
+                LIVING_MAHOGANY_BLOCKS.getFence().get(),
                 BAOBAB_LOG_BLOCKS.getFence().get()
         );
         tag(Tags.Blocks.FENCE_GATES).add(
@@ -762,6 +773,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 PEARL_LOG_BLOCKS.getFenceGate().get(),
                 YELLOW_WILLOW_LOG_BLOCKS.getFenceGate().get(),
                 LIVING_LOG_BLOCKS.getFenceGate().get(),
+                LIVING_MAHOGANY_BLOCKS.getFenceGate().get(),
                 BAOBAB_LOG_BLOCKS.getFenceGate().get()
         );
         tag(Tags.Blocks.FENCE_GATES_WOODEN).add(
@@ -773,6 +785,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 PEARL_LOG_BLOCKS.getFenceGate().get(),
                 YELLOW_WILLOW_LOG_BLOCKS.getFenceGate().get(),
                 LIVING_LOG_BLOCKS.getFenceGate().get(),
+                LIVING_MAHOGANY_BLOCKS.getFenceGate().get(),
                 BAOBAB_LOG_BLOCKS.getFenceGate().get()
         );
         tag(Tags.Blocks.GLASS_BLOCKS).add(
@@ -816,6 +829,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         );
         tag(Tags.Blocks.GRAVELS).add(
                 SLUSH.get(),
+                SILT_BLOCK.get(),
                 MARINE_GRAVEL.get()
         );
         tag(Tags.Blocks.HIDDEN_FROM_RECIPE_VIEWERS).add(
@@ -834,6 +848,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         );
         tag(Tags.Blocks.GRAVELS).add(
                 SLUSH.get(),
+                SILT_BLOCK.get(),
                 MARINE_GRAVEL.get()
         );
         tag(Tags.Blocks.OBSIDIANS).add(
@@ -1147,7 +1162,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 BLUE_BRICK_SLAB.get(),
                 PINK_BRICK_SLAB.get(),
                 GREEN_BRICK_SLAB.get(),
-                FunctionalBlocks.HELLFORGE.get()
+                FunctionalBlocks.HELLFORGE.get(),
+                HELLSTONE.get(),
+                ASH_HELLSTONE.get(),
+                HELLSTONE_BRICKS.get(),
+                RAW_HELLSTONE_BLOCK.get(),
+                HELLSTONE_BLOCK.get()
         );
     }
 

@@ -44,6 +44,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.PROVIDE_LIFE).add(ModItems.HEART.get(), ModItems.CANDY_APPLE.get(), ModItems.CANDY_CANE.get());
         tag(ModTags.Items.DESERT_FOSSIL).add(NatureBlocks.DESERT_FOSSIL.get().asItem());
         tag(ModTags.Items.SLUSH).add(NatureBlocks.SLUSH.get().asItem());
+        tag(ModTags.Items.SILT_BLOCK).add(NatureBlocks.SILT_BLOCK.get().asItem());
         tag(ModTags.Items.MARINE_GRAVEL).add(NatureBlocks.MARINE_GRAVEL.get().asItem());
         tag(ModTags.Items.JUNK).add(Blocks.LILY_PAD.asItem(), Items.LEATHER_BOOTS, Blocks.SEAGRASS.asItem());
         tag(ModTags.Items.CORALS).add(Blocks.TUBE_CORAL.asItem(), Blocks.TUBE_CORAL_FAN.asItem(), Blocks.TUBE_CORAL_BLOCK.asItem(), Blocks.BRAIN_CORAL.asItem(), Blocks.BRAIN_CORAL_FAN.asItem(), Blocks.BRAIN_CORAL_BLOCK.asItem(),
@@ -177,6 +178,22 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.LIVING_LOG_BLOCKS.getFence().asItem(),
                 NatureBlocks.LIVING_LOG_BLOCKS.getFenceGate().asItem(),
                 NatureBlocks.LIVING_LOG_BLOCKS.getPressurePlate().asItem(),
+
+                // 生命红木
+                NatureBlocks.LIVING_MAHOGANY_BLOCKS.getButton().asItem(),
+                NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().asItem(),
+                NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLog().asItem(),
+                NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStrippedWood().asItem(),
+                NatureBlocks.LIVING_MAHOGANY_BLOCKS.getDoor().asItem(),
+                NatureBlocks.LIVING_MAHOGANY_BLOCKS.getTrapdoor().asItem(),
+                NatureBlocks.LIVING_MAHOGANY_BLOCKS.getSign().asItem(),
+                NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStairs().asItem(),
+                NatureBlocks.LIVING_MAHOGANY_BLOCKS.getSlab().asItem(),
+                NatureBlocks.LIVING_MAHOGANY_BLOCKS.getWood().asItem(),
+                NatureBlocks.LIVING_MAHOGANY_BLOCKS.getFence().asItem(),
+                NatureBlocks.LIVING_MAHOGANY_BLOCKS.getFenceGate().asItem(),
+                NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPressurePlate().asItem(),
 
                 // 阴森木
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getButton().asItem(),
@@ -332,6 +349,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
               NatureBlocks.PALM_LOG_BLOCKS.getPlanks().asItem(),
               NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().asItem(),
               NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().asItem(),
+              NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().asItem(),
               NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks().asItem(),
               Blocks.OAK_PLANKS.asItem(),
               Blocks.ACACIA_PLANKS.asItem(),
@@ -358,61 +376,70 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.DAMSEL_FISH.get(),
                 FoodItems.TROUT.get(),
                 FoodItems.TUNA.get(),
-                FoodItems.PARTIAL_MOUTH_FISH.get()
+                FoodItems.PARTIAL_MOUTH_FISH.get(),
+                FoodItems.YELLOW_EEL.get(),
+                FoodItems.TILAPIA.get()
         );
         tag(ItemTags.PLANKS).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getPlanks().asItem(),
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getPlanks().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks().asItem()
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().asItem(),NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks().asItem()
         );
         tag(ItemTags.LOGS).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getLog().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getLog().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getLog().asItem(),
-                NatureBlocks.ASH_LOG_BLOCKS.getLog().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.ASH_LOG_BLOCKS.getLog().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getLog().asItem(),NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLog().asItem(),
                 NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getLog().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().asItem()
         );
         tag(ItemTags.WOODEN_SLABS).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getSlab().asItem(),
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getSlab().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getSlab().asItem()
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getSlab().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getSlab().asItem()
         );
         tag(ItemTags.WOODEN_FENCES).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getFence().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getFence().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getFence().asItem(),
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getFence().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getFence().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getFence().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getFence().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getFence().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getFence().asItem()
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getFence().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getFence().asItem(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getFence().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getFence().asItem()
         );
         tag(ItemTags.WOODEN_DOORS).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getDoor().asItem(),
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getDoor().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getDoor().asItem()
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getDoor().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getDoor().asItem()
         );
         tag(ItemTags.WOODEN_TRAPDOORS).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getTrapdoor().asItem(),
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getTrapdoor().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getTrapdoor().asItem()
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getTrapdoor().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getTrapdoor().asItem()
         );
         tag(ItemTags.WOODEN_PRESSURE_PLATES).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getPressurePlate().asItem(),
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getPressurePlate().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getPressurePlate().asItem()
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPressurePlate().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getPressurePlate().asItem()
         );
         tag(ItemTags.WOODEN_STAIRS).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getStairs().asItem(),
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getStairs().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getStairs().asItem()
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getStairs().asItem(),  NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStairs().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getStairs().asItem()
         );
         tag(ModTags.Items.CHARCOAL_CAN_BE_BURNED).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getLog().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getLog().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getLog().asItem(),
                 NatureBlocks.ASH_LOG_BLOCKS.getLog().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getLog().asItem(),NatureBlocks.SPOOKY_LOG_BLOCKS.getLog().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getLog().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getLog().asItem(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLog().asItem(),NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().asItem(),
                 NatureBlocks.EBONY_LOG_BLOCKS.getStrippedLog().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedLog().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getStrippedLog().asItem(),
                 NatureBlocks.ASH_LOG_BLOCKS.getStrippedLog().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getStrippedLog().asItem(),NatureBlocks.SPOOKY_LOG_BLOCKS.getStrippedLog().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedLog().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getStrippedLog().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedLog().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getStrippedLog().asItem(),NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStrippedLog().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedLog().asItem(),
                 NatureBlocks.EBONY_LOG_BLOCKS.getStrippedWood().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedWood().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getStrippedWood().asItem(),
                 NatureBlocks.ASH_LOG_BLOCKS.getStrippedWood().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getStrippedWood().asItem(),NatureBlocks.SPOOKY_LOG_BLOCKS.getStrippedWood().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedWood().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getStrippedWood().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedWood().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedWood().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getStrippedWood().asItem(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStrippedWood().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedWood().asItem(),
                 NatureBlocks.EBONY_LOG_BLOCKS.getWood().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getWood().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getWood().asItem(),
                 NatureBlocks.ASH_LOG_BLOCKS.getWood().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getWood().asItem(),NatureBlocks.SPOOKY_LOG_BLOCKS.getWood().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getWood().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getWood().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().asItem()
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getWood().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getWood().asItem(),NatureBlocks.LIVING_MAHOGANY_BLOCKS.getWood().asItem(),  NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().asItem()
         );
         // neoforge
         tag(Tags.Items.BONES).add(

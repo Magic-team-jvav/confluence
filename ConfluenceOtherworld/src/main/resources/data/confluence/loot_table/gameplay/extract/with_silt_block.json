@@ -28,7 +28,7 @@
               "count": {
                 "type": "uniform",
                 "min": 1,
-                "max": 1
+                "max": 2
               }
             }
           ],
@@ -43,7 +43,7 @@
               "count": {
                 "type": "uniform",
                 "min": 1,
-                "max": 2
+                "max": 4
               }
             }
           ],
@@ -58,7 +58,7 @@
               "count": {
                 "type": "uniform",
                 "min": 1,
-                "max": 7
+                "max": 15
               }
             }
           ],
@@ -73,7 +73,7 @@
               "count": {
                 "type": "uniform",
                 "min": 1,
-                "max": 1
+                "max": 2
               }
             }
           ],
@@ -88,7 +88,7 @@
               "count": {
                 "type": "uniform",
                 "min": 1,
-                "max": 1
+                "max": 2
               }
             }
           ],
@@ -103,7 +103,7 @@
               "count": {
                 "type": "uniform",
                 "min": 1,
-                "max": 1
+                "max": 2
               }
             }
           ],
@@ -118,7 +118,7 @@
               "count": {
                 "type": "uniform",
                 "min": 1,
-                "max": 1
+                "max": 2
               }
             }
           ],
@@ -133,7 +133,7 @@
               "count": {
                 "type": "uniform",
                 "min": 1,
-                "max": 1
+                "max": 2
               }
             }
           ],
@@ -148,7 +148,7 @@
               "count": {
                 "type": "uniform",
                 "min": 1,
-                "max": 1
+                "max": 2
               }
             }
           ],
@@ -163,7 +163,7 @@
               "count": {
                 "type": "uniform",
                 "min": 1,
-                "max": 1
+                "max": 2
               }
             }
           ],
@@ -178,7 +178,7 @@
               "count": {
                 "type": "uniform",
                 "min": 1,
-                "max": 1
+                "max": 2
               }
             }
           ],
@@ -193,7 +193,7 @@
               "count": {
                 "type": "uniform",
                 "min": 1,
-                "max": 1
+                "max": 2
               }
             }
           ],
@@ -208,7 +208,7 @@
               "count": {
                 "type": "uniform",
                 "min": 1,
-                "max": 1
+                "max": 2
               }
             }
           ],
@@ -223,7 +223,7 @@
               "count": {
                 "type": "uniform",
                 "min": 1,
-                "max": 1
+                "max": 2
               }
             }
           ],
@@ -238,7 +238,7 @@
               "count": {
                 "type": "uniform",
                 "min": 1,
-                "max": 1
+                "max": 2
               }
             }
           ],
@@ -253,7 +253,7 @@
               "count": {
                 "type": "uniform",
                 "min": 1,
-                "max": 1
+                "max": 2
               }
             }
           ],
@@ -268,7 +268,7 @@
               "count": {
                 "type": "uniform",
                 "min": 1,
-                "max": 1
+                "max": 2
               }
             }
           ],
@@ -283,7 +283,7 @@
               "count": {
                 "type": "uniform",
                 "min": 1,
-                "max": 1
+                "max": 2
               }
             }
           ],
@@ -297,72 +297,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:prismarine_shard",
-          "weight": 5
+          "name": "minecraft:flint",
+          "weight": 10
         },
         {
           "type": "minecraft:empty",
-          "weight": 95
-        }
-      ],
-      "rolls": 1
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:prismarine_crystals",
-          "weight": 5
-        },
-        {
-          "type": "minecraft:empty",
-          "weight": 95
-        }
-      ],
-      "rolls": 1
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:nautilus_shell",
-          "weight": 5
-        },
-        {
-          "type": "minecraft:empty",
-          "weight": 95
-        }
-      ],
-      "rolls": 1
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:sniffer_egg",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:empty",
-          "weight": 99
-        }
-      ],
-      "rolls": 1
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "confluence:heim",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:empty",
-          "weight": 95
+          "weight": 90
         }
       ],
       "rolls": 1

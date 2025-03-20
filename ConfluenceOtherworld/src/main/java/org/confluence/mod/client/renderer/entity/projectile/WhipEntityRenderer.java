@@ -1,6 +1,8 @@
 package org.confluence.mod.client.renderer.entity.projectile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -11,10 +13,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.ItemAbilities;
 import org.confluence.mod.common.entity.projectile.WhipEntity;
 import org.confluence.terraentity.entity.ai.keyframe.FrameUtil;
 
@@ -42,7 +42,7 @@ public class WhipEntityRenderer extends EntityRenderer<WhipEntity> {
 
         if(entity.getOwner() instanceof Player player) {
             poseStack.pushPose();
-            poseStack.translate(-0.5, -0.5f, -0.5);
+//            poseStack.translate(-0.5, -0.5f, -0.5);
             float f = player.getAttackAnim(partialTick);
             float f1 = Mth.sin(Mth.sqrt(f) * 3.1415927F);
             Vec3 vec3 = this.getPlayerHandPos(player, f1, partialTick);
@@ -66,17 +66,48 @@ public class WhipEntityRenderer extends EntityRenderer<WhipEntity> {
             // Catmull-Rom样条插值
             List<Vec3> positions = FrameUtil.getInterpolatedPoints(toInterpoloate, 30);
 
+//            VertexConsumer vertexconsumer1 = bufferSource.getBuffer(RenderType.lineStrip());
+//            Vec3 vec31 = getPlayerHandPos(player, f1, partialTick).subtract(player.position());
+
+            float f5 = 0.0F;
+            float f6 = 0.0F;
+            float f7 = 0.0F;
+            int i = 0;
             for(Vec3 vec : positions){
                 // 变换到相机坐标系
                 float f2 = (float) (vec3.x - vec.x - lerpx);
                 float f3 = (float) (vec3.y - vec.y - lerpy);
                 float f4 = (float) (vec3.z - vec.z - lerpz);
-                poseStack.pushPose();
-                poseStack.translate(-f2 , -f3, -f4);
-                poseStack.scale(0.5f, 0.5f, 0.5f);
-                Minecraft.getInstance().getBlockRenderer().renderSingleBlock(
-                        Blocks.ACACIA_FENCE.defaultBlockState(), poseStack, bufferSource, packedLight, OverlayTexture.pack(0, 10));
-                poseStack.popPose();
+                // 排除第一个点
+                if(i > 0) {
+                    poseStack.pushPose();
+    //                PoseStack.Pose posestack$pose1 = poseStack.last();
+
+                    poseStack.translate(-f2 , -f3, -f4);
+                    poseStack.scale(0.5f, 0.5f, 0.5f);
+
+                    // 旋转到前方视角
+                    float fx = f2 - f5;
+                    float fy = f3 - f6;
+                    float fz = f4 - f7;
+                    float yaw = (float) (Math.PI - Math.atan2(fz, fx));
+                    float pitch = (float) (-Math.atan2(fy,
+                            Math.sqrt(fx * fx + fz * fz)));
+                    poseStack.mulPose(Axis.YP.rotation(yaw));
+                    poseStack.mulPose(Axis.ZP.rotation((float) (pitch + Math.PI / 3 )));
+
+    //                stringVertex(-f2, -f3, -f4, vertexconsumer1, posestack$pose1);
+    //                poseStack.translate(-vec31.x, -vec31.y, -vec31.z);
+
+                    Minecraft.getInstance().getBlockRenderer().renderSingleBlock(
+                            Blocks.ACACIA_FENCE.defaultBlockState(), poseStack, bufferSource, packedLight, OverlayTexture.pack(0, 10));
+
+                    poseStack.popPose();
+                }
+                f5 = f2;
+                f6 = f3;
+                f7 = f4;
+                i++;
             }
             poseStack.popPose();
         }
@@ -85,11 +116,6 @@ public class WhipEntityRenderer extends EntityRenderer<WhipEntity> {
 
     private Vec3 getPlayerHandPos(Player player, float angle, float partialTick) {
         int i = player.getMainArm() == HumanoidArm.RIGHT ? 1 : -1;
-        ItemStack itemstack = player.getMainHandItem();
-        if (!itemstack.canPerformAction(ItemAbilities.FISHING_ROD_CAST)) {
-            i = -i;
-        }
-
         if (this.entityRenderDispatcher.options.getCameraType().isFirstPerson() && player == Minecraft.getInstance().player) {
             double d4 = 960.0 / (double) this.entityRenderDispatcher.options.fov().get();
             Vec3 vec3 = this.entityRenderDispatcher.camera.getNearPlane()
@@ -109,5 +135,16 @@ public class WhipEntityRenderer extends EntityRenderer<WhipEntity> {
             return player.getEyePosition(partialTick).add(-d1 * d2 - d0 * d3, (double)f2 - 0.45 * (double)f1, -d0 * d2 + d1 * d3);
         }
     }
+    private static float fraction(int numerator, int denominator) {
+        return (float)numerator / (float)denominator;
+    }
 
+    private static void vertex(VertexConsumer consumer, PoseStack.Pose pose, int packedLight, float x, int y, int u, int v) {
+        consumer.addVertex(pose, x - 0.5F, (float)y - 0.5F, 0.0F).setColor(-1).setUv((float)u, (float)v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, 0.0F, 1.0F, 0.0F);
+    }
+
+    private static void stringVertex(float x, float y, float z, VertexConsumer consumer, PoseStack.Pose pose) {
+        float f6 = Mth.sqrt(x*x + y*y + z*z);
+        consumer.addVertex(pose, x, y, z).setColor(-16777216).setNormal(pose, x / f6, y / f6, z / f6);
+    }
 }

@@ -4,7 +4,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -15,21 +14,29 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.animation.LashAnimation;
+import org.confluence.terraentity.api.hit_effect.EffectStrategy;
 import org.confluence.terraentity.entity.ai.keyframe.animation.Vec3KeyframeAnimation;
 import org.confluence.terraentity.entity.ai.keyframe.dynamic_curve.SplineKeyframeDynamicCurve;
+import org.confluence.terraentity.init.TEAttributes;
+import org.confluence.terraentity.init.TETags;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WhipEntity extends AbstractHurtingProjectile {
 
+    Map<Entity, Integer> hitEntities = new HashMap<>();
     // todo 更换贴图和模型
     public ResourceLocation texture = Confluence.asResource("textures/entity/whip.png");
 
     int existTick = 20;
-    Vec3KeyframeAnimation tail;
+    public int hitCooldown = 5;
+    public EffectStrategy hiteffect;
+
 
     // 初始位置
     public Vec3 initialPosition;
@@ -43,6 +50,7 @@ public class WhipEntity extends AbstractHurtingProjectile {
     List<Vec3KeyframeAnimation> parts;
     // 关键点插值器
     public SplineKeyframeDynamicCurve<Vec3KeyframeAnimation> interpolator;
+    Vec3KeyframeAnimation tail;
 
     public static final EntityDataAccessor<Vector3f> DATA_INITIAL_POSITION = SynchedEntityData.defineId(WhipEntity.class, EntityDataSerializers.VECTOR3);
     public static final EntityDataAccessor<Vector3f> DATA_INITIAL_DIRECTION = SynchedEntityData.defineId(WhipEntity.class, EntityDataSerializers.VECTOR3);
@@ -108,8 +116,23 @@ public class WhipEntity extends AbstractHurtingProjectile {
                         AABB aabb = new AABB(pos.x - range, pos.y - range, pos.z - range,
                                 pos.x + range, pos.y + range, pos.z + range);
                         for (var entity : level().getEntities(this, aabb, e -> e != getOwner())) {
-                            if (entity instanceof LivingEntity) {
-                                entity.hurt(damageSources().magic(), 1);
+                            if (entity instanceof LivingEntity hurter) {
+                                if(getOwner() instanceof LivingEntity living){
+                                    if(!hitEntities.containsKey(entity)){
+                                        hitEntities.put(entity, hitCooldown);
+                                        double damage = living.getAttributeValue(TEAttributes.SUMMON_DAMAGE);
+                                        if(hiteffect!= null){
+                                            hiteffect.getEffect().accept(living, hurter);
+                                        }
+                                        hurter.hurt(TETags.DamageTypes.of(level(), TETags.DamageTypes.SUMMONER, living), (float) damage);
+                                    }else{
+                                        hitEntities.put(entity, hitEntities.get(entity) - 1);
+                                         if(hitEntities.get(entity) <= 0){
+                                             hitEntities.remove(entity);
+                                         }
+                                         return;
+                                    }
+                                }
                             }
                         }
                     }

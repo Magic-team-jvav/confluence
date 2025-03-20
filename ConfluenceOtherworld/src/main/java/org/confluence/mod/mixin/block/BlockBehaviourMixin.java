@@ -52,6 +52,10 @@ public abstract class BlockBehaviourMixin {
         @Final
         private boolean isAir;
 
+
+
+
+
         @Inject(method = "getCollisionShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;", at = @At("RETURN"), cancellable = true)
         private void shimmer(BlockGetter pLevel, BlockPos pPos, CollisionContext pContext, CallbackInfoReturnable<VoxelShape> cir) {
             if (asState().getDestroySpeed(pLevel, pPos) < 0) return;

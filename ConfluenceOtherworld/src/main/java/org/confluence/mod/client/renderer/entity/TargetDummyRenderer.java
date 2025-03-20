@@ -11,6 +11,8 @@ import org.confluence.mod.client.model.entity.TargetDummyModel;
 import org.confluence.mod.common.entity.TargetDummyEntity;
 
 public class TargetDummyRenderer extends HumanoidMobRenderer<TargetDummyEntity, TargetDummyModel<TargetDummyEntity>> {
+    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/target_dummy.png");
+
     public TargetDummyRenderer(EntityRendererProvider.Context context, TargetDummyModel<TargetDummyEntity> model, float shadowRadius) {
         super(context, model, shadowRadius);
         this.addLayer(new HumanoidArmorLayer(this,
@@ -21,6 +23,6 @@ public class TargetDummyRenderer extends HumanoidMobRenderer<TargetDummyEntity, 
 
     @Override
     public ResourceLocation getTextureLocation(TargetDummyEntity targetDummyEntity) {
-        return Confluence.asResource("textures/entity/target_dummy.png");
+        return TEXTURE;
     }
 }

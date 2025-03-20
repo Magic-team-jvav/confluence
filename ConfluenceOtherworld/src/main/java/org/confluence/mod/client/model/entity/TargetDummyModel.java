@@ -86,7 +86,6 @@ public class TargetDummyModel<T extends TargetDummyEntity> extends HumanoidModel
                 entity.shouldPlayAnimationBack = true;
             }
         }
-
         if (entity.shouldPlayAnimationBack){
             float slow = getSlowSpeed(entity);
             head.xRot -= getXRot(entity) / 10 / slow;
@@ -123,11 +122,14 @@ public class TargetDummyModel<T extends TargetDummyEntity> extends HumanoidModel
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
+        poseStack.pushPose();
         head.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
         body.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
         rightArm.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
         leftArm.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
         rightLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
         leftLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+        poseStack.popPose();
     }
+
 }

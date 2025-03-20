@@ -9,12 +9,14 @@ import com.xiaohunao.equipment_benediction.common.init.EBRegistries;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.equipment_set.AdditionalManaHook;
 import org.confluence.mod.common.equipment_set.ManaConsumeHook;
 
 public final class ModHookTypes {
     public static final DeferredRegister<HookType<?>> TYPES = DeferredRegister.create(EBRegistries.Keys.HOOK_TYPES, Confluence.MODID);
 
     public static final DeferredHolder<HookType<?>, HookType<ManaConsumeHook>> MANA_CONSUME = register("mana_consume", ManaConsumeHook.class);
+    public static final DeferredHolder<HookType<?>, HookType<AdditionalManaHook>> ADDITIONAL_MANA = register("additional_mana", AdditionalManaHook.class);
 
     private static <T extends IHook> DeferredHolder<HookType<?>, HookType<T>> register(String id, Class<T> hookClass) {
         return TYPES.register(id, () -> HookType.createHook(EquipmentBenediction.asResource(id), hookClass));

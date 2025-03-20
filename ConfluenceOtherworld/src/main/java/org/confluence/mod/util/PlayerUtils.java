@@ -96,7 +96,7 @@ public final class PlayerUtils {
 
     public static boolean extractMana(ServerPlayer serverPlayer, ItemStack itemStack, IntSupplier sup) {
         if (serverPlayer.gameMode.isCreative()) return true;
-        IntSupplier posted = HookMapManager.postHooks(ModHookTypes.MANA_CONSUME.get(), (owner, hook) -> hook.onManaConsume(owner, itemStack, sup), serverPlayer);
+        IntSupplier posted = HookMapManager.postHooks(ModHookTypes.MANA_CONSUME.get(), (owner, hook, original) -> hook.onManaConsume(owner, itemStack, original), serverPlayer, sup);
         ManaStorage manaStorage = serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE);
         if (manaStorage.extractMana(posted, serverPlayer)) {
             manaStorage.setRegenerateDelay((int) Math.ceil(0.7F * ((1 - (float) manaStorage.getCurrentMana() / manaStorage.getMaxMana()) * 240 + 45)));

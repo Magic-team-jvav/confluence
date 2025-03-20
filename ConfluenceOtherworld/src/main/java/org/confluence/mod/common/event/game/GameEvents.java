@@ -1,5 +1,6 @@
 package org.confluence.mod.common.event.game;
 
+import com.xiaohunao.equipment_benediction.common.event.AfterEquipmentBenedictionUpdatedEvent;
 import com.xiaohunao.heaven_destiny_moment.common.event.MomentEvent;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstance;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
@@ -110,6 +111,13 @@ public final class GameEvents {
             serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).flushAbility(serverPlayer);
             FishingPowerInfoPacketS2C.sendAndGet(serverPlayer);
             EchoVisibilityPacketS2C.sendToClient(serverPlayer);
+        }
+    }
+
+    @SubscribeEvent
+    public static void afterEquipmentBenedictionUpdated(AfterEquipmentBenedictionUpdatedEvent event) {
+        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
+            serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).flushAbility(serverPlayer);
         }
     }
 

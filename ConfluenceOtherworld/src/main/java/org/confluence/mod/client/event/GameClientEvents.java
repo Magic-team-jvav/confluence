@@ -454,11 +454,6 @@ public final class GameClientEvents {
     }
 
     @SubscribeEvent
-    public static void postRenderPlayer(RenderPlayerEvent.Post event) {
-        LashRendererHandler.render(event);
-    }
-
-    @SubscribeEvent
     public static void postRenderGeoLiving(GeoRenderEvent.Entity.Post event) {
         if (ClientConfigs.goreEffect == ClientConfigs.GoreEffect.OFF) return;
         Entity entity = event.getEntity();

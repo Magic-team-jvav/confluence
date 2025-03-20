@@ -58,21 +58,7 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
                 int widthHealth = guiGraphics.guiWidth() - 128;
-
-
-                var bone = LashAnimation.animation.boneAnimations().get("bone1");
-                var k = bone.getFirst().keyframes();
-                float vv = (float) (System.currentTimeMillis()/100000.0 % 1.0f * 100 % 2.5f);
-                System.out.println(vv);
-                Vector3f v =
-                    k[0].interpolation().apply(Vec3.ZERO.toVector3f(),vv , k, 0, 1, 1);
-                System.out.println(v);
-
-                widthHealth += v.x();
-
-
-                int heightHealth = (int) (4 + 10 + v.y());
-
+                int heightHealth = 4;
                 float maxHealth = 0.0F;
                 float currentHealth = 0.0F;
                 int heartBuff = 0;

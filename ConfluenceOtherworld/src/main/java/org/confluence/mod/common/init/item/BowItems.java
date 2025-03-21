@@ -61,8 +61,8 @@ public class BowItems {
             modifier->modifier.addOnHitEffect(ModEffectStrategies.Components.HUNTING_RIFLE_EFFECT.get())
     ));
     public static final DeferredItem<TerraBowItem> DEMON_BOW = register("demon_bow", () -> new TerraBowItem(5.5F, ModRarity.BLUE,
-            modifier->modifier.addFullPullHitEffect(EffectStrategyComponent.ofPrefab("lightning_bolt",ModEffectStrategies.LIGHTS_BANE_EFFECT))
-    ));
+            modifier->modifier.addFullPullHitEffect(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get()))
+    );
     public static final DeferredItem<TerraBowItem> TENDON_BOW = register("tendon_bow",  () -> new TerraBowItem(6F, ModRarity.BLUE,
             modifier->modifier.addFullPullHitEffect(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get())
     ));

@@ -86,7 +86,7 @@ public class SwordItems {
 
     //效果剑
     public static final DeferredItem<SwordItem> LIGHTS_BANE = register("lights_bane",ModTiers.TITANIUM, 5, -1.0f,
-            ModRarity.BLUE,     EFFECT_SWORD.apply(EffectStrategyComponent.ofPrefab("light",LIGHTS_BANE_EFFECT)));
+            ModRarity.BLUE,     EFFECT_SWORD.apply(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get()));
     public static final DeferredItem<SwordItem> BLOOD_BUTCHERER = register("blood_butchere",ModTiers.TITANIUM, 7, -2.7F,
             ModRarity.BLUE,     EFFECT_SWORD.apply(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get()));
     public static final DeferredItem<SwordItem> VOLCANO = register("volcano",ModTiers.TITANIUM, 13, -3F,
@@ -95,7 +95,7 @@ public class SwordItems {
                     .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.5f, AttributeModifier.Operation.ADD_VALUE)
     );
     public static final DeferredItem<SwordItem> BAT_BAT = register("bat_bat", ModTiers.TITANIUM,12,-3.7f,
-            ModRarity.ORANGE,   EFFECT_SWORD.apply(EffectStrategyComponent.ofPrefab("bat",BAT_FANG_EFFECT)));
+            ModRarity.ORANGE,   EFFECT_SWORD.apply(ModEffectStrategies.Components.BAT_FANG_EFFECT.get()));
     public static final DeferredItem<SwordItem> TENTACLE_MACE = register("tentacle_mace",ModTiers.TITANIUM, 5, -1.4F,
             ModRarity.GREEN,    EFFECT_SWORD.apply(ModEffectStrategies.Components.TENTACLE_SPIKES_EFFECT.get()));
 

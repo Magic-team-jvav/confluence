@@ -574,6 +574,19 @@ public class ModEnglishProvider extends LanguageProvider {
         add("task.confluence.use_life_crystal.desc", "Mail will use life crystal to heal herself");
         add("task.confluence.use_life_crystal.condition.has_life_crystal", "Mainhand holds life crystal");
 
+        // hit effect
+        add("terra_entity.effect.strategy.bat", "Blood absorb +1 hp");
+        add("terra_entity.effect.strategy.lights_bane", "Summon lights bane");
+
+        add("terra_entity.effect.strategy.frozen_burn_3_sec_50_chance", "50% chance frozen burn 3 seconds");
+        add("terra_entity.effect.strategy.tentacle_spikes", "Tentacle spikes");
+        add("terra_entity.effect.strategy.hunting_4_sec", "Hunting 4 seconds");
+        add("terra_entity.effect.strategy.hell_fire_5_sec", "Hell fire 5 seconds");
+        add("terra_entity.effect.strategy.set_fire_5_sec", "Set fire 5 seconds");
+        add("terra_entity.effect.strategy.blood_butchered", "Blood Butchered");
+        add("terra_entity.effect.strategy.bei_dou", "Random 5 effects:\\nfrozen burn ⅳ 10 seconds\\nhell fire ⅳ 10 seconds\\nwither ⅳ 10 seconds\\npoison ⅳ 10 seconds\\ninstant harm ⅷ");
+
+
         PonderHelper.addTranslateKeys(this::add, true);
 
 

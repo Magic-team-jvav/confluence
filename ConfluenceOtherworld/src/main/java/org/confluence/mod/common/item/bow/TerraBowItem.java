@@ -98,13 +98,13 @@ public class TerraBowItem extends BowItem {
 
         if(this.arrowModifier.onHitEffects != null){
 
-            IEffectStrategy.appendDescription(tooltipComponents,
-                    this.arrowModifier.onHitEffects.stream().flatMap(e->e.effects().stream()).toList(),
+            IEffectStrategy.appendDescriptions(tooltipComponents,
+                    this.arrowModifier.onHitEffects,
                     Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").withColor(0xFF00FF));
         }
         if(this.arrowModifier.fullPullHitEffects != null){
-            IEffectStrategy.appendDescription(tooltipComponents,
-                    this.arrowModifier.fullPullHitEffects.stream().flatMap(e->e.effects().stream()).toList(),
+            IEffectStrategy.appendDescriptions(tooltipComponents,
+                    this.arrowModifier.fullPullHitEffects,
                     Component.translatable("tooltip.item.confluence.bow_full_pull_on_hit_effects").append(": ").withColor(0xFF00FF));
         }
 

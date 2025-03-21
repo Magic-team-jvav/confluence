@@ -21,59 +21,63 @@ import java.util.function.Supplier;
 import static org.confluence.terraentity.registries.hit_effect.EffectStrategy.*;
 
 /**
- * <h1>攻击时给敌人施加的效果或回调</h1>
+ * <h1> 攻击时给敌人施加的效果或回调 </h1>
  * <p> 适用于剑、弹射物、生物命中特效等 </p>
- *
+ * <p> 为使翻译键统一，建议注册 EffectStrategy 使用 private, 复用Components  </p>
  * @author coffee
  */
 public final class ModEffectStrategies {
     public static final TERegistries.EffectStrategies EFFECT_STRATEGY = TERegistries.EffectStrategies.create(Confluence.MODID);
 
     /**
-     * 默认id的效果
+     * 复杂的回调效果
      * @param name id
-     * @param effect 效果
+     * @param effect 效果回调
      */
     public static DeferredHolder<EffectStrategy, EffectStrategy> createEffect(String name, BiConsumer<LivingEntity, LivingEntity> effect) {
         return EFFECT_STRATEGY.register(name, ()->new EffectStrategy(name, effect));
     }
+
+    /**
+     * 预定义类型效果
+     * @param name id
+     * @param effect 效果类型
+     */
     public static DeferredHolder<EffectStrategy, EffectStrategy> createEffect(String name, IEffectStrategy effect) {
         return EFFECT_STRATEGY.register(name, ()->new EffectStrategy(effect));
     }
-    
 
     /**未定义效果*/
-    public static final DeferredHolder<EffectStrategy, EffectStrategy> UNDEFINED = createEffect("undefined",
+    private static final DeferredHolder<EffectStrategy, EffectStrategy> UNDEFINED = createEffect("undefined",
             UNDEFINED_EFFECT);
 
     /**蝙蝠棍*/
-    public static final  DeferredHolder<EffectStrategy, EffectStrategy> BAT_FANG_EFFECT = createEffect("bat",
+    private static final  DeferredHolder<EffectStrategy, EffectStrategy> BAT_FANG_EFFECT = createEffect("bat",
             (owner, entity)-> owner.heal(1));
 
     /** 魔光剑*/
-    public static final  DeferredHolder<EffectStrategy, EffectStrategy> LIGHTS_BANE_EFFECT = createEffect("lights_bane",
+    private static final  DeferredHolder<EffectStrategy, EffectStrategy> LIGHTS_BANE_EFFECT = createEffect("lights_bane",
             ON_HIT_PROJECTILE.apply((level)->ModEntities.LIGHTS_BANE_PROJECTILE.get().create(level).addAttackDamage(7f)));
 
-
     /**着火*/
-    public static final DeferredHolder<EffectStrategy, EffectStrategy> SET_FIRE_EFFECT = createEffect("set_fire_5_sec",
+    private static final DeferredHolder<EffectStrategy, EffectStrategy> SET_FIRE_EFFECT = createEffect("set_fire_5_sec",
             SET_FIRE.apply(5 * 20, 1f));
 
 
     // 北斗飞镖
-    public static final DeferredHolder<EffectStrategy, EffectStrategy> FROST_BURN_10_SEC_4_AMP = createEffect("frozen_burn_10_sec_4_amp",
+    private static final DeferredHolder<EffectStrategy, EffectStrategy> FROST_BURN_10_SEC_4_AMP = createEffect("frozen_burn_10_sec_4_amp",
             TimePossibilityAmplifierEffect.of("frozen_burn_10_sec_4_amp", ModEffects.FROST_BURN, 200,3,3,1f));
 
-    public static final DeferredHolder<EffectStrategy, EffectStrategy> HELL_FIRE_10_SEC_4_AMP = createEffect("hell_fire_10_sec_4_amp",
+    private static final DeferredHolder<EffectStrategy, EffectStrategy> HELL_FIRE_10_SEC_4_AMP = createEffect("hell_fire_10_sec_4_amp",
             TimePossibilityAmplifierEffect.of("hell_fire_10_sec_4_amp", ModEffects.HELLFIRE,  200,3,3,1f));
 
-    public static final DeferredHolder<EffectStrategy, EffectStrategy> WITHER_10_SEC_4_AMP = createEffect("wither_10_sec_4_amp",
+    private static final DeferredHolder<EffectStrategy, EffectStrategy> WITHER_10_SEC_4_AMP = createEffect("wither_10_sec_4_amp",
             TimePossibilityAmplifierEffect.of("wither_10_sec_4_amp", MobEffects.WITHER, 200,3,3,1f));
 
-    public static final DeferredHolder<EffectStrategy, EffectStrategy> POISON_10_SEC_4_AMP = createEffect("poison_10_sec_4_amp",
+    private static final DeferredHolder<EffectStrategy, EffectStrategy> POISON_10_SEC_4_AMP = createEffect("poison_10_sec_4_amp",
             TimePossibilityAmplifierEffect.of("poison_10_sec_4_amp", MobEffects.POISON, 200,3,3,1f));
 
-    public static final DeferredHolder<EffectStrategy, EffectStrategy> INSTANT_HARM_1_SEC_7_AMP = createEffect("instant_harm_1_sec_7_amp",
+    private static final DeferredHolder<EffectStrategy, EffectStrategy> INSTANT_HARM_1_SEC_7_AMP = createEffect("instant_harm_1_sec_7_amp",
             TimePossibilityAmplifierEffect.of("instant_harm_1_sec_7_amp", MobEffects.HARM, 1,6,6,1f));
 
 
@@ -94,7 +98,7 @@ public final class ModEffectStrategies {
 
         /**猎弓*/
         public static final Supplier<EffectStrategyComponent>  HUNTING_RIFLE_EFFECT = ()->EffectStrategyComponent.of(
-                TimePossibilityAmplifierEffect.of("hunting", TEEffects.SUMMON_FOCUS, 80));
+                TimePossibilityAmplifierEffect.of("hunting_4_sec", TEEffects.SUMMON_FOCUS, 80));
 
         /**火山*/
         public static final Supplier<EffectStrategyComponent> HELL_FIRE_EFFECT = ()->new EffectStrategyComponent(List.of(
@@ -106,13 +110,22 @@ public final class ModEffectStrategies {
         public static final Supplier<EffectStrategyComponent>  BLOOD_BUTCHERED_EFFECT = ()->EffectStrategyComponent.of(
                 TimePossibilityAmplifierEffect.of("blood_butchered",ModEffects.BLOOD_BUTCHERED.getDelegate(), 180, 0, 4, 0.5f));
 
+        /** 魔光剑*/
+        public static final Supplier<EffectStrategyComponent> LIGHTS_BANE_EFFECT = ()->EffectStrategyComponent.ofPrefab("lights_bane",
+                ModEffectStrategies.LIGHTS_BANE_EFFECT);
+
+        /**蝙蝠棍*/
+        public static final Supplier<EffectStrategyComponent> BAT_FANG_EFFECT = ()->EffectStrategyComponent.ofPrefab("bat",
+                ModEffectStrategies.BAT_FANG_EFFECT);
+
+        /**北斗飞镖*/
         public static final Supplier<EffectStrategyComponent> BEI_DOU_EFFECT = ()->EffectStrategyComponent.of(
                 new RandomWeightEffect("bei_dou", ()->Map.of(
-                        ModEffectStrategies.POISON_10_SEC_4_AMP.get(), 6f,
-                        ModEffectStrategies.HELL_FIRE_10_SEC_4_AMP.get(), 5f,
-                        ModEffectStrategies.WITHER_10_SEC_4_AMP.get(), 5f,
-                        ModEffectStrategies.INSTANT_HARM_1_SEC_7_AMP.get(), 1f,
-                        ModEffectStrategies.FROST_BURN_10_SEC_4_AMP.get(), 5f
+                        POISON_10_SEC_4_AMP.get(), 6f,
+                        HELL_FIRE_10_SEC_4_AMP.get(), 5f,
+                        WITHER_10_SEC_4_AMP.get(), 5f,
+                        INSTANT_HARM_1_SEC_7_AMP.get(), 1f,
+                        FROST_BURN_10_SEC_4_AMP.get(), 5f
                 )));
     }
 }

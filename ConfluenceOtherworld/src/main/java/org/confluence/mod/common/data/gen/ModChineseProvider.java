@@ -2617,6 +2617,18 @@ public class ModChineseProvider extends LanguageProvider {
         add("task.confluence.use_life_crystal.desc", "女仆会主动使用生命水晶增加最大生命值");
         add("task.confluence.use_life_crystal.condition.has_life_crystal", "主手持有生命水晶");
 
+        // hit effect
+        add("terra_entity.effect.strategy.bat", "吸血 +1 hp");
+        add("terra_entity.effect.strategy.lights_bane", "召唤魔光剑");
+
+        add("terra_entity.effect.strategy.frozen_burn_3_sec_50_chance", "50%几率 霜冻 3秒");
+        add("terra_entity.effect.strategy.tentacle_spikes", "触手钉锤");
+        add("terra_entity.effect.strategy.hunting_4_sec", "狩猎 4秒");
+        add("terra_entity.effect.strategy.hell_fire_5_sec", "烈火焚身 5秒");
+        add("terra_entity.effect.strategy.set_fire_5_sec", "着火啦 5秒");
+        add("terra_entity.effect.strategy.blood_butchered", "血腥屠宰");
+        add("terra_entity.effect.strategy.bei_dou", "随机5种效果:\\n霜冻 Ⅳ 10秒\\n烈火焚身 Ⅳ 10秒\\n凋零 Ⅳ 10秒\\n中毒 Ⅳ 10秒\\n瞬间伤害 Ⅷ");
+
         PonderHelper.addTranslateKeys(this::add, false);
     }
 }

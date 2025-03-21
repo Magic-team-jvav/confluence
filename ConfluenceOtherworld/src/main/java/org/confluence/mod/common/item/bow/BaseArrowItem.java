@@ -53,7 +53,7 @@ public class BaseArrowItem extends ArrowItem {
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.additional_attack_damage").append(": +").append(String.format("%.1f", attributes.base_damage)).withColor(0x00FF00));
 
             if(attributes.onHitEffects !=null){
-                IEffectStrategy.appendDescription(tooltipComponents, attributes.onHitEffects.stream().flatMap(e->e.effects().stream()).toList(),
+                IEffectStrategy.appendDescriptions(tooltipComponents, attributes.onHitEffects,
                         Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").withColor(0xFF00FF)
                 );
             }

@@ -36,10 +36,12 @@ public class ScarabBombEntity extends StickyBombEntity {
 
     public ScarabBombEntity(EntityType<? extends ScarabBombEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.blastPower = 5;
     }
 
     public ScarabBombEntity(LivingEntity pShooter) {
         super(ModEntities.SCARAB_BOMB_ENTITY.get(), pShooter);
+        this.blastPower = 5;
     }
 
     @Override
@@ -57,9 +59,9 @@ public class ScarabBombEntity extends StickyBombEntity {
         ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList = new ObjectArrayList<>();
         DamageSource damageSource = Explosion.getDefaultDamageSource(level(), this);
         MultiplyExplosionDamageCalculator damageCalculator = new MultiplyExplosionDamageCalculator(0.2F);
-        for (int i = 0; i < 13; i++) {
+        for (int i = 0; i < 24; i++) {
             if (i % 3 == 0) {
-                Explosion explosion = level().explode(this, damageSource, damageCalculator, getX(), getY(), getZ(), blastPower, false, Level.ExplosionInteraction.MOB);
+                Explosion explosion = level().explode(this, damageSource, damageCalculator, blastPos.x(), blastPos.y(), blastPos.z(), blastPower, false, Level.ExplosionInteraction.MOB);
                 Vec3 end = blastPos.add(step);
                 BlockPos.betweenClosedStream(new AABB(blastPos, end)).forEach(blockPos -> {
                     if (!level().isLoaded(blockPos)) return;

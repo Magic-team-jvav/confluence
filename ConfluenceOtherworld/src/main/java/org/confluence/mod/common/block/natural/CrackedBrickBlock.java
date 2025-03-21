@@ -9,7 +9,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.PushReaction;
@@ -17,8 +16,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class CrackedBrickBlock extends Block {
-    public CrackedBrickBlock() {
-        super(Properties.ofFullCopy(Blocks.STONE_BRICKS).strength(0));
+    public CrackedBrickBlock(Properties properties) {
+        super(properties);
     }
 
     @Override

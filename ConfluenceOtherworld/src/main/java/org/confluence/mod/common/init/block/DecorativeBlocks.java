@@ -133,64 +133,26 @@ public class DecorativeBlocks {
     public static final Supplier<Block> TR_GRANITE_COLUMN = copyBlockRegister("tr_granite_column", Blocks.STONE_BRICKS);
 
     // 地牢
-    public static final Supplier<Block> BLUE_BRICKS = copyBlockRegister("blue_bricks", Blocks.STONE_BRICKS);
-    public static final Supplier<Block> GREEN_BRICKS = copyBlockRegister("green_bricks", Blocks.STONE_BRICKS);
-    public static final Supplier<Block> PINK_BRICKS = copyBlockRegister("pink_bricks", Blocks.STONE_BRICKS);
-    public static final Supplier<CrackedBrickBlock> CRACKED_BLUE_BRICK = registerWithItem("cracked_blue_block", CrackedBrickBlock::new);
-    public static final Supplier<CrackedBrickBlock> CRACKED_GREEN_BRICK = registerWithItem("cracked_green_block", CrackedBrickBlock::new);
-    public static final Supplier<CrackedBrickBlock> CRACKED_PINK_BRICK = registerWithItem("cracked_pink_block", CrackedBrickBlock::new);
-    public static final Supplier<Block> CHISELED_BLUE_BRICKS = copyBlockRegister("chiseled_blue_bricks", Blocks.STONE_BRICKS);
-    public static final Supplier<Block> CHISELED_GREEN_BRICKS = copyBlockRegister("chiseled_green_bricks", Blocks.STONE_BRICKS);
-    public static final Supplier<Block> CHISELED_PINK_BRICKS = copyBlockRegister("chiseled_pink_bricks", Blocks.STONE_BRICKS);
+    public static final Supplier<Block> BLUE_BRICKS = registerWithItem("blue_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(DyeColor.BLUE).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final Supplier<Block> GREEN_BRICKS = registerWithItem("green_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(DyeColor.GREEN).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final Supplier<Block> PINK_BRICKS = registerWithItem("pink_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(DyeColor.PINK).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final Supplier<CrackedBrickBlock> CRACKED_BLUE_BRICK = registerWithItem("cracked_blue_block", () -> new CrackedBrickBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).strength(0).mapColor(DyeColor.BLUE)));
+    public static final Supplier<CrackedBrickBlock> CRACKED_GREEN_BRICK = registerWithItem("cracked_green_block", () -> new CrackedBrickBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).strength(0).mapColor(DyeColor.GREEN)));
+    public static final Supplier<CrackedBrickBlock> CRACKED_PINK_BRICK = registerWithItem("cracked_pink_block", () -> new CrackedBrickBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).strength(0).mapColor(DyeColor.PINK)));
+    public static final Supplier<Block> CHISELED_BLUE_BRICKS = registerWithItem("chiseled_blue_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(DyeColor.BLUE).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final Supplier<Block> CHISELED_GREEN_BRICKS = registerWithItem("chiseled_green_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(DyeColor.GREEN).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final Supplier<Block> CHISELED_PINK_BRICKS = registerWithItem("chiseled_pink_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(DyeColor.PINK).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final Supplier<StairBlock> BLUE_BRICK_STAIRS = registerWithItem("blue_brick_stairs", () -> new StairBlock(BLUE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_STAIRS).mapColor(DyeColor.BLUE).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final Supplier<StairBlock> GREEN_BRICK_STAIRS = registerWithItem("green_brick_stairs", () -> new StairBlock(GREEN_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_STAIRS).mapColor(DyeColor.GREEN).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final Supplier<StairBlock> PINK_BRICK_STAIRS = registerWithItem("pink_brick_stairs", () -> new StairBlock(PINK_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_STAIRS).mapColor(DyeColor.PINK).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final Supplier<SlabBlock> BLUE_BRICK_SLAB = registerWithItem("blue_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_SLAB).mapColor(DyeColor.BLUE).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final Supplier<SlabBlock> GREEN_BRICK_SLAB = registerWithItem("green_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_SLAB).mapColor(DyeColor.GREEN).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final Supplier<SlabBlock> PINK_BRICK_SLAB = registerWithItem("pink_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_SLAB).mapColor(DyeColor.PINK).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final Supplier<DoorBlock> BLUE_BRICKS_DOOR = registerWithItem("blue_bricks_door", () -> new DoorBlock(BlockSetType.STONE, BlockBehaviour.Properties.ofFullCopy(IRON_DOOR).mapColor(DyeColor.BLUE).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final Supplier<DoorBlock> GREEN_BRICKS_DOOR = registerWithItem("green_bricks_door", () -> new DoorBlock(BlockSetType.STONE, BlockBehaviour.Properties.ofFullCopy(IRON_DOOR).mapColor(DyeColor.GREEN).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final Supplier<DoorBlock> PINK_BRICKS_DOOR = registerWithItem("pink_bricks_door", () -> new DoorBlock(BlockSetType.STONE, BlockBehaviour.Properties.ofFullCopy(IRON_DOOR).mapColor(DyeColor.PINK).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final Supplier<DoorBlock> DUNGEON_DOOR = registerWithItem("dungeon_door", () -> new DoorBlock(BlockSetType.STONE, BlockBehaviour.Properties.ofFullCopy(IRON_DOOR).mapColor(DyeColor.GRAY).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
 
-    public static final Supplier<StairBlock> BLUE_BRICK_STAIRS = registerWithItem("blue_brick_stairs", () -> new StairBlock(TUFF.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS)));
-    public static final Supplier<StairBlock> GREEN_BRICK_STAIRS = registerWithItem("green_brick_stairs", () -> new StairBlock(TUFF.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS)));
-    public static final Supplier<StairBlock> PINK_BRICK_STAIRS = registerWithItem("pink_brick_stairs", () -> new StairBlock(TUFF.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS)));
-
-    public static final Supplier<SlabBlock> BLUE_BRICK_SLAB = registerWithItem("blue_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS)));
-    public static final Supplier<SlabBlock> GREEN_BRICK_SLAB = registerWithItem("green_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS)));
-    public static final Supplier<SlabBlock> PINK_BRICK_SLAB = registerWithItem("pink_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS)));
-
-    public static final Supplier<DoorBlock> BLUE_BRICKS_DOOR = registerWithItem("blue_bricks_door", () -> new DoorBlock(
-            BlockSetType.STONE,
-            BlockBehaviour.Properties.of()
-                    .mapColor(BLUE_BRICKS.get().defaultMapColor())
-                    .instrument(NoteBlockInstrument.BASS)
-                    .strength(5.0F)
-                    .noOcclusion()
-                    .ignitedByLava()
-                    .pushReaction(PushReaction.DESTROY)
-    ));
-    public static final Supplier<DoorBlock> GREEN_BRICKS_DOOR = registerWithItem("green_bricks_door", () -> new DoorBlock(
-            BlockSetType.STONE,
-            BlockBehaviour.Properties.of()
-                    .mapColor(GREEN_BRICKS.get().defaultMapColor())
-                    .instrument(NoteBlockInstrument.BASS)
-                    .strength(5.0F)
-                    .noOcclusion()
-                    .ignitedByLava()
-                    .pushReaction(PushReaction.DESTROY)
-    ));
-    public static final Supplier<DoorBlock> PINK_BRICKS_DOOR = registerWithItem("pink_bricks_door", () -> new DoorBlock(
-            BlockSetType.STONE,
-            BlockBehaviour.Properties.of()
-                    .mapColor(PINK_BRICKS.get().defaultMapColor())
-                    .instrument(NoteBlockInstrument.BASS)
-                    .strength(5.0F)
-                    .noOcclusion()
-                    .ignitedByLava()
-                    .pushReaction(PushReaction.DESTROY)
-    ));
-    public static final Supplier<DoorBlock> DUNGEON_DOOR = registerWithItem("dungeon_door", () -> new DoorBlock(
-            BlockSetType.OAK,
-            BlockBehaviour.Properties.of()
-                    .mapColor(OAK_PLANKS.defaultMapColor())
-                    .instrument(NoteBlockInstrument.BASS)
-                    .strength(3.0F)
-                    .noOcclusion()
-                    .ignitedByLava()
-                    .pushReaction(PushReaction.DESTROY)
-    ));
     // 大宝石块
     public static final Supplier<Block> RUBY_BLOCK = copyBlockRegister("ruby_block", Blocks.DIAMOND_BLOCK);
     public static final Supplier<Block> AMBER_BLOCK = copyBlockRegister("amber_block", Blocks.DIAMOND_BLOCK);

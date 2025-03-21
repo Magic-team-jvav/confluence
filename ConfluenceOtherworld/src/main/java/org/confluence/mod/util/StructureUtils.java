@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
-import org.jetbrains.annotations.Contract;
 import org.joml.Vector3d;
 
 import java.util.ArrayList;
@@ -255,7 +254,7 @@ public final class StructureUtils {
         double step = (rEnd - rStart) / VctList.size();
         for (int i = 0; i < VctList.size(); i++) {
             posPoint = VctList.get(i);
-            ball(rStart + step * i, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate, replace, blockMap);
+            ball(rStart + step * i, VectorUtils.fromVector3d(posPoint), blockstate, replace, blockMap);
         }
     }
 
@@ -264,7 +263,7 @@ public final class StructureUtils {
         double step = (rEnd - rStart) / VctList.size();
         for (int i = 0; i < VctList.size(); i++) {
             posPoint = VctList.get(i);
-            ball(rStart + step * i, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate1, blockstate2, replace, blockMap, checkY);
+            ball(rStart + step * i, VectorUtils.fromVector3d(posPoint), blockstate1, blockstate2, replace, blockMap, checkY);
         }
     }
 
@@ -272,7 +271,7 @@ public final class StructureUtils {
         Vector3d posPoint;
         for (Vector3d vector3d : VctList) {
             posPoint = vector3d;
-            ellipsoid(radiusDX, radiusDY, radiusDZ, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate, replace, blockMap);
+            ellipsoid(radiusDX, radiusDY, radiusDZ, VectorUtils.fromVector3d(posPoint), blockstate, replace, blockMap);
         }
     }
 
@@ -281,7 +280,7 @@ public final class StructureUtils {
         double step = (rEnd - rStart) / VctList.size();
         for (int i = 0; i < VctList.size(); i++) {
             posPoint = VctList.get(i);
-            ball(rStart + step * i, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate, replace, blockMap, placePer, random);
+            ball(rStart + step * i, VectorUtils.fromVector3d(posPoint), blockstate, replace, blockMap, placePer, random);
         }
     }
 
@@ -289,7 +288,7 @@ public final class StructureUtils {
         Vector3d posPoint;
         for (Vector3d vector3d : VctList) {
             posPoint = vector3d;
-            ellipsoid(radiusDX, radiusDY, radiusDZ, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate, replace, blockMap, placePer, random);
+            ellipsoid(radiusDX, radiusDY, radiusDZ, VectorUtils.fromVector3d(posPoint), blockstate, replace, blockMap, placePer, random);
         }
     }
 
@@ -357,16 +356,16 @@ public final class StructureUtils {
         BlockPos pos;
         for (int i = 0; i < rotate; i++) {
             pos = centerPos.offset(((int) (Mth.cos(rStep * i + start) * radius) + random.nextInt(-offset, offset + 1)), 0, ((int) (Mth.sin(rStep * i + start) * radius) + random.nextInt(-offset, offset + 1)));
-            list.add(new Vector3d(pos.getX(), pos.getY(), pos.getZ()));
+            list.add(VectorUtils.toVector3d(pos));
         }
     }
 
     public static void lineSetFeature(List<Vector3d> list, Map<BlockPos, ResourceLocation> featureMap, ResourceLocation[] feature, WorldgenRandom random) {
         BlockPos pos;
         Vector3d vctPos;
-        for (int i = 0; i < list.size(); i++) {
-            vctPos = list.get(i);
-            pos = new BlockPos((int) vctPos.x, (int) vctPos.y, (int) vctPos.z);
+        for (Vector3d vector3d : list) {
+            vctPos = vector3d;
+            pos = VectorUtils.fromVector3d(vctPos);
             featureMap.put(pos, feature[random.nextInt(feature.length)]);
         }
     }

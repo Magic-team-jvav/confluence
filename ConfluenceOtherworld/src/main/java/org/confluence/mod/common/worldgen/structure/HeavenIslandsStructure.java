@@ -122,13 +122,13 @@ public class HeavenIslandsStructure extends Structure {
             Vector3d littleCloudPos;
             BlockPos littleCloudPosInt;
             roundPos(centerPos.offset(0, 25, 0), (double) radiusXZ / 2.0D + 8, random, vctPosList, 5, random.nextInt(2, 7), 0.78539815F);
-            for (int i = 0; i < vctPosList.size(); i++) {
-                littleCloudPos = vctPosList.get(i);
+            for (Vector3d vector3d : vctPosList) {
+                littleCloudPos = vector3d;
                 littleCloudPosInt = new BlockPos((int) littleCloudPos.x, (int) littleCloudPos.y + random.nextInt(-5, 6), (int) littleCloudPos.z);
                 radiusXZ = random.nextInt(5, 8);
                 radiusY = random.nextInt(3, 6);
                 cloudPos.clear();
-                ellipsoid(radiusXZ - 2, radiusY - 2, radiusXZ - 2, littleCloudPosInt, 0, 2, true, blockMap, littleCloudPosInt.getY());
+                ellipsoid(radiusXZ - 2, radiusY - 2, radiusXZ - 2, littleCloudPosInt, 6, 2, true, blockMap, littleCloudPosInt.getY());
                 cloudPos = ellipsoidPos(radiusXZ - 2, radiusY - 2, radiusXZ - 2, radiusXZ, radiusY, radiusXZ, littleCloudPosInt, 0.7F, random, littleCloudPosInt.getY());
                 lineSet(cloudPos, 1.5, 1.5, 1, true, blockMap);
             }
@@ -138,7 +138,9 @@ public class HeavenIslandsStructure extends Structure {
                     NatureBlocks.CLOUD_BLOCK.get().defaultBlockState(),
                     Blocks.WATER.defaultBlockState(),
                     Blocks.STONE.defaultBlockState(),
-                    Blocks.GRASS_BLOCK.defaultBlockState()
+                    Blocks.GRASS_BLOCK.defaultBlockState(),
+                    Blocks.DIRT.defaultBlockState(),
+                    NatureBlocks.EVAPORATIVE_CLOUD_BLOCK.get().defaultBlockState()
             ), featureMap, builder);
             if (type == 0) {
                 if (houseFace0 == 0) {

@@ -46,8 +46,7 @@ public class ShimmerLakeStructure extends Structure {
         return onTopOfChunkCenter(context, Heightmap.Types.WORLD_SURFACE_WG, builder -> {
             ChunkPos startChunk = context.chunkPos();
             WorldgenRandom random = context.random();
-            BlockPos centerPos = startChunk.getMiddleBlockPosition(lowestY);
-            centerPos = new BlockPos(centerPos.getX(), random.nextInt(-40, 10), centerPos.getZ());
+            BlockPos centerPos = startChunk.getMiddleBlockPosition(random.nextInt(-40, 10));
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
             Map<BlockPos, ResourceLocation> featureMap = new HashMap<>();
             List<Vector3d> vctPosList = new ArrayList<>();

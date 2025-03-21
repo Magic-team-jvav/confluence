@@ -39,8 +39,7 @@ public class QueenBeeHiveStructure extends Structure {
             int radius = random.nextInt(12, 15);
             int radius2 = 2 * radius;
             int block;
-            BlockPos centerPos = startChunk.getMiddleBlockPosition(lowestY);
-            centerPos = new BlockPos(centerPos.getX(), random.nextInt(-40, 30), centerPos.getZ());
+            BlockPos centerPos = startChunk.getMiddleBlockPosition(random.nextInt(-40, 30));
             BlockPos.MutableBlockPos pillarEndPos = centerPos.mutable();
             BlockPos.MutableBlockPos pillarStartPos = centerPos.mutable();
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();

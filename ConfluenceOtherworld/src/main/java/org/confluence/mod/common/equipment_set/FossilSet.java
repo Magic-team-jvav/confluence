@@ -43,6 +43,6 @@ public class FossilSet extends EquipmentSet {
                     if (!projectileItemStack.isEmpty() && event.getEntity().getRandom().nextFloat() < 0.2F) {
                         event.setProjectileItemStack(projectileItemStack.copy());
                     }
-                }).build());
+                }).build(),true);
     }
 }

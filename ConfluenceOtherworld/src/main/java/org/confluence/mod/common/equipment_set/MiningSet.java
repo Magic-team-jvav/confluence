@@ -14,9 +14,9 @@ import org.confluence.mod.common.init.item.ArmorItems;
 public class MiningSet extends EquipmentSet {
     @Override
     protected void init(HookMap.Builder hook, EquippableGroup.Builder equippableGroup) {
-        equippableGroup.addEquippableSet("chestplate", blockBreakSpeedBonus(VanillaEquippable.CHEST, ArmorItems.SHADOW_CHESTPLATE));
-        equippableGroup.addEquippableSet("leggings", blockBreakSpeedBonus(VanillaEquippable.LEGS, ArmorItems.SHADOW_LEGGINGS));
-        equippableGroup.addEquippableSet("boots", blockBreakSpeedBonus(VanillaEquippable.FEET, ArmorItems.SHADOW_BOOTS));
+        equippableGroup.addEquippableSet("chestplate", blockBreakSpeedBonus(VanillaEquippable.CHEST, ArmorItems.MINING_CHESTPLATE));
+        equippableGroup.addEquippableSet("leggings", blockBreakSpeedBonus(VanillaEquippable.LEGS, ArmorItems.MINING_LEGGINGS));
+        equippableGroup.addEquippableSet("boots", blockBreakSpeedBonus(VanillaEquippable.FEET, ArmorItems.MINING_BOOTS));
     }
 
     private static EquippableSetData blockBreakSpeedBonus(VanillaEquippable slot, DeferredItem<ArmorItem> item) {

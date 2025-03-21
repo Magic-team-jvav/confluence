@@ -39,6 +39,6 @@ public class SporeRootSet extends EquipmentSet {
                         VanillaEquippable.FEET, ArmorItems.SPORE_ROOT_BOOTS
                 )
                 .bindHook(builder -> builder.addBonus(TEAttributes.MINION_CAPACITY, new AttributeModifier(Confluence.asResource("spore_root_set"), 1, AttributeModifier.Operation.ADD_VALUE)))
-                .build());
+                .build(),true);
     }
 }

@@ -21,6 +21,6 @@ public class GladiatorSet extends EquipmentSet {
                         VanillaEquippable.FEET, ArmorItems.GLADIATOR_BOOTS
                 )
                 .bindHook(builder -> builder.addBonus(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(Confluence.asResource("gladiator_set"), 1.0, AttributeModifier.Operation.ADD_VALUE)))
-                .build());
+                .build(),true);
     }
 }

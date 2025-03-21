@@ -9,9 +9,9 @@ import com.xiaohunao.equipment_benediction.common.init.EBRegistries;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.equipment_set.AdditionalManaHook;
-import org.confluence.mod.common.equipment_set.FishingPowerHook;
-import org.confluence.mod.common.equipment_set.ManaConsumeHook;
+import org.confluence.mod.common.hook.AdditionalManaHook;
+import org.confluence.mod.common.hook.FishingPowerHook;
+import org.confluence.mod.common.hook.ManaConsumeHook;
 
 public final class ModHookTypes {
     public static final DeferredRegister<HookType<?>> TYPES = DeferredRegister.create(EBRegistries.Keys.HOOK_TYPES, Confluence.MODID);

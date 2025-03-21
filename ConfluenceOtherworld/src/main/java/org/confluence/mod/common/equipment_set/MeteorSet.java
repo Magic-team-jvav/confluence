@@ -32,7 +32,7 @@ public class MeteorSet extends EquipmentSet {
                         return () -> 0;
                     }
                     return original;
-                }).build());
+                }).build(),true);
     }
 
     private static EquippableSetData magicDamageBonus(VanillaEquippable slot, DeferredItem<ArmorItem> item) {

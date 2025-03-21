@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -17,7 +16,6 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModStructures;
-import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.util.StructureUtils;
 import org.joml.Vector3d;
@@ -28,20 +26,18 @@ import static org.confluence.mod.util.StructureUtils.*;
 
 public class HeavenIslandsStructure extends Structure {
     public static final MapCodec<HeavenIslandsStructure> CODEC = simpleCodec(HeavenIslandsStructure::new);
-    public static final Map<Integer, String> sideMap = new HashMap<>(
-            Map.of(
-                    0, "heaven_islands/sky_island_house_side_0",
-                    1, "heaven_islands/sky_island_house_side_1"
-            )
-    );
-    public static final ResourceLocation[] feature = new ResourceLocation[]{
-            ResourceLocation.fromNamespaceAndPath("minecraft", "patch_grass"),
-            ResourceLocation.fromNamespaceAndPath("minecraft", "patch_tall_grass"),
-            ResourceLocation.fromNamespaceAndPath("minecraft", "flower_flower_forest")
+    private static final String[] sideMap = new String[]{
+            "heaven_islands/sky_island_house_side_0",
+            "heaven_islands/sky_island_house_side_1"
     };
-    public static final ResourceLocation[] featureTree = new ResourceLocation[]{
-            ResourceLocation.fromNamespaceAndPath("minecraft", "oak"),
-            ResourceLocation.fromNamespaceAndPath("minecraft", "cherry"),
+    private static final ResourceLocation[] feature = new ResourceLocation[]{
+            ResourceLocation.withDefaultNamespace("patch_grass"),
+            ResourceLocation.withDefaultNamespace("patch_tall_grass"),
+            ResourceLocation.withDefaultNamespace("flower_flower_forest")
+    };
+    private static final ResourceLocation[] featureTree = new ResourceLocation[]{
+            ResourceLocation.withDefaultNamespace("oak"),
+            ResourceLocation.withDefaultNamespace("cherry"),
             Confluence.asResource("yellow_willow")
     };
 
@@ -147,12 +143,12 @@ public class HeavenIslandsStructure extends Structure {
             if (type == 0) {
                 if (houseFace0 == 0) {
                     builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "heaven_islands/sky_island_house", centerPos.offset(((houseFace1 == 0) ? 6 : -6), height, ((houseFace1 == 0) ? -12 : 12)), false, true, ((houseFace1 == 0) ? Rotation.CLOCKWISE_90 : Rotation.COUNTERCLOCKWISE_90)));
-                    builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), sideMap.get(typeSide0), centerPos.offset(-7, height, 9), false, true, Rotation.CLOCKWISE_180));
-                    builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), sideMap.get(typeSide1), centerPos.offset(7, height, -9), false, true, Rotation.NONE));
+                    builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), sideMap[typeSide0], centerPos.offset(-7, height, 9), false, true, Rotation.CLOCKWISE_180));
+                    builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), sideMap[typeSide1], centerPos.offset(7, height, -9), false, true, Rotation.NONE));
                 } else {
                     builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "heaven_islands/sky_island_house", centerPos.offset(((houseFace1 == 0) ? 12 : -12), height, ((houseFace1 == 0) ? 6 : -6)), false, true, ((houseFace1 == 0) ? Rotation.CLOCKWISE_180 : Rotation.NONE)));
-                    builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), sideMap.get(typeSide0), centerPos.offset(-9, height, -7), false, true, Rotation.COUNTERCLOCKWISE_90));
-                    builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), sideMap.get(typeSide1), centerPos.offset(9, height, 7), false, true, Rotation.CLOCKWISE_90));
+                    builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), sideMap[typeSide0], centerPos.offset(-9, height, -7), false, true, Rotation.COUNTERCLOCKWISE_90));
+                    builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), sideMap[typeSide1], centerPos.offset(9, height, 7), false, true, Rotation.CLOCKWISE_90));
                 }
             }
         });

@@ -352,7 +352,7 @@ public final class StructureUtils {
     }
 
     public static void roundPos(BlockPos centerPos, double radius, WorldgenRandom random, List<Vector3d> list, int offset, int rotate, float start) {
-        float rStep = Mth.PI * 2 / rotate;
+        float rStep = Mth.TWO_PI / rotate;
         BlockPos pos;
         for (int i = 0; i < rotate; i++) {
             pos = centerPos.offset(((int) (Mth.cos(rStep * i + start) * radius) + random.nextInt(-offset, offset + 1)), 0, ((int) (Mth.sin(rStep * i + start) * radius) + random.nextInt(-offset, offset + 1)));

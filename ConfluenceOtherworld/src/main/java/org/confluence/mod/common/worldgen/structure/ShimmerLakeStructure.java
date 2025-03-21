@@ -6,10 +6,8 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -25,7 +23,7 @@ import static org.confluence.mod.util.StructureUtils.*;
 
 public class ShimmerLakeStructure extends Structure {
     public static final MapCodec<ShimmerLakeStructure> CODEC = simpleCodec(ShimmerLakeStructure::new);
-    public static final ResourceLocation[] feature = new ResourceLocation[]{
+    private static final ResourceLocation[] feature = new ResourceLocation[]{
             Confluence.asResource("amber_tree"),
             Confluence.asResource("diamond_tree"),
             Confluence.asResource("emerald_tree"),

@@ -145,7 +145,7 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
     }
 
     public static class LevelAccess extends EnvironmentLevelAccess {
-        public LevelAccess(Level level, BlockPos pos) {
+        public LevelAccess(@Nullable Level level, @Nullable BlockPos pos) {
             super(level, pos);
             this.level = level;
             this.pos = pos;

@@ -1,7 +1,9 @@
 package org.confluence.mod.common.menu;
 
 import com.google.common.collect.Lists;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -53,6 +55,16 @@ public class SkyMillMenu extends AbstractContainerMenu {
             }
         };
         addSlot(new AmountResultSlot(input, result, 0, 35, 14) {
+            @Override
+            public void onTake(Player pPlayer, ItemStack pStack) {
+                super.onTake(pPlayer, pStack);
+                access.execute((level, pos) -> {
+                    if (level instanceof ServerLevel serverLevel) {
+                        serverLevel.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 5, 0, 0, 0, 0.01);
+                    }
+                });
+            }
+
             @Override
             protected void updateMenu() {
                 SkyMillMenu.this.setupResultSlot();

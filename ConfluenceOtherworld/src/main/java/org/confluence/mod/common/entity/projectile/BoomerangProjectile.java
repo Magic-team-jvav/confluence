@@ -25,6 +25,7 @@ import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.sword.Boomerang;
 import org.confluence.mod.common.item.sword.Boomerang.BoomerangModifier;
+import org.confluence.terraentity.init.TEDataComponentTypes;
 
 public class BoomerangProjectile extends AbstractHurtingProjectile {
 
@@ -93,7 +94,10 @@ public class BoomerangProjectile extends AbstractHurtingProjectile {
                 owner.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(new AttributeModifier(temp, modifier.damage - 1, AttributeModifier.Operation.ADD_VALUE));
                 float damage = (float) owner.getAttributeValue(Attributes.ATTACK_DAMAGE);
                 owner.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(temp);
-                modifier.onHitEffects.applyAll((LivingEntity) this.getOwner(), living);
+                var data = weapon.get(TEDataComponentTypes.EFFECT_STRATEGY);
+                if(data != null) {
+                    data.applyAll((LivingEntity) this.getOwner(), living);
+                }
                 living.hurt(this.damageSources().mobProjectile(this,owner), damage);
                 //击退
                 doKnockback(living);

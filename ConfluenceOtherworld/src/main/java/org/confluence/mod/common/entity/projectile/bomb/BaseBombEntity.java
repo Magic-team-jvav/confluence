@@ -9,11 +9,13 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.util.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.util.VectorUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -32,7 +34,7 @@ public class BaseBombEntity extends ThrowableItemProjectile {
     public ParticleEmitter emitter;
 
     protected int delay = 60;
-    protected float blastPower = 3.0F;
+    protected float blastPower = 15.0F;
     protected double bounceFactor = 0.2;
     protected double frictionFactor = 0.9;
 
@@ -62,7 +64,7 @@ public class BaseBombEntity extends ThrowableItemProjectile {
      * 子类可以覆盖的方法，定义炸弹如何爆炸
      */
     protected void explodeFunction() {
-        level().explode(this, getX(), getY(), getZ(), blastPower, Level.ExplosionInteraction.BLOCK);
+        level().explode(this, Explosion.getDefaultDamageSource(level(), this), new MultiplyExplosionDamageCalculator(0.2F), getX(), getY(), getZ(), blastPower, false, Level.ExplosionInteraction.BLOCK);
     }
 
     @Override

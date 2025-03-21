@@ -34,8 +34,8 @@ public class BaseDynamiteEntity extends BaseBombEntity {
     protected void explodeFunction() {
         level().explode(
                 this, Explosion.getDefaultDamageSource(level(), this),
-                new MultiplyExplosionDamageCalculator(1.5F),
-                getX(), getY(), getZ(), 4.5F, false,
+                new MultiplyExplosionDamageCalculator(0.2F),
+                getX(), getY(), getZ(), 20.0F, false,
                 Level.ExplosionInteraction.TNT, ParticleTypes.EXPLOSION,
                 ParticleTypes.EXPLOSION_EMITTER, SoundEvents.GENERIC_EXPLODE
         );

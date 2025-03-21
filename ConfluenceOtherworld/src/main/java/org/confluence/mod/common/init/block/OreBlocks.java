@@ -86,9 +86,9 @@ public class OreBlocks {
     public static final DeferredBlock<Block> CORRUPTION_GOLD_ORE = copyBlockRegister("corruption_gold_ore", Blocks.GOLD_ORE);
     public static final DeferredBlock<Block> FLESHIFICATION_GOLD_ORE = copyBlockRegister("fleshification_gold_ore", Blocks.GOLD_ORE);
 
-    public static final DeferredBlock<Block> METEORITE_ORE = simpleBlockRegister("meteorite_ore", MeteoriteOre::new);
-    public static final DeferredBlock<Block> RAW_METEORITE_BLOCK = simpleBlockRegister("raw_meteorite_block", MeteoriteOre::new);
-    public static final DeferredBlock<Block> METEORITE_BLOCK = simpleBlockRegister("meteorite_block", MeteoriteOre::new);
+    public static final DeferredBlock<Block> METEORITE_ORE = registerWithItem("meteorite_ore", MeteoriteOre::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
+    public static final DeferredBlock<Block> RAW_METEORITE_BLOCK = registerWithItem("raw_meteorite_block", MeteoriteOre::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
+    public static final DeferredBlock<Block> METEORITE_BLOCK = registerWithItem("meteorite_block", MeteoriteOre::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
 
     public static final DeferredBlock<Block> STURDY_FOSSIL_BLOCK = copyBlockRegister("sturdy_fossil_block", Blocks.DIAMOND_BLOCK);
 

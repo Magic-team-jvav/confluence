@@ -7,11 +7,10 @@ import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.common.entity.projectile.BaseArrowEntity;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.confluence.terraentity.registries.hit_effect.EffectStrategy;
+import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -53,9 +52,11 @@ public class BaseArrowItem extends ArrowItem {
         if(attributes!=null){
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.additional_attack_damage").append(": +").append(String.format("%.1f", attributes.base_damage)).withColor(0x00FF00));
 
-            EffectStrategy.appendDescription(tooltipComponents, attributes.onHitEffect.stream().map(DeferredHolder::get).toList(),
-                    Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").withColor(0xFF00FF)
-            );
+            if(attributes.onHitEffects !=null){
+                IEffectStrategy.appendDescription(tooltipComponents, attributes.onHitEffects.stream().flatMap(e->e.effects().stream()).toList(),
+                        Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").withColor(0xFF00FF)
+                );
+            }
 
             if((attributes.getType() & BaseArrowEntity.Tag.low_gravity) != 0){
                 tooltipComponents.add(Component.translatable("tooltip.item.confluence.no_gravity"));

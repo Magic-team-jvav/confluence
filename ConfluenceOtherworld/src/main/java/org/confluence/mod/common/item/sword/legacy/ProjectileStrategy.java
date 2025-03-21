@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.sword.stagedy;
+package org.confluence.mod.common.item.sword.legacy;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;

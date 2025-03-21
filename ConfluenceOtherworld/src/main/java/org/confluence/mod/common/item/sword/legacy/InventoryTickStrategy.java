@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.sword.stagedy;
+package org.confluence.mod.common.item.sword.legacy;
 
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;

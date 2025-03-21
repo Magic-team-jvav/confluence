@@ -2618,7 +2618,5 @@ public class ModChineseProvider extends LanguageProvider {
         add("task.confluence.use_life_crystal.condition.has_life_crystal", "主手持有生命水晶");
 
         PonderHelper.addTranslateKeys(this::add, false);
-
-        ModEffectStrategies.EFFECT_STRATEGY.getEntries().forEach(strategy -> add(strategy.get().getTranslationKey(), strategy.get().getDescription_zh_cn()));
     }
 }

@@ -39,7 +39,7 @@ public class BoomerangItems {
     );
     public static final DeferredItem<Boomerang> ICE_BOOMERANG = register("ice_boomerang",5.5f,ModRarity.BLUE,
             NORMAL_BOOMERANG_MODIFIER.apply(16,1.6f,1.6f)
-                    .addOnHitEffect(ModEffectStrategies.FROST_BURN_BOOMERANG_EFFECT)
+                    .addOnHitEffect(ModEffectStrategies.Components.FROST_BURN_BOOMERANG_EFFECT.get())
     );   //50% 的几率造成 3 秒的霜冻。
 
     public static final DeferredItem<Boomerang> TRIMARANG = register("trimarang",5.5f,ModRarity.ORANGE,
@@ -49,7 +49,7 @@ public class BoomerangItems {
 
     public static final DeferredItem<Boomerang> FLAMARANG = register("flamarang",12.5f,ModRarity.ORANGE,
             NORMAL_BOOMERANG_MODIFIER.apply(18,1.85f,1.85f)
-                    .addOnHitEffect(ModEffectStrategies.HELL_FIRE_EFFECT)
+                    .addOnHitEffect(ModEffectStrategies.Components.HELL_FIRE_EFFECT.get())
     );   //狱炎效果。
 
 
@@ -65,7 +65,7 @@ public class BoomerangItems {
             MULTI_BOOMERANG_MODIFIER.apply(5, 4,
                     NORMAL_BOOMERANG_MODIFIER.apply(40, 3.0f, 3.0f)
                             .setMaxPenetration(7)
-                            .addOnHitEffect(ModEffectStrategies.BEI_DOU_EFFECT)
+                            .addOnHitEffect(ModEffectStrategies.Components.BEI_DOU_EFFECT.get())
             )
     );
 

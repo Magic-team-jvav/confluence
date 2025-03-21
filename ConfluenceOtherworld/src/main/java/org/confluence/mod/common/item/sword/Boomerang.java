@@ -20,10 +20,12 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SingleBooleanComponent;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModDataComponentTypes;
-import org.confluence.mod.common.item.sword.stagedy.InventoryTickStrategy;
-import org.confluence.mod.common.item.sword.stagedy.projectile.BoomerangProjContainer;
-import org.confluence.mod.common.item.sword.stagedy.projectile.IProjContainer;
+import org.confluence.mod.common.item.sword.legacy.InventoryTickStrategy;
+import org.confluence.mod.common.item.sword.legacy.projectile.BoomerangProjContainer;
+import org.confluence.mod.common.item.sword.legacy.projectile.IProjContainer;
+import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.confluence.terraentity.registries.hit_effect.EffectStrategy;
+import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,9 +105,9 @@ public class Boomerang extends Item {
         if(this.boomerangModifier.canPenetrate || this.boomerangModifier.maxPenetration > 1){
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.penetration").append(": ").append(String.valueOf(this.boomerangModifier.maxPenetration)).withColor(0x00FFFF));
         }
-        if(!this.boomerangModifier.onHitEffects.isEmpty()){
-            EffectStrategy.appendDescription(tooltipComponents,
-                    this.boomerangModifier.onHitEffects.stream().map(DeferredHolder::get).toList(),
+        if(this.boomerangModifier.onHitEffects != null){
+            IEffectStrategy.appendDescription(tooltipComponents,
+                    this.boomerangModifier.onHitEffects.effects(),
                     Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").withColor(0x969811));
         }
     }
@@ -133,7 +135,7 @@ public class Boomerang extends Item {
 //调参后这是木回旋镖的数值
 
         private IProjContainer proj;
-        public List<DeferredHolder<EffectStrategy, EffectStrategy>> onHitEffects = new ArrayList<>();
+        public EffectStrategyComponent onHitEffects;
         public BaseSwordItem.QuaConsumer<ItemStack, Level, Entity, Boolean> inventoryTick;
         public ItemAttributeModifiers.Builder attributeModifiersBuilder = ItemAttributeModifiers.builder();
         private int modifyCount = 0;
@@ -144,8 +146,8 @@ public class Boomerang extends Item {
          *
          * @see EffectStrategy
          */
-        public BoomerangModifier addOnHitEffect(DeferredHolder<EffectStrategy, EffectStrategy> onHit) {
-            this.onHitEffects.add(onHit);
+        public BoomerangModifier addOnHitEffect(EffectStrategyComponent onHit) {
+            this.onHitEffects = onHit;
             return this;
         }
 

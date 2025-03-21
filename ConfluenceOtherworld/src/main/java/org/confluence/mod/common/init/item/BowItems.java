@@ -17,6 +17,7 @@ import org.confluence.mod.common.item.bow.DaedalusStormbow;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.bow.TerraBowItem;
 import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.terraentity.data.component.EffectStrategyComponent;
 
 import java.util.function.Supplier;
 
@@ -57,13 +58,13 @@ public class BowItems {
             modifier->modifier.setTransformArrow(ArrowItems.FOSSIL_ARROW.get())
     ));
     public static final DeferredItem<TerraBowItem> HUNTING_BOW = register("hunting_bow", () -> new TerraBowItem(3.5F, ModRarity.BLUE, // 猎弓
-            modifier->modifier.addOnHitEffect(ModEffectStrategies.HUNTING_RIFLE_EFFECT)
+            modifier->modifier.addOnHitEffect(ModEffectStrategies.Components.HUNTING_RIFLE_EFFECT.get())
     ));
     public static final DeferredItem<TerraBowItem> DEMON_BOW = register("demon_bow", () -> new TerraBowItem(5.5F, ModRarity.BLUE,
-            modifier->modifier.addFullPullHitEffect(ModEffectStrategies.LIGHTS_BANE_EFFECT)
+            modifier->modifier.addFullPullHitEffect(EffectStrategyComponent.ofPrefab("lightning_bolt",ModEffectStrategies.LIGHTS_BANE_EFFECT))
     ));
     public static final DeferredItem<TerraBowItem> TENDON_BOW = register("tendon_bow",  () -> new TerraBowItem(6F, ModRarity.BLUE,
-            modifier->modifier.addFullPullHitEffect(ModEffectStrategies.BLOOD_BUTCHERED_EFFECT)
+            modifier->modifier.addFullPullHitEffect(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get())
     ));
     public static final DeferredItem<TerraBowItem> MOLTEN_FURY = register("molten_fury",  () -> new TerraBowItem(7F, ModRarity.ORANGE,
             modifier->modifier.setTransformArrow(ArrowItems.HELLFIRE_ARROW.get())

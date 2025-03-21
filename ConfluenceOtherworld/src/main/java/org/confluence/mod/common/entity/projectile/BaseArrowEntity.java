@@ -23,11 +23,10 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.bow.BaseArrowItem;
 import org.confluence.mod.util.EnchantmentUtil;
-import org.confluence.terraentity.registries.hit_effect.EffectStrategy;
+import org.confluence.terraentity.data.component.EffectStrategyComponent;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -217,8 +216,10 @@ public class BaseArrowEntity extends AbstractArrow {
     @Override
     protected void doPostHurtEffects(LivingEntity pLiving) {
         if(getOwner() instanceof LivingEntity owner){
-            modify.onHitEffect.forEach(m->m.get().getEffect().accept(owner,pLiving));
-            if(fullPull) modify.fullPullHitEffect.forEach(m->m.get().getEffect().accept(owner,pLiving));
+            modify.onHitEffects.forEach(effect -> effect.applyAll(owner,pLiving));
+            if(fullPull) {
+                modify.fullPullHitEffects.forEach(effect -> effect.applyAll(owner,pLiving));
+            }
         }
         super.doPostHurtEffects(pLiving);
     }
@@ -309,16 +310,16 @@ public class BaseArrowEntity extends AbstractArrow {
         private float damageInRain = 0;
 
         private BaseArrowItem transformArrow = null;
-        public final List<DeferredHolder<EffectStrategy,EffectStrategy>> onHitEffect = new ArrayList<>();
-        public final List<DeferredHolder<EffectStrategy,EffectStrategy>> fullPullHitEffect = new ArrayList<>();
+        public List<EffectStrategyComponent> onHitEffects = new ArrayList<>();
+        public List<EffectStrategyComponent> fullPullHitEffects = new ArrayList<>();
 
 
-        public Builder addFullPullHitEffect(DeferredHolder<EffectStrategy,EffectStrategy> consumer){
-            this.fullPullHitEffect.add(consumer);
+        public Builder addFullPullHitEffect(EffectStrategyComponent component){
+            this.fullPullHitEffects.add(component);
             return this;
         }
-        public Builder addOnHitEffect(DeferredHolder<EffectStrategy,EffectStrategy> consumer){
-            this.onHitEffect.add(consumer);
+        public Builder addOnHitEffect(EffectStrategyComponent component){
+            this.onHitEffects.add(component);
             return this;
         }
         public Builder setDamage(float damage){//基本伤害

@@ -629,7 +629,6 @@ public class ModEnglishProvider extends LanguageProvider {
 
         ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), toTitleCase(effect.getId().getPath())));
         ModEntities.ENTITIES.getEntries().forEach(entity -> add(entity.get(), toTitleCase(entity.getId().getPath())));
-        ModEffectStrategies.EFFECT_STRATEGY.getEntries().forEach(strategy -> add(strategy.get().getTranslationKey(), toTitleCase(strategy.get().getDescription_en_us())));
     }
 
     @Override

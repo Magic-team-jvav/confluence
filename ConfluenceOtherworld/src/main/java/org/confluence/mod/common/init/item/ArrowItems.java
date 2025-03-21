@@ -27,11 +27,11 @@ public class ArrowItems {
     ));
     public static final DeferredItem<BaseArrowItem> HELLFIRE_ARROW = ITEMS.register("hellfire_arrow", () -> new  BaseArrowItem(ModRarity.GREEN,
             BaseArrowEntity.Tuple.create("textures/entity/arrow/hellfire_arrow.png",()->new BaseArrowEntity.Builder()
-                    .setDamage(0.0f).setCauseFire(5*20).addOnHitEffect(ModEffectStrategies.HELL_FIRE_EFFECT))
+                    .setDamage(0.0f).setCauseFire(5*20).addOnHitEffect(ModEffectStrategies.Components.HELL_FIRE_EFFECT.get()))
     ));
     public static final DeferredItem<BaseArrowItem> FROSTBURN_ARROW = ITEMS.register("frostburn_arrow", () -> new  BaseArrowItem(ModRarity.WHITE,
             BaseArrowEntity.Tuple.create("textures/entity/arrow/frostburn_arrow.png",()->new BaseArrowEntity.Builder()
-                    .setDamage(-3.5f).addOnHitEffect(ModEffectStrategies.FROST_BURN_EFFECT))
+                    .setDamage(-3.5f).addOnHitEffect(ModEffectStrategies.Components.FROST_BURN_EFFECT.get()))
     ));
     public static final DeferredItem<BaseArrowItem> BONE_ARROW = ITEMS.register("bone_arrow", () -> new  BaseArrowItem(ModRarity.WHITE
 

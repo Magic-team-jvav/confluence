@@ -11,14 +11,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.common.entity.projectile.BaseArrowEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.confluence.terraentity.registries.hit_effect.EffectStrategy;
+import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -80,7 +79,7 @@ public class TerraBowItem extends BowItem {
 
     @Override
     public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remainingUseDuration) {
-        if(!this.arrowModifier.fullPullHitEffect.isEmpty()) {
+        if(this.arrowModifier.fullPullHitEffects != null) {
             float f = getUseDuration(stack, entity) - remainingUseDuration;
             if (f < 16)
                 entity.getData(ModAttachmentTypes.WEAPON_STORAGE).bowFullPull = false;
@@ -97,14 +96,15 @@ public class TerraBowItem extends BowItem {
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable("attribute.name.generic.attack_damage").append(": ").append(String.format("%.1f", this.baseDamage)).withColor(0x00FF00));
 
-        if(!this.arrowModifier.onHitEffect.isEmpty()){
-            EffectStrategy.appendDescription(tooltipComponents,
-                    this.arrowModifier.onHitEffect.stream().map(DeferredHolder::get).toList(),
+        if(this.arrowModifier.onHitEffects != null){
+
+            IEffectStrategy.appendDescription(tooltipComponents,
+                    this.arrowModifier.onHitEffects.stream().flatMap(e->e.effects().stream()).toList(),
                     Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").withColor(0xFF00FF));
         }
-        if(!this.arrowModifier.fullPullHitEffect.isEmpty()){
-            EffectStrategy.appendDescription(tooltipComponents,
-                    this.arrowModifier.fullPullHitEffect.stream().map(DeferredHolder::get).toList(),
+        if(this.arrowModifier.fullPullHitEffects != null){
+            IEffectStrategy.appendDescription(tooltipComponents,
+                    this.arrowModifier.fullPullHitEffects.stream().flatMap(e->e.effects().stream()).toList(),
                     Component.translatable("tooltip.item.confluence.bow_full_pull_on_hit_effects").append(": ").withColor(0xFF00FF));
         }
 

@@ -1,10 +1,9 @@
-package org.confluence.mod.common.item.sword.stagedy.projectile;
+package org.confluence.mod.common.item.sword.legacy.projectile;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.terra_curio.common.init.TCAttributes;

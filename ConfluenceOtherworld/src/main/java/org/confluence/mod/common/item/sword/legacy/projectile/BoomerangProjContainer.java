@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.sword.stagedy.projectile;
+package org.confluence.mod.common.item.sword.legacy.projectile;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;

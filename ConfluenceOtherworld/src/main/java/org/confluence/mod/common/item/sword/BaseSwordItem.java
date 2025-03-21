@@ -19,18 +19,19 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.ItemAbility;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
 import org.confluence.mod.common.init.ModDataComponentTypes;
-import org.confluence.mod.common.item.sword.stagedy.InventoryTickStrategy;
-import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
-import org.confluence.mod.common.item.sword.stagedy.SwordPrefabs;
-import org.confluence.mod.common.item.sword.stagedy.projectile.IProjContainer;
+import org.confluence.mod.common.item.sword.legacy.InventoryTickStrategy;
+import org.confluence.mod.common.item.sword.legacy.ProjectileStrategy;
+import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
+import org.confluence.terraentity.data.component.EffectStrategyComponent;
+import org.confluence.terraentity.init.TEDataComponentTypes;
 import org.confluence.terraentity.registries.hit_effect.EffectStrategy;
+import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -76,15 +77,16 @@ public class BaseSwordItem extends SwordItem {
         if (modifier != null &&
 //                damageSource.is(DamageTypeTags.IS_PLAYER_ATTACK) &&
                 damageSource.is(DamageTypeTags.PANIC_CAUSES)) {
-            if (attacker instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.95f
-                    && damageSource.is(DamageTypeTags.CAN_BREAK_ARMOR_STAND)
-                    && damageSource.is(DamageTypeTags.IS_PLAYER_ATTACK)
-            ) {
-                modifier.onHitEffects.forEach(effect -> effect.get().getEffect().accept(player, hurter));
-            }else if(attacker instanceof LivingEntity livingEntity){
-                modifier.onHitEffects.forEach(effect -> effect.get().getEffect().accept(livingEntity, hurter));
-                if(modifier.proj != null)
-                    modifier.proj.get().genProjectile(livingEntity, weapon);
+            var data = weapon.get(TEDataComponentTypes.EFFECT_STRATEGY);
+            if(data != null) {
+                if (attacker instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.95f
+                        && damageSource.is(DamageTypeTags.CAN_BREAK_ARMOR_STAND)
+                        && damageSource.is(DamageTypeTags.IS_PLAYER_ATTACK)
+                ) {
+                    data.applyAll(player, hurter);
+                } else if (attacker instanceof LivingEntity livingEntity) {
+                    data.applyAll(livingEntity, hurter);
+                }
             }
         }
     }
@@ -119,8 +121,7 @@ public class BaseSwordItem extends SwordItem {
         public float sweepRange = 1.0F;
 
         private Item.Properties properties = new Item.Properties();
-        private Supplier<? extends IProjContainer>  proj;
-        private final List<DeferredHolder<EffectStrategy,? extends EffectStrategy>> onHitEffects = new ArrayList<>();
+//        private final List<DeferredHolder<EffectStrategy,? extends EffectStrategy>> onHitEffects = new ArrayList<>();
         private QuaConsumer<ItemStack,Level,Entity,Boolean> inventoryTick;
         private final ItemAttributeModifiers.Builder attributeModifiersBuilder = ItemAttributeModifiers.builder();
         private int modifyCount = 0;
@@ -128,11 +129,13 @@ public class BaseSwordItem extends SwordItem {
 
 
 
-        /**添加击中效果
+        /**添加击中效果组件
+         * <p>注意会覆盖原有组件</p>
          * @see EffectStrategy
          * */
-        public ModifierBuilder addOnHitEffect(DeferredHolder<EffectStrategy,? extends EffectStrategy> onHit){
-            this.onHitEffects.add(onHit);
+        public ModifierBuilder setOnHitEffect(EffectStrategyComponent onHit){
+//            this.onHitEffects.add(onHit);
+            this.modifier.add(p->p.component(TEDataComponentTypes.EFFECT_STRATEGY, onHit));
             return this;
         }
 
@@ -196,9 +199,10 @@ public class BaseSwordItem extends SwordItem {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        if(!this.modifier.onHitEffects.isEmpty()){
-            EffectStrategy.appendDescription(tooltipComponents,
-                    this.modifier.onHitEffects.stream().map(DeferredHolder::get).toList(),
+        var hitEffects = stack.get(TEDataComponentTypes.EFFECT_STRATEGY);
+        if(hitEffects != null){
+            IEffectStrategy.appendDescription(tooltipComponents,
+                    hitEffects.effects(),
                     Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").withColor(0x969811));
         }
         var data = stack.get(ModDataComponentTypes.SWORD_PROJECTILE);

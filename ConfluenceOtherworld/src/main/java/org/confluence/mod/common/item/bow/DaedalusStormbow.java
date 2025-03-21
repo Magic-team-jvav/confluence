@@ -9,8 +9,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.common.item.sword.stagedy.projectile.IProjContainer;
-import org.confluence.mod.common.item.sword.stagedy.projectile.StarFuryProjContainer;
+import org.confluence.mod.common.item.sword.legacy.projectile.IProjContainer;
+import org.confluence.mod.common.item.sword.legacy.projectile.StarFuryProjContainer;
 import org.confluence.terra_curio.common.component.ModRarity;
 
 import javax.annotation.Nullable;

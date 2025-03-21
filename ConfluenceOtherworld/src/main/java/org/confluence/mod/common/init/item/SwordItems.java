@@ -13,14 +13,18 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
+import org.confluence.mod.common.init.ModEffectStrategies;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.LightSaber;
-import org.confluence.mod.common.item.sword.stagedy.InventoryTickStrategy;
-import org.confluence.mod.common.item.sword.stagedy.SwordPrefabs;
+import org.confluence.mod.common.item.sword.legacy.InventoryTickStrategy;
+import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
 import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.terraentity.data.component.EffectStrategyComponent;
+import org.confluence.terraentity.registries.TERegistries;
 import org.confluence.terraentity.registries.generation.variant.ForwardGeneration;
+import org.confluence.terraentity.registries.hit_effect.variant.PrefabEffect;
 import org.confluence.terraentity.registries.track.variant.SimpleTrack;
 import org.confluence.terraentity.init.TESounds;
 
@@ -28,7 +32,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import static org.confluence.mod.common.init.ModEffectStrategies.*;
-import static org.confluence.mod.common.item.sword.stagedy.SwordPrefabs.*;
+import static org.confluence.mod.common.item.sword.legacy.SwordPrefabs.*;
 
 
 
@@ -82,18 +86,18 @@ public class SwordItems {
 
     //效果剑
     public static final DeferredItem<SwordItem> LIGHTS_BANE = register("lights_bane",ModTiers.TITANIUM, 5, -1.0f,
-            ModRarity.BLUE,     EFFECT_SWORD.apply(LIGHTS_BANE_EFFECT));
+            ModRarity.BLUE,     EFFECT_SWORD.apply(EffectStrategyComponent.ofPrefab("light",LIGHTS_BANE_EFFECT)));
     public static final DeferredItem<SwordItem> BLOOD_BUTCHERER = register("blood_butchere",ModTiers.TITANIUM, 7, -2.7F,
-            ModRarity.BLUE,     EFFECT_SWORD.apply(BLOOD_BUTCHERED_EFFECT));
+            ModRarity.BLUE,     EFFECT_SWORD.apply(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get()));
     public static final DeferredItem<SwordItem> VOLCANO = register("volcano",ModTiers.TITANIUM, 13, -3F,
-            ModRarity.ORANGE,   EFFECT_SWORD.apply(HELL_FIRE_EFFECT).addOnHitEffect(SET_FIRE_EFFECT)
+            ModRarity.ORANGE,   EFFECT_SWORD.apply(ModEffectStrategies.Components.HELL_FIRE_EFFECT.get())
                     .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2f, AttributeModifier.Operation.ADD_VALUE)
                     .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.5f, AttributeModifier.Operation.ADD_VALUE)
     );
     public static final DeferredItem<SwordItem> BAT_BAT = register("bat_bat", ModTiers.TITANIUM,12,-3.7f,
-            ModRarity.ORANGE,   EFFECT_SWORD.apply(BAT_FANG_EFFECT));
+            ModRarity.ORANGE,   EFFECT_SWORD.apply(EffectStrategyComponent.ofPrefab("bat",BAT_FANG_EFFECT)));
     public static final DeferredItem<SwordItem> TENTACLE_MACE = register("tentacle_mace",ModTiers.TITANIUM, 5, -1.4F,
-            ModRarity.GREEN,    EFFECT_SWORD.apply(TENTACLE_SPIKES_EFFECT));
+            ModRarity.GREEN,    EFFECT_SWORD.apply(ModEffectStrategies.Components.TENTACLE_SPIKES_EFFECT.get()));
 
 
 
@@ -122,9 +126,9 @@ public class SwordItems {
             SwordPrefabs.BOARD_SWORD.apply(10.0f)                                //宽剑
                     .addAttributeModifier(Attributes.MOVEMENT_SPEED,1.5f,
                             AttributeModifier.Operation.ADD_MULTIPLIED_BASE)        //手持属性加成
-//                    .addOnHitEffect(UNDEFINED)                //命中效果
+//                    .setOnHitEffect(UNDEFINED)                //命中效果
                     .setInventoryTick(InventoryTickStrategy.INVINCIBLE)             //背包每刻效果
-//            ).peek(it-> EFFECT_STRATEGY.getEntries().stream().toList().forEach(it::addOnHitEffect)).findFirst().get()
+//            ).peek(it-> EFFECT_STRATEGY.getEntries().stream().toList().forEach(it::setOnHitEffect)).findFirst().get()
                     .modifyProperties(p->p.component(ModDataComponentTypes.SWORD_PROJECTILE, new SwordProjectileComponent(
                             1,1,1,50,0.05f,20, TESounds.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
                             Optional.of(new SimpleTrack(Math.PI/2,0.5f, 0.1f, Optional.empty(), 0.1)),

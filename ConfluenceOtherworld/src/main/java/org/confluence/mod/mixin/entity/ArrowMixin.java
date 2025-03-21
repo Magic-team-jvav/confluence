@@ -18,7 +18,8 @@ public class ArrowMixin implements SelfGetter<Arrow> {
         ItemStack weapon = te$getSelf().getWeaponItem();
         if(weapon !=null && weapon.getItem() instanceof TerraBowItem bow){
             try {
-                bow.arrowModifier.onHitEffect.forEach(effect -> effect.get().getEffect().accept((LivingEntity) te$getSelf().getOwner(),living));
+                if (bow.arrowModifier.onHitEffects != null)
+                    bow.arrowModifier.onHitEffects.forEach(effect -> effect.applyAll((LivingEntity) te$getSelf().getOwner(),living));
             }catch (Exception ignored){
             }
         }

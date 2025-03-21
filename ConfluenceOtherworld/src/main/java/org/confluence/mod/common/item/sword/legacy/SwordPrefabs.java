@@ -1,15 +1,14 @@
-package org.confluence.mod.common.item.sword.stagedy;
+package org.confluence.mod.common.item.sword.legacy;
 
 
-import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.item.sword.BaseSwordItem.ModifierBuilder;
-import org.confluence.terraentity.registries.hit_effect.EffectStrategy;
+import org.confluence.terraentity.data.component.EffectStrategyComponent;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static org.confluence.mod.common.item.sword.stagedy.InventoryTickStrategy.UMBRELLA_TICK;
+import static org.confluence.mod.common.item.sword.legacy.InventoryTickStrategy.UMBRELLA_TICK;
 
 /**
  * 这个类用于组合各种剑的特殊技能 strategy，以便于快速注册
@@ -33,8 +32,8 @@ public class SwordPrefabs {
             .setProj(strategy);
 
     /** 效果剑*/
-    public static final Function<DeferredHolder<EffectStrategy,EffectStrategy> , ModifierBuilder>  EFFECT_SWORD = (effect)->new ModifierBuilder()
-            .addOnHitEffect(effect);
+    public static final Function<EffectStrategyComponent , ModifierBuilder> EFFECT_SWORD = (effect)->new ModifierBuilder()
+            .setOnHitEffect(effect);
 
 
     /**特殊类*/

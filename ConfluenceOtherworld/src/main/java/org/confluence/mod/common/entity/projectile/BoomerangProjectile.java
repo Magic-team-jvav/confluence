@@ -93,7 +93,7 @@ public class BoomerangProjectile extends AbstractHurtingProjectile {
                 owner.getAttribute(Attributes.ATTACK_DAMAGE).addTransientModifier(new AttributeModifier(temp, modifier.damage - 1, AttributeModifier.Operation.ADD_VALUE));
                 float damage = (float) owner.getAttributeValue(Attributes.ATTACK_DAMAGE);
                 owner.getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(temp);
-                modifier.onHitEffects.forEach(effect -> effect.get().getEffect().accept((LivingEntity) this.getOwner(), living));
+                modifier.onHitEffects.applyAll((LivingEntity) this.getOwner(), living);
                 living.hurt(this.damageSources().mobProjectile(this,owner), damage);
                 //击退
                 doKnockback(living);

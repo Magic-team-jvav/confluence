@@ -65,6 +65,7 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.entity.monster.AbstractMonster;
+import org.confluence.terraentity.init.TEItems;
 
 import java.util.Map;
 import java.util.Optional;
@@ -326,5 +327,6 @@ public final class ModEvents {
         event.modify(TGItems.CHLOROPHYTE_BULLET.get(), lime);
         Consumer<DataComponentPatch.Builder> cyan = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.CYAN);
         event.modify(TGItems.LUMINITE_BULLET.get(), cyan);
+
     }
 }

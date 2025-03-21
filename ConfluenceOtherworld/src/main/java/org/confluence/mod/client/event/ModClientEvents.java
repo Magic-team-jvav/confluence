@@ -83,6 +83,7 @@ import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
 import org.confluence.mod.integration.ponder.PonderHelper;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.terraentity.client.entity.renderer.GeoNormalRenderer;
+import org.confluence.terraentity.client.entity.renderer.WhipEntityRenderer;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import java.util.HashSet;
@@ -219,8 +220,6 @@ public final class ModClientEvents {
         event.registerEntityRenderer(ENCHANTED_SWORD_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, new EnchantedSwordProjectileModel(c.bakeLayer(EnchantedSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1, 0.2F, 0.89f));
         event.registerEntityRenderer(LIGHTS_BANE_PROJECTILE.get(), LightsBaneProjectileRenderer::new);
 
-        // 鞭子
-        event.registerEntityRenderer(WHIP_PROJECTILE.get(), WhipEntityRenderer::new);
 
 
         event.registerEntityRenderer(BOOMERANG_PROJECTILE.get(), BoomerangProjRenderer::new);

@@ -18,7 +18,7 @@ import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.confluence.terraentity.api.hit_effect.EffectStrategy;
+import org.confluence.terraentity.registries.hit_effect.EffectStrategy;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

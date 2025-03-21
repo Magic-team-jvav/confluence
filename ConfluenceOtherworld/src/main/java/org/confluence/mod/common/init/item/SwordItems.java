@@ -20,13 +20,12 @@ import org.confluence.mod.common.item.sword.LightSaber;
 import org.confluence.mod.common.item.sword.stagedy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.stagedy.SwordPrefabs;
 import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terraentity.entity.proj.generation.ForwardGeneration;
-import org.confluence.terraentity.entity.proj.track.SimpleTrack;
+import org.confluence.terraentity.registries.generation.variant.ForwardGeneration;
+import org.confluence.terraentity.registries.track.variant.SimpleTrack;
 import org.confluence.terraentity.init.TESounds;
 
 import java.util.Optional;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 import static org.confluence.mod.common.init.ModEffectStrategies.*;
 import static org.confluence.mod.common.item.sword.stagedy.SwordPrefabs.*;

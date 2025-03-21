@@ -4,7 +4,7 @@ package org.confluence.mod.common.item.sword.stagedy;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.item.sword.BaseSwordItem.ModifierBuilder;
-import org.confluence.terraentity.api.hit_effect.EffectStrategy;
+import org.confluence.terraentity.registries.hit_effect.EffectStrategy;
 
 import java.util.function.Function;
 import java.util.function.Supplier;

@@ -13,6 +13,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.*;
 
+
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -89,7 +90,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheld.add(createDir(ManaWeaponItems.ITEMS, "mana_staff/"));
         handheld.add(createDir(HoeItems.ITEMS, "hoe/"));
         handheld.add(createDir(ShovelItems.ITEMS, "shovel/"));
-        handheld.add(createDir(WhipItems.ITEMS, "whip/"));
 
         genModels(handheld, "item/handheld", true);
 

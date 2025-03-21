@@ -26,6 +26,7 @@ import org.confluence.mod.common.entity.projectile.sword.ForwardSwordProjectile;
 import org.confluence.mod.common.entity.projectile.sword.LightBaneProjectile;
 import org.confluence.mod.common.entity.projectile.sword.StarFuryProjectile;
 import org.confluence.mod.common.event.ModEvents;
+import org.confluence.terraentity.entity.proj.WhipEntity;
 
 import java.util.function.Supplier;
 
@@ -70,8 +71,6 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>,EntityType<ForwardSwordProjectile>> ENCHANTED_SWORD_PROJECTILE = ENTITIES.register("enchanted_sword_projectile", () -> EntityType.Builder.of(ForwardSwordProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:enchanted_sword_projectile"));
     public static final DeferredHolder<EntityType<?>,EntityType<LightBaneProjectile>> LIGHTS_BANE_PROJECTILE = ENTITIES.register("lights_bane_projectile", () -> EntityType.Builder.of(LightBaneProjectile::new, MobCategory.MISC).sized(1F, 1F).build("confluence:lights_bane_projectile"));
 
-    // 鞭子
-    public static final DeferredHolder<EntityType<?>,EntityType<WhipEntity>> WHIP_PROJECTILE = ENTITIES.register("whip_projectile", () -> EntityType.Builder.of(WhipEntity::new, MobCategory.MISC).sized(1F, 1F).updateInterval(1).build("confluence:whip_projectile"));
 
     public static final Supplier<EntityType<BoomerangProjectile>> BOOMERANG_PROJECTILE = ENTITIES.register("boomerang_projectile", () -> EntityType.Builder.<BoomerangProjectile>of(BoomerangProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:boomerang_projectile"));
     public static final Supplier<EntityType<BoulderEntity>> BOULDER = ENTITIES.register("boulder", () -> EntityType.Builder.<BoulderEntity>of(BoulderEntity::new, MobCategory.MISC).sized(BoulderEntity.DIAMETER, BoulderEntity.DIAMETER).clientTrackingRange(6).build("confluence:boulder"));

@@ -27,7 +27,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.bow.BaseArrowItem;
 import org.confluence.mod.util.EnchantmentUtil;
-import org.confluence.terraentity.api.hit_effect.EffectStrategy;
+import org.confluence.terraentity.registries.hit_effect.EffectStrategy;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;

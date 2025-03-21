@@ -30,7 +30,7 @@ import org.confluence.mod.common.item.sword.stagedy.SwordPrefabs;
 import org.confluence.mod.common.item.sword.stagedy.projectile.IProjContainer;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.confluence.terraentity.api.hit_effect.EffectStrategy;
+import org.confluence.terraentity.registries.hit_effect.EffectStrategy;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -171,7 +171,7 @@ public class BaseSwordItem extends SwordItem {
         }
 
         public ModifierBuilder modifyProperties(Function<Item.Properties,Item.Properties> modifier){
-//            this.properties = modifier.apply(this.properties);
+//            this.properties = modifier.getEffect(this.properties);
             this.modifier.add(modifier);
             return this;
         }

@@ -115,6 +115,5 @@ public final class ModItems {
         ToolItems.ITEMS.register(eventBus);
         TreasureBagItems.ITEMS.register(eventBus);
         VanityArmorItems.ITEMS.register(eventBus);
-        WhipItems.ITEMS.register(eventBus);
     }
 }

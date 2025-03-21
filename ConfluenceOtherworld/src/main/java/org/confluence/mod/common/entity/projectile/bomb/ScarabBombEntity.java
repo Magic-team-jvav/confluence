@@ -55,7 +55,7 @@ public class ScarabBombEntity extends StickyBombEntity {
         if (!(level() instanceof ServerLevel serverLevel)) return;
         Vec3 blastPos = getEyePosition();
         Vec3 step = facingDir.normalize().scale(-3);
-        float upperLimit = ModBlocks.getObsidianBasedExplosionResistance(100);
+        float upperLimit = ModBlocks.getObsidianBasedExplosionResistance(50);
         ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList = new ObjectArrayList<>();
         DamageSource damageSource = Explosion.getDefaultDamageSource(level(), this);
         MultiplyExplosionDamageCalculator damageCalculator = new MultiplyExplosionDamageCalculator(0.2F);

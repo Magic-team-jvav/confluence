@@ -1,8 +1,10 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.core.Holder;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
@@ -63,12 +65,15 @@ public class ConsumableItems {
     public static final Supplier<ThrownPowderItem> VILE_POWDER = ITEMS.register("vile_powder", () -> new ThrownPowderItem(ISpreadable.Type.CORRUPT));
     public static final Supplier<ThrownPowderItem> VICIOUS_POWDER = ITEMS.register("vicious_powder", () -> new ThrownPowderItem(ISpreadable.Type.CRIMSON));
     public static final Supplier<FertilizerItem> FERTILIZER = ITEMS.register("fertilizer", FertilizerItem::new);
+    public static final Supplier<ModBoneMealItem> ROTTEN_BONE_DUST = ITEMS.register("rotten_bone_dust", ModBoneMealItem::new);
+    public static final Supplier<ModBoneMealItem> BLOODSTAINED_POWDER = ITEMS.register("bloodstained_powder", ModBoneMealItem::new);
 
     public static final Supplier<BossSummingItem> SUSPICIOUS_LOOKING_EYE = ITEMS.register("suspicious_looking_eye", () -> new BossSummingItem(player -> player.level().isNight(), EyeOfCthulhu::new, BossSummingItem.getTooltipsFromString("suspicious_looking_eye", 3, ChatFormatting.RED)));
     public static final Supplier<BossSummingItem> SLIME_CROWN = ITEMS.register("slime_crown", () -> new BossSummingItem(player -> true, KingSlime::new, BossSummingItem.getTooltipsFromString("slime_crown", 3, ChatFormatting.BLUE)));
     public static final Supplier<BossSummingItem> WORM_FOOD = ITEMS.register("worm_food", () -> new BossSummingItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CORRUPTION), level -> new EaterOfWorlds(level, true), BossSummingItem.getTooltipsFromString("worm_food", 3, ChatFormatting.DARK_PURPLE)));
     public static final Supplier<BossSummingItem> BLOODY_SPINE = ITEMS.register("bloody_spine", () -> new BossSummingItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.TR_CRIMSON), BrainOfCthulhu::new, BossSummingItem.getTooltipsFromString("bloody_spine", 3, ChatFormatting.RED)));
-    public static final Supplier<BossSummingItem> ABEEMINATION = ITEMS.register("abeemination", () -> new BossSummingItem(player -> player.level().getBiome(player.blockPosition()).is(Biomes.JUNGLE), QueenBee::new, BossSummingItem.getTooltipsFromString("abeemination", 4, ChatFormatting.YELLOW)));
-    public static final Supplier<ModBoneMealItem> ROTTEN_BONE_DUST = ITEMS.register("rotten_bone_dust", ModBoneMealItem::new);
-    public static final Supplier<ModBoneMealItem> BLOODSTAINED_POWDER = ITEMS.register("bloodstained_powder", ModBoneMealItem::new);
+    public static final Supplier<BossSummingItem> ABEEMINATION = ITEMS.register("abeemination", () -> new BossSummingItem(player -> {
+        Holder<Biome> biome = player.level().getBiome(player.blockPosition());
+        return biome.is(Tags.Biomes.IS_JUNGLE) || biome.is(Tags.Biomes.IS_LUSH);
+    }, QueenBee::new, BossSummingItem.getTooltipsFromString("abeemination", 4, ChatFormatting.YELLOW)));
 }

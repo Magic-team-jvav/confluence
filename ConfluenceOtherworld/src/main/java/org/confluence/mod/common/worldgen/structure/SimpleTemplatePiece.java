@@ -17,10 +17,21 @@ import org.confluence.mod.common.init.ModStructures;
 public class SimpleTemplatePiece extends TemplateStructurePiece {
     public SimpleTemplatePiece(StructureTemplateManager structureTemplateManager, String name, BlockPos startPos, boolean overwrite, boolean ignoreEntities, Rotation rotation) {
         super(ModStructures.SIMPLE_TEMPLATE_PIECE.get(), 0, structureTemplateManager, Confluence.asResource("simple_template/" + name), name, makeSettings(overwrite, ignoreEntities, rotation), startPos);
+        makeBigBox();
     }
 
     public SimpleTemplatePiece(StructureTemplateManager structureTemplateManager, CompoundTag tag) {
         super(ModStructures.SIMPLE_TEMPLATE_PIECE.get(), tag, structureTemplateManager, location -> makeSettings(tag.getBoolean("OW"), tag.getBoolean("IE"), Rotation.valueOf(tag.getString("Rot"))));
+        makeBigBox();
+    }
+
+    private void makeBigBox() {
+        int i = templatePosition.getX() / 16 * 16;
+        int j = templatePosition.getZ() / 16 * 16;
+        this.boundingBox = new BoundingBox(
+                i - 16, templatePosition.getY() - 12, j - 16,
+                i + 31, templatePosition.getY() + 11, j + 31
+        );
     }
 
     private static StructurePlaceSettings makeSettings(boolean overwrite, boolean ignoreEntities, Rotation rotation) {

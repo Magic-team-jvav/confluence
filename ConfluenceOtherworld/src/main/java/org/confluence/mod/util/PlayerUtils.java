@@ -7,6 +7,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -95,11 +96,11 @@ public final class PlayerUtils {
     }
 
     public static boolean extractMana(ServerPlayer serverPlayer, ItemStack itemStack, IntSupplier sup) {
-        if (serverPlayer.gameMode.isCreative()) return true;
+        if (serverPlayer.isCreative()) return true;
         IntSupplier posted = HookMapManager.postHooks(ModHookTypes.MANA_CONSUME.get(), (owner, hook, original) -> hook.onManaConsume(owner, itemStack, original), serverPlayer, sup);
         ManaStorage manaStorage = serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE);
         if (manaStorage.extractMana(posted, serverPlayer)) {
-            manaStorage.setRegenerateDelay((int) Math.ceil(0.7F * ((1 - (float) manaStorage.getCurrentMana() / manaStorage.getMaxMana()) * 240 + 45)));
+            manaStorage.setRegenerateDelay(Mth.ceil(0.7F * ((1 - (float) manaStorage.getCurrentMana() / manaStorage.getMaxMana()) * 240 + 45)));
             syncMana2Client(serverPlayer, manaStorage);
             return true;
         }

@@ -6,24 +6,24 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModStructures;
-import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
+import org.confluence.mod.util.VectorUtils;
 import org.joml.Vector3d;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-import static org.confluence.mod.util.StructureUtils.*;
+import static org.confluence.mod.util.StructureUtils.frustumSet;
+import static org.confluence.mod.util.StructureUtils.frustumSetPos;
 
 public class IceThornStructure extends Structure {
     public static final MapCodec<IceThornStructure> CODEC = simpleCodec(IceThornStructure::new);
@@ -56,8 +56,8 @@ public class IceThornStructure extends Structure {
             int count = random.nextInt(4, 7);
             int step = 80 / count;
             int countThorn;
-            Vector3d mainStart = new Vector3d(centerPos.getX(), centerPos.getY(), centerPos.getZ());
-            Vector3d mainEnd = new Vector3d(centerPos.getX(), centerPos.getY() + random.nextInt(120, 150), centerPos.getZ());
+            Vector3d mainStart = VectorUtils.toVector3d(centerPos);
+            Vector3d mainEnd = VectorUtils.toVector3d(centerPos).add(0, random.nextInt(120, 150), 0);
             Vector3d otherEnd;
             List<Vector3d> otherEnds = new ArrayList<>();
             List<Vector3d> thorns;
@@ -66,14 +66,15 @@ public class IceThornStructure extends Structure {
             for (int i = 1; i <= count; i++) {
                 radius = random.nextInt(10, 16);
                 otherEnd = new Vector3d(random.nextInt(-50, 51), step * i + random.nextInt(-3, 4), random.nextInt(-50, 51));
-                thorns = frustumSetPos(mainStart, new Vector3d(otherEnd.x + mainStart.x, otherEnd.y + mainStart.y, otherEnd.z + mainStart.z), radius, 0.6, 0.05F, random);
+                Vector3d endPos = new Vector3d(otherEnd.x + mainStart.x, otherEnd.y + mainStart.y, otherEnd.z + mainStart.z);
+                thorns = frustumSetPos(mainStart, endPos, radius, 0.6, 0.05F, random);
                 for (Vector3d thorn : thorns) {
                     countThorn = random.nextInt(5, 11);
                     for (int j = 0; j < countThorn; j++) {
-                        blockMap.put(new BlockPos((int) thorn.x, (int) thorn.y - j, (int) thorn.z), 2);
+                        blockMap.put(BlockPos.containing(thorn.x, thorn.y - j, thorn.z), 2);
                     }
                 }
-                frustumSet(mainStart, new Vector3d(otherEnd.x + mainStart.x, otherEnd.y + mainStart.y, otherEnd.z + mainStart.z), radius, 0.6, 0, blockMap);
+                frustumSet(mainStart, new Vector3d(endPos), radius, 0.6, 0, blockMap);
                 otherEnds.add(otherEnd);
             }
             frustumSet(mainStart, mainEnd, random.nextInt(10, 16), 0.6, 0, blockMap);

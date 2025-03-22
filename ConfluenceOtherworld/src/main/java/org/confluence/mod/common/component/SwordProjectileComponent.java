@@ -10,15 +10,18 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.terra_curio.common.init.TCAttributes;
+import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.confluence.terraentity.registries.generation.variant.AboveFallenGeneration;
 import org.confluence.terraentity.registries.generation.variant.ForwardGeneration;
 import org.confluence.terraentity.registries.generation.IGeneration;
+import org.confluence.terraentity.registries.hit_effect.variant.TimePossibilityAmplifierEffect;
 import org.confluence.terraentity.registries.track.ITrackType;
 import org.confluence.terraentity.init.TESounds;
 import org.jetbrains.annotations.NotNull;
@@ -49,24 +52,33 @@ public record SwordProjectileComponent (
         ResourceLocation soundEvent,
         ResourceLocation projType,
         Optional<ITrackType> trackType,
-        IGeneration generation
+        IGeneration generation,
+        Optional<EffectStrategyComponent> hitEffect
 ) implements DataComponentType<SwordProjectileComponent> {
 
     public static final Supplier<SwordProjectileComponent> ICE_PROJ =
             ()->new SwordProjectileComponent(2,0.6f,0.9f,40, 0, 10,
                     ModSoundEvents.FROZEN_ARROW.getId(), ModEntities.ICE_BLADE_SWORD_PROJECTILE.getId(),
-                    Optional.empty(), ForwardGeneration.of(0,0));
+                    Optional.empty(), ForwardGeneration.of(0,0),
+                    Optional.empty()   );
 
     public static final Supplier<SwordProjectileComponent> STAR_FURY_PROJ =
             ()->new SwordProjectileComponent(1.5f,1.5f,0.9f,100, 0, 10,
                     ModSoundEvents.STAR.getId(),ModEntities.STAR_FURY_PROJECTILE.getId(),
-                    Optional.empty(), new AboveFallenGeneration(30,30,10,0.5f,20,5));
+                    Optional.empty(), new AboveFallenGeneration(30,30,10,0.5f,20,5),
+                    Optional.empty() );
 
     public static final Supplier<SwordProjectileComponent> ENCHANTED_SWORD_PROJ =
             ()->new SwordProjectileComponent(1,0.8f,0.9f,40, 0, 10,
                     TESounds.REGULAR_STAFF_SHOOT_2.getId(),ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
-                    Optional.empty(), ForwardGeneration.of(0,0));
+                    Optional.empty(), ForwardGeneration.of(0,0),
+                    Optional.empty() );
 
+    public static final Supplier<SwordProjectileComponent> GRASS_PROJ =
+            ()->new SwordProjectileComponent(1,0.8f,0.9f,40, 0, 10,
+                    TESounds.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.GRASS_PROJECTILE.getId(),
+                    Optional.empty(), ForwardGeneration.of(0,20),
+                    Optional.of(EffectStrategyComponent.of(TimePossibilityAmplifierEffect.of("grass_effect", MobEffects.POISON, 100, 1, 0.5f))));
 
 
     public static final Codec<SwordProjectileComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -79,7 +91,8 @@ public record SwordProjectileComponent (
             ResourceLocation.CODEC.fieldOf("soundEvent").forGetter(SwordProjectileComponent::soundEvent),
             ResourceLocation.CODEC.fieldOf("projType").forGetter(SwordProjectileComponent::projType),
             ITrackType.TYPED_CODEC.optionalFieldOf("trackType").forGetter(SwordProjectileComponent::trackType),
-            IGeneration.TYPED_CODEC.fieldOf("generation").forGetter(SwordProjectileComponent::generation)
+            IGeneration.TYPED_CODEC.fieldOf("generation").forGetter(SwordProjectileComponent::generation),
+            EffectStrategyComponent.CODEC.optionalFieldOf("hitEffect").forGetter(SwordProjectileComponent::hitEffect)
     ).apply(instance, SwordProjectileComponent::new));
 
     public SoundEvent getSoundEvent() {

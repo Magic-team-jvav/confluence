@@ -51,11 +51,18 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
     public SwordProjectile(EntityType<? extends SwordProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
+        if(!level().isClientSide()){
+            direction = new Vec3(this.getRandom().nextFloat() - 0.5f, this.getRandom().nextFloat() - 0.5f, this.getRandom().nextFloat() - 0.5f);
+//            direction = new Vec3(1,0,0);
+            this.entityData.set(DATA_DIRECTION, direction.toVector3f());
+        }
     }
 
     // 数据同步
     float gravity = 0;
     Vec3 initSpeed = new Vec3(0, 0, 0);
+    public Vec3 direction = new Vec3(0, 0, 0);
+    public static final EntityDataAccessor<Vector3f> DATA_DIRECTION = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.VECTOR3);
     protected static final EntityDataAccessor<Vector3f> DATA_INIT_SPEED = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.VECTOR3);
     protected static final EntityDataAccessor<Float> DATA_INIT_GRAVITY = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.FLOAT);
 
@@ -65,9 +72,13 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
             if (data == DATA_INIT_SPEED) {
                 this.initSpeed = new Vec3(this.entityData.get(DATA_INIT_SPEED));
                 this.setDeltaMovement(initSpeed);
-            }
-            if (data == DATA_INIT_GRAVITY) {
+            }else if (data == DATA_INIT_GRAVITY) {
                 this.gravity = this.entityData.get(DATA_INIT_GRAVITY);
+            }else if (DATA_DIRECTION.equals(data)) {
+                direction =new Vec3(this.entityData.get(DATA_DIRECTION));
+                float yaw = (float) Math.atan2(direction.x, direction.z) * (180F / (float) Math.PI);
+                this.setYRot(yaw);
+                yRotO = yaw;
             }
         }
     }
@@ -76,6 +87,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         super.defineSynchedData(builder);
         builder.define(DATA_INIT_SPEED, new Vector3f(0, 0, 0));
         builder.define(DATA_INIT_GRAVITY, 0.0F);
+        builder.define(DATA_DIRECTION, new Vector3f());
     }
 
     @Override
@@ -239,16 +251,22 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     }
 
     protected boolean doHurt(Entity living){
-        if(!(living instanceof LivingEntity)) return false;
-        float damage = getBaseDamage() * (attackDamage);
-        if (living.hurt(damageSource(), damage)) {
-            float attackKnockBack = getBaseKnockBack() + knockBack;
-            VectorUtils.knockBackA2B(this, living, attackKnockBack * 0.5, 0.2);
-            if(--hitCount == 0){
-                discard();
+        if(living instanceof LivingEntity hurter) {
+            float damage = getBaseDamage() * (attackDamage);
+            if (getOwner() instanceof LivingEntity owner)
+                component.hitEffect().ifPresent(effect -> {
+                    effect.applyAll(owner, hurter);
+                });
+            if (hurter.hurt(damageSource(), damage)) {
+                float attackKnockBack = getBaseKnockBack() + knockBack;
+                VectorUtils.knockBackA2B(this, hurter, attackKnockBack * 0.5, 0.2);
+                if (--hitCount == 0) {
+                    discard();
+                }
             }
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override

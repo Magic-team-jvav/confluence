@@ -104,10 +104,12 @@ public class SwordItems {
     //弹幕剑
     public static final DeferredItem<SwordItem> ICE_BLADE = register("ice_blade",ModTiers.TITANIUM, 5, -1.0F,
             ModRarity.BLUE,     PROJ_SWORD.apply(SwordProjectileComponent.ICE_PROJ));
-    public static final DeferredItem<SwordItem>STARFURY = register("starfury",ModTiers.TITANIUM, 6, -1.1F,
+    public static final DeferredItem<SwordItem> STARFURY = register("starfury",ModTiers.TITANIUM, 6, -1.1F,
             ModRarity.GREEN,    PROJ_SWORD.apply(SwordProjectileComponent.STAR_FURY_PROJ));
-    public static final DeferredItem<SwordItem> ENCHANTED_SWORD = register("enchanted_sword",ModTiers.TITANIUM, 7, -1.1F,
+    public static final DeferredItem<SwordItem> ENCHANTED_SWORD = register("enchanted_sword", ModTiers.TITANIUM, 7, -1.1F,
             ModRarity.ORANGE,   PROJ_SWORD.apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ));
+    public static final DeferredItem<SwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.TITANIUM, 7, -1.1F,
+            ModRarity.GREEN,   PROJ_SWORD.apply(SwordProjectileComponent.GRASS_PROJ));
 
     // 光剑
     public static final DeferredItem<SwordItem> RED_LIGHT_SABER = register("red_light_saber", ()->new LightSaber.Red(ModTiers.TITANIUM, ModRarity.BLUE,10, -2));
@@ -132,7 +134,7 @@ public class SwordItems {
                     .modifyProperties(p->p.component(ModDataComponentTypes.SWORD_PROJECTILE, new SwordProjectileComponent(
                             1,1,1,50,0.05f,20, TESounds.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
                             Optional.of(new SimpleTrack(Math.PI/2,0.5f, 0.1f, Optional.empty(), 0.1)),
-                            ForwardGeneration.of(0,0)
+                            ForwardGeneration.of(0,0), Optional.empty()
                     )))
     );
 

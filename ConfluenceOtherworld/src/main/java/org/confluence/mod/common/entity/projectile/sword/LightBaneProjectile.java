@@ -20,18 +20,12 @@ import java.util.List;
 
 public class LightBaneProjectile extends SwordProjectile {
 
-    public Vec3 direction;
     List<Entity> hits = new ArrayList<>();
-    public static final EntityDataAccessor<Vector3f> DATA_DIRECTION = SynchedEntityData.defineId(LightBaneProjectile.class, EntityDataSerializers.VECTOR3);
 
     public LightBaneProjectile(EntityType<LightBaneProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
         hitCount = 99999;
-        if(!level().isClientSide()){
-            direction = new Vec3(this.getRandom().nextFloat() - 0.5f, this.getRandom().nextFloat() - 0.5f, this.getRandom().nextFloat() - 0.5f);
-//            direction = new Vec3(1,0,0);
-            this.entityData.set(DATA_DIRECTION, direction.toVector3f());
-        }
+
     }
 
     @Override
@@ -60,26 +54,9 @@ public class LightBaneProjectile extends SwordProjectile {
         return false;
     }
 
+    @Override
     public DamageSource damageSource(){
         return super.damageSource();
-    }
-
-    @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_DIRECTION, new Vector3f());
-    }
-
-    @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
-        super.onSyncedDataUpdated(key);
-        if (this.level().isClientSide() && DATA_DIRECTION.equals(key)) {
-            direction =new Vec3(this.entityData.get(DATA_DIRECTION));
-            float yaw = (float) Math.atan2(direction.x, direction.z) * (180F / (float) Math.PI);
-            this.setYRot(yaw);
-            yRotO = yaw;
-        }
-
     }
 
     @Nullable

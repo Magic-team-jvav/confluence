@@ -33,6 +33,7 @@ public class BaseArrowItem extends ArrowItem {
         return modifier;
     }
 
+    @Override
     public AbstractArrow createArrow(Level pLevel, ItemStack pStack, LivingEntity pShooter,ItemStack weapon) {
         // todo 到时候做自定义箭矢的时候再改
         if(pStack.getItem() instanceof BaseArrowItem arrowItem && arrowItem.modifier != null){
@@ -48,6 +49,7 @@ public class BaseArrowItem extends ArrowItem {
         return super.createArrow(pLevel, pStack, pShooter,weapon);
     }
 
+    @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
 
         if(attributes!=null){

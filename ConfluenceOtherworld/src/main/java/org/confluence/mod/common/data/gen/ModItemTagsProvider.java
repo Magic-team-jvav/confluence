@@ -651,7 +651,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 BowItems.DEMON_BOW.get(),
                 BowItems.TENDON_BOW.get(),
                 BowItems.DAEDALUS_STORM_BOW.get(),
-                BowItems.MOLTEN_FURY.asItem()
+                BowItems.MOLTEN_FURY.get(),
+                BowItems.THE_BEES_KNEES.get()
         );
 
         AccessoryItems.acceptTag(tag(TCTags.ACCESSORY));

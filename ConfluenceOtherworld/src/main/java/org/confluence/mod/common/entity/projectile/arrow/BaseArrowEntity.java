@@ -37,7 +37,7 @@ import java.util.function.Supplier;
 
 public class BaseArrowEntity extends AbstractArrow {
 
-    static final float minSpeedAttackFactor = 0.5f;//速度影响伤害的最小系数
+    protected float minSpeedAttackFactor = 0.5f;//速度影响伤害的最小系数
 
     public static class Tuple {
         public String path;
@@ -113,17 +113,25 @@ public class BaseArrowEntity extends AbstractArrow {
         super.onAddedToLevel();
     }
 
+    @Override
     public void shoot(double pX, double pY, double pZ, float pVelocity, float pInaccuracy) {
         super.shoot(pX, pY, pZ, pVelocity, pInaccuracy);
         this.setDeltaMovement(getDeltaMovement().scale(modify.speedFactor * (level().isRaining() ? modify.speedUpInRain : 1)));
     }
 
+    protected float getSpeedDamageFactor(float length){
+        return Math.min(length, 3f);
+    }
+
+    protected float getSpeedDamageMinFactor(float f){
+        return Math.max(f, minSpeedAttackFactor);
+    }
+
+    @Override
     protected void onHitEntity(EntityHitResult pResult) {
         Entity entity = pResult.getEntity();
         if((modify.type & Tag.cause_fire)!=0)
             entity.setRemainingFireTicks(this.getRemainingFireTicks() + modify.causeFireTick - tickCount);
-
-
 
         if(!(entity instanceof LivingEntity)) {
             super.onHitEntity(pResult);
@@ -131,7 +139,8 @@ public class BaseArrowEntity extends AbstractArrow {
         }
         if(havenBeen.contains((LivingEntity) entity)) return;
         float f = (float)this.getDeltaMovement().length();
-
+        // 限制速度增伤
+        f = getSpeedDamageFactor(f);
         Entity entity1 = this.getOwner();
         DamageSource damagesource = this.damageSources().arrow(this, (Entity)(entity1 != null ? entity1 : this));
 
@@ -141,12 +150,12 @@ public class BaseArrowEntity extends AbstractArrow {
             Level var9 = this.level();
             if (var9 instanceof ServerLevel) {
                 int value = EnchantmentUtil.getEnchantmentLevel(Enchantments.POWER, this.getWeaponItem());
-                d0 += value * 0.5f;
+                d0 *= (value * 0.1f + 1.0f);
             }
         }
 
         //速度修正系数影响的最小速度值
-        f = Math.max(f, minSpeedAttackFactor);
+        f = getSpeedDamageMinFactor(f);
         int i = Mth.ceil(Mth.clamp((double)f * d0, 0.0, 2.147483647E9));
 
         //暴击增伤
@@ -281,8 +290,6 @@ public class BaseArrowEntity extends AbstractArrow {
     protected float getWaterInertia() {
         return modify.speedUpInWater * super.getWaterInertia();
     }
-
-
 
 
     /** 能力表 **/

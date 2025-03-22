@@ -16,6 +16,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.attachment.WeaponStorage;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
@@ -27,13 +28,20 @@ import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.confluence.terraentity.init.TEDataComponentTypes;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Quaternionf;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
+/**
+ * 泰拉弓箭基类
+ * @author Coffee
+ */
 public class TerraBowItem extends BowItem {
 
     public float baseDamage;
@@ -52,7 +60,15 @@ public class TerraBowItem extends BowItem {
 
     @Override
     public @NotNull AbstractArrow customArrow(AbstractArrow arrow, ItemStack projectileStack, ItemStack weaponStack) {
-        arrow.setBaseDamage(baseDamage);
+        int multiShoot = modifyArrowBuilder.multiShoot;
+        if(!modifyArrowBuilder.canMultiShoot.test(projectileStack)) {
+            // 可以分裂但不满足条件没有分裂的箭伤害合成一支箭
+            float damage = baseDamage * multiShoot;
+            arrow.setBaseDamage(damage);
+        }else{
+            arrow.setBaseDamage(baseDamage);
+        }
+
         return arrow;
     }
 
@@ -69,6 +85,7 @@ public class TerraBowItem extends BowItem {
 
     }
 
+    @Override
     protected void shoot(ServerLevel level, LivingEntity shooter, InteractionHand hand, ItemStack weapon, List<ItemStack> projectileItems, float velocity, float inaccuracy, boolean isCrit, @Nullable LivingEntity target) {
         float f = EnchantmentHelper.processProjectileSpread(level, weapon, shooter, 0.0F);
         float f1 = projectileItems.size() == 1 ? 0.0F : 2.0F * f / (float)(projectileItems.size() - 1);
@@ -82,14 +99,36 @@ public class TerraBowItem extends BowItem {
                 f3 = -f3;
 
                 int count = modifyArrowBuilder.multiShoot;
+                if(!modifyArrowBuilder.canMultiShoot.test(itemstack)) {
+                    count = 1;
+                }
                 for(int k = 0; k < count; k++) {
-                    float f0 = count * 5 - k * 10f;
+//                    float f0 = count * 5 - k * 10f;
                     Projectile projectile = this.createProjectile(level, shooter, weapon, itemstack, isCrit);
-                    this.shootProjectile(shooter, projectile, i, velocity, inaccuracy, f4 + f0, target);
+                    this.shootProjectile(shooter, projectile, i, velocity, inaccuracy, f4 + 0, target);
+
+                    if(modifyArrowBuilder.multiShootOffset!=null) {
+                        // 多重射击初始位置偏移
+                        Vec3 offset = modifyArrowBuilder.multiShootOffset.apply(k, count);
+                        // 变换到本地坐标系
+                        Vec3 initDirection = projectile.getDeltaMovement();
+                        float yaw = (float) (-Math.atan2(initDirection.z, initDirection.x));
+                        float pitch = (float) (Math.atan2(initDirection.y,
+                                Math.sqrt(initDirection.x * initDirection.x + initDirection.z * initDirection.z)));
+                        Quaternionf q = new Quaternionf().rotateY(yaw).rotateZ(pitch);
+                        offset = new Vec3(q.transform(offset.toVector3f()));
+                        projectile.setPos(projectile.position().add(offset));
+                    }
+
                     if (projectile instanceof AbstractArrow abstractArrow) {
+                        // 多重射击箭设置不可拾取额外的箭
+                        if(k > 0) abstractArrow.pickup = AbstractArrow.Pickup.DISALLOWED;
                         ShortBowItem.applyToArrow(weapon, abstractArrow);
                         // 激活弓箭满蓄力特殊效果
                         if (abstractArrow instanceof BaseArrowEntity terraArrow) {
+                            // 多重射击的箭设置最大存在时间
+                            if(count > 1 && (terraArrow.modify.getType() & BaseArrowEntity.Tag.auto_discard) == 0)
+                                terraArrow.modify.setAutoDiscard(100);
                             WeaponStorage data = shooter.getData(ModAttachmentTypes.WEAPON_STORAGE);
                             if (data.bowFullPull) {
                                 terraArrow.fullPull = true;
@@ -97,6 +136,7 @@ public class TerraBowItem extends BowItem {
                             }
                         }
                     }
+
                     level.addFreshEntity(projectile);
                 }
 
@@ -127,7 +167,9 @@ public class TerraBowItem extends BowItem {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable("attribute.name.generic.attack_damage").append(": ").append(String.format("%.1f", this.baseDamage)).withColor(0x00FF00));
-
+        if(modifyArrowBuilder.multiShoot > 1){
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.max_count").append(": ").append(String.format("%d", modifyArrowBuilder.multiShoot)).withColor(0x00FF00));
+        }
         // 命中效果
         var hitEffect = stack.get(TEDataComponentTypes.EFFECT_STRATEGY);
         if(hitEffect != null){
@@ -169,7 +211,7 @@ public class TerraBowItem extends BowItem {
     public static float getFastBowPowerForTime(int pCharge) {
         float f = pCharge / 20.0f;
         f = (f * f + f * 2.0F) / 3 * 0.5f + 0.5f; // 0.5f< f < 0.7+0.5
-        f = Math.min(f, 1.5F);
+        f = Math.min(f, 1F);
         return f;
     }
 
@@ -177,50 +219,115 @@ public class TerraBowItem extends BowItem {
         List<Function<Item.Properties, Item.Properties>> modifyProperties = new ArrayList<>();
         List<Consumer<BaseArrowEntity.Builder>> modifyArrowBuilder = new ArrayList<>();
         int multiShoot = 1;
+        Predicate<ItemStack> canMultiShoot = ammo->true;
+        BiFunction<Integer, Integer, Vec3> multiShootOffset;
         public EntityTransform entityTransform;
 
-
+        /**
+         * 应用属性修改器
+         */
         public void applyModifiers(BaseArrowEntity.Builder modifyArrow){
             modifyArrowBuilder.forEach(m->m.accept(modifyArrow));
         }
+
+        /**
+         * 设置木箭转换的箭实体类型
+         * @param transformArrow 实体构造信息
+         */
         public Builder setEntityTransform(EntityTransform transformArrow){
             this.entityTransform = transformArrow;
             return this;
         }
+
+        /**
+         * 设置多重射击
+         * @param multiShoot 数量
+         */
         public Builder setMultiShoot(int multiShoot) {
             this.multiShoot = multiShoot;
             return this;
         }
+
+        /**
+         * 设置多重射击
+         * @param multiShoot 数量
+         * @param multiShootOffset 偏移函数，第一个参数为当前射击序号，第二个参数为总射击数量
+         */
+        public Builder setMultiShoot(int multiShoot, BiFunction<Integer, Integer, Vec3> multiShootOffset) {
+            this.multiShoot = multiShoot;
+            this.multiShootOffset = multiShootOffset;
+            return this;
+        }
+
+        /**
+         * 当满足条件时，允许多重射击
+         */
+        public Builder setCanMultiShoot(Predicate<ItemStack> canMultiShoot) {
+            this.canMultiShoot = canMultiShoot;
+            return this;
+        }
+
+        /**
+         * 设置耐久度
+         */
         public Builder setDuration(int duration){
             this.modifyProperties.add(p->p.durability(duration));
             return this;
         }
+
+        /**
+         * 设置命中效果
+         */
         public Builder setOnHitEffect(EffectStrategyComponent component){
             this.modifyProperties.add(p->p.component(TEDataComponentTypes.EFFECT_STRATEGY, component));
             this.addModifyArrowBuilder(m->m.addOnHitEffect(component));
             return this;
         }
+
+        /**
+         * 设置满蓄力命中效果
+         */
         public Builder setFullPullHitEffect(EffectStrategyComponent component){
             this.modifyProperties.add(p->p.component(TEDataComponentTypes.BOW_FULL_CHARGE_EFFECT_STRATEGY, component));
             this.addModifyArrowBuilder(m->m.addFullPullHitEffect(component));
             return this;
         }
-        public Builder setEntityTransform(BaseArrowItem entityTransform){
-            this.modifyArrowBuilder.add(m->m.setTransformArrow(entityTransform));
+
+        /**
+         * 设置木箭转换泰拉箭
+         */
+        public Builder setArrowTransform(BaseArrowItem arrow){
+            this.modifyArrowBuilder.add(m->m.setTransformArrow(arrow));
             return this;
         }
+
+        /**
+         * 设置不可破坏
+         */
         public Builder setUnBreakable(){
             this.modifyProperties.add(p->p.component(DataComponents.UNBREAKABLE, new Unbreakable(true)));
             return this;
         }
+
+        /**
+         * 设置稀有度
+         */
         public Builder setRarity(ModRarity rarity){
             this.modifyProperties.add(p->p.component(TCDataComponentTypes.MOD_RARITY, rarity));
             return this;
         }
+
+        /**
+         * 添加属性修改器
+         */
         public Builder addModifyArrowBuilder(Consumer<BaseArrowEntity.Builder> modifyArrowBuilder){
             this.modifyArrowBuilder.add(modifyArrowBuilder);
             return this;
         }
+
+        /**
+         * 构建属性
+         */
         public Properties buildProperties(Properties properties){
             for(Function<Item.Properties, Item.Properties> f : modifyProperties){
                 properties = f.apply(properties);
@@ -228,13 +335,18 @@ public class TerraBowItem extends BowItem {
             return properties;
         }
     }
-    public record EntityTransform(String name,EntityType<? extends AbstractArrow> type, ArrowFactory factory){
-        public static EntityTransform create(String name,EntityType<? extends AbstractArrow> type, ArrowFactory factory){
-            return new EntityTransform(name,type, factory);
+
+    /**
+     * 箭实体类型转换器
+     * @param type 箭实体类型
+     * @param factory 箭实体构造
+     */
+    public record EntityTransform(EntityType<? extends AbstractArrow> type, ArrowFactory factory){
+        public static EntityTransform create(EntityType<? extends AbstractArrow> type, ArrowFactory factory){
+            return new EntityTransform(type, factory);
         }
-
-
     }
+
     @FunctionalInterface
     public interface ArrowFactory {
         BaseArrowEntity create(EntityType<? extends AbstractArrow> type, LivingEntity shooter, ItemStack pickupItemStack, ItemStack firedFromWeapon, BaseArrowItem arrow, TerraBowItem.Builder modifyConsumer);

@@ -682,6 +682,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("entity.confluence.frozen_zombie", "冰冻僵尸");
         add("entity.confluence.raincoat_zombie", "雨衣僵尸");
         add("entity.confluence.undead_miner", "不死矿工");
+        add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.ARROW_PROJECTILE.get(), "泰拉箭");
         add(ModEntities.ANTI_GRAVITY_HOOK.get(), "反重力钩");
         add(ModEntities.BALL_OF_FIRE_PROJECTILE.get(), "火球弹");
@@ -2068,6 +2069,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(BowItems.FOSSIL_BOW.get(), "石骸弓");
         add(BowItems.DEMON_BOW.get(), "恶魔弓");
         add(BowItems.TENDON_BOW.get(), "肌腱弓");
+        add(BowItems.THE_BEES_KNEES.get(), "蜂膝弓");
         add(BowItems.MOLTEN_FURY.get(), "熔火之怒");
 
 

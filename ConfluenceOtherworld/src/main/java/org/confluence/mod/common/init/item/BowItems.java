@@ -6,6 +6,7 @@ import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -15,6 +16,7 @@ import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.common.entity.projectile.arrow.BeeArrow;
 import org.confluence.mod.common.init.ModEffectStrategies;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.item.bow.BaseArrowItem;
 import org.confluence.mod.common.item.bow.DaedalusStormbow;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.bow.TerraBowItem;
@@ -56,24 +58,31 @@ public class BowItems {
     // DIY蓄力弓
     /**如果需要速射，加上tag {@link org.confluence.mod.common.init.ModTags.Items#FAST_BOW}*/
 
-    public static final DeferredItem<TerraBowItem> FOSSIL_BOW = register("fossil_bow", 5.5F,
-            m->m.setRarity(ModRarity.BLUE).setEntityTransform(ArrowItems.FOSSIL_ARROW.get())
+    public static final DeferredItem<TerraBowItem> FOSSIL_BOW = register("fossil_bow", 5.5F, m->m
+            .setRarity(ModRarity.BLUE)
+            .setArrowTransform(ArrowItems.FOSSIL_ARROW.get())
     );
-    public static final DeferredItem<TerraBowItem> HUNTING_BOW = register("hunting_bow", 3.5F,
-            m->m.setRarity(ModRarity.BLUE).setOnHitEffect(ModEffectStrategies.Components.HUNTING_RIFLE_EFFECT.get())
+    public static final DeferredItem<TerraBowItem> HUNTING_BOW = register("hunting_bow", 3.5F, m->m
+            .setRarity(ModRarity.BLUE)
+            .setOnHitEffect(ModEffectStrategies.Components.HUNTING_RIFLE_EFFECT.get())
     );
-    public static final DeferredItem<TerraBowItem> DEMON_BOW = register("demon_bow", 5.5F,
-            m->m.setRarity(ModRarity.BLUE).setFullPullHitEffect(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get())
+    public static final DeferredItem<TerraBowItem> DEMON_BOW = register("demon_bow", 5.5F, m->m
+            .setRarity(ModRarity.BLUE)
+            .setFullPullHitEffect(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get())
     );
-    public static final DeferredItem<TerraBowItem> TENDON_BOW = register("tendon_bow",  6F,
-            m->m.setRarity(ModRarity.BLUE).setFullPullHitEffect(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get())
+    public static final DeferredItem<TerraBowItem> TENDON_BOW = register("tendon_bow",  6F, m->m
+            .setRarity(ModRarity.BLUE)
+            .setFullPullHitEffect(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get())
     );
-    public static final DeferredItem<TerraBowItem> MOLTEN_FURY = register("molten_fury",  7F, m->m.setRarity(ModRarity.ORANGE)
-            .setEntityTransform(ArrowItems.HELLFIRE_ARROW.get())
+    public static final DeferredItem<TerraBowItem> MOLTEN_FURY = register("molten_fury",  7F, m->m
+            .setRarity(ModRarity.ORANGE)
+            .setArrowTransform(ArrowItems.HELLFIRE_ARROW.get())
     );
-    public static final DeferredItem<TerraBowItem> THE_BEES_KNEES = register("the_bees_knees",  3F, m->m.setRarity(ModRarity.YELLOW)
-            .setMultiShoot(3)
-            .setEntityTransform(TerraBowItem.EntityTransform.create("the_bees_knees", ModEntities.BEE_ARROW.get(), BeeArrow::new))
+    public static final DeferredItem<TerraBowItem> THE_BEES_KNEES = register("the_bees_knees",  2.5F, m->m
+            .setRarity(ModRarity.YELLOW)
+            .setMultiShoot(3, (i, c)->new Vec3(-i*0.25f,0,0))
+            .setCanMultiShoot(ammo->!(ammo.getItem() instanceof BaseArrowItem))
+            .setEntityTransform(TerraBowItem.EntityTransform.create(ModEntities.BEE_ARROW.get(), BeeArrow::new))
     );
 
     // 代达罗斯风暴弓

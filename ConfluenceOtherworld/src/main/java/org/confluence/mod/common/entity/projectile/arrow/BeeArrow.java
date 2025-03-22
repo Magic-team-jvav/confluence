@@ -2,12 +2,14 @@ package org.confluence.mod.common.entity.projectile.arrow;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.item.bow.BaseArrowItem;
 import org.confluence.mod.common.item.bow.TerraBowItem;
+import org.confluence.terra_curio.common.entity.projectile.BeeProjectile;
 import org.confluence.terraentity.registries.track.ITrackType;
 import org.confluence.terraentity.registries.track.variant.BasisTrack;
 import org.confluence.terraentity.utils.TEUtils;
@@ -43,6 +45,19 @@ public class BeeArrow extends BaseArrowEntity {
                 Vec3 movement = trackType.calDeltaMovement(getDeltaMovement(), dir, angle);
                 setDeltaMovement(movement);
             }
+        }
+        Vec3 vec3 = getDeltaMovement();
+        Vec3 pos = position();
+        move(MoverType.SELF, vec3);
+        Vec3 motion = getDeltaMovement();
+
+        if (motion.x != vec3.x || motion.y != vec3.y || motion.z != vec3.z) {
+            if (motion.x != vec3.x) motion = new Vec3(-vec3.x, vec3.y, vec3.z);
+            if (motion.y != vec3.y) motion = new Vec3(vec3.x, -vec3.y, vec3.z);
+            if (motion.z != vec3.z) motion = new Vec3(vec3.x, vec3.y, -vec3.z);
+            setDeltaMovement(motion);
+        }else{
+            setPos(pos);
         }
     }
 

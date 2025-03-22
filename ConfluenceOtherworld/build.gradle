@@ -3,7 +3,8 @@ plugins {
 }
 var projectName = ["TerraEntity", "MineTeam", "EquipmentBenediction",
                    "TerraCurio", "ParticleStorm", "HeavenDestinyMoment", "PhaseJourney",
-                   "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture"
+                   "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture",
+                   "EntityTrackerHUD"
 ]
 
 version = mod_version

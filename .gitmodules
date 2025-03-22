@@ -42,3 +42,7 @@
 	path = TerraEntity
 	url = https://github.com/EDGtheXu/TerraEntity
 	branch = neoforge-dev/1.21.1
+[submodule "EntityTrackerHUD"]
+	path = EntityTrackerHUD
+	url = https://github.com/MakerTechno/EntityTrackerHUD.git
+	branch = neoforge-dev/1.21.1

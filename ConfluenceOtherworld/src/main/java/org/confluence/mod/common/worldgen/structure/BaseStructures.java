@@ -54,7 +54,8 @@ public class BaseStructures {
             double leafBlobGenerationRadiusY,
             float leafPosDensity,
             float leafDensity,
-            int leafBlocks
+            int leafBlocks,
+            int rootEndBlocks
     ) {
         List<Vector3d> locationList = new ArrayList<>();
         Vector3d locationStart = new Vector3d();
@@ -95,7 +96,8 @@ public class BaseStructures {
                 leafBlobGenerationRadiusY,
                 leafPosDensity,
                 leafDensity,
-                leafBlocks
+                leafBlocks,
+                rootEndBlocks
         );
         if (isGenerateTreeRoot) {
             stick(
@@ -118,7 +120,8 @@ public class BaseStructures {
                     leafBlobGenerationRadiusY,
                     leafPosDensity,
                     leafDensity,
-                    leafBlocks
+                    leafBlocks,
+                    rootEndBlocks
             );
         }
 
@@ -134,7 +137,7 @@ public class BaseStructures {
             ball(4.9, centerPos, 0, true, blockMap);
             lineSet(locationList, largeTreeRootStartRadius * 2.0D / 5.0D, largeTreeRootEndRadius - 0.1D, 0, true, blockMap);
         }
-        Vector3d room = locationList.get(locationList.size() / 2 + random.nextInt(-20, 21));
+        Vector3d room = locationList.get(locationList.size() / 2 + random.nextInt(-locationList.size() / 4, locationList.size() / 4 + 1));
         centerPos = new BlockPos((int) room.x, (int) room.y, (int) room.z);
         return centerPos;
     }
@@ -159,7 +162,8 @@ public class BaseStructures {
             double leafBlobGenerationRadiusY,
             float leafPosDensity,
             float leafDensity,
-            int leafBlocks
+            int leafBlocks,
+            int endBlocks
     ) {
         List<Vector3d> leavesTop = new ArrayList<>();
         int stickCount = count + random.nextInt(countRandomAddition);
@@ -170,6 +174,7 @@ public class BaseStructures {
         double endX;
         double endY;
         double endZ;
+        Vector3d rootEnd;
         for (int stickPlace = 0; stickPlace < stickCount; stickPlace++) {
             anCs = 360.0 / stickCount;
             everyA = anCs * stickPlace / 180 * Math.PI;
@@ -178,7 +183,7 @@ public class BaseStructures {
             endX = length * Math.cos(everyA) * Math.cos(everyB);
             endY = length * Math.sin(everyB);
             endZ = length * Math.sin(everyA) * Math.cos(everyB);
-            Vector3d stickStart = locationList.get(branch ? (locationList.size() - (locationList.size() / 11 * 7) - random.nextInt(locationList.size() / 9)) : (random.nextInt(locationList.size() / 9)));
+            Vector3d stickStart = locationList.get(branch ? Math.max((locationList.size() - (locationList.size() / 11 * 7) - random.nextInt(locationList.size() / 9)), 0) : (random.nextInt(locationList.size() / 9)));
             Vector3d stickEnd = new Vector3d();
             stickEnd.x = branch ? (locationList.getLast().x + endX) : (locationList.getFirst().x + endX / 2);
             stickEnd.y = branch ? (locationList.getLast().y + endY + offset) : (locationList.getFirst().y - endY + offset);
@@ -193,6 +198,9 @@ public class BaseStructures {
                 leavesTop.clear();
                 leavesTop = ellipsoidPos(branchLeafGenerationRadiusXZ, branchLeafGenerationRadiusY, branchLeafGenerationRadiusXZ, new BlockPos((int) stickEnd.x, (int) stickEnd.y, (int) stickEnd.z), leafPosDensity, random);
                 lineSetEllipsoid(leavesTop, leafBlobGenerationRadiusXZ, leafBlobGenerationRadiusY, leafBlobGenerationRadiusXZ, leafBlocks, false, blockMap, leafDensity, random);
+            } else {
+                rootEnd = stickList.getLast();
+                ball(endRadius, new BlockPos((int) rootEnd.x, (int) rootEnd.y, (int) rootEnd.z), endBlocks, true, blockMap);
             }
         }
     }

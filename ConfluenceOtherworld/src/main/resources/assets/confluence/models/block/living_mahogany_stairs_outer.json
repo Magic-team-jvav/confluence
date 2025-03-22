@@ -1,0 +1,9 @@
+{
+  "parent": "block/outer_stairs",
+  "textures": {
+    "bottom": "confluence:block/living_mahogany_planks",
+    "top": "confluence:block/living_mahogany_planks",
+    "side": "confluence:block/living_mahogany_planks"
+  },
+  "render_type": "solid"
+}

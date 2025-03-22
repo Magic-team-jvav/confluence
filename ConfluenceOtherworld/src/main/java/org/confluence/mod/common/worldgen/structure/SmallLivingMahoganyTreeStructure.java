@@ -4,11 +4,9 @@ import com.google.common.collect.Lists;
 import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -16,20 +14,15 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
-import org.joml.Vector3d;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static net.minecraft.world.level.block.LeavesBlock.PERSISTENT;
-import static org.confluence.mod.util.StructureUtils.*;
-import static org.confluence.mod.util.VectorUtils.lightningPathList;
 
-public class LivingMahoganyTreeStructure extends Structure {
-    public static final MapCodec<LivingMahoganyTreeStructure> CODEC = simpleCodec(LivingMahoganyTreeStructure::new);
+public class SmallLivingMahoganyTreeStructure extends Structure {
+    public static final MapCodec<SmallLivingMahoganyTreeStructure> CODEC = simpleCodec(SmallLivingMahoganyTreeStructure::new);
 
-    protected LivingMahoganyTreeStructure(StructureSettings settings) {
+    protected SmallLivingMahoganyTreeStructure(StructureSettings settings) {
         super(settings);
     }
 
@@ -51,40 +44,40 @@ public class LivingMahoganyTreeStructure extends Structure {
                     centerPos,
                     blockMap,
                     random,
-                    random.nextInt(36, 42),
+                    random.nextInt(21, 25),
                     1,
-                    2.5D,
+                    1.4D,
                     0.8D,
                     1,
-                    14,
-                    2,
-                    -12,
-                    1,
-                    1,
-                    1,
-                    1,
-                    5,
-                    1,
                     7,
+                    2,
+                    -7,
+                    1,
+                    1,
+                    1,
+                    1,
+                    3,
+                    1,
                     5,
+                    3,
                     -10,
-                    2,
                     1,
                     1,
                     1,
-                    4,
-                    2,
+                    1,
+                    3,
+                    1,
                     true,
-                    random.nextInt(36, 40),
+                    random.nextInt(21, 25),
                     0,
                     0,
                     0,
                     0,
                     false,
-                    9,
+                    6,
+                    2,
+                    8,
                     3,
-                    13,
-                    4,
                     2,
                     1,
                     0.20F,
@@ -104,6 +97,6 @@ public class LivingMahoganyTreeStructure extends Structure {
 
     @Override
     public StructureType<?> type() {
-        return ModStructures.LIVING_MAHOGANY_TREE.get();
+        return ModStructures.SMALL_LIVING_MAHOGANY_TREE.get();
     }
 }

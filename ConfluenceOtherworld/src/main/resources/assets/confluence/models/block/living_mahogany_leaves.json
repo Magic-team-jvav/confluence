@@ -1,0 +1,7 @@
+{
+  "parent": "block/leaves",
+  "textures": {
+    "all": "confluence:block/living_mahogany_leaves",
+    "particle": "confluence:block/living_mahogany_leaves"
+  }
+}

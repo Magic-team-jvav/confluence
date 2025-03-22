@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "confluence:block/living_mahogany_log_top",
+    "up": "confluence:block/living_mahogany_log_top",
+    "north": "confluence:block/living_mahogany_log_side",
+    "east": "confluence:block/living_mahogany_log_side",
+    "south": "confluence:block/living_mahogany_log_side",
+    "west": "confluence:block/living_mahogany_log_side",
+    "particle": "confluence:block/living_mahogany_log_top"
+  },
+  "render_type": "solid"
+}

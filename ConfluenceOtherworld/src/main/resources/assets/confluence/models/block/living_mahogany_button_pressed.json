@@ -1,0 +1,7 @@
+{
+  "parent": "block/button_pressed",
+  "textures": {
+    "texture": "confluence:block/living_mahogany_planks"
+  },
+  "render_type": "solid"
+}

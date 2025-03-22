@@ -39,8 +39,9 @@ import java.util.function.Supplier;
  * @param gravity 重力
  * @param cooldown 冷却时间
  * @param soundEvent 音效
- * @param trackType 轨迹类型
+ * @param trackType 追踪类型
  * @param generation 生成器
+ * @param hitEffect 击中特效
  */
 public record SwordProjectileComponent (
         float damageFactor,
@@ -55,6 +56,20 @@ public record SwordProjectileComponent (
         IGeneration generation,
         Optional<EffectStrategyComponent> hitEffect
 ) implements DataComponentType<SwordProjectileComponent> {
+
+    public static final Codec<SwordProjectileComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.FLOAT.fieldOf("damageFactor").forGetter(SwordProjectileComponent::damageFactor),
+            Codec.FLOAT.fieldOf("baseSpeed").forGetter(SwordProjectileComponent::baseSpeed),
+            Codec.FLOAT.fieldOf("acceleration").forGetter(SwordProjectileComponent::acceleration),
+            Codec.INT.fieldOf("existTicks").forGetter(SwordProjectileComponent::existTicks),
+            Codec.FLOAT.fieldOf("gravity").forGetter(SwordProjectileComponent::gravity),
+            Codec.INT.fieldOf("cooldown").forGetter(SwordProjectileComponent::cooldown),
+            ResourceLocation.CODEC.fieldOf("soundEvent").forGetter(SwordProjectileComponent::soundEvent),
+            ResourceLocation.CODEC.fieldOf("projType").forGetter(SwordProjectileComponent::projType),
+            ITrackType.TYPED_CODEC.optionalFieldOf("trackType").forGetter(SwordProjectileComponent::trackType),
+            IGeneration.TYPED_CODEC.fieldOf("generation").forGetter(SwordProjectileComponent::generation),
+            EffectStrategyComponent.CODEC.optionalFieldOf("hitEffect").forGetter(SwordProjectileComponent::hitEffect)
+    ).apply(instance, SwordProjectileComponent::new));
 
     public static final Supplier<SwordProjectileComponent> ICE_PROJ =
             ()->new SwordProjectileComponent(2,0.6f,0.9f,40, 0, 10,
@@ -75,25 +90,13 @@ public record SwordProjectileComponent (
                     Optional.empty() );
 
     public static final Supplier<SwordProjectileComponent> GRASS_PROJ =
-            ()->new SwordProjectileComponent(1,0.8f,0.9f,40, 0, 10,
+            ()->new SwordProjectileComponent(1,0.8f,0.9f,20, 0, 10,
                     TESounds.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.GRASS_PROJECTILE.getId(),
                     Optional.empty(), ForwardGeneration.of(0,20),
                     Optional.of(EffectStrategyComponent.of(TimePossibilityAmplifierEffect.of("grass_effect", MobEffects.POISON, 100, 1, 0.5f))));
 
 
-    public static final Codec<SwordProjectileComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.FLOAT.fieldOf("damageFactor").forGetter(SwordProjectileComponent::damageFactor),
-            Codec.FLOAT.fieldOf("baseSpeed").forGetter(SwordProjectileComponent::baseSpeed),
-            Codec.FLOAT.fieldOf("acceleration").forGetter(SwordProjectileComponent::acceleration),
-            Codec.INT.fieldOf("existTicks").forGetter(SwordProjectileComponent::existTicks),
-            Codec.FLOAT.fieldOf("gravity").forGetter(SwordProjectileComponent::gravity),
-            Codec.INT.fieldOf("cooldown").forGetter(SwordProjectileComponent::cooldown),
-            ResourceLocation.CODEC.fieldOf("soundEvent").forGetter(SwordProjectileComponent::soundEvent),
-            ResourceLocation.CODEC.fieldOf("projType").forGetter(SwordProjectileComponent::projType),
-            ITrackType.TYPED_CODEC.optionalFieldOf("trackType").forGetter(SwordProjectileComponent::trackType),
-            IGeneration.TYPED_CODEC.fieldOf("generation").forGetter(SwordProjectileComponent::generation),
-            EffectStrategyComponent.CODEC.optionalFieldOf("hitEffect").forGetter(SwordProjectileComponent::hitEffect)
-    ).apply(instance, SwordProjectileComponent::new));
+
 
     public SoundEvent getSoundEvent() {
         return BuiltInRegistries.SOUND_EVENT.get(soundEvent);

@@ -22,7 +22,6 @@ public class GrassSwordProjectile extends SwordProjectile {
         super(entityType, pLevel);
         this.canPenalize = true;
         hitCount = 99999;
-        this.TIME_EXISTENCE = 20;
         this.collisionProperties = new CollisionProperties(10,10,1);
     }
 

@@ -14,15 +14,12 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
-import net.minecraft.world.entity.projectile.Arrow;
-import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.component.SwordProjectileComponent;
-import org.confluence.mod.util.ComputerUtils;
 import org.confluence.mod.util.VectorUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.entity.ai.ICollisionAttackEntity;
@@ -45,7 +42,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     protected float baseKnockBack = 0.0F;
     protected boolean canPenalize = false;
     protected CollisionProperties collisionProperties = new CollisionProperties(1, 1, 0);
-    protected SwordProjectileComponent component;
+    protected SwordProjectileComponent projComponent;
 
     protected ItemStack firedFromWeapon;
 
@@ -118,9 +115,10 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         return this;
     }
 
-    public void setComponent(SwordProjectileComponent component) {
-        this.component = component;
-        this.gravity = component.gravity();
+    public void setProjComponent(SwordProjectileComponent projComponent) {
+        this.projComponent = projComponent;
+        this.gravity = projComponent.gravity();
+        this.TIME_EXISTENCE = projComponent.existTicks();
         this.entityData.set(DATA_INIT_GRAVITY, gravity);
     }
 
@@ -166,8 +164,8 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     @Override
     public void tick() {
         super.tick();
-        if(component!= null){
-            if(!level().isClientSide() && tickCount >= component.existTicks())
+        if(projComponent != null){
+            if(!level().isClientSide() && tickCount >= projComponent.existTicks())
                 discard();
             this.applyGravity();
             if(target != null && target.isAlive()) {
@@ -176,8 +174,8 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
                 Vec3 motion = getDeltaMovement();
                 double angle = TEUtils.angleBetween(motion, dir);
 
-                if (component.trackType().isPresent()) {
-                    this.setDeltaMovement(component.trackType().get().calDeltaMovement(motion, dir, angle));
+                if (projComponent.trackType().isPresent()) {
+                    this.setDeltaMovement(projComponent.trackType().get().calDeltaMovement(motion, dir, angle));
                 }
             }
         }
@@ -253,8 +251,8 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     protected boolean doHurt(Entity living){
         if(living instanceof LivingEntity hurter) {
             float damage = getBaseDamage() * (attackDamage);
-            if (getOwner() instanceof LivingEntity owner)
-                component.hitEffect().ifPresent(effect -> {
+            if (getOwner() instanceof LivingEntity owner && projComponent != null)
+                projComponent.hitEffect().ifPresent(effect -> {
                     effect.applyAll(owner, hurter);
                 });
             if (hurter.hurt(damageSource(), damage)) {

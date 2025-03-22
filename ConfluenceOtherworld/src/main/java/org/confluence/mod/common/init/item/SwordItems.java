@@ -98,6 +98,8 @@ public class SwordItems {
             ModRarity.ORANGE,   EFFECT_SWORD.apply(ModEffectStrategies.Components.BAT_FANG_EFFECT.get()));
     public static final DeferredItem<SwordItem> TENTACLE_MACE = register("tentacle_mace",ModTiers.TITANIUM, 5, -1.4F,
             ModRarity.GREEN,    EFFECT_SWORD.apply(ModEffectStrategies.Components.TENTACLE_SPIKES_EFFECT.get()));
+    public static final DeferredItem<SwordItem> BEE_KEEPER = register("bee_keeper",ModTiers.TITANIUM, 5, 1,
+            ModRarity.GREEN,    EFFECT_SWORD.apply(ModEffectStrategies.Components.BEE_KEEPER_EFFECT.get()));
 
 
 

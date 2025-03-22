@@ -82,6 +82,8 @@ import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
 import org.confluence.mod.integration.ponder.PonderHelper;
 import org.confluence.mod.util.ClientUtils;
+import org.confluence.terra_curio.TerraCurio;
+import org.confluence.terra_curio.client.model.entity.BeeProjectileModel;
 import org.confluence.terraentity.client.entity.renderer.GeoNormalRenderer;
 import org.confluence.terraentity.client.entity.renderer.WhipEntityRenderer;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
@@ -219,10 +221,11 @@ public final class ModClientEvents {
         event.registerEntityRenderer(ENCHANTED_SWORD_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, new EnchantedSwordProjectileModel(c.bakeLayer(EnchantedSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1, 0.2F, 0.89f));
         event.registerEntityRenderer(LIGHTS_BANE_PROJECTILE.get(), LightsBaneProjectileRenderer::new);
         event.registerEntityRenderer(GRASS_PROJECTILE.get(), c-> new ForwardProjRenderer<>(c, null,null));
+        event.registerEntityRenderer(BEE_PROJECTILE.get(), c-> new ForwardProjRenderer<>(c, new BeeProjectileModel(c.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
 
 
         event.registerEntityRenderer(ARROW_PROJECTILE.get(), TerraArrowRenderer::new);
-        event.registerEntityRenderer(BEE_ARROW.get(), BeeArrowRenderer::new);
+        event.registerEntityRenderer(BEE_ARROW.get(), c-> new ForwardProjRenderer<>(c, new BeeProjectileModel(c.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
 
 
         event.registerEntityRenderer(BOOMERANG_PROJECTILE.get(), BoomerangProjRenderer::new);

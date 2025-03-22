@@ -4,7 +4,6 @@ import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.TooltipManager;
-import org.confluence.mod.common.init.ModEffectStrategies;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
@@ -1619,6 +1618,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.EXOTIC_SCIMITAR.get(), "异域弯刀");
         add(SwordItems.FAKE_SWORD.get(), "假剑");
         add(SwordItems.VOLCANO.get(), "火山");
+        add(SwordItems.BEE_KEEPER.get(), "养蜂人");
+        add(SwordItems.BLADE_OF_GRASS.get(), "草剑");
+
         add(SwordItems.DEVELOPER_SWORD.get(), "开发者剑");
         // 光剑
         add(SwordItems.RED_LIGHT_SABER.get(), "红陨石光剑");
@@ -2626,6 +2628,7 @@ public class ModChineseProvider extends LanguageProvider {
         // hit effect
         add("terra_entity.effect.strategy.bat", "吸血 +1 hp");
         add("terra_entity.effect.strategy.lights_bane", "召唤魔光剑");
+        add("terra_entity.effect.strategy.bee_keeper", "召唤蜜蜂");
 
         add("terra_entity.effect.strategy.frozen_burn_3_sec_50_chance", "50%几率 霜冻 3秒");
         add("terra_entity.effect.strategy.tentacle_spikes", "触手钉锤");

@@ -30,7 +30,6 @@ import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.confluence.terraentity.init.TEDataComponentTypes;
-import org.confluence.terraentity.registries.hit_effect.EffectStrategy;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 import org.jetbrains.annotations.NotNull;
 
@@ -99,7 +98,7 @@ public class BaseSwordItem extends SwordItem {
             try {
                 data.generation().genProjectile(living, weapon, data.getVelocity(living), () -> {
                     if (BuiltInRegistries.ENTITY_TYPE.get(data.projType()).create(living.level()) instanceof SwordProjectile projectile) {
-                        projectile.setComponent(data);
+                        projectile.setProjComponent(data);
                         projectile.addAttackDamage((float) (data.damageFactor() * living.getAttributeValue(Attributes.ATTACK_DAMAGE)));
                         return projectile;
                     } else {
@@ -131,7 +130,7 @@ public class BaseSwordItem extends SwordItem {
 
         /**添加击中效果组件
          * <p>注意会覆盖原有组件</p>
-         * @see EffectStrategy
+         * @see EffectStrategyComponent
          * */
         public ModifierBuilder setOnHitEffect(EffectStrategyComponent onHit){
 //            this.onHitEffects.add(onHit);

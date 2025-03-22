@@ -18,8 +18,8 @@ public class ForwardSwordProjectile extends SwordProjectile {
         double offY = getY() + vec3.y;
         double offZ = getZ() + vec3.z;
         float accelerate;
-        if(component != null){
-            accelerate = component.acceleration();
+        if(projComponent != null){
+            accelerate = projComponent.acceleration();
         }else{
             accelerate = 0.8f;
         }

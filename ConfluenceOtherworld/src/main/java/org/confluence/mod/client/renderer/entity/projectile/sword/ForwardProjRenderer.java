@@ -6,11 +6,11 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
 import org.confluence.terraentity.client.entity.renderer.BaseEntityRenderer;
 
-public class ForwardProjRenderer<T extends SwordProjectile, S extends SwordProjectile, M extends EntityModel<S>> extends BaseEntityRenderer<T, S, M> {
+public class ForwardProjRenderer<T extends Entity, S extends Entity, M extends EntityModel<S>> extends BaseEntityRenderer<T, S, M> {
     private final ResourceLocation texture;
 
     protected boolean rotateZ;
@@ -23,7 +23,7 @@ public class ForwardProjRenderer<T extends SwordProjectile, S extends SwordProje
         this.rotateZSpeed = rotateZSpeed;
     }
     public ForwardProjRenderer(EntityRendererProvider.Context context, M pModel, ResourceLocation texture, float size, float offsetY) {
-        this(context, pModel, texture, 1 , 0, 0);
+        this(context, pModel, texture, size , offsetY, 0);
     }
 
     public ForwardProjRenderer(EntityRendererProvider.Context context, M pModel, ResourceLocation texture) {
@@ -45,10 +45,9 @@ public class ForwardProjRenderer<T extends SwordProjectile, S extends SwordProje
 
         float yaw = (float) Math.atan2(v.z, v.x);
         poseStack.mulPose(Axis.YN.rotation(yaw + Mth.HALF_PI));
-
+        float pitch = -(float) Math.atan2(v.y, Math.sqrt(v.x * v.x + v.z * v.z));
+        poseStack.mulPose(Axis.XN.rotation(pitch));
         if(rotateZ) {
-            float pitch = -(float) Math.atan2(v.y, Math.sqrt(v.x * v.x + v.z * v.z));
-            poseStack.mulPose(Axis.XN.rotation(pitch));
             poseStack.mulPose(Axis.ZN.rotation((entity.tickCount + partialTick) * rotateZSpeed));
         }
 

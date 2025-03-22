@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.loading.FMLEnvironment;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
@@ -240,5 +241,13 @@ public final class ModUtils {
                 aCodec.fieldOf("a").forGetter(Tuple::getA),
                 bCodec.fieldOf("b").forGetter(Tuple::getB)
         ).apply(instance, Tuple::new));
+    }
+
+    public static <L, M, R> Codec<ImmutableTriple<L, M, R>> tripleCodec(Codec<L> lCodec, Codec<M> mCodec, Codec<R> rCodec) {
+        return RecordCodecBuilder.create(instance -> instance.group(
+                lCodec.fieldOf("l").forGetter(ImmutableTriple::getLeft),
+                mCodec.fieldOf("m").forGetter(ImmutableTriple::getMiddle),
+                rCodec.fieldOf("r").forGetter(ImmutableTriple::getRight)
+        ).apply(instance, ImmutableTriple::new));
     }
 }

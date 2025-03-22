@@ -213,13 +213,14 @@ public final class ModClientEvents {
         event.registerEntityRenderer(WATER_STREAM_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(WATER_BOLT_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(BALL_OF_FIRE_PROJECTILE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(ARROW_PROJECTILE.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(EFFECT_THROWN_POTION.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(ICE_BLADE_SWORD_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, new IceBladeSwordProjectileModel(c.bakeLayer(IceBladeSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/ice_blade_sword_projectile.png"), 1, 0F));
         event.registerEntityRenderer(STAR_FURY_PROJECTILE.get(), StarFuryProjectileRenderer::new);
         event.registerEntityRenderer(ENCHANTED_SWORD_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, new EnchantedSwordProjectileModel(c.bakeLayer(EnchantedSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1, 0.2F, 0.89f));
         event.registerEntityRenderer(LIGHTS_BANE_PROJECTILE.get(), LightsBaneProjectileRenderer::new);
 
+        event.registerEntityRenderer(ARROW_PROJECTILE.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(BEE_ARROW.get(), BeeArrowRenderer::new);
 
 
         event.registerEntityRenderer(BOOMERANG_PROJECTILE.get(), BoomerangProjRenderer::new);

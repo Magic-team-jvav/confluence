@@ -1,4 +1,4 @@
-package org.confluence.mod.common.entity.projectile;
+package org.confluence.mod.common.entity.projectile.arrow;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
@@ -51,10 +51,6 @@ public class BaseArrowEntity extends AbstractArrow {
         }
     }
 
-    public void test(){
-
-    }
-
     private static final EntityDataAccessor<String> TEXTURE_PATH = SynchedEntityData.defineId(BaseArrowEntity.class, EntityDataSerializers.STRING);
     public String texturePath = "";
     private int penetrate = 0;
@@ -73,10 +69,11 @@ public class BaseArrowEntity extends AbstractArrow {
      * @param firedFromWeapon 发射的武器
      * @param arrow 预定义的箭的类型
      */
-    public BaseArrowEntity(LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, BaseArrowItem arrow) {
-        super(ModEntities.ARROW_PROJECTILE.get(), owner, owner.level(), pickupItemStack, firedFromWeapon);
-        this.baseArrowTuple = arrow.getModifier();
-        if(baseArrowTuple==null)// 不应该出现这种情况
+    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType,LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @Nullable BaseArrowItem arrow) {
+        super(pEntityType, owner, owner.level(), pickupItemStack, firedFromWeapon);
+        if(arrow!=null)
+            this.baseArrowTuple = arrow.getModifier();
+        if(baseArrowTuple==null)// 这时候应该为实体的木箭转化
             this.modify = new Builder();
         else
             this.modify = baseArrowTuple.attr.get();
@@ -91,8 +88,8 @@ public class BaseArrowEntity extends AbstractArrow {
      * @param arrow 预定义的箭的类型
      * @param modifyConsumer 属性额外修饰
      */
-    public BaseArrowEntity(LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, BaseArrowItem arrow, TerraBowItem.Builder modifyConsumer) {
-        this(owner,pickupItemStack,firedFromWeapon, arrow);
+    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType,LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @Nullable BaseArrowItem arrow, TerraBowItem.Builder modifyConsumer) {
+        this(pEntityType, owner,pickupItemStack,firedFromWeapon, arrow);
         if(modifyConsumer!=null)
             modifyConsumer.applyModifiers(modify);
         if((modify.type & Tag.auto_discard) != 0){

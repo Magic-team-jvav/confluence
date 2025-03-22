@@ -15,6 +15,8 @@ import org.confluence.mod.common.entity.hook.*;
 import org.confluence.mod.common.entity.minecart.*;
 import org.confluence.mod.common.entity.npc.AbstractTerraNPC;
 import org.confluence.mod.common.entity.projectile.*;
+import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
+import org.confluence.mod.common.entity.projectile.arrow.BeeArrow;
 import org.confluence.mod.common.entity.projectile.bomb.*;
 import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
 import org.confluence.mod.common.entity.projectile.boulder.ExplodeBoulderEntity;
@@ -26,15 +28,14 @@ import org.confluence.mod.common.entity.projectile.sword.ForwardSwordProjectile;
 import org.confluence.mod.common.entity.projectile.sword.LightBaneProjectile;
 import org.confluence.mod.common.entity.projectile.sword.StarFuryProjectile;
 import org.confluence.mod.common.event.ModEvents;
-import org.confluence.terraentity.entity.proj.WhipEntity;
 
 import java.util.function.Supplier;
 
 /**
  * Fast Link:
- * 渲染器 {@link org.confluence.mod.client.event.ModClientEvents#registerEntityRenderers}
- * 发包   {@link ModEvents#registerPayloadHandlers)}
- * 属性   {@link ModEvents#registerAttributes}
+ * <p>渲染器 {@link org.confluence.mod.client.event.ModClientEvents#registerEntityRenderers}
+ * <p>发包   {@link ModEvents#registerPayloadHandlers)}
+ * <p>属性   {@link ModEvents#registerAttributes}
  */
 public final class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Confluence.MODID);
@@ -63,16 +64,21 @@ public final class ModEntities {
     public static final Supplier<EntityType<WaterStreamProjectile>> WATER_STREAM_PROJECTILE = ENTITIES.register("water_stream_projectile", () -> EntityType.Builder.<WaterStreamProjectile>of(WaterStreamProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(10).build("confluence:water_stream_projectile"));
     public static final Supplier<EntityType<WaterBoltProjectile>> WATER_BOLT_PROJECTILE = ENTITIES.register("water_bolt_projectile", () -> EntityType.Builder.<WaterBoltProjectile>of(WaterBoltProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(10).build("confluence:water_bolt_projectile"));
     public static final Supplier<EntityType<BallOfFireProjectile>> BALL_OF_FIRE_PROJECTILE = ENTITIES.register("ball_of_fire_projectile", () -> EntityType.Builder.<BallOfFireProjectile>of(BallOfFireProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(10).build("confluence:ball_of_fire_projectile"));
-    public static final Supplier<EntityType<BaseArrowEntity>> ARROW_PROJECTILE = ENTITIES.register("arrow_projectile", () -> EntityType.Builder.<BaseArrowEntity>of(BaseArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:arrow_projectile"));
     public static final Supplier<EntityType<EffectThrownPotion>> EFFECT_THROWN_POTION = ENTITIES.register("effect_thrown_potion", () -> EntityType.Builder.<EffectThrownPotion>of(EffectThrownPotion::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build("confluence:effect_thrown_potion"));
+
     // 剑气
     public static final DeferredHolder<EntityType<?>,EntityType<ForwardSwordProjectile>> ICE_BLADE_SWORD_PROJECTILE = ENTITIES.register("ice_blade_sword_projectile", () -> EntityType.Builder.of(ForwardSwordProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:ice_blade_sword_projectile"));
     public static final DeferredHolder<EntityType<?>,EntityType<StarFuryProjectile>> STAR_FURY_PROJECTILE = ENTITIES.register("star_fury_projectile", () -> EntityType.Builder.of(StarFuryProjectile::new, MobCategory.MISC).sized(1F, 1F).build("confluence:star_fury_projectile"));//星怒弹幕
     public static final DeferredHolder<EntityType<?>,EntityType<ForwardSwordProjectile>> ENCHANTED_SWORD_PROJECTILE = ENTITIES.register("enchanted_sword_projectile", () -> EntityType.Builder.of(ForwardSwordProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:enchanted_sword_projectile"));
     public static final DeferredHolder<EntityType<?>,EntityType<LightBaneProjectile>> LIGHTS_BANE_PROJECTILE = ENTITIES.register("lights_bane_projectile", () -> EntityType.Builder.of(LightBaneProjectile::new, MobCategory.MISC).sized(1F, 1F).build("confluence:lights_bane_projectile"));
 
+    // 弓箭
+    public static final Supplier<EntityType<BaseArrowEntity>> ARROW_PROJECTILE = ENTITIES.register("arrow_projectile", () -> EntityType.Builder.<BaseArrowEntity>of(BaseArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:arrow_projectile"));
+    public static final Supplier<EntityType<BeeArrow>> BEE_ARROW = ENTITIES.register("bee_arrow_projectile", () -> EntityType.Builder.<BeeArrow>of(BeeArrow::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:bee_arrow_projectile"));
 
+    // 回旋镖
     public static final Supplier<EntityType<BoomerangProjectile>> BOOMERANG_PROJECTILE = ENTITIES.register("boomerang_projectile", () -> EntityType.Builder.<BoomerangProjectile>of(BoomerangProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:boomerang_projectile"));
+
     public static final Supplier<EntityType<BoulderEntity>> BOULDER = ENTITIES.register("boulder", () -> EntityType.Builder.<BoulderEntity>of(BoulderEntity::new, MobCategory.MISC).sized(BoulderEntity.DIAMETER, BoulderEntity.DIAMETER).clientTrackingRange(6).build("confluence:boulder"));
     public static final Supplier<EntityType<FollowerBoulderEntity>> FOLLOWER_BOULDER = ENTITIES.register("follower_boulder", () -> EntityType.Builder.<FollowerBoulderEntity>of(FollowerBoulderEntity::new, MobCategory.MISC).sized(BoulderEntity.DIAMETER, BoulderEntity.DIAMETER).clientTrackingRange(6).build("confluence:follower_boulder"));
     public static final Supplier<EntityType<ExplodeBoulderEntity>> EXPLODE_BOULDER = ENTITIES.register("explode_boulder", () -> EntityType.Builder.<ExplodeBoulderEntity>of(ExplodeBoulderEntity::new, MobCategory.MISC).sized(BoulderEntity.DIAMETER, BoulderEntity.DIAMETER).clientTrackingRange(6).build("confluence:explode_boulder"));

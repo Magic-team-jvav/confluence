@@ -12,7 +12,9 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
+import org.confluence.mod.common.entity.projectile.arrow.BeeArrow;
 import org.confluence.mod.common.init.ModEffectStrategies;
+import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.bow.DaedalusStormbow;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.bow.TerraBowItem;
@@ -55,7 +57,7 @@ public class BowItems {
     /**如果需要速射，加上tag {@link org.confluence.mod.common.init.ModTags.Items#FAST_BOW}*/
 
     public static final DeferredItem<TerraBowItem> FOSSIL_BOW = register("fossil_bow", 5.5F,
-            m->m.setRarity(ModRarity.BLUE).setTransformArrow(ArrowItems.FOSSIL_ARROW.get())
+            m->m.setRarity(ModRarity.BLUE).setEntityTransform(ArrowItems.FOSSIL_ARROW.get())
     );
     public static final DeferredItem<TerraBowItem> HUNTING_BOW = register("hunting_bow", 3.5F,
             m->m.setRarity(ModRarity.BLUE).setOnHitEffect(ModEffectStrategies.Components.HUNTING_RIFLE_EFFECT.get())
@@ -67,9 +69,12 @@ public class BowItems {
             m->m.setRarity(ModRarity.BLUE).setFullPullHitEffect(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get())
     );
     public static final DeferredItem<TerraBowItem> MOLTEN_FURY = register("molten_fury",  7F, m->m.setRarity(ModRarity.ORANGE)
-            .setTransformArrow(ArrowItems.HELLFIRE_ARROW.get())
+            .setEntityTransform(ArrowItems.HELLFIRE_ARROW.get())
     );
-
+    public static final DeferredItem<TerraBowItem> THE_BEES_KNEES = register("the_bees_knees",  3F, m->m.setRarity(ModRarity.YELLOW)
+            .setMultiShoot(3)
+            .setEntityTransform(TerraBowItem.EntityTransform.create("the_bees_knees", ModEntities.BEE_ARROW.get(), BeeArrow::new))
+    );
 
     // 代达罗斯风暴弓
     public static final DeferredItem<TerraBowItem> DAEDALUS_STORM_BOW = register("daedalus_storm_bow",()->new DaedalusStormbow(10f, ModRarity.PURPLE));

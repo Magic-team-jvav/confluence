@@ -7,7 +7,8 @@ import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.common.entity.projectile.BaseArrowEntity;
+import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
+import org.confluence.mod.common.init.ModEntities;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
@@ -37,9 +38,9 @@ public class BaseArrowItem extends ArrowItem {
         if(pStack.getItem() instanceof BaseArrowItem arrowItem && arrowItem.modifier != null){
             BaseArrowEntity arrow;
             if(weapon.getItem() instanceof TerraBowItem item){
-                arrow= new BaseArrowEntity(pShooter, this.getDefaultInstance(), weapon, this, item.modifyArrowBuilder);
+                arrow= new BaseArrowEntity(ModEntities.ARROW_PROJECTILE.get(),pShooter, this.getDefaultInstance(), weapon, this, item.modifyArrowBuilder);
             }else{
-                arrow= new BaseArrowEntity(pShooter, this.getDefaultInstance(), weapon, this);
+                arrow= new BaseArrowEntity(ModEntities.ARROW_PROJECTILE.get(), pShooter, this.getDefaultInstance(), weapon, this);
             }
             //arrow.setEffectsFromItem(pStack);
             return arrow;

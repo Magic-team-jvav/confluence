@@ -128,20 +128,10 @@ public class HeavenIslandsStructure extends Structure {
                 radiusXZ = random.nextInt(5, 8);
                 radiusY = random.nextInt(3, 6);
                 cloudPos.clear();
-                ellipsoid(radiusXZ - 2, radiusY - 2, radiusXZ - 2, littleCloudPosInt, 6, 2, true, blockMap, littleCloudPosInt.getY());
+                ellipsoid(radiusXZ - 2, radiusY - 2, radiusXZ - 2, littleCloudPosInt.offset(0, 1, 0), 6, 2, true, blockMap, littleCloudPosInt.getY());
                 cloudPos = ellipsoidPos(radiusXZ - 2, radiusY - 2, radiusXZ - 2, radiusXZ, radiusY, radiusXZ, littleCloudPosInt, 0.7F, random, littleCloudPosInt.getY());
                 lineSet(cloudPos, 1.5, 1.5, 1, true, blockMap);
             }
-
-            GridPiece.addPieces(blockMap, startChunk, lowestY, Lists.newArrayList(
-                    Blocks.AIR.defaultBlockState(),
-                    NatureBlocks.CLOUD_BLOCK.get().defaultBlockState(),
-                    Blocks.WATER.defaultBlockState(),
-                    Blocks.STONE.defaultBlockState(),
-                    Blocks.GRASS_BLOCK.defaultBlockState(),
-                    Blocks.DIRT.defaultBlockState(),
-                    NatureBlocks.EVAPORATIVE_CLOUD_BLOCK.get().defaultBlockState()
-            ), featureMap, builder);
             if (type == 0) {
                 if (houseFace0 == 0) {
                     builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "heaven_islands/sky_island_house", centerPos.offset(((houseFace1 == 0) ? 6 : -6), height, ((houseFace1 == 0) ? -12 : 12)), false, true, ((houseFace1 == 0) ? Rotation.CLOCKWISE_90 : Rotation.COUNTERCLOCKWISE_90)));
@@ -153,6 +143,16 @@ public class HeavenIslandsStructure extends Structure {
                     builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), sideMap[typeSide1], centerPos.offset(9, height, 7), false, true, Rotation.CLOCKWISE_90));
                 }
             }
+
+            GridPiece.addPieces(blockMap, startChunk, lowestY, Lists.newArrayList(
+                    Blocks.AIR.defaultBlockState(),
+                    NatureBlocks.CLOUD_BLOCK.get().defaultBlockState(),
+                    Blocks.WATER.defaultBlockState(),
+                    Blocks.STONE.defaultBlockState(),
+                    Blocks.GRASS_BLOCK.defaultBlockState(),
+                    Blocks.DIRT.defaultBlockState(),
+                    NatureBlocks.EVAPORATIVE_CLOUD_BLOCK.get().defaultBlockState()
+            ), featureMap, builder);
         });
     }
 

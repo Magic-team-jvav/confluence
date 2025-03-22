@@ -25,10 +25,10 @@ import static net.minecraft.world.level.block.LeavesBlock.PERSISTENT;
 import static org.confluence.mod.util.StructureUtils.*;
 import static org.confluence.mod.util.VectorUtils.lightningPathList;
 
-public class LivingTreeStructure extends Structure {
-    public static final MapCodec<LivingTreeStructure> CODEC = simpleCodec(LivingTreeStructure::new);
+public class LivingMahoganyTreeStructure extends Structure {
+    public static final MapCodec<LivingMahoganyTreeStructure> CODEC = simpleCodec(LivingMahoganyTreeStructure::new);
 
-    protected LivingTreeStructure(StructureSettings settings) {
+    protected LivingMahoganyTreeStructure(StructureSettings settings) {
         super(settings);
     }
 
@@ -44,7 +44,7 @@ public class LivingTreeStructure extends Structure {
             BlockPos centerPos = startChunk.getMiddleBlockPosition(lowestY);
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
 
-            centerPos = BaseStructures.livingTree(
+            BaseStructures.livingTree(
                     centerPos,
                     blockMap,
                     random,
@@ -73,11 +73,11 @@ public class LivingTreeStructure extends Structure {
                     5,
                     true,
                     random.nextInt(65, 95),
-                    4,
-                    4.9D,
-                    1.0D,
-                    1,
-                    true,
+                    0,
+                    0,
+                    0,
+                    0,
+                    false,
                     20,
                     10,
                     30,
@@ -89,24 +89,16 @@ public class LivingTreeStructure extends Structure {
                     2
             );
 
-            Rotation rotation = Util.getRandom(Rotation.values(), random);
-
             GridPiece.addPieces(blockMap, startChunk, lowestY, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
                     NatureBlocks.LIVING_LOG_BLOCKS.getWood().get().defaultBlockState(),
                     NatureBlocks.LIVING_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(PERSISTENT, Boolean.TRUE)
             ), builder);
-            switch (rotation) {
-                case CLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(5, 0, 1), true, true, Rotation.CLOCKWISE_90));
-                case CLOCKWISE_180 -> builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(-1, 0, 5), true, true, Rotation.CLOCKWISE_180));
-                case COUNTERCLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(-5, 0, -1), true, true, Rotation.COUNTERCLOCKWISE_90));
-                default -> builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(1, 0, -5), true, true, Rotation.NONE));
-            }
         });
     }
 
     @Override
     public StructureType<?> type() {
-        return ModStructures.LIVING_TREE.get();
+        return ModStructures.LIVING_MAHOGANY_TREE.get();
     }
 }

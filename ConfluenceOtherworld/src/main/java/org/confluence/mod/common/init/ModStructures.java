@@ -15,6 +15,7 @@ public final class ModStructures {
     public static final DeferredRegister<StructurePieceType> PIECE_TYPES = DeferredRegister.create(BuiltInRegistries.STRUCTURE_PIECE, Confluence.MODID);
 
     public static final Supplier<StructureType<LivingTreeStructure>> LIVING_TREE = TYPES.register("living_tree", () -> () -> LivingTreeStructure.CODEC);
+    public static final Supplier<StructureType<LivingMahoganyTreeStructure>> LIVING_MAHOGANY_TREE = TYPES.register("living_mahogany_tree", () -> () -> LivingMahoganyTreeStructure.CODEC);
     public static final Supplier<StructureType<CrimsonCaveStructure>> CRIMSON_CAVE = TYPES.register("crimson_cave", () -> () -> CrimsonCaveStructure.CODEC);
     public static final Supplier<StructureType<QueenBeeHiveStructure>> QUEEN_BEE_HIVE = TYPES.register("queen_bee_hive", () -> () -> QueenBeeHiveStructure.CODEC);
     public static final Supplier<StructureType<ShimmerLakeStructure>> SHIMMER_LAKE = TYPES.register("shimmer_lake", () -> () -> ShimmerLakeStructure.CODEC);

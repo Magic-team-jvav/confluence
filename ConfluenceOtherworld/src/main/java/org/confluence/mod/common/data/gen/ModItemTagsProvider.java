@@ -587,6 +587,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         AxeItems.acceptTag(axes);
         PickaxeAxeItems.acceptTag(axes);
 
+        PickaxeAxeItems.acceptTag(tag(ModTags.Items.TOOLS));
+        AxeItems.acceptTag(tag(ModTags.Items.TOOLS));
+        PickaxeItems.acceptTag(tag(ModTags.Items.TOOLS));
+        HammerItems.acceptTag(tag(ModTags.Items.TOOLS));
+        FishingPoleItems.acceptTag(tag(ModTags.Items.TOOLS));
+
         SwordItems.acceptTag(tag(Tags.Items.MELEE_WEAPON_TOOLS));
         ManaWeaponItems.acceptTag(tag(ModTags.Items.MANA_WEAPON));
         BowItems.acceptTag(tag(Tags.Items.RANGED_WEAPON_TOOLS));
@@ -625,11 +631,20 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ConsumableItems.SUSPICIOUS_LOOKING_EYE.get(),
                 ConsumableItems.SLIME_CROWN.get()
         );
+
         tag(ModTags.Items.INGOTS_TIN).add(MaterialItems.TIN_INGOT.get());
         tag(ModTags.Items.INGOTS_LEAD).add(MaterialItems.LEAD_INGOT.get());
         tag(ModTags.Items.INGOTS_SILVER).add(MaterialItems.SILVER_INGOT.get());
         tag(ModTags.Items.INGOTS_TUNGSTEN).add(MaterialItems.TUNGSTEN_INGOT.get());
         tag(ModTags.Items.INGOTS_PLATINUM).add(MaterialItems.PLATINUM_INGOT.get());
+
+        tag(ModTags.Items.RAW_MATERIALS_TIN).add(MaterialItems.RAW_TIN.get());
+        tag(ModTags.Items.RAW_MATERIALS_LEAD).add(MaterialItems.RAW_LEAD.get());
+        tag(ModTags.Items.RAW_MATERIALS_SILVER).add(MaterialItems.RAW_SILVER.get());
+        tag(ModTags.Items.RAW_MATERIALS_TUNGSTEN).add(MaterialItems.RAW_TUNGSTEN.get());
+        tag(ModTags.Items.RAW_MATERIALS_PLATINUM).add(MaterialItems.RAW_PLATINUM.get());
+
+
         tag(ModTags.Items.MOSS_ITEM).add(
                 NatureBlocks.BROWN_MOSS.get().asItem(),
                 NatureBlocks.BROWN_MOSS.get().asItem(),

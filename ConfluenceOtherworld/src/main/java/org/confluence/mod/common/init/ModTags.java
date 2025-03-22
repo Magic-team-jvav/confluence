@@ -56,6 +56,20 @@ public final class ModTags {
         public static final TagKey<Item> INGOTS_TUNGSTEN = c("ingots/tungsten");
         public static final TagKey<Item> INGOTS_PLATINUM = c("ingots/platinum");
 
+        public static final TagKey<Item> RAW_MATERIALS_TIN = c("raw_materials/tin");
+        public static final TagKey<Item> RAW_MATERIALS_LEAD = c("raw_materials/lead");
+        public static final TagKey<Item> RAW_MATERIALS_SILVER = c("raw_materials/silver");
+        public static final TagKey<Item> RAW_MATERIALS_TUNGSTEN = c("raw_materials/tungsten");
+        public static final TagKey<Item> RAW_MATERIALS_PLATINUM = c("raw_materials/platinum");
+
+        public static final TagKey<Item> TOOLS = c("tools");
+
+        public static final TagKey<Item> GEMS_RUBY = c("gems/ruby");
+
+        public static final TagKey<Item> ORES_TIN = c("ores/tin");
+
+        public static final TagKey<Item> STORAGE_BLOCKS = c("storage_blocks");
+
         public static final TagKey<Item> COINS = register("coins");
         public static final TagKey<Item> AMMO = register("ammo");
         public static final TagKey<Item> PET = register("pet");

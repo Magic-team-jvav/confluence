@@ -22,7 +22,7 @@
     "inner_block": {
       "type": "simple_state_provider",
       "state": {
-        "Name": "confluence:stripped_baobab_wood"
+        "Name": "confluence:stripped_baobab_log"
       }
     },
     "leaves_block": {

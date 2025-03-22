@@ -228,6 +228,9 @@ public class ModLootTableProvider extends LootTableProvider {
             add(CHLOROPHYTE_ORE.get(), block -> createOreDrop(block, RAW_CHLOROPHYTE.get()));
             add(HELLSTONE.get(), block -> createOreDrop(block, RAW_HELLSTONE.get()));
             add(ASH_HELLSTONE.get(), block -> createOreDrop(block, RAW_HELLSTONE.get()));
+
+            add(COLD_CRYSTAL_ORE.get(), block -> createOreDrop(block, COLD_CRYSTAL.get()));
+            add(GELSTONE_ORE.get(), block -> createOreDrop(block, GELSTONE.get()));
             // endregion ore
 
             // region natural
@@ -238,16 +241,9 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(TR_CRIMSON_COBBLESTONE.get());
             dropSelf(TR_CRIMSON_SAND.get());
             dropSelf(ASH_BLOCK.get());
-            dropSelf(ASH_GRASS_BLOCK.get());
-            dropOther(TR_CRIMSON_GRASS_BLOCK.get(), Items.DIRT);
-            dropOther(CORRUPT_GRASS_BLOCK.get(), Items.DIRT);
-            dropOther(HALLOW_GRASS_BLOCK.get(), Items.DIRT);
             dropOther(TR_CRIMSON_STONE.get(), TR_CRIMSON_COBBLESTONE.get());
             dropOther(EBONY_STONE.get(), EBONY_COBBLESTONE.get());
             dropOther(PEARL_STONE.get(), PEARL_COBBLESTONE.get());
-            dropOther(GELSTONE_ORE.get(), GELSTONE.get());
-            dropOther(SPORE_ROOT_BLOCK.get(), SPORE_ROOT.get());
-            dropOther(WINTER_MARROW_BLOCK.get(), WINTER_MARROW.get());
             dropSelf(EBONY_LOG_BLOCKS.getLog().get());
             dropSelf(YELLOW_WILLOW_LOG_BLOCKS.getLog().get());
             dropSelf(BAOBAB_LOG_BLOCKS.getLog().get());
@@ -364,10 +360,6 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(JUNGLE_ROSE.get());
 
             dropOther(LIFE_CRYSTAL_BLOCK.get(), LIFE_CRYSTAL.get());
-            dropOther(MUSHROOM_GRASS_BLOCK.get(), Items.MUD);
-            dropOther(JUNGLE_GRASS_BLOCK.get(), Items.MUD);
-            dropOther(CORRUPT_JUNGLE_GRASS_BLOCK.get(), Items.MUD);
-            dropOther(TR_CRIMSON_JUNGLE_GRASS_BLOCK.get(), Items.MUD);
 
             //chain
             dropSelf(RUBY_CHAIN.get());

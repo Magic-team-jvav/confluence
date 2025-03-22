@@ -2,9 +2,11 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.FishingRodItem;
+import net.minecraft.world.item.Item;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -47,5 +49,8 @@ public class FishingPoleItems {
             }
         };
         ITEMS.getEntries().forEach(pole -> ItemProperties.register(pole.get(), cast, function));
+    }
+    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
+        ITEMS.getEntries().forEach(item -> tag.add(item.get()));
     }
 }

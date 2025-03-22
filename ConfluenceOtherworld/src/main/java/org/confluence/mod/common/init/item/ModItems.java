@@ -51,7 +51,12 @@ public final class ModItems {
     public static final Supplier<FailedSkullItem> FAILED_SKULL = HIDDEN.register("failed_skull", FailedSkullItem::new);
     public static final Supplier<KindMitaRingItem> KIND_MITA_RING = HIDDEN.register("kind_mita_ring", KindMitaRingItem::new);
 
-    public static final Supplier<TooltipItem> MYSTERIOUS_NOTE = HIDDEN.register("mysterious_note", () -> new TooltipItem(new Item.Properties(), ModRarity.MASTER, TooltipItem.getTooltipsFromString("mysterious_note", 1)));
+    public static final Supplier<KindMitaRingItem> FERTILE_SINGULARITY = HIDDEN.register("fertile_singularity", KindMitaRingItem::new); // 占位符 丰饶奇点
+    public static final Supplier<KindMitaRingItem> PERPLEXED_CAT_MEDAL = HIDDEN.register("perplexed_cat_medal", KindMitaRingItem::new); // 占位符 疑惑猫猫勋章
+    public static final Supplier<KindMitaRingItem> CANDY_SWORD = HIDDEN.register("candy_sword", KindMitaRingItem::new); // 占位符 糖果剑
+    public static final Supplier<KindMitaRingItem> PULSAR = HIDDEN.register("pulsar", KindMitaRingItem::new); // 占位符 脉冲星
+
+    public static final Supplier<Item> MYSTERIOUS_NOTE = HIDDEN.register("mysterious_note", () -> new Item(new Item.Properties()));
 
     public static final Supplier<CoinItem> COPPER_COIN = ITEMS.register("copper_coin", () -> new CoinItem(ModBlocks.COPPER_COIN_PILE.get(), ModRarity.WHITE, ModItems.SILVER_COIN, 100));
     public static final Supplier<CoinItem> SILVER_COIN = ITEMS.register("silver_coin", () -> new CoinItem(ModBlocks.SILVER_COIN_PILE.get(), ModRarity.ORANGE, ModItems.GOLDEN_COIN, 100));

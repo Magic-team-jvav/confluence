@@ -1088,7 +1088,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.MUSHROOM_GRASS_BLOCK.get(), "蘑菇草方块");
         add(NatureBlocks.JUNGLE_GRASS_BLOCK.get(), "丛林草方块");
         add(NatureBlocks.ASH_BLOCK.get(), "灰烬块");
-        add(NatureBlocks.ASH_GRASS_BLOCK.get(), "灰烬草块");
+        add(NatureBlocks.ASH_GRASS_BLOCK.get(), "灰烬草方块");
         add(NatureBlocks.ASH_GRASS.get(), "灰烬草");
         add(NatureBlocks.CLOUD_BLOCK.get(), "云块");
         add(NatureBlocks.EVAPORATIVE_CLOUD_BLOCK.get(), "蒸发云块");
@@ -1820,6 +1820,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.KIND_MITA_RING.get(), "善良米塔的戒指");
         add(ModItems.ICE_TOFU_BRICK.get(), "冰豆腐砖");
         add(ModItems.MYSTERIOUS_NOTE.get(), "神秘纸条");
+        add(ModItems.FERTILE_SINGULARITY.get(), "丰饶奇点");
+        add(ModItems.PERPLEXED_CAT_MEDAL.get(), "疑惑猫猫勋章");
+        add(ModItems.CANDY_SWORD.get(), "糖果剑");
+        add(ModItems.PULSAR.get(), "脉冲星");
 
 
         add(ModItems.CATTAILS.get(), "香蒲");

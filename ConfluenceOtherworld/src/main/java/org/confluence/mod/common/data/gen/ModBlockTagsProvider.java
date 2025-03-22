@@ -306,7 +306,13 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 TR_CRIMSON_SAND_LAYER_BLOCK.get(),
                 ASH_BLOCK.get(),
                 MUSHROOM_GRASS_BLOCK.get(),
-                JUNGLE_GRASS_BLOCK.get()
+                JUNGLE_GRASS_BLOCK.get(),
+                CORRUPT_GRASS_BLOCK.get(),
+                HALLOW_GRASS_BLOCK.get(),
+                TR_CRIMSON_GRASS_BLOCK.get(),
+                CORRUPT_JUNGLE_GRASS_BLOCK.get(),
+                TR_CRIMSON_JUNGLE_GRASS_BLOCK.get(),
+                ASH_GRASS_BLOCK.get()
         );
         // 锄头
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithHoe = tag(BlockTags.MINEABLE_WITH_HOE);
@@ -464,6 +470,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GELSTONE_ORE.get(),
                 SPORE_ROOT_BLOCK.get(),
                 WINTER_MARROW_BLOCK.get(),
+                COLD_CRYSTAL_ORE.get(),
                 THIN_ICE_BLOCK.get()
         );
         tag(ModTags.Blocks.NEEDS_2_LEVEL).add(
@@ -1137,38 +1144,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 HARDENED_SAND_BLOCK.get(),
                 RED_HARDENED_SAND_BLOCK.get()
         );
-        tag(ModTags.Blocks.UNBREAKABLE_IF_CANNOT_HARVEST).add(
-                EBONY_STONE.get(),
-                TR_CRIMSON_STONE.get(),
-                METEORITE_ORE.get(),
-                DEEPSLATE_COBALT_ORE.get(),
-                DEEPSLATE_PALLADIUM_ORE.get(),
-                DEEPSLATE_MYTHRIL_ORE.get(),
-                DEEPSLATE_ORICHALCUM_ORE.get(),
-                DEEPSLATE_ADAMANTITE_ORE.get(),
-                DEEPSLATE_TITANIUM_ORE.get(),
-                TR_CRIMSON_HARDENED_SAND_BLOCK.get(),
-                EBONY_HARDENED_SAND_BLOCK.get(),
-                PEARL_HARDENED_SAND_BLOCK.get(),
-                BLUE_BRICKS.get(),
-                PINK_BRICKS.get(),
-                GREEN_BRICKS.get(),
-                BLUE_BRICK_STAIRS.get(),
-                PINK_BRICK_STAIRS.get(),
-                GREEN_BRICK_STAIRS.get(),
-                BLUE_BRICKS_DOOR.get(),
-                PINK_BRICKS_DOOR.get(),
-                GREEN_BRICKS_DOOR.get(),
-                BLUE_BRICK_SLAB.get(),
-                PINK_BRICK_SLAB.get(),
-                GREEN_BRICK_SLAB.get(),
-                FunctionalBlocks.HELLFORGE.get(),
-                HELLSTONE.get(),
-                ASH_HELLSTONE.get(),
-                HELLSTONE_BRICKS.get(),
-                RAW_HELLSTONE_BLOCK.get(),
-                HELLSTONE_BLOCK.get()
-        );
+        tag(ModTags.Blocks.UNBREAKABLE_IF_CANNOT_HARVEST).addTags(ModTags.Blocks.NEEDS_2_LEVEL, ModTags.Blocks.NEEDS_3_LEVEL, ModTags.Blocks.NEEDS_4_LEVEL, ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL, Tags.Blocks.ORES_NETHERITE_SCRAP, Tags.Blocks.STORAGE_BLOCKS_NETHERITE);
+
     }
 
     @Override

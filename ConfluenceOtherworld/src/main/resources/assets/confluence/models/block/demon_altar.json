@@ -2,7 +2,7 @@
   "credit": "Made with Blockbench",
   "parent": "builtin/entity",
   "textures": {
-    "particle": "confluence:block/demon_altar"
+    "particle": "confluence:block/ebony_stone"
   },
   "texture_size": [
     256,

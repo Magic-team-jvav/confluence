@@ -14,7 +14,7 @@ public class FoodType {
     public static final FoodProperties FISH = new FoodProperties.Builder().nutrition(3).saturationModifier(1.5f).fast().alwaysEdible().build();
     //金鲤鱼
     public static final FoodProperties GOLDEN_CARP = new FoodProperties.Builder().nutrition(6).saturationModifier(3.5f).fast().alwaysEdible()
-            .effect(() -> new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, 24000,3), 1.0f)
+            .effect(() -> new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, 24000,2), 1.0f)
             .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 100, 1), 1.0F)
             .effect(() -> new MobEffectInstance(MobEffects.ABSORPTION, 2400, 0), 1.0F)
             .build();

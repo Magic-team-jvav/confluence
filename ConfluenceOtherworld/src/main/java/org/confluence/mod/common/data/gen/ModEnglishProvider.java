@@ -10,7 +10,6 @@ import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.TooltipManager;
-import org.confluence.mod.common.init.ModEffectStrategies;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
@@ -622,6 +621,7 @@ public class ModEnglishProvider extends LanguageProvider {
         FishingPoleItems.ITEMS.getEntries().forEach(itemAction);
         FoodItems.ITEMS.getEntries().forEach(itemAction);
         HammerItems.ITEMS.getEntries().forEach(itemAction);
+        HoeItems.ITEMS.getEntries().forEach(itemAction);
         HookItems.ITEMS.getEntries().forEach(itemAction);
         IconItems.ITEMS.getEntries().forEach(itemAction);
         LightPetItems.ITEMS.getEntries().forEach(itemAction);
@@ -636,6 +636,7 @@ public class ModEnglishProvider extends LanguageProvider {
         PickaxeItems.ITEMS.getEntries().forEach(itemAction);
         PotionItems.ITEMS.getEntries().forEach(itemAction);
         QuestedFishes.ITEMS.getEntries().forEach(itemAction);
+        ShovelItems.ITEMS.getEntries().forEach(itemAction);
         SwordItems.ITEMS.getEntries().forEach(itemAction);
         ToolItems.ITEMS.getEntries().forEach(itemAction);
         TreasureBagItems.ITEMS.getEntries().forEach(itemAction);

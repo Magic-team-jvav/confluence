@@ -1,17 +1,18 @@
-| 项目名                                                  | 备注            | 是否独立运行                |
-|------------------------------------------------------|---------------|-----------------------|
-| [ConfluenceOtherworld](ConfluenceOtherworld) | 本体            | 依赖所有                  |
-| [TerraEntity](TerraEntity)                           | 泰拉实体生物        | 是                     |
-| [MineTeam](MineTeam)                                 | 类泰拉团队机制       | 是                     |
-| [EquipmentBenediction](EquipmentBenediction)         | 多种装备加成机制      | 是                     |
-| [TerraCurio](TerraCurio)                             | 泰拉饰品          | 是                     |
-| [TerraGuns](TerraGuns)                               | 泰拉枪支          | 是                     |
-| [ParticleStorm](ParticleStorm)                       | 为复杂的粒子提供API   | 是                     |
-| [HeavenDestinyMoment](HeavenDestinyMoment)           | 提供各类事件机制API   | 是                     |
-| [PhaseJourney](PhaseJourney)                         | 提供各类阶游戏段机制API | 是                     |
-| [TerraMoment](TerraMoment)                           | 泰拉事件          | 依赖HeavenDestinyMoment |
-| [IsekaiInvaded](IsekaiInvaded)                       | 多维度入侵事件       | 依赖HeavenDestinyMoment |
-| [TerraFurniture](TerraFurniture)                     | 泰拉家具          | 是                     |
+| 项目名                                          | 备注                | 是否独立运行                |
+|----------------------------------------------|-------------------|-----------------------|
+| [ConfluenceOtherworld](ConfluenceOtherworld) | 本体                | 依赖所有                  |
+| [TerraEntity](TerraEntity)                   | 泰拉实体生物            | 是                     |
+| [MineTeam](MineTeam)                         | 类泰拉团队机制           | 是                     |
+| [EquipmentBenediction](EquipmentBenediction) | 多种装备加成机制          | 是                     |
+| [TerraCurio](TerraCurio)                     | 泰拉饰品              | 是                     |
+| [TerraGuns](TerraGuns)                       | 泰拉枪支              | 是                     |
+| [ParticleStorm](ParticleStorm)               | 为复杂的粒子提供API       | 是                     |
+| [HeavenDestinyMoment](HeavenDestinyMoment)   | 提供各类事件机制API       | 是                     |
+| [PhaseJourney](PhaseJourney)                 | 提供各类阶游戏段机制API     | 是                     |
+| [TerraMoment](TerraMoment)                   | 泰拉事件              | 依赖HeavenDestinyMoment |
+| [IsekaiInvaded](IsekaiInvaded)               | 多维度入侵事件           | 依赖HeavenDestinyMoment |
+| [TerraFurniture](TerraFurniture)             | 泰拉家具              | 是                     |
+| [EntityTrackerHUD](EntityTrackerHUD)         | 提供包括Boss实体的实时位置提示 | 是                     |
 
 ## 构建项目
 

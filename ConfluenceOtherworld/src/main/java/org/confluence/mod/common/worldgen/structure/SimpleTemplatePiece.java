@@ -43,6 +43,7 @@ public class SimpleTemplatePiece extends TemplateStructurePiece {
                 i - 16, templatePosition.getY() - 12, j - 16,
                 i + 31, templatePosition.getY() + 11, j + 31
         );
+        placeSettings.setBoundingBox(boundingBox);
     }
 
     private static StructurePlaceSettings makeSettings(boolean overwrite, boolean ignoreEntities, Rotation rotation) {

@@ -27,14 +27,16 @@ import org.confluence.terraentity.init.TEDataComponentTypes;
 import org.confluence.terraentity.registries.hit_effect.EffectStrategy;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class Boomerang extends Item {
 
     public final BoomerangModifier boomerangModifier;
 
     public Boomerang(float damage, BoomerangModifier boomerangModifier, Properties properties) {
-        super(properties);
+        super(boomerangModifier.buildProperties(properties));
         this.boomerangModifier = boomerangModifier;
         this.boomerangModifier.damage = damage;
         this.boomerangModifier.proj = new BoomerangProjContainer(boomerangModifier);
@@ -138,7 +140,7 @@ public class Boomerang extends Item {
         public BaseSwordItem.QuaConsumer<ItemStack, Level, Entity, Boolean> inventoryTick;
         public ItemAttributeModifiers.Builder attributeModifiersBuilder = ItemAttributeModifiers.builder();
         private int modifyCount = 0;
-        public Item.Properties properties = new Properties();
+        List<Function<Properties, Properties>> modifierFunctions = new ArrayList<>();
 
         /**
          * 添加击中效果
@@ -146,7 +148,7 @@ public class Boomerang extends Item {
          * @see EffectStrategy
          */
         public BoomerangModifier setOnHitEffect(EffectStrategyComponent onHit) {
-            properties.component(TEDataComponentTypes.EFFECT_STRATEGY, onHit);
+            modifierFunctions.add(properties -> properties.component(TEDataComponentTypes.EFFECT_STRATEGY, onHit));
             return this;
         }
 
@@ -241,6 +243,10 @@ public class Boomerang extends Item {
         public BoomerangModifier setMaxPenetration(int maxPenetration) {
             this.maxPenetration = maxPenetration;
             return this;
+        }
+
+        public Properties buildProperties(Properties properties) {
+            return modifierFunctions.stream().reduce(properties, (p, f) -> f.apply(p), (p1, p2) -> p1);
         }
 
     }

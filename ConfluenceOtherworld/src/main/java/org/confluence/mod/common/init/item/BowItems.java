@@ -17,8 +17,8 @@ import org.confluence.mod.common.item.bow.DaedalusStormbow;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.bow.TerraBowItem;
 import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terraentity.data.component.EffectStrategyComponent;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -54,44 +54,54 @@ public class BowItems {
     // DIY蓄力弓
     /**如果需要速射，加上tag {@link org.confluence.mod.common.init.ModTags.Items#FAST_BOW}*/
 
-    public static final DeferredItem<TerraBowItem> FOSSIL_BOW = register("fossil_bow", () -> new TerraBowItem(5.5F, ModRarity.BLUE,
-            modifier->modifier.setTransformArrow(ArrowItems.FOSSIL_ARROW.get())
-    ));
-    public static final DeferredItem<TerraBowItem> HUNTING_BOW = register("hunting_bow", () -> new TerraBowItem(3.5F, ModRarity.BLUE, // 猎弓
-            modifier->modifier.addOnHitEffect(ModEffectStrategies.Components.HUNTING_RIFLE_EFFECT.get())
-    ));
-    public static final DeferredItem<TerraBowItem> DEMON_BOW = register("demon_bow", () -> new TerraBowItem(5.5F, ModRarity.BLUE,
-            modifier->modifier.addFullPullHitEffect(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get()))
+    public static final DeferredItem<TerraBowItem> FOSSIL_BOW = register("fossil_bow", 5.5F,
+            m->m.setRarity(ModRarity.BLUE).setTransformArrow(ArrowItems.FOSSIL_ARROW.get())
     );
-    public static final DeferredItem<TerraBowItem> TENDON_BOW = register("tendon_bow",  () -> new TerraBowItem(6F, ModRarity.BLUE,
-            modifier->modifier.addFullPullHitEffect(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get())
-    ));
-    public static final DeferredItem<TerraBowItem> MOLTEN_FURY = register("molten_fury",  () -> new TerraBowItem(7F, ModRarity.ORANGE,
-            modifier->modifier.setTransformArrow(ArrowItems.HELLFIRE_ARROW.get())
-    ));
+    public static final DeferredItem<TerraBowItem> HUNTING_BOW = register("hunting_bow", 3.5F,
+            m->m.setRarity(ModRarity.BLUE).setOnHitEffect(ModEffectStrategies.Components.HUNTING_RIFLE_EFFECT.get())
+    );
+    public static final DeferredItem<TerraBowItem> DEMON_BOW = register("demon_bow", 5.5F,
+            m->m.setRarity(ModRarity.BLUE).setFullPullHitEffect(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get())
+    );
+    public static final DeferredItem<TerraBowItem> TENDON_BOW = register("tendon_bow",  6F,
+            m->m.setRarity(ModRarity.BLUE).setFullPullHitEffect(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get())
+    );
+    public static final DeferredItem<TerraBowItem> MOLTEN_FURY = register("molten_fury",  7F, m->m.setRarity(ModRarity.ORANGE)
+            .setTransformArrow(ArrowItems.HELLFIRE_ARROW.get())
+    );
 
 
     // 代达罗斯风暴弓
-    public static final DeferredItem<TerraBowItem> DAEDALUS_STORM_BOW = register("daedalus_storm_bow", ()->new DaedalusStormbow(10F, ModRarity.PURPLE));
+    public static final DeferredItem<TerraBowItem> DAEDALUS_STORM_BOW = register("daedalus_storm_bow",()->new DaedalusStormbow(10f, ModRarity.PURPLE));
 
 
-    public static final DeferredItem<TerraBowItem> DEVELOPER_BOW = register("developer_bow", () -> new TerraBowItem(1F, ModRarity.MASTER,
-            modifier->modifier.setCauseFire(200)
-                    .setDamage(10)
-                    .setSpeedFactor(2)
-                    .setPenetration(2)
+    public static final DeferredItem<TerraBowItem> DEVELOPER_BOW = register("developer_bow", 1F,
+            m->m.setRarity(ModRarity.MASTER).addModifyArrowBuilder(
+                    modifier->modifier.setCauseFire(200)
+                            .setDamage(10)
+                            .setSpeedFactor(2)
+                            .setPenetration(2)
             ));
 
 
     public static DeferredItem<TerraBowItem> register(String name, Supplier<TerraBowItem> supplier) {
         return ITEMS.register(name, supplier);
     }
-    public static DeferredItem<TerraBowItem> register(String name, float damage, int durability, ModRarity rarity) {
-        return register(name, () -> new TerraBowItem(damage, durability, rarity));
-    }
+
+    /**
+     * 注册效果修饰的有耐久弓
+     */
     public static DeferredItem<TerraBowItem> register(String name, float damage, int durability) {
-        return register(name, damage, durability, ModRarity.WHITE);
+        return register(name, () -> new TerraBowItem(damage, new TerraBowItem.Builder().setDuration(durability)));
     }
+
+    /**
+     * 注册带有效果修饰的无耐久弓
+     */
+    public static DeferredItem<TerraBowItem> register(String name, float damage, Function<TerraBowItem.Builder, TerraBowItem.Builder> modifier) {
+        return register(name, () -> new TerraBowItem(damage,  modifier.apply(new TerraBowItem.Builder().setUnBreakable())));
+    }
+
 
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
         ITEMS.getEntries().forEach(entry -> tag.add(entry.get()));

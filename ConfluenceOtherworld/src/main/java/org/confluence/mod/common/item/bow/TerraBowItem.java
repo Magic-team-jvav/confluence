@@ -17,9 +17,12 @@ import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
+import org.confluence.terraentity.data.component.EffectStrategyComponent;
+import org.confluence.terraentity.init.TEDataComponentTypes;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -27,37 +30,18 @@ import java.util.function.Function;
 public class TerraBowItem extends BowItem {
 
     public float baseDamage;
-
-    public Consumer<BaseArrowEntity.Builder> modifyArrowBuilder = b->{};
-
     public BaseArrowEntity.Builder arrowModifier;
+    public Builder modifyArrowBuilder;
 
-
-    public TerraBowItem(float baseDamage, int durability, ModRarity rarity) {
-        super(new Properties().durability(durability)
-                .stacksTo(1)
-                .component(TCDataComponentTypes.MOD_RARITY, rarity));
+    public TerraBowItem(float baseDamage, Builder builder) {
+        super(builder.buildProperties(new Properties().stacksTo(1)));
         this.baseDamage = baseDamage;
         this.arrowModifier = new BaseArrowEntity.Builder();
-    }
-    public TerraBowItem(float baseDamage, int durability, ModRarity rarity, Consumer<BaseArrowEntity.Builder> modifyArrowBuilder) {
-        this(baseDamage, durability, rarity);
-        this.modifyArrowBuilder = modifyArrowBuilder;
-        modifyArrowBuilder.accept(this.arrowModifier);
+        builder.modifyArrowBuilder.forEach(m->m.accept(this.arrowModifier));
+        this.modifyArrowBuilder = builder;
     }
 
-    // 无法破坏
-    public TerraBowItem(float baseDamage, ModRarity rarity) {
-        super(new Properties().component(DataComponents.UNBREAKABLE, new Unbreakable(true))
-                .component(TCDataComponentTypes.MOD_RARITY, rarity).stacksTo(1));
-        this.baseDamage = baseDamage;
-        this.arrowModifier = new BaseArrowEntity.Builder();
-    }
-    public TerraBowItem(float baseDamage, ModRarity rarity, Consumer<BaseArrowEntity.Builder> modifyArrowBuilder) {
-        this(baseDamage, rarity);
-        this.modifyArrowBuilder = modifyArrowBuilder;
-        modifyArrowBuilder.accept(this.arrowModifier);
-    }
+
 
     @Override
     public @NotNull AbstractArrow customArrow(AbstractArrow arrow, ItemStack projectileStack, ItemStack weaponStack) {
@@ -97,15 +81,17 @@ public class TerraBowItem extends BowItem {
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable("attribute.name.generic.attack_damage").append(": ").append(String.format("%.1f", this.baseDamage)).withColor(0x00FF00));
 
-        if(this.arrowModifier.onHitEffects != null){
+        var hitEffect = stack.get(TEDataComponentTypes.EFFECT_STRATEGY);
+        if(hitEffect != null){
 
-            IEffectStrategy.appendDescriptions(tooltipComponents,
-                    this.arrowModifier.onHitEffects,
+            IEffectStrategy.appendDescription(tooltipComponents,
+                    hitEffect.effects(),
                     Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").withColor(0xFF00FF));
         }
-        if(this.arrowModifier.fullPullHitEffects != null){
-            IEffectStrategy.appendDescriptions(tooltipComponents,
-                    this.arrowModifier.fullPullHitEffects,
+        var fullPullHitEffect = stack.get(TEDataComponentTypes.BOW_FULL_CHARGE_EFFECT_STRATEGY);
+        if(fullPullHitEffect != null){
+            IEffectStrategy.appendDescription(tooltipComponents,
+                    fullPullHitEffect.effects(),
                     Component.translatable("tooltip.item.confluence.bow_full_pull_on_hit_effects").append(": ").withColor(0xFF00FF));
         }
 
@@ -131,5 +117,50 @@ public class TerraBowItem extends BowItem {
         f = (f * f + f * 2.0F) / 3 * 0.5f + 0.5f; // 0.5f< f < 0.7+0.5
         f = Math.min(f, 1.5F);
         return f;
+    }
+
+    public static class Builder{
+        List<Function<Item.Properties, Item.Properties>> modifyProperties = new ArrayList<>();
+        List<Consumer<BaseArrowEntity.Builder>> modifyArrowBuilder = new ArrayList<>();
+
+        public void applyModifiers(BaseArrowEntity.Builder modifyArrow){
+            modifyArrowBuilder.forEach(m->m.accept(modifyArrow));
+        }
+        public Builder setDuration(int duration){
+            this.modifyProperties.add(p->p.durability(duration));
+            return this;
+        }
+        public Builder setOnHitEffect(EffectStrategyComponent component){
+            this.modifyProperties.add(p->p.component(TEDataComponentTypes.EFFECT_STRATEGY, component));
+            this.addModifyArrowBuilder(m->m.addOnHitEffect(component));
+            return this;
+        }
+        public Builder setFullPullHitEffect(EffectStrategyComponent component){
+            this.modifyProperties.add(p->p.component(TEDataComponentTypes.BOW_FULL_CHARGE_EFFECT_STRATEGY, component));
+            this.addModifyArrowBuilder(m->m.addFullPullHitEffect(component));
+            return this;
+        }
+        public Builder setTransformArrow(BaseArrowItem transformArrow){
+            this.modifyArrowBuilder.add(m->m.setTransformArrow(transformArrow));
+            return this;
+        }
+        public Builder setUnBreakable(){
+            this.modifyProperties.add(p->p.component(DataComponents.UNBREAKABLE, new Unbreakable(true)));
+            return this;
+        }
+        public Builder setRarity(ModRarity rarity){
+            this.modifyProperties.add(p->p.component(TCDataComponentTypes.MOD_RARITY, rarity));
+            return this;
+        }
+        public Builder addModifyArrowBuilder(Consumer<BaseArrowEntity.Builder> modifyArrowBuilder){
+            this.modifyArrowBuilder.add(modifyArrowBuilder);
+            return this;
+        }
+        public Properties buildProperties(Properties properties){
+            for(Function<Item.Properties, Item.Properties> f : modifyProperties){
+                properties = f.apply(properties);
+            }
+            return properties;
+        }
     }
 }

@@ -25,6 +25,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.bow.BaseArrowItem;
+import org.confluence.mod.common.item.bow.TerraBowItem;
 import org.confluence.mod.util.EnchantmentUtil;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
 
@@ -90,9 +91,10 @@ public class BaseArrowEntity extends AbstractArrow {
      * @param arrow 预定义的箭的类型
      * @param modifyConsumer 属性额外修饰
      */
-    public BaseArrowEntity(LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, BaseArrowItem arrow, Consumer<Builder> modifyConsumer) {
+    public BaseArrowEntity(LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, BaseArrowItem arrow, TerraBowItem.Builder modifyConsumer) {
         this(owner,pickupItemStack,firedFromWeapon, arrow);
-        if(modifyConsumer!=null) modifyConsumer.accept(modify);
+        if(modifyConsumer!=null)
+            modifyConsumer.applyModifiers(modify);
         if((modify.type & Tag.auto_discard) != 0){
             this.pickup = Pickup.DISALLOWED;
         }

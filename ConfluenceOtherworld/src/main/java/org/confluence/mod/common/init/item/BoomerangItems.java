@@ -70,7 +70,7 @@ public class BoomerangItems {
     );
 
     private static DeferredItem<Boomerang> register(String name, float damage, ModRarity rarity, Boomerang.BoomerangModifier boomerangModifier) {
-        return ITEMS.register(name, () -> new Boomerang(damage,boomerangModifier,boomerangModifier.properties.stacksTo(1)
+        return ITEMS.register(name, () -> new Boomerang(damage,boomerangModifier,new Item.Properties().stacksTo(1)
                 .component(TCDataComponentTypes.MOD_RARITY, rarity)
                 .component(ModDataComponentTypes.BOOMERANG_READY, SingleBooleanComponent.TRUE)
                 .component(DataComponents.UNBREAKABLE, new Unbreakable(true))

@@ -1,4 +1,4 @@
-package org.confluence.mod.common.event.subscriber.game;
+package org.confluence.mod.common.event.game;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;

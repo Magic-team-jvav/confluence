@@ -1,4 +1,4 @@
-package org.confluence.mod.common.event.subscriber.game;
+package org.confluence.mod.common.event.game;
 
 import com.xiaohunao.equipment_benediction.common.event.AfterEquipmentBenedictionUpdatedEvent;
 import com.xiaohunao.heaven_destiny_moment.common.event.MomentEvent;

@@ -15,15 +15,10 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.joml.Vector3d;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static net.minecraft.world.level.block.LeavesBlock.PERSISTENT;
-import static org.confluence.mod.util.StructureUtils.*;
-import static org.confluence.mod.util.VectorUtils.lightningPathList;
 
 public class LivingTreeStructure extends Structure {
     public static final MapCodec<LivingTreeStructure> CODEC = simpleCodec(LivingTreeStructure::new);
@@ -102,7 +97,8 @@ public class LivingTreeStructure extends Structure {
             switch (rotation) {
                 case CLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(5, 0, 1), true, true, Rotation.CLOCKWISE_90));
                 case CLOCKWISE_180 -> builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(-1, 0, 5), true, true, Rotation.CLOCKWISE_180));
-                case COUNTERCLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(-5, 0, -1), true, true, Rotation.COUNTERCLOCKWISE_90));
+                case COUNTERCLOCKWISE_90 ->
+                        builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(-5, 0, -1), true, true, Rotation.COUNTERCLOCKWISE_90));
                 default -> builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(1, 0, -5), true, true, Rotation.NONE));
             }
         });

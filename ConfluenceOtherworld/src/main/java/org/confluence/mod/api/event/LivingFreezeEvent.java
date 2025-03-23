@@ -1,4 +1,4 @@
-package org.confluence.mod.common.event;
+package org.confluence.mod.api.event;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;

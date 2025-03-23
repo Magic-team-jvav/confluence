@@ -4,11 +4,9 @@ import com.google.common.collect.Lists;
 import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -16,15 +14,10 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
-import org.joml.Vector3d;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static net.minecraft.world.level.block.LeavesBlock.PERSISTENT;
-import static org.confluence.mod.util.StructureUtils.*;
-import static org.confluence.mod.util.VectorUtils.lightningPathList;
 
 public class LivingMahoganyTreeStructure extends Structure {
     public static final MapCodec<LivingMahoganyTreeStructure> CODEC = simpleCodec(LivingMahoganyTreeStructure::new);
@@ -96,7 +89,7 @@ public class LivingMahoganyTreeStructure extends Structure {
             GridPiece.addPieces(blockMap, startChunk, lowestY, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
                     NatureBlocks.LIVING_MAHOGANY_BLOCKS.getWood().get().defaultBlockState(),
-                    NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLeaves().get().defaultBlockState().setValue(PERSISTENT, Boolean.TRUE),
+                    NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLeaves().get().defaultBlockState().setValue(PERSISTENT, true),
                     OreBlocks.SPORE_ROOT_BLOCK.get().defaultBlockState()
             ), builder);
         });

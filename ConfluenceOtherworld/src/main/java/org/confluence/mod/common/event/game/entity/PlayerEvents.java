@@ -1,4 +1,4 @@
-package org.confluence.mod.common.event.subscriber.game.entity;
+package org.confluence.mod.common.event.game.entity;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;

@@ -1,4 +1,4 @@
-package org.confluence.mod.common.event.subscriber.game;
+package org.confluence.mod.common.event.game;
 
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;

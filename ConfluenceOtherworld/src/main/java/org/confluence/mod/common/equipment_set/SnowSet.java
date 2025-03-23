@@ -23,7 +23,7 @@ public class SnowSet extends EquipmentSet implements LivingFreezeHook {
                         VanillaEquippable.FEET, ArmorItems.INSULATED_SHOES
                 )
                 .bindHook(ModHookTypes.LIVING_FREEZE.get(), this)
-                .build(),true);
+                .build());
         equippableGroup.addEquippableSet("pink",new EquippableSetData.Builder()
                 .addEquippable(
                         VanillaEquippable.HEAD, ArmorItems.PINK_SNOW_CAPS,
@@ -31,7 +31,7 @@ public class SnowSet extends EquipmentSet implements LivingFreezeHook {
                         VanillaEquippable.LEGS, ArmorItems.INSULATED_PANTS,
                         VanillaEquippable.FEET, ArmorItems.INSULATED_SHOES
                 )                .bindHook(ModHookTypes.LIVING_FREEZE.get(), this)
-                .build(),true);
+                .build());
     }
 
     @Override

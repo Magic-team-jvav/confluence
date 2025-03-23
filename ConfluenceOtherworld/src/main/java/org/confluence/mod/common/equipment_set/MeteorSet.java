@@ -32,12 +32,12 @@ public class MeteorSet extends EquipmentSet {
                         return () -> 0;
                     }
                     return original;
-                }).build(),true);
+                }).build());
     }
 
     private static EquippableSetData magicDamageBonus(VanillaEquippable slot, DeferredItem<ArmorItem> item) {
         return new EquippableSetData.Builder().addEquippable(slot, item)
-                .bindHook(builder -> builder.addBonus(TCAttributes.MAGIC_DAMAGE, new AttributeModifier(item.getId(), 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
+                .bindHook(builder -> builder.addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(item.getId(), 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .build();
     }
 }

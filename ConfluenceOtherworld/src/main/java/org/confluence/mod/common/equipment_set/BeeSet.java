@@ -39,6 +39,6 @@ public class BeeSet extends EquipmentSet {
                         VanillaEquippable.FEET, ArmorItems.BEE_BOOTS
                 )
                 .bindHook(builder -> builder.addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(Confluence.asResource("bee_set"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
-                .build(),true);
+                .build());
     }
 }

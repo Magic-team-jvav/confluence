@@ -29,6 +29,6 @@ public class CactusSet extends EquipmentSet {
                         });
                     }
                 })
-                .build(),true);
+                .build());
     }
 }

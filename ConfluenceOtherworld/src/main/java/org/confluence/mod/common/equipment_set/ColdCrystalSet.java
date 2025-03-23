@@ -23,12 +23,12 @@ public class ColdCrystalSet extends EquipmentSet {
                 .build());
         equippableGroup.addEquippableSet("chestplate", new EquippableSetData.Builder()
                 .addEquippable(VanillaEquippable.CHEST, ArmorItems.COLD_CRYSTAL_CHESTPLATE)
-                .bindHook(builder -> builder.addBonus(TCAttributes.MAGIC_DAMAGE, new AttributeModifier(ArmorItems.COLD_CRYSTAL_CHESTPLATE.getId(), 0.04, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
+                .bindHook(builder -> builder.addBonus(TCAttributes.getRangedDamage(), new AttributeModifier(ArmorItems.COLD_CRYSTAL_CHESTPLATE.getId(), 0.04, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .bindHook(ModHookTypes.ADDITIONAL_MANA.get(), (owner, player, original) -> original + 20)
                 .build());
         equippableGroup.addEquippableSet("leggings", new EquippableSetData.Builder()
                 .addEquippable(VanillaEquippable.LEGS, ArmorItems.COLD_CRYSTAL_LEGGINGS)
-                .bindHook(builder -> builder.addBonus(TCAttributes.MAGIC_DAMAGE, new AttributeModifier(ArmorItems.COLD_CRYSTAL_LEGGINGS.getId(), 0.04, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
+                .bindHook(builder -> builder.addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(ArmorItems.COLD_CRYSTAL_LEGGINGS.getId(), 0.04, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .build());
         equippableGroup.addEquippableSet("boots", new EquippableSetData.Builder()
                 .addEquippable(VanillaEquippable.FEET, ArmorItems.COLD_CRYSTAL_BOOTS)
@@ -43,6 +43,6 @@ public class ColdCrystalSet extends EquipmentSet {
                         VanillaEquippable.FEET, ArmorItems.COLD_CRYSTAL_BOOTS
                 )
                 .bindHook(EBHookTypes.BEFORE_LIVING_DAMAGE.get(), (owner, event) -> event.getEntity().addEffect(new MobEffectInstance(ModEffects.FROST_BURN, 100)))
-                .build(),true);
+                .build());
     }
 }

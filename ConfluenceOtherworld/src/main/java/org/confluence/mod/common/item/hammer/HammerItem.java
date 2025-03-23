@@ -26,6 +26,11 @@ public class HammerItem extends DiggerItem {
 
     @Override
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity) {
+        hammerMineBlock(stack, level, state, pos, entity);
+        return true;
+    }
+
+    public static void hammerMineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity) {
         if (!level.isClientSide) {
             int destroyCount = 1;
             if (entity instanceof Player player) {
@@ -42,7 +47,6 @@ public class HammerItem extends DiggerItem {
                 stack.hurtAndBreak(destroyCount, entity, EquipmentSlot.MAINHAND);
             }
         }
-        return true;
     }
 
     /**

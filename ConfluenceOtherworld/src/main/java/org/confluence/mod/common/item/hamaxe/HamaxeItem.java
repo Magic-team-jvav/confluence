@@ -1,5 +1,6 @@
-package org.confluence.mod.common.item.pickaxe_axe;
+package org.confluence.mod.common.item.hamaxe;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.InteractionResult;
@@ -14,27 +15,30 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.item.hammer.HammerItem;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 
 import java.util.Map;
 
-public class PickaxeAxeItem extends DiggerItem {
-    public PickaxeAxeItem(Tier tier, float rawDamage, float rawSpeed, boolean unbreakable) {
+public class HamaxeItem extends DiggerItem {
+    public HamaxeItem(Tier tier, float rawDamage, float rawSpeed, boolean unbreakable) {
         this(tier, rawDamage, rawSpeed, unbreakable, ModRarity.WHITE);
     }
 
-    public PickaxeAxeItem(Tier tier, float rawDamage, float rawSpeed, boolean unbreakable, ModRarity rarity) {
-        super(tier, ModTags.Blocks.MINEABLE_WITH_PICKAXE_AXE, unbreakable(new Properties(), unbreakable).component(TCDataComponentTypes.MOD_RARITY, rarity)
+    public HamaxeItem(Tier tier, float rawDamage, float rawSpeed, boolean unbreakable, ModRarity rarity) {
+        super(tier, ModTags.Blocks.MINEABLE_WITH_HAMAXE, unbreakable(new Properties(), unbreakable).component(TCDataComponentTypes.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4)));
     }
 
-    public PickaxeAxeItem(Tier tier, float rawDamage, float rawSpeed, boolean unbreakable, ModRarity rarity, Map<Holder<Attribute>, AttributeModifier> modifiers) {
-        super(tier, ModTags.Blocks.MINEABLE_WITH_PICKAXE_AXE, unbreakable(new Properties(), unbreakable).component(TCDataComponentTypes.MOD_RARITY, rarity)
+    public HamaxeItem(Tier tier, float rawDamage, float rawSpeed, boolean unbreakable, ModRarity rarity, Map<Holder<Attribute>, AttributeModifier> modifiers) {
+        super(tier, ModTags.Blocks.MINEABLE_WITH_HAMAXE, unbreakable(new Properties(), unbreakable).component(TCDataComponentTypes.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, getAttributeModifiers(tier, rawDamage, rawSpeed, modifiers)));
     }
 
@@ -61,13 +65,19 @@ public class PickaxeAxeItem extends DiggerItem {
     }
 
     @Override
+    public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miningEntity) {
+        HammerItem.hammerMineBlock(stack, level, state, pos, miningEntity);
+        return true;
+    }
+
+    @Override
     public InteractionResult useOn(UseOnContext context) {
         return Items.NETHERITE_AXE.useOn(context);
     }
 
     @Override
     public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
-        return ItemAbilities.DEFAULT_PICKAXE_ACTIONS.contains(itemAbility) || ItemAbilities.DEFAULT_AXE_ACTIONS.contains(itemAbility);
+        return ItemAbilities.DEFAULT_AXE_ACTIONS.contains(itemAbility);
     }
 
     @Override

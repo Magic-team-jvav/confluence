@@ -29,7 +29,7 @@ public class NinjaSet extends EquipmentSet {
                         VanillaEquippable.FEET, ArmorItems.NINJA_BOOTS
                 )
                 .bindHook(builder -> builder.addBonus(Attributes.MOVEMENT_SPEED, new AttributeModifier(Confluence.asResource("ninja_set"), 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
-                .build(),true);
+                .build());
     }
 
     private static EquippableSetData critChanceBonus(VanillaEquippable slot, DeferredItem<ArmorItem> item) {

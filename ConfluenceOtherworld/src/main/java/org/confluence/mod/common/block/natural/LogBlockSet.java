@@ -137,11 +137,11 @@ public class LogBlockSet {
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenSlabs = provider.tag(BlockTags.WOODEN_SLABS);
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> fences = provider.tag(BlockTags.FENCES);
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenFences = provider.tag(BlockTags.WOODEN_FENCES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> forgeFences = provider.tag(Tags.Blocks.FENCES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> forgeFencesWooden = provider.tag(Tags.Blocks.FENCES_WOODEN);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cFences = provider.tag(Tags.Blocks.FENCES);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cFencesWooden = provider.tag(Tags.Blocks.FENCES_WOODEN);
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> fenceGates = provider.tag(BlockTags.FENCE_GATES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> forgeFenceGates = provider.tag(Tags.Blocks.FENCE_GATES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> forgeFenceGatesWooden = provider.tag(Tags.Blocks.FENCE_GATES_WOODEN);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cFenceGates = provider.tag(Tags.Blocks.FENCE_GATES);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cFenceGatesWooden = provider.tag(Tags.Blocks.FENCE_GATES_WOODEN);
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> trapdoors = provider.tag(BlockTags.TRAPDOORS);
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenTrapdoors = provider.tag(BlockTags.WOODEN_TRAPDOORS);
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenPressurePlates = provider.tag(BlockTags.WOODEN_PRESSURE_PLATES);
@@ -190,14 +190,14 @@ public class LogBlockSet {
                 FenceBlock fenceBlock = builder1.FENCE.get();
                 fences.add(fenceBlock);
                 woodenFences.add(fenceBlock);
-                forgeFences.add(fenceBlock);
-                forgeFencesWooden.add(fenceBlock);
+                cFences.add(fenceBlock);
+                cFencesWooden.add(fenceBlock);
             }
             if (builder1.FENCE_GATE != null) {
                 FenceGateBlock fenceGateBlock = builder1.FENCE_GATE.get();
                 fenceGates.add(fenceGateBlock);
-                forgeFenceGates.add(fenceGateBlock);
-                forgeFenceGatesWooden.add(fenceGateBlock);
+                cFenceGates.add(fenceGateBlock);
+                cFenceGatesWooden.add(fenceGateBlock);
             }
             if (builder1.PRESSURE_PLATE != null) {
                 PressurePlateBlock pressurePlateBlock = builder1.PRESSURE_PLATE.get();

@@ -12,7 +12,6 @@ import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
 import org.jetbrains.annotations.Nullable;
@@ -21,7 +20,6 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.confluence.mod.Confluence.MODID;
 import static org.confluence.mod.common.init.block.DecorativeBlocks.*;
-import static org.confluence.mod.common.init.block.DecorativeBlocks.PINK_BRICK_SLAB;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
 import static org.confluence.mod.common.init.block.ModBlocks.*;
 import static org.confluence.mod.common.init.block.NatureBlocks.*;
@@ -36,8 +34,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         LogBlockSet.acceptTags(this);
-        acceptTags(this);
-        acceptOreTags(this);
+        OreBlocks.acceptTags(this);
+        OreBlocks.acceptOreTags(this);
         StatueBlocks.acceptTags(this);
         tag(ModTags.Blocks.JEWELLERY_BRANCHES_ATTACHABLE).add(STONY_LOG.get());
         tag(ModTags.Blocks.ASH_LOG_BRANCHES_ATTACHABLE).add(ASH_LOG_BLOCKS.getLog().get());
@@ -140,45 +138,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 PINK_PACKED_ICE.get(),
                 PURPLE_ICE.get(),
                 PURPLE_PACKED_ICE.get()
-        );
-        tag((BlockTags.LOGS)).add(
-                EBONY_LOG_BLOCKS.getStrippedLog().get(),
-                SHADOW_LOG_BLOCKS.getStrippedLog().get(),
-                PALM_LOG_BLOCKS.getStrippedLog().get(),
-                ASH_LOG_BLOCKS.getStrippedLog().get(),
-                PEARL_LOG_BLOCKS.getStrippedLog().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getStrippedLog().get(),
-                LIVING_LOG_BLOCKS.getStrippedLog().get(),
-                LIVING_MAHOGANY_BLOCKS.getStrippedLog().get(),
-                BAOBAB_LOG_BLOCKS.getStrippedLog().get(),
-                EBONY_LOG_BLOCKS.getLog().get(),
-                SHADOW_LOG_BLOCKS.getLog().get(),
-                PALM_LOG_BLOCKS.getLog().get(),
-                ASH_LOG_BLOCKS.getLog().get(),
-                PEARL_LOG_BLOCKS.getLog().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getLog().get(),
-                LIVING_LOG_BLOCKS.getLog().get(),
-                LIVING_MAHOGANY_BLOCKS.getLog().get(),
-                BAOBAB_LOG_BLOCKS.getLog().get(),
-                EBONY_LOG_BLOCKS.getWood().get(),
-                SHADOW_LOG_BLOCKS.getWood().get(),
-                PALM_LOG_BLOCKS.getWood().get(),
-                ASH_LOG_BLOCKS.getWood().get(),
-                PEARL_LOG_BLOCKS.getWood().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getWood().get(),
-                LIVING_LOG_BLOCKS.getWood().get(),
-                LIVING_MAHOGANY_BLOCKS.getWood().get(),
-                BAOBAB_LOG_BLOCKS.getWood().get(),
-                EBONY_LOG_BLOCKS.getStrippedWood().get(),
-                SHADOW_LOG_BLOCKS.getStrippedWood().get(),
-                PALM_LOG_BLOCKS.getStrippedWood().get(),
-                ASH_LOG_BLOCKS.getStrippedWood().get(),
-                PEARL_LOG_BLOCKS.getStrippedWood().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getStrippedWood().get(),
-                LIVING_LOG_BLOCKS.getStrippedWood().get(),
-                LIVING_MAHOGANY_BLOCKS.getStrippedWood().get(),
-                BAOBAB_LOG_BLOCKS.getStrippedWood().get(),
-                OAK_LOG_BOULDER.get()
         );
         /*IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithHoe = tag(BlockTags.MINEABLE_WITH_HOE);
         mineableWithHoe.add(
@@ -598,19 +557,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 ASH_HELLSTONE.get(),
                 RAW_HELLSTONE_BLOCK.get(),
                 HELLSTONE_BLOCK.get()
-        );
-        tag(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE).addTag(BlockTags.LEAVES);
-        tag(BlockTags.LEAVES).add(
-                EBONY_LOG_BLOCKS.getLeaves().get(),
-                SHADOW_LOG_BLOCKS.getLeaves().get(),
-                PALM_LOG_BLOCKS.getLeaves().get(),
-                PEARL_LOG_BLOCKS.getLeaves().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get(),
-                LIVING_LOG_BLOCKS.getLeaves().get(),
-                LIVING_MAHOGANY_BLOCKS.getLeaves().get(),
-                BAOBAB_LOG_BLOCKS.getLeaves().get(),
-                YELLOW_WILLOW_DROOPING_LEAVES.get()
-        );
+        ).addTag(BlockTags.LEAVES);
         tag(ModTags.Blocks.COIN_PILE).add(COPPER_COIN_PILE.get(), SILVER_COIN_PILE.get(), GOLDEN_COIN_PILE.get(), PLATINUM_COIN_PILE.get(), EMERALD_COIN_PILE.get());
 
         tag(ModTags.Blocks.NEEDS_5_LEVEL).add(
@@ -659,6 +606,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DEMON_ALTAR.get(),
                 CRIMSON_ALTAR.get()
         );
+        tag(ModTags.Blocks.MINEABLE_WITH_HAMAXE).addTag(ModTags.Blocks.MINEABLE_WITH_HAMMER).addTag(BlockTags.MINEABLE_WITH_AXE);
         // neoforge标签
         tag(Tags.Blocks.NEEDS_NETHERITE_TOOL).add(
                 EBONY_HARDENED_SAND_BLOCK.get(),
@@ -756,54 +704,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(Tags.Blocks.DYED_MAGENTA).add(MAGENTA_PURE_GLASS.get());
         tag(Tags.Blocks.DYED_PINK).add(PINK_PURE_GLASS.get());
 
-        tag(Tags.Blocks.FENCES).add(
-                EBONY_LOG_BLOCKS.getFence().get(),
-                SHADOW_LOG_BLOCKS.getFence().get(),
-                PALM_LOG_BLOCKS.getFence().get(),
-                SPOOKY_LOG_BLOCKS.getFence().get(),
-                ASH_LOG_BLOCKS.getFence().get(),
-                PEARL_LOG_BLOCKS.getFence().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getFence().get(),
-                LIVING_LOG_BLOCKS.getFence().get(),
-                LIVING_MAHOGANY_BLOCKS.getFence().get(),
-                BAOBAB_LOG_BLOCKS.getFence().get()
-        );
-        tag(Tags.Blocks.FENCES_WOODEN).add(
-                EBONY_LOG_BLOCKS.getFence().get(),
-                SHADOW_LOG_BLOCKS.getFence().get(),
-                PALM_LOG_BLOCKS.getFence().get(),
-                SPOOKY_LOG_BLOCKS.getFence().get(),
-                ASH_LOG_BLOCKS.getFence().get(),
-                PEARL_LOG_BLOCKS.getFence().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getFence().get(),
-                LIVING_LOG_BLOCKS.getFence().get(),
-                LIVING_MAHOGANY_BLOCKS.getFence().get(),
-                BAOBAB_LOG_BLOCKS.getFence().get()
-        );
-        tag(Tags.Blocks.FENCE_GATES).add(
-                EBONY_LOG_BLOCKS.getFenceGate().get(),
-                SHADOW_LOG_BLOCKS.getFenceGate().get(),
-                PALM_LOG_BLOCKS.getFenceGate().get(),
-                SPOOKY_LOG_BLOCKS.getFenceGate().get(),
-                ASH_LOG_BLOCKS.getFenceGate().get(),
-                PEARL_LOG_BLOCKS.getFenceGate().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getFenceGate().get(),
-                LIVING_LOG_BLOCKS.getFenceGate().get(),
-                LIVING_MAHOGANY_BLOCKS.getFenceGate().get(),
-                BAOBAB_LOG_BLOCKS.getFenceGate().get()
-        );
-        tag(Tags.Blocks.FENCE_GATES_WOODEN).add(
-                EBONY_LOG_BLOCKS.getFenceGate().get(),
-                SHADOW_LOG_BLOCKS.getFenceGate().get(),
-                PALM_LOG_BLOCKS.getFenceGate().get(),
-                SPOOKY_LOG_BLOCKS.getFenceGate().get(),
-                ASH_LOG_BLOCKS.getFenceGate().get(),
-                PEARL_LOG_BLOCKS.getFenceGate().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getFenceGate().get(),
-                LIVING_LOG_BLOCKS.getFenceGate().get(),
-                LIVING_MAHOGANY_BLOCKS.getFenceGate().get(),
-                BAOBAB_LOG_BLOCKS.getFenceGate().get()
-        );
         tag(Tags.Blocks.GLASS_BLOCKS).add(
                 PURE_GLASS.get(),
                 WHITE_PURE_GLASS.get(),
@@ -862,11 +762,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DEEPSLATE_TITANIUM_ORE.get(),
                 RAW_TITANIUM_BLOCK.get()
         );
-        tag(Tags.Blocks.GRAVELS).add(
-                SLUSH.get(),
-                SILT_BLOCK.get(),
-                MARINE_GRAVEL.get()
-        );
         tag(Tags.Blocks.OBSIDIANS).add(
                 TR_OBSIDIAN_BRICKS.get(),
                 TR_OBSIDIAN_SMALL_BRICKS.get(),
@@ -896,9 +791,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SANCTIFICATION_REDSTONE_ORE.get(),
                 CORRUPTION_LAPIS_ORE.get(),
                 FLESHIFICATION_LAPIS_ORE.get(),
-                SANCTIFICATION_LAPIS_ORE.get()
-        );
-        tag(Tags.Blocks.ORE_RATES_DENSE).add(
+                SANCTIFICATION_LAPIS_ORE.get(),
                 SANCTIFICATION_COAL_ORE.get(),
                 CORRUPTION_COAL_ORE.get(),
                 FLESHIFICATION_COAL_ORE.get(),
@@ -1064,81 +957,14 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(Tags.Blocks.SANDSTONE_RED_BLOCKS).add(
                 RED_HARDENED_SAND_BLOCK.get()
         );
-        tag(Tags.Blocks.SANDSTONE_RED_BLOCKS).add(
-                RED_HARDENED_SAND_BLOCK.get()
-        );
         tag(Tags.Blocks.STONES).add(
                 EBONY_STONE.get(),
                 TR_CRIMSON_STONE.get(),
                 PEARL_STONE.get(),
                 TR_POLISHED_GRANITE.get()
         );
-        tag(Tags.Blocks.STORAGE_BLOCKS).add(
-                RAW_TIN_BLOCK.get(),
-                RAW_LEAD_BLOCK.get(),
-                RAW_SILVER_BLOCK.get(),
-                RAW_TUNGSTEN_BLOCK.get(),
-                RAW_PLATINUM_BLOCK.get(),
-                RAW_DEMONITE_BLOCK.get(),
-                RAW_TR_CRIMSON_BLOCK.get(),
-                METEORITE_BLOCK.get(),
-                RAW_ADAMANTITE_BLOCK.get(),
-                RAW_COBALT_BLOCK.get(),
-                RAW_HELLSTONE_BLOCK.get(),
-                RAW_CHLOROPHYTE_BLOCK.get(),
-                RAW_LUMINITE_BLOCK.get(),
-                RAW_PALLADIUM_BLOCK.get(),
-                RAW_ORICHALCUM_BLOCK.get(),
-                RAW_TITANIUM_BLOCK.get(),
-                FLOATING_WHEAT_BALE.get()
-        );
-        tag(Tags.Blocks.STORAGE_BLOCKS).add(
-                RAW_TIN_BLOCK.get(),
-                RAW_LEAD_BLOCK.get(),
-                RAW_SILVER_BLOCK.get(),
-                RAW_TUNGSTEN_BLOCK.get(),
-                RAW_PLATINUM_BLOCK.get(),
-                RAW_DEMONITE_BLOCK.get(),
-                RAW_TR_CRIMSON_BLOCK.get(),
-                METEORITE_BLOCK.get(),
-                RAW_ADAMANTITE_BLOCK.get(),
-                RAW_COBALT_BLOCK.get(),
-                RAW_HELLSTONE_BLOCK.get(),
-                RAW_CHLOROPHYTE_BLOCK.get(),
-                RAW_LUMINITE_BLOCK.get(),
-                RAW_PALLADIUM_BLOCK.get(),
-                RAW_ORICHALCUM_BLOCK.get(),
-                RAW_TITANIUM_BLOCK.get(),
-                FLOATING_WHEAT_BALE.get(),
-                AMBER_BLOCK.get(),
-                RUBY_BLOCK.get(),
-                SAPPHIRE_BLOCK.get(),
-                TOPAZ_BLOCK.get(),
-                TR_EMERALD_BLOCK.get(),
-                TR_AMETHYST_BLOCK.get()
-        );
         tag(Tags.Blocks.STORAGE_BLOCKS_WHEAT).add(
                 TR_AMETHYST_BLOCK.get()
-        );
-        tag(Tags.Blocks.STRIPPED_LOGS).add(
-                EBONY_LOG_BLOCKS.getStrippedLog().get(),
-                SHADOW_LOG_BLOCKS.getStrippedLog().get(),
-                PALM_LOG_BLOCKS.getStrippedLog().get(),
-                ASH_LOG_BLOCKS.getStrippedLog().get(),
-                PEARL_LOG_BLOCKS.getStrippedLog().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getStrippedLog().get(),
-                LIVING_LOG_BLOCKS.getStrippedLog().get(),
-                BAOBAB_LOG_BLOCKS.getStrippedLog().get()
-        );
-        tag(Tags.Blocks.STRIPPED_WOODS).add(
-                EBONY_LOG_BLOCKS.getStrippedWood().get(),
-                SHADOW_LOG_BLOCKS.getStrippedWood().get(),
-                PALM_LOG_BLOCKS.getStrippedWood().get(),
-                ASH_LOG_BLOCKS.getStrippedWood().get(),
-                PEARL_LOG_BLOCKS.getStrippedWood().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getStrippedWood().get(),
-                LIVING_LOG_BLOCKS.getStrippedWood().get(),
-                BAOBAB_LOG_BLOCKS.getStrippedWood().get()
         );
         tag(Tags.Blocks.VILLAGER_JOB_SITES).add(
                 SKY_MILL.get()
@@ -1156,7 +982,40 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 RED_HARDENED_SAND_BLOCK.get()
         );
         tag(ModTags.Blocks.UNBREAKABLE_IF_CANNOT_HARVEST).addTags(ModTags.Blocks.NEEDS_2_LEVEL, ModTags.Blocks.NEEDS_3_LEVEL, ModTags.Blocks.NEEDS_4_LEVEL, ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL, Tags.Blocks.ORES_NETHERITE_SCRAP, Tags.Blocks.STORAGE_BLOCKS_NETHERITE);
-
+        tag(Tags.Blocks.STORAGE_BLOCKS).add(
+                RAW_TIN_BLOCK.get(),
+                RAW_LEAD_BLOCK.get(),
+                RAW_SILVER_BLOCK.get(),
+                RAW_TUNGSTEN_BLOCK.get(),
+                RAW_PLATINUM_BLOCK.get(),
+                RAW_DEMONITE_BLOCK.get(),
+                RAW_TR_CRIMSON_BLOCK.get(),
+                TIN_BLOCK.get(),
+                LEAD_BLOCK.get(),
+                SILVER_BLOCK.get(),
+                TUNGSTEN_BLOCK.get(),
+                PLATINUM_BLOCK.get(),
+                DEMONITE_BLOCK.get(),
+                TR_CRIMSON_BLOCK.get(),
+                METEORITE_BLOCK.get(),
+                RAW_ADAMANTITE_BLOCK.get(),
+                RAW_COBALT_BLOCK.get(),
+                RAW_HELLSTONE_BLOCK.get(),
+                RAW_CHLOROPHYTE_BLOCK.get(),
+                RAW_LUMINITE_BLOCK.get(),
+                RAW_PALLADIUM_BLOCK.get(),
+                RAW_ORICHALCUM_BLOCK.get(),
+                RAW_TITANIUM_BLOCK.get(),
+                ADAMANTITE_BLOCK.get(),
+                COBALT_BLOCK.get(),
+                HELLSTONE_BLOCK.get(),
+                CHLOROPHYTE_BLOCK.get(),
+                LUMINITE_BLOCK.get(),
+                PALLADIUM_BLOCK.get(),
+                ORICHALCUM_BLOCK.get(),
+                TITANIUM_BLOCK.get(),
+                FLOATING_WHEAT_BALE.get()
+        );
     }
 
     @Override

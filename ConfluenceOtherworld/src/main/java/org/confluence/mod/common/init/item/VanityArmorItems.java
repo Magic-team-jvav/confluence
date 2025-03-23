@@ -60,6 +60,7 @@ public class VanityArmorItems {
     public static final Supplier<BaseVanityArmorItem> THE_DOCTORS_SHIRT = ITEMS.register("the_doctors_shirt", () -> new BaseVanityArmorItem(ArmorItem.Type.CHESTPLATE, ModRarity.WHITE));
     public static final Supplier<BaseVanityArmorItem> THE_DOCTORS_PANTS = ITEMS.register("the_doctors_pants", () -> new BaseVanityArmorItem(ArmorItem.Type.LEGGINGS, ModRarity.WHITE));
     public static final Supplier<BaseVanityArmorItem> THE_DOCTORS_SHOES = ITEMS.register("the_doctors_shoes", () -> new BaseVanityArmorItem(ArmorItem.Type.BOOTS, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> DEAD_MANS_SWEATER = ITEMS.register("dead_mans_seater", () -> new BaseVanityArmorItem(ArmorItem.Type.CHESTPLATE, ModRarity.GREEN));
 
     public static final Supplier<BaseDyeItem> RED_DYE = registerDye("red_dye", ModRarity.BLUE, 0xFFDB0909);
     public static final Supplier<BaseDyeItem> BRIGHT_RED_DYE = registerDye("bright_red_dye", ModRarity.BLUE, 0xFFFF4F4F); // Adjusted to a brighter red

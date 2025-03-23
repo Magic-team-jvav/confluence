@@ -1900,7 +1900,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.CANDY_CANE.get(), "拐杖糖");
         add(ModItems.CANDY_APPLE.get(), "糖葫芦");
         add(ModItems.WHOOPIE_CUSHION.get(), "整蛊坐垫");
-        add(ModItems.DEAD_MANS_SWEATER.get(), "死人毛衣");
+        add(VanityArmorItems.DEAD_MANS_SWEATER.get(), "死人毛衣");
         add(ModItems.GRASS_SEED.get(), "草种子");
         add(ModItems.JUNGLE_GRASS_SEED.get(), "丛林草种子");
         add(ModItems.MUSHROOM_GRASS_SEED.get(), "蘑菇草种子");

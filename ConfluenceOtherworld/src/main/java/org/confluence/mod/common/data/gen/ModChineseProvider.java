@@ -730,6 +730,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.ROPE_COILS.get(), "绳索卷");
         add(ModEntities.SCARAB_BOMB_ENTITY.get(), "圣甲虫炸弹");
         add(ModEntities.SHURIKEN_PROJECTILE.get(), "手里剑");
+        add(ModEntities.JAVELIN_PROJECTILE.get(), "标枪");
         add(ModEntities.SKELETRON_HAND.get(), "骷髅王之手");
         add(ModEntities.SLIME_HOOK.get(), "史莱姆钩");
         add(ModEntities.SPOOKY_HOOK.get(), "诡异钩");
@@ -1740,6 +1741,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(ConsumableItems.SHURIKEN.get(), "手里剑");
         add(ConsumableItems.THROWING_KNIVES.get(), "投刀");
+        add(ConsumableItems.JAVELIN.get(), "标枪");
         add(ConsumableItems.VITAL_CRYSTAL.get(), "活力水晶");
         add(ConsumableItems.MINECART_UPGRADE_KIT.get(), "矿车升级包");
         add(ConsumableItems.GALAXY_PEARL.get(), "银河珍珠");

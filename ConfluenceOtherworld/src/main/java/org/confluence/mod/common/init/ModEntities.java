@@ -15,8 +15,8 @@ import org.confluence.mod.common.entity.hook.*;
 import org.confluence.mod.common.entity.minecart.*;
 import org.confluence.mod.common.entity.npc.AbstractTerraNPC;
 import org.confluence.mod.common.entity.projectile.*;
-import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
-import org.confluence.mod.common.entity.projectile.arrow.BeeArrow;
+import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
+import org.confluence.mod.common.entity.projectile.range.arrow.BeeArrow;
 import org.confluence.mod.common.entity.projectile.bomb.*;
 import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
 import org.confluence.mod.common.entity.projectile.boulder.ExplodeBoulderEntity;
@@ -84,10 +84,12 @@ public final class ModEntities {
     public static final Supplier<EntityType<ExplodeBoulderEntity>> EXPLODE_BOULDER = ENTITIES.register("explode_boulder", () -> EntityType.Builder.<ExplodeBoulderEntity>of(ExplodeBoulderEntity::new, MobCategory.MISC).sized(BoulderEntity.DIAMETER, BoulderEntity.DIAMETER).clientTrackingRange(6).build("confluence:explode_boulder"));
     public static final Supplier<EntityType<RollingCactusBoulderEntity>> ROLLING_CACTUS_BOULDER = ENTITIES.register("rolling_cactus_boulder", () -> EntityType.Builder.<RollingCactusBoulderEntity>of(RollingCactusBoulderEntity::new, MobCategory.MISC).sized(BoulderEntity.DIAMETER, BoulderEntity.DIAMETER).clientTrackingRange(6).build("confluence:rolling_cactus_boulder"));
     public static final Supplier<EntityType<RollingCactusBoulderEntity.SpikeProjectile>> ROLLING_CACTUS_SPIKE = ENTITIES.register("rolling_cactus_spike", () -> EntityType.Builder.of(RollingCactusBoulderEntity.SpikeProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(6).build("confluence:rolling_cactus_spike"));
-    public static final Supplier<EntityType<ThrownKnivesProjectile>> THROWN_KNIVES_PROJECTILE = ENTITIES.register("thrown_knives_projectile", () -> EntityType.Builder.<ThrownKnivesProjectile>of(ThrownKnivesProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:thrown_knives_projectile"));
-    public static final Supplier<EntityType<ShurikenProjectile>> SHURIKEN_PROJECTILE = ENTITIES.register("shuriken_projectile", () -> EntityType.Builder.<ShurikenProjectile>of(ShurikenProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:shuriken_projectile"));
+    public static final Supplier<EntityType<ThrowableDropSelfProjectile>> THROWN_KNIVES_PROJECTILE = ENTITIES.register("thrown_knives_projectile", () -> EntityType.Builder.of(ThrowableDropSelfProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:thrown_knives_projectile"));
+    public static final Supplier<EntityType<ThrowableDropSelfProjectile>> SHURIKEN_PROJECTILE = ENTITIES.register("shuriken_projectile", () -> EntityType.Builder.of(ThrowableDropSelfProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:shuriken_projectile"));
+    public static final Supplier<EntityType<ThrowableDropSelfProjectile>> JAVELIN_PROJECTILE = ENTITIES.register("javelin_projectile", () -> EntityType.Builder.of(ThrowableDropSelfProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:javelin_projectile"));
     public static final Supplier<EntityType<RopeCoilsProjectile>> ROPE_COILS = ENTITIES.register("rope_coils", () -> EntityType.Builder.<RopeCoilsProjectile>of(RopeCoilsProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:rope_coils"));
     public static final Supplier<EntityType<IceTofuBrickProjectile>> ICE_TOFU_BRICK_PROJECTILE = ENTITIES.register("ice_tofu_brick_projectile", () -> EntityType.Builder.<IceTofuBrickProjectile>of(IceTofuBrickProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:ice_tofu_brick_projectile"));
+
 
     public static final Supplier<EntityType<BaseFishingHook>> BASE_FISHING_HOOK = ENTITIES.register("base_fishing_hook", () -> EntityType.Builder.<BaseFishingHook>of(BaseFishingHook::new, MobCategory.MISC).noSave().noSummon().sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(5).build("confluence:base_fishing_hook"));
     public static final Supplier<EntityType<HotlineFishingHook>> HOTLINE_FISHING_HOOK = ENTITIES.register("hotline_fishing_hook", () -> EntityType.Builder.<HotlineFishingHook>of(HotlineFishingHook::new, MobCategory.MISC).noSave().noSummon().fireImmune().sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(5).build("confluence:hotline_fishing_hook"));

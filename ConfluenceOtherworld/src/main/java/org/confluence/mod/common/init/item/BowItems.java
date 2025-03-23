@@ -13,7 +13,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
-import org.confluence.mod.common.entity.projectile.arrow.BeeArrow;
+import org.confluence.mod.common.entity.projectile.range.arrow.BeeArrow;
 import org.confluence.mod.common.init.ModEffectStrategies;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.bow.BaseArrowItem;

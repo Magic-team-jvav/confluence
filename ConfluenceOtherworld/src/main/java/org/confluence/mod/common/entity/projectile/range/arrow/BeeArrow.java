@@ -1,4 +1,4 @@
-package org.confluence.mod.common.entity.projectile.arrow;
+package org.confluence.mod.common.entity.projectile.range.arrow;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -9,7 +9,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.item.bow.BaseArrowItem;
 import org.confluence.mod.common.item.bow.TerraBowItem;
-import org.confluence.terra_curio.common.entity.projectile.BeeProjectile;
 import org.confluence.terraentity.registries.track.ITrackType;
 import org.confluence.terraentity.registries.track.variant.BasisTrack;
 import org.confluence.terraentity.utils.TEUtils;

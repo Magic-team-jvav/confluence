@@ -192,7 +192,7 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add("tooltip.item.confluence.copper_short_sword.0", "The smallest fragment of the divine weapon's power has been with you since the convergence of the two worlds... until the journey's end.");
         add("tooltip.item.confluence.copper_short_sword.1", "\"We are so awesome!\" said the copper short sword.");
-        add("tooltip.item.confluence.starfury.0", "A small part of the divine weapon's power ascends to the sky, becoming the star that watches over the heavens.");
+        add("tooltip.item.confluence.starfury.0", "A small part of the divine weapon's power is condensed within the clouds, transforming into a crystalline and sparkling star.");
         add("tooltip.item.confluence.starfury.1", "\"The wrath of the heavens pours down.\"");
         add("tooltip.item.confluence.enchanted_sword.0", "A small part of the divine weapon's power is buried in a cave, condensed into a bleak sword intent.");
         add("tooltip.item.confluence.enchanted_sword.1", "\"A flash of light in the dim sword tomb.\"");

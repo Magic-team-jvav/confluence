@@ -247,7 +247,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("tooltip.item.confluence.copper_short_sword.0", "神兵最微末的那部分力量自两世汇流之初就伴随着你…直至旅途的终点");
         add("tooltip.item.confluence.copper_short_sword.1", "“我们十个真厉害！”铜短剑说。");
-        add("tooltip.item.confluence.starfury.0", "神兵的一小部分力量为莅临空中，化为天空守望的明星");
+        add("tooltip.item.confluence.starfury.0", "神兵的一小部分力量凝聚在云团间，化为晶莹剔透的闪星");
         add("tooltip.item.confluence.starfury.1", "“天域的怒火倾泻而下”");
         add("tooltip.item.confluence.enchanted_sword.0", "神兵的一小部分力量埋藏在洞穴中，凝成了寒碜碜的剑意");
         add("tooltip.item.confluence.enchanted_sword.1", "“昏暗剑冢中一抹流光”");

@@ -1,4 +1,4 @@
-package org.confluence.mod.common.event.game.entity;
+package org.confluence.mod.common.event.subscriber.game.entity;
 
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentManager;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
@@ -45,6 +45,7 @@ import org.confluence.mod.common.effect.beneficial.LuckEffect;
 import org.confluence.mod.common.effect.beneficial.ThornsEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
+import org.confluence.mod.common.event.LivingFreezeEvent;
 import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;

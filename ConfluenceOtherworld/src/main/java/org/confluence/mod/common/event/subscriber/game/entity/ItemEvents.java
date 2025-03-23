@@ -1,4 +1,4 @@
-package org.confluence.mod.common.event.game.entity;
+package org.confluence.mod.common.event.subscriber.game.entity;
 
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EquipmentSlotGroup;

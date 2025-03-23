@@ -3,6 +3,8 @@ package org.confluence.mod.mixin.entity;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
+import com.xiaohunao.equipment_benediction.common.interfaces.IBenediction;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -16,9 +18,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidType;
+import org.confluence.mod.common.event.LivingFreezeEvent;
+import org.confluence.mod.common.hook.LivingFreezeHook;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModFluids;
+import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
@@ -35,11 +41,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements ILivingEntity, SelfGetter<LivingEntity> {
     @Shadow
     public abstract boolean isSuppressingSlidingDownLadder();
+
+    @Shadow public abstract boolean canFreeze();
 
     @Unique
     private final Object2IntMap<Immunity> confluence$entityImmunityTicks = new Object2IntOpenHashMap<>();
@@ -128,5 +137,23 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
             confluence$deadO = dead[0];
         }
         return confluence$deadO;
+    }
+
+    @Inject(method = "canFreeze", at = @At(value = "HEAD"), cancellable = true)
+    private void confluence$canFreeze(CallbackInfoReturnable<Boolean> cir) {
+        LivingFreezeEvent.Pre post = NeoForge.EVENT_BUS.post(new LivingFreezeEvent.Pre(self()));
+        HookMapManager.postHooks(ModHookTypes.LIVING_FREEZE.get(), (owner, hook,original) -> {
+            hook.livingFreeze(owner, self(), post);
+            return original;
+        }, self(),post);
+
+        if (!post.canFreeze()) {
+            cir.setReturnValue(false);
+        }
+    }
+
+    @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/DamageSources;freeze()Lnet/minecraft/world/damagesource/DamageSource;"), cancellable = true)
+    private void confluence$aiStep(CallbackInfo ci) {
+        NeoForge.EVENT_BUS.post(new LivingFreezeEvent.Post(self()));
     }
 }

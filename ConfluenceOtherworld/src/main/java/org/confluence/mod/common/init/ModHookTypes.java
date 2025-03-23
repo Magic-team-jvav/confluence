@@ -11,6 +11,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.hook.AdditionalManaHook;
 import org.confluence.mod.common.hook.FishingPowerHook;
+import org.confluence.mod.common.hook.LivingFreezeHook;
 import org.confluence.mod.common.hook.ManaConsumeHook;
 
 public final class ModHookTypes {
@@ -19,6 +20,7 @@ public final class ModHookTypes {
     public static final DeferredHolder<HookType<?>, HookType<ManaConsumeHook>> MANA_CONSUME = register("mana_consume", ManaConsumeHook.class);
     public static final DeferredHolder<HookType<?>, HookType<AdditionalManaHook>> ADDITIONAL_MANA = register("additional_mana", AdditionalManaHook.class);
     public static final DeferredHolder<HookType<?>, HookType<FishingPowerHook>> FISHING_POWER = register("fishing_power", FishingPowerHook.class);
+    public static final DeferredHolder<HookType<?>, HookType<LivingFreezeHook>> LIVING_FREEZE = register("living_freeze", LivingFreezeHook.class);
 
     private static <T extends IHook> DeferredHolder<HookType<?>, HookType<T>> register(String id, Class<T> hookClass) {
         return TYPES.register(id, () -> HookType.createHook(EquipmentBenediction.asResource(id), hookClass));

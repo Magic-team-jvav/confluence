@@ -25,7 +25,7 @@ import org.confluence.mod.common.entity.projectile.boulder.RollingCactusBoulderE
 import org.confluence.mod.common.entity.projectile.mana.*;
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
 import org.confluence.mod.common.entity.projectile.sword.*;
-import org.confluence.mod.common.event.ModEvents;
+import org.confluence.mod.common.event.subscriber.ModEvents;
 
 import java.util.function.Supplier;
 

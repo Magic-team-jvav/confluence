@@ -1,4 +1,4 @@
-package org.confluence.mod.common.event;
+package org.confluence.mod.common.event.subscriber;
 
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.component.DataComponentPatch;

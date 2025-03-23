@@ -1,4 +1,4 @@
-package org.confluence.mod.common.event.game;
+package org.confluence.mod.common.event.subscriber.game;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;

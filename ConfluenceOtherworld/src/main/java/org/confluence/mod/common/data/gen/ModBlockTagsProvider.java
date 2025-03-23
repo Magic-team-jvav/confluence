@@ -49,6 +49,15 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 Blocks.PACKED_ICE,
                 Blocks.SNOW_BLOCK
         );
+        tag(ModTags.Blocks.COLD_CRYSTAL_ORE_REPLACEMENT).add(
+                Blocks.PACKED_ICE,
+                Blocks.SNOW_BLOCK
+        );
+        tag(ModTags.Blocks.GELSTONE_ORE_REPLACEMENT).add(
+                Blocks.MUD,
+                Blocks.CLAY,
+                Blocks.STONE
+        );
         tag(BlockTags.ANVIL).add(
                 LEAD_ANVIL.get(),
                 CHIPPED_LEAD_ANVIL.get(),

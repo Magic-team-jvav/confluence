@@ -35,7 +35,7 @@ public class SnowSet extends EquipmentSet implements LivingFreezeHook {
     }
 
     @Override
-    public void livingFreeze(IBenediction owner, LivingEntity self, LivingFreezeEvent.Pre post) {
-        post.setCanFreeze(false);
+    public void livingFreeze(IBenediction owner, LivingEntity self, LivingFreezeEvent.Pre event) {
+        event.setCanFreeze(false);
     }
 }

@@ -39,7 +39,7 @@ public abstract class ManaGunItem<T extends Projectile> extends GeoGunItem<T> im
     private final int manaCost;
 
     public ManaGunItem(Properties properties, ModRarity rarity, float damage, float weaponSpeed, int useDelay, float knockBack, float crit, float inaccuracy, int manaCost) {
-        super(properties.component(TCDataComponentTypes.MOD_RARITY, rarity), damage, weaponSpeed, useDelay, knockBack, crit, inaccuracy);
+        super(properties.stacksTo(1).component(TCDataComponentTypes.MOD_RARITY, rarity), damage, weaponSpeed, useDelay, knockBack, crit, inaccuracy);
         this.manaCost = manaCost;
     }
 

@@ -35,7 +35,7 @@ public class ThrownKnivesProjectile extends ThrowableProjectile {
     protected void onHitEntity(EntityHitResult pResult) {
         super.onHitEntity(pResult);
         Entity entity = pResult.getEntity();
-        if (entity.hurt(damageSources().mobProjectile(this, (LivingEntity) getOwner()), 5.0F)) {
+        if (entity.canBeHitByProjectile() && entity.hurt(damageSources().mobProjectile(this, (LivingEntity) getOwner()), 5.0F)) {
             VectorUtils.knockBackA2B(this, entity, 0.5, 0.2);
             if (penetrate == maxPenetrate){
                 if (random.nextBoolean()) {

@@ -58,7 +58,7 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
     @Override
     protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
         if (params.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof Entity entity) {
-            return Collections.singletonList(setData(FunctionalBlocks.BASE_CHEST_BLOCK.toStack(), entity.variant));
+            return Collections.singletonList(setData(FunctionalBlocks.DEATH_CHEST_BLOCK.toStack(), entity.variant));
         }
         return Collections.emptyList();
     }

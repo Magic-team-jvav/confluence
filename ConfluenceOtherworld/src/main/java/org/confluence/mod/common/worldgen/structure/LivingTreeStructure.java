@@ -13,9 +13,11 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
+import java.util.Map;
 import java.util.Optional;
 
 import static net.minecraft.world.level.block.LeavesBlock.PERSISTENT;
@@ -39,6 +41,7 @@ public class LivingTreeStructure extends Structure {
         return onTopOfChunkCenter(context, Heightmap.Types.WORLD_SURFACE_WG, builder -> {
             WorldgenRandom random = context.random();
             BlockPos centerPos = startChunk.getMiddleBlockPosition(lowestY);
+            BlockPos chestPos = centerPos;
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
 
             centerPos = BaseStructures.livingTree(
@@ -93,6 +96,8 @@ public class LivingTreeStructure extends Structure {
                     Blocks.AIR.defaultBlockState(),
                     NatureBlocks.LIVING_LOG_BLOCKS.getWood().get().defaultBlockState(),
                     NatureBlocks.LIVING_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(PERSISTENT, Boolean.TRUE)
+            ), Map.of(
+                    chestPos.offset(0, -3, 3), Confluence.asResource("surface_chests")
             ), builder);
             switch (rotation) {
                 case CLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(5, 0, 1), true, true, Rotation.CLOCKWISE_90));

@@ -101,6 +101,16 @@ public final class ModFluids {
         addItem(ItemTags.WOOL, Items.WHITE_WOOL, 1);
         addItem(ItemTags.WOOL_CARPETS, Items.WHITE_CARPET, 1);
         addItem(Items.CRAFTING_TABLE, Items.OAK_PLANKS, 1);
+        // 下界合金装备嬗变
+        addItem(Items.NETHERITE_CHESTPLATE, Items.NETHERITE_INGOT, 1);
+        addItem(Items.NETHERITE_HELMET, Items.NETHERITE_INGOT, 1);
+        addItem(Items.NETHERITE_LEGGINGS, Items.NETHERITE_INGOT, 1);
+        addItem(Items.NETHERITE_BOOTS, Items.NETHERITE_INGOT, 1);
+        addItem(Items.NETHERITE_SWORD, Items.NETHERITE_INGOT, 1);
+        addItem(Items.NETHERITE_SHOVEL, Items.NETHERITE_INGOT, 1);
+        addItem(Items.NETHERITE_HOE, Items.NETHERITE_INGOT, 1);
+        addItem(Items.NETHERITE_AXE, Items.NETHERITE_INGOT, 1);
+        addItem(Items.NETHERITE_PICKAXE, Items.NETHERITE_INGOT, 1);
         // 饰品转化
         addItem(BALLOON_PUFFERFISH.get(), SHINY_RED_BALLOON.get());
         addItem(MAGMA_STONE.get(), LAVA_CHARM.get());

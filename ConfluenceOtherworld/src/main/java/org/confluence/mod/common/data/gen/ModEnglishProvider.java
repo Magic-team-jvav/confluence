@@ -640,7 +640,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.molten_set.data.3", "Melee speed increased by 3.5%");
         add("equipment_benediction.set_switcher.confluence.molten_set.data.4", "Melee damage increased by 10%, Immunity to Fire");
 
-        add("equipment_benediction.set_switcher.confluence.meteor_set", "Space Set");
+        add("equipment_benediction.set_switcher.confluence.meteor_set", "Meteor Set");
         add("equipment_benediction.set_switcher.confluence.meteor_set.data.0", "Magic damage increased by 7%");
         add("equipment_benediction.set_switcher.confluence.meteor_set.data.1", "Magic damage increased by 7%");
         add("equipment_benediction.set_switcher.confluence.meteor_set.data.2", "Magic damage increased by 7%");

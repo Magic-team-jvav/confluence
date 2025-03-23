@@ -737,7 +737,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.molten_set.data.3", "近战速度提高3.5%");
         add("equipment_benediction.set_switcher.confluence.molten_set.data.4", "近战伤害提高10%，免疫着火");
 
-        add("equipment_benediction.set_switcher.confluence.meteor_set", "太空套装");
+        add("equipment_benediction.set_switcher.confluence.meteor_set", "流星套装");
         add("equipment_benediction.set_switcher.confluence.meteor_set.data.0", "魔法伤害提高7%");
         add("equipment_benediction.set_switcher.confluence.meteor_set.data.1", "魔法伤害提高7%");
         add("equipment_benediction.set_switcher.confluence.meteor_set.data.2", "魔法伤害提高7%");

@@ -179,8 +179,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.has_proj.track_type", "- Track Type");
 
 
-
-
         add("tooltip.item.confluence.arrow_transform", "Wooden Arrow Transform");
         add("tooltip.item.confluence.additional_attack_damage", "Additional Attack Damage");
         add("tooltip.item.confluence.no_gravity", "No Gravity");
@@ -190,6 +188,16 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add("tooltip.item.confluence.radio_thing.0", "Allows the user to see the world differently");
         add("tooltip.item.terra_curio.radio_thing.1", "'Forbidden Knowledge echoes from the radio...'");
+
+
+        add("tooltip.item.confluence.copper_short_sword.0", "The faintest shard of the divine weapon's essence has accompanied you since the confluence of two epochs... to journey's end");
+        add("tooltip.item.confluence.copper_short_sword.1", "\"We ten are truly magnificent!\" declares the Copper Shortsword");
+        add("tooltip.item.confluence.starfury.0", "A fragment of the sacred blade's power was claimed by jungle swarms, reduced to buzzing hordes");
+        add("tooltip.item.confluence.starfury.1", "\"A fleeting spark in the gloom of sword-tombs\"");
+        add("tooltip.item.confluence.enchanted_sword.0", "A sliver of the celestial weapon's might lies entombed in caverns, crystallized into frigid intent");
+        add("tooltip.item.confluence.enchanted_sword.1", "\"The heavens' wrath cascades downward\"");
+        add("tooltip.item.confluence.bee_keeper.0", "A portion of the ancient weapon's essence was usurped by jungle hives, transformed into droning legions");
+        add("tooltip.item.confluence.bee_keeper.1", "\"Honeyed words, venomous intent\"");
 
 
         add("painting.confluence.magic_harp.title", "MAGIC_HARP");

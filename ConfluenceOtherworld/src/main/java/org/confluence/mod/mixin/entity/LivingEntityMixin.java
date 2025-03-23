@@ -46,7 +46,8 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @Shadow
     public abstract boolean isSuppressingSlidingDownLadder();
 
-    @Shadow public abstract boolean canFreeze();
+    @Shadow
+    public abstract boolean canFreeze();
 
     @Unique
     private final Object2IntMap<Immunity> confluence$entityImmunityTicks = new Object2IntOpenHashMap<>();
@@ -140,10 +141,10 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @Inject(method = "canFreeze", at = @At(value = "HEAD"), cancellable = true)
     private void confluence$canFreeze(CallbackInfoReturnable<Boolean> cir) {
         LivingFreezeEvent.Pre post = NeoForge.EVENT_BUS.post(new LivingFreezeEvent.Pre(self()));
-        HookMapManager.postHooks(ModHookTypes.LIVING_FREEZE.get(), (owner, hook,original) -> {
-            hook.livingFreeze(owner, self(), post);
+        HookMapManager.postHooks(ModHookTypes.LIVING_FREEZE.get(), (owner, hook, original) -> {
+            hook.livingFreeze(owner, self(), original);
             return original;
-        }, self(),post);
+        }, self(), post);
 
         if (!post.canFreeze()) {
             cir.setReturnValue(false);

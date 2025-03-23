@@ -1,0 +1,17 @@
+{
+  "type": "confluence:simple_block_nbt",
+  "config": {
+    "to_place": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "confluence:base_chest_block"
+      }
+    },
+    "nbt": {
+      "LootTable": "confluence:chests/lvy_chests",
+      "id": "confluence:base_chest_block_entity",
+      "VariantId": 5,
+      "CustomName": "{\"italic\":false,\"translate\":\"block.confluence.base_chest_block.unlocked_lvy\"}"
+    }
+  }
+}

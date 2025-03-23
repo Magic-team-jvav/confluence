@@ -35,9 +35,12 @@ public final class ModTags {
         public static final TagKey<Block> ASH_LOG_BRANCHES_ATTACHABLE = register("ash_log_branches_attachable");
         public static final TagKey<Block> DESERT_FOSSIL_REPLACEMENT = register("desert_fossil_replacement");
         public static final TagKey<Block> SLUSH_REPLACEMENT = register("slush_replacement");
+        public static final TagKey<Block> COLD_CRYSTAL_ORE_REPLACEMENT = register("cold_crystal_ore_replacement");
+        public static final TagKey<Block> GELSTONE_ORE_REPLACEMENT = register("gelstone_ore_replacement");
         public static final TagKey<Block> TOMBSTONE = register("tombstone");
         public static final TagKey<Block> ROPE = register("rope");
         public static final TagKey<Block> MINEABLE_WITH_HAMMER = register("mineable_with_hammer"); // 使用锤子挖掘更快
+        public static final TagKey<Block> MINEABLE_WITH_HAMAXE = register("mineable_with_hamaxe"); // 锤斧
         public static final TagKey<Block> UNBREAKABLE_IF_CANNOT_HARVEST = register("unbreakable_if_cannot_harvest");
 
         private static TagKey<Block> c(String name) {
@@ -62,13 +65,18 @@ public final class ModTags {
         public static final TagKey<Item> RAW_MATERIALS_TUNGSTEN = c("raw_materials/tungsten");
         public static final TagKey<Item> RAW_MATERIALS_PLATINUM = c("raw_materials/platinum");
 
-        public static final TagKey<Item> TOOLS = c("tools");
-
         public static final TagKey<Item> GEMS_RUBY = c("gems/ruby");
+        public static final TagKey<Item> GEMS_AMBER = c("gems/amber");
+        public static final TagKey<Item> GEMS_TOPAZ = c("gems/topaz");
+        public static final TagKey<Item> GEMS_TR_EMERALD = c("gems/tr_emerald");
+        public static final TagKey<Item> GEMS_SAPPHIRE = c("gems/sapphire");
+        public static final TagKey<Item> GEMS_TR_AMETHYST = c("gems/tr_amethyst");
 
         public static final TagKey<Item> ORES_TIN = c("ores/tin");
-
-        public static final TagKey<Item> STORAGE_BLOCKS = c("storage_blocks");
+        public static final TagKey<Item> ORES_LEAD = c("ores/lead");
+        public static final TagKey<Item> ORES_SILVER = c("ores/silver");
+        public static final TagKey<Item> ORES_TUNGSTEN = c("ores/tungsten");
+        public static final TagKey<Item> ORES_PLATINUM = c("ores/platinum");
 
         public static final TagKey<Item> COINS = register("coins");
         public static final TagKey<Item> AMMO = register("ammo");

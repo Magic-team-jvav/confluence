@@ -76,8 +76,8 @@
       "bonus_rolls": 0.0,
       "entries": [
         {
-          "type": "minecraft:loot_table",
-          "value": "confluence:gameplay/living_carry",
+          "type": "minecraft:item",
+          "name": "confluence:living_wood_wand",
           "weight": 2
         },
         {
@@ -92,6 +92,11 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "confluence:leaves_wand",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
           "name": "confluence:sunflower_minecart",
           "weight": 1
         },
@@ -102,7 +107,7 @@
         },
         {
           "type": "minecraft:empty",
-          "weight": 18
+          "weight": 2
         }
       ],
       "rolls": 1

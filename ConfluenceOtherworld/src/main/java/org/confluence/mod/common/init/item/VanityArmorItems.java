@@ -28,6 +28,39 @@ public class VanityArmorItems {
         }
     });
     public static final Supplier<BaseVanityArmorItem> PLATINUM_CROWN = ITEMS.register("platinum_crown", () -> new BaseVanityArmorItem(ArmorItem.Type.HELMET, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> ROBE = ITEMS.register("robe", () -> new BaseVanityArmorItem(ArmorItem.Type.CHESTPLATE, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> TOP_HAT = ITEMS.register("top_hat", () -> new BaseVanityArmorItem(ArmorItem.Type.HELMET, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> TUXEDO_SHIRT = ITEMS.register("tuxedo_shirt", () -> new BaseVanityArmorItem(ArmorItem.Type.CHESTPLATE, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> TUXEDO_PANTS = ITEMS.register("tuxedo_pants", () -> new BaseVanityArmorItem(ArmorItem.Type.LEGGINGS, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> TUXEDO_SHOES = ITEMS.register("tuxedo_shoes", () -> new BaseVanityArmorItem(ArmorItem.Type.BOOTS, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> SUMMER_HAT = ITEMS.register("summer_hat", () -> new BaseVanityArmorItem(ArmorItem.Type.HELMET, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> BUNNY_HOOD = ITEMS.register("bunny_hood", () -> new BaseVanityArmorItem(ArmorItem.Type.HELMET, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> PLUMBERS_HAT = ITEMS.register("plumbers_hat", () -> new BaseVanityArmorItem(ArmorItem.Type.HELMET, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> PLUMBERS_SHIRT = ITEMS.register("plumbers_shirt", () -> new BaseVanityArmorItem(ArmorItem.Type.CHESTPLATE, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> PLUMBERS_PANTS = ITEMS.register("plumbers_pants", () -> new BaseVanityArmorItem(ArmorItem.Type.LEGGINGS, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> PLUMBERS_SHOES = ITEMS.register("plumbers_shoes", () -> new BaseVanityArmorItem(ArmorItem.Type.BOOTS, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> HEROS_HAT = ITEMS.register("heros_hat", () -> new BaseVanityArmorItem(ArmorItem.Type.HELMET, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> HEROS_SHIRT = ITEMS.register("heros_shirt", () -> new BaseVanityArmorItem(ArmorItem.Type.CHESTPLATE, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> HEROS_PANTS = ITEMS.register("heros_pants", () -> new BaseVanityArmorItem(ArmorItem.Type.LEGGINGS, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> HEROS_SHOES = ITEMS.register("heros_shoes", () -> new BaseVanityArmorItem(ArmorItem.Type.BOOTS, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> ARCHAEOLOGISTS_HAT = ITEMS.register("archaeologists_hat", () -> new BaseVanityArmorItem(ArmorItem.Type.HELMET, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> ARCHAEOLOGISTS_JACKET = ITEMS.register("archaeologists_jacket", () -> new BaseVanityArmorItem(ArmorItem.Type.CHESTPLATE, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> ARCHAEOLOGISTS_PANTS = ITEMS.register("archaeologists_pants", () -> new BaseVanityArmorItem(ArmorItem.Type.LEGGINGS, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> ARCHAEOLOGISTS_SHOES = ITEMS.register("archaeologists_shoes", () -> new BaseVanityArmorItem(ArmorItem.Type.BOOTS, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> CLOTHIERS_HAT = ITEMS.register("clothiers_hat", () -> new BaseVanityArmorItem(ArmorItem.Type.HELMET, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> CLOTHIERS_JACKET = ITEMS.register("clothiers_jacket", () -> new BaseVanityArmorItem(ArmorItem.Type.CHESTPLATE, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> CLOTHIERS_PANTS = ITEMS.register("clothiers_pants", () -> new BaseVanityArmorItem(ArmorItem.Type.LEGGINGS, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> CLOTHIERS_SHOES = ITEMS.register("clothiers_shoes", () -> new BaseVanityArmorItem(ArmorItem.Type.BOOTS, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> ROBOT_HAT = ITEMS.register("robot_hat", () -> new BaseVanityArmorItem(ArmorItem.Type.HELMET, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> FAMILIAR_WIG = ITEMS.register("familiar_wig", () -> new BaseVanityArmorItem(ArmorItem.Type.HELMET, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> FAMILIAR_SHIRT = ITEMS.register("familiar_shirt", () -> new BaseVanityArmorItem(ArmorItem.Type.CHESTPLATE, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> FAMILIAR_PANTS = ITEMS.register("familiar_pants", () -> new BaseVanityArmorItem(ArmorItem.Type.LEGGINGS, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> FAMILIAR_SHOES = ITEMS.register("familiar_shoes", () -> new BaseVanityArmorItem(ArmorItem.Type.BOOTS, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> MIME_MASK = ITEMS.register("mime_mask", () -> new BaseVanityArmorItem(ArmorItem.Type.HELMET, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> THE_DOCTORS_SHIRT = ITEMS.register("the_doctors_shirt", () -> new BaseVanityArmorItem(ArmorItem.Type.CHESTPLATE, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> THE_DOCTORS_PANTS = ITEMS.register("the_doctors_pants", () -> new BaseVanityArmorItem(ArmorItem.Type.LEGGINGS, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> THE_DOCTORS_SHOES = ITEMS.register("the_doctors_shoes", () -> new BaseVanityArmorItem(ArmorItem.Type.BOOTS, ModRarity.WHITE));
+    public static final Supplier<BaseVanityArmorItem> DEAD_MANS_SWEATER = ITEMS.register("dead_mans_seater", () -> new BaseVanityArmorItem(ArmorItem.Type.CHESTPLATE, ModRarity.GREEN));
 
     public static final Supplier<BaseDyeItem> RED_DYE = registerDye("red_dye", ModRarity.BLUE, 0xFFDB0909);
     public static final Supplier<BaseDyeItem> BRIGHT_RED_DYE = registerDye("bright_red_dye", ModRarity.BLUE, 0xFFFF4F4F); // Adjusted to a brighter red

@@ -37,7 +37,7 @@ import org.confluence.mod.common.block.functional.network.Network;
 import org.confluence.mod.common.block.functional.network.NetworkNode;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -158,7 +158,7 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
             if (getLootTable() != null) {
                 for (int i = 0; i < getContainerSize(); i++) {
                     if (getItems().get(i).isEmpty()) {
-                        getItems().set(i, ModItems.DEAD_MANS_SWEATER.get().getDefaultInstance());
+                        getItems().set(i, VanityArmorItems.DEAD_MANS_SWEATER.get().getDefaultInstance());
                         break;
                     }
                 }

@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:living_wood_wand",
+          "name": "confluence:living_mahogany_wand",
           "weight":1
         }
       ],
@@ -17,7 +17,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:leaves_wand",
+          "name": "confluence:rich_mahogany_leaf_wand",
           "weight":1
         }
       ],

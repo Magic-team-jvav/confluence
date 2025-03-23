@@ -90,6 +90,7 @@ public class MaterialItems {
     public static final DeferredItem<Item> ANTLION_MANDIBLE = register("antlion_mandible");
     public static final DeferredItem<Item> HOOK = register("hook");
     public static final DeferredItem<Item> FILAMENTOUS_FIN = register("filamentous_fin");
+    public static final DeferredItem<Item> TATTERED_CLOTH = register("tattered_cloth");
     public static final DeferredItem<Item> LENS = register("lens");
     public static final DeferredItem<Item> BLACK_LENS = register("black_lens");
     public static final DeferredItem<Item> STURDY_FOSSIL = register("sturdy_fossil", ModRarity.BLUE);

@@ -4,6 +4,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
@@ -125,7 +126,7 @@ public class BaseSwordItem extends SwordItem {
         private final ItemAttributeModifiers.Builder attributeModifiersBuilder = ItemAttributeModifiers.builder();
         private int modifyCount = 0;
         private List<Function<Item.Properties,Item.Properties>> modifier = new ArrayList<>();
-
+        List<Function<MutableComponent, MutableComponent>> tooltipsModifier = new ArrayList<>();
 
 
         /**添加击中效果组件
@@ -178,6 +179,28 @@ public class BaseSwordItem extends SwordItem {
             return this;
         }
 
+        public ModifierBuilder addTooltip(int count){
+            for(int i = 0;i<count;i++)
+                addTooltip();
+            return this;
+        }
+
+        public ModifierBuilder addTooltip(){
+            addTooltip(p->p);
+            return this;
+        }
+
+        public ModifierBuilder addTooltip(int count, Function<MutableComponent, MutableComponent> tooltips){
+            for(int i = 0;i<count;i++)
+                addTooltip(tooltips);
+            return this;
+        }
+
+        public ModifierBuilder addTooltip(Function<MutableComponent, MutableComponent> tooltips){
+            this.tooltipsModifier.add(tooltips);
+            return this;
+        }
+
 
         public Item.Properties buildProperties(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed){
             if(modifier != null)
@@ -213,9 +236,19 @@ public class BaseSwordItem extends SwordItem {
             if(data.trackType().isPresent()){
                 data.trackType().ifPresent(type -> tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.track_type").append(": ").append(Component.translatable(type.getName())).withColor(0x57cdfb)));
             }
+        }
 
-
-
+        for(int i = 0;i<modifier.tooltipsModifier.size();i++){
+            if(i == 0){
+                tooltipComponents.add(Component.empty());
+            }
+            var it = modifier.tooltipsModifier.get(i);
+            tooltipComponents.add(it.apply(
+                    Component.translatable("tooltip.item.confluence." + BuiltInRegistries.ITEM.getKey(this).getPath() + "." + i)
+                            .withStyle(style -> style.withColor(0x666666).withItalic(true))
+                    )
+//                    .withColor(0x004388)
+            );
         }
     }
 

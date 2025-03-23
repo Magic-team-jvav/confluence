@@ -208,6 +208,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putTarget(LIFE_CRYSTAL_BLOCK.get(), Color.RED, true, ShowType.SPELUNKER);
         // 箱子
         putTarget(BASE_CHEST_BLOCK.get(), Color.ORANGE, true, ShowType.SPELUNKER);
+        putTarget(Blocks.CHEST, Color.ORANGE, true, ShowType.SPELUNKER);
 
 
         // 青金石
@@ -223,6 +224,10 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putTarget(CORRUPTION_REDSTONE_ORE.get(), Color.red, true, ShowType.SPELUNKER);
         putTarget(SANCTIFICATION_REDSTONE_ORE.get(), Color.red, true, ShowType.SPELUNKER);
         putTarget(FLESHIFICATION_REDSTONE_ORE.get(), Color.red, true, ShowType.SPELUNKER);
+
+        // 化石对标
+        putTarget(COLD_CRYSTAL_ORE.get(), Color.red, true, ShowType.SPELUNKER);
+        putTarget(GELSTONE_ORE.get(), Color.red, true, ShowType.SPELUNKER);
 
 
         // tip 危险感知

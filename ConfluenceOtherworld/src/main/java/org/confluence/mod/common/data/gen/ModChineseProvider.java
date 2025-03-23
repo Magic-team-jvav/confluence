@@ -245,6 +245,17 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.radio_thing.0", "允许使用者以不同的方式看世界");
         add("tooltip.item.terra_curio.radio_thing.1", "“禁忌的知识在其中回响……”");
 
+        add("tooltip.item.confluence.copper_short_sword.0", "神兵最微末的那部分力量自两世汇流之初就伴随着你…直至旅途的终点");
+        add("tooltip.item.confluence.copper_short_sword.1", "“我们十个真厉害！”铜短剑说。");
+        add("tooltip.item.confluence.starfury.0", "神兵的一小部分力量凝聚在云团间，化为晶莹剔透的闪星");
+        add("tooltip.item.confluence.starfury.1", "“天域的怒火倾泻而下”");
+        add("tooltip.item.confluence.enchanted_sword.0", "神兵的一小部分力量埋藏在洞穴中，凝成了寒碜碜的剑意");
+        add("tooltip.item.confluence.enchanted_sword.1", "“昏暗剑冢中一抹流光”");
+
+        add("tooltip.item.confluence.bee_keeper.0", "神兵的一小部分力量为丛林中的蜂群所占有，沦为嗡嗡作响的蜂群");
+        add("tooltip.item.confluence.bee_keeper.1", "“口蜜腹剑”");
+
+
 
         add("confluence.configuration.achievementToast", "启用泰拉样式成就");
         add("confluence.configuration.achievementToast.tooltip", "如果想使用原版样式进度的话就关闭它");
@@ -681,6 +692,85 @@ public class ModChineseProvider extends LanguageProvider {
         add("entity.confluence.frozen_zombie", "冰冻僵尸");
         add("entity.confluence.raincoat_zombie", "雨衣僵尸");
         add("entity.confluence.undead_miner", "不死矿工");
+
+        add("equipment_benediction.set_switcher.confluence.cold_crystal_set", "寒晶套装");
+        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.0", "最大魔力值增加20，暴击率提高4%");
+        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.1", "最大魔力值增加20，魔法伤害提高4%");
+        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.2", "魔法伤害提高4%");
+        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.3", "暴击率提高4%");
+        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.4", "魔法攻击会有附带霜冻效果");
+
+        add("equipment_benediction.set_switcher.confluence.mining_set", "挖矿套装");
+        add("equipment_benediction.set_switcher.confluence.mining_set.data.0", "提供照明");
+        add("equipment_benediction.set_switcher.confluence.mining_set.data.1", "+10%挖矿速度");
+        add("equipment_benediction.set_switcher.confluence.mining_set.data.2", "+10%挖矿速度");
+
+        add("equipment_benediction.set_switcher.confluence.shadow_set", "暗影套装");
+        add("equipment_benediction.set_switcher.confluence.shadow_set.data.0", "暴击率提高3.5%");
+        add("equipment_benediction.set_switcher.confluence.shadow_set.data.1", "暴击率提高3.5%");
+        add("equipment_benediction.set_switcher.confluence.shadow_set.data.2", "暴击率提高3.5%");
+        add("equipment_benediction.set_switcher.confluence.shadow_set.data.3", "暴击率提高3.5%");
+        add("equipment_benediction.set_switcher.confluence.shadow_set.data.4", "提高移动速度和加速度");
+
+        add("equipment_benediction.set_switcher.confluence.crimson_set", "猩红套装");
+        add("equipment_benediction.set_switcher.confluence.crimson_set.data.0", "伤害提高2%");
+        add("equipment_benediction.set_switcher.confluence.crimson_set.data.1", "伤害提高2%");
+        add("equipment_benediction.set_switcher.confluence.crimson_set.data.2", "伤害提高2%");
+        add("equipment_benediction.set_switcher.confluence.crimson_set.data.3", "伤害提高2%");
+        add("equipment_benediction.set_switcher.confluence.crimson_set.data.4", "提高再生量50%");
+
+        add("equipment_benediction.set_switcher.confluence.snow_set", "防雪套装");
+        add("equipment_benediction.set_switcher.confluence.snow_set.data.0", "免疫冷冻类debuff%");
+        add("equipment_benediction.set_switcher.confluence.snow_set.data.1", "免疫冷冻类debuff");
+
+        add("equipment_benediction.set_switcher.confluence.bee_set", "蜜蜂套装");
+        add("equipment_benediction.set_switcher.confluence.bee_set.data.0", "召唤伤害提高4%，仆从数量上限增加1");
+        add("equipment_benediction.set_switcher.confluence.bee_set.data.1", "召唤伤害提高4%");
+        add("equipment_benediction.set_switcher.confluence.bee_set.data.2", "仆从数量上限增加1");
+        add("equipment_benediction.set_switcher.confluence.bee_set.data.3", "召唤伤害提高5%");
+        add("equipment_benediction.set_switcher.confluence.bee_set.data.4", "召唤伤害提高10%");
+
+        add("equipment_benediction.set_switcher.confluence.molten_set", "熔岩套装");
+        add("equipment_benediction.set_switcher.confluence.molten_set.data.0", "暴击率提高7%");
+        add("equipment_benediction.set_switcher.confluence.molten_set.data.1", "近战伤害提高7%");
+        add("equipment_benediction.set_switcher.confluence.molten_set.data.2", "近战速度提高3.5%");
+        add("equipment_benediction.set_switcher.confluence.molten_set.data.3", "近战速度提高3.5%");
+        add("equipment_benediction.set_switcher.confluence.molten_set.data.4", "近战伤害提高10%，免疫着火");
+
+        add("equipment_benediction.set_switcher.confluence.meteor_set", "太空套装");
+        add("equipment_benediction.set_switcher.confluence.meteor_set.data.0", "魔法伤害提高7%");
+        add("equipment_benediction.set_switcher.confluence.meteor_set.data.1", "魔法伤害提高7%");
+        add("equipment_benediction.set_switcher.confluence.meteor_set.data.2", "魔法伤害提高7%");
+        add("equipment_benediction.set_switcher.confluence.meteor_set.data.3", "魔法伤害提高7%");
+        add("equipment_benediction.set_switcher.confluence.meteor_set.data.4", "太空枪魔力消耗降低为0");
+
+        add("equipment_benediction.set_switcher.confluence.gladiator_set", "角斗士套装");
+        add("equipment_benediction.set_switcher.confluence.gladiator_set.data.0", "免疫击退");
+
+        add("equipment_benediction.set_switcher.confluence.fossil_set", "化石套装");
+        add("equipment_benediction.set_switcher.confluence.fossil_set.data.0", "暴击率提高4%");
+        add("equipment_benediction.set_switcher.confluence.fossil_set.data.1", "远程伤害提高2.5%");
+        add("equipment_benediction.set_switcher.confluence.fossil_set.data.2", "远程伤害提高2.5%");
+        add("equipment_benediction.set_switcher.confluence.fossil_set.data.3", "暴击率提高4%");
+        add("equipment_benediction.set_switcher.confluence.fossil_set.data.4", "不消耗弹药几率提高20%");
+
+        add("equipment_benediction.set_switcher.confluence.ninja_set", "忍者套装");
+        add("equipment_benediction.set_switcher.confluence.ninja_set.data.0", "暴击率提高2%");
+        add("equipment_benediction.set_switcher.confluence.ninja_set.data.1", "暴击率提高2%");
+        add("equipment_benediction.set_switcher.confluence.ninja_set.data.2", "暴击率提高2%");
+        add("equipment_benediction.set_switcher.confluence.ninja_set.data.3", "暴击率提高2%");
+        add("equipment_benediction.set_switcher.confluence.ninja_set.data.4", "移动速度提高20%");
+
+        add("equipment_benediction.set_switcher.confluence.spore_root_set", "孢根套装");
+        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.0", "召唤伤害提高2%，仆从数量上限增加1");
+        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.1", "召唤伤害提高3%");
+        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.2", "召唤伤害提高3%");
+        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.3", "召唤伤害提高2%");
+        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.4", "仆从数量上限增加1");
+
+        add("equipment_benediction.set_switcher.confluence.cactus_set", "仙人掌套装");
+        add("equipment_benediction.set_switcher.confluence.cactus_set.data.0", "攻击者因为仙人掌尖刺受到伤害");
+
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.ARROW_PROJECTILE.get(), "泰拉箭");
         add(ModEntities.ANTI_GRAVITY_HOOK.get(), "反重力钩");
@@ -730,6 +820,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.ROPE_COILS.get(), "绳索卷");
         add(ModEntities.SCARAB_BOMB_ENTITY.get(), "圣甲虫炸弹");
         add(ModEntities.SHURIKEN_PROJECTILE.get(), "手里剑");
+        add(ModEntities.JAVELIN_PROJECTILE.get(), "标枪");
         add(ModEntities.SKELETRON_HAND.get(), "骷髅王之手");
         add(ModEntities.SLIME_HOOK.get(), "史莱姆钩");
         add(ModEntities.SPOOKY_HOOK.get(), "诡异钩");
@@ -1595,6 +1686,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.GOLDEN_SHORT_SWORD.get(), "金短剑");
         add(SwordItems.GOLDEN_BOARD_SWORD.get(), "金阔剑");
         add(SwordItems.CACTUS_SWORD.get(), "仙人掌剑");
+        add(SwordItems.MURAMASA.get(), "村正大刀");
+
 
         add(SwordItems.CROWBAR.get(), "撬棍");
         add(SwordItems.ZOMBIE_ARM.get(), "僵尸臂");
@@ -1740,6 +1833,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(ConsumableItems.SHURIKEN.get(), "手里剑");
         add(ConsumableItems.THROWING_KNIVES.get(), "投刀");
+        add(ConsumableItems.JAVELIN.get(), "标枪");
         add(ConsumableItems.VITAL_CRYSTAL.get(), "活力水晶");
         add(ConsumableItems.MINECART_UPGRADE_KIT.get(), "矿车升级包");
         add(ConsumableItems.GALAXY_PEARL.get(), "银河珍珠");
@@ -1806,7 +1900,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.CANDY_CANE.get(), "拐杖糖");
         add(ModItems.CANDY_APPLE.get(), "糖葫芦");
         add(ModItems.WHOOPIE_CUSHION.get(), "整蛊坐垫");
-        add(ModItems.DEAD_MANS_SWEATER.get(), "死人毛衣");
+        add(VanityArmorItems.DEAD_MANS_SWEATER.get(), "死人毛衣");
         add(ModItems.GRASS_SEED.get(), "草种子");
         add(ModItems.JUNGLE_GRASS_SEED.get(), "丛林草种子");
         add(ModItems.MUSHROOM_GRASS_SEED.get(), "蘑菇草种子");

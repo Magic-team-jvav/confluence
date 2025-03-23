@@ -28,6 +28,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
+import static org.confluence.mod.common.init.block.OreBlocks.*;
+
 
 public class ModItemTagsProvider extends ItemTagsProvider {
     public ModItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagLookup<Block>> b, @Nullable ExistingFileHelper helper) {
@@ -345,8 +347,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 OreBlocks.SANCTIFICATION_REDSTONE_ORE.asItem(), OreBlocks.CORRUPTION_REDSTONE_ORE.asItem(), OreBlocks.FLESHIFICATION_REDSTONE_ORE.get().asItem()
         );
         tag(ModTags.Items.INITIAL_WOOD).add(
-              NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks().asItem(),
-              NatureBlocks.PALM_LOG_BLOCKS.getPlanks().asItem(),
               NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().asItem(),
               NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().asItem(),
               NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().asItem(),
@@ -379,53 +379,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.PARTIAL_MOUTH_FISH.get(),
                 FoodItems.YELLOW_EEL.get(),
                 FoodItems.TILAPIA.get()
-        );
-        tag(ItemTags.PLANKS).add(
-                NatureBlocks.EBONY_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getPlanks().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getPlanks().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().asItem(),NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().asItem(),
-                NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks().asItem()
-        );
-        tag(ItemTags.LOGS).add(
-                NatureBlocks.EBONY_LOG_BLOCKS.getLog().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getLog().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getLog().asItem(),
-                NatureBlocks.ASH_LOG_BLOCKS.getLog().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getLog().asItem(),NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLog().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getLog().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().asItem()
-        );
-        tag(ItemTags.WOODEN_SLABS).add(
-                NatureBlocks.EBONY_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getSlab().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getSlab().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getSlab().asItem(),
-                NatureBlocks.BAOBAB_LOG_BLOCKS.getSlab().asItem()
-        );
-        tag(ItemTags.WOODEN_FENCES).add(
-                NatureBlocks.EBONY_LOG_BLOCKS.getFence().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getFence().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getFence().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getFence().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getFence().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getFence().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getFence().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getFence().asItem(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getFence().asItem(),
-                NatureBlocks.BAOBAB_LOG_BLOCKS.getFence().asItem()
-        );
-        tag(ItemTags.WOODEN_DOORS).add(
-                NatureBlocks.EBONY_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getDoor().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getDoor().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getDoor().asItem(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getDoor().asItem(),
-                NatureBlocks.BAOBAB_LOG_BLOCKS.getDoor().asItem()
-        );
-        tag(ItemTags.WOODEN_TRAPDOORS).add(
-                NatureBlocks.EBONY_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getTrapdoor().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getTrapdoor().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getTrapdoor().asItem(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getTrapdoor().asItem(),
-                NatureBlocks.BAOBAB_LOG_BLOCKS.getTrapdoor().asItem()
-        );
-        tag(ItemTags.WOODEN_PRESSURE_PLATES).add(
-                NatureBlocks.EBONY_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getPressurePlate().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getPressurePlate().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getPressurePlate().asItem(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPressurePlate().asItem(),
-                NatureBlocks.BAOBAB_LOG_BLOCKS.getPressurePlate().asItem()
-        );
-        tag(ItemTags.WOODEN_STAIRS).add(
-                NatureBlocks.EBONY_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getStairs().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getStairs().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getStairs().asItem(),  NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStairs().asItem(),
-                NatureBlocks.BAOBAB_LOG_BLOCKS.getStairs().asItem()
         );
         tag(ModTags.Items.CHARCOAL_CAN_BE_BURNED).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getLog().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getLog().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getLog().asItem(),
@@ -514,6 +467,24 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.SAPPHIRE.get(),
                 MaterialItems.TR_AMETHYST.get()
         );
+        tag(ModTags.Items.GEMS_RUBY).add(
+                MaterialItems.RUBY.get()
+        );
+        tag(ModTags.Items.GEMS_AMBER).add(
+                MaterialItems.AMBER.get()
+        );
+        tag(ModTags.Items.GEMS_TOPAZ).add(
+                MaterialItems.TOPAZ.get()
+        );
+        tag(ModTags.Items.GEMS_TR_EMERALD).add(
+                MaterialItems.TR_EMERALD.get()
+        );
+        tag(ModTags.Items.GEMS_SAPPHIRE).add(
+                MaterialItems.SAPPHIRE.get()
+        );
+        tag(ModTags.Items.GEMS_TR_AMETHYST).add(
+                MaterialItems.TR_AMETHYST.get()
+        );
 
         tag(Tags.Items.GUNPOWDERS).add(
                 MaterialItems.BLOOD_CLOT_POWDER.get()
@@ -579,19 +550,24 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         BowItems.acceptTag(tag(Tags.Items.TOOLS_BOW));
         PaintItems.acceptTag(tag(Tags.Items.DYED));
         ArrowItems.acceptTag(tag(ItemTags.ARROWS));
-        HammerItems.acceptTag(tag(ModTags.Items.HAMMER));
+        IntrinsicTagAppender<Item> hammer = tag(ModTags.Items.HAMMER);
+        HamaxeItems.acceptTag(hammer);
+        HammerItems.acceptTag(hammer);
         IntrinsicTagAppender<Item> pickaxes = tag(ItemTags.PICKAXES);
         PickaxeItems.acceptTag(pickaxes);
         PickaxeAxeItems.acceptTag(pickaxes);
         IntrinsicTagAppender<Item> axes = tag(ItemTags.AXES);
+        HamaxeItems.acceptTag(axes);
         AxeItems.acceptTag(axes);
         PickaxeAxeItems.acceptTag(axes);
 
-        PickaxeAxeItems.acceptTag(tag(ModTags.Items.TOOLS));
-        AxeItems.acceptTag(tag(ModTags.Items.TOOLS));
-        PickaxeItems.acceptTag(tag(ModTags.Items.TOOLS));
-        HammerItems.acceptTag(tag(ModTags.Items.TOOLS));
-        FishingPoleItems.acceptTag(tag(ModTags.Items.TOOLS));
+        IntrinsicTagAppender<Item> tools = tag(Tags.Items.TOOLS);
+        PickaxeAxeItems.acceptTag(tools);
+        AxeItems.acceptTag(tools);
+        PickaxeItems.acceptTag(tools);
+        HamaxeItems.acceptTag(tools);
+        HammerItems.acceptTag(tools);
+        FishingPoleItems.acceptTag(tools);
 
         SwordItems.acceptTag(tag(Tags.Items.MELEE_WEAPON_TOOLS));
         ManaWeaponItems.acceptTag(tag(ModTags.Items.MANA_WEAPON));
@@ -600,6 +576,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         PickaxeItems.acceptTag(mining_tool_tools);
         PickaxeAxeItems.acceptTag(mining_tool_tools);
         AxeItems.acceptTag(mining_tool_tools);
+        HamaxeItems.acceptTag(mining_tool_tools);
         HammerItems.acceptTag(mining_tool_tools);
         DrillItems.acceptTag(mining_tool_tools);
         IntrinsicTagAppender<Item> prefix_universal_only = tag(ModTags.Items.PREFIX_UNIVERSAL_ONLY);
@@ -644,6 +621,171 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.RAW_MATERIALS_TUNGSTEN).add(MaterialItems.RAW_TUNGSTEN.get());
         tag(ModTags.Items.RAW_MATERIALS_PLATINUM).add(MaterialItems.RAW_PLATINUM.get());
 
+        tag(Tags.Items.ORES_COAL).add(
+                SANCTIFICATION_COAL_ORE.get().asItem(),
+                CORRUPTION_COAL_ORE.get().asItem(),
+                FLESHIFICATION_COAL_ORE.get().asItem()
+        );
+        tag(ItemTags.COAL_ORES).add(
+                SANCTIFICATION_COAL_ORE.get().asItem(),
+                CORRUPTION_COAL_ORE.get().asItem(),
+                FLESHIFICATION_COAL_ORE.get().asItem()
+        );
+        tag(Tags.Items.ORES_COPPER).add(
+                SANCTIFICATION_COPPER_ORE.get().asItem(),
+                CORRUPTION_COPPER_ORE.get().asItem(),
+                FLESHIFICATION_COPPER_ORE.get().asItem()
+        );
+
+        tag(ItemTags.COPPER_ORES).add(
+                SANCTIFICATION_COPPER_ORE.get().asItem(),
+                CORRUPTION_COPPER_ORE.get().asItem(),
+                FLESHIFICATION_COPPER_ORE.get().asItem()
+        );
+        tag(Tags.Items.ORES_DIAMOND).add(
+                SANCTIFICATION_DIAMOND_ORE.get().asItem(),
+                CORRUPTION_DIAMOND_ORE.get().asItem(),
+                FLESHIFICATION_DIAMOND_ORE.get().asItem()
+        );
+
+        tag(ItemTags.DIAMOND_ORES).add(
+                SANCTIFICATION_DIAMOND_ORE.get().asItem(),
+                CORRUPTION_DIAMOND_ORE.get().asItem(),
+                FLESHIFICATION_DIAMOND_ORE.get().asItem()
+        );
+        tag(Tags.Items.ORES_EMERALD).add(
+                SANCTIFICATION_EMERALD_ORE.get().asItem(),
+                CORRUPTION_EMERALD_ORE.get().asItem(),
+                FLESHIFICATION_EMERALD_ORE.get().asItem()
+        );
+
+        tag(ItemTags.EMERALD_ORES).add(
+                SANCTIFICATION_EMERALD_ORE.get().asItem(),
+                CORRUPTION_EMERALD_ORE.get().asItem(),
+                FLESHIFICATION_EMERALD_ORE.get().asItem()
+        );
+        tag(Tags.Items.ORES_GOLD).add(
+                SANCTIFICATION_GOLD_ORE.get().asItem(),
+                CORRUPTION_GOLD_ORE.get().asItem(),
+                FLESHIFICATION_GOLD_ORE.get().asItem()
+        );
+
+        tag(ItemTags.GOLD_ORES).add(
+                SANCTIFICATION_GOLD_ORE.get().asItem(),
+                CORRUPTION_GOLD_ORE.get().asItem(),
+                FLESHIFICATION_GOLD_ORE.get().asItem()
+        );
+        tag(Tags.Items.ORES_IRON).add(
+                SANCTIFICATION_IRON_ORE.get().asItem(),
+                CORRUPTION_IRON_ORE.get().asItem(),
+                FLESHIFICATION_IRON_ORE.get().asItem()
+        );
+
+        tag(ItemTags.IRON_ORES).add(
+                SANCTIFICATION_IRON_ORE.get().asItem(),
+                CORRUPTION_IRON_ORE.get().asItem(),
+                FLESHIFICATION_IRON_ORE.get().asItem()
+        );
+        tag(Tags.Items.ORES_LAPIS).add(
+                SANCTIFICATION_LAPIS_ORE.get().asItem(),
+                CORRUPTION_LAPIS_ORE.get().asItem(),
+                FLESHIFICATION_LAPIS_ORE.get().asItem()
+        );
+
+        tag(ItemTags.LAPIS_ORES).add(
+                SANCTIFICATION_LAPIS_ORE.get().asItem(),
+                CORRUPTION_LAPIS_ORE.get().asItem(),
+                FLESHIFICATION_LAPIS_ORE.get().asItem()
+        );
+        tag(Tags.Items.ORES_REDSTONE).add(
+                SANCTIFICATION_REDSTONE_ORE.get().asItem(),
+                CORRUPTION_REDSTONE_ORE.get().asItem(),
+                FLESHIFICATION_REDSTONE_ORE.get().asItem()
+        );
+
+        tag(ItemTags.REDSTONE_ORES).add(
+                SANCTIFICATION_REDSTONE_ORE.get().asItem(),
+                CORRUPTION_REDSTONE_ORE.get().asItem(),
+                FLESHIFICATION_REDSTONE_ORE.get().asItem()
+        );
+
+        tag(ModTags.Items.ORES_TIN).add(
+                TIN_ORE.get().asItem(),
+                DEEPSLATE_TIN_ORE.get().asItem(),
+                SANCTIFICATION_TIN_ORE.get().asItem(),
+                CORRUPTION_TIN_ORE.get().asItem(),
+                FLESHIFICATION_TIN_ORE.get().asItem()
+        );
+
+        tag(ModTags.Items.ORES_LEAD).add(
+                LEAD_ORE.get().asItem(),
+                DEEPSLATE_LEAD_ORE.get().asItem(),
+                SANCTIFICATION_LEAD_ORE.get().asItem(),
+                CORRUPTION_LEAD_ORE.get().asItem(),
+                FLESHIFICATION_LEAD_ORE.get().asItem()
+        );
+
+        tag(ModTags.Items.ORES_SILVER).add(
+                SILVER_ORE.get().asItem(),
+                DEEPSLATE_SILVER_ORE.get().asItem(),
+                SANCTIFICATION_SILVER_ORE.get().asItem(),
+                CORRUPTION_SILVER_ORE.get().asItem(),
+                FLESHIFICATION_SILVER_ORE.get().asItem()
+        );
+
+        tag(ModTags.Items.ORES_TUNGSTEN).add(
+                TUNGSTEN_ORE.get().asItem(),
+                DEEPSLATE_TUNGSTEN_ORE.get().asItem(),
+                SANCTIFICATION_TUNGSTEN_ORE.get().asItem(),
+                CORRUPTION_TUNGSTEN_ORE.get().asItem(),
+                FLESHIFICATION_TUNGSTEN_ORE.get().asItem()
+        );
+
+        tag(ModTags.Items.ORES_PLATINUM).add(
+                PLATINUM_ORE.get().asItem(),
+                DEEPSLATE_PLATINUM_ORE.get().asItem(),
+                SANCTIFICATION_PLATINUM_ORE.get().asItem(),
+                CORRUPTION_PLATINUM_ORE.get().asItem(),
+                FLESHIFICATION_PLATINUM_ORE.get().asItem()
+        );
+
+        tag(Tags.Items.ORES_IN_GROUND_DEEPSLATE).add(
+                DEEPSLATE_TIN_ORE.get().asItem(),
+                DEEPSLATE_LEAD_ORE.get().asItem(),
+                DEEPSLATE_SILVER_ORE.get().asItem(),
+                DEEPSLATE_TUNGSTEN_ORE.get().asItem(),
+                DEEPSLATE_PLATINUM_ORE.get().asItem(),
+                DEEPSLATE_RUBY_ORE.get().asItem(),
+                DEEPSLATE_TOPAZ_ORE.get().asItem(),
+                DEEPSLATE_TR_EMERALD_ORE.get().asItem(),
+                DEEPSLATE_SAPPHIRE_ORE.get().asItem(),
+                DEEPSLATE_COBALT_ORE.get().asItem(),
+                DEEPSLATE_PALLADIUM_ORE.get().asItem(),
+                DEEPSLATE_MYTHRIL_ORE.get().asItem(),
+                DEEPSLATE_ORICHALCUM_ORE.get().asItem(),
+                DEEPSLATE_ADAMANTITE_ORE.get().asItem(),
+                DEEPSLATE_TITANIUM_ORE.get().asItem(),
+                DEEPSLATE_TR_AMETHYST_ORE.get().asItem()
+        );
+
+        tag(Tags.Items.ORES_IN_GROUND_NETHERRACK).add(
+                HELLSTONE.get().asItem()
+        );
+        tag(Tags.Items.ORES_IN_GROUND_STONE).add(
+                TIN_ORE.get().asItem(),
+                LEAD_ORE.get().asItem(),
+                SILVER_ORE.get().asItem(),
+                TUNGSTEN_ORE.get().asItem(),
+                PLATINUM_ORE.get().asItem(),
+                RUBY_ORE.get().asItem(),
+                TOPAZ_ORE.get().asItem(),
+                TR_EMERALD_ORE.get().asItem(),
+                SAPPHIRE_ORE.get().asItem(),
+                TR_AMETHYST_ORE.get().asItem(),
+                DEMONITE_ORE.get().asItem(),
+                TR_CRIMSON_ORE.get().asItem()
+        );
+        copy(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS);
 
         tag(ModTags.Items.MOSS_ITEM).add(
                 NatureBlocks.BROWN_MOSS.get().asItem(),

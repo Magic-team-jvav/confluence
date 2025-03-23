@@ -77,7 +77,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "value": "confluence:living_wood_wand",
+          "name": "confluence:living_wood_wand",
           "weight": 2
         },
         {

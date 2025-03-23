@@ -67,8 +67,17 @@ public final class ModTags {
         public static final TagKey<Item> TOOLS = c("tools");
 
         public static final TagKey<Item> GEMS_RUBY = c("gems/ruby");
+        public static final TagKey<Item> GEMS_AMBER = c("gems/amber");
+        public static final TagKey<Item> GEMS_TOPAZ = c("gems/topaz");
+        public static final TagKey<Item> GEMS_TR_EMERALD = c("gems/tr_emerald");
+        public static final TagKey<Item> GEMS_SAPPHIRE = c("gems/sapphire");
+        public static final TagKey<Item> GEMS_TR_AMETHYST = c("gems/tr_amethyst");
 
         public static final TagKey<Item> ORES_TIN = c("ores/tin");
+        public static final TagKey<Item> ORES_LEAD = c("ores/lead");
+        public static final TagKey<Item> ORES_SILVER = c("ores/silver");
+        public static final TagKey<Item> ORES_TUNGSTEN = c("ores/tungsten");
+        public static final TagKey<Item> ORES_PLATINUM = c("ores/platinum");
 
         public static final TagKey<Item> STORAGE_BLOCKS = c("storage_blocks");
 

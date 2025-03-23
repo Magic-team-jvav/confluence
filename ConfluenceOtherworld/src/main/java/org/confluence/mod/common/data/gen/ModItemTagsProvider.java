@@ -28,6 +28,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
+import static org.confluence.mod.common.init.block.DecorativeBlocks.FLOATING_WHEAT_BALE;
+import static org.confluence.mod.common.init.block.OreBlocks.*;
+
 
 public class ModItemTagsProvider extends ItemTagsProvider {
     public ModItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagLookup<Block>> b, @Nullable ExistingFileHelper helper) {
@@ -514,6 +517,24 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.SAPPHIRE.get(),
                 MaterialItems.TR_AMETHYST.get()
         );
+        tag(ModTags.Items.GEMS_RUBY).add(
+                MaterialItems.RUBY.get()
+        );
+        tag(ModTags.Items.GEMS_AMBER).add(
+                MaterialItems.AMBER.get()
+        );
+        tag(ModTags.Items.GEMS_TOPAZ).add(
+                MaterialItems.TOPAZ.get()
+        );
+        tag(ModTags.Items.GEMS_TR_EMERALD).add(
+                MaterialItems.TR_EMERALD.get()
+        );
+        tag(ModTags.Items.GEMS_SAPPHIRE).add(
+                MaterialItems.SAPPHIRE.get()
+        );
+        tag(ModTags.Items.GEMS_TR_AMETHYST).add(
+                MaterialItems.TR_AMETHYST.get()
+        );
 
         tag(Tags.Items.GUNPOWDERS).add(
                 MaterialItems.BLOOD_CLOT_POWDER.get()
@@ -643,6 +664,240 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.RAW_MATERIALS_SILVER).add(MaterialItems.RAW_SILVER.get());
         tag(ModTags.Items.RAW_MATERIALS_TUNGSTEN).add(MaterialItems.RAW_TUNGSTEN.get());
         tag(ModTags.Items.RAW_MATERIALS_PLATINUM).add(MaterialItems.RAW_PLATINUM.get());
+
+        tag(Tags.Items.ORES_COAL).add(
+                SANCTIFICATION_COAL_ORE.get().asItem(),
+                CORRUPTION_COAL_ORE.get().asItem(),
+                FLESHIFICATION_COAL_ORE.get().asItem()
+        );
+        tag(ItemTags.COAL_ORES).add(
+                SANCTIFICATION_COAL_ORE.get().asItem(),
+                CORRUPTION_COAL_ORE.get().asItem(),
+                FLESHIFICATION_COAL_ORE.get().asItem()
+        );
+        tag(Tags.Items.ORES_COPPER).add(
+                SANCTIFICATION_COPPER_ORE.get().asItem(),
+                CORRUPTION_COPPER_ORE.get().asItem(),
+                FLESHIFICATION_COPPER_ORE.get().asItem()
+        );
+
+        tag(ItemTags.COPPER_ORES).add(
+                SANCTIFICATION_COPPER_ORE.get().asItem(),
+                CORRUPTION_COPPER_ORE.get().asItem(),
+                FLESHIFICATION_COPPER_ORE.get().asItem()
+        );
+        tag(Tags.Items.ORES_DIAMOND).add(
+                SANCTIFICATION_DIAMOND_ORE.get().asItem(),
+                CORRUPTION_DIAMOND_ORE.get().asItem(),
+                FLESHIFICATION_DIAMOND_ORE.get().asItem()
+        );
+
+        tag(ItemTags.DIAMOND_ORES).add(
+                SANCTIFICATION_DIAMOND_ORE.get().asItem(),
+                CORRUPTION_DIAMOND_ORE.get().asItem(),
+                FLESHIFICATION_DIAMOND_ORE.get().asItem()
+        );
+        tag(Tags.Items.ORES_EMERALD).add(
+                SANCTIFICATION_EMERALD_ORE.get().asItem(),
+                CORRUPTION_EMERALD_ORE.get().asItem(),
+                FLESHIFICATION_EMERALD_ORE.get().asItem()
+        );
+
+        tag(ItemTags.EMERALD_ORES).add(
+                SANCTIFICATION_EMERALD_ORE.get().asItem(),
+                CORRUPTION_EMERALD_ORE.get().asItem(),
+                FLESHIFICATION_EMERALD_ORE.get().asItem()
+        );
+        tag(Tags.Items.ORES_GOLD).add(
+                SANCTIFICATION_GOLD_ORE.get().asItem(),
+                CORRUPTION_GOLD_ORE.get().asItem(),
+                FLESHIFICATION_GOLD_ORE.get().asItem()
+        );
+
+        tag(ItemTags.GOLD_ORES).add(
+                SANCTIFICATION_GOLD_ORE.get().asItem(),
+                CORRUPTION_GOLD_ORE.get().asItem(),
+                FLESHIFICATION_GOLD_ORE.get().asItem()
+        );
+        tag(Tags.Items.ORES_IRON).add(
+                SANCTIFICATION_IRON_ORE.get().asItem(),
+                CORRUPTION_IRON_ORE.get().asItem(),
+                FLESHIFICATION_IRON_ORE.get().asItem()
+        );
+
+        tag(ItemTags.IRON_ORES).add(
+                SANCTIFICATION_IRON_ORE.get().asItem(),
+                CORRUPTION_IRON_ORE.get().asItem(),
+                FLESHIFICATION_IRON_ORE.get().asItem()
+        );
+        tag(Tags.Items.ORES_LAPIS).add(
+                SANCTIFICATION_LAPIS_ORE.get().asItem(),
+                CORRUPTION_LAPIS_ORE.get().asItem(),
+                FLESHIFICATION_LAPIS_ORE.get().asItem()
+        );
+
+        tag(ItemTags.LAPIS_ORES).add(
+                SANCTIFICATION_LAPIS_ORE.get().asItem(),
+                CORRUPTION_LAPIS_ORE.get().asItem(),
+                FLESHIFICATION_LAPIS_ORE.get().asItem()
+        );
+        tag(Tags.Items.ORES_REDSTONE).add(
+                SANCTIFICATION_REDSTONE_ORE.get().asItem(),
+                CORRUPTION_REDSTONE_ORE.get().asItem(),
+                FLESHIFICATION_REDSTONE_ORE.get().asItem()
+        );
+
+        tag(ItemTags.REDSTONE_ORES).add(
+                SANCTIFICATION_REDSTONE_ORE.get().asItem(),
+                CORRUPTION_REDSTONE_ORE.get().asItem(),
+                FLESHIFICATION_REDSTONE_ORE.get().asItem()
+        );
+
+        tag(ModTags.Items.ORES_TIN).add(
+                TIN_ORE.get().asItem(),
+                DEEPSLATE_TIN_ORE.get().asItem(),
+                SANCTIFICATION_TIN_ORE.get().asItem(),
+                CORRUPTION_TIN_ORE.get().asItem(),
+                FLESHIFICATION_TIN_ORE.get().asItem()
+        );
+
+        tag(ModTags.Items.ORES_LEAD).add(
+                LEAD_ORE.get().asItem(),
+                DEEPSLATE_LEAD_ORE.get().asItem(),
+                SANCTIFICATION_LEAD_ORE.get().asItem(),
+                CORRUPTION_LEAD_ORE.get().asItem(),
+                FLESHIFICATION_LEAD_ORE.get().asItem()
+        );
+
+        tag(ModTags.Items.ORES_SILVER).add(
+                SILVER_ORE.get().asItem(),
+                DEEPSLATE_SILVER_ORE.get().asItem(),
+                SANCTIFICATION_SILVER_ORE.get().asItem(),
+                CORRUPTION_SILVER_ORE.get().asItem(),
+                FLESHIFICATION_SILVER_ORE.get().asItem()
+        );
+
+        tag(ModTags.Items.ORES_TUNGSTEN).add(
+                TUNGSTEN_ORE.get().asItem(),
+                DEEPSLATE_TUNGSTEN_ORE.get().asItem(),
+                SANCTIFICATION_TUNGSTEN_ORE.get().asItem(),
+                CORRUPTION_TUNGSTEN_ORE.get().asItem(),
+                FLESHIFICATION_TUNGSTEN_ORE.get().asItem()
+        );
+
+        tag(ModTags.Items.ORES_PLATINUM).add(
+                PLATINUM_ORE.get().asItem(),
+                DEEPSLATE_PLATINUM_ORE.get().asItem(),
+                SANCTIFICATION_PLATINUM_ORE.get().asItem(),
+                CORRUPTION_PLATINUM_ORE.get().asItem(),
+                FLESHIFICATION_PLATINUM_ORE.get().asItem()
+        );
+
+        tag(Tags.Items.ORES_IN_GROUND_DEEPSLATE).add(
+                DEEPSLATE_TIN_ORE.get().asItem(),
+                DEEPSLATE_LEAD_ORE.get().asItem(),
+                DEEPSLATE_SILVER_ORE.get().asItem(),
+                DEEPSLATE_TUNGSTEN_ORE.get().asItem(),
+                DEEPSLATE_PLATINUM_ORE.get().asItem(),
+                DEEPSLATE_RUBY_ORE.get().asItem(),
+                DEEPSLATE_TOPAZ_ORE.get().asItem(),
+                DEEPSLATE_TR_EMERALD_ORE.get().asItem(),
+                DEEPSLATE_SAPPHIRE_ORE.get().asItem(),
+                DEEPSLATE_COBALT_ORE.get().asItem(),
+                DEEPSLATE_PALLADIUM_ORE.get().asItem(),
+                DEEPSLATE_MYTHRIL_ORE.get().asItem(),
+                DEEPSLATE_ORICHALCUM_ORE.get().asItem(),
+                DEEPSLATE_ADAMANTITE_ORE.get().asItem(),
+                DEEPSLATE_TITANIUM_ORE.get().asItem(),
+                DEEPSLATE_TR_AMETHYST_ORE.get().asItem()
+        );
+
+        tag(Tags.Items.ORES_IN_GROUND_NETHERRACK).add(
+                HELLSTONE.get().asItem()
+        );
+        tag(Tags.Items.ORES_IN_GROUND_STONE).add(
+                TIN_ORE.get().asItem(),
+                LEAD_ORE.get().asItem(),
+                SILVER_ORE.get().asItem(),
+                TUNGSTEN_ORE.get().asItem(),
+                PLATINUM_ORE.get().asItem(),
+                RUBY_ORE.get().asItem(),
+                TOPAZ_ORE.get().asItem(),
+                TR_EMERALD_ORE.get().asItem(),
+                SAPPHIRE_ORE.get().asItem(),
+                TR_AMETHYST_ORE.get().asItem(),
+                DEMONITE_ORE.get().asItem(),
+                TR_CRIMSON_ORE.get().asItem()
+        );
+
+        tag(ModTags.Items.STORAGE_BLOCKS).add(
+                RAW_TIN_BLOCK.get().asItem(),
+                RAW_LEAD_BLOCK.get().asItem(),
+                RAW_SILVER_BLOCK.get().asItem(),
+                RAW_TUNGSTEN_BLOCK.get().asItem(),
+                RAW_PLATINUM_BLOCK.get().asItem(),
+                RAW_DEMONITE_BLOCK.get().asItem(),
+                RAW_TR_CRIMSON_BLOCK.get().asItem(),
+                TIN_BLOCK.get().asItem(),
+                LEAD_BLOCK.get().asItem(),
+                SILVER_BLOCK.get().asItem(),
+                TUNGSTEN_BLOCK.get().asItem(),
+                PLATINUM_BLOCK.get().asItem(),
+                DEMONITE_BLOCK.get().asItem(),
+                TR_CRIMSON_BLOCK.get().asItem(),
+                METEORITE_BLOCK.get().asItem(),
+                RAW_ADAMANTITE_BLOCK.get().asItem(),
+                RAW_COBALT_BLOCK.get().asItem(),
+                RAW_HELLSTONE_BLOCK.get().asItem(),
+                RAW_CHLOROPHYTE_BLOCK.get().asItem(),
+                RAW_LUMINITE_BLOCK.get().asItem(),
+                RAW_PALLADIUM_BLOCK.get().asItem(),
+                RAW_ORICHALCUM_BLOCK.get().asItem(),
+                RAW_TITANIUM_BLOCK.get().asItem(),
+                ADAMANTITE_BLOCK.get().asItem(),
+                COBALT_BLOCK.get().asItem(),
+                HELLSTONE_BLOCK.get().asItem(),
+                CHLOROPHYTE_BLOCK.get().asItem(),
+                LUMINITE_BLOCK.get().asItem(),
+                PALLADIUM_BLOCK.get().asItem(),
+                ORICHALCUM_BLOCK.get().asItem(),
+                TITANIUM_BLOCK.get().asItem(),
+                FLOATING_WHEAT_BALE.get().asItem()
+        );
+        tag(Tags.Items.STORAGE_BLOCKS).add(
+                RAW_TIN_BLOCK.get().asItem(),
+                RAW_LEAD_BLOCK.get().asItem(),
+                RAW_SILVER_BLOCK.get().asItem(),
+                RAW_TUNGSTEN_BLOCK.get().asItem(),
+                RAW_PLATINUM_BLOCK.get().asItem(),
+                RAW_DEMONITE_BLOCK.get().asItem(),
+                RAW_TR_CRIMSON_BLOCK.get().asItem(),
+                TIN_BLOCK.get().asItem(),
+                LEAD_BLOCK.get().asItem(),
+                SILVER_BLOCK.get().asItem(),
+                TUNGSTEN_BLOCK.get().asItem(),
+                PLATINUM_BLOCK.get().asItem(),
+                DEMONITE_BLOCK.get().asItem(),
+                TR_CRIMSON_BLOCK.get().asItem(),
+                METEORITE_BLOCK.get().asItem(),
+                RAW_ADAMANTITE_BLOCK.get().asItem(),
+                RAW_COBALT_BLOCK.get().asItem(),
+                RAW_HELLSTONE_BLOCK.get().asItem(),
+                RAW_CHLOROPHYTE_BLOCK.get().asItem(),
+                RAW_LUMINITE_BLOCK.get().asItem(),
+                RAW_PALLADIUM_BLOCK.get().asItem(),
+                RAW_ORICHALCUM_BLOCK.get().asItem(),
+                RAW_TITANIUM_BLOCK.get().asItem(),
+                ADAMANTITE_BLOCK.get().asItem(),
+                COBALT_BLOCK.get().asItem(),
+                HELLSTONE_BLOCK.get().asItem(),
+                CHLOROPHYTE_BLOCK.get().asItem(),
+                LUMINITE_BLOCK.get().asItem(),
+                PALLADIUM_BLOCK.get().asItem(),
+                ORICHALCUM_BLOCK.get().asItem(),
+                TITANIUM_BLOCK.get().asItem(),
+                FLOATING_WHEAT_BALE.get().asItem()
+        );
 
 
         tag(ModTags.Items.MOSS_ITEM).add(

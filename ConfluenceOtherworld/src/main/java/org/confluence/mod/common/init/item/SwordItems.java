@@ -21,17 +21,13 @@ import org.confluence.mod.common.item.sword.LightSaber;
 import org.confluence.mod.common.item.sword.legacy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
 import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terraentity.data.component.EffectStrategyComponent;
-import org.confluence.terraentity.registries.TERegistries;
 import org.confluence.terraentity.registries.generation.variant.ForwardGeneration;
-import org.confluence.terraentity.registries.hit_effect.variant.PrefabEffect;
 import org.confluence.terraentity.registries.track.variant.SimpleTrack;
 import org.confluence.terraentity.init.TESounds;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import static org.confluence.mod.common.init.ModEffectStrategies.*;
 import static org.confluence.mod.common.item.sword.legacy.SwordPrefabs.*;
 
 
@@ -65,6 +61,11 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> TUNGSTEN_BOARD_SWORD = register("tungsten_board_sword", ModTiers.TUNGSTEN, 3, -2.4F, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> GOLDEN_BOARD_SWORD = register("golden_board_sword", ModTiers.GOLD, 3, -2.4F, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> PLATINUM_BOARD_SWORD = register("platinum_board_sword", ModTiers.PLATINUM, 4, -2.4F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> MURAMASA = register("muramasa", ModTiers.TITANIUM, 10, -1, NORMAL_SWORD.get()
+            .setSweepRange(2.5F)
+            .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.2f, AttributeModifier.Operation.ADD_VALUE)
+    );
+
 
     //tip 注册剑的特殊功能只需修改最后一个参数即可，只需要把 NORMAL_SWORD替换成prefab的其他预制效果，还可以追加效果
     public static final DeferredItem<SwordItem> FAKE_SWORD = register("fake_sword",ModTiers.CANDY_CANE, 0, -2.4F, ModRarity.GRAY, NORMAL_SWORD.get());

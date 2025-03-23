@@ -186,7 +186,13 @@ public class BaseSwordItem extends SwordItem {
         }
 
         public ModifierBuilder addTooltip(){
-            this.tooltipsModifier.add(p->p);
+            addTooltip(p->p);
+            return this;
+        }
+
+        public ModifierBuilder addTooltip(int count, Function<MutableComponent, MutableComponent> tooltips){
+            for(int i = 0;i<count;i++)
+                addTooltip(tooltips);
             return this;
         }
 
@@ -239,8 +245,9 @@ public class BaseSwordItem extends SwordItem {
             var it = modifier.tooltipsModifier.get(i);
             tooltipComponents.add(it.apply(
                     Component.translatable("tooltip.item.confluence." + BuiltInRegistries.ITEM.getKey(this).getPath() + "." + i)
-                            .withStyle(style -> style.withColor(0xffff66).withItalic(true))
+                            .withStyle(style -> style.withColor(0x666666).withItalic(true))
                     )
+//                    .withColor(0x004388)
             );
         }
     }

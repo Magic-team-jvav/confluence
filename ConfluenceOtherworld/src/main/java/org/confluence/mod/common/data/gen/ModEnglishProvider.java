@@ -190,14 +190,15 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.terra_curio.radio_thing.1", "'Forbidden Knowledge echoes from the radio...'");
 
 
-        add("tooltip.item.confluence.copper_short_sword.0", "The faintest shard of the divine weapon's essence has accompanied you since the confluence of two epochs... to journey's end");
-        add("tooltip.item.confluence.copper_short_sword.1", "\"We ten are truly magnificent!\" declares the Copper Shortsword");
-        add("tooltip.item.confluence.starfury.0", "A fragment of the sacred blade's power was claimed by jungle swarms, reduced to buzzing hordes");
-        add("tooltip.item.confluence.starfury.1", "\"A fleeting spark in the gloom of sword-tombs\"");
-        add("tooltip.item.confluence.enchanted_sword.0", "A sliver of the celestial weapon's might lies entombed in caverns, crystallized into frigid intent");
-        add("tooltip.item.confluence.enchanted_sword.1", "\"The heavens' wrath cascades downward\"");
-        add("tooltip.item.confluence.bee_keeper.0", "A portion of the ancient weapon's essence was usurped by jungle hives, transformed into droning legions");
-        add("tooltip.item.confluence.bee_keeper.1", "\"Honeyed words, venomous intent\"");
+        add("tooltip.item.confluence.copper_short_sword.0", "The smallest fragment of the divine weapon's power has been with you since the convergence of the two worlds... until the journey's end.");
+        add("tooltip.item.confluence.copper_short_sword.1", "\"We are so awesome!\" said the copper short sword.");
+        add("tooltip.item.confluence.starfury.0", "A small part of the divine weapon's power ascends to the sky, becoming the star that watches over the heavens.");
+        add("tooltip.item.confluence.starfury.1", "\"The wrath of the heavens pours down.\"");
+        add("tooltip.item.confluence.enchanted_sword.0", "A small part of the divine weapon's power is buried in a cave, condensed into a bleak sword intent.");
+        add("tooltip.item.confluence.enchanted_sword.1", "\"A flash of light in the dim sword tomb.\"");
+
+        add("tooltip.item.confluence.bee_keeper.0", "A small part of the divine weapon's power is possessed by the swarm of bees in the jungle, becoming a buzzing hive.");
+        add("tooltip.item.confluence.bee_keeper.1", "\"Sweet on the outside, sharp on the inside.\"");
 
 
         add("painting.confluence.magic_harp.title", "MAGIC_HARP");
@@ -594,6 +595,84 @@ public class ModEnglishProvider extends LanguageProvider {
         add("terra_entity.effect.strategy.set_fire_5_sec", "Set fire 5 seconds");
         add("terra_entity.effect.strategy.blood_butchered", "Blood Butchered");
         add("terra_entity.effect.strategy.bei_dou", "Random 5 effects:\\nfrozen burn ⅳ 10 seconds\\nhell fire ⅳ 10 seconds\\nwither ⅳ 10 seconds\\npoison ⅳ 10 seconds\\ninstant harm ⅷ");
+
+        add("equipment_benediction.set_switcher.confluence.cold_crystal_set", "Cold Crystal Set");
+        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.0", "Increase maximum mana by 20, Critical Hit Rate increased by 4%");
+        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.1", "Increase maximum mana by 20, Magic Damage increased by 4%");
+        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.2", "Magic Damage increased by 4%");
+        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.3", "Critical Hit Rate increased by 4%");
+        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.4", "Magic Attack will have an additional Frostbite effect");
+
+        add("equipment_benediction.set_switcher.confluence.mining_set", "Mining Set");
+        add("equipment_benediction.set_switcher.confluence.mining_set.data.0", "Provides lighting");
+        add("equipment_benediction.set_switcher.confluence.mining_set.data.1", "+10% Mining Speed");
+        add("equipment_benediction.set_switcher.confluence.mining_set.data.2", "+10% Mining Speed");
+
+        add("equipment_benediction.set_switcher.confluence.shadow_set", "Shadow Set");
+        add("equipment_benediction.set_switcher.confluence.shadow_set.data.0", "Critical Hit Rate increased by 3.5%");
+        add("equipment_benediction.set_switcher.confluence.shadow_set.data.1", "Critical Hit Rate increased by 3.5%");
+        add("equipment_benediction.set_switcher.confluence.shadow_set.data.2", "Critical Hit Rate increased by 3.5%");
+        add("equipment_benediction.set_switcher.confluence.shadow_set.data.3", "Critical Hit Rate increased by 3.5%");
+        add("equipment_benediction.set_switcher.confluence.shadow_set.data.4", "Increased movement speed and acceleration");
+
+        add("equipment_benediction.set_switcher.confluence.crimson_set", "Crimson Set");
+        add("equipment_benediction.set_switcher.confluence.crimson_set.data.0", "Damage increased by 2%");
+        add("equipment_benediction.set_switcher.confluence.crimson_set.data.1", "Damage increased by 2%");
+        add("equipment_benediction.set_switcher.confluence.crimson_set.data.2", "Damage increased by 2%");
+        add("equipment_benediction.set_switcher.confluence.crimson_set.data.3", "Damage increased by 2%");
+        add("equipment_benediction.set_switcher.confluence.crimson_set.data.4", "Increases regeneration by 50%");
+
+        add("equipment_benediction.set_switcher.confluence.snow_set", "Snowproof Set");
+        add("equipment_benediction.set_switcher.confluence.snow_set.data.0", "Immunity to Frozen-type debuffs");
+        add("equipment_benediction.set_switcher.confluence.snow_set.data.1", "Immunity to Frozen-type debuffs");
+
+        add("equipment_benediction.set_switcher.confluence.bee_set", "Bee Set");
+        add("equipment_benediction.set_switcher.confluence.bee_set.data.0", "Summon damage increased by 4%, Summon limit increased by 1");
+        add("equipment_benediction.set_switcher.confluence.bee_set.data.1", "Summon damage increased by 4%");
+        add("equipment_benediction.set_switcher.confluence.bee_set.data.2", "Summon limit increased by 1");
+        add("equipment_benediction.set_switcher.confluence.bee_set.data.3", "Summon damage increased by 5%");
+        add("equipment_benediction.set_switcher.confluence.bee_set.data.4", "Summon damage increased by 10%");
+
+        add("equipment_benediction.set_switcher.confluence.molten_set", "Molten Set");
+        add("equipment_benediction.set_switcher.confluence.molten_set.data.0", "Critical Hit Rate increased by 7%");
+        add("equipment_benediction.set_switcher.confluence.molten_set.data.1", "Melee damage increased by 7%");
+        add("equipment_benediction.set_switcher.confluence.molten_set.data.2", "Melee speed increased by 3.5%");
+        add("equipment_benediction.set_switcher.confluence.molten_set.data.3", "Melee speed increased by 3.5%");
+        add("equipment_benediction.set_switcher.confluence.molten_set.data.4", "Melee damage increased by 10%, Immunity to Fire");
+
+        add("equipment_benediction.set_switcher.confluence.meteor_set", "Space Set");
+        add("equipment_benediction.set_switcher.confluence.meteor_set.data.0", "Magic damage increased by 7%");
+        add("equipment_benediction.set_switcher.confluence.meteor_set.data.1", "Magic damage increased by 7%");
+        add("equipment_benediction.set_switcher.confluence.meteor_set.data.2", "Magic damage increased by 7%");
+        add("equipment_benediction.set_switcher.confluence.meteor_set.data.3", "Magic damage increased by 7%");
+        add("equipment_benediction.set_switcher.confluence.meteor_set.data.4", "Space Gun magic consumption reduced to 0");
+
+        add("equipment_benediction.set_switcher.confluence.gladiator_set", "Gladiator Set");
+        add("equipment_benediction.set_switcher.confluence.gladiator_set.data.0", "Immunity to Knockback");
+
+        add("equipment_benediction.set_switcher.confluence.fossil_set", "Fossil Set");
+        add("equipment_benediction.set_switcher.confluence.fossil_set.data.0", "Critical Hit Rate increased by 4%");
+        add("equipment_benediction.set_switcher.confluence.fossil_set.data.1", "Ranged damage increased by 2.5%");
+        add("equipment_benediction.set_switcher.confluence.fossil_set.data.2", "Ranged damage increased by 2.5%");
+        add("equipment_benediction.set_switcher.confluence.fossil_set.data.3", "Critical Hit Rate increased by 4%");
+        add("equipment_benediction.set_switcher.confluence.fossil_set.data.4", "Chance of not consuming ammo increased by 20%");
+
+        add("equipment_benediction.set_switcher.confluence.ninja_set", "Ninja Set");
+        add("equipment_benediction.set_switcher.confluence.ninja_set.data.0", "Critical Hit Rate increased by 2%");
+        add("equipment_benediction.set_switcher.confluence.ninja_set.data.1", "Critical Hit Rate increased by 2%");
+        add("equipment_benediction.set_switcher.confluence.ninja_set.data.2", "Critical Hit Rate increased by 2%");
+        add("equipment_benediction.set_switcher.confluence.ninja_set.data.3", "Critical Hit Rate increased by 2%");
+        add("equipment_benediction.set_switcher.confluence.ninja_set.data.4", "Movement speed increased by 20%");
+
+        add("equipment_benediction.set_switcher.confluence.spore_root_set", "Spore Root Set");
+        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.0", "Summon damage increased by 2%, Summon limit increased by 1");
+        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.1", "Summon damage increased by 3%");
+        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.2", "Summon damage increased by 3%");
+        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.3", "Summon damage increased by 2%");
+        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.4", "Summon limit increased by 1");
+
+        add("equipment_benediction.set_switcher.confluence.cactus_set", "Cactus Set");
+        add("equipment_benediction.set_switcher.confluence.cactus_set.data.0", "Attackers take damage from cactus thorns");
 
 
         PonderHelper.addTranslateKeys(this::add, true);

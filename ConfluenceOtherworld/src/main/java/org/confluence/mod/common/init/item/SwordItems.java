@@ -37,7 +37,7 @@ public class SwordItems {
 
     // 普通短剑
     public static final DeferredItem<SwordItem> COPPER_SHORT_SWORD = register("copper_short_sword", ModTiers.COPPER, 0, -1, ModRarity.WHITE, SHORT_SWORD.get()
-            .addTooltip(2));
+            .addTooltip(p -> p.withStyle(style -> style.withColor(0x984c11))).addTooltip(p -> p.withStyle(style -> style.withColor(0x984c11))));
     public static final DeferredItem<SwordItem> TIN_SHORT_SWORD = register("tin_short_sword", ModTiers.TIN, 0, -1, SHORT_SWORD.get());
     public static final DeferredItem<SwordItem> IRON_SHORT_SWORD = register("iron_short_sword", ModTiers.IRON, 1, -1, SHORT_SWORD.get());
     public static final DeferredItem<SwordItem> LEAD_SHORT_SWORD = register("lead_short_sword", ModTiers.LEAD, 1, -1, SHORT_SWORD.get());
@@ -101,8 +101,7 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> TENTACLE_MACE = register("tentacle_mace",ModTiers.TITANIUM, 5, -1.4F,
             ModRarity.GREEN,    EFFECT_SWORD.apply(ModEffectStrategies.Components.TENTACLE_SPIKES_EFFECT.get()));
     public static final DeferredItem<SwordItem> BEE_KEEPER = register("bee_keeper",ModTiers.TITANIUM, 11, -3.1F,
-            ModRarity.GREEN,    EFFECT_SWORD.apply(ModEffectStrategies.Components.BEE_KEEPER_EFFECT.get())
-                    .addTooltip(2, s->s.withColor(0xFFFF66)));
+            ModRarity.GREEN,    EFFECT_SWORD.apply(ModEffectStrategies.Components.BEE_KEEPER_EFFECT.get()).addTooltip(2));
 
 
 
@@ -110,11 +109,9 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> ICE_BLADE = register("ice_blade",ModTiers.TITANIUM, 5, -1.0F,
             ModRarity.BLUE,     PROJ_SWORD.apply(SwordProjectileComponent.ICE_PROJ));
     public static final DeferredItem<SwordItem> STARFURY = register("starfury",ModTiers.TITANIUM, 6, -1.1F,
-            ModRarity.GREEN,    PROJ_SWORD.apply(SwordProjectileComponent.STAR_FURY_PROJ)
-                    .addTooltip(2, style->style.withColor(0x983535)));
+            ModRarity.GREEN,    PROJ_SWORD.apply(SwordProjectileComponent.STAR_FURY_PROJ)  .addTooltip(p -> p.withStyle(style -> style.withColor(0xe44189))).addTooltip(p -> p.withStyle(style -> style.withColor(0xe44189))));
     public static final DeferredItem<SwordItem> ENCHANTED_SWORD = register("enchanted_sword", ModTiers.TITANIUM, 7, -1.1F,
-            ModRarity.ORANGE,   PROJ_SWORD.apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ)
-                    .addTooltip(2, style->style.withColor(0x004388)));
+            ModRarity.ORANGE,   PROJ_SWORD.apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ).addTooltip(p -> p.withStyle(style -> style.withColor(0x4156e4))).addTooltip(p -> p.withStyle(style -> style.withColor(0x4156e4))));
     public static final DeferredItem<SwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.TITANIUM, 5, -1.1F,
             ModRarity.GREEN,   PROJ_SWORD.apply(SwordProjectileComponent.GRASS_PROJ));
 

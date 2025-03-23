@@ -348,8 +348,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 OreBlocks.SANCTIFICATION_REDSTONE_ORE.asItem(), OreBlocks.CORRUPTION_REDSTONE_ORE.asItem(), OreBlocks.FLESHIFICATION_REDSTONE_ORE.get().asItem()
         );
         tag(ModTags.Items.INITIAL_WOOD).add(
-              NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks().asItem(),
-              NatureBlocks.PALM_LOG_BLOCKS.getPlanks().asItem(),
               NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().asItem(),
               NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().asItem(),
               NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().asItem(),
@@ -836,40 +834,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 TR_CRIMSON_ORE.get().asItem()
         );
 
-        tag(ModTags.Items.STORAGE_BLOCKS).add(
-                RAW_TIN_BLOCK.get().asItem(),
-                RAW_LEAD_BLOCK.get().asItem(),
-                RAW_SILVER_BLOCK.get().asItem(),
-                RAW_TUNGSTEN_BLOCK.get().asItem(),
-                RAW_PLATINUM_BLOCK.get().asItem(),
-                RAW_DEMONITE_BLOCK.get().asItem(),
-                RAW_TR_CRIMSON_BLOCK.get().asItem(),
-                TIN_BLOCK.get().asItem(),
-                LEAD_BLOCK.get().asItem(),
-                SILVER_BLOCK.get().asItem(),
-                TUNGSTEN_BLOCK.get().asItem(),
-                PLATINUM_BLOCK.get().asItem(),
-                DEMONITE_BLOCK.get().asItem(),
-                TR_CRIMSON_BLOCK.get().asItem(),
-                METEORITE_BLOCK.get().asItem(),
-                RAW_ADAMANTITE_BLOCK.get().asItem(),
-                RAW_COBALT_BLOCK.get().asItem(),
-                RAW_HELLSTONE_BLOCK.get().asItem(),
-                RAW_CHLOROPHYTE_BLOCK.get().asItem(),
-                RAW_LUMINITE_BLOCK.get().asItem(),
-                RAW_PALLADIUM_BLOCK.get().asItem(),
-                RAW_ORICHALCUM_BLOCK.get().asItem(),
-                RAW_TITANIUM_BLOCK.get().asItem(),
-                ADAMANTITE_BLOCK.get().asItem(),
-                COBALT_BLOCK.get().asItem(),
-                HELLSTONE_BLOCK.get().asItem(),
-                CHLOROPHYTE_BLOCK.get().asItem(),
-                LUMINITE_BLOCK.get().asItem(),
-                PALLADIUM_BLOCK.get().asItem(),
-                ORICHALCUM_BLOCK.get().asItem(),
-                TITANIUM_BLOCK.get().asItem(),
-                FLOATING_WHEAT_BALE.get().asItem()
-        );
         tag(Tags.Items.STORAGE_BLOCKS).add(
                 RAW_TIN_BLOCK.get().asItem(),
                 RAW_LEAD_BLOCK.get().asItem(),

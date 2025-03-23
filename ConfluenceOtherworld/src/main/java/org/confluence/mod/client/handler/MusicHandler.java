@@ -6,6 +6,7 @@ import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.ChannelAccess;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -16,6 +17,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.SelectMusicEvent;
 import net.neoforged.neoforge.common.Tags;
+import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.terraentity.entity.ai.Boss;
@@ -35,6 +37,7 @@ public final class MusicHandler {
     private static boolean hasBossMusic = false;
 
     public static void handle(SelectMusicEvent event, LocalPlayer player) {
+        if (!ClientConfigs.playerOurMusic) return;
         if (nextBiomeCheck-- <= 0) {
             Holder<Biome> biome = player.level().getBiome(player.blockPosition());
             if (biome != lastBiome) {
@@ -49,9 +52,7 @@ public final class MusicHandler {
             selectMusic(player);
         }
         SoundInstance playingMusic = event.getPlayingMusic();
-        if ((playingMusic == null || (
-                nextSong != null && !nextSong.getLocation().equals(playingMusic.getLocation())
-        )) && nextSongDelay-- <= 0) {
+        if ((playingMusic == null || (nextSong != null && isSameModButDifferentSong(nextSong.getLocation(), playingMusic.getLocation()))) && nextSongDelay-- <= 0) {
             if (volume > 0.0F) {
                 volume -= 0.01F;
                 Map<SoundInstance, ChannelAccess.ChannelHandle> instanceToChannel = Minecraft.getInstance().getSoundManager().soundEngine.instanceToChannel;
@@ -73,6 +74,10 @@ public final class MusicHandler {
                 nextSong = null;
             }
         }
+    }
+
+    private static boolean isSameModButDifferentSong(ResourceLocation next, ResourceLocation current) {
+        return next.getNamespace().equals(current.getNamespace()) && !next.getPath().equals(current.getNamespace());
     }
 
     public static void clear() {

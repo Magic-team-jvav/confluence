@@ -26,19 +26,16 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.block.MusicBoxBlocks;
-import org.confluence.mod.common.item.accessory.MusicBoxItem;
 import org.confluence.mod.mixed.IMusicManager;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Supplier;
-
 public class MusicBoxBlock extends AbstractMechanicalBlock {
-    private final Supplier<MusicBoxItem> musicBoxItem;
+    public final @Nullable Music music;
 
-    public MusicBoxBlock(Supplier<MusicBoxItem> musicBoxItem) {
+    public MusicBoxBlock(@Nullable Music music) {
         super(BlockBehaviour.Properties.ofFullCopy(Blocks.JUKEBOX));
-        this.musicBoxItem = musicBoxItem;
+        this.music = music;
         registerDefaultState(stateDefinition.any().setValue(StateProperties.DRIVE, true));
     }
 
@@ -57,7 +54,7 @@ public class MusicBoxBlock extends AbstractMechanicalBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state, musicBoxItem.get().music);
+        return new Entity(pos, state, music);
     }
 
     @Override

@@ -21,16 +21,21 @@ import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
 public class MusicBoxItem extends BlockItem implements ICurioItem, IFunctionCouldEnable {
+    private static Map<Music, MusicBoxItem> MUSIC_2_ITEM = new HashMap<>();
     private static final Map<ResourceLocation, MusicBoxItem> SOUND_ID_2_ITEM = new Hashtable<>();
     public final @Nullable Music music;
 
-    public MusicBoxItem(@Nullable Music music, MusicBoxBlock block) {
+    public MusicBoxItem(MusicBoxBlock block) {
         super(block, new Properties().stacksTo(1).component(TCDataComponentTypes.MOD_RARITY, ModRarity.ORANGE));
-        this.music = music;
+        this.music = block.music;
+        if (music != null) {
+            MUSIC_2_ITEM.put(music, this);
+        }
     }
 
     @Override
@@ -67,7 +72,10 @@ public class MusicBoxItem extends BlockItem implements ICurioItem, IFunctionCoul
     }
 
     public static void initialize() {
-        // todo 注册音乐->物品
+        for (Map.Entry<Music, MusicBoxItem> entry : MUSIC_2_ITEM.entrySet()) {
+            SOUND_ID_2_ITEM.put(entry.getKey().getEvent().value().getLocation(), entry.getValue());
+        }
+        MUSIC_2_ITEM = null;
     }
 
     public static void register(Holder<SoundEvent> holder, MusicBoxItem musicBoxItem) {

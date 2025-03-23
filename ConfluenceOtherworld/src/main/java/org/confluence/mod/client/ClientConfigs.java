@@ -19,6 +19,7 @@ import java.util.Locale;
 public final class ClientConfigs {
     public static int showWindParticles = 90;
     public static boolean achievementToast = true;
+    public static boolean playerOurMusic = false;
 
     public static boolean terraStyleHealth = true;
     public static TerraStyleHealthHud.Health healthStyle = TerraStyleHealthHud.Health.OVERLAY;
@@ -36,6 +37,7 @@ public final class ClientConfigs {
 
     private static IntValue SHOW_WIND_PARTICLES;
     private static BooleanValue ACHIEVEMENT_TOAST;
+    private static BooleanValue PLAY_OUR_MUSIC;
 
     private static BooleanValue TERRA_STYLE_HEALTH;
     private static EnumValue<TerraStyleHealthHud.Health> HEALTH_STYLE;
@@ -54,6 +56,7 @@ public final class ClientConfigs {
     public static void onLoad() {
         showWindParticles = SHOW_WIND_PARTICLES.get();
         achievementToast = ACHIEVEMENT_TOAST.get();
+        playerOurMusic = PLAY_OUR_MUSIC.get();
 
         terraStyleHealth = TERRA_STYLE_HEALTH.get();
         healthStyle = HEALTH_STYLE.get();
@@ -75,6 +78,7 @@ public final class ClientConfigs {
 
         SHOW_WIND_PARTICLES = BUILDER.defineInRange("showWindParticles", 90, 0, 100);
         ACHIEVEMENT_TOAST = BUILDER.define("achievementToast", true);
+        PLAY_OUR_MUSIC = BUILDER.define("playerOurMusic", false);
 
         BUILDER.push("HUD");
         BUILDER.push("Health");

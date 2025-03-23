@@ -142,7 +142,20 @@ public class AccessoryItems {
             .accessories(of(TCItems.MAY$FLY, new MayFlyAbilityValue.Storage(0.3F, 36, true, false)))
             .attribute(Attributes.FALL_DAMAGE_MULTIPLIER, -100, ADD_VALUE));
 
-    public static final Supplier<MusicBoxItem> MUSIC_BOX = ITEMS.register("music_box", () -> new MusicBoxItem(null, MusicBoxBlocks.MUSIC_BOX.get()));
+    public static final Supplier<MusicBoxItem> MUSIC_BOX = ITEMS.register("music_box", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX.get()));
+    public static final Supplier<MusicBoxItem> MUSIC_BOX_OTHERWORLD_DAY = ITEMS.register("music_box_otherworld_day", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_OTHERWORLD_DAY.get()));
+    // todo eerie
+    public static final Supplier<MusicBoxItem> MUSIC_BOX_NIGHT = ITEMS.register("music_box_night", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_NIGHT.get()));
+    // todo title
+    public static final Supplier<MusicBoxItem> MUSIC_BOX_UNDERGROUND = ITEMS.register("music_box_underground", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_UNDERGROUND.get()));
+    // todo boss1
+    public static final Supplier<MusicBoxItem> MUSIC_BOX_JUNGLE = ITEMS.register("music_box_jungle", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_JUNGLE.get()));
+    public static final Supplier<MusicBoxItem> MUSIC_BOX_CORRUPTION = ITEMS.register("music_box_corruption", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_CORRUPTION.get()));
+    public static final Supplier<MusicBoxItem> MUSIC_BOX_UNDERGROUND_CORRUPTION = ITEMS.register("music_box_underground_corruption", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_UNDERGROUND_CORRUPTION.get()));
+    public static final Supplier<MusicBoxItem> MUSIC_BOX_THE_HALLOW = ITEMS.register("music_box_the_hallow", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_THE_HALLOW.get()));
+    // todo boss2
+    public static final Supplier<MusicBoxItem> MUSIC_BOX_UNDERGROUND_HALLOW = ITEMS.register("music_box_underground_hallow", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_UNDERGROUND_HALLOW.get()));
+    // todo boss3
 
     private static Supplier<BaseCurioItem> registerCurio(String name, Consumer<BaseCurioItem.Builder> consumer) {
         return ITEMS.register(name, () -> {

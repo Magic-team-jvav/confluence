@@ -45,6 +45,6 @@ public class MoltenSet extends EquipmentSet {
                     if (TCUtils.isFire(event.getSource())) {
                         event.setInvulnerable(true);
                     }
-                }).build(),true);
+                }).build());
     }
 }

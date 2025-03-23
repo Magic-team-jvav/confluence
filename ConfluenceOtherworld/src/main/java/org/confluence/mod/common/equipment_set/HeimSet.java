@@ -34,7 +34,7 @@ public class HeimSet extends EquipmentSet {
                     }
                 })
                 // todo tick hook
-                .build(),true);
+                .build());
 //        equippableGroup.addEquippableSet("leggings", new EquippableSetData.Builder()
 //                .addEquippable(VanillaEquippable.LEGS, ArmorItems.HEIM_LEGGINGS)
 //                .bindHook(builder -> builder.addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(ArmorItems.HEIM_LEGGINGS.getId(), 0.01, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))

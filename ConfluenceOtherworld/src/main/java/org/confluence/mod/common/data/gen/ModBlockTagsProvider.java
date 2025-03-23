@@ -12,8 +12,6 @@ import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,7 +19,6 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.confluence.mod.Confluence.MODID;
 import static org.confluence.mod.common.init.block.DecorativeBlocks.*;
-import static org.confluence.mod.common.init.block.DecorativeBlocks.PINK_BRICK_SLAB;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
 import static org.confluence.mod.common.init.block.ModBlocks.*;
 import static org.confluence.mod.common.init.block.NatureBlocks.*;
@@ -659,6 +656,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DEMON_ALTAR.get(),
                 CRIMSON_ALTAR.get()
         );
+        tag(ModTags.Blocks.MINEABLE_WITH_HAMAXE).addTag(ModTags.Blocks.MINEABLE_WITH_HAMMER).addTag(BlockTags.MINEABLE_WITH_AXE);
         // neoforge标签
         tag(Tags.Blocks.NEEDS_NETHERITE_TOOL).add(
                 EBONY_HARDENED_SAND_BLOCK.get(),

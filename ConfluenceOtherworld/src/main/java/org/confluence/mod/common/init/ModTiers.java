@@ -38,6 +38,7 @@ public final class ModTiers {
 
     public static final Tier DEMONITE = new PoweredTier(65, ModTags.Blocks.NEEDS_5_LEVEL, 1661, 10, 4, 12, () -> Ingredient.of(MaterialItems.DEMONITE_INGOT.get()));
     public static final Tier TR_CRIMSON = new PoweredTier(70, ModTags.Blocks.NEEDS_5_LEVEL, 1661, 11, 4, 13, () -> Ingredient.of(MaterialItems.TR_CRIMSON_INGOT.get()));
+    public static final Tier METEOR = new PoweredTier(80, ModTags.Blocks.NEEDS_6_LEVEL, 10000, 10000, 10000, 10000, () -> Ingredient.of(MaterialItems.METEORITE_INGOT));
     public static final Tier HELLSTONE = new PoweredTier(100, ModTags.Blocks.NEEDS_6_LEVEL, 1661, 14, 6, 14, () -> Ingredient.of(MaterialItems.HELLSTONE_INGOT.get()));
     public static final Tier COBALT = new PoweredTier(110, ModTags.Blocks.NEEDS_7_LEVEL, 1661, 16, 1, 15, () -> Ingredient.of(MaterialItems.COBALT_INGOT.get()));
     public static final Tier PALLADIUM = new PoweredTier(130, ModTags.Blocks.NEEDS_7_LEVEL, 1661, 16, 1, 15, () -> Ingredient.of(MaterialItems.PALLADIUM_INGOT.get()));

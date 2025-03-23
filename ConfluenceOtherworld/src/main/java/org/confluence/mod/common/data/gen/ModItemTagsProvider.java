@@ -600,19 +600,24 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         BowItems.acceptTag(tag(Tags.Items.TOOLS_BOW));
         PaintItems.acceptTag(tag(Tags.Items.DYED));
         ArrowItems.acceptTag(tag(ItemTags.ARROWS));
-        HammerItems.acceptTag(tag(ModTags.Items.HAMMER));
+        IntrinsicTagAppender<Item> hammer = tag(ModTags.Items.HAMMER);
+        HamaxeItems.acceptTag(hammer);
+        HammerItems.acceptTag(hammer);
         IntrinsicTagAppender<Item> pickaxes = tag(ItemTags.PICKAXES);
         PickaxeItems.acceptTag(pickaxes);
         PickaxeAxeItems.acceptTag(pickaxes);
         IntrinsicTagAppender<Item> axes = tag(ItemTags.AXES);
+        HamaxeItems.acceptTag(axes);
         AxeItems.acceptTag(axes);
         PickaxeAxeItems.acceptTag(axes);
 
-        PickaxeAxeItems.acceptTag(tag(ModTags.Items.TOOLS));
-        AxeItems.acceptTag(tag(ModTags.Items.TOOLS));
-        PickaxeItems.acceptTag(tag(ModTags.Items.TOOLS));
-        HammerItems.acceptTag(tag(ModTags.Items.TOOLS));
-        FishingPoleItems.acceptTag(tag(ModTags.Items.TOOLS));
+        IntrinsicTagAppender<Item> tools = tag(Tags.Items.TOOLS);
+        PickaxeAxeItems.acceptTag(tools);
+        AxeItems.acceptTag(tools);
+        PickaxeItems.acceptTag(tools);
+        HamaxeItems.acceptTag(tools);
+        HammerItems.acceptTag(tools);
+        FishingPoleItems.acceptTag(tools);
 
         SwordItems.acceptTag(tag(Tags.Items.MELEE_WEAPON_TOOLS));
         ManaWeaponItems.acceptTag(tag(ModTags.Items.MANA_WEAPON));
@@ -621,6 +626,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         PickaxeItems.acceptTag(mining_tool_tools);
         PickaxeAxeItems.acceptTag(mining_tool_tools);
         AxeItems.acceptTag(mining_tool_tools);
+        HamaxeItems.acceptTag(mining_tool_tools);
         HammerItems.acceptTag(mining_tool_tools);
         DrillItems.acceptTag(mining_tool_tools);
         IntrinsicTagAppender<Item> prefix_universal_only = tag(ModTags.Items.PREFIX_UNIVERSAL_ONLY);

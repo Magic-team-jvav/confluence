@@ -29,7 +29,7 @@ public class ShadowSet extends EquipmentSet {
                         VanillaEquippable.FEET, ArmorItems.SHADOW_BOOTS
                 )
                 .bindHook(builder -> builder.addBonus(Attributes.MOVEMENT_SPEED, new AttributeModifier(Confluence.asResource("shadow_set"), 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
-                .build(),true);
+                .build());
     }
 
     private static EquippableSetData critChanceBonus(VanillaEquippable slot, DeferredItem<ArmorItem> item) {

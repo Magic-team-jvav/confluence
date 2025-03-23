@@ -19,6 +19,7 @@ import org.confluence.mod.common.init.item.MaterialItems;
 
 import java.util.EnumMap;
 import java.util.List;
+import java.util.function.Supplier;
 
 public final class ModArmorMaterials {
     public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = DeferredRegister.create(BuiltInRegistries.ARMOR_MATERIAL, Confluence.MODID);
@@ -173,8 +174,26 @@ public final class ModArmorMaterials {
             15, SoundEvents.ARMOR_EQUIP_NETHERITE, MaterialItems.HELLSTONE_INGOT,
             "molten", 0.0F, 0.0F
     );
+    public static final Holder<ArmorMaterial> NECRO_ARMOR_MATERIALS = registerArmorMaterial("necro_armor_materials",
+            10000, 10000, 10000, 10000,
+            10000, SoundEvents.ARMOR_EQUIP_LEATHER, Items.BONE,
+            "necro", 0.0F, 0.0F);
 
-    public static Holder<ArmorMaterial> registerArmorMaterial(String name, int helmetArmor, int chestplateArmor, int leggingsArmor, int bootsArmor, int durability, Holder<SoundEvent> equipSound, ItemLike fixItem, String layersName, float toughness, float knockbackResistance) {
+    public static final Holder<ArmorMaterial> GOGGLES_ARMOR_MATERIALS = registerArmorMaterial("goggles_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "goggles", 0, 0);
+    public static final Holder<ArmorMaterial> WIZARD_HAT_ARMOR_MATERIALS = registerArmorMaterial("wizard_hat_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "wizard_hat", 0, 0);
+    public static final Holder<ArmorMaterial> MAGIC_HAT_ARMOR_MATERIALS = registerArmorMaterial("magic_hat_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "magic_hat", 0, 0);
+    public static final Holder<ArmorMaterial> AMETHYST_ROBE_ARMOR_MATERIALS = registerArmorMaterial("amethyst_robe_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.TR_AMETHYST), "amethyst_robe", 0, 0);
+    public static final Holder<ArmorMaterial> TOPAZ_ROBE_ARMOR_MATERIALS = registerArmorMaterial("topaz_robe_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.TOPAZ), "topaz_robe", 0, 0);
+    public static final Holder<ArmorMaterial> SAPPHIRE_ROBE_ARMOR_MATERIALS = registerArmorMaterial("sapphire_robe_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.SAPPHIRE), "sapphire_robe", 0, 0);
+    public static final Holder<ArmorMaterial> EMERALD_ROBE_ARMOR_MATERIALS = registerArmorMaterial("emerald_robe_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.TR_EMERALD), "emerald_robe", 0, 0);
+    public static final Holder<ArmorMaterial> RUBY_ROBE_ARMOR_MATERIALS = registerArmorMaterial("ruby_robe_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.RUBY), "ruby_robe", 0, 0);
+    public static final Holder<ArmorMaterial> MYSTIC_ROBE_ARMOR_MATERIALS = registerArmorMaterial("mystic_robe_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "mystic_robe", 0, 0);
+    public static final Holder<ArmorMaterial> DIAMOND_ROBE_ARMOR_MATERIALS = registerArmorMaterial("diamond_robe_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(Items.DIAMOND), "diamond_robe", 0, 0);
+    public static final Holder<ArmorMaterial> AMBER_ROBE_ARMOR_MATERIALS = registerArmorMaterial("amber_robe_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.AMBER), "amber_robe", 0, 0);
+
+    public static final Holder<ArmorMaterial> JUNGLE_ARMOR_MATERIALS = registerArmorMaterial("jungle_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.JUNGLE_SPORE), "jungle", 0, 0);
+
+    public static Holder<ArmorMaterial> registerArmorMaterial(String name, int helmetArmor, int chestplateArmor, int leggingsArmor, int bootsArmor, int enchantmentValue, Holder<SoundEvent> equipSound, ItemLike fixItem, String layersName, float toughness, float knockbackResistance) {
         return ARMOR_MATERIALS.register(name, () -> new ArmorMaterial(
                 Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
                     map.put(ArmorItem.Type.HELMET, helmetArmor);
@@ -182,9 +201,26 @@ public final class ModArmorMaterials {
                     map.put(ArmorItem.Type.LEGGINGS, leggingsArmor);
                     map.put(ArmorItem.Type.BOOTS, bootsArmor);
                 }),
-                durability,
+                enchantmentValue,
                 equipSound,
                 () -> Ingredient.of(fixItem),
+                List.of(new ArmorMaterial.Layer(Confluence.asResource(layersName))),
+                toughness,
+                knockbackResistance
+        ));
+    }
+
+    public static Holder<ArmorMaterial> registerArmorMaterial(String name, int helmetArmor, int chestplateArmor, int leggingsArmor, int bootsArmor, int enchantmentValue, Holder<SoundEvent> equipSound, Supplier<Ingredient> ingredient, String layersName, float toughness, float knockbackResistance) {
+        return ARMOR_MATERIALS.register(name, () -> new ArmorMaterial(
+                Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+                    map.put(ArmorItem.Type.HELMET, helmetArmor);
+                    map.put(ArmorItem.Type.CHESTPLATE, chestplateArmor);
+                    map.put(ArmorItem.Type.LEGGINGS, leggingsArmor);
+                    map.put(ArmorItem.Type.BOOTS, bootsArmor);
+                }),
+                enchantmentValue,
+                equipSound,
+                ingredient,
                 List.of(new ArmorMaterial.Layer(Confluence.asResource(layersName))),
                 toughness,
                 knockbackResistance

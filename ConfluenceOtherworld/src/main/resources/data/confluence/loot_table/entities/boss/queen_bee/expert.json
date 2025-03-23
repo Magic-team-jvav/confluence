@@ -13,6 +13,11 @@
           "type": "minecraft:item",
           "name": "confluence:the_bees_knees",
           "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:bee_keeper",
+          "weight": 1
         }
       ]
     },

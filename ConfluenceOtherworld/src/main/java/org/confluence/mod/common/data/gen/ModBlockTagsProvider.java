@@ -316,7 +316,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         );
         // 锄头
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithHoe = tag(BlockTags.MINEABLE_WITH_HOE);
-        mineableWithShovel.add(
+        mineableWithHoe.add(
                 FLOATING_WHEAT_BALE.get(),
                 SCULK_TRAP.get()
         );
@@ -1032,7 +1032,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 TOPAZ_ORE.get(),
                 TR_EMERALD_ORE.get(),
                 SAPPHIRE_ORE.get(),
-                TR_AMETHYST_ORE.get()
+                TR_AMETHYST_ORE.get(),
+                DEMONITE_ORE.get(),
+                TR_CRIMSON_ORE.get()
         );
         tag(Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES).add(
                 HEAVY_WORK_BENCH.get()

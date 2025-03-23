@@ -89,7 +89,7 @@ public class SwordItems {
             ModRarity.BLUE,     EFFECT_SWORD.apply(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get()));
     public static final DeferredItem<SwordItem> BLOOD_BUTCHERER = register("blood_butchere",ModTiers.TITANIUM, 7, -2.7F,
             ModRarity.BLUE,     EFFECT_SWORD.apply(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get()));
-    public static final DeferredItem<SwordItem> VOLCANO = register("volcano",ModTiers.TITANIUM, 13, -3F,
+    public static final DeferredItem<SwordItem> VOLCANO = register("volcano",ModTiers.TITANIUM, 16, -3F,
             ModRarity.ORANGE,   EFFECT_SWORD.apply(ModEffectStrategies.Components.HELL_FIRE_EFFECT.get())
                     .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2f, AttributeModifier.Operation.ADD_VALUE)
                     .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.5f, AttributeModifier.Operation.ADD_VALUE)
@@ -98,7 +98,7 @@ public class SwordItems {
             ModRarity.ORANGE,   EFFECT_SWORD.apply(ModEffectStrategies.Components.BAT_FANG_EFFECT.get()));
     public static final DeferredItem<SwordItem> TENTACLE_MACE = register("tentacle_mace",ModTiers.TITANIUM, 5, -1.4F,
             ModRarity.GREEN,    EFFECT_SWORD.apply(ModEffectStrategies.Components.TENTACLE_SPIKES_EFFECT.get()));
-    public static final DeferredItem<SwordItem> BEE_KEEPER = register("bee_keeper",ModTiers.TITANIUM, 5, 1,
+    public static final DeferredItem<SwordItem> BEE_KEEPER = register("bee_keeper",ModTiers.TITANIUM, 11, -3.1F,
             ModRarity.GREEN,    EFFECT_SWORD.apply(ModEffectStrategies.Components.BEE_KEEPER_EFFECT.get()));
 
 
@@ -110,7 +110,7 @@ public class SwordItems {
             ModRarity.GREEN,    PROJ_SWORD.apply(SwordProjectileComponent.STAR_FURY_PROJ));
     public static final DeferredItem<SwordItem> ENCHANTED_SWORD = register("enchanted_sword", ModTiers.TITANIUM, 7, -1.1F,
             ModRarity.ORANGE,   PROJ_SWORD.apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ));
-    public static final DeferredItem<SwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.TITANIUM, 7, -1.1F,
+    public static final DeferredItem<SwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.TITANIUM, 5, -1.1F,
             ModRarity.GREEN,   PROJ_SWORD.apply(SwordProjectileComponent.GRASS_PROJ));
 
     // 光剑

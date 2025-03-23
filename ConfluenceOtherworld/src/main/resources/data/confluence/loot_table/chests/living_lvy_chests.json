@@ -37,7 +37,7 @@
       "entries": [
         {
            "type": "minecraft:loot_table",
-           "value": "confluence:gameplay/living_carry",
+           "value": "confluence:gameplay/living_mahogany_carry",
            "weight": 2
         },
         {

@@ -27,13 +27,13 @@ public class HeimSet extends EquipmentSet {
         equippableGroup.addEquippableSet("chestplate", new EquippableSetData.Builder()
                 .addEquippable(VanillaEquippable.CHEST, ArmorItems.HEIM_CHESTPLATE)
                 .bindHook(builder -> builder.addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(ArmorItems.HEIM_CHESTPLATE.getId(), 0.01, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
-                .bindHook(EBHookTypes.LIVING_SHIELD_BLOCK.get(), (owner, event) -> {
+                .bindDelayHook(EBHookTypes.LIVING_SHIELD_BLOCK.get(), (owner, event) -> {
                     if (event.getBlocked()) {
                         LivingEntity living = event.getEntity();
-                        living.getPersistentData().putLong("confluence:last_shield_block_time", living.level().getGameTime());
+                        System.out.println("delay shield block");
                     }
-                })
-                // todo tick hook
+                },60)
+
                 .build(),true);
 //        equippableGroup.addEquippableSet("leggings", new EquippableSetData.Builder()
 //                .addEquippable(VanillaEquippable.LEGS, ArmorItems.HEIM_LEGGINGS)

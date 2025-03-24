@@ -238,13 +238,7 @@ public final class LivingEntityEvents {
                 amount *= 0.5F;
             }
         }
-        // 召唤物集火伤害加成
-        if (damageSource.is(TETags.DamageTypes.SUMMONER)) {
-            if (living.hasEffect(TEEffects.SUMMON_FOCUS)) {
-                amount = amount + 2;
-                event.setNewDamage(amount);
-            }
-        }
+
         // 剑命中效果
         ItemStack weapon = damageSource.getWeaponItem();
         if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword) {

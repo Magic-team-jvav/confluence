@@ -23,6 +23,6 @@ public class InstantExplosionBlock extends AbstractMechanicalBlock {
     @Override
     public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
         pLevel.removeBlock(pPos, false);
-        pLevel.explode(null, pPos.getX() + 0.5, pPos.getY() + 0.5, pPos.getZ() + 0.5, 10.0F, false, Level.ExplosionInteraction.BLOCK);
+        pLevel.explode(null, pPos.getX() + 0.5, pPos.getY() + 0.5, pPos.getZ() + 0.5, 15.0F, false, Level.ExplosionInteraction.BLOCK);
     }
 }

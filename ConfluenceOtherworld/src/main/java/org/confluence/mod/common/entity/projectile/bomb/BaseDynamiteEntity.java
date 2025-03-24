@@ -16,18 +16,21 @@ public class BaseDynamiteEntity extends BaseBombEntity {
         super(pEntityType, pLevel);
         this.delay = 100;
         this.diameter = DIAMETER;
+        this.blastPower = 15.0F;
     }
 
     public BaseDynamiteEntity(EntityType<? extends BaseDynamiteEntity> pEntityType, LivingEntity pShooter) {
         super(pEntityType, pShooter);
         this.delay = 100;
         this.diameter = 0.25F;
+        this.blastPower = 15.0F;
     }
 
     public BaseDynamiteEntity(LivingEntity pShooter) {
         super(ModEntities.DYNAMITE.get(), pShooter);
         this.delay = 100;
         this.diameter = 0.25F;
+        this.blastPower = 15.0F;
     }
 
     @Override
@@ -35,7 +38,7 @@ public class BaseDynamiteEntity extends BaseBombEntity {
         level().explode(
                 this, Explosion.getDefaultDamageSource(level(), this),
                 new MultiplyExplosionDamageCalculator(0.2F),
-                getX(), getY(), getZ(), 20.0F, false,
+                getX(), getY(), getZ(), blastPower, false,
                 Level.ExplosionInteraction.TNT, ParticleTypes.EXPLOSION,
                 ParticleTypes.EXPLOSION_EMITTER, SoundEvents.GENERIC_EXPLODE
         );

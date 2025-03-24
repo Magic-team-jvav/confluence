@@ -34,7 +34,7 @@ public class BaseBombEntity extends ThrowableItemProjectile {
     public ParticleEmitter emitter;
 
     protected int delay = 60;
-    protected float blastPower = 15.0F;
+    protected float blastPower = 10.0F;
     protected double bounceFactor = 0.2;
     protected double frictionFactor = 0.9;
 

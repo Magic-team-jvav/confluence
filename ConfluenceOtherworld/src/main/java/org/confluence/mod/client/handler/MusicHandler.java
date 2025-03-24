@@ -77,7 +77,7 @@ public final class MusicHandler {
     }
 
     private static boolean isSameModButDifferentSong(ResourceLocation next, ResourceLocation current) {
-        return next.getNamespace().equals(current.getNamespace()) && !next.getPath().equals(current.getNamespace());
+        return next.getNamespace().equals(current.getNamespace()) && !next.getPath().equals(current.getPath());
     }
 
     public static void clear() {

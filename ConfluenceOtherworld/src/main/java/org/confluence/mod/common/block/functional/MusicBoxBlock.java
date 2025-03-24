@@ -12,6 +12,7 @@ import net.minecraft.sounds.Music;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -23,12 +24,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import org.confluence.mod.client.event.GameClientEvents;
 import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.block.MusicBoxBlocks;
+import org.confluence.mod.common.item.accessory.MusicBoxItem;
 import org.confluence.mod.mixed.IMusicManager;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
+import top.theillusivec4.curios.api.SlotContext;
 
 public class MusicBoxBlock extends AbstractMechanicalBlock {
     public final @Nullable Music music;
@@ -118,11 +123,20 @@ public class MusicBoxBlock extends AbstractMechanicalBlock {
                 if (manager.confluence$getMusicBoxOccupied().isNone()) {
                     if (!musicManager.isPlayingMusic(music) && withinRange(entity.getBlockPos().getCenter(), player.position(), music)) {
                         musicManager.startPlaying(music);
+                        /**
+                         * @see GameClientEvents#clientTick$Post(ClientTickEvent.Post) 1st
+                         * @see MusicBoxItem#curioTick(SlotContext, ItemStack) 2nd
+                         */
                         manager.confluence$setMusicBoxOccupied(IMusicManager.State.BLOCK); // 3rd
                     }
-                } else if (musicManager.isPlayingMusic(music) && !withinRange(entity.getBlockPos().getCenter(), player.position(), music)) {
-                    musicManager.stopPlaying(music);
-                    manager.confluence$setMusicBoxOccupied(IMusicManager.State.NONE);
+                } else if (musicManager.isPlayingMusic(music)) {
+                    if (!withinRange(entity.getBlockPos().getCenter(), player.position(), music)) {
+                        musicManager.stopPlaying(music);
+                        manager.confluence$setMusicBoxOccupied(IMusicManager.State.NONE);
+                    }
+                } else if (withinRange(entity.getBlockPos().getCenter(), player.position(), music)) {
+                    musicManager.stopPlaying();
+                    musicManager.startPlaying(music);
                 }
             }
         }

@@ -18,6 +18,7 @@ import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -28,6 +29,8 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
@@ -44,11 +47,13 @@ import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.gui.TooltipManager;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.textures.LocalBrushData;
+import org.confluence.mod.common.block.functional.MusicBoxBlock;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.item.accessory.MusicBoxItem;
 import org.confluence.mod.common.item.sword.legacy.ProjectileStrategy;
 import org.confluence.mod.integration.touhou_little_maid.ExtraButton;
 import org.confluence.mod.mixed.*;
@@ -68,6 +73,7 @@ import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.cache.object.GeoCube;
 import software.bernie.geckolib.event.GeoRenderEvent;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import top.theillusivec4.curios.api.SlotContext;
 
 import java.util.*;
 
@@ -82,6 +88,10 @@ public final class GameClientEvents {
         LocalPlayer player = minecraft.player;
 
         WeatherHandler.initialize(player);
+        /**
+         * @see MusicBoxItem#curioTick(SlotContext, ItemStack) 2nd
+         * @see MusicBoxBlock.Entity#clientTick(Level, BlockPos, BlockState, MusicBoxBlock.Entity) 3rd
+         */
         IMusicManager.reset(minecraft.getMusicManager()); // 1st
 
         if (player == null) {
@@ -232,7 +242,7 @@ public final class GameClientEvents {
                 }
             });
             if (isInventoryScreen) {
-                ((IInventoryScreen) screen).confluence$setExtraInventoryButton(extraInventoryButton);
+                ((IInventoryScreen) screen).confluence$setExtraButton(extraInventoryButton);
             }
             event.addListener(extraInventoryButton);
         }
@@ -473,11 +483,12 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void selectMusic(SelectMusicEvent event) {
         if (event.isCanceled()) return;
-        LocalPlayer player = Minecraft.getInstance().player;
+        Minecraft minecraft = Minecraft.getInstance();
+        LocalPlayer player = minecraft.player;
         if (player == null) {
             MusicHandler.clear();
         } else {
-            MusicHandler.handle(event, player);
+            MusicHandler.handle(event, player, minecraft);
         }
     }
 }

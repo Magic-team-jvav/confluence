@@ -3,6 +3,7 @@ package org.confluence.mod.common.item.accessory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.MusicManager;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.Music;
@@ -10,6 +11,9 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import org.confluence.mod.client.event.GameClientEvents;
 import org.confluence.mod.common.block.functional.MusicBoxBlock;
 import org.confluence.mod.mixed.IMusicManager;
 import org.confluence.mod.network.c2s.ReplaceMusicBoxItemPacketC2S;
@@ -64,8 +68,13 @@ public class MusicBoxItem extends BlockItem implements ICurioItem, IFunctionCoul
                 }
             } else {
                 if (!musicManager.isPlayingMusic(music)) {
+                    musicManager.stopPlaying();
                     musicManager.startPlaying(music);
                 }
+                /**
+                 * @see GameClientEvents#clientTick$Post(ClientTickEvent.Post) 1st
+                 * @see MusicBoxBlock.Entity#clientTick(Level, BlockPos, BlockState, MusicBoxBlock.Entity) 3rd
+                 */
                 manager.confluence$setMusicBoxOccupied(IMusicManager.State.ACCESSORY); // 2nd
             }
         }

@@ -191,6 +191,12 @@ dependencies {
     compileOnly "curse.maven:carry-on-274259:5649344"
     //runtimeOnly "curse.maven:carry-on-274259:5649344"
 
+    compileOnly "curse.maven:apothic-attributes-898963:6302334"
+    if (true) {
+        runtimeOnly "curse.maven:apothic-attributes-898963:6302334"
+        runtimeOnly "curse.maven:placebo-283644:6337156"
+    }
+
     /**********************************************************/
 
     //runtimeOnly "curse.maven:worldedit-225608:5830452"

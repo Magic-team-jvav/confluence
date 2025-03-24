@@ -111,6 +111,7 @@
         "client.renderer.SectionCompilerMixin",
         "entity.LocalPlayerMixin",
         "integration.advancement_plaque.AdvancementPlaqueMixin",
+        "integration.apothic_attributes.AttributesGuiMixin",
         "integration.betteradvancements.BetterDisplayInfoMixin",
         "integration.create.ponder.PonderTooltipHandlerMixin",
         "integration.ftbchunks.EntityMapIconMixin",

@@ -11,30 +11,33 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.PushReaction;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class HorizontalDirectionalWithVerticalTwoPartBlock extends HorizontalDirectionalBlock {
+    public static final EnumProperty<StateProperties.VerticalTwoPart> PART = StateProperties.VERTICAL_TWO_PART;
+
     public HorizontalDirectionalWithVerticalTwoPartBlock(Properties properties) {
         super(properties);
-        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(StateProperties.VERTICAL_TWO_PART, StateProperties.VerticalTwoPart.BASE));
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(PART, StateProperties.VerticalTwoPart.BASE));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, StateProperties.VERTICAL_TWO_PART);
+        builder.add(FACING, PART);
     }
 
     @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         if (!pLevel.isClientSide) {
             BlockPos relativePos = pPos.relative(StateProperties.VerticalTwoPart.getConnectedDirection(pState));
-            pLevel.setBlockAndUpdate(relativePos, pState.setValue(StateProperties.VERTICAL_TWO_PART, StateProperties.VerticalTwoPart.UP));
+            pLevel.setBlockAndUpdate(relativePos, pState.setValue(PART, StateProperties.VerticalTwoPart.UP));
         }
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+    public @Nullable BlockState getStateForPlacement(BlockPlaceContext pContext) {
         Level level = pContext.getLevel();
         BlockState blockState = defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite());
         BlockPos relativePos = pContext.getClickedPos().relative(StateProperties.VerticalTwoPart.getConnectedDirection(blockState));

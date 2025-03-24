@@ -720,7 +720,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.crimson_set.data.4", "提高再生量50%");
 
         add("equipment_benediction.set_switcher.confluence.snow_set", "防雪套装");
-        add("equipment_benediction.set_switcher.confluence.snow_set.data.0", "免疫冷冻类debuff%");
+        add("equipment_benediction.set_switcher.confluence.snow_set.data.0", "免疫冷冻类debuff");
         add("equipment_benediction.set_switcher.confluence.snow_set.data.1", "免疫冷冻类debuff");
 
         add("equipment_benediction.set_switcher.confluence.bee_set", "蜜蜂套装");
@@ -1900,7 +1900,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.CANDY_CANE.get(), "拐杖糖");
         add(ModItems.CANDY_APPLE.get(), "糖葫芦");
         add(ModItems.WHOOPIE_CUSHION.get(), "整蛊坐垫");
-        add(VanityArmorItems.DEAD_MANS_SWEATER.get(), "死人毛衣");
         add(ModItems.GRASS_SEED.get(), "草种子");
         add(ModItems.JUNGLE_GRASS_SEED.get(), "丛林草种子");
         add(ModItems.MUSHROOM_GRASS_SEED.get(), "蘑菇草种子");
@@ -2627,6 +2626,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(PaintItems.ILLUMINANT_COATING.get(), "夜明漆");
         add(PaintItems.ECHO_COATING.get(), "回声漆");
 
+        add(VanityArmorItems.DEAD_MANS_SWEATER.get(), "死人毛衣");
         add(VanityArmorItems.GOLD_CROWN.get(), "金冠");
         add(VanityArmorItems.PLATINUM_CROWN.get(), "铂金冠");
         add(VanityArmorItems.RED_DYE.get(), "红染料");

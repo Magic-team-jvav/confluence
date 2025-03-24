@@ -3,6 +3,7 @@ package org.confluence.mod.common.entity.projectile.sword;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.terraentity.registries.track.ITrackType;
@@ -32,7 +33,7 @@ public class BeeKeeperProjectile extends SwordProjectile {
             } else if (tickCount < 10) {
                 setDeltaMovement(getDeltaMovement().scale(0.8f));
             } else {
-                LivingEntity target = TEUtils.getAABBAngleTarget(position(), position().add(getDeltaMovement().normalize().scale(1)), level(), getOwner(), 10, 180);
+                LivingEntity target = TEUtils.getAABBAngleTarget(position(), position().add(getDeltaMovement().normalize().scale(1)), level(), getOwner(), 10, 180, this::canHitEntity);
                 if (target != null) {
                     Vec3 motion = getDeltaMovement();
                     Vec3 dir = target.position().add(0, target.getEyeHeight() * 0.5f, 0).subtract(position());
@@ -52,7 +53,7 @@ public class BeeKeeperProjectile extends SwordProjectile {
         if (tickCount <= 10) {
             return false;
         }
-        return super.canHitEntity(target);
+        return target instanceof Enemy && super.canHitEntity(target) && TEUtils.projectileCanHitEntityTest.test(this,target);
     }
     @Override
     public void onAddedToLevel() {

@@ -79,11 +79,13 @@ public class BaseSwordItem extends SwordItem {
                 damageSource.is(DamageTypeTags.PANIC_CAUSES)) {
             var data = weapon.get(TEDataComponentTypes.EFFECT_STRATEGY);
             if(data != null) {
-                if (attacker instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.95f
+                if (attacker instanceof Player player
                         && damageSource.is(DamageTypeTags.CAN_BREAK_ARMOR_STAND)
                         && damageSource.is(DamageTypeTags.IS_PLAYER_ATTACK)
                 ) {
-                    data.applyAll(player, hurter);
+                    if(player.getAttackStrengthScale(0.5f) > 0.95f) {
+                        data.applyAll(player, hurter);
+                    }
                 } else if (attacker instanceof LivingEntity livingEntity) {
                     data.applyAll(livingEntity, hurter);
                 }

@@ -6,7 +6,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -14,12 +13,12 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.block.HorizontalDirectionalWithVerticalTwoPartBlock;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.entity.boss.QueenBee;
 import org.confluence.terraentity.init.TEEntities;
 
@@ -65,12 +64,7 @@ public class LarvaBlock extends HorizontalDirectionalWithVerticalTwoPartBlock {
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pMovedByPiston) {
         super.onRemove(state, level, pos, pNewState, pMovedByPiston);
         if (state.getValue(PART).isBase()) {
-            Vec3 center = pos.getCenter();
-            QueenBee queenBee = new QueenBee(TEEntities.QUEEN_BEE.get(), level);
-            queenBee.setPos(center.x + level.random.nextInt(-50, 51), center.y, center.z + level.random.nextInt(-50, 51));
-            level.addFreshEntity(queenBee);
-            Player nearestPlayer = level.getNearestPlayer(queenBee, 200);
-            if (nearestPlayer != null) queenBee.setTarget(nearestPlayer);
+            ModUtils.summonBoss(level, pos.getCenter(), new QueenBee(TEEntities.QUEEN_BEE.get(), level));
         }
     }
 

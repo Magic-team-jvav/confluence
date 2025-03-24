@@ -15,6 +15,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
 import org.confluence.mod.common.init.ModAchievements;
@@ -23,7 +24,9 @@ import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
+import org.confluence.terraentity.entity.boss.EyeOfCthulhu;
 import org.confluence.terraentity.init.TEEntities;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
@@ -42,7 +45,18 @@ public final class TickEvents {
             float factorZ = Mth.nextFloat(serverLevel.random, -1.0F, 1.0F);
             ConfluenceData.get(serverLevel).setWindSpeed(factorX, factorZ);
         } else if (dayTime == 13500L) { // 19:30
-            if (serverLevel.random.nextFloat() < 0.02F && ConfluenceData.get(serverLevel).getKillBoard().isAnyDefeated(TEEntities.EATER_OF_WORLDS.get(), TEEntities.BRAIN_OF_CTHULHU.get())) {
+            KillBoard killBoard = ConfluenceData.get(serverLevel).getKillBoard();
+            if (!killBoard.isDefeated(TEEntities.EYE_OF_CTHULHU.get())) {
+                for (ServerPlayer player : serverLevel.players()) {
+                    if (player.getMaxHealth() >= 40 && player.getArmorValue() >= 2) {
+                        if (/* todo NPC check */serverLevel.random.nextFloat() < 0.3333F) {
+                            ModUtils.summonBoss(serverLevel, player.position(), new EyeOfCthulhu(serverLevel));
+                        }
+                        break;
+                    }
+                }
+            }
+            if (killBoard.isAnyDefeated(TEEntities.EATER_OF_WORLDS.get(), TEEntities.BRAIN_OF_CTHULHU.get()) && serverLevel.random.nextFloat() < 0.02F) {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
             }
         }

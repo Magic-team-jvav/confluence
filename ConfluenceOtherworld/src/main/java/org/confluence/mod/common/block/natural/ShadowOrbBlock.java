@@ -77,11 +77,7 @@ public class ShadowOrbBlock extends Block {
             }
 
             if (data.updateEvilBrokenCount()) {
-                EaterOfWorlds eaterOfWorlds = new EaterOfWorlds(level, true);
-                eaterOfWorlds.setPos(center.x + level.random.nextInt(-50, 51), center.y, center.z + level.random.nextInt(-50, 51));
-                level.addFreshEntity(eaterOfWorlds);
-                Player nearestPlayer = level.getNearestPlayer(eaterOfWorlds, 200);
-                if (nearestPlayer != null) eaterOfWorlds.setTarget(nearestPlayer);
+                ModUtils.summonBoss(level, center, new EaterOfWorlds(level, true));
             }
         }
     }

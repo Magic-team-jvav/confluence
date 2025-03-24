@@ -417,6 +417,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getStairs().asItem(),  NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStairs().asItem(),
                 NatureBlocks.BAOBAB_LOG_BLOCKS.getStairs().asItem()
         );
+        tag(ItemTags.LEAVES).add(
+                NatureBlocks.EBONY_LOG_BLOCKS.getLeaves().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getLeaves().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getLeaves().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getLeaves().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getLeaves().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLeaves().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getLeaves().asItem(),  NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLeaves().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().asItem()
+        );
         tag(ItemTags.CAT_FOOD).add(
                 FoodItems.SEA_BASS.get(),
                 FoodItems.ATLANTIC_COD.get(),

@@ -4,13 +4,19 @@ import com.google.common.collect.Lists;
 import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import org.confluence.mod.common.block.HorizontalDirectionalWithVerticalTwoPartBlock;
+import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -79,6 +85,18 @@ public class QueenBeeHiveStructure extends Structure {
                     }
                 }
             }
+            rectangular(centerPos.offset(-2, -radius2, -1).immutable(), centerPos.offset(2, 3, 1), 1, blockMap, 1);
+            rectangular(centerPos.offset(-1, -radius2, -2).immutable(), centerPos.offset(1, 3, -1), 1, blockMap, 1);
+            rectangular(centerPos.offset(-1, -radius2, 1).immutable(), centerPos.offset(1, 3, 2), 1, blockMap, 1);
+            chance = random.nextFloat();
+            if (chance <= 0.5F) {
+                rectangular(centerPos.offset(-1, 3, -1).immutable(), centerPos.offset(1, 3, 1).immutable(), 0, blockMap, 1);
+            } else if (chance <= 0.75F) {
+                rectangular(centerPos.offset(-1, 3, -1).immutable(), centerPos.offset(1, 3, 1).immutable(), 2, blockMap, 1);
+            } else {
+                rectangular(centerPos.offset(-1, 3, -1).immutable(), centerPos.offset(1, 3, 1).immutable(), 3, blockMap, 1);
+            }
+            rectangular(centerPos.offset(-1, 0, 1).immutable(), centerPos.offset(1, 1, -1), 0, blockMap, 0);
 
             GridPiece.addPieces(blockMap, startChunk, lowestY, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
@@ -86,6 +104,7 @@ public class QueenBeeHiveStructure extends Structure {
                     Blocks.HONEY_BLOCK.defaultBlockState(),
                     ModBlocks.HONEY.get().defaultBlockState()
             ), builder);
+            builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "larva", centerPos, true, true, Util.getRandom(Rotation.values(), random)));
         });
     }
 

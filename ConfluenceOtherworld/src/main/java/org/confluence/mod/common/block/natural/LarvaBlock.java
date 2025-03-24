@@ -5,18 +5,28 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.EntityCollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.block.HorizontalDirectionalWithVerticalTwoPartBlock;
 import org.confluence.terraentity.entity.boss.QueenBee;
 import org.confluence.terraentity.init.TEEntities;
 
 public class LarvaBlock extends HorizontalDirectionalWithVerticalTwoPartBlock {
     public static final MapCodec<LarvaBlock> CODEC = simpleCodec(LarvaBlock::new);
+    private static final VoxelShape SHAPE_UPPER = box(0, 0, 0, 16, 8, 16);
+    private static final VoxelShape SHAPE_LOWER = box(0, 8, 0, 16, 16, 16);
 
     public LarvaBlock(Properties properties) {
         super(properties);
@@ -62,5 +72,30 @@ public class LarvaBlock extends HorizontalDirectionalWithVerticalTwoPartBlock {
             Player nearestPlayer = level.getNearestPlayer(queenBee, 200);
             if (nearestPlayer != null) queenBee.setTarget(nearestPlayer);
         }
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return state.getValue(PART).isBase() ? SHAPE_LOWER : SHAPE_UPPER;
+    }
+
+    @Override
+    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        if (context instanceof EntityCollisionContext entityCollisionContext) {
+            return entityCollisionContext.getEntity() instanceof Projectile ? Shapes.empty() : Shapes.block();
+        }
+        return Shapes.block();
+    }
+
+    @Override
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+        if (entity instanceof Projectile) {
+            level.destroyBlock(pos, false);
+        }
+    }
+
+    @Override
+    protected void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile) {
+        level.destroyBlock(hit.getBlockPos(), false);
     }
 }

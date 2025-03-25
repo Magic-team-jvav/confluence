@@ -1,3 +1,24 @@
 {
-  "parent": "minecraft:block/cube_all"
+  "parent": "block/block",
+  "render_type": "translucent",
+  "textures": {
+    "particle": "block/honey_block_top",
+    "down": "block/honey_block_bottom",
+    "up": "block/honey_block_top",
+    "side": "block/honey_block_side"
+  },
+  "elements": [
+    {   "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "down":  { "texture": "#down", "cullface": "down" },
+        "up":    { "texture": "#down", "cullface": "up" },
+        "north": { "texture": "#down", "cullface": "north" },
+        "south": { "texture": "#down", "cullface": "south" },
+        "west":  { "texture": "#down", "cullface": "west" },
+        "east":  { "texture": "#down", "cullface": "east" }
+      }
+    }
+  ]
 }
+

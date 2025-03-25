@@ -4,6 +4,7 @@ import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.TooltipManager;
+import org.confluence.mod.common.block.natural.LarvaBlock;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
@@ -770,6 +771,8 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("equipment_benediction.set_switcher.confluence.cactus_set", "仙人掌套装");
         add("equipment_benediction.set_switcher.confluence.cactus_set.data.0", "攻击者因为仙人掌尖刺受到伤害");
+
+        add("block.confluence.larva", "幼虫");
 
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.ARROW_PROJECTILE.get(), "泰拉箭");

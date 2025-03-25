@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " c ",
+        "a#a",
+        " b "
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:tnt"
+        },
+        "a": {
+            "item": "minecraft:gunpowder"
+        },
+        "b": {
+            "item": "minecraft:redstone"
+        },
+        "c": {
+            "tag": "confluence:lead_and_iron"
+        }
+    },
+    "result": {
+        "id": "confluence:instantaneous_explosion_tnt"
+    }
+}

@@ -48,7 +48,7 @@ public final class TickEvents {
             KillBoard killBoard = ConfluenceData.get(serverLevel).getKillBoard();
             if (!killBoard.isDefeated(TEEntities.EYE_OF_CTHULHU.get())) {
                 for (ServerPlayer player : serverLevel.players()) {
-                    if (player.getMaxHealth() >= 40 && player.getArmorValue() >= 2) {
+                    if (player.getMaxHealth() >= 40 && player.getArmorValue() >= 10) {
                         if (/* todo NPC check */serverLevel.random.nextFloat() < 0.3333F) {
                             ModUtils.summonBoss(serverLevel, player.position(), new EyeOfCthulhu(serverLevel));
                         }

@@ -67,9 +67,7 @@ import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.entity.ai.Boss;
-import org.confluence.terraentity.init.TEEffects;
 import org.confluence.terraentity.init.TEEntities;
-import org.confluence.terraentity.init.TETags;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class LivingEntityEvents {

@@ -68,7 +68,6 @@ public final class PlayerEvents {
             BoulderWorld.forceSetAccessory(serverPlayer);
             TheConstantPostEffectPacketS2C.sendToClient(serverPlayer);
             SecretFlagSyncPacketS2C.sendToAll(IWorldOptions.getSecretFlag(serverPlayer.server));
-            serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).setChanged();
         }
     }
 

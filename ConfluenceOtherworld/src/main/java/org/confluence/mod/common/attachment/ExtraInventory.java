@@ -37,7 +37,7 @@ public class ExtraInventory extends ItemStackHandler implements Container {
     private int sizeAccessoryDye = 0;
     private transient boolean initialized = false;
     private transient NonNullList<ItemStack> previousStacks;
-    private transient boolean dirty;
+    private transient boolean dirty = true;
 
     public ExtraInventory() {
         super(SIZE_EXCEPT_ACCESSORY_DYE);

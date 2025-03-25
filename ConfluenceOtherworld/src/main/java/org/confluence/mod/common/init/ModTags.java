@@ -72,6 +72,8 @@ public final class ModTags {
         public static final TagKey<Item> GEMS_SAPPHIRE = c("gems/sapphire");
         public static final TagKey<Item> GEMS_TR_AMETHYST = c("gems/tr_amethyst");
 
+        public static final TagKey<Item> NUGGETS_TIN = c("nuggets/lead");
+
         public static final TagKey<Item> ORES_TIN = c("ores/tin");
         public static final TagKey<Item> ORES_LEAD = c("ores/lead");
         public static final TagKey<Item> ORES_SILVER = c("ores/silver");

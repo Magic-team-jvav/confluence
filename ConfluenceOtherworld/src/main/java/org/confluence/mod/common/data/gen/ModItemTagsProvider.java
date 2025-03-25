@@ -539,6 +539,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.TR_AMETHYST.get()
         );
 
+        tag(ModTags.Items.NUGGETS_TIN).add(
+                MaterialItems.LEAD_NUGGET.get()
+        );
+
         tag(Tags.Items.GUNPOWDERS).add(
                 MaterialItems.BLOOD_CLOT_POWDER.get()
         );
@@ -573,6 +577,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(Tags.Items.NUGGETS).add(
                 MaterialItems.LEAD_NUGGET.get()
         );
+
         tag(Tags.Items.SEEDS).add(
                 FoodItems.FLOATING_WHEAT_SEED.get(),
                 FoodItems.CLOUDWEAVER_SEED.get(),

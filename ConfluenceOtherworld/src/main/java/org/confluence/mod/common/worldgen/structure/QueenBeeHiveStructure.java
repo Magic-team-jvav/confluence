@@ -85,23 +85,15 @@ public class QueenBeeHiveStructure extends Structure {
                     }
                 }
             }
-            rectangular(centerPos.offset(-2, -radius2, -1).immutable(), centerPos.offset(2, 3, 1), 1, blockMap, 1);
-            rectangular(centerPos.offset(-1, -radius2, -2).immutable(), centerPos.offset(1, 3, -1), 1, blockMap, 1);
-            rectangular(centerPos.offset(-1, -radius2, 1).immutable(), centerPos.offset(1, 3, 2), 1, blockMap, 1);
-            chance = random.nextFloat();
-            if (chance <= 0.5F) {
-                rectangular(centerPos.offset(-1, 3, -1).immutable(), centerPos.offset(1, 3, 1).immutable(), 0, blockMap, 1);
-            } else if (chance <= 0.75F) {
-                rectangular(centerPos.offset(-1, 3, -1).immutable(), centerPos.offset(1, 3, 1).immutable(), 2, blockMap, 1);
-            } else {
-                rectangular(centerPos.offset(-1, 3, -1).immutable(), centerPos.offset(1, 3, 1).immutable(), 3, blockMap, 1);
-            }
-            rectangular(centerPos.offset(-1, 0, 1).immutable(), centerPos.offset(1, 1, -1), 0, blockMap, 0);
+            rectangular(centerPos.offset(-2, -radius2, -1).immutable(), centerPos.offset(2, -1, 1), 1, blockMap, 1);
+            rectangular(centerPos.offset(-1, -radius2, -2).immutable(), centerPos.offset(1, -1, -1), 1, blockMap, 1);
+            rectangular(centerPos.offset(-1, -radius2, 1).immutable(), centerPos.offset(1, -1, 2), 1, blockMap, 1);
+            rectangular(centerPos.offset(-1, -1, -1).immutable(), centerPos.offset(1, 2, 1).immutable(), 2, blockMap, 1);
 
             GridPiece.addPieces(blockMap, startChunk, lowestY, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
                     NatureBlocks.JUNGLE_HIVE_BLOCK.get().defaultBlockState(),
-                    Blocks.HONEY_BLOCK.defaultBlockState(),
+                    NatureBlocks.THIN_HONEY_BLOCK.get().defaultBlockState(),
                     ModBlocks.HONEY.get().defaultBlockState()
             ), builder);
             builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "larva", centerPos, true, true, Util.getRandom(Rotation.values(), random)));

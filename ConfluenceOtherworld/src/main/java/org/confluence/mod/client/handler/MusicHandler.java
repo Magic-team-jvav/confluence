@@ -119,6 +119,7 @@ public final class MusicHandler {
 
     // todo eerie, high_wind, slime_rain, town_day, town_night, aether
     private static void selectMusic(LocalPlayer player) {
+        if (player.level().dimension() != Level.OVERWORLD) return;
         BlockPos pos = player.blockPosition();
         int y = pos.getY();
         Level level = player.level();

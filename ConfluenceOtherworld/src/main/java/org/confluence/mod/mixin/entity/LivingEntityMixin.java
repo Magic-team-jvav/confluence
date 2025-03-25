@@ -155,7 +155,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
         }
     }
 
-    @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/DamageSources;freeze()Lnet/minecraft/world/damagesource/DamageSource;"), cancellable = true)
+    @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/DamageSources;freeze()Lnet/minecraft/world/damagesource/DamageSource;"))
     private void confluence$aiStep(CallbackInfo ci) {
         NeoForge.EVENT_BUS.post(new LivingFreezeEvent.Post(self()));
     }

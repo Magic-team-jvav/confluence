@@ -159,16 +159,15 @@ public class ExtraInventory extends ItemStackHandler implements Container {
 
     public void initialize(ServerPlayer serverPlayer) {
         if (!initialized) {
-            updateAccessorySize(serverPlayer);
+            updateAccessorySize(CuriosApi.getCuriosInventory(serverPlayer).map(handler -> {
+                ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);
+                return accessory == null ? 0 : accessory.getSlots();
+            }).orElse(0));
             this.initialized = true;
         }
     }
 
-    public void updateAccessorySize(ServerPlayer serverPlayer) {
-        int accessoryDye = CuriosApi.getCuriosInventory(serverPlayer).map(handler -> {
-            ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);
-            return accessory == null ? 0 : accessory.getSlots();
-        }).orElse(0);
+    public void updateAccessorySize(int accessoryDye) {
         setAccessoryDyes(accessoryDye);
         this.previousStacks = NonNullList.withSize(SIZE_EXCEPT_ACCESSORY_DYE + accessoryDye, ItemStack.EMPTY);
     }

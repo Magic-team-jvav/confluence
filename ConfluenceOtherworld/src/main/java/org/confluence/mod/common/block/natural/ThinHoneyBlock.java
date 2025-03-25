@@ -23,6 +23,11 @@ public class ThinHoneyBlock extends HalfTransparentBlock {
     }
 
     @Override
+    protected VoxelShape getBlockSupportShape(BlockState state, BlockGetter level, BlockPos pos) {
+        return Shapes.block();
+    }
+
+    @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         entity.setDeltaMovement(entity.getDeltaMovement().scale(0.6));
     }

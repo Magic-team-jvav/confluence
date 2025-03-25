@@ -80,7 +80,7 @@ public class DartTrapBlock extends AbstractMechanicalBlock {
         if (ModSecretSeeds.NO_TRAPS.match(pLevel)) {
             arrow.addEffect(new MobEffectInstance(ModEffects.BLEEDING, 1200, 1));
         }
-        arrow.setBaseDamage(5.0);
+        arrow.setBaseDamage(1.0);
         arrow.shoot(direction.getStepX(), direction.getStepY(), direction.getStepZ(), 3.0F, 0.0F);
         pLevel.addFreshEntity(arrow);
         pLevel.setBlockAndUpdate(pPos, pState.setValue(TRIGGERED, true));

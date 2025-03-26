@@ -4,7 +4,6 @@ import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.TooltipManager;
-import org.confluence.mod.common.block.natural.LarvaBlock;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
@@ -680,12 +679,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("event.confluence.shadow_orb_broken.1", "四面回荡着尖叫声……");
         add("event.confluence.crimson_heart_broken.0", "不寒而栗，毛骨悚然……！");
         add("event.confluence.crimson_heart_broken.1", "四面回荡着尖叫声……");
-
-        add("attribute.name.player.minion_capacity", "仆从容量");
-        add("attribute.name.player.sentry_capacity", "哨兵容量");
-        add("attribute.name.player.summon_damage", "召唤伤害");
-        add("attribute.name.player.summon_knockback", "召唤击退");
-        add("attribute.name.player.whip_range", "鞭范围");
+        add("event.confluence.eye_of_cthulhu", "你感到有个邪恶的东西在看着你……");
 
         add("entity.minecraft.villager.confluence.sky_miller", "天师");
         add("entity.minecraft.villager.confluence.banker", "银行家");

@@ -2,6 +2,8 @@ package org.confluence.mod.common.event.game;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -15,6 +17,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.data.saved.EntityDelaySpawner;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
@@ -24,7 +27,6 @@ import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
-import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.entity.boss.EyeOfCthulhu;
 import org.confluence.terraentity.init.TEEntities;
@@ -38,6 +40,7 @@ public final class TickEvents {
         if (serverLevel.dimension() != Level.OVERWORLD) return;
         FallingStarItemEntity.summon(serverLevel);
         MeteoriteTracker.INSTANCE.tick(serverLevel);
+        EntityDelaySpawner.INSTANCE.tick(serverLevel);
 
         long dayTime = serverLevel.getDayTime() % 24000L;
         if (dayTime == 0L) { // 6:00
@@ -46,14 +49,10 @@ public final class TickEvents {
             ConfluenceData.get(serverLevel).setWindSpeed(factorX, factorZ);
         } else if (dayTime == 13500L) { // 19:30
             KillBoard killBoard = ConfluenceData.get(serverLevel).getKillBoard();
-            if (!killBoard.isDefeated(TEEntities.EYE_OF_CTHULHU.get())) {
-                for (ServerPlayer player : serverLevel.players()) {
-                    if (player.getMaxHealth() >= 40 && player.getArmorValue() >= 10) {
-                        if (/* todo NPC check */serverLevel.random.nextFloat() < 0.3333F) {
-                            ModUtils.summonBoss(serverLevel, player.position(), new EyeOfCthulhu(serverLevel));
-                        }
-                        break;
-                    }
+            if (!killBoard.isDefeated(TEEntities.EYE_OF_CTHULHU.get()) && serverLevel.players().stream().anyMatch(player -> player.getMaxHealth() >= 40 && player.getArmorValue() >= 10)) {
+                if (/* todo NPC check */serverLevel.random.nextFloat() < 0.3333F) {
+                    EntityDelaySpawner.INSTANCE.pushBoss(81 * 20, new EyeOfCthulhu(serverLevel));
+                    serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("event.confluence.eye_of_cthulhu").withStyle(ChatFormatting.GREEN), false);
                 }
             }
             if (killBoard.isAnyDefeated(TEEntities.EATER_OF_WORLDS.get(), TEEntities.BRAIN_OF_CTHULHU.get()) && serverLevel.random.nextFloat() < 0.02F) {

@@ -51,7 +51,7 @@ public final class TickEvents {
             KillBoard killBoard = ConfluenceData.get(serverLevel).getKillBoard();
             if (!killBoard.isDefeated(TEEntities.EYE_OF_CTHULHU.get()) && serverLevel.players().stream().anyMatch(player -> player.getMaxHealth() >= 40 && player.getArmorValue() >= 10)) {
                 if (/* todo NPC check */serverLevel.random.nextFloat() < 0.3333F) {
-                    EntityDelaySpawner.INSTANCE.pushBoss(81 * 20, new EyeOfCthulhu(serverLevel));
+                    EntityDelaySpawner.INSTANCE.pushBoss(1350, new EyeOfCthulhu(serverLevel));
                     serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("event.confluence.eye_of_cthulhu").withStyle(ChatFormatting.GREEN), false);
                 }
             }

@@ -1,9 +1,9 @@
 package org.confluence.mod.common.data.saved;
 
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.util.ModUtils;
 
 import java.util.ArrayList;
@@ -17,11 +17,10 @@ public class EntityDelaySpawner {
         if (!bossQueue.isEmpty()) {
             bossQueue.removeIf(mobDelayed -> {
                 if (mobDelayed.delay-- <= 0) {
-                    List<ServerPlayer> players = serverLevel.players();
-                    if (!players.isEmpty()) {
-                        ModUtils.summonBoss(serverLevel, players.stream().findAny().get().position(), mobDelayed.entity);
-                        return true;
-                    }
+                    Vec3 vec3 = serverLevel.players().stream().findAny().map(Entity::position)
+                            .orElseGet(serverLevel.getLevelData().getSpawnPos()::getCenter);
+                    ModUtils.summonBoss(serverLevel, vec3, mobDelayed.entity);
+                    return true;
                 }
                 return false;
             });

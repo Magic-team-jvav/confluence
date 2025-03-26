@@ -77,7 +77,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("item.confluence.kind_mita_ring.tooltip.1", "“戒指会带你找到正确的方向，亲爱的”");
         add("item.confluence.failed_skull.tooltip.1", "一只苦力怕被猪灵强制改造了身体，可以多次自爆。猪灵想用它作为入侵主世界的生物兵器，却被其意外逃脱");
         add("item.confluence.pink_cola.tooltip.1", "一瓶普通的粉色可乐，或许原来有一整箱？");
-        add("item.confluence.dongdongs_flatbread.tooltip.1", "刚在地狱岩上考好的饼，快来尝尝吧！");
+        add("item.confluence.dongdongs_flatbread.tooltip.1", "刚在下界岩上考好的饼，快来尝尝吧！");
 
 
 

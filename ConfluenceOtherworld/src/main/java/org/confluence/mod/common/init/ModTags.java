@@ -37,6 +37,7 @@ public final class ModTags {
         public static final TagKey<Block> SLUSH_REPLACEMENT = register("slush_replacement");
         public static final TagKey<Block> COLD_CRYSTAL_ORE_REPLACEMENT = register("cold_crystal_ore_replacement");
         public static final TagKey<Block> GELSTONE_ORE_REPLACEMENT = register("gelstone_ore_replacement");
+        public static final TagKey<Block> OPAL_ORE_REPLACEMENT = register("opal_ore_replacement");
         public static final TagKey<Block> TOMBSTONE = register("tombstone");
         public static final TagKey<Block> ROPE = register("rope");
         public static final TagKey<Block> MINEABLE_WITH_HAMMER = register("mineable_with_hammer"); // 使用锤子挖掘更快

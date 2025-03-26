@@ -31,6 +31,10 @@ public class EntityDelaySpawner {
         bossQueue.add(new Delayed<>(delay, entity));
     }
 
+    public void clear() {
+        bossQueue.clear();
+    }
+
     static class Delayed<E extends Entity> {
         int delay;
         final E entity;

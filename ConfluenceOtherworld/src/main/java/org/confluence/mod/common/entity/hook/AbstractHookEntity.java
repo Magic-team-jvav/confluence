@@ -15,6 +15,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -28,7 +29,7 @@ public abstract class AbstractHookEntity extends Projectile {
     private static final EntityDataAccessor<Integer> DATA_HOOK_STATE = SynchedEntityData.defineId(AbstractHookEntity.class, EntityDataSerializers.INT);
     public final float hookRangeSqr;
     private final BaseHookItem.HookType hookType;
-    private BlockPos hookedPos;
+    private BlockState hookedState;
     public float lastDelta = 0.0F;
 
     public AbstractHookEntity(EntityType<? extends AbstractHookEntity> entityType, Level pLevel) {
@@ -98,7 +99,7 @@ public abstract class AbstractHookEntity extends Projectile {
                     onHitBlock(hitResult);
                     onHooked(hitResult, hook);
                 }
-            } else if (hookState == HookState.HOOKED && hookedPos != null && level().getBlockState(hookedPos).canBeReplaced()) {
+            } else if (hookState == HookState.HOOKED && level().getBlockState(blockPosition()) != hookedState) {
                 setHookState(HookState.POP);
             }
         }
@@ -119,7 +120,7 @@ public abstract class AbstractHookEntity extends Projectile {
         level().gameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Context.of(this, level().getBlockState(blockPos)));
         setDeltaMovement(Vec3.ZERO);
         setHookState(HookState.HOOKED);
-        this.hookedPos = blockPos;
+        this.hookedState = level().getBlockState(blockPosition());
         this.hasImpulse = true;
     }
 

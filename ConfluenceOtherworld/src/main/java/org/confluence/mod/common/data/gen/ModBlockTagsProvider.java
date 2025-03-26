@@ -39,6 +39,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         StatueBlocks.acceptTags(this);
         tag(ModTags.Blocks.JEWELLERY_BRANCHES_ATTACHABLE).add(STONY_LOG.get());
         tag(ModTags.Blocks.ASH_LOG_BRANCHES_ATTACHABLE).add(ASH_LOG_BLOCKS.getLog().get());
+        tag(ModTags.Blocks.OPAL_ORE_REPLACEMENT).add(
+                DIATOMACEOUS.get()
+        );
         tag(ModTags.Blocks.DESERT_FOSSIL_REPLACEMENT).add(
                 HARDENED_SAND_BLOCK.get(),
                 RED_HARDENED_SAND_BLOCK.get()
@@ -425,7 +428,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 TR_CRIMSON_GRASS_BLOCK.get(),
                 CORRUPT_JUNGLE_GRASS_BLOCK.get(),
                 TR_CRIMSON_JUNGLE_GRASS_BLOCK.get(),
-                ASH_GRASS_BLOCK.get()
+                ASH_GRASS_BLOCK.get(),
+                MOIST_SAND_BLOCK.get(),
+                RED_MOIST_SAND_BLOCK.get(),
+                TR_CRIMSON_MOIST_SAND_BLOCK.get(),
+                PEARL_MOIST_SAND_BLOCK.get(),
+                EBONY_MOIST_SAND_BLOCK.get()
         );
         // 锄头
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithHoe = tag(BlockTags.MINEABLE_WITH_HOE);

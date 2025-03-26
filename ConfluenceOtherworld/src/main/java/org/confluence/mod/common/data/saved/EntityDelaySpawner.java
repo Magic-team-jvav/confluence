@@ -12,15 +12,15 @@ import java.util.Queue;
 
 public class EntityDelaySpawner {
     public static final EntityDelaySpawner INSTANCE = new EntityDelaySpawner();
-    private final Queue<Entry<Mob>> bossQueue = EvictingQueue.create(1);
+    private final Queue<Delayed<Mob>> bossQueue = EvictingQueue.create(1);
 
     public void tick(ServerLevel serverLevel) {
         if (!bossQueue.isEmpty()) {
-            Entry<Mob> entry = bossQueue.peek();
-            if (entry.delay-- <= 0) {
+            Delayed<Mob> delayed = bossQueue.peek();
+            if (delayed.delay-- <= 0) {
                 List<ServerPlayer> players = serverLevel.players();
                 if (!players.isEmpty()) {
-                    ModUtils.summonBoss(serverLevel, players.stream().findAny().get().position(), entry.entity);
+                    ModUtils.summonBoss(serverLevel, players.stream().findAny().get().position(), delayed.entity);
                     bossQueue.remove();
                 }
             }
@@ -28,16 +28,14 @@ public class EntityDelaySpawner {
     }
 
     public void pushBoss(int delay, Mob entity) {
-        if (bossQueue.isEmpty()) {
-            bossQueue.add(new Entry<>(delay, entity));
-        }
+        bossQueue.add(new Delayed<>(delay, entity));
     }
 
-    static class Entry<E extends Entity> {
+    static class Delayed<E extends Entity> {
         int delay;
         final E entity;
 
-        Entry(int delay, E entity) {
+        Delayed(int delay, E entity) {
             this.delay = delay;
             this.entity = entity;
         }

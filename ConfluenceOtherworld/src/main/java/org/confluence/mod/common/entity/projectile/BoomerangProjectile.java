@@ -161,13 +161,14 @@ public class BoomerangProjectile extends AbstractHurtingProjectile {
                     entityData.set(DATA_BACKING, true);
                 }
             }else{
-                Vec3 dir = living.position().add(0,1,0).subtract(this.position()).normalize();
+                Vec3 distinct = living.position().add(0,1F,0);
+                Vec3 dir = distinct.subtract(this.position()).normalize();
                 int delta = 10;
                 double actualSpeed = Math.min(Mth.lerp((float) (tickCount - backTime) / delta,backSpeed+0.01F,modifier.backSpeed),modifier.backSpeed);
                 Vec3 motion = dir.scale(actualSpeed);
                 this.setDeltaMovement(motion);
 //                this.move(MoverType.SELF, this.getDeltaMovement());
-                if(this.distanceToSqr(living.position().add(0,1,0)) < 1.5f){
+                if(this.distanceToSqr(distinct) <  modifier.backSpeed * 0.8F){
                     discard();
                 }
             }

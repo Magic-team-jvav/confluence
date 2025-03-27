@@ -54,7 +54,7 @@ import org.confluence.mod.common.entity.DeadBodyPartEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.accessory.MusicBoxItem;
-import org.confluence.mod.common.item.sword.legacy.ProjectileStrategy;
+import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.integration.touhou_little_maid.ExtraButton;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.mixin.client.accessor.AgeableListModelAccessor;
@@ -100,7 +100,7 @@ public final class GameClientEvents {
         }
 
         MeteorLandingHandler.handle(minecraft, player);
-        ProjectileStrategy.handle(minecraft, player);
+        BaseSwordItem.swordProjectileHandle(minecraft, player);
         HookThrowingHandler.handle(player);
         KeyRequestHandler.handle();
     }

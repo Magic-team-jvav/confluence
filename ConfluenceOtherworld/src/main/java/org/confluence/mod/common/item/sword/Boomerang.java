@@ -45,10 +45,17 @@ public class Boomerang extends Item {
         this.boomerangModifier.damage = damage;
     }
 
+    /**
+     * 是否已经准备好射击
+     */
     public static boolean isBacked(ItemStack stack){
         if(stack == null || stack.get(ModDataComponentTypes.BOOMERANG_READY) == null) return true;
         return stack.get(ModDataComponentTypes.BOOMERANG_READY).value();
     }
+
+    /**
+     * 设置射击准备状态
+     */
     public static void setBacked(ItemStack stack, SingleBooleanComponent value){
         if(stack!= null && stack.get(ModDataComponentTypes.BOOMERANG_READY)!=null)
             stack.set(ModDataComponentTypes.BOOMERANG_READY, value);

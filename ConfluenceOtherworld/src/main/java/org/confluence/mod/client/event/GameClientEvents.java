@@ -93,17 +93,15 @@ public final class GameClientEvents {
          * @see MusicBoxBlock.Entity#clientTick(Level, BlockPos, BlockState, MusicBoxBlock.Entity) 3rd
          */
         IMusicManager.reset(minecraft.getMusicManager()); // 1st
+        MeteorLandingHandler.handle(minecraft, player);
 
         if (player == null) {
             LocalBrushData.clear();
-            MeteorLandingHandler.clear();
-            return;
+        } else {
+            BaseSwordItem.swordProjectileHandle(minecraft, player);
+            HookThrowingHandler.handle(player);
+            KeyRequestHandler.handle();
         }
-
-        MeteorLandingHandler.handle(minecraft, player);
-        BaseSwordItem.swordProjectileHandle(minecraft, player);
-        HookThrowingHandler.handle(player);
-        KeyRequestHandler.handle();
     }
 
     @SubscribeEvent

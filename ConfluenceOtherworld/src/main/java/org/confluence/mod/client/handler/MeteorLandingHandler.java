@@ -6,7 +6,6 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -23,7 +22,7 @@ import org.joml.Matrix4f;
 public final class MeteorLandingHandler {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/environment/meteor.png");
     private static final float RADIUS = 5.0F;
-    private static BlockPos blockPos = null;
+    private static GlobalPos globalPos = null;
     private static Vec3 location = null;
     private static int tickUntilLanding = 0;
 
@@ -38,7 +37,13 @@ public final class MeteorLandingHandler {
     private static float v0;
     private static float v1;
 
-    public static void handle(Minecraft minecraft, Player player) {
+    public static void handle(Minecraft minecraft, @Nullable Player player) {
+        if (player == null) {
+            globalPos = null;
+            location = null;
+            tickUntilLanding = 0;
+            return;
+        }
         if (minecraft.isPaused()) return;
         if (tickUntilLanding > 0) {
             pitchO = pitch;
@@ -53,8 +58,8 @@ public final class MeteorLandingHandler {
     }
 
     public static void handlePacket(MeteoriteLocationPacketS2C packet, Player player) {
-        blockPos = packet.location();
-        location = blockPos.getCenter();
+        globalPos = GlobalPos.of(Level.OVERWORLD, packet.location());
+        location = packet.location().getCenter();
         tickUntilLanding = Math.max(packet.tickUntilLanding(), 1);
 
         totalLandingTick = tickUntilLanding;
@@ -100,12 +105,6 @@ public final class MeteorLandingHandler {
     }
 
     public static @Nullable GlobalPos asGlobalPos() {
-        return blockPos == null ? null : GlobalPos.of(Level.OVERWORLD, blockPos);
-    }
-
-    public static void clear() {
-        blockPos = null;
-        location = null;
-        tickUntilLanding = 0;
+        return globalPos;
     }
 }

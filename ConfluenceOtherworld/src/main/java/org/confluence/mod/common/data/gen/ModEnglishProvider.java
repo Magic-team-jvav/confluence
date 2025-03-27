@@ -55,6 +55,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("creativetab.confluence.developer", "Confluence | Developer");
 
         add("chat.type.advancement.achievement", "%s has achieved the achievement %s");
+        add("chat.confluence.magic_conch", "The location where you listen to the sound of the ocean [%s] has been recorded");
+        add("chat.confluence.demon_conch", "The location where you listen to the sound of the demon [%s] has been recorded");
         add("options.difficulty.legendary", "§aLegendary");
 
         add("item.confluence.meteorite_ingot.tooltip", "Warm to the touch");

@@ -37,6 +37,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("creativetab.confluence.developer", "汇流来世 | 开发者物品");
 
         add("chat.type.advancement.achievement", "%s达成了成就%s");
+        add("chat.confluence.magic_conch", "你听取海洋声音的位置[%s]已记录");
+        add("chat.confluence.demon_conch", "你听取恶魔呼喊的位置[%s]已记录");
         add("options.difficulty.legendary", "§a传奇");
 
         add("jukebox_song.confluence.song", "C418 - alpha");

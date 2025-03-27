@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " # ",
+        "#/#",
+        " # "
+    ],
+    "key": {
+        "#": {
+            "tag": "confluence:demonite_and_crimson_ingot"
+        },
+        "/": {
+            "item": "confluence:falling_star"
+        }
+    },
+    "result": {
+        "id": "confluence:meteor_compass"
+    }
+}

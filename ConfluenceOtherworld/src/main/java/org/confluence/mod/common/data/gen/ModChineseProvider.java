@@ -1828,6 +1828,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.VINE_ROPE_COIL.get(), "藤蔓绳圈");
         add(ToolItems.SILK_ROPE_COIL.get(), "丝绸绳圈");
         add(ToolItems.WEB_ROPE_COIL.get(), "蛛丝绳圈");
+        add(ToolItems.METEOR_COMPASS.get(), "陨石指南针");
 
 
         add(ConsumableItems.SHURIKEN.get(), "手里剑");
@@ -1918,6 +1919,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.PERPLEXED_CAT_MEDAL.get(), "疑惑猫猫勋章");
         add(ModItems.CANDY_SWORD.get(), "糖果剑");
         add(ModItems.PULSAR.get(), "脉冲星");
+
 
 
         add(ModItems.CATTAILS.get(), "香蒲");

@@ -50,6 +50,14 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 Blocks.PACKED_ICE,
                 Blocks.SNOW_BLOCK
         );
+        tag(ModTags.Blocks.MARINE_GRAVEL_REPLACEMENT).add(
+                Blocks.SAND,
+                Blocks.GRAVEL,
+                Blocks.STONE,
+                Blocks.DEEPSLATE,
+                HARDENED_SAND_BLOCK.get(),
+                DIATOMACEOUS.get()
+        );
         tag(ModTags.Blocks.COLD_CRYSTAL_ORE_REPLACEMENT).add(
                 Blocks.PACKED_ICE,
                 Blocks.SNOW_BLOCK

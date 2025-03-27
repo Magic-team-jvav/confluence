@@ -35,6 +35,7 @@ public final class ModTags {
         public static final TagKey<Block> ASH_LOG_BRANCHES_ATTACHABLE = register("ash_log_branches_attachable");
         public static final TagKey<Block> DESERT_FOSSIL_REPLACEMENT = register("desert_fossil_replacement");
         public static final TagKey<Block> SLUSH_REPLACEMENT = register("slush_replacement");
+        public static final TagKey<Block> MARINE_GRAVEL_REPLACEMENT = register("marine_gravel_replacement");
         public static final TagKey<Block> COLD_CRYSTAL_ORE_REPLACEMENT = register("cold_crystal_ore_replacement");
         public static final TagKey<Block> GELSTONE_ORE_REPLACEMENT = register("gelstone_ore_replacement");
         public static final TagKey<Block> OPAL_ORE_REPLACEMENT = register("opal_ore_replacement");

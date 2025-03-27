@@ -6,6 +6,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -15,11 +16,13 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
 import org.confluence.mod.util.ClientUtils;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
 public final class MeteorLandingHandler {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/environment/meteor.png");
     private static final float RADIUS = 5.0F;
+    private static GlobalPos globalPos = null;
     private static Vec3 location = null;
     private static int tickUntilLanding = 0;
 
@@ -34,7 +37,13 @@ public final class MeteorLandingHandler {
     private static float v0;
     private static float v1;
 
-    public static void handle(Minecraft minecraft, Player player) {
+    public static void handle(Minecraft minecraft, @Nullable Player player) {
+        if (player == null) {
+            globalPos = null;
+            location = null;
+            tickUntilLanding = 0;
+            return;
+        }
         if (minecraft.isPaused()) return;
         if (tickUntilLanding > 0) {
             pitchO = pitch;
@@ -49,8 +58,9 @@ public final class MeteorLandingHandler {
     }
 
     public static void handlePacket(MeteoriteLocationPacketS2C packet, Player player) {
+        globalPos = GlobalPos.of(Level.OVERWORLD, packet.location());
         location = packet.location().getCenter();
-        tickUntilLanding = packet.tickUntilLanding();
+        tickUntilLanding = Math.max(packet.tickUntilLanding(), 1);
 
         totalLandingTick = tickUntilLanding;
         calculate(player);
@@ -92,5 +102,9 @@ public final class MeteorLandingHandler {
         bufferBuilder.addVertex(matrix4f, RADIUS, 100, RADIUS).setUv(1.0F, v0).setColor(1.0F, 1.0F, 1.0F, alpha);
         bufferBuilder.addVertex(matrix4f, -RADIUS, 100, RADIUS).setUv(0.0F, v0).setColor(1.0F, 1.0F, 1.0F, alpha);
         BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
+    }
+
+    public static @Nullable GlobalPos asGlobalPos() {
+        return globalPos;
     }
 }

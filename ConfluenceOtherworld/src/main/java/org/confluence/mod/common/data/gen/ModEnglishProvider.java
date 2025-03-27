@@ -55,14 +55,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("creativetab.confluence.developer", "Confluence | Developer");
 
         add("chat.type.advancement.achievement", "%s has achieved the achievement %s");
+        add("chat.confluence.magic_conch", "The location where you listen to the sound of the ocean [%s] has been recorded");
+        add("chat.confluence.demon_conch", "The location where you listen to the sound of the demon [%s] has been recorded");
         add("options.difficulty.legendary", "§aLegendary");
 
         add("item.confluence.meteorite_ingot.tooltip", "Warm to the touch");
         add("jukebox_song.confluence.alpha", "C418 - alpha");
-
-        add("bossevent.confluence.boss_generate", "The %s has awakened!");
-        add("bossevent.confluence.boss_death", "The %s been defeated!");
-        add("bossevent.confluence.cthulhu_eye.leave", "The CthulhuEye leaved!");
 
         add("item.confluence.afterlife_notes", "Afterlife Notes");
         add("text.confluence.afterlife_notes", "Adventurer, this world is full of challenges and opportunities. Use this journal to uncover its secrets and face its trials. Keep exploring to find power and treasure. Your journey has just begun.                  — The Guide");
@@ -537,12 +535,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("event.confluence.shadow_orb_broken.1", "Screams echo around you...");
         add("event.confluence.crimson_heart_broken.0", "A horrible chill goes down your spine...");
         add("event.confluence.crimson_heart_broken.1", "Screams echo around you...");
-
-        add("attribute.name.player.minion_capacity", "Minion Capacity");
-        add("attribute.name.player.sentry_capacity", "Sentry Capacity");
-        add("attribute.name.player.summon_damage", "Summon Damage");
-        add("attribute.name.player.summon_knockback", "Summon Knockback");
-        add("attribute.name.player.whip_range", "Whip Range");
+        add("event.confluence.eye_of_cthulhu", "You feel an evil presence watching you...");
 
         add("entity.minecraft.villager.confluence.sky_miller", "Sky Miller");
         add("entity.minecraft.villager.confluence.banker", "Banker");

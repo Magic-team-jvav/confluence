@@ -23,6 +23,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
 
 import static org.confluence.mod.util.ClientUtils.colorDraw;
+import static org.confluence.mod.util.ClientUtils.drawString;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -156,16 +157,23 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
                 float maxHealth = 0.0F;
                 float currentHealth = 0.0F;
+                float absorptionHealth = 0.0F;
                 Player player = minecraft.player;
                 if (player != null) {
                     maxHealth = player.getMaxHealth();
                     currentHealth = player.getHealth();
+                    absorptionHealth = player.getAbsorptionAmount();
                 }
                 int widthHealth = guiGraphics.guiWidth() / 2 - 91;
                 int heightHealth = guiGraphics.guiHeight() - minecraft.gui.leftHeight;
+                String abHealth = String.format("%.1f", absorptionHealth);
                 minecraft.gui.leftHeight += 10;
                 RandomSource random = RandomSource.create(114514);
                 colorDraw(guiGraphics, minecraft, random, OVERLAY_TEXTURE, HEALTH, HEALTH_HIGH, HEALTH_LOW, maxHealth, currentHealth, widthHealth, heightHealth, OVERLAY_SIZE, 0, true);
+                if (absorptionHealth > 0.0F) {
+                    guiGraphics.blit(Confluence.asResource("textures/gui/hud/icon_0.png"), widthHealth, heightHealth, 0, 0, 81, 9, 128, 16);
+                    drawString(guiGraphics, minecraft.font, abHealth, widthHealth + 41F - (minecraft.font.width(Component.literal(abHealth))) / 2.0F, heightHealth + 1, 0x5efff8);
+                }
             }
         };
 

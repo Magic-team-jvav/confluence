@@ -2,6 +2,7 @@ package org.confluence.mod.common.item.sword;
 
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -17,13 +18,15 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SingleBooleanComponent;
+import org.confluence.mod.common.entity.projectile.BoomerangProjectile;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModDataComponentTypes;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.sword.legacy.InventoryTickStrategy;
-import org.confluence.mod.common.item.sword.legacy.projectile.BoomerangProjContainer;
-import org.confluence.mod.common.item.sword.legacy.projectile.IProjContainer;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.confluence.terraentity.init.TEDataComponentTypes;
+import org.confluence.terraentity.registries.generation.IGeneration;
+import org.confluence.terraentity.registries.generation.variant.ForwardGeneration;
 import org.confluence.terraentity.registries.hit_effect.EffectStrategy;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 
@@ -34,18 +37,25 @@ import java.util.function.Function;
 public class Boomerang extends Item {
 
     public final BoomerangModifier boomerangModifier;
+    private final IGeneration generation = new ForwardGeneration(0,1.0f);
 
     public Boomerang(float damage, BoomerangModifier boomerangModifier, Properties properties) {
         super(boomerangModifier.buildProperties(properties));
         this.boomerangModifier = boomerangModifier;
         this.boomerangModifier.damage = damage;
-        this.boomerangModifier.proj = new BoomerangProjContainer(boomerangModifier);
     }
 
+    /**
+     * 是否已经准备好射击
+     */
     public static boolean isBacked(ItemStack stack){
         if(stack == null || stack.get(ModDataComponentTypes.BOOMERANG_READY) == null) return true;
         return stack.get(ModDataComponentTypes.BOOMERANG_READY).value();
     }
+
+    /**
+     * 设置射击准备状态
+     */
     public static void setBacked(ItemStack stack, SingleBooleanComponent value){
         if(stack!= null && stack.get(ModDataComponentTypes.BOOMERANG_READY)!=null)
             stack.set(ModDataComponentTypes.BOOMERANG_READY, value);
@@ -72,12 +82,9 @@ public class Boomerang extends Item {
         }
         // 射击
         setBacked(stack,SingleBooleanComponent.FALSE);
-        if(boomerangModifier.proj == null)
-            return InteractionResultHolder.fail(stack);
-        boomerangModifier.proj.genProjectile(player, stack);
-//        if(stack.get(DataComponents.UNBREAKABLE)==null)
-//            if(usedHand == InteractionHand.OFF_HAND) stack.hurtAndBreak(1, player, EquipmentSlot.OFFHAND);
-//            else stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
+
+        this.shoot(player, stack);
+
         if(boomerangModifier.shouldApplyCd ) {
             int count = player.getData(ModAttachmentTypes.WEAPON_STORAGE).tryIncrease(this);
             if(count < boomerangModifier.maxCount) player.getCooldowns().addCooldown(this, boomerangModifier.cd);
@@ -85,6 +92,14 @@ public class Boomerang extends Item {
         }
         else player.getCooldowns().addCooldown(this, 100); //最大等待时间
         return super.use(level, player, usedHand);
+    }
+
+    private void shoot(LivingEntity owner, ItemStack stack){
+        owner.level().playSound(owner, owner.blockPosition(), ModSoundEvents.WAVING.get(), SoundSource.AMBIENT, 1.0F, 1.0F);
+        generation.genProjectile(owner, stack, 2f, ()->{
+            BoomerangProjectile projectile = new BoomerangProjectile(owner, boomerangModifier, stack);
+            return projectile;
+        });
     }
 
     @Override
@@ -114,10 +129,6 @@ public class Boomerang extends Item {
         }
     }
 
-    public void genProjectile(LivingEntity owner, ItemStack stack){
-        if(this.boomerangModifier.proj == null) return;
-        this.boomerangModifier.proj.genProjectile(owner, stack);
-    }
 
     public static class BoomerangModifier {
 
@@ -136,7 +147,6 @@ public class Boomerang extends Item {
 
 //调参后这是木回旋镖的数值
 
-        private IProjContainer proj;
         public BaseSwordItem.QuaConsumer<ItemStack, Level, Entity, Boolean> inventoryTick;
         public ItemAttributeModifiers.Builder attributeModifiersBuilder = ItemAttributeModifiers.builder();
         private int modifyCount = 0;

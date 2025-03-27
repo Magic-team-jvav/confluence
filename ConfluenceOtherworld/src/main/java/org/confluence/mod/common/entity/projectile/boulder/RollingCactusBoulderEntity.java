@@ -47,7 +47,7 @@ public class RollingCactusBoulderEntity extends BoulderEntity {
                 float f = -Mth.sin(y) * cos;
                 float f1 = -Mth.sin(x);
                 float f2 = Mth.cos(y) * cos;
-                projectile.setPos(position().add(0.5, 1.25, 0.5));
+                projectile.setPos(position().add(0.0, 1.25, 0.0));
                 projectile.shoot(f, f1, f2, 0.4F, 0.1F);
                 level().addFreshEntity(projectile);
                 y += d;

@@ -50,4 +50,5 @@ public class ToolItems {
     public static final Supplier<RopeCoilItem> WEB_ROPE_COIL = ITEMS.register("web_rope_coil", () -> new RopeCoilItem(new Item.Properties(), ModBlocks.WEB_ROPE.get()));
 
     public static final Supplier<TargetDummyItem> TARGET_DUMMY = ITEMS.register("target_dummy", TargetDummyItem::new);
+    public static final Supplier<Item> METEOR_COMPASS = ITEMS.register("meteor_compass", () -> new Item(new Item.Properties().stacksTo(1)));
 }

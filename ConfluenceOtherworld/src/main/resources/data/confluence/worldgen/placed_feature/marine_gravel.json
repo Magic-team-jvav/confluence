@@ -2,8 +2,8 @@
   "feature": "confluence:marine_gravel",
   "placement": [
     {
-      "type": "minecraft:rarity_filter",
-      "chance": 14
+      "type": "minecraft:count",
+      "count": 10
     },
     {
       "type": "minecraft:in_square"
@@ -11,35 +11,17 @@
     {
       "type": "minecraft:height_range",
       "height": {
-        "type": "minecraft:trapezoid",
-        "min_inclusive": {
-          "absolute": -58
-        },
+        "type": "minecraft:uniform",
         "max_inclusive": {
-          "absolute": 30
+          "below_top": 0
+        },
+        "min_inclusive": {
+          "above_bottom": 0
         }
       }
     },
     {
       "type": "minecraft:biome"
-    },
-    {
-      "type": "minecraft:environment_scan",
-      "allowed_search_condition": {
-        "type": "minecraft:matching_blocks",
-        "blocks": "minecraft:air"
-      },
-      "direction_of_search": "up",
-      "max_steps": 12,
-      "target_condition": {
-        "type": "minecraft:has_sturdy_face",
-        "offset": [
-          0,
-          0,
-          0
-        ],
-        "direction": "down"
-      }
     }
   ]
 }

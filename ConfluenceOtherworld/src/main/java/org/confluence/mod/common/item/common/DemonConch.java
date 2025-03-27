@@ -22,4 +22,9 @@ public class DemonConch extends MagicConch {
     protected boolean checkAvailable(UseOnContext pContext) {
         return pContext.getLevel().getBlockState(pContext.getClickedPos()).is(Blocks.NETHER_PORTAL);
     }
+
+    @Override
+    protected Component successStoreMessage(BlockPos pos) {
+        return Component.translatable("chat.confluence.demon_conch", pos.toShortString());
+    }
 }

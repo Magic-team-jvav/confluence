@@ -41,7 +41,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     protected float knockBack = 0.0F;
     protected float baseKnockBack = 0.0F;
     protected boolean canPenalize = false;
-    protected CollisionProperties collisionProperties = new CollisionProperties(1, 1, 0);
+    protected CollisionProperties collisionProperties = new CollisionProperties(1, 1, 0.5F);
     protected SwordProjectileComponent projComponent;
 
     protected ItemStack firedFromWeapon;

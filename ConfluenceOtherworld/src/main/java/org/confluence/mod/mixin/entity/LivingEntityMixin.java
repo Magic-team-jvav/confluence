@@ -58,6 +58,9 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @Unique
     private boolean confluence$deadO;
 
+    @Unique
+    private int confluence$freezeTick = 0;
+
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
@@ -75,6 +78,19 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @Override
     public Object2IntMap<Immunity> confluence$getImmunityTicks() {
         return confluence$entityImmunityTicks;
+    }
+
+    @Override
+    public void confluence$setFreezeTick(int tick) {
+        this.confluence$freezeTick = tick;
+    }
+
+    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
+    private void tick(CallbackInfo ci) {
+        if (confluence$freezeTick > 0) {
+            this.confluence$freezeTick--;
+            ci.cancel();
+        }
     }
 
     @Inject(method = "checkFallDamage", at = @At("HEAD"), cancellable = true)

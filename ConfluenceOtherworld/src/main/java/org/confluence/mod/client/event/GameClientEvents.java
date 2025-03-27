@@ -54,7 +54,7 @@ import org.confluence.mod.common.entity.DeadBodyPartEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.accessory.MusicBoxItem;
-import org.confluence.mod.common.item.sword.legacy.ProjectileStrategy;
+import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.integration.touhou_little_maid.ExtraButton;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.mixin.client.accessor.AgeableListModelAccessor;
@@ -93,16 +93,15 @@ public final class GameClientEvents {
          * @see MusicBoxBlock.Entity#clientTick(Level, BlockPos, BlockState, MusicBoxBlock.Entity) 3rd
          */
         IMusicManager.reset(minecraft.getMusicManager()); // 1st
+        MeteorLandingHandler.handle(minecraft, player);
 
         if (player == null) {
             LocalBrushData.clear();
-            return;
+        } else {
+            BaseSwordItem.swordProjectileHandle(minecraft, player);
+            HookThrowingHandler.handle(player);
+            KeyRequestHandler.handle();
         }
-
-        MeteorLandingHandler.handle(minecraft, player);
-        ProjectileStrategy.handle(minecraft, player);
-        HookThrowingHandler.handle(player);
-        KeyRequestHandler.handle();
     }
 
     @SubscribeEvent

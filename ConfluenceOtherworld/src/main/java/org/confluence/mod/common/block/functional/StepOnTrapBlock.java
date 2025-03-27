@@ -36,7 +36,7 @@ public class StepOnTrapBlock extends Block {
         @Override
         protected void onStep(Level level, BlockPos pos, BlockState state, Entity entity) {
             if (!level.isClientSide && entity instanceof LivingEntity living) {
-                living.addEffect(new MobEffectInstance(TCEffects.GRAVITATION, 600));
+                living.addEffect(new MobEffectInstance(TCEffects.GRAVITATION, 100, 1));
             }
         }
     };

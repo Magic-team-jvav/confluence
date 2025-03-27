@@ -1,0 +1,28 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        "#a  ",
+        "# a ",
+        "  a ",
+        "   a"
+    ],
+    "key": {
+        "#": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "minecraft:copper_ingot"
+            },
+            "count": 4
+        },
+        "a": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:tr_amethyst"
+            },
+            "count": 1
+        }
+    },
+    "result": {
+        "id": "terra_entity:amethyst_whip"
+    }
+}

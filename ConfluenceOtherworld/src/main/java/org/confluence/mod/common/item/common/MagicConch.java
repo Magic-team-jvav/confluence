@@ -55,9 +55,15 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
                         tag.put(distanceToPos1 > distanceToPos2 ? "pos2" : "pos1", NbtUtils.writeBlockPos(clickedPos));
                     }
                 }
+                Player player = pContext.getPlayer();
+                if (player != null) player.sendSystemMessage(successStoreMessage(clickedPos));
             });
         }
         return InteractionResult.SUCCESS;
+    }
+
+    protected Component successStoreMessage(BlockPos pos) {
+        return Component.translatable("chat.confluence.magic_conch", pos.toShortString());
     }
 
     @Override

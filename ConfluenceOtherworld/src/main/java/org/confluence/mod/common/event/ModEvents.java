@@ -60,6 +60,7 @@ import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.accessory.MusicBoxItem;
 import org.confluence.mod.integration.patchouli.PatchouliEntityEntriesPacketS2C;
 import org.confluence.mod.integration.patchouli.PatchouliHelper;
+import org.confluence.mod.integration.terra_entity.TEItemComponentModify;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.ConfluenceResources;
@@ -332,6 +333,7 @@ public final class ModEvents {
         event.modify(TGItems.CHLOROPHYTE_BULLET.get(), lime);
         Consumer<DataComponentPatch.Builder> cyan = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.CYAN);
         event.modify(TGItems.LUMINITE_BULLET.get(), cyan);
+        TEItemComponentModify.modifyDefaultComponents(event);
     }
 
     @SubscribeEvent

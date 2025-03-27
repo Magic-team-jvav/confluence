@@ -135,6 +135,8 @@ repositories {
     }
 }
 
+var vanillin = true // 香兰素
+
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
 
@@ -180,8 +182,10 @@ dependencies {
     //runtimeOnly "curse.maven:better-advancements-272515:5850587"
 
     compileOnly "curse.maven:sodium-394468:6211307"
-    runtimeOnly "curse.maven:sodium-394468:6211307"
-    runtimeOnly "curse.maven:irisshaders-455508:6213632"
+    if (!vanillin) {
+        runtimeOnly "curse.maven:sodium-394468:6211307"
+        runtimeOnly "curse.maven:irisshaders-455508:6213632"
+    }
 
     compileOnly "curse.maven:advancement-plaques-499826:5905995"
     //runtimeOnly "curse.maven:advancement-plaques-499826:5905995"
@@ -211,6 +215,9 @@ dependencies {
     //runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
     //runtimeOnly "curse.maven:lootr-361276:6294335"
     //runtimeOnly "curse.maven:the-twilight-forest-227639:6087105"
+    if (vanillin) {
+        runtimeOnly "curse.maven:vanillin-965702:6282987"
+    }
     if (false) {
         runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"
         runtimeOnly "curse.maven:xaeros-world-map-317780:6212662"

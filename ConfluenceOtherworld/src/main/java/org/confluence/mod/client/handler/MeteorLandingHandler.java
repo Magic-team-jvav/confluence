@@ -104,7 +104,7 @@ public final class MeteorLandingHandler {
         BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
     }
 
-    public static @Nullable GlobalPos asGlobalPos() {
+    public static @Nullable GlobalPos getGlobalPos() {
         return globalPos;
     }
 }

@@ -199,7 +199,7 @@ public final class ModClientSetups {
         };
         ItemProperties.register(FunctionalBlocks.BASE_CHEST_BLOCK.get().asItem(), variant, variantFunction);
         ItemProperties.register(FunctionalBlocks.DEATH_CHEST_BLOCK.get().asItem(), variant, variantFunction);
-        ItemProperties.register(ToolItems.METEOR_COMPASS.get(), ResourceLocation.withDefaultNamespace("angle"), new CompassItemPropertyFunction((level, stack, entity) -> MeteorLandingHandler.asGlobalPos()));
+        ItemProperties.register(ToolItems.METEOR_COMPASS.get(), ResourceLocation.withDefaultNamespace("angle"), new CompassItemPropertyFunction((level, stack, entity) -> MeteorLandingHandler.getGlobalPos()));
     }
 
     static void eventBus(Consumer<IEventBus> consumer) {

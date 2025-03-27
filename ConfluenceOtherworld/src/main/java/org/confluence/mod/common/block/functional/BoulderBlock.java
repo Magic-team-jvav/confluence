@@ -42,7 +42,7 @@ public class BoulderBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    protected void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile) {
+    public void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile) {
         level.destroyBlock(hit.getBlockPos(), false);
         summon(level, hit.getBlockPos(), state, entity -> {
             if (projectile.getOwner() instanceof Player player) {

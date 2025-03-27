@@ -96,6 +96,7 @@ public final class GameClientEvents {
 
         if (player == null) {
             LocalBrushData.clear();
+            MeteorLandingHandler.clear();
             return;
         }
 

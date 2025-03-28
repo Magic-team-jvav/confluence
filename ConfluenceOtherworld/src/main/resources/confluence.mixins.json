@@ -45,6 +45,7 @@
         "entity.ServerPlayerMixin",
         "entity.VillagerMixin",
         "entity.ZombieMixin",
+        "integration.apothic_attributes.AttributeEventsMixin",
         "integration.carryon.PickupHandlerMixin",
         "integration.curios.CuriosServerPayloadHandlerMixin",
         "integration.ftbchunks.LongRangePlayerTrackerMixin",

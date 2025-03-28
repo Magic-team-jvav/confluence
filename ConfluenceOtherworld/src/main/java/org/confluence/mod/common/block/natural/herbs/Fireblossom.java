@@ -23,8 +23,11 @@ public class Fireblossom extends BaseHerbBlock {
 
     @Override
     public boolean canBloom(ServerLevel world, BlockState state){
-        long dayTime = world.dayTime() % 24000;
-        return dayTime >= 9760L && world.isDay() && !world.isRaining();
+        if (world.dimensionType().natural()) {
+            long dayTime = world.dayTime() % 24000;
+            return dayTime >= 9760L && world.isDay() && !world.isRaining();
+        }
+        return true;
     }
 
     @Override

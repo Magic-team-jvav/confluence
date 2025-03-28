@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static net.minecraft.world.level.block.LeavesBlock.PERSISTENT;
+import static org.confluence.mod.util.StructureUtils.getHeight;
 import static org.confluence.mod.util.StructureUtils.rectangular;
 
 public class LivingMahoganyTreeStructure extends Structure {
@@ -31,10 +32,10 @@ public class LivingMahoganyTreeStructure extends Structure {
 
     @Override
     protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
-        int lowestY = getLowestY(context, 16, 16);
         ChunkPos startChunk = context.chunkPos();
         int x = startChunk.getMiddleBlockX();
         int z = startChunk.getMiddleBlockZ();
+        int lowestY = getHeight(x, z, context);
         if (x * x + z * z <= 160000 && lowestY < context.chunkGenerator().getSeaLevel() - 16) {
             return Optional.empty();
         }

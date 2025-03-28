@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.confluence.mod.util.StructureUtils.getHeight;
 import static org.confluence.mod.util.StructureUtils.lineSet;
 
 public class CrimsonCaveStructure extends Structure {
@@ -52,12 +53,14 @@ public class CrimsonCaveStructure extends Structure {
                 }
             }
         }
-        int lowestY = getLowestY(context, 16, 16);
-        if (lowestY < context.chunkGenerator().getSeaLevel() - 16) {
+        ChunkPos startChunk = context.chunkPos();
+        int x = startChunk.getMiddleBlockX();
+        int z = startChunk.getMiddleBlockZ();
+        int lowestY = getHeight(x, z, context);
+        if (x * x + z * z <= 160000 && lowestY < context.chunkGenerator().getSeaLevel() - 16) {
             return Optional.empty();
         }
         return onTopOfChunkCenter(context, Heightmap.Types.WORLD_SURFACE_WG, builder -> {
-            ChunkPos startChunk = context.chunkPos();
             WorldgenRandom random = context.random();
             List<Vector3d> VctList = new ArrayList<>();
             int fingerCount = random.nextInt(6, 10);

@@ -7,9 +7,12 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
@@ -21,6 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static net.minecraft.world.level.block.LeavesBlock.PERSISTENT;
+import static org.confluence.mod.util.StructureUtils.getHeight;
 
 public class LivingTreeStructure extends Structure {
     public static final MapCodec<LivingTreeStructure> CODEC = simpleCodec(LivingTreeStructure::new);
@@ -31,10 +35,10 @@ public class LivingTreeStructure extends Structure {
 
     @Override
     protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
-        int lowestY = getLowestY(context, 16, 16);
         ChunkPos startChunk = context.chunkPos();
         int x = startChunk.getMiddleBlockX();
         int z = startChunk.getMiddleBlockZ();
+        int lowestY = getHeight(x, z, context);
         if (x * x + z * z <= 160000 && lowestY < context.chunkGenerator().getSeaLevel() - 16) {
             return Optional.empty();
         }

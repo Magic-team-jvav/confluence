@@ -23,8 +23,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 
 import java.util.Optional;
 
-import static org.confluence.mod.util.StructureUtils.ball;
-import static org.confluence.mod.util.StructureUtils.rectangular;
+import static org.confluence.mod.util.StructureUtils.*;
 
 public class QueenBeeHiveStructure extends Structure {
     public static final MapCodec<QueenBeeHiveStructure> CODEC = simpleCodec(QueenBeeHiveStructure::new);
@@ -35,12 +34,14 @@ public class QueenBeeHiveStructure extends Structure {
 
     @Override
     protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
-        int lowestY = getLowestY(context, 16, 16);
-        if (lowestY < context.chunkGenerator().getSeaLevel() - 16) {
+        ChunkPos startChunk = context.chunkPos();
+        int x = startChunk.getMiddleBlockX();
+        int z = startChunk.getMiddleBlockZ();
+        int lowestY = getHeight(x, z, context);
+        if (x * x + z * z <= 160000 && lowestY < context.chunkGenerator().getSeaLevel() - 16) {
             return Optional.empty();
         }
         return onTopOfChunkCenter(context, Heightmap.Types.WORLD_SURFACE_WG, builder -> {
-            ChunkPos startChunk = context.chunkPos();
             WorldgenRandom random = context.random();
             int radius = random.nextInt(12, 15);
             int radius2 = 2 * radius;

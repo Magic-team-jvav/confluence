@@ -4,7 +4,12 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import org.joml.Vector3d;
 
 import java.util.LinkedList;
@@ -102,7 +107,7 @@ public final class StructureUtils {
         return vectorAtoProjection.dot(vectorAtoB) >= 0 && vectorAtoProjection.dot(vectorAtoProjection) <= vectorAtoB.dot(vectorAtoB);
     }
 
-    //填充方法
+//填充方法
     //球体填充
     public static void ball(double radiusD, BlockPos centerPos, int blockState, boolean replace, Object2IntMap<BlockPos> blockMap) {
         int radius = (int) radiusD + 1;
@@ -285,8 +290,9 @@ public final class StructureUtils {
         int setStartZ = Math.min(zStart1, zEnd1);
         int setEndZ = Math.max(zStart0, zEnd0);
 
-        Vector3d pointP = new Vector3d();
-        double length = Math.sqrt(Mth.square(endPos.x - startPos.x) + Mth.square(endPos.y - startPos.y) + Mth.square(endPos.z - startPos.z));
+        Vector3d pointP = new Vector3d(0, 0, 0);
+        BlockPos pointPInt;
+        double length = Math.sqrt(Math.pow(endPos.x - startPos.x, 2) + Math.pow(endPos.y - startPos.y, 2) + Math.pow(endPos.z - startPos.z, 2));
         double lengthGet;
         double lengthP;
         double x2;
@@ -311,7 +317,7 @@ public final class StructureUtils {
         }
     }
 
-    //生成坐标列表
+//生成坐标列表
     //生成球体坐标列表，带有随机比例
     public static List<Vector3d> ballPos(double radiusD, BlockPos centerPos, float chance, WorldgenRandom random) {
         List<Vector3d> list = new LinkedList<>();
@@ -463,7 +469,7 @@ public final class StructureUtils {
         return list;
     }
 
-    //列表快捷填充
+//列表快捷填充
     //在整个坐标列表上填充球体，带有半径渐变
     public static void lineSet(List<Vector3d> VctList, double rStart, double rEnd, int blockstate, boolean replace, Object2IntMap<BlockPos> blockMap) {
         Vector3d posPoint;
@@ -524,7 +530,7 @@ public final class StructureUtils {
         }
     }
 
-    //快捷方法整合
+//快捷方法整合
     //不规则球体填充，带有壁厚、随机比例
     public static void ball(int radius, int wall, BlockPos centerPos, Object2IntMap<BlockPos> blockMap, float chance, WorldgenRandom random, int wallBlock, int airBlock) {
         List<Vector3d> list = ballPos(radius, centerPos, chance, random);
@@ -537,5 +543,13 @@ public final class StructureUtils {
         List<Vector3d> list = ballPos(radius, centerPos, chance, random);
         lineSet(list, radius, radius, wallBlock, true, blockMap);
         lineSet(list, radius - wall, radius - wall, airBlock1, airBlock2, true, blockMap, checkY);
+    }
+
+    //获取xz在高度图上的y坐标
+    public static int getHeight(int x, int z, Structure.GenerationContext context) {
+        ChunkGenerator chunkgenerator = context.chunkGenerator();
+        LevelHeightAccessor levelheightaccessor = context.heightAccessor();
+        RandomState randomstate = context.randomState();
+        return chunkgenerator.getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, levelheightaccessor, randomstate);
     }
 }

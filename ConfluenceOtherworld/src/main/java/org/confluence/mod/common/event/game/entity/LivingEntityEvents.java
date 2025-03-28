@@ -236,18 +236,15 @@ public final class LivingEntityEvents {
                 amount *= 0.5F;
             }
         }
-
         // 剑命中效果
         ItemStack weapon = damageSource.getWeaponItem();
         if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword) {
             sword.applyHitEffects(weapon, attacker, living, damageSource, amount);
         }
-
         // 暴击判定和伤害显示
         boolean crit = false;
         if (!TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE) && attacker instanceof Player player) {
-            double chance = player.getAttributeValue(TCAttributes.CRIT_CHANCE);
-            if (living.level().random.nextFloat() < chance) {
+            if (living.getRandom().nextFloat() < player.getAttributeValue(TCAttributes.CRIT_CHANCE)) {
                 amount *= 1.5F;
                 player.crit(living);
                 crit = true;

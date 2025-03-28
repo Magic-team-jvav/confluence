@@ -127,6 +127,7 @@ public class MeteoriteTracker {
                 level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE)
                         .getHolder(Confluence.asResource("normal_meteorite")).orElseThrow().value()
                         .place(level, level.getChunkSource().getGenerator(), level.random, origin);
+                placed = true;
             } catch (Exception ignored) {}
             if (withForceChunk) level.setChunkForced(chunkX, chunkZ, false);
             return placed;

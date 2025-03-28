@@ -1,11 +1,16 @@
 package org.confluence.mod.common.equipment_set;
 
+import com.xiaohunao.equipment_benediction.common.context.LivingEquipmentChangeContext;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSet;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableSetData;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
+import com.xiaohunao.equipment_benediction.common.hook.hooks.EquipEquipmentHook;
 import com.xiaohunao.equipment_benediction.common.init.EBHookTypes;
+import com.xiaohunao.equipment_benediction.common.interfaces.IBenediction;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -26,22 +31,32 @@ public class HeimSet extends EquipmentSet {
                 .build());
         equippableGroup.addEquippableSet("chestplate", new EquippableSetData.Builder()
                 .addEquippable(VanillaEquippable.CHEST, ArmorItems.HEIM_CHESTPLATE)
-                .bindHook(builder -> builder.addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(ArmorItems.HEIM_CHESTPLATE.getId(), 0.01, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .bindDelayHook(EBHookTypes.LIVING_SHIELD_BLOCK.get(), (owner, event) -> {
-                    if (event.getBlocked()) {
-                        LivingEntity living = event.getEntity();
-                        System.out.println("delay shield block");
-                    }
+                    event.getEntity().addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 40, 1));
                 },60)
+                .build());
+        equippableGroup.addEquippableSet("leggings", new EquippableSetData.Builder()
+                .addEquippable(VanillaEquippable.LEGS, ArmorItems.HEIM_LEGGINGS)
+                .bindHook(builder -> builder.addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(ArmorItems.HEIM_LEGGINGS.getId(), 0.01, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
+                .build());
+        equippableGroup.addEquippableSet("boots", new EquippableSetData.Builder()
+                .addEquippable(VanillaEquippable.FEET, ArmorItems.HEIM_BOOTS)
+                .bindHook(builder -> builder.addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(ArmorItems.HEIM_BOOTS.getId(), 0.01, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
+                .build());
 
-                .build(),true);
-//        equippableGroup.addEquippableSet("leggings", new EquippableSetData.Builder()
-//                .addEquippable(VanillaEquippable.LEGS, ArmorItems.HEIM_LEGGINGS)
-//                .bindHook(builder -> builder.addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(ArmorItems.HEIM_LEGGINGS.getId(), 0.01, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
-//                .build());
-//        equippableGroup.addEquippableSet("boots", new EquippableSetData.Builder()
-//                .addEquippable(VanillaEquippable.FEET, ArmorItems.HEIM_BOOTS)
-//                .bindHook(builder -> builder.addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(ArmorItems.HEIM_BOOTS.getId(), 0.01, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
-//                .build());
+        equippableGroup.addEquippableSet("heim_set", new EquippableSetData.Builder()
+                        .addEquippable(
+                                VanillaEquippable.HEAD, ArmorItems.HEIM_HELMET,
+                                VanillaEquippable.CHEST, ArmorItems.HEIM_CHESTPLATE,
+                                VanillaEquippable.LEGS, ArmorItems.HEIM_LEGGINGS,
+                                VanillaEquippable.FEET, ArmorItems.HEIM_BOOTS
+                        )
+                        .bindHook(EBHookTypes.UNEQUIP_EQUIPMENT.get(), (owner, changeContext) -> {
+                            changeContext.livingEntity().removeEffect(MobEffects.ABSORPTION);
+                        })
+                        .bindTimerHook(EBHookTypes.EQUIP_EQUIPMENT.get(), (Owner, changeContext) ->
+                                changeContext.livingEntity().addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 40, 1)),80)
+                .build()
+        );
     }
 }

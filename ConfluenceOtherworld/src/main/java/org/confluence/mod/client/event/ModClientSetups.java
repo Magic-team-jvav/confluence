@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.core.BlockPos;
@@ -27,6 +28,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.handler.MeteorLandingHandler;
 import org.confluence.mod.client.renderer.item.EntityDisplayItemRenderer;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
@@ -197,6 +199,7 @@ public final class ModClientSetups {
         };
         ItemProperties.register(FunctionalBlocks.BASE_CHEST_BLOCK.get().asItem(), variant, variantFunction);
         ItemProperties.register(FunctionalBlocks.DEATH_CHEST_BLOCK.get().asItem(), variant, variantFunction);
+        ItemProperties.register(ToolItems.METEOR_COMPASS.get(), ResourceLocation.withDefaultNamespace("angle"), new CompassItemPropertyFunction((level, stack, entity) -> MeteorLandingHandler.getGlobalPos()));
     }
 
     static void eventBus(Consumer<IEventBus> consumer) {

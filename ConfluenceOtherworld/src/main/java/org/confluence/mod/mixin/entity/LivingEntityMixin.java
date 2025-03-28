@@ -7,12 +7,12 @@ import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -58,6 +58,9 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @Unique
     private boolean confluence$deadO;
 
+    @Unique
+    private int confluence$freezeTick = 0;
+
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
@@ -75,6 +78,19 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @Override
     public Object2IntMap<Immunity> confluence$getImmunityTicks() {
         return confluence$entityImmunityTicks;
+    }
+
+    @Override
+    public void confluence$setFreezeTick(int tick) {
+        this.confluence$freezeTick = tick;
+    }
+
+    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
+    private void tick(CallbackInfo ci) {
+        if (confluence$freezeTick > 0) {
+            this.confluence$freezeTick--;
+            ci.cancel();
+        }
     }
 
     @Inject(method = "checkFallDamage", at = @At("HEAD"), cancellable = true)
@@ -103,8 +119,12 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
         LivingEntity self = self();
         FluidType fluidType = self.getBlockStateOn().getFluidState().getType().getFluidType();
         if (fluidType == ModFluids.HONEY.type().get()) {
-            if ((!self.level().isClientSide && self instanceof Animal) || self instanceof ServerPlayer) {
-                self.addEffect(new MobEffectInstance(TCEffects.HONEY, 600));
+            if (!self.level().isClientSide) {
+                if (self instanceof Animal || self instanceof Player) {
+                    self.addEffect(new MobEffectInstance(TCEffects.HONEY, 600));
+                } else if (self instanceof AbstractPiglin piglin) {
+                    piglin.setImmuneToZombification(true);
+                }
             }
             instance = instance.scale(0.8);
         } else if (fluidType == ModFluids.SHIMMER.type().get()) {
@@ -151,7 +171,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
         }
     }
 
-    @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/DamageSources;freeze()Lnet/minecraft/world/damagesource/DamageSource;"), cancellable = true)
+    @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/DamageSources;freeze()Lnet/minecraft/world/damagesource/DamageSource;"))
     private void confluence$aiStep(CallbackInfo ci) {
         NeoForge.EVENT_BUS.post(new LivingFreezeEvent.Post(self()));
     }

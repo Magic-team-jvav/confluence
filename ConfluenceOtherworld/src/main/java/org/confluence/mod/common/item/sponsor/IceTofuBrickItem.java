@@ -27,8 +27,9 @@ public class IceTofuBrickItem extends CustomRarityItem implements ProjectileItem
         if (!level.isClientSide) {
             IceTofuBrickProjectile brick = new IceTofuBrickProjectile(player, level);
             brick.setItem(itemstack);
-            brick.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
+            brick.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.0F, 0.0F);
             level.addFreshEntity(brick);
+            player.getCooldowns().addCooldown(this, 6);
         }
         return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
     }

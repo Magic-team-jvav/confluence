@@ -1,0 +1,28 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        "#a  ",
+        "# a ",
+        "  a ",
+        "   a"
+    ],
+    "key": {
+        "#": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "tag": "c:ingots/silver"
+            },
+            "count": 4
+        },
+        "a": {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:sapphire"
+            },
+            "count": 1
+        }
+    },
+    "result": {
+        "id": "terra_entity:sapphire_whip"
+    }
+}

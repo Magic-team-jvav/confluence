@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile.range.arrow;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
@@ -36,7 +37,7 @@ public class BeeArrow extends BaseArrowEntity {
         super.tick();
 
         if(!this.inGround && getOwner() != null) {
-            LivingEntity target = TEUtils.getAABBAngleTarget(position(), position().add(getDeltaMovement().normalize().scale(10)), level(), this, 20, 30);
+            LivingEntity target = TEUtils.getAABBAngleTarget(position(), position().add(getDeltaMovement().normalize().scale(10)), level(), this, 20, 30, this::canHitEntity);
             if(target != null) {
                 Vec3 motion = getDeltaMovement();
                 Vec3 dir = target.position().add(0, target.getEyeHeight() * 0.5f, 0).subtract(position());
@@ -60,5 +61,8 @@ public class BeeArrow extends BaseArrowEntity {
         }
     }
 
-
+    @Override
+    protected boolean canHitEntity(Entity target) {
+        return super.canHitEntity(target) &&TEUtils.projectileCanHitEntityTest.test(this, target);
+    }
 }

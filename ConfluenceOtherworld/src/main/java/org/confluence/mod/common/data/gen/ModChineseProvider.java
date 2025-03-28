@@ -37,6 +37,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("creativetab.confluence.developer", "汇流来世 | 开发者物品");
 
         add("chat.type.advancement.achievement", "%s达成了成就%s");
+        add("chat.confluence.magic_conch", "你听取海洋声音的位置[%s]已记录");
+        add("chat.confluence.demon_conch", "你听取恶魔呼喊的位置[%s]已记录");
         add("options.difficulty.legendary", "§a传奇");
 
         add("jukebox_song.confluence.song", "C418 - alpha");
@@ -77,7 +79,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("item.confluence.kind_mita_ring.tooltip.1", "“戒指会带你找到正确的方向，亲爱的”");
         add("item.confluence.failed_skull.tooltip.1", "一只苦力怕被猪灵强制改造了身体，可以多次自爆。猪灵想用它作为入侵主世界的生物兵器，却被其意外逃脱");
         add("item.confluence.pink_cola.tooltip.1", "一瓶普通的粉色可乐，或许原来有一整箱？");
-        add("item.confluence.dongdongs_flatbread.tooltip.1", "刚在地狱岩上考好的饼，快来尝尝吧！");
+        add("item.confluence.dongdongs_flatbread.tooltip.1", "刚在下界岩上考好的饼，快来尝尝吧！");
 
 
 
@@ -679,12 +681,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("event.confluence.shadow_orb_broken.1", "四面回荡着尖叫声……");
         add("event.confluence.crimson_heart_broken.0", "不寒而栗，毛骨悚然……！");
         add("event.confluence.crimson_heart_broken.1", "四面回荡着尖叫声……");
-
-        add("attribute.name.player.minion_capacity", "仆从容量");
-        add("attribute.name.player.sentry_capacity", "哨兵容量");
-        add("attribute.name.player.summon_damage", "召唤伤害");
-        add("attribute.name.player.summon_knockback", "召唤击退");
-        add("attribute.name.player.whip_range", "鞭范围");
+        add("event.confluence.eye_of_cthulhu", "你感到有个邪恶的东西在看着你……");
 
         add("entity.minecraft.villager.confluence.sky_miller", "天师");
         add("entity.minecraft.villager.confluence.banker", "银行家");
@@ -770,6 +767,8 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("equipment_benediction.set_switcher.confluence.cactus_set", "仙人掌套装");
         add("equipment_benediction.set_switcher.confluence.cactus_set.data.0", "攻击者因为仙人掌尖刺受到伤害");
+
+        add("block.confluence.larva", "幼虫");
 
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.ARROW_PROJECTILE.get(), "泰拉箭");
@@ -1829,6 +1828,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.VINE_ROPE_COIL.get(), "藤蔓绳圈");
         add(ToolItems.SILK_ROPE_COIL.get(), "丝绸绳圈");
         add(ToolItems.WEB_ROPE_COIL.get(), "蛛丝绳圈");
+        add(ToolItems.METEOR_COMPASS.get(), "陨石指南针");
 
 
         add(ConsumableItems.SHURIKEN.get(), "手里剑");
@@ -1919,6 +1919,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.PERPLEXED_CAT_MEDAL.get(), "疑惑猫猫勋章");
         add(ModItems.CANDY_SWORD.get(), "糖果剑");
         add(ModItems.PULSAR.get(), "脉冲星");
+
 
 
         add(ModItems.CATTAILS.get(), "香蒲");

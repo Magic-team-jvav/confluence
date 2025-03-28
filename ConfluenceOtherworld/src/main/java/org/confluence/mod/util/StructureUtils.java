@@ -7,7 +7,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import org.joml.Vector3d;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -102,7 +102,7 @@ public final class StructureUtils {
         return vectorAtoProjection.dot(vectorAtoB) >= 0 && vectorAtoProjection.dot(vectorAtoProjection) <= vectorAtoB.dot(vectorAtoB);
     }
 
-//填充方法
+    //填充方法
     //球体填充
     public static void ball(double radiusD, BlockPos centerPos, int blockState, boolean replace, Object2IntMap<BlockPos> blockMap) {
         int radius = (int) radiusD + 1;
@@ -285,35 +285,36 @@ public final class StructureUtils {
         int setStartZ = Math.min(zStart1, zEnd1);
         int setEndZ = Math.max(zStart0, zEnd0);
 
-        Vector3d pointP;
-        BlockPos pointPInt;
-        double length = Math.sqrt(Math.pow(endPos.x - startPos.x, 2) + Math.pow(endPos.y - startPos.y, 2) + Math.pow(endPos.z - startPos.z, 2));
+        Vector3d pointP = new Vector3d();
+        double length = Math.sqrt(Mth.square(endPos.x - startPos.x) + Mth.square(endPos.y - startPos.y) + Mth.square(endPos.z - startPos.z));
         double lengthGet;
         double lengthP;
         double x2;
         double y2;
 
-        for (int x = setStartX; x <= setEndX; x++){
-            x2 = Math.pow(endPos.x - x, 2);
-            for (int y = setStartY; y <= setEndY; y++){
-                y2 = Math.pow(endPos.y - y, 2);
-                for (int z = setStartZ; z <= setEndZ; z++){
-                    pointP = new Vector3d(x, y, z);
-                    lengthGet = Math.sqrt(x2 + y2 + Math.pow(endPos.z - z, 2));
+        for (int x = setStartX; x <= setEndX; x++) {
+            x2 = Mth.square(endPos.x - x);
+            pointP.x = x;
+            for (int y = setStartY; y <= setEndY; y++) {
+                y2 = Mth.square(endPos.y - y) + x2;
+                pointP.y = y;
+                for (int z = setStartZ; z <= setEndZ; z++) {
+                    pointP.z = z;
+                    if (!isProjectionBetweenPoints(startPos, endPos, pointP)) continue;
+                    lengthGet = Math.sqrt(y2 + Mth.square(endPos.z - z));
                     lengthP = lengthGet / length;
-                    if (isProjectionBetweenPoints(startPos, endPos, pointP) && getDistanceToLineSegment(startPos, endPos, pointP) <= (startRadius * lengthP + endRadius * (1.0D - lengthP))) {
-                        pointPInt = new BlockPos(x, y, z);
-                        blockMap.put(pointPInt, blockstate);
+                    if (getDistanceToLineSegment(startPos, endPos, pointP) <= (startRadius * lengthP + endRadius * (1.0D - lengthP))) {
+                        blockMap.put(new BlockPos(x, y, z), blockstate);
                     }
                 }
             }
         }
     }
 
-//生成坐标列表
+    //生成坐标列表
     //生成球体坐标列表，带有随机比例
     public static List<Vector3d> ballPos(double radiusD, BlockPos centerPos, float chance, WorldgenRandom random) {
-        List<Vector3d> list = new ArrayList<>();
+        List<Vector3d> list = new LinkedList<>();
         int radius = (int) radiusD + 1;
         double radius2 = radiusD * radiusD;
         int x2;
@@ -335,7 +336,7 @@ public final class StructureUtils {
 
     //生成椭球体坐标列表，带有随机比例
     public static List<Vector3d> ellipsoidPos(double radiusDX, double radiusDY, double radiusDZ, BlockPos centerPos, float chance, WorldgenRandom random) {
-        List<Vector3d> list = new ArrayList<>();
+        List<Vector3d> list = new LinkedList<>();
         int radiusX = (int) radiusDX + 1;
         int radiusY = (int) radiusDY + 1;
         int radiusZ = (int) radiusDZ + 1;
@@ -361,7 +362,7 @@ public final class StructureUtils {
 
     //生成椭球体坐标列表，带有内径、随机比例、最大y坐标
     public static List<Vector3d> ellipsoidPos(double radiusDXIn, double radiusDYIn, double radiusDZIn, double radiusDXOut, double radiusDYOut, double radiusDZOut, BlockPos centerPos, float chance, WorldgenRandom random, int checkY) {
-        List<Vector3d> list = new ArrayList<>();
+        List<Vector3d> list = new LinkedList<>();
         int radiusX = (int) radiusDXOut + 1;
         int radiusY = (int) radiusDYOut + 1;
         int radiusZ = (int) radiusDZOut + 1;
@@ -390,7 +391,7 @@ public final class StructureUtils {
 
     //生成螺旋形坐标列表
     public static List<Vector3d> rotateCloudPos(float rotate, float rotateStep, double length, double lengthStep, int count, BlockPos centerPos) {
-        List<Vector3d> poses = new ArrayList<>();
+        List<Vector3d> poses = new LinkedList<>();
         Vector3d vctPos;
         for (int i = 0; i < count; i++) {
             vctPos = new Vector3d(centerPos.getX() + (length + lengthStep * i) * Mth.cos(rotate + rotateStep * i), centerPos.getY(), centerPos.getZ() + (length + lengthStep * i) * Mth.sin(rotate + rotateStep * i));
@@ -431,26 +432,29 @@ public final class StructureUtils {
         int setStartZ = Math.min(zStart1, zEnd1);
         int setEndZ = Math.max(zStart0, zEnd0);
 
-        Vector3d pointP;
-        double length = Math.sqrt(Math.pow(endPos.x - startPos.x, 2) + Math.pow(endPos.y - startPos.y, 2) + Math.pow(endPos.z - startPos.z, 2));
+        Vector3d pointP = new Vector3d();
+        double length = Math.sqrt(Mth.square(endPos.x - startPos.x) + Mth.square(endPos.y - startPos.y) + Mth.square(endPos.z - startPos.z));
         double lengthGet;
         double lengthP;
         double x2;
         double y2;
 
-        List<Vector3d> list = new ArrayList<>();
+        List<Vector3d> list = new LinkedList<>();
 
-        for (int x = setStartX; x <= setEndX; x++){
-            x2 = Math.pow(endPos.x - x, 2);
-            for (int y = setStartY; y <= setEndY; y++){
-                y2 = Math.pow(endPos.y - y, 2);
-                for (int z = setStartZ; z <= setEndZ; z++){
-                    if (chance >= random.nextFloat()) {
-                        pointP = new Vector3d(x, y, z);
-                        lengthGet = Math.sqrt(x2 + y2 + Math.pow(endPos.z - z, 2));
+        for (int x = setStartX; x <= setEndX; x++) {
+            x2 = Mth.square(endPos.x - x);
+            pointP.x = x;
+            for (int y = setStartY; y <= setEndY; y++) {
+                y2 = Mth.square(endPos.y - y) + x2;
+                pointP.y = y;
+                for (int z = setStartZ; z <= setEndZ; z++) {
+                    if (chance >= 1 || chance >= random.nextFloat()) {
+                        pointP.z = z;
+                        if (!isProjectionBetweenPoints(startPos, endPos, pointP)) continue;
+                        lengthGet = Math.sqrt(y2 + Mth.square(endPos.z - z));
                         lengthP = lengthGet / length;
-                        if (isProjectionBetweenPoints(startPos, endPos, pointP) && getDistanceToLineSegment(startPos, endPos, pointP) <= (startRadius * lengthP + endRadius * (1.0D - lengthP))) {
-                            list.add(pointP);
+                        if (getDistanceToLineSegment(startPos, endPos, pointP) <= (startRadius * lengthP + endRadius * (1.0D - lengthP))) {
+                            list.add(new Vector3d(pointP));
                         }
                     }
                 }
@@ -459,14 +463,14 @@ public final class StructureUtils {
         return list;
     }
 
-//列表快捷填充
+    //列表快捷填充
     //在整个坐标列表上填充球体，带有半径渐变
     public static void lineSet(List<Vector3d> VctList, double rStart, double rEnd, int blockstate, boolean replace, Object2IntMap<BlockPos> blockMap) {
         Vector3d posPoint;
         double step = (rEnd - rStart) / VctList.size();
         for (int i = 0; i < VctList.size(); i++) {
             posPoint = VctList.get(i);
-            ball(rStart + step * i, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate, replace, blockMap);
+            ball(rStart + step * i, VectorUtils.fromVector3d(posPoint), blockstate, replace, blockMap);
         }
     }
 
@@ -476,7 +480,7 @@ public final class StructureUtils {
         double step = (rEnd - rStart) / VctList.size();
         for (int i = 0; i < VctList.size(); i++) {
             posPoint = VctList.get(i);
-            ball(rStart + step * i, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate1, blockstate2, replace, blockMap, checkY);
+            ball(rStart + step * i, VectorUtils.fromVector3d(posPoint), blockstate1, blockstate2, replace, blockMap, checkY);
         }
     }
 
@@ -485,7 +489,7 @@ public final class StructureUtils {
         Vector3d posPoint;
         for (Vector3d vector3d : VctList) {
             posPoint = vector3d;
-            ellipsoid(radiusDX, radiusDY, radiusDZ, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate, replace, blockMap);
+            ellipsoid(radiusDX, radiusDY, radiusDZ, VectorUtils.fromVector3d(posPoint), blockstate, replace, blockMap);
         }
     }
 
@@ -495,7 +499,7 @@ public final class StructureUtils {
         double step = (rEnd - rStart) / VctList.size();
         for (int i = 0; i < VctList.size(); i++) {
             posPoint = VctList.get(i);
-            ball(rStart + step * i, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate, replace, blockMap, placePer, random);
+            ball(rStart + step * i, VectorUtils.fromVector3d(posPoint), blockstate, replace, blockMap, placePer, random);
         }
     }
 
@@ -504,7 +508,7 @@ public final class StructureUtils {
         Vector3d posPoint;
         for (Vector3d vector3d : VctList) {
             posPoint = vector3d;
-            ellipsoid(radiusDX, radiusDY, radiusDZ, new BlockPos((int) posPoint.x, (int) posPoint.y, (int) posPoint.z), blockstate, replace, blockMap, placePer, random);
+            ellipsoid(radiusDX, radiusDY, radiusDZ, VectorUtils.fromVector3d(posPoint), blockstate, replace, blockMap, placePer, random);
         }
     }
 
@@ -512,14 +516,15 @@ public final class StructureUtils {
     public static void lineSetFeature(List<Vector3d> list, Map<BlockPos, ResourceLocation> featureMap, ResourceLocation[] feature, WorldgenRandom random) {
         BlockPos pos;
         Vector3d vctPos;
+        int length = feature.length;
         for (Vector3d vector3d : list) {
             vctPos = vector3d;
             pos = VectorUtils.fromVector3d(vctPos);
-            featureMap.put(pos, feature[random.nextInt(feature.length)]);
+            featureMap.put(pos, feature[random.nextInt(length)]);
         }
     }
 
-//快捷方法整合
+    //快捷方法整合
     //不规则球体填充，带有壁厚、随机比例
     public static void ball(int radius, int wall, BlockPos centerPos, Object2IntMap<BlockPos> blockMap, float chance, WorldgenRandom random, int wallBlock, int airBlock) {
         List<Vector3d> list = ballPos(radius, centerPos, chance, random);
@@ -533,5 +538,4 @@ public final class StructureUtils {
         lineSet(list, radius, radius, wallBlock, true, blockMap);
         lineSet(list, radius - wall, radius - wall, airBlock1, airBlock2, true, blockMap, checkY);
     }
-
 }

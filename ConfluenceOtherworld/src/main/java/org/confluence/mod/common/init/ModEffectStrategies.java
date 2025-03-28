@@ -3,6 +3,7 @@ package org.confluence.mod.common.init;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.confluence.terraentity.registries.hit_effect.EffectStrategy;
@@ -27,7 +28,7 @@ import static org.confluence.terraentity.registries.hit_effect.EffectStrategy.*;
  * @author coffee
  */
 public final class ModEffectStrategies {
-    public static final TERegistries.EffectStrategies EFFECT_STRATEGY = TERegistries.EffectStrategies.create(Confluence.MODID);
+    public static final DeferredRegister<EffectStrategy> EFFECT_STRATEGY = DeferredRegister.create(TERegistries.EffectStrategies.REGISTRY, Confluence.MODID);
 
     /**
      * 复杂的回调效果

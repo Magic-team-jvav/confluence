@@ -154,6 +154,9 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putTarget(CORRUPTION_GOLD_ORE.get(), Color.ORANGE, true, ShowType.SPELUNKER);
         putTarget(SANCTIFICATION_GOLD_ORE.get(), Color.ORANGE, true, ShowType.SPELUNKER);
         putTarget(FLESHIFICATION_GOLD_ORE.get(), Color.ORANGE, true, ShowType.SPELUNKER);
+        putTarget(Blocks.GILDED_BLACKSTONE, Color.ORANGE, true, ShowType.SPELUNKER);
+        putTarget(Blocks.NETHER_GOLD_ORE, Color.ORANGE, true, ShowType.SPELUNKER);
+
 
         //煤矿
         putTarget(Blocks.COAL_ORE, Color.BLACK, false, ShowType.SPELUNKER);
@@ -228,6 +231,14 @@ public class SpelunkerHelper extends AbstractBufferManager {
         // 化石对标
         putTarget(COLD_CRYSTAL_ORE.get(), Color.red, true, ShowType.SPELUNKER);
         putTarget(GELSTONE_ORE.get(), Color.red, true, ShowType.SPELUNKER);
+        putTarget(OPAL_ORE.get(), Color.red, true, ShowType.SPELUNKER);
+
+        // 狱石
+        putTarget(HELLSTONE.get(), Color.ORANGE, true, ShowType.SPELUNKER);
+        putTarget(ASH_HELLSTONE.get(), Color.ORANGE, true, ShowType.SPELUNKER);
+
+        // 石英
+        putTarget(Blocks.NETHER_QUARTZ_ORE, Color.WHITE, true, ShowType.SPELUNKER);
 
 
         // tip 危险感知

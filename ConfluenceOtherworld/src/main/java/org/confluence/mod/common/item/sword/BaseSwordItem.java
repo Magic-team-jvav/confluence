@@ -1,5 +1,7 @@
 package org.confluence.mod.common.item.sword;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -7,6 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlotGroup;
@@ -19,14 +22,17 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.common.ItemAbility;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.sword.legacy.InventoryTickStrategy;
-import org.confluence.mod.common.item.sword.legacy.ProjectileStrategy;
 import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
+import org.confluence.mod.network.c2s.SwordShootingPacketC2S;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
@@ -79,11 +85,13 @@ public class BaseSwordItem extends SwordItem {
                 damageSource.is(DamageTypeTags.PANIC_CAUSES)) {
             var data = weapon.get(TEDataComponentTypes.EFFECT_STRATEGY);
             if(data != null) {
-                if (attacker instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.95f
+                if (attacker instanceof Player player
                         && damageSource.is(DamageTypeTags.CAN_BREAK_ARMOR_STAND)
                         && damageSource.is(DamageTypeTags.IS_PLAYER_ATTACK)
                 ) {
-                    data.applyAll(player, hurter);
+                    if(player.getAttackStrengthScale(0.5f) > 0.95f) {
+                        data.applyAll(player, hurter);
+                    }
                 } else if (attacker instanceof LivingEntity livingEntity) {
                     data.applyAll(livingEntity, hurter);
                 }
@@ -146,7 +154,7 @@ public class BaseSwordItem extends SwordItem {
         }
 
         /**设置弹幕
-         * @see ProjectileStrategy
+         * @see SwordProjectileComponent
          * */
         public ModifierBuilder setProj(Supplier<SwordProjectileComponent>  proj){
             this.modifier.add(p->p.component(ModDataComponentTypes.SWORD_PROJECTILE,proj.get()));
@@ -269,5 +277,22 @@ public class BaseSwordItem extends SwordItem {
     @FunctionalInterface
     public interface QuaConsumer<A,B,C,D> {
         void accept(A a,B b,C c,D d);
+    }
+
+    // TODO: 这是飞龙、波涌之刃的发剑气方式，还要写附魔剑、泰拉刃的
+    @OnlyIn(Dist.CLIENT)
+    public static void swordProjectileHandle(Minecraft minecraft, LocalPlayer player) {
+        if (minecraft.gameMode == null || minecraft.gameMode.isDestroying() || !minecraft.options.keyAttack.isDown()) {return;}
+
+        ItemStack stack = player.getMainHandItem();
+        Item item = stack.getItem();
+        var data = stack.get(ModDataComponentTypes.SWORD_PROJECTILE);
+        if (item instanceof BaseSwordItem sword && !player.getCooldowns().isOnCooldown(item)
+                && data!= null
+        ) {
+            PacketDistributor.sendToServer((new SwordShootingPacketC2S()));
+            player.getCooldowns().addCooldown(sword, data.getAttackSpeed(player));
+            player.swing(InteractionHand.MAIN_HAND);
+        }
     }
 }

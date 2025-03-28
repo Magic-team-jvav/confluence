@@ -17,7 +17,15 @@ public class HotSwap {
         return null;
     }
 
-    public static double wrap(double original) {
-        return original;
+    public static double wrapD(double original) {
+        return original - 0.2;
+    }
+
+    public static int wrapI(int original) {
+        return original + 32;
+    }
+
+    public static double constant() {
+        return -0.1;
     }
 }

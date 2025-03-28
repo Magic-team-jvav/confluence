@@ -67,9 +67,7 @@ import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.entity.ai.Boss;
-import org.confluence.terraentity.init.TEEffects;
 import org.confluence.terraentity.init.TEEntities;
-import org.confluence.terraentity.init.TETags;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class LivingEntityEvents {
@@ -134,7 +132,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void livingHeal(LivingHealEvent event) {
         LivingEntity living = event.getEntity();
         if (!(living.level() instanceof ServerLevel level)) return;
@@ -238,18 +236,15 @@ public final class LivingEntityEvents {
                 amount *= 0.5F;
             }
         }
-
         // 剑命中效果
         ItemStack weapon = damageSource.getWeaponItem();
         if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword) {
             sword.applyHitEffects(weapon, attacker, living, damageSource, amount);
         }
-
         // 暴击判定和伤害显示
         boolean crit = false;
         if (!TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE) && attacker instanceof Player player) {
-            double chance = player.getAttributeValue(TCAttributes.CRIT_CHANCE);
-            if (living.level().random.nextFloat() < chance) {
+            if (living.getRandom().nextFloat() < player.getAttributeValue(TCAttributes.CRIT_CHANCE)) {
                 amount *= 1.5F;
                 player.crit(living);
                 crit = true;

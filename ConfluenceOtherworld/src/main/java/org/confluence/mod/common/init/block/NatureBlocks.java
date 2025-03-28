@@ -45,7 +45,7 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> BAOBAB_SAPLING = registerWithItem("baobab_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.BAOBAB_GROWER, Blocks.GRASS_BLOCK, Blocks.DIRT));
 
     // 流体接触块
-    public static final DeferredBlock<Block> THIN_HONEY_BLOCK = registerWithItem("thin_honey_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.HONEY_BLOCK)));
+    public static final DeferredBlock<ThinHoneyBlock> THIN_HONEY_BLOCK = registerWithItem("thin_honey_block", () -> new ThinHoneyBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.HONEY_BLOCK)));
     public static final DeferredBlock<Block> LOOSE_HONEY_BLOCK = registerWithItem("loose_honey_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.HONEY_BLOCK)));
     public static final DeferredBlock<AetheriumBlock> AETHERIUM_BLOCK = registerWithItem("aetherium_block", () -> new AetheriumBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).lightLevel(blockState -> 10)));
     public static final DeferredBlock<Block> DARK_AETHERIUM_BLOCK = registerWithItem("dark_aetherium_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK)));

@@ -7,11 +7,13 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.terra_curio.common.init.TCAttributes;
+import org.confluence.terraentity.registries.generation.IGeneration;
 
 /**
- * 这个文件夹定义弹幕的大体释放逻辑，参数可以在strategy调整
+ * 使用{@link IGeneration}和{@link org.confluence.mod.common.component.SwordProjectileComponent}替换
  * @author coffee
  */
+@Deprecated
 public interface IProjContainer { // 剑气
 
     int getCooldown();

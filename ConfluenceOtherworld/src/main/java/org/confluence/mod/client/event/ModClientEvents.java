@@ -227,7 +227,6 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BEE_ARROW.get(), c-> new ForwardProjRenderer<>(c, new BeeProjectileModel(c.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
 
 
-        event.registerEntityRenderer(BOOMERANG_PROJECTILE.get(), BoomerangProjRenderer::new);
         event.registerEntityRenderer(BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(FOLLOWER_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(EXPLODE_BOULDER.get(), BoulderRenderer::new);

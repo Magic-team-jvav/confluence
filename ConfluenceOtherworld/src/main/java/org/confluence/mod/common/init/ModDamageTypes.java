@@ -12,7 +12,6 @@ public final class ModDamageTypes {
     public static final ResourceKey<DamageType> FALLING_STAR = register("falling_star");
     public static final ResourceKey<DamageType> ACID_VENOM = register("acid_venom");
     public static final ResourceKey<DamageType> CURSED_INFERNO = register("cursed_inferno");
-    public static final ResourceKey<DamageType> FROST_BURN = register("frost_burn");
     public static final ResourceKey<DamageType> BOULDER = register("boulder");
     public static final ResourceKey<DamageType> THORN = register("thorn");
     public static final ResourceKey<DamageType> DARKNESS = register("darkness");

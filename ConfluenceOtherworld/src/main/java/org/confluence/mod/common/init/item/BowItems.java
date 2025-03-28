@@ -21,6 +21,7 @@ import org.confluence.mod.common.item.bow.DaedalusStormbow;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.bow.TerraBowItem;
 import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.terraentity.init.TEEffectStrategies;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -64,7 +65,7 @@ public class BowItems {
     );
     public static final DeferredItem<TerraBowItem> HUNTING_BOW = register("hunting_bow", 3.5F, m->m
             .setRarity(ModRarity.BLUE)
-            .setOnHitEffect(ModEffectStrategies.Components.HUNTING_RIFLE_EFFECT.get())
+            .setOnHitEffect(TEEffectStrategies.Components.HUNTING_RIFLE_EFFECT.get())
     );
     public static final DeferredItem<TerraBowItem> DEMON_BOW = register("demon_bow", 5.5F, m->m
             .setRarity(ModRarity.BLUE)

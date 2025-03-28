@@ -22,10 +22,10 @@
       "count": 2
     },
     "c": {
-      "item": "confluence:enchanted_boomerang"
+      "item": "terra_entity:enchanted_boomerang"
     }
   },
   "result": {
-    "id": "confluence:flamarang"
+    "id": "terra_entity:flamarang"
   }
 }

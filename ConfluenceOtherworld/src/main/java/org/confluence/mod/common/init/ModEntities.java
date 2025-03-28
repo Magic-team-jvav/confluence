@@ -26,6 +26,7 @@ import org.confluence.mod.common.entity.projectile.mana.*;
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
 import org.confluence.mod.common.entity.projectile.sword.*;
 import org.confluence.mod.common.event.ModEvents;
+import org.confluence.terraentity.entity.proj.BoomerangProjectile;
 
 import java.util.function.Supplier;
 
@@ -76,8 +77,8 @@ public final class ModEntities {
     public static final Supplier<EntityType<BaseArrowEntity>> ARROW_PROJECTILE = ENTITIES.register("arrow_projectile", () -> EntityType.Builder.<BaseArrowEntity>of(BaseArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:arrow_projectile"));
     public static final Supplier<EntityType<BeeArrow>> BEE_ARROW = ENTITIES.register("bee_arrow_projectile", () -> EntityType.Builder.<BeeArrow>of(BeeArrow::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:bee_arrow_projectile"));
 
-    // 回旋镖
-    public static final Supplier<EntityType<BoomerangProjectile>> BOOMERANG_PROJECTILE = ENTITIES.register("boomerang_projectile", () -> EntityType.Builder.<BoomerangProjectile>of(BoomerangProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:boomerang_projectile"));
+//    // 回旋镖
+//    public static final Supplier<EntityType<BoomerangProjectile>> BOOMERANG_PROJECTILE = ENTITIES.register("boomerang_projectile", () -> EntityType.Builder.<BoomerangProjectile>of(BoomerangProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:boomerang_projectile"));
 
     public static final Supplier<EntityType<BoulderEntity>> BOULDER = ENTITIES.register("boulder", () -> EntityType.Builder.<BoulderEntity>of(BoulderEntity::new, MobCategory.MISC).sized(BoulderEntity.DIAMETER, BoulderEntity.DIAMETER).clientTrackingRange(6).build("confluence:boulder"));
     public static final Supplier<EntityType<FollowerBoulderEntity>> FOLLOWER_BOULDER = ENTITIES.register("follower_boulder", () -> EntityType.Builder.<FollowerBoulderEntity>of(FollowerBoulderEntity::new, MobCategory.MISC).sized(BoulderEntity.DIAMETER, BoulderEntity.DIAMETER).clientTrackingRange(6).build("confluence:follower_boulder"));

@@ -19,10 +19,11 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.client.renderer.item.LightSaberRenderer;
-import org.confluence.mod.common.component.SingleBooleanComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.terraentity.data.component.SingleBooleanComponent;
+import org.confluence.terraentity.init.TEDataComponentTypes;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
@@ -43,7 +44,7 @@ public abstract class LightSaber extends BaseSwordItem implements GeoItem {
 
     private final AttributeModifier modifier;
     public LightSaber(Tier tier, ModRarity rarity, int damage, float attackSpeed, String color) {
-        super(tier, rarity, 0, attackSpeed, new ModifierBuilder().modifyProperties(p->p.component(ModDataComponentTypes.BOOMERANG_READY.get(),SingleBooleanComponent.TRUE)));
+        super(tier, rarity, 0, attackSpeed, new ModifierBuilder().modifyProperties(p->p.component(TEDataComponentTypes.BOOMERANG_READY.get(), SingleBooleanComponent.TRUE)));
         this.color = color;
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
 
@@ -51,7 +52,7 @@ public abstract class LightSaber extends BaseSwordItem implements GeoItem {
     }
 
     public static boolean isTurnOn(ItemStack itemStack) {
-        return itemStack.getComponents().getOrDefault(ModDataComponentTypes.BOOMERANG_READY.get(), SingleBooleanComponent.TRUE).value();
+        return itemStack.getComponents().getOrDefault(TEDataComponentTypes.BOOMERANG_READY.get(), SingleBooleanComponent.TRUE).value();
     }
 
     @Override
@@ -72,7 +73,7 @@ public abstract class LightSaber extends BaseSwordItem implements GeoItem {
     @Override
     public @NotNull ItemStack finishUsingItem(@NotNull ItemStack itemStack, @NotNull Level level, @NotNull LivingEntity living) {
         if (level.isClientSide) return itemStack;
-        boolean turnOn = !itemStack.set(ModDataComponentTypes.BOOMERANG_READY.get(), new SingleBooleanComponent(!isTurnOn(itemStack))).value();
+        boolean turnOn = !itemStack.set(TEDataComponentTypes.BOOMERANG_READY.get(), new SingleBooleanComponent(!isTurnOn(itemStack))).value();
         var builder = ItemAttributeModifiers.builder();
         if(turnOn){
             itemStack.getComponents().get(DataComponents.ATTRIBUTE_MODIFIERS).modifiers().forEach(m -> {

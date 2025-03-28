@@ -2,16 +2,16 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
         {
-            "item": "confluence:enchanted_boomerang"
+            "item": "terra_entity:enchanted_boomerang"
         },
         {
-            "item": "confluence:shroomerang"
+            "item": "terra_entity:shroomerang"
         },
         {
-            "item": "confluence:ice_boomerang"
+            "item": "terra_entity:ice_boomerang"
         }
     ],
     "result": {
-        "id": "confluence:trimarang"
+        "id": "terra_entity:trimarang"
     }
 }

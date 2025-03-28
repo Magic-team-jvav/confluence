@@ -9,6 +9,7 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.integration.ponder.PonderHelper;
+import org.confluence.terraentity.init.item.TEBoomerangItems;
 
 import static org.confluence.mod.common.init.item.PickaxeItems.MOLTEN_PICKAXE;
 
@@ -226,10 +227,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.paint_scraper", "用于去除油漆或涂料，按下shift+右键仅去除一面");
         add("tooltip.item.confluence.paint_sprayer.0", "自动给放置的物体刷油漆或涂料");
         add("tooltip.item.confluence.coin", "潜行右键合并为上级钱币");
-        add("tooltip.item.confluence.penetration", "穿透数量");
-        add("tooltip.item.confluence.on_hit_effects", "命中效果");
-        add("tooltip.item.confluence.max_count", "分身数量");
-        add("tooltip.item.confluence.fly_speed", "飞行速度");
+
         add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "蓄满效果");
         add("tooltip.item.confluence.has_proj", "剑气");
         add("tooltip.item.confluence.has_proj.damage", "- 伤害");
@@ -782,7 +780,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.BODY_PART.get(), "身体部件");
         add(ModEntities.BOMB_ENTITY.get(), "炸弹");
         add(ModEntities.BOMB_FISH_ENTITY.get(), "炸弹鱼");
-        add(ModEntities.BOOMERANG_PROJECTILE.get(), "回旋镖");
+//        add(ModEntities.BOOMERANG_PROJECTILE.get(), "回旋镖");
         add(ModEntities.BOUNCY_BOMB_ENTITY.get(), "弹力炸弹");
         add(ModEntities.BOUNCY_DYNAMITE.get(), "弹力炸药");
         add(ModEntities.BOUNCY_GRENADE.get(), "弹力手雷");
@@ -1728,14 +1726,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.TERRAGRIM.get(), "泰拉魔刃");
 
 
-        add(BoomerangItems.WOOD_BOOMERANG.get(), "木回旋镖");
-        add(BoomerangItems.ENCHANTED_BOOMERANG.get(), "附魔回旋镖");
-        add(BoomerangItems.SHROOMERANG.get(), "蘑菇回旋镖");
-        add(BoomerangItems.ICE_BOOMERANG.get(), "冰雪回旋镖");
-        add(BoomerangItems.TRIMARANG.get(), "三尖回旋镖");
-        add(BoomerangItems.FLAMARANG.get(), "烈焰回旋镖");
-        add(BoomerangItems.DEVELOPER_BOOMERANG.get(), "开发者回旋镖");
-        add(BoomerangItems.BeiDou_BOOMERANG.get(), "北斗飞镖");
+
 
 
         add(AxeItems.COPPER_AXE.get(), "铜斧");
@@ -2685,7 +2676,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.CRATE.get(), "宝匣");
         add(ModEffects.ACID_VENOM.get(), "酸性毒液");
         add(ModEffects.CURSED_INFERNO.get(), "诅咒焰");
-        add(ModEffects.FROST_BURN.get(), "霜冻");
+//        add(ModEffects.FROST_BURN.get(), "霜冻");
         add(ModEffects.RAGE.get(), "暴怒");
         add(ModEffects.FISHING.get(), "钓鱼");
         add(ModEffects.LUCK_EFFECT.get(), "幸运");
@@ -2704,7 +2695,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.ARCHERY.get(), "箭术");
         add(ModEffects.HEART_REACH.get(), "拾心");
         add(ModEffects.OBSIDIAN_SKIN.get(), "黑曜石皮");
-        add(ModEffects.HELLFIRE.get(), "狱炎");
+//        add(ModEffects.HELLFIRE.get(), "狱炎");
         add(ModEffects.COZY_FIRE.get(), "温馨之火");
         add(ModEffects.BEWITCHED.get(), "着魔");
         add(ModEffects.HUNGER_DELAYED.get(), "饥饿延缓");
@@ -2712,26 +2703,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(TooltipManager.prefix, "** 赞助者物品 **");
 
         // 车万女仆
-        add("task.confluence.boomerang_attack", "回旋镖攻击");
-        add("task.confluence.boomerang_attack.desc", "女仆会主动用回旋镖攻击周围的敌对生物");
-        add("task.confluence.boomerang_attack.condition.has_boomerang", "主手持有回旋镖");
 
         add("task.confluence.use_life_crystal", "生命水晶");
         add("task.confluence.use_life_crystal.desc", "女仆会主动使用生命水晶增加最大生命值");
         add("task.confluence.use_life_crystal.condition.has_life_crystal", "主手持有生命水晶");
 
-        // hit effect
-        add("terra_entity.effect.strategy.bat", "吸血 +1 hp");
-        add("terra_entity.effect.strategy.lights_bane", "召唤魔光剑");
-        add("terra_entity.effect.strategy.bee_keeper", "召唤蜜蜂");
-
-        add("terra_entity.effect.strategy.frozen_burn_3_sec_50_chance", "50%几率 霜冻 3秒");
-        add("terra_entity.effect.strategy.tentacle_spikes", "触手钉锤");
-        add("terra_entity.effect.strategy.hunting_4_sec", "狩猎 4秒");
-        add("terra_entity.effect.strategy.hell_fire_5_sec", "烈火焚身 5秒");
-        add("terra_entity.effect.strategy.set_fire_5_sec", "着火啦 5秒");
-        add("terra_entity.effect.strategy.blood_butchered", "血腥屠宰");
-        add("terra_entity.effect.strategy.bei_dou", "随机5种效果:\\n霜冻 Ⅳ 10秒\\n烈火焚身 Ⅳ 10秒\\n凋零 Ⅳ 10秒\\n中毒 Ⅳ 10秒\\n瞬间伤害 Ⅷ");
 
         PonderHelper.addTranslateKeys(this::add, false);
     }

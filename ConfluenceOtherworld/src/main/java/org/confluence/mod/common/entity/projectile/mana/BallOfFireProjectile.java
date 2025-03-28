@@ -15,6 +15,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.util.VectorUtils;
+import org.confluence.terraentity.init.TEEffects;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
@@ -69,7 +70,7 @@ public class BallOfFireProjectile extends AbstractManaProjectile {
             boolean ddu = ModSecretSeeds.DONT_DIG_UP.match(serverLevel);
             if (random.nextBoolean()) {
                 if (ddu && entity instanceof LivingEntity living) {
-                    living.addEffect(new MobEffectInstance(ModEffects.HELLFIRE, 100));
+                    living.addEffect(new MobEffectInstance(TEEffects.HELLFIRE, 100));
                 } else {
                     entity.setRemainingFireTicks(100);
                 }

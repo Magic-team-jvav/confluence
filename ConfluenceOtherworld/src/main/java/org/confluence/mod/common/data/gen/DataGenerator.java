@@ -4,12 +4,16 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.recipe.ConfluenceWorkshopProvider;
 import org.confluence.mod.common.data.gen.recipe.NPCShopProvider;
+import org.confluence.terraentity.TerraEntity;
+import org.confluence.terraentity.data.gen.TERegisterDataPack;
 
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 @EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD)
@@ -27,7 +31,11 @@ public class DataGenerator {
         generator.addProvider(client, new ModBlockStateProvider(output, helper));
         generator.addProvider(client, new ModItemModelProvider(output, helper));
 
+
         boolean server = event.includeServer();
+        DatapackBuiltinEntriesProvider provider = new DatapackBuiltinEntriesProvider(output, lookup, TERegisterDataPack.DATA_BUILDER, Set.of(TerraEntity.MODID));
+        lookup = provider.getRegistryProvider();
+
         ModBlockTagsProvider blockTagsProvider = new ModBlockTagsProvider(output, lookup, helper);
         generator.addProvider(server, blockTagsProvider);
         generator.addProvider(server, new ModItemTagsProvider(output, lookup, blockTagsProvider.contentsGetter(), helper));

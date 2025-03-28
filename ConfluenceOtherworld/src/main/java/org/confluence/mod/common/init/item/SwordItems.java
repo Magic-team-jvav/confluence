@@ -21,6 +21,7 @@ import org.confluence.mod.common.item.sword.LightSaber;
 import org.confluence.mod.common.item.sword.legacy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
 import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.terraentity.init.TEEffectStrategies;
 import org.confluence.terraentity.registries.generation.variant.ForwardGeneration;
 import org.confluence.terraentity.registries.track.variant.SimpleTrack;
 import org.confluence.terraentity.init.TESounds;
@@ -92,7 +93,7 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> BLOOD_BUTCHERER = register("blood_butchere",ModTiers.TITANIUM, 7, -2.7F,
             ModRarity.BLUE,     EFFECT_SWORD.apply(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get()));
     public static final DeferredItem<SwordItem> VOLCANO = register("volcano",ModTiers.TITANIUM, 16, -3F,
-            ModRarity.ORANGE,   EFFECT_SWORD.apply(ModEffectStrategies.Components.HELL_FIRE_EFFECT.get())
+            ModRarity.ORANGE,   EFFECT_SWORD.apply(TEEffectStrategies.Components.HELL_FIRE_EFFECT.get())
                     .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2f, AttributeModifier.Operation.ADD_VALUE)
                     .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.5f, AttributeModifier.Operation.ADD_VALUE)
     );

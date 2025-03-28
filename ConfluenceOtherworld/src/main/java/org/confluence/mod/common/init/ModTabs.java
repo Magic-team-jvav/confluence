@@ -18,7 +18,10 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 import org.confluence.terra_guns.common.init.TGItems;
+import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.TEItems;
+import org.confluence.terraentity.init.item.TESummonItems;
+import org.confluence.terraentity.init.item.TEWhipItems;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -136,7 +139,7 @@ public final class ModTabs {
                     .title(Component.translatable("creativetab.confluence.warriors"))
                     .displayItems((parameters, output) -> {
                         SwordItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        BoomerangItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                        TEBoomerangItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                     }).withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "rangers")).withTabsBefore(ARMORS.getId()).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SHOOTERS = TABS.register("rangers",
             () -> CreativeModeTab.builder().icon(() -> IconItems.REMOTE_ICON.get().getDefaultInstance())
@@ -160,8 +163,8 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.SUMMON_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.summoners"))
                     .displayItems((parameters, output) -> {
-                        TEItems.SUMMON_ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        TEItems.WHIP_ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                        TESummonItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                        TEWhipItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                         LightPetItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                     }).withTabsAfter(TEItems.NEO_TERRA.getId()).withTabsBefore(MAGES.getId()).build());
     /* 生物 */
@@ -174,10 +177,10 @@ public final class ModTabs {
                         ModItems.HIDDEN.getEntries().forEach(item -> output.accept(item.get()));
                         output.accept(FoodItems.PINK_COLA.get());
                         output.accept(FoodItems.DONGDONGS_FLATBREAD.get());
-                        output.accept(BoomerangItems.BeiDou_BOOMERANG.get());
+                        output.accept(TEBoomerangItems.BeiDou_BOOMERANG.get());
                         output.accept(ToolItems.DEV_BUG_NET.get());
                         output.accept(SwordItems.DEVELOPER_SWORD.get());
-                        output.accept(BoomerangItems.DEVELOPER_BOOMERANG.get());
+                        output.accept(TEBoomerangItems.DEVELOPER_BOOMERANG.get());
                         output.accept(BowItems.DEVELOPER_BOW.get());
                     }).withTabsBefore(TMCreativeModeTab.TAB.getId()).build());
 }

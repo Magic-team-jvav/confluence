@@ -17,14 +17,14 @@ import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.attachment.WeaponStorage;
 import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
+import org.confluence.terraentity.attachment.WeaponStorage;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
+import org.confluence.terraentity.init.TEAttachments;
 import org.confluence.terraentity.init.TEDataComponentTypes;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 import org.jetbrains.annotations.NotNull;
@@ -129,7 +129,7 @@ public class TerraBowItem extends BowItem {
                             // 多重射击的箭设置最大存在时间
                             if(count > 1 && (terraArrow.modify.getType() & BaseArrowEntity.Tag.auto_discard) == 0)
                                 terraArrow.modify.setAutoDiscard(100);
-                            WeaponStorage data = shooter.getData(ModAttachmentTypes.WEAPON_STORAGE);
+                            WeaponStorage data = shooter.getData(TEAttachments.WEAPON_STORAGE);
                             if (data.bowFullPull) {
                                 terraArrow.fullPull = true;
                                 data.bowFullPull = false;
@@ -154,9 +154,9 @@ public class TerraBowItem extends BowItem {
         if(this.arrowModifier.fullPullHitEffects != null) {
             float f = getUseDuration(stack, entity) - remainingUseDuration;
             if (f < 16)
-                entity.getData(ModAttachmentTypes.WEAPON_STORAGE).bowFullPull = false;
+                entity.getData(TEAttachments.WEAPON_STORAGE).bowFullPull = false;
             else if (f == 16) {
-                entity.getData(ModAttachmentTypes.WEAPON_STORAGE).bowFullPull = true;
+                entity.getData(TEAttachments.WEAPON_STORAGE).bowFullPull = true;
                 if (level.isClientSide)
                     entity.playSound(ModSoundEvents.COOLDOWN_RECOVERY.get());
 

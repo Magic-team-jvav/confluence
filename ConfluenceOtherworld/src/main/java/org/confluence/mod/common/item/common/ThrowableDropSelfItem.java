@@ -10,7 +10,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
-import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.terraentity.init.TESounds;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -39,7 +39,7 @@ public class ThrowableDropSelfItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
         if (!pLevel.isClientSide) {
-            pLevel.playSound(null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), ModSoundEvents.WAVING.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));
+            pLevel.playSound(null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), TESounds.WAVING.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));
             ThrowableDropSelfProjectile projectile = entityType.create(pLevel);
             if (projectile != null) {
                 projectile.setOwner(pPlayer);

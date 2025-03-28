@@ -17,6 +17,7 @@ import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.sponsor.*;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
+import org.confluence.terraentity.init.item.TEBoomerangItems;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -95,7 +96,6 @@ public final class ModItems {
         ArrowItems.ITEMS.register(eventBus);
         AxeItems.ITEMS.register(eventBus);
         BaitItems.ITEMS.register(eventBus);
-        BoomerangItems.ITEMS.register(eventBus);
         BowItems.ITEMS.register(eventBus);
         ConsumableItems.ITEMS.register(eventBus);
         DrillItems.ITEMS.register(eventBus);

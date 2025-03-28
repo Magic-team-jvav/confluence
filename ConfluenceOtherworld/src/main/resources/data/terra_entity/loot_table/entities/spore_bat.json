@@ -34,7 +34,7 @@
             "entries": [
                 {
                     "type": "minecraft:item",
-                    "name": "confluence:shroomerang",
+                    "name": "terra_entity:shroomerang",
                     "weight": 5
                 },
                 {

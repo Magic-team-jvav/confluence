@@ -16,7 +16,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:ice_boomerang",
+          "name": "terra_entity:ice_boomerang",
           "weight": 1
         },
         {

@@ -12,6 +12,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.terra_curio.common.init.TCAttributes;
+import org.confluence.terraentity.init.TEEffects;
 
 public class ColdCrystalSet extends EquipmentSet {
     @Override
@@ -42,7 +43,7 @@ public class ColdCrystalSet extends EquipmentSet {
                         VanillaEquippable.LEGS, ArmorItems.COLD_CRYSTAL_LEGGINGS,
                         VanillaEquippable.FEET, ArmorItems.COLD_CRYSTAL_BOOTS
                 )
-                .bindHook(EBHookTypes.BEFORE_LIVING_DAMAGE.get(), (owner, event) -> event.getEntity().addEffect(new MobEffectInstance(ModEffects.FROST_BURN, 100)))
+                .bindHook(EBHookTypes.BEFORE_LIVING_DAMAGE.get(), (owner, event) -> event.getEntity().addEffect(new MobEffectInstance(TEEffects.FROST_BURN, 100)))
                 .build());
     }
 }

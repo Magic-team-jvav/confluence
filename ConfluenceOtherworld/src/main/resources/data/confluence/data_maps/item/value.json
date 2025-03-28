@@ -29,12 +29,12 @@
         "confluence:tin_short_sword": 315,
         "confluence:tin_board_sword": 945,
 
-        "confluence:flamarang": 20000,
-        "confluence:trimarang": 20000,
-        "confluence:ice_boomerang": 10000,
-        "confluence:shroomerang": 6000,
-        "confluence:enchanted_boomerang": 10000,
-        "confluence:wood_boomerang": 10000,
+        "terra_entity:flamarang": 20000,
+        "terra_entity:trimarang": 20000,
+        "terra_entity:ice_boomerang": 10000,
+        "terra_entity:shroomerang": 6000,
+        "terra_entity:enchanted_boomerang": 10000,
+        "terra_entity:wood_boomerang": 10000,
         "confluence:stylish_scissors": 350,
 
         "confluence:molten_fury": 5400,

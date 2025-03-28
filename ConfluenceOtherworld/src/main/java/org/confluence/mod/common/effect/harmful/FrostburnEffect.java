@@ -4,6 +4,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import org.confluence.mod.common.init.ModDamageTypes;
+import org.confluence.terraentity.init.TETags;
 
 //// 免疫:
 // 远古幻影妖
@@ -25,18 +26,18 @@ import org.confluence.mod.common.init.ModDamageTypes;
 // 尖刺冰雪史莱姆 星尘柱
 // 毁灭者 亡灵维京海盗 星旋柱
 // 幻灵 雪兽 僵尸精灵
-public class FrostburnEffect extends MobEffect { //霜冻：缓慢损失生命 每秒损失8点生命 停止生命再生
-    public FrostburnEffect() {
-        super(MobEffectCategory.HARMFUL, 0xBBFFFF);
-    }
-
-    @Override
-    public boolean applyEffectTick(LivingEntity living, int amplifier) {
-        living.hurt(ModDamageTypes.of(living.level(), ModDamageTypes.FROST_BURN), 2.0F * (amplifier + 1));
-        return true;
-    }
-
-    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
-        return duration % 20 == 0;
-    }
-}
+//public class FrostburnEffect extends MobEffect { //霜冻：缓慢损失生命 每秒损失8点生命 停止生命再生
+//    public FrostburnEffect() {
+//        super(MobEffectCategory.HARMFUL, 0xBBFFFF);
+//    }
+//
+//    @Override
+//    public boolean applyEffectTick(LivingEntity living, int amplifier) {
+//        living.hurt(ModDamageTypes.of(living.level(), TETags.DamageTypes.FROST_BURN), 2.0F * (amplifier + 1));
+//        return true;
+//    }
+//
+//    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
+//        return duration % 20 == 0;
+//    }
+//}

@@ -3,7 +3,6 @@ package org.confluence.mod.integration.touhou_little_maid;
 import com.github.tartaricacid.touhoulittlemaid.api.ILittleMaid;
 import com.github.tartaricacid.touhoulittlemaid.api.LittleMaidExtension;
 import com.github.tartaricacid.touhoulittlemaid.entity.task.TaskManager;
-import org.confluence.mod.integration.touhou_little_maid.task_boomerang.TaskBoomerangAttack;
 import org.confluence.mod.integration.touhou_little_maid.task_use_lifecrystal.TaskUseLifeCrystal;
 
 /**
@@ -13,7 +12,6 @@ import org.confluence.mod.integration.touhou_little_maid.task_use_lifecrystal.Ta
 public class LittleMaidCompat implements ILittleMaid {
     @Override
     public void addMaidTask(TaskManager manager) {
-        manager.add(new TaskBoomerangAttack());
         manager.add(new TaskUseLifeCrystal());
     }
 }

@@ -12,6 +12,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.terraentity.init.item.TEBoomerangItems;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -83,7 +84,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheld.add(createDir(BowItems.ITEMS, "bow/"));
         handheld.add(createDir(AxeItems.ITEMS, "axe/"));
         handheld.add(createDir(HammerItems.ITEMS, "hammer/"));
-        handheld.add(createDir(BoomerangItems.ITEMS, "boomerang/"));
+        handheld.add(createDir(TEBoomerangItems.ITEMS, "boomerang/"));
         handheld.add(createDir(PickaxeItems.ITEMS, "pickaxe/"));
         handheld.add(createDir(PickaxeAxeItems.ITEMS, "pickaxe_axe/"));
         handheld.add(createDir(ManaWeaponItems.ITEMS, "mana_staff/"));

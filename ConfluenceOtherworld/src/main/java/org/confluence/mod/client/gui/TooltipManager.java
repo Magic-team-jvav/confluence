@@ -1,7 +1,7 @@
 package org.confluence.mod.client.gui;
 
 import net.minecraft.world.item.Item;
-import org.confluence.mod.common.init.item.BoomerangItems;
+import org.confluence.terraentity.init.item.TEBoomerangItems;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +20,7 @@ public class TooltipManager {
         if (ins == null) {
             ins = new TooltipManager();
             ins.item_donator = new HashMap<>();
-            ins.add(BoomerangItems.BeiDou_BOOMERANG.get(), "bei_dou");
+            ins.add(TEBoomerangItems.BeiDou_BOOMERANG.get(), "bei_dou");
 
         }
         return ins;

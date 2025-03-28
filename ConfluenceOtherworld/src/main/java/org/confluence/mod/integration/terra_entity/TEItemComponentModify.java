@@ -4,7 +4,8 @@ import net.minecraft.core.component.DataComponentPatch;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.confluence.terraentity.init.TEItems;
+import org.confluence.terraentity.init.item.TEBoomerangItems;
+import org.confluence.terraentity.init.item.TEWhipItems;
 
 import java.util.function.Consumer;
 
@@ -12,7 +13,24 @@ public class TEItemComponentModify {
 
     public static void modifyDefaultComponents(ModifyDefaultComponentsEvent event) {
         Consumer<DataComponentPatch.Builder> orange = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.ORANGE);
-        event.modify(TEItems.SWAMP_WHIP.get(), orange);
+        Consumer<DataComponentPatch.Builder> blue = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.BLUE);
+        Consumer<DataComponentPatch.Builder> purple = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.PURPLE);
+        Consumer<DataComponentPatch.Builder> yellow = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.YELLOW);
+        Consumer<DataComponentPatch.Builder> green = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.GREEN);
+        Consumer<DataComponentPatch.Builder> red = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.RED);
+        Consumer<DataComponentPatch.Builder> master = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.MASTER);
+
+        event.modify(TEWhipItems.SWAMP_WHIP.get(), orange);
+
+        event.modify(TEBoomerangItems.WOOD_BOOMERANG.get(), blue);
+        event.modify(TEBoomerangItems.ENCHANTED_BOOMERANG.get(), blue);
+        event.modify(TEBoomerangItems.SHROOMERANG.get(), blue);
+        event.modify(TEBoomerangItems.ICE_BOOMERANG.get(), blue);
+        event.modify(TEBoomerangItems.TRIMARANG.get(), orange);
+        event.modify(TEBoomerangItems.FLAMARANG.get(), orange);
+
+        event.modify(TEBoomerangItems.BeiDou_BOOMERANG.get(), master);
+        event.modify(TEBoomerangItems.DEVELOPER_BOOMERANG.get(), master);
 
     }
 }

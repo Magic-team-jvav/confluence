@@ -12,7 +12,6 @@ public final class ModSoundEvents {
     public static final DeferredRegister<SoundEvent> EVENTS = DeferredRegister.create(Registries.SOUND_EVENT, Confluence.MODID);
 
     public static final DeferredHolder<SoundEvent, SoundEvent> TRANSMISSION = register("transmission"); // 泰拉传送
-    public static final DeferredHolder<SoundEvent, SoundEvent> WAVING = register("waving"); // 泰拉挥动
     public static final DeferredHolder<SoundEvent, SoundEvent> LIGHTSABER_OPEN = register("lightsaber_open"); // 光剑
     public static final DeferredHolder<SoundEvent, SoundEvent> REGULAR_STAFF_SHOOT = register("regular_staff_shoot"); // 法杖1
     public static final DeferredHolder<SoundEvent, SoundEvent> REGULAR_STAFF_SHOOT_2 = register("regular_staff_shoot_2"); // 法杖2

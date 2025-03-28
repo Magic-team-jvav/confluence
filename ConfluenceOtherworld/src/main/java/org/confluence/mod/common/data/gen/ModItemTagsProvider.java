@@ -21,8 +21,9 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_guns.common.init.TGItems;
-import org.confluence.terraentity.init.TEItems;
+import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.TETags;
+import org.confluence.terraentity.init.item.TESummonItems;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -639,7 +640,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         DrillItems.acceptTag(mining_tool_tools);
         IntrinsicTagAppender<Item> prefix_universal_only = tag(ModTags.Items.PREFIX_UNIVERSAL_ONLY);
         DrillItems.acceptTag(prefix_universal_only);
-        BoomerangItems.acceptTag(prefix_universal_only);
+        TEBoomerangItems.acceptTag(prefix_universal_only);
 
         tag(ModTags.Items.COINS).add(
                 ModItems.COPPER_COIN.get(),
@@ -932,7 +933,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 .addTag(ModTags.Items.HARDMODE_ORES)
                 .add(NatureBlocks.PEARL_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new));
 
-        TEItems.SUMMON_ITEMS.getEntries().forEach(item -> tag(ModTags.Items.SUMMONER_WEAPON).add(item.get()));
+        TESummonItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.SUMMONER_WEAPON).add(item.get()));
 
         tag(ModTags.Items.ABLE_TO_DESTROY_ALTAR).add(
                 HammerItems.PWNHAMMER.get()

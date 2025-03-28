@@ -46,7 +46,7 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> MANA_SICKNESS = EFFECTS.register("mana_sickness", ManaSicknessEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> BLEEDING = EFFECTS.register("bleeding", BleedingEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> ACID_VENOM = EFFECTS.register("acid_venom", AcidVenomEffect::new);
-    public static final DeferredHolder<MobEffect, MobEffect> FROST_BURN = EFFECTS.register("frost_burn", FrostburnEffect::new);
+//    public static final DeferredHolder<MobEffect, MobEffect> FROST_BURN = EFFECTS.register("frost_burn", FrostburnEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> CURSED_INFERNO = EFFECTS.register("cursed_inferno", CursedInfernoEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> SILENCED = EFFECTS.register("silenced", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0xFFFAFA));
     public static final DeferredHolder<MobEffect, MobEffect> CURSED = EFFECTS.register("cursed", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x4F4F4F));
@@ -66,7 +66,7 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> SHARPENED = EFFECTS.register("sharpened", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xDDDDDD).addAttributeModifier(TCAttributes.getArmorPass(), Confluence.asResource("sharpened"), 12.0, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> BEWITCHED = EFFECTS.register("bewitched", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xDDAA33).addAttributeModifier(TEAttributes.MINION_CAPACITY, Confluence.asResource("bewitched"), 1.0, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> AMMO_BOX = EFFECTS.register("ammo_box", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x119911));
-    public static final DeferredHolder<MobEffect, MobEffect> HELLFIRE = EFFECTS.register("hellfire", () -> new HellFireEffect(MobEffectCategory.HARMFUL, 0xAB1122));
+//    public static final DeferredHolder<MobEffect, MobEffect> HELLFIRE = EFFECTS.register("hellfire", () -> new HellFireEffect(MobEffectCategory.HARMFUL, 0xAB1122));
     public static final DeferredHolder<MobEffect, MobEffect> COZY_FIRE = EFFECTS.register("cozy_fire", CozyFireEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> HUNGER_DELAYED = EFFECTS.register("hunger_delayed", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xAA0099));
 }

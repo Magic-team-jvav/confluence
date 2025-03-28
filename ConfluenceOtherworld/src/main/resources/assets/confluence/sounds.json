@@ -4,11 +4,6 @@
             "confluence:transmission"
         ]
     },
-    "waving": {
-        "sounds": [
-            "confluence:waving"
-        ]
-    },
     "lightsaber_open": {
         "sounds": [
             "confluence:lightsaber_open"

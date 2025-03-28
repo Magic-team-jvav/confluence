@@ -56,9 +56,9 @@ public final class ModEffectStrategies {
     private static final  DeferredHolder<EffectStrategy, EffectStrategy> BAT_FANG_EFFECT = createEffect("bat",
             (owner, entity)-> owner.heal(1));
 
-    /**着火*/
-    private static final DeferredHolder<EffectStrategy, EffectStrategy> SET_FIRE_EFFECT = createEffect("set_fire_5_sec",
-            SET_FIRE.apply(5 * 20, 1f));
+//    /**着火*/
+//    private static final DeferredHolder<EffectStrategy, EffectStrategy> SET_FIRE_EFFECT = createEffect("set_fire_5_sec",
+//            SET_FIRE.apply(5 * 20, 1f));
 
     /** 魔光剑*/
     private static final  DeferredHolder<EffectStrategy, EffectStrategy> LIGHTS_BANE_EFFECT = createEffect("lights_bane",
@@ -69,20 +69,20 @@ public final class ModEffectStrategies {
             ON_HIT_PROJECTILE_COUNT.apply((level)->ModEntities.BEE_PROJECTILE.get().create(level).addAttackDamage(2), 3));
 
     // 北斗飞镖
-    private static final DeferredHolder<EffectStrategy, EffectStrategy> FROST_BURN_10_SEC_4_AMP = createEffect("frozen_burn_10_sec_4_amp",
-            TimePossibilityAmplifierEffect.of("frozen_burn_10_sec_4_amp", ModEffects.FROST_BURN, 200,3,3,1f));
-
-    private static final DeferredHolder<EffectStrategy, EffectStrategy> HELL_FIRE_10_SEC_4_AMP = createEffect("hell_fire_10_sec_4_amp",
-            TimePossibilityAmplifierEffect.of("hell_fire_10_sec_4_amp", ModEffects.HELLFIRE,  200,3,3,1f));
-
-    private static final DeferredHolder<EffectStrategy, EffectStrategy> WITHER_10_SEC_4_AMP = createEffect("wither_10_sec_4_amp",
-            TimePossibilityAmplifierEffect.of("wither_10_sec_4_amp", MobEffects.WITHER, 200,3,3,1f));
-
-    private static final DeferredHolder<EffectStrategy, EffectStrategy> POISON_10_SEC_4_AMP = createEffect("poison_10_sec_4_amp",
-            TimePossibilityAmplifierEffect.of("poison_10_sec_4_amp", MobEffects.POISON, 200,3,3,1f));
-
-    private static final DeferredHolder<EffectStrategy, EffectStrategy> INSTANT_HARM_1_SEC_7_AMP = createEffect("instant_harm_1_sec_7_amp",
-            TimePossibilityAmplifierEffect.of("instant_harm_1_sec_7_amp", MobEffects.HARM, 1,6,6,1f));
+//    private static final DeferredHolder<EffectStrategy, EffectStrategy> FROST_BURN_10_SEC_4_AMP = createEffect("frozen_burn_10_sec_4_amp",
+//            TimePossibilityAmplifierEffect.of("frozen_burn_10_sec_4_amp", TEEffects.FROST_BURN, 200,3,3,1f));
+//
+//    private static final DeferredHolder<EffectStrategy, EffectStrategy> HELL_FIRE_10_SEC_4_AMP = createEffect("hell_fire_10_sec_4_amp",
+//            TimePossibilityAmplifierEffect.of("hell_fire_10_sec_4_amp", ModEffects.HELLFIRE,  200,3,3,1f));
+//
+//    private static final DeferredHolder<EffectStrategy, EffectStrategy> WITHER_10_SEC_4_AMP = createEffect("wither_10_sec_4_amp",
+//            TimePossibilityAmplifierEffect.of("wither_10_sec_4_amp", MobEffects.WITHER, 200,3,3,1f));
+//
+//    private static final DeferredHolder<EffectStrategy, EffectStrategy> POISON_10_SEC_4_AMP = createEffect("poison_10_sec_4_amp",
+//            TimePossibilityAmplifierEffect.of("poison_10_sec_4_amp", MobEffects.POISON, 200,3,3,1f));
+//
+//    private static final DeferredHolder<EffectStrategy, EffectStrategy> INSTANT_HARM_1_SEC_7_AMP = createEffect("instant_harm_1_sec_7_amp",
+//            TimePossibilityAmplifierEffect.of("instant_harm_1_sec_7_amp", MobEffects.HARM, 1,6,6,1f));
 
 
     /**
@@ -92,26 +92,26 @@ public final class ModEffectStrategies {
 
 /* effect效果*/
 
-        /**霜冻*/
-        public static final Supplier<EffectStrategyComponent> FROST_BURN_EFFECT = ()->EffectStrategyComponent.of(
-                TimePossibilityAmplifierEffect.of("set_fire_5_sec", ModEffects.FROST_BURN,10*20));
-
-        public static final Supplier<EffectStrategyComponent> FROST_BURN_BOOMERANG_EFFECT = ()->EffectStrategyComponent.of(
-                TimePossibilityAmplifierEffect.of("frozen_burn_3_sec_50_chance", ModEffects.FROST_BURN,3 * 20,0,0.5F));
+//        /**霜冻*/
+//        public static final Supplier<EffectStrategyComponent> FROST_BURN_EFFECT = ()->EffectStrategyComponent.of(
+//                TimePossibilityAmplifierEffect.of("set_fire_5_sec", ModEffects.FROST_BURN,10*20));
+//
+//        public static final Supplier<EffectStrategyComponent> FROST_BURN_BOOMERANG_EFFECT = ()->EffectStrategyComponent.of(
+//                TimePossibilityAmplifierEffect.of("frozen_burn_3_sec_50_chance", ModEffects.FROST_BURN,3 * 20,0,0.5F));
 
         /**触手钉锤*/
         public static final Supplier<EffectStrategyComponent>  TENTACLE_SPIKES_EFFECT =()->EffectStrategyComponent.of(
                 TimePossibilityAmplifierEffect.of("tentacle_spikes", ModEffects.TENTACLE_SPIKES, 180, 0, 4, 0.5f));
 
-        /**猎弓*/
-        public static final Supplier<EffectStrategyComponent>  HUNTING_RIFLE_EFFECT = ()->EffectStrategyComponent.of(
-                TimePossibilityAmplifierEffect.of("hunting_4_sec", TEEffects.SUMMON_FOCUS, 80));
+//        /**猎弓*/
+//        public static final Supplier<EffectStrategyComponent>  HUNTING_RIFLE_EFFECT = ()->EffectStrategyComponent.of(
+//                TimePossibilityAmplifierEffect.of("hunting_4_sec", TEEffects.SUMMON_FOCUS, 80));
 
-        /**火山*/
-        public static final Supplier<EffectStrategyComponent> HELL_FIRE_EFFECT = ()->new EffectStrategyComponent(List.of(
-                TimePossibilityAmplifierEffect.of("hell_fire_5_sec", ModEffects.HELLFIRE,5 * 20),
-                PrefabEffect.of("set_fire_5_sec", SET_FIRE_EFFECT)
-        ));
+//        /**火山*/
+//        public static final Supplier<EffectStrategyComponent> HELL_FIRE_EFFECT = ()->new EffectStrategyComponent(List.of(
+//                TimePossibilityAmplifierEffect.of("hell_fire_5_sec", ModEffects.HELLFIRE,5 * 20),
+//                PrefabEffect.of("set_fire_5_sec", SET_FIRE_EFFECT)
+//        ));
 
         /**血腥屠刀*/
         public static final Supplier<EffectStrategyComponent>  BLOOD_BUTCHERED_EFFECT = ()->EffectStrategyComponent.of(
@@ -133,14 +133,14 @@ public final class ModEffectStrategies {
 
 /* random效果*/
 
-        /**北斗飞镖*/
-        public static final Supplier<EffectStrategyComponent> BEI_DOU_EFFECT = ()->EffectStrategyComponent.of(
-                new RandomWeightEffect("bei_dou", ()->Map.of(
-                        POISON_10_SEC_4_AMP.get(), 6f,
-                        HELL_FIRE_10_SEC_4_AMP.get(), 5f,
-                        WITHER_10_SEC_4_AMP.get(), 5f,
-                        INSTANT_HARM_1_SEC_7_AMP.get(), 1f,
-                        FROST_BURN_10_SEC_4_AMP.get(), 5f
-                )));
+//        /**北斗飞镖*/
+//        public static final Supplier<EffectStrategyComponent> BEI_DOU_EFFECT = ()->EffectStrategyComponent.of(
+//                new RandomWeightEffect("bei_dou", ()->Map.of(
+//                        POISON_10_SEC_4_AMP.get(), 6f,
+//                        HELL_FIRE_10_SEC_4_AMP.get(), 5f,
+//                        WITHER_10_SEC_4_AMP.get(), 5f,
+//                        INSTANT_HARM_1_SEC_7_AMP.get(), 1f,
+//                        FROST_BURN_10_SEC_4_AMP.get(), 5f
+//                )));
     }
 }

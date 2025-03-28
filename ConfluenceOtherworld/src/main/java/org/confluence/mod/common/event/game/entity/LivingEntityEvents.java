@@ -67,6 +67,7 @@ import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.entity.ai.Boss;
+import org.confluence.terraentity.init.TEEffects;
 import org.confluence.terraentity.init.TEEntities;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
@@ -136,7 +137,7 @@ public final class LivingEntityEvents {
     public static void livingHeal(LivingHealEvent event) {
         LivingEntity living = event.getEntity();
         if (!(living.level() instanceof ServerLevel level)) return;
-        if (living.hasEffect(ModEffects.FROST_BURN) || living.hasEffect(ModEffects.BLEEDING) || living.hasEffect(ModEffects.HELLFIRE)) {
+        if (living.hasEffect(TEEffects.FROST_BURN) || living.hasEffect(ModEffects.BLEEDING) || living.hasEffect(TEEffects.HELLFIRE)) {
             event.setCanceled(true); // todo 有些怪物对其免疫
         } else {
             float amount = event.getAmount();

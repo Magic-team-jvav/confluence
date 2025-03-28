@@ -16,6 +16,7 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.integration.ponder.PonderHelper;
 import org.confluence.mod.mixin.accessor.LanguageProviderAccessor;
+import org.confluence.terraentity.init.item.TEBoomerangItems;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -165,10 +166,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.paint_scraper", "Used to remove paint or coatings.Press Shift + Right-click to remove only one side.");
         add("tooltip.item.confluence.paint_sprayer.0", "Automatically paints or coats placed objects.");
         add("tooltip.item.confluence.coin", "Using it while crouch to upgrade tier");
-        add("tooltip.item.confluence.penetration", "Penetrates Count");
-        add("tooltip.item.confluence.on_hit_effects", "Effects");
-        add("tooltip.item.confluence.max_count", "Max Count");
-        add("tooltip.item.confluence.fly_speed", "Fly Speed");
+
         add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "Full Pull Effects");
         add("tooltip.item.confluence.has_proj", "Has Projectile");
         add("tooltip.item.confluence.has_proj.damage", "- Damage");
@@ -567,27 +565,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add(TooltipManager.prefix, "** Sponsor Item **");
 
         // TouhouLittleMaid
-        add("task.confluence.boomerang_attack", "Boomerang Attack");
-        add("task.confluence.boomerang_attack.desc", "Mail will use a boomerang to attack surrounding hostile mobs");
-        add("task.confluence.boomerang_attack.condition.has_boomerang", "Mainhand holds a boomerang");
 
         add("task.confluence.use_life_crystal", "Use Life Crystal");
         add("task.confluence.use_life_crystal.desc", "Mail will use life crystal to heal herself");
         add("task.confluence.use_life_crystal.condition.has_life_crystal", "Mainhand holds life crystal");
 
-        // hit effect
-        add("terra_entity.effect.strategy.bat", "Blood absorb +1 hp");
-        add("terra_entity.effect.strategy.lights_bane", "Summon lights bane");
-        add("terra_entity.effect.strategy.bee_keeper", "Summon bees");
-
-
-        add("terra_entity.effect.strategy.frozen_burn_3_sec_50_chance", "50% chance frozen burn 3 seconds");
-        add("terra_entity.effect.strategy.tentacle_spikes", "Tentacle spikes");
-        add("terra_entity.effect.strategy.hunting_4_sec", "Hunting 4 seconds");
-        add("terra_entity.effect.strategy.hell_fire_5_sec", "Hell fire 5 seconds");
-        add("terra_entity.effect.strategy.set_fire_5_sec", "Set fire 5 seconds");
-        add("terra_entity.effect.strategy.blood_butchered", "Blood Butchered");
-        add("terra_entity.effect.strategy.bei_dou", "Random 5 effects:\\nfrozen burn ⅳ 10 seconds\\nhell fire ⅳ 10 seconds\\nwither ⅳ 10 seconds\\npoison ⅳ 10 seconds\\ninstant harm ⅷ");
 
         add("equipment_benediction.set_switcher.confluence.cold_crystal_set", "Cold Crystal Set");
         add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.0", "Increase maximum mana by 20, Critical Hit Rate increased by 4%");
@@ -695,7 +677,6 @@ public class ModEnglishProvider extends LanguageProvider {
         ArrowItems.ITEMS.getEntries().forEach(itemAction);
         AxeItems.ITEMS.getEntries().forEach(itemAction);
         BaitItems.ITEMS.getEntries().forEach(itemAction);
-        BoomerangItems.ITEMS.getEntries().forEach(itemAction);
         BowItems.ITEMS.getEntries().forEach(itemAction);
         ConsumableItems.ITEMS.getEntries().forEach(itemAction);
         VanityArmorItems.ITEMS.getEntries().forEach(itemAction);

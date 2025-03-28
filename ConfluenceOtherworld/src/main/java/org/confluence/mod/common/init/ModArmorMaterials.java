@@ -63,7 +63,7 @@ public final class ModArmorMaterials {
             11, SoundEvents.ARMOR_EQUIP_GENERIC, Blocks.PUMPKIN, "pearl", 0.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> RAINCOAT_ARMOR_MATERIALS = registerArmorMaterial("raincoat_armor_materials",
-            1, 1, 2, 1,
+            1, 2, 1, 1,
             9, SoundEvents.ARMOR_EQUIP_LEATHER, MaterialItems.GEL, "raincoat", 0.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> SNOW_ARMOR_MATERIALS = registerArmorMaterial("snow_armor_materials",
@@ -90,7 +90,7 @@ public final class ModArmorMaterials {
             "tin", 0.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> LEAD_ARMOR_MATERIALS = registerArmorMaterial("lead_armor_materials",
-            2, 5, 6, 2,
+            2, 6, 5, 2,
             9, SoundEvents.ARMOR_EQUIP_IRON, MaterialItems.LEAD_INGOT,
             "lead", 0.0F, 0.0F
     );
@@ -100,7 +100,7 @@ public final class ModArmorMaterials {
             "silver", 0.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> TUNGSTEN_ARMOR_MATERIALS = registerArmorMaterial("tungsten_armor_materials",
-            2, 6, 7, 2,
+            2, 7, 6, 2,
             10, SoundEvents.ARMOR_EQUIP_IRON, MaterialItems.TUNGSTEN_INGOT,
             "tungsten", 0.0F, 0.0F
     );
@@ -110,7 +110,7 @@ public final class ModArmorMaterials {
             "golden", 2.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> PLATINUM_ARMOR_MATERIALS = registerArmorMaterial("platinum_armor_materials",
-            3, 6, 7, 3,
+            3, 7, 6, 3,
             10, SoundEvents.ARMOR_EQUIP_GOLD, MaterialItems.PLATINUM_INGOT,
             "platinum", 2.0F, 0.0F
     );
@@ -130,7 +130,7 @@ public final class ModArmorMaterials {
             "ninja", 1.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> OBSIDIAN_ARMOR_MATERIALS = registerArmorMaterial("obsidian_armor_materials",
-            3, 5, 6, 3,
+            3, 6, 5, 3,
             13, SoundEvents.ARMOR_EQUIP_LEATHER, Blocks.OBSIDIAN,
             "obsidian", 1.0F, 0.0F
     );
@@ -160,7 +160,7 @@ public final class ModArmorMaterials {
             "heim", 2.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> SHADOW_ARMOR_MATERIALS = registerArmorMaterial("shadow_armor_materials",
-            3, 6, 7, 3,
+            3, 7, 6, 3,
             12, SoundEvents.ARMOR_EQUIP_NETHERITE, MaterialItems.DEMONITE_INGOT,
             "shadow", 2.0F, 0.0F
     );
@@ -175,23 +175,23 @@ public final class ModArmorMaterials {
             "molten", 0.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> NECRO_ARMOR_MATERIALS = registerArmorMaterial("necro_armor_materials",
-            10000, 10000, 10000, 10000,
-            10000, SoundEvents.ARMOR_EQUIP_LEATHER, Items.BONE,
+            3, 7, 6, 3,
+            16, SoundEvents.ARMOR_EQUIP_LEATHER, Items.BONE,
             "necro", 0.0F, 0.0F);
 
-    public static final Holder<ArmorMaterial> GOGGLES_ARMOR_MATERIALS = registerArmorMaterial("goggles_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "goggles", 0, 0);
-    public static final Holder<ArmorMaterial> WIZARD_HAT_ARMOR_MATERIALS = registerArmorMaterial("wizard_hat_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "wizard_hat", 0, 0);
-    public static final Holder<ArmorMaterial> MAGIC_HAT_ARMOR_MATERIALS = registerArmorMaterial("magic_hat_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "magic_hat", 0, 0);
-    public static final Holder<ArmorMaterial> AMETHYST_ROBE_ARMOR_MATERIALS = registerArmorMaterial("amethyst_robe_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.TR_AMETHYST), "amethyst_robe", 0, 0);
-    public static final Holder<ArmorMaterial> TOPAZ_ROBE_ARMOR_MATERIALS = registerArmorMaterial("topaz_robe_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.TOPAZ), "topaz_robe", 0, 0);
-    public static final Holder<ArmorMaterial> SAPPHIRE_ROBE_ARMOR_MATERIALS = registerArmorMaterial("sapphire_robe_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.SAPPHIRE), "sapphire_robe", 0, 0);
-    public static final Holder<ArmorMaterial> EMERALD_ROBE_ARMOR_MATERIALS = registerArmorMaterial("emerald_robe_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.TR_EMERALD), "emerald_robe", 0, 0);
-    public static final Holder<ArmorMaterial> RUBY_ROBE_ARMOR_MATERIALS = registerArmorMaterial("ruby_robe_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.RUBY), "ruby_robe", 0, 0);
-    public static final Holder<ArmorMaterial> MYSTIC_ROBE_ARMOR_MATERIALS = registerArmorMaterial("mystic_robe_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "mystic_robe", 0, 0);
-    public static final Holder<ArmorMaterial> DIAMOND_ROBE_ARMOR_MATERIALS = registerArmorMaterial("diamond_robe_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(Items.DIAMOND), "diamond_robe", 0, 0);
-    public static final Holder<ArmorMaterial> AMBER_ROBE_ARMOR_MATERIALS = registerArmorMaterial("amber_robe_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.AMBER), "amber_robe", 0, 0);
+    public static final Holder<ArmorMaterial> GOGGLES_ARMOR_MATERIALS = registerArmorMaterial("goggles_armor_materials", 1, 0, 0, 0, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "goggles", 0, 0);
+    public static final Holder<ArmorMaterial> WIZARD_HAT_ARMOR_MATERIALS = registerArmorMaterial("wizard_hat_armor_materials", 4, 0, 0, 0, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "wizard_hat", 0, 0);
+    public static final Holder<ArmorMaterial> MAGIC_HAT_ARMOR_MATERIALS = registerArmorMaterial("magic_hat_armor_materials", 2, 0, 0, 0, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "magic_hat", 0, 0);
+    public static final Holder<ArmorMaterial> AMETHYST_ROBE_ARMOR_MATERIALS = registerArmorMaterial("amethyst_robe_armor_materials", 0, 0, 0, 0, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.TR_AMETHYST), "amethyst_robe", 0, 0);
+    public static final Holder<ArmorMaterial> TOPAZ_ROBE_ARMOR_MATERIALS = registerArmorMaterial("topaz_robe_armor_materials", 0, 1, 0, 0, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.TOPAZ), "topaz_robe", 0, 0);
+    public static final Holder<ArmorMaterial> SAPPHIRE_ROBE_ARMOR_MATERIALS = registerArmorMaterial("sapphire_robe_armor_materials", 0, 1, 0, 0, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.SAPPHIRE), "sapphire_robe", 0, 0);
+    public static final Holder<ArmorMaterial> EMERALD_ROBE_ARMOR_MATERIALS = registerArmorMaterial("emerald_robe_armor_materials", 0, 2, 0, 0, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.TR_EMERALD), "emerald_robe", 0, 0);
+    public static final Holder<ArmorMaterial> RUBY_ROBE_ARMOR_MATERIALS = registerArmorMaterial("ruby_robe_armor_materials", 0, 2, 0, 0, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.RUBY), "ruby_robe", 0, 0);
+    public static final Holder<ArmorMaterial> MYSTIC_ROBE_ARMOR_MATERIALS = registerArmorMaterial("mystic_robe_armor_materials", 0, 2, 0, 0, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "mystic_robe", 0, 0);
+    public static final Holder<ArmorMaterial> DIAMOND_ROBE_ARMOR_MATERIALS = registerArmorMaterial("diamond_robe_armor_materials", 0, 3, 0, 0, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(Items.DIAMOND), "diamond_robe", 0, 0);
+    public static final Holder<ArmorMaterial> AMBER_ROBE_ARMOR_MATERIALS = registerArmorMaterial("amber_robe_armor_materials", 0, 3, 0, 0, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.AMBER), "amber_robe", 0, 0);
 
-    public static final Holder<ArmorMaterial> JUNGLE_ARMOR_MATERIALS = registerArmorMaterial("jungle_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.JUNGLE_SPORE), "jungle", 0, 0);
+    public static final Holder<ArmorMaterial> JUNGLE_ARMOR_MATERIALS = registerArmorMaterial("jungle_armor_materials", 3, 6, 6, 3, 15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.JUNGLE_SPORE), "jungle", 0, 0);
 
     public static Holder<ArmorMaterial> registerArmorMaterial(String name, int helmetArmor, int chestplateArmor, int leggingsArmor, int bootsArmor, int enchantmentValue, Holder<SoundEvent> equipSound, ItemLike fixItem, String layersName, float toughness, float knockbackResistance) {
         return ARMOR_MATERIALS.register(name, () -> new ArmorMaterial(

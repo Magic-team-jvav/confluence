@@ -1,32 +1,17 @@
 {
     "type": "confluence:heavy_work_bench",
     "pattern": [
-        " fba",
-        "  ec",
-        " g  ",
-        "#   "
+        "  aa",
+        "  a#",
+        " a  ",
+        "a   "
     ],
     "key": {
         "#": {
             "item": "minecraft:red_dye"
         },
         "a": {
-            "item": "minecraft:copper_ingot"
-        },
-        "b": {
-            "tag": "c:ingots/tin"
-        },
-        "c": {
-            "tag": "c:ingots/silver"
-        },
-        "e": {
-            "item": "minecraft:redstone"
-        },
-        "f": {
-            "item": "minecraft:gold_ingot"
-        },
-        "g": {
-            "item": "minecraft:iron_ingot"
+            "tag": "c:ingots/platinum"
         }
     },
     "result": {

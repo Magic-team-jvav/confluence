@@ -51,7 +51,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 Blocks.SNOW_BLOCK
         );
         tag(ModTags.Blocks.MARINE_GRAVEL_REPLACEMENT).add(
-                Blocks.SAND,
                 Blocks.GRAVEL,
                 Blocks.STONE,
                 Blocks.DEEPSLATE,

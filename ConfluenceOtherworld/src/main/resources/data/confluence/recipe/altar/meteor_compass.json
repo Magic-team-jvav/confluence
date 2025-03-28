@@ -1,0 +1,25 @@
+{
+    "type": "confluence:altar",
+    "result": {
+        "id": "confluence:meteor_compass"
+    },
+    "ingredients": [
+        {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "tag": "confluence:demonite_and_crimson_ingot"
+            },
+            "count": 4
+        },
+        {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:falling_star"
+            },
+            "count": 4
+        },
+        {
+            "item": "minecraft:compass"
+        }
+    ]
+}

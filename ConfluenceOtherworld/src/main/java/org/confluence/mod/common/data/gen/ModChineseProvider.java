@@ -491,7 +491,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("achievements.confluence.dye_hard.description", "在每个可能的染料栏中都装备染料。");
         add("achievements.confluence.fashion_statement.title", "时尚宣言");
         add("achievements.confluence.fashion_statement.description", "在全部四个社交盔甲栏中都装备上盔甲或时装服饰。");
-        add("achievements.confluence.the_cavalry.title", "骑兵 ");
+        add("achievements.confluence.the_cavalry.title", "骑兵");
         add("achievements.confluence.the_cavalry.description", "装备坐骑。");
 
 

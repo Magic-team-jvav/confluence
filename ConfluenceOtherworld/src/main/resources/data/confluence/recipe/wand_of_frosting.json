@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " ##",
+        " ##",
+        "/  "
+    ],
+    "key": {
+        "/": {
+            "item": "confluence:wand_of_sparking"
+        },
+        "#": {
+            "item": "confluence:winter_marrow"
+        }
+    },
+    "result": {
+        "id": "confluence:wand_of_frosting"
+    }
+}

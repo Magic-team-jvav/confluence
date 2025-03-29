@@ -70,9 +70,9 @@ public final class ModItems {
     public static final Supplier<GrassSeedItem> GRASS_SEED = ITEMS.register("grass_seed", () -> new GrassSeedItem(Map.of(Blocks.DIRT, Blocks.GRASS_BLOCK)));
     public static final Supplier<GrassSeedItem> JUNGLE_GRASS_SEED = ITEMS.register("jungle_grass_seed", () -> new GrassSeedItem(Map.of(Blocks.MUD, NatureBlocks.JUNGLE_GRASS_BLOCK.get())));
     public static final Supplier<GrassSeedItem> MUSHROOM_GRASS_SEED = ITEMS.register("mushroom_grass_seed", () -> new GrassSeedItem(Map.of(Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get())));
-    public static final Supplier<GrassSeedItem> CORRUPT_SEED = ITEMS.register("corrupt_seed", () -> new GrassSeedItem(Map.of(Blocks.DIRT, NatureBlocks.CORRUPT_GRASS_BLOCK.get(), Blocks.MUD, NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK.get())));
-    public static final Supplier<GrassSeedItem> TR_CRIMSON_SEED = ITEMS.register("tr_crimson_seed", () -> new GrassSeedItem(Map.of(Blocks.DIRT, NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(), Blocks.MUD, NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK.get())));
-    public static final Supplier<GrassSeedItem> HALLOWED_SEED = ITEMS.register("hallowed_seed", () -> new GrassSeedItem(Map.of(Blocks.DIRT, NatureBlocks.HALLOW_GRASS_BLOCK.get())));
+    public static final Supplier<GrassSeedItem> CORRUPT_SEED = ITEMS.register("corrupt_seed", () -> new GrassSeedItem(Map.of(Blocks.MUD, NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK.get()), Map.of(BlockTags.DIRT, NatureBlocks.CORRUPT_GRASS_BLOCK.get())));
+    public static final Supplier<GrassSeedItem> TR_CRIMSON_SEED = ITEMS.register("tr_crimson_seed", () -> new GrassSeedItem(Map.of(Blocks.MUD, NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK.get()), Map.of(BlockTags.DIRT, NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get())));
+    public static final Supplier<GrassSeedItem> HALLOWED_SEED = ITEMS.register("hallowed_seed", () -> new GrassSeedItem(Map.of(), Map.of(BlockTags.DIRT, NatureBlocks.HALLOW_GRASS_BLOCK.get())));
     public static final Supplier<GrassSeedItem> ASH_GRASS_SEED = ITEMS.register("ash_grass_seed", () -> new GrassSeedItem(Map.of(NatureBlocks.ASH_BLOCK.get(), NatureBlocks.ASH_GRASS_BLOCK.get())));
 
     public static final Supplier<BlockItem> CATTAILS = BLOCK_ITEMS.register("cattails", () -> new BlockItem(NatureBlocks.CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));

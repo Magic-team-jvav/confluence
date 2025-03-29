@@ -129,6 +129,13 @@ public class ConfluenceCommand {
                             return 0;
                         })))
                 )
+                .then(Commands.literal("reload")
+                        .then(Commands.argument("resource", EnumArgument.enumArgument(ReloadResource.class)).executes(context -> {
+
+                            ReloadResource.execute(context.getArgument("resource", ReloadResource.class));
+                            return 1;
+                        }))
+                )
         );
     }
 

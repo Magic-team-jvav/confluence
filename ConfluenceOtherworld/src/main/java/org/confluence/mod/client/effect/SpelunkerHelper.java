@@ -1,12 +1,21 @@
 package org.confluence.mod.client.effect;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.JsonOps;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -16,6 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.util.VectorUtils;
 import org.joml.Matrix4f;
@@ -54,29 +64,73 @@ public class SpelunkerHelper extends AbstractBufferManager {
     public Map<Block, ArrayList<BlockPos>> centers = new LinkedHashMap<>();
     public Map<Block, List<BlockPos>> blockMap = new HashMap<>();
 
+    /**
+     * 重载资源包
+     */
+    public void reloadSpecular() {
+        this.targets.clear();
+        Minecraft.getInstance().getResourceManager().getResource(Confluence.asResource("spelunker/config.json")).ifPresentOrElse(r -> {
+            try {
+                var reader = r.openAsReader();
+                JsonObject jsonobject = GsonHelper.parse(reader);
+//                System.out.println(jsonobject);
+                while (lock) {
+                    Thread.onSpinWait();
+                }
+                this.targets.putAll(Tuple.BLOCK_MAP_CODEC.codec().decode(JsonOps.INSTANCE, jsonobject).result().get().getFirst());
+                Minecraft.getInstance().player.sendSystemMessage(Component.literal("successfully load spelunker config"));
+            } catch (Exception e) {
+                defaultBlocks();
+                Minecraft.getInstance().player.sendSystemMessage(Component.literal("failed to load spelunker config"));
+
+            }
+        }, ()->{
+            this.defaultBlocks();
+            Minecraft.getInstance().player.sendSystemMessage(Component.literal("failed to load spelunker config"));
+        });
+    }
+
     enum ShowType {SPELUNKER, DANGER}
 
-    private Player player;
     private final Minecraft mc;
 
-    private record Tuple(Color color, Boolean showText, ShowType showType) {}
+    private record Tuple(Color color, Boolean showText, ShowType showType) {
+        public static final Codec<Tuple> CODEC = RecordCodecBuilder.create((builder) -> builder.group(
+                Codec.INT.fieldOf("color").forGetter(t -> t.color.getRGB()),
+                Codec.BOOL.fieldOf("showText").forGetter(t -> t.showText),
+                Codec.INT.fieldOf("showType").forGetter(t -> t.showType.ordinal())
+        ).apply(builder, (color, showText, showType)->new Tuple(new Color(color), showText, ShowType.values()[showType])));
+
+        public static final MapCodec<Map<Block, Tuple>> BLOCK_MAP_CODEC =
+                Codec.unboundedMap(ResourceLocation.CODEC.xmap(BuiltInRegistries.BLOCK::get,BuiltInRegistries.BLOCK::getKey), Tuple.CODEC).fieldOf("targets").fieldOf("values");
+
+    }
 
     private static SpelunkerHelper blockGen;
+    public static volatile boolean lock = true;
 
     public static SpelunkerHelper getSingleton() {
         if (blockGen == null) {
             blockGen = new SpelunkerHelper(100);
+
         }
         return blockGen;
     }
 
     public SpelunkerHelper(int refreshTime) {
         super(refreshTime);
-        this.player = Minecraft.getInstance().player;
         refreshBlocks();
-
-
         mc = Minecraft.getInstance();
+
+
+        this.defaultBlocks();
+    }
+
+    /**
+     * 默认的配置
+     */
+    public void defaultBlocks() {
+
         //远古残骸
         putTarget(Blocks.ANCIENT_DEBRIS, Color.MAGENTA, true, ShowType.SPELUNKER);//这个还必须放这个位置
 
@@ -283,11 +337,10 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putTarget(GRAVITATION_TRAP.get(), Color.MAGENTA, true, ShowType.DANGER);
         putTarget(PNEUMATIC_TRAP.get(), Color.MAGENTA, true, ShowType.DANGER);
         putTarget(SPIKE.get(), Color.MAGENTA, true, ShowType.DANGER);
-
     }
 
 
-    public void putTarget(Block block, Color color, Boolean always, ShowType showType) {
+    private void putTarget(Block block, Color color, Boolean always, ShowType showType) {
         targets.put(block, new Tuple(color, always, showType));
     }
 
@@ -298,6 +351,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         }
         blockMap.clear();
 
+        Player player = Minecraft.getInstance().player;
         Level level = player.level();
         BlockPos center = player.blockPosition();
         for (int i = -range; i <= range; i++) {
@@ -326,7 +380,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         //重新加载缓存，提速
         centers.clear();
         centerCacheFrame.clear();
-        player = Minecraft.getInstance().player;
+        Player player = Minecraft.getInstance().player;
         if(player == null)
             return;
         refreshBlocks();
@@ -408,10 +462,10 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
     @Override
     protected void afterRender(PoseStack poseStack) {
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
+
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_LINE_SMOOTH);
-
         poseStack.pushPose();
         Vec3 playerPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
         poseStack.translate(-playerPos.x(), -playerPos.y(), -playerPos.z());
@@ -421,6 +475,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         AtomicInteger count = new AtomicInteger();
         float scale = 20;
         int textDir = blockGen.textRenderType;
+        Player player = Minecraft.getInstance().player;
         for (var n : centerCacheFrame.entrySet()) {
             var pos = n.getKey();
             var block = n.getValue();
@@ -468,13 +523,16 @@ public class SpelunkerHelper extends AbstractBufferManager {
         }
 
         poseStack.popPose();
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_LINE_SMOOTH);
     }
 
 
     public static void renderLevel(RenderLevelStageEvent event) {
         if (
 //                event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER ||
-                event.getStage() == RenderLevelStageEvent.Stage.AFTER_LEVEL
+                        event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS
 //                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY
 //                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_SOLID_BLOCKS
 //                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_CUTOUT_BLOCKS
@@ -494,7 +552,13 @@ public class SpelunkerHelper extends AbstractBufferManager {
             blockGen.centerCacheFrame.clear();
             return;
         }
-
+        lock = true;
         blockGen.render(event);
+        lock = false;
+
+
+//         获取json数据  /confluence reload spelunker
+//        JsonElement element = Tuple.BLOCK_MAP_CODEC.codec().encodeStart(JsonOps.INSTANCE, blockGen.targets).result().get();
+//        System.out.println(element);
     }
 }

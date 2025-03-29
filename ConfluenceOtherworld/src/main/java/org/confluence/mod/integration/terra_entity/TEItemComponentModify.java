@@ -1,6 +1,8 @@
 package org.confluence.mod.integration.terra_entity;
 
 import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.Unbreakable;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
@@ -20,8 +22,10 @@ public class TEItemComponentModify {
         Consumer<DataComponentPatch.Builder> red = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.RED);
         Consumer<DataComponentPatch.Builder> master = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.MASTER);
 
+        // 鞭子
         event.modify(TEWhipItems.SWAMP_WHIP.get(), orange);
 
+        // 回旋镖
         event.modify(TEBoomerangItems.WOOD_BOOMERANG.get(), blue);
         event.modify(TEBoomerangItems.ENCHANTED_BOOMERANG.get(), blue);
         event.modify(TEBoomerangItems.SHROOMERANG.get(), blue);
@@ -31,6 +35,9 @@ public class TEItemComponentModify {
 
         event.modify(TEBoomerangItems.BeiDou_BOOMERANG.get(), master);
         event.modify(TEBoomerangItems.DEVELOPER_BOOMERANG.get(), master);
+
+            // 设置无限耐久
+        TEBoomerangItems.ITEMS.getEntries().forEach(i->event.modify(i.get(), b->b.set(DataComponents.UNBREAKABLE, new Unbreakable(true))));
 
     }
 }

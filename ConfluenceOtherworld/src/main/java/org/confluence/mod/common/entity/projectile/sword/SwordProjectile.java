@@ -20,6 +20,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.component.SwordProjectileComponent;
+import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.util.VectorUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.entity.ai.ICollisionAttackEntity;
@@ -200,7 +201,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        if (!target.canBeHitByProjectile() || target instanceof Villager) {
+        if (!target.isAttackable() || target instanceof Villager) {
             return false;
         }
         Entity entity = this.getOwner();
@@ -240,7 +241,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
     public DamageSource damageSource(){
         if(getOwner() instanceof LivingEntity living)
-            return damageSources().mobProjectile(this, living);
+            return ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, living);
         else return damageSources().magic();
     }
 

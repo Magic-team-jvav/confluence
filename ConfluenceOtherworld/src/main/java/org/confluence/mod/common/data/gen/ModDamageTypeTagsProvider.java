@@ -26,7 +26,19 @@ public class ModDamageTypeTagsProvider extends DamageTypeTagsProvider {
                 ModDamageTypes.CURSED_INFERNO,
                 TETags.DamageTypes.FROST_BURN
         );
-        tag(DamageTypeTags.IS_PROJECTILE).add(ModDamageTypes.MAGICAL_PROJECTILE);
+        tag(DamageTypeTags.IS_PROJECTILE).add(
+                ModDamageTypes.MAGICAL_PROJECTILE,
+                ModDamageTypes.SWORD_PROJECTILE
+        );
         tag(Tags.DamageTypes.IS_MAGIC).add(ModDamageTypes.MAGICAL_PROJECTILE);
+
+        // 九头蛇只吃这个伤害类型
+        tag(DamageTypeTags.BYPASSES_INVULNERABILITY).add(
+                ModDamageTypes.SWORD_PROJECTILE,
+                ModDamageTypes.MAGICAL_PROJECTILE
+        );
+
     }
+
+
 }

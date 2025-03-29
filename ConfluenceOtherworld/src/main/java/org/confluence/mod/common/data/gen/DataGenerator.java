@@ -1,6 +1,8 @@
 package org.confluence.mod.common.data.gen;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -10,8 +12,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.recipe.ConfluenceWorkshopProvider;
 import org.confluence.mod.common.data.gen.recipe.NPCShopProvider;
-import org.confluence.terraentity.TerraEntity;
-import org.confluence.terraentity.data.gen.TERegisterDataPack;
+import org.confluence.mod.common.init.ModDamageTypes;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -33,8 +34,10 @@ public class DataGenerator {
 
 
         boolean server = event.includeServer();
-        DatapackBuiltinEntriesProvider provider = new DatapackBuiltinEntriesProvider(output, lookup, TERegisterDataPack.DATA_BUILDER, Set.of(TerraEntity.MODID));
-        lookup = provider.getRegistryProvider();
+
+        DatapackBuiltinEntriesProvider ModProvider = new DatapackBuiltinEntriesProvider(output, lookup, DATA_BUILDER, Set.of(Confluence.MODID));
+        lookup = ModProvider.getRegistryProvider();
+        generator.addProvider(server, ModProvider);
 
         ModBlockTagsProvider blockTagsProvider = new ModBlockTagsProvider(output, lookup, helper);
         generator.addProvider(server, blockTagsProvider);
@@ -48,4 +51,8 @@ public class DataGenerator {
 //        generator.addProvider(server, new HeavyWorkBenchRecipeProvider(output));
         generator.addProvider(server, new NPCShopProvider(output));
     }
+
+    static final RegistrySetBuilder DATA_BUILDER = new RegistrySetBuilder()
+            .add(Registries.DAMAGE_TYPE, ModDamageTypes::createDamageTypes)
+            ;
 }

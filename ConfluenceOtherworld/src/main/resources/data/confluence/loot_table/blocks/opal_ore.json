@@ -5,21 +5,6 @@
       "bonus_rolls": 0.0,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "confluence:opal",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:empty",
-          "weight": 1
-        }
-      ],
-      "rolls": 1
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
           "type": "minecraft:alternatives",
           "children": [
             {
@@ -28,17 +13,34 @@
                 {
                   "condition": "minecraft:match_tool",
                   "predicate": {
-                    "predicates": {
-                      "minecraft:enchantments": [
-                        {
-                          "enchantments": "minecraft:silk_touch",
-                          "levels": {
-                            "min": 1
-                          }
+                    "enchantments": [
+                      {
+                        "enchantment": "minecraft:silk_touch",
+                        "levels": {
+                          "min": 1
                         }
-                      ]
-                    }
+                      }
+                    ]
                   }
+                }
+              ],
+              "name": "confluence:opal",
+              "functions": [
+                {
+                  "function": "set_count",
+                  "count": {
+                    "type": "uniform",
+                    "min": 0,
+                    "max": 1
+                  }
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:survives_explosion"
                 }
               ],
               "name": "confluence:opal_ore"
@@ -46,7 +48,7 @@
           ]
         }
       ],
-      "rolls": 1
+      "rolls": 1.0
     }
   ],
   "random_sequence": "confluence:blocks/opal_ore"

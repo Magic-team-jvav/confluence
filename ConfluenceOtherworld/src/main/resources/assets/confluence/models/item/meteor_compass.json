@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "confluence:item/meteor_compass_16"
+        "layer0": "confluence:item/compass/meteor_compass_16"
     },
     "overrides": [
         { "predicate": { "angle": 0.000000 }, "model": "confluence:item/meteor_compass" },
@@ -36,6 +36,6 @@
         { "predicate": { "angle": 0.890625 }, "model": "confluence:item/meteor_compass_13" },
         { "predicate": { "angle": 0.921875 }, "model": "confluence:item/meteor_compass_14" },
         { "predicate": { "angle": 0.953125 }, "model": "confluence:item/meteor_compass_15" },
-        { "predicate": { "angle": 0.984375 }, "model": "confluence:item/meteor_compass" }
+        { "predicate": { "angle": 0.984375 }, "model": "confluence:item/meteor_compass_16" }
     ]
 }

@@ -117,6 +117,21 @@
         "max": 8.0,
         "min": 3.0
       }
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:meteor_compass",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 2
+        }
+      ],
+      "rolls": 1
     }
   ],
   "random_sequence": "confluence:chests/village/village_plains_house"

@@ -76,8 +76,26 @@
         },
         {
           "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "minecraft:any_of",
+              "terms": [
+                {
+                  "condition": "minecraft:location_check",
+                  "predicate": {
+                    "position": {
+                      "y": {
+                        "min": -64.0,
+                        "max": 40.0
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          ],
           "name": "confluence:golden_carp",
-          "weight":67
+          "weight": 67
         },
         {
           "type": "minecraft:item",

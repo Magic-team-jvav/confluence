@@ -205,7 +205,7 @@ public class NatureBlocks {
     // 灰烬
     public static final DeferredBlock<Block> ASH_SAPLING = registerWithItem("ash_sapling", () -> new AshSaplingBlock(ModFeatures.TreeGrowers.ASH_GROWER));
     public static final LogBlockSet ASH_LOG_BLOCKS = LogBlockSet.builder("ash", false).createDefault(ASH, true).build();
-    public static final DeferredBlock<Block> ASH_BLOCK = registerWithItem("ash_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).strength(1.0F, 1.0F).sound(SoundType.SAND)));
+    public static final DeferredBlock<Block> ASH_BLOCK = registerWithItem("ash_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SAND).strength(1.0F, 1.0F).sound(SoundType.SAND)));
     public static final DeferredBlock<Block> ASH_GRASS_BLOCK = registerWithItem("ash_grass_block", AshGrassBlock::new);
     public static final DeferredBlock<Block> ASH_GRASS = registerWithItem("ash_grass", () -> new BasePlantBlock(ASH_GRASS_BLOCK.get()));
 

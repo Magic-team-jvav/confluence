@@ -158,7 +158,7 @@ public class TerraBowItem extends BowItem {
             else if (f == 16) {
                 entity.getData(TEAttachments.WEAPON_STORAGE).bowFullPull = true;
                 if (level.isClientSide)
-                    entity.playSound(ModSoundEvents.COOLDOWN_RECOVERY.get());
+                    entity.playSound(ModSoundEvents.BOW_COOLDOWN_RECOVERY.get());
 
             }
         }

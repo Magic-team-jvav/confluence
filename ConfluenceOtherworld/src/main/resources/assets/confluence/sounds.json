@@ -89,6 +89,11 @@
             "confluence:use_mounts"
         ]
     },
+    "bow_cooldown_recovery": {
+        "sounds": [
+            "confluence:bow_cooldown_recovery"
+        ]
+    },
     "decoupling": {
         "sounds": [
             "confluence:decoupling"

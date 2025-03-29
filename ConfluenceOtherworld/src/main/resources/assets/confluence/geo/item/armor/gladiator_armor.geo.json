@@ -3,12 +3,12 @@
 	"minecraft:geometry": [
 		{
 			"description": {
-				"identifier": "geometry.gladiator_armor",
+				"identifier": "geometry.unknown",
 				"texture_width": 128,
 				"texture_height": 128,
 				"visible_bounds_width": 3,
-				"visible_bounds_height": 3.5,
-				"visible_bounds_offset": [0, 1.25, 0]
+				"visible_bounds_height": 4.5,
+				"visible_bounds_offset": [0, 1.75, 0]
 			},
 			"bones": [
 				{
@@ -21,7 +21,7 @@
 					"pivot": [0, 24, 0],
 					"cubes": [
 						{"origin": [-4, 24, -4], "size": [8, 8, 8], "inflate": 1, "uv": [0, 29]},
-						{"origin": [0, 27, -8], "size": [0, 13, 16], "uv": [0, 0]},
+						{"origin": [0, 27, -11], "size": [0, 16, 21], "uv": [54, 43]},
 						{"origin": [-0.5, 33, -5], "size": [1, 4, 10], "uv": [0, 45]},
 						{"origin": [-4, 24, -4], "size": [8, 8, 8], "inflate": 1.5, "uv": [32, 0]}
 					]
@@ -35,7 +35,8 @@
 					"parent": "bipedBody",
 					"pivot": [0, 24, 0],
 					"cubes": [
-						{"origin": [-4, 12, -2], "size": [8, 12, 4], "inflate": 1.01, "uv": [32, 16]}
+						{"origin": [-4, 12, -2], "size": [8, 12, 4], "inflate": 0.76, "uv": [32, 16]},
+						{"origin": [-4, 12, -2], "size": [8, 12, 4], "inflate": 1.26, "uv": [0, 0]}
 					]
 				},
 				{
@@ -55,7 +56,8 @@
 					"parent": "bipedLeftArm",
 					"pivot": [4, 22, 0],
 					"cubes": [
-						{"origin": [4, 12, -2], "size": [4, 12, 4], "inflate": 1, "uv": [38, 48]}
+						{"origin": [4, 12, -2], "size": [4, 12, 4], "inflate": 0.75, "uv": [38, 48]},
+						{"origin": [4, 12, -2], "size": [4, 12, 4], "inflate": 1, "uv": [38, 64]}
 					]
 				},
 				{
@@ -67,7 +69,8 @@
 					"parent": "bipedRightArm",
 					"pivot": [-4, 22, 0],
 					"cubes": [
-						{"origin": [-8, 12, -2], "size": [4, 12, 4], "inflate": 1, "uv": [22, 48]}
+						{"origin": [-8, 12, -2], "size": [4, 12, 4], "inflate": 0.75, "uv": [22, 48]},
+						{"origin": [-8, 12, -2], "size": [4, 12, 4], "inflate": 1, "uv": [22, 64]}
 					]
 				},
 				{

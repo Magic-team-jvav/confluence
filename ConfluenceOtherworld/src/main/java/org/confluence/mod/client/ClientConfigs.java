@@ -2,6 +2,7 @@ package org.confluence.mod.client;
 
 import net.minecraft.network.chat.Component;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.Builder;
@@ -68,7 +69,7 @@ public final class ClientConfigs {
         terraStyleFood = TERRA_STYLE_FOOD.get();
 
         bloodyEffect = BLOODY_EFFECT.get();
-        goreEffect = GORE_EFFECT.get();
+        goreEffect = GORE_EFFECT != null ? GORE_EFFECT.get() : GoreEffect.OFF;
         damageIndicator = DAMAGE_INDICATOR.get();
         healIndicator = HEAL_INDICATOR.get();
     }
@@ -106,7 +107,9 @@ public final class ClientConfigs {
 
         BUILDER.push("Entity");
         BLOODY_EFFECT = BUILDER.define("bloodyEffect", true);
-        GORE_EFFECT = BUILDER.defineEnum("goreEffect", GoreEffect.CONFLUENCE_VANILLA);
+        if(!ModList.get().isLoaded("yes_steve_model")) {
+            GORE_EFFECT = BUILDER.defineEnum("goreEffect", GoreEffect.CONFLUENCE_VANILLA);
+        }
         DAMAGE_INDICATOR = BUILDER.define("damageIndicator", true);
         HEAL_INDICATOR = BUILDER.define("healIndicator", true);
         BUILDER.pop();

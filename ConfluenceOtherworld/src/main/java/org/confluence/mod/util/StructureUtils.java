@@ -107,7 +107,7 @@ public final class StructureUtils {
         return vectorAtoProjection.dot(vectorAtoB) >= 0 && vectorAtoProjection.dot(vectorAtoProjection) <= vectorAtoB.dot(vectorAtoB);
     }
 
-//填充方法
+    //填充方法
     //球体填充
     public static void ball(double radiusD, BlockPos centerPos, int blockState, boolean replace, Object2IntMap<BlockPos> blockMap) {
         int radius = (int) radiusD + 1;
@@ -270,18 +270,18 @@ public final class StructureUtils {
 
     //任意角度圆台填充
     public static void frustumSet(Vector3d startPos, Vector3d endPos, double startRadius, double endRadius, int blockstate, Object2IntMap<BlockPos> blockMap) {
-        int xStart0 = (int) startPos.x + (int) startRadius + 1;
-        int xStart1 = (int) startPos.x - (int) startRadius - 1;
-        int xEnd0 = (int) endPos.x + (int) endRadius + 1;
-        int xEnd1 = (int) endPos.x - (int) endRadius - 1;
-        int yStart0 = (int) startPos.y + (int) startRadius + 1;
-        int yStart1 = (int) startPos.y - (int) startRadius - 1;
-        int yEnd0 = (int) endPos.y + (int) endRadius + 1;
-        int yEnd1 = (int) endPos.y - (int) endRadius - 1;
-        int zStart0 = (int) startPos.z + (int) startRadius + 1;
-        int zStart1 = (int) startPos.z - (int) startRadius - 1;
-        int zEnd0 = (int) endPos.z + (int) endRadius + 1;
-        int zEnd1 = (int) endPos.z - (int) endRadius - 1;
+        int xStart0 = (int) (startPos.x + startRadius + 1);
+        int xStart1 = (int) (startPos.x - startRadius - 1);
+        int xEnd0 = (int) (endPos.x + endRadius + 1);
+        int xEnd1 = (int) (endPos.x - endRadius - 1);
+        int yStart0 = (int) (startPos.y + startRadius + 1);
+        int yStart1 = (int) (startPos.y - startRadius - 1);
+        int yEnd0 = (int) (endPos.y + endRadius + 1);
+        int yEnd1 = (int) (endPos.y - endRadius - 1);
+        int zStart0 = (int) (startPos.z + startRadius + 1);
+        int zStart1 = (int) (startPos.z - startRadius - 1);
+        int zEnd0 = (int) (endPos.z + endRadius + 1);
+        int zEnd1 = (int) (endPos.z - endRadius - 1);
 
         int setStartX = Math.min(xStart1, xEnd1);
         int setEndX = Math.max(xStart0, xEnd0);
@@ -290,9 +290,8 @@ public final class StructureUtils {
         int setStartZ = Math.min(zStart1, zEnd1);
         int setEndZ = Math.max(zStart0, zEnd0);
 
-        Vector3d pointP = new Vector3d(0, 0, 0);
-        BlockPos pointPInt;
-        double length = Math.sqrt(Math.pow(endPos.x - startPos.x, 2) + Math.pow(endPos.y - startPos.y, 2) + Math.pow(endPos.z - startPos.z, 2));
+        Vector3d pointP = new Vector3d();
+        double length = Math.sqrt(Mth.square(endPos.x - startPos.x) + Mth.square(endPos.y - startPos.y) + Mth.square(endPos.z - startPos.z));
         double lengthGet;
         double lengthP;
         double x2;
@@ -317,7 +316,7 @@ public final class StructureUtils {
         }
     }
 
-//生成坐标列表
+    //生成坐标列表
     //生成球体坐标列表，带有随机比例
     public static List<Vector3d> ballPos(double radiusD, BlockPos centerPos, float chance, WorldgenRandom random) {
         List<Vector3d> list = new LinkedList<>();
@@ -418,18 +417,18 @@ public final class StructureUtils {
 
     //生成任意角度圆台坐标列表
     public static List<Vector3d> frustumSetPos(Vector3d startPos, Vector3d endPos, double startRadius, double endRadius, float chance, WorldgenRandom random) {
-        int xStart0 = (int) startPos.x + (int) startRadius + 1;
-        int xStart1 = (int) startPos.x - (int) startRadius - 1;
-        int xEnd0 = (int) endPos.x + (int) endRadius + 1;
-        int xEnd1 = (int) endPos.x - (int) endRadius - 1;
-        int yStart0 = (int) startPos.y + (int) startRadius + 1;
-        int yStart1 = (int) startPos.y - (int) startRadius - 1;
-        int yEnd0 = (int) endPos.y + (int) endRadius + 1;
-        int yEnd1 = (int) endPos.y - (int) endRadius - 1;
-        int zStart0 = (int) startPos.z + (int) startRadius + 1;
-        int zStart1 = (int) startPos.z - (int) startRadius - 1;
-        int zEnd0 = (int) endPos.z + (int) endRadius + 1;
-        int zEnd1 = (int) endPos.z - (int) endRadius - 1;
+        int xStart0 = (int) (startPos.x + startRadius + 1);
+        int xStart1 = (int) (startPos.x - startRadius - 1);
+        int xEnd0 = (int) (endPos.x + endRadius + 1);
+        int xEnd1 = (int) (endPos.x - endRadius - 1);
+        int yStart0 = (int) (startPos.y + startRadius + 1);
+        int yStart1 = (int) (startPos.y - startRadius - 1);
+        int yEnd0 = (int) (endPos.y + endRadius + 1);
+        int yEnd1 = (int) (endPos.y - endRadius - 1);
+        int zStart0 = (int) (startPos.z + startRadius + 1);
+        int zStart1 = (int) (startPos.z - startRadius - 1);
+        int zEnd0 = (int) (endPos.z + endRadius + 1);
+        int zEnd1 = (int) (endPos.z - endRadius - 1);
 
         int setStartX = Math.min(xStart1, xEnd1);
         int setEndX = Math.max(xStart0, xEnd0);
@@ -469,7 +468,7 @@ public final class StructureUtils {
         return list;
     }
 
-//列表快捷填充
+    //列表快捷填充
     //在整个坐标列表上填充球体，带有半径渐变
     public static void lineSet(List<Vector3d> VctList, double rStart, double rEnd, int blockstate, boolean replace, Object2IntMap<BlockPos> blockMap) {
         Vector3d posPoint;
@@ -530,7 +529,7 @@ public final class StructureUtils {
         }
     }
 
-//快捷方法整合
+    //快捷方法整合
     //不规则球体填充，带有壁厚、随机比例
     public static void ball(int radius, int wall, BlockPos centerPos, Object2IntMap<BlockPos> blockMap, float chance, WorldgenRandom random, int wallBlock, int airBlock) {
         List<Vector3d> list = ballPos(radius, centerPos, chance, random);

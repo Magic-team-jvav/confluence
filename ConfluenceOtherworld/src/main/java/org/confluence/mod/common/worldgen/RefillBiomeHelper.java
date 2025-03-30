@@ -1,85 +1,88 @@
 package org.confluence.mod.common.worldgen;
 
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
-import org.confluence.mod.util.VectorUtils;
-import org.joml.Vector3d;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
+import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-
-import static org.confluence.mod.util.StructureUtils.getDistanceToLineSegment;
-import static org.confluence.mod.util.StructureUtils.isProjectionBetweenPoints;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class RefillBiomeHelper {
+    public static Map<ChunkPos, Set<BlockPos>> map = Map.of();
+
     public static void start(MinecraftServer server) {
         ServerLevel overworld = server.overworld();
         BlockPos startPos = server.getWorldData().overworldData().getSpawnPos().atY(overworld.getMinBuildHeight());
-        ChunkPos startChunk = new ChunkPos(startPos);
-        int height = overworld.getMaxBuildHeight() - overworld.getMinBuildHeight();
-        Vector3d vector3d = VectorUtils.toVector3d(startPos);
-        for (Vector3d pos : frustumSetPos(vector3d, new Vector3d(vector3d).add(0, height, 0), 1, height)) {
-            BlockPos blockPos = VectorUtils.fromVector3d(pos);
-        }
-        CompletableFuture.runAsync(() -> {
+        int height = overworld.getMaxBuildHeight() - overworld.getMinBuildHeight(), startRadius = 32, thickness = 64;
+        map = conicalCylinder(startPos, height, startRadius, startRadius + height, thickness);
 
-        }, Util.backgroundExecutor()).thenAccept(v -> {
-
-        });
+//        Iterator<Map.Entry<ChunkPos, Set<BlockPos>>> iterator = map.entrySet().iterator();
+//        CompletableFuture<Void> future = CompletableFuture.completedFuture(null);
+//
+//        while (iterator.hasNext()) {
+//            Map.Entry<ChunkPos, Set<BlockPos>> entry = iterator.next();
+//            final ChunkPos chunkPos = entry.getKey();
+//            final Set<BlockPos> blockPosSet = entry.getValue();
+//
+//            future = future.thenRunAsync(() -> {
+//                boolean noForceBefore = !overworld.getForcedChunks().contains(chunkPos.toLong());
+//                if (noForceBefore) overworld.setChunkForced(chunkPos.x, chunkPos.z, true);
+//                refill(overworld, chunkPos, blockPosSet, evil);
+//                if (noForceBefore) overworld.setChunkForced(chunkPos.x, chunkPos.z, false);
+//                System.out.println("succeed");
+//            }, Util.backgroundExecutor());
+//
+//            iterator.remove();
+//        }
+//
+//        future.thenAccept(v -> {
+//            System.out.println("completed");
+//        });
     }
 
-    private static List<Vector3d> frustumSetPos(Vector3d startPos, Vector3d endPos, double startRadius, double endRadius) {
-        int xStart0 = (int) startPos.x + (int) startRadius + 1;
-        int xStart1 = (int) startPos.x - (int) startRadius - 1;
-        int xEnd0 = (int) endPos.x + (int) endRadius + 1;
-        int xEnd1 = (int) endPos.x - (int) endRadius - 1;
-        int yStart0 = (int) startPos.y + (int) startRadius + 1;
-        int yStart1 = (int) startPos.y - (int) startRadius - 1;
-        int yEnd0 = (int) endPos.y + (int) endRadius + 1;
-        int yEnd1 = (int) endPos.y - (int) endRadius - 1;
-        int zStart0 = (int) startPos.z + (int) startRadius + 1;
-        int zStart1 = (int) startPos.z - (int) startRadius - 1;
-        int zEnd0 = (int) endPos.z + (int) endRadius + 1;
-        int zEnd1 = (int) endPos.z - (int) endRadius - 1;
+    public static void refill(ServerLevel overworld, ChunkPos chunkPos, Set<BlockPos> set) {
+        ChunkAccess chunkAccess = overworld.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.FULL, false);
+        Map<Block, Block> blockMap = ISpreadable.Type.HALLOW.getBlockMap();
+        for (BlockPos blockPos : set) {
+            Block block = blockMap.get(chunkAccess.getBlockState(blockPos).getBlock());
+            if (block != null) {
+                chunkAccess.setBlockState(blockPos, block.defaultBlockState(), false);
+            }
+        }
+    }
 
-        int setStartX = Math.min(xStart1, xEnd1);
-        int setEndX = Math.max(xStart0, xEnd0);
-        int setStartY = Math.min(yStart1, yEnd1);
-        int setEndY = Math.max(yStart0, yEnd0);
-        int setStartZ = Math.min(zStart1, zEnd1);
-        int setEndZ = Math.max(zStart0, zEnd0);
-
-        Vector3d pointP = new Vector3d();
-        double length = Math.sqrt(Mth.square(endPos.x - startPos.x) + Mth.square(endPos.y - startPos.y) + Mth.square(endPos.z - startPos.z));
-        double lengthGet;
-        double lengthP;
-        double x2;
-        double y2;
-
-        List<Vector3d> list = new LinkedList<>();
-
-        for (int x = setStartX; x <= setEndX; x++) {
-            x2 = Mth.square(endPos.x - x);
-            pointP.x = x;
-            for (int y = setStartY; y <= setEndY; y++) {
-                y2 = Mth.square(endPos.y - y) + x2;
-                pointP.y = y;
-                for (int z = setStartZ; z <= setEndZ; z++) {
-                    pointP.z = z;
-                    if (!isProjectionBetweenPoints(startPos, endPos, pointP)) continue;
-                    lengthGet = Math.sqrt(y2 + Mth.square(endPos.z - z));
-                    lengthP = lengthGet / length;
-                    if (getDistanceToLineSegment(startPos, endPos, pointP) <= (startRadius * lengthP + endRadius * (1.0D - lengthP))) {
-                        list.add(new Vector3d(pointP));
+    private static Map<ChunkPos, Set<BlockPos>> conicalCylinder(BlockPos startPos, int height, int startRadius, int endRadius, int thickness) {
+        float deltaRadius = (endRadius - startRadius) / (float) height;
+        float currentRadius = startRadius;
+        Map<ChunkPos, Set<BlockPos>> map = new HashMap<>();
+        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+        for (int y = 0; y < height; y++) {
+            mutable.setY(y + startPos.getY());
+            float startDiameter = (currentRadius + thickness) * 2 + 1;
+            float currentOuterSqr = currentRadius * currentRadius;
+            float currentInnerSqr = Mth.square(currentRadius - thickness);
+            for (int x = 0; x < startDiameter; x++) {
+                mutable.setX((int) (x - currentRadius + startPos.getX()));
+                int cacheXSqr = (int) Mth.square(x - currentRadius);
+                for (int z = 0; z < startDiameter; z++) {
+                    mutable.setZ((int) (z - currentRadius + startPos.getZ()));
+                    int cacheSqr = (int) (Mth.square(z - currentRadius) + cacheXSqr);
+                    if (cacheSqr < currentOuterSqr && cacheSqr > currentInnerSqr) {
+                        BlockPos blockPos = mutable.immutable();
+                        map.computeIfAbsent(new ChunkPos(blockPos), pos -> new HashSet<>()).add(blockPos);
                     }
                 }
             }
+            currentRadius += deltaRadius;
         }
-        return list;
+        return map;
     }
 }

@@ -3,11 +3,13 @@ package org.confluence.mod.common.event.game;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -23,6 +25,7 @@ import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
 import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.worldgen.RefillBiomeHelper;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IServerPlayer;
@@ -30,6 +33,9 @@ import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.entity.boss.EyeOfCthulhu;
 import org.confluence.terraentity.init.TEEntities;
+
+import java.util.Map;
+import java.util.Set;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class TickEvents {
@@ -58,6 +64,19 @@ public final class TickEvents {
             if (killBoard.isAnyDefeated(TEEntities.EATER_OF_WORLDS.get(), TEEntities.BRAIN_OF_CTHULHU.get()) && serverLevel.random.nextFloat() < 0.02F) {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
             }
+        }
+
+        if (Confluence.THE_HALLOW_TEST && serverLevel.getGameTime() % 5 == 0 && !RefillBiomeHelper.map.isEmpty()) {
+            Map.Entry<ChunkPos, Set<BlockPos>> entry = RefillBiomeHelper.map.entrySet().iterator().next();
+            ChunkPos chunkPos = entry.getKey();
+
+            boolean noForceBefore = !serverLevel.getForcedChunks().contains(chunkPos.toLong());
+            if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, true);
+            RefillBiomeHelper.refill(serverLevel, chunkPos, entry.getValue());
+            if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, false);
+
+            System.out.println("succeed at game time " + serverLevel.getGameTime());
+            RefillBiomeHelper.map.remove(chunkPos);
         }
     }
 

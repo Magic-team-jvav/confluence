@@ -116,7 +116,7 @@ public class CrimsonCaveStructure extends Structure {
                 blockMap.put(pos, 2);
             }
 
-            GridPiece.addPieces(blockMap, startChunk, lowestY, Lists.newArrayList(
+            GridPiece.addPieces(blockMap, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
                     NatureBlocks.TR_CRIMSON_STONE.get().defaultBlockState(),
                     NatureBlocks.CRIMSON_HEART.get().defaultBlockState()

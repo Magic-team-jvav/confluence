@@ -6,7 +6,6 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
-import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -37,18 +36,16 @@ public class GridPiece extends StructurePiece {
     public static final Codec<List<Tuple<BlockPos, ResourceLocation>>> FEATURES_CODEC = ModUtils.tupleCodec(BlockPos.CODEC, ResourceLocation.CODEC).listOf();
 
     private final ChunkPos startPos;
-    private final int y;
     private final List<Tuple<Integer, LongArrayList>> blockMap;
     public List<BlockState> blockList;
     private final List<Tuple<BlockPos, ResourceLocation>> features;
 
-    public GridPiece(ChunkPos startPos, int y, Object2IntMap<BlockPos> blockMap, Map<BlockPos, ResourceLocation> features) {
+    public GridPiece(ChunkPos startPos, int minY, int maxY, Object2IntMap<BlockPos> blockMap, Map<BlockPos, ResourceLocation> features) {
         super(ModStructures.GRID_PIECE.get(), 0, new BoundingBox(
-                startPos.getMinBlockX() - 24, y - 12, startPos.getMinBlockZ() - 24,
-                startPos.getMaxBlockX() + 23, y + 11, startPos.getMaxBlockZ() + 23
+                startPos.getMinBlockX(), minY, startPos.getMinBlockZ(),
+                startPos.getMaxBlockX(), maxY, startPos.getMaxBlockZ()
         ));
         this.startPos = startPos;
-        this.y = y;
         this.blockMap = new ArrayList<>();
         this.features = new ArrayList<>();
         convertToList(blockMap, features);
@@ -69,7 +66,6 @@ public class GridPiece extends StructurePiece {
     public GridPiece(CompoundTag tag) {
         super(ModStructures.GRID_PIECE.get(), tag);
         this.startPos = new ChunkPos(tag.getLong("StartPos"));
-        this.y = tag.getInt("Y");
         this.blockMap = BLOCK_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("BlockMap")).getOrThrow();
         this.blockList = BlockState.CODEC.listOf().parse(NbtOps.INSTANCE, tag.get("BlockList")).getOrThrow();
         this.features = FEATURES_CODEC.parse(NbtOps.INSTANCE, tag.get("Features")).getOrThrow();
@@ -78,7 +74,6 @@ public class GridPiece extends StructurePiece {
     @Override
     protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
         tag.putLong("StartPos", startPos.toLong());
-        tag.putInt("Y", y);
         tag.put("BlockMap", BLOCK_MAP_CODEC.encodeStart(NbtOps.INSTANCE, blockMap).getOrThrow());
         tag.put("BlockList", BlockState.CODEC.listOf().encodeStart(NbtOps.INSTANCE, blockList).getOrThrow());
         tag.put("Features", FEATURES_CODEC.encodeStart(NbtOps.INSTANCE, features).getOrThrow());
@@ -102,35 +97,31 @@ public class GridPiece extends StructurePiece {
         }
     }
 
-    public static void addPieces(Object2IntMap<BlockPos> blockMap, ChunkPos startChunk, int y, List<BlockState> blockList, StructurePiecesBuilder builder) {
-        addPieces(blockMap, startChunk, y, blockList, Map.of(), builder);
+    public static void addPieces(Object2IntMap<BlockPos> blockMap, List<BlockState> blockList, StructurePiecesBuilder builder) {
+        addPieces(blockMap, blockList, Map.of(), builder);
     }
 
-    public static void addPieces(Object2IntMap<BlockPos> blockMap, ChunkPos startChunk, int y, List<BlockState> blockList, Map<BlockPos, ResourceLocation> featureMap, StructurePiecesBuilder builder) {
+    public static void addPieces(Object2IntMap<BlockPos> blockMap, List<BlockState> blockList, Map<BlockPos, ResourceLocation> featureMap, StructurePiecesBuilder builder) {
         Map<ChunkPos, Map<BlockPos, ResourceLocation>> sliceMap = new HashMap<>();
+        int minY = 2048, maxY = -2048;
         for (Map.Entry<BlockPos, ResourceLocation> posEntry : featureMap.entrySet()) {
             BlockPos blockPos = posEntry.getKey();
-            sliceMap.computeIfAbsent(sliceChunk(blockPos, startChunk), map -> new HashMap<>()).put(blockPos, posEntry.getValue());
+            int y = blockPos.getY();
+            if (y > maxY) maxY = y;
+            if (y < minY) minY = y;
+            sliceMap.computeIfAbsent(new ChunkPos(blockPos), map -> new HashMap<>()).put(blockPos, posEntry.getValue());
         }
 
         Map<ChunkPos, Object2IntMap<BlockPos>> gridMap = new HashMap<>();
         for (Object2IntMap.Entry<BlockPos> posEntry : blockMap.object2IntEntrySet()) {
             BlockPos blockPos = posEntry.getKey();
-            gridMap.computeIfAbsent(sliceChunk(blockPos, startChunk), map -> new Object2IntOpenHashMap<>()).put(blockPos, posEntry.getIntValue());
+            gridMap.computeIfAbsent(new ChunkPos(blockPos), map -> new Object2IntOpenHashMap<>()).put(blockPos, posEntry.getIntValue());
         }
 
         for (Map.Entry<ChunkPos, Object2IntMap<BlockPos>> entry : gridMap.entrySet()) {
-            GridPiece piece = new GridPiece(entry.getKey(), y, entry.getValue(), sliceMap.getOrDefault(entry.getKey(), Map.of()));
+            GridPiece piece = new GridPiece(entry.getKey(), minY, maxY, entry.getValue(), sliceMap.getOrDefault(entry.getKey(), Map.of()));
             piece.blockList = blockList;
             builder.addPiece(piece);
         }
-    }
-
-    private static ChunkPos sliceChunk(BlockPos blockPos, ChunkPos startChunk) {
-        int cx = SectionPos.blockToSectionCoord(blockPos.getX());
-        int cz = SectionPos.blockToSectionCoord(blockPos.getZ());
-        int regionX = (cx - startChunk.x + 1) / 3;
-        int regionZ = (cz - startChunk.z + 1) / 3;
-        return new ChunkPos(cx + regionX, cz + regionZ);
     }
 }

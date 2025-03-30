@@ -513,10 +513,8 @@ public final class StructureUtils {
     //在整个坐标列表上放置地物
     public static void lineSetFeature(List<Vector3d> list, Map<BlockPos, ResourceLocation> featureMap, ResourceLocation[] feature, WorldgenRandom random) {
         BlockPos pos;
-        Vector3d vctPos;
         int length = feature.length;
-        for (Vector3d vector3d : list) {
-            vctPos = vector3d;
+        for (Vector3d vctPos : list) {
             pos = VectorUtils.fromVector3d(vctPos);
             featureMap.put(pos, feature[random.nextInt(length)]);
         }

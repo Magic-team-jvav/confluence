@@ -133,7 +133,7 @@ public class HeavenIslandsStructure extends Structure {
                 lineSet(cloudPos, 1.5, 1.5, 1, true, blockMap);
             }
 
-            GridPiece.addPieces(blockMap, startChunk, lowestY, Lists.newArrayList(
+            GridPiece.addPieces(blockMap, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
                     NatureBlocks.CLOUD_BLOCK.get().defaultBlockState(),
                     Blocks.WATER.defaultBlockState(),

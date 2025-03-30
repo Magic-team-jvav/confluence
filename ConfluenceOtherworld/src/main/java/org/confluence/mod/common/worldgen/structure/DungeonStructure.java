@@ -6,8 +6,6 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -15,17 +13,16 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
-import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.util.VectorUtils;
 import org.joml.Vector3d;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-import static org.confluence.mod.util.StructureUtils.*;
+import static org.confluence.mod.util.StructureUtils.lineSet;
 
 public class DungeonStructure extends Structure {
     public static final MapCodec<DungeonStructure> CODEC = simpleCodec(DungeonStructure::new);
@@ -55,7 +52,7 @@ public class DungeonStructure extends Structure {
             lineSet(firstChannel, 5.5, 5.5, 1, true, blockMap);
             lineSet(firstChannel, 2.5, 2.5, 0, true, blockMap);
 
-            GridPiece.addPieces(blockMap, startChunk, lowestY, Lists.newArrayList(
+            GridPiece.addPieces(blockMap, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
                     DecorativeBlocks.BLUE_BRICKS.get().defaultBlockState()
             ), builder);

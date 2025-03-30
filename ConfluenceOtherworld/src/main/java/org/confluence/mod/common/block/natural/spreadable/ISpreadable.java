@@ -217,7 +217,7 @@ public interface ISpreadable {
                 getSupplier(SANDSTONE), NatureBlocks.PEARL_SANDSTONE,
                 getSupplier(SAND), NatureBlocks.PEARL_SAND,
                 getSupplier(SHORT_GRASS), NatureBlocks.HALLOW_GRASS,
-                getSupplier(TALL_GRASS), NatureBlocks.HALLOW_GRASS,
+                //getSupplier(TALL_GRASS), NatureBlocks.HALLOW_GRASS,
                 getSupplier(ICE), NatureBlocks.PINK_ICE,
                 getSupplier(PACKED_ICE), NatureBlocks.PINK_PACKED_ICE,
                 // 邪恶环境方块
@@ -364,7 +364,7 @@ public interface ISpreadable {
                 getSupplier(SANDSTONE), NatureBlocks.TR_CRIMSON_SANDSTONE,
                 getSupplier(SAND), NatureBlocks.TR_CRIMSON_SAND,
                 getSupplier(SHORT_GRASS), NatureBlocks.TR_CRIMSON_GRASS,
-                getSupplier(TALL_GRASS), NatureBlocks.TR_CRIMSON_GRASS,
+                //getSupplier(TALL_GRASS), NatureBlocks.TR_CRIMSON_GRASS,
                 getSupplier(ICE), NatureBlocks.RED_ICE,
                 getSupplier(PACKED_ICE), NatureBlocks.RED_PACKED_ICE,
                 //矿物
@@ -460,7 +460,7 @@ public interface ISpreadable {
                 getSupplier(SANDSTONE), NatureBlocks.EBONY_SANDSTONE,
                 getSupplier(SAND), NatureBlocks.EBONY_SAND,
                 getSupplier(SHORT_GRASS), NatureBlocks.CORRUPT_GRASS,
-                getSupplier(TALL_GRASS), NatureBlocks.CORRUPT_GRASS,
+                //getSupplier(TALL_GRASS), NatureBlocks.CORRUPT_GRASS,
                 getSupplier(ICE), NatureBlocks.PURPLE_ICE,
                 getSupplier(PACKED_ICE), NatureBlocks.PURPLE_PACKED_ICE,
                 //矿物
@@ -521,8 +521,8 @@ public interface ISpreadable {
             NatureBlocks.JUNGLE_SPORE, NatureBlocks.GLOWING_MUSHROOM,
             NatureBlocks.JUNGLE_DROOPING_VINE, NatureBlocks.GLOWING_MUSHROOM_DROOPING_VINE,
             NatureBlocks.JUNGLE_THORN, getSupplier(Blocks.AIR),
-            getSupplier(SHORT_GRASS), NatureBlocks.GLOWING_MUSHROOM,
-            getSupplier(TALL_GRASS), NatureBlocks.GLOWING_MUSHROOM
+            getSupplier(SHORT_GRASS), NatureBlocks.GLOWING_MUSHROOM
+            //getSupplier(TALL_GRASS), NatureBlocks.GLOWING_MUSHROOM
         ),
         JUNGLE(
             getSupplier(MUD),NatureBlocks.JUNGLE_GRASS_BLOCK,

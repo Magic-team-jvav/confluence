@@ -16,7 +16,6 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.integration.ponder.PonderHelper;
 import org.confluence.mod.mixin.accessor.LanguageProviderAccessor;
-import org.confluence.terraentity.init.item.TEBoomerangItems;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -351,6 +350,14 @@ public class ModEnglishProvider extends LanguageProvider {
         add("achievements.confluence.fashion_statement.description", "Equip armor or vanity clothing in all four social slots.");
         add("achievements.confluence.the_cavalry.title", "The Cavalry");
         add("achievements.confluence.the_cavalry.description", "Equip a mount.");
+        add("achievements.confluence.deceiver_of_fools.title", "Deceiver of Fools");
+        add("achievements.confluence.deceiver_of_fools.description", "Kill a nymph.");
+        add("achievements.confluence.not_the_bees.title", "Not the Bees!");
+        add("achievements.confluence.not_the_bees.description", "Fire a Bee Gun while wearing a full set of Bee Armor.");
+        add("achievements.confluence.bloodbath.title", "Bloodbath");
+        add("achievements.confluence.bloodbath.description", "Survive a blood moon, a nocturnal event where the rivers run red and monsters swarm aplenty.");
+        add("achievements.confluence.sticky_situation.title", "Sticky Situation");
+        add("achievements.confluence.sticky_situation.description", "Survive the slime rain, where gelatinous organisms fall from the sky in droves.");
 
 
         add("confluence.configuration.achievementToast", "Enable Terra Style Achievements");

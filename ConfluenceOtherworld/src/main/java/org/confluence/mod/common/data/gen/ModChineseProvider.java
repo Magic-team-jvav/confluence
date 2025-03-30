@@ -9,7 +9,6 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.integration.ponder.PonderHelper;
-import org.confluence.terraentity.init.item.TEBoomerangItems;
 
 import static org.confluence.mod.common.init.item.PickaxeItems.MOLTEN_PICKAXE;
 
@@ -528,6 +527,14 @@ public class ModChineseProvider extends LanguageProvider {
         add("achievements.confluence.mastermind.description", "打败克苏鲁之脑，它是出没在让人毛骨悚然的猩红之地的巨大恶魔大脑。");
         add("achievements.confluence.sting_operation.title", "蜇刺行动 ");
         add("achievements.confluence.sting_operation.description", "打败蜂王，它是统治丛林蜂巢的女王。");
+        add("achievements.confluence.deceiver_of_fools.title", "傻瓜骗子");
+        add("achievements.confluence.deceiver_of_fools.description", "杀死宁芙。");
+        add("achievements.confluence.not_the_bees.title", "不要蜜蜂！");
+        add("achievements.confluence.not_the_bees.description", "穿着一整套蜜蜂盔甲时使用蜜蜂枪射击。");
+        add("achievements.confluence.bloodbath.title", "大屠杀");
+        add("achievements.confluence.bloodbath.description", "活着度过血月，在这一夜间事件中，河流会泛红，怪物蜂拥而至。");
+        add("achievements.confluence.sticky_situation.title", "黏黏糊糊");
+        add("achievements.confluence.sticky_situation.description", "在史莱姆雨中活下来，在此期间明胶生物会成群结队地从天而降。");
 
 
         add("prefix.confluence.tooltip.plus", "+%s%% %s");

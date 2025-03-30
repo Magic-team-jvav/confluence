@@ -126,7 +126,7 @@ public final class ModAchievements {
         /* Ice Scream 4, 9 */
         offset("vehicular_manslaughter", 0, 10);
         /* There are Some Who Call Him... 1, 10 */
-        /* Deceiver of Fools 2, 10 */
+        offset("deceiver_of_fools", 2, 10);
         /* Til Death... 3, 10 */
         /* Archaeologist 4, 10 */
         offset("pretty_in_pink", 0, 11);

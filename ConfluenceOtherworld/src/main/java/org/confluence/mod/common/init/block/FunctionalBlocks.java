@@ -18,6 +18,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.functional.*;
+import org.confluence.mod.common.block.functional.announcement_box.AnnouncementBox;
 import org.confluence.mod.common.block.functional.announcement_box.AnnouncementBoxEntity;
 import org.confluence.mod.common.block.functional.announcement_box.WallAnnouncementBoxBlock;
 import org.confluence.mod.common.block.functional.crafting.*;
@@ -107,9 +108,9 @@ public class FunctionalBlocks {
     public static final DeferredBlock<DetonatorBlock> DETONATOR = registerWithEntity("detonator", () -> new DetonatorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_TRAPDOOR)));
     public static final DeferredBlock<MechanicalFragileBlock> MECHANICAL_FRAGILE_SANDSTONE = registerWithEntity("mechanical_fragile_sandstone", () -> new MechanicalFragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE), Blocks.SANDSTONE::defaultBlockState));
     public static final DeferredBlock<MechanicalFragileBlock> MECHANICAL_FRAGILE_OBSIDIAN_BRICKS = registerWithEntity("mechanical_fragile_obsidian_bricks", () -> new MechanicalFragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS), DecorativeBlocks.TR_OBSIDIAN_BRICKS.get()::defaultBlockState));
-    public static final DeferredBlock<StandingAnnouncementBoxBlock> STANDING_ANNOUNCEMENT_BOX = registerNoItem("standing_announcement_box", () -> new StandingAnnouncementBoxBlock(StandingAnnouncementBoxBlock.METAL,BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)));
-    public static final DeferredBlock<WallAnnouncementBoxBlock> WALL_ANNOUNCEMENT_BOX = registerNoItem("wall_announcement_box", () -> new WallAnnouncementBoxBlock(StandingAnnouncementBoxBlock.METAL,BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)));
-    public static final Supplier<BlockEntityType<AnnouncementBoxEntity>> ANNOUNCEMENT_BOX_ENTITY = BLOCK_ENTITIES.register("announcement_box_entity", () -> BlockEntityType.Builder.of(AnnouncementBoxEntity::new).build(null));
+    public static final DeferredBlock<StandingAnnouncementBoxBlock> STANDING_ANNOUNCEMENT_BOX = registerNoItem("standing_announcement_box", () -> new StandingAnnouncementBoxBlock(AnnouncementBox.METAL,BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)));
+    public static final DeferredBlock<WallAnnouncementBoxBlock> WALL_ANNOUNCEMENT_BOX = registerNoItem("wall_announcement_box", () -> new WallAnnouncementBoxBlock(AnnouncementBox.METAL,BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)));
+    public static final Supplier<BlockEntityType<AnnouncementBoxEntity>> ANNOUNCEMENT_BOX_ENTITY = BLOCK_ENTITIES.register("announcement_box_entity", () -> BlockEntityType.Builder.of(AnnouncementBoxEntity::new, STANDING_ANNOUNCEMENT_BOX.get(), WALL_ANNOUNCEMENT_BOX.get()).build(null));
     public static final PropertyDispatch.TriFunction<Item.Properties, StandingSignBlock, WallSignBlock, ? extends SignItem> AnnouncementBoxItem = SignItem::new;
     public static final DeferredItem<SignItem> ANNOUNCEMENT_BOX_ITEM = ModItems.BLOCK_ITEMS.register("announcement_box", () -> AnnouncementBoxItem.apply(new Item.Properties().stacksTo(16), STANDING_ANNOUNCEMENT_BOX.get(), WALL_ANNOUNCEMENT_BOX.get()));
     public static final Supplier<BlockEntityType<AbstractMechanicalBlock.Entity>> MECHANICAL_BLOCK_ENTITY = BLOCK_ENTITIES.register("mechanical_block_entity", () -> {

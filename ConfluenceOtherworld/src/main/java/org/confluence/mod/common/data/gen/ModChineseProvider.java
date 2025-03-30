@@ -258,6 +258,8 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("confluence.configuration.achievementToast", "启用泰拉样式成就");
         add("confluence.configuration.achievementToast.tooltip", "如果想使用原版样式进度的话就关闭它");
+        add("confluence.configuration.playerOurMusic", "启用泰拉音乐");
+        add("confluence.configuration.playerOurMusic.tooltip", "启用泰拉的音乐，它会在合适的环境播放");
         add("confluence.configuration.dropsMoney", "钱币掉落");
         add("confluence.configuration.dropsMoney.tooltip", "启用时，生物死亡后会掉落钱币");
         add("confluence.configuration.Paints", "油漆功能设置");
@@ -1747,6 +1749,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(AxeItems.BLOOD_LUST_CLUSTER.get(), "嗜血狂斧");
         add(AxeItems.STAFF_OF_REGROWTH.get(), "再生法杖");
         add(AxeItems.DRILL_OF_REGROWTH.get(), "再生之斧");
+        add(HamaxeItems.METEOR_HAMAXE.get(), "流星锤斧");
+        add(HamaxeItems.MOLTEN_HAMAXE.get(), "熔火锤斧");
 
         add(HoeItems.COPPER_HOE.get(), "铜锄");
         add(HoeItems.TIN_HOE.get(), "锡锄");

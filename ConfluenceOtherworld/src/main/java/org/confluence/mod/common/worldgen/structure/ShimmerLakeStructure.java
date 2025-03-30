@@ -61,7 +61,7 @@ public class ShimmerLakeStructure extends Structure {
             roundPos(centerPos.offset(0, -1, 0), 34, random, vctPosList, 3, random.nextInt(14, 17), 0.0F);
             lineSetFeature(vctPosList, featureMap, feature, random);
 
-            GridPiece.addPieces(blockMap, startChunk, lowestY, Lists.newArrayList(
+            GridPiece.addPieces(blockMap, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
                     Blocks.STONE.defaultBlockState(),
                     ModBlocks.SHIMMER.get().defaultBlockState()

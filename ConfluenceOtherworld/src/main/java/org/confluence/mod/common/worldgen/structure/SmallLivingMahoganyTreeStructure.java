@@ -87,7 +87,7 @@ public class SmallLivingMahoganyTreeStructure extends Structure {
                     3
             );
 
-            GridPiece.addPieces(blockMap, startChunk, lowestY, Lists.newArrayList(
+            GridPiece.addPieces(blockMap, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
                     NatureBlocks.LIVING_MAHOGANY_BLOCKS.getWood().get().defaultBlockState(),
                     NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLeaves().get().defaultBlockState().setValue(PERSISTENT, Boolean.TRUE),

@@ -86,7 +86,7 @@ public class IceThornStructure extends Structure {
                 frustumSet(mainStart, new Vector3d(mainStart.x + (end.x * 0.1), mainStart.y + (end.y * 0.1), mainStart.z + (end.z * 0.1)), random.nextInt(2, 4), 0.6, 1, blockMap);
             }
 
-            GridPiece.addPieces(blockMap, startChunk, lowestY, Lists.newArrayList(
+            GridPiece.addPieces(blockMap, Lists.newArrayList(
                     Blocks.PACKED_ICE.defaultBlockState(),
                     OreBlocks.WINTER_MARROW_BLOCK.get().defaultBlockState(),
                     Blocks.ICE.defaultBlockState()

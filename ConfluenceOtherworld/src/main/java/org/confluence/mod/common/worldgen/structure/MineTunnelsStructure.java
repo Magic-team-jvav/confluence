@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
@@ -18,11 +17,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModStructures;
-import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.util.ConfluenceResources;
-import org.confluence.mod.util.VectorUtils;
-import org.joml.Vector3d;
 
 import java.util.*;
 
@@ -37,7 +32,7 @@ public class MineTunnelsStructure extends Structure {
             new BlockPos(0, 0, 1),
             new BlockPos(0, 0, -1)
     };
-    public static final Integer[] railShape = new Integer[]{5, 4, 7, 6};
+    public static final int[] railShape = new int[]{5, 4, 7, 6};
 
     protected MineTunnelsStructure(StructureSettings settings) {
         super(settings);
@@ -83,15 +78,15 @@ public class MineTunnelsStructure extends Structure {
             tunnels(maxY, minY, 0, length, 5, 6, tunnelsMap, switchMap, random, underPos.offset(-3, 0, 0));
             tunnels(maxY, minY, 0, length, 6, 6, tunnelsMap, switchMap, random, underPos.offset(0, 0, 3));
             tunnels(maxY, minY, 0, length, 7, 6, tunnelsMap, switchMap, random, underPos.offset(0, 0, -3));
-            for (Map.Entry<BlockPos, Integer> tunnel : tunnelsMap.entrySet()) {
+            for (Object2IntMap.Entry<BlockPos> tunnel : tunnelsMap.object2IntEntrySet()) {
                 tunnelPos = tunnel.getKey();
                 ball(2.9D + 2.0D * random.nextDouble(), tunnelPos, 0, true, blockMap);
             }
-            for (Map.Entry<BlockPos, Integer> tunnel : tunnelsMap.entrySet()) {
+            for (Object2IntMap.Entry<BlockPos> tunnel : tunnelsMap.object2IntEntrySet()) {
                 tunnelPos = tunnel.getKey();
                 xSet = tunnelPos.getX() - underPos.getX() + 5;
                 zSet = tunnelPos.getZ() - underPos.getZ() + 5;
-                tunnelFacing = tunnel.getValue();
+                tunnelFacing = tunnel.getIntValue();
                 facingType = tunnelFacing % 4;
                 if (facingType == 0 || facingType == 1) {
                     rectangular(tunnelPos.offset(0, yOffset, 1), tunnelPos.offset(0, yOffset, -1), 1, blockMap, 0);
@@ -172,7 +167,7 @@ public class MineTunnelsStructure extends Structure {
                 rectangular(underPos.offset(-3, -2, -3), centerPos.offset(-3, minY - centerPos.getY(), -3), 14, blockMap, 0);
             }
 
-            GridPiece.addPieces(blockMap, startChunk, lowestY, Lists.newArrayList(
+            GridPiece.addPieces(blockMap, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
                     Blocks.OAK_PLANKS.defaultBlockState(),
                     FunctionalBlocks.EVER_POWERED_RAIL.get().defaultBlockState().setValue(SHAPE, RailShape.NORTH_SOUTH),

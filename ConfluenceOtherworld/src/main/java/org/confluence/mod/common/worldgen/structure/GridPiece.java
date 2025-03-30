@@ -103,18 +103,18 @@ public class GridPiece extends StructurePiece {
 
     public static void addPieces(Object2IntMap<BlockPos> blockMap, List<BlockState> blockList, Map<BlockPos, ResourceLocation> featureMap, StructurePiecesBuilder builder) {
         Map<ChunkPos, Map<BlockPos, ResourceLocation>> sliceMap = new HashMap<>();
-        int minY = 2048, maxY = -2048;
         for (Map.Entry<BlockPos, ResourceLocation> posEntry : featureMap.entrySet()) {
             BlockPos blockPos = posEntry.getKey();
-            int y = blockPos.getY();
-            if (y > maxY) maxY = y;
-            if (y < minY) minY = y;
             sliceMap.computeIfAbsent(new ChunkPos(blockPos), map -> new HashMap<>()).put(blockPos, posEntry.getValue());
         }
 
         Map<ChunkPos, Object2IntMap<BlockPos>> gridMap = new HashMap<>();
+        int minY = 2048, maxY = -2048;
         for (Object2IntMap.Entry<BlockPos> posEntry : blockMap.object2IntEntrySet()) {
             BlockPos blockPos = posEntry.getKey();
+            int y = blockPos.getY();
+            if (y > maxY) maxY = y;
+            if (y < minY) minY = y;
             gridMap.computeIfAbsent(new ChunkPos(blockPos), map -> new Object2IntOpenHashMap<>()).put(blockPos, posEntry.getIntValue());
         }
 

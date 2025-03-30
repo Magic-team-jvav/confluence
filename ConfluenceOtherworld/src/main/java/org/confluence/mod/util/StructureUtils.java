@@ -471,48 +471,41 @@ public final class StructureUtils {
     //列表快捷填充
     //在整个坐标列表上填充球体，带有半径渐变
     public static void lineSet(List<Vector3d> VctList, double rStart, double rEnd, int blockstate, boolean replace, Object2IntMap<BlockPos> blockMap) {
-        Vector3d posPoint;
         double step = (rEnd - rStart) / VctList.size();
-        for (int i = 0; i < VctList.size(); i++) {
-            posPoint = VctList.get(i);
-            ball(rStart + step * i, VectorUtils.fromVector3d(posPoint), blockstate, replace, blockMap);
+        int i = 0;
+        for (Vector3d posPoint : VctList) {
+            ball(rStart + step * i++, VectorUtils.fromVector3d(posPoint), blockstate, replace, blockMap);
         }
     }
 
     //在整个坐标列表上填充球体，带有指定y坐标上下不同种方块填充
     public static void lineSet(List<Vector3d> VctList, double rStart, double rEnd, int blockstate1, int blockstate2, boolean replace, Object2IntMap<BlockPos> blockMap, int checkY) {
-        Vector3d posPoint;
         double step = (rEnd - rStart) / VctList.size();
-        for (int i = 0; i < VctList.size(); i++) {
-            posPoint = VctList.get(i);
-            ball(rStart + step * i, VectorUtils.fromVector3d(posPoint), blockstate1, blockstate2, replace, blockMap, checkY);
+        int i = 0;
+        for (Vector3d posPoint : VctList) {
+            ball(rStart + step * i++, VectorUtils.fromVector3d(posPoint), blockstate1, blockstate2, replace, blockMap, checkY);
         }
     }
 
     //在整个坐标列表上填充椭球体
     public static void lineSetEllipsoid(List<Vector3d> VctList, double radiusDX, double radiusDY, double radiusDZ, int blockstate, boolean replace, Object2IntMap<BlockPos> blockMap) {
-        Vector3d posPoint;
-        for (Vector3d vector3d : VctList) {
-            posPoint = vector3d;
+        for (Vector3d posPoint : VctList) {
             ellipsoid(radiusDX, radiusDY, radiusDZ, VectorUtils.fromVector3d(posPoint), blockstate, replace, blockMap);
         }
     }
 
     //在整个坐标列表上填充球体，带有半径渐变、随机比例
     public static void lineSet(List<Vector3d> VctList, double rStart, double rEnd, int blockstate, boolean replace, Object2IntMap<BlockPos> blockMap, float placePer, WorldgenRandom random) {
-        Vector3d posPoint;
         double step = (rEnd - rStart) / VctList.size();
-        for (int i = 0; i < VctList.size(); i++) {
-            posPoint = VctList.get(i);
-            ball(rStart + step * i, VectorUtils.fromVector3d(posPoint), blockstate, replace, blockMap, placePer, random);
+        int i = 0;
+        for (Vector3d posPoint : VctList) {
+            ball(rStart + step * i++, VectorUtils.fromVector3d(posPoint), blockstate, replace, blockMap, placePer, random);
         }
     }
 
     //在整个坐标列表上填充椭球体，带有随机比例
     public static void lineSetEllipsoid(List<Vector3d> VctList, double radiusDX, double radiusDY, double radiusDZ, int blockstate, boolean replace, Object2IntMap<BlockPos> blockMap, float placePer, WorldgenRandom random) {
-        Vector3d posPoint;
-        for (Vector3d vector3d : VctList) {
-            posPoint = vector3d;
+        for (Vector3d posPoint : VctList) {
             ellipsoid(radiusDX, radiusDY, radiusDZ, VectorUtils.fromVector3d(posPoint), blockstate, replace, blockMap, placePer, random);
         }
     }

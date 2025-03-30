@@ -77,7 +77,7 @@ public class HeavenIslandsStructure extends Structure {
             float rotateStepFirst = 2 * Mth.PI / rotateCount;
             float rotateStep = (0.12F + 0.05F * random.nextFloat()) * rotateFace;
             double radiusCloud;
-            List<Vector3d> vctPosList = new ArrayList<>();
+            List<Vector3d> vctPosList = new LinkedList<>();
 
             if (type == 0) {
                 ellipsoid(radiusXZ - 4, radiusY - 2, radiusXZ - 4, centerPos, 0, 3, true, blockMap, centerPos.getY() - 2);

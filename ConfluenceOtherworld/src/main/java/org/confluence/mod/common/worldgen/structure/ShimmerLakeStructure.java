@@ -51,7 +51,7 @@ public class ShimmerLakeStructure extends Structure {
             BlockPos centerPos = startChunk.getMiddleBlockPosition(random.nextInt(-40, 10));
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
             Map<BlockPos, ResourceLocation> featureMap = new HashMap<>();
-            List<Vector3d> vctPosList = new ArrayList<>();
+            List<Vector3d> vctPosList = new LinkedList<>();
 
             List<Vector3d> posOut = ellipsoidPos(36, 12, 36, centerPos, 0.03F, random);
             List<Vector3d> posIn = ellipsoidPos(24, 9, 24, centerPos, 0.03F, random);

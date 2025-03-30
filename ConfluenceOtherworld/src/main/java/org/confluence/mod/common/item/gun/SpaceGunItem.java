@@ -15,7 +15,7 @@ import org.confluence.terra_guns.common.init.TGSoundEvents;
 
 public class SpaceGunItem extends ManaGunItem<SimpleTrailProjectile> {
     public SpaceGunItem() {
-        super(ModRarity.BLUE, 3.4F, 30, 17, 0.75F, 0.04F, 0, 6);
+        super(ModRarity.BLUE, 3.4F, 30, 8, 0.75F, 0.04F, 0, 6);
         addAttributeModifiers(builder -> builder.add(TCAttributes.getCriticalChance(), new AttributeModifier(Confluence.asResource("space_gun"), 0.04, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND));
     }
 

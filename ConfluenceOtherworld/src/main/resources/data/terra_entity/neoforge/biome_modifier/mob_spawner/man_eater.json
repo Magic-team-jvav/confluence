@@ -7,7 +7,7 @@
       "minecraft:bamboo_jungle"
     ],
     "spawners": {
-        "type": "terra_entity:hornet",
+        "type": "terra_entity:man_eater",
         "weight": 120,
         "minCount": 1,
         "maxCount": 1

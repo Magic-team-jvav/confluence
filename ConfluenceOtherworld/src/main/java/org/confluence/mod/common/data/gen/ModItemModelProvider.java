@@ -35,11 +35,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         dispatcher = new HashMap<>();
         dispatcher.put(SwordItems.BAT_BAT, image24x);
         dispatcher.put(SwordItems.STARFURY, image24x);
-        dispatcher.put(SwordItems.BLOOD_BUTCHERER, image24x);
         dispatcher.put(SwordItems.CANDY_CANE_SWORD, image24x);
         dispatcher.put(SwordItems.PURPLE_CLUBBERFISH, image24x);
         dispatcher.put(SwordItems.VOLCANO, image24x);
-        dispatcher.put(SwordItems.KATANA, image24x);
 //        dispatcher.put(SwordItems.LIGHTS_BANE, image24x);
 
 

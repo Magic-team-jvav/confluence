@@ -63,6 +63,21 @@ public final class ModBlocks {
     public static final Supplier<Block> FAILED_SKULL_BLOCK = registerWithoutItem("failed_skull_block", () -> new ModSkullBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CREEPER).strength(1.0F).pushReaction(PushReaction.DESTROY)));
     public static final Supplier<Block> FAILED_SKULL_WALL_BLOCK = registerWithoutItem("failed_skull_wall_block", () -> new ModSkullBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CREEPER).strength(1.0F).pushReaction(PushReaction.DESTROY)));
 
+    public static final DeferredBlock<TombstoneBlock> TOMBSTONE = registerWithItem("tombstone", TombstoneBlock::new);
+    public static final DeferredBlock<TombstoneBlock> GRAVE_MARKER = registerWithItem("grave_marker", TombstoneBlock::new);
+    public static final DeferredBlock<TombstoneBlock> CROSS_GRAVE_MARKER = registerWithItem("cross_grave_marker", TombstoneBlock::new);
+    public static final DeferredBlock<TombstoneBlock> HEADSTONE = registerWithItem("headstone", TombstoneBlock::new);
+    public static final DeferredBlock<TombstoneBlock> GRAVESTONE = registerWithItem("gravestone", TombstoneBlock::new);
+    public static final DeferredBlock<TombstoneBlock> OBELISK = registerWithItem("obelisk", TombstoneBlock::new);
+    public static final DeferredBlock<TombstoneBlock> GOLDEN_TOMBSTONE = registerWithItem("golden_tombstone", TombstoneBlock::new);
+    public static final DeferredBlock<TombstoneBlock> GOLDEN_GRAVE_MARKER = registerWithItem("golden_grave_marker", TombstoneBlock::new);
+    public static final DeferredBlock<TombstoneBlock> GOLDEN_CROSS_GRAVE_MARKER = registerWithItem("golden_cross_grave_marker", TombstoneBlock::new);
+    public static final DeferredBlock<TombstoneBlock> GOLDEN_HEADSTONE = registerWithItem("golden_headstone", TombstoneBlock::new);
+    public static final DeferredBlock<TombstoneBlock> GOLDEN_GRAVESTONE = registerWithItem("golden_gravestone", TombstoneBlock::new);
+    public static final Supplier<BlockEntityType<TombstoneBlock.Entity>> TOMBSTONE_ENTITY = BLOCK_ENTITIES.register("tombstone_entity", () -> BlockEntityType.Builder.of(TombstoneBlock.Entity::new,
+            TOMBSTONE.get(), GRAVE_MARKER.get(), CROSS_GRAVE_MARKER.get(), HEADSTONE.get(), GRAVESTONE.get(), OBELISK.get(),
+            GOLDEN_TOMBSTONE.get(), GOLDEN_GRAVE_MARKER.get(), GOLDEN_CROSS_GRAVE_MARKER.get(), GOLDEN_HEADSTONE.get(), GOLDEN_GRAVESTONE.get()).build(null));
+
     public static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> block) {
         return registerWithItem(id, block, new Item.Properties());
     }

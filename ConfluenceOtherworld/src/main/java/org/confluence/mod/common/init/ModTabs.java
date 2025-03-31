@@ -18,8 +18,8 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 import org.confluence.terra_guns.common.init.TGItems;
-import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.TEItems;
+import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TESummonItems;
 import org.confluence.terraentity.init.item.TEWhipItems;
 
@@ -83,11 +83,22 @@ public final class ModTabs {
                         Consumer<Supplier<? extends ItemLike>> action = item -> output.accept(item.get());
                         ModItems.ITEMS.getEntries().forEach(action);
                         ConsumableItems.ITEMS.getEntries().forEach(action);
+                        TreasureBagItems.ITEMS.getEntries().forEach(action);
+                        output.accept(ModBlocks.TOMBSTONE);
+                        output.accept(ModBlocks.GRAVE_MARKER);
+                        output.accept(ModBlocks.CROSS_GRAVE_MARKER);
+                        output.accept(ModBlocks.HEADSTONE);
+                        output.accept(ModBlocks.GRAVESTONE);
+                        output.accept(ModBlocks.OBELISK);
+                        output.accept(ModBlocks.GOLDEN_TOMBSTONE);
+                        output.accept(ModBlocks.GOLDEN_GRAVE_MARKER);
+                        output.accept(ModBlocks.GOLDEN_CROSS_GRAVE_MARKER);
+                        output.accept(ModBlocks.GOLDEN_HEADSTONE);
+                        output.accept(ModBlocks.GOLDEN_GRAVESTONE);
                         BaitItems.ITEMS.getEntries().forEach(action);
                         QuestedFishes.ITEMS.getEntries().forEach(action);
                         CrateBlocks.BLOCKS.getEntries().forEach(action);
                         PaintItems.ITEMS.getEntries().forEach(action);
-                        TreasureBagItems.ITEMS.getEntries().forEach(action);
                     }).withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "food_and_potions")).withTabsBefore(MATERIALS.getId()).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FOOD_AND_POTIONS = TABS.register("food_and_potions",
             () -> CreativeModeTab.builder().icon(() -> IconItems.POTION_ICON.get().getDefaultInstance())

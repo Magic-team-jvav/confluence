@@ -28,6 +28,7 @@ public abstract class AnnouncementBox extends SignBlock implements INetworkBlock
         public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
             return new AnnouncementBoxEntity(pos, state);
         }
+
         public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
 
         }

@@ -2,7 +2,6 @@ package org.confluence.mod.client.event;
 
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.BiomeColors;
-import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -69,7 +68,6 @@ import org.confluence.mod.client.renderer.entity.projectile.sword.LightsBaneProj
 import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjectileRenderer;
 import org.confluence.mod.client.textures.GrayBlockModelSwapper;
 import org.confluence.mod.client.textures.GraySpriteShifterEntry;
-import org.confluence.mod.common.block.functional.announcement_box.AnnouncementBoxEntity;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModMenuTypes;
@@ -304,7 +302,7 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(NatureBlocks.LIFE_CRYSTAL_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new LifeCrystalBlockModel()));
         event.registerBlockEntityRenderer(StatueBlocks.BLOCK_ENTITY.get(), MechanicalBlockRenderer::new);
 
-        event.registerBlockEntityRenderer(FunctionalBlocks.ANNOUNCEMENT_BOX_ENTITY.get(), SignRenderer::new);
+        event.registerBlockEntityRenderer(FunctionalBlocks.ANNOUNCEMENT_BOX_ENTITY.get(), AnnouncementBoxRenderer::new);
     }
 
     @SubscribeEvent

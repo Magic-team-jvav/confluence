@@ -2,8 +2,6 @@ package org.confluence.mod.common.block.functional.announcement_box;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
@@ -12,6 +10,10 @@ import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.block.functional.network.NetworkNode;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Set;
 
@@ -43,11 +45,5 @@ public class AnnouncementBoxEntity extends SignBlockEntity implements INetworkEn
     @Override
     public Int2ObjectMap<Set<BlockPos>> getRelativePoses() {
         return relativePoses;
-    }
-
-    public class AnnounceBoxRenderer extends SignRenderer{
-        public AnnounceBoxRenderer(BlockEntityRendererProvider.Context context) {
-            super(context);
-        }
     }
 }

@@ -1,16 +1,16 @@
 package org.confluence.mod.common.init.block;
 
-import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SignItem;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.AnvilBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -19,14 +19,10 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.functional.*;
-import org.confluence.mod.common.block.functional.announcement_box.AnnouncementBox;
-import org.confluence.mod.common.block.functional.announcement_box.AnnouncementBoxEntity;
-import org.confluence.mod.common.block.functional.announcement_box.WallAnnouncementBoxBlock;
 import org.confluence.mod.common.block.functional.crafting.*;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.entity.projectile.boulder.ExplodeBoulderEntity;
 import org.confluence.mod.common.entity.projectile.boulder.FollowerBoulderEntity;
-import org.confluence.mod.common.block.functional.announcement_box.StandingAnnouncementBoxBlock;
 import org.confluence.mod.common.init.item.ModItems;
 
 import java.util.ArrayList;
@@ -109,11 +105,10 @@ public class FunctionalBlocks {
     public static final DeferredBlock<DetonatorBlock> DETONATOR = registerWithEntity("detonator", () -> new DetonatorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_TRAPDOOR)));
     public static final DeferredBlock<MechanicalFragileBlock> MECHANICAL_FRAGILE_SANDSTONE = registerWithEntity("mechanical_fragile_sandstone", () -> new MechanicalFragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE), Blocks.SANDSTONE::defaultBlockState));
     public static final DeferredBlock<MechanicalFragileBlock> MECHANICAL_FRAGILE_OBSIDIAN_BRICKS = registerWithEntity("mechanical_fragile_obsidian_bricks", () -> new MechanicalFragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS), DecorativeBlocks.TR_OBSIDIAN_BRICKS.get()::defaultBlockState));
-    public static final DeferredBlock<StandingAnnouncementBoxBlock> STANDING_ANNOUNCEMENT_BOX = registerNoItem("standing_announcement_box", () -> new StandingAnnouncementBoxBlock(AnnouncementBox.METAL,BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)));
-    public static final DeferredBlock<WallAnnouncementBoxBlock> WALL_ANNOUNCEMENT_BOX = registerNoItem("wall_announcement_box", () -> new WallAnnouncementBoxBlock(AnnouncementBox.METAL,BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)));
-    public static final Supplier<BlockEntityType<AnnouncementBoxEntity>> ANNOUNCEMENT_BOX_ENTITY = BLOCK_ENTITIES.register("announcement_box_entity", () -> BlockEntityType.Builder.of(AnnouncementBoxEntity::new, STANDING_ANNOUNCEMENT_BOX.get(), WALL_ANNOUNCEMENT_BOX.get()).build(null));
-    public static final PropertyDispatch.TriFunction<Item.Properties, StandingSignBlock, WallSignBlock, ? extends SignItem> AnnouncementBoxItem = SignItem::new;
-    public static final DeferredItem<SignItem> ANNOUNCEMENT_BOX_ITEM = ModItems.BLOCK_ITEMS.register("announcement_box", () -> AnnouncementBoxItem.apply(new Item.Properties().stacksTo(16), STANDING_ANNOUNCEMENT_BOX.get(), WALL_ANNOUNCEMENT_BOX.get()));
+    public static final DeferredBlock<AnnouncementBoxBlock> ANNOUNCEMENT_BOX = BLOCKS.register("announcement_box", () -> new AnnouncementBoxBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_TRAPDOOR).noCollission()));
+    public static final DeferredBlock<AnnouncementBoxBlock.Wall> WALL_ANNOUNCEMENT_BOX = BLOCKS.register("wall_announcement_box", () -> new AnnouncementBoxBlock.Wall(BlockBehaviour.Properties.ofFullCopy(ANNOUNCEMENT_BOX.get())));
+    public static final DeferredItem<SignItem> METAL_SIGN_ITEM = ModItems.BLOCK_ITEMS.register("announcement_box", () -> new SignItem(new Item.Properties(), ANNOUNCEMENT_BOX.get(), WALL_ANNOUNCEMENT_BOX.get()));
+    public static final Supplier<BlockEntityType<AnnouncementBoxBlock.Entity>> ANNOUNCEMENT_BOX_ENTITY = BLOCK_ENTITIES.register("announcement_box_entity", () -> BlockEntityType.Builder.of(AnnouncementBoxBlock.Entity::new, ANNOUNCEMENT_BOX.get(), WALL_ANNOUNCEMENT_BOX.get()).build(null));
     public static final Supplier<BlockEntityType<AbstractMechanicalBlock.Entity>> MECHANICAL_BLOCK_ENTITY = BLOCK_ENTITIES.register("mechanical_block_entity", () -> {
         Block[] validBlocks = MECHANICAL_BLOCKS.stream().map(DeferredBlock::get).toArray(Block[]::new);
         MECHANICAL_BLOCKS = null;

@@ -1,0 +1,11 @@
+{
+  "type": "confluence:rail_trap",
+  "config": {
+    "trap": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "confluence:normal_boulder"
+      }
+    }
+  }
+}

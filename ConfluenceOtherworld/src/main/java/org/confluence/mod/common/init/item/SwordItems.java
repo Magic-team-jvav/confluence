@@ -92,7 +92,7 @@ public class SwordItems {
             ModRarity.BLUE,     EFFECT_SWORD.apply(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get()));
     public static final DeferredItem<SwordItem> BLOOD_BUTCHERER = register("blood_butchere",ModTiers.TITANIUM, 7, -2.7F,
             ModRarity.BLUE,     EFFECT_SWORD.apply(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get()));
-    public static final DeferredItem<SwordItem> VOLCANO = register("volcano",ModTiers.TITANIUM, 16, -3F,
+    public static final DeferredItem<SwordItem> VOLCANO = register("volcano",ModTiers.TITANIUM, 18, -3F,
             ModRarity.ORANGE,   EFFECT_SWORD.apply(TEEffectStrategies.Components.HELL_FIRE_EFFECT.get())
                     .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2f, AttributeModifier.Operation.ADD_VALUE)
                     .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.5f, AttributeModifier.Operation.ADD_VALUE)
@@ -117,13 +117,13 @@ public class SwordItems {
             ModRarity.GREEN,   PROJ_SWORD.apply(SwordProjectileComponent.GRASS_PROJ));
 
     // 光剑
-    public static final DeferredItem<SwordItem> RED_LIGHT_SABER = register("red_light_saber", ()->new LightSaber.Red(ModTiers.TITANIUM, ModRarity.BLUE,10, -2));
-    public static final DeferredItem<SwordItem> ORANGE_LIGHT_SABER = register("orange_light_saber", ()->new LightSaber.Orange(ModTiers.TITANIUM, ModRarity.BLUE,10, -2));
-    public static final DeferredItem<SwordItem> YELLOW_LIGHT_SABER = register("yellow_light_saber", ()->new LightSaber.Yellow(ModTiers.TITANIUM, ModRarity.BLUE,10, -2));
-    public static final DeferredItem<SwordItem> GREEN_LIGHT_SABER = register("green_light_saber", ()->new LightSaber.Green(ModTiers.TITANIUM, ModRarity.BLUE,10, -2));
-    public static final DeferredItem<SwordItem> BLUE_LIGHT_SABER = register("blue_light_saber", ()->new LightSaber.Blue(ModTiers.TITANIUM, ModRarity.BLUE,10, -2));
-    public static final DeferredItem<SwordItem> PURPLE_LIGHT_SABER = register("purple_light_saber", ()->new LightSaber.Purple(ModTiers.TITANIUM, ModRarity.BLUE,10, -2));
-    public static final DeferredItem<SwordItem> WHITE_LIGHT_SABER = register("white_light_saber", ()->new LightSaber.White(ModTiers.TITANIUM, ModRarity.BLUE,10, -2));
+    public static final DeferredItem<SwordItem> RED_LIGHT_SABER = register("red_light_saber", ()->new LightSaber.Red(ModTiers.TITANIUM, ModRarity.BLUE,15, -2));
+    public static final DeferredItem<SwordItem> ORANGE_LIGHT_SABER = register("orange_light_saber", ()->new LightSaber.Orange(ModTiers.TITANIUM, ModRarity.BLUE,15, -2));
+    public static final DeferredItem<SwordItem> YELLOW_LIGHT_SABER = register("yellow_light_saber", ()->new LightSaber.Yellow(ModTiers.TITANIUM, ModRarity.BLUE,15, -2));
+    public static final DeferredItem<SwordItem> GREEN_LIGHT_SABER = register("green_light_saber", ()->new LightSaber.Green(ModTiers.TITANIUM, ModRarity.BLUE,15, -2));
+    public static final DeferredItem<SwordItem> BLUE_LIGHT_SABER = register("blue_light_saber", ()->new LightSaber.Blue(ModTiers.TITANIUM, ModRarity.BLUE,15, -2));
+    public static final DeferredItem<SwordItem> PURPLE_LIGHT_SABER = register("purple_light_saber", ()->new LightSaber.Purple(ModTiers.TITANIUM, ModRarity.BLUE,15, -2));
+    public static final DeferredItem<SwordItem> WHITE_LIGHT_SABER = register("white_light_saber", ()->new LightSaber.White(ModTiers.TITANIUM, ModRarity.BLUE,15, -2));
 
 
     // 特殊剑

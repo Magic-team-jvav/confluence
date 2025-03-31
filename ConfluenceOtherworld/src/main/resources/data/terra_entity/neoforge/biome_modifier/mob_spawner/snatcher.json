@@ -7,8 +7,8 @@
       "minecraft:bamboo_jungle"
     ],
     "spawners": {
-        "type": "terra_entity:hornet",
-        "weight": 120,
+        "type": "terra_entity:snatcher",
+        "weight": 30,
         "minCount": 1,
         "maxCount": 1
     }

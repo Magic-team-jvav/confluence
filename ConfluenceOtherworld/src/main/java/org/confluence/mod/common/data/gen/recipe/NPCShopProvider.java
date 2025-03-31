@@ -20,6 +20,8 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.data.gen.AbstractRecipeProvider;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
+import org.confluence.terraentity.init.TEItems;
+import org.confluence.terraentity.init.item.TEWhipItems;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -66,6 +68,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(new ItemStack(TCItems.DPS_METER.get(), 1), 50000)
                 .add(new ItemStack(SwordItems.KATANA.get(), 1), 100000)
                 .add(new ItemStack(FoodItems.PAD_THAI.get(), 1), 750)
+                .add(new ItemStack(TEWhipItems.LEATHER_WHIP.get(), 1), 100000)
                 .build();
     }
 

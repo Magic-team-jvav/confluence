@@ -15,4 +15,12 @@ public interface IMinecraftServer {
     static boolean matchesSecretFlag(MinecraftServer server, long flag) {
         return ((IMinecraftServer) server).confluence$matchesSecretFlag(flag);
     }
+
+    static boolean isHardmode(MinecraftServer server) {
+        return ((IMinecraftServer) server).confluence$matchesSecretFlag(IWorldOptions.HARDMODE);
+    }
+
+    static boolean isGraduated(MinecraftServer server) {
+        return ((IMinecraftServer) server).confluence$matchesSecretFlag(IWorldOptions.GRADUATED);
+    }
 }

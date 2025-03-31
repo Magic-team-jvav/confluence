@@ -17,7 +17,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -255,7 +254,7 @@ public final class ModUtils {
     public static void summonBoss(Level level, Vec3 center, Mob boss) {
         boss.setPos(center.x + level.random.nextInt(-50, 51), center.y, center.z + level.random.nextInt(-50, 51));
         level.addFreshEntity(boss);
-        Player nearestPlayer = level.getNearestPlayer(boss, 200);
-        if (nearestPlayer != null) boss.setTarget(nearestPlayer);
+//        Player nearestPlayer = level.getNearestPlayer(boss, 200);
+//        if (nearestPlayer != null) boss.setTarget(nearestPlayer);
     }
 }

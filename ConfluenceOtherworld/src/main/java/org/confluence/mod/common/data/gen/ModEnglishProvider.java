@@ -167,6 +167,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.coin", "Using it while crouch to upgrade tier");
 
         add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "Full Pull Effects");
+        add("tooltip.item.confluence.max_count", "Arrow Count");
+        add("tooltip.item.confluence.on_hit_effects", "On Hit Effects");
+
         add("tooltip.item.confluence.has_proj", "Has Projectile");
         add("tooltip.item.confluence.has_proj.damage", "- Damage");
         add("tooltip.item.confluence.has_proj.speed", "- Speed");

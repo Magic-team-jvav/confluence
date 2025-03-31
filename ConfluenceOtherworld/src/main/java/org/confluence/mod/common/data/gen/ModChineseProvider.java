@@ -230,6 +230,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.coin", "潜行右键合并为上级钱币");
 
         add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "蓄满效果");
+        add("tooltip.item.confluence.max_count", "多重射击");
+        add("tooltip.item.confluence.on_hit_effects", "命中效果");
+
+
         add("tooltip.item.confluence.has_proj", "剑气");
         add("tooltip.item.confluence.has_proj.damage", "- 伤害");
         add("tooltip.item.confluence.has_proj.speed", "- 速度");

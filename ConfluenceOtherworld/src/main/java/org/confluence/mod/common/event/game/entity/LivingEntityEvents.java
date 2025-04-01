@@ -54,6 +54,7 @@ import org.confluence.mod.common.init.item.PickaxeItems;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
+import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
@@ -310,6 +311,7 @@ public final class LivingEntityEvents {
             }
             if (flag) event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
         }
+        SweetSword.applyEffects(event);
     }
 
     @SubscribeEvent

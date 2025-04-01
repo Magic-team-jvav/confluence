@@ -4,6 +4,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
@@ -18,6 +19,7 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.LightSaber;
+import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.item.sword.legacy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
 import org.confluence.terra_curio.common.component.ModRarity;
@@ -26,6 +28,7 @@ import org.confluence.terraentity.registries.generation.variant.ForwardGeneratio
 import org.confluence.terraentity.registries.track.variant.SimpleTrack;
 import org.confluence.terraentity.init.TESounds;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -142,6 +145,15 @@ public class SwordItems {
                             ForwardGeneration.of(0,0), Optional.empty()
                     )))
     );
+
+    // 赞助者物品
+    public static final DeferredItem<SwordItem> BROKEN_SWEET_SWORD = register("broken_sweet_sword",()->new SweetSword(ModTiers.TITANIUM,ModRarity.MASTER, 8, -1.0F, new BaseSwordItem.ModifierBuilder()));
+
+    public static final DeferredItem<SwordItem> SWEET_SWORD = register("sweet_sword",()->new SweetSword(ModTiers.TITANIUM,ModRarity.MASTER, 16, -1.0F, new BaseSwordItem.ModifierBuilder()
+            .modifyProperties(p->p.food(
+                    new FoodProperties(1,1,false,2, Optional.of(BROKEN_SWEET_SWORD.get().getDefaultInstance()), List.of())))
+    ));
+
 
     public static DeferredItem<SwordItem> register(String name, Supplier<SwordItem> supplier) {
         return ITEMS.register(name, supplier);

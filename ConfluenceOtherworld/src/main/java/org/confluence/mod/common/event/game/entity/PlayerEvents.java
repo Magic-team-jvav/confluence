@@ -49,7 +49,6 @@ import org.confluence.mod.common.worldgen.RefillBiomeHelper;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.network.s2c.*;
-import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -120,11 +119,9 @@ public final class PlayerEvents {
             BaseAxeItem.dropAndPlaceOnRightClick(event.getEntity(), event.getItemStack(), event.getPos());
         }
 
-        ModUtils.devRun(() -> {
-            if (Confluence.THE_HALLOW_TEST && level instanceof ServerLevel serverLevel && event.getHand() == InteractionHand.MAIN_HAND) {
-                RefillBiomeHelper.start(serverLevel.getServer());
-            }
-        });
+        if (Confluence.THE_HALLOW_TEST && level instanceof ServerLevel serverLevel && event.getHand() == InteractionHand.MAIN_HAND) {
+            RefillBiomeHelper.start(serverLevel.getServer());
+        }
     }
 
     @SubscribeEvent

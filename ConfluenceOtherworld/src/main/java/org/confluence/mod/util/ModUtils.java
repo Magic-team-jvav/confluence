@@ -27,13 +27,17 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.providers.VanillaEnchantmentProviders;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.loading.FMLEnvironment;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.mixed.Immunity;
@@ -256,5 +260,17 @@ public final class ModUtils {
         level.addFreshEntity(boss);
 //        Player nearestPlayer = level.getNearestPlayer(boss, 200);
 //        if (nearestPlayer != null) boss.setTarget(nearestPlayer);
+    }
+
+    public static @Nullable BlockState getLeadAnvilDamage(BlockState state, DirectionProperty FACING) {
+        Block block = state.getBlock();
+        if (block == FunctionalBlocks.LEAD_ANVIL.get()) {
+            return FunctionalBlocks.CHIPPED_LEAD_ANVIL.get().defaultBlockState().setValue(FACING, state.getValue(FACING));
+        } else if (block == FunctionalBlocks.CHIPPED_LEAD_ANVIL.get()) {
+            return FunctionalBlocks.DAMAGED_LEAD_ANVIL.get().defaultBlockState().setValue(FACING, state.getValue(FACING));
+        } else if (block == FunctionalBlocks.DAMAGED_LEAD_ANVIL.get()) {
+            return null;
+        }
+        return state;
     }
 }

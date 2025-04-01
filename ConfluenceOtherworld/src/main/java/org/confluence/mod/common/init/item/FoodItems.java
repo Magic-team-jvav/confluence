@@ -8,12 +8,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.block.natural.food.GreenDumplingBlock;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.common.HerbSeedItem;
@@ -62,7 +59,7 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> MARSHMALLOW = registerNormalFood("marshmallow", FoodType.WellFedPropertiesDuration(1200)); //棉花糖
     public static final DeferredItem<BaseFoodItem> COOKED_MARSHMALLOW = registerNormalFood("cooked_marshmallow", FoodType.WellFedPropertiesDuration(2400)); //烤棉花糖
     public static final DeferredItem<BaseFoodItem> PAD_THAI = registerNormalFood("pad_thai", FoodType.PlentySatisfiedPropertiesDuration(9600)); //泰式炒河粉
-    public static final DeferredItem<BaseFoodItem> FISH_AND_MUSHROOM_SOUP = registerContainerFood("fish_and_mushroom_soup", FoodType.PlentySatisfiedPropertiesDuration(9600), BOWL, 20, UseAnim.DRINK ,SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //鱼菇汤
+    public static final DeferredItem<BaseFoodItem> FISH_AND_MUSHROOM_SOUP = registerContainerFood("fish_and_mushroom_soup", FoodType.PlentySatisfiedPropertiesDuration(9600), BOWL, 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //鱼菇汤
     public static final DeferredItem<BaseFoodItem> FRUIT_SALAD = registerContainerFood("fruit_salad", FoodType.WellFedPropertiesDuration(30000), GLASS_BOTTLE, 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //水果沙拉
     public static final DeferredItem<BaseFoodItem> GRUB_SOUP = registerContainerFood("grub_soup", FoodType.PlentySatisfiedPropertiesDuration(16000), BOWL, 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //蛆虫汤
     public static final DeferredItem<BaseFoodItem> NACHOS = registerContainerFood("nachos", FoodType.PlentySatisfiedPropertiesDuration(19200), BOWL, 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //一碗玉米粒
@@ -116,32 +113,32 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> COFFEE = registerContainerFood("coffee", FoodType.PlentySatisfiedPropertiesDuration(12000), GLASS_BOTTLE, 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //咖啡
     public static final DeferredItem<BaseFoodItem> SAKE = registerContainerFood("sake", FoodType.WellFedPropertiesDuration(1200), GLASS_BOTTLE, 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //清酒
     //鱼
-    public static final DeferredItem<BaseFoodItem> SEA_BASS = registerNormalFood("sea_bass",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> ATLANTIC_COD = registerNormalFood("atlantic_cod",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> FROSTY_MINNOW = registerNormalFood("frosty_minnow",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> PISCES_FIN_COD = registerNormalFood("pisces_fin_cod",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> PARTIAL_MOUTH_FISH = registerNormalFood("partial_mouth_fish",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> ROCK_LOBSTER = registerNormalFood("rock_lobster",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> SHRIMP = registerNormalFood("shrimp",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> TR_SALMON = registerNormalFood("tr_salmon",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> TUNA = registerNormalFood("tuna",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> RED_SNAPPER = registerNormalFood("red_snapper",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> TROUT = registerNormalFood("trout",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> ARMORED_CAVE_FISH = registerNormalFood("armored_cave_fish",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> MIRROR_FISH = registerNormalFood("mirror_fish",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> STINKY_FISH = registerNormalFood("stinky_fish",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> NEON_GREASE_CARP = registerNormalFood("neon_grease_carp",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> DAMSEL_FISH = registerNormalFood("damsel_fish",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> EBONY_KOI = registerNormalFood("ebony_koi",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> SCARLET_TIGER_FISH = registerNormalFood("scarlet_tiger_fish",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> BLOODY_PIRANHAS = registerNormalFood("bloody_piranhas",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> PRINCESS_FISH = registerNormalFood("princess_fish",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> COLORFUL_MINERAL_FISH = registerNormalFood("colorful_mineral_fish",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> CHAOS_FISH = registerNormalFood("chaos_fish",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> MOTTLED_OILFISH = registerNormalFood("mottled_oilfish",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> YELLOW_EEL = registerNormalFood("yellow_eel",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> TILAPIA = registerNormalFood("tilapia",FoodType.FISH);
-    public static final DeferredItem<BaseFoodItem> GOLDEN_CARP = registerNormalFood("golden_carp",FoodType.GOLDEN_CARP);
+    public static final DeferredItem<BaseFoodItem> SEA_BASS = registerNormalFood("sea_bass", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> ATLANTIC_COD = registerNormalFood("atlantic_cod", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> FROSTY_MINNOW = registerNormalFood("frosty_minnow", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> PISCES_FIN_COD = registerNormalFood("pisces_fin_cod", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> PARTIAL_MOUTH_FISH = registerNormalFood("partial_mouth_fish", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> ROCK_LOBSTER = registerNormalFood("rock_lobster", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> SHRIMP = registerNormalFood("shrimp", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> TR_SALMON = registerNormalFood("tr_salmon", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> TUNA = registerNormalFood("tuna", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> RED_SNAPPER = registerNormalFood("red_snapper", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> TROUT = registerNormalFood("trout", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> ARMORED_CAVE_FISH = registerNormalFood("armored_cave_fish", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> MIRROR_FISH = registerNormalFood("mirror_fish", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> STINKY_FISH = registerNormalFood("stinky_fish", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> NEON_GREASE_CARP = registerNormalFood("neon_grease_carp", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> DAMSEL_FISH = registerNormalFood("damsel_fish", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> EBONY_KOI = registerNormalFood("ebony_koi", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> SCARLET_TIGER_FISH = registerNormalFood("scarlet_tiger_fish", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> BLOODY_PIRANHAS = registerNormalFood("bloody_piranhas", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> PRINCESS_FISH = registerNormalFood("princess_fish", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> COLORFUL_MINERAL_FISH = registerNormalFood("colorful_mineral_fish", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> CHAOS_FISH = registerNormalFood("chaos_fish", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> MOTTLED_OILFISH = registerNormalFood("mottled_oilfish", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> YELLOW_EEL = registerNormalFood("yellow_eel", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> TILAPIA = registerNormalFood("tilapia", FoodType.FISH);
+    public static final DeferredItem<BaseFoodItem> GOLDEN_CARP = registerNormalFood("golden_carp", FoodType.GOLDEN_CARP);
     public static final DeferredItem<BaseFoodItem> OBSIDIAN_FISH = registerFood("obsidian_fish", builder -> builder.initialize().food(FoodType.FISH).isFireResistant());
     public static final DeferredItem<BaseFoodItem> FLASHFIN_KOI = registerFood("flashfin_koi", builder -> builder.initialize().food(FoodType.FISH).isFireResistant());
 
@@ -156,9 +153,9 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> EGG_YOLK_MOONCAKES = registerFood("egg_yolk_mooncakes", builder -> builder.initialize().food(FoodType.PlentySatisfiedPropertiesDuration(6000)).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
     public static final DeferredItem<BaseFoodItem> EGG_YOLK_MOONCAKES_CHUNKS = registerFood("egg_yolk_mooncakes_chunks", builder -> builder.initialize().food(FoodType.PlentySatisfiedPropertiesDuration(6000)).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
 
-    public static final DeferredItem<BaseFoodItem> LONGEVITY_NOODLES = registerNormalFood("longevity_noodles",FoodType.WellFedPropertiesDuration(6000));
+    public static final DeferredItem<BaseFoodItem> LONGEVITY_NOODLES = registerNormalFood("longevity_noodles", FoodType.WellFedPropertiesDuration(6000));
 
-    public static final Supplier<BaseFoodItem.BlockItem> GREEN_DUMPLING = registerBlockItemFood("green_dumpling", builder -> builder.initialize().food(FoodType.WellFedPropertiesDuration(6000)).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.GREEN_DUMPLING_BLOCK.get());
+    public static final Supplier<BaseFoodItem.BlockItem> GREEN_DUMPLING = registerBlockItemFood("green_dumpling", builder -> builder.initialize().food(FoodType.WellFedPropertiesDuration(6000)).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.GREEN_DUMPLING_BLOCK);
 
     // 种子
     public static final Supplier<Item> STELLAR_BLOSSOM_SEED = ITEMS.register("stellar_blossom_seed", () -> new ItemNameBlockItem(NatureBlocks.STELLAR_BLOSSOM.get(), new Item.Properties()));
@@ -180,15 +177,13 @@ public class FoodItems {
         });
     }
 
-    public static DeferredItem<BaseFoodItem.BlockItem> registerBlockItemFood(String name, Consumer<BaseFoodItem.Builder> consumer, Block block) {
+    public static DeferredItem<BaseFoodItem.BlockItem> registerBlockItemFood(String name, Consumer<BaseFoodItem.Builder> consumer, Supplier<? extends Block> block) {
         return ITEMS.register(name, () -> {
             BaseFoodItem.Builder builder = BaseFoodItem.builder();
             consumer.accept(builder);
-            BaseFoodItem baseFoodItem = builder.build();
-            return new BaseFoodItem.BlockItem(block, baseFoodItem.getProperties());
+            return new BaseFoodItem.BlockItem(block.get(), builder.getProperties());
         });
     }
-
 
     public static DeferredItem<BaseFoodItem> registerToolTipFood(String name, Consumer<BaseFoodItem.Builder> consumer, int line) {
         return ITEMS.register(name, () -> {

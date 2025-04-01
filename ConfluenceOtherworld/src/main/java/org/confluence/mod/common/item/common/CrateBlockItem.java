@@ -21,8 +21,8 @@ import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.util.PlayerUtils;
 
-public class BoxBlockItem extends BlockItem {
-    public BoxBlockItem(Block block, ResourceKey<LootTable> lootTable) {
+public class CrateBlockItem extends BlockItem {
+    public CrateBlockItem(Block block, ResourceKey<LootTable> lootTable) {
         super(block, new Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(lootTable)));
     }
 

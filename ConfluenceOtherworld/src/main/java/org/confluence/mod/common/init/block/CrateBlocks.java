@@ -10,7 +10,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.item.common.BoxBlockItem;
+import org.confluence.mod.common.item.common.CrateBlockItem;
 
 public class CrateBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
@@ -47,7 +47,7 @@ public class CrateBlocks {
 
     private static DeferredBlock<Block> register(String name, ResourceKey<LootTable> lootTable) {
         DeferredBlock<Block> block = BLOCKS.register(name, () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)));
-        ModItems.BLOCK_ITEMS.register(name, () -> new BoxBlockItem(block.get(), lootTable));
+        ModItems.BLOCK_ITEMS.register(name, () -> new CrateBlockItem(block.get(), lootTable));
         return block;
     }
 }

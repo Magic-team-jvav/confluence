@@ -12,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.FoodItems;
 
@@ -26,12 +25,6 @@ public class BaseFoodItem extends Item {
     public BaseFoodItem(Builder builder) {
         super(builder.properties);
         this.builder = builder;
-    }
-
-    public static class BlockItem extends net.minecraft.world.item.BlockItem {
-        public BlockItem(Block block, Properties properties) {
-            super(block, properties);
-        }
     }
 
     public Properties getProperties() {
@@ -133,6 +126,10 @@ public class BaseFoodItem extends Item {
                 components.add(Component.translatable("item.confluence." + id + ".tooltip." + i).withStyle(ChatFormatting.GRAY));
             }
             return components;
+        }
+
+        public Properties getProperties() {
+            return properties;
         }
 
         public Builder initialize() {

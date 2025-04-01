@@ -37,6 +37,7 @@ public class SkyMillCategory implements IRecipeCategory<SkyMillRecipe> {
         return TITLE;
     }
 
+    @SuppressWarnings("removal")
     @Override
     public IDrawable getBackground() {
         return BACK_GROUND;

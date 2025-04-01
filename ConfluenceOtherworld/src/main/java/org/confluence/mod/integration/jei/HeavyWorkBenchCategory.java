@@ -57,6 +57,7 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<HeavyWorkBenchRec
         return TITLE;
     }
 
+    @SuppressWarnings("removal")
     @Override
     public IDrawable getBackground() {
         return BACKGROUND;

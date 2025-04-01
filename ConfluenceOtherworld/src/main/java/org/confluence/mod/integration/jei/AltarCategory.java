@@ -37,6 +37,7 @@ public class AltarCategory implements IRecipeCategory<AltarRecipe> {
         return TITLE;
     }
 
+    @SuppressWarnings("removal")
     @Override
     public IDrawable getBackground() {
         return ModJeiPlugin.QUARTER_BACKGROUND;

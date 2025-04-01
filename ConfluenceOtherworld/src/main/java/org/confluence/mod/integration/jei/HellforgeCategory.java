@@ -43,6 +43,7 @@ public class HellforgeCategory implements IRecipeCategory<HellforgeRecipe> {
         return TITLE;
     }
 
+    @SuppressWarnings("removal")
     @Override
     public IDrawable getBackground() {
         return BACKGROUND;

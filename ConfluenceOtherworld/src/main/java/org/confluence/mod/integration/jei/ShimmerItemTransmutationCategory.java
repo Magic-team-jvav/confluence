@@ -39,6 +39,7 @@ public class ShimmerItemTransmutationCategory implements IRecipeCategory<Shimmer
         return SHIMMER_TRANSMUTATION_TITLE;
     }
 
+    @SuppressWarnings("removal")
     @Override
     public IDrawable getBackground() {
         return ModJeiPlugin.FULL_BACKGROUND;

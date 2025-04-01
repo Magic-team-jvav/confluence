@@ -36,6 +36,7 @@ public class FletchingTableCategory implements IRecipeCategory<FletchingTableRec
         return TITLE;
     }
 
+    @SuppressWarnings("removal")
     @Override
     public IDrawable getBackground() {
         return BACKGROUND;

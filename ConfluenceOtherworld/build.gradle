@@ -162,9 +162,9 @@ dependencies {
     compileOnly "curse.maven:jade-324717:6011258"
     runtimeOnly "curse.maven:jade-324717:6011258"
 
-    compileOnly "mezz.jei:jei-1.21-common-api:${jei_version}"
-    compileOnly "mezz.jei:jei-1.21-neoforge-api:${jei_version}"
-    runtimeOnly "mezz.jei:jei-1.21-neoforge:${jei_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+    runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
     compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE:api"
     compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
@@ -222,7 +222,7 @@ dependencies {
         runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"
         runtimeOnly "curse.maven:xaeros-world-map-317780:6212662"
     }
-    if (false) {
+    if (true) {
         runtimeOnly "curse.maven:applied-energistics-2-223794:6237438"
         runtimeOnly "curse.maven:guideme-1173950:6283609"
     }
@@ -235,6 +235,7 @@ dependencies {
         runtimeOnly "curse.maven:corgilib-693313:6002859"
         runtimeOnly "curse.maven:oh-the-trees-youll-grow-962544:6294221"
     }
+    runtimeOnly "maven.modrinth:mekanism:10.7.13.78"
 }
 
 tasks.withType(ProcessResources).configureEach {

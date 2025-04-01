@@ -37,6 +37,7 @@ public class AlchemyTableCategory implements IRecipeCategory<AlchemyTableRecipe>
         return TITLE;
     }
 
+    @SuppressWarnings("removal")
     @Override
     public IDrawable getBackground() {
         return BACKGROUND;

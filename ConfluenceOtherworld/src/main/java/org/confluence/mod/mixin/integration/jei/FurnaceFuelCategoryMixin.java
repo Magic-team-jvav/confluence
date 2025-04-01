@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Pseudo
-@Mixin(targets = "mezz.jei.library.plugins.vanilla.cooking.fuel.FurnaceFuelCategory$RecipeWidget", remap = false)
-public abstract class FurnaceFuelCategory$RecipeWidgetMixin {
+@Mixin(targets = "mezz.jei.library.plugins.vanilla.cooking.fuel.FurnaceFuelCategory", remap = false)
+public abstract class FurnaceFuelCategoryMixin {
     @Inject(method = "createSmeltCountText", at = @At("HEAD"), cancellable = true)
     private static void infinite(int burnTime, CallbackInfoReturnable<Component> cir) {
         if (burnTime == 1061109567) { // 0x3F3F3F3F

@@ -2,6 +2,7 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.food.FoodProperties;
@@ -13,10 +14,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SwordProjectileComponent;
-import org.confluence.mod.common.init.ModDataComponentTypes;
-import org.confluence.mod.common.init.ModEffectStrategies;
-import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.init.ModTiers;
+import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.LightSaber;
 import org.confluence.mod.common.item.sword.SweetSword;
@@ -147,11 +145,12 @@ public class SwordItems {
     );
 
     // 赞助者物品
-    public static final DeferredItem<SwordItem> BROKEN_SWEET_SWORD = register("broken_sweet_sword",()->new SweetSword(ModTiers.TITANIUM,ModRarity.MASTER, 8, -1.0F, new BaseSwordItem.ModifierBuilder()));
+    public static final DeferredItem<SwordItem> BROKEN_SWEET_SWORD = register("broken_sweet_sword",()->new SweetSword(ModTiers.TITANIUM,ModRarity.EXPERT, 8, -1.0F, new BaseSwordItem.ModifierBuilder()));
 
-    public static final DeferredItem<SwordItem> SWEET_SWORD = register("sweet_sword",()->new SweetSword(ModTiers.TITANIUM,ModRarity.MASTER, 16, -1.0F, new BaseSwordItem.ModifierBuilder()
-            .modifyProperties(p->p.food(
-                    new FoodProperties(1,1,false,2, Optional.of(BROKEN_SWEET_SWORD.get().getDefaultInstance()), List.of())))
+    public static final DeferredItem<SwordItem> SWEET_SWORD = register("sweet_sword",()->new SweetSword(ModTiers.TITANIUM,ModRarity.EXPERT, 16, -1.0F, new BaseSwordItem.ModifierBuilder()
+            .modifyProperties(p->p.food(new FoodProperties(1,1,false,2, Optional.of(BROKEN_SWEET_SWORD.get().getDefaultInstance()), List.of(
+                            new FoodProperties.PossibleEffect(()->new MobEffectInstance(ModEffects.DELICIOUS, 200),1.0f)
+            ))))
     ));
 
 

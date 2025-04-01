@@ -201,7 +201,7 @@ dependencies {
     //runtimeOnly "curse.maven:carry-on-274259:5649344"
 
     compileOnly "curse.maven:apothic-attributes-898963:6302334"
-    if (true) {
+    if (false) {
         runtimeOnly "curse.maven:apothic-attributes-898963:6302334"
         runtimeOnly "curse.maven:placebo-283644:6337156"
     }
@@ -215,6 +215,7 @@ dependencies {
     //runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
     //runtimeOnly "curse.maven:lootr-361276:6294335"
     //runtimeOnly "curse.maven:the-twilight-forest-227639:6087105"
+    //runtimeOnly "maven.modrinth:mekanism:10.7.13.78"
     if (vanillin) {
         runtimeOnly "curse.maven:vanillin-965702:6282987"
     }
@@ -222,7 +223,7 @@ dependencies {
         runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"
         runtimeOnly "curse.maven:xaeros-world-map-317780:6212662"
     }
-    if (true) {
+    if (false) {
         runtimeOnly "curse.maven:applied-energistics-2-223794:6237438"
         runtimeOnly "curse.maven:guideme-1173950:6283609"
     }
@@ -235,7 +236,6 @@ dependencies {
         runtimeOnly "curse.maven:corgilib-693313:6002859"
         runtimeOnly "curse.maven:oh-the-trees-youll-grow-962544:6294221"
     }
-    runtimeOnly "maven.modrinth:mekanism:10.7.13.78"
 }
 
 tasks.withType(ProcessResources).configureEach {

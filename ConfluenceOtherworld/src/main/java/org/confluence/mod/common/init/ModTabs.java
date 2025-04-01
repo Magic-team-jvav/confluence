@@ -84,17 +84,7 @@ public final class ModTabs {
                         ModItems.ITEMS.getEntries().forEach(action);
                         ConsumableItems.ITEMS.getEntries().forEach(action);
                         TreasureBagItems.ITEMS.getEntries().forEach(action);
-                        output.accept(ModBlocks.TOMBSTONE);
-                        output.accept(ModBlocks.GRAVE_MARKER);
-                        output.accept(ModBlocks.CROSS_GRAVE_MARKER);
-                        output.accept(ModBlocks.HEADSTONE);
-                        output.accept(ModBlocks.GRAVESTONE);
-                        output.accept(ModBlocks.OBELISK);
-                        output.accept(ModBlocks.GOLDEN_TOMBSTONE);
-                        output.accept(ModBlocks.GOLDEN_GRAVE_MARKER);
-                        output.accept(ModBlocks.GOLDEN_CROSS_GRAVE_MARKER);
-                        output.accept(ModBlocks.GOLDEN_HEADSTONE);
-                        output.accept(ModBlocks.GOLDEN_GRAVESTONE);
+                        ModBlocks.TOMBSTONES.forEach(action);
                         BaitItems.ITEMS.getEntries().forEach(action);
                         QuestedFishes.ITEMS.getEntries().forEach(action);
                         CrateBlocks.BLOCKS.getEntries().forEach(action);

@@ -10,6 +10,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import org.confluence.mod.common.block.common.TombstoneBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.OreBlocks;
@@ -1176,6 +1178,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 TITANIUM_BLOCK.get(),
                 FLOATING_WHEAT_BALE.get()
         );
+        tag(ModTags.Blocks.TOMBSTONE).add(TOMBSTONES.stream().map(DeferredBlock::get).toArray(TombstoneBlock[]::new));
     }
 
     @Override

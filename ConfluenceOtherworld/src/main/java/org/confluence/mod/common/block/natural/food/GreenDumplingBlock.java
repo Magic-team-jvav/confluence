@@ -7,9 +7,11 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -22,12 +24,18 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
-import org.confluence.mod.common.init.block.ModBlocks;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.FoodItems;
-import org.confluence.mod.common.item.food.FoodType;
 
 public class GreenDumplingBlock extends Block {
     public static final IntegerProperty PIECE = IntegerProperty.create("piece", 1, 5);
+    private static final VoxelShape ONE_PIECE = box(3.0, 0.0, 3.0, 13.0, 3.0, 13.0);
+    private static final VoxelShape TWO_PIECE = box(3.0, 0.0, 3.0, 13.0, 4.0, 13.0);
+    private static final VoxelShape THREE_PIECE = box(3.0, 0.0, 3.0, 13.0, 5.0, 13.0);
+    private static final VoxelShape FOUR_PIECE = box(3.0, 0.0, 3.0, 13.0, 9.0, 13.0);
+    private static final VoxelShape FIVE_PIECE = box(3.0, 0.0, 3.0, 13.0, 11.0, 13.0);
 
     public GreenDumplingBlock() {
         super(BlockBehaviour.Properties.of().pushReaction(PushReaction.DESTROY).strength(1.0f));
@@ -37,45 +45,72 @@ public class GreenDumplingBlock extends Block {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState clickedBlockState = context.getLevel().getBlockState(context.getClickedPos());
-        if (clickedBlockState.is(this) && clickedBlockState.getValue(PIECE) < 5) {
-            return clickedBlockState.cycle(PIECE);
+        if (clickedBlockState.is(this)) {
+            int currentPiece = clickedBlockState.getValue(PIECE);
+            if (currentPiece < 5) {
+                return clickedBlockState.cycle(PIECE);
+            }
         }
-        return clickedBlockState;
+        return this.defaultBlockState();
+    }
+
+    @Override
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if (!stack.is(FoodItems.GREEN_DUMPLING.get())) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        int currentPiece = state.getValue(PIECE);
+        if (currentPiece >= 5) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (!player.isCreative()) stack.shrink(1);
+        level.playSound(null, pos, SoundEvents.CAKE_ADD_CANDLE, SoundSource.BLOCKS, 1.0F, 1.0F);
+        level.setBlockAndUpdate(pos, state.setValue(PIECE, currentPiece + 1));
+        level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+        return ItemInteractionResult.SUCCESS;
     }
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (level.isClientSide) {
-            if (eat(level, pos, state, player).consumesAction()) {
-                return InteractionResult.SUCCESS;
-            }
-            if (player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
-                return InteractionResult.CONSUME;
-            }
+            InteractionResult result = eat(level, pos, state, player);
+            if (result.consumesAction()) return InteractionResult.SUCCESS;
+            if (player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) return InteractionResult.CONSUME;
         }
         return eat(level, pos, state, player);
     }
 
     protected static InteractionResult eat(LevelAccessor level, BlockPos pos, BlockState state, Player player) {
-        if (!player.canEat(true)) {
-            return InteractionResult.PASS;
-        } else {
-            player.getFoodData().eat(FoodType.WellFedPropertiesDuration(6000));
-            int i = state.getValue(PIECE);
-            level.gameEvent(player, GameEvent.EAT, pos);
-            if (i > 1) {
-                level.setBlock(pos, state.setValue(PIECE, i - 1), 3);
+        ItemStack itemStack = player.getItemInHand(InteractionHand.MAIN_HAND);
+        if (!player.canEat(false)) return InteractionResult.PASS;
+        player.getFoodData().eat(3, 2.5F);
+        player.addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, 6000, 1));
+        player.addEffect(new MobEffectInstance(ModEffects.HUNGER_DELAYED, 1000));
+        player.playSound(SoundEvents.GENERIC_EAT);
+        int pieceCount = state.getValue(PIECE);
+        level.gameEvent(player, GameEvent.EAT, pos);
+        if (!itemStack.is(FoodItems.GREEN_DUMPLING.get())) {
+            if (pieceCount > 1) {
+                level.setBlock(pos, state.setValue(PIECE, pieceCount - 1), 3);
             } else {
                 level.removeBlock(pos, false);
                 level.gameEvent(player, GameEvent.BLOCK_DESTROY, pos);
             }
-            return InteractionResult.SUCCESS;
         }
+        return InteractionResult.SUCCESS;
     }
 
     @Override
     protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         return facing == Direction.DOWN && !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        int piece = state.getValue(PIECE);
+        return switch (piece) {
+            case 2 -> TWO_PIECE;
+            case 3 -> THREE_PIECE;
+            case 4 -> FOUR_PIECE;
+            case 5 -> FIVE_PIECE;
+            default -> ONE_PIECE;
+        };
     }
 
     @Override

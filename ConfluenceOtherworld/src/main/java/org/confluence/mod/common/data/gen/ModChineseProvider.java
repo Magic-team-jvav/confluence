@@ -2441,6 +2441,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.COOKED_FLUTTERING_LAMB_CHOPS.get(), "熟飘飘羊排");
         add(FoodItems.BAOBAB_FRUIT.get(), "猴面包果");
         add(FoodItems.COOKED_BAOBAB_FRUIT.get(), "烤猴面包果");
+        add(FoodItems.GREEN_DUMPLING.get(), "青团");
         //赞助
         add(FoodItems.PINK_COLA.get(), "粉色可乐");
         add(FoodItems.DONGDONGS_FLATBREAD.get(), "东东的大饼");

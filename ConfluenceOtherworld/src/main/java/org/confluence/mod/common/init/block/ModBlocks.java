@@ -18,6 +18,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.*;
 import org.confluence.mod.common.block.natural.CoinPileBlock;
+import org.confluence.mod.common.block.natural.food.GreenDumplingBlock;
 import org.confluence.mod.common.block.natural.herbs.*;
 import org.confluence.mod.common.fluid.EmptyPickupLiquidBlock;
 import org.confluence.mod.common.init.ModFluids;
@@ -78,6 +79,8 @@ public final class ModBlocks {
     public static final DeferredBlock<TombstoneBlock> GOLDEN_HEADSTONE = registerTombstone("golden_headstone");
     public static final DeferredBlock<TombstoneBlock> GOLDEN_GRAVESTONE = registerTombstone("golden_gravestone");
     public static final Supplier<BlockEntityType<TombstoneBlock.Entity>> TOMBSTONE_ENTITY = BLOCK_ENTITIES.register("tombstone_entity", () -> BlockEntityType.Builder.of(TombstoneBlock.Entity::new, TOMBSTONES.stream().map(DeferredHolder::get).toArray(TombstoneBlock[]::new)).build(null));
+
+    public static final DeferredBlock<GreenDumplingBlock> GREEN_DUMPLING_BLOCK = registerWithoutItem("green_dumpling_block", GreenDumplingBlock::new);
 
     private static DeferredBlock<TombstoneBlock> registerTombstone(String id) {
         DeferredBlock<TombstoneBlock> tombstone = registerWithItem(id, TombstoneBlock::new);

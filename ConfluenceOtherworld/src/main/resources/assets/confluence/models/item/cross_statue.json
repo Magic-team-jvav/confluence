@@ -1,0 +1,44 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"parent": "confluence:item/anvil_statue",
+	"textures": {
+		"0": "confluence:block/cross_statue"
+	},
+	"elements": [
+		{
+			"from": [5, -6, 6],
+			"to": [11, 10, 10],
+			"faces": {
+				"north": {"uv": [2.5, 0, 5.5, 8], "texture": "#0"},
+				"east": {"uv": [8, 0, 10, 8], "texture": "#0"},
+				"south": {"uv": [2.5, 0, 5.5, 8], "texture": "#0"},
+				"west": {"uv": [8, 0, 10, 8], "texture": "#0"},
+				"up": {"uv": [0, 0.5, 3, 2.5], "texture": "#0"},
+				"down": {"uv": [0, 0.5, 3, 2.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [0, -1, 6],
+			"to": [5, 5, 10],
+			"faces": {
+				"north": {"uv": [5.5, 2.5, 8, 5.5], "texture": "#0"},
+				"south": {"uv": [0, 2.5, 2.5, 5.5], "texture": "#0"},
+				"west": {"uv": [8, 2.5, 10, 5.5], "texture": "#0"},
+				"up": {"uv": [0, 0.5, 2.5, 2.5], "texture": "#0"},
+				"down": {"uv": [0, 0.5, 2.5, 2.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [11, -1, 6],
+			"to": [16, 5, 10],
+			"faces": {
+				"north": {"uv": [0, 2.5, 2.5, 5.5], "texture": "#0"},
+				"east": {"uv": [8, 2.5, 10, 5.5], "texture": "#0"},
+				"south": {"uv": [5.5, 2.5, 8, 5.5], "texture": "#0"},
+				"up": {"uv": [5.5, 0.5, 8, 2.5], "texture": "#0"},
+				"down": {"uv": [5.5, 0.5, 8, 2.5], "texture": "#0"}
+			}
+		}
+	]
+}

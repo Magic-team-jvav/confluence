@@ -6,7 +6,10 @@
             "ingredient": {
                 "item": "minecraft:obsidian"
             },
-            "count": 20
+            "count": 10
+        },
+        {
+            "item": "minecraft:skeleton_skull"
         }
     ],
     "result": {

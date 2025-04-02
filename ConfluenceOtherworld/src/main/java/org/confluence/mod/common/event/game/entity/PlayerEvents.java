@@ -89,7 +89,12 @@ public final class PlayerEvents {
         ItemStack itemStack = event.getItemStack();
         Block block = blockState.getBlock();
 
-        if (!(itemStack.getItem() instanceof BlockItem) && !itemStack.is(ModTags.Items.MINECART) && block instanceof BaseRailBlock railBlock && !player.isSpectator()) {
+        if (CommonConfigs.RIGHT_CLICK_RIDE_MINECART.get() &&
+                !(itemStack.getItem() instanceof BlockItem) &&
+                !itemStack.is(ModTags.Items.MINECART) &&
+                block instanceof BaseRailBlock railBlock &&
+                !player.isSpectator()
+        ) {
             player.swing(InteractionHand.MAIN_HAND);
             if (!level.isClientSide) {
                 ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);

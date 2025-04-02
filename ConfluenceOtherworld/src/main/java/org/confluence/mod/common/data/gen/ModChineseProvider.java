@@ -286,6 +286,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.fallingStarInterval.tooltip", "定义夜晚中坠星的生成间隔");
         add("confluence.configuration.returnPotionGlassBottle", "返还药水瓶");
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "决定你使用药水后是否返还瓶子");
+        add("confluence.configuration.rightClickRideMinecart", "右键上矿车");
+        add("confluence.configuration.rightClickRideMinecart.tooltip", "开启后，当你右键点击轨道时，将自动乘坐矿车");
         add("confluence.configuration.defaultRespawnTimeMin", "默认最小重生时间");
         add("confluence.configuration.defaultRespawnTimeMin.tooltip", "设置默认最小重生时间");
         add("confluence.configuration.defaultRespawnTimeMax", "默认最大重生时间");

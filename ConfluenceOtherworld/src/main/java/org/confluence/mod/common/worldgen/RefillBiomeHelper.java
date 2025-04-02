@@ -48,8 +48,9 @@ public class RefillBiomeHelper {
 //        });
     }
 
-    public static void refill(ServerLevel overworld, ChunkPos chunkPos, Set<BlockPos> set) {
+    public static boolean refill(ServerLevel overworld, ChunkPos chunkPos, Set<BlockPos> set) {
         ChunkAccess chunkAccess = overworld.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.FULL, false);
+        if (chunkAccess == null) return false;
         Map<Block, Block> blockMap = ISpreadable.Type.HALLOW.getBlockMap();
         for (BlockPos blockPos : set) {
             Block block = blockMap.get(chunkAccess.getBlockState(blockPos).getBlock());
@@ -57,6 +58,7 @@ public class RefillBiomeHelper {
                 chunkAccess.setBlockState(blockPos, block.defaultBlockState(), false);
             }
         }
+        return true;
     }
 
     private static Map<ChunkPos, Set<BlockPos>> conicalCylinder(BlockPos startPos, int height, int startRadius, int endRadius, int thickness) {

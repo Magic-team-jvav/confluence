@@ -72,11 +72,10 @@ public final class TickEvents {
 
             boolean noForceBefore = !serverLevel.getForcedChunks().contains(chunkPos.toLong());
             if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, true);
-            RefillBiomeHelper.refill(serverLevel, chunkPos, entry.getValue());
+            boolean refilled = RefillBiomeHelper.refill(serverLevel, chunkPos, entry.getValue());
             if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, false);
 
-            System.out.println("succeed at game time " + serverLevel.getGameTime());
-            RefillBiomeHelper.map.remove(chunkPos);
+            if (refilled) RefillBiomeHelper.map.remove(chunkPos);
         }
     }
 

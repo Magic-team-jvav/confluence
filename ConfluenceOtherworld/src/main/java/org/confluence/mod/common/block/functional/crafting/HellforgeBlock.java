@@ -494,7 +494,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
 
         @Override
         public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
-            return direction != Direction.DOWN || index != 1 || stack.is(Items.WATER_BUCKET) || stack.is(Items.BUCKET);
+            return direction != Direction.DOWN || index != FUEL_SLOT || stack.is(Items.WATER_BUCKET) || stack.is(Items.BUCKET);
         }
 
         @Override

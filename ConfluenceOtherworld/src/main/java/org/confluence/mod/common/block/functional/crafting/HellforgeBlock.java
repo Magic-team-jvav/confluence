@@ -46,7 +46,6 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.menu.HellforgeMenu;
 import org.confluence.mod.common.recipe.ArrayRecipeInput;
 import org.confluence.mod.common.recipe.HellforgeRecipe;
-import org.confluence.mod.mixed.IRecipeManager;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -220,8 +219,8 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
                         this.lastIngredientCount = count;
                     }
 
-                    Optional<RecipeHolder<HellforgeRecipe>> recipe = ((IRecipeManager) level.getRecipeManager())
-                            .confluence$byType(ModRecipes.HELLFORGE_TYPE.get()).stream()
+                    Optional<RecipeHolder<HellforgeRecipe>> recipe = level.getRecipeManager()
+                            .byType(ModRecipes.HELLFORGE_TYPE.get()).stream()
                             .filter(holder -> holder.value().matches(recipeInput, level))
                             .max(Comparator.comparingInt(holder -> holder.value().ingredients.size()));
                     if (recipe.isPresent()) {

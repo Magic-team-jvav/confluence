@@ -61,6 +61,9 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
     mavenLocal()
+    flatDir {
+        dirs 'libs'
+    }
     maven { // Registrate
         url "https://maven.ithundxr.dev/snapshots"
     }
@@ -135,7 +138,7 @@ repositories {
     }
 }
 
-var vanillin = true // 香兰素
+var vanillin = false // 香兰素
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }

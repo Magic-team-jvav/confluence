@@ -44,6 +44,7 @@ public final class ModTags {
         public static final TagKey<Block> MINEABLE_WITH_HAMMER = register("mineable_with_hammer"); // 使用锤子挖掘更快
         public static final TagKey<Block> MINEABLE_WITH_HAMAXE = register("mineable_with_hamaxe"); // 锤斧
         public static final TagKey<Block> UNBREAKABLE_IF_CANNOT_HARVEST = register("unbreakable_if_cannot_harvest");
+        public static final TagKey<Block> EMPTY = register("empty"); // 用于特殊情况，不要往里面加物品
 
         private static TagKey<Block> c(String name) {
             return BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
@@ -96,7 +97,6 @@ public final class ModTags {
         public static final TagKey<Item> PROVIDE_LIGHT = register("provide_light");
         public static final TagKey<Item> HARDMODE = register("hardmode"); // 用于防止微光分解出困难模式物品
         public static final TagKey<Item> BOTTOMLESS = register("bottomless");
-        public static final TagKey<Item> FRUIT = register("fruit");
         public static final TagKey<Item> DESERT_FOSSIL = register("desert_fossil");
         public static final TagKey<Item> JUNK = register("junk");
         public static final TagKey<Item> SLUSH = register("slush");

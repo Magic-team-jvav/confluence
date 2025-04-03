@@ -71,8 +71,10 @@ public class CookingPotCategory implements IRecipeCategory<CookingPotRecipe> {
             }
         }
         builder.addSlot(RecipeIngredientRole.INPUT, 79, 1).addIngredients(recipe.getContainer());
-        Ingredient heatSource = Ingredient.of(Streams.stream(BuiltInRegistries.BLOCK.getTagOrEmpty(recipe.getHeatSource())).map(holder -> holder.value().asItem().getDefaultInstance()).toArray(ItemStack[]::new));
-        builder.addSlot(RecipeIngredientRole.CATALYST, 79, 32).addIngredients(heatSource);
+        if (!recipe.isDoNotNeedHeatSource()) {
+            Ingredient heatSource = Ingredient.of(Streams.stream(BuiltInRegistries.BLOCK.getTagOrEmpty(recipe.getHeatSource())).map(holder -> holder.value().asItem().getDefaultInstance()).toArray(ItemStack[]::new));
+            builder.addSlot(RecipeIngredientRole.CATALYST, 79, 32).addIngredients(heatSource);
+        }
         builder.addSlot(RecipeIngredientRole.OUTPUT, 121, 16).addItemStack(recipe.getResultItem(null));
     }
 

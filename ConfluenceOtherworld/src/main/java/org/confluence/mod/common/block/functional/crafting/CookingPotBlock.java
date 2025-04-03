@@ -162,7 +162,7 @@ public class CookingPotBlock extends BaseEntityBlock {
                 Optional<RecipeHolder<CookingPotRecipe>> recipeFor = blockEntity.cachedCheck.getRecipeFor(input, level);
                 if (recipeFor.isPresent()) {
                     CookingPotRecipe recipe = recipeFor.get().value();
-                    if (blockState.is(recipe.getHeatSource()) &&
+                    if ((recipe.isDoNotNeedHeatSource() || blockState.is(recipe.getHeatSource())) &&
                             recipe.getContainer().test(blockEntity.items.get(CookingPotMenu.CONTAINER_SLOT)) &&
                             canResultInsert(blockEntity.items, blockEntity.getMaxStackSize(), recipe.getResultItem(null))
                     ) {

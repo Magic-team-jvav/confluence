@@ -21,8 +21,8 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_guns.common.init.TGItems;
-import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.TETags;
+import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TESummonItems;
 import org.jetbrains.annotations.Nullable;
 
@@ -273,7 +273,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ToolItems.BOTTOMLESS_HONEY_BUCKET.get(),
                 ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get()
         );
-        tag(ModTags.Items.FRUIT).add(
+        tag(Tags.Items.FOODS_FRUIT).add(
                 Items.APPLE, Items.MELON_SLICE, FoodItems.APRICOT.get(),
                 FoodItems.BANANA.get(), FoodItems.CHERRY.get(), FoodItems.COCONUT.get(),
                 FoodItems.DRAGON_FRUIT.get(), FoodItems.GRAPE_FRUIT.get(), FoodItems.LEMON.get(),

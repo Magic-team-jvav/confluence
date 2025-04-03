@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PointedDripstoneBlock;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.SoundActions;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.fluids.FluidInteractionRegistry;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.GamePhase;
@@ -135,11 +136,11 @@ public final class ModFluids {
         // todo 火把转化
         // 临时转化
         addItem(Blocks.SCULK.asItem(), FunctionalBlocks.ECHO_BLOCK.get().asItem());
-        addItem(PaintItems.ECHO_COATING.get(),PaintItems.ILLUMINANT_COATING.get());
-        addItem(PaintItems.ILLUMINANT_COATING.get(),PaintItems.NEGATIVE_PAINT.get());
-        addItem(PaintItems.NEGATIVE_PAINT.get(),PaintItems.SHADOW_PAINT.get());
-        addItem(PaintItems.SHADOW_PAINT.get(),PaintItems.ECHO_COATING.get());
-        addItem(AccessoryItems.MECHANICAL_LENS.get(),AccessoryItems.SPECTRE_GOGGLES.get());
+        addItem(PaintItems.ECHO_COATING.get(), PaintItems.ILLUMINANT_COATING.get());
+        addItem(PaintItems.ILLUMINANT_COATING.get(), PaintItems.NEGATIVE_PAINT.get());
+        addItem(PaintItems.NEGATIVE_PAINT.get(), PaintItems.SHADOW_PAINT.get());
+        addItem(PaintItems.SHADOW_PAINT.get(), PaintItems.ECHO_COATING.get());
+        addItem(AccessoryItems.MECHANICAL_LENS.get(), AccessoryItems.SPECTRE_GOGGLES.get());
         // 微光箭转化
         addItem(ArrowItems.FLAMING_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
         addItem(ArrowItems.UNHOLY_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
@@ -215,7 +216,7 @@ public final class ModFluids {
         addItem(ConsumableItems.LIFE_CRYSTAL.get(), ConsumableItems.VITAL_CRYSTAL.get());
         addItem(ConsumableItems.MANA_CRYSTAL.get(), ConsumableItems.ARCANE_CRYSTAL.get());
         addItem(ConsumableItems.LIFE_FRUIT.get(), ConsumableItems.AEGIS_APPLE.get());
-        addItem(ModTags.Items.FRUIT, ConsumableItems.AMBROSIA.get(), 1);
+        addItem(Tags.Items.FOODS_FRUIT, ConsumableItems.AMBROSIA.get(), 1);
         addItem(BaitItems.GOLD_WORM.get(), ConsumableItems.GUMMY_WORM.get());
         addItem(MaterialItems.PINK_PEARL.get(), ConsumableItems.GALAXY_PEARL.get());
 

@@ -69,7 +69,46 @@ public class CookingPotMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
-        return ItemStack.EMPTY;
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = slots.get(index);
+        if (slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
+            itemstack = itemstack1.copy();
+            if (index == RESULT_SLOT) {
+                if (!moveItemStackTo(itemstack1, INV_SLOT_START, USE_ROW_SLOT_END, true)) {
+                    return ItemStack.EMPTY;
+                }
+
+                slot.onQuickCraft(itemstack1, itemstack);
+            } else if (index > CONTAINER_SLOT && !moveItemStackTo(itemstack1, CONTAINER_SLOT, RESULT_SLOT, false)) {
+                if (!moveItemStackTo(itemstack1, INPUT_SLOT_1, CONTAINER_SLOT, false)) {
+                    if (index < INV_SLOT_END) {
+                        if (!moveItemStackTo(itemstack1, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)) {
+                            return ItemStack.EMPTY;
+                        }
+                    } else if (index < USE_ROW_SLOT_END && !moveItemStackTo(itemstack1, INV_SLOT_START, INV_SLOT_END, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                    return ItemStack.EMPTY;
+                }
+            } else if (!moveItemStackTo(itemstack1, INV_SLOT_START, USE_ROW_SLOT_END, false)) {
+                return ItemStack.EMPTY;
+            }
+
+            if (itemstack1.isEmpty()) {
+                slot.setByPlayer(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
+            }
+
+            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(player, itemstack1);
+        }
+
+        return itemstack;
     }
 
     public float getBurnProgress() {

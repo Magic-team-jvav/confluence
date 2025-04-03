@@ -15,6 +15,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import org.confluence.mod.common.init.ModRecipes;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
 import org.confluence.terra_curio.common.recipe.AmountIngredient;
@@ -41,6 +42,10 @@ public class CookingPotRecipe extends AbstractAmountRecipe {
 
     public int getCookingTime() {
         return cookingTime;
+    }
+
+    public boolean isDoNotNeedHeatSource() {
+        return heatSource.equals(ModTags.Blocks.EMPTY);
     }
 
     @Override

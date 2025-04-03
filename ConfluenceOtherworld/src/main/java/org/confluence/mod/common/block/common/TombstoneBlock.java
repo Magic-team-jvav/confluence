@@ -4,14 +4,6 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentSerialization;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -22,6 +14,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -32,7 +25,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.util.ModUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -105,7 +97,7 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
 
     public void openTextEdit(Player player, Entity entity) {
         entity.setAllowedPlayerEditor(player.getUUID());
-        // todo player.openTextEdit(entity, isFrontText);
+        player.openTextEdit(entity, true);
     }
 
     public boolean otherPlayerIsEditingSign(Player player, Entity entity) {
@@ -124,87 +116,14 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
         return CODEC;
     }
 
-    public static class Entity extends BlockEntity {
-        public Component[] texts = new Component[0];
-        private @Nullable UUID playerWhoMayEdit;
-
+    public static class Entity extends SignBlockEntity {
         public Entity(BlockPos pos, BlockState blockState) {
             super(ModBlocks.TOMBSTONE_ENTITY.get(), pos, blockState);
         }
 
-        public void setTexts(Component @NotNull [] texts) {
-            this.texts = texts;
-            markUpdated();
-        }
-
-        public Component[] getTexts() {
-            return texts;
-        }
-
-        public void setAllowedPlayerEditor(@Nullable UUID playWhoMayEdit) {
-            this.playerWhoMayEdit = playWhoMayEdit;
-        }
-
-        public @Nullable UUID getPlayerWhoMayEdit() {
-            return playerWhoMayEdit;
-        }
-
-        public boolean playerIsTooFarAwayToEdit(UUID uuid) {
-            if (level == null) return true;
-            Player player = level.getPlayerByUUID(uuid);
-            return player == null || !player.canInteractWithBlock(getBlockPos(), 4.0);
-        }
-
-        private void clearInvalidPlayerWhoMayEdit(Entity sign, UUID uuid) {
-            if (sign.playerIsTooFarAwayToEdit(uuid)) {
-                sign.setAllowedPlayerEditor(null);
-            }
-        }
-
         @Override
-        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.saveAdditional(tag, registries);
-            ListTag textsTag = new ListTag();
-            for (Component text : texts) {
-                textsTag.add(ComponentSerialization.CODEC.encodeStart(NbtOps.INSTANCE, text).getOrThrow());
-            }
-            tag.put("texts", textsTag);
-        }
-
-        @Override
-        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.loadAdditional(tag, registries);
-            if (tag.get("texts") instanceof ListTag textsTag) {
-                this.texts = new Component[textsTag.size()];
-                int i = 0;
-                for (Tag textTag : textsTag) {
-                    texts[i++] = ComponentSerialization.CODEC.parse(NbtOps.INSTANCE, textTag).getOrThrow();
-                }
-            }
-        }
-
-        @Override
-        public ClientboundBlockEntityDataPacket getUpdatePacket() {
-            return ClientboundBlockEntityDataPacket.create(this);
-        }
-
-        @Override
-        public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-            return saveCustomOnly(registries);
-        }
-
-        public static void tick(Level level, BlockPos pos, BlockState state, Entity sign) {
-            UUID uuid = sign.getPlayerWhoMayEdit();
-            if (uuid != null) {
-                sign.clearInvalidPlayerWhoMayEdit(sign, uuid);
-            }
-        }
-
-        private void markUpdated() {
-            setChanged();
-            if (level != null) {
-                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-            }
+        public int getMaxTextLineWidth() {
+            return 120;
         }
     }
 }

@@ -10,7 +10,6 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.confluence.mod.Confluence;
@@ -56,10 +55,9 @@ public class HellforgeCategory implements IRecipeCategory<HellforgeRecipe> {
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, HellforgeRecipe recipe, IFocusGroup focuses) {
-        NonNullList<Ingredient> ingredients = recipe.ingredients;
         int i = 0;
         int j = 0;
-        for (Ingredient ingredient : ingredients) {
+        for (Ingredient ingredient : recipe.ingredients) {
             addInput(builder, 4 + i * 18, 7 + j * 18, ingredient);
             if (i == 1) {
                 j++;

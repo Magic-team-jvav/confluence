@@ -1,6 +1,5 @@
 package org.confluence.mod.common.recipe;
 
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
@@ -58,14 +57,7 @@ public class SkyMillRecipe extends AbstractAmountRecipe {
     public static class Serializer implements RecipeSerializer<SkyMillRecipe> {
         public static final MapCodec<SkyMillRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                Ingredient.CODEC_NONEMPTY.listOf().fieldOf("ingredients").flatXmap(list -> {
-                    Ingredient[] ingredients = list.toArray(Ingredient[]::new);
-                    if (ingredients.length == 0) {
-                        return DataResult.error(() -> "No ingredients for workshop recipe");
-                    } else {
-                        return DataResult.success(NonNullList.of(AmountIngredient.EMPTY, ingredients));
-                    }
-                }, DataResult::success).forGetter(recipe -> recipe.ingredients)
+                INGREDIENTS_CODEC.forGetter(recipe -> recipe.ingredients)
         ).apply(instance, SkyMillRecipe::new));
         public static final StreamCodec<RegistryFriendlyByteBuf, SkyMillRecipe> STREAM_CODEC = StreamCodec.of(SkyMillRecipe.Serializer::toNetwork, SkyMillRecipe.Serializer::fromNetwork);
 

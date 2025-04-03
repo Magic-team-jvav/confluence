@@ -50,6 +50,8 @@ public final class ModRecipes {
     public static final Supplier<RecipeSerializer<?>> FLETCHING_TABLE_SERIALIZER = SERIALIZERS.register("fletching_table", FletchingTableRecipe.Serializer::new);
     public static final Supplier<RecipeType<AlchemyTableRecipe>> ALCHEMY_TABLE_TYPE = registerType("alchemy_table");
     public static final Supplier<RecipeSerializer<?>> ALCHEMY_TABLE_SERIALIZER = SERIALIZERS.register("alchemy_table", AlchemyTableRecipe.Serializer::new);
+    public static final Supplier<RecipeType<CookingPotRecipe>> COOKING_POT_TYPE = registerType("cooking_pot");
+    public static final Supplier<RecipeSerializer<?>> COOKING_POT_SERIALIZER = SERIALIZERS.register("cooking_pot", CookingPotRecipe.Serializer::new);
 
     private static <R extends Recipe<?>> Supplier<RecipeType<R>> registerType(String id) {
         return TYPES.register(id + "_type", () -> new RecipeType<>() {

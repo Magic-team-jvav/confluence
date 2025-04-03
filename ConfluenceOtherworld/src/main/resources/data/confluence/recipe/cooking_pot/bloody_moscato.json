@@ -1,0 +1,19 @@
+{
+    "type": "confluence:cooking_pot",
+    "ingredients": [
+        {
+            "item": "confluence:blood_orange"
+        },
+        {
+            "item": "confluence:rambutan"
+        }
+    ],
+    "result": {
+        "id": "confluence:bloody_moscato"
+    },
+    "container": {
+        "item": "confluence:bottle"
+    },
+    "heat_source": "confluence:empty",
+    "cookingtime": 100
+}

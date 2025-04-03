@@ -113,6 +113,7 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> COFFEE = registerContainerFood("coffee", FoodType.PlentySatisfiedPropertiesDuration(12000), GLASS_BOTTLE, 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //咖啡
     public static final DeferredItem<BaseFoodItem> SAKE = registerContainerFood("sake", FoodType.WellFedPropertiesDuration(1200), GLASS_BOTTLE, 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //清酒
     //鱼
+    public static final DeferredItem<BaseFoodItem> GOLDFISH = registerNormalFood("goldfish", FoodType.FISH);
     public static final DeferredItem<BaseFoodItem> SEA_BASS = registerNormalFood("sea_bass", FoodType.FISH);
     public static final DeferredItem<BaseFoodItem> ATLANTIC_COD = registerNormalFood("atlantic_cod", FoodType.FISH);
     public static final DeferredItem<BaseFoodItem> FROSTY_MINNOW = registerNormalFood("frosty_minnow", FoodType.FISH);

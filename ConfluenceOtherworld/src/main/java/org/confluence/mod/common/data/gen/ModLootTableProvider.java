@@ -108,6 +108,7 @@ public class ModLootTableProvider extends LootTableProvider {
 
             dropSelf(EXTRACTINATOR.get());
             dropSelf(SKY_MILL.get());
+            dropSelf(COOKING_POT.get());
             dropSelf(HEAVY_WORK_BENCH.get());
             dropSelf(HELLFORGE.get());
             dropSelf(WEATHER_VANE.get());

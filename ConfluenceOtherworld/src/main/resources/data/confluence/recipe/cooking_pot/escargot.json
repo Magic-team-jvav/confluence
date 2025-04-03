@@ -1,0 +1,14 @@
+{
+    "type": "confluence:cooking_pot",
+    "ingredients": [
+        {
+            "item": "confluence:snail"
+        }
+    ],
+    "result": {
+        "id": "confluence:escargot"
+    },
+    "container": [],
+    "heat_source": "minecraft:campfires",
+    "cookingtime": 200
+}

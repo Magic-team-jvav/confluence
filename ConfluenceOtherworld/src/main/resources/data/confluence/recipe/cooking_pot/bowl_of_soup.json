@@ -1,0 +1,19 @@
+{
+    "type": "confluence:cooking_pot",
+    "ingredients": [
+        {
+            "item": "confluence:life_mushroom"
+        },
+        {
+            "item": "confluence:goldfish"
+        }
+    ],
+    "result": {
+        "id": "confluence:bowl_of_soup"
+    },
+    "container": {
+        "item": "minecraft:bowl"
+    },
+    "heat_source": "minecraft:campfires",
+    "cookingtime": 200
+}

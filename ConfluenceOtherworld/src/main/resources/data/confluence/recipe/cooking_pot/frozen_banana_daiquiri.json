@@ -1,0 +1,19 @@
+{
+    "type": "confluence:cooking_pot",
+    "ingredients": [
+        {
+            "item": "minecraft:snow_block"
+        },
+        {
+            "item": "confluence:banana"
+        }
+    ],
+    "result": {
+        "id": "confluence:frozen_banana_daiquiri"
+    },
+    "container": {
+        "item": "confluence:bottle"
+    },
+    "heat_source": "confluence:empty",
+    "cookingtime": 100
+}

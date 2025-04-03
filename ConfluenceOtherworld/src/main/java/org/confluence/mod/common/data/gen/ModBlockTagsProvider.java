@@ -393,6 +393,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DESERT_FOSSIL.get(),
                 EXTRACTINATOR.get(),
                 SKY_MILL.get(),
+                COOKING_POT.get(),
                 HELLFORGE.get(),
                 ALCHEMY_TABLE.get(),
                 WEATHER_VANE.get(),

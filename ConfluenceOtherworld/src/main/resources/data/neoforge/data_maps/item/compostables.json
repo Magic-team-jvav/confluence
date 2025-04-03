@@ -134,6 +134,9 @@
         },
         "confluence:hallow_grass": {
             "chance": 0.45
+        },
+        "#c:foods/fruit": {
+            "chance": 0.65
         }
     }
 }

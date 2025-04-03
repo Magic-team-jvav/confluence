@@ -1,0 +1,20 @@
+{
+    "type": "confluence:cooking_pot",
+    "ingredients": [
+        {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "tag": "c:foods/fruit"
+            },
+            "count": 2
+        }
+    ],
+    "result": {
+        "id": "confluence:fruit_juice"
+    },
+    "container": {
+        "item": "confluence:bottle"
+    },
+    "heat_source": "confluence:empty",
+    "cookingtime": 100
+}

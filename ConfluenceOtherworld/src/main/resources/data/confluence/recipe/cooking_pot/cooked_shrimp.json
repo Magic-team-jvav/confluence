@@ -1,0 +1,14 @@
+{
+    "type": "confluence:cooking_pot",
+    "ingredients": [
+        {
+            "item": "confluence:shrimp"
+        }
+    ],
+    "result": {
+        "id": "confluence:cooked_shrimp"
+    },
+    "container": [],
+    "heat_source": "minecraft:campfires",
+    "cookingtime": 200
+}

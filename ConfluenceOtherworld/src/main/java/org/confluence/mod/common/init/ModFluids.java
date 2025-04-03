@@ -171,7 +171,7 @@ public final class ModFluids {
         addItem(MaterialItems.TR_EMERALD.get(), MaterialItems.SAPPHIRE.get());
         addItem(MaterialItems.RUBY.get(), MaterialItems.TR_EMERALD.get());
         addItem(Items.DIAMOND, MaterialItems.RUBY.get());
-        addItem(MaterialItems.TR_AMETHYST.get(), Items.DIRT);
+        addItem(MaterialItems.TR_AMETHYST.get(), Items.COBBLESTONE);
         // 锭到矿的转化
         addItem(MaterialItems.TITANIUM_INGOT.get(), MaterialItems.RAW_TITANIUM.get());
         addItem(MaterialItems.ADAMANTITE_INGOT.get(), MaterialItems.RAW_ADAMANTITE.get());

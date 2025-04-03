@@ -62,6 +62,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.BLOOD_CLOT_POWDER.get(),
                 MaterialItems.ROTTEN_BONE.get()
         );
+
+        tag(ModTags.Items.FISH_COOKING).addTag(Tags.Items.FOODS_RAW_FISH).add(
+                FoodItems.SEA_BASS.get(),
+                FoodItems.ATLANTIC_COD.get(),
+                FoodItems.TROUT.get()
+        );
         tag(ModTags.Items.SHADOW_SCALE_AND_TISSUE_SAMPLE).add(
                 MaterialItems.SHADOW_SCALE.get(),
                 MaterialItems.TISSUE_SAMPLE.get()

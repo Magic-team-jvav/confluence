@@ -1,0 +1,18 @@
+{
+    "type": "confluence:cooking_pot",
+    "ingredients": [
+        {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:frog_meat"
+            },
+            "count": 2
+        }
+    ],
+    "result": {
+        "id": "confluence:froggle_bunwich"
+    },
+    "container": [],
+    "heat_source": "minecraft:campfires",
+    "cookingtime": 200
+}

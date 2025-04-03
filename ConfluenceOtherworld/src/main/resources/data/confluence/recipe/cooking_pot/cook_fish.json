@@ -1,0 +1,14 @@
+{
+    "type": "confluence:cooking_pot",
+    "ingredients": [
+        {
+            "tag": "confluence:fish_cooking"
+        }
+    ],
+    "result": {
+        "id": "confluence:cook_fish"
+    },
+    "container": [],
+    "heat_source": "minecraft:campfires",
+    "cookingtime": 200
+}

@@ -104,7 +104,7 @@ public final class ModVillagers {
             tier1.add(new SkyVillagerItemListing(Items.BEEF, IntegerRange.of(6, 7), Items.EMERALD, 5, 25, 0.05F));
             tier1.add(new SkyVillagerItemListing(Items.MUTTON, IntegerRange.of(6, 7), Items.EMERALD, 5, 25, 0.05F));
             tier1.add(new SkyVillagerItemListing(Items.PORKCHOP, IntegerRange.of(6, 7), Items.EMERALD, 5, 25, 0.05F));
-            tier2.add(new SkyVillagerItemListing(Items.EMERALD, 5, FoodItems.FISH_AND_MUSHROOM_SOUP.get(), 10, 25, 0.05F));
+            tier2.add(new SkyVillagerItemListing(Items.EMERALD, 5, FoodItems.BOWL_OF_SOUP.get(), 10, 25, 0.05F));
             tier3.add(new SkyVillagerItemListing(Items.RABBIT, 2, Items.EMERALD, 10, 25, 0.05F));
             tier3.add(new SkyVillagerItemListing(Items.CHICKEN, 10, Items.EMERALD, 2, 10, 25, 0.05F));
             tier5.add(new SkyVillagerItemListing(ModItems.EMERALD_COIN.get(), 120, TCItems.SEXTANT.get(), 10, 25, 0.05F));

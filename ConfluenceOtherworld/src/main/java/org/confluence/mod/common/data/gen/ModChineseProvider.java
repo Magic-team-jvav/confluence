@@ -2431,6 +2431,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.PHO.get(), "河粉");
         add(FoodItems.FRUIT_JUICE.get(), "混合果汁");
         add(FoodItems.SAKE.get(), "清酒");
+        add(FoodItems.BUNNY_STEW.get(), "炖兔兔");
         add(FoodItems.ZONGZI.get(), "粽子");
         add(FoodItems.CLOUD_DOUGH.get(), "云朵面团");
         add(FoodItems.CLOUD_BREAD.get(), "云朵面包");
@@ -2448,6 +2449,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.PINK_COLA.get(), "粉色可乐");
         add(FoodItems.DONGDONGS_FLATBREAD.get(), "东东的大饼");
         // 鱼
+        add(FoodItems.GOLDFISH.get(), "金鱼");
         add(FoodItems.SEA_BASS.get(), "鲈鱼");
         add(FoodItems.ATLANTIC_COD.get(), "大西洋鳕鱼");
         add(FoodItems.ARMORED_CAVE_FISH.get(), "装甲洞穴鱼");

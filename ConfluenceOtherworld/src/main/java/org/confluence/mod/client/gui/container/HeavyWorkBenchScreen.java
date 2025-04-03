@@ -10,7 +10,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.menu.HeavyWorkBenchMenu;
-import org.jetbrains.annotations.NotNull;
 
 public class HeavyWorkBenchScreen extends AbstractContainerScreen<HeavyWorkBenchMenu> {
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/heavy_work_bench.png");
@@ -31,7 +30,7 @@ public class HeavyWorkBenchScreen extends AbstractContainerScreen<HeavyWorkBench
     }
 
     @Override
-    public void render(@NotNull GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
         menu.resultSlot.isActive = true;
@@ -56,7 +55,7 @@ public class HeavyWorkBenchScreen extends AbstractContainerScreen<HeavyWorkBench
     }
 
     @Override
-    protected void renderBg(@NotNull GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
+    protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
         pGuiGraphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight);
         if (menu.getRecipesAmount() > 1) {
             if (upButtonClicked) {

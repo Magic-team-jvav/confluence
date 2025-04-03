@@ -18,7 +18,6 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.menu.ExtraInventoryMenu;
 import org.confluence.mod.common.menu.IToggleSlot;
 import org.confluence.terra_curio.TerraCurio;
-import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.common.network.client.CPacketOpenVanilla;
 
 import static net.minecraft.client.gui.screens.inventory.InventoryScreen.renderEntityInInventoryFollowsMouse;
@@ -37,7 +36,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     }
 
     @Override
-    public void render(@NotNull GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
         this.xMouse = (float) pMouseX;
@@ -51,7 +50,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     }
 
     @Override
-    protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {}
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {}
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {

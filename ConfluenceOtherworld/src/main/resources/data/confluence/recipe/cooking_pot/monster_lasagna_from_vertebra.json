@@ -1,0 +1,15 @@
+{
+    "type": "confluence:cooking_pot",
+    "ingredients": [
+        {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:vertebra"
+            },
+            "count": 8
+        }
+    ],
+    "result": {
+        "id": "confluence:monster_lasagna"
+    }
+}

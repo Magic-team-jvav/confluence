@@ -7,7 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.menu.FletchingTableMenu;
-import org.jetbrains.annotations.NotNull;
 
 public class FletchingTableScreen extends AbstractContainerScreen<FletchingTableMenu> {
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/fletching_table.png");
@@ -17,7 +16,7 @@ public class FletchingTableScreen extends AbstractContainerScreen<FletchingTable
     }
 
     @Override
-    public void render(@NotNull GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
     }

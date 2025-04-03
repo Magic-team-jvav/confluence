@@ -12,7 +12,6 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.menu.SkyMillMenu;
 import org.confluence.mod.common.recipe.SkyMillRecipe;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class SkyMillScreen extends AbstractContainerScreen<SkyMillMenu> {
     }
 
     @Override
-    protected void renderBg(@NotNull GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
+    protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
         pGuiGraphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight);
         int k = (int) (41.0F * scrollOffs);
         pGuiGraphics.blit(BACKGROUND, leftPos + 154, topPos + SCROLLER_HEIGHT + k, 176 + (isScrollBarActive() ? 0 : SCROLLER_WIDTH), 0, 12, SCROLLER_HEIGHT);
@@ -58,13 +57,13 @@ public class SkyMillScreen extends AbstractContainerScreen<SkyMillMenu> {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
     }
 
     @Override
-    protected void renderTooltip(@NotNull GuiGraphics pGuiGraphics, int pX, int pY) {
+    protected void renderTooltip(GuiGraphics pGuiGraphics, int pX, int pY) {
         super.renderTooltip(pGuiGraphics, pX, pY);
         if (displayRecipes) {
             int i = leftPos + RECIPES_X;

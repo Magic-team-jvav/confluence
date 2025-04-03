@@ -110,8 +110,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         if (!pState.is(pNewState.getBlock())) {
-            BlockEntity blockentity = pLevel.getBlockEntity(pPos);
-            if (blockentity instanceof Entity entity && pState.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase()) {
+            if (pLevel.getBlockEntity(pPos) instanceof Entity entity && pState.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase()) {
                 if (pLevel instanceof ServerLevel serverLevel) {
                     Containers.dropContents(pLevel, pPos, entity);
                     entity.getRecipesToAwardAndPopExperience(serverLevel, Vec3.atCenterOf(pPos));
@@ -129,7 +128,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new Entity(pos, state);
     }
 
@@ -233,7 +232,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
             this.blasting = RecipeManager.createCheck(RecipeType.BLASTING);
         }
 
-        public static void serverTick(Level level, BlockPos pos, BlockState state, HellforgeBlock.Entity blockEntity) {
+        public static void serverTick(Level level, BlockPos pos, BlockState state, Entity blockEntity) {
             boolean isLit = blockEntity.isLit();
             boolean[] data = new boolean[2];
             if (blockEntity.isLit()) {
@@ -314,8 +313,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
         }
 
         private static boolean doUpdateProgress(Entity blockEntity, Level level, RecipeHolder<?> recipeholder, BooleanSupplier supplier) {
-            blockEntity.cookingProgress++;
-            if (blockEntity.cookingProgress >= blockEntity.cookingTotalTime) {
+            if (++blockEntity.cookingProgress >= blockEntity.cookingTotalTime) {
                 blockEntity.cookingProgress = 0;
                 if (!blockEntity.isLit()) {
                     blockEntity.cookingTotalTime = getTotalCookTime(level, blockEntity);

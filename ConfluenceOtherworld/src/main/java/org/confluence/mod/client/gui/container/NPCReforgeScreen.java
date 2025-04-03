@@ -19,7 +19,6 @@ import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terraentity.entity.ai.keyframe.animation.KeyframeAnimation;
-import org.jetbrains.annotations.NotNull;
 
 public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/reforge.png");
@@ -35,7 +34,7 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     }
 
     @Override
-    protected void renderBg(@NotNull GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         guiGraphics.blit(BACKGROUND, leftPos, topPos + 19, 0, 0, imageWidth, imageHeight);
         int cost = menu.getCost();
         if (cost < 0x3F3F3F3F) {
@@ -93,10 +92,10 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     }
 
     @Override
-    protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {}
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {}
 
     @Override
-    public void render(@NotNull GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
 

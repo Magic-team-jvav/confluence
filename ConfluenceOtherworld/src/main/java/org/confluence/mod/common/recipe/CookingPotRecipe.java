@@ -8,15 +8,14 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import org.confluence.mod.common.init.ModRecipes;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
 import org.confluence.terra_curio.common.recipe.AmountIngredient;
 
@@ -56,7 +55,7 @@ public class CookingPotRecipe extends AbstractAmountRecipe {
 
     @Override
     public ItemStack getToastSymbol() {
-        return Items.CAULDRON.getDefaultInstance();
+        return FunctionalBlocks.COOKING_POT.toStack();
     }
 
     @Override
@@ -73,9 +72,9 @@ public class CookingPotRecipe extends AbstractAmountRecipe {
         public static final MapCodec<CookingPotRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
                 INGREDIENTS_CODEC.forGetter(recipe -> recipe.ingredients),
-                Ingredient.CODEC.lenientOptionalFieldOf("container", Ingredient.EMPTY).forGetter(recipe -> recipe.container),
-                TagKey.codec(Registries.BLOCK).lenientOptionalFieldOf("heat_source", BlockTags.CAMPFIRES).forGetter(recipe -> recipe.heatSource),
-                Codec.INT.lenientOptionalFieldOf("cookingtime", 200).forGetter(recipe -> recipe.cookingTime)
+                Ingredient.CODEC.fieldOf("container").forGetter(recipe -> recipe.container),
+                TagKey.codec(Registries.BLOCK).fieldOf("heat_source").forGetter(recipe -> recipe.heatSource),
+                Codec.INT.fieldOf("cookingtime").forGetter(recipe -> recipe.cookingTime)
         ).apply(instance, CookingPotRecipe::new));
         public static final StreamCodec<RegistryFriendlyByteBuf, CookingPotRecipe> STREAM_CODEC = StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
 

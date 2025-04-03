@@ -48,7 +48,7 @@ public final class ModJeiPlugin implements IModPlugin {
         if (CommonConfigs.FLETCHING_MENU.get()) {
             registration.addRecipeCategories(new FletchingTableCategory(jeiHelpers));
         }
-        //registration.addRecipeCategories(new LootTableCategory(jeiHelpers));
+        registration.addRecipeCategories(new CookingPotCategory(jeiHelpers));
     }
 
     @Override
@@ -65,7 +65,7 @@ public final class ModJeiPlugin implements IModPlugin {
         if (CommonConfigs.FLETCHING_MENU.get()) {
             registration.addRecipes(FletchingTableCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.FLETCHING_TABLE_TYPE.get()));
         }
-        //LootTableCategory.registerLootTables(registration);
+        registration.addRecipes(CookingPotCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.COOKING_POT_TYPE.get()));
     }
 
     private static <I extends RecipeInput, T extends Recipe<I>> List<T> getAllRecipesFor(RecipeManager recipeManager, RecipeType<T> recipeType) {
@@ -85,7 +85,7 @@ public final class ModJeiPlugin implements IModPlugin {
             registration.addRecipeCatalyst(new ItemStack(Blocks.FLETCHING_TABLE), FletchingTableCategory.TYPE);
         }
         registration.addRecipeCatalyst(FunctionalBlocks.LEAD_ANVIL.toStack(), RecipeTypes.ANVIL);
-        //LootTableCategory.registerLootTableCatalysts(registration);
+        registration.addRecipeCatalyst(FunctionalBlocks.COOKING_POT.toStack(), CookingPotCategory.TYPE);
     }
 
     @Override
@@ -97,16 +97,12 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeClickArea(HellforgeScreen.class, 89, 31, 28, 23, HellforgeCategory.TYPE);
         registration.addRecipeClickArea(SkyMillScreen.class, 34, 35, 18, 18, SkyMillCategory.TYPE);
         registration.addRecipeClickArea(AlchemyTableScreen.class, 79, 38, 18, 20, AlchemyTableCategory.TYPE);
+        registration.addRecipeClickArea(CookingPotScreen.class, 78, 36, 46, 15, CookingPotCategory.TYPE);
     }
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
         // todo
-    }
-
-    @Override
-    public void registerIngredients(IModIngredientRegistration registration) {
-        //LootTableCategory.registerStacks(registration);
     }
 
     public static void drawArrowDown(GuiGraphics guiGraphics, int x, int y, boolean usable) {

@@ -84,5 +84,8 @@ public class CookingPotCategory implements IRecipeCategory<CookingPotRecipe> {
         if (recipe.getContainer().isEmpty()) {
             guiGraphics.blit(BACKGROUND, 79, 1, 143, 0, 16, 16, 159, 49);
         }
+        if (recipe.isDoNotNeedHeatSource()) {
+            guiGraphics.blit(BACKGROUND, 79, 32, 143, 33, 16, 16, 159, 49);
+        }
     }
 }

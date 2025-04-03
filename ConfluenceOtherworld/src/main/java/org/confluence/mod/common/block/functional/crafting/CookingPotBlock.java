@@ -157,12 +157,14 @@ public class CookingPotBlock extends BaseEntityBlock {
         public static void serverTick(Level level, BlockPos pos, BlockState state, Entity blockEntity) {
             BlockState blockState = level.getBlockState(pos.below());
             blockEntity.heatSourceItem = Item.getId(blockState.getBlock().asItem());
-            boolean hasInput = blockEntity.items.stream().anyMatch(itemStack -> !itemStack.isEmpty());
-            if (hasInput) {
-                List<ItemStack> items = new ArrayList<>();
-                for (int i = 0; i < 4; i++) {
-                    items.add(blockEntity.items.get(i));
+            List<ItemStack> items = new ArrayList<>();
+            for (int i = 0; i < 4; i++) {
+                ItemStack itemStack = blockEntity.items.get(i);
+                if (!itemStack.isEmpty()) {
+                    items.add(itemStack);
                 }
+            }
+            if (!items.isEmpty()) {
                 CookingPotRecipe.Input input = new CookingPotRecipe.Input(items, blockEntity.getItem(CookingPotMenu.CONTAINER_SLOT));
                 Optional<RecipeHolder<CookingPotRecipe>> recipeFor = blockEntity.cachedCheck.getRecipeFor(input, level);
                 if (recipeFor.isPresent()) {

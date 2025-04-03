@@ -11,14 +11,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
 import org.confluence.terra_curio.common.recipe.AmountIngredient;
+
+import java.util.List;
 
 public class CookingPotRecipe extends AbstractAmountRecipe {
     private final Ingredient container;
@@ -30,6 +34,14 @@ public class CookingPotRecipe extends AbstractAmountRecipe {
         this.container = container;
         this.heatSource = heatSource;
         this.cookingTime = cookingTime;
+    }
+
+    @Override
+    public boolean matches(RecipeInput input, Level pLevel) {
+        if (input instanceof Input recipeInput) {
+            return container.test(recipeInput.container) && super.matches(input, pLevel);
+        }
+        return false;
     }
 
     public Ingredient getContainer() {
@@ -112,6 +124,26 @@ public class CookingPotRecipe extends AbstractAmountRecipe {
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.container);
             ResourceLocation.STREAM_CODEC.encode(buffer, recipe.heatSource.location());
             buffer.writeVarInt(recipe.cookingTime);
+        }
+    }
+
+    public static class Input implements RecipeInput {
+        private final List<ItemStack> items;
+        final ItemStack container;
+
+        public Input(List<ItemStack> items, ItemStack container) {
+            this.items = items;
+            this.container = container;
+        }
+
+        @Override
+        public ItemStack getItem(int index) {
+            return items.get(index);
+        }
+
+        @Override
+        public int size() {
+            return items.size();
         }
     }
 }

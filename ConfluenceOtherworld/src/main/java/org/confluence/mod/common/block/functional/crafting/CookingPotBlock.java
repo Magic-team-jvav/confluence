@@ -35,10 +35,11 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.menu.CookingPotMenu;
 import org.confluence.mod.common.recipe.CookingPotRecipe;
-import org.confluence.mod.common.recipe.ListRecipeInput;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.confluence.mod.common.menu.HellforgeMenu.RESULT_SLOT;
@@ -158,7 +159,11 @@ public class CookingPotBlock extends BaseEntityBlock {
             blockEntity.heatSourceItem = Item.getId(blockState.getBlock().asItem());
             boolean hasInput = blockEntity.items.stream().anyMatch(itemStack -> !itemStack.isEmpty());
             if (hasInput) {
-                ListRecipeInput input = new ListRecipeInput(blockEntity.items);
+                List<ItemStack> items = new ArrayList<>();
+                for (int i = 0; i < 4; i++) {
+                    items.add(blockEntity.items.get(i));
+                }
+                CookingPotRecipe.Input input = new CookingPotRecipe.Input(items, blockEntity.getItem(CookingPotMenu.CONTAINER_SLOT));
                 Optional<RecipeHolder<CookingPotRecipe>> recipeFor = blockEntity.cachedCheck.getRecipeFor(input, level);
                 if (recipeFor.isPresent()) {
                     CookingPotRecipe recipe = recipeFor.get().value();

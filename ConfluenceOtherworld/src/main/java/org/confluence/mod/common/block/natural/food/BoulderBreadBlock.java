@@ -1,6 +1,7 @@
 package org.confluence.mod.common.block.natural.food;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -23,7 +24,11 @@ public class BoulderBreadBlock extends Block {
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (level.isClientSide) {
+        if (player.hasEffect(ModEffects.CHOKING)) {
+            if (!level.isClientSide) player.sendSystemMessage(Component.translatable("message.confluence.choking"));
+            return InteractionResult.FAIL;
+        }
+        if (!level.isClientSide) {
             InteractionResult result = eat(level, pos, state, player);
             if (result.consumesAction()) return InteractionResult.SUCCESS;
             if (player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) return InteractionResult.CONSUME;

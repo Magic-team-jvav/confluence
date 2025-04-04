@@ -71,12 +71,11 @@ public class CattailsHeadBlock extends GrowingPlantHeadBlock implements LiquidBl
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState state = context.getLevel().getBlockState(context.getClickedPos());
-        if (state.is(this)) {
-            return state.setValue(PLACE, true);
-        }
+        if (state.is(this)) return state.setValue(PLACE, true);
         FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
         if (fluidstate.is(FluidTags.WATER) && fluidstate.getAmount() == 8) {
-            return Objects.requireNonNull(super.getStateForPlacement(context)).setValue(PLACE, true);
+            BlockState newState = super.getStateForPlacement(context);
+            if (newState != null) return newState.setValue(PLACE, true);
         }
         return null;
     }

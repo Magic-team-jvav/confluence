@@ -789,6 +789,13 @@ public class ModChineseProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.cactus_set", "仙人掌套装");
         add("equipment_benediction.set_switcher.confluence.cactus_set.data.0", "攻击者因为仙人掌尖刺受到伤害");
 
+        add("equipment_benediction.set_switcher.confluence.heim_set", "渊鳞套装");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.0", "延长水下呼吸时间5%，近战伤害提高1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.1", "成功使用护盾拦截下一次攻击后三秒内伤害提高20%，三秒提高过程中你发动攻击命中或被击中时停止，近战伤害提高1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.2", "增加2%暴击率，近战伤害提高1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.3", "提高水下移动速度5%，近战伤害提高1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.4", "赋予你4点血量的伤害吸收，每隔5分钟再次赋予");
+
         add("block.confluence.larva", "幼虫");
 
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");

@@ -45,6 +45,7 @@ import org.confluence.mod.common.effect.beneficial.LuckEffect;
 import org.confluence.mod.common.effect.beneficial.ThornsEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
+import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulder;
 import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
@@ -123,6 +124,7 @@ public final class LivingEntityEvents {
 
             if (living instanceof ServerPlayer serverPlayer) {
                 PlayerUtils.dropMoney(serverPlayer);
+                TombstoneBoulder.createTombstone(serverPlayer);
             }
             DeathMotionPacketS2C.sendToAll(living);
             NoTraps.entityDropsGrenade(living);

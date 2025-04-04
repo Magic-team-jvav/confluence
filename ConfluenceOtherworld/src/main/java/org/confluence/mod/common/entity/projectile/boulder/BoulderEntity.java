@@ -122,7 +122,7 @@ public class BoulderEntity extends Projectile {
         } else {
             onHitEntity((EntityHitResult) hitResult);
         }
-        if (getDeltaMovement().length() < minimumBreakSpeed) {
+        if (onGround() && getDeltaMovement().length() < minimumBreakSpeed) {
             if (isVertical()) {
                 targetTo(level().getNearestPlayer(this, SEARCH_RANGE));
                 setVertical(false);

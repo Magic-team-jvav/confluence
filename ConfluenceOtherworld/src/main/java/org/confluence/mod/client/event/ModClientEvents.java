@@ -234,6 +234,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(EXPLODE_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(ROLLING_CACTUS_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(ROLLING_CACTUS_SPIKE.get(), RollingCactusSpikeRenderer::new);
+        event.registerEntityRenderer(TOMBSTONE_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(THROWN_KNIVES_PROJECTILE.get(), ThrownKnivesProjectileRenderer::new);
         event.registerEntityRenderer(JAVELIN_PROJECTILE.get(), SpearRenderer::new);
         event.registerEntityRenderer(SHURIKEN_PROJECTILE.get(), ShurikenProjectileRenderer::new);

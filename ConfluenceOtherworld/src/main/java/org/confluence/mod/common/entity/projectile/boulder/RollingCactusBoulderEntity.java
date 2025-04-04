@@ -22,8 +22,8 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.util.VectorUtils;
 
 public class RollingCactusBoulderEntity extends BoulderEntity {
-    public RollingCactusBoulderEntity(EntityType<RollingCactusBoulderEntity> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public RollingCactusBoulderEntity(EntityType<RollingCactusBoulderEntity> entityType, Level pLevel) {
+        super(entityType, pLevel);
         this.minimumBreakSpeed = 0.05;
         this.speed = 0.3;
     }

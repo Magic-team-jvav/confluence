@@ -1,5 +1,7 @@
 package org.confluence.mod.common.init.block;
 
+import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
+import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -25,15 +27,13 @@ import org.confluence.mod.common.fluid.EmptyPickupLiquidBlock;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.item.ModItems;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 public final class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Confluence.MODID);
-    public static final List<DeferredBlock<TombstoneBlock>> TOMBSTONES = new ArrayList<>();
+    public static final Object2BooleanMap<DeferredBlock<TombstoneBlock>> TOMBSTONES = new Object2BooleanOpenHashMap<>();
 
     public static final DeferredBlock<CoinPileBlock> COPPER_COIN_PILE = registerWithoutItem("copper_coin_pile", CoinPileBlock::new);
     public static final DeferredBlock<CoinPileBlock> SILVER_COIN_PILE = registerWithoutItem("silver_coin_pile", CoinPileBlock::new);
@@ -68,25 +68,25 @@ public final class ModBlocks {
     public static final Supplier<Block> FAILED_SKULL_BLOCK = registerWithoutItem("failed_skull_block", () -> new ModSkullBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CREEPER).strength(1.0F).pushReaction(PushReaction.DESTROY)));
     public static final Supplier<Block> FAILED_SKULL_WALL_BLOCK = registerWithoutItem("failed_skull_wall_block", () -> new ModSkullBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CREEPER).strength(1.0F).pushReaction(PushReaction.DESTROY)));
 
-    public static final DeferredBlock<TombstoneBlock> TOMBSTONE = registerTombstone("tombstone");
-    public static final DeferredBlock<TombstoneBlock> GRAVE_MARKER = registerTombstone("grave_marker");
-    public static final DeferredBlock<TombstoneBlock> CROSS_GRAVE_MARKER = registerTombstone("cross_grave_marker");
-    public static final DeferredBlock<TombstoneBlock> HEADSTONE = registerTombstone("headstone");
-    public static final DeferredBlock<TombstoneBlock> GRAVESTONE = registerTombstone("gravestone");
-    public static final DeferredBlock<TombstoneBlock> OBELISK = registerTombstone("obelisk");
-    public static final DeferredBlock<TombstoneBlock> GOLDEN_TOMBSTONE = registerTombstone("golden_tombstone");
-    public static final DeferredBlock<TombstoneBlock> GOLDEN_GRAVE_MARKER = registerTombstone("golden_grave_marker");
-    public static final DeferredBlock<TombstoneBlock> GOLDEN_CROSS_GRAVE_MARKER = registerTombstone("golden_cross_grave_marker");
-    public static final DeferredBlock<TombstoneBlock> GOLDEN_HEADSTONE = registerTombstone("golden_headstone");
-    public static final DeferredBlock<TombstoneBlock> GOLDEN_GRAVESTONE = registerTombstone("golden_gravestone");
-    public static final Supplier<BlockEntityType<TombstoneBlock.Entity>> TOMBSTONE_ENTITY = BLOCK_ENTITIES.register("tombstone_entity", () -> BlockEntityType.Builder.of(TombstoneBlock.Entity::new, TOMBSTONES.stream().map(DeferredHolder::get).toArray(TombstoneBlock[]::new)).build(null));
+    public static final DeferredBlock<TombstoneBlock> TOMBSTONE = registerTombstone("tombstone", false);
+    public static final DeferredBlock<TombstoneBlock> GRAVE_MARKER = registerTombstone("grave_marker", false);
+    public static final DeferredBlock<TombstoneBlock> CROSS_GRAVE_MARKER = registerTombstone("cross_grave_marker", false);
+    public static final DeferredBlock<TombstoneBlock> HEADSTONE = registerTombstone("headstone", false);
+    public static final DeferredBlock<TombstoneBlock> GRAVESTONE = registerTombstone("gravestone", false);
+    public static final DeferredBlock<TombstoneBlock> OBELISK = registerTombstone("obelisk", false);
+    public static final DeferredBlock<TombstoneBlock> GOLDEN_TOMBSTONE = registerTombstone("golden_tombstone", true);
+    public static final DeferredBlock<TombstoneBlock> GOLDEN_GRAVE_MARKER = registerTombstone("golden_grave_marker", true);
+    public static final DeferredBlock<TombstoneBlock> GOLDEN_CROSS_GRAVE_MARKER = registerTombstone("golden_cross_grave_marker", true);
+    public static final DeferredBlock<TombstoneBlock> GOLDEN_HEADSTONE = registerTombstone("golden_headstone", true);
+    public static final DeferredBlock<TombstoneBlock> GOLDEN_GRAVESTONE = registerTombstone("golden_gravestone", true);
+    public static final Supplier<BlockEntityType<TombstoneBlock.Entity>> TOMBSTONE_ENTITY = BLOCK_ENTITIES.register("tombstone_entity", () -> BlockEntityType.Builder.of(TombstoneBlock.Entity::new, TOMBSTONES.keySet().stream().map(DeferredHolder::get).toArray(TombstoneBlock[]::new)).build(null));
 
     public static final DeferredBlock<GreenDumplingBlock> GREEN_DUMPLING_BLOCK = registerWithoutItem("green_dumpling_block", GreenDumplingBlock::new);
     public static final DeferredBlock<BoulderBreadBlock> BOULDER_BREAD_BLOCK = registerWithoutItem("boulder_bread_block", BoulderBreadBlock::new);
 
-    private static DeferredBlock<TombstoneBlock> registerTombstone(String id) {
+    private static DeferredBlock<TombstoneBlock> registerTombstone(String id, boolean isGolden) {
         DeferredBlock<TombstoneBlock> tombstone = registerWithItem(id, TombstoneBlock::new);
-        TOMBSTONES.add(tombstone);
+        TOMBSTONES.put(tombstone, isGolden);
         return tombstone;
     }
 

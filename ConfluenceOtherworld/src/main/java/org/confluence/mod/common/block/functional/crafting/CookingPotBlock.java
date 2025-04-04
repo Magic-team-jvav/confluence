@@ -1,6 +1,7 @@
 package org.confluence.mod.common.block.functional.crafting;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -13,7 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -34,6 +35,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.menu.CookingPotMenu;
@@ -41,13 +43,18 @@ import org.confluence.mod.common.recipe.CookingPotRecipe;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.model.DefaultedBlockGeoModel;
+import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import static org.confluence.mod.common.menu.HellforgeMenu.RESULT_SLOT;
 
@@ -270,6 +277,38 @@ public class CookingPotBlock extends BaseEntityBlock {
         @Override
         public AnimatableInstanceCache getAnimatableInstanceCache() {
             return CACHE;
+        }
+    }
+
+    public static class Item extends BlockItem implements GeoItem {
+        private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
+
+        public Item(Block block, Properties properties) {
+            super(block, properties);
+            SingletonGeoAnimatable.registerSyncedAnimatable(this);
+        }
+
+        @Override
+        public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
+
+        @Override
+        public AnimatableInstanceCache getAnimatableInstanceCache() {
+            return CACHE;
+        }
+
+        @Override
+        public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+            consumer.accept(new GeoRenderProvider() {
+                private GeoItemRenderer<Item> renderer;
+
+                @Override
+                public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
+                    if (renderer == null) {
+                        this.renderer = new GeoItemRenderer<>(new DefaultedBlockGeoModel<>(Confluence.asResource("cooking_pot")));
+                    }
+                    return renderer;
+                }
+            });
         }
     }
 }

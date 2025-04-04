@@ -702,6 +702,8 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("entity.minecraft.villager.confluence.sky_miller", "天师");
         add("entity.minecraft.villager.confluence.banker", "银行家");
+        add("entity.minecraft.villager.sky", "天师");
+        add("entity.minecraft.villager.coin", "银行家");
         add("entity.confluence.dart", "毒镖");
         add("entity.confluence.frozen_zombie", "冰冻僵尸");
         add("entity.confluence.raincoat_zombie", "雨衣僵尸");

@@ -117,7 +117,7 @@ public final class ModTags {
         public static final TagKey<Item> PREFIX_UNIVERSAL_ONLY = register("prefix_universal_only");
         public static final TagKey<Item> HARDMODE_ORES = register("hardmode_ores");
         public static final TagKey<Item> WINGS = register("wings");
-        public static final TagKey<Item> BOSS_SUMMING = register("boss_summing");
+        public static final TagKey<Item> BOSS_SUMMONING = register("boss_summoning");
         public static final TagKey<Item> COAL_ORE_SMELTING = register("coal_ore_smelting");
         public static final TagKey<Item> IRON_ORE_SMELTING = register("iron_ore_smelting");
         public static final TagKey<Item> TIN_ORE_SMELTING = register("tin_ore_smelting");

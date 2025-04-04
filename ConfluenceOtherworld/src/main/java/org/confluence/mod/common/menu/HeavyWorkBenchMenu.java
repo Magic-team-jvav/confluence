@@ -178,6 +178,7 @@ public class HeavyWorkBenchMenu extends AbstractContainerMenu {
 
     @Override
     public void slotsChanged(Container pContainer) {
+        input.asCraftingInput(true);
         this.recipes = player.level().getRecipeManager().getRecipesFor(ModRecipes.HEAVY_WORK_BENCH_TYPE.get(), input, player.level());
         if (selectedRecipeIndex.get() >= recipes.size()) selectedRecipeIndex.set(recipes.size() - 1);
         access.execute((level, pos) -> {

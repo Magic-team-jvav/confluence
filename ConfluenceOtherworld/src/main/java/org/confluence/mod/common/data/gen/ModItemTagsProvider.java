@@ -18,6 +18,7 @@ import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.common.MagicConch;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_guns.common.init.TGItems;
@@ -403,6 +404,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.ASH_GRASS_BLOCK.get().asItem(),
                 NatureBlocks.MUSHROOM_GRASS_BLOCK.get().asItem(),
                 NatureBlocks.JUNGLE_GRASS_BLOCK.get().asItem()
+        );
+        tag(ItemTags.BOOKSHELF_BOOKS).add(
+                ManaWeaponItems.WATER_BOLT.get().asItem()
         );
         tag(ItemTags.PLANKS).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getPlanks().asItem(),

@@ -550,6 +550,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("event.confluence.eye_of_cthulhu", "You feel an evil presence watching you...");
 
         add("entity.minecraft.villager.confluence.sky_miller", "Sky Miller");
+        add("entity.minecraft.villager.confluence.chef", "Chef");
         add("entity.minecraft.villager.confluence.banker", "Banker");
         add("entity.minecraft.villager.sky", "Sky Miller");
         add("entity.minecraft.villager.coin", "Banker");

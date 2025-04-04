@@ -271,6 +271,18 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(WEB_ROPE.get());
             dropSelf(VINE_ROPE.get());
 
+            dropSelf(TOMBSTONE.get());
+            dropSelf(GRAVE_MARKER.get());
+            dropSelf(CROSS_GRAVE_MARKER.get());
+            dropSelf(HEADSTONE.get());
+            dropSelf(GRAVESTONE.get());
+            dropSelf(OBELISK.get());
+            dropSelf(GOLDEN_TOMBSTONE.get());
+            dropSelf(GOLDEN_GRAVE_MARKER.get());
+            dropSelf(GOLDEN_CROSS_GRAVE_MARKER.get());
+            dropSelf(GOLDEN_HEADSTONE.get());
+            dropSelf(GOLDEN_GRAVESTONE.get());
+
             dropOther(NATURES_GIFT.get(), AccessoryItems.NATURES_GIFT.get());
             add(JUNGLE_ROSE.get(), LootTable.lootTable().withPool(LootPool.lootPool()
                     .add(LootItem.lootTableItem(JUNGLE_ROSE.get()).when(LootItemRandomChanceCondition.randomChance(0.05f)))));

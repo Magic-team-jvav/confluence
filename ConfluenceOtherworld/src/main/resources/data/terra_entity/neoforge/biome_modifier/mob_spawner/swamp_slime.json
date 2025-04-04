@@ -1,0 +1,13 @@
+{
+    "type": "neoforge:add_spawns",
+    "biomes": [
+        "minecraft:swamp",
+        "minecraft:mangrove_swamp"
+    ],
+    "spawners": {
+        "type": "terra_entity:swamp_slime",
+        "weight": 90,
+        "minCount": 1,
+        "maxCount": 3
+    }
+}

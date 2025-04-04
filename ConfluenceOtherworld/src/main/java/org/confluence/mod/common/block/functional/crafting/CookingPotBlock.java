@@ -29,6 +29,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.mod.common.init.ModRecipes;
@@ -38,8 +39,7 @@ import org.confluence.mod.common.recipe.CookingPotRecipe;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Optional;
 
 import static org.confluence.mod.common.menu.HellforgeMenu.RESULT_SLOT;
@@ -117,6 +117,7 @@ public class CookingPotBlock extends BaseEntityBlock {
         int cookingProgress;
         int cookingTotalTime;
         int heatSourceItem = Item.getId(Items.AIR);
+        ItemStack[] itemStacks = new ItemStack[4];
         protected final ContainerData dataAccess = new ContainerData() {
             @Override
             public int get(int data) {
@@ -155,24 +156,15 @@ public class CookingPotBlock extends BaseEntityBlock {
         }
 
         public static void serverTick(Level level, BlockPos pos, BlockState state, Entity blockEntity) {
-            BlockState blockState = level.getBlockState(pos.below());
-            blockEntity.heatSourceItem = Item.getId(blockState.getBlock().asItem());
-            List<ItemStack> items = new ArrayList<>();
-            for (int i = 0; i < 4; i++) {
-                ItemStack itemStack = blockEntity.items.get(i);
-                if (!itemStack.isEmpty()) {
-                    items.add(itemStack);
-                }
-            }
-            if (!items.isEmpty()) {
-                CookingPotRecipe.Input input = new CookingPotRecipe.Input(items, blockEntity.getItem(CookingPotMenu.CONTAINER_SLOT));
+            BlockInWorld heatSource = new BlockInWorld(level, pos.below(), true);
+            blockEntity.heatSourceItem = Item.getId(heatSource.getState().getBlock().asItem());
+            ItemStack[] itemStacks = blockEntity.getItemStacks();
+            if (Arrays.stream(itemStacks).anyMatch(itemStack -> !itemStack.isEmpty())) {
+                CookingPotRecipe.Input input = new CookingPotRecipe.Input(itemStacks, blockEntity.getItem(CookingPotMenu.CONTAINER_SLOT), heatSource);
                 Optional<RecipeHolder<CookingPotRecipe>> recipeFor = blockEntity.cachedCheck.getRecipeFor(input, level);
                 if (recipeFor.isPresent()) {
                     CookingPotRecipe recipe = recipeFor.get().value();
-                    if ((recipe.isDoNotNeedHeatSource() || blockState.is(recipe.getHeatSource())) &&
-                            recipe.getContainer().test(blockEntity.items.get(CookingPotMenu.CONTAINER_SLOT)) &&
-                            canResultInsert(blockEntity.items, blockEntity.getMaxStackSize(), recipe.getResultItem(null))
-                    ) {
+                    if (canResultInsert(blockEntity.items, blockEntity.getMaxStackSize(), recipe.getResultItem(null))) {
                         blockEntity.cookingTotalTime = recipe.getCookingTime();
                         if (++blockEntity.cookingProgress >= blockEntity.cookingTotalTime) {
                             blockEntity.items.get(CookingPotMenu.CONTAINER_SLOT).shrink(1);
@@ -190,6 +182,14 @@ public class CookingPotBlock extends BaseEntityBlock {
                 }
             }
             blockEntity.cookingProgress = 0;
+        }
+
+        private ItemStack[] getItemStacks() {
+            itemStacks[0] = items.get(0);
+            itemStacks[1] = items.get(1);
+            itemStacks[2] = items.get(2);
+            itemStacks[3] = items.get(3);
+            return itemStacks;
         }
 
         private static boolean canResultInsert(NonNullList<ItemStack> inventory, int maxStackSize, ItemStack neoResult) {

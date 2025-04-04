@@ -15,6 +15,6 @@
     "container": {
         "item": "minecraft:bowl"
     },
-    "heat_source": "confluence:empty",
+    "heat_source": {},
     "cookingtime": 100
 }

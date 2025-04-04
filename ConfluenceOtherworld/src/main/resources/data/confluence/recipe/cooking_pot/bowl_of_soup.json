@@ -14,6 +14,11 @@
     "container": {
         "item": "minecraft:bowl"
     },
-    "heat_source": "minecraft:campfires",
+    "heat_source": {
+        "tag": "minecraft:campfires",
+        "state": {
+            "lit": "true"
+        }
+    },
     "cookingtime": 200
 }

@@ -3,7 +3,11 @@ package org.confluence.mod.network;
 import com.mojang.datafixers.util.Pair;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.core.Registry;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Tuple;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -71,6 +75,18 @@ public interface ExtraByteBufCodecs {
                 for (V v : value) {
                     codec.encode(buffer, v);
                 }
+            }
+        };
+    }
+
+    static <T, B extends ByteBuf> StreamCodec<B, TagKey<T>> tagKey(ResourceKey<Registry<T>> resourceKey) {
+        return new StreamCodec<>() {
+            public TagKey<T> decode(B buffer) {
+                return TagKey.create(resourceKey, ResourceLocation.STREAM_CODEC.decode(buffer));
+            }
+
+            public void encode(B buffer, TagKey<T> tagKey) {
+                ResourceLocation.STREAM_CODEC.encode(buffer, tagKey.location());
             }
         };
     }

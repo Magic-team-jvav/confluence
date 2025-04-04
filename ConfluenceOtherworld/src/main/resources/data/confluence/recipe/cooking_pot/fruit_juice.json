@@ -15,6 +15,6 @@
     "container": {
         "item": "confluence:bottle"
     },
-    "heat_source": "confluence:empty",
+    "heat_source": {},
     "cookingtime": 100
 }

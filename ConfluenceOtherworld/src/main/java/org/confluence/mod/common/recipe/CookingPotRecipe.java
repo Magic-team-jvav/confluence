@@ -3,11 +3,14 @@ package org.confluence.mod.common.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.advancements.critereon.NbtPredicate;
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -15,21 +18,26 @@ import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import org.confluence.mod.common.init.ModRecipes;
-import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.network.ExtraByteBufCodecs;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
 import org.confluence.terra_curio.common.recipe.AmountIngredient;
 
-import java.util.List;
+import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class CookingPotRecipe extends AbstractAmountRecipe {
     private final Ingredient container;
-    private final TagKey<Block> heatSource;
+    private final HeatSourcePredicate heatSource;
     private final int cookingTime;
 
-    public CookingPotRecipe(ItemStack result, NonNullList<Ingredient> ingredients, Ingredient container, TagKey<Block> heatSource, int cookingTime) {
+    public CookingPotRecipe(ItemStack result, NonNullList<Ingredient> ingredients, Ingredient container, HeatSourcePredicate heatSource, int cookingTime) {
         super(result, ingredients);
         this.container = container;
         this.heatSource = heatSource;
@@ -39,7 +47,7 @@ public class CookingPotRecipe extends AbstractAmountRecipe {
     @Override
     public boolean matches(RecipeInput input, Level pLevel) {
         if (input instanceof Input recipeInput) {
-            return container.test(recipeInput.container) && super.matches(input, pLevel);
+            return heatSource.matches(recipeInput.heatSource) && container.test(recipeInput.container) && super.matches(input, pLevel);
         }
         return false;
     }
@@ -48,16 +56,12 @@ public class CookingPotRecipe extends AbstractAmountRecipe {
         return container;
     }
 
-    public TagKey<Block> getHeatSource() {
+    public HeatSourcePredicate getHeatSource() {
         return heatSource;
     }
 
     public int getCookingTime() {
         return cookingTime;
-    }
-
-    public boolean isDoNotNeedHeatSource() {
-        return heatSource.equals(ModTags.Blocks.EMPTY);
     }
 
     @Override
@@ -90,7 +94,7 @@ public class CookingPotRecipe extends AbstractAmountRecipe {
                 ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
                 INGREDIENTS_CODEC.forGetter(recipe -> recipe.ingredients),
                 Ingredient.CODEC.fieldOf("container").forGetter(recipe -> recipe.container),
-                TagKey.codec(Registries.BLOCK).fieldOf("heat_source").forGetter(recipe -> recipe.heatSource),
+                HeatSourcePredicate.CODEC.fieldOf("heat_source").forGetter(recipe -> recipe.heatSource),
                 Codec.INT.fieldOf("cookingtime").forGetter(recipe -> recipe.cookingTime)
         ).apply(instance, CookingPotRecipe::new));
         public static final StreamCodec<RegistryFriendlyByteBuf, CookingPotRecipe> STREAM_CODEC = StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
@@ -111,7 +115,7 @@ public class CookingPotRecipe extends AbstractAmountRecipe {
             nonnulllist.replaceAll(ignore -> Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
             ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
             Ingredient container = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            TagKey<Block> heatSource = TagKey.create(Registries.BLOCK, ResourceLocation.STREAM_CODEC.decode(buffer));
+            HeatSourcePredicate heatSource = HeatSourcePredicate.STREAM_CODEC.decode(buffer);
             return new CookingPotRecipe(itemstack, nonnulllist, container, heatSource, buffer.readVarInt());
         }
 
@@ -122,28 +126,92 @@ public class CookingPotRecipe extends AbstractAmountRecipe {
             }
             ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
             Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.container);
-            ResourceLocation.STREAM_CODEC.encode(buffer, recipe.heatSource.location());
+            HeatSourcePredicate.STREAM_CODEC.encode(buffer, recipe.heatSource);
             buffer.writeVarInt(recipe.cookingTime);
         }
     }
 
     public static class Input implements RecipeInput {
-        private final List<ItemStack> items;
+        private final ItemStack[] items;
         final ItemStack container;
+        final BlockInWorld heatSource;
 
-        public Input(List<ItemStack> items, ItemStack container) {
+        public Input(ItemStack[] items, ItemStack container, BlockInWorld heatSource) {
             this.items = items;
             this.container = container;
+            this.heatSource = heatSource;
         }
 
         @Override
         public ItemStack getItem(int index) {
-            return items.get(index);
+            return items[index];
         }
 
         @Override
         public int size() {
-            return items.size();
+            return items.length;
+        }
+    }
+
+    public record HeatSourcePredicate(Optional<TagKey<Block>> tag, Optional<StatePropertiesPredicate> properties, Optional<NbtPredicate> nbt) {
+        public static final Codec<HeatSourcePredicate> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                TagKey.codec(Registries.BLOCK).optionalFieldOf("tag").forGetter(HeatSourcePredicate::tag),
+                StatePropertiesPredicate.CODEC.optionalFieldOf("state").forGetter(HeatSourcePredicate::properties),
+                NbtPredicate.CODEC.optionalFieldOf("nbt").forGetter(HeatSourcePredicate::nbt)
+        ).apply(instance, HeatSourcePredicate::new));
+        public static final StreamCodec<RegistryFriendlyByteBuf, HeatSourcePredicate> STREAM_CODEC = StreamCodec.composite(
+                ByteBufCodecs.optional(ExtraByteBufCodecs.tagKey(Registries.BLOCK)),
+                HeatSourcePredicate::tag,
+                ByteBufCodecs.optional(StatePropertiesPredicate.STREAM_CODEC),
+                HeatSourcePredicate::properties,
+                ByteBufCodecs.optional(NbtPredicate.STREAM_CODEC),
+                HeatSourcePredicate::nbt,
+                HeatSourcePredicate::new
+        );
+
+        public boolean matches(BlockInWorld block) {
+            return matchesState(block.getState()) && (nbt.isEmpty() || matchesBlockEntity(block.getLevel(), block.getEntity(), nbt.get()));
+        }
+
+        private boolean matchesState(BlockState state) {
+            return (tag.isEmpty() || state.is(tag.get())) && (properties.isEmpty() || properties.get().matches(state));
+        }
+
+        private static boolean matchesBlockEntity(LevelReader level, @Nullable BlockEntity blockEntity, NbtPredicate nbtPredicate) {
+            return blockEntity != null && nbtPredicate.matches(blockEntity.saveWithFullMetadata(level.registryAccess()));
+        }
+
+        @SuppressWarnings("all")
+        public static class Builder {
+            private Optional<TagKey<Block>> blocks = Optional.empty();
+            private Optional<StatePropertiesPredicate> properties = Optional.empty();
+            private Optional<NbtPredicate> nbt = Optional.empty();
+
+            private Builder() {
+            }
+
+            public static Builder block() {
+                return new Builder();
+            }
+
+            public Builder of(TagKey<Block> tag) {
+                this.blocks = Optional.of(tag);
+                return this;
+            }
+
+            public Builder hasNbt(CompoundTag nbt) {
+                this.nbt = Optional.of(new NbtPredicate(nbt));
+                return this;
+            }
+
+            public Builder setProperties(StatePropertiesPredicate.Builder properties) {
+                this.properties = properties.build();
+                return this;
+            }
+
+            public HeatSourcePredicate build() {
+                return new HeatSourcePredicate(blocks, properties, nbt);
+            }
         }
     }
 }

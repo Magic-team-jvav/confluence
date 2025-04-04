@@ -71,8 +71,8 @@ public class CookingPotCategory implements IRecipeCategory<CookingPotRecipe> {
             }
         }
         builder.addSlot(RecipeIngredientRole.INPUT, 79, 1).addIngredients(recipe.getContainer());
-        if (!recipe.isDoNotNeedHeatSource()) {
-            Ingredient heatSource = Ingredient.of(Streams.stream(BuiltInRegistries.BLOCK.getTagOrEmpty(recipe.getHeatSource())).map(holder -> holder.value().asItem().getDefaultInstance()).toArray(ItemStack[]::new));
+        if (recipe.getHeatSource().tag().isPresent()) {
+            Ingredient heatSource = Ingredient.of(Streams.stream(BuiltInRegistries.BLOCK.getTagOrEmpty(recipe.getHeatSource().tag().get())).map(holder -> holder.value().asItem().getDefaultInstance()).toArray(ItemStack[]::new));
             builder.addSlot(RecipeIngredientRole.CATALYST, 79, 32).addIngredients(heatSource);
         }
         builder.addSlot(RecipeIngredientRole.OUTPUT, 121, 16).addItemStack(recipe.getResultItem(null));
@@ -84,7 +84,7 @@ public class CookingPotCategory implements IRecipeCategory<CookingPotRecipe> {
         if (recipe.getContainer().isEmpty()) {
             guiGraphics.blit(BACKGROUND, 79, 1, 143, 0, 16, 16, 159, 49);
         }
-        if (recipe.isDoNotNeedHeatSource()) {
+        if (recipe.getHeatSource().tag().isEmpty()) {
             guiGraphics.blit(BACKGROUND, 79, 32, 143, 33, 16, 16, 159, 49);
         }
     }

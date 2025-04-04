@@ -9,16 +9,19 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -31,6 +34,7 @@ import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
@@ -65,6 +69,7 @@ import org.confluence.mod.integration.terra_entity.TEItemComponentModify;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.ConfluenceResources;
+import org.confluence.mod.util.DateUtils;
 import org.confluence.phase_journey.api.PhaseJourneyEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.component.ModRarity;
@@ -73,6 +78,7 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.entity.monster.AbstractMonster;
+import org.confluence.terraentity.init.TEEntities;
 
 import java.util.Map;
 import java.util.Optional;
@@ -351,5 +357,16 @@ public final class ModEvents {
             }
             return null;
         }, FunctionalBlocks.DEMON_ALTAR.get(), FunctionalBlocks.CRIMSON_ALTAR.get());
+    }
+
+    @SubscribeEvent
+    public static void registerSpawnReplacements(RegisterSpawnPlacementsEvent event) {
+        event.register(TEEntities.GREEN_DUMPLING_SLIME.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, serverLevel, spawnType, pos, random) -> {
+            if (DateUtils.isQingMing(DateUtils.getLunar()) && serverLevel instanceof Level level) {
+                int y = pos.getY();
+                return y > 30 && y < 260 && level.isDay() && serverLevel.canSeeSky(pos);
+            }
+            return false;
+        }, RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 }

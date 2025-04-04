@@ -13,8 +13,8 @@ import org.confluence.mod.common.entity.TargetDummyEntity;
 public class TargetDummyRenderer extends HumanoidMobRenderer<TargetDummyEntity, TargetDummyModel<TargetDummyEntity>> {
     public static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/target_dummy.png");
 
-    public TargetDummyRenderer(EntityRendererProvider.Context context, TargetDummyModel<TargetDummyEntity> model, float shadowRadius) {
-        super(context, model, shadowRadius);
+    public TargetDummyRenderer(EntityRendererProvider.Context context) {
+        super(context, new TargetDummyModel<>(context.bakeLayer(TargetDummyModel.LAYER_LOCATION)), 0);
         this.addLayer(new HumanoidArmorLayer(this,
                 new ArmorStandArmorModel(context.bakeLayer(ModelLayers.ARMOR_STAND_INNER_ARMOR)),
                 new ArmorStandArmorModel(context.bakeLayer(ModelLayers.ARMOR_STAND_OUTER_ARMOR)),

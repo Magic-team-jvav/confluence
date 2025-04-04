@@ -18,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -31,12 +32,19 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.menu.CookingPotMenu;
 import org.confluence.mod.common.recipe.CookingPotRecipe;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -45,6 +53,7 @@ import static org.confluence.mod.common.menu.HellforgeMenu.RESULT_SLOT;
 
 public class CookingPotBlock extends BaseEntityBlock {
     public static final MapCodec<CookingPotBlock> CODEC = simpleCodec(CookingPotBlock::new);
+    private static final VoxelShape SHAPE = box(1, 0, 1, 15, 14, 15);
 
     public CookingPotBlock(Properties properties) {
         super(properties);
@@ -58,7 +67,12 @@ public class CookingPotBlock extends BaseEntityBlock {
 
     @Override
     protected RenderShape getRenderShape(BlockState state) {
-        return RenderShape.MODEL;
+        return RenderShape.ENTITYBLOCK_ANIMATED;
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;
     }
 
     @Override
@@ -111,7 +125,7 @@ public class CookingPotBlock extends BaseEntityBlock {
         return level.isClientSide ? null : ModUtils.getTicker(blockEntityType, FunctionalBlocks.COOKING_POT_ENTITY.get(), Entity::serverTick);
     }
 
-    public static class Entity extends BaseContainerBlockEntity {
+    public static class Entity extends BaseContainerBlockEntity implements GeoBlockEntity {
         protected NonNullList<ItemStack> items = NonNullList.withSize(CookingPotMenu.SLOT_COUNT, ItemStack.EMPTY);
         int cookingProgress;
         int cookingTotalTime;
@@ -148,10 +162,12 @@ public class CookingPotBlock extends BaseEntityBlock {
             }
         };
         private final RecipeManager.CachedCheck<CookingPotRecipe.Input, CookingPotRecipe> cachedCheck;
+        private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
         public Entity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.COOKING_POT_ENTITY.get(), pos, blockState);
             this.cachedCheck = RecipeManager.createCheck(ModRecipes.COOKING_POT_TYPE.get());
+            SingletonGeoAnimatable.registerSyncedAnimatable(this);
         }
 
         public static void serverTick(Level level, BlockPos pos, BlockState state, Entity blockEntity) {
@@ -246,6 +262,14 @@ public class CookingPotBlock extends BaseEntityBlock {
         @Override
         public int getContainerSize() {
             return items.size();
+        }
+
+        @Override
+        public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
+
+        @Override
+        public AnimatableInstanceCache getAnimatableInstanceCache() {
+            return CACHE;
         }
     }
 }

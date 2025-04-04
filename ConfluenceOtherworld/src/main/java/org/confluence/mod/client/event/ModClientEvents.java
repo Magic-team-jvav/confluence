@@ -86,6 +86,7 @@ import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.model.entity.BeeProjectileModel;
 import org.confluence.terraentity.client.entity.renderer.GeoNormalRenderer;
+import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import java.util.HashSet;
@@ -220,12 +221,12 @@ public final class ModClientEvents {
         event.registerEntityRenderer(STAR_FURY_PROJECTILE.get(), StarFuryProjectileRenderer::new);
         event.registerEntityRenderer(ENCHANTED_SWORD_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, new EnchantedSwordProjectileModel(c.bakeLayer(EnchantedSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1, 0.2F, 0.89f));
         event.registerEntityRenderer(LIGHTS_BANE_PROJECTILE.get(), LightsBaneProjectileRenderer::new);
-        event.registerEntityRenderer(GRASS_PROJECTILE.get(), c-> new ForwardProjRenderer<>(c, null,null));
-        event.registerEntityRenderer(BEE_PROJECTILE.get(), c-> new ForwardProjRenderer<>(c, new BeeProjectileModel(c.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
+        event.registerEntityRenderer(GRASS_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, null, null));
+        event.registerEntityRenderer(BEE_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, new BeeProjectileModel(c.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
 
 
         event.registerEntityRenderer(ARROW_PROJECTILE.get(), TerraArrowRenderer::new);
-        event.registerEntityRenderer(BEE_ARROW.get(), c-> new ForwardProjRenderer<>(c, new BeeProjectileModel(c.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
+        event.registerEntityRenderer(BEE_ARROW.get(), c -> new ForwardProjRenderer<>(c, new BeeProjectileModel(c.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
 
 
         event.registerEntityRenderer(BOULDER.get(), BoulderRenderer::new);
@@ -234,7 +235,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(ROLLING_CACTUS_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(ROLLING_CACTUS_SPIKE.get(), RollingCactusSpikeRenderer::new);
         event.registerEntityRenderer(THROWN_KNIVES_PROJECTILE.get(), ThrownKnivesProjectileRenderer::new);
-        event.registerEntityRenderer(JAVELIN_PROJECTILE.get(), c->new SpearRenderer(c, - Math.PI * 0.25f));
+        event.registerEntityRenderer(JAVELIN_PROJECTILE.get(), SpearRenderer::new);
         event.registerEntityRenderer(SHURIKEN_PROJECTILE.get(), ShurikenProjectileRenderer::new);
         event.registerEntityRenderer(GRENADE.get(), BaseGrenadeEntityRenderer::new);
         event.registerEntityRenderer(BOUNCY_GRENADE.get(), BouncyGrenadeEntityRenderer::new);
@@ -287,7 +288,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(ICE_TOFU_BRICK_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(BODY_PART.get(), BodyPartRenderer::new);
 
-        event.registerEntityRenderer(TARGET_DUMMY.get(), c -> new TargetDummyRenderer(c, new TargetDummyModel<>(c.bakeLayer(TargetDummyModel.LAYER_LOCATION)), 0));
+        event.registerEntityRenderer(TARGET_DUMMY.get(), TargetDummyRenderer::new);
 
         // npc
         event.registerEntityRenderer(GUIDE.get(), c -> new GeoNormalRenderer<>(c, GUIDE.getId()));
@@ -302,7 +303,7 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(FunctionalBlocks.WEATHER_VANE_ENTITY.get(), WeatherVaneBlockRenderer::new);
         event.registerBlockEntityRenderer(NatureBlocks.LIFE_CRYSTAL_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new LifeCrystalBlockModel()));
         event.registerBlockEntityRenderer(StatueBlocks.BLOCK_ENTITY.get(), MechanicalBlockRenderer::new);
-
+        event.registerBlockEntityRenderer(FunctionalBlocks.COOKING_POT_ENTITY.get(), context -> new GeoBlockRenderer<>(new DefaultedBlockGeoModel<>(Confluence.asResource("cooking_pot"))));
         event.registerBlockEntityRenderer(FunctionalBlocks.ANNOUNCEMENT_BOX_ENTITY.get(), SignRenderer::new);
     }
 

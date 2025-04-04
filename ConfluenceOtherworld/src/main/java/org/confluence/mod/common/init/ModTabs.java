@@ -84,7 +84,7 @@ public final class ModTabs {
                         ModItems.ITEMS.getEntries().forEach(action);
                         ConsumableItems.ITEMS.getEntries().forEach(action);
                         TreasureBagItems.ITEMS.getEntries().forEach(action);
-                        ModBlocks.TOMBSTONES.forEach(action);
+                        ModBlocks.TOMBSTONES.keySet().forEach(action);
                         BaitItems.ITEMS.getEntries().forEach(action);
                         QuestedFishes.ITEMS.getEntries().forEach(action);
                         CrateBlocks.BLOCKS.getEntries().forEach(action);

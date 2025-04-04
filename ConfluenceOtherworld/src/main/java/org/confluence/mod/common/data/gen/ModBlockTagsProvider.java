@@ -1203,7 +1203,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 TITANIUM_BLOCK.get(),
                 FLOATING_WHEAT_BALE.get()
         );
-        tag(ModTags.Blocks.TOMBSTONE).add(TOMBSTONES.stream().map(DeferredBlock::get).toArray(TombstoneBlock[]::new));
+        tag(ModTags.Blocks.TOMBSTONE).add(TOMBSTONES.keySet().stream().map(DeferredBlock::get).toArray(TombstoneBlock[]::new));
     }
 
     @Override

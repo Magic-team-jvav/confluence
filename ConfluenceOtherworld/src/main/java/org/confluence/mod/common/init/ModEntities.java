@@ -14,19 +14,18 @@ import org.confluence.mod.common.entity.fishing.HotlineFishingHook;
 import org.confluence.mod.common.entity.hook.*;
 import org.confluence.mod.common.entity.minecart.*;
 import org.confluence.mod.common.entity.npc.AbstractTerraNPC;
-import org.confluence.mod.common.entity.projectile.*;
+import org.confluence.mod.common.entity.projectile.EffectThrownPotion;
+import org.confluence.mod.common.entity.projectile.IceTofuBrickProjectile;
+import org.confluence.mod.common.entity.projectile.RopeCoilsProjectile;
+import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
+import org.confluence.mod.common.entity.projectile.bomb.*;
+import org.confluence.mod.common.entity.projectile.boulder.*;
+import org.confluence.mod.common.entity.projectile.mana.*;
 import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
 import org.confluence.mod.common.entity.projectile.range.arrow.BeeArrow;
-import org.confluence.mod.common.entity.projectile.bomb.*;
-import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
-import org.confluence.mod.common.entity.projectile.boulder.ExplodeBoulderEntity;
-import org.confluence.mod.common.entity.projectile.boulder.FollowerBoulderEntity;
-import org.confluence.mod.common.entity.projectile.boulder.RollingCactusBoulderEntity;
-import org.confluence.mod.common.entity.projectile.mana.*;
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
 import org.confluence.mod.common.entity.projectile.sword.*;
 import org.confluence.mod.common.event.ModEvents;
-import org.confluence.terraentity.entity.proj.BoomerangProjectile;
 
 import java.util.function.Supplier;
 
@@ -85,6 +84,7 @@ public final class ModEntities {
     public static final Supplier<EntityType<ExplodeBoulderEntity>> EXPLODE_BOULDER = ENTITIES.register("explode_boulder", () -> EntityType.Builder.<ExplodeBoulderEntity>of(ExplodeBoulderEntity::new, MobCategory.MISC).sized(BoulderEntity.DIAMETER, BoulderEntity.DIAMETER).clientTrackingRange(6).build("confluence:explode_boulder"));
     public static final Supplier<EntityType<RollingCactusBoulderEntity>> ROLLING_CACTUS_BOULDER = ENTITIES.register("rolling_cactus_boulder", () -> EntityType.Builder.<RollingCactusBoulderEntity>of(RollingCactusBoulderEntity::new, MobCategory.MISC).sized(BoulderEntity.DIAMETER, BoulderEntity.DIAMETER).clientTrackingRange(6).build("confluence:rolling_cactus_boulder"));
     public static final Supplier<EntityType<RollingCactusBoulderEntity.SpikeProjectile>> ROLLING_CACTUS_SPIKE = ENTITIES.register("rolling_cactus_spike", () -> EntityType.Builder.of(RollingCactusBoulderEntity.SpikeProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(6).build("confluence:rolling_cactus_spike"));
+    public static final Supplier<EntityType<TombstoneBoulder>> TOMBSTONE_BOULDER = ENTITIES.register("tombstone_boulder", () -> EntityType.Builder.<TombstoneBoulder>of(TombstoneBoulder::new, MobCategory.MISC).sized(BoulderEntity.DIAMETER, BoulderEntity.DIAMETER).clientTrackingRange(6).build("confluence:tombstone_boulder"));
     public static final Supplier<EntityType<ThrowableDropSelfProjectile>> THROWN_KNIVES_PROJECTILE = ENTITIES.register("thrown_knives_projectile", () -> EntityType.Builder.of(ThrowableDropSelfProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:thrown_knives_projectile"));
     public static final Supplier<EntityType<ThrowableDropSelfProjectile>> SHURIKEN_PROJECTILE = ENTITIES.register("shuriken_projectile", () -> EntityType.Builder.of(ThrowableDropSelfProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:shuriken_projectile"));
     public static final Supplier<EntityType<ThrowableDropSelfProjectile>> JAVELIN_PROJECTILE = ENTITIES.register("javelin_projectile", () -> EntityType.Builder.of(ThrowableDropSelfProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:javelin_projectile"));

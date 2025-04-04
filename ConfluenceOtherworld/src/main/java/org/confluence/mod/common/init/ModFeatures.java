@@ -26,7 +26,6 @@ import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.worldgen.SecretFlagPlacementModifier;
 import org.confluence.mod.common.worldgen.feature.*;
-import org.confluence.mod.common.worldgen.structure.MineTunnelsStructure;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -111,14 +110,14 @@ public final class ModFeatures {
         if (level.getBlockEntity(blockPos) instanceof INetworkEntity entity) {
             return entity;
         }
-        Confluence.LOGGER.error("Failed to fetch mechanical block entity at ({}, {}, {})", blockPos.getX(), blockPos.getY(), blockPos.getZ());
+        //Confluence.LOGGER.error("Failed to fetch mechanical block entity at ({}, {}, {})", blockPos.getX(), blockPos.getY(), blockPos.getZ());
         return null;
     }
 
     public static @Nullable BlockEntity getBlockEntity(WorldGenLevel level, BlockPos blockPos) {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         if (blockEntity == null) {
-            Confluence.LOGGER.error("Failed to fetch block entity at ({}, {}, {})", blockPos.getX(), blockPos.getY(), blockPos.getZ());
+            //Confluence.LOGGER.error("Failed to fetch block entity at ({}, {}, {})", blockPos.getX(), blockPos.getY(), blockPos.getZ());
             return null;
         }
         return blockEntity;

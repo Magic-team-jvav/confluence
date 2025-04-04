@@ -41,7 +41,7 @@ import org.confluence.terraentity.entity.monster.AbstractMonster;
 import org.confluence.terraentity.entity.monster.demoneye.DemonEye;
 import org.confluence.terraentity.entity.monster.prefab.FlyMonsterPrefab;
 import org.confluence.terraentity.entity.monster.slime.BaseSlime;
-import org.confluence.terraentity.init.TEEntities;
+import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,10 +133,10 @@ public class StatueBlocks {
     // Blood Zombie Statue
     public static final Supplier<BehaviourStatueBlock> BONE_SKELETON_STATUE = registerSimpleSummon("bone_skeleton_statue", true, level -> new Skeleton(EntityType.SKELETON, level));
     // Chest Statue
-    public static final Supplier<BehaviourStatueBlock> CORRUPT_STATUE = registerSimpleSummon("corrupt_statue", true, level -> new AbstractMonster(TEEntities.EATER_OF_SOULS.get(), level, FlyMonsterPrefab.EATER_OF_SOULS_BUILDER.get()));
+    public static final Supplier<BehaviourStatueBlock> CORRUPT_STATUE = registerSimpleSummon("corrupt_statue", true, level -> new AbstractMonster(TEMonsterEntities.EATER_OF_SOULS.get(), level, FlyMonsterPrefab.EATER_OF_SOULS_BUILDER.get()));
     // Crab Statue
-    public static final Supplier<BehaviourStatueBlock> DRIPPLER_STATUE = registerSimpleSummon("drippler_statue", true, level -> new AbstractMonster(TEEntities.DRIPPLER.get(), level, FlyMonsterPrefab.DRIPPLER_BUILDER.get()));
-    public static final Supplier<BehaviourStatueBlock> EYEBALL_STATUE = registerSimpleSummon("eyeball_statue", true, level -> new DemonEye(TEEntities.DEMON_EYE.get(), level));
+    public static final Supplier<BehaviourStatueBlock> DRIPPLER_STATUE = registerSimpleSummon("drippler_statue", true, level -> new AbstractMonster(TEMonsterEntities.DRIPPLER.get(), level, FlyMonsterPrefab.DRIPPLER_BUILDER.get()));
+    public static final Supplier<BehaviourStatueBlock> EYEBALL_STATUE = registerSimpleSummon("eyeball_statue", true, level -> new DemonEye(TEMonsterEntities.DEMON_EYE.get(), level));
     // Goblin Statue
     // Granite Golem Statue
     // Harpy Statue
@@ -153,7 +153,7 @@ public class StatueBlocks {
         skeleton.setPos(pos);
         return skeleton;
     }, entity -> entity.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY)));
-    public static final Supplier<BehaviourStatueBlock> SLIME_STATUE = registerSimpleSummon("slime_statue", false, level -> new BaseSlime(TEEntities.BLUE_SLIME.get(), level, 0x73BCF4, 2));
+    public static final Supplier<BehaviourStatueBlock> SLIME_STATUE = registerSimpleSummon("slime_statue", false, level -> new BaseSlime(TEMonsterEntities.BLUE_SLIME.get(), level, 0x73BCF4, 2));
     // Undead Viking Statue
     // Unicorn Statue
     // Wall Creeper Statue

@@ -69,7 +69,8 @@ import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.entity.ai.Boss;
 import org.confluence.terraentity.init.TEEffects;
-import org.confluence.terraentity.init.TEEntities;
+import org.confluence.terraentity.init.entity.TEBossEntities;
+import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class LivingEntityEvents {
@@ -97,15 +98,15 @@ public final class LivingEntityEvents {
                 EntityType<?> type = living.getType();
                 ConfluenceData data = ConfluenceData.get(level);
                 data.getKillBoard().defeat(type, data);
-                boolean isEaterOfWorlds = type == TEEntities.EATER_OF_WORLDS.get();
-                if (isEaterOfWorlds || type == TEEntities.BRAIN_OF_CTHULHU.get()) {
+                boolean isEaterOfWorlds = type == TEBossEntities.EATER_OF_WORLDS.get();
+                if (isEaterOfWorlds || type == TEBossEntities.BRAIN_OF_CTHULHU.get()) {
                     if (DateUtils.isWithinDayTime(0, 0, 4, 30, level.getDayTime())) { // 00:00 -> 04:30
                         MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
                     } else if (!MeteoriteTracker.INSTANCE.spawnAtNextNight) {
                         MeteoriteTracker.INSTANCE.spawnAtNextNight = level.random.nextBoolean();
                     }
                 }
-                boolean stickySituation = type == TEEntities.KING_SLIME.get() && MomentManager.of(level).hasMoment(TMMoments.SLIME_RAIN);
+                boolean stickySituation = type == TEBossEntities.KING_SLIME.get() && MomentManager.of(level).hasMoment(TMMoments.SLIME_RAIN);
                 ResourceKey<Level> dimension = living.level().dimension();
                 level.players().stream()
                         .filter(player -> player.level().dimension() == dimension)
@@ -196,7 +197,7 @@ public final class LivingEntityEvents {
         // 克苏鲁之脑和飞眼怪给的debuff
         if (attacker != null && ModUtils.isAtLeastExpert(level, living.blockPosition())) {
             EntityType<?> type = attacker.getType();
-            if (type == TEEntities.VISUAL_NEURON.get() || (type == TEEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
+            if (type == TEMonsterEntities.VISUAL_NEURON.get() || (type == TEBossEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
                 boolean master = ModUtils.isMaster(level, living.blockPosition());
                 Holder<MobEffect> debuff;
                 float min;
@@ -304,9 +305,9 @@ public final class LivingEntityEvents {
         } else {
             boolean flag = false;
             EntityType<?> type = event.getEntity().getType();
-            if (type == TEEntities.KING_SLIME.get()) {
+            if (type == TEBossEntities.KING_SLIME.get()) {
                 flag = effect == MobEffects.POISON;
-            } else if (type == TEEntities.QUEEN_BEE.get()) {
+            } else if (type == TEBossEntities.QUEEN_BEE.get()) {
                 flag = effect == MobEffects.POISON;
             }
             if (flag) event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);

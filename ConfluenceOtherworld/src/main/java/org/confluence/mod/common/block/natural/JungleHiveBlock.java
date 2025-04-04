@@ -1,8 +1,6 @@
 package org.confluence.mod.common.block.natural;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -12,9 +10,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.terra_curio.common.entity.projectile.BeeProjectile;
 import org.confluence.terraentity.entity.monster.LittleHornet;
-import org.confluence.terraentity.init.TEEntities;
+import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import javax.annotation.Nullable;
 
@@ -31,7 +28,7 @@ public class JungleHiveBlock extends Block {
         if (randomNumber == 0) {
             level.setBlockAndUpdate(pos, ModBlocks.HONEY.get().defaultBlockState());
         } else if (randomNumber == 1) {
-            LittleHornet BeeEntity = TEEntities.LITTLE_HORNET.get().create(level);
+            LittleHornet BeeEntity = TEMonsterEntities.LITTLE_HORNET.get().create(level);
             if (BeeEntity != null) {
                 BeeEntity.setPos(pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5);
                 level.addFreshEntity(BeeEntity);

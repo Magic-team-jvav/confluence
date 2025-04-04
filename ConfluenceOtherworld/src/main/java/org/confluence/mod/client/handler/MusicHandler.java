@@ -21,7 +21,7 @@ import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.IMusicManager;
 import org.confluence.terraentity.entity.ai.Boss;
-import org.confluence.terraentity.init.TEEntities;
+import org.confluence.terraentity.init.entity.TEBossEntities;
 
 import java.util.Map;
 
@@ -93,15 +93,15 @@ public final class MusicHandler {
         if (minecraft.gui.getBossOverlay().shouldPlayMusic()) {
             AABB area = new AABB(player.blockPosition()).inflate(minecraft.levelRenderer.getLastViewDistance());
             for (Entity boss : player.level().getEntities((Entity) null, area, entity -> entity instanceof Boss)) {
-                if (boss.getType() == TEEntities.KING_SLIME.get()) {
+                if (boss.getType() == TEBossEntities.KING_SLIME.get()) {
                     nextSong = KING_SLIME;
-                } else if (boss.getType() == TEEntities.EYE_OF_CTHULHU.get()) {
+                } else if (boss.getType() == TEBossEntities.EYE_OF_CTHULHU.get()) {
                     nextSong = EYE_OF_CTHULHU;
-                } else if (boss.getType() == TEEntities.EATER_OF_WORLDS.get()) {
+                } else if (boss.getType() == TEBossEntities.EATER_OF_WORLDS.get()) {
                     nextSong = EATER_OF_WORLDS;
-                } else if (boss.getType() == TEEntities.BRAIN_OF_CTHULHU.get()) {
+                } else if (boss.getType() == TEBossEntities.BRAIN_OF_CTHULHU.get()) {
                     nextSong = BRAIN_OF_CTHULHU;
-                } else if (boss.getType() == TEEntities.QUEEN_BEE.get()) {
+                } else if (boss.getType() == TEBossEntities.QUEEN_BEE.get()) {
                     nextSong = QUEEN_BEE;
                 }
                 if (nextSong != null) {

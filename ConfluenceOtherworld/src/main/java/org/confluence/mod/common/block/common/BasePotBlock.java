@@ -46,7 +46,7 @@ import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_guns.common.init.TGItems;
-import org.confluence.terraentity.init.TEEntities;
+import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -389,9 +389,9 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
             }
         }
         int defeated = ConfluenceData.get((ServerLevel) level).getKillBoard().countDefeated(
-                TEEntities.EYE_OF_CTHULHU.get(),
-                TEEntities.EATER_OF_WORLDS.get(),
-                TEEntities.BRAIN_OF_CTHULHU.get()
+                TEBossEntities.EYE_OF_CTHULHU.get(),
+                TEBossEntities.EATER_OF_WORLDS.get(),
+                TEBossEntities.BRAIN_OF_CTHULHU.get()
         );
         for (int i = 0; i < defeated; i++) {
             ratio *= 1.1F; // todo 剩下的Boss

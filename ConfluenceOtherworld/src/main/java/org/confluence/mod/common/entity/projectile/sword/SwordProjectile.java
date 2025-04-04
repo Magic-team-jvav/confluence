@@ -205,14 +205,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
             return false;
         }
         Entity entity = this.getOwner();
-        // 防止击中仆从
-        if(
-                entity != null && (
-                        target instanceof TamableAnimal animal &&
-                        entity instanceof LivingEntity living &&
-                        animal.isOwnedBy(living)
-                )
-        ){
+        if(!TEUtils.projectileCanHitEntityTest.test(this, target)){
             return false;
         }
 

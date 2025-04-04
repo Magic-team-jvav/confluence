@@ -2,7 +2,7 @@
     "type": "confluence:cooking_pot",
     "ingredients": [
         {
-            "item": "confluence:squirrel_meat"
+            "item": "confluence:raw_squirrel"
         }
     ],
     "result": {

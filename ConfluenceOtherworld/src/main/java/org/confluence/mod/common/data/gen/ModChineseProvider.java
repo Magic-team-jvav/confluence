@@ -705,6 +705,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("entity.minecraft.villager.confluence.banker", "银行家");
         add("entity.minecraft.villager.sky", "天师");
         add("entity.minecraft.villager.coin", "银行家");
+        add("entity.minecraft.villager.chef", "厨师");
         add("entity.confluence.dart", "毒镖");
         add("entity.confluence.frozen_zombie", "冰冻僵尸");
         add("entity.confluence.raincoat_zombie", "雨衣僵尸");
@@ -2501,10 +2502,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.TILAPIA.get(), "罗非鱼");
 
 
-        add(FoodItems.FROG_MEAT.get(), "青蛙肉");
-        add(FoodItems.SQUIRREL_MEAT.get(), "松鼠肉");
-        add(FoodItems.BIRD_MEAT.get(), "鸟肉");
-        add(FoodItems.DUCK_MEAT.get(), "鸭肉");
+        add(FoodItems.RAW_FROG.get(), "生青蛙肉");
+        add(FoodItems.RAW_SQUIRREL.get(), "生松鼠肉");
+        add(FoodItems.RAW_BIRD.get(), "生鸟肉");
+        add(FoodItems.RAW_DUCK.get(), "生鸭肉");
 
         add(FoodItems.WATERLEAF_SEED.get(), "幌菊种子");
         add(FoodItems.FIREBLOSSOM_SEED.get(), "火焰花种子");

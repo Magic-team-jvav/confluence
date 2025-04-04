@@ -554,6 +554,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.minecraft.villager.confluence.banker", "Banker");
         add("entity.minecraft.villager.sky", "Sky Miller");
         add("entity.minecraft.villager.coin", "Banker");
+        add("entity.minecraft.villager.chef", "Chef");
         add("entity.confluence.dart", "Dart");
         add("entity.confluence.frozen_zombie", "Frozen Zombie");
         add("entity.confluence.raincoat_zombie", "Raincoat Zombie");

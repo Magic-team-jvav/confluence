@@ -4,7 +4,7 @@
         {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "item": "confluence:frog_meat"
+                "item": "confluence:raw_frog"
             },
             "count": 2
         }

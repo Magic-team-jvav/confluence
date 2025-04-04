@@ -1,0 +1,37 @@
+{
+	"credit": "Made with Blockbench",
+	"render_type": "cutout_mipped",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "confluence:block/green_dumpling",
+		"particle": "confluence:block/green_dumpling"
+	},
+	"elements": [
+		{
+			"from": [6, 0.032, 6],
+			"to": [10, 3.032, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 0.032, 7]},
+			"faces": {
+				"north": {"uv": [8, 4, 10, 5.5], "texture": "#0"},
+				"east": {"uv": [8, 5.5, 10, 7], "texture": "#0"},
+				"south": {"uv": [8, 7, 10, 8.5], "texture": "#0"},
+				"west": {"uv": [8, 8.5, 10, 10], "texture": "#0"},
+				"up": {"uv": [10, 2, 8, 0], "texture": "#0"},
+				"down": {"uv": [10, 2, 8, 4], "texture": "#0"}
+			}
+		},
+		{
+			"from": [0, 0.016, 0],
+			"to": [16, 0.016, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0.016, 0]},
+			"faces": {
+				"north": {"uv": [0, 0, 8, 0], "texture": "#0"},
+				"east": {"uv": [0, 0, 8, 0], "texture": "#0"},
+				"south": {"uv": [0, 0, 8, 0], "texture": "#0"},
+				"west": {"uv": [0, 0, 8, 0], "texture": "#0"},
+				"up": {"uv": [8, 8, 0, 0], "texture": "#0"},
+				"down": {"uv": [8, 8, 0, 16], "texture": "#0"}
+			}
+		}
+	]
+}

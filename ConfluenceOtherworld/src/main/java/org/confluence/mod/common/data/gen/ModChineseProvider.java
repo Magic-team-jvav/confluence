@@ -2417,7 +2417,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.GRAPE_JUICE.get(), "葡萄汁");
         add(FoodItems.LEMONADE.get(), "柠檬水");
         add(FoodItems.PEACH_SANGRIA.get(), "桃子果酒");
-        add(FoodItems.PIÑA_COLADA.get(), "椰林飘香");
+        add(FoodItems.PINA_COLADA.get(), "椰林飘香");
         add(FoodItems.PRISMATIC_PUNCH.get(), "七彩潘趣酒");
         add(FoodItems.TROPICAL_SMOOTHIE.get(), "热带冰沙");
         add(FoodItems.SMOOTHIE_OF_DARKNESS.get(), "黑暗奶昔");

@@ -91,11 +91,6 @@ public class BaseFoodItem extends Item {
             return this;
         }
 
-        public Builder craftRemainder(Item item) {
-            properties.craftRemainder(item);
-            return this;
-        }
-
         public Builder duration(Function<ItemStack, Integer> duration) {
             this.duration = duration;
             return this;

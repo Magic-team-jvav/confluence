@@ -79,6 +79,7 @@ import org.confluence.terra_curio.common.init.TCTabs;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.entity.monster.AbstractMonster;
 import org.confluence.terraentity.init.TEEntities;
+import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.Map;
 import java.util.Optional;
@@ -361,7 +362,7 @@ public final class ModEvents {
 
     @SubscribeEvent
     public static void registerSpawnReplacements(RegisterSpawnPlacementsEvent event) {
-        event.register(TEEntities.GREEN_DUMPLING_SLIME.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, serverLevel, spawnType, pos, random) -> {
+        event.register(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, serverLevel, spawnType, pos, random) -> {
             if (DateUtils.isQingMing(DateUtils.getLunar()) && serverLevel instanceof Level level) {
                 int y = pos.getY();
                 return y > 30 && y < 260 && level.isDay() && serverLevel.canSeeSky(pos);

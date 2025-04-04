@@ -26,6 +26,20 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "terra_entity:slimy_saddle",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
           "name": "confluence:golden_coin",
           "weight": 1,
           "functions": [

@@ -2,15 +2,14 @@
     "type": "confluence:cooking_pot",
     "ingredients": [
         {
-            "type": "terra_curio:amount_ingredient",
-            "ingredient": {
-                "tag": "c:foods/fruit"
-            },
-            "count": 3
+            "item": "confluence:elderberry"
+        },
+        {
+            "item": "confluence:blackcurrant"
         }
     ],
     "result": {
-        "id": "confluence:fruit_juice"
+        "id": "confluence:smoothie_of_darkness"
     },
     "container": {
         "item": "confluence:bottle"

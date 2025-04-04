@@ -23,6 +23,15 @@ public class TEItemComponentModify {
         Consumer<DataComponentPatch.Builder> master = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.MASTER);
 
         // 鞭子
+        event.modify(TEWhipItems.SLUB_WHIP.get(), blue);
+        event.modify(TEWhipItems.LEATHER_WHIP.get(), blue);
+        event.modify(TEWhipItems.RUBY_WHIP.get(), blue);
+        event.modify(TEWhipItems.AMBER_WHIP.get(), blue);
+        event.modify(TEWhipItems.TOPAZ_WHIP.get(), blue);
+        event.modify(TEWhipItems.EMERALD_WHIP.get(), blue);
+        event.modify(TEWhipItems.DIAMOND_WHIP.get(), blue);
+        event.modify(TEWhipItems.SAPPHIRE_WHIP.get(), blue);
+        event.modify(TEWhipItems.AMETHYST_WHIP.get(), blue);
         event.modify(TEWhipItems.SWAMP_WHIP.get(), orange);
 
         // 回旋镖

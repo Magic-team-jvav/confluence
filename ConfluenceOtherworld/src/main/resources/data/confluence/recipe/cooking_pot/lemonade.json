@@ -2,15 +2,11 @@
     "type": "confluence:cooking_pot",
     "ingredients": [
         {
-            "type": "terra_curio:amount_ingredient",
-            "ingredient": {
-                "tag": "c:foods/fruit"
-            },
-            "count": 3
+            "item": "confluence:lemon"
         }
     ],
     "result": {
-        "id": "confluence:fruit_juice"
+        "id": "confluence:lemonade"
     },
     "container": {
         "item": "confluence:bottle"

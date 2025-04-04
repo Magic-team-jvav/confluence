@@ -1,0 +1,21 @@
+{
+    "type": "confluence:cooking_pot",
+    "ingredients": [
+        {
+            "item": "confluence:squirrel_meat"
+        }
+    ],
+    "result": {
+        "id": "confluence:grilled_squirrel"
+    },
+    "container": {
+        "item": "minecraft:stick"
+    },
+    "heat_source": {
+        "tag":"minecraft:campfires",
+        "state":{
+            "lit":"ture"
+        }
+    },
+    "cookingtime": 200
+}

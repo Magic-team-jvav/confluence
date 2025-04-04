@@ -1,0 +1,23 @@
+{
+    "type": "confluence:cooking_pot",
+    "ingredients": [
+        {
+            "type": "terra_curio:amount_ingredient",
+            "ingredient": {
+                "tag": "confluence:seafood_dinner_cooking"
+            },
+            "count": 2
+        }
+    ],
+    "result": {
+        "id": "confluence:seafood_dinner"
+    },
+    "container": [],
+    "heat_source": {
+        "tag":"minecraft:campfires",
+        "state":{
+            "lit":"ture"
+        }
+    },
+    "cookingtime": 200
+}

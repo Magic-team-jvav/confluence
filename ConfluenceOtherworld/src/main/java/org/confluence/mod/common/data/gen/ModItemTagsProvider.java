@@ -68,6 +68,33 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.ATLANTIC_COD.get(),
                 FoodItems.TROUT.get()
         );
+        tag(ModTags.Items.SEAFOOD_DINNER_COOKING).add(
+                FoodItems.FROSTY_MINNOW.get(),
+                FoodItems.ARMORED_CAVE_FISH.get(),
+                FoodItems.CHAOS_FISH.get(),
+                FoodItems.SCARLET_TIGER_FISH.get(),
+                FoodItems.DAMSEL_FISH.get(),
+                FoodItems.PISCES_FIN_COD.get(),
+                FoodItems.EBONY_KOI.get(),
+                FoodItems.FLASHFIN_KOI.get(),
+                FoodItems.BLOODY_PIRANHAS.get(),
+                FoodItems.PRINCESS_FISH.get(),
+                FoodItems.COLORFUL_MINERAL_FISH.get(),
+                FoodItems.TILAPIA.get(),
+                FoodItems.OBSIDIAN_FISH.get(),
+                FoodItems.NEON_GREASE_CARP.get(),
+                FoodItems.MIRROR_FISH.get(),
+                FoodItems.MOTTLED_OILFISH.get(),
+                FoodItems.STINKY_FISH.get()
+        );
+        tag(ModTags.Items.GOLD_COOKING).add(
+                BaitItems.GOLD_BUTTERFLY.get(),
+                BaitItems.GOLD_DRAGONFLY.get(),
+                BaitItems.GOLD_GRASSHOPPER.get(),
+                BaitItems.GOLD_LADYBUG.get(),
+                BaitItems.GOLD_WATER_STRIDER.get(),
+                BaitItems.GOLD_WORM.get()
+        );
         tag(ModTags.Items.SHADOW_SCALE_AND_TISSUE_SAMPLE).add(
                 MaterialItems.SHADOW_SCALE.get(),
                 MaterialItems.TISSUE_SAMPLE.get()
@@ -906,9 +933,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         // Tool 附魔
         ToolItems.ITEMS.getEntries().forEach(item -> {
             tag(ItemTags.DURABILITY_ENCHANTABLE).add(item.get());
-
-
         });
+        HoeItems.ITEMS.getEntries().forEach(item -> {
+            tag(ItemTags.DURABILITY_ENCHANTABLE).add(item.get());
+        });
+        ShovelItems.ITEMS.getEntries().forEach(item -> {
+            tag(ItemTags.DURABILITY_ENCHANTABLE).add(item.get());
+        });
+        HamaxeItems.ITEMS.getEntries().forEach(item -> {
+            tag(ItemTags.DURABILITY_ENCHANTABLE).add(item.get());
+        });
+
 
         // Armor 附魔
         ArmorItems.ITEMS.getEntries().forEach(item -> {

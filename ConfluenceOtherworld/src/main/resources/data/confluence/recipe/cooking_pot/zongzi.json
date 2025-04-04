@@ -1,5 +1,5 @@
 {
-    "type": "minecraft:crafting_shapeless",
+    "type": "confluence:cooking_pot",
     "ingredients": [
         {
             "item": "minecraft:sugar"
@@ -9,12 +9,19 @@
         },
         {
             "item": "minecraft:wheat"
-        },
-        {
-            "item": "minecraft:lily_pad"
         }
     ],
     "result": {
         "id": "confluence:zongzi"
-    }
+    },
+    "container": {
+        "item": "minecraft:lily_pad"
+    },
+    "heat_source": {
+        "tag":"minecraft:campfires",
+        "state":{
+            "lit":"ture"
+        }
+    },
+    "cookingtime": 200
 }

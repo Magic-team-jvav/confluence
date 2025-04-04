@@ -28,6 +28,8 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> COOKED_SHRIMP = registerNormalFood("cooked_shrimp", FoodType.PlentySatisfiedProperties(6000));
     public static final DeferredItem<BaseFoodItem> FROG_MEAT = registerNormalFood("frog_meat", FoodType.RAW_MEAT);
     public static final DeferredItem<BaseFoodItem> SQUIRREL_MEAT = registerNormalFood("squirrel_meat", FoodType.RAW_MEAT);
+    public static final DeferredItem<BaseFoodItem> BIRD_MEAT = registerNormalFood("bird_meat", FoodType.RAW_MEAT);
+    public static final DeferredItem<BaseFoodItem> DUCK_MEAT = registerNormalFood("duck_meat", FoodType.RAW_MEAT);
     public static final DeferredItem<BaseFoodItem> ESCARGOT = registerNormalFood("escargot", FoodType.PlentySatisfiedProperties(6000));
     public static final DeferredItem<BaseFoodItem> FROGGLE_BUNWICH = registerNormalFood("froggle_bunwich", FoodType.PlentySatisfiedProperties(7200));
     public static final DeferredItem<BaseFoodItem> GOLDEN_DELIGHT = registerNormalFood("golden_delight", FoodType.GOLDEN_CARP); //金美味

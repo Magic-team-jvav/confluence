@@ -70,6 +70,20 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "terra_entity:honeyed_goggles",
+          "weight": 11
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 89
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
           "name": "minecraft:honey_bottle",
           "functions": [
             {

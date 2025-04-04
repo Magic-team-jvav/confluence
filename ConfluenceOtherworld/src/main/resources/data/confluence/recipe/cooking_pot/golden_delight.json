@@ -1,0 +1,19 @@
+{
+    "type": "confluence:cooking_pot",
+    "ingredients": [
+        {
+            "tag": "confluence:gold_cooking"
+        }
+    ],
+    "result": {
+        "id": "confluence:golden_delight"
+    },
+    "container": [],
+    "heat_source": {
+        "tag":"minecraft:campfires",
+        "state":{
+            "lit":"ture"
+        }
+    },
+    "cookingtime": 200
+}

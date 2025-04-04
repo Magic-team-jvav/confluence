@@ -1999,6 +1999,18 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.SCULK_TRAP.get(), "幽匿陷阱");
         add(FunctionalBlocks.ROLLING_CACTUS_BOULDER.get(), "仙人球");
 
+        add(ModBlocks.TOMBSTONE.get(), "墓石");
+        add(ModBlocks.GRAVE_MARKER.get(), "墓石碑");
+        add(ModBlocks.CROSS_GRAVE_MARKER.get(), "十字墓石碑");
+        add(ModBlocks.HEADSTONE.get(), "碑石");
+        add(ModBlocks.GRAVESTONE.get(), "墓碑");
+        add(ModBlocks.OBELISK.get(), "方尖碑");
+        add(ModBlocks.GOLDEN_TOMBSTONE.get(), "金墓石");
+        add(ModBlocks.GOLDEN_GRAVE_MARKER.get(), "金墓石碑");
+        add(ModBlocks.GOLDEN_CROSS_GRAVE_MARKER.get(), "金十字墓石碑");
+        add(ModBlocks.GOLDEN_HEADSTONE.get(), "金碑石");
+        add(ModBlocks.GOLDEN_GRAVESTONE.get(), "金墓碑");
+
 
         add(MinecartItems.MECHANICAL_CART.get(), "机械矿车");
         add(MinecartItems.DIGGING_MOLECART.get(), "挖掘鼹鼠矿车");
@@ -2382,13 +2394,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.ESCARGOT.get(), "食用蜗牛");
         add(FoodItems.FROGGLE_BUNWICH.get(), "蛙腿三明治");
         add(FoodItems.GOLDEN_DELIGHT.get(), "金美味");
-        add(FoodItems.GRILLED_SQUIRREL.get(), "松鼠尾");
+        add(FoodItems.GRILLED_SQUIRREL.get(), "烤松鼠");
         add(FoodItems.LOBSTER_TAIL.get(), "龙虾尾");
         add(FoodItems.MONSTER_LASAGNA.get(), "怪物千层面");
         add(FoodItems.COOK_FISH.get(), "熟鱼");
         add(FoodItems.SASHIMI.get(), "生鱼片");
         add(FoodItems.ROASTED_BIRD.get(), "烤鸟腿");
-        add(FoodItems.ROASTED_DUCK.get(), "鸭肉");
+        add(FoodItems.ROASTED_DUCK.get(), "烤鸭");
         add(FoodItems.SAUTEED_FROG_LEGS.get(), "炒蛙腿");
         add(FoodItems.SEAFOOD_DINNER.get(), "海鲜大餐");
         add(FoodItems.BACON.get(), "培根");
@@ -2420,7 +2432,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.PEACH_SANGRIA.get(), "桃子果酒");
         add(FoodItems.PINA_COLADA.get(), "椰林飘香");
         add(FoodItems.PRISMATIC_PUNCH.get(), "七彩潘趣酒");
-        add(FoodItems.TROPICAL_SMOOTHIE.get(), "热带冰沙");
+        add(FoodItems.TROPICAL_SMOOTHIE.get(), "热带奶昔");
         add(FoodItems.SMOOTHIE_OF_DARKNESS.get(), "黑暗奶昔");
         add(FoodItems.CREAM_SODA.get(), "奶油苏打水");
         add(FoodItems.ICE_CREAM.get(), "冰淇淋");
@@ -2488,6 +2500,8 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(FoodItems.FROG_MEAT.get(), "青蛙肉");
         add(FoodItems.SQUIRREL_MEAT.get(), "松鼠肉");
+        add(FoodItems.BIRD_MEAT.get(), "鸟肉");
+        add(FoodItems.DUCK_MEAT.get(), "鸭肉");
 
         add(FoodItems.WATERLEAF_SEED.get(), "幌菊种子");
         add(FoodItems.FIREBLOSSOM_SEED.get(), "火焰花种子");

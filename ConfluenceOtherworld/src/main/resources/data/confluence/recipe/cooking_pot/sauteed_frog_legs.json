@@ -1,0 +1,19 @@
+{
+    "type": "confluence:cooking_pot",
+    "ingredients": [
+        {
+         "item": "confluence:frog_meat"
+        }
+    ],
+    "result": {
+        "id": "confluence:sauteed_frog_legs"
+    },
+    "container": [],
+    "heat_source": {
+        "tag":"minecraft:campfires",
+        "state":{
+            "lit":"ture"
+        }
+    },
+    "cookingtime": 200
+}

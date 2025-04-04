@@ -2,15 +2,14 @@
     "type": "confluence:cooking_pot",
     "ingredients": [
         {
-            "type": "terra_curio:amount_ingredient",
-            "ingredient": {
-                "tag": "c:foods/fruit"
-            },
-            "count": 3
+            "item": "confluence:mango"
+        },
+        {
+            "item": "confluence:pineapple"
         }
     ],
     "result": {
-        "id": "confluence:fruit_juice"
+        "id": "confluence:tropical_smoothie"
     },
     "container": {
         "item": "confluence:bottle"

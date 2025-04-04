@@ -40,6 +40,20 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "terra_entity:honeyed_goggles",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 19
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
           "name": "confluence:royal_wax",
           "functions": [
             {

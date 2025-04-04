@@ -2,15 +2,14 @@
     "type": "confluence:cooking_pot",
     "ingredients": [
         {
-            "type": "terra_curio:amount_ingredient",
-            "ingredient": {
-                "tag": "c:foods/fruit"
-            },
-            "count": 3
+            "item": "confluence:star_fruit"
+        },
+        {
+            "item": "confluence:dragon_fruit"
         }
     ],
     "result": {
-        "id": "confluence:fruit_juice"
+        "id": "confluence:prismatic_punch"
     },
     "container": {
         "item": "confluence:bottle"

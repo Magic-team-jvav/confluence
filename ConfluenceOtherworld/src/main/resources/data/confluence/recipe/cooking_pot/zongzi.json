@@ -18,9 +18,9 @@
         "item": "minecraft:lily_pad"
     },
     "heat_source": {
-        "tag":"minecraft:campfires",
-        "state":{
-            "lit":"ture"
+        "tag": "minecraft:campfires",
+        "state": {
+            "lit": "true"
         }
     },
     "cookingtime": 200

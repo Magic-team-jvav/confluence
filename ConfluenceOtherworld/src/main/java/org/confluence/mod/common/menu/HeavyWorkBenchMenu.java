@@ -18,7 +18,6 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.EnvironmentRecipeInput;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 import org.confluence.terra_curio.common.menu.AmountResultSlot;
-import org.confluence.terra_curio.common.menu.RecipeInputContainer;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public class HeavyWorkBenchMenu extends AbstractContainerMenu {
     public final ToggleAmountResultSlot resultSlot;
     private final HeavyWorkBenchBlock.LevelAccess access;
     private final Player player;
-    private final RecipeInputContainer input;
+    private final EnvironmentRecipeInput input;
     private final ResultContainer result = new ResultContainer();
     private final DataSlot selectedRecipeIndex = DataSlot.standalone();
     private List<RecipeHolder<HeavyWorkBenchRecipe>> recipes = new ArrayList<>();

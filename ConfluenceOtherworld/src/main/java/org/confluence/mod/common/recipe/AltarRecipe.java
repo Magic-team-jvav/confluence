@@ -14,7 +14,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
 import org.confluence.terra_curio.common.recipe.AmountIngredient;
 
-public class AltarRecipe extends AbstractAmountRecipe {
+public class AltarRecipe extends AbstractAmountRecipe<ItemStackHandlerRecipeInput> {
     public AltarRecipe(ItemStack pResult, NonNullList<Ingredient> pIngredients) {
         super(pResult, pIngredients);
     }
@@ -41,7 +41,7 @@ public class AltarRecipe extends AbstractAmountRecipe {
 
     @Override
     public ItemStack getToastSymbol() {
-        return FunctionalBlocks.DEMON_ALTAR.get().asItem().getDefaultInstance();
+        return FunctionalBlocks.DEMON_ALTAR.toStack();
     }
 
     public static class Serializer implements RecipeSerializer<AltarRecipe> {

@@ -23,16 +23,16 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.network.ExtraByteBufCodecs;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
 import org.confluence.terra_curio.common.recipe.AmountIngredient;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class CookingPotRecipe extends AbstractAmountRecipe {
+public class CookingPotRecipe extends AbstractAmountRecipe<CookingPotRecipe.Input> {
     private final Ingredient container;
     private final HeatSourcePredicate heatSource;
     private final int cookingTime;
@@ -45,11 +45,8 @@ public class CookingPotRecipe extends AbstractAmountRecipe {
     }
 
     @Override
-    public boolean matches(RecipeInput input, Level pLevel) {
-        if (input instanceof Input recipeInput) {
-            return heatSource.matches(recipeInput.heatSource) && container.test(recipeInput.container) && super.matches(input, pLevel);
-        }
-        return false;
+    public boolean matches(Input input, Level pLevel) {
+        return heatSource.matches(input.heatSource) && container.test(input.container) && super.matches(input, pLevel);
     }
 
     public Ingredient getContainer() {
@@ -170,15 +167,15 @@ public class CookingPotRecipe extends AbstractAmountRecipe {
         );
 
         public boolean matches(BlockInWorld block) {
-            return matchesState(block.getState()) && (nbt.isEmpty() || matchesBlockEntity(block.getLevel(), block.getEntity(), nbt.get()));
+            return matchesState(block.getState()) && matchesBlockEntity(block.getLevel(), block.getEntity());
         }
 
         private boolean matchesState(BlockState state) {
             return (tag.isEmpty() || state.is(tag.get())) && (properties.isEmpty() || properties.get().matches(state));
         }
 
-        private static boolean matchesBlockEntity(LevelReader level, @Nullable BlockEntity blockEntity, NbtPredicate nbtPredicate) {
-            return blockEntity != null && nbtPredicate.matches(blockEntity.saveWithFullMetadata(level.registryAccess()));
+        private boolean matchesBlockEntity(LevelReader level, @Nullable BlockEntity blockEntity) {
+            return nbt.isEmpty() || (blockEntity != null && nbt.get().matches(blockEntity.saveWithFullMetadata(level.registryAccess())));
         }
 
         @SuppressWarnings("all")

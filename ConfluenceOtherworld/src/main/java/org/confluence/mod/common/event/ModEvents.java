@@ -44,6 +44,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.common.HoneyCauldronBlock;
+import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
@@ -344,5 +345,11 @@ public final class ModEvents {
             if (container == null) return null;
             return new InvWrapper(container);
         }, FunctionalBlocks.BASE_CHEST_BLOCK.get(), FunctionalBlocks.DEATH_CHEST_BLOCK.get());
+        event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, blockEntity, context) -> {
+            if (blockEntity instanceof AltarBlock.Entity entity) {
+                return new InvWrapper(entity);
+            }
+            return null;
+        }, FunctionalBlocks.DEMON_ALTAR.get(), FunctionalBlocks.CRIMSON_ALTAR.get());
     }
 }

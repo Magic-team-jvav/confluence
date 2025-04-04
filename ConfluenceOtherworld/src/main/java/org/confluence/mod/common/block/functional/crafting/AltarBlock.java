@@ -22,7 +22,9 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -32,6 +34,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
@@ -47,7 +50,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.HammerItems;
 import org.confluence.mod.common.recipe.AltarRecipe;
-import org.confluence.mod.common.recipe.ItemStackContainer;
+import org.confluence.mod.common.recipe.ItemStackHandlerRecipeInput;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
@@ -129,7 +132,7 @@ public class AltarBlock extends BaseEntityBlock {
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         if (pLevel.getBlockEntity(pPos) instanceof Entity entity) {
-            Containers.dropContents(pLevel, pPos, entity.itemHandler);
+            Containers.dropContents(pLevel, pPos, entity.itemHandler.getItems());
             pLevel.removeBlockEntity(pPos);
         }
     }
@@ -187,15 +190,15 @@ public class AltarBlock extends BaseEntityBlock {
         return false;
     }
 
-    public static class Entity extends BlockEntity implements GeoBlockEntity {
+    public static class Entity extends BaseContainerBlockEntity implements GeoBlockEntity {
         public static final int CONTAINER_SIZE = 6;
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
-        private final ItemStackContainer itemHandler; // 5 Inputs and 1 Output.
+        private final ItemStackHandlerRecipeInput itemHandler; // 5 Inputs and 1 Output.
         private Variant variant;
 
         public Entity(BlockPos pPos, BlockState pBlockState) {
             super(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), pPos, pBlockState);
-            this.itemHandler = new ItemStackContainer(this, CONTAINER_SIZE);
+            this.itemHandler = new ItemStackHandlerRecipeInput(this, CONTAINER_SIZE);
             SingletonGeoAnimatable.registerSyncedAnimatable(this);
         }
 
@@ -264,6 +267,31 @@ public class AltarBlock extends BaseEntityBlock {
         }
 
         @Override
+        protected Component getDefaultName() {
+            return Component.empty();
+        }
+
+        @Override
+        protected NonNullList<ItemStack> getItems() {
+            return itemHandler.getItems();
+        }
+
+        @Override
+        protected void setItems(NonNullList<ItemStack> items) {
+            itemHandler.setItems(items);
+        }
+
+        @Override
+        public boolean canOpen(Player player) {
+            return false;
+        }
+
+        @Override
+        protected AbstractContainerMenu createMenu(int containerId, Inventory inventory) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
         public ClientboundBlockEntityDataPacket getUpdatePacket() {
             return ClientboundBlockEntityDataPacket.create(this);
         }
@@ -311,6 +339,11 @@ public class AltarBlock extends BaseEntityBlock {
                         500, 0F, 0.0625F, 0F, 0.25F);
             }
         }
+
+        @Override
+        public int getContainerSize() {
+            return itemHandler.size();
+        }
     }
 
     public static class Item extends BlockItem implements GeoItem {
@@ -325,7 +358,6 @@ public class AltarBlock extends BaseEntityBlock {
             consumer.accept(new GeoRenderProvider() {
                 private GeoItemRenderer<Item> renderer;
 
-                @SuppressWarnings("removal")
                 @Override
                 public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
                     if (renderer == null) {

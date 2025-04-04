@@ -7,16 +7,16 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class HeavyWorkBenchRecipe extends AbstractAmountRecipe {
+public class HeavyWorkBenchRecipe extends AbstractAmountRecipe<EnvironmentRecipeInput> {
     public final ShapedRecipePattern pattern;
 
     protected HeavyWorkBenchRecipe(ItemStack pResult, ShapedRecipePattern pattern) {
@@ -34,17 +34,12 @@ public class HeavyWorkBenchRecipe extends AbstractAmountRecipe {
     }
 
     @Override
-    public boolean matches(RecipeInput input, Level pLevel) {
-        List<ItemStack> itemStacks = new ArrayList<>();
-        for (int i = 0; i < input.size(); i++) {
-            ItemStack itemStack = input.getItem(i);
-            itemStacks.add(itemStack);
-        }
-        return pattern.matches(CraftingInput.of(4, 4, itemStacks));
+    public boolean matches(EnvironmentRecipeInput input, Level pLevel) {
+        return input.getAccess().matches(this) &&  pattern.matches(input.asCraftingInput());
     }
 
     @Override
-    public ItemStack assembleAndExtract(RecipeInput input, HolderLookup.Provider registries) {
+    public ItemStack assembleAndExtract(EnvironmentRecipeInput input, HolderLookup.Provider registries) {
         consumeShaped(input, 4, 4, pattern);
         return assemble(input, registries);
     }

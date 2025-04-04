@@ -80,7 +80,7 @@ public class CookingPotMenu extends AbstractContainerMenu {
                 }
 
                 slot.onQuickCraft(itemstack1, itemstack);
-            } else if (index > CONTAINER_SLOT && !moveItemStackTo(itemstack1, CONTAINER_SLOT, RESULT_SLOT, false)) {
+            } else if (index > CONTAINER_SLOT) {
                 if (!moveItemStackTo(itemstack1, INPUT_SLOT_1, CONTAINER_SLOT, false)) {
                     if (index < INV_SLOT_END) {
                         if (!moveItemStackTo(itemstack1, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)) {
@@ -89,6 +89,8 @@ public class CookingPotMenu extends AbstractContainerMenu {
                     } else if (index < USE_ROW_SLOT_END && !moveItemStackTo(itemstack1, INV_SLOT_START, INV_SLOT_END, false)) {
                         return ItemStack.EMPTY;
                     }
+                    return ItemStack.EMPTY;
+                } else if (!moveItemStackTo(itemstack1, CONTAINER_SLOT, RESULT_SLOT, false)) {
                     return ItemStack.EMPTY;
                 }
             } else if (!moveItemStackTo(itemstack1, INV_SLOT_START, USE_ROW_SLOT_END, false)) {

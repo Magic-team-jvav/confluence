@@ -22,7 +22,6 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.EnvironmentRecipeInput;
 import org.confluence.mod.common.recipe.SkyMillRecipe;
 import org.confluence.terra_curio.common.menu.AmountResultSlot;
-import org.confluence.terra_curio.common.menu.RecipeInputContainer;
 
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
     private final SkyMillBlock.LevelAccess access;
     private final Player player;
     private Runnable slotUpdateListener = () -> {};
-    public final RecipeInputContainer input;
+    public final EnvironmentRecipeInput input;
     private final ResultContainer result = new ResultContainer();
     private final DataSlot selectedRecipeIndex = DataSlot.standalone();
     private List<RecipeHolder<SkyMillRecipe>> recipes = Lists.newArrayList();

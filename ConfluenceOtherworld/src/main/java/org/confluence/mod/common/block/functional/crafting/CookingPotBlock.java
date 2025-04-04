@@ -17,7 +17,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -148,7 +147,7 @@ public class CookingPotBlock extends BaseEntityBlock {
                 return CookingPotMenu.DATA_COUNT;
             }
         };
-        private final RecipeManager.CachedCheck<RecipeInput, CookingPotRecipe> cachedCheck;
+        private final RecipeManager.CachedCheck<CookingPotRecipe.Input, CookingPotRecipe> cachedCheck;
 
         public Entity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.COOKING_POT_ENTITY.get(), pos, blockState);

@@ -35,6 +35,7 @@ import java.util.UUID;
 public class TombstoneBlock extends HorizontalDirectionalBlock implements EntityBlock, SimpleWaterloggedBlock {
     public static final MapCodec<TombstoneBlock> CODEC = simpleCodec(TombstoneBlock::new);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+    private static final VoxelShape SHAPE = box(4, 0, 4, 12, 14, 12);
 
     public TombstoneBlock(Properties properties) {
         super(properties);
@@ -119,6 +120,11 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
         return CODEC;
     }
 
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        return SHAPE;
+    }
+
     public static class Entity extends SignBlockEntity {
         public Entity(BlockPos pos, BlockState blockState) {
             super(ModBlocks.TOMBSTONE_ENTITY.get(), pos, blockState);
@@ -128,10 +134,5 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
         public int getMaxTextLineWidth() {
             return 120;
         }
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-        return box(4, 0, 4, 12, 14, 12);
     }
 }

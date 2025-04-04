@@ -3,6 +3,7 @@ package org.confluence.mod.common.block.functional.crafting;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -17,12 +18,14 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -58,13 +61,13 @@ import java.util.function.Consumer;
 
 import static org.confluence.mod.common.menu.HellforgeMenu.RESULT_SLOT;
 
-public class CookingPotBlock extends BaseEntityBlock {
+public class CookingPotBlock extends HorizontalDirectionalBlock implements EntityBlock {
     public static final MapCodec<CookingPotBlock> CODEC = simpleCodec(CookingPotBlock::new);
     private static final VoxelShape SHAPE = box(1, 0, 1, 15, 14, 15);
 
     public CookingPotBlock(Properties properties) {
         super(properties);
-        registerDefaultState(defaultBlockState().setValue(BlockStateProperties.LIT, false));
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(BlockStateProperties.LIT, false));
     }
 
     @Override
@@ -80,6 +83,11 @@ public class CookingPotBlock extends BaseEntityBlock {
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
@@ -119,7 +127,7 @@ public class CookingPotBlock extends BaseEntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(BlockStateProperties.LIT);
+        pBuilder.add(BlockStateProperties.LIT, FACING);
     }
 
     @Override

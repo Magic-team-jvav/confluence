@@ -369,8 +369,10 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void livingBreathe(LivingBreatheEvent event) {
-        if (event.canBreathe()) return;
         LivingEntity living = event.getEntity();
+        if (living.hasEffect(ModEffects.CHOKING)) {
+            living.setAirSupply(living.getAirSupply() - 5);
+        } else if (event.canBreathe()) return;
         if (living.hasEffect(ModEffects.SHIMMER)) {
             event.setCanBreathe(true);
         } else if (ModUtils.anyHandHasItem(living, itemStack -> itemStack.is(SwordItems.BREATHING_REED))) {

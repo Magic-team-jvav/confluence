@@ -73,6 +73,7 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> COOKED_FLUTTERING_LAMB_CHOPS = registerNormalFood("cooked_fluttering_lamb_chops", FoodType.WellFedProperties(2400));
     public static final DeferredItem<BaseFoodItem> BAOBAB_FRUIT = registerNormalFood("baobab_fruit", Foods.BREAD); //猴面包果
     public static final DeferredItem<BaseFoodItem> COOKED_BAOBAB_FRUIT = registerNormalFood("cooked_baobab_fruit", Foods.BREAD); //烤猴面包果
+    public static final DeferredItem<BaseFoodItem.BlockItem> BOULDER_BREAD = registerBlockItemFood("boulder_bread", builder -> builder.initialize().food(FoodType.BOULDER_BREAD).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.BOULDER_BREAD_BLOCK); //巨石面包
     // 水果
     public static final DeferredItem<BaseFoodItem> APRICOT = registerNormalFood("apricot", FoodType.WellFedProperties(6000));
     public static final DeferredItem<BaseFoodItem> BANANA = registerNormalFood("banana", FoodType.WellFedProperties(6000));
@@ -160,7 +161,7 @@ public class FoodItems {
 
     public static final DeferredItem<BaseFoodItem> LONGEVITY_NOODLES = registerNormalFood("longevity_noodles", FoodType.WellFedProperties(6000));
 
-    public static final Supplier<BaseFoodItem.BlockItem> GREEN_DUMPLING = registerBlockItemFood("green_dumpling", builder -> builder.initialize().food(FoodType.WellFedProperties(6000)).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.GREEN_DUMPLING_BLOCK);
+    public static final Supplier<BaseFoodItem.BlockItem> GREEN_DUMPLING = registerBlockItemFood("green_dumpling", builder -> builder.initialize().food(FoodType.GREEN_DUMPLING).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.GREEN_DUMPLING_BLOCK);
 
     // 种子
     public static final Supplier<Item> STELLAR_BLOSSOM_SEED = ITEMS.register("stellar_blossom_seed", () -> new ItemNameBlockItem(NatureBlocks.STELLAR_BLOSSOM.get(), new Item.Properties()));

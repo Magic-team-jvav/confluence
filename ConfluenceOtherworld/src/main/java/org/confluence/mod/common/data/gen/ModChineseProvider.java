@@ -40,6 +40,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("chat.confluence.magic_conch", "你听取海洋声音的位置[%s]已记录");
         add("chat.confluence.demon_conch", "你听取恶魔呼喊的位置[%s]已记录");
         add("options.difficulty.legendary", "§a传奇");
+        add("message.confluence.choking", "你被噎住了,需要喝水才行");
 
         add("jukebox_song.confluence.song", "C418 - alpha");
 
@@ -2449,6 +2450,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.BAOBAB_FRUIT.get(), "猴面包果");
         add(FoodItems.COOKED_BAOBAB_FRUIT.get(), "烤猴面包果");
         add(FoodItems.GREEN_DUMPLING.get(), "青团");
+        add(FoodItems.BOULDER_BREAD.get(), "巨石面包");
         //赞助
         add(FoodItems.PINK_COLA.get(), "粉色可乐");
         add(FoodItems.DONGDONGS_FLATBREAD.get(), "东东的大饼");
@@ -2729,6 +2731,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.COZY_FIRE.get(), "温馨之火");
         add(ModEffects.BEWITCHED.get(), "着魔");
         add(ModEffects.HUNGER_DELAYED.get(), "饥饿延缓");
+        add(ModEffects.CHOKING.get(), "干噎");
 
         add(TooltipManager.prefix, "** 赞助者物品 **");
 

@@ -70,5 +70,5 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> COZY_FIRE = EFFECTS.register("cozy_fire", CozyFireEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> HUNGER_DELAYED = EFFECTS.register("hunger_delayed", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xAA0099));
     public static final DeferredHolder<MobEffect, MobEffect> DELICIOUS = EFFECTS.register("delicious", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xAA0099));
-
+    public static final DeferredHolder<MobEffect, MobEffect> CHOKING = EFFECTS.register("choking", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x708090).addAttributeModifier(Attributes.MOVEMENT_SPEED, Confluence.asResource("choking"), -0.30F, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 }

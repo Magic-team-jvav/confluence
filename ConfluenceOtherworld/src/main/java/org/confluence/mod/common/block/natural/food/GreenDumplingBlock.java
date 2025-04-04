@@ -60,7 +60,7 @@ public class GreenDumplingBlock extends Block {
         int currentPiece = state.getValue(PIECE);
         if (currentPiece >= 5) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         if (!player.isCreative()) stack.shrink(1);
-        level.playSound(null, pos, SoundEvents.CAKE_ADD_CANDLE, SoundSource.BLOCKS, 1.0F, 1.0F);
+        level.playSound(null, pos, SoundEvents.SLIME_BLOCK_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
         level.setBlockAndUpdate(pos, state.setValue(PIECE, currentPiece + 1));
         level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
         return ItemInteractionResult.SUCCESS;
@@ -81,6 +81,7 @@ public class GreenDumplingBlock extends Block {
         if (!player.canEat(false)) return InteractionResult.PASS;
         player.getFoodData().eat(3, 2.5F);
         player.addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, 6000, 1));
+        player.addEffect(new MobEffectInstance(ModEffects.CHOKING, 2400));
         player.addEffect(new MobEffectInstance(ModEffects.HUNGER_DELAYED, 1000));
         player.playSound(SoundEvents.GENERIC_EAT);
         int pieceCount = state.getValue(PIECE);

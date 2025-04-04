@@ -1,10 +1,6 @@
 {
   "credit": "Made with Blockbench",
   "parent": "builtin/entity",
-  "texture_size": [
-    128,
-    128
-  ],
   "display": {
     "thirdperson_righthand": {
       "rotation": [
@@ -117,6 +113,6 @@
     }
   },
   "textures": {
-    "particle": "minecraft:cauldron"
+    "particle": "minecraft:block/cauldron_side"
   }
 }

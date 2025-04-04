@@ -2,7 +2,7 @@
     "type": "confluence:cooking_pot",
     "ingredients": [
         {
-            "item": "confluence:bird_meat"
+            "item": "confluence:raw_bird"
         }
     ],
     "result": {

@@ -554,6 +554,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.minecraft.villager.confluence.banker", "Banker");
         add("entity.minecraft.villager.sky", "Sky Miller");
         add("entity.minecraft.villager.coin", "Banker");
+        add("entity.minecraft.villager.chef", "Chef");
         add("entity.confluence.dart", "Dart");
         add("entity.confluence.frozen_zombie", "Frozen Zombie");
         add("entity.confluence.raincoat_zombie", "Raincoat Zombie");
@@ -662,6 +663,13 @@ public class ModEnglishProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.spore_root_set.data.2", "Summon damage increased by 3%");
         add("equipment_benediction.set_switcher.confluence.spore_root_set.data.3", "Summon damage increased by 2%");
         add("equipment_benediction.set_switcher.confluence.spore_root_set.data.4", "Summon limit increased by 1");
+
+        add("equipment_benediction.set_switcher.confluence.heim_set", "Abyssal Scale Set");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.0", "Extend underwater breathing time by 5% and increase melee damage by 1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.1", "After successfully using the shield to intercept the next attack, increase damage by 20% within three seconds. The damage increase stops when you launch an attack and hit or get hit during these three seconds. Increase melee damage by 1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.2", "Increase critical hit rate by 2% and increase melee damage by 1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.3", "Increase underwater movement speed by 5% and increase melee damage by 1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.4", "Grant you 4 HP of damage absorption, and grant it again every 5 minutes");
 
         add("equipment_benediction.set_switcher.confluence.cactus_set", "Cactus Set");
         add("equipment_benediction.set_switcher.confluence.cactus_set.data.0", "Attackers take damage from cactus thorns");

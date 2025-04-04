@@ -35,7 +35,7 @@ public class HeavyWorkBenchRecipe extends AbstractAmountRecipe<EnvironmentRecipe
 
     @Override
     public boolean matches(EnvironmentRecipeInput input, Level pLevel) {
-        return input.getAccess().matches(this) &&  pattern.matches(input.asCraftingInput());
+        return input.getAccess().matches(this) && pattern.matches(input.asCraftingInput(false));
     }
 
     @Override

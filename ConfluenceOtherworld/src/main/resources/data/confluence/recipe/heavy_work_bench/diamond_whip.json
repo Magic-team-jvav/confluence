@@ -17,7 +17,7 @@
         "a": {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "item": "minecraft:diamond"
+                "item": "confluence:diamond_chain"
             },
             "count": 1
         }

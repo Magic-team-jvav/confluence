@@ -705,6 +705,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("entity.minecraft.villager.confluence.banker", "银行家");
         add("entity.minecraft.villager.sky", "天师");
         add("entity.minecraft.villager.coin", "银行家");
+        add("entity.minecraft.villager.chef", "厨师");
         add("entity.confluence.dart", "毒镖");
         add("entity.confluence.frozen_zombie", "冰冻僵尸");
         add("entity.confluence.raincoat_zombie", "雨衣僵尸");
@@ -787,6 +788,13 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("equipment_benediction.set_switcher.confluence.cactus_set", "仙人掌套装");
         add("equipment_benediction.set_switcher.confluence.cactus_set.data.0", "攻击者因为仙人掌尖刺受到伤害");
+
+        add("equipment_benediction.set_switcher.confluence.heim_set", "渊鳞套装");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.0", "延长水下呼吸时间5%，近战伤害提高1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.1", "成功使用护盾拦截下一次攻击后三秒内伤害提高20%，三秒提高过程中你发动攻击命中或被击中时停止，近战伤害提高1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.2", "增加2%暴击率，近战伤害提高1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.3", "提高水下移动速度5%，近战伤害提高1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.4", "赋予你4点血量的伤害吸收，每隔5分钟再次赋予");
 
         add("block.confluence.larva", "幼虫");
 
@@ -2501,10 +2509,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.TILAPIA.get(), "罗非鱼");
 
 
-        add(FoodItems.FROG_MEAT.get(), "青蛙肉");
-        add(FoodItems.SQUIRREL_MEAT.get(), "松鼠肉");
-        add(FoodItems.BIRD_MEAT.get(), "鸟肉");
-        add(FoodItems.DUCK_MEAT.get(), "鸭肉");
+        add(FoodItems.RAW_FROG.get(), "生青蛙肉");
+        add(FoodItems.RAW_SQUIRREL.get(), "生松鼠肉");
+        add(FoodItems.RAW_BIRD.get(), "生鸟肉");
+        add(FoodItems.RAW_DUCK.get(), "生鸭肉");
 
         add(FoodItems.WATERLEAF_SEED.get(), "幌菊种子");
         add(FoodItems.FIREBLOSSOM_SEED.get(), "火焰花种子");

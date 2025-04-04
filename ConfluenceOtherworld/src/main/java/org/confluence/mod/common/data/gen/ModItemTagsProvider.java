@@ -698,7 +698,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
         tag(ModTags.Items.BOSS_SUMMONING).add(
                 ConsumableItems.SUSPICIOUS_LOOKING_EYE.get(),
-                ConsumableItems.SLIME_CROWN.get()
+                ConsumableItems.SLIME_CROWN.get(),
+                ConsumableItems.WORM_FOOD.get(),
+                ConsumableItems.BLOODY_SPINE.get(),
+                ConsumableItems.ABEEMINATION.get()
         );
 
         tag(ModTags.Items.INGOTS_TIN).add(MaterialItems.TIN_INGOT.get());

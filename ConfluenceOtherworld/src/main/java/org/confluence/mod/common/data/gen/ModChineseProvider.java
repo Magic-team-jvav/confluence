@@ -701,6 +701,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("event.confluence.eye_of_cthulhu", "你感到有个邪恶的东西在看着你……");
 
         add("entity.minecraft.villager.confluence.sky_miller", "天师");
+        add("entity.minecraft.villager.confluence.chef", "厨师");
         add("entity.minecraft.villager.confluence.banker", "银行家");
         add("entity.minecraft.villager.sky", "天师");
         add("entity.minecraft.villager.coin", "银行家");

@@ -415,7 +415,19 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 BASE_CHEST_BLOCK.get(),
                 JUNGLE_HIVE_BLOCK.get(),
                 THIN_ICE_BLOCK.get(),
-                WINTER_MARROW_BLOCK.get()
+                WINTER_MARROW_BLOCK.get(),
+
+                TOMBSTONE.get(),
+                GRAVE_MARKER.get(),
+                CROSS_GRAVE_MARKER.get(),
+                HEADSTONE.get(),
+                GRAVESTONE.get(),
+                OBELISK.get(),
+                GOLDEN_TOMBSTONE.get(),
+                GOLDEN_GRAVE_MARKER.get(),
+                GOLDEN_CROSS_GRAVE_MARKER.get(),
+                GOLDEN_HEADSTONE.get(),
+                GOLDEN_GRAVESTONE.get()
         );
         // 铲子
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithShovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);
@@ -602,7 +614,19 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SPORE_ROOT_BLOCK.get(),
                 WINTER_MARROW_BLOCK.get(),
                 COLD_CRYSTAL_ORE.get(),
-                THIN_ICE_BLOCK.get()
+                THIN_ICE_BLOCK.get(),
+
+                TOMBSTONE.get(),
+                GRAVE_MARKER.get(),
+                CROSS_GRAVE_MARKER.get(),
+                HEADSTONE.get(),
+                GRAVESTONE.get(),
+                OBELISK.get(),
+                GOLDEN_TOMBSTONE.get(),
+                GOLDEN_GRAVE_MARKER.get(),
+                GOLDEN_CROSS_GRAVE_MARKER.get(),
+                GOLDEN_HEADSTONE.get(),
+                GOLDEN_GRAVESTONE.get()
         );
         tag(ModTags.Blocks.NEEDS_2_LEVEL).add(
                 METEORITE_ORE.get(),

@@ -91,7 +91,7 @@ public class SwordItems {
     //效果剑
     public static final DeferredItem<SwordItem> LIGHTS_BANE = register("lights_bane",ModTiers.TITANIUM, 5, -1.0f,
             ModRarity.BLUE,     EFFECT_SWORD.apply(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get()));
-    public static final DeferredItem<SwordItem> BLOOD_BUTCHERER = register("blood_butchere",ModTiers.TITANIUM, 7, -2.7F,
+    public static final DeferredItem<SwordItem> BLOOD_BUTCHERER = register("blood_butcherer",ModTiers.TITANIUM, 7, -2.7F,
             ModRarity.BLUE,     EFFECT_SWORD.apply(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get()));
     public static final DeferredItem<SwordItem> VOLCANO = register("volcano",ModTiers.TITANIUM, 18, -3F,
             ModRarity.ORANGE,   EFFECT_SWORD.apply(TEEffectStrategies.Components.HELL_FIRE_EFFECT.get())

@@ -639,7 +639,6 @@ public class ModChineseProvider extends LanguageProvider {
 
 
         add("resourcepack.terraria_art", "泰拉艺术");
-        add("resourcepack.otherworldly_music", "来世音乐包");
         add("resourcepack.terraria_armor", "泰拉盔甲样式材质");
 
         add("event.confluence.blood_moon", "血月正在升起...");
@@ -1855,7 +1854,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.ROTTEN_BONE_DUST.get(), "朽骨齑尘");
         add(ConsumableItems.BLOODSTAINED_POWDER.get(), "血凝痂粉");
 
-        add(TreasureBagItems.KING_SLIME_TREASURE_BAG.get(), "史莱姆之王宝藏袋");
+        add(TreasureBagItems.KING_SLIME_TREASURE_BAG.get(), "史莱姆王宝藏袋");
         add(TreasureBagItems.EYE_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之眼宝藏袋");
         add(TreasureBagItems.EATER_OF_WORLDS_TREASURE_BAG.get(), "世界吞噬怪宝藏袋");
         add(TreasureBagItems.BRAIN_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之脑宝藏袋");
@@ -2351,7 +2350,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.STAR_FRUIT.get(), "杨桃");
         add(FoodItems.POMEGRANATE.get(), "番石榴");
         add(FoodItems.RAMBUTAN.get(), "红毛丹");
-        add(FoodItems.PEELED_SUGAR_TANGERINE.get(), "拨开的砂糖橘");
+        add(FoodItems.PEELED_SUGAR_TANGERINE.get(), "剥开的砂糖橘");
         add(FoodItems.COOKED_SHRIMP.get(), "熟虾");
         add(FoodItems.ESCARGOT.get(), "食用蜗牛");
         add(FoodItems.FROGGLE_BUNWICH.get(), "蛙腿三明治");
@@ -2512,7 +2511,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(PotionItems.FLIPPER_POTION.get(), "脚蹼药水");
         add(PotionItems.ARCHERY_POTION.get(), "箭术药水");
         add(PotionItems.HEART_REACH_POTION.get(), "拾心药水");
-        add(PotionItems.GILLS_POTION.get(), "鱼腮药水");
+        add(PotionItems.GILLS_POTION.get(), "鱼鳃药水");
         add(PotionItems.INVISIBILITY_POTION.get(), "隐形药水");
         add(PotionItems.WORMHOLE_POTION.get(), "虫洞药水");
         add(PotionItems.MINING_POTION.get(), "采矿药水");

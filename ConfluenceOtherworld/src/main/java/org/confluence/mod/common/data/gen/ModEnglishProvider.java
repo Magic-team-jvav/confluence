@@ -492,6 +492,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("resourcepack.terraria_art", "Terraria Art");
         add("resourcepack.terraria_armor", "Terraria-Like Armor");
 
+
         add("event.confluence.blood_moon", "The Blood Moon is rising...");
         add("event.confluence.meteorite", "A meteorite has landed!");
         add("event.confluence.meteorite.ready", "A meteorite will falling!");

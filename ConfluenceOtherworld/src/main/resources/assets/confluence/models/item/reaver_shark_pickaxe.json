@@ -1,6 +1,6 @@
 {
   "parent": "confluence:item/template_reverse24x",
   "textures": {
-    "layer0": "confluence:item/sword/blood_butchere"
+    "layer0": "confluence:item/pickaxe/reaver_shark_pickaxe"
   }
 }

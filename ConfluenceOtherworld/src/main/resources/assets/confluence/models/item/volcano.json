@@ -1,0 +1,6 @@
+{
+  "parent": "confluence:item/template_normal32x",
+  "textures": {
+    "layer0": "confluence:item/sword/volcano"
+  }
+}

@@ -25,7 +25,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
 import javax.annotation.Nullable;
-import java.util.Objects;
 
 import static net.neoforged.neoforge.common.CommonHooks.canCropGrow;
 
@@ -46,6 +45,7 @@ public class CattailsHeadBlock extends GrowingPlantHeadBlock implements LiquidBl
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         BlockPos blockpos = pos.relative(this.growthDirection);
         if (state.getValue(AGE) < MAX_AGE) {
+            if (!level.getBlockState(pos.above()).isAir() && !level.getBlockState(pos.above()).is(Blocks.WATER)) return;
             if (level.getBlockState(blockpos).is(Blocks.WATER) || canCropGrow(level, blockpos, state, random.nextDouble() < 0.20)) {
                 level.setBlockAndUpdate(blockpos, this.getGrowIntoState(state, level.random));
             }
@@ -53,15 +53,16 @@ public class CattailsHeadBlock extends GrowingPlantHeadBlock implements LiquidBl
             if (!level.getBlockState(pos.above()).isAir()) {
                 BlockState newState = state.setValue(AGE, 0);
                 level.setBlockAndUpdate(pos, newState);
-            }
-            else if (state.getValue(AGE) < MAX_AGE) {
-                if (level.getBlockState(blockpos).is(Blocks.WATER) ||
-                    this.canGrowInto(level.getBlockState(blockpos))) {
-                    level.setBlockAndUpdate(blockpos, this.getGrowIntoState(state, level.random));
+            } else if (state.getValue(AGE) < MAX_AGE) {
+                if (level.getBlockState(blockpos).is(Blocks.WATER) || this.canGrowInto(level.getBlockState(blockpos))) {
+                    if (level.getBlockState(pos.below()).is(Blocks.WATER)) {
+                        level.setBlockAndUpdate(blockpos, this.getGrowIntoState(state, level.random));
+                    }
                 }
             }
         }
     }
+
 
     @Override
     public BlockState getStateForPlacement(LevelAccessor level) {
@@ -112,7 +113,7 @@ public class CattailsHeadBlock extends GrowingPlantHeadBlock implements LiquidBl
 
     @Override
     protected boolean canGrowInto(BlockState state) {
-        return state.is(Blocks.WATER) || state.is(Blocks.AIR);
+        return state.is(Blocks.AIR);
     }
 
     @Override

@@ -36,9 +36,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         LogBlockSet.acceptTags(this);
-        OreBlocks.acceptTags(this);
-        OreBlocks.acceptOreTags(this);
-        StatueBlocks.acceptTags(this);
+        IntrinsicTagAppender<Block> mineableWithPickaxe = tag(BlockTags.MINEABLE_WITH_PICKAXE);
+        OreBlocks.acceptTag(mineableWithPickaxe);
+        OreBlocks.acceptTag(tag(Tags.Blocks.ORES));
+        StatueBlocks.acceptTag(mineableWithPickaxe);
         tag(ModTags.Blocks.JEWELLERY_BRANCHES_ATTACHABLE).add(STONY_LOG.get());
         tag(ModTags.Blocks.ASH_LOG_BRANCHES_ATTACHABLE).add(ASH_LOG_BLOCKS.getLog().get());
         tag(ModTags.Blocks.OPAL_ORE_REPLACEMENT).add(
@@ -151,58 +152,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 PURPLE_ICE.get(),
                 PURPLE_PACKED_ICE.get()
         );
-        tag((BlockTags.LOGS)).add(
-                EBONY_LOG_BLOCKS.getStrippedLog().get(),
-                SHADOW_LOG_BLOCKS.getStrippedLog().get(),
-                PALM_LOG_BLOCKS.getStrippedLog().get(),
-                ASH_LOG_BLOCKS.getStrippedLog().get(),
-                PEARL_LOG_BLOCKS.getStrippedLog().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getStrippedLog().get(),
-                LIVING_LOG_BLOCKS.getStrippedLog().get(),
-                LIVING_MAHOGANY_BLOCKS.getStrippedLog().get(),
-                BAOBAB_LOG_BLOCKS.getStrippedLog().get(),
-                EBONY_LOG_BLOCKS.getLog().get(),
-                SHADOW_LOG_BLOCKS.getLog().get(),
-                PALM_LOG_BLOCKS.getLog().get(),
-                ASH_LOG_BLOCKS.getLog().get(),
-                PEARL_LOG_BLOCKS.getLog().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getLog().get(),
-                LIVING_LOG_BLOCKS.getLog().get(),
-                LIVING_MAHOGANY_BLOCKS.getLog().get(),
-                BAOBAB_LOG_BLOCKS.getLog().get(),
-                EBONY_LOG_BLOCKS.getWood().get(),
-                SHADOW_LOG_BLOCKS.getWood().get(),
-                PALM_LOG_BLOCKS.getWood().get(),
-                ASH_LOG_BLOCKS.getWood().get(),
-                PEARL_LOG_BLOCKS.getWood().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getWood().get(),
-                LIVING_LOG_BLOCKS.getWood().get(),
-                LIVING_MAHOGANY_BLOCKS.getWood().get(),
-                BAOBAB_LOG_BLOCKS.getWood().get(),
-                EBONY_LOG_BLOCKS.getStrippedWood().get(),
-                SHADOW_LOG_BLOCKS.getStrippedWood().get(),
-                PALM_LOG_BLOCKS.getStrippedWood().get(),
-                ASH_LOG_BLOCKS.getStrippedWood().get(),
-                PEARL_LOG_BLOCKS.getStrippedWood().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getStrippedWood().get(),
-                LIVING_LOG_BLOCKS.getStrippedWood().get(),
-                LIVING_MAHOGANY_BLOCKS.getStrippedWood().get(),
-                BAOBAB_LOG_BLOCKS.getStrippedWood().get(),
-                OAK_LOG_BOULDER.get()
-        );
+        tag(BlockTags.LOGS).add(OAK_LOG_BOULDER.get());
 
-        tag(BlockTags.LEAVES).add(
-                EBONY_LOG_BLOCKS.getLeaves().get(),
-                SHADOW_LOG_BLOCKS.getLeaves().get(),
-                PALM_LOG_BLOCKS.getLeaves().get(),
-                PEARL_LOG_BLOCKS.getLeaves().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get(),
-                LIVING_LOG_BLOCKS.getLeaves().get(),
-                LIVING_MAHOGANY_BLOCKS.getLeaves().get(),
-                BAOBAB_LOG_BLOCKS.getLeaves().get(),
-                YELLOW_WILLOW_DROOPING_LEAVES.get()
-        );
-
+        tag(BlockTags.LEAVES).add(YELLOW_WILLOW_DROOPING_LEAVES.get());
         tag(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE).addTag(BlockTags.LEAVES);
 
 
@@ -216,92 +168,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 LIVING_MAHOGANY_BLOCKS.getLog().get(),
                 BAOBAB_LOG_BLOCKS.getLog().get()
         );
-        tag(BlockTags.LEAVES).add(
-                EBONY_LOG_BLOCKS.getLeaves().get(),
-                SHADOW_LOG_BLOCKS.getLeaves().get(),
-                PALM_LOG_BLOCKS.getLeaves().get(),
-                PEARL_LOG_BLOCKS.getLeaves().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get(),
-                LIVING_LOG_BLOCKS.getLeaves().get(),
-                LIVING_MAHOGANY_BLOCKS.getLeaves().get(),
-                BAOBAB_LOG_BLOCKS.getLeaves().get(),
-                YELLOW_WILLOW_DROOPING_LEAVES.get()
-        );
-        tag(Tags.Blocks.FENCES).add(
-                EBONY_LOG_BLOCKS.getFence().get(),
-                SHADOW_LOG_BLOCKS.getFence().get(),
-                PALM_LOG_BLOCKS.getFence().get(),
-                SPOOKY_LOG_BLOCKS.getFence().get(),
-                ASH_LOG_BLOCKS.getFence().get(),
-                PEARL_LOG_BLOCKS.getFence().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getFence().get(),
-                LIVING_LOG_BLOCKS.getFence().get(),
-                LIVING_MAHOGANY_BLOCKS.getFence().get(),
-                BAOBAB_LOG_BLOCKS.getFence().get()
-        );
-        tag(Tags.Blocks.FENCES_WOODEN).add(
-                EBONY_LOG_BLOCKS.getFence().get(),
-                SHADOW_LOG_BLOCKS.getFence().get(),
-                PALM_LOG_BLOCKS.getFence().get(),
-                SPOOKY_LOG_BLOCKS.getFence().get(),
-                ASH_LOG_BLOCKS.getFence().get(),
-                PEARL_LOG_BLOCKS.getFence().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getFence().get(),
-                LIVING_LOG_BLOCKS.getFence().get(),
-                LIVING_MAHOGANY_BLOCKS.getFence().get(),
-                BAOBAB_LOG_BLOCKS.getFence().get()
-        );
-        tag(Tags.Blocks.FENCE_GATES).add(
-                EBONY_LOG_BLOCKS.getFenceGate().get(),
-                SHADOW_LOG_BLOCKS.getFenceGate().get(),
-                PALM_LOG_BLOCKS.getFenceGate().get(),
-                SPOOKY_LOG_BLOCKS.getFenceGate().get(),
-                ASH_LOG_BLOCKS.getFenceGate().get(),
-                PEARL_LOG_BLOCKS.getFenceGate().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getFenceGate().get(),
-                LIVING_LOG_BLOCKS.getFenceGate().get(),
-                LIVING_MAHOGANY_BLOCKS.getFenceGate().get(),
-                BAOBAB_LOG_BLOCKS.getFenceGate().get()
-        );
-        tag(Tags.Blocks.FENCE_GATES_WOODEN).add(
-                EBONY_LOG_BLOCKS.getFenceGate().get(),
-                SHADOW_LOG_BLOCKS.getFenceGate().get(),
-                PALM_LOG_BLOCKS.getFenceGate().get(),
-                SPOOKY_LOG_BLOCKS.getFenceGate().get(),
-                ASH_LOG_BLOCKS.getFenceGate().get(),
-                PEARL_LOG_BLOCKS.getFenceGate().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getFenceGate().get(),
-                LIVING_LOG_BLOCKS.getFenceGate().get(),
-                LIVING_MAHOGANY_BLOCKS.getFenceGate().get(),
-                BAOBAB_LOG_BLOCKS.getFenceGate().get()
-        );
-
-        tag(Tags.Blocks.STRIPPED_LOGS).add(
-                EBONY_LOG_BLOCKS.getStrippedLog().get(),
-                SHADOW_LOG_BLOCKS.getStrippedLog().get(),
-                PALM_LOG_BLOCKS.getStrippedLog().get(),
-                ASH_LOG_BLOCKS.getStrippedLog().get(),
-                PEARL_LOG_BLOCKS.getStrippedLog().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getStrippedLog().get(),
-                LIVING_LOG_BLOCKS.getStrippedLog().get(),
-                BAOBAB_LOG_BLOCKS.getStrippedLog().get()
-        );
-        tag(Tags.Blocks.STRIPPED_WOODS).add(
-                EBONY_LOG_BLOCKS.getStrippedWood().get(),
-                SHADOW_LOG_BLOCKS.getStrippedWood().get(),
-                PALM_LOG_BLOCKS.getStrippedWood().get(),
-                ASH_LOG_BLOCKS.getStrippedWood().get(),
-                PEARL_LOG_BLOCKS.getStrippedWood().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getStrippedWood().get(),
-                LIVING_LOG_BLOCKS.getStrippedWood().get(),
-                BAOBAB_LOG_BLOCKS.getStrippedWood().get()
-        );
-        /*IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithHoe = tag(BlockTags.MINEABLE_WITH_HOE);
-        mineableWithHoe.add(
-        );
-         */
         // 镐子
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithPickaxe = tag(BlockTags.MINEABLE_WITH_PICKAXE);
         mineableWithPickaxe.add(
                 RUBY_BLOCK.get(),
                 AMBER_BLOCK.get(),

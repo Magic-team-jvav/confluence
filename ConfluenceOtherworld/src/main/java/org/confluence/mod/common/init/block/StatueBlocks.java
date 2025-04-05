@@ -3,7 +3,6 @@ package org.confluence.mod.common.init.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -24,14 +23,12 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.block.common.StatueBlock;
 import org.confluence.mod.common.block.functional.BehaviourStatueBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
-import org.confluence.mod.common.data.gen.ModBlockTagsProvider;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ModItems;
@@ -259,10 +256,8 @@ public class StatueBlocks {
         BEHAVIOUR_STATUES.add(block);
         return block;
     }
-    public static void acceptTags(ModBlockTagsProvider provider) {
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithPickaxe = provider.tag(BlockTags.MINEABLE_WITH_PICKAXE);
-        for (DeferredHolder<Block, ? extends Block> statueblock : BLOCKS.getEntries()) {
-            mineableWithPickaxe.add(statueblock.get());
-        }
+
+    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> tag) {
+        BLOCKS.getEntries().forEach(block -> tag.add(block.get()));
     }
 }

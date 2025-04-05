@@ -31,7 +31,7 @@ public class FishingPoleItems {
             HOTLINE_FISHING_HOOK = register("hotline_fishing_hook", HotlineFishingHookItem::new),
             GOLDEN_FISHING_ROD = register("golden_fishing_rod", GoldenFishingRod::new);
 
-    private static DeferredItem<AbstractFishingPole> register(String name, Supplier<AbstractFishingPole> supplier ) {
+    private static DeferredItem<AbstractFishingPole> register(String name, Supplier<AbstractFishingPole> supplier) {
         return ITEMS.register(name, supplier);
     }
 
@@ -50,6 +50,7 @@ public class FishingPoleItems {
         };
         ITEMS.getEntries().forEach(pole -> ItemProperties.register(pole.get(), cast, function));
     }
+
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
         ITEMS.getEntries().forEach(item -> tag.add(item.get()));
     }

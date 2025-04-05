@@ -11,6 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.item.ItemStack;
@@ -185,6 +186,9 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
     @Override
     protected boolean canHitEntity(Entity target) {
+        if(hitCount <= 0){
+            return false;
+        }
         if (!target.isAttackable() || target instanceof Villager) {
             return false;
         }
@@ -202,11 +206,11 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        if (!level().isClientSide && entity instanceof LivingEntity living && getOwner() instanceof LivingEntity owner && owner != entity) {
+//        if (!level().isClientSide && entity instanceof LivingEntity living && getOwner() instanceof LivingEntity owner && owner != entity) {
             // 事件统一暴击判定 org.confluence.mod.common.event.game.entity.LivingEntityEvents.livingDamage$Pre
 //            if (random.nextFloat() < criticalChance) damage *= 1.5F;
 //            doHurt(living);
-        }
+//        }
     }
 
     @Override
@@ -233,14 +237,15 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
                 projComponent.hitEffect().ifPresent(effect -> {
                     effect.applyAll(owner, hurter);
                 });
-            if(hitCount <= 0){
-                discard();
-                return false;
-            }
+
             if (hurter.hurt(damageSource(), damage)) {
+                System.out.println("hit: " + hitCount);
                 float attackKnockBack = getBaseKnockBack() + knockBack;
                 VectorUtils.knockBackA2B(this, hurter, attackKnockBack * 0.5, 0.2);
-                --hitCount;
+
+                if(--hitCount <= 0 && !level().isClientSide){
+                    discard();
+                }
             }
             return true;
         }

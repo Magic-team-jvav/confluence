@@ -72,19 +72,19 @@ public record SwordProjectileComponent (
     ).apply(instance, SwordProjectileComponent::new));
 
     public static final Supplier<SwordProjectileComponent> ICE_PROJ =
-            ()->new SwordProjectileComponent(2,0.6f,0.9f,40, 0, 10,
+            ()->new SwordProjectileComponent(2,0.6f,0.9f,40, 0, 15,
                     ModSoundEvents.FROZEN_ARROW.getId(), ModEntities.ICE_BLADE_SWORD_PROJECTILE.getId(),
                     Optional.empty(), ForwardGeneration.of(0,0),
                     Optional.empty()   );
 
     public static final Supplier<SwordProjectileComponent> STAR_FURY_PROJ =
-            ()->new SwordProjectileComponent(1.5f,1.5f,0.9f,100, 0, 10,
+            ()->new SwordProjectileComponent(1.5f,1.5f,0.9f,100, 0, 15,
                     ModSoundEvents.STAR.getId(),ModEntities.STAR_FURY_PROJECTILE.getId(),
                     Optional.empty(), new AboveFallenGeneration(30,30,10,3,20,5),
                     Optional.empty() );
 
     public static final Supplier<SwordProjectileComponent> ENCHANTED_SWORD_PROJ =
-            ()->new SwordProjectileComponent(1,0.8f,0.9f,40, 0, 10,
+            ()->new SwordProjectileComponent(1.2f,0.8f,0.9f,40, 0, 10,
                     TESounds.REGULAR_STAFF_SHOOT_2.getId(),ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
                     Optional.empty(), ForwardGeneration.of(0,0),
                     Optional.empty() );

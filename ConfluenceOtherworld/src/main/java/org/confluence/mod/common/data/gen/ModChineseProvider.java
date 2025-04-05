@@ -289,6 +289,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "决定你使用药水后是否返还瓶子");
         add("confluence.configuration.rightClickRideMinecart", "右键上矿车");
         add("confluence.configuration.rightClickRideMinecart.tooltip", "开启后，当你右键点击轨道时，将自动乘坐矿车");
+        add("confluence.configuration.dropsTombstone", "掉落墓石");
+        add("confluence.configuration.dropsTombstone.tooltip", "启用时，允许玩家死亡后掉落墓石");
         add("confluence.configuration.defaultRespawnTimeMin", "默认最小重生时间");
         add("confluence.configuration.defaultRespawnTimeMin.tooltip", "设置默认最小重生时间");
         add("confluence.configuration.defaultRespawnTimeMax", "默认最大重生时间");

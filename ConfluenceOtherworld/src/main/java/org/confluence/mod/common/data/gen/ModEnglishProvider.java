@@ -389,6 +389,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "Decides whether to return the glass bottle after using a potion");
         add("confluence.configuration.rightClickRideMinecart", "Right click to ride a minecart");
         add("confluence.configuration.rightClickRideMinecart.tooltip", "When enabled, when you right-click on a rail, it will automatically ride a minecart");
+        add("confluence.configuration.dropsTombstone", "Drops Tombstone");
+        add("confluence.configuration.dropsTombstone.tooltip", "When enabled，allows player to drops tombstone after death");
         add("confluence.configuration.defaultRespawnTimeMin", "Default Minimum Respawn Time");
         add("confluence.configuration.defaultRespawnTimeMin.tooltip", "Set the default minimum respawn time");
         add("confluence.configuration.defaultRespawnTimeMax", "Default Maximum Respawn Time");

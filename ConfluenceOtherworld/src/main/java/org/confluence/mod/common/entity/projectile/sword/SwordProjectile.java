@@ -9,7 +9,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.npc.Villager;
@@ -36,7 +35,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     // 可调参数
     public int TIME_EXISTENCE = 40;
     public int hitCount = 1;
-    protected float attackDamage = 0.0F;
+    protected float attackDamageFactor = 1F;
     protected float baseAttackDamage = 0;
     protected float criticalChance = 0.0F;
     protected float knockBack = 0.0F;
@@ -135,10 +134,6 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
                 this.knockBack += (float) attributeInstance.getValue();
             }
-            attributeInstance = owner.getAttribute(TCAttributes.getRangedDamage());
-            if (attributeInstance != null) {
-                this.attackDamage += (float) attributeInstance.getValue();
-            }
             if (TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE)) return;
             attributeInstance = owner.getAttribute(TCAttributes.CRIT_CHANCE);
             if (attributeInstance != null) {
@@ -185,18 +180,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 //        this.applyGravity();
         doCollisionAttack(this::canHitEntity,
                 this::doHurt);
-        if (target != null) {
-//            this.setDeltaMovement(
-//                    VectorUtils.interpolateSimple(this.getDeltaMovement(), target.position().subtract(this.position()),
-//                            0.5f, 0.1f, getDeltaMovement().length() * 0.5f,1, getDeltaMovement()));
 
-
-
-//            this.setDeltaMovement(
-//                        VectorUtils.interpolateBasis(motion, dir,
-//                                d -> d * 0.1, d -> 0));
-
-        }
     }
 
     @Override
@@ -244,17 +228,19 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
     protected boolean doHurt(Entity living){
         if(living instanceof LivingEntity hurter) {
-            float damage = getBaseDamage() * (attackDamage);
+            float damage = getBaseDamage() * (attackDamageFactor);
             if (getOwner() instanceof LivingEntity owner && projComponent != null)
                 projComponent.hitEffect().ifPresent(effect -> {
                     effect.applyAll(owner, hurter);
                 });
+            if(hitCount <= 0){
+                discard();
+                return false;
+            }
             if (hurter.hurt(damageSource(), damage)) {
                 float attackKnockBack = getBaseKnockBack() + knockBack;
                 VectorUtils.knockBackA2B(this, hurter, attackKnockBack * 0.5, 0.2);
-                if (--hitCount == 0) {
-                    discard();
-                }
+                --hitCount;
             }
             return true;
         }

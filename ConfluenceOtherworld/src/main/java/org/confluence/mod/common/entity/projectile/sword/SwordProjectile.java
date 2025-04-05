@@ -239,7 +239,6 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
                 });
 
             if (hurter.hurt(damageSource(), damage)) {
-                System.out.println("hit: " + hitCount);
                 float attackKnockBack = getBaseKnockBack() + knockBack;
                 VectorUtils.knockBackA2B(this, hurter, attackKnockBack * 0.5, 0.2);
 

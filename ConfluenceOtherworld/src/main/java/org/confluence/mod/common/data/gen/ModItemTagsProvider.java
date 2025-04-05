@@ -830,16 +830,98 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.GOLDEN_CARP.get(),
                 FoodItems.GOLDEN_DELIGHT.get()
         );
-        // todo
-//        tag(ItemTags.NON_FLAMMABLE_WOOD).add(
-//
-//        );
-//        tag(Tags.Items.FOODS_VEGETABLE).add(
-//
-//        );
-//        tag(ItemTags.FISHES).add(
-//
-//        );
+        tag(ItemTags.NON_FLAMMABLE_WOOD).add(
+                NatureBlocks.ASH_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.ASH_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.ASH_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.ASH_LOG_BLOCKS.getStrippedWood().asItem(),
+                NatureBlocks.ASH_LOG_BLOCKS.getPlanks().asItem(),
+                NatureBlocks.ASH_LOG_BLOCKS.getStairs().asItem(),
+                NatureBlocks.ASH_LOG_BLOCKS.getSlab().asItem(),
+                NatureBlocks.ASH_LOG_BLOCKS.getButton().asItem(),
+                NatureBlocks.ASH_LOG_BLOCKS.getFence().asItem(),
+                NatureBlocks.ASH_LOG_BLOCKS.getFenceGate().asItem(),
+                NatureBlocks.ASH_LOG_BLOCKS.getSign().asItem(),
+                NatureBlocks.ASH_LOG_BLOCKS.getPressurePlate().asItem(),
+                NatureBlocks.ASH_LOG_BLOCKS.getDoor().asItem()
+        );
+        tag(Tags.Items.FOODS_VEGETABLE).add(
+                FoodItems.SPICY_PEPPER.get()
+        );
+        tag(ItemTags.FISHES).add(
+                SwordItems.PURPLE_CLUBBERFISH.get(),
+                ConsumableItems.BOMB_FISH.get(),
+                PickaxeItems.REAVER_SHARK_PICKAXE.get(),
+                QuestedFishes.AMANITA_FUNGIFIN.get(),
+                QuestedFishes.ANGELFISH.get(),
+                QuestedFishes.BATFISH.get(),
+                QuestedFishes.BLOODY_MANOWAR.get(),
+                QuestedFishes.BONEFISH.get(),
+                QuestedFishes.BUMBLEBEE_TUNA.get(),
+                QuestedFishes.BUNNYFISH.get(),
+                QuestedFishes.CAP_TUNABEARD.get(),
+                QuestedFishes.CATFISH.get(),
+                QuestedFishes.CLOUDFISH.get(),
+                QuestedFishes.TR_CLOWNFISH.get(),
+                QuestedFishes.CURSEDFISH.get(),
+                QuestedFishes.DEMONIC_HELLFISH.get(),
+                QuestedFishes.DERPFISH.get(),
+                QuestedFishes.DIRTFISH.get(),
+                QuestedFishes.DYNAMITE_FISH.get(),
+                QuestedFishes.EATER_OF_PLANKTON.get(),
+                QuestedFishes.FALLEN_STARFISH.get(),
+                QuestedFishes.THE_FISH_OF_CTHULHU.get(),
+                QuestedFishes.FISHOTRON.get(),
+                QuestedFishes.FISHRON.get(),
+                QuestedFishes.GUIDE_VOODOO_FISH.get(),
+                QuestedFishes.HARPYFISH.get(),
+                QuestedFishes.HUNGERFISH.get(),
+                QuestedFishes.ICHORFISH.get(),
+                QuestedFishes.INFECTED_SCABBARDFISH.get(),
+                QuestedFishes.JEWELFISH.get(),
+                QuestedFishes.MIRAGE_FISH.get(),
+                QuestedFishes.MUDFISH.get(),
+                QuestedFishes.MUTANT_FLINXFIN.get(),
+                QuestedFishes.PENGFISH.get(),
+                QuestedFishes.PIXIEFISH.get(),
+                QuestedFishes.SCARAB_FISH.get(),
+                QuestedFishes.SCORPIO_FISH.get(),
+                QuestedFishes.SLIMEFISH.get(),
+                QuestedFishes.SPIDERFISH.get(),
+                QuestedFishes.TROPICAL_BARRACUDA.get(),
+                QuestedFishes.TUNDRA_TROUT.get(),
+                QuestedFishes.UNICORN_FISH.get(),
+                QuestedFishes.WYVERNTAIL.get(),
+                QuestedFishes.ZOMBIE_FISH.get(),
+                FoodItems.GOLDFISH.get(),
+                FoodItems.SEA_BASS.get(),
+                FoodItems.ATLANTIC_COD.get(),
+                FoodItems.ARMORED_CAVE_FISH.get(),
+                FoodItems.CHAOS_FISH.get(),
+                FoodItems.SCARLET_TIGER_FISH.get(),
+                FoodItems.DAMSEL_FISH.get(),
+                FoodItems.PISCES_FIN_COD.get(),
+                FoodItems.EBONY_KOI.get(),
+                FoodItems.FLASHFIN_KOI.get(),
+                FoodItems.PARTIAL_MOUTH_FISH.get(),
+                FoodItems.FROSTY_MINNOW.get(),
+                FoodItems.GOLDEN_CARP.get(),
+                FoodItems.BLOODY_PIRANHAS.get(),
+                FoodItems.NEON_GREASE_CARP.get(),
+                FoodItems.OBSIDIAN_FISH.get(),
+                FoodItems.PRINCESS_FISH.get(),
+                FoodItems.COLORFUL_MINERAL_FISH.get(),
+                FoodItems.RED_SNAPPER.get(),
+                FoodItems.TROUT.get(),
+                FoodItems.ROCK_LOBSTER.get(),
+                FoodItems.TR_SALMON.get(),
+                FoodItems.MIRROR_FISH.get(),
+                FoodItems.STINKY_FISH.get(),
+                FoodItems.TUNA.get(),
+                FoodItems.MOTTLED_OILFISH.get(),
+                FoodItems.YELLOW_EEL.get(),
+                FoodItems.TILAPIA.get()
+        );
         tag(Tags.Items.FOODS_EDIBLE_WHEN_PLACED).add(FoodItems.GREEN_DUMPLING.get());
         tag(ItemTags.CLUSTER_MAX_HARVESTABLES).addTag(ItemTags.PICKAXES);
         tag(ItemTags.COMPASSES).add(ToolItems.METEOR_COMPASS.get());

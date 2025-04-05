@@ -1,5 +1,5 @@
 {
-  "parent": "confluence:item/template_reverse24x",
+  "parent": "confluence:item/template_normal24x",
   "textures": {
     "layer0": "confluence:item/sword/lights_bane"
   }

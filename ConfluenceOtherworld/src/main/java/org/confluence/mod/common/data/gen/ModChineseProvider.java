@@ -385,57 +385,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("biome.confluence.ash_wasteland", "灰烬荒地");
         add("biome.confluence.ash_forest", "白蜡木林");
 
-        add("painting.confluence.magic_harp.title", "MAGIC_HARP");
-        add("painting.confluence.magic_harp.author", "BiliBili_魔法竖琴waaa，看上去傻傻的...");
-        add("painting.confluence.westernat.title", "WESTERNAT");
-        add("painting.confluence.westernat.author", "BiliBili_Westernat233，MC21世纪以来，最具有印象派主义的白桦树绘画!");
-        add("painting.confluence.cooobrid.title", "COOOBRID");
-        add("painting.confluence.cooobrid.author", "BiliBili_事一只一只一只鸽子，事一只只会咕咕咕的鸽子");
-        add("painting.confluence.nakinosi.title", "NAKINOSI");
-        add("painting.confluence.nakinosi.author", "BiliBili_咕咕咕的屑枕头，世界上最好看的渐变头发！");
-        add("painting.confluence.maker.title", "MAKER");
-        add("painting.confluence.maker.author", "BiliBili_Maker-2333，是Maker不是Marker！");
-        add("painting.confluence.mustard_oasis.title", "MUSTARD_OASIS");
-        add("painting.confluence.mustard_oasis.author", "BiliBili_芥末Oasis，芥末配fish，豪赤😋");
-        add("painting.confluence.a_pigeon_delight.title", "A_PIGEON_DELIGHT");
-        add("painting.confluence.a_pigeon_delight.author", "BiliBili_一只鸽子悦");
-        add("painting.confluence.sheep_mink.title", "SHEEP_MINK");
-        add("painting.confluence.sheep_mink.author", "BiliBili_眠羊敏克，“啊？我打json？”");
-        add("painting.confluence.voila.title", "VOILA");
-        add("painting.confluence.voila.author", "BiliBili_风起下片灬");
-        add("painting.confluence.xuanyu_1725.title", "XUANYU");
-        add("painting.confluence.xuanyu_1725.author", "BiliBili_轩宇1725");
-        add("painting.confluence.shadow_end.title", "SHADOW_END");
-        add("painting.confluence.shadow_end.author", "BiliBili_影末子");
-        add("painting.confluence.kl_jiana.title", "Kaleb Langley");
-        add("painting.confluence.kl_jiana.author", "BiliBili_KalebLangley");
-        add("painting.confluence.hunao.title", "HUNAO");
-        add("painting.confluence.hunao.author", "BiliBili_小胡闹鸭");
-        add("painting.confluence.sihuai_2412.title", "SIHUAI_2412");
-        add("painting.confluence.sihuai_2412.author", "BiliBili_思怀_2412");
-        add("painting.confluence.old_sheep.title", "OLD_SHEEP");
-        add("painting.confluence.old_sheep.author", "BiliBili_我叫老绵羊");
-        add("painting.confluence.slime_dragon.title", "SLIME_DRAGON");
-        add("painting.confluence.slime_dragon.author", "BiliBili_小史龙吖Slime_Dragon");
-        add("painting.confluence.khaki_coffee_beans.title", "KHAKI_COFFEE_BEANS");
-        add("painting.confluence.khaki_coffee_beans.author", "BiliBili_卡其色咖啡豆");
-        add("painting.confluence.uqtqu_day.title", "UQTQU_DAY");
-        add("painting.confluence.uqtqu_day.author", "BiliBili__昼泽_，✞ʚ散兵重度依赖ɞ✟⁺");
-        add("painting.confluence.emerald_shenyi.title", "EMERALD_SHENYI");
-        add("painting.confluence.emerald_shenyi.author", "BiliBili_Emerald_审翼");
-        add("painting.confluence.chromatic.title", "CHROMATIC");
-        add("painting.confluence.chromatic.author", "BiliBili_陌林_Chromatic");
-        add("painting.confluence.the_great_papyrus.title", "THE_GREAT_PAPYRUS");
-        add("painting.confluence.the_great_papyrus.author", "BiliBili_事伟大的papyrus呀");
-        add("painting.confluence.kulou_d.title", "KULOU_D");
-        add("painting.confluence.kulou_d.author", "BiliBili_KuLou_D");
-        add("painting.confluence.in_the_gap_of_the_cloud_sea.title", "云海隙间");
-        add("painting.confluence.in_the_gap_of_the_cloud_sea.author", "鹰角豆");
-
-        add("painting.confluence.confluence.title", "CONFLUENCE");
-        add("painting.confluence.confluence.author", "汇流来世");
-        add("painting.confluence.the_twilight_of_dawn.title", "The Twilight Of Dawn");
-        add("painting.confluence.the_twilight_of_dawn.author", "汇聚的旅程走到了分岔口，迎接强敌的时刻终将来临。");
 
         // new
         add("achievements.toast.complete", "成就达成！");

@@ -16,6 +16,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.*;
@@ -245,27 +246,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.REDSTONE_ORE_SMELTING).add(
                 OreBlocks.SANCTIFICATION_REDSTONE_ORE.asItem(), OreBlocks.CORRUPTION_REDSTONE_ORE.asItem(), OreBlocks.FLESHIFICATION_REDSTONE_ORE.asItem()
         );
-        tag(ItemTags.DIRT).add(
-                NatureBlocks.CORRUPT_GRASS_BLOCK.asItem(),
-                NatureBlocks.ASH_BLOCK.asItem(),
-                NatureBlocks.TR_CRIMSON_GRASS_BLOCK.asItem(),
-                NatureBlocks.HALLOW_GRASS_BLOCK.asItem(),
-                NatureBlocks.ASH_GRASS_BLOCK.asItem(),
-                NatureBlocks.MUSHROOM_GRASS_BLOCK.asItem(),
-                NatureBlocks.JUNGLE_GRASS_BLOCK.asItem()
-        );
         tag(ItemTags.BOOKSHELF_BOOKS).add(
                 ManaWeaponItems.WATER_BOLT.get()
         );
-        copy(BlockTags.PLANKS, ItemTags.PLANKS);
-        copy(BlockTags.LOGS, ItemTags.LOGS);
-        copy(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS);
-        copy(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES);
-        copy(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS);
-        copy(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS);
-        copy(BlockTags.WOODEN_PRESSURE_PLATES, ItemTags.WOODEN_PRESSURE_PLATES);
-        copy(BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS);
-        copy(BlockTags.LEAVES, ItemTags.LEAVES);
         tag(ItemTags.CAT_FOOD).add(
                 FoodItems.SEA_BASS.get(),
                 FoodItems.ATLANTIC_COD.get(),
@@ -276,7 +259,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.YELLOW_EEL.get(),
                 FoodItems.TILAPIA.get()
         );
-        copy(BlockTags.LOGS_THAT_BURN, ItemTags.LOGS_THAT_BURN);
         // neoforge
         tag(Tags.Items.BONES).add(
                 MaterialItems.ROTTEN_BONE.get(),
@@ -304,7 +286,16 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DecorativeBlocks.TR_OBSIDIAN_BRICKS.asItem(),
                 DecorativeBlocks.TR_OBSIDIAN_SMALL_BRICKS.asItem(),
                 DecorativeBlocks.CRYSTAL_BLOCKS.asItem(),
-                DecorativeBlocks.RAINBOW_BRICKS.asItem()
+                DecorativeBlocks.RAINBOW_BRICKS.asItem(),
+                DecorativeBlocks.BLUE_BRICKS.asItem(),
+                DecorativeBlocks.CHISELED_BLUE_BRICKS.asItem(),
+                FunctionalBlocks.FRAGILE_BLUE_BRICKS.asItem(),
+                DecorativeBlocks.GREEN_BRICKS.asItem(),
+                DecorativeBlocks.CHISELED_GREEN_BRICKS.asItem(),
+                FunctionalBlocks.FRAGILE_GREEN_BRICKS.asItem(),
+                DecorativeBlocks.PINK_BRICKS.asItem(),
+                DecorativeBlocks.CHISELED_PINK_BRICKS.asItem(),
+                FunctionalBlocks.FRAGILE_PINK_BRICKS.asItem()
         );
         tag(Tags.Items.BUCKETS).add(
                 ToolItems.HONEY_BUCKET.get(),
@@ -324,7 +315,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.FLOATING_WHEAT_HEADS.get()
         );
         tag(Tags.Items.DUSTS).add(
-                MaterialItems.BLOOD_CLOT_POWDER.get()
+                MaterialItems.BLOOD_CLOT_POWDER.get(),
+                MaterialItems.PIXIE_DUST.get(),
+                ConsumableItems.ROTTEN_BONE_DUST.get(),
+                ConsumableItems.BLOODSTAINED_POWDER.get(),
+                ConsumableItems.VILE_POWDER.get(),
+                ConsumableItems.VICIOUS_POWDER.get(),
+                ConsumableItems.PURIFICATION_POWDER.get()
         );
         tag(Tags.Items.DYED_WHITE).add(DecorativeBlocks.WHITE_PURE_GLASS.asItem());
         tag(Tags.Items.DYED_LIGHT_GRAY).add(DecorativeBlocks.LIGHT_GRAY_PURE_GLASS.asItem());
@@ -372,10 +369,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.NUGGETS_TIN).add(
                 MaterialItems.LEAD_NUGGET.get()
         );
-
-        tag(Tags.Items.GUNPOWDERS).add(
-                MaterialItems.BLOOD_CLOT_POWDER.get()
-        );
         tag(Tags.Items.INGOTS).add(
                 MaterialItems.TIN_INGOT.get(),
                 MaterialItems.LEAD_INGOT.get(),
@@ -411,7 +404,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(Tags.Items.SEEDS).add(
                 FoodItems.FLOATING_WHEAT_SEED.get(),
                 FoodItems.CLOUDWEAVER_SEED.get(),
-                FoodItems.STELLAR_BLOSSOM_SEED.get()
+                FoodItems.STELLAR_BLOSSOM_SEED.get(),
+                FoodItems.WATERLEAF_SEED.get(),
+                FoodItems.FIREBLOSSOM_SEED.get(),
+                FoodItems.MOONGLOW_SEED.get(),
+                FoodItems.BLINKROOT_SEED.get(),
+                FoodItems.SHIVERTHORN_SEED.get(),
+                FoodItems.DAYBLOOM_SEED.get(),
+                FoodItems.DEATHWEED_SEED.get()
         );
         tag(Tags.Items.SEEDS_WHEAT).add(
                 FoodItems.FLOATING_WHEAT_SEED.get()
@@ -435,7 +435,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.RAW_TR_CRIMSON.get()
         );
 
-        BowItems.acceptTag(tag(Tags.Items.TOOLS_BOW));
         PaintItems.acceptTag(tag(Tags.Items.DYED));
         ArrowItems.acceptTag(tag(ItemTags.ARROWS));
         IntrinsicTagAppender<Item> hammer = tag(ModTags.Items.HAMMERS);
@@ -676,7 +675,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DEMONITE_ORE.asItem(),
                 TR_CRIMSON_ORE.asItem()
         );
-        copy(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS);
 
         tag(ModTags.Items.MOSS_ITEM).add(
                 NatureBlocks.BROWN_MOSS.asItem(),
@@ -715,27 +713,33 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         // Bow 附魔
         IntrinsicTagAppender<Item> durabilityEnchantable = tag(ItemTags.DURABILITY_ENCHANTABLE);
         BowItems.ITEMS.getEntries().forEach(item -> {
-            durabilityEnchantable.add(item.get());
-            tag(ItemTags.BOW_ENCHANTABLE).add(item.get());
-            tag(Tags.Items.RANGED_WEAPON_TOOLS).add(item.get());
-            weapons.add(item.get());
+            Item value = item.get();
+            durabilityEnchantable.add(value);
+            tag(ItemTags.BOW_ENCHANTABLE).add(value);
+            tag(Tags.Items.RANGED_WEAPON_TOOLS).add(value);
+            weapons.add(value);
+            tag(Tags.Items.TOOLS_BOW).add(value);
         });
         //  FishingPole 附魔
         FishingPoleItems.acceptTag(tag(ItemTags.FISHING_ENCHANTABLE));
         // Sword 附魔
         SwordItems.ITEMS.getEntries().forEach(item -> {
-            tag(ItemTags.SHARP_WEAPON_ENCHANTABLE).add(item.get());
-            tag(ItemTags.SWORD_ENCHANTABLE).add(item.get());
-            durabilityEnchantable.add(item.get());
-            tag(ItemTags.WEAPON_ENCHANTABLE).add(item.get());
-            tag(Tags.Items.MELEE_WEAPON_TOOLS).add(item.get());
-            weapons.add(item.get());
+            Item value = item.get();
+            tag(ItemTags.SHARP_WEAPON_ENCHANTABLE).add(value);
+            tag(ItemTags.SWORD_ENCHANTABLE).add(value);
+            durabilityEnchantable.add(value);
+            tag(ItemTags.WEAPON_ENCHANTABLE).add(value);
+            tag(Tags.Items.MELEE_WEAPON_TOOLS).add(value);
+            weapons.add(value);
+            tag(ItemTags.SWORDS).add(value);
         });
 
         // Tool 附魔
         //ToolItems.ITEMS.getEntries().forEach(item -> tag(ItemTags.DURABILITY_ENCHANTABLE).add(item.get())); 不是所有工具都能附魔！
         HoeItems.acceptTag(durabilityEnchantable);
+        HoeItems.acceptTag(tag(ItemTags.HOES));
         ShovelItems.acceptTag(durabilityEnchantable);
+        ShovelItems.acceptTag(tag(ItemTags.SHOVELS));
         HamaxeItems.acceptTag(durabilityEnchantable);
 
 
@@ -773,5 +777,105 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.ABLE_TO_DESTROY_ALTAR).add(
                 HammerItems.PWNHAMMER.get()
         );
+        tag(Tags.Items.FOODS_SOUP).add(
+                FoodItems.BOWL_OF_SOUP.get(),
+                FoodItems.GRUB_SOUP.get()
+        );
+        tag(Tags.Items.FOODS_BREAD).add(
+                FoodItems.BOULDER_BREAD.get(),
+                FoodItems.CLOUD_BREAD.get()
+        );
+        tag(ItemTags.MEAT).add(
+                FoodItems.RAW_FROG.get(),
+                FoodItems.RAW_SQUIRREL.get(),
+                FoodItems.RAW_BIRD.get(),
+                FoodItems.RAW_DUCK.get()
+        );
+        tag(Tags.Items.FOODS_RAW_MEAT).add(
+                FoodItems.RAW_FROG.get(),
+                FoodItems.RAW_SQUIRREL.get(),
+                FoodItems.RAW_BIRD.get(),
+                FoodItems.RAW_DUCK.get()
+        );
+        tag(Tags.Items.FERTILIZERS).add(ConsumableItems.FERTILIZER.get());
+        tag(ItemTags.PARROT_POISONOUS_FOOD).add(
+                FoodItems.CHOCOLATE_CHIP_COOKIE.get()
+        );
+        tag(ItemTags.PARROT_FOOD).add(
+                FoodItems.FLOATING_WHEAT_SEED.get(),
+                FoodItems.CLOUDWEAVER_SEED.get(),
+                FoodItems.STELLAR_BLOSSOM_SEED.get(),
+                FoodItems.WATERLEAF_SEED.get(),
+                FoodItems.FIREBLOSSOM_SEED.get(),
+                FoodItems.MOONGLOW_SEED.get(),
+                FoodItems.BLINKROOT_SEED.get(),
+                FoodItems.SHIVERTHORN_SEED.get(),
+                FoodItems.DAYBLOOM_SEED.get(),
+                FoodItems.DEATHWEED_SEED.get()
+        );
+        tag(Tags.Items.MUSIC_DISCS).add(ModItems.ALPHA.get());
+        tag(ItemTags.VILLAGER_PLANTABLE_SEEDS).add(
+                FoodItems.STELLAR_BLOSSOM_SEED.get(),
+                FoodItems.CLOUDWEAVER_SEED.get(),
+                FoodItems.FLOATING_WHEAT_SEED.get()
+        );
+        tag(ItemTags.LLAMA_TEMPT_ITEMS).add(DecorativeBlocks.FLOATING_WHEAT_BALE.asItem());
+        tag(ItemTags.LLAMA_FOOD).add(MaterialItems.FLOATING_WHEAT_HEADS.get());
+        tag(ItemTags.GOAT_FOOD).add(MaterialItems.FLOATING_WHEAT_HEADS.get());
+        tag(Tags.Items.FOODS_GOLDEN).add(
+                FoodItems.GOLDEN_CARP.get(),
+                FoodItems.GOLDEN_DELIGHT.get()
+        );
+        tag(ItemTags.PIGLIN_LOVED).add(
+                FoodItems.GOLDEN_CARP.get(),
+                FoodItems.GOLDEN_DELIGHT.get()
+        );
+        // todo
+//        tag(ItemTags.NON_FLAMMABLE_WOOD).add(
+//
+//        );
+//        tag(Tags.Items.FOODS_VEGETABLE).add(
+//
+//        );
+//        tag(ItemTags.FISHES).add(
+//
+//        );
+        tag(Tags.Items.FOODS_EDIBLE_WHEN_PLACED).add(FoodItems.GREEN_DUMPLING.get());
+        tag(ItemTags.CLUSTER_MAX_HARVESTABLES).addTag(ItemTags.PICKAXES);
+        tag(ItemTags.COMPASSES).add(ToolItems.METEOR_COMPASS.get());
+        tag(Tags.Items.FOODS_PIE).add(FoodItems.APPLE_PIE.get());
+        tag(Tags.Items.FOODS_COOKIE).add(FoodItems.CHOCOLATE_CHIP_COOKIE.get());
+        copy(Tags.Blocks.FENCE_GATES, Tags.Items.FENCE_GATES);
+        copy(Tags.Blocks.STRIPPED_LOGS, Tags.Items.STRIPPED_LOGS);
+        copy(BlockTags.SIGNS, ItemTags.SIGNS);
+        copy(BlockTags.WOODEN_BUTTONS, ItemTags.WOODEN_BUTTONS);
+        copy(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS);
+        copy(BlockTags.PLANKS, ItemTags.PLANKS);
+        copy(BlockTags.LOGS, ItemTags.LOGS);
+        copy(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS);
+        copy(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES);
+        copy(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS);
+        copy(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS);
+        copy(BlockTags.WOODEN_PRESSURE_PLATES, ItemTags.WOODEN_PRESSURE_PLATES);
+        copy(BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS);
+        copy(BlockTags.LEAVES, ItemTags.LEAVES);
+        copy(Tags.Blocks.GLASS_BLOCKS, Tags.Items.GLASS_BLOCKS);
+        copy(BlockTags.RAILS, ItemTags.RAILS);
+        copy(BlockTags.LOGS_THAT_BURN, ItemTags.LOGS_THAT_BURN);
+        copy(BlockTags.STONE_BRICKS, ItemTags.STONE_BRICKS);
+        copy(BlockTags.ANVIL, ItemTags.ANVIL);
+        copy(BlockTags.FENCE_GATES, ItemTags.FENCE_GATES);
+        copy(BlockTags.DIRT, ItemTags.DIRT);
+        copy(Tags.Blocks.ORE_RATES_SINGULAR, Tags.Items.ORE_RATES_SINGULAR);
+        copy(Tags.Blocks.ORE_RATES_DENSE, Tags.Items.ORE_RATES_DENSE);
+        copy(Tags.Blocks.SANDSTONE_BLOCKS, Tags.Items.SANDSTONE_BLOCKS);
+        copy(Tags.Blocks.FENCE_GATES_WOODEN, Tags.Items.FENCE_GATES_WOODEN);
+        copy(Tags.Blocks.PLAYER_WORKSTATIONS_FURNACES, Tags.Items.PLAYER_WORKSTATIONS_FURNACES);
+        copy(Tags.Blocks.GRAVELS, Tags.Items.GRAVELS);
+        copy(Tags.Blocks.CHAINS, Tags.Items.CHAINS);
+        copy(Tags.Blocks.ROPES, Tags.Items.ROPES);
+        copy(Tags.Blocks.VILLAGER_JOB_SITES, Tags.Items.VILLAGER_JOB_SITES);
+        copy(Tags.Blocks.CHESTS_TRAPPED, Tags.Items.CHESTS_TRAPPED);
+        copy(Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES, Tags.Items.PLAYER_WORKSTATIONS_CRAFTING_TABLES);
     }
 }

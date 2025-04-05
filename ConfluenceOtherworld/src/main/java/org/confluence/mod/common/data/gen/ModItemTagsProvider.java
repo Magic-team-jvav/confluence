@@ -18,7 +18,6 @@ import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.item.common.MagicConch;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_guns.common.init.TGItems;
@@ -64,12 +63,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.ROTTEN_BONE.get()
         );
 
-        tag(ModTags.Items.FISH_COOKING).addTag(Tags.Items.FOODS_RAW_FISH).add(
+        tag(Tags.Items.FOODS_RAW_FISH).add(
                 FoodItems.SEA_BASS.get(),
                 FoodItems.ATLANTIC_COD.get(),
                 FoodItems.TROUT.get()
         );
-        tag(ModTags.Items.SEAFOOD_DINNER_COOKING).add(
+        tag(ModTags.Items.SEAFOOD_DINNER_MATERIALS).add(
                 FoodItems.FROSTY_MINNOW.get(),
                 FoodItems.ARMORED_CAVE_FISH.get(),
                 FoodItems.CHAOS_FISH.get(),
@@ -290,7 +289,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.YELLOW_WILLOW_SAPLING.get().asItem()
         );
 
-        tag(ModTags.Items.DEMONITE_AND_CRIMSON_INGOT).add(MaterialItems.DEMONITE_INGOT.get(), MaterialItems.TR_CRIMSON_INGOT.get());
+        tag(ModTags.Items.EVIL_INGOT).add(MaterialItems.DEMONITE_INGOT.get(), MaterialItems.TR_CRIMSON_INGOT.get());
         tag(ModTags.Items.LEAD_AND_IRON).add(Items.IRON_INGOT, MaterialItems.LEAD_INGOT.get());
         IntrinsicTagAppender<Item> torch = tag(ModTags.Items.TORCH);
         torch.add(Items.TORCH, Items.SOUL_TORCH);
@@ -381,7 +380,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.REDSTONE_ORE_SMELTING).add(
                 OreBlocks.SANCTIFICATION_REDSTONE_ORE.asItem(), OreBlocks.CORRUPTION_REDSTONE_ORE.asItem(), OreBlocks.FLESHIFICATION_REDSTONE_ORE.get().asItem()
         );
-        tag(ModTags.Items.INITIAL_WOOD).add(
+        tag(ItemTags.PLANKS).add(
               NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().asItem(),
               NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().asItem(),
               NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().asItem(),
@@ -471,7 +470,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.YELLOW_EEL.get(),
                 FoodItems.TILAPIA.get()
         );
-        tag(ModTags.Items.CHARCOAL_CAN_BE_BURNED).add(
+        tag(ItemTags.LOGS_THAT_BURN).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getLog().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getLog().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getLog().asItem(),
                 NatureBlocks.ASH_LOG_BLOCKS.getLog().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getLog().asItem(),NatureBlocks.SPOOKY_LOG_BLOCKS.getLog().asItem(),
                 NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getLog().asItem(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLog().asItem(),NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().asItem(),
@@ -646,7 +645,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         BowItems.acceptTag(tag(Tags.Items.TOOLS_BOW));
         PaintItems.acceptTag(tag(Tags.Items.DYED));
         ArrowItems.acceptTag(tag(ItemTags.ARROWS));
-        IntrinsicTagAppender<Item> hammer = tag(ModTags.Items.HAMMER);
+        IntrinsicTagAppender<Item> hammer = tag(ModTags.Items.HAMMERS);
         HamaxeItems.acceptTag(hammer);
         HammerItems.acceptTag(hammer);
         IntrinsicTagAppender<Item> pickaxes = tag(ItemTags.PICKAXES);
@@ -667,6 +666,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         SwordItems.acceptTag(tag(Tags.Items.MELEE_WEAPON_TOOLS));
         ManaWeaponItems.acceptTag(tag(ModTags.Items.MANA_WEAPON));
+        ManaWeaponItems.acceptTag(tag(ModTags.Items.WEAPONS));
         BowItems.acceptTag(tag(Tags.Items.RANGED_WEAPON_TOOLS));
         IntrinsicTagAppender<Item> mining_tool_tools = tag(Tags.Items.MINING_TOOL_TOOLS);
         PickaxeItems.acceptTag(mining_tool_tools);
@@ -688,7 +688,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
         tag(TETags.Items.HONEY_TRANSLATION_BUCKET).add(ToolItems.HONEY_BUCKET.get());
         tag(TETags.Items.HONEY_TRANSLATION_NOT_CONSUMED).add(ToolItems.BOTTOMLESS_HONEY_BUCKET.get());
-        tag(ModTags.Items.HARDMODE_ORES).add(
+        tag(ModTags.Items.HARDMODE_RAW_MATERIALS).add(
                 MaterialItems.RAW_COBALT.get(),
                 MaterialItems.RAW_PALLADIUM.get(),
                 MaterialItems.RAW_MYTHRIL.get(),
@@ -924,6 +924,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         BowItems.ITEMS.getEntries().forEach(item -> {
             tag(ItemTags.DURABILITY_ENCHANTABLE).add(item.get());
             tag(ItemTags.BOW_ENCHANTABLE).add(item.get());
+            tag(Tags.Items.RANGED_WEAPON_TOOLS).add(item.get());
+            tag(ModTags.Items.WEAPONS).add(item.get());
         });
         //  FishingPole 附魔
         FishingPoleItems.ITEMS.getEntries().forEach(item -> {
@@ -935,6 +937,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             tag(ItemTags.SWORD_ENCHANTABLE).add(item.get());
             tag(ItemTags.DURABILITY_ENCHANTABLE).add(item.get());
             tag(ItemTags.WEAPON_ENCHANTABLE).add(item.get());
+            tag(Tags.Items.MELEE_WEAPON_TOOLS).add(item.get());
+            tag(ModTags.Items.WEAPONS).add(item.get());
         });
 
         // Tool 附魔
@@ -978,7 +982,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         TreasureBagItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.TREASURE_BAG).add(item.get()));
 
         tag(ModTags.Items.HARDMODE)
-                .addTag(ModTags.Items.HARDMODE_ORES)
+                .addTag(ModTags.Items.HARDMODE_RAW_MATERIALS)
                 .add(NatureBlocks.PEARL_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new));
 
         TESummonItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.SUMMONER_WEAPON).add(item.get()));

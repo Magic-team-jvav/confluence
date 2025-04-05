@@ -4,7 +4,7 @@
         {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "tag": "confluence:seafood_dinner_cooking"
+                "tag": "confluence:seafood_dinner_materials"
             },
             "count": 2
         }

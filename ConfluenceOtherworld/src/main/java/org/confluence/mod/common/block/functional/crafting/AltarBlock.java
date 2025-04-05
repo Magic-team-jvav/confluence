@@ -16,6 +16,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.ContainerHelper;
@@ -42,6 +43,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.block.AltarBlockModel;
 import org.confluence.mod.common.data.saved.ConfluenceData;
@@ -101,7 +103,7 @@ public class AltarBlock extends BaseEntityBlock {
 
     @Override
     public float getDestroyProgress(BlockState pState, Player pPlayer, BlockGetter pLevel, BlockPos pPos) {
-        return pPlayer.getMainHandItem().is(ModTags.Items.HAMMER) ? super.getDestroyProgress(pState, pPlayer, pLevel, pPos) : 0.0F;
+        return pPlayer.getMainHandItem().is(ModTags.Items.HAMMERS) ? super.getDestroyProgress(pState, pPlayer, pLevel, pPos) : 0.0F;
     }
 
     @Override

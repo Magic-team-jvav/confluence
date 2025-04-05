@@ -21,7 +21,7 @@
             "conditions": {
                 "items": [
                     {
-                        "items": "#confluence:hardmode_ores"
+                        "items": "#confluence:hardmode_raw_materials"
                     }
                 ]
             }

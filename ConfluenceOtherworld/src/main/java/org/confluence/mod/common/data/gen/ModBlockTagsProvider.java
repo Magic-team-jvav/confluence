@@ -1022,7 +1022,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         );
         tag(Tags.Blocks.VILLAGER_JOB_SITES).add(
                 SKY_MILL.get(),
-                GOLDEN_COIN_PILE.get(),
                 COOKING_POT.get()
         );
         tag(Tags.Blocks.ROPES).add(

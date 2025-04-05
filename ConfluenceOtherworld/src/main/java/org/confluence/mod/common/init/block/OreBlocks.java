@@ -1,7 +1,6 @@
 package org.confluence.mod.common.init.block;
 
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -9,16 +8,13 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RedStoneOreBlock;
 import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.HellStoneBlock;
 import org.confluence.mod.common.block.natural.MeteoriteOre;
 import org.confluence.mod.common.block.natural.OpalOreBlock;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
-import org.confluence.mod.common.data.gen.ModBlockTagsProvider;
 import org.confluence.mod.common.init.item.ModItems;
 
 import java.util.function.Function;
@@ -247,17 +243,7 @@ public class OreBlocks {
         return block;
     }
 
-    public static void acceptTags(ModBlockTagsProvider provider) {
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithPickaxe = provider.tag(BlockTags.MINEABLE_WITH_PICKAXE);
-        for (DeferredHolder<Block, ? extends Block> oreblock : BLOCKS.getEntries()) {
-            mineableWithPickaxe.add(oreblock.get());
-        }
-    }
-
-    public static void acceptOreTags(ModBlockTagsProvider provider) {
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> ores = provider.tag(Tags.Blocks.ORES);
-        for (DeferredHolder<Block, ? extends Block> oreblock : BLOCKS.getEntries()) {
-            ores.add(oreblock.get());
-        }
+    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> tag) {
+        BLOCKS.getEntries().forEach(block -> tag.add(block.get()));
     }
 }

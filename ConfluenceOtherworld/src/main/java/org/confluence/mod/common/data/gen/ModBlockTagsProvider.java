@@ -36,9 +36,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         LogBlockSet.acceptTags(this);
-        OreBlocks.acceptTags(this);
-        OreBlocks.acceptOreTags(this);
-        StatueBlocks.acceptTags(this);
+        IntrinsicTagAppender<Block> mineableWithPickaxe = tag(BlockTags.MINEABLE_WITH_PICKAXE);
+        OreBlocks.acceptTag(mineableWithPickaxe);
+        OreBlocks.acceptTag(tag(Tags.Blocks.ORES));
+        StatueBlocks.acceptTag(mineableWithPickaxe);
         tag(ModTags.Blocks.JEWELLERY_BRANCHES_ATTACHABLE).add(STONY_LOG.get());
         tag(ModTags.Blocks.ASH_LOG_BRANCHES_ATTACHABLE).add(ASH_LOG_BLOCKS.getLog().get());
         tag(ModTags.Blocks.OPAL_ORE_REPLACEMENT).add(
@@ -168,7 +169,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 BAOBAB_LOG_BLOCKS.getLog().get()
         );
         // 镐子
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithPickaxe = tag(BlockTags.MINEABLE_WITH_PICKAXE);
         mineableWithPickaxe.add(
                 RUBY_BLOCK.get(),
                 AMBER_BLOCK.get(),

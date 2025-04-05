@@ -13,14 +13,8 @@ public class FoodType {
                 .effect(() -> new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, 3000), 1.0f)
                 .build();
     }
-
-    //泰拉基础鱼
-    public static FoodProperties fishProperties(int nutrition, float saturationModifier) {
-        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(saturationModifier).fast().alwaysEdible().build();
-    }
-
-    //常规生肉
-    public static FoodProperties rawMeatProperties(int nutrition, float saturationModifier) {
+    //无效果食物
+    public static FoodProperties noEffectProperties(int nutrition, float saturationModifier) {
         return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(saturationModifier).fast().alwaysEdible().build();
     }
 

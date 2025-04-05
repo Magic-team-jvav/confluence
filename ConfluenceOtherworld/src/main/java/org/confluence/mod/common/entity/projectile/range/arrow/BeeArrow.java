@@ -63,6 +63,6 @@ public class BeeArrow extends BaseArrowEntity {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return super.canHitEntity(target) &&TEUtils.projectileCanHitEntityTest.test(this, target);
+        return super.canHitEntity(target) &&TEUtils.projectileCanHurtEntityTest.test(this, target);
     }
 }

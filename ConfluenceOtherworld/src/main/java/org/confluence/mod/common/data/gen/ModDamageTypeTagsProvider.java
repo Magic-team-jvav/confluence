@@ -31,10 +31,7 @@ public class ModDamageTypeTagsProvider extends DamageTypeTagsProvider {
                 ModDamageTypes.SWORD_PROJECTILE
         );
         tag(Tags.DamageTypes.IS_MAGIC).add(ModDamageTypes.MAGICAL_PROJECTILE);
-        // 九头蛇只吃这个伤害类型
-        tag(DamageTypeTags.BYPASSES_INVULNERABILITY).add(
-                ModDamageTypes.SWORD_PROJECTILE,
-                ModDamageTypes.MAGICAL_PROJECTILE
-        );
+
+
     }
 }

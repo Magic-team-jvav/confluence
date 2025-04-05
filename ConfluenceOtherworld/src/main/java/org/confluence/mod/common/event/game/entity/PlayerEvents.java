@@ -349,9 +349,11 @@ public final class PlayerEvents {
             if (isWaterBottle || isBottledWater) {
                 player.removeEffect(ModEffects.CHOKING);
                 ItemStack newItemStack = isWaterBottle ? new ItemStack(Items.GLASS_BOTTLE) : new ItemStack(PotionItems.BOTTLE.get());
-                if (!player.isCreative()) player.getInventory().add(newItemStack);
+                if (!player.isCreative()){
+                    player.getInventory().add(newItemStack);
+                    itemStack.shrink(1);
+                }
             }
-            if (!player.isCreative()) itemStack.shrink(1);
         }
     }
 }

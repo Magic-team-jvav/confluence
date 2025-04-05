@@ -191,7 +191,7 @@ public final class LivingEntityEvents {
         float amount = event.getNewDamage();
         Entity attacker = damageSource.getEntity();
 
-        ThornsEffect.apply(living, attacker, amount);
+        ThornsEffect.apply(living, attacker, damageSource, amount);
         amount = ArcheryEffect.apply(living, damageSource, amount);
         amount = ManaSicknessEffect.apply(damageSource, amount);
         amount = TheConstant.applyAttackDamage(attacker, amount);

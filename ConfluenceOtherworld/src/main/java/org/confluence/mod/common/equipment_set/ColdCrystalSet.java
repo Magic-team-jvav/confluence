@@ -8,7 +8,7 @@ import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import com.xiaohunao.equipment_benediction.common.init.EBHookTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import org.confluence.mod.common.init.ModEffects;
+import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.terra_curio.common.init.TCAttributes;
@@ -43,7 +43,11 @@ public class ColdCrystalSet extends EquipmentSet {
                         VanillaEquippable.LEGS, ArmorItems.COLD_CRYSTAL_LEGGINGS,
                         VanillaEquippable.FEET, ArmorItems.COLD_CRYSTAL_BOOTS
                 )
-                .bindHook(EBHookTypes.BEFORE_LIVING_DAMAGE.get(), (owner, event) -> event.getEntity().addEffect(new MobEffectInstance(TEEffects.FROST_BURN, 100)))
+                .bindHook(EBHookTypes.BEFORE_LIVING_DAMAGE.get(), (owner, event) -> {
+                    if (event.getSource().is(Tags.DamageTypes.IS_MAGIC)) {
+                        event.getEntity().addEffect(new MobEffectInstance(TEEffects.FROST_BURN, 100));
+                    }
+                })
                 .build());
     }
 }

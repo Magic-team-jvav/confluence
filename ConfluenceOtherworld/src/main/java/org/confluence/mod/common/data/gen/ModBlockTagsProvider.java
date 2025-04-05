@@ -93,8 +93,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         );
         tag(BlockTags.RAILS).add(EVER_POWERED_RAIL.get());
 
-        // tag((BlockTags.STONE_ORE_REPLACEABLES)).add(
-        // );
         tag(BlockTags.DIRT).add(
                 CORRUPT_GRASS_BLOCK.get(),
                 ASH_BLOCK.get(),
@@ -831,24 +829,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 PEARL_HARDENED_SAND_BLOCK.get()
         );
          */
-        tag(Tags.Blocks.ORE_RATES_DENSE).add(
-                CORRUPTION_COPPER_ORE.get(),
-                FLESHIFICATION_COPPER_ORE.get(),
-                SANCTIFICATION_COPPER_ORE.get(),
-                CORRUPTION_TIN_ORE.get(),
-                FLESHIFICATION_TIN_ORE.get(),
-                SANCTIFICATION_TIN_ORE.get(),
-                TIN_ORE.get(),
-                DEEPSLATE_TIN_ORE.get(),
-                CORRUPTION_REDSTONE_ORE.get(),
-                FLESHIFICATION_REDSTONE_ORE.get(),
-                SANCTIFICATION_REDSTONE_ORE.get(),
-                CORRUPTION_LAPIS_ORE.get(),
-                FLESHIFICATION_LAPIS_ORE.get(),
-                SANCTIFICATION_LAPIS_ORE.get(),
-                SANCTIFICATION_COAL_ORE.get(),
-                CORRUPTION_COAL_ORE.get(),
-                FLESHIFICATION_COAL_ORE.get(),
+        tag(Tags.Blocks.ORE_RATES_SINGULAR).add(
                 SANCTIFICATION_IRON_ORE.get(),
                 CORRUPTION_IRON_ORE.get(),
                 FLESHIFICATION_IRON_ORE.get(),
@@ -916,6 +897,25 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 RAW_ADAMANTITE_BLOCK.get(),
                 DEEPSLATE_TITANIUM_ORE.get(),
                 RAW_TITANIUM_BLOCK.get()
+        );
+        tag(Tags.Blocks.ORE_RATES_DENSE).add(
+                CORRUPTION_TIN_ORE.get(),
+                FLESHIFICATION_TIN_ORE.get(),
+                SANCTIFICATION_TIN_ORE.get(),
+                TIN_ORE.get(),
+                DEEPSLATE_TIN_ORE.get(),
+                CORRUPTION_COPPER_ORE.get(),
+                FLESHIFICATION_COPPER_ORE.get(),
+                SANCTIFICATION_COPPER_ORE.get(),
+                SANCTIFICATION_COAL_ORE.get(),
+                CORRUPTION_COAL_ORE.get(),
+                FLESHIFICATION_COAL_ORE.get(),
+                CORRUPTION_REDSTONE_ORE.get(),
+                FLESHIFICATION_REDSTONE_ORE.get(),
+                SANCTIFICATION_REDSTONE_ORE.get(),
+                CORRUPTION_LAPIS_ORE.get(),
+                FLESHIFICATION_LAPIS_ORE.get(),
+                SANCTIFICATION_LAPIS_ORE.get()
         );
         tag(Tags.Blocks.ORES_COAL).add(
                 SANCTIFICATION_COAL_ORE.get(),
@@ -1021,7 +1021,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 TR_AMETHYST_BLOCK.get()
         );
         tag(Tags.Blocks.VILLAGER_JOB_SITES).add(
-                SKY_MILL.get()
+                SKY_MILL.get(),
+                GOLDEN_COIN_PILE.get(),
+                COOKING_POT.get()
         );
         tag(Tags.Blocks.ROPES).add(
                 ROPE.get(),
@@ -1071,6 +1073,17 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 FLOATING_WHEAT_BALE.get()
         );
         tag(ModTags.Blocks.TOMBSTONE).add(TOMBSTONES.keySet().stream().map(DeferredBlock::get).toArray(TombstoneBlock[]::new));
+        tag(BlockTags.STONE_BRICKS).add(
+                BLUE_BRICKS.get(),
+                CHISELED_BLUE_BRICKS.get(),
+                FRAGILE_BLUE_BRICKS.get(),
+                GREEN_BRICKS.get(),
+                CHISELED_GREEN_BRICKS.get(),
+                FRAGILE_GREEN_BRICKS.get(),
+                PINK_BRICKS.get(),
+                CHISELED_PINK_BRICKS.get(),
+                FRAGILE_PINK_BRICKS.get()
+        );
     }
 
     @Override

@@ -167,7 +167,7 @@ public class OreBlocks {
     public static final DeferredBlock<Block> RAW_LUMINITE_BLOCK = copyBlockRegister("raw_luminite_block", Blocks.RAW_IRON_BLOCK);
     public static final DeferredBlock<Block> LUMINITE_BLOCK = copyBlockRegister("luminite_block", Blocks.IRON_BLOCK);
 
-    public static final Supplier<Block> OPAL_ORE = simpleBlockRegister("opal_ore", OpalOreBlock::new);
+    public static final DeferredBlock<Block> OPAL_ORE = simpleBlockRegister("opal_ore", OpalOreBlock::new);
     public static final DeferredBlock<Block> GELSTONE_ORE = copyBlockRegister("gelstone_ore", Blocks.IRON_ORE);
     public static final DeferredBlock<Block> SPORE_ROOT_BLOCK = copyBlockRegister("spore_root_block", Blocks.IRON_ORE);
     public static final DeferredBlock<Block> WINTER_MARROW_BLOCK = copyBlockRegister("winter_marrow_block", Blocks.IRON_ORE);

@@ -415,4 +415,28 @@ public final class LivingEntityEvents {
             }
         }
     }
+
+    @SubscribeEvent
+    public static void livingEntityUseItem$Start(LivingEntityUseItemEvent.Start event) {
+        LivingEntity living = event.getEntity();
+        if (!living.level().isClientSide && living.hasEffect(ModEffects.CHOKING)) {
+            ItemStack itemStack = event.getItem();
+            if (itemStack.getFoodProperties(living) != null) {
+                event.setCanceled(true);
+                living.sendSystemMessage(Component.translatable("message.confluence.choking"));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void livingEntityUseItem$Finish(LivingEntityUseItemEvent.Finish event) {
+        if (event.getEntity() instanceof ServerPlayer player && player.hasEffect(ModEffects.CHOKING)) {
+            ItemStack itemStack = event.getItem();
+            if (ModUtils.isWaterBottle(itemStack)) {
+                player.removeEffect(ModEffects.CHOKING);
+                ItemStack resultItem = itemStack.finishUsingItem(player.level(), player);
+                event.setResultStack(resultItem);
+            }
+        }
+    }
 }

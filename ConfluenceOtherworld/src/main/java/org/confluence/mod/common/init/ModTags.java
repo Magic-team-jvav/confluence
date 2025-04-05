@@ -82,6 +82,9 @@ public final class ModTags {
         public static final TagKey<Item> ORES_TUNGSTEN = c("ores/tungsten");
         public static final TagKey<Item> ORES_PLATINUM = c("ores/platinum");
 
+        public static final TagKey<Item> HAMMERS = c("tools/hammers");
+        public static final TagKey<Item> WEAPONS = c("weapons");
+
         public static final TagKey<Item> COINS = register("coins");
         public static final TagKey<Item> AMMO = register("ammo");
         public static final TagKey<Item> PET = register("pet");
@@ -112,8 +115,6 @@ public final class ModTags {
         public static final TagKey<Item> LEAD_AND_IRON = register("lead_and_iron");
         public static final TagKey<Item> SHADOW_SCALE_AND_TISSUE_SAMPLE = register("shadow_scale_and_tissue_sample");
         public static final TagKey<Item> EVIL_INGOT = register("evil_ingot");
-        public static final TagKey<Item> HAMMERS = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "tools/hammers"));
-        public static final TagKey<Item> WEAPONS = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "weapons"));
         public static final TagKey<Item> MANA_WEAPON = register("mana_weapon");
         public static final TagKey<Item> PREFIX_UNIVERSAL_ONLY = register("prefix_universal_only");
         public static final TagKey<Item> HARDMODE_RAW_MATERIALS = register("hardmode_raw_materials");

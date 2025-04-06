@@ -18,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.ItemStackedOnOtherEvent;
+import net.neoforged.neoforge.event.LootTableLoadEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
@@ -33,6 +34,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.item.common.ColoredItem;
+import org.confluence.mod.integration.terra_entity.TERemoval;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.EchoVisibilityPacketS2C;
@@ -45,6 +47,7 @@ import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
 import org.confluence.terra_curio.api.event.RangePickupItemEvent;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.confluence.terra_curio.util.TCUtils;
+import org.confluence.terraentity.TerraEntity;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
@@ -197,5 +200,9 @@ public final class GameEvents {
                 event.setTargets(targets);
             }
         }
+    }
+    @SubscribeEvent
+    public static void forbidLootTableLoading(LootTableLoadEvent event) {
+        TERemoval.processLootTables(event);
     }
 }

@@ -53,6 +53,5 @@ public class DataGenerator {
     }
 
     static final RegistrySetBuilder DATA_BUILDER = new RegistrySetBuilder()
-            .add(Registries.DAMAGE_TYPE, ModDamageTypes::createDamageTypes)
-            ;
+            .add(Registries.DAMAGE_TYPE, ModDamageTypes::createDamageTypes);
 }

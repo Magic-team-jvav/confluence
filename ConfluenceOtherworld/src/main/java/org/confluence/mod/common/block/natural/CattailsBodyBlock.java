@@ -3,24 +3,22 @@ package org.confluence.mod.common.block.natural;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
-import javax.annotation.Nullable;
-
-public class CattailsBodyBlock extends GrowingPlantBodyBlock implements LiquidBlockContainer {
+public class CattailsBodyBlock extends GrowingPlantBodyBlock implements SimpleWaterloggedBlock, BonemealableBlock {
     public static final MapCodec<CattailsBodyBlock> CODEC = simpleCodec(CattailsBodyBlock::new);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private static final VoxelShape SHAPE = Block.box(1.0, 0.0, 1.0, 15.0, 16.0, 15.0);
@@ -28,6 +26,15 @@ public class CattailsBodyBlock extends GrowingPlantBodyBlock implements LiquidBl
     public CattailsBodyBlock(BlockBehaviour.Properties properties) {
         super(properties, Direction.UP, SHAPE, true);
         this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
+    }
+
+    @Override
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        BlockPos blockpos = pos.relative(this.growthDirection);
+        if (level.getBlockState(blockpos).is(Blocks.WATER)) {
+            state = state.setValue(WATERLOGGED, true);
+        }
+        level.setBlockAndUpdate(pos, state);
     }
 
     @Override
@@ -57,17 +64,17 @@ public class CattailsBodyBlock extends GrowingPlantBodyBlock implements LiquidBl
 
     @Override
     protected FluidState getFluidState(BlockState state) {
-        return Fluids.WATER.getSource(false);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    public boolean canPlaceLiquid(@Nullable Player player, BlockGetter level, BlockPos pos, BlockState state, Fluid fluid) {
-        return false;
+    public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos pos, BlockState state) {
+        return true;
     }
 
     @Override
-    public boolean placeLiquid(LevelAccessor level, BlockPos pos, BlockState state, FluidState fluidState) {
-        return false;
+    public boolean isBonemealSuccess(Level level, RandomSource randomSource, BlockPos pos, BlockState state) {
+        return true;
     }
 
     @Override

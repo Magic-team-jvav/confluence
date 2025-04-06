@@ -20,7 +20,8 @@ import org.confluence.mod.common.item.food.FoodType;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static net.minecraft.world.item.Items.*;
+import static net.minecraft.world.item.Items.BOWL;
+import static net.minecraft.world.item.Items.GLASS_BOTTLE;
 
 public class FoodItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);

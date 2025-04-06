@@ -83,7 +83,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("item.confluence.dongdongs_flatbread.tooltip.1", "刚在下界岩上考好的饼，快来尝尝吧！");
 
 
-
         add("tooltip.item.confluence.boredoms_pact_falling_resolve.0", "「无聊之咒·陨志」");
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.1", "(Boredom's Pact - Falling Resolve)");
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.2", "           ");
@@ -260,7 +259,6 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("tooltip.item.confluence.bee_keeper.0", "神兵的一小部分力量为丛林中的蜂群所占有，沦为嗡嗡作响的蜂群");
         add("tooltip.item.confluence.bee_keeper.1", "“口蜜腹剑”");
-
 
 
         add("confluence.configuration.achievementToast", "启用泰拉样式成就");
@@ -1706,9 +1704,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.TERRAGRIM.get(), "泰拉魔刃");
 
 
-
-
-
         add(AxeItems.COPPER_AXE.get(), "铜斧");
         add(AxeItems.TIN_AXE.get(), "锡斧");
         add(AxeItems.LEAD_AXE.get(), "铅斧");
@@ -1892,7 +1887,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.PERPLEXED_CAT_MEDAL.get(), "疑惑猫猫勋章");
         add(ModItems.CANDY_SWORD.get(), "糖果剑");
         add(ModItems.PULSAR.get(), "脉冲星");
-
 
 
         add(ModItems.CATTAILS.get(), "香蒲");

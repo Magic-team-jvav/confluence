@@ -121,10 +121,7 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock {
         if (state.getValue(AGE) >= maxAge) return;
         if (canCropGrow(level, pos.relative(this.growthDirection), state, random.nextDouble() < 0.1)) {
             BlockPos blockPos = pos.relative(this.growthDirection);
-            if (this.canGrowInto(level.getBlockState(blockPos))) {
-                level.setBlockAndUpdate(blockPos, this.getGrowIntoState(state, level.random));
-                net.neoforged.neoforge.common.CommonHooks.fireCropGrowPost(level, blockPos, level.getBlockState(blockPos));
-            }
+            if (this.canGrowInto(level.getBlockState(blockPos))) level.setBlockAndUpdate(blockPos, this.getGrowIntoState(state, level.random));
         }
     }
 

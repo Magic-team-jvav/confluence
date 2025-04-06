@@ -9,16 +9,15 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.entity.PartEntity;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.util.VectorUtils;
@@ -36,7 +35,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     // 可调参数
     public int TIME_EXISTENCE = 40;
     public int hitCount = 1;
-    protected float attackDamage = 0.0F;
+    protected float attackDamageFactor = 1F;
     protected float baseAttackDamage = 0;
     protected float criticalChance = 0.0F;
     protected float knockBack = 0.0F;
@@ -135,10 +134,6 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
                 this.knockBack += (float) attributeInstance.getValue();
             }
-            attributeInstance = owner.getAttribute(TCAttributes.getRangedDamage());
-            if (attributeInstance != null) {
-                this.attackDamage += (float) attributeInstance.getValue();
-            }
             if (TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE)) return;
             attributeInstance = owner.getAttribute(TCAttributes.CRIT_CHANCE);
             if (attributeInstance != null) {
@@ -185,51 +180,26 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 //        this.applyGravity();
         doCollisionAttack(this::canHitEntity,
                 this::doHurt);
-        if (target != null) {
-//            this.setDeltaMovement(
-//                    VectorUtils.interpolateSimple(this.getDeltaMovement(), target.position().subtract(this.position()),
-//                            0.5f, 0.1f, getDeltaMovement().length() * 0.5f,1, getDeltaMovement()));
 
-
-
-//            this.setDeltaMovement(
-//                        VectorUtils.interpolateBasis(motion, dir,
-//                                d -> d * 0.1, d -> 0));
-
-        }
     }
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        if (!target.isAttackable() || target instanceof Villager) {
-            return false;
-        }
-        Entity entity = this.getOwner();
-        // 防止击中仆从
-        if(
-                entity != null && (
-                        target instanceof TamableAnimal animal &&
-                        entity instanceof LivingEntity living &&
-                        animal.isOwnedBy(living)
-                )
-        ){
+        if(hitCount <= 0){
             return false;
         }
 
-        if(entity == null || !entity.isPassengerOfSameVehicle(target)) {
-            return true;
-        }
-        return target != entity;
+        return TEUtils.projectileCanHitEntityTest.test(this, target);
     }
 
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
-        Entity entity = entityHitResult.getEntity();
-        if (!level().isClientSide && entity instanceof LivingEntity living && getOwner() instanceof LivingEntity owner && owner != entity) {
+//        Entity entity = entityHitResult.getEntity();
+//        if (!level().isClientSide && entity instanceof LivingEntity living && getOwner() instanceof LivingEntity owner && owner != entity) {
             // 事件统一暴击判定 org.confluence.mod.common.event.game.entity.LivingEntityEvents.livingDamage$Pre
 //            if (random.nextFloat() < criticalChance) damage *= 1.5F;
 //            doHurt(living);
-        }
+//        }
     }
 
     @Override
@@ -249,17 +219,29 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         return collisionProperties;
     }
 
-    protected boolean doHurt(Entity living){
-        if(living instanceof LivingEntity hurter) {
-            float damage = getBaseDamage() * (attackDamage);
+    protected boolean doHurt(Entity target){
+        if(TEUtils.projectileCanHurtEntityTest.test(this, target)) {
+            float damage = getBaseDamage() * (attackDamageFactor);
+
+            LivingEntity hurter;
+            if(target instanceof LivingEntity living){
+                hurter = living;
+            }else if(target instanceof PartEntity<?> partEntity && partEntity.getParent() instanceof LivingEntity living){
+                hurter = living;
+            }else{
+                return false;
+            }
+
             if (getOwner() instanceof LivingEntity owner && projComponent != null)
                 projComponent.hitEffect().ifPresent(effect -> {
                     effect.applyAll(owner, hurter);
                 });
-            if (hurter.hurt(damageSource(), damage)) {
+
+            if (target.hurt(damageSource(), damage)) {
                 float attackKnockBack = getBaseKnockBack() + knockBack;
                 VectorUtils.knockBackA2B(this, hurter, attackKnockBack * 0.5, 0.2);
-                if (--hitCount == 0) {
+
+                if(--hitCount <= 0 && !level().isClientSide){
                     discard();
                 }
             }

@@ -2,7 +2,7 @@
     "type": "confluence:cooking_pot",
     "ingredients": [
         {
-            "tag": "confluence:fish_cooking"
+            "tag": "c:foods/raw_fish"
         }
     ],
     "result": {

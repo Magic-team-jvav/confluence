@@ -142,13 +142,7 @@ public final class ModFluids {
         addItem(PaintItems.SHADOW_PAINT.get(), PaintItems.ECHO_COATING.get());
         addItem(AccessoryItems.MECHANICAL_LENS.get(), AccessoryItems.SPECTRE_GOGGLES.get());
         // 微光箭转化
-        addItem(ArrowItems.FLAMING_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
-        addItem(ArrowItems.UNHOLY_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
-        addItem(ArrowItems.STAR_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
-        addItem(ArrowItems.HELLFIRE_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
-        addItem(ArrowItems.FROSTBURN_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
-        addItem(ArrowItems.BONE_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
-        addItem(Items.ARROW, ArrowItems.SHIMMER_ARROW.get());
+        addItem(ItemTags.ARROWS, ArrowItems.SHIMMER_ARROW.get(), 1);
         // 匣子转化
         addItem(CrateBlocks.PEARLWOOD_CRATE.get().asItem(), CrateBlocks.WOODEN_CRATE.get().asItem());
         addItem(CrateBlocks.MYTHRIL_CRATE.get().asItem(), CrateBlocks.IRON_CRATE.get().asItem());
@@ -180,7 +174,6 @@ public final class ModFluids {
         addItem(MaterialItems.PALLADIUM_INGOT.get(), MaterialItems.RAW_PALLADIUM.get());
         addItem(MaterialItems.COBALT_INGOT.get(), MaterialItems.RAW_COBALT.get());
         addItem(MaterialItems.HELLSTONE_INGOT.get(), MaterialItems.RAW_HELLSTONE.get());
-        addItem(MaterialItems.RAW_HELLSTONE.get(), MaterialItems.RAW_HELLSTONE.get());
         addItem(MaterialItems.TR_CRIMSON_INGOT.get(), MaterialItems.RAW_TR_CRIMSON.get());
         addItem(MaterialItems.DEMONITE_INGOT.get(), MaterialItems.RAW_DEMONITE.get());
         addItem(MaterialItems.METEORITE_INGOT.get(), MaterialItems.RAW_METEORITE.get());

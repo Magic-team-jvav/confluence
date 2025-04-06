@@ -82,6 +82,9 @@ public final class ModTags {
         public static final TagKey<Item> ORES_TUNGSTEN = c("ores/tungsten");
         public static final TagKey<Item> ORES_PLATINUM = c("ores/platinum");
 
+        public static final TagKey<Item> HAMMERS = c("tools/hammers");
+        public static final TagKey<Item> WEAPONS = c("weapons");
+
         public static final TagKey<Item> COINS = register("coins");
         public static final TagKey<Item> AMMO = register("ammo");
         public static final TagKey<Item> PET = register("pet");
@@ -103,19 +106,18 @@ public final class ModTags {
         public static final TagKey<Item> MARINE_GRAVEL = register("marine_gravel");
         public static final TagKey<Item> CORALS = register("corals");
         public static final TagKey<Item> EVIL_MATERIAL = register("evil_material");
-        public static final TagKey<Item> FISH_COOKING = register("fish_cooking");// 制作熟鱼
-        public static final TagKey<Item> SEAFOOD_DINNER_COOKING = register("seafood_dinner_cooking");// 制作海鲜大餐
+        // public static final TagKey<Item> FISH_COOKING = register("fish_cooking");// 制作熟鱼
+        public static final TagKey<Item> SEAFOOD_DINNER_MATERIALS = register("seafood_dinner_materials");// 制作海鲜大餐
         public static final TagKey<Item> GOLD_COOKING = register("gold_cooking");// 制作金美味
         public static final TagKey<Item> WOODEN_COMBUSTIBLES = register("wooden_combustibles");  // 可燃木材系列
-        public static final TagKey<Item> INITIAL_WOOD = register("initial_wood");  // 木套tag
-        public static final TagKey<Item> CHARCOAL_CAN_BE_BURNED = register("charcoal_can_be_burned");  // 可烧成木炭
+        // public static final TagKey<Item> INITIAL_WOOD = register("initial_wood");  // 木套tag
+        // public static final TagKey<Item> CHARCOAL_CAN_BE_BURNED = register("charcoal_can_be_burned");  // 可烧成木炭
         public static final TagKey<Item> LEAD_AND_IRON = register("lead_and_iron");
         public static final TagKey<Item> SHADOW_SCALE_AND_TISSUE_SAMPLE = register("shadow_scale_and_tissue_sample");
-        public static final TagKey<Item> DEMONITE_AND_CRIMSON_INGOT = register("demonite_and_crimson_ingot");
-        public static final TagKey<Item> HAMMER = register("hammer");
+        public static final TagKey<Item> EVIL_INGOT = register("evil_ingot");
         public static final TagKey<Item> MANA_WEAPON = register("mana_weapon");
         public static final TagKey<Item> PREFIX_UNIVERSAL_ONLY = register("prefix_universal_only");
-        public static final TagKey<Item> HARDMODE_ORES = register("hardmode_ores");
+        public static final TagKey<Item> HARDMODE_RAW_MATERIALS = register("hardmode_raw_materials");
         public static final TagKey<Item> WINGS = register("wings");
         public static final TagKey<Item> BOSS_SUMMONING = register("boss_summoning");
         public static final TagKey<Item> COAL_ORE_SMELTING = register("coal_ore_smelting");

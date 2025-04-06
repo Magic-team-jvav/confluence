@@ -20,7 +20,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.block.HorizontalDirectionalWithVerticalTwoPartBlock;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.entity.boss.QueenBee;
-import org.confluence.terraentity.init.TEEntities;
+import org.confluence.terraentity.init.entity.TEBossEntities;
 
 public class LarvaBlock extends HorizontalDirectionalWithVerticalTwoPartBlock {
     public static final MapCodec<LarvaBlock> CODEC = simpleCodec(LarvaBlock::new);
@@ -64,7 +64,7 @@ public class LarvaBlock extends HorizontalDirectionalWithVerticalTwoPartBlock {
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pMovedByPiston) {
         super.onRemove(state, level, pos, pNewState, pMovedByPiston);
         if (state.getValue(PART).isBase()) {
-            ModUtils.summonBoss(level, pos.getCenter(), new QueenBee(TEEntities.QUEEN_BEE.get(), level));
+            ModUtils.summonBoss(level, pos.getCenter(), new QueenBee(TEBossEntities.QUEEN_BEE.get(), level));
         }
     }
 

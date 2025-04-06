@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.entity.SignText;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.common.TombstoneBlock;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
@@ -69,23 +70,25 @@ public class TombstoneBoulder extends BoulderEntity {
     }
 
     public static void createTombstone(ServerPlayer serverPlayer) {
-        boolean isGolden = PlayerUtils.getMoney(serverPlayer) >= 100 * 100 * 10;
-        BlockState blockState = Util.getRandom(ModBlocks.TOMBSTONES.object2BooleanEntrySet().stream()
-                .filter(entry -> entry.getBooleanValue() == isGolden)
-                .map(entry -> entry.getKey().get().defaultBlockState())
-                .toArray(BlockState[]::new), serverPlayer.getRandom());
-        Level level = serverPlayer.level();
-        Vec3 position = serverPlayer.position();
-        TombstoneBoulder entity = new TombstoneBoulder(level, position, blockState);
-        entity.text = entity.text
-                .setMessage(0, serverPlayer.getCombatTracker().getDeathMessage())
-                .setMessage(1, Component.literal(DATE_FORMAT.format(Calendar.getInstance().getTime())));
-        if (level.getBlockState(serverPlayer.blockPosition().below()).isAir()) {
-            entity.setVertical(true);
-        } else {
-            entity.targetTo(level.getNearestPlayer(position.x, position.y, position.z, BoulderEntity.SEARCH_RANGE, Entity::isAlive));
-            entity.setVertical(false);
+        if (CommonConfigs.DROPS_TOMBSTONE.get()) {
+            boolean isGolden = PlayerUtils.getMoney(serverPlayer) >= 100 * 100 * 10;
+            BlockState blockState = Util.getRandom(ModBlocks.TOMBSTONES.object2BooleanEntrySet().stream()
+                    .filter(entry -> entry.getBooleanValue() == isGolden)
+                    .map(entry -> entry.getKey().get().defaultBlockState())
+                    .toArray(BlockState[]::new), serverPlayer.getRandom());
+            Level level = serverPlayer.level();
+            Vec3 position = serverPlayer.position();
+            TombstoneBoulder entity = new TombstoneBoulder(level, position, blockState);
+            entity.text = entity.text
+                    .setMessage(0, serverPlayer.getCombatTracker().getDeathMessage())
+                    .setMessage(1, Component.literal(DATE_FORMAT.format(Calendar.getInstance().getTime())));
+            if (level.getBlockState(serverPlayer.blockPosition().below()).isAir()) {
+                entity.setVertical(true);
+            } else {
+                entity.targetTo(level.getNearestPlayer(position.x, position.y, position.z, BoulderEntity.SEARCH_RANGE, Entity::isAlive));
+                entity.setVertical(false);
+            }
+            level.addFreshEntity(entity);
         }
-        level.addFreshEntity(entity);
     }
 }

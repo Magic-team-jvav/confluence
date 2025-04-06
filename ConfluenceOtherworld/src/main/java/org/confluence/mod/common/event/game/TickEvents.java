@@ -32,7 +32,7 @@ import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.entity.boss.EyeOfCthulhu;
-import org.confluence.terraentity.init.TEEntities;
+import org.confluence.terraentity.init.entity.TEBossEntities;
 
 import java.util.Map;
 import java.util.Set;
@@ -55,13 +55,13 @@ public final class TickEvents {
             ConfluenceData.get(serverLevel).setWindSpeed(factorX, factorZ);
         } else if (dayTime == 13500L) { // 19:30
             KillBoard killBoard = ConfluenceData.get(serverLevel).getKillBoard();
-            if (!killBoard.isDefeated(TEEntities.EYE_OF_CTHULHU.get()) && serverLevel.players().stream().anyMatch(player -> player.getMaxHealth() >= 40 && player.getArmorValue() >= 18)) { //todo 在NPC条件实装时，再改回10点防御值
+            if (!killBoard.isDefeated(TEBossEntities.EYE_OF_CTHULHU.get()) && serverLevel.players().stream().anyMatch(player -> player.getMaxHealth() >= 40 && player.getArmorValue() >= 18)) { //todo 在NPC条件实装时，再改回10点防御值
                 if (/* todo NPC check */serverLevel.random.nextFloat() < 0.3333F) {
                     EntityDelaySpawner.INSTANCE.pushBoss(1350, new EyeOfCthulhu(serverLevel));
                     serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("event.confluence.eye_of_cthulhu").withStyle(ChatFormatting.GREEN), false);
                 }
             }
-            if (killBoard.isAnyDefeated(TEEntities.EATER_OF_WORLDS.get(), TEEntities.BRAIN_OF_CTHULHU.get()) && serverLevel.random.nextFloat() < 0.02F) {
+            if (killBoard.isAnyDefeated(TEBossEntities.EATER_OF_WORLDS.get(), TEBossEntities.BRAIN_OF_CTHULHU.get()) && serverLevel.random.nextFloat() < 0.02F) {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
             }
         }

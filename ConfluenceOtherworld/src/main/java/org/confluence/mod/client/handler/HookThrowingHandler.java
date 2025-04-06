@@ -50,7 +50,7 @@ public final class HookThrowingHandler {
             }
             if (hookEntity.getHookState() == AbstractHookEntity.HookState.HOOKED) {
                 Input input = localPlayer.input;
-                if (input.jumping) {
+                if (input.jumping || localPlayer.vehicle != null) {
                     HookThrowingPacketC2S.pop(id);
                     PlayerJumpHandler.multiJump(localPlayer, 1.25);
                     return;

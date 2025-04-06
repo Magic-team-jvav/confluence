@@ -55,6 +55,7 @@
         "integration.terra_curio.WorkshopBlockMixin",
         "integration.terra_curio.WorkshopMenuMixin",
         "integration.terra_curio.WorkshopRecipeMixin",
+        "integration.terra_entity.DemonEyeMixin",
         "integration.terra_entity.TEUtilsMixin",
         "integration.terrablender.MixinMultiNoiseBiomeSourceSquared",
         "integration.touhoulittlemaid.MaidFishingHookMixin",

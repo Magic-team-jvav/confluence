@@ -17,7 +17,7 @@
         "a": {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "item": "confluence:topaz"
+                "item": "confluence:topaz_chain"
             },
             "count": 1
         }

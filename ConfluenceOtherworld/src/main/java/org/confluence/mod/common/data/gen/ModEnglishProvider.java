@@ -199,56 +199,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.bee_keeper.1", "\"Sweet on the outside, sharp on the inside.\"");
 
 
-        add("painting.confluence.magic_harp.title", "MAGIC_HARP");
-        add("painting.confluence.magic_harp.author", "BiliBili_魔法竖琴waaa，看上去傻傻的...");
-        add("painting.confluence.westernat.title", "WESTERNAT");
-        add("painting.confluence.westernat.author", "BiliBili_Westernat233，MC21世纪以来，最具有印象派主义的白桦树绘画!");
-        add("painting.confluence.cooobrid.title", "COOOBRID");
-        add("painting.confluence.cooobrid.author", "BiliBili_事一只一只一只鸽子，事一只只会咕咕咕的鸽子");
-        add("painting.confluence.nakinosi.title", "NAKINOSI");
-        add("painting.confluence.nakinosi.author", "BiliBili_咕咕咕的屑枕头，世界上最好看的渐变头发！");
-        add("painting.confluence.maker.title", "MAKER");
-        add("painting.confluence.maker.author", "BiliBili_Maker-2333，是Maker不是Marker！");
-        add("painting.confluence.mustard_oasis.title", "MUSTARD_OASIS");
-        add("painting.confluence.mustard_oasis.author", "BiliBili_芥末Oasis，芥末配fish，豪赤😋");
-        add("painting.confluence.a_pigeon_delight.title", "A_PIGEON_DELIGHT");
-        add("painting.confluence.sheep_mink.title", "SHEEP_MINK");
-        add("painting.confluence.sheep_mink.author", "BiliBili_眠羊敏克，“啊？我打json？”");
-        add("painting.confluence.voila.title", "VOILA");
-        add("painting.confluence.voila.author", "BiliBili_风起下片灬");
-        add("painting.confluence.xuanyu_1725.title", "XUANYU");
-        add("painting.confluence.xuanyu_1725.author", "BiliBili_轩宇1725");
-        add("painting.confluence.shadow_end.title", "SHADOW_END");
-        add("painting.confluence.shadow_end.author", "BiliBili_影末子");
-        add("painting.confluence.kl_jiana.title", "Kaleb Langley");
-        add("painting.confluence.kl_jiana.author", "BiliBili_KalebLangley");
-        add("painting.confluence.hunao.title", "HUNAO");
-        add("painting.confluence.hunao.author", "BiliBili_小胡闹鸭");
-        add("painting.confluence.sihuai_2412.title", "SIHUAI_2412");
-        add("painting.confluence.sihuai_2412.author", "BiliBili_思怀_2412");
-        add("painting.confluence.old_sheep.title", "OLD_SHEEP");
-        add("painting.confluence.old_sheep.author", "BiliBili_我叫老绵羊");
-        add("painting.confluence.slime_dragon.title", "SLIME_DRAGON");
-        add("painting.confluence.slime_dragon.author", "BiliBili_小史龙吖Slime_Dragon");
-        add("painting.confluence.khaki_coffee_beans.title", "KHAKI_COFFEE_BEANS");
-        add("painting.confluence.khaki_coffee_beans.author", "BiliBili_卡其色咖啡豆");
-        add("painting.confluence.uqtqu_day.title", "UQTQU_DAY");
-        add("painting.confluence.uqtqu_day.author", "BiliBili__昼泽_");
-        add("painting.confluence.emerald_shenyi.title", "EMERALD_SHENYI");
-        add("painting.confluence.emerald_shenyi.author", "BiliBili_Emerald_审翼");
-        add("painting.confluence.chromatic.title", "CHROMATIC");
-        add("painting.confluence.chromatic.author", "BiliBili_陌林_Chromatic");
-        add("painting.confluence.the_great_papyrus.title", "THE_GREAT_PAPYRUS");
-        add("painting.confluence.the_great_papyrus.author", "BiliBili_事伟大的papyrus呀");
-        add("painting.confluence.kulou_d.title", "KULOU_D");
-        add("painting.confluence.kulou_d.author", "BiliBili_KuLou_D");
-        add("painting.confluence.in_the_gap_of_the_cloud_sea.title", "云海隙间");
-        add("painting.confluence.in_the_gap_of_the_cloud_sea.author", "鹰角豆");
-
-        add("painting.confluence.confluence.title", "CONFLUENCE");
-        add("painting.confluence.confluence.author", "Confluence Of The Afterlife");
-        add("painting.confluence.the_twilight_of_dawn.title", "The Twilight Of Dawn");
-        add("painting.confluence.the_twilight_of_dawn.author", "The converging journey has reached a fork, and the moment to face powerful foes will inevitably arrive.");
 
         // new
         add("achievements.toast.complete", "Achievement achieved!");
@@ -389,6 +339,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "Decides whether to return the glass bottle after using a potion");
         add("confluence.configuration.rightClickRideMinecart", "Right click to ride a minecart");
         add("confluence.configuration.rightClickRideMinecart.tooltip", "When enabled, when you right-click on a rail, it will automatically ride a minecart");
+        add("confluence.configuration.dropsTombstone", "Drops Tombstone");
+        add("confluence.configuration.dropsTombstone.tooltip", "When enabled，allows player to drops tombstone after death");
         add("confluence.configuration.defaultRespawnTimeMin", "Default Minimum Respawn Time");
         add("confluence.configuration.defaultRespawnTimeMin.tooltip", "Set the default minimum respawn time");
         add("confluence.configuration.defaultRespawnTimeMax", "Default Maximum Respawn Time");
@@ -540,6 +492,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("resourcepack.terraria_art", "Terraria Art");
         add("resourcepack.terraria_armor", "Terraria-Like Armor");
 
+
         add("event.confluence.blood_moon", "The Blood Moon is rising...");
         add("event.confluence.meteorite", "A meteorite has landed!");
         add("event.confluence.meteorite.ready", "A meteorite will falling!");
@@ -554,6 +507,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.minecraft.villager.confluence.banker", "Banker");
         add("entity.minecraft.villager.sky", "Sky Miller");
         add("entity.minecraft.villager.coin", "Banker");
+        add("entity.minecraft.villager.chef", "Chef");
         add("entity.confluence.dart", "Dart");
         add("entity.confluence.frozen_zombie", "Frozen Zombie");
         add("entity.confluence.raincoat_zombie", "Raincoat Zombie");
@@ -662,6 +616,13 @@ public class ModEnglishProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.spore_root_set.data.2", "Summon damage increased by 3%");
         add("equipment_benediction.set_switcher.confluence.spore_root_set.data.3", "Summon damage increased by 2%");
         add("equipment_benediction.set_switcher.confluence.spore_root_set.data.4", "Summon limit increased by 1");
+
+        add("equipment_benediction.set_switcher.confluence.heim_set", "Abyssal Scale Set");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.0", "Extend underwater breathing time by 5% and increase melee damage by 1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.1", "After successfully using the shield to intercept the next attack, increase damage by 20% within three seconds. The damage increase stops when you launch an attack and hit or get hit during these three seconds. Increase melee damage by 1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.2", "Increase critical hit rate by 2% and increase melee damage by 1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.3", "Increase underwater movement speed by 5% and increase melee damage by 1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.4", "Grant you 4 HP of damage absorption, and grant it again every 5 minutes");
 
         add("equipment_benediction.set_switcher.confluence.cactus_set", "Cactus Set");
         add("equipment_benediction.set_switcher.confluence.cactus_set.data.0", "Attackers take damage from cactus thorns");

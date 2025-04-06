@@ -2,17 +2,12 @@ package org.confluence.mod.common.entity.projectile.sword;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModParticleTypes;
-import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -45,9 +40,9 @@ public class LightBaneProjectile extends SwordProjectile {
     }
 
     @Override
-    protected boolean doHurt(Entity living) {
-        if(super.doHurt(living)){
-            hits.add(living);
+    protected boolean doHurt(Entity target) {
+        if(super.doHurt(target)){
+            hits.add(target);
             ((ServerLevel) level()).sendParticles(ModParticleTypes.LIGHT_BANE.get(),getX(),getY(),getZ(),1,0,0,0,0);
             return true;
         }

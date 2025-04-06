@@ -6,6 +6,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -36,7 +37,7 @@ public abstract class AbstractManaProjectile extends Projectile {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        if (!target.canBeHitByProjectile()) return false;
+        if (!target.canBeHitByProjectile() || target instanceof ArmorStand) return false;
         Entity entity = getOwner();
         return entity == null || (entity != target && !entity.isPassengerOfSameVehicle(target));
     }

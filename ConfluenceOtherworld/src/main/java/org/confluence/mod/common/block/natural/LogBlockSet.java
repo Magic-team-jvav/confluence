@@ -149,6 +149,7 @@ public class LogBlockSet {
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenDoors = provider.tag(BlockTags.WOODEN_DOORS);
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> leaves = provider.tag(BlockTags.LEAVES);
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> signs = provider.tag(BlockTags.SIGNS);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cStrippedLogs = provider.tag(Tags.Blocks.STRIPPED_LOGS);
         for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
             Builder builder1 = logBlocks.builder;
             planks.add(builder1.PLANKS.get());
@@ -163,6 +164,7 @@ public class LogBlockSet {
                 completes.add(value);
                 if (builder1.ignitedByLava) burn.add(value);
                 logs.add(value);
+                cStrippedLogs.add(value);
             }
             if (builder1.WOOD != null) {
                 RotatedPillarBlock value = builder1.WOOD.get();

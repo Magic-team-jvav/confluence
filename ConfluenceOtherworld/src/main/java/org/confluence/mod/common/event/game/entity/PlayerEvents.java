@@ -3,7 +3,6 @@ package org.confluence.mod.common.event.game.entity;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -18,8 +17,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
@@ -40,7 +37,9 @@ import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.entity.npc.AbstractTerraNPC;
 import org.confluence.mod.common.init.*;
-import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
 import org.confluence.mod.common.item.common.ColoredItem;
@@ -330,28 +329,6 @@ public final class PlayerEvents {
     public static void startTracking(PlayerEvent.StartTracking event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer && event.getTarget() instanceof ServerPlayer player) {
             ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, player, player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
-        }
-    }
-
-    @SubscribeEvent
-    public static void Checking(PlayerInteractEvent.RightClickItem event) {
-        Player player = event.getEntity();
-        ItemStack itemStack = event.getItemStack();
-        Level level = event.getLevel();
-        if (player.hasEffect(ModEffects.CHOKING) && !level.isClientSide) {
-            if (itemStack.getItem().getFoodProperties(itemStack, player) != null) {
-                event.setCanceled(true);
-                player.sendSystemMessage(Component.translatable("message.confluence.choking"));
-                return;
-            }
-            boolean isWaterBottle = itemStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).is(Potions.WATER);
-            boolean isBottledWater = itemStack.is(PotionItems.BOTTLED_WATER);
-            if (isWaterBottle || isBottledWater) {
-                player.removeEffect(ModEffects.CHOKING);
-                ItemStack newItemStack = isWaterBottle ? new ItemStack(Items.GLASS_BOTTLE) : new ItemStack(PotionItems.BOTTLE.get());
-                if (!player.isCreative()) player.getInventory().add(newItemStack);
-            }
-            if (!player.isCreative()) itemStack.shrink(1);
         }
     }
 }

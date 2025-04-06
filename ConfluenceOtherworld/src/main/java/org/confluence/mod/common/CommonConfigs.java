@@ -16,6 +16,7 @@ public final class CommonConfigs {
     public static BooleanValue RIGHT_CLICK_RIDE_MINECART;
 
     public static BooleanValue SHOW_MONEY_DROPS;
+    public static BooleanValue DROPS_TOMBSTONE;
     public static IntValue DEFAULT_RESPAWN_TIME_MIN;
     public static IntValue DEFAULT_RESPAWN_TIME_MAX;
     public static IntValue BOSS_RESPAWN_TIME_MIN;
@@ -42,6 +43,7 @@ public final class CommonConfigs {
 
         BUILDER.push("PlayerDeath");
         SHOW_MONEY_DROPS = BUILDER.define("showMoneyDrops", true);
+        DROPS_TOMBSTONE = BUILDER.define("dropsTombstone", true);
         DEFAULT_RESPAWN_TIME_MIN = BUILDER.comment("The min value of the default respawn time").defineInRange("defaultRespawnTimeMin", 3, 0, Integer.MAX_VALUE);
         DEFAULT_RESPAWN_TIME_MAX = BUILDER.comment("The max value of the default respawn time").defineInRange("defaultRespawnTimeMax", 8, 0, Integer.MAX_VALUE);
         BOSS_RESPAWN_TIME_MIN = BUILDER.comment("The min respawn time when the boss is present").defineInRange("bossRespawnTimeMin", 9, 0, Integer.MAX_VALUE);

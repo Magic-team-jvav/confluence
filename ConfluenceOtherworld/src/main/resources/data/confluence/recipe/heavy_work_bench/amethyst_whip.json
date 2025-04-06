@@ -17,7 +17,7 @@
         "a": {
             "type": "terra_curio:amount_ingredient",
             "ingredient": {
-                "item": "confluence:tr_amethyst"
+                "item": "confluence:amethyst_chain"
             },
             "count": 1
         }

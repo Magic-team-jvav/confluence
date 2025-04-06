@@ -83,7 +83,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("item.confluence.dongdongs_flatbread.tooltip.1", "刚在下界岩上考好的饼，快来尝尝吧！");
 
 
-
         add("tooltip.item.confluence.boredoms_pact_falling_resolve.0", "「无聊之咒·陨志」");
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.1", "(Boredom's Pact - Falling Resolve)");
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.2", "           ");
@@ -262,7 +261,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.bee_keeper.1", "“口蜜腹剑”");
 
 
-
         add("confluence.configuration.achievementToast", "启用泰拉样式成就");
         add("confluence.configuration.achievementToast.tooltip", "如果想使用原版样式进度的话就关闭它");
         add("confluence.configuration.playerOurMusic", "启用泰拉音乐");
@@ -289,6 +287,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "决定你使用药水后是否返还瓶子");
         add("confluence.configuration.rightClickRideMinecart", "右键上矿车");
         add("confluence.configuration.rightClickRideMinecart.tooltip", "开启后，当你右键点击轨道时，将自动乘坐矿车");
+        add("confluence.configuration.dropsTombstone", "掉落墓石");
+        add("confluence.configuration.dropsTombstone.tooltip", "启用时，允许玩家死亡后掉落墓石");
         add("confluence.configuration.defaultRespawnTimeMin", "默认最小重生时间");
         add("confluence.configuration.defaultRespawnTimeMin.tooltip", "设置默认最小重生时间");
         add("confluence.configuration.defaultRespawnTimeMax", "默认最大重生时间");
@@ -383,57 +383,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("biome.confluence.ash_wasteland", "灰烬荒地");
         add("biome.confluence.ash_forest", "白蜡木林");
 
-        add("painting.confluence.magic_harp.title", "MAGIC_HARP");
-        add("painting.confluence.magic_harp.author", "BiliBili_魔法竖琴waaa，看上去傻傻的...");
-        add("painting.confluence.westernat.title", "WESTERNAT");
-        add("painting.confluence.westernat.author", "BiliBili_Westernat233，MC21世纪以来，最具有印象派主义的白桦树绘画!");
-        add("painting.confluence.cooobrid.title", "COOOBRID");
-        add("painting.confluence.cooobrid.author", "BiliBili_事一只一只一只鸽子，事一只只会咕咕咕的鸽子");
-        add("painting.confluence.nakinosi.title", "NAKINOSI");
-        add("painting.confluence.nakinosi.author", "BiliBili_咕咕咕的屑枕头，世界上最好看的渐变头发！");
-        add("painting.confluence.maker.title", "MAKER");
-        add("painting.confluence.maker.author", "BiliBili_Maker-2333，是Maker不是Marker！");
-        add("painting.confluence.mustard_oasis.title", "MUSTARD_OASIS");
-        add("painting.confluence.mustard_oasis.author", "BiliBili_芥末Oasis，芥末配fish，豪赤😋");
-        add("painting.confluence.a_pigeon_delight.title", "A_PIGEON_DELIGHT");
-        add("painting.confluence.a_pigeon_delight.author", "BiliBili_一只鸽子悦");
-        add("painting.confluence.sheep_mink.title", "SHEEP_MINK");
-        add("painting.confluence.sheep_mink.author", "BiliBili_眠羊敏克，“啊？我打json？”");
-        add("painting.confluence.voila.title", "VOILA");
-        add("painting.confluence.voila.author", "BiliBili_风起下片灬");
-        add("painting.confluence.xuanyu_1725.title", "XUANYU");
-        add("painting.confluence.xuanyu_1725.author", "BiliBili_轩宇1725");
-        add("painting.confluence.shadow_end.title", "SHADOW_END");
-        add("painting.confluence.shadow_end.author", "BiliBili_影末子");
-        add("painting.confluence.kl_jiana.title", "Kaleb Langley");
-        add("painting.confluence.kl_jiana.author", "BiliBili_KalebLangley");
-        add("painting.confluence.hunao.title", "HUNAO");
-        add("painting.confluence.hunao.author", "BiliBili_小胡闹鸭");
-        add("painting.confluence.sihuai_2412.title", "SIHUAI_2412");
-        add("painting.confluence.sihuai_2412.author", "BiliBili_思怀_2412");
-        add("painting.confluence.old_sheep.title", "OLD_SHEEP");
-        add("painting.confluence.old_sheep.author", "BiliBili_我叫老绵羊");
-        add("painting.confluence.slime_dragon.title", "SLIME_DRAGON");
-        add("painting.confluence.slime_dragon.author", "BiliBili_小史龙吖Slime_Dragon");
-        add("painting.confluence.khaki_coffee_beans.title", "KHAKI_COFFEE_BEANS");
-        add("painting.confluence.khaki_coffee_beans.author", "BiliBili_卡其色咖啡豆");
-        add("painting.confluence.uqtqu_day.title", "UQTQU_DAY");
-        add("painting.confluence.uqtqu_day.author", "BiliBili__昼泽_，✞ʚ散兵重度依赖ɞ✟⁺");
-        add("painting.confluence.emerald_shenyi.title", "EMERALD_SHENYI");
-        add("painting.confluence.emerald_shenyi.author", "BiliBili_Emerald_审翼");
-        add("painting.confluence.chromatic.title", "CHROMATIC");
-        add("painting.confluence.chromatic.author", "BiliBili_陌林_Chromatic");
-        add("painting.confluence.the_great_papyrus.title", "THE_GREAT_PAPYRUS");
-        add("painting.confluence.the_great_papyrus.author", "BiliBili_事伟大的papyrus呀");
-        add("painting.confluence.kulou_d.title", "KULOU_D");
-        add("painting.confluence.kulou_d.author", "BiliBili_KuLou_D");
-        add("painting.confluence.in_the_gap_of_the_cloud_sea.title", "云海隙间");
-        add("painting.confluence.in_the_gap_of_the_cloud_sea.author", "鹰角豆");
-
-        add("painting.confluence.confluence.title", "CONFLUENCE");
-        add("painting.confluence.confluence.author", "汇流来世");
-        add("painting.confluence.the_twilight_of_dawn.title", "The Twilight Of Dawn");
-        add("painting.confluence.the_twilight_of_dawn.author", "汇聚的旅程走到了分岔口，迎接强敌的时刻终将来临。");
 
         // new
         add("achievements.toast.complete", "成就达成！");
@@ -688,7 +637,6 @@ public class ModChineseProvider extends LanguageProvider {
 
 
         add("resourcepack.terraria_art", "泰拉艺术");
-        add("resourcepack.otherworldly_music", "来世音乐包");
         add("resourcepack.terraria_armor", "泰拉盔甲样式材质");
 
         add("event.confluence.blood_moon", "血月正在升起...");
@@ -705,6 +653,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("entity.minecraft.villager.confluence.banker", "银行家");
         add("entity.minecraft.villager.sky", "天师");
         add("entity.minecraft.villager.coin", "银行家");
+        add("entity.minecraft.villager.chef", "厨师");
         add("entity.confluence.dart", "毒镖");
         add("entity.confluence.frozen_zombie", "冰冻僵尸");
         add("entity.confluence.raincoat_zombie", "雨衣僵尸");
@@ -787,6 +736,13 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("equipment_benediction.set_switcher.confluence.cactus_set", "仙人掌套装");
         add("equipment_benediction.set_switcher.confluence.cactus_set.data.0", "攻击者因为仙人掌尖刺受到伤害");
+
+        add("equipment_benediction.set_switcher.confluence.heim_set", "渊鳞套装");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.0", "延长水下呼吸时间5%，近战伤害提高1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.1", "成功使用护盾拦截下一次攻击后三秒内伤害提高20%，三秒提高过程中你发动攻击命中或被击中时停止，近战伤害提高1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.2", "增加2%暴击率，近战伤害提高1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.3", "提高水下移动速度5%，近战伤害提高1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.4", "赋予你4点血量的伤害吸收，每隔5分钟再次赋予");
 
         add("block.confluence.larva", "幼虫");
 
@@ -1748,9 +1704,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.TERRAGRIM.get(), "泰拉魔刃");
 
 
-
-
-
         add(AxeItems.COPPER_AXE.get(), "铜斧");
         add(AxeItems.TIN_AXE.get(), "锡斧");
         add(AxeItems.LEAD_AXE.get(), "铅斧");
@@ -1896,7 +1849,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.ROTTEN_BONE_DUST.get(), "朽骨齑尘");
         add(ConsumableItems.BLOODSTAINED_POWDER.get(), "血凝痂粉");
 
-        add(TreasureBagItems.KING_SLIME_TREASURE_BAG.get(), "史莱姆之王宝藏袋");
+        add(TreasureBagItems.KING_SLIME_TREASURE_BAG.get(), "史莱姆王宝藏袋");
         add(TreasureBagItems.EYE_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之眼宝藏袋");
         add(TreasureBagItems.EATER_OF_WORLDS_TREASURE_BAG.get(), "世界吞噬怪宝藏袋");
         add(TreasureBagItems.BRAIN_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之脑宝藏袋");
@@ -1934,7 +1887,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.PERPLEXED_CAT_MEDAL.get(), "疑惑猫猫勋章");
         add(ModItems.CANDY_SWORD.get(), "糖果剑");
         add(ModItems.PULSAR.get(), "脉冲星");
-
 
 
         add(ModItems.CATTAILS.get(), "香蒲");
@@ -2392,7 +2344,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.STAR_FRUIT.get(), "杨桃");
         add(FoodItems.POMEGRANATE.get(), "番石榴");
         add(FoodItems.RAMBUTAN.get(), "红毛丹");
-        add(FoodItems.PEELED_SUGAR_TANGERINE.get(), "拨开的砂糖橘");
+        add(FoodItems.PEELED_SUGAR_TANGERINE.get(), "剥开的砂糖橘");
         add(FoodItems.COOKED_SHRIMP.get(), "熟虾");
         add(FoodItems.ESCARGOT.get(), "食用蜗牛");
         add(FoodItems.FROGGLE_BUNWICH.get(), "蛙腿三明治");
@@ -2501,10 +2453,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.TILAPIA.get(), "罗非鱼");
 
 
-        add(FoodItems.FROG_MEAT.get(), "青蛙肉");
-        add(FoodItems.SQUIRREL_MEAT.get(), "松鼠肉");
-        add(FoodItems.BIRD_MEAT.get(), "鸟肉");
-        add(FoodItems.DUCK_MEAT.get(), "鸭肉");
+        add(FoodItems.RAW_FROG.get(), "生青蛙肉");
+        add(FoodItems.RAW_SQUIRREL.get(), "生松鼠肉");
+        add(FoodItems.RAW_BIRD.get(), "生鸟肉");
+        add(FoodItems.RAW_DUCK.get(), "生鸭肉");
 
         add(FoodItems.WATERLEAF_SEED.get(), "幌菊种子");
         add(FoodItems.FIREBLOSSOM_SEED.get(), "火焰花种子");
@@ -2553,7 +2505,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(PotionItems.FLIPPER_POTION.get(), "脚蹼药水");
         add(PotionItems.ARCHERY_POTION.get(), "箭术药水");
         add(PotionItems.HEART_REACH_POTION.get(), "拾心药水");
-        add(PotionItems.GILLS_POTION.get(), "鱼腮药水");
+        add(PotionItems.GILLS_POTION.get(), "鱼鳃药水");
         add(PotionItems.INVISIBILITY_POTION.get(), "隐形药水");
         add(PotionItems.WORMHOLE_POTION.get(), "虫洞药水");
         add(PotionItems.MINING_POTION.get(), "采矿药水");

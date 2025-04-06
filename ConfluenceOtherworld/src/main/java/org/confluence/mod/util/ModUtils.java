@@ -116,14 +116,14 @@ public final class ModUtils {
      * @see ModUtils#isMaster(Level, BlockPos)
      */
     public static boolean isAtLeastExpert(Level level, BlockPos pos) {
-        return level.getCurrentDifficultyAt(pos).getEffectiveDifficulty() >= 1;
+        return level.getCurrentDifficultyAt(pos).getEffectiveDifficulty() >= 1.5F;
     }
 
     /**
      * 为大师?在处理if...else if时应先使用此方法
      */
     public static boolean isMaster(Level level, BlockPos pos) {
-        return level.getCurrentDifficultyAt(pos).getEffectiveDifficulty() >= 2;
+        return level.getCurrentDifficultyAt(pos).getEffectiveDifficulty() >= 2.25F;
     }
 
     /**
@@ -136,9 +136,9 @@ public final class ModUtils {
      */
     public static <T> T switchByDifficulty(Level level, BlockPos blockPos, T classic, T expert, T master) {
         float difficulty = level.getCurrentDifficultyAt(blockPos).getEffectiveDifficulty();
-        if (difficulty >= 2) return master;
-        if (difficulty >= 1) return expert;
-        return classic;
+        if (difficulty >= 2.25F) return master;
+        if (difficulty >= 1.5F) return expert;
+        return classic; // 0.75F
     }
 
     /**
@@ -153,9 +153,9 @@ public final class ModUtils {
     public static <T> T switchByDifficulty(Level level, BlockPos blockPos, T classic, T expert, T master, T legendary) {
         float difficulty = level.getCurrentDifficultyAt(blockPos).getEffectiveDifficulty();
         if (difficulty >= 3) return legendary;
-        if (difficulty >= 2) return master;
-        if (difficulty >= 1) return expert;
-        return classic;
+        if (difficulty >= 2.25F) return master;
+        if (difficulty >= 1.5F) return expert;
+        return classic; // 0.75F
     }
 
     /**

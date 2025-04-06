@@ -27,7 +27,7 @@ import org.confluence.mod.util.color.IntegerRGB;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.entity.boss.BrainOfCthulhu;
-import org.confluence.terraentity.init.TEEntities;
+import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.jetbrains.annotations.Nullable;
 
 public class CrimsonHeartBlock extends Block {
@@ -77,7 +77,7 @@ public class CrimsonHeartBlock extends Block {
             }
 
             if (data.updateEvilBrokenCount()) {
-                ModUtils.summonBoss(level, center, new BrainOfCthulhu(TEEntities.BRAIN_OF_CTHULHU.get(), level));
+                ModUtils.summonBoss(level, center, new BrainOfCthulhu(TEBossEntities.BRAIN_OF_CTHULHU.get(), level));
             }
         }
     }

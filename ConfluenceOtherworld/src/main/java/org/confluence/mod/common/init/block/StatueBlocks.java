@@ -3,7 +3,6 @@ package org.confluence.mod.common.init.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -24,14 +23,12 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.block.common.StatueBlock;
 import org.confluence.mod.common.block.functional.BehaviourStatueBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
-import org.confluence.mod.common.data.gen.ModBlockTagsProvider;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ModItems;
@@ -41,7 +38,7 @@ import org.confluence.terraentity.entity.monster.AbstractMonster;
 import org.confluence.terraentity.entity.monster.demoneye.DemonEye;
 import org.confluence.terraentity.entity.monster.prefab.FlyMonsterPrefab;
 import org.confluence.terraentity.entity.monster.slime.BaseSlime;
-import org.confluence.terraentity.init.TEEntities;
+import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,10 +130,10 @@ public class StatueBlocks {
     // Blood Zombie Statue
     public static final Supplier<BehaviourStatueBlock> BONE_SKELETON_STATUE = registerSimpleSummon("bone_skeleton_statue", true, level -> new Skeleton(EntityType.SKELETON, level));
     // Chest Statue
-    public static final Supplier<BehaviourStatueBlock> CORRUPT_STATUE = registerSimpleSummon("corrupt_statue", true, level -> new AbstractMonster(TEEntities.EATER_OF_SOULS.get(), level, FlyMonsterPrefab.EATER_OF_SOULS_BUILDER.get()));
+    public static final Supplier<BehaviourStatueBlock> CORRUPT_STATUE = registerSimpleSummon("corrupt_statue", true, level -> new AbstractMonster(TEMonsterEntities.EATER_OF_SOULS.get(), level, FlyMonsterPrefab.EATER_OF_SOULS_BUILDER.get()));
     // Crab Statue
-    public static final Supplier<BehaviourStatueBlock> DRIPPLER_STATUE = registerSimpleSummon("drippler_statue", true, level -> new AbstractMonster(TEEntities.DRIPPLER.get(), level, FlyMonsterPrefab.DRIPPLER_BUILDER.get()));
-    public static final Supplier<BehaviourStatueBlock> EYEBALL_STATUE = registerSimpleSummon("eyeball_statue", true, level -> new DemonEye(TEEntities.DEMON_EYE.get(), level));
+    public static final Supplier<BehaviourStatueBlock> DRIPPLER_STATUE = registerSimpleSummon("drippler_statue", true, level -> new AbstractMonster(TEMonsterEntities.DRIPPLER.get(), level, FlyMonsterPrefab.DRIPPLER_BUILDER.get()));
+    public static final Supplier<BehaviourStatueBlock> EYEBALL_STATUE = registerSimpleSummon("eyeball_statue", true, level -> new DemonEye(TEMonsterEntities.DEMON_EYE.get(), level));
     // Goblin Statue
     // Granite Golem Statue
     // Harpy Statue
@@ -153,7 +150,7 @@ public class StatueBlocks {
         skeleton.setPos(pos);
         return skeleton;
     }, entity -> entity.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY)));
-    public static final Supplier<BehaviourStatueBlock> SLIME_STATUE = registerSimpleSummon("slime_statue", false, level -> new BaseSlime(TEEntities.BLUE_SLIME.get(), level, 0x73BCF4, 2));
+    public static final Supplier<BehaviourStatueBlock> SLIME_STATUE = registerSimpleSummon("slime_statue", false, level -> new BaseSlime(TEMonsterEntities.BLUE_SLIME.get(), level, 0x73BCF4, 2));
     // Undead Viking Statue
     // Unicorn Statue
     // Wall Creeper Statue
@@ -259,10 +256,8 @@ public class StatueBlocks {
         BEHAVIOUR_STATUES.add(block);
         return block;
     }
-    public static void acceptTags(ModBlockTagsProvider provider) {
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithPickaxe = provider.tag(BlockTags.MINEABLE_WITH_PICKAXE);
-        for (DeferredHolder<Block, ? extends Block> statueblock : BLOCKS.getEntries()) {
-            mineableWithPickaxe.add(statueblock.get());
-        }
+
+    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> tag) {
+        BLOCKS.getEntries().forEach(block -> tag.add(block.get()));
     }
 }

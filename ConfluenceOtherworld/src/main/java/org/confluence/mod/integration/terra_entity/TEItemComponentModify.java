@@ -47,6 +47,7 @@ public class TEItemComponentModify {
 
             // 设置无限耐久
         TEBoomerangItems.ITEMS.getEntries().forEach(i->event.modify(i.get(), b->b.set(DataComponents.UNBREAKABLE, new Unbreakable(true))));
+        TEWhipItems.ITEMS.getEntries().forEach(i->event.modify(i.get(), b->b.set(DataComponents.UNBREAKABLE, new Unbreakable(true))));
 
     }
 }

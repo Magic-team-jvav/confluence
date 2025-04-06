@@ -174,7 +174,6 @@ public final class ModFluids {
         addItem(MaterialItems.PALLADIUM_INGOT.get(), MaterialItems.RAW_PALLADIUM.get());
         addItem(MaterialItems.COBALT_INGOT.get(), MaterialItems.RAW_COBALT.get());
         addItem(MaterialItems.HELLSTONE_INGOT.get(), MaterialItems.RAW_HELLSTONE.get());
-        addItem(MaterialItems.RAW_HELLSTONE.get(), MaterialItems.RAW_HELLSTONE.get());
         addItem(MaterialItems.TR_CRIMSON_INGOT.get(), MaterialItems.RAW_TR_CRIMSON.get());
         addItem(MaterialItems.DEMONITE_INGOT.get(), MaterialItems.RAW_DEMONITE.get());
         addItem(MaterialItems.METEORITE_INGOT.get(), MaterialItems.RAW_METEORITE.get());

@@ -18,6 +18,6 @@ public class BottomlessBucketItem extends BucketItem {
 
     @Override
     public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
-        return itemStack;
+        return itemStack.copy();
     }
 }

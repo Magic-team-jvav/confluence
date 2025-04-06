@@ -1,0 +1,12 @@
+{
+    "parent": "minecraft:block/block",
+    "automatic_culling": false,
+    "flip_v": true,
+    "loader": "neoforge:obj",
+    "model": "confluence:models/obelisk.obj",
+    "mtl_override": "confluence:models/obelisk.mtl",
+    "textures": {
+        "texture0": "confluence:block/obelisk",
+        "particle": "minecraft:block/blackstone"
+    }
+}

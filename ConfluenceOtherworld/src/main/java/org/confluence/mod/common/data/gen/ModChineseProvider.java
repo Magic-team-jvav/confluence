@@ -613,6 +613,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.touhoulittlemaid", "女仆特供");
         add("title.confluence.npc_trade", "汇流商店");
         add("title.confluence.cooking_pot", "烹饪锅");
+        add("container.confluence.piggy_bank", "猪猪存钱罐");
 
         add("block.confluence.base_chest_block.locked_golden", "§r上锁的金箱");
         add("block.confluence.base_chest_block.unlocked_golden", "§r金箱");
@@ -1953,6 +1954,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.BASE_CHEST_BLOCK.get(), "箱子");
         add(FunctionalBlocks.SCULK_TRAP.get(), "幽匿陷阱");
         add(FunctionalBlocks.ROLLING_CACTUS_BOULDER.get(), "仙人球");
+        add(FunctionalBlocks.PIGGY_BANK.get(), "猪猪存钱罐");
 
         add(ModBlocks.TOMBSTONE.get(), "墓石");
         add(ModBlocks.GRAVE_MARKER.get(), "墓石碑");

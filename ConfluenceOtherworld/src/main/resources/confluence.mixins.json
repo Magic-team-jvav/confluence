@@ -11,6 +11,7 @@
     "MinecraftServerMixin",
     "RecipeManagerMixin",
     "ServerAdvancementManagerMixin",
+    "ServerLifecycleHooksMixin",
     "ServerPlayerGameModeMixin",
     "SimpleJsonResourceReloadListenerMixin",
     "StructureTemplateMixin",

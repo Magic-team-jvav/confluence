@@ -201,8 +201,6 @@ public final class GameEvents {
             }
         }
     }
-    @SubscribeEvent
-    public static void forbidLootTableLoading(LootTableLoadEvent event) {
-        TERemoval.processLootTables(event);
-    }
+
+
 }

@@ -18,6 +18,6 @@ public class SimpleJsonResourceReloadListenerMixin {
 
     @ModifyArg(method = "scanDirectory", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/GsonHelper;fromJson(Lcom/google/gson/Gson;Ljava/io/Reader;Ljava/lang/Class;)Ljava/lang/Object;"), index = 1)
     private static Reader onScanDirectory2(Reader reader, @Local Map.Entry<ResourceLocation, Resource> entry, @Local(argsOnly = true) ResourceManager resourceManager){
-        return TERemoval.processLootTablesForbidden(reader, resourceManager, entry);
+        return TERemoval.processLootTables(reader, resourceManager, entry);
     }
 }

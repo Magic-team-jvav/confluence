@@ -2,6 +2,7 @@ package org.confluence.mod.integration.touhou_little_maid.task_use_lifecrystal;
 
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -42,18 +43,30 @@ public class MaidUseItemTask extends Behavior<EntityMaid> {
         if (stack.getItem() == ConsumableItems.LIFE_CRYSTAL.get()) {
             var data = entityIn.getData(ModAttachmentTypes.EVER_BENEFICIAL.get());
             if(data.increaseCrystals()){
-                entityIn.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(
-                        new AttributeModifier(Confluence.asResource("life_crystal_health_modifier" + data.getUsedLifeCrystals()), 4, AttributeModifier.Operation.ADD_VALUE)
-                );
-                entityIn.playSound(ModSoundEvents.LIFE_CRYSTAL_USE.get());
-                entityIn.heal(4);
-                stack.shrink(1);
-                entityIn.setSwingingArms(true);
+                var att = entityIn.getAttribute(Attributes.MAX_HEALTH);
+                if(att!= null) {
+                    String base = "life_crystal_health_modifier";
+                    int i = data.getUsedLifeCrystals();
+                    ResourceLocation location;
+                    do {
+                        location = Confluence.asResource(base + i);
+                        i++;
+                    }while (att.hasModifier(location));
+                    att.addPermanentModifier(new AttributeModifier(location, getStepIncrement(), AttributeModifier.Operation.ADD_VALUE));
+                    entityIn.playSound(ModSoundEvents.LIFE_CRYSTAL_USE.get());
+                    entityIn.heal(getStepIncrement());
+                    stack.shrink(1);
+                    entityIn.setSwingingArms(true);
+                }
             }
         }
     }
 
     protected void stop(ServerLevel worldIn, EntityMaid entityIn, long gameTimeIn) {
         entityIn.setSwingingArms(false);
+    }
+
+    public int getStepIncrement() {
+        return 2;
     }
 }

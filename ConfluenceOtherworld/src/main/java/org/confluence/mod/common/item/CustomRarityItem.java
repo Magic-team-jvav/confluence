@@ -3,8 +3,8 @@ package org.confluence.mod.common.item;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 
 import java.util.function.Consumer;
 
@@ -22,7 +22,7 @@ public class CustomRarityItem extends Item {
     }
 
     public CustomRarityItem(Properties properties, ModRarity rarity) {
-        super(properties.component(TCDataComponentTypes.MOD_RARITY, rarity));
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
     }
 
     public CustomRarityItem addAttributeModifiers(Consumer<ItemAttributeModifiers.Builder> consumer) {

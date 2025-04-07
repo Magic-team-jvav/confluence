@@ -27,6 +27,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.fml.loading.FMLEnvironment;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.model.block.ExtractinatorBlockModel;
 import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
@@ -35,8 +37,6 @@ import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.data.map.ExtractinatorData;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_curio.mixin.client.accessor.MinecraftAccessor;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
@@ -142,7 +142,7 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
         public Item(ExtractinatorBlock pBlock) {
-            super(pBlock, new Properties().component(TCDataComponentTypes.MOD_RARITY, ModRarity.WHITE).stacksTo(1));
+            super(pBlock, new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.WHITE).stacksTo(1));
         }
 
         @Override

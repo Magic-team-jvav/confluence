@@ -19,11 +19,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.hammer.HammerItem;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 
 import java.util.Map;
 
@@ -33,12 +33,12 @@ public class HamaxeItem extends DiggerItem {
     }
 
     public HamaxeItem(Tier tier, float rawDamage, float rawSpeed, boolean unbreakable, ModRarity rarity) {
-        super(tier, ModTags.Blocks.MINEABLE_WITH_HAMAXE, unbreakable(new Properties(), unbreakable).component(TCDataComponentTypes.MOD_RARITY, rarity)
+        super(tier, ModTags.Blocks.MINEABLE_WITH_HAMAXE, unbreakable(new Properties(), unbreakable).component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4)));
     }
 
     public HamaxeItem(Tier tier, float rawDamage, float rawSpeed, boolean unbreakable, ModRarity rarity, Map<Holder<Attribute>, AttributeModifier> modifiers) {
-        super(tier, ModTags.Blocks.MINEABLE_WITH_HAMAXE, unbreakable(new Properties(), unbreakable).component(TCDataComponentTypes.MOD_RARITY, rarity)
+        super(tier, ModTags.Blocks.MINEABLE_WITH_HAMAXE, unbreakable(new Properties(), unbreakable).component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, getAttributeModifiers(tier, rawDamage, rawSpeed, modifiers)));
     }
 

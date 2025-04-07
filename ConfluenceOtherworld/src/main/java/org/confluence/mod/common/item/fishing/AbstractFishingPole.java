@@ -20,14 +20,14 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.FishingPoleItems;
 import org.confluence.mod.common.item.accessory.FishingBobber;
 import org.confluence.mod.mixed.IFishingHook;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -42,11 +42,11 @@ public abstract class AbstractFishingPole extends FishingRodItem {
     }
 
     public AbstractFishingPole(ModRarity rarity) {
-        this(new Properties().component(TCDataComponentTypes.MOD_RARITY.get(), rarity));
+        this(new Properties().component(ConfluenceMagicLib.MOD_RARITY.get(), rarity));
     }
 
     public AbstractFishingPole(Properties properties, ModRarity rarity) {
-        super(properties.component(TCDataComponentTypes.MOD_RARITY.get(), rarity));
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY.get(), rarity));
     }
 
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {

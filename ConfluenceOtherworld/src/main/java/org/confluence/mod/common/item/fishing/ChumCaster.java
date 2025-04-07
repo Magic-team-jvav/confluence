@@ -12,10 +12,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.fishing.BloodyFishingHook;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.terra_curio.common.component.ModRarity;
 
 public class ChumCaster extends AbstractFishingPole {
     public static final ResourceLocation ID = Confluence.asResource("chum_caster");

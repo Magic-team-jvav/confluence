@@ -17,11 +17,11 @@ import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terraentity.attachment.WeaponStorage;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.confluence.terraentity.init.TEAttachments;
@@ -313,7 +313,7 @@ public class TerraBowItem extends BowItem {
          * 设置稀有度
          */
         public Builder setRarity(ModRarity rarity){
-            this.modifyProperties.add(p->p.component(TCDataComponentTypes.MOD_RARITY, rarity));
+            this.modifyProperties.add(p->p.component(ConfluenceMagicLib.MOD_RARITY, rarity));
             return this;
         }
 

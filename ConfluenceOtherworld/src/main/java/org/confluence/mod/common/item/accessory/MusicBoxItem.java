@@ -13,12 +13,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.client.event.GameClientEvents;
 import org.confluence.mod.common.block.functional.MusicBoxBlock;
 import org.confluence.mod.mixed.IMusicManager;
 import org.confluence.mod.network.c2s.ReplaceMusicBoxItemPacketC2S;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.jetbrains.annotations.Nullable;
@@ -35,7 +35,7 @@ public class MusicBoxItem extends BlockItem implements ICurioItem, IFunctionCoul
     public final @Nullable Music music;
 
     public MusicBoxItem(MusicBoxBlock block) {
-        super(block, new Properties().stacksTo(1).component(TCDataComponentTypes.MOD_RARITY, ModRarity.ORANGE));
+        super(block, new Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE));
         this.music = block.music;
         if (music != null) {
             MUSIC_2_ITEM.put(music, this);

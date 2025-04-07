@@ -5,10 +5,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.item.drill.DrillItem;
-import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCAttributes;
 
 import java.util.Map;

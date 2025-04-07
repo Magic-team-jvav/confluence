@@ -4,8 +4,8 @@ import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.component.Unbreakable;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TEWhipItems;
 
@@ -14,13 +14,13 @@ import java.util.function.Consumer;
 public class TEItemComponentModify {
 
     public static void modifyDefaultComponents(ModifyDefaultComponentsEvent event) {
-        Consumer<DataComponentPatch.Builder> orange = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.ORANGE);
-        Consumer<DataComponentPatch.Builder> blue = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.BLUE);
-        Consumer<DataComponentPatch.Builder> purple = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.PURPLE);
-        Consumer<DataComponentPatch.Builder> yellow = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.YELLOW);
-        Consumer<DataComponentPatch.Builder> green = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.GREEN);
-        Consumer<DataComponentPatch.Builder> red = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.RED);
-        Consumer<DataComponentPatch.Builder> master = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.MASTER);
+        Consumer<DataComponentPatch.Builder> orange = builder -> builder.set(ConfluenceMagicLib.MOD_RARITY.get(), ModRarity.ORANGE);
+        Consumer<DataComponentPatch.Builder> blue = builder -> builder.set(ConfluenceMagicLib.MOD_RARITY.get(), ModRarity.BLUE);
+        Consumer<DataComponentPatch.Builder> purple = builder -> builder.set(ConfluenceMagicLib.MOD_RARITY.get(), ModRarity.PURPLE);
+        Consumer<DataComponentPatch.Builder> yellow = builder -> builder.set(ConfluenceMagicLib.MOD_RARITY.get(), ModRarity.YELLOW);
+        Consumer<DataComponentPatch.Builder> green = builder -> builder.set(ConfluenceMagicLib.MOD_RARITY.get(), ModRarity.GREEN);
+        Consumer<DataComponentPatch.Builder> red = builder -> builder.set(ConfluenceMagicLib.MOD_RARITY.get(), ModRarity.RED);
+        Consumer<DataComponentPatch.Builder> master = builder -> builder.set(ConfluenceMagicLib.MOD_RARITY.get(), ModRarity.MASTER);
 
         // 鞭子
         event.modify(TEWhipItems.SLUB_WHIP.get(), blue);

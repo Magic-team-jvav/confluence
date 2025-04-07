@@ -5,10 +5,10 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.item.CustomRarityItem;
-import org.confluence.terra_curio.common.component.ModRarity;
 
 public class WireCutterItem extends CustomRarityItem {
     public WireCutterItem() {

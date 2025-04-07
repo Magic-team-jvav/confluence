@@ -9,12 +9,12 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.common.item.potion.*;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.jetbrains.annotations.NotNull;
 

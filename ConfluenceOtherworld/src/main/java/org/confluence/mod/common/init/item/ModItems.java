@@ -8,6 +8,8 @@ import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModJukeboxSongs;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -15,8 +17,6 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.sponsor.*;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -62,7 +62,7 @@ public final class ModItems {
     public static final Supplier<CoinItem> SILVER_COIN = ITEMS.register("silver_coin", () -> new CoinItem(ModBlocks.SILVER_COIN_PILE.get(), ModRarity.ORANGE, ModItems.GOLDEN_COIN, 100));
     public static final Supplier<CoinItem> GOLDEN_COIN = ITEMS.register("golden_coin", () -> new CoinItem(ModBlocks.GOLDEN_COIN_PILE.get(), ModRarity.LIGHT_PURPLE, ModItems.PLATINUM_COIN, 100));
     public static final Supplier<CoinItem> PLATINUM_COIN = ITEMS.register("platinum_coin", () -> new CoinItem(ModBlocks.PLATINUM_COIN_PILE.get(), ModRarity.CYAN, null, MAX_STACK_SIZE));
-    public static final Supplier<Item> EMERALD_COIN = ITEMS.register("emerald_coin", () -> new BlockItem(ModBlocks.EMERALD_COIN_PILE.get(), new Item.Properties().component(TCDataComponentTypes.MOD_RARITY, ModRarity.PURPLE).stacksTo(MAX_STACK_SIZE)));
+    public static final Supplier<Item> EMERALD_COIN = ITEMS.register("emerald_coin", () -> new BlockItem(ModBlocks.EMERALD_COIN_PILE.get(), new Item.Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PURPLE).stacksTo(MAX_STACK_SIZE)));
 
     public static final Supplier<Item> WHOOPIE_CUSHION = ITEMS.registerSimpleItem("whoopie_cushion", new Item.Properties().stacksTo(1));
 

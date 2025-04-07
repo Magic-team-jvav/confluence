@@ -4,8 +4,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.item.CustomRarityItem;
-import org.confluence.terra_curio.common.component.ModRarity;
 
 import java.util.ArrayList;
 import java.util.List;

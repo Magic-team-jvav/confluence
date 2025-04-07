@@ -2,8 +2,8 @@ package org.confluence.mod.common.item.pickaxe;
 
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Tier;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 
 public class BasePickaxeItem extends PickaxeItem {
     public BasePickaxeItem(Tier tier, float rawDamage, float rawSpeed) {
@@ -15,7 +15,7 @@ public class BasePickaxeItem extends PickaxeItem {
     }
 
     public BasePickaxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
-        super(tier, properties.component(TCDataComponentTypes.MOD_RARITY, rarity)
+        super(tier, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .attributes(createAttributes(tier, rawDamage - tier.getAttackDamageBonus() - 1.0F, rawSpeed - 4.0F)));
     }
 }

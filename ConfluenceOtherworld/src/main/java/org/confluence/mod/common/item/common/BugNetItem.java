@@ -8,9 +8,9 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.CustomRarityItem;
-import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.util.TCUtils;
 
 import java.util.function.Predicate;

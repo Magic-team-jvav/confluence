@@ -9,9 +9,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class CoinItem extends BlockItem {
     public final Supplier<CoinItem> upgrade;
 
     public CoinItem(Block block, ModRarity rarity, @Nullable Supplier<CoinItem> upgrade, int maxStackSize) {
-        super(block, new Properties().fireResistant().stacksTo(maxStackSize).component(TCDataComponentTypes.MOD_RARITY, rarity));
+        super(block, new Properties().fireResistant().stacksTo(maxStackSize).component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.upgrade = upgrade;
     }
 

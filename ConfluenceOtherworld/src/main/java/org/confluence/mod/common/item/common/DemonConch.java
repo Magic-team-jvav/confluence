@@ -5,7 +5,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Blocks;
-import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.lib.common.component.ModRarity;
 
 import java.util.Optional;
 

@@ -8,13 +8,13 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terra_curio.common.component.ModRarity;
 
 public class ManaCrystalItem extends CustomRarityItem {
     public ManaCrystalItem() {

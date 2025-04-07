@@ -16,9 +16,9 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class BaseAxeItem extends AxeItem {
     }
 
     public BaseAxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
-        super(tier, properties.component(TCDataComponentTypes.MOD_RARITY, rarity)
+        super(tier, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4)));
     }
 

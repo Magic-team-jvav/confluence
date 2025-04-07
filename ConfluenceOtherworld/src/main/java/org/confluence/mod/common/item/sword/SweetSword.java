@@ -5,8 +5,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Tier;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.terra_curio.common.component.ModRarity;
 
 public class SweetSword extends BaseSwordItem{
 

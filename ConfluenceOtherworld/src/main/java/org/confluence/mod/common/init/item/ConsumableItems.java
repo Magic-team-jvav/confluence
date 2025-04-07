@@ -6,6 +6,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.entity.projectile.bomb.*;
@@ -13,7 +14,6 @@ import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.mana.ArcaneCrystalItem;
 import org.confluence.mod.common.item.mana.ManaCrystalItem;
-import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terraentity.entity.boss.*;
 
 import java.util.function.Supplier;

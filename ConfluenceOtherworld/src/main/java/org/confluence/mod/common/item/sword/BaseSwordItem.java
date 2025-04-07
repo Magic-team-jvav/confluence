@@ -26,6 +26,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
@@ -33,8 +35,6 @@ import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.sword.legacy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
 import org.confluence.mod.network.c2s.SwordShootingPacketC2S;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.confluence.terraentity.init.TEDataComponentTypes;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
@@ -61,7 +61,7 @@ public class BaseSwordItem extends SwordItem {
     public BaseSwordItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed) {
         super(tier, new Item.Properties()
                 .durability(tier.getUses())
-                .component(TCDataComponentTypes.MOD_RARITY, rarity)
+                .component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS,
                         createAttributes(tier,rawDamage, rawSpeed))
         );
@@ -214,7 +214,7 @@ public class BaseSwordItem extends SwordItem {
             if(modifier != null)
                 modifier.forEach(m->properties = m.apply(properties));
             properties = properties.durability(tier.getUses())
-                    .component(TCDataComponentTypes.MOD_RARITY, rarity)
+                    .component(ConfluenceMagicLib.MOD_RARITY, rarity)
                     .component(DataComponents.ATTRIBUTE_MODIFIERS,
                             attributeModifiersBuilder
                                     .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, rawDamage + tier.getAttackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)

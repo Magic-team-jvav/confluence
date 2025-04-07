@@ -7,11 +7,11 @@ import com.mojang.serialization.Codec;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.mixed.Immunity;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -42,7 +42,7 @@ public abstract class ItemStackMixin implements Immunity, SelfGetter<ItemStack> 
     @ModifyExpressionValue(method = "canBeHurtBy", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;has(Lnet/minecraft/core/component/DataComponentType;)Z"))
     private boolean fireResistant(boolean original) {
         if (original) return true;
-        ModRarity rarity = confluence$self().get(TCDataComponentTypes.MOD_RARITY);
+        ModRarity rarity = confluence$self().get(ConfluenceMagicLib.MOD_RARITY);
         return rarity != null && rarity != ModRarity.WHITE && rarity != ModRarity.GRAY;
     }
 }

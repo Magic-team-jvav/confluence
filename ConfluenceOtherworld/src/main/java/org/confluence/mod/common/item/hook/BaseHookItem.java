@@ -9,10 +9,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,7 +24,7 @@ public class BaseHookItem extends Item {
     protected final HookEntityFactory factory;
 
     public BaseHookItem(Properties pProperties, ModRarity rarity, int amount, float range, float velocity, HookType type, HookEntityFactory factory) {
-        super(pProperties.component(TCDataComponentTypes.MOD_RARITY, rarity).stacksTo(1));
+        super(pProperties.component(ConfluenceMagicLib.MOD_RARITY, rarity).stacksTo(1));
         this.amount = amount;
         this.range = range;
         this.velocity = velocity;

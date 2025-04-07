@@ -42,6 +42,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.block.AltarBlockModel;
@@ -52,8 +54,6 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.HammerItems;
 import org.confluence.mod.common.recipe.AltarRecipe;
 import org.confluence.mod.common.recipe.ItemStackHandlerRecipeInput;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -350,7 +350,7 @@ public class AltarBlock extends BaseEntityBlock {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
         public Item(AltarBlock pBlock) {
-            super(pBlock, new Properties().component(TCDataComponentTypes.MOD_RARITY, ModRarity.PURPLE));
+            super(pBlock, new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PURPLE));
         }
 
         @Override

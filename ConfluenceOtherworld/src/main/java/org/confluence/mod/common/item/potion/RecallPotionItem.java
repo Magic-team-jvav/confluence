@@ -5,13 +5,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.portal.DimensionTransition;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCSoundEvents;
 
 public class RecallPotionItem extends AbstractPotionItem {
     public RecallPotionItem() {
-        super(new Properties().component(TCDataComponentTypes.MOD_RARITY, ModRarity.BLUE));
+        super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE));
     }
 
     @Override

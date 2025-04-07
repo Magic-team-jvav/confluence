@@ -4,12 +4,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.common.extensions.IAbstractMinecartExtension;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.minecart.*;
 import org.confluence.mod.common.entity.minecart.GenericMinecartEntity.Variant;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
-import org.confluence.terra_curio.common.component.ModRarity;
 
 import java.util.function.Supplier;
 

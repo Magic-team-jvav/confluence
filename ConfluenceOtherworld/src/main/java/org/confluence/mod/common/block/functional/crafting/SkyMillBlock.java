@@ -27,14 +27,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.fluids.FluidType;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.client.model.block.SkyMillBlockModel;
 import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.menu.SkyMillMenu;
 import org.confluence.mod.common.recipe.EnvironmentLevelAccess;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -126,7 +126,7 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
         public Item(SkyMillBlock pBlock) {
-            super(pBlock, new Properties().component(TCDataComponentTypes.MOD_RARITY, ModRarity.BLUE));
+            super(pBlock, new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE));
         }
 
         @Override

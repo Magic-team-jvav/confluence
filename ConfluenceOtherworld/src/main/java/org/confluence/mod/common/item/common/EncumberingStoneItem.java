@@ -5,9 +5,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.mixed.IServerPlayer;
-import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 
 public class EncumberingStoneItem extends CustomRarityItem implements IFunctionCouldEnable {

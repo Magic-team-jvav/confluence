@@ -16,11 +16,11 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -90,7 +90,7 @@ public class LifeCrystalBlock extends HorizontalDirectionalBlock implements Enti
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
         public Item(LifeCrystalBlock pBlock) {
-            super(pBlock, new Properties().component(TCDataComponentTypes.MOD_RARITY, ModRarity.GREEN));
+            super(pBlock, new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN));
         }
 
         @Override

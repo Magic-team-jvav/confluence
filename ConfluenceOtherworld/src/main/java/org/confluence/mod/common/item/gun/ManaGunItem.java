@@ -15,11 +15,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_guns.api.IAmmo;
 import org.confluence.terra_guns.api.IGun;
 import org.confluence.terra_guns.common.entity.SimpleTrailProjectile;
@@ -39,7 +39,7 @@ public abstract class ManaGunItem<T extends Projectile> extends GeoGunItem<T> im
     private final int manaCost;
 
     public ManaGunItem(Properties properties, ModRarity rarity, float damage, float weaponSpeed, int useDelay, float knockBack, float crit, float inaccuracy, int manaCost) {
-        super(properties.stacksTo(1).component(TCDataComponentTypes.MOD_RARITY, rarity), damage, weaponSpeed, useDelay, knockBack, crit, inaccuracy);
+        super(properties.stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, rarity), damage, weaponSpeed, useDelay, knockBack, crit, inaccuracy);
         this.manaCost = manaCost;
     }
 

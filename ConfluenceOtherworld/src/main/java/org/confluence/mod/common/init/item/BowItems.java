@@ -11,6 +11,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.common.entity.projectile.range.arrow.BeeArrow;
@@ -20,7 +21,6 @@ import org.confluence.mod.common.item.bow.BaseArrowItem;
 import org.confluence.mod.common.item.bow.DaedalusStormbow;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.bow.TerraBowItem;
-import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terraentity.init.TEEffectStrategies;
 
 import java.util.function.Function;

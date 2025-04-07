@@ -14,12 +14,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
-import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCAttributes;
 
 import java.util.function.Consumer;

@@ -8,9 +8,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.fishing.BaseFishingHook;
-import org.confluence.terra_curio.common.component.ModRarity;
 
 public class WoodFishingPole extends AbstractFishingPole {
     public static final ResourceLocation ID = Confluence.asResource("wood_fishing_pole");

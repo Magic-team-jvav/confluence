@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
@@ -17,7 +18,6 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.menu.NPCReforgeMenu;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
-import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terraentity.entity.ai.keyframe.animation.KeyframeAnimation;
 
 public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {

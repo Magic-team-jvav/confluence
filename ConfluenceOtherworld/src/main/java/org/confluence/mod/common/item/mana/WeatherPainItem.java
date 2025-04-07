@@ -5,8 +5,8 @@ import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.projectile.mana.HurtnadoProjectile;
-import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.util.TCUtils;
 

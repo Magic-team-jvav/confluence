@@ -4,6 +4,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.Tags;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
@@ -12,8 +14,6 @@ import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
@@ -388,7 +388,7 @@ public final class PrefixUtils {
             if (rarity < -1) rarity = -1;
             else if (rarity > 11) rarity = 11;
         }
-        itemStack.set(TCDataComponentTypes.MOD_RARITY, ModRarity.ID_MAP.getOrDefault(rarity, ModRarity.WHITE));
+        itemStack.set(ConfluenceMagicLib.MOD_RARITY, ModRarity.ID_MAP.getOrDefault(rarity, ModRarity.WHITE));
         itemStack.set(ModDataComponentTypes.VALUE, new ValueComponent((int) (ValueComponent.getValue(copy) * num14 * num14)));
     }
 

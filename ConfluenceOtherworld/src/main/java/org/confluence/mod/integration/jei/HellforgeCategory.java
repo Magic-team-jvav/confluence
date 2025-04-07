@@ -12,11 +12,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.container.HellforgeScreen;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.HellforgeRecipe;
-import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.integration.jei.JeiBackGround;
 import org.jetbrains.annotations.Nullable;
 

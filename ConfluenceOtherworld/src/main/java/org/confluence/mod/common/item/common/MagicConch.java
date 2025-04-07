@@ -18,10 +18,10 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.neoforged.neoforge.common.Tags;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.network.c2s.ApplySelectionPacketC2S;
 import org.confluence.mod.network.s2c.OpenSelectionsScreenPacketS2C;
-import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
 

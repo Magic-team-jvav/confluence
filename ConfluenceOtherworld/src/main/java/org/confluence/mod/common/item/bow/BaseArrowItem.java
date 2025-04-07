@@ -7,10 +7,10 @@ import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 
 import javax.annotation.Nullable;
@@ -23,7 +23,7 @@ public class BaseArrowItem extends ArrowItem {
         this(rarity,null);
     }
     public BaseArrowItem(ModRarity rarity,@Nullable BaseArrowEntity.Tuple modifier) {
-        super(new Properties().component(TCDataComponentTypes.MOD_RARITY, rarity));
+        super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.modifier=modifier;
         if(modifier!=null)
             attributes = modifier.attr.get();

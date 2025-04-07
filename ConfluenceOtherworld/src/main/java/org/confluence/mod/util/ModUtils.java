@@ -23,6 +23,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.NbtComponent;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -30,8 +32,6 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.terra_curio.TerraCurio;
-import org.confluence.terra_curio.common.component.NbtComponent;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terra_guns.TerraGuns;
 import org.confluence.terraentity.TerraEntity;
@@ -71,7 +71,7 @@ public final class ModUtils {
      * @see TCUtils#getItemStackNbt(ItemStack) 获取或创建
      */
     public static @Nullable CompoundTag getItemStackNbt(ItemStack itemStack) {
-        NbtComponent component = itemStack.get(TCDataComponentTypes.NBT);
+        NbtComponent component = itemStack.get(ConfluenceMagicLib.NBT);
         if (component == null) return null;
         return component.nbt();
     }

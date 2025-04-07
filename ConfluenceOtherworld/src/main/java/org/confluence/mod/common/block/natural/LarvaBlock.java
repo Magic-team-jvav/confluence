@@ -17,7 +17,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.confluence.mod.common.block.HorizontalDirectionalWithVerticalTwoPartBlock;
+import org.confluence.lib.common.block.HorizontalDirectionalWithVerticalTwoPartBlock;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.entity.boss.QueenBee;
 import org.confluence.terraentity.init.entity.TEBossEntities;

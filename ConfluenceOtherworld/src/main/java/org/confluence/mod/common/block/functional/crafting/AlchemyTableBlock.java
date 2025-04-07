@@ -15,8 +15,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.confluence.mod.common.block.HorizontalDirectionalWithVerticalFourPartBlock;
-import org.confluence.mod.common.block.StateProperties;
+import org.confluence.lib.common.block.HorizontalDirectionalWithVerticalFourPartBlock;
+import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.menu.AlchemyTableMenu;
 import org.jetbrains.annotations.Nullable;
 

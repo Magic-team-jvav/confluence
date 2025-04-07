@@ -1,7 +1,7 @@
 package org.confluence.mod.common.block.functional.network;
 
 import net.minecraft.world.level.block.state.BlockState;
-import org.confluence.mod.common.block.StateProperties;
+import org.confluence.lib.common.block.StateProperties;
 
 import java.util.HashSet;
 import java.util.Set;

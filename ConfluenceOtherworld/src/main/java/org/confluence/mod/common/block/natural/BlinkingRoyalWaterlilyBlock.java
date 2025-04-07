@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import org.confluence.mod.common.block.HorizontalDirectionalWithHorizontalFourPartBlock;
+import org.confluence.lib.common.block.HorizontalDirectionalWithHorizontalFourPartBlock;
 import org.confluence.mod.common.init.ModFluids;
 import org.jetbrains.annotations.Nullable;
 

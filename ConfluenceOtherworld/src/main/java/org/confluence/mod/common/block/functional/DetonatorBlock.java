@@ -15,7 +15,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.confluence.mod.common.block.StateProperties;
+import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 
 import java.util.function.Predicate;

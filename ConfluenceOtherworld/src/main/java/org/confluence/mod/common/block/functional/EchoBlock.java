@@ -12,8 +12,8 @@ import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.fml.loading.FMLEnvironment;
+import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.client.handler.ClientPacketHandler;
-import org.confluence.mod.common.block.StateProperties;
 
 public class EchoBlock extends HalfTransparentBlock implements ISimulatorBlock {
     public EchoBlock() {

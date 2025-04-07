@@ -17,8 +17,8 @@ import org.confluence.mod.common.block.functional.network.INetworkEntity;
 
 import javax.annotation.Nullable;
 
-import static org.confluence.mod.common.block.StateProperties.REVERSE;
-import static org.confluence.mod.common.block.StateProperties.SIGNAL;
+import static org.confluence.lib.common.block.StateProperties.REVERSE;
+import static org.confluence.lib.common.block.StateProperties.SIGNAL;
 
 public class SignalAdapterBlock extends AbstractMechanicalBlock {
     public SignalAdapterBlock() {

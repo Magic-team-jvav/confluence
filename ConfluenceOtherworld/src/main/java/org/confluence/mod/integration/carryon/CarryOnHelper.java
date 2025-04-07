@@ -2,7 +2,7 @@ package org.confluence.mod.integration.carryon;
 
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.fml.ModList;
-import org.confluence.mod.common.block.StateProperties;
+import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.init.block.NatureBlocks;
 

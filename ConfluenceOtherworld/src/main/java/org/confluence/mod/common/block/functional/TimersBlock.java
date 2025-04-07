@@ -22,8 +22,8 @@ import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
 
-import static org.confluence.mod.common.block.StateProperties.DRIVE;
-import static org.confluence.mod.common.block.StateProperties.SIGNAL;
+import static org.confluence.lib.common.block.StateProperties.DRIVE;
+import static org.confluence.lib.common.block.StateProperties.SIGNAL;
 
 public class TimersBlock extends AbstractMechanicalBlock {
     private final int duration;

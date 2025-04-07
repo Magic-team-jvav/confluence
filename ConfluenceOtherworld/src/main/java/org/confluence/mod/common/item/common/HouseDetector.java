@@ -11,8 +11,8 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.phys.BlockHitResult;
+import org.confluence.lib.util.ComputerUtils;
 import org.confluence.mod.client.effect.DebugBlocksHelper;
-import org.confluence.mod.util.ComputerUtils;
 
 public class HouseDetector extends Item {
 

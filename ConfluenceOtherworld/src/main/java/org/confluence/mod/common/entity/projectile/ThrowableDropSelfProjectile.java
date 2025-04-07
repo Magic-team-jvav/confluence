@@ -6,18 +6,15 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
-import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import org.confluence.mod.common.init.item.ConsumableItems;
-import org.confluence.mod.util.ModUtils;
-import org.confluence.mod.util.VectorUtils;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.VectorUtils;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -78,7 +75,7 @@ public class ThrowableDropSelfProjectile extends ThrowableItemProjectile {
                 VectorUtils.knockBackA2B(this, entity, 0.5, 0.2);
                 if (penetrate == maxPenetrate) {
                     if (drop != null && random.nextBoolean()) {
-                        ModUtils.createItemEntity(drop, getX(), getY(), getZ(), level(), 0);
+                        LibUtils.createItemEntity(drop, getX(), getY(), getZ(), level(), 0);
                     }
                     discard();
                 } else {
@@ -93,7 +90,7 @@ public class ThrowableDropSelfProjectile extends ThrowableItemProjectile {
     protected void onHitBlock(BlockHitResult pResult) {
         super.onHitBlock(pResult);
         if (drop != null && random.nextBoolean()) {
-            ModUtils.createItemEntity(drop, getX(), getY(), getZ(), level(), 0);
+            LibUtils.createItemEntity(drop, getX(), getY(), getZ(), level(), 0);
         }
         discard();
     }

@@ -9,8 +9,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class EvaporativeCloudBlock extends BaseEntityBlock {
@@ -40,7 +40,7 @@ public class EvaporativeCloudBlock extends BaseEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         if (pLevel.isClientSide) return null;
-        return ModUtils.getTicker(pBlockEntityType, NatureBlocks.EVAPORATIVE_CLOUD_BLOCK_ENTITY.get(), (level, blockPos, blockState, e) -> {
+        return LibUtils.getTicker(pBlockEntityType, NatureBlocks.EVAPORATIVE_CLOUD_BLOCK_ENTITY.get(), (level, blockPos, blockState, e) -> {
             level.updateNeighborsAt(blockPos, blockState.getBlock());
             level.removeBlock(blockPos, false);
         });

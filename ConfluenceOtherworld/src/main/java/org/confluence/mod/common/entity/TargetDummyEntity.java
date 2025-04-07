@@ -19,8 +19,8 @@ import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.item.ToolItems;
-import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,7 +39,7 @@ public class TargetDummyEntity extends Mob {
         if (source.getEntity() instanceof Player player) {
             if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof PickaxeItem && player.isShiftKeyDown()) {
                 this.remove(RemovalReason.DISCARDED);
-                ModUtils.createItemEntity(ToolItems.TARGET_DUMMY.get().getDefaultInstance(), position(), player.level(), 0);
+                LibUtils.createItemEntity(ToolItems.TARGET_DUMMY.get().getDefaultInstance(), position(), player.level(), 0);
                 return true;
             } else if (player.isCreative() && player.isShiftKeyDown()){
                 this.remove(RemovalReason.DISCARDED);
@@ -68,10 +68,10 @@ public class TargetDummyEntity extends Mob {
     @Override
     public void remove(RemovalReason reason) {
         for (var armor : this.getArmorSlots()){
-            ModUtils.createItemEntity(armor, getX(), getY(), getZ(), level(), 0);
+            LibUtils.createItemEntity(armor, getX(), getY(), getZ(), level(), 0);
         }
-        ModUtils.createItemEntity(this.getMainHandItem(), getX(), getY(), getZ(), level(), 0);
-        ModUtils.createItemEntity(this.getOffhandItem(), getX(), getY(), getZ(), level(), 0);
+        LibUtils.createItemEntity(this.getMainHandItem(), getX(), getY(), getZ(), level(), 0);
+        LibUtils.createItemEntity(this.getOffhandItem(), getX(), getY(), getZ(), level(), 0);
         super.remove(reason);
     }
 

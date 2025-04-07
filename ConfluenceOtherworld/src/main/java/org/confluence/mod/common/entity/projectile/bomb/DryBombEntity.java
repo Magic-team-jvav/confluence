@@ -9,8 +9,8 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import org.confluence.lib.util.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.util.MultiplyExplosionDamageCalculator;
 
 public class DryBombEntity extends BaseBombEntity {
     protected int radius = 4;

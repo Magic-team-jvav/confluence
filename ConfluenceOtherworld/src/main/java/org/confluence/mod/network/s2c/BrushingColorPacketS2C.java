@@ -13,11 +13,11 @@ import net.minecraft.world.level.ChunkPos;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.textures.LocalBrushData;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.init.ModAttachmentTypes;
-import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,7 +37,7 @@ public record BrushingColorPacketS2C(BrushData data) implements CustomPacketPayl
                 for (int l = 0; l < 6; l++) {
                     int m = 1 << l;
                     if ((face & m) == m) {
-                        list[ModUtils.DIRECTIONS[l].get3DDataValue()] = buffer.readInt();
+                        list[LibUtils.DIRECTIONS[l].get3DDataValue()] = buffer.readInt();
                     }
                 }
             }

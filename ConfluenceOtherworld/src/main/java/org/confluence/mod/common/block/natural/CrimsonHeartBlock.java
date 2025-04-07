@@ -20,6 +20,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.color.IntegerRGB;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.item.LightPetItems;
 import org.confluence.mod.util.ModUtils;
@@ -51,14 +52,14 @@ public class CrimsonHeartBlock extends Block {
             int count = data.getEvilBrokenCount() % 3;
 
             if (count == 0 || level.random.nextFloat() < 0.2F) {
-                ModUtils.createItemEntity(TGItems.THE_UNDERTAKER.toStack(), center.x, center.y, center.z, level, 0);
-                ModUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(TGItems.THE_UNDERTAKER.toStack(), center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                ModUtils.createItemEntity(LightPetItems.CRIMSON_HEART.get(), 1, center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(LightPetItems.CRIMSON_HEART.get(), 1, center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                ModUtils.createItemEntity(TCItems.PANIC_NECKLACE.get(), 1, center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(TCItems.PANIC_NECKLACE.get(), 1, center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
                 // 猩红魔杖

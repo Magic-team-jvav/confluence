@@ -8,9 +8,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
-import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -74,7 +74,7 @@ public final class LocalBrushData {
             int[] colors = entry.getValue();
             for (int i = 0; i < 6; i++) {
                 int color = colors[i];
-                Direction facing = ModUtils.DIRECTIONS[i];
+                Direction facing = LibUtils.DIRECTIONS[i];
                 if (color == BrushData.CLEAR_COLOR) {
                     removeData(pos, facing);
                 } else if (color != BrushData.EMPTY_COLOR) {

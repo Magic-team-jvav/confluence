@@ -15,8 +15,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.ticks.LevelTickAccess;
-import org.confluence.mod.util.ModUtils;
-import org.confluence.mod.util.VectorUtils;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.VectorUtils;
 
 public class ConnectedPillarBlock extends LayeredBlock {
 	public static final BooleanProperty NORTH = BooleanProperty.create("north");
@@ -47,7 +47,7 @@ public class ConnectedPillarBlock extends LayeredBlock {
 		MutableBlockPos currentPos = new MutableBlockPos();
 		Axis axis = state.getValue(AXIS);
 
-		for (Direction connection : ModUtils.DIRECTIONS) {
+		for (Direction connection : LibUtils.DIRECTIONS) {
 			if (connection.getAxis() == axis)
 				continue;
 

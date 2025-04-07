@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import software.bernie.geckolib.util.InternalUtil;
 
-import static org.confluence.mod.util.ModUtils.getSlotIndex;
+import static org.confluence.lib.util.LibUtils.getSlotIndex;
 
 @Mixin(value = InternalUtil.class, remap = false)
 public abstract class InternalUtilMixin {

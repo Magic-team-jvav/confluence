@@ -8,8 +8,8 @@ import org.joml.Vector3d;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.confluence.mod.util.StructureUtils.*;
-import static org.confluence.mod.util.VectorUtils.lightningPathList;
+import static org.confluence.lib.util.StructureUtils.*;
+import static org.confluence.lib.util.VectorUtils.lightningPathList;
 
 public class BaseStructures {
     public static BlockPos livingTree(

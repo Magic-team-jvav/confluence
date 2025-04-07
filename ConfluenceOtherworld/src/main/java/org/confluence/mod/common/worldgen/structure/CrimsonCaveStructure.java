@@ -16,21 +16,21 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import org.confluence.lib.util.StructureUtils;
+import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.worldgen.BannedBiomeMultiNoiseBiomeSource;
 import org.confluence.mod.mixed.IMultiNoiseBiomeSource;
-import org.confluence.mod.util.StructureUtils;
-import org.confluence.mod.util.VectorUtils;
 import org.joml.Vector3d;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.confluence.mod.util.StructureUtils.getHeight;
-import static org.confluence.mod.util.StructureUtils.lineSet;
+import static org.confluence.lib.util.StructureUtils.getHeight;
+import static org.confluence.lib.util.StructureUtils.lineSet;
 
 public class CrimsonCaveStructure extends Structure {
     public static final MapCodec<CrimsonCaveStructure> CODEC = simpleCodec(CrimsonCaveStructure::new);

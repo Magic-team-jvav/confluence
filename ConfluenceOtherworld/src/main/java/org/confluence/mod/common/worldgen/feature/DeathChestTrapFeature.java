@@ -19,6 +19,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.storage.loot.LootTable;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.ModFeatures;
@@ -26,7 +27,6 @@ import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.mixed.IBaseContainerBlockEntity;
-import org.confluence.mod.util.ModUtils;
 
 import java.util.Optional;
 
@@ -74,7 +74,7 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
         int half = amount / 2;
         for (BlockPos pos : BlockPos.randomBetweenClosed(random, amount, chestPos.getX() - half, chestPos.getY() - 3, chestPos.getZ() - half, chestPos.getX() + half, chestPos.getY() - 2, chestPos.getZ() + half)) {
             BlockPos.MutableBlockPos mutable = pos.mutable();
-            for (Direction direction : ModUtils.DIRECTIONS) {
+            for (Direction direction : LibUtils.DIRECTIONS) {
                 if (direction == Direction.UP) continue;
                 if (level.isStateAtPosition(pos.relative(direction), BlockBehaviour.BlockStateBase::isAir)) {
                     mutable.move(direction.getOpposite());
@@ -116,7 +116,7 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
         boolean succeed = false;
         int maxDartDistance = config.maxDartDistance;
         dir:
-        for (Direction direction : ModUtils.HORIZONTAL) {
+        for (Direction direction : LibUtils.HORIZONTAL) {
             BlockPos.MutableBlockPos copy = chestPos.mutable();
             Direction opposite = direction.getOpposite();
             BlockPos firstFindPos = null;

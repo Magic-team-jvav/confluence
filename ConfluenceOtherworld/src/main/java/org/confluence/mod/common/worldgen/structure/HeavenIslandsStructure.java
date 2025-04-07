@@ -14,15 +14,15 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import org.confluence.lib.util.StructureUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.util.StructureUtils;
 import org.joml.Vector3d;
 
 import java.util.*;
 
-import static org.confluence.mod.util.StructureUtils.*;
+import static org.confluence.lib.util.StructureUtils.*;
 
 public class HeavenIslandsStructure extends Structure {
     public static final MapCodec<HeavenIslandsStructure> CODEC = simpleCodec(HeavenIslandsStructure::new);

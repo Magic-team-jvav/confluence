@@ -20,6 +20,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.color.IntegerRGB;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.LightPetItems;
@@ -51,20 +52,20 @@ public class ShadowOrbBlock extends Block {
             int count = data.getEvilBrokenCount() % 3;
 
             if (count == 0 || level.random.nextFloat() < 0.2F) {
-                ModUtils.createItemEntity(TGItems.MUSKET.toStack(), center.x, center.y, center.z, level, 0);
-                ModUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(TGItems.MUSKET.toStack(), center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                ModUtils.createItemEntity(LightPetItems.SHADOW_ORB.get(), 1, center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(LightPetItems.SHADOW_ORB.get(), 1, center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                ModUtils.createItemEntity(ManaWeaponItems.VILETHRON.get(), 1, center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(ManaWeaponItems.VILETHRON.get(), 1, center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
                 // 链球
             }
             if (level.random.nextFloat() < 0.2F) {
-                ModUtils.createItemEntity(AccessoryItems.BAND_OF_STARPOWER.get(), 1, center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(AccessoryItems.BAND_OF_STARPOWER.get(), 1, center.x, center.y, center.z, level, 0);
             }
 
             for (ServerPlayer player : serverLevel.getPlayers(serverPlayer -> serverPlayer.distanceToSqr(center) <= 32 * 32)) {

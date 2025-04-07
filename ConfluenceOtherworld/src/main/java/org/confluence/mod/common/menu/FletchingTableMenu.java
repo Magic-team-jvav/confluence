@@ -18,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import org.confluence.lib.recipe.AbstractAmountRecipe;
+import org.confluence.lib.common.recipe.AbstractAmountRecipe;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.recipe.FletchingTableRecipe;

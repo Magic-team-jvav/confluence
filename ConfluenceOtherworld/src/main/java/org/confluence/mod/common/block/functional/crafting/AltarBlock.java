@@ -16,7 +16,6 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.ContainerHelper;
@@ -43,7 +42,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.Tags;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.block.AltarBlockModel;
 import org.confluence.mod.common.data.saved.ConfluenceData;
@@ -53,7 +52,6 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.HammerItems;
 import org.confluence.mod.common.recipe.AltarRecipe;
 import org.confluence.mod.common.recipe.ItemStackHandlerRecipeInput;
-import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.jetbrains.annotations.Nullable;
@@ -161,7 +159,7 @@ public class AltarBlock extends BaseEntityBlock {
                     crafted = true;
                     AltarRecipe recipe = recipes.getFirst().value(); // 先只取第一个合成表
                     ItemStack result = recipe.assembleAndExtract(entity.itemHandler, pLevel.registryAccess());
-                    ModUtils.createItemEntity(result, pPos.getX() + 0.5, pPos.getY() + 0.75, pPos.getZ() + 0.5, pLevel, 0);
+                    LibUtils.createItemEntity(result, pPos.getX() + 0.5, pPos.getY() + 0.75, pPos.getZ() + 0.5, pLevel, 0);
                 }
                 if (crafted) entity.playAnimation(serverLevel, pPos);
             } else { // 合成一个
@@ -169,7 +167,7 @@ public class AltarBlock extends BaseEntityBlock {
                 if (recipes.isEmpty()) return;
                 AltarRecipe recipe = recipes.getFirst().value(); // 先只取第一个合成表
                 ItemStack result = recipe.assembleAndExtract(entity.itemHandler, pLevel.registryAccess());
-                ModUtils.createItemEntity(result, pPos.getX() + 0.5, pPos.getY() + 0.75, pPos.getZ() + 0.5, pLevel, 0);
+                LibUtils.createItemEntity(result, pPos.getX() + 0.5, pPos.getY() + 0.75, pPos.getZ() + 0.5, pLevel, 0);
                 entity.playAnimation(serverLevel, pPos);
             }
         }

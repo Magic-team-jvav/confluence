@@ -4,6 +4,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.common.menu.IToggleSlot;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
@@ -13,7 +14,7 @@ import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
 public class ToggleCurioSlot extends Slot implements IToggleSlot {
     public boolean isActive = true;
-    private Player player;
+    private final Player player;
 
     public ToggleCurioSlot(Player player, Container container, int slot, int x, int y) {
         super(container, slot, x, y);

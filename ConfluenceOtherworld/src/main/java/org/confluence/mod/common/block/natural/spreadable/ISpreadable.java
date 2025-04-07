@@ -15,12 +15,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.Property;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
-import org.confluence.mod.util.ModUtils;
 
 import java.util.Hashtable;
 import java.util.Locale;
@@ -110,7 +110,7 @@ public interface ISpreadable {
 
     private static Map<BlockPos, BlockState> searchFace(ServerLevel serverLevel, BlockPos targetPos, Map<BlockPos, BlockState> map, int depth) {
         if (depth == 128) return map;
-        for (Direction direction : ModUtils.DIRECTIONS) {
+        for (Direction direction : LibUtils.DIRECTIONS) {
             BlockPos relative = targetPos.relative(direction);
             if (map.containsKey(relative)) continue;
             BlockState blockState = serverLevel.getBlockState(relative);

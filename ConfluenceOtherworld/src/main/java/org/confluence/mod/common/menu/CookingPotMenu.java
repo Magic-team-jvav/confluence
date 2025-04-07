@@ -12,6 +12,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.confluence.lib.common.menu.ContainerResultSlot;
 import org.confluence.mod.common.init.ModMenuTypes;
 
 public class CookingPotMenu extends AbstractContainerMenu {

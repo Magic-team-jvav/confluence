@@ -14,7 +14,7 @@ import software.bernie.geckolib.util.Color;
 
 import java.util.OptionalInt;
 
-import static org.confluence.mod.util.ModUtils.getSlotIndex;
+import static org.confluence.lib.util.LibUtils.getSlotIndex;
 
 public class NormalArmorItemRenderer extends DyeableGeoArmorRenderer<NormalArmorItem> {
     public NormalArmorItemRenderer(String path) {

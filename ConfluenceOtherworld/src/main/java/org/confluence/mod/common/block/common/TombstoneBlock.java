@@ -26,8 +26,8 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -112,7 +112,7 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return ModUtils.getTicker(blockEntityType, ModBlocks.TOMBSTONE_ENTITY.get(), Entity::tick);
+        return LibUtils.getTicker(blockEntityType, ModBlocks.TOMBSTONE_ENTITY.get(), Entity::tick);
     }
 
     @Override

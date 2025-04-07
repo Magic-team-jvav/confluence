@@ -8,7 +8,7 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import org.confluence.mod.util.ModUtils;
+import org.confluence.lib.util.LibUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -26,7 +26,7 @@ public record BrushData(Map<BlockPos, int[]> colors) {
     public static final MapCodec<BrushData> MAP_CODEC =
             RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.unboundedMap(
-                    ModUtils.BLOCK_POS_CODEC,
+                    LibUtils.BLOCK_POS_CODEC,
                     Codec.INT.listOf().xmap(list -> new IntArrayList(list).elements(), IntArrayList::new)
             ).fieldOf("entries").forGetter(BrushData::colors)
     ).apply(instance, map -> new BrushData(new Hashtable<>(map))));

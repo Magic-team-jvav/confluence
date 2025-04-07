@@ -8,8 +8,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.mixed.SelfGetter;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.mixed.Immunity;
-import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,7 +36,7 @@ public abstract class ItemStackMixin implements Immunity, SelfGetter<ItemStack> 
 
     @WrapOperation(method = "lambda$static$3", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ExtraCodecs;intRange(II)Lcom/mojang/serialization/Codec;"))
     private static Codec<Integer> modify(int min, int max, Operation<Codec<Integer>> original) {
-        return original.call(min, ModUtils.getMaxStackSize(max));
+        return original.call(min, LibUtils.getMaxStackSize(max));
     }
 
     @ModifyExpressionValue(method = "canBeHurtBy", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;has(Lnet/minecraft/core/component/DataComponentType;)Z"))

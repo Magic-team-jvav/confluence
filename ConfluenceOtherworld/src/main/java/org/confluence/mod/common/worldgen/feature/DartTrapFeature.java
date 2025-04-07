@@ -12,9 +12,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.ModFeatures;
-import org.confluence.mod.util.ModUtils;
 
 public class DartTrapFeature extends Feature<DartTrapFeature.Config> {
     public DartTrapFeature(Codec<Config> pCodec) {
@@ -33,7 +33,7 @@ public class DartTrapFeature extends Feature<DartTrapFeature.Config> {
         }
         if (ModFeatures.isPosSturdy(level, mutablePos, Direction.UP)) {
             BlockPos dartPos = mutablePos.offset(0, 2, 0);
-            for (Direction direction : ModUtils.HORIZONTAL) {
+            for (Direction direction : LibUtils.HORIZONTAL) {
                 BlockPos.MutableBlockPos copy = dartPos.mutable();
                 int h;
                 for (h = 1; h <= config.maxDartDistance && ModFeatures.isPosAir(level, copy); ++h) {

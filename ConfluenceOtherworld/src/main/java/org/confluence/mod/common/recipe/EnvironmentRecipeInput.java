@@ -2,7 +2,7 @@ package org.confluence.mod.common.recipe;
 
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.crafting.CraftingInput;
-import org.confluence.terra_curio.common.menu.RecipeInputContainer;
+import org.confluence.lib.common.menu.RecipeInputContainer;
 
 public class EnvironmentRecipeInput extends RecipeInputContainer {
     private final EnvironmentLevelAccess access;

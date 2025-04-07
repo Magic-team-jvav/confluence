@@ -1,8 +1,9 @@
 package org.confluence.mod.common.menu;
 
 import net.minecraft.world.Container;
-import org.confluence.terra_curio.common.menu.AmountResultSlot;
-import org.confluence.terra_curio.common.menu.RecipeInputContainer;
+import org.confluence.lib.common.menu.AmountResultSlot;
+import org.confluence.lib.common.menu.IToggleSlot;
+import org.confluence.lib.common.menu.RecipeInputContainer;
 
 public class ToggleAmountResultSlot extends AmountResultSlot implements IToggleSlot {
     public boolean isActive = true;

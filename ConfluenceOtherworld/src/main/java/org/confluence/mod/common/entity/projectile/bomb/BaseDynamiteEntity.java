@@ -6,8 +6,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.util.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.util.MultiplyExplosionDamageCalculator;
 
 public class BaseDynamiteEntity extends BaseBombEntity {
     public static final float DIAMETER = 0.25F;

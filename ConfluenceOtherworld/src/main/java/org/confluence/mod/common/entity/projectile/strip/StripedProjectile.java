@@ -20,8 +20,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.mixed.Immunity;
-import org.confluence.mod.util.VectorUtils;
 
 /**
  * 长条形射弹

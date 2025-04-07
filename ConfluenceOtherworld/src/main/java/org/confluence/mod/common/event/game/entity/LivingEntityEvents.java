@@ -35,6 +35,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.*;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
@@ -131,7 +132,7 @@ public final class LivingEntityEvents {
             if (living.getRandom().nextFloat() < 0.011F) {
                 Item holidayGift = DateUtils.getHolidayGift();
                 if (holidayGift != Items.AIR) {
-                    ModUtils.createItemEntity(holidayGift.getDefaultInstance(), living.position(), living.level(), 0);
+                    LibUtils.createItemEntity(holidayGift.getDefaultInstance(), living.position(), living.level(), 0);
                 }
             }
         }
@@ -197,10 +198,10 @@ public final class LivingEntityEvents {
         amount = TheConstant.applyAttackDamage(attacker, amount);
 
         // 克苏鲁之脑和飞眼怪给的debuff
-        if (attacker != null && ModUtils.isAtLeastExpert(level, living.blockPosition())) {
+        if (attacker != null && LibUtils.isAtLeastExpert(level, living.blockPosition())) {
             EntityType<?> type = attacker.getType();
             if (type == TEMonsterEntities.VISUAL_NEURON.get() || (type == TEBossEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
-                boolean master = ModUtils.isMaster(level, living.blockPosition());
+                boolean master = LibUtils.isMaster(level, living.blockPosition());
                 Holder<MobEffect> debuff;
                 float min;
                 int i = attacker.getRandom().nextInt(81);
@@ -237,7 +238,7 @@ public final class LivingEntityEvents {
         }
         // 芦苇呼吸管对溺水伤害减半
         if (damageSource.is(DamageTypes.DROWN)) {
-            if (ModUtils.anyHandHasItem(living, itemStack -> itemStack.is(SwordItems.BREATHING_REED))) {
+            if (LibUtils.anyHandHasItem(living, itemStack -> itemStack.is(SwordItems.BREATHING_REED))) {
                 amount *= 0.5F;
             }
         }
@@ -341,10 +342,8 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void livingDrops(LivingDropsEvent event) {
-        LivingEntity living = event.getEntity();
-        if (living.getTags().contains(ModUtils.NO_DROPS_TAG)) {
-            event.setCanceled(true);
-        } else if (living instanceof Player player && !living.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
+        if (event.isCanceled()) return;
+        if (event.getEntity() instanceof Player player && !player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
             ExtraInventory data = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
             for (int i = 0; i < data.getContainerSize(); i++) {
                 if (i >= ExtraInventory.COINS_START && i < ExtraInventory.COINS_START + ExtraInventory.SIZE_COINS) continue;
@@ -352,7 +351,7 @@ public final class LivingEntityEvents {
                 if (!itemStack.isEmpty()) {
                     data.setItem(i, ItemStack.EMPTY);
                 }
-                event.getDrops().add(new ItemEntity(living.level(), living.getX(), living.getY(), living.getZ(), itemStack));
+                event.getDrops().add(new ItemEntity(player.level(), player.getX(), player.getY(), player.getZ(), itemStack));
             }
         }
     }
@@ -375,7 +374,7 @@ public final class LivingEntityEvents {
         } else if (event.canBreathe()) return;
         if (living.hasEffect(ModEffects.SHIMMER)) {
             event.setCanBreathe(true);
-        } else if (ModUtils.anyHandHasItem(living, itemStack -> itemStack.is(SwordItems.BREATHING_REED))) {
+        } else if (LibUtils.anyHandHasItem(living, itemStack -> itemStack.is(SwordItems.BREATHING_REED))) {
             // todo 管子在水面上时允许呼吸
             event.setConsumeAirAmount(living.getRandom().nextInt(3) > 0 ? 0 : 1);
         }

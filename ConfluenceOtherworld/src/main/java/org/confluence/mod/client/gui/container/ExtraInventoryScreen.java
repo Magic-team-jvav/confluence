@@ -13,10 +13,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.common.menu.IToggleSlot;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.menu.ExtraInventoryMenu;
-import org.confluence.mod.common.menu.IToggleSlot;
 import org.confluence.terra_curio.TerraCurio;
 import top.theillusivec4.curios.common.network.client.CPacketOpenVanilla;
 

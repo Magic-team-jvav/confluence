@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.NeoForgeMod;
-import org.confluence.mod.util.MultiplyExplosionDamageCalculator;
+import org.confluence.lib.util.MultiplyExplosionDamageCalculator;
 
 public class LiquidBombEntity extends BaseBombEntity {
     private BlockState toFill;

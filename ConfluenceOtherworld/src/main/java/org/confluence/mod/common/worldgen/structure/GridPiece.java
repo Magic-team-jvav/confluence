@@ -22,8 +22,8 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModStructures;
-import org.confluence.mod.util.ModUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,8 +32,8 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class GridPiece extends StructurePiece {
-    public static final Codec<List<Tuple<Integer, LongArrayList>>> BLOCK_MAP_CODEC = ModUtils.tupleCodec(Codec.INT, Codec.LONG.listOf().xmap(LongArrayList::new, Function.identity())).listOf();
-    public static final Codec<List<Tuple<BlockPos, ResourceLocation>>> FEATURES_CODEC = ModUtils.tupleCodec(BlockPos.CODEC, ResourceLocation.CODEC).listOf();
+    public static final Codec<List<Tuple<Integer, LongArrayList>>> BLOCK_MAP_CODEC = LibUtils.tupleCodec(Codec.INT, Codec.LONG.listOf().xmap(LongArrayList::new, Function.identity())).listOf();
+    public static final Codec<List<Tuple<BlockPos, ResourceLocation>>> FEATURES_CODEC = LibUtils.tupleCodec(BlockPos.CODEC, ResourceLocation.CODEC).listOf();
 
     private final ChunkPos startPos;
     private final List<Tuple<Integer, LongArrayList>> blockMap;

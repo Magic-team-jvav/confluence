@@ -22,7 +22,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import java.util.*;
 
 import static net.minecraft.world.level.block.PoweredRailBlock.SHAPE;
-import static org.confluence.mod.util.StructureUtils.*;
+import static org.confluence.lib.util.StructureUtils.*;
 
 public class MineTunnelsStructure extends Structure {
     public static final MapCodec<MineTunnelsStructure> CODEC = simpleCodec(MineTunnelsStructure::new);

@@ -18,8 +18,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.util.VectorUtils;
 
 public class RollingCactusBoulderEntity extends BoulderEntity {
     public RollingCactusBoulderEntity(EntityType<RollingCactusBoulderEntity> entityType, Level pLevel) {

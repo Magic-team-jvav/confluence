@@ -7,8 +7,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
+import org.confluence.lib.util.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.util.MultiplyExplosionDamageCalculator;
 
 public class BaseGrenadeEntity extends BaseBombEntity {
     public static final float DIAMETER = 0.125F;

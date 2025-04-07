@@ -12,18 +12,18 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.OreBlocks;
-import org.confluence.mod.util.VectorUtils;
 import org.joml.Vector3d;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.confluence.mod.util.StructureUtils.frustumSet;
-import static org.confluence.mod.util.StructureUtils.frustumSetPos;
+import static org.confluence.lib.util.StructureUtils.frustumSet;
+import static org.confluence.lib.util.StructureUtils.frustumSetPos;
 
 public class IceThornStructure extends Structure {
     public static final MapCodec<IceThornStructure> CODEC = simpleCodec(IceThornStructure::new);

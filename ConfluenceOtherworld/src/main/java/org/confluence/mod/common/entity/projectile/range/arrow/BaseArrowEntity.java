@@ -23,9 +23,9 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.EnchantmentUtil;
 import org.confluence.mod.common.item.bow.BaseArrowItem;
 import org.confluence.mod.common.item.bow.TerraBowItem;
-import org.confluence.mod.util.EnchantmentUtil;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
 
 import javax.annotation.Nullable;

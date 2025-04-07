@@ -25,13 +25,13 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.event.GameClientEvents;
 import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.block.MusicBoxBlocks;
 import org.confluence.mod.common.item.accessory.MusicBoxItem;
 import org.confluence.mod.mixed.IMusicManager;
-import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.SlotContext;
 
@@ -69,7 +69,7 @@ public class MusicBoxBlock extends AbstractMechanicalBlock {
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide ? ModUtils.getTicker(blockEntityType, MusicBoxBlocks.MUSIC_BOX_ENTITY.get(), Entity::clientTick) : null;
+        return level.isClientSide ? LibUtils.getTicker(blockEntityType, MusicBoxBlocks.MUSIC_BOX_ENTITY.get(), Entity::clientTick) : null;
     }
 
     public static class Entity extends AbstractMechanicalBlock.Entity {

@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.GetCustomDiggingPowerEvent;
 import org.confluence.mod.common.CommonConfigs;
@@ -41,11 +42,11 @@ import java.util.function.IntSupplier;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
+import static org.confluence.lib.util.LibUtils.MAX_STACK_SIZE;
 import static org.confluence.mod.common.attachment.ExtraInventory.COINS_START;
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_COINS;
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 import static org.confluence.mod.util.DateUtils.isWithinDayTime;
-import static org.confluence.mod.util.ModUtils.MAX_STACK_SIZE;
 
 public final class PlayerUtils {
     public static final ToIntFunction<Item> COIN_2_INDEX = coin -> {
@@ -326,7 +327,7 @@ public final class PlayerUtils {
         long money = getMoney(player);
         long drops;
         if (player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
-            int ratio = ModUtils.switchByDifficulty(player.level(), player.blockPosition(), 2, 3, 4);
+            int ratio = LibUtils.switchByDifficulty(player.level(), player.blockPosition(), 2, 3, 4);
             drops = money * ratio / 4;
         } else {
             drops = money;

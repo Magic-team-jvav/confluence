@@ -10,9 +10,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.util.ModUtils;
 
 public class SpikeBlock extends Block {
     private static final VoxelShape SHAPE = box(4.0, 4.0, 4.0, 12.0, 12.0, 12.0);
@@ -26,7 +26,7 @@ public class SpikeBlock extends Block {
         if (!level.isClientSide) {
             entity.hurt(ModDamageTypes.of(level, ModDamageTypes.THORN), 12.0F);
             if (entity.isAlive() && entity instanceof LivingEntity living) {
-                living.addEffect(new MobEffectInstance(ModEffects.BLEEDING, ModUtils.switchByDifficulty(level, pos, 200, 400, 500)));
+                living.addEffect(new MobEffectInstance(ModEffects.BLEEDING, LibUtils.switchByDifficulty(level, pos, 200, 400, 500)));
             }
         }
     }

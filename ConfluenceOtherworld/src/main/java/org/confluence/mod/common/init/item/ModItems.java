@@ -21,7 +21,7 @@ import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static org.confluence.mod.util.ModUtils.MAX_STACK_SIZE;
+import static org.confluence.lib.util.LibUtils.MAX_STACK_SIZE;
 
 @SuppressWarnings("unused")
 public final class ModItems {

@@ -26,11 +26,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.functional.BoulderBlock;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class BoulderEntity extends Projectile {
@@ -90,7 +90,7 @@ public class BoulderEntity extends Projectile {
         if (!level().isClientSide) {
             Vec3 motion = getDeltaMovement();
             if (motion.x != vec3.x || motion.y != vec3.y || motion.z != vec3.z) {
-                for (Direction dir : ModUtils.DIRECTIONS) {
+                for (Direction dir : LibUtils.DIRECTIONS) {
                     BlockPos blockPos = blockPosition().relative(dir);
                     BlockState blockState = level().getBlockState(blockPos);
                     if (blockState.getBlock() instanceof BoulderBlock block) {

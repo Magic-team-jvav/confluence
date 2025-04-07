@@ -14,13 +14,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.MusicBoxBlocks;
 import org.confluence.mod.common.item.accessory.*;
-import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.api.primitive.*;
 import org.confluence.terra_curio.common.init.TCAttributes;
@@ -190,7 +190,7 @@ public class AccessoryItems {
             }
             ItemStack itemStack = item.getDefaultInstance();
             itemStack.setCount(randomSource.nextInt(1, 3));
-            ModUtils.createItemEntity(itemStack, target.getX(), target.getY(), target.getZ(), player.level(), 0);
+            LibUtils.createItemEntity(itemStack, target.getX(), target.getY(), target.getZ(), player.level(), 0);
         }
     }
 

@@ -13,13 +13,15 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import org.confluence.lib.common.worldgen.structure.GridPiece;
+import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
 import java.util.Optional;
 
-import static org.confluence.lib.util.StructureUtils.*;
+import static org.confluence.lib.common.worldgen.structure.StructureUtils.*;
 
 public class QueenBeeHiveStructure extends Structure {
     public static final MapCodec<QueenBeeHiveStructure> CODEC = simpleCodec(QueenBeeHiveStructure::new);

@@ -13,6 +13,8 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import org.confluence.lib.common.worldgen.structure.GridPiece;
+import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
@@ -22,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.confluence.lib.util.StructureUtils.lineSet;
+import static org.confluence.lib.common.worldgen.structure.StructureUtils.lineSet;
 
 public class DungeonStructure extends Structure {
     public static final MapCodec<DungeonStructure> CODEC = simpleCodec(DungeonStructure::new);

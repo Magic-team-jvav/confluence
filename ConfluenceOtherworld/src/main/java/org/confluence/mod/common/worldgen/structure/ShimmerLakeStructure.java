@@ -12,6 +12,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import org.confluence.lib.common.worldgen.structure.GridPiece;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -19,7 +20,7 @@ import org.joml.Vector3d;
 
 import java.util.*;
 
-import static org.confluence.lib.util.StructureUtils.*;
+import static org.confluence.lib.common.worldgen.structure.StructureUtils.*;
 
 public class ShimmerLakeStructure extends Structure {
     public static final MapCodec<ShimmerLakeStructure> CODEC = simpleCodec(ShimmerLakeStructure::new);

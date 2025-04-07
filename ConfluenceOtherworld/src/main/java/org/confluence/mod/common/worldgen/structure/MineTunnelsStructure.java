@@ -15,6 +15,8 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import org.confluence.lib.common.worldgen.structure.GridPiece;
+import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -22,7 +24,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import java.util.*;
 
 import static net.minecraft.world.level.block.PoweredRailBlock.SHAPE;
-import static org.confluence.lib.util.StructureUtils.*;
+import static org.confluence.lib.common.worldgen.structure.StructureUtils.*;
 
 public class MineTunnelsStructure extends Structure {
     public static final MapCodec<MineTunnelsStructure> CODEC = simpleCodec(MineTunnelsStructure::new);

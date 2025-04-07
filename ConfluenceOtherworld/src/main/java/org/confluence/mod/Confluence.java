@@ -11,6 +11,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.*;
@@ -21,7 +22,7 @@ import org.slf4j.LoggerFactory;
 
 @Mod(Confluence.MODID)
 public class Confluence {
-    public static final String MODID = "confluence";
+    public static final String MODID = ConfluenceMagicLib.CONFLUENCE_ID;
     public static final Logger LOGGER = LoggerFactory.getLogger("Confluence");
     public static GameRules.Key<GameRules.IntegerValue> SPREADABLE_CHANCE;
     public static final boolean THE_HALLOW_TEST = false;
@@ -38,7 +39,6 @@ public class Confluence {
         ModItems.register(eventBus);
         ModVillagers.register(eventBus);
         ModRecipes.register(eventBus);
-        ModStructures.register(eventBus);
         ModFeatures.register(eventBus);
         ModFluids.initialize();
         ModCriterionTriggers.TRIGGERS.register(eventBus);
@@ -54,6 +54,7 @@ public class Confluence {
         ModChunkGenerators.GENERATORS.register(eventBus);
         ModEntityDataSerializers.SERIALIZERS.register(eventBus);
         ModCarvers.CARVERS.register(eventBus);
+        ModStructures.TYPES.register(eventBus);
 
         ModEffectStrategies.EFFECT_STRATEGY.register(eventBus);
         ModEquipmentSets.EQUIPMENT_SET.register(eventBus);

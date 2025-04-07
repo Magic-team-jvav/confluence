@@ -11,6 +11,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import org.confluence.lib.common.worldgen.structure.GridPiece;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -20,8 +21,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import static net.minecraft.world.level.block.LeavesBlock.PERSISTENT;
-import static org.confluence.lib.util.StructureUtils.getHeight;
-import static org.confluence.lib.util.StructureUtils.rectangular;
+import static org.confluence.lib.common.worldgen.structure.StructureUtils.getHeight;
+import static org.confluence.lib.common.worldgen.structure.StructureUtils.rectangular;
 
 public class LivingMahoganyTreeStructure extends Structure {
     public static final MapCodec<LivingMahoganyTreeStructure> CODEC = simpleCodec(LivingMahoganyTreeStructure::new);

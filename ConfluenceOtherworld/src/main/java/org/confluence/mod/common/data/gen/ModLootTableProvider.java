@@ -9,7 +9,6 @@ import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -32,7 +31,6 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.FoodItems;
 import org.confluence.mod.common.init.item.MaterialItems;
-import org.confluence.mod.common.init.item.ModItems;
 
 import java.util.List;
 import java.util.Set;
@@ -139,6 +137,7 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(DART_TRAP.get());
             dropSelf(STONE_DART_TRAP.get());
             dropSelf(DEEPSLATE_DART_TRAP.get());
+            dropSelf(PIGGY_BANK.get());
 
             add(SANCTIFICATION_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));
             add(CORRUPTION_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));

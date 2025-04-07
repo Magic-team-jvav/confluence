@@ -77,7 +77,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("item.confluence.tokyo_teddy_bear.tooltip.5", "           已不再需要");
         add("item.confluence.tokyo_teddy_bear.tooltip.6", "——由一只蜘蛛讲述的故事");
         add("item.confluence.paradox_interactive_medal.0", "同时玩过钢铁雄心、维多利亚、欧陆风云、十字军之王、都市天际线的证明。");
-        add("item.confluence.kind_mita_ring.tooltip.1", "“戒指会带你找到正确的方向，亲爱的”");
+        add("item.confluence.kind_miside_ring.tooltip.1", "“戒指会带你找到正确的方向，亲爱的”");
         add("item.confluence.failed_skull.tooltip.1", "一只苦力怕被猪灵强制改造了身体，可以多次自爆。猪灵想用它作为入侵主世界的生物兵器，却被其意外逃脱");
         add("item.confluence.pink_cola.tooltip.1", "一瓶普通的粉色可乐，或许原来有一整箱？");
         add("item.confluence.dongdongs_flatbread.tooltip.1", "刚在下界岩上考好的饼，快来尝尝吧！");
@@ -1880,7 +1880,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get(), "「无聊之咒·陨志」");
         add(ModItems.TOKYO_TEDDY_BEAR.get(), "东京泰迪熊");
         add(ModItems.FAILED_SKULL.get(), "失败品的头颅");
-        add(ModItems.KIND_MITA_RING.get(), "善良米塔的戒指");
+        add(ModItems.KIND_MISIDE_RING.get(), "善良米塔的戒指");
         add(ModItems.ICE_TOFU_BRICK.get(), "冰豆腐砖");
         add(ModItems.MYSTERIOUS_NOTE.get(), "神秘纸条");
         add(ModItems.FERTILE_SINGULARITY.get(), "丰饶奇点");

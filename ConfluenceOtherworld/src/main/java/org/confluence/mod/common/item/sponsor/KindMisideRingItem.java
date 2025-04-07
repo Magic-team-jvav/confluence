@@ -12,10 +12,10 @@ import org.confluence.mod.common.item.common.TooltipItem;
 
 import java.util.List;
 
-public class KindMitaRingItem extends TooltipItem {
+public class KindMisideRingItem extends TooltipItem {
 
-    public KindMitaRingItem() {
-        super(new Properties(), ModRarity.COMMON, TooltipItem.getTooltipsFromString("kind_mita_ring", 1));
+    public KindMisideRingItem() {
+        super(new Properties(), ModRarity.COMMON, TooltipItem.getTooltipsFromString("kind_miside_ring", 1));
     }
 
     @Override

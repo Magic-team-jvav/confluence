@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.gen;
 
+import com.xiaohunao.terra_moment.common.init.TMItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
@@ -30,6 +32,7 @@ import org.confluence.terraentity.init.item.TESummonItems;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static org.confluence.mod.common.init.block.OreBlocks.*;
@@ -961,8 +964,31 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         copy(Tags.Blocks.CHESTS_TRAPPED, Tags.Items.CHESTS_TRAPPED);
         copy(Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES, Tags.Items.PLAYER_WORKSTATIONS_CRAFTING_TABLES);
 
-        tag(LibTags.Items.WIP).add(
-                ModItems.WHOOPIE_CUSHION.get()
+        IntrinsicTagAppender<Item> wip = tag(LibTags.Items.WIP);
+        wip.add(
+                ModItems.WHOOPIE_CUSHION.get(),
+                ConsumableItems.GOODIE_BAG.get(),
+                PaintItems.ECHO_COATING.get(),
+                FoodItems.BOULDER_BREAD.get(),
+                FunctionalBlocks.ANNOUNCEMENT_BOX.asItem(),
+                ToolItems.HOUSE_DETECTOR.get(),
+                ToolItems.TARGET_DUMMY.get(),
+                DrillItems.DRAX.get(),
+                ModItems.TOKYO_TEDDY_BEAR.get(),
+                ModItems.ICE_TOFU_BRICK.get(),
+                ModItems.FAILED_SKULL.get(),
+                ModItems.KIND_MISIDE_RING.get(),
+                ModItems.FERTILE_SINGULARITY.get(),
+                ModItems.PERPLEXED_CAT_MEDAL.get(),
+                ModItems.CANDY_SWORD.get(),
+                ModItems.PULSAR.get(),
+                ModItems.MYSTERIOUS_NOTE.get()
         );
+        Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
+        MinecartItems.ITEMS.getEntries().forEach(wipAction);
+        TGItems.ITEM_GUNS.getEntries().forEach(wipAction);
+        TGItems.ITEM_BULLETS.getEntries().forEach(wipAction);
+        LightPetItems.ITEMS.getEntries().forEach(wipAction);
+        TMItems.ITEMS.getEntries().forEach(wipAction);
     }
 }

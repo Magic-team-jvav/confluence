@@ -49,12 +49,12 @@ public final class ModItems {
     public static final Supplier<TooltipItem> TOKYO_TEDDY_BEAR = HIDDEN.register("tokyo_teddy_bear", () -> new TooltipItem(new Item.Properties(), ModRarity.MASTER, TooltipItem.getTooltipsFromString("tokyo_teddy_bear", 6)));
     public static final Supplier<IceTofuBrickItem> ICE_TOFU_BRICK = HIDDEN.register("ice_tofu_brick", IceTofuBrickItem::new);
     public static final Supplier<FailedSkullItem> FAILED_SKULL = HIDDEN.register("failed_skull", FailedSkullItem::new);
-    public static final Supplier<KindMitaRingItem> KIND_MITA_RING = HIDDEN.register("kind_mita_ring", KindMitaRingItem::new);
+    public static final Supplier<KindMisideRingItem> KIND_MISIDE_RING = HIDDEN.register("kind_miside_ring", KindMisideRingItem::new);
 
-    public static final Supplier<KindMitaRingItem> FERTILE_SINGULARITY = HIDDEN.register("fertile_singularity", KindMitaRingItem::new); // 占位符 丰饶奇点
-    public static final Supplier<KindMitaRingItem> PERPLEXED_CAT_MEDAL = HIDDEN.register("perplexed_cat_medal", KindMitaRingItem::new); // 占位符 疑惑猫猫勋章
-    public static final Supplier<KindMitaRingItem> CANDY_SWORD = HIDDEN.register("candy_sword", KindMitaRingItem::new); // 占位符 糖果剑
-    public static final Supplier<KindMitaRingItem> PULSAR = HIDDEN.register("pulsar", KindMitaRingItem::new); // 占位符 脉冲星
+    public static final Supplier<KindMisideRingItem> FERTILE_SINGULARITY = HIDDEN.register("fertile_singularity", KindMisideRingItem::new); // 占位符 丰饶奇点
+    public static final Supplier<KindMisideRingItem> PERPLEXED_CAT_MEDAL = HIDDEN.register("perplexed_cat_medal", KindMisideRingItem::new); // 占位符 疑惑猫猫勋章
+    public static final Supplier<KindMisideRingItem> CANDY_SWORD = HIDDEN.register("candy_sword", KindMisideRingItem::new); // 占位符 糖果剑
+    public static final Supplier<KindMisideRingItem> PULSAR = HIDDEN.register("pulsar", KindMisideRingItem::new); // 占位符 脉冲星
 
     public static final Supplier<Item> MYSTERIOUS_NOTE = HIDDEN.register("mysterious_note", () -> new Item(new Item.Properties()));
 

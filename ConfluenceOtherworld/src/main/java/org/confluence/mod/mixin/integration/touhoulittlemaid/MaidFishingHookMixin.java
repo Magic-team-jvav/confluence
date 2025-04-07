@@ -8,10 +8,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
-import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
@@ -44,8 +44,8 @@ public abstract class MaidFishingHookMixin implements SelfGetter<MaidFishingHook
                 if (level.random.nextFloat() < chance) {
                     randomItems.addAll(level.getServer().reloadableRegistries().getLootTable(ModLootTables.CRATE)
                             .getRandomItems(new LootParams.Builder(level)
-                                    .withParameter(LootContextParams.ORIGIN, self().position())
-                                    .withParameter(LootContextParams.THIS_ENTITY, self())
+                                    .withParameter(LootContextParams.ORIGIN, confluence$self().position())
+                                    .withParameter(LootContextParams.THIS_ENTITY, confluence$self())
                                     .create(LootContextParamSets.GIFT)));
                 }
             }

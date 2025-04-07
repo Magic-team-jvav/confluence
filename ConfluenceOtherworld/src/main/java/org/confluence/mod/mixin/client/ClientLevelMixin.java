@@ -14,9 +14,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.fluids.FluidType;
+import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.handler.WeatherHandler;
-import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -57,12 +57,12 @@ public abstract class ClientLevelMixin implements LevelReader, SelfGetter<Client
         if (confluence$blockParticles != null) {
             r = i1 == 0 ? 0 : confluence$random.nextInt(i1);
             if (r == 0) {
-                WeatherHandler.handleBlock(self(), confluence$random, blockstate, blockPos, confluence$blockParticles);
+                WeatherHandler.handleBlock(confluence$self(), confluence$random, blockstate, blockPos, confluence$blockParticles);
             }
         }
         if (confluence$fluidParticles != null && !fluidstate.isEmpty()) {
             if (r == 0 || confluence$random.nextInt(i1) == 0) {
-                WeatherHandler.handleFluid(self(), confluence$random, fluidstate, blockPos, confluence$fluidParticles);
+                WeatherHandler.handleFluid(confluence$self(), confluence$random, fluidstate, blockPos, confluence$fluidParticles);
             }
         }
     }

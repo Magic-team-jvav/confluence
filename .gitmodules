@@ -46,3 +46,7 @@
 	path = EntityTrackerHUD
 	url = https://github.com/MakerTechno/EntityTrackerHUD.git
 	branch = neoforge-dev/1.21.1
+[submodule "Confluence-Magic-Lib"]
+	path = Confluence-Magic-Lib
+	url = https://github.com/westernat/Confluence-Magic-Lib.git
+	branch = neoforge-dev/1.21.1

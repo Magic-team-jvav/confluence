@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidType;
+import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.api.event.LivingFreezeEvent;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModFluids;
@@ -30,7 +31,6 @@ import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terra_curio.mixed.SelfGetter;
 import org.confluence.terra_curio.util.TCUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -95,7 +95,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
 
     @Inject(method = "checkFallDamage", at = @At("HEAD"), cancellable = true)
     private void fall(double motionY, boolean onGround, BlockState blockState, BlockPos blockPos, CallbackInfo ci) {
-        LivingEntity self = self();
+        LivingEntity self = confluence$self();
         if (fallDistance >= 2.5F && blockState.is(NatureBlocks.THIN_ICE_BLOCK)) {
             if (TCUtils.isIceSafe(self)) return;
             if (!level().isClientSide) {
@@ -116,7 +116,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
 
     @WrapOperation(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;multiply(DDD)Lnet/minecraft/world/phys/Vec3;"))
     private Vec3 waterWalk(Vec3 instance, double factorX, double factorY, double factorZ, Operation<Vec3> original) {
-        LivingEntity self = self();
+        LivingEntity self = confluence$self();
         FluidType fluidType = self.getBlockStateOn().getFluidState().getType().getFluidType();
         if (fluidType == ModFluids.HONEY.type().get()) {
             if (!self.level().isClientSide) {
@@ -143,8 +143,8 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
 
     @ModifyVariable(method = "handleOnClimbable", at = @At(value = "NEW", target = "(DDD)Lnet/minecraft/world/phys/Vec3;"), ordinal = 2)
     private double checkRope(double d2, @Local(argsOnly = true) Vec3 deltaMovement) {
-        NoTraps.breakClimbable(self());
-        if (deltaMovement.y < 0.0 && !isSuppressingSlidingDownLadder() && self() instanceof Player && getInBlockState().is(ModTags.Blocks.ROPE)) {
+        NoTraps.breakClimbable(confluence$self());
+        if (deltaMovement.y < 0.0 && !isSuppressingSlidingDownLadder() && confluence$self() instanceof Player && getInBlockState().is(ModTags.Blocks.ROPE)) {
             return 0.0;
         }
         return Math.max(deltaMovement.y, -0.15F);
@@ -160,11 +160,11 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
 
     @Inject(method = "canFreeze", at = @At(value = "HEAD"), cancellable = true)
     private void confluence$canFreeze(CallbackInfoReturnable<Boolean> cir) {
-        LivingFreezeEvent.Pre post = NeoForge.EVENT_BUS.post(new LivingFreezeEvent.Pre(self()));
+        LivingFreezeEvent.Pre post = NeoForge.EVENT_BUS.post(new LivingFreezeEvent.Pre(confluence$self()));
         HookMapManager.postHooks(ModHookTypes.LIVING_FREEZE.get(), (owner, hook, original) -> {
-            hook.livingFreeze(owner, self(), original);
+            hook.livingFreeze(owner, confluence$self(), original);
             return original;
-        }, self(), post);
+        }, confluence$self(), post);
 
         if (!post.canFreeze()) {
             cir.setReturnValue(false);
@@ -173,6 +173,6 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
 
     @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/DamageSources;freeze()Lnet/minecraft/world/damagesource/DamageSource;"))
     private void confluence$aiStep(CallbackInfo ci) {
-        NeoForge.EVENT_BUS.post(new LivingFreezeEvent.Post(self()));
+        NeoForge.EVENT_BUS.post(new LivingFreezeEvent.Post(confluence$self()));
     }
 }

@@ -2,8 +2,8 @@ package org.confluence.mod.mixin.entity;
 
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
+import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.item.bow.TerraBowItem;
-import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,8 +19,8 @@ public abstract class LocalPlayerMixin implements SelfGetter<LocalPlayer> {
 
     @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/Input;tick(ZF)V", shift = At.Shift.AFTER))
     public void aiStep(CallbackInfo ci) {
-        if(isUsingItem() && !self().isPassenger()) {
-            if(self().getUseItem().getItem() instanceof TerraBowItem) {
+        if(isUsingItem() && !confluence$self().isPassenger()) {
+            if(confluence$self().getUseItem().getItem() instanceof TerraBowItem) {
                 this.input.leftImpulse *= 5;
                 this.input.forwardImpulse *= 5;
             }

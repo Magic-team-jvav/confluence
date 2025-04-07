@@ -5,10 +5,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.client.effect.GlowingHelper;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.mixed.IEntity;
-import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,20 +24,20 @@ public abstract class EntityClientMixin implements SelfGetter<Entity>, IEntity {
             GlowingHelper helper = GlowingHelper.INSTANCE;
             //自定义狩猎药水表
             for (var entry : helper.colorMap.entrySet()) {
-                if (entry.getKey().isAssignableFrom(self().getClass())) {
+                if (entry.getKey().isAssignableFrom(confluence$self().getClass())) {
                     cir.setReturnValue(entry.getValue().color().getRGB());
                     return;
                 }
             }
 
             //敌人
-            if (self() instanceof Enemy) {
+            if (confluence$self() instanceof Enemy) {
                 cir.setReturnValue(helper.enemyColor.getRGB());
                 return;
             }
 
             //中立生物
-            if (self() instanceof NeutralMob) {
+            if (confluence$self() instanceof NeutralMob) {
                 /*todo 添加愤怒颜色
                 if((te$getSelf() instanceof EnderMan) && ((EnderMan) te$getSelf()).isCreepy()){
                         cir.setReturnValue(helper.angerColor.getRGB());

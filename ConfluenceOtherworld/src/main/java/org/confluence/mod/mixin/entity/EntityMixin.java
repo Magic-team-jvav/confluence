@@ -1,11 +1,8 @@
 package org.confluence.mod.mixin.entity;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentContents;
-import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -15,14 +12,13 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.fluids.FluidType;
+import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.api.event.ShimmerEntityTransmutationEvent;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.GamePhase;
@@ -30,7 +26,6 @@ import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.mixed.IEntity;
-import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -38,8 +33,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.List;
 
 import static org.confluence.mod.api.event.ShimmerEntityTransmutationEvent.ENTITY_TRANSMUTATION;
 
@@ -103,7 +96,7 @@ public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
 
     @Inject(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;pop()V"))
     private void shimmerTick(CallbackInfo ci) {
-        Entity self = self();
+        Entity self = confluence$self();
         if (self instanceof PartEntity<?>) return;
 
         if (confluence$entity_coolDown < 0) this.confluence$entity_coolDown = 0;
@@ -166,7 +159,7 @@ public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
     @Inject(method = "getName", at = @At("RETURN"), cancellable = true)
     private void zombieName(CallbackInfoReturnable<Component> cir) {
         Component returnValue = cir.getReturnValue();
-        Entity self = self();
+        Entity self = confluence$self();
         if(self instanceof Zombie zombie){
             ItemStack chestItem = zombie.getItemBySlot(EquipmentSlot.CHEST);
             if (chestItem.is(ArmorItems.RAINCOAT.get())){

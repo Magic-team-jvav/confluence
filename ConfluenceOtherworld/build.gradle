@@ -1,7 +1,7 @@
 plugins {
     id 'net.neoforged.moddev'
 }
-var projectName = ["TerraEntity", "MineTeam", "EquipmentBenediction",
+var projectName = ["Confluence-Magic-Lib","TerraEntity", "MineTeam", "EquipmentBenediction",
                    "TerraCurio", "ParticleStorm", "HeavenDestinyMoment", "PhaseJourney",
                    "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture",
                    "EntityTrackerHUD"

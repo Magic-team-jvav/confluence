@@ -12,10 +12,10 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.lib.network.ExtraByteBufCodecs;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModAttachmentTypes;
-import org.confluence.mod.network.ExtraByteBufCodecs;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

@@ -7,9 +7,9 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.mixed.IAbstractArrow;
-import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,12 +24,12 @@ public abstract class AbstractArrowMixin implements IAbstractArrow, SelfGetter<A
 
     @Override
     public boolean confluence$isShootFromShortBow() {
-        return self().getEntityData().get(FROM_SHORT_BOW);
+        return confluence$self().getEntityData().get(FROM_SHORT_BOW);
     }
 
     @Override
     public void confluence$setShootFromShortBow(boolean is) {
-        self().getEntityData().set(FROM_SHORT_BOW, is);
+        confluence$self().getEntityData().set(FROM_SHORT_BOW, is);
     }
 
     @Inject(method = "defineSynchedData", at = @At("TAIL"))
@@ -39,7 +39,7 @@ public abstract class AbstractArrowMixin implements IAbstractArrow, SelfGetter<A
 
     @ModifyVariable(method = "shoot", at = @At("HEAD"), argsOnly = true, ordinal = 0)
     private float boost(float velocity) {
-        if (self().getOwner() instanceof LivingEntity living && living.hasEffect(ModEffects.ARCHERY)) {
+        if (confluence$self().getOwner() instanceof LivingEntity living && living.hasEffect(ModEffects.ARCHERY)) {
             return velocity * 1.2F;
         }
         return velocity;

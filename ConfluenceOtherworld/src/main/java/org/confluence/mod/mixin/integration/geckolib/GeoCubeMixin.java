@@ -1,8 +1,8 @@
 package org.confluence.mod.mixin.integration.geckolib;
 
+import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.mixed.IGeoCube;
 import org.confluence.mod.util.DeathAnimUtils;
-import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import software.bernie.geckolib.cache.object.GeoCube;
@@ -16,7 +16,7 @@ public abstract class GeoCubeMixin implements IGeoCube, SelfGetter<GeoCube> {
     @Override
     public GeoCube confluence$getCopy(){
         if(confluence$copy == null){
-            confluence$copy = DeathAnimUtils.duplicateGeoCube(self());
+            confluence$copy = DeathAnimUtils.duplicateGeoCube(confluence$self());
         }
         return confluence$copy;
     }

@@ -7,9 +7,9 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.lib.network.ExtraByteBufCodecs;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
-import org.confluence.mod.network.ExtraByteBufCodecs;
 import org.jetbrains.annotations.NotNull;
 
 public record SecretFlagSyncPacketS2C(long flag) implements CustomPacketPayload {

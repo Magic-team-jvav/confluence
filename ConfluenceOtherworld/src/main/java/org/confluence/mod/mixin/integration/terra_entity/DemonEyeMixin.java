@@ -2,7 +2,7 @@ package org.confluence.mod.mixin.integration.terra_entity;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import org.confluence.terra_curio.mixed.SelfGetter;
+import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.entity.monster.demoneye.DemonEye;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,7 +15,7 @@ public abstract class DemonEyeMixin implements SelfGetter<DemonEye> {
     @Inject(method = "push", at = @At("HEAD"))
     private void collidingCheck(Entity entity, CallbackInfo ci) {
         if (entity instanceof Player player) {
-            TCUtils.applyCthulhuTouch(player, self());
+            TCUtils.applyCthulhuTouch(player, confluence$self());
         }
     }
 }

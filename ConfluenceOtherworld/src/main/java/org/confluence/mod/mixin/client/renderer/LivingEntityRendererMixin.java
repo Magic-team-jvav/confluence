@@ -6,10 +6,10 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.world.entity.LivingEntity;
+import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.client.AntiPushPoseStack;
 import org.confluence.mod.mixed.ILivingEntityRenderer;
 import org.confluence.mod.util.DeathAnimUtils;
-import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,7 +35,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity,M extends
     @Override
     public ModelPart confluence$getRootModelPart(){
         if(confluence$rootModelPart == null){
-            confluence$rootModelPart = DeathAnimUtils.findRootModelPart(self());
+            confluence$rootModelPart = DeathAnimUtils.findRootModelPart(confluence$self());
         }
         return confluence$rootModelPart;
     }

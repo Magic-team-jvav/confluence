@@ -37,6 +37,7 @@ PhaseJourney/run
 TerraMoment/run
 ExtraWorldInvaded/run
 TerraGuns/run
+Confluence-Magic-Lib/run
 
 TerraEntity/build
 MineTeam/build
@@ -48,6 +49,7 @@ PhaseJourney/build
 TerraMoment/build
 ExtraWorldInvaded/build
 TerraGuns/build
+Confluence-Magic-Lib/build
 
 TerraEntity/src/generated
 MineTeam/src/generated
@@ -59,3 +61,4 @@ PhaseJourney/src/generated
 TerraMoment/src/generated
 ExtraWorldInvaded/src/generated
 TerraGuns/src/generated
+Confluence-Magic-Lib/src/generated

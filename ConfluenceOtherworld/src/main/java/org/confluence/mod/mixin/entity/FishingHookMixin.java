@@ -29,6 +29,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModTags;
@@ -37,7 +38,6 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.fishing.IBait;
 import org.confluence.mod.mixed.IFishingHook;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terra_curio.mixed.SelfGetter;
 import org.confluence.terra_curio.util.TCUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -70,13 +70,13 @@ public abstract class FishingHookMixin implements IFishingHook, SelfGetter<Fishi
     @Unique
     @Override
     public void confluence$setIsLavaHook() {
-        self().getEntityData().set(DATA_LAVA, true);
+        confluence$self().getEntityData().set(DATA_LAVA, true);
     }
 
     @Unique
     @Override
     public boolean confluence$isLavaHook() {
-        return self().getEntityData().get(DATA_LAVA);
+        return confluence$self().getEntityData().get(DATA_LAVA);
     }
 
     @Unique
@@ -193,13 +193,13 @@ public abstract class FishingHookMixin implements IFishingHook, SelfGetter<Fishi
     @ModifyArg(method = "retrieve", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/ReloadableServerRegistries$Holder;getLootTable(Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/world/level/storage/loot/LootTable;"))
     private ResourceKey<LootTable> modifyLoot(ResourceKey<LootTable> lootTableKey) {
         if (confluence$isInLava()) return ModLootTables.FISHING_LAVA;
-        if (self().getType() == EntityType.FISHING_BOBBER) return lootTableKey;
+        if (confluence$self().getType() == EntityType.FISHING_BOBBER) return lootTableKey;
         return ModLootTables.FISH;
     }
 
     @Unique
     private boolean confluence$isInLava() {
-        return self().getInBlockState().getFluidState().is(FluidTags.LAVA);
+        return confluence$self().getInBlockState().getFluidState().is(FluidTags.LAVA);
     }
 
     @ModifyExpressionValue(method = "retrieve", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItems(Lnet/minecraft/world/level/storage/loot/LootParams;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;"))
@@ -210,8 +210,8 @@ public abstract class FishingHookMixin implements IFishingHook, SelfGetter<Fishi
             if (level.random.nextFloat() < chance) {
                 return level.getServer().reloadableRegistries().getLootTable(ModLootTables.CRATE)
                         .getRandomItems(new LootParams.Builder(level)
-                                .withParameter(LootContextParams.ORIGIN, self().position())
-                                .withParameter(LootContextParams.THIS_ENTITY, self())
+                                .withParameter(LootContextParams.ORIGIN, confluence$self().position())
+                                .withParameter(LootContextParams.THIS_ENTITY, confluence$self())
                                 .create(LootContextParamSets.GIFT));
             }
         }

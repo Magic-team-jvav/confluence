@@ -5,11 +5,11 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.entity.npc.NPCTrades;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.mixed.IDamageSource;
 import org.confluence.mod.mixed.IPlayer;
-import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -52,7 +52,7 @@ public abstract class PlayerMixin implements IPlayer , SelfGetter<Player> {
     @ModifyArg(method = "causeFoodExhaustion", at= @At(value = "INVOKE", target = "Lnet/minecraft/world/food/FoodData;addExhaustion(F)V"))
     private float exhaustionDelay(float exhaustion) {
         if (exhaustion > 0.0F) {
-            MobEffectInstance effect = self().getEffect(ModEffects.HUNGER_DELAYED);
+            MobEffectInstance effect = confluence$self().getEffect(ModEffects.HUNGER_DELAYED);
             if (effect != null) {
                 float i = Math.min(effect.getAmplifier() + 1, 5) * 0.2F;
                 return Math.max(exhaustion - exhaustion * i, 0);

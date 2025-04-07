@@ -8,14 +8,14 @@
     ],
     "key": {
         "#": {
-            "type": "terra_curio:amount_ingredient",
+            "type": "confluence_magic_lib:amount_ingredient",
             "ingredient": {
                 "tag": "c:ingots/platinum"
             },
             "count": 2
         },
         "a": {
-            "type": "terra_curio:amount_ingredient",
+            "type": "confluence_magic_lib:amount_ingredient",
             "ingredient": {
                 "item": "minecraft:diamond"
             },

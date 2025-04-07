@@ -5,14 +5,14 @@
     },
     "ingredients": [
         {
-            "type": "terra_curio:amount_ingredient",
+            "type": "confluence_magic_lib:amount_ingredient",
             "ingredient": {
                 "item": "minecraft:bone"
             },
             "count": 3
         },
         {
-            "type": "terra_curio:amount_ingredient",
+            "type": "confluence_magic_lib:amount_ingredient",
             "ingredient": {
                 "item": "confluence:ash_block"
             },

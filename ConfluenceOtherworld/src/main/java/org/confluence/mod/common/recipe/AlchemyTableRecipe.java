@@ -11,10 +11,10 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.recipe.AbstractAmountRecipe;
+import org.confluence.lib.recipe.AmountIngredient;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.menu.AlchemyTableMenu;
-import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
-import org.confluence.terra_curio.common.recipe.AmountIngredient;
 import org.jetbrains.annotations.Nullable;
 
 public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {

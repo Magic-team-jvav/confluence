@@ -11,6 +11,7 @@ import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import org.confluence.lib.recipe.AbstractAmountRecipe;
 import org.confluence.mod.common.block.functional.crafting.HeavyWorkBenchBlock;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
@@ -18,7 +19,6 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.EnvironmentRecipeInput;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 import org.confluence.terra_curio.common.menu.AmountResultSlot;
-import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
 
 import java.util.ArrayList;
 import java.util.List;

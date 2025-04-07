@@ -11,10 +11,10 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import org.confluence.lib.recipe.AbstractAmountRecipe;
+import org.confluence.lib.recipe.AmountIngredient;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
-import org.confluence.terra_curio.common.recipe.AmountIngredient;
 
 public class HellforgeRecipe extends AbstractAmountRecipe<RecipeInput> {
     protected final float experience;

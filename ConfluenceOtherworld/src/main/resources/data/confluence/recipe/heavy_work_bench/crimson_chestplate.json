@@ -7,14 +7,14 @@
     ],
     "key": {
         "#": {
-            "type": "terra_curio:amount_ingredient",
+            "type": "confluence_magic_lib:amount_ingredient",
             "ingredient": {
                 "item": "confluence:tr_crimson_ingot"
             },
             "count": 5
         },
         "a": {
-            "type": "terra_curio:amount_ingredient",
+            "type": "confluence_magic_lib:amount_ingredient",
             "ingredient": {
                 "item": "confluence:tissue_sample"
             },

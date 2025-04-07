@@ -8,14 +8,14 @@
   ],
   "key": {
     "a": {
-      "type": "terra_curio:amount_ingredient",
+      "type": "confluence_magic_lib:amount_ingredient",
       "ingredient": {
         "item": "confluence:hellstone_ingot"
       },
       "count": 3
     },
     "b": {
-      "type": "terra_curio:amount_ingredient",
+      "type": "confluence_magic_lib:amount_ingredient",
       "ingredient": {
         "item": "confluence:hellstone_ingot"
       },

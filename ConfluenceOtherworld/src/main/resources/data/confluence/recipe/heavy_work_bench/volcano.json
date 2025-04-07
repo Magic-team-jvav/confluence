@@ -8,7 +8,7 @@
   ],
   "key": {
     "a": {
-      "type": "terra_curio:amount_ingredient",
+      "type": "confluence_magic_lib:amount_ingredient",
       "ingredient": {
         "item": "confluence:hellstone_ingot"
       },
@@ -18,7 +18,7 @@
       "item": "minecraft:soul_sand"
     },
     "c": {
-      "type": "terra_curio:amount_ingredient",
+      "type": "confluence_magic_lib:amount_ingredient",
       "ingredient": {
         "item": "minecraft:blaze_rod"
       },

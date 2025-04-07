@@ -15,12 +15,12 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import org.confluence.lib.recipe.AbstractAmountRecipe;
+import org.confluence.lib.recipe.AmountIngredient;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.AlchemyTableRecipe;
-import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
-import org.confluence.terra_curio.common.recipe.AmountIngredient;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;

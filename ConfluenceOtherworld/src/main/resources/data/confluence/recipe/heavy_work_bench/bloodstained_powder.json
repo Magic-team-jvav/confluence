@@ -5,14 +5,14 @@
 	],
 	"key": {
 		"a": {
-			"type": "terra_curio:amount_ingredient",
+			"type": "confluence_magic_lib:amount_ingredient",
 			"ingredient": {
 				"item": "confluence:blood_clot_powder"
 			},
 			"count": 8
 		},
 		"b": {
-			"type": "terra_curio:amount_ingredient",
+			"type": "confluence_magic_lib:amount_ingredient",
 			"ingredient": {
 				"item": "confluence:vertebra"
 			},

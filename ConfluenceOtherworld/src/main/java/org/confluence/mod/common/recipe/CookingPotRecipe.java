@@ -25,10 +25,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.confluence.lib.network.ExtraByteBufCodecs;
+import org.confluence.lib.recipe.AbstractAmountRecipe;
+import org.confluence.lib.recipe.AmountIngredient;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
-import org.confluence.terra_curio.common.recipe.AmountIngredient;
 
 import java.util.Optional;
 

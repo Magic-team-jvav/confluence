@@ -11,7 +11,7 @@
 			"tag": "confluence:lead_and_iron"
 		},
 		"b": {
-			"type": "terra_curio:amount_ingredient",
+			"type": "confluence_magic_lib:amount_ingredient",
 			"ingredient": {
 				"tag": "confluence:lead_and_iron"
 			},

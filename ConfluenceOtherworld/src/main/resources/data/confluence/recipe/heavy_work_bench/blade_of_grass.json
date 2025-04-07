@@ -8,7 +8,7 @@
   ],
   "key": {
     "a": {
-      "type": "terra_curio:amount_ingredient",
+      "type": "confluence_magic_lib:amount_ingredient",
       "ingredient": {
         "item": "confluence:jungle_spore"
       },
@@ -18,7 +18,7 @@
         "item": "confluence:man_eater_vine"
     },
     "c": {
-      "type": "terra_curio:amount_ingredient",
+      "type": "confluence_magic_lib:amount_ingredient",
       "ingredient": {
         "item": "confluence:stinger"
       },

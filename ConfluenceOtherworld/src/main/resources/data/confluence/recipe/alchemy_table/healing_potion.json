@@ -8,7 +8,7 @@
             "item": "confluence:glowing_mushroom"
         },
         {
-            "type": "terra_curio:amount_ingredient",
+            "type": "confluence_magic_lib:amount_ingredient",
             "ingredient": {
                 "item": "confluence:lesser_healing_potion"
             },

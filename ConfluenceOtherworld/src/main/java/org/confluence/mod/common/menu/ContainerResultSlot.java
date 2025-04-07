@@ -5,7 +5,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
-import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
+import org.confluence.lib.recipe.AbstractAmountRecipe;
 import org.jetbrains.annotations.Nullable;
 
 public class ContainerResultSlot extends Slot {

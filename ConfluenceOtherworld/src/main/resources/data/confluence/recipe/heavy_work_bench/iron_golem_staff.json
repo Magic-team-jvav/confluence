@@ -8,14 +8,14 @@
     ],
     "key": {
         "#": {
-            "type": "terra_curio:amount_ingredient",
+            "type": "confluence_magic_lib:amount_ingredient",
             "ingredient": {
                 "item": "minecraft:iron_block"
             },
             "count": 3
         },
         "c": {
-            "type": "terra_curio:amount_ingredient",
+            "type": "confluence_magic_lib:amount_ingredient",
             "ingredient": {
                 "item": "minecraft:redstone_block"
             },

@@ -15,9 +15,9 @@ import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.fluids.FluidInteractionRegistry;
+import org.confluence.lib.common.fluid.FluidTriple;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.GamePhase;
-import org.confluence.mod.common.fluid.FluidTriple;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 

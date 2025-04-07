@@ -38,7 +38,6 @@ import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.RegisterEvent;
 import net.neoforged.neoforgespi.locating.IModFile;
 import nowebsite.makertechno.terra_furniture.common.init.TFBlocks;
 import nowebsite.makertechno.terra_furniture.common.init.TFTabs;
@@ -54,7 +53,6 @@ import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.entity.TargetDummyEntity;
-import org.confluence.mod.common.fluid.FluidBuilder;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -159,11 +157,6 @@ public final class ModEvents {
                 if (pack != null) consumer.accept(pack);
             });
         }
-    }
-
-    @SubscribeEvent
-    public static void register(RegisterEvent event) {
-        FluidBuilder.register(event);
     }
 
     @SubscribeEvent

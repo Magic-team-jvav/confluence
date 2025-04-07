@@ -17,6 +17,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.integration.terra_entity.TEEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +35,7 @@ public class Confluence {
             ClientConfigs.register(container);
             container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         }
-
+        TEEvents.init(eventBus);
         ModBlocks.register(eventBus);
         ModItems.register(eventBus);
         ModVillagers.register(eventBus);

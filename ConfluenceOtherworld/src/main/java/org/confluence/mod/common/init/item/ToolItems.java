@@ -7,10 +7,10 @@ import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.terra_curio.common.item.MagicMirror;
 

@@ -12,9 +12,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredItem;
+import org.confluence.lib.common.recipe.AbstractRecipeProvider;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
-import org.confluence.terra_curio.common.data.gen.AbstractRecipeProvider;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -4,8 +4,8 @@ import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.item.CustomRarityItem;
 
 public class QuestedFishes {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);

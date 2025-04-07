@@ -12,15 +12,14 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
+import org.confluence.lib.common.recipe.AbstractRecipeProvider;
 import org.confluence.mod.common.entity.npc.NPCTrades;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.terra_curio.common.data.gen.AbstractRecipeProvider;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
-import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.item.TEWhipItems;
 
 import java.nio.file.Path;

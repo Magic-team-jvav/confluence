@@ -5,7 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.mod.common.item.CustomRarityItem;
+import org.confluence.lib.common.item.CustomRarityItem;
 
 import java.util.ArrayList;
 import java.util.List;

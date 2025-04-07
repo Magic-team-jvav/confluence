@@ -12,8 +12,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileItem;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.common.entity.projectile.IceTofuBrickProjectile;
-import org.confluence.mod.common.item.CustomRarityItem;
 
 public class IceTofuBrickItem extends CustomRarityItem implements ProjectileItem {
     public IceTofuBrickItem() {

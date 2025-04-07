@@ -12,10 +12,10 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.item.CustomRarityItem;
 
 public class RightClickLootItem extends CustomRarityItem {
     public RightClickLootItem(ModRarity rarity, ResourceKey<LootTable> lootTable) {

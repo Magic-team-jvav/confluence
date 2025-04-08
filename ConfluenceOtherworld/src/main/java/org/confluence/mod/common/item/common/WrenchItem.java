@@ -8,9 +8,9 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.block.functional.network.PathService;
-import org.confluence.terra_curio.util.TCUtils;
 
 public class WrenchItem extends CustomRarityItem {
     public final int color;
@@ -26,7 +26,7 @@ public class WrenchItem extends CustomRarityItem {
     }
 
     public static boolean containsPos(ItemStack pStack) {
-        return TCUtils.getItemStackNbt(pStack).contains("blockPos");
+        return LibUtils.getItemStackNbt(pStack).contains("blockPos");
     }
 
     @Override
@@ -61,14 +61,14 @@ public class WrenchItem extends CustomRarityItem {
     }
 
     public static void writeBlockPos(ItemStack itemStack, BlockPos pos) {
-        TCUtils.updateItemStackNbt(itemStack, nbt -> nbt.put("blockPos", NbtUtils.writeBlockPos(pos)));
+        LibUtils.updateItemStackNbt(itemStack, nbt -> nbt.put("blockPos", NbtUtils.writeBlockPos(pos)));
     }
 
     public static BlockPos readBlockPos(ItemStack itemStack) {
-        return NbtUtils.readBlockPos(TCUtils.getItemStackNbt(itemStack), "blockPos").orElse(BlockPos.ZERO);
+        return NbtUtils.readBlockPos(LibUtils.getItemStackNbt(itemStack), "blockPos").orElse(BlockPos.ZERO);
     }
 
     public static void removeBlockPos(ItemStack itemStack) {
-        TCUtils.updateItemStackNbt(itemStack, nbt -> nbt.remove("blockPos"));
+        LibUtils.updateItemStackNbt(itemStack, nbt -> nbt.remove("blockPos"));
     }
 }

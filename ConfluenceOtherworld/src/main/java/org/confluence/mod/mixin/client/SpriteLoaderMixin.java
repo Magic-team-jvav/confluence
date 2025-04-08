@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.texture.SpriteLoader;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.metadata.animation.FrameSize;
 import net.minecraft.resources.ResourceLocation;
+import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.util.ClientUtils;
@@ -41,11 +42,11 @@ public abstract class SpriteLoaderMixin {
                 ClientUtils.ORIGINAL.add(name);
                 FrameSize frameSize = new FrameSize(content.width(), content.height());
 
-                NativeImage grayImage = ClientUtils.copyWithGray(content.getOriginalImage());
+                NativeImage grayImage = LibClientUtils.copyWithGray(content.getOriginalImage());
                 SpriteContents grayContent = new SpriteContents(name.withSuffix(ClientUtils.GRAY_SUFFIX), frameSize, grayImage, content.metadata());
                 neoContents.add(grayContent);
 
-                NativeImage negativeImage = ClientUtils.copyWithNegative(content.getOriginalImage());
+                NativeImage negativeImage = LibClientUtils.copyWithNegative(content.getOriginalImage());
                 SpriteContents negativeContent = new SpriteContents(name.withSuffix(ClientUtils.NEGATIVE_SUFFIX), frameSize, negativeImage, content.metadata());
                 neoContents.add(negativeContent);
             }

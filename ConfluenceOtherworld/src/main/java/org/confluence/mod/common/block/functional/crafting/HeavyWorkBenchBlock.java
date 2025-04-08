@@ -18,9 +18,9 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.block.HorizontalDirectionalWithVerticalFourPartBlock;
 import org.confluence.lib.common.block.StateProperties;
+import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.menu.HeavyWorkBenchMenu;
-import org.confluence.mod.common.recipe.EnvironmentLevelAccess;
 import org.confluence.mod.util.DynamicBiomeUtils;
 import org.jetbrains.annotations.Nullable;
 

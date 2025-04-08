@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import org.confluence.lib.util.FeatureUtils;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -63,7 +64,7 @@ public class WithDetonatorFeature extends Feature<WithDetonatorFeature.Config> {
         int dx = (random.nextInt(bound) + bound - 2) * Mth.sign(i);
         int dz = (random.nextInt(bound) + bound - 2) * Mth.sign(k);
         BlockPos.MutableBlockPos mutable = center.mutable().move(dx, 0, dz);
-        for (int dy = 0; dy < bound && ModFeatures.isPosAir(level, mutable); dy++) {
+        for (int dy = 0; dy < bound && FeatureUtils.isPosAir(level, mutable); dy++) {
             mutable.move(0, -1, 0);
         }
         return mutable;
@@ -83,7 +84,7 @@ public class WithDetonatorFeature extends Feature<WithDetonatorFeature.Config> {
             for (int y = -halfDist + 2; y < halfDist - 1; y++) {
                 for (int z = -halfDist; z < halfDist; z++) {
                     if (x * x + y * y + z * z <= halfDistSqr) {
-                        ModFeatures.safeSetBlock(level, center.offset(x, y, z), air, ModFeatures.IS_BASE_STONE);
+                        FeatureUtils.safeSetBlock(level, center.offset(x, y, z), air, ModFeatures.IS_BASE_STONE);
                     }
                 }
             }

@@ -41,11 +41,11 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.block.HorizontalDirectionalWithHorizontalTwoPartBlock;
 import org.confluence.lib.common.block.StateProperties;
+import org.confluence.lib.common.recipe.ArrayRecipeInput;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.menu.HellforgeMenu;
-import org.confluence.mod.common.recipe.ArrayRecipeInput;
 import org.confluence.mod.common.recipe.HellforgeRecipe;
 import org.jetbrains.annotations.Nullable;
 

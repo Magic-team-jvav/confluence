@@ -20,7 +20,7 @@ import org.joml.Vector3d;
 
 import java.util.*;
 
-import static org.confluence.lib.common.worldgen.structure.StructureUtils.*;
+import static org.confluence.lib.util.StructureUtils.*;
 
 public class ShimmerLakeStructure extends Structure {
     public static final MapCodec<ShimmerLakeStructure> CODEC = simpleCodec(ShimmerLakeStructure::new);

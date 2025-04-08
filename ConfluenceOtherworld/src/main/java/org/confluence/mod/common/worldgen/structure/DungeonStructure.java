@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.confluence.lib.common.worldgen.structure.StructureUtils.lineSet;
+import static org.confluence.lib.util.StructureUtils.lineSet;
 
 public class DungeonStructure extends Structure {
     public static final MapCodec<DungeonStructure> CODEC = simpleCodec(DungeonStructure::new);

@@ -8,9 +8,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.progress.StoringChunkProgressListener;
+import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.mixed.ILevelLoadingScreen;
 import org.confluence.mod.mixed.IWorldOptions;
-import org.confluence.mod.util.ClientUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -67,7 +67,7 @@ public abstract class LevelLoadingScreenMixin implements ILevelLoadingScreen {
                 PoseStack pose = instance.pose();
                 pose.pushPose();
                 pose.translate(x, y, 0);
-                pose.mulPose(ClientUtils.ANGLE_180);
+                pose.mulPose(LibClientUtils.ANGLE_180);
                 original.call(instance, font, text, 0, 0, color);
                 pose.popPose();
             }

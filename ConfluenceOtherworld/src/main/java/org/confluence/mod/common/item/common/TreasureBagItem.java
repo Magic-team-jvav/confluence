@@ -24,7 +24,6 @@ import org.confluence.mod.common.data.map.TreasureBagDrop;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiFunction;
@@ -51,7 +50,7 @@ public class TreasureBagItem extends CustomRarityItem {
                     .withParameter(LootContextParams.THIS_ENTITY, player)
                     .withLuck(player.getLuck())
                     .create(LootContextParamSets.GIFT);
-            String string = TCUtils.getItemStackNbt(itemStack).getString("lootTable");
+            String string = LibUtils.getItemStackNbt(itemStack).getString("lootTable");
             if (string.isEmpty() && player.isCreative()) {
                 string = lootTable.withSuffix(suffix.apply(serverLevel, player.blockPosition())).toString();
             }
@@ -78,7 +77,7 @@ public class TreasureBagItem extends CustomRarityItem {
         if (data == null || !(data.item() instanceof TreasureBagItem item)) return null;
         ItemStack itemStack = item.getDefaultInstance();
         String lootTable = item.lootTable.withSuffix(item.suffix.apply(serverLevel, living.blockPosition())).toString();
-        TCUtils.updateItemStackNbt(itemStack, tag -> tag.putString("lootTable", lootTable));
+        LibUtils.updateItemStackNbt(itemStack, tag -> tag.putString("lootTable", lootTable));
         return itemStack;
     }
 

@@ -16,11 +16,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.lib.common.menu.AmountResultSlot;
+import org.confluence.lib.common.recipe.EnvironmentRecipeInput;
 import org.confluence.mod.common.block.functional.crafting.SkyMillBlock;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.recipe.EnvironmentRecipeInput;
 import org.confluence.mod.common.recipe.SkyMillRecipe;
 
 import java.util.List;

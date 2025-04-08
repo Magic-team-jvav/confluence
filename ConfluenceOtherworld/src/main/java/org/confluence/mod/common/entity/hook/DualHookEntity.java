@@ -13,9 +13,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.hook.BaseHookItem;
-import org.confluence.terra_curio.util.TCUtils;
 
 import java.util.function.IntFunction;
 
@@ -50,7 +50,7 @@ public class DualHookEntity extends AbstractHookEntity implements VariantHolder<
     @Override
     protected void onHooked(BlockHitResult hitResult, ItemStack itemStack) {
         super.onHooked(hitResult, itemStack);
-        if (TCUtils.getItemStackNbt(itemStack).get("hooks") instanceof ListTag list) {
+        if (LibUtils.getItemStackNbt(itemStack).get("hooks") instanceof ListTag list) {
             list.forEach(tag -> {
                 AbstractHookEntity hookEntity = BaseHookItem.getHookEntity(tag, (ServerLevel) level());
                 if (hookEntity != null && hookEntity != this) hookEntity.setHookState(HookState.POP);

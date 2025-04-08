@@ -17,6 +17,7 @@ import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.brewing.IBrewingRecipe;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -26,7 +27,6 @@ import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.recipe.*;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -524,7 +524,7 @@ public final class ModRecipes {
         }
 
         public static void addMaterials(ItemStack potion, Item... materials) {
-            TCUtils.updateItemStackNbt(potion, tag -> {
+            LibUtils.updateItemStackNbt(potion, tag -> {
                 int[] ids = tag.getIntArray("confluence:potion_materials");
                 for (Item material : materials) {
                     int id = MATERIAL_ID_MAP.getOrDefault(material, -1);
@@ -536,7 +536,7 @@ public final class ModRecipes {
         }
 
         public static void setMaterials(ItemStack potion, Item[] materials) {
-            TCUtils.updateItemStackNbt(potion, tag -> {
+            LibUtils.updateItemStackNbt(potion, tag -> {
                 int[] ids = Arrays.stream(materials).mapToInt(material -> MATERIAL_ID_MAP.getOrDefault(material, -1)).filter(id -> id != -1).toArray();
                 Arrays.sort(ids);
                 tag.putIntArray("confluence:potion_materials", ids);
@@ -545,7 +545,7 @@ public final class ModRecipes {
 
         public static void setMaterials(ItemStack potion, int[] materials) {
             Arrays.sort(materials);
-            TCUtils.updateItemStackNbt(potion, tag -> tag.putIntArray("confluence:potion_materials", materials));
+            LibUtils.updateItemStackNbt(potion, tag -> tag.putIntArray("confluence:potion_materials", materials));
         }
 
         public static int[] getMaterials(ItemStack potion) {

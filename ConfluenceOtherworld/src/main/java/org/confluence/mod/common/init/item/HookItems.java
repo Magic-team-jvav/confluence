@@ -7,6 +7,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
 import org.confluence.mod.common.entity.hook.BaseHookEntity;
@@ -17,7 +18,6 @@ import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.common.item.hook.FishHookItem;
 import org.confluence.mod.common.item.hook.LunarHookItem;
 import org.confluence.mod.common.item.hook.WebSlingerItem;
-import org.confluence.terra_curio.util.TCUtils;
 
 public class HookItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -38,7 +38,7 @@ public class HookItems {
             BAT_HOOK = ITEMS.register("bat_hook", () -> new BaseHookItem(ModRarity.ORANGE, 1, 20.83F, 1.35F, BaseHookItem.HookType.SINGLE, (itemStack, item, player, level) -> new AbstractHookEntity.Impl(ModEntities.BAT_HOOK.get(), item, player, level))),
             CANDY_CANE_HOOK = ITEMS.register("candy_cane_hook", () -> new BaseHookItem(ModRarity.LIME, 1, 16.67F, 1.15F, BaseHookItem.HookType.SINGLE, (itemStack, item, player, level) -> new AbstractHookEntity.Impl(ModEntities.CANDY_CANE_HOOK.get(), item, player, level))),
             DUAL_HOOK = ITEMS.register("dual_hook", () -> new BaseHookItem(ModRarity.LIGHT_RED, 2, 18.33F, 1.4F, BaseHookItem.HookType.INDIVIDUAL, (itemStack, item, player, level) -> {
-                CompoundTag tag = TCUtils.getItemStackNbt(itemStack);
+                CompoundTag tag = LibUtils.getItemStackNbt(itemStack);
                 boolean isRed = tag.getBoolean("isRed");
                 tag.putBoolean("isRed", !isRed);
                 return new DualHookEntity(item, player, level, isRed ? DualHookEntity.Variant.RED : DualHookEntity.Variant.BLUE);

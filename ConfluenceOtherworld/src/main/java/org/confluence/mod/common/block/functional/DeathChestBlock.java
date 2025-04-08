@@ -30,6 +30,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
@@ -38,7 +39,6 @@ import org.confluence.mod.common.block.functional.network.NetworkNode;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.VanityArmorItems;
-import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -128,7 +128,7 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
     }
 
     public static ItemStack setData(ItemStack itemStack, Variant variant) {
-        TCUtils.updateItemStackNbt(itemStack, tag -> tag.putInt("VariantId", variant.getId()));
+        LibUtils.updateItemStackNbt(itemStack, tag -> tag.putInt("VariantId", variant.getId()));
         itemStack.set(DataComponents.CUSTOM_NAME, Component.translatable("block.confluence.base_chest_block." + variant.getSerializedName().replace("unlocked", "death")).withStyle(style -> style.withItalic(false)));
         return itemStack;
     }

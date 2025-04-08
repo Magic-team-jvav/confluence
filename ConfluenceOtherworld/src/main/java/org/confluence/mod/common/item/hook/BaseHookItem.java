@@ -11,9 +11,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
-import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class BaseHookItem extends Item {
@@ -57,10 +57,10 @@ public class BaseHookItem extends Item {
     }
 
     public boolean canHook(ServerLevel level, ExtraInventory extraInventory, ItemStack itemStack) {
-        CompoundTag nbt = TCUtils.getItemStackNbt(itemStack);
+        CompoundTag nbt = LibUtils.getItemStackNbt(itemStack);
         ListTag list = nbt.getList("hooks", Tag.TAG_COMPOUND);
         list.removeIf(tag -> getHookEntity(tag, level) == null);
-        TCUtils.updateItemStackNbt(itemStack, tag -> {
+        LibUtils.updateItemStackNbt(itemStack, tag -> {
             tag.put("hooks", list);
             extraInventory.setChanged();
         });
@@ -74,7 +74,7 @@ public class BaseHookItem extends Item {
 
     public void onUnequip(ServerPlayer serverPlayer, ItemStack newStack, ItemStack stack) {
         if (ItemStack.isSameItem(newStack, stack)) return;
-        if (TCUtils.getItemStackNbt(stack).get("hooks") instanceof ListTag list) {
+        if (LibUtils.getItemStackNbt(stack).get("hooks") instanceof ListTag list) {
             removeAll(list, serverPlayer.serverLevel());
         }
     }

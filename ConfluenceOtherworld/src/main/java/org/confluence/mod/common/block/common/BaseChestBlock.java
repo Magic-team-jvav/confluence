@@ -37,12 +37,11 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.functional.DeathChestBlock;
-import org.confluence.mod.common.block.natural.CrimsonHeartBlock;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.mixed.IBaseContainerBlockEntity;
-import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -76,7 +75,7 @@ public class BaseChestBlock extends ChestBlock {
     @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
-        CompoundTag tag = TCUtils.getItemStackNbt(pStack);
+        CompoundTag tag = LibUtils.getItemStackNbt(pStack);
         if (pLevel.getBlockEntity(pPos) instanceof Entity entity) {
             entity.variant = Variant.byId(tag.getInt("VariantId"));
         }
@@ -89,7 +88,7 @@ public class BaseChestBlock extends ChestBlock {
         if (pContext.getLevel().getBlockEntity(relative) instanceof Entity entity) {
             ItemStack itemStack = pContext.getItemInHand();
 
-            if (TCUtils.getItemStackNbt(itemStack).getInt("VariantId") != entity.variant.id)
+            if (LibUtils.getItemStackNbt(itemStack).getInt("VariantId") != entity.variant.id)
                 return null;
 
             BlockState blockstate = pContext.getLevel().getBlockState(relative);
@@ -153,7 +152,7 @@ public class BaseChestBlock extends ChestBlock {
     }
 
     public static ItemStack setData(ItemStack itemStack, Variant variant) {
-        TCUtils.updateItemStackNbt(itemStack, tag -> tag.putInt("VariantId", variant.id));
+        LibUtils.updateItemStackNbt(itemStack, tag -> tag.putInt("VariantId", variant.id));
         itemStack.set(DataComponents.CUSTOM_NAME, Component.translatable("block.confluence.base_chest_block." + variant.name).withStyle(style -> style.withItalic(false)));
         return itemStack;
     }

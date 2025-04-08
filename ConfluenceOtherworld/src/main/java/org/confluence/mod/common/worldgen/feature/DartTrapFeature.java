@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import org.confluence.lib.util.FeatureUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.ModFeatures;
@@ -26,27 +27,27 @@ public class DartTrapFeature extends Feature<DartTrapFeature.Config> {
         Config config = pContext.config();
         WorldGenLevel level = pContext.level();
         BlockPos blockPos = pContext.origin();
-        if (!ModFeatures.isPosAir(level, blockPos)) return false;
+        if (!FeatureUtils.isPosAir(level, blockPos)) return false;
         BlockPos.MutableBlockPos mutablePos = blockPos.mutable();
-        for (int v = 1; v <= config.maxSearchDown && ModFeatures.isPosAir(level, mutablePos); ++v) {
+        for (int v = 1; v <= config.maxSearchDown && FeatureUtils.isPosAir(level, mutablePos); ++v) {
             mutablePos.move(0, -1, 0);
         }
-        if (ModFeatures.isPosSturdy(level, mutablePos, Direction.UP)) {
+        if (FeatureUtils.isPosSturdy(level, mutablePos, Direction.UP)) {
             BlockPos dartPos = mutablePos.offset(0, 2, 0);
             for (Direction direction : LibUtils.HORIZONTAL) {
                 BlockPos.MutableBlockPos copy = dartPos.mutable();
                 int h;
-                for (h = 1; h <= config.maxDartDistance && ModFeatures.isPosAir(level, copy); ++h) {
+                for (h = 1; h <= config.maxDartDistance && FeatureUtils.isPosAir(level, copy); ++h) {
                     copy.move(direction);
                 }
                 ChunkPos chunkPos = new ChunkPos(mutablePos);
                 if (!level.hasChunk(chunkPos.x, chunkPos.z)) continue;
                 if (h >= 4 && !level.isStateAtPosition(copy, blockState -> blockState.isAir() || blockState.getCollisionShape(level, copy).isEmpty())) {
                     BlockState dartTrap = ModFeatures.getDartTrap(level, copy, direction.getOpposite());
-                    boolean b = ModFeatures.safeSetBlock(level, copy, dartTrap, ModFeatures.IS_REPLACEABLE);
+                    boolean b = FeatureUtils.safeSetBlock(level, copy, dartTrap, ModFeatures.IS_REPLACEABLE);
                     Tuple<BlockPos, BlockState> pressurePlate = ModFeatures.getPressurePlate(level, mutablePos);
                     BlockPos platePos = pressurePlate.getA();
-                    boolean b1 = ModFeatures.safeSetBlock(level, platePos, pressurePlate.getB(), ModFeatures.IS_REPLACEABLE);
+                    boolean b1 = FeatureUtils.safeSetBlock(level, platePos, pressurePlate.getB(), ModFeatures.IS_REPLACEABLE);
                     if (b && b1) {
                         INetworkEntity dart = ModFeatures.getNetworkEntity(level, copy);
                         INetworkEntity plate = ModFeatures.getNetworkEntity(level, platePos);

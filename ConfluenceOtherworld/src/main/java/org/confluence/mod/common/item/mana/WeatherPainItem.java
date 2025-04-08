@@ -6,9 +6,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.projectile.mana.HurtnadoProjectile;
 import org.confluence.terra_curio.common.init.TCAttributes;
-import org.confluence.terra_curio.util.TCUtils;
 
 public class WeatherPainItem extends ManaStaffItem<HurtnadoProjectile> {
     public WeatherPainItem() {
@@ -26,7 +26,7 @@ public class WeatherPainItem extends ManaStaffItem<HurtnadoProjectile> {
     @Override
     protected void afterShoot(ServerPlayer player, ItemStack itemStack, HurtnadoProjectile projectile) {
         super.afterShoot(player, itemStack, projectile);
-        TCUtils.updateItemStackNbt(itemStack, tag -> {
+        LibUtils.updateItemStackNbt(itemStack, tag -> {
             if (tag.hasUUID("UUID") && player.serverLevel().getEntity(tag.getUUID("UUID")) instanceof HurtnadoProjectile projectile1) {
                 projectile1.discard();
             }

@@ -14,11 +14,11 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.lib.common.menu.AmountResultSlot;
 import org.confluence.lib.common.menu.ToggleAmountResultSlot;
 import org.confluence.lib.common.recipe.AbstractAmountRecipe;
+import org.confluence.lib.common.recipe.EnvironmentRecipeInput;
 import org.confluence.mod.common.block.functional.crafting.HeavyWorkBenchBlock;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.recipe.EnvironmentRecipeInput;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 
 import java.util.ArrayList;

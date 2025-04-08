@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import org.confluence.lib.util.FeatureUtils;
 import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.NotNull;
@@ -23,14 +24,14 @@ public class SculkSensorWithTNTFeature extends Feature<SculkSensorWithTNTFeature
         Config config = context.config();
         WorldGenLevel level = context.level();
         BlockPos blockPos = context.origin();
-        if (!ModFeatures.isPosAir(level, blockPos)) return false;
+        if (!FeatureUtils.isPosAir(level, blockPos)) return false;
         BlockPos.MutableBlockPos mutablePos = blockPos.mutable();
-        for (int v = 1; v <= config.maxSearchDown && ModFeatures.isPosAir(level, mutablePos); ++v) {
+        for (int v = 1; v <= config.maxSearchDown && FeatureUtils.isPosAir(level, mutablePos); ++v) {
             mutablePos.move(0, -1, 0);
         }
-        if (ModFeatures.safeSetBlock(level, mutablePos.above(), Blocks.SCULK_SENSOR.defaultBlockState(), ModFeatures.IS_REPLACEABLE)) {
-            return ModFeatures.safeSetBlock(level, mutablePos, FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get().defaultBlockState(), ModFeatures.IS_REPLACEABLE)
-                    && ModFeatures.safeSetBlock(level, mutablePos.below(), Blocks.TNT.defaultBlockState(), ModFeatures.IS_REPLACEABLE);
+        if (FeatureUtils.safeSetBlock(level, mutablePos.above(), Blocks.SCULK_SENSOR.defaultBlockState(), ModFeatures.IS_REPLACEABLE)) {
+            return FeatureUtils.safeSetBlock(level, mutablePos, FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get().defaultBlockState(), ModFeatures.IS_REPLACEABLE)
+                    && FeatureUtils.safeSetBlock(level, mutablePos.below(), Blocks.TNT.defaultBlockState(), ModFeatures.IS_REPLACEABLE);
         }
         return false;
     }

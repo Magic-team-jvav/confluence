@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import org.confluence.mod.common.init.ModFeatures;
+import org.confluence.lib.util.FeatureUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,11 +29,11 @@ public class DroopingVineTreeFeature extends Feature<DroopingVineTreeFeature.Con
     }
 
     private static void setLeaves(BoundingBox box, BlockState leaves, boolean up, RandomSource random, WorldGenLevel level) {
-        ModFeatures.leaves(box, leaves, up, random, level, Blocks.AIR.defaultBlockState(), false);
+        FeatureUtils.leaves(box, leaves, up, random, level, Blocks.AIR.defaultBlockState(), false);
     }
 
     private static void setLeaves(BoundingBox box, BlockState leaves, boolean up, RandomSource random, WorldGenLevel level, BlockState droopingLeaves) {
-        ModFeatures.leaves(box, leaves, up, random, level, droopingLeaves, true);
+        FeatureUtils.leaves(box, leaves, up, random, level, droopingLeaves, true);
     }
 
     @Override

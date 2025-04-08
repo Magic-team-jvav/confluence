@@ -13,7 +13,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.confluence.lib.common.block.transparent.TransparentLeavesBlock;
+import org.confluence.lib.common.block.TransparentLeavesBlock;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.MushroomBlock;
 import org.confluence.mod.common.block.natural.*;

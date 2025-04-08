@@ -8,10 +8,10 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.projectile.ThrownKnivesProjectileModel;
 import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
-import org.confluence.mod.util.ClientUtils;
 
 public class ThrownKnivesProjectileRenderer extends EntityRenderer<ThrowableDropSelfProjectile> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/thrown_knives_projectile.png");
@@ -33,7 +33,7 @@ public class ThrownKnivesProjectileRenderer extends EntityRenderer<ThrowableDrop
         poseStack.translate(0.0F, 0.125F, 0.0F);
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - 90.0F));
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTick, entity.xRotO, entity.getXRot())));
-        poseStack.mulPose(ClientUtils.ANGLE_N90);
+        poseStack.mulPose(LibClientUtils.ANGLE_N90);
         model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY);
         poseStack.popPose();
     }

@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.common.block.ISimulatorBlock;
 import org.confluence.lib.common.block.StateProperties;
 import org.jetbrains.annotations.Nullable;
 

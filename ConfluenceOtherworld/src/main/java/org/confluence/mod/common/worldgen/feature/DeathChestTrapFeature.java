@@ -19,6 +19,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.storage.loot.LootTable;
+import org.confluence.lib.util.FeatureUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
@@ -41,14 +42,14 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
         WorldGenLevel level = pContext.level();
         RandomSource random = pContext.random();
         BlockPos blockPos = pContext.origin();
-        if (!ModFeatures.isPosAir(level, blockPos)) return false;
+        if (!FeatureUtils.isPosAir(level, blockPos)) return false;
         BlockPos.MutableBlockPos mutablePos = blockPos.mutable();
-        for (int v = 1; v <= config.maxSearchDown && ModFeatures.isPosAir(level, mutablePos); ++v) {
+        for (int v = 1; v <= config.maxSearchDown && FeatureUtils.isPosAir(level, mutablePos); ++v) {
             mutablePos.move(0, -1, 0);
         }
         BlockPos chestPos = mutablePos.above();
         BlockState chestState = StructurePiece.reorient(level, chestPos, FunctionalBlocks.DEATH_CHEST_BLOCK.get().defaultBlockState());
-        if (ModFeatures.safeSetBlock(level, chestPos, chestState, ModFeatures.IS_REPLACEABLE)) {
+        if (FeatureUtils.safeSetBlock(level, chestPos, chestState, ModFeatures.IS_REPLACEABLE)) {
             RandomizableContainer.setBlockEntityLootTable(level, random, chestPos, config.lootTable);
             INetworkEntity chest = ModFeatures.getNetworkEntity(level, chestPos);
             if (chest != null && chest.getSelf() instanceof BaseChestBlock.Entity entity) {
@@ -80,7 +81,7 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
                     mutable.move(direction.getOpposite());
                 }
             }
-            if (ModFeatures.safeSetBlock(level, mutable, blockState, ModFeatures.IS_REPLACEABLE)) {
+            if (FeatureUtils.safeSetBlock(level, mutable, blockState, ModFeatures.IS_REPLACEABLE)) {
                 INetworkEntity tnt = ModFeatures.getNetworkEntity(level, mutable);
                 if (tnt != null) {
                     tnt.connectTo(0x0000FF, chestPos, chest);
@@ -100,7 +101,7 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
             Optional<Column> optionalColumn = Column.scan(level, pos, maxBoulderHeight, BlockBehaviour.BlockStateBase::isAir, ModFeatures.IS_BASE_STONE);
             if (optionalColumn.isPresent() && optionalColumn.get() instanceof Column.Range range && range.height() > 4) {
                 BlockPos boulderPos = pos.atY(range.ceiling());
-                if (ModFeatures.safeSetBlock(level, boulderPos, ModFeatures.getBoulder(level, random, config.boulder), ModFeatures.IS_REPLACEABLE)) {
+                if (FeatureUtils.safeSetBlock(level, boulderPos, ModFeatures.getBoulder(level, random, config.boulder), ModFeatures.IS_REPLACEABLE)) {
                     INetworkEntity boulder = ModFeatures.getNetworkEntity(level, boulderPos);
                     if (boulder != null) {
                         boulder.connectTo(0xFF0000, chestPos, chest);
@@ -129,12 +130,12 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
             for (BlockPos pos : BlockPos.betweenClosed(leftTop, rightBottom)) {
                 BlockPos.MutableBlockPos mutable = pos.mutable().move(direction);
                 int h;
-                for (h = 1; h <= maxDartDistance && ModFeatures.isPosAir(level, mutable); ++h) {
+                for (h = 1; h <= maxDartDistance && FeatureUtils.isPosAir(level, mutable); ++h) {
                     mutable.move(direction);
                 }
                 if (h >= 16 && !level.isStateAtPosition(mutable, blockState -> blockState.isAir() || blockState.getCollisionShape(level, mutable).isEmpty())) {
                     BlockState dartTrap = ModFeatures.getDartTrap(level, mutable, opposite);
-                    if (ModFeatures.safeSetBlock(level, mutable, dartTrap, ModFeatures.IS_REPLACEABLE)) {
+                    if (FeatureUtils.safeSetBlock(level, mutable, dartTrap, ModFeatures.IS_REPLACEABLE)) {
                         INetworkEntity dart = ModFeatures.getNetworkEntity(level, mutable);
 
                         BlockPos connectPos;

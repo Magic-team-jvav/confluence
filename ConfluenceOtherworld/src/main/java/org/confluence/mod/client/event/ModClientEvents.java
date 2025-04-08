@@ -360,6 +360,7 @@ public final class ModClientEvents {
                     GraySpriteShifterEntry.ALL.put(key, new GraySpriteShifterEntry(sprite, gray, negative));
                 }
             }
+            ClientUtils.ORIGINAL.clear();
         }
     }
 

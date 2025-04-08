@@ -28,7 +28,6 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.terra_curio.TerraCurio;
-import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terra_guns.TerraGuns;
 import org.confluence.terraentity.TerraEntity;
 import org.jetbrains.annotations.Nullable;
@@ -64,7 +63,7 @@ public final class ModUtils {
     /**
      * 仅获取
      *
-     * @see TCUtils#getItemStackNbt(ItemStack) 获取或创建
+     * @see LibUtils#getItemStackNbt(ItemStack) 获取或创建
      */
     public static @Nullable CompoundTag getItemStackNbt(ItemStack itemStack) {
         NbtComponent component = itemStack.get(ConfluenceMagicLib.NBT);

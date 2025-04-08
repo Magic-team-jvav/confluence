@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.confluence.lib.common.worldgen.structure.StructureUtils.frustumSet;
-import static org.confluence.lib.common.worldgen.structure.StructureUtils.frustumSetPos;
+import static org.confluence.lib.util.StructureUtils.frustumSet;
+import static org.confluence.lib.util.StructureUtils.frustumSetPos;
 
 public class IceThornStructure extends Structure {
     public static final MapCodec<IceThornStructure> CODEC = simpleCodec(IceThornStructure::new);

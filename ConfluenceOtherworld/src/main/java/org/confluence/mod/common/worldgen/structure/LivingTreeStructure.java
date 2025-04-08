@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static net.minecraft.world.level.block.LeavesBlock.PERSISTENT;
-import static org.confluence.lib.common.worldgen.structure.StructureUtils.getHeight;
+import static org.confluence.lib.util.StructureUtils.getHeight;
 
 public class LivingTreeStructure extends Structure {
     public static final MapCodec<LivingTreeStructure> CODEC = simpleCodec(LivingTreeStructure::new);

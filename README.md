@@ -13,6 +13,7 @@
 | [IsekaiInvaded](IsekaiInvaded)               | 多维度入侵事件           | 依赖HeavenDestinyMoment |
 | [TerraFurniture](TerraFurniture)             | 泰拉家具              | 是                     |
 | [EntityTrackerHUD](EntityTrackerHUD)         | 提供包括Boss实体的实时位置提示 | 是                     |
+| [ConfluenceDelight](ConfluenceDelight)       | 泰拉乐事              | 是                     |
 
 ## 构建项目
 

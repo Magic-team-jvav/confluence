@@ -98,7 +98,7 @@ public class SafeBlock extends HorizontalDirectionalWaterloggedBlock implements 
 
     public static class Entity extends BlockEntity implements PlayerContainer.ValidEntity, GeoBlockEntity {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
-        protected final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
+        public final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
             @Override
             protected void onOpen(Level level, BlockPos pos, BlockState state) {
                 Entity.this.triggerAnim("status", "open");

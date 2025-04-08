@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "confluence:block/golden_headstone",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "confluence:block/golden_headstone"
+    },
+    "facing=south": {
+      "model": "confluence:block/golden_headstone",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "confluence:block/golden_headstone",
+      "y": 270
+    }
+  }
+}

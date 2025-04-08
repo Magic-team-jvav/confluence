@@ -24,6 +24,7 @@ import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import javax.annotation.CheckForNull;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 public class HardmodeConvertor {
     public static final HardmodeConvertor INSTANCE = new HardmodeConvertor();
@@ -48,7 +49,7 @@ public class HardmodeConvertor {
                 return DataResult.success(longList, Lifecycle.stable());
             }
         };
-        return LibUtils.tupleCodec(Codec.LONG.xmap(ChunkPos::new, ChunkPos::toLong), codec).listOf();
+        return LibUtils.tupleCodec(Codec.LONG.xmap(ChunkPos::new, ChunkPos::toLong), codec).listOf().xmap(LinkedList::new, Function.identity());
     });
 
     private volatile boolean started = false;
@@ -145,7 +146,7 @@ public class HardmodeConvertor {
                         int i = mutable.getX() - chunkPos.getMinBlockX();
                         int j = mutable.getZ() - chunkPos.getMinBlockZ();
                         BlockPosColumn column = columns[i][j];
-                        if (column == null) column = new BlockPosColumn(startPos.getY(), height);
+                        if (column == null || column == BlockPosColumn.ZERO) column = new BlockPosColumn(startPos.getY(), height);
                         columns[i][j] = column.updateY(mutable.getY());
                     }
                 }

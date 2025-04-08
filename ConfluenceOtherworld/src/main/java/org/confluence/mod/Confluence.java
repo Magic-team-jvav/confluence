@@ -26,7 +26,6 @@ public class Confluence {
     public static final String MODID = ConfluenceMagicLib.CONFLUENCE_ID;
     public static final Logger LOGGER = LoggerFactory.getLogger("Confluence");
     public static GameRules.Key<GameRules.IntegerValue> SPREADABLE_CHANCE;
-    public static final boolean THE_HALLOW_TEST = false;
 
     public Confluence(IEventBus eventBus, ModContainer container) {
         StartupConfigs.register(container);

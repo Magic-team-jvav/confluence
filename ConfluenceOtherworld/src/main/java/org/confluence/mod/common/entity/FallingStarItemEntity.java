@@ -70,15 +70,15 @@ public class FallingStarItemEntity extends ItemEntity {
                     level().playSound(null, getX(), getY(), getZ(), ModSoundEvents.STAR_LANDS.get(), SoundSource.NEUTRAL, 2.0F, 1.0F);
                 }
             } else if (!wasOnGround() && !level().getBlockState(blockPosition().below(6)).isAir()) {
-                if (!level().getBlockState(blockPosition()).isEmpty()) {
-                    setWasOnGround(true);
-                }
                 level().playSound(null, getX(), getY(), getZ(), ModSoundEvents.STAR.get(), SoundSource.NEUTRAL, 2.0F, 1.0F);
             } else if (level() instanceof ServerLevel serverLevel && ModSecretSeeds.DONT_DIG_UP.match(serverLevel)) {
                 if (ProjectileUtil.getHitResultOnMoveVector(this, entity -> true) instanceof EntityHitResult entityHitResult) {
                     entityHitResult.getEntity().hurt(ModDamageTypes.of(level(), ModDamageTypes.FALLING_STAR), 100);
                     onRemove();
                 }
+            } else if (getInBlockState().liquid() || getBlockStateOn().liquid()) {
+                setWasOnGround(true);
+                setOnGround(true);
             }
         }
     }

@@ -47,7 +47,6 @@ import org.confluence.mod.common.recipe.CookingPotRecipe;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -182,7 +181,6 @@ public class CookingPotBlock extends HorizontalDirectionalBlock implements Entit
         public Entity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.COOKING_POT_ENTITY.get(), pos, blockState);
             this.cachedCheck = RecipeManager.createCheck(ModRecipes.COOKING_POT_TYPE.get());
-            SingletonGeoAnimatable.registerSyncedAnimatable(this);
         }
 
         public static void serverTick(Level level, BlockPos pos, BlockState state, Entity blockEntity) {
@@ -293,7 +291,6 @@ public class CookingPotBlock extends HorizontalDirectionalBlock implements Entit
 
         public Item(Block block, Properties properties) {
             super(block, properties);
-            SingletonGeoAnimatable.registerSyncedAnimatable(this);
         }
 
         @Override

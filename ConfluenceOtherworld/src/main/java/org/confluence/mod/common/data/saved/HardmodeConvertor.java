@@ -26,7 +26,6 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
-import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.CheckForNull;
 import java.util.*;
@@ -66,56 +65,7 @@ public class HardmodeConvertor {
     private volatile boolean started = false;
     private volatile List<Tuple<ChunkPos, BlockPosColumn[][]>> sanctification = new LinkedList<>();
     private transient volatile boolean shouldContinue = true;
-    private transient final Function<BlockState, @Nullable BlockState> the_hallow = new Function<>() {
-        private final Map<BlockState, BlockState> cache = new ConcurrentHashMap<>();
-
-        @Override
-        public BlockState apply(BlockState blockState) {
-            return get(blockState);
-        }
-
-        @SuppressWarnings("unchecked")
-        private <T extends Comparable<T>, V extends T> BlockState get(BlockState blockState) {
-            return cache.computeIfAbsent(blockState, source -> {
-                Block target = null;
-
-                if (source.is(BlockTags.LOGS)) {
-                    target = NatureBlocks.PEARL_LOG_BLOCKS.getLog().get();
-                } else if (source.is(BlockTags.LEAVES)) {
-                    target = NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().get();
-                } else if (source.is(BlockTags.BASE_STONE_OVERWORLD)) {
-                    target = NatureBlocks.PEARL_STONE.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_GRASS_BLOCK)) {
-                    target = NatureBlocks.HALLOW_GRASS_BLOCK.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_JUNGLE_GRASS_BLOCK)) {
-                    target = NatureBlocks.JUNGLE_GRASS_BLOCK.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SHORT_GRASS)) {
-                    target = NatureBlocks.HALLOW_GRASS.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_PACKED_ICE)) {
-                    target = NatureBlocks.PINK_PACKED_ICE.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_ICE)) {
-                    target = NatureBlocks.PINK_ICE.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SAND)) {
-                    target = NatureBlocks.PEARL_SAND.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SANDSTONE)) {
-                    target = NatureBlocks.PEARL_SANDSTONE.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_HARDENED_SAND_BLOCK)) {
-                    target = NatureBlocks.PEARL_HARDENED_SAND_BLOCK.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_MOIST_SAND_BLOCK)) {
-                    target = NatureBlocks.PEARL_MOIST_SAND_BLOCK.get();
-                }
-
-                if (target == null) return null;
-                BlockState targetState = target.defaultBlockState();
-                for (Map.Entry<Property<?>, Comparable<?>> entry1 : source.getValues().entrySet()) {
-                    if (targetState.hasProperty(entry1.getKey())) {
-                        targetState = targetState.setValue((Property<T>) entry1.getKey(), (V) entry1.getValue());
-                    }
-                }
-                return targetState;
-            });
-        }
-    };
+    private transient final TheHallowConversionTable theHallowConversionTable = new TheHallowConversionTable();
 
     public boolean isStarted() {
         return started;
@@ -148,6 +98,7 @@ public class HardmodeConvertor {
                 print(serverLevel.getServer(), Component.translatable("event.confluence.hardmode_conversion.welcome").withStyle(ChatFormatting.RED), true);
             }
             this.started = false;
+            theHallowConversionTable.clear();
         } else if (serverLevel.getGameTime() % 5 == 0) {
             Tuple<ChunkPos, BlockPosColumn[][]> entry = sanctification.getFirst();
             ChunkPos chunkPos = entry.getA();
@@ -177,7 +128,7 @@ public class HardmodeConvertor {
                 for (BlockPos blockPos : column.iterable(chunkPos.getBlockX(x), chunkPos.getBlockZ(z))) {
                     BlockState sourceState = chunkAccess.getBlockState(blockPos);
                     if (sourceState.isAir()) continue;
-                    BlockState targetState = the_hallow.apply(sourceState);
+                    BlockState targetState = theHallowConversionTable.get(sourceState);
                     if (targetState == null) continue;
                     for (Map.Entry<Property<?>, Comparable<?>> entry1 : sourceState.getValues().entrySet()) {
                         if (targetState.hasProperty(entry1.getKey())) {
@@ -253,6 +204,12 @@ public class HardmodeConvertor {
         this.shouldContinue = true;
     }
 
+    public void clear() {
+        this.started = false;
+        sanctification.clear();
+        this.shouldContinue = false;
+    }
+
     public static class BlockPosColumn {
         public static final BlockPosColumn ZERO = new BlockPosColumn(0, 0);
         public static final Codec<BlockPosColumn> CODEC = Codec.LONG.xmap(BlockPosColumn::of, BlockPosColumn::asLong);
@@ -298,6 +255,56 @@ public class HardmodeConvertor {
 
         public static BlockPosColumn of(long packedPos) {
             return new BlockPosColumn(ChunkPos.getX(packedPos), ChunkPos.getZ(packedPos));
+        }
+    }
+
+    public static class TheHallowConversionTable {
+        private final Map<BlockState, BlockState> cache = new ConcurrentHashMap<>();
+
+        @SuppressWarnings("unchecked")
+        public <T extends Comparable<T>, V extends T> BlockState get(BlockState blockState) {
+            return cache.computeIfAbsent(blockState, source -> {
+                Block target = null;
+
+                if (source.is(BlockTags.LOGS)) {
+                    target = NatureBlocks.PEARL_LOG_BLOCKS.getLog().get();
+                } else if (source.is(BlockTags.LEAVES)) {
+                    target = NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().get();
+                } else if (source.is(BlockTags.BASE_STONE_OVERWORLD)) {
+                    target = NatureBlocks.PEARL_STONE.get();
+                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_GRASS_BLOCK)) {
+                    target = NatureBlocks.HALLOW_GRASS_BLOCK.get();
+                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_JUNGLE_GRASS_BLOCK)) {
+                    target = NatureBlocks.JUNGLE_GRASS_BLOCK.get();
+                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SHORT_GRASS)) {
+                    target = NatureBlocks.HALLOW_GRASS.get();
+                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_PACKED_ICE)) {
+                    target = NatureBlocks.PINK_PACKED_ICE.get();
+                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_ICE)) {
+                    target = NatureBlocks.PINK_ICE.get();
+                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SAND)) {
+                    target = NatureBlocks.PEARL_SAND.get();
+                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SANDSTONE)) {
+                    target = NatureBlocks.PEARL_SANDSTONE.get();
+                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_HARDENED_SAND_BLOCK)) {
+                    target = NatureBlocks.PEARL_HARDENED_SAND_BLOCK.get();
+                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_MOIST_SAND_BLOCK)) {
+                    target = NatureBlocks.PEARL_MOIST_SAND_BLOCK.get();
+                }
+
+                if (target == null) return null;
+                BlockState targetState = target.defaultBlockState();
+                for (Map.Entry<Property<?>, Comparable<?>> entry1 : source.getValues().entrySet()) {
+                    if (targetState.hasProperty(entry1.getKey())) {
+                        targetState = targetState.setValue((Property<T>) entry1.getKey(), (V) entry1.getValue());
+                    }
+                }
+                return targetState;
+            });
+        }
+
+        public void clear() {
+            cache.clear();
         }
     }
 }

@@ -26,6 +26,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
+import org.confluence.mod.network.s2c.SecretFlagSyncPacketS2C;
 
 import javax.annotation.CheckForNull;
 import java.util.*;
@@ -94,8 +95,10 @@ public class HardmodeConvertor {
         if (!shouldContinue) return;
         if (sanctification.isEmpty()) {
             if (started) {
-                print(serverLevel.getServer(), Component.translatable("event.confluence.hardmode_conversion.finished").withStyle(ChatFormatting.GREEN), true);
-                print(serverLevel.getServer(), Component.translatable("event.confluence.hardmode_conversion.welcome").withStyle(ChatFormatting.RED), true);
+                MinecraftServer server = serverLevel.getServer();
+                SecretFlagSyncPacketS2C.sendToAll(IWorldOptions.getSecretFlag(server));
+                print(server, Component.translatable("event.confluence.hardmode_conversion.finished").withStyle(ChatFormatting.GREEN), true);
+                print(server, Component.translatable("event.confluence.hardmode_conversion.welcome").withStyle(ChatFormatting.RED), true);
             }
             this.started = false;
             theHallowConversionTable.clear();
@@ -207,7 +210,8 @@ public class HardmodeConvertor {
     public void clear() {
         this.started = false;
         sanctification.clear();
-        this.shouldContinue = false;
+        this.shouldContinue = true;
+        theHallowConversionTable.clear();
     }
 
     public static class BlockPosColumn {

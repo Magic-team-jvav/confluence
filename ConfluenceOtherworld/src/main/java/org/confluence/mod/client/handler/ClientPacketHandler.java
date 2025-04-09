@@ -11,6 +11,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.mixed.IDeathScreen;
+import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.phase_journey.mixed.ILevelRenderer;
 
@@ -72,6 +73,9 @@ public final class ClientPacketHandler {
 
     public static void handleSecretFlag(SecretFlagSyncPacketS2C packet) {
         secretFlag = packet.flag();
+        if ((secretFlag & IWorldOptions.HARDMODE) != 0) {
+            ((ILevelRenderer) Minecraft.getInstance().levelRenderer).phase_journey$rebuildAllChunks();
+        }
     }
 
     public static void handleDeathInfo(PlayerDeathInfoPacketS2C packet, Player player) {

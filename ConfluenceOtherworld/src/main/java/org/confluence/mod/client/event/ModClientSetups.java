@@ -34,6 +34,7 @@ import org.confluence.mod.client.renderer.item.EntityDisplayItemRenderer;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ToolItems;
@@ -166,6 +167,7 @@ public final class ModClientSetups {
         ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.EVER_POWERED_RAIL.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.PURE_GLASS.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.ECHO_BLOCK.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CURSED_FLAME_BLOCK.get(), cutout);
         RenderType cutoutMipped = RenderType.cutoutMipped();
         ItemBlockRenderTypes.setRenderLayer(NatureBlocks.GREEN_MOSS.get(), cutoutMipped);
         ItemBlockRenderTypes.setRenderLayer(NatureBlocks.BROWN_MOSS.get(), cutoutMipped);

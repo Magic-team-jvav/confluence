@@ -1133,6 +1133,13 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 EBONY_MOIST_SAND_BLOCK.get(),
                 TR_CRIMSON_MOIST_SAND_BLOCK.get()
         );
+        tag(ModTags.Blocks.CURSED_FLAME_BASE_BLOCK).add(
+                EBONY_STONE.get(),
+                EBONY_COBBLESTONE.get(),
+                EBONY_HARDENED_SAND_BLOCK.get(),
+                EBONY_SANDSTONE.get(),
+                EBONY_SAND.get()
+        );
     }
 
     @Override

@@ -53,6 +53,7 @@ public final class ModTags {
         public static final TagKey<Block> HALLOW_CONVERSION_SANDSTONE = register("hallow_conversion_sandstone");
         public static final TagKey<Block> HALLOW_CONVERSION_HARDENED_SAND_BLOCK = register("hallow_conversion_hardened_sand_block");
         public static final TagKey<Block> HALLOW_CONVERSION_MOIST_SAND_BLOCK = register("hallow_conversion_moist_sand_block");
+        public static final TagKey<Block> CURSED_FLAME_BASE_BLOCK = register("cursed_flame_base_block");
 
         private static TagKey<Block> c(String name) {
             return BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", name));

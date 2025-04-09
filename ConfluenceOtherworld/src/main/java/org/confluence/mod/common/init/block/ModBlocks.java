@@ -8,6 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -21,6 +22,7 @@ import org.confluence.lib.common.block.EmptyPickupLiquidBlock;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.*;
 import org.confluence.mod.common.block.natural.CoinPileBlock;
+import org.confluence.mod.common.block.natural.CursedFlameBlock;
 import org.confluence.mod.common.block.natural.food.BoulderBreadBlock;
 import org.confluence.mod.common.block.natural.food.GreenDumplingBlock;
 import org.confluence.mod.common.block.natural.herbs.*;
@@ -83,6 +85,8 @@ public final class ModBlocks {
 
     public static final DeferredBlock<GreenDumplingBlock> GREEN_DUMPLING_BLOCK = registerWithoutItem("green_dumpling_block", GreenDumplingBlock::new);
     public static final DeferredBlock<BoulderBreadBlock> BOULDER_BREAD_BLOCK = registerWithoutItem("boulder_bread_block", BoulderBreadBlock::new);
+
+    public static final DeferredBlock<CursedFlameBlock> CURSED_FLAME_BLOCK = registerWithoutItem("cursed_flame_block", () -> new CursedFlameBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GREEN).replaceable().noCollission().instabreak().lightLevel(l -> 7).sound(SoundType.WOOL).pushReaction(PushReaction.DESTROY)));
 
     private static DeferredBlock<TombstoneBlock> registerTombstone(String id, boolean isGolden) {
         DeferredBlock<TombstoneBlock> tombstone = registerWithItem(id, TombstoneBlock::new);

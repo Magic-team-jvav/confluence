@@ -4,6 +4,7 @@ import com.xiaohunao.terra_moment.common.init.TMCreativeModeTab;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
@@ -42,7 +43,9 @@ public final class ModTabs {
                         });
                         PotBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
                         output.accept(OreBlocks.COLD_CRYSTAL_ORE.get());
-                    }).withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "building_blocks")).build()
+                    })
+                    .withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "building_blocks"))
+                    .withTabsBefore(CreativeModeTabs.SPAWN_EGGS).build()
     );
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> BUILDING_BLOCKS = TABS.register("building_blocks",
             () -> CreativeModeTab.builder().icon(() -> IconItems.BLOCKS_ICON.get().getDefaultInstance())

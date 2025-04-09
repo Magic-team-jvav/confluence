@@ -36,8 +36,8 @@ public class HardmodeConvertor {
                 MutableInt counter = new MutableInt();
                 ops.getLongStream(input).getOrThrow().forEach(l -> {
                     int i = counter.getAndIncrement();
-                    int x = i % 16;
-                    int z = i / 16;
+                    int x = i / 16;
+                    int z = i % 16;
                     columns[x][z] = BlockPosColumn.of(l);
                 });
                 return DataResult.success(new Pair<>(columns, input), Lifecycle.stable());
@@ -73,9 +73,10 @@ public class HardmodeConvertor {
     }
 
     public void scheduleRefill(ServerLevel serverLevel) {
+        if (!shouldContinue) return;
         if (list.isEmpty()) {
             started = false;
-        } else if (shouldContinue && serverLevel.getGameTime() % 5 == 0) {
+        } else if (serverLevel.getGameTime() % 5 == 0) {
             Tuple<ChunkPos, BlockPosColumn[][]> entry = list.getFirst();
             ChunkPos chunkPos = entry.getA();
 
@@ -164,7 +165,7 @@ public class HardmodeConvertor {
     public <T> void decode(Dynamic<T> tag) {
         this.shouldContinue = false;
         Dynamic<T> dynamic = tag.get("confluence:hardmode_convertor").orElseEmptyMap();
-        dynamic.get("list").orElseEmptyList().read(LIST_CODEC).ifSuccess(result -> this.list = result);
+        dynamic.get("sanctification").orElseEmptyList().read(LIST_CODEC).ifSuccess(result -> this.list = result);
         this.started = dynamic.get("started").asBoolean(false);
         this.shouldContinue = true;
     }
@@ -172,7 +173,7 @@ public class HardmodeConvertor {
     public void encode(CompoundTag nbt) {
         this.shouldContinue = false;
         CompoundTag tag = new CompoundTag();
-        tag.put("list", LIST_CODEC.encodeStart(NbtOps.INSTANCE, list).getOrThrow());
+        tag.put("sanctification", LIST_CODEC.encodeStart(NbtOps.INSTANCE, list).getOrThrow());
         tag.putBoolean("started", started);
         nbt.put("confluence:hardmode_convertor", tag);
         this.shouldContinue = true;

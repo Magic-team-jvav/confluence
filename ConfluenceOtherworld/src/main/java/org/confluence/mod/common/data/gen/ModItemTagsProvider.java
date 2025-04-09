@@ -982,7 +982,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ModItems.PERPLEXED_CAT_MEDAL.get(),
                 ModItems.CANDY_SWORD.get(),
                 ModItems.PULSAR.get(),
-                ModItems.MYSTERIOUS_NOTE.get()
+                ModItems.MYSTERIOUS_NOTE.get(),
+                ModItems.HARDMODE_CONVERTOR.get()
         );
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);

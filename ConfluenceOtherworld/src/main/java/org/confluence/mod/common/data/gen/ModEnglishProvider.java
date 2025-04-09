@@ -59,7 +59,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("chat.confluence.demon_conch", "The location where you listen to the sound of the demon [%s] has been recorded");
         add("options.difficulty.legendary", "§aLegendary");
 
-        add("item.confluence.meteorite_ingot.tooltip", "Warm to the touch");
+        add("tooltip.item.confluence.meteorite_ingot.0", "Warm to the touch");
         add("jukebox_song.confluence.alpha", "C418 - alpha");
 
         add("item.confluence.afterlife_notes", "Afterlife Notes");
@@ -165,6 +165,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.paint_scraper", "Used to remove paint or coatings.Press Shift + Right-click to remove only one side.");
         add("tooltip.item.confluence.paint_sprayer.0", "Automatically paints or coats placed objects.");
         add("tooltip.item.confluence.coin", "Using it while crouch to upgrade tier");
+        add("tooltip.item.confluence.hardmode_convertor.0", "Right-clicking on the ground immediately turns the current world into Hardmode");
 
         add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "Full Pull Effects");
         add("tooltip.item.confluence.max_count", "Arrow Count");
@@ -502,6 +503,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("event.confluence.crimson_heart_broken.0", "A horrible chill goes down your spine...");
         add("event.confluence.crimson_heart_broken.1", "Screams echo around you...");
         add("event.confluence.eye_of_cthulhu", "You feel an evil presence watching you...");
+        add("event.confluence.hardmode_conversion.pass", "There is a conversion mission in the world!");
+        add("event.confluence.hardmode_conversion.generate_data.starting", "Conversation data preparation, please wait");
+        add("event.confluence.hardmode_conversion.generate_data.sanctification", "Sanctification data: %s entries, estimated to take %s seconds");
+        add("event.confluence.hardmode_conversion.generate_data.started", "Conversation data is ready, and the conversion is begining");
+        add("event.confluence.hardmode_conversion.generate_data.finished", "Welcome to Terraria");
 
         add("entity.minecraft.villager.confluence.sky_miller", "Sky Miller");
         add("entity.minecraft.villager.confluence.chef", "Chef");

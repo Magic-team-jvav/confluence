@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.sponsor;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -15,7 +16,7 @@ import java.util.List;
 public class KindMisideRingItem extends TooltipItem {
 
     public KindMisideRingItem() {
-        super(new Properties(), ModRarity.COMMON, TooltipItem.getTooltipsFromString("kind_miside_ring", 1));
+        super(new Properties(), ModRarity.COMMON, TooltipItem.getTooltipsFromString("kind_miside_ring", 1, ChatFormatting.GRAY));
     }
 
     @Override

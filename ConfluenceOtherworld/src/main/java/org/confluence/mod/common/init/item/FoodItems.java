@@ -1,9 +1,9 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.UseAnim;
@@ -152,8 +152,8 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> FLASHFIN_KOI = registerFood("flashfin_koi", builder -> builder.initialize().food(FoodType.noEffectProperties(2, 0.4f)).isFireResistant());
 
     //赞助
-    public static final DeferredItem<BaseFoodItem> PINK_COLA = registerToolTipFood("pink_cola", builder -> builder.initialize().food(FoodType.PINK_COLA).drinkingSound(s -> SoundEvents.GENERIC_DRINK).duration(d -> 15).useAnim(u -> UseAnim.DRINK), 1);
-    public static final DeferredItem<BaseFoodItem> DONGDONGS_FLATBREAD = registerToolTipFood("dongdongs_flatbread", builder -> builder.initialize().food(FoodType.DONGDONGS_FLATBREAD).eatingSound(s -> SoundEvents.GENERIC_EAT).duration(d -> 15).useAnim(u -> UseAnim.EAT), 1);
+    public static final DeferredItem<BaseFoodItem> PINK_COLA = registerToolTipFood("pink_cola", builder -> builder.initialize().food(FoodType.PINK_COLA).drinkingSound(s -> SoundEvents.GENERIC_DRINK).duration(d -> 15).useAnim(u -> UseAnim.DRINK), 1, ChatFormatting.GRAY);
+    public static final DeferredItem<BaseFoodItem> DONGDONGS_FLATBREAD = registerToolTipFood("dongdongs_flatbread", builder -> builder.initialize().food(FoodType.DONGDONGS_FLATBREAD).eatingSound(s -> SoundEvents.GENERIC_EAT).duration(d -> 15).useAnim(u -> UseAnim.EAT), 1, ChatFormatting.GRAY);
     //节日特有
     public static final DeferredItem<BaseFoodItem> ZONGZI = registerFood("zongzi", builder -> builder.initialize().food(FoodType.WellFedProperties(6000, 4, 1.5f)).isFireResistant());
 
@@ -194,9 +194,9 @@ public class FoodItems {
         });
     }
 
-    public static DeferredItem<BaseFoodItem> registerToolTipFood(String name, Consumer<BaseFoodItem.Builder> consumer, int line) {
+    public static DeferredItem<BaseFoodItem> registerToolTipFood(String name, Consumer<BaseFoodItem.Builder> consumer, int line, ChatFormatting chatFormatting) {
         return ITEMS.register(name, () -> {
-            BaseFoodItem.Builder builder = BaseFoodItem.builder().tooltip(name, line);
+            BaseFoodItem.Builder builder = BaseFoodItem.builder().tooltip(name, line, chatFormatting);
             consumer.accept(builder);
             return builder.build();
         });

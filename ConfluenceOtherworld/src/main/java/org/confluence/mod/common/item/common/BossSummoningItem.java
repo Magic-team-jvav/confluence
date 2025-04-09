@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -10,21 +9,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class BossSummingItem extends TooltipItem {
+public class BossSummoningItem extends TooltipItem {
     private final Predicate<Player> condition;
     private final Factory factory;
 
-    public BossSummingItem(ModRarity rarity, Predicate<Player> condition, Factory factory) {
+    public BossSummoningItem(ModRarity rarity, Predicate<Player> condition, Factory factory) {
         super(new Properties(), rarity, List.of());
         this.condition = condition;
         this.factory = factory;
     }
 
-    public BossSummingItem(Predicate<Player> condition, Factory factory, List<Component> tooltips) {
+    public BossSummoningItem(Predicate<Player> condition, Factory factory, List<Component> tooltips) {
         super(new Properties(), ModRarity.BLUE, tooltips);
         this.condition = condition;
         this.factory = factory;
@@ -48,13 +46,5 @@ public class BossSummingItem extends TooltipItem {
     @FunctionalInterface
     public interface Factory {
         LivingEntity create(Level level);
-    }
-
-    public static List<Component> getTooltipsFromString(String id, int lineCount, ChatFormatting color) {
-        List<Component> components = new ArrayList<>();
-        for (int i = 1; i <= lineCount; i++) {
-            components.add(Component.translatable("item.confluence." + id + ".tooltip." + i).withStyle(color));
-        }
-        return components;
     }
 }

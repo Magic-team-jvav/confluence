@@ -36,10 +36,10 @@ public class TooltipItem extends CustomRarityItem {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 
-    public static List<Component> getTooltipsFromString(String id, int lineCount){
+    public static List<Component> getTooltipsFromString(String id, int lineCount, ChatFormatting chatFormatting) {
         List<Component> components = new ArrayList<>();
-        for (int i = 1; i <= lineCount; i++){
-            components.add(Component.translatable("item.confluence." + id + ".tooltip." + i).withStyle(ChatFormatting.DARK_GRAY));
+        for (int i = 0; i < lineCount; i++) {
+            components.add(Component.translatable("tooltip.item.confluence." + id + "." + i).withStyle(chatFormatting));
         }
         return components;
     }

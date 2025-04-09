@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.FoodItems;
+import org.confluence.mod.common.item.common.TooltipItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,15 +112,15 @@ public class BaseFoodItem extends Item {
             return this;
         }
 
-        public Builder tooltip(String id, int lineCount) {
-            this.tooltips.addAll(tooltips(id, lineCount));
+        public Builder tooltip(String id, int lineCount, ChatFormatting chatFormatting) {
+            this.tooltips.addAll(TooltipItem.getTooltipsFromString(id, lineCount, chatFormatting));
             return this;
         }
 
         public static List<Component> tooltips(String id, int lineCount) {
             List<Component> components = new ArrayList<>();
             for (int i = 1; i <= lineCount; i++) {
-                components.add(Component.translatable("item.confluence." + id + ".tooltip." + i).withStyle(ChatFormatting.GRAY));
+                components.add(Component.translatable("tooltip.item.confluence." + id + "." + i).withStyle(ChatFormatting.GRAY));
             }
             return components;
         }

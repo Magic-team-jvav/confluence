@@ -46,7 +46,7 @@ public class FailedSkullItem extends StandingAndWallBlockItem implements Equipab
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.addAll(TooltipItem.getTooltipsFromString("failed_skull", 1));
+        tooltipComponents.addAll(TooltipItem.getTooltipsFromString("failed_skull", 1, ChatFormatting.GRAY));
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 }

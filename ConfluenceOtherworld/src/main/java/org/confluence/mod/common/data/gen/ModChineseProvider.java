@@ -50,37 +50,37 @@ public class ModChineseProvider extends LanguageProvider {
         add("generator.confluence.tr_crimson", "猩红之地");
 
 
-        add("item.confluence.meteorite_ingot.tooltip", "摸起来是温的");
+        add("tooltip.item.confluence.meteorite_ingot.0", "摸起来是温的");
         add("item.confluence.encumbering_stone.disable", "负重石：关闭");
         add("item.confluence.paint", "油漆");
-        add("item.confluence.slime_crown.tooltip.1", "右键使用以召唤史莱姆王");
-        add("item.confluence.slime_crown.tooltip.2", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");
-        add("item.confluence.slime_crown.tooltip.3", "“戴上它可能不是个好选择”");
-        add("item.confluence.suspicious_looking_eye.tooltip.1", "右键使用以召唤克苏鲁之眼，它只在夜间出没");
-        add("item.confluence.suspicious_looking_eye.tooltip.2", "一颗死气沉沉，目光呆滞的眼球，尽管它不具备攻击性，但它似乎比它们那些夜间会在半空中飞来飞去的同僚们更为危险。");
-        add("item.confluence.suspicious_looking_eye.tooltip.3", "“它好像在看着你…”");
-        add("item.confluence.worm_food.tooltip.1", "右键使用以召唤世界吞噬者，它会在充满腐化毒雾的巨大裂谷中穿梭");
-        add("item.confluence.worm_food.tooltip.2", "闻起来像一块烂掉了的排骨，似乎对那些病变了的泰拉生物有极强的吸引力。");
-        add("item.confluence.worm_food.tooltip.3", "“它还要吞噬更多…更多更多更多更多…”");
-        add("item.confluence.bloody_spine.tooltip.1", "右键使用以召唤克苏鲁之脑，它会在嗅到猩红之地血肉与脓浆的气息后方才苏醒");
-        add("item.confluence.bloody_spine.tooltip.2", "一截被剥离下来了的身体组织，上面斑驳着血痂块与肌肉组织，很难想象它是从哪种生物体内，以何种方式取出来的。");
-        add("item.confluence.bloody_spine.tooltip.3", "“它似乎在尝试着与你对话…要不蘨睈錗㧴氓旳義厡…”");
-        add("item.confluence.abeemination.tooltip.1", "右键使用以召唤蜂王，只有热带阔叶雨林间的污浊瘴气才能压制住她的狂怒");
-        add("item.confluence.abeemination.tooltip.2", "她似乎极度那些厌恶荧光真菌孢子的气息");
-        add("item.confluence.abeemination.tooltip.3", "一团尚未成型的幼蜂，摸上去感觉像黏稠的蜂蜜……蜂王与她的下属们对它们甜蜜领地的保护欲不知何时渐渐发展为对非同类生物的极度排斥与憎恶。");
-        add("item.confluence.abeemination.tooltip.4", "“群蜂振翅之声憾动了丛林中最为厚重的叶片”");
+        add("tooltip.item.confluence.slime_crown.0", "右键使用以召唤史莱姆王");
+        add("tooltip.item.confluence.slime_crown.1", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");
+        add("tooltip.item.confluence.slime_crown.2", "“戴上它可能不是个好选择”");
+        add("tooltip.item.confluence.suspicious_looking_eye.0", "右键使用以召唤克苏鲁之眼，它只在夜间出没");
+        add("tooltip.item.confluence.suspicious_looking_eye.1", "一颗死气沉沉，目光呆滞的眼球，尽管它不具备攻击性，但它似乎比它们那些夜间会在半空中飞来飞去的同僚们更为危险。");
+        add("tooltip.item.confluence.suspicious_looking_eye.2", "“它好像在看着你…”");
+        add("tooltip.item.confluence.worm_food.0", "右键使用以召唤世界吞噬者，它会在充满腐化毒雾的巨大裂谷中穿梭");
+        add("tooltip.item.confluence.worm_food.1", "闻起来像一块烂掉了的排骨，似乎对那些病变了的泰拉生物有极强的吸引力。");
+        add("tooltip.item.confluence.worm_food.2", "“它还要吞噬更多…更多更多更多更多…”");
+        add("tooltip.item.confluence.bloody_spine.0", "右键使用以召唤克苏鲁之脑，它会在嗅到猩红之地血肉与脓浆的气息后方才苏醒");
+        add("tooltip.item.confluence.bloody_spine.1", "一截被剥离下来了的身体组织，上面斑驳着血痂块与肌肉组织，很难想象它是从哪种生物体内，以何种方式取出来的。");
+        add("tooltip.item.confluence.bloody_spine.2", "“它似乎在尝试着与你对话…要不蘨睈錗㧴氓旳義厡…”");
+        add("tooltip.item.confluence.abeemination.0", "右键使用以召唤蜂王，只有热带阔叶雨林间的污浊瘴气才能压制住她的狂怒");
+        add("tooltip.item.confluence.abeemination.1", "她似乎极度那些厌恶荧光真菌孢子的气息");
+        add("tooltip.item.confluence.abeemination.2", "一团尚未成型的幼蜂，摸上去感觉像黏稠的蜂蜜……蜂王与她的下属们对它们甜蜜领地的保护欲不知何时渐渐发展为对非同类生物的极度排斥与憎恶。");
+        add("tooltip.item.confluence.abeemination.3", "“群蜂振翅之声憾动了丛林中最为厚重的叶片”");
 
-        add("item.confluence.tokyo_teddy_bear.tooltip.1", "一位自卑的少女如破碎的泰迪熊般说到：");
-        add("item.confluence.tokyo_teddy_bear.tooltip.2", "           来让你听听");
-        add("item.confluence.tokyo_teddy_bear.tooltip.3", "           全智全能的话吧");
-        add("item.confluence.tokyo_teddy_bear.tooltip.4", "           头脑以外的");
-        add("item.confluence.tokyo_teddy_bear.tooltip.5", "           已不再需要");
-        add("item.confluence.tokyo_teddy_bear.tooltip.6", "——由一只蜘蛛讲述的故事");
-        add("item.confluence.paradox_interactive_medal.0", "同时玩过钢铁雄心、维多利亚、欧陆风云、十字军之王、都市天际线的证明。");
-        add("item.confluence.kind_miside_ring.tooltip.1", "“戒指会带你找到正确的方向，亲爱的”");
-        add("item.confluence.failed_skull.tooltip.1", "一只苦力怕被猪灵强制改造了身体，可以多次自爆。猪灵想用它作为入侵主世界的生物兵器，却被其意外逃脱");
-        add("item.confluence.pink_cola.tooltip.1", "一瓶普通的粉色可乐，或许原来有一整箱？");
-        add("item.confluence.dongdongs_flatbread.tooltip.1", "刚在下界岩上考好的饼，快来尝尝吧！");
+        add("tooltip.item.confluence.tokyo_teddy_bear.0", "一位自卑的少女如破碎的泰迪熊般说到：");
+        add("tooltip.item.confluence.tokyo_teddy_bear.1", "           来让你听听");
+        add("tooltip.item.confluence.tokyo_teddy_bear.2", "           全智全能的话吧");
+        add("tooltip.item.confluence.tokyo_teddy_bear.3", "           头脑以外的");
+        add("tooltip.item.confluence.tokyo_teddy_bear.4", "           已不再需要");
+        add("tooltip.item.confluence.tokyo_teddy_bear.5", "——由一只蜘蛛讲述的故事");
+        add("tooltip.item.confluence.paradox_interactive_medal.0", "同时玩过钢铁雄心、维多利亚、欧陆风云、十字军之王、都市天际线的证明。");
+        add("tooltip.item.confluence.kind_miside_ring.0", "“戒指会带你找到正确的方向，亲爱的”");
+        add("tooltip.item.confluence.failed_skull.0", "一只苦力怕被猪灵强制改造了身体，可以多次自爆。猪灵想用它作为入侵主世界的生物兵器，却被其意外逃脱");
+        add("tooltip.item.confluence.pink_cola.0", "一瓶普通的粉色可乐，或许原来有一整箱？");
+        add("tooltip.item.confluence.dongdongs_flatbread.0", "刚在下界岩上考好的饼，快来尝尝吧！");
 
 
         add("tooltip.item.confluence.boredoms_pact_falling_resolve.0", "「无聊之咒·陨志」");
@@ -122,10 +122,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("author.confluence.lorissa", "洛丽莎");
         add("author.confluence.annaleigh", "安娜莉");
 
-        add("item.confluence.mysterious_note_blessing.tooltip.1", "希望看到这张字条的玩家可以学习顺心，工作顺利，生活事事如意，不管什么阴霾都会很快过去的因为我们都要向着明天前进。");
-        add("item.confluence.mysterious_note_urgency.tooltip.1", "汇流乐事什么时候才开始制作啊，我都已经等的变成傻子了。");
-        add("item.confluence.mysterious_note_explanation.tooltip.1", "“冷知识：其实召唤师要和召唤物进行心灵沟通，盔甲防护不能太厚否则会影响沟通。”");
-        add("item.confluence.mysterious_note_warning.tooltip.1", "呱！快跑吔！是牢镜病毒！");
+        add("tooltip.item.confluence.mysterious_note_blessing.0", "希望看到这张字条的玩家可以学习顺心，工作顺利，生活事事如意，不管什么阴霾都会很快过去的因为我们都要向着明天前进。");
+        add("tooltip.item.confluence.mysterious_note_urgency.0", "汇流乐事什么时候才开始制作啊，我都已经等的变成傻子了。");
+        add("tooltip.item.confluence.mysterious_note_explanation.0", "“冷知识：其实召唤师要和召唤物进行心灵沟通，盔甲防护不能太厚否则会影响沟通。”");
+        add("tooltip.item.confluence.mysterious_note_warning.0", "呱！快跑吔！是牢镜病毒！");
         // 世界机制
         add("worldgen.confluence.placing_traps", "正在放置机关");
         add("worldgen.confluence.generating_bees", "正在生成蜜蜂");
@@ -228,6 +228,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.paint_scraper", "用于去除油漆或涂料，按下shift+右键仅去除一面");
         add("tooltip.item.confluence.paint_sprayer.0", "自动给放置的物体刷油漆或涂料");
         add("tooltip.item.confluence.coin", "潜行右键合并为上级钱币");
+        add("tooltip.item.confluence.hardmode_convertor.0", "右击地面将当前世界立刻开始转变为困难模式");
 
         add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "蓄满效果");
         add("tooltip.item.confluence.max_count", "多重射击");
@@ -648,6 +649,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("event.confluence.crimson_heart_broken.0", "不寒而栗，毛骨悚然……！");
         add("event.confluence.crimson_heart_broken.1", "四面回荡着尖叫声……");
         add("event.confluence.eye_of_cthulhu", "你感到有个邪恶的东西在看着你……");
+        add("event.confluence.hardmode_conversion.pass", "世界中已有转变任务！");
+        add("event.confluence.hardmode_conversion.generate_data.starting", "转变数据准备中，请稍等");
+        add("event.confluence.hardmode_conversion.generate_data.sanctification", "神圣化数据：%s条，预计耗时%s秒");
+        add("event.confluence.hardmode_conversion.generate_data.started", "转变数据准备完毕，正在开始转变");
+        add("event.confluence.hardmode_conversion.generate_data.finished", "欢迎来到泰拉瑞亚");
 
         add("entity.minecraft.villager.confluence.sky_miller", "天师");
         add("entity.minecraft.villager.confluence.chef", "厨师");
@@ -1888,7 +1894,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.PERPLEXED_CAT_MEDAL.get(), "疑惑猫猫勋章");
         add(ModItems.CANDY_SWORD.get(), "糖果剑");
         add(ModItems.PULSAR.get(), "脉冲星");
-
+        add(ModItems.ENTITY_DISPLAY.get(), "生物显示");
+        add(ModItems.HARDMODE_CONVERTOR.get(), "困难模式转变器");
 
         add(ModItems.CATTAILS.get(), "香蒲");
         add(ModItems.JUNGLE_CATTAILS.get(), "丛林香蒲");

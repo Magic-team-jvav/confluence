@@ -7,6 +7,7 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
@@ -53,31 +55,39 @@ public class HardmodeConvertor {
     });
 
     private volatile boolean started = false;
-    private volatile List<Tuple<ChunkPos, BlockPosColumn[][]>> list = new LinkedList<>();
-    private volatile boolean shouldContinue = true;
+    private volatile List<Tuple<ChunkPos, BlockPosColumn[][]>> sanctification = new LinkedList<>();
+    private transient volatile boolean shouldContinue = true;
 
     public boolean isStarted() {
         return started;
     }
 
-    public void start(MinecraftServer server) {
+    public void start(MinecraftServer server, boolean debug) {
+        print(server, Component.translatable("event.confluence.hardmode_conversion.generate_data.starting"), debug);
+        this.shouldContinue = false;
+        this.started = true;
         CompletableFuture.supplyAsync(() -> {
             ServerLevel overworld = server.overworld();
             BlockPos startPos = server.getWorldData().overworldData().getSpawnPos().atY(overworld.getMinBuildHeight());
             int height = overworld.getMaxBuildHeight() - overworld.getMinBuildHeight(), startRadius = 32, thickness = 64;
             return generateConicalCylinder(startPos, height, startRadius, startRadius + height, thickness);
-        }, Util.backgroundExecutor()).thenAccept(value -> {
-            started = true;
-            list = value;
+        }, Util.backgroundExecutor()).thenAccept(list -> {
+            this.sanctification = list;
+            this.shouldContinue = true;
+            print(server, Component.translatable("event.confluence.hardmode_conversion.generate_data.sanctification", sanctification.size(), sanctification.size() / 4), debug);
+            print(server, Component.translatable("event.confluence.hardmode_conversion.generate_data.started"), debug);
         });
     }
 
     public void scheduleRefill(ServerLevel serverLevel) {
         if (!shouldContinue) return;
-        if (list.isEmpty()) {
-            started = false;
+        if (sanctification.isEmpty()) {
+            if (started) {
+                print(serverLevel.getServer(), Component.translatable("event.confluence.hardmode_conversion.generate_data.finished"), !FMLEnvironment.production);
+            }
+            this.started = false;
         } else if (serverLevel.getGameTime() % 5 == 0) {
-            Tuple<ChunkPos, BlockPosColumn[][]> entry = list.getFirst();
+            Tuple<ChunkPos, BlockPosColumn[][]> entry = sanctification.getFirst();
             ChunkPos chunkPos = entry.getA();
 
             boolean noForceBefore = !serverLevel.getForcedChunks().contains(chunkPos.toLong());
@@ -85,8 +95,12 @@ public class HardmodeConvertor {
             boolean refilled = refill(serverLevel, chunkPos, entry.getB());
             if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, false);
 
-            if (refilled) list.removeFirst();
+            if (refilled) sanctification.removeFirst();
         }
+    }
+
+    private static void print(MinecraftServer server, Component component, boolean debug) {
+        if (debug) server.getPlayerList().broadcastSystemMessage(component, false);
     }
 
     @SuppressWarnings("unchecked")
@@ -165,7 +179,7 @@ public class HardmodeConvertor {
     public <T> void decode(Dynamic<T> tag) {
         this.shouldContinue = false;
         Dynamic<T> dynamic = tag.get("confluence:hardmode_convertor").orElseEmptyMap();
-        dynamic.get("sanctification").orElseEmptyList().read(LIST_CODEC).ifSuccess(result -> this.list = result);
+        dynamic.get("sanctification").orElseEmptyList().read(LIST_CODEC).ifSuccess(result -> this.sanctification = result);
         this.started = dynamic.get("started").asBoolean(false);
         this.shouldContinue = true;
     }
@@ -173,7 +187,7 @@ public class HardmodeConvertor {
     public void encode(CompoundTag nbt) {
         this.shouldContinue = false;
         CompoundTag tag = new CompoundTag();
-        tag.put("sanctification", LIST_CODEC.encodeStart(NbtOps.INSTANCE, list).getOrThrow());
+        tag.put("sanctification", LIST_CODEC.encodeStart(NbtOps.INSTANCE, sanctification).getOrThrow());
         tag.putBoolean("started", started);
         nbt.put("confluence:hardmode_convertor", tag);
         this.shouldContinue = true;

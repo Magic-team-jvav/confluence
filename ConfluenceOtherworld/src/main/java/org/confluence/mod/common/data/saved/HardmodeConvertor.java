@@ -119,8 +119,7 @@ public class HardmodeConvertor {
         if (debug) server.getPlayerList().broadcastSystemMessage(component, false);
     }
 
-    @SuppressWarnings("unchecked")
-    private <T extends Comparable<T>, V extends T> boolean refill(ServerLevel overworld, ChunkPos chunkPos, BlockPosColumn[][] set) {
+    private boolean refill(ServerLevel overworld, ChunkPos chunkPos, BlockPosColumn[][] set) {
         ChunkAccess chunkAccess = overworld.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.FULL, false);
         if (chunkAccess == null) return false;
         for (int x = 0; x < 16; x++) {
@@ -132,13 +131,9 @@ public class HardmodeConvertor {
                     BlockState sourceState = chunkAccess.getBlockState(blockPos);
                     if (sourceState.isAir()) continue;
                     BlockState targetState = theHallowConversionTable.get(sourceState);
-                    if (targetState == null) continue;
-                    for (Map.Entry<Property<?>, Comparable<?>> entry1 : sourceState.getValues().entrySet()) {
-                        if (targetState.hasProperty(entry1.getKey())) {
-                            targetState = targetState.setValue((Property<T>) entry1.getKey(), (V) entry1.getValue());
-                        }
+                    if (targetState != null) {
+                        chunkAccess.setBlockState(blockPos, targetState, false);
                     }
-                    chunkAccess.setBlockState(blockPos, targetState, false);
                 }
             }
         }

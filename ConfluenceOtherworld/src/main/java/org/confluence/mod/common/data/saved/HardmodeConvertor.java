@@ -3,6 +3,7 @@ package org.confluence.mod.common.data.saved;
 import com.google.common.collect.AbstractIterator;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.*;
+import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -10,6 +11,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.level.ChunkPos;
@@ -18,18 +20,23 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
-import net.neoforged.fml.loading.FMLEnvironment;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
+import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.CheckForNull;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
+/**
+ * <a href="https://terraria.wiki.gg/zh/wiki/%E5%9B%B0%E9%9A%BE%E6%A8%A1%E5%BC%8F%E8%BD%AC%E6%8D%A2">困难模式转换</a>
+ */
 public class HardmodeConvertor {
     public static final HardmodeConvertor INSTANCE = new HardmodeConvertor();
     public static final Codec<List<Tuple<ChunkPos, BlockPosColumn[][]>>> LIST_CODEC = Codec.lazyInitialized(() -> {
@@ -59,6 +66,56 @@ public class HardmodeConvertor {
     private volatile boolean started = false;
     private volatile List<Tuple<ChunkPos, BlockPosColumn[][]>> sanctification = new LinkedList<>();
     private transient volatile boolean shouldContinue = true;
+    private transient final Function<BlockState, @Nullable BlockState> the_hallow = new Function<>() {
+        private final Map<BlockState, BlockState> cache = new ConcurrentHashMap<>();
+
+        @Override
+        public BlockState apply(BlockState blockState) {
+            return get(blockState);
+        }
+
+        @SuppressWarnings("unchecked")
+        private <T extends Comparable<T>, V extends T> BlockState get(BlockState blockState) {
+            return cache.computeIfAbsent(blockState, source -> {
+                Block target = null;
+
+                if (source.is(BlockTags.LOGS)) {
+                    target = NatureBlocks.PEARL_LOG_BLOCKS.getLog().get();
+                } else if (source.is(BlockTags.LEAVES)) {
+                    target = NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().get();
+                } else if (source.is(BlockTags.BASE_STONE_OVERWORLD)) {
+                    target = NatureBlocks.PEARL_STONE.get();
+                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_GRASS_BLOCK)) {
+                    target = NatureBlocks.HALLOW_GRASS_BLOCK.get();
+                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_JUNGLE_GRASS_BLOCK)) {
+                    target = NatureBlocks.JUNGLE_GRASS_BLOCK.get();
+                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SHORT_GRASS)) {
+                    target = NatureBlocks.HALLOW_GRASS.get();
+                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_PACKED_ICE)) {
+                    target = NatureBlocks.PINK_PACKED_ICE.get();
+                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_ICE)) {
+                    target = NatureBlocks.PINK_ICE.get();
+                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SAND)) {
+                    target = NatureBlocks.PEARL_SAND.get();
+                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SANDSTONE)) {
+                    target = NatureBlocks.PEARL_SANDSTONE.get();
+                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_HARDENED_SAND_BLOCK)) {
+                    target = NatureBlocks.PEARL_HARDENED_SAND_BLOCK.get();
+                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_MOIST_SAND_BLOCK)) {
+                    target = NatureBlocks.PEARL_MOIST_SAND_BLOCK.get();
+                }
+
+                if (target == null) return null;
+                BlockState targetState = target.defaultBlockState();
+                for (Map.Entry<Property<?>, Comparable<?>> entry1 : source.getValues().entrySet()) {
+                    if (targetState.hasProperty(entry1.getKey())) {
+                        targetState = targetState.setValue((Property<T>) entry1.getKey(), (V) entry1.getValue());
+                    }
+                }
+                return targetState;
+            });
+        }
+    };
 
     public boolean isStarted() {
         return started;
@@ -87,7 +144,8 @@ public class HardmodeConvertor {
         if (!shouldContinue) return;
         if (sanctification.isEmpty()) {
             if (started) {
-                print(serverLevel.getServer(), Component.translatable("event.confluence.hardmode_conversion.sanctification.finished"), !FMLEnvironment.production);
+                print(serverLevel.getServer(), Component.translatable("event.confluence.hardmode_conversion.finished").withStyle(ChatFormatting.GREEN), true);
+                print(serverLevel.getServer(), Component.translatable("event.confluence.hardmode_conversion.welcome").withStyle(ChatFormatting.RED), true);
             }
             this.started = false;
         } else if (serverLevel.getGameTime() % 5 == 0) {
@@ -108,10 +166,9 @@ public class HardmodeConvertor {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T extends Comparable<T>, V extends T> boolean refill(ServerLevel overworld, ChunkPos chunkPos, BlockPosColumn[][] set) {
+    private <T extends Comparable<T>, V extends T> boolean refill(ServerLevel overworld, ChunkPos chunkPos, BlockPosColumn[][] set) {
         ChunkAccess chunkAccess = overworld.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.FULL, false);
         if (chunkAccess == null) return false;
-        Map<Block, Block> blockMap = ISpreadable.Type.HALLOW.getBlockMap();
         for (int x = 0; x < 16; x++) {
             BlockPosColumn[] columns = set[x];
             for (int z = 0; z < 16; z++) {
@@ -120,9 +177,8 @@ public class HardmodeConvertor {
                 for (BlockPos blockPos : column.iterable(chunkPos.getBlockX(x), chunkPos.getBlockZ(z))) {
                     BlockState sourceState = chunkAccess.getBlockState(blockPos);
                     if (sourceState.isAir()) continue;
-                    Block block = blockMap.get(sourceState.getBlock());
-                    if (block == null) continue;
-                    BlockState targetState = block.defaultBlockState();
+                    BlockState targetState = the_hallow.apply(sourceState);
+                    if (targetState == null) continue;
                     for (Map.Entry<Property<?>, Comparable<?>> entry1 : sourceState.getValues().entrySet()) {
                         if (targetState.hasProperty(entry1.getKey())) {
                             targetState = targetState.setValue((Property<T>) entry1.getKey(), (V) entry1.getValue());

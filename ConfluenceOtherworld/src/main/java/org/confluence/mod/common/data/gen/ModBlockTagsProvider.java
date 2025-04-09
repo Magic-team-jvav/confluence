@@ -1083,6 +1083,56 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CHISELED_PINK_BRICKS.get(),
                 FRAGILE_PINK_BRICKS.get()
         );
+        tag(BlockTags.BASE_STONE_OVERWORLD).add(
+                EBONY_STONE.get(),
+                TR_CRIMSON_STONE.get()
+        );
+        tag(ModTags.Blocks.HALLOW_CONVERSION_GRASS_BLOCK).add(
+                Blocks.GRASS_BLOCK,
+                CORRUPT_GRASS_BLOCK.get(),
+                TR_CRIMSON_GRASS.get()
+        );
+        tag(ModTags.Blocks.HALLOW_CONVERSION_JUNGLE_GRASS_BLOCK).add(
+                CORRUPT_JUNGLE_GRASS_BLOCK.get(),
+                TR_CRIMSON_JUNGLE_GRASS_BLOCK.get()
+        );
+        tag(ModTags.Blocks.HALLOW_CONVERSION_SHORT_GRASS).add(
+                Blocks.SHORT_GRASS,
+                Blocks.FERN,
+                CORRUPT_GRASS.get(),
+                TR_CRIMSON_GRASS.get()
+        );
+        tag(ModTags.Blocks.HALLOW_CONVERSION_PACKED_ICE).add(
+                Blocks.PACKED_ICE,
+                PURPLE_PACKED_ICE.get(),
+                PINK_PACKED_ICE.get()
+        );
+        tag(ModTags.Blocks.HALLOW_CONVERSION_ICE).add(
+                Blocks.ICE,
+                PURPLE_ICE.get(),
+                PINK_ICE.get()
+        );
+        tag(ModTags.Blocks.HALLOW_CONVERSION_SAND).add(
+                Blocks.SAND,
+                Blocks.RED_SAND,
+                SILT_BLOCK.get(),
+                EBONY_SAND.get(),
+                TR_CRIMSON_SAND.get()
+        );
+        tag(ModTags.Blocks.HALLOW_CONVERSION_SANDSTONE).add(
+                Blocks.SANDSTONE,
+                Blocks.RED_SANDSTONE
+        );
+        tag(ModTags.Blocks.HALLOW_CONVERSION_HARDENED_SAND_BLOCK).add(
+                HARDENED_SAND_BLOCK.get(),
+                RED_HARDENED_SAND_BLOCK.get()
+        );
+        tag(ModTags.Blocks.HALLOW_CONVERSION_MOIST_SAND_BLOCK).add(
+                MOIST_SAND_BLOCK.get(),
+                RED_MOIST_SAND_BLOCK.get(),
+                EBONY_MOIST_SAND_BLOCK.get(),
+                TR_CRIMSON_MOIST_SAND_BLOCK.get()
+        );
     }
 
     @Override

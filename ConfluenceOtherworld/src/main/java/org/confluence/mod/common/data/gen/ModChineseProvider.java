@@ -649,12 +649,13 @@ public class ModChineseProvider extends LanguageProvider {
         add("event.confluence.crimson_heart_broken.0", "不寒而栗，毛骨悚然……！");
         add("event.confluence.crimson_heart_broken.1", "四面回荡着尖叫声……");
         add("event.confluence.eye_of_cthulhu", "你感到有个邪恶的东西在看着你……");
-        add("event.confluence.hardmode_conversion.pass", "世界中已有转变任务！");
-        add("event.confluence.hardmode_conversion.hardmode", "世界类型已转变为困难模式");
-        add("event.confluence.hardmode_conversion.starting", "转变数据准备中，请稍等");
+        add("event.confluence.hardmode_conversion.pass", "世界中已有转换任务！");
+        add("event.confluence.hardmode_conversion.hardmode", "世界类型已转换为困难模式");
+        add("event.confluence.hardmode_conversion.starting", "转换数据准备中，请稍等");
         add("event.confluence.hardmode_conversion.generate_data.sanctification", "神圣化数据：%s条，预计耗时%s秒");
-        add("event.confluence.hardmode_conversion.started", "转变数据准备完毕，正在开始转变");
-        add("event.confluence.hardmode_conversion.sanctification.finished", "欢迎来到泰拉瑞亚");
+        add("event.confluence.hardmode_conversion.started", "转换数据准备完毕，正在开始转换");
+        add("event.confluence.hardmode_conversion.finished", "“古老的光明与黑暗之魂已经释放。”");
+        add("event.confluence.hardmode_conversion.welcome", "欢迎来到泰拉瑞亚");
 
         add("entity.minecraft.villager.confluence.sky_miller", "天师");
         add("entity.minecraft.villager.confluence.chef", "厨师");
@@ -1896,7 +1897,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.CANDY_SWORD.get(), "糖果剑");
         add(ModItems.PULSAR.get(), "脉冲星");
         add(ModItems.ENTITY_DISPLAY.get(), "生物显示");
-        add(ModItems.HARDMODE_CONVERTOR.get(), "困难模式转变器");
+        add(ModItems.HARDMODE_CONVERTOR.get(), "困难模式转换器");
 
         add(ModItems.CATTAILS.get(), "香蒲");
         add(ModItems.JUNGLE_CATTAILS.get(), "丛林香蒲");

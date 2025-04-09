@@ -97,7 +97,7 @@ public class HardmodeConvertor {
         if (sanctification.isEmpty()) {
             if (started) {
                 MinecraftServer server = serverLevel.getServer();
-                SecretFlagSyncPacketS2C.sendToAll(IWorldOptions.getSecretFlag(server));
+                SecretFlagSyncPacketS2C.sendToAll(((IMinecraftServer) server).confluence$getSecretFlag());
                 print(server, Component.translatable("event.confluence.hardmode_conversion.finished").withStyle(ChatFormatting.GREEN), true);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.welcome").withStyle(ChatFormatting.RED), true);
             }

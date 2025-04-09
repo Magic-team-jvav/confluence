@@ -39,6 +39,11 @@ public abstract class MinecraftServerMixin implements IMinecraftServer {
         return (confluence$secretFlag & flag) != 0;
     }
 
+    @Override
+    public long confluence$getSecretFlag() {
+        return confluence$secretFlag;
+    }
+
     @Inject(method = "<init>", at = @At("TAIL"))
     private void initialize(Thread serverThread, LevelStorageSource.LevelStorageAccess storageSource, PackRepository packRepository, WorldStem worldStem, Proxy proxy, DataFixer fixerUpper, Services services, ChunkProgressListenerFactory progressListenerFactory, CallbackInfo ci) {
         this.confluence$secretFlag = ((IWorldOptions) getWorldData().worldGenOptions()).confluence$getSecretFlag();

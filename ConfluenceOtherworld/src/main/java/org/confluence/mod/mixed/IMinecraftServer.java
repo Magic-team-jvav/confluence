@@ -8,6 +8,8 @@ public interface IMinecraftServer {
 
     boolean confluence$matchesSecretFlag(long flag);
 
+    long confluence$getSecretFlag();
+
     default boolean confluence$matchesSecretFlag(SecretSeed secretSeed) {
         return confluence$matchesSecretFlag(secretSeed.getFlag());
     }

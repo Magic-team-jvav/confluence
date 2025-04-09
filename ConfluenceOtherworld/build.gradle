@@ -4,7 +4,7 @@ plugins {
 var projectName = ["Confluence-Magic-Lib","TerraEntity", "MineTeam", "EquipmentBenediction",
                    "TerraCurio", "ParticleStorm", "HeavenDestinyMoment", "PhaseJourney",
                    "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture",
-                   "EntityTrackerHUD","ConfluenceDelight"
+                   "EntityTrackerHUD"
 ]
 
 version = mod_version
@@ -142,6 +142,7 @@ var vanillin = false // 香兰素
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
+    implementation(project(":ConfluenceDelight"))
 
     implementation(jarJar("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"))
 

@@ -22,6 +22,8 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
+import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.mixed.IWorldOptions;
 
 import javax.annotation.CheckForNull;
 import java.util.*;
@@ -63,9 +65,11 @@ public class HardmodeConvertor {
     }
 
     public void start(MinecraftServer server, boolean debug) {
-        print(server, Component.translatable("event.confluence.hardmode_conversion.generate_data.starting"), debug);
         this.shouldContinue = false;
         this.started = true;
+        ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
+        print(server, Component.translatable("event.confluence.hardmode_conversion.hardmode"), debug);
+        print(server, Component.translatable("event.confluence.hardmode_conversion.starting"), debug);
         CompletableFuture.supplyAsync(() -> {
             ServerLevel overworld = server.overworld();
             BlockPos startPos = server.getWorldData().overworldData().getSpawnPos().atY(overworld.getMinBuildHeight());
@@ -75,7 +79,7 @@ public class HardmodeConvertor {
             this.sanctification = list;
             this.shouldContinue = true;
             print(server, Component.translatable("event.confluence.hardmode_conversion.generate_data.sanctification", sanctification.size(), sanctification.size() / 4), debug);
-            print(server, Component.translatable("event.confluence.hardmode_conversion.generate_data.started"), debug);
+            print(server, Component.translatable("event.confluence.hardmode_conversion.started"), debug);
         });
     }
 
@@ -83,7 +87,7 @@ public class HardmodeConvertor {
         if (!shouldContinue) return;
         if (sanctification.isEmpty()) {
             if (started) {
-                print(serverLevel.getServer(), Component.translatable("event.confluence.hardmode_conversion.generate_data.finished"), !FMLEnvironment.production);
+                print(serverLevel.getServer(), Component.translatable("event.confluence.hardmode_conversion.sanctification.finished"), !FMLEnvironment.production);
             }
             this.started = false;
         } else if (serverLevel.getGameTime() % 5 == 0) {

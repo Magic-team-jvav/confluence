@@ -54,6 +54,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.HammerItems;
 import org.confluence.mod.common.recipe.AltarRecipe;
+import org.confluence.mod.mixed.IMinecraftServer;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -112,7 +113,7 @@ public class AltarBlock extends BaseEntityBlock {
     @Override
     public void playerDestroy(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState, @Nullable BlockEntity pBlockEntity, ItemStack pTool) {
         super.playerDestroy(pLevel, pPlayer, pPos, pState, pBlockEntity, pTool);
-        if (pPlayer instanceof ServerPlayer serverPlayer) {
+        if (pPlayer instanceof ServerPlayer serverPlayer && IMinecraftServer.isHardmode(serverPlayer.server)) {
             ServerLevel serverLevel = serverPlayer.serverLevel();
             ConfluenceData data = ConfluenceData.get(serverLevel);
             if (data.increaseRevealStep(serverLevel)) {

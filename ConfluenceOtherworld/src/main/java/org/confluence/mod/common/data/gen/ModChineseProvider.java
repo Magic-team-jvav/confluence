@@ -650,10 +650,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("event.confluence.crimson_heart_broken.1", "四面回荡着尖叫声……");
         add("event.confluence.eye_of_cthulhu", "你感到有个邪恶的东西在看着你……");
         add("event.confluence.hardmode_conversion.pass", "世界中已有转变任务！");
-        add("event.confluence.hardmode_conversion.generate_data.starting", "转变数据准备中，请稍等");
+        add("event.confluence.hardmode_conversion.hardmode", "世界类型已转变为困难模式");
+        add("event.confluence.hardmode_conversion.starting", "转变数据准备中，请稍等");
         add("event.confluence.hardmode_conversion.generate_data.sanctification", "神圣化数据：%s条，预计耗时%s秒");
-        add("event.confluence.hardmode_conversion.generate_data.started", "转变数据准备完毕，正在开始转变");
-        add("event.confluence.hardmode_conversion.generate_data.finished", "欢迎来到泰拉瑞亚");
+        add("event.confluence.hardmode_conversion.started", "转变数据准备完毕，正在开始转变");
+        add("event.confluence.hardmode_conversion.sanctification.finished", "欢迎来到泰拉瑞亚");
 
         add("entity.minecraft.villager.confluence.sky_miller", "天师");
         add("entity.minecraft.villager.confluence.chef", "厨师");

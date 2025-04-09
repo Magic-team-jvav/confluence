@@ -504,10 +504,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("event.confluence.crimson_heart_broken.1", "Screams echo around you...");
         add("event.confluence.eye_of_cthulhu", "You feel an evil presence watching you...");
         add("event.confluence.hardmode_conversion.pass", "There is a conversion mission in the world!");
-        add("event.confluence.hardmode_conversion.generate_data.starting", "Conversation data preparation, please wait");
+        add("event.confluence.hardmode_conversion.hardmode", "The world type has been changed to Hardmode");
+        add("event.confluence.hardmode_conversion.starting", "Conversation data preparation, please wait");
         add("event.confluence.hardmode_conversion.generate_data.sanctification", "Sanctification data: %s entries, estimated to take %s seconds");
-        add("event.confluence.hardmode_conversion.generate_data.started", "Conversation data is ready, and the conversion is begining");
-        add("event.confluence.hardmode_conversion.generate_data.finished", "Welcome to Terraria");
+        add("event.confluence.hardmode_conversion.started", "Conversation data is ready, and the conversion is begining");
+        add("event.confluence.hardmode_conversion.sanctification.finished", "Welcome to Terraria");
 
         add("entity.minecraft.villager.confluence.sky_miller", "Sky Miller");
         add("entity.minecraft.villager.confluence.chef", "Chef");

@@ -139,10 +139,13 @@ repositories {
 }
 
 var vanillin = false // 香兰素
+var delight = true;
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
-    implementation(project(":ConfluenceDelight"))
+    if (delight) {
+        implementation(project(":ConfluenceDelight"))
+    }
 
     implementation(jarJar("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"))
 

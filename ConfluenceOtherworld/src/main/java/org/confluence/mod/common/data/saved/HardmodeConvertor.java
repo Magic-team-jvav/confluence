@@ -6,6 +6,7 @@ import com.mojang.serialization.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
@@ -115,19 +116,17 @@ public class HardmodeConvertor {
         }
     }
 
-    private static void print(MinecraftServer server, Component component, boolean debug) {
-        if (debug) server.getPlayerList().broadcastSystemMessage(component, false);
-    }
-
     private boolean refill(ServerLevel overworld, ChunkPos chunkPos, BlockPosColumn[][] set) {
         ChunkAccess chunkAccess = overworld.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.FULL, false);
         if (chunkAccess == null) return false;
+        int cx = SectionPos.sectionToBlockCoord(chunkPos.x);
+        int cz = SectionPos.sectionToBlockCoord(chunkPos.z);
         for (int x = 0; x < 16; x++) {
             BlockPosColumn[] columns = set[x];
             for (int z = 0; z < 16; z++) {
                 BlockPosColumn column = columns[z];
                 if (column == null || column == BlockPosColumn.ZERO) continue;
-                for (BlockPos blockPos : column.iterable(chunkPos.getBlockX(x), chunkPos.getBlockZ(z))) {
+                for (BlockPos blockPos : column.iterable(cx + x, cz + z)) {
                     BlockState sourceState = chunkAccess.getBlockState(blockPos);
                     if (sourceState.isAir()) continue;
                     BlockState targetState = theHallowConversionTable.get(sourceState);
@@ -183,6 +182,10 @@ public class HardmodeConvertor {
             list.add(new Tuple<>(entry.getKey(), entry.getValue()));
         }
         return list;
+    }
+
+    private static void print(MinecraftServer server, Component component, boolean debug) {
+        if (debug) server.getPlayerList().broadcastSystemMessage(component, false);
     }
 
     public <T> void decode(Dynamic<T> tag) {

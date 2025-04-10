@@ -12,6 +12,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.confluence.lib.common.data.gen.CollectRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.recipe.ModRecipeProvider;
+import org.confluence.mod.common.data.gen.recipe.CraftingRecipeProvider;
 import org.confluence.mod.common.data.gen.recipe.NPCShopProvider;
 import org.confluence.mod.common.init.ModDamageTypes;
 
@@ -50,5 +51,7 @@ public class DataGenerator {
         generator.addProvider(server, new ModPoiTypeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModBiomeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new CollectRecipeProvider(output, lookup, NPCShopProvider::new, ModRecipeProvider::new));
+
+        generator.addProvider(server, new CraftingRecipeProvider(output,lookup));
     }
 }

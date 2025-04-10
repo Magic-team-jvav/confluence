@@ -55,6 +55,17 @@ public final class ModTags {
         public static final TagKey<Block> HALLOW_CONVERSION_MOIST_SAND_BLOCK = register("hallow_conversion_moist_sand_block");
         public static final TagKey<Block> CURSED_FLAME_BASE_BLOCK = register("cursed_flame_base_block");
 
+        public static final TagKey<Block> TIN_BLOCK = c("storage_blocks/tin");
+        public static final TagKey<Block> LEAD_BLOCK = c("storage_blocks/lead");
+        public static final TagKey<Block> SLIVER_BLOCK = c("storage_blocks/silver");
+        public static final TagKey<Block> TUNGSTEN_BLOCK = c("storage_blocks/tungsten");
+        public static final TagKey<Block> PLATINUM_BLOCK = c("storage_blocks/platinum");
+        public static final TagKey<Block> RAW_TIN_BLOCK = c("storage_blocks/raw_tin");
+        public static final TagKey<Block> RAW_LEAD_BLOCK = c("storage_blocks/raw_lead");
+        public static final TagKey<Block> RAW_SLIVER_BLOCK = c("storage_blocks/raw_silver");
+        public static final TagKey<Block> RAW_TUNGSTEN_BLOCK = c("storage_blocks/raw_tungsten");
+        public static final TagKey<Block> RAW_PLATINUM_BLOCK = c("storage_blocks/raw_platinum");
+
         private static TagKey<Block> c(String name) {
             return BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
         }
@@ -66,16 +77,26 @@ public final class ModTags {
 
     public static class Items {
         public static final TagKey<Item> INGOTS_TIN = c("ingots/tin");
+        public static final TagKey<Item> TIN_BLOCK = c("storage_blocks/tin");
         public static final TagKey<Item> INGOTS_LEAD = c("ingots/lead");
+        public static final TagKey<Item> LEAD_BLOCK = c("storage_blocks/lead");
         public static final TagKey<Item> INGOTS_SILVER = c("ingots/silver");
+        public static final TagKey<Item> SILVER_BLOCK = c("storage_blocks/silver");
         public static final TagKey<Item> INGOTS_TUNGSTEN = c("ingots/tungsten");
+        public static final TagKey<Item> TUNGSTEN_BLOCK = c("storage_blocks/tungsten");
         public static final TagKey<Item> INGOTS_PLATINUM = c("ingots/platinum");
+        public static final TagKey<Item> PLATINUM_BLOCK = c("storage_blocks/platinum");
 
         public static final TagKey<Item> RAW_MATERIALS_TIN = c("raw_materials/tin");
+        public static final TagKey<Item> RAW_MATERIALS_TIN_BLOCK = c("storage_blocks/raw_tin");
         public static final TagKey<Item> RAW_MATERIALS_LEAD = c("raw_materials/lead");
+        public static final TagKey<Item> RAW_MATERIALS_LEAD_BLOCK = c("storage_blocks/raw_lead");
         public static final TagKey<Item> RAW_MATERIALS_SILVER = c("raw_materials/silver");
+        public static final TagKey<Item> RAW_MATERIALS_SILVER_BLOCK = c("storage_blocks/raw_silver");
         public static final TagKey<Item> RAW_MATERIALS_TUNGSTEN = c("raw_materials/tungsten");
+        public static final TagKey<Item> RAW_MATERIALS_TUNGSTEN_BLOCK = c("storage_blocks/raw_tungsten");
         public static final TagKey<Item> RAW_MATERIALS_PLATINUM = c("raw_materials/platinum");
+        public static final TagKey<Item> RAW_MATERIALS_PLATINUM_BLOCK = c("storage_blocks/raw_platinum");
 
         public static final TagKey<Item> GEMS_RUBY = c("gems/ruby");
         public static final TagKey<Item> GEMS_AMBER = c("gems/amber");

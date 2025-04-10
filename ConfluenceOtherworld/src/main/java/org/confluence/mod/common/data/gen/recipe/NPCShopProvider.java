@@ -1,18 +1,14 @@
 package org.confluence.mod.common.data.gen.recipe;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.registries.DeferredItem;
-import org.confluence.lib.common.recipe.AbstractRecipeProvider;
+import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.common.data.gen.npc_trade.MoneyTradeItem;
-import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
@@ -24,7 +20,6 @@ import org.confluence.terraentity.init.item.TEWhipItems;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -73,6 +68,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .build());
     }
 
+    @Override
     protected PackOutput.PathProvider pathProvider() {
         return npcShopPathProvider;
     }
@@ -92,14 +88,11 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         public Builder add(ItemLike it, int amount, int cost) {
             return add(new ItemStack(it, amount), cost);
         }
-        
-        public Builder add(ItemLike it,int cost){
-            add(new ItemStack(it), cost);
-            return this;
+
+        public Builder add(ItemLike it, int cost) {
+            return add(new ItemStack(it), cost);
         }
-        public Builder add(DeferredItem<Item> it, int amount, int cost){
-            return add(it.toStack(amount),cost);
-        }
+
         public NPCTrades build() {
             return new NPCTrades(trades);
         }

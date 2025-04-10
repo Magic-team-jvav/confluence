@@ -132,6 +132,7 @@ public class HardmodeConvertor {
                     BlockState targetState = theHallowConversionTable.get(sourceState);
                     if (targetState != null) {
                         chunkAccess.setBlockState(blockPos, targetState, false);
+                        //overworld.sendBlockUpdated(blockPos, sourceState, targetState, Block.UPDATE_CLIENTS);
                     }
                 }
             }

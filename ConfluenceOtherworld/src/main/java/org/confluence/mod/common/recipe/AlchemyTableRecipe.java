@@ -22,7 +22,7 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
     private final Ingredient base;
     private final NonNullList<Ingredient> ingredients;
 
-    protected AlchemyTableRecipe(ItemStack result, Ingredient base, NonNullList<Ingredient> ingredients) {
+    public AlchemyTableRecipe(ItemStack result, Ingredient base, NonNullList<Ingredient> ingredients) {
         if (ingredients.size() > 6) {
             throw new RuntimeException("Too many ingredients for '" + getGroup() + "' recipe. The maximum is: 6");
         }

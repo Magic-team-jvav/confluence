@@ -21,8 +21,8 @@ public class HellforgeRecipe extends AbstractAmountRecipe<RecipeInput> {
     protected final int cookingTime;
     protected final boolean requiresFuel;
 
-    public HellforgeRecipe(ItemStack pResult, NonNullList<Ingredient> pIngredients, float experience, int cookingTime, boolean requiresFuel) {
-        super(pResult, pIngredients);
+    public HellforgeRecipe(ItemStack result, NonNullList<Ingredient> ingredients, float experience, int cookingTime, boolean requiresFuel) {
+        super(result, ingredients);
         this.experience = experience;
         this.cookingTime = cookingTime;
         this.requiresFuel = requiresFuel;

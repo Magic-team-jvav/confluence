@@ -151,6 +151,7 @@ public class CookingPotRecipe extends AbstractAmountRecipe<CookingPotRecipe.Inpu
     }
 
     public record HeatSourcePredicate(Optional<TagKey<Block>> tag, Optional<StatePropertiesPredicate> properties, Optional<NbtPredicate> nbt) {
+        public static final HeatSourcePredicate EMPTY = new HeatSourcePredicate(Optional.empty(), Optional.empty(), Optional.empty());
         public static final Codec<HeatSourcePredicate> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 TagKey.codec(Registries.BLOCK).optionalFieldOf("tag").forGetter(HeatSourcePredicate::tag),
                 StatePropertiesPredicate.CODEC.optionalFieldOf("state").forGetter(HeatSourcePredicate::properties),

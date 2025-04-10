@@ -20,7 +20,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 public class HeavyWorkBenchRecipe extends AbstractAmountRecipe<EnvironmentRecipeInput> {
     public final ShapedRecipePattern pattern;
 
-    protected HeavyWorkBenchRecipe(ItemStack pResult, ShapedRecipePattern pattern) {
+    public HeavyWorkBenchRecipe(ItemStack pResult, ShapedRecipePattern pattern) {
         super(pResult, pattern.ingredients());
         this.pattern = pattern;
     }

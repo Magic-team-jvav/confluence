@@ -9,8 +9,9 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import org.confluence.lib.common.data.gen.CollectRecipeProvider;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.gen.recipe.ConfluenceWorkshopProvider;
+import org.confluence.mod.common.data.gen.recipe.ModRecipeProvider;
 import org.confluence.mod.common.data.gen.recipe.NPCShopProvider;
 import org.confluence.mod.common.init.ModDamageTypes;
 
@@ -19,6 +20,8 @@ import java.util.concurrent.CompletableFuture;
 
 @EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class DataGenerator {
+    private static final RegistrySetBuilder DATA_BUILDER = new RegistrySetBuilder().add(Registries.DAMAGE_TYPE, ModDamageTypes::createDamageTypes);
+
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
         net.minecraft.data.DataGenerator generator = event.getGenerator();
@@ -35,9 +38,9 @@ public class DataGenerator {
 
         boolean server = event.includeServer();
 
-        DatapackBuiltinEntriesProvider ModProvider = new DatapackBuiltinEntriesProvider(output, lookup, DATA_BUILDER, Set.of(Confluence.MODID));
-        lookup = ModProvider.getRegistryProvider();
-        generator.addProvider(server, ModProvider);
+        DatapackBuiltinEntriesProvider provider = new DatapackBuiltinEntriesProvider(output, lookup, DATA_BUILDER, Set.of(Confluence.MODID));
+        lookup = provider.getRegistryProvider();
+        generator.addProvider(server, provider);
 
         ModBlockTagsProvider blockTagsProvider = new ModBlockTagsProvider(output, lookup, helper);
         generator.addProvider(server, blockTagsProvider);
@@ -46,12 +49,6 @@ public class DataGenerator {
         generator.addProvider(server, new ModDamageTypeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModPoiTypeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModBiomeTagsProvider(output, lookup, helper));
-
-        generator.addProvider(server, new ConfluenceWorkshopProvider(output));
-//        generator.addProvider(server, new HeavyWorkBenchRecipeProvider(output));
-        generator.addProvider(server, new NPCShopProvider(output));
+        generator.addProvider(server, new CollectRecipeProvider(output, lookup, NPCShopProvider::new, ModRecipeProvider::new));
     }
-
-    static final RegistrySetBuilder DATA_BUILDER = new RegistrySetBuilder()
-            .add(Registries.DAMAGE_TYPE, ModDamageTypes::createDamageTypes);
 }

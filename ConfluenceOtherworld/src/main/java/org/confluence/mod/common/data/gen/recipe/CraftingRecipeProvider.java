@@ -9,6 +9,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.jetbrains.annotations.NotNull;
@@ -19,9 +20,10 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
     public CraftingRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries);
     }
-    // 注册矿物块的合成与分解配方
+
     @Override
     protected void buildRecipes(@NotNull RecipeOutput output) {
+        // 注册矿物块的合成与分解配方
         compressAndDecompressNine(MaterialItems.TIN_INGOT.get(), ModTags.Items.INGOTS_TIN,
                 OreBlocks.TIN_BLOCK.asItem(), ModTags.Items.TIN_BLOCK, output);
         compressAndDecompressNine(MaterialItems.LEAD_INGOT.get(), ModTags.Items.INGOTS_LEAD,
@@ -40,7 +42,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 OreBlocks.TR_CRIMSON_BLOCK.asItem(), ModTags.Items.CRIMSON_BLOCK, output);
         compressAndDecompressNine(MaterialItems.HELLSTONE_INGOT.get(), ModTags.Items.INGOTS_HELLSTONE,
                 OreBlocks.HELLSTONE_BLOCK.asItem(), ModTags.Items.HELLSTONE_BLOCK, output);
-
+        // 粗矿
         compressAndDecompressNine(MaterialItems.RAW_TIN.get(), ModTags.Items.RAW_MATERIALS_TIN,
                 OreBlocks.RAW_TIN_BLOCK.asItem(), ModTags.Items.RAW_MATERIALS_TIN_BLOCK, output);
         compressAndDecompressNine(MaterialItems.RAW_LEAD.get(), ModTags.Items.RAW_MATERIALS_LEAD,
@@ -59,6 +61,13 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 OreBlocks.RAW_TR_CRIMSON_BLOCK.asItem(), ModTags.Items.RAW_MATERIALS_CRIMSON_BLOCK, output);
         compressAndDecompressNine(MaterialItems.RAW_HELLSTONE.get(), ModTags.Items.RAW_MATERIALS_HELLSTONE,
                 OreBlocks.RAW_HELLSTONE_BLOCK.asItem(), ModTags.Items.RAW_MATERIALS_HELLSTONE_BLOCK, output);
+
+        // 铅砧
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, FunctionalBlocks.LEAD_ANVIL)
+                .define('I', ModTags.Items.LEAD_BLOCK).define('i', ModTags.Items.INGOTS_LEAD)
+                .pattern("III").pattern(" i ").pattern("iii")
+                .unlockedBy("hasitem", inventoryTrigger(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(MaterialItems.LEAD_INGOT)))
+                .save(output);
     }
     // 九原料合成一块的合成及分解配方
     protected void compressAndDecompressNine(ItemLike input, TagKey<Item> inputTag, ItemLike result, TagKey<Item> resultTag, @NotNull RecipeOutput output){

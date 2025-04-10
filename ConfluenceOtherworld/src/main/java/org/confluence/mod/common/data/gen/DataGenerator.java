@@ -50,8 +50,8 @@ public class DataGenerator {
         generator.addProvider(server, new ModDamageTypeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModPoiTypeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModBiomeTagsProvider(output, lookup, helper));
-        generator.addProvider(server, new CollectRecipeProvider(output, lookup, NPCShopProvider::new, ModRecipeProvider::new));
+        generator.addProvider(server, new CollectRecipeProvider(output, lookup, NPCShopProvider::new, ModRecipeProvider::new, CraftingRecipeProvider::new));
 
-        generator.addProvider(server, new CraftingRecipeProvider(output,lookup));
+        //generator.addProvider(server, new CraftingRecipeProvider(output,lookup));
     }
 }

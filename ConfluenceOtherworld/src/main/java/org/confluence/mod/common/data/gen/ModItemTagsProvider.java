@@ -511,6 +511,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.TUNGSTEN_BLOCK).add(OreBlocks.TUNGSTEN_BLOCK.asItem());
         tag(ModTags.Items.INGOTS_PLATINUM).add(MaterialItems.PLATINUM_INGOT.get());
         tag(ModTags.Items.PLATINUM_BLOCK).add(OreBlocks.PLATINUM_BLOCK.asItem());
+        tag(ModTags.Items.INGOTS_METEORITE).add(MaterialItems.METEORITE_INGOT.get());
+        tag(ModTags.Items.METEORITE_BLOCK).add(OreBlocks.METEORITE_BLOCK.asItem());
+        tag(ModTags.Items.INGOTS_DEMONITE).add(MaterialItems.DEMONITE_INGOT.get());
+        tag(ModTags.Items.DEMONITE_BLOCK).add(OreBlocks.DEMONITE_BLOCK.asItem());
+        tag(ModTags.Items.INGOTS_CRIMSON).add(MaterialItems.TR_CRIMSON_INGOT.get());
+        tag(ModTags.Items.CRIMSON_BLOCK).add(OreBlocks.TR_CRIMSON_BLOCK.asItem());
+        tag(ModTags.Items.INGOTS_HELLSTONE).add(MaterialItems.HELLSTONE_INGOT.get());
+        tag(ModTags.Items.HELLSTONE_BLOCK).add(OreBlocks.HELLSTONE_BLOCK.asItem());
 
         tag(ModTags.Items.RAW_MATERIALS_TIN).add(MaterialItems.RAW_TIN.get());
         tag(ModTags.Items.RAW_MATERIALS_TIN_BLOCK).add(OreBlocks.RAW_TIN_BLOCK.asItem());
@@ -522,6 +530,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.RAW_MATERIALS_TUNGSTEN_BLOCK).add(OreBlocks.RAW_TUNGSTEN_BLOCK.asItem());
         tag(ModTags.Items.RAW_MATERIALS_PLATINUM).add(MaterialItems.RAW_PLATINUM.get());
         tag(ModTags.Items.RAW_MATERIALS_PLATINUM_BLOCK).add(OreBlocks.RAW_PLATINUM_BLOCK.asItem());
+        tag(ModTags.Items.RAW_MATERIALS_METEORITE).add(MaterialItems.RAW_METEORITE.get());
+        tag(ModTags.Items.RAW_MATERIALS_METEORITE_BLOCK).add(OreBlocks.RAW_METEORITE_BLOCK.asItem());
+        tag(ModTags.Items.RAW_MATERIALS_DEMONITE).add(MaterialItems.RAW_DEMONITE.get());
+        tag(ModTags.Items.RAW_MATERIALS_DEMONITE_BLOCK).add(OreBlocks.RAW_DEMONITE_BLOCK.asItem());
+        tag(ModTags.Items.RAW_MATERIALS_CRIMSON).add(MaterialItems.RAW_TR_CRIMSON.get());
+        tag(ModTags.Items.RAW_MATERIALS_CRIMSON_BLOCK).add(OreBlocks.RAW_TR_CRIMSON_BLOCK.asItem());
+        tag(ModTags.Items.RAW_MATERIALS_HELLSTONE).add(MaterialItems.RAW_HELLSTONE.get());
+        tag(ModTags.Items.RAW_MATERIALS_HELLSTONE_BLOCK).add(OreBlocks.RAW_HELLSTONE_BLOCK.asItem());
 
         tag(Tags.Items.ORES_COAL).add(
                 OreBlocks.SANCTIFICATION_COAL_ORE.asItem(),

@@ -60,11 +60,19 @@ public final class ModTags {
         public static final TagKey<Block> SLIVER_BLOCK = c("storage_blocks/silver");
         public static final TagKey<Block> TUNGSTEN_BLOCK = c("storage_blocks/tungsten");
         public static final TagKey<Block> PLATINUM_BLOCK = c("storage_blocks/platinum");
+        public static final TagKey<Block> METEORITE_BLOCK = c("storage_blocks/meteorite");
+        public static final TagKey<Block> DEMONITE_BLOCK = c("storage_blocks/demonite");
+        public static final TagKey<Block> CRIMSON_BLOCK = c("storage_blocks/crimson");
+        public static final TagKey<Block> HELLSTONE_BLOCK = c("storage_blocks/hellstone");
         public static final TagKey<Block> RAW_TIN_BLOCK = c("storage_blocks/raw_tin");
         public static final TagKey<Block> RAW_LEAD_BLOCK = c("storage_blocks/raw_lead");
         public static final TagKey<Block> RAW_SLIVER_BLOCK = c("storage_blocks/raw_silver");
         public static final TagKey<Block> RAW_TUNGSTEN_BLOCK = c("storage_blocks/raw_tungsten");
         public static final TagKey<Block> RAW_PLATINUM_BLOCK = c("storage_blocks/raw_platinum");
+        public static final TagKey<Block> RAW_METEORITE_BLOCK = c("storage_blocks/raw_meteorite");
+        public static final TagKey<Block> RAW_DEMONITE_BLOCK = c("storage_blocks/raw_demonite");
+        public static final TagKey<Block> RAW_CRIMSON_BLOCK = c("storage_blocks/raw_crimson");
+        public static final TagKey<Block> RAW_HELLSTONE_BLOCK = c("storage_blocks/raw_hellstone");
 
         private static TagKey<Block> c(String name) {
             return BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
@@ -86,6 +94,14 @@ public final class ModTags {
         public static final TagKey<Item> TUNGSTEN_BLOCK = c("storage_blocks/tungsten");
         public static final TagKey<Item> INGOTS_PLATINUM = c("ingots/platinum");
         public static final TagKey<Item> PLATINUM_BLOCK = c("storage_blocks/platinum");
+        public static final TagKey<Item> INGOTS_METEORITE = c("ingots/meteorite");
+        public static final TagKey<Item> METEORITE_BLOCK = c("storage_blocks/meteorite");
+        public static final TagKey<Item> INGOTS_DEMONITE = c("ingots/demonite");
+        public static final TagKey<Item> DEMONITE_BLOCK = c("storage_blocks/demonite");
+        public static final TagKey<Item> INGOTS_CRIMSON = c("ingots/crimson");
+        public static final TagKey<Item> CRIMSON_BLOCK = c("storage_blocks/crimson");
+        public static final TagKey<Item> INGOTS_HELLSTONE = c("ingots/hellstone");
+        public static final TagKey<Item> HELLSTONE_BLOCK = c("storage_blocks/hellstone");
 
         public static final TagKey<Item> RAW_MATERIALS_TIN = c("raw_materials/tin");
         public static final TagKey<Item> RAW_MATERIALS_TIN_BLOCK = c("storage_blocks/raw_tin");
@@ -97,6 +113,14 @@ public final class ModTags {
         public static final TagKey<Item> RAW_MATERIALS_TUNGSTEN_BLOCK = c("storage_blocks/raw_tungsten");
         public static final TagKey<Item> RAW_MATERIALS_PLATINUM = c("raw_materials/platinum");
         public static final TagKey<Item> RAW_MATERIALS_PLATINUM_BLOCK = c("storage_blocks/raw_platinum");
+        public static final TagKey<Item> RAW_MATERIALS_METEORITE = c("raw_materials/meteorite");
+        public static final TagKey<Item> RAW_MATERIALS_METEORITE_BLOCK = c("storage_blocks/raw_meteorite");
+        public static final TagKey<Item> RAW_MATERIALS_DEMONITE = c("raw_materials/demonite");
+        public static final TagKey<Item> RAW_MATERIALS_DEMONITE_BLOCK = c("storage_blocks/raw_demonite");
+        public static final TagKey<Item> RAW_MATERIALS_CRIMSON = c("raw_materials/crimson");
+        public static final TagKey<Item> RAW_MATERIALS_CRIMSON_BLOCK = c("storage_blocks/raw_crimson");
+        public static final TagKey<Item> RAW_MATERIALS_HELLSTONE = c("raw_materials/hellstone");
+        public static final TagKey<Item> RAW_MATERIALS_HELLSTONE_BLOCK = c("storage_blocks/raw_hellstone");
 
         public static final TagKey<Item> GEMS_RUBY = c("gems/ruby");
         public static final TagKey<Item> GEMS_AMBER = c("gems/amber");

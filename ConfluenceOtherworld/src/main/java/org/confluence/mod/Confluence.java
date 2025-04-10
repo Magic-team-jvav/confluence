@@ -56,7 +56,6 @@ public class Confluence {
         ModChunkGenerators.GENERATORS.register(eventBus);
         ModCarvers.CARVERS.register(eventBus);
         ModStructures.TYPES.register(eventBus);
-        ModEffectStrategies.EFFECT_STRATEGY.register(eventBus);
         ModEquipmentSets.EQUIPMENT_SET.register(eventBus);
         ModHookTypes.TYPES.register(eventBus);
     }

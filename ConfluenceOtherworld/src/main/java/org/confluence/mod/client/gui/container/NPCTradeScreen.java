@@ -19,7 +19,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.event.ModClientSetups;
-import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.terraentity.entity.npc.NPCTrades;
 import org.confluence.mod.common.menu.NPCTradesMenu;
@@ -178,13 +177,13 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
         // 左侧物品
         if(this.hoveredItem >= 0 && this.hoveredItem < menu.NPCTrades.trades().size()){
             int x = offsetX + hoveredItem % col * intervalX;
-            int y = offsetY + hoveredItem / col * 20;
+            int y = offsetY + (hoveredItem / col - scrollOff) * 20;
             renderSlotHighlight(guiGraphics,x ,y, 20);
         }
         // 左侧物品
         if(this.shopItem >= 0 && this.shopItem < menu.NPCTrades.trades().size()){
             int x = offsetX + shopItem % col * intervalX;
-            int y = offsetY + shopItem / col * 20;
+            int y = offsetY + (shopItem / col- scrollOff) * 20;
             renderSlotHighlight(guiGraphics,x ,y , 20);
         }
         var trades = menu.NPCTrades.trades();

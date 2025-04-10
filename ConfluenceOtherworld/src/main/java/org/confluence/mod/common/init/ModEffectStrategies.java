@@ -1,21 +1,15 @@
 package org.confluence.mod.common.init;
 
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.confluence.terraentity.registries.hit_effect.EffectStrategy;
-import org.confluence.terraentity.init.TEEffects;
 import org.confluence.terraentity.registries.TERegistries;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
-import org.confluence.terraentity.registries.hit_effect.variant.PrefabEffect;
-import org.confluence.terraentity.registries.hit_effect.variant.RandomWeightEffect;
 import org.confluence.terraentity.registries.hit_effect.variant.TimePossibilityAmplifierEffect;
 
-import java.util.List;
-import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 

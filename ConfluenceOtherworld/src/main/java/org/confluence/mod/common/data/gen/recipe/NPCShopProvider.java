@@ -8,6 +8,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.npc_trade.MoneyTradeItem;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -36,7 +37,8 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
-        recipe(NPCTrades.CODEC, pathProvider().json(TENpcEntities.GUIDE.getId())).addRecipe(new Builder()
+        // 命名空间替换成confluence，本体不能覆盖子模块的数据包
+        recipe(NPCTrades.CODEC, pathProvider().json(Confluence.asResource(TENpcEntities.GUIDE.getId().getPath()))).addRecipe(new Builder()
                 .add(TGItems.MUSKET_BULLET.get(), 100, 80)
                 .add(ConsumableItems.GRENADE.get(), 75)
                 .add(ConsumableItems.BOMB.get(), 300)

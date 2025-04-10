@@ -13,13 +13,15 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.confluence.lib.common.recipe.AbstractRecipeProvider;
-import org.confluence.mod.common.entity.npc.NPCTrades;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.gen.npc_trade.MoneyTradeItem;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
+import org.confluence.terraentity.entity.npc.NPCTrades;
+import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.init.item.TEWhipItems;
 
 import java.nio.file.Path;
@@ -28,7 +30,7 @@ import java.util.List;
 
 /**
  * 生成单个NPC单个配方
- * @see NPCTrades.Trade
+ * @see org.confluence.terraentity.registries.npc_trade.ITrade
  */
 public class NPCShopProvider extends AbstractRecipeProvider {
 
@@ -39,7 +41,8 @@ public class NPCShopProvider extends AbstractRecipeProvider {
     @Override
     protected void run() {
 
-        gen(ModEntities.GUIDE)
+//        gen(Confluence.asResource("guild"))
+        gen(TENpcEntities.GUIDE)
                 .add(new ItemStack(TGItems.MUSKET_BULLET.get(),100),80)
                 .add(new ItemStack(ConsumableItems.GRENADE.get(), 1), 75)
                 .add(new ItemStack(ConsumableItems.BOMB.get(), 1), 300)
@@ -72,9 +75,11 @@ public class NPCShopProvider extends AbstractRecipeProvider {
     }
 
     private <T extends Entity>Builder gen(DeferredHolder<EntityType<?>,EntityType<T>> entityType){
-        return new Builder(entityType.getId());
+        return gen(entityType.getId());
     }
-
+    private Builder gen(ResourceLocation location){
+        return new Builder(location);
+    }
 
     private void genRecipe(NPCTrades trades, ResourceLocation location){
         JsonElement res = parseCodec(NPCTrades.CODEC.encodeStart(JavaOps.INSTANCE,trades));
@@ -84,13 +89,13 @@ public class NPCShopProvider extends AbstractRecipeProvider {
     private class Builder {
         ResourceLocation location;
         private int money;
-        private List<NPCTrades.Trade> trades;
+        private List<MoneyTradeItem> trades;
         public Builder(ResourceLocation location){
             this.location = location;
             trades = new ArrayList<>();
         }
         public Builder add(ItemStack it,int cost){
-            trades.add(new NPCTrades.Trade(it,cost));
+            trades.add(new MoneyTradeItem(it,cost));
             return this;
         }
         public Builder add(DeferredItem<Item> it, int amount, int cost){

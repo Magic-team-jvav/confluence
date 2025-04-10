@@ -19,14 +19,15 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.event.ModClientSetups;
-import org.confluence.mod.common.entity.npc.NPCTrades;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.terraentity.entity.npc.NPCTrades;
 import org.confluence.mod.common.menu.NPCTradesMenu;
-import org.confluence.mod.mixed.IPlayer;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.entity.ai.keyframe.animation.KeyframeAnimation;
+import org.confluence.terraentity.init.entity.TENpcEntities;
+import org.confluence.terraentity.mixed.IPlayer;
 
 import java.awt.*;
 import java.util.List;
@@ -69,7 +70,7 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
     protected void init() {
         super.init();
         if (menu.NPCTrades == null) {
-            menu.NPCTrades = ((IPlayer) Minecraft.getInstance().player).rhyme$getDaveTrades();
+            menu.NPCTrades = ((IPlayer) Minecraft.getInstance().player).terra_entity$getDaveTrades();
             if (menu.NPCTrades == null){
                 return;
             }
@@ -94,7 +95,7 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
                 if (player != null) {
                     ItemStack stack = player.containerMenu.getCarried();
                     player.containerMenu.setCarried(ItemStack.EMPTY);
-                    ((IPlayer) player).rhyme$setDaveTrades(NPCTrades.getTrade(ModEntities.GUIDE.getId()));
+                    ((IPlayer) player).terra_entity$setDaveTrades(NPCTrades.getTrade(TENpcEntities.GUIDE.getId()));
                     OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.NPC_REFORGE_MENU, stack);
                 }
             });
@@ -152,7 +153,7 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradesMenu> {
         if(interpolator == null) return;
 
         if (menu.NPCTrades == null) {
-            menu.NPCTrades = ((IPlayer) Minecraft.getInstance().player).rhyme$getDaveTrades();
+            menu.NPCTrades = ((IPlayer) Minecraft.getInstance().player).terra_entity$getDaveTrades();
             if (menu.NPCTrades == null){
                 return;
             }

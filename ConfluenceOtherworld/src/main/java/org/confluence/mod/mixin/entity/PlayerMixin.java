@@ -6,43 +6,16 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.mixed.SelfGetter;
-import org.confluence.mod.common.entity.npc.NPCTrades;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.mixed.IDamageSource;
-import org.confluence.mod.mixed.IPlayer;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Player.class)
-public abstract class PlayerMixin implements IPlayer , SelfGetter<Player> {
-    @Unique
-    private NPCTrades rhyme$NPCTrades;
-    @Unique
-    private Entity rhyme$interactingEntity;
-
-    @Override
-    public NPCTrades rhyme$getDaveTrades() {
-        return rhyme$NPCTrades;
-    }
-
-    @Override
-    public void rhyme$setDaveTrades(NPCTrades NPCTrades) {
-        rhyme$NPCTrades = NPCTrades;
-    }
-
-    @Override
-    public Entity rhyme$getInteractingEntity() {
-        return rhyme$interactingEntity;
-    } // getRhyme$dave
-
-    @Override
-    public void rhyme$setInteractingEntity(Entity entity) {
-        this.rhyme$interactingEntity = entity;
-    } // setRhyme$dave
+public abstract class PlayerMixin implements SelfGetter<Player> {
 
     @Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
     private void attack(Entity target, CallbackInfo ci, @Local DamageSource damagesource, @Local(ordinal = 2) boolean flag1) {

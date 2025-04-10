@@ -71,8 +71,8 @@ import org.confluence.phase_journey.api.PhaseJourneyEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
-import org.confluence.terraentity.entity.monster.AbstractMonster;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
+import org.confluence.terraentity.network.s2c.SyncNPCTradesPacketS2C;
 
 import java.util.Map;
 import java.util.Optional;
@@ -171,7 +171,6 @@ public final class ModEvents {
         registrar.playToClient(GamePhasePacketS2C.TYPE, GamePhasePacketS2C.STREAM_CODEC, GamePhasePacketS2C::handle);
         registrar.playToClient(ManaPacketS2C.TYPE, ManaPacketS2C.STREAM_CODEC, ManaPacketS2C::handle);
         registrar.playToClient(MeteoriteLocationPacketS2C.TYPE, MeteoriteLocationPacketS2C.STREAM_CODEC, MeteoriteLocationPacketS2C::handle);
-        registrar.playToClient(NPCTradesPacketS2C.TYPE, NPCTradesPacketS2C.STREAM_CODEC, NPCTradesPacketS2C::handle);
         registrar.playToClient(OpenSelectionsScreenPacketS2C.TYPE, OpenSelectionsScreenPacketS2C.STREAM_CODEC, OpenSelectionsScreenPacketS2C::handle);
         registrar.playToClient(PlayerDeathInfoPacketS2C.TYPE, PlayerDeathInfoPacketS2C.STREAM_CODEC, PlayerDeathInfoPacketS2C::handle);
         registrar.playToClient(SecretFlagSyncPacketS2C.TYPE, SecretFlagSyncPacketS2C.STREAM_CODEC, SecretFlagSyncPacketS2C::handle);
@@ -194,7 +193,6 @@ public final class ModEvents {
 
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
-        event.put(ModEntities.GUIDE.get(), AbstractMonster.createAttributes().build());
 
         event.put(ModEntities.TARGET_DUMMY.get(), TargetDummyEntity.createAttributes().build());
     }

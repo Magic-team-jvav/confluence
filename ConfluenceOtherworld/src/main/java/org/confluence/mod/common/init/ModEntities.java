@@ -13,7 +13,6 @@ import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.entity.fishing.HotlineFishingHook;
 import org.confluence.mod.common.entity.hook.*;
 import org.confluence.mod.common.entity.minecart.*;
-import org.confluence.mod.common.entity.npc.AbstractTerraNPC;
 import org.confluence.mod.common.entity.projectile.EffectThrownPotion;
 import org.confluence.mod.common.entity.projectile.IceTofuBrickProjectile;
 import org.confluence.mod.common.entity.projectile.RopeCoilsProjectile;
@@ -130,9 +129,6 @@ public final class ModEntities {
     public static final Supplier<EntityType<DeadBodyPartEntity>> BODY_PART = ENTITIES.register("body_part", () -> EntityType.Builder.<DeadBodyPartEntity>of(DeadBodyPartEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).fireImmune().noSave().noSummon().build("confluence:body_part"));
 
     public static final Supplier<EntityType<TargetDummyEntity>> TARGET_DUMMY = ENTITIES.register("target_dummy", () -> EntityType.Builder.<TargetDummyEntity>of(TargetDummyEntity::new, MobCategory.MISC).sized(1.0F, 2.0F).clientTrackingRange(6).build("confluence:target_dummy"));
-
-    // npc
-    public static final DeferredHolder<EntityType<?>, EntityType<AbstractTerraNPC>> GUIDE = ENTITIES.register("guide", () -> EntityType.Builder.of(AbstractTerraNPC::new, MobCategory.CREATURE).sized(0.95F, 1.95F).clientTrackingRange(6).build("confluence:guide"));
 
 
     private static <E extends BaseMinecartEntity> Supplier<EntityType<E>> registerMinecart(String id, EntityType.EntityFactory<E> factory) {

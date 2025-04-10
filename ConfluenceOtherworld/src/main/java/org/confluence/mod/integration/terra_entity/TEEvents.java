@@ -4,6 +4,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.gen.npc_trade.ModTradeProviders;
 import org.confluence.terraentity.api.event.WhipRegisterModifyEvent;
 
 @EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD)
@@ -17,6 +18,7 @@ public class TEEvents {
 
     public static void init(IEventBus eventBus){
         eventBus.addListener(TEEvents::onRegisterWhips);
+        ModTradeProviders.TYPES.register(eventBus);
 
     }
 }

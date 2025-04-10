@@ -27,6 +27,7 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.terraentity.client.buffer.AbstractBufferManager;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.lwjgl.opengl.GL11;
@@ -37,7 +38,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.confluence.mod.client.ModKeyBindings.SHOW_DETAIL_SPECULAR;
-import static org.confluence.mod.client.effect.RenderUtil.renderDebugBlock;
+import static org.confluence.terraentity.client.util.ShaderUtil.renderDebugBlock;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
 import static org.confluence.mod.common.init.block.NatureBlocks.LIFE_CRYSTAL_BLOCK;
 import static org.confluence.mod.common.init.block.OreBlocks.*;

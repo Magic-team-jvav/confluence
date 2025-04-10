@@ -9,6 +9,7 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.integration.ponder.PonderHelper;
+import org.confluence.terraentity.init.TEItems;
 
 import static org.confluence.mod.common.init.item.PickaxeItems.MOLTEN_PICKAXE;
 
@@ -786,7 +787,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.FISH_HOOK.get(), "钓鱼钩");
         add(ModEntities.GENERIC_MINECART.get(), "矿车");
         add(ModEntities.GRENADE.get(), "手雷");
-        add(ModEntities.GUIDE.get(), "向导");
         add(ModEntities.HONEY_BOMB.get(), "蜂蜜炸弹");
         add(ModEntities.HOOK_OF_DISSONANCE.get(), "失谐钩");
         add(ModEntities.HOTLINE_FISHING_HOOK.get(), "熔线钓鱼钩");
@@ -1793,7 +1793,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.ENCUMBERING_STONE.get(), "负重石");
         add(ToolItems.MAGIC_CONCH.get(), "魔法海螺");
         add(ToolItems.DEMON_CONCH.get(), "恶魔海螺");
-        add(ToolItems.HOUSE_DETECTOR.get(), "房屋探测器");
         add(ToolItems.HONEY_BUCKET.get(), "蜂蜜桶");
         add(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get(), "无底微光桶");
         add(ToolItems.BOTTOMLESS_WATER_BUCKET.get(), "无底水桶");

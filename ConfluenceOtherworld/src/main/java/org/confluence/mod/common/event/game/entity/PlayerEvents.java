@@ -35,7 +35,6 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
-import org.confluence.mod.common.entity.npc.AbstractTerraNPC;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.MaterialItems;
@@ -50,6 +49,8 @@ import org.confluence.mod.mixed.*;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
+import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
+import org.confluence.terraentity.mixed.IPlayer;
 
 import static org.confluence.mod.api.event.MinecartAbilityEvent.DismountOnMinecart;
 import static org.confluence.mod.api.event.MinecartAbilityEvent.RightClickRailBlock;
@@ -131,8 +132,8 @@ public final class PlayerEvents {
         }
         // 打开商店
         if (event.getTarget() instanceof AbstractTerraNPC npc) {
-            ((IPlayer) event.getEntity()).rhyme$setDaveTrades(npc.trades);
-            ((IPlayer) event.getEntity()).rhyme$setInteractingEntity(npc);
+            ((IPlayer) event.getEntity()).terra_entity$setDaveTrades(npc.trades);
+            ((IPlayer) event.getEntity()).terra_entity$setInteractingEntity(npc);
         }
     }
 

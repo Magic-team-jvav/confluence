@@ -6,6 +6,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.menu.*;
+import org.confluence.mod.common.menu.NPCTradesMenu;
 
 import java.util.function.Supplier;
 

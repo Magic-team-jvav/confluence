@@ -26,6 +26,7 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_guns.common.init.TGItems;
+import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.TETags;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TESummonItems;
@@ -971,7 +972,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 PaintItems.ECHO_COATING.get(),
                 FoodItems.BOULDER_BREAD.get(),
                 FunctionalBlocks.ANNOUNCEMENT_BOX.asItem(),
-                ToolItems.HOUSE_DETECTOR.get(),
+                TEItems.HOUSE_DETECTOR.get(),
                 ToolItems.TARGET_DUMMY.get(),
                 DrillItems.DRAX.get(),
                 ModItems.TOKYO_TEDDY_BEAR.get(),

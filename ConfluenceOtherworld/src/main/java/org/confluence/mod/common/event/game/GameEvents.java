@@ -18,7 +18,6 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.ItemStackedOnOtherEvent;
-import net.neoforged.neoforge.event.LootTableLoadEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
@@ -34,20 +33,18 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.item.common.ColoredItem;
-import org.confluence.mod.integration.terra_entity.TERemoval;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.EchoVisibilityPacketS2C;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
-import org.confluence.mod.network.s2c.NPCTradesPacketS2C;
+import org.confluence.terraentity.network.s2c.SyncNPCTradesPacketS2C;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
 import org.confluence.terra_curio.api.event.RangePickupItemEvent;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.confluence.terra_curio.util.TCUtils;
-import org.confluence.terraentity.TerraEntity;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
@@ -156,7 +153,7 @@ public final class GameEvents {
             }
         } else {
             ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, serverPlayer, serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY));
-            NPCTradesPacketS2C.sync(serverPlayer);
+            SyncNPCTradesPacketS2C.sync(serverPlayer);
         }
 
     }

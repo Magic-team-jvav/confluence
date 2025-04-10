@@ -14,10 +14,12 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.data.gen.npc_trade.ModTradeProviders;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.integration.terra_entity.TEEvents;
+import org.confluence.terraentity.init.TEEntityDataSerializers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,10 +54,8 @@ public class Confluence {
         ModMenuTypes.TYPES.register(eventBus);
         ModParticleTypes.TYPES.register(eventBus);
         ModChunkGenerators.GENERATORS.register(eventBus);
-        ModEntityDataSerializers.SERIALIZERS.register(eventBus);
         ModCarvers.CARVERS.register(eventBus);
         ModStructures.TYPES.register(eventBus);
-
         ModEffectStrategies.EFFECT_STRATEGY.register(eventBus);
         ModEquipmentSets.EQUIPMENT_SET.register(eventBus);
         ModHookTypes.TYPES.register(eventBus);

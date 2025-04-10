@@ -8,15 +8,16 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.npc.NPCTrades;
+import org.confluence.mod.common.data.gen.npc_trade.MoneyTradeItem;
 import org.confluence.mod.util.PlayerUtils;
+import org.confluence.terraentity.registries.npc_trade.ITrade;
 import org.jetbrains.annotations.NotNull;
 
 
-public record NPCShopPacket(NPCTrades.Trade trade) implements CustomPacketPayload {
+public record NPCShopPacket(ITrade trade) implements CustomPacketPayload {
     public static final Type<NPCShopPacket> TYPE = new Type<>(Confluence.asResource("npc_trade_packet_s2c"));
     public static final StreamCodec<RegistryFriendlyByteBuf, NPCShopPacket> STREAM_CODEC = StreamCodec.composite(
-            NPCTrades.Trade.STREAM_CODEC,
+            ITrade.STREAM_CODEC,
             NPCShopPacket::trade,
             NPCShopPacket::new
     );
@@ -31,7 +32,7 @@ public record NPCShopPacket(NPCTrades.Trade trade) implements CustomPacketPayloa
 
             if(trade.canTrade(context.player()) &&  context.player() instanceof ServerPlayer sp){
                 // todo
-                if(PlayerUtils.tryCostMoney(sp, trade.cost())) {
+                if(trade instanceof MoneyTradeItem trade &&  PlayerUtils.tryCostMoney(sp, trade.cost())) {
                     ItemStack result = trade.result();
                     if(context.player().getInventory().getFreeSlot() ==-1){
                         context.player().drop(result.copy(),false);

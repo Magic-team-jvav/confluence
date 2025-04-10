@@ -86,6 +86,7 @@ import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.model.entity.BeeProjectileModel;
 import org.confluence.terraentity.client.entity.renderer.GeoNormalRenderer;
+import org.confluence.mod.client.gui.container.NPCTradeScreen;
 import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
@@ -291,8 +292,6 @@ public final class ModClientEvents {
 
         event.registerEntityRenderer(TARGET_DUMMY.get(), TargetDummyRenderer::new);
 
-        // npc
-        event.registerEntityRenderer(GUIDE.get(), c -> new GeoNormalRenderer<>(c, GUIDE.getId()));
 
         event.registerBlockEntityRenderer(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new AltarBlockModel()));
         event.registerBlockEntityRenderer(FunctionalBlocks.SKY_MILL_ENTITY.get(), context -> new SkyMillBlockRenderer());

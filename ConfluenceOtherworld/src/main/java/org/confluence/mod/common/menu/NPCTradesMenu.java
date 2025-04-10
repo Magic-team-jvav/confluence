@@ -7,16 +7,18 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.mod.common.entity.npc.NPCTrades;
+import org.confluence.mod.common.data.gen.npc_trade.MoneyTradeItem;
 import org.confluence.mod.common.init.ModMenuTypes;
-import org.confluence.mod.mixed.IPlayer;
 import org.confluence.mod.network.c2s.NPCShopPacket;
+import org.confluence.terraentity.entity.npc.NPCTrades;
+import org.confluence.terraentity.mixed.IPlayer;
+import org.confluence.terraentity.registries.npc_trade.ITrade;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class NPCTradesMenu extends AbstractContainerMenu {
     private final SimpleContainer container;
-    public NPCTrades NPCTrades;
+    public NPCTrades<MoneyTradeItem> NPCTrades;
     public int selectedMerchantIndex = -1;
     public boolean forge;
 
@@ -25,11 +27,11 @@ public class NPCTradesMenu extends AbstractContainerMenu {
 
     }
 
-    public NPCTradesMenu(int containerId, Inventory playerInventory, @Nullable NPCTrades NPCTrades, boolean forge) {
+    public NPCTradesMenu(int containerId, Inventory playerInventory, @Nullable NPCTrades<MoneyTradeItem> NPCTrades, boolean forge) {
         super(ModMenuTypes.MAID_TRADES_MENU.get(), containerId);
         this.forge = forge;
         this.NPCTrades = NPCTrades;
-        if(NPCTrades == null) this.NPCTrades = ((IPlayer)playerInventory.player).rhyme$getDaveTrades();
+        if(NPCTrades == null) this.NPCTrades = ((IPlayer)playerInventory.player).terra_entity$getDaveTrades();
 
         this.container = new SimpleContainer(1);
         this.addSlot(new Slot(this.container, 0, 238, 37){
@@ -39,9 +41,9 @@ public class NPCTradesMenu extends AbstractContainerMenu {
             }
             @Override
             public void onTake(Player player, ItemStack stack){
-                var d  = ((IPlayer)playerInventory.player).rhyme$getDaveTrades();
+                var d  = ((IPlayer)playerInventory.player).terra_entity$getDaveTrades();
                 if(selectedMerchantIndex >= 0 && selectedMerchantIndex < d.trades().size()){
-                    PacketDistributor.sendToServer(new NPCShopPacket(d.trades().get(selectedMerchantIndex)));
+                    PacketDistributor.sendToServer(new NPCShopPacket((ITrade) d.trades().get(selectedMerchantIndex)));
                 }
                 super.onTake(player, stack);
             }
@@ -66,7 +68,7 @@ public class NPCTradesMenu extends AbstractContainerMenu {
     }
 
     public boolean stillValid(Player player) {
-        return ((IPlayer)player).rhyme$getDaveTrades() == NPCTrades;
+        return ((IPlayer)player).terra_entity$getDaveTrades() == NPCTrades;
     }
 
     public ItemStack quickMoveStack(Player player, int index) {

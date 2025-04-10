@@ -43,7 +43,7 @@ import org.confluence.lib.client.AntiPushPoseStack;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
-import org.confluence.mod.client.effect.DebugBlocksHelper;
+import org.confluence.terraentity.client.buffer.DebugBlocksHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.gui.TooltipManager;
 import org.confluence.mod.client.handler.*;
@@ -215,9 +215,7 @@ public final class GameClientEvents {
         level.getProfiler().push("Spelunker");
         SpelunkerHelper.renderLevel(event);
         level.getProfiler().pop();
-        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_LEVEL) {
-            DebugBlocksHelper.Singleton().render(event);
-        } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
             level.getProfiler().push("StarPhase");
             StarPhaseHandler.render(event);
             level.getProfiler().pop();

@@ -9,7 +9,6 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.integration.ponder.PonderHelper;
-import org.confluence.terraentity.init.TEItems;
 
 import static org.confluence.mod.common.init.item.PickaxeItems.MOLTEN_PICKAXE;
 
@@ -2137,8 +2136,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeapons.RAZORPINE.get(), "剃刀松");
         add(ManaWeapons.BETSYS_WRATH.get(), "双足翼龙怒气");
          */
-        add(ManaWeaponItems.BEE_GUN.get(), "蜜蜂枪");
-        add(ManaWeaponItems.SPACE_GUN.get(), "太空枪");
+        //TODO 枪！
+//        add(ManaWeaponItems.BEE_GUN.get(), "蜜蜂枪");
+//        add(ManaWeaponItems.SPACE_GUN.get(), "太空枪");
 
         // 弓
         add(BowItems.WOODEN_SHORT_BOW.get(), "木短弓");

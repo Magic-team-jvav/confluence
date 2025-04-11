@@ -1,0 +1,23 @@
+{
+    "display": {
+        "icon": {
+            "id": "minecraft:barrier"
+        },
+        "title": {
+            "translate": "achievements.confluence.star_destroyer.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.star_destroyer.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "never": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

@@ -68,7 +68,11 @@ public final class PlayerEvents {
             EchoVisibilityPacketS2C.sendToClient(serverPlayer);
             BoulderWorld.forceSetAccessory(serverPlayer);
             TheConstantPostEffectPacketS2C.sendToClient(serverPlayer);
-            SecretFlagSyncPacketS2C.sendToAll(((IMinecraftServer) serverPlayer.server).confluence$getSecretFlag());
+            long secretFlag = ((IMinecraftServer) serverPlayer.server).confluence$getSecretFlag();
+            SecretFlagSyncPacketS2C.sendToAll(secretFlag);
+            if ((secretFlag & IWorldOptions.HARDMODE) != 0) {
+                PlayerUtils.awardAchievement(serverPlayer, "its_hard");
+            }
         }
     }
 

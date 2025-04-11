@@ -12,6 +12,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
@@ -21,13 +22,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.common.NeoForge;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.api.event.EnterHardmodeEvent;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.SecretFlagSyncPacketS2C;
+import org.confluence.mod.util.PlayerUtils;
 
 import javax.annotation.CheckForNull;
 import java.util.*;
@@ -66,6 +71,7 @@ public class HardmodeConvertor {
 
     private volatile boolean started = false;
     private volatile List<Tuple<ChunkPos, BlockPosColumn[][]>> sanctification = new LinkedList<>();
+    private volatile boolean completed = false;
     private transient volatile boolean shouldContinue = true;
     private transient final TheHallowConversionTable theHallowConversionTable = new TheHallowConversionTable();
 
@@ -73,11 +79,14 @@ public class HardmodeConvertor {
         return started;
     }
 
+    public boolean isCompleted() {
+        return completed;
+    }
+
     public void start(MinecraftServer server, boolean debug) {
+        if (completed) return;
         this.shouldContinue = false;
         this.started = true;
-        ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
-        print(server, Component.translatable("event.confluence.hardmode_conversion.hardmode"), debug);
         print(server, Component.translatable("event.confluence.hardmode_conversion.starting"), debug);
         CompletableFuture.supplyAsync(() -> {
             ServerLevel overworld = server.overworld();
@@ -96,10 +105,17 @@ public class HardmodeConvertor {
         if (!shouldContinue) return;
         if (sanctification.isEmpty()) {
             if (started) {
+                this.completed = true;
                 MinecraftServer server = serverLevel.getServer();
                 SecretFlagSyncPacketS2C.sendToAll(((IMinecraftServer) server).confluence$getSecretFlag());
+                for (ServerPlayer serverPlayer : server.getPlayerList().getPlayers()) {
+                    PlayerUtils.awardAchievement(serverPlayer, "its_hard");
+                }
+                ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
+                print(server, Component.translatable("event.confluence.hardmode_conversion.hardmode"), !FMLEnvironment.production);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.finished").withStyle(ChatFormatting.GREEN), true);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.welcome").withStyle(ChatFormatting.RED), true);
+                NeoForge.EVENT_BUS.post(new EnterHardmodeEvent(server));
             }
             this.started = false;
             theHallowConversionTable.clear();
@@ -194,6 +210,7 @@ public class HardmodeConvertor {
         Dynamic<T> dynamic = tag.get("confluence:hardmode_convertor").orElseEmptyMap();
         dynamic.get("sanctification").orElseEmptyList().read(LIST_CODEC).ifSuccess(result -> this.sanctification = result);
         this.started = dynamic.get("started").asBoolean(false);
+        this.completed = dynamic.get("completed").asBoolean(false);
         this.shouldContinue = true;
     }
 
@@ -202,12 +219,14 @@ public class HardmodeConvertor {
         CompoundTag tag = new CompoundTag();
         tag.put("sanctification", LIST_CODEC.encodeStart(NbtOps.INSTANCE, sanctification).getOrThrow());
         tag.putBoolean("started", started);
+        tag.putBoolean("completed", completed);
         nbt.put("confluence:hardmode_convertor", tag);
         this.shouldContinue = true;
     }
 
     public void clear() {
         this.started = false;
+        this.completed = false;
         sanctification.clear();
         this.shouldContinue = true;
         theHallowConversionTable.clear();

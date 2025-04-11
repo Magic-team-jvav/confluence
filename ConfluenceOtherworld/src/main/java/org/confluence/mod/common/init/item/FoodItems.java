@@ -152,8 +152,8 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> FLASHFIN_KOI = registerFood("flashfin_koi", builder -> builder.initialize().food(FoodType.noEffectProperties(2, 0.4f)).isFireResistant());
 
     //赞助
-    public static final DeferredItem<BaseFoodItem> PINK_COLA = registerToolTipFood("pink_cola", builder -> builder.initialize().food(FoodType.PINK_COLA).drinkingSound(s -> SoundEvents.GENERIC_DRINK).duration(d -> 15).useAnim(u -> UseAnim.DRINK), 1, ChatFormatting.GRAY);
-    public static final DeferredItem<BaseFoodItem> DONGDONGS_FLATBREAD = registerToolTipFood("dongdongs_flatbread", builder -> builder.initialize().food(FoodType.DONGDONGS_FLATBREAD).eatingSound(s -> SoundEvents.GENERIC_EAT).duration(d -> 15).useAnim(u -> UseAnim.EAT), 1, ChatFormatting.GRAY);
+    public static final DeferredItem<BaseFoodItem> PINK_COLA = registerToolTipFood("pink_cola", builder -> builder.initialize().food(FoodType.PINK_COLA).drinkingSound(s -> SoundEvents.GENERIC_DRINK).duration(d -> 15).useAnim(u -> UseAnim.DRINK), 1, ChatFormatting.DARK_GRAY);
+    public static final DeferredItem<BaseFoodItem> DONGDONGS_FLATBREAD = registerToolTipFood("dongdongs_flatbread", builder -> builder.initialize().food(FoodType.DONGDONGS_FLATBREAD).eatingSound(s -> SoundEvents.GENERIC_EAT).duration(d -> 15).useAnim(u -> UseAnim.EAT), 1, ChatFormatting.DARK_GRAY);
     //节日特有
     public static final DeferredItem<BaseFoodItem> ZONGZI = registerFood("zongzi", builder -> builder.initialize().food(FoodType.WellFedProperties(6000, 4, 1.5f)).isFireResistant());
 

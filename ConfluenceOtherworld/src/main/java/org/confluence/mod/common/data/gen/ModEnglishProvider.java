@@ -261,8 +261,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("achievements.confluence.bulldozer.description", "Destroy a total of 10,000 blocks.");
         add("achievements.confluence.begone_evil.title", "Begone, Evil! ");
         add("achievements.confluence.begone_evil.description", "Smash a demon or crimson altar with a powerful, holy hammer.");
-
-
         add("achievements.confluence.ooo_shinny.title", "Ooo! Shiny!");
         add("achievements.confluence.ooo_shinny.description", "Mine your first nugget of ore with a pickaxe.");
         add("achievements.confluence.i_am_loot.title", "I Am Loot!");
@@ -283,7 +281,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("achievements.confluence.ankhumulation_complete.description", "The finest protection from unpleasant maladies and ailments.");
         add("achievements.confluence.a_shimmer_in_the_dark.title", "A Shimmer In The Dark");
         add("achievements.confluence.a_shimmer_in_the_dark.description", "Shimmer an item into another item. What other transmutations can you find?");
-
         add("achievements.confluence.pretty_in_pink.title", "Pretty in Pink");
         add("achievements.confluence.pretty_in_pink.description", "Kill pinky.");
         add("achievements.confluence.slippery_shinobi.title", "Slippery Shinobi ");
@@ -312,6 +309,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("achievements.confluence.bloodbath.description", "Survive a blood moon, a nocturnal event where the rivers run red and monsters swarm aplenty.");
         add("achievements.confluence.sticky_situation.title", "Sticky Situation");
         add("achievements.confluence.sticky_situation.description", "Survive the slime rain, where gelatinous organisms fall from the sky in droves.");
+        add("achievements.confluence.its_hard.title", "It's Hard!");
+        add("achievements.confluence.its_hard.description", "Unleash the ancient spirits of light and darkness across your world, enabling much stronger foes and showering the world with dazzling treasures (and rainbows!).");
 
 
         add("confluence.configuration.achievementToast", "Enable Terra Style Achievements");

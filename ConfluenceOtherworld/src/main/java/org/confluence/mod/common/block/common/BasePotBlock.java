@@ -46,7 +46,7 @@ import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.terra_guns.common.init.TGItems;
+//import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.jetbrains.annotations.Nullable;
 
@@ -312,7 +312,8 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
             if (level.random.nextBoolean()) {
                 item = ArrowItems.UNHOLY_ARROW.get();
             } else {
-                item = level.random.nextBoolean() ? TGItems.SILVER_BULLET.get() : TGItems.TUNGSTEN_BULLET.get();
+                //TODO 枪！
+//                item = level.random.nextBoolean() ? TGItems.SILVER_BULLET.get() : TGItems.TUNGSTEN_BULLET.get();
             }
         }
         LibUtils.createItemEntity(item, amount, center, level, 0);

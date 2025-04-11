@@ -26,7 +26,7 @@ import org.confluence.mod.common.init.item.LightPetItems;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terra_guns.common.init.TGItems;
+//import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.entity.boss.BrainOfCthulhu;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.jetbrains.annotations.Nullable;
@@ -52,8 +52,9 @@ public class CrimsonHeartBlock extends Block {
             int count = data.getEvilBrokenCount() % 3;
 
             if (count == 0 || level.random.nextFloat() < 0.2F) {
-                LibUtils.createItemEntity(TGItems.THE_UNDERTAKER.toStack(), center.x, center.y, center.z, level, 0);
-                LibUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
+                //TODO 枪！
+//                LibUtils.createItemEntity(TGItems.THE_UNDERTAKER.toStack(), center.x, center.y, center.z, level, 0);
+//                LibUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
                 LibUtils.createItemEntity(LightPetItems.CRIMSON_HEART.get(), 1, center.x, center.y, center.z, level, 0);

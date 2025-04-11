@@ -27,7 +27,7 @@ import org.confluence.mod.common.init.item.LightPetItems;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terra_guns.common.init.TGItems;
+//import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.entity.boss.EaterOfWorlds;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,8 +52,9 @@ public class ShadowOrbBlock extends Block {
             int count = data.getEvilBrokenCount() % 3;
 
             if (count == 0 || level.random.nextFloat() < 0.2F) {
-                LibUtils.createItemEntity(TGItems.MUSKET.toStack(), center.x, center.y, center.z, level, 0);
-                LibUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
+                //TODO 枪！
+//                LibUtils.createItemEntity(TGItems.MUSKET.toStack(), center.x, center.y, center.z, level, 0);
+//                LibUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
                 LibUtils.createItemEntity(LightPetItems.SHADOW_ORB.get(), 1, center.x, center.y, center.z, level, 0);

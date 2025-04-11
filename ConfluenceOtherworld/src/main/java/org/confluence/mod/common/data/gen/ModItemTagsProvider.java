@@ -25,7 +25,7 @@ import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
-import org.confluence.terra_guns.common.init.TGItems;
+//import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.TETags;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
@@ -734,7 +734,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         IntrinsicTagAppender<Item> ammo = tag(ModTags.Items.AMMO)
                 .addTag(ItemTags.ARROWS)
                 .add(Items.FIREWORK_ROCKET, MaterialItems.FALLING_STAR.get());
-        TGItems.ITEM_BULLETS.getEntries().forEach(item -> ammo.add(item.get()));
+        //TODO 枪！
+//        TGItems.ITEM_BULLETS.getEntries().forEach(item -> ammo.add(item.get()));
         IntrinsicTagAppender<Item> dye = tag(ModTags.Items.DYE);
         VanityArmorItems.DYE_ITEMS.forEach(dye::add);
         dye.add(VanityArmorItems.TEAM_DYE.get());
@@ -1012,8 +1013,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);
-        TGItems.ITEM_GUNS.getEntries().forEach(wipAction);
-        TGItems.ITEM_BULLETS.getEntries().forEach(wipAction);
+        //TODO 枪！
+//        TGItems.ITEM_GUNS.getEntries().forEach(wipAction);
+//        TGItems.ITEM_BULLETS.getEntries().forEach(wipAction);
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
         TMItems.ITEMS.getEntries().forEach(wipAction);
     }

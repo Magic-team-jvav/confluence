@@ -14,7 +14,7 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terra_guns.common.init.TGItems;
+//import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.entity.npc.NPCTrades;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.init.item.TEWhipItems;
@@ -39,7 +39,8 @@ public class NPCShopProvider extends AbstractRecipeProvider {
     protected void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
         // 命名空间替换成confluence，本体不能覆盖子模块的数据包
         recipe(NPCTrades.CODEC, pathProvider().json(Confluence.asResource(TENpcEntities.GUIDE.getId().getPath()))).addRecipe(new Builder()
-                .add(TGItems.MUSKET_BULLET.get(), 100, 80)
+                //TODO 枪！
+//                .add(TGItems.MUSKET_BULLET.get(), 100, 80)
                 .add(ConsumableItems.GRENADE.get(), 75)
                 .add(ConsumableItems.BOMB.get(), 300)
                 .add(ConsumableItems.DYNAMITE.get(), 2000)

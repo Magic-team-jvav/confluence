@@ -4,10 +4,10 @@
             "id": "minecraft:barrier"
         },
         "title": {
-            "translate": "achievements.confluence.do_you_want_to_slay_snowman.title"
+            "translate": "achievements.confluence.good_little_slave.title"
         },
         "description": {
-            "translate": "achievements.confluence.do_you_want_to_slay_snowman.description"
+            "translate": "achievements.confluence.good_little_slave.description"
         },
         "frame": "challenge",
         "show_toast": true,

@@ -56,7 +56,7 @@ public final class ModAchievements {
         offset("drax_attax", 4, 1);
         offset("temple_raider", 0, 2);
         offset("fashion_statement", 1, 2);
-        offset("sword_of_hero", 2, 2);
+        offset("sword_of_the_hero", 2, 2);
         offset("dye_hard", 3, 2);
         offset("sick_throw", 4, 2);
         offset("the_cavalry", 0, 3);
@@ -112,7 +112,7 @@ public final class ModAchievements {
         offset("still_hungry", 0, 7);
         offset("buckets_of_bolts", 1, 7);
         offset("the_great_southern_plantkill", 2, 7);
-        offset("lihzahrdian", 3, 7);
+        offset("lihzahrdian_idol", 3, 7);
         offset("fish_out_of_water", 4, 7);
         offset("obsessive_devotion", 0, 8);
         offset("star_destroyer", 1, 8);
@@ -120,7 +120,7 @@ public final class ModAchievements {
         offset("slippery_shinobi", 3, 8);
         offset("goblin_punter", 4, 8);
         offset("walk_the_plank", 0, 9);
-        offset("do_you_want_to_slay_snowman", 1, 9);
+        offset("do_you_want_to_slay_a_snowman", 1, 9);
         offset("tin_foil_hatter", 2, 9);
         offset("baleful_harvest", 3, 9);
         offset("ice_scream", 4, 9);
@@ -151,7 +151,7 @@ public final class ModAchievements {
         offset("you_and_what_army", 10, 8);
         offset("marathon_medalist", 6, 9);
         offset("servant_in_training", 7, 9);
-        offset("good_little_salve", 8, 9);
+        offset("good_little_slave", 8, 9);
         offset("trout_monkey", 9, 9);
         offset("fast_and_fishious", 10 ,9);
         offset("supreme_helper_minion", 6, 10);
@@ -161,7 +161,7 @@ public final class ModAchievements {
         offset("hot_reels", 10, 10);
         offset("heliophobia", 6, 11);
         offset("leading_landlord", 7, 11);
-        offset("felling_petty", 8, 11);
+        offset("feeling_petty", 8, 11);
         offset("jolly_jamboree", 9, 11);
         offset("dead_men_tell_no_tales", 10, 11);
         offset("unusual_survival_strategies", 6.5F, 12);

@@ -4,10 +4,10 @@
             "id": "minecraft:barrier"
         },
         "title": {
-            "translate": "achievements.confluence.sword_of_hero.title"
+            "translate": "achievements.confluence.sword_of_the_hero.title"
         },
         "description": {
-            "translate": "achievements.confluence.sword_of_hero.description"
+            "translate": "achievements.confluence.sword_of_the_hero.description"
         },
         "frame": "challenge",
         "show_toast": true,

@@ -4,10 +4,10 @@
             "id": "minecraft:barrier"
         },
         "title": {
-            "translate": "achievements.confluence.felling_petty.title"
+            "translate": "achievements.confluence.lihzahrdian_idol.title"
         },
         "description": {
-            "translate": "achievements.confluence.felling_petty.description"
+            "translate": "achievements.confluence.lihzahrdian_idol.description"
         },
         "frame": "challenge",
         "show_toast": true,

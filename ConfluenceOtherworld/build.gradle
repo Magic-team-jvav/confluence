@@ -139,7 +139,7 @@ repositories {
 }
 
 var vanillin = false // 香兰素
-var delight = true;
+var delight = true
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
@@ -212,6 +212,9 @@ dependencies {
         runtimeOnly "curse.maven:apothic-attributes-898963:6302334"
         runtimeOnly "curse.maven:placebo-283644:6337156"
     }
+
+    compileOnly "curse.maven:appleskin-248787:5586600"
+    //runtimeOnly "curse.maven:appleskin-248787:5586600"
 
     /**********************************************************/
 

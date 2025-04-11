@@ -453,8 +453,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("achievements.confluence.fashion_statement.description", "在全部四个社交盔甲栏中都装备上盔甲或时装服饰。");
         add("achievements.confluence.the_cavalry.title", "骑兵");
         add("achievements.confluence.the_cavalry.description", "装备坐骑。");
-
-
         add("achievements.confluence.ooo_shinny.title", "哦！亮闪闪！");
         add("achievements.confluence.ooo_shinny.description", "用镐开采第一块矿石。");
         add("achievements.confluence.i_am_loot.title", "我要洗劫！");
@@ -475,7 +473,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("achievements.confluence.ankhumulation_complete.description", "这是对抗烦人疾病的最佳防护。");
         add("achievements.confluence.a_shimmer_in_the_dark.title", "暗中微光");
         add("achievements.confluence.a_shimmer_in_the_dark.description", "用微光将一个物品变成另一个物品。你还能找到哪些其他变化？");
-
         add("achievements.confluence.pretty_in_pink.title", "粉红佳人");
         add("achievements.confluence.pretty_in_pink.description", "杀死粉史莱姆。");
         add("achievements.confluence.slippery_shinobi.title", "黏滑忍者");
@@ -496,6 +493,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("achievements.confluence.bloodbath.description", "活着度过血月，在这一夜间事件中，河流会泛红，怪物蜂拥而至。");
         add("achievements.confluence.sticky_situation.title", "黏黏糊糊");
         add("achievements.confluence.sticky_situation.description", "在史莱姆雨中活下来，在此期间明胶生物会成群结队地从天而降。");
+        add("achievements.confluence.its_hard.title", "举步维艰！");
+        add("achievements.confluence.its_hard.description", "在你的世界里释放古老的光明与黑暗之魂，让更强大的敌人出现，并用耀眼夺目的宝藏（和彩虹！）洗礼世界。");
 
 
         add("prefix.confluence.tooltip.plus", "+%s%% %s");

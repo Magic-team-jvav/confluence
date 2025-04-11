@@ -186,7 +186,7 @@ dependencies {
     //runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
 
     compileOnly "curse.maven:better-advancements-272515:5850587"
-    //runtimeOnly "curse.maven:better-advancements-272515:5850587"
+    runtimeOnly "curse.maven:better-advancements-272515:5850587"
 
     compileOnly "curse.maven:sodium-394468:6211307"
     if (!vanillin) {
@@ -201,8 +201,8 @@ dependencies {
     compileOnly "curse.maven:journeymap-32274:6213329"
     //runtimeOnly "curse.maven:journeymap-32274:6213329"
 
-    compileOnly "curse.maven:touhou-little-maid-355044:6266244"
-    //runtimeOnly "curse.maven:touhou-little-maid-355044:6266244"
+    compileOnly "curse.maven:touhou-little-maid-355044:6302619"
+    //runtimeOnly "curse.maven:touhou-little-maid-355044:6302619"
 
     compileOnly "curse.maven:carry-on-274259:5649344"
     //runtimeOnly "curse.maven:carry-on-274259:5649344"

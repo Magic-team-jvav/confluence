@@ -120,7 +120,7 @@ public class BaseFoodItem extends Item {
         public static List<Component> tooltips(String id, int lineCount) {
             List<Component> components = new ArrayList<>();
             for (int i = 1; i <= lineCount; i++) {
-                components.add(Component.translatable("tooltip.item.confluence." + id + "." + i).withStyle(ChatFormatting.GRAY));
+                components.add(Component.translatable("tooltip.item.confluence." + id + "." + i).withStyle(ChatFormatting.DARK_GRAY));
             }
             return components;
         }

@@ -8,6 +8,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TooltipItem extends CustomRarityItem {
@@ -19,11 +20,11 @@ public class TooltipItem extends CustomRarityItem {
     }
 
     public TooltipItem(Properties properties, ModRarity rarity, Component tooltip) {
-        this(properties, rarity, List.of(tooltip));
+        this(properties, rarity, Collections.singletonList(tooltip));
     }
 
     public TooltipItem(Properties properties, ModRarity rarity, String tooltip) {
-        this(properties, rarity, List.of(Component.translatable(tooltip).withStyle(ChatFormatting.DARK_GRAY)));
+        this(properties, rarity, Collections.singletonList(Component.translatable(tooltip).withStyle(ChatFormatting.DARK_GRAY)));
     }
 
     public List<Component> getTooltips() {
@@ -37,6 +38,9 @@ public class TooltipItem extends CustomRarityItem {
     }
 
     public static List<Component> getTooltipsFromString(String id, int lineCount, ChatFormatting chatFormatting) {
+        if (lineCount == 1) {
+            return Collections.singletonList(Component.translatable("tooltip.item.confluence." + id + ".0").withStyle(chatFormatting));
+        }
         List<Component> components = new ArrayList<>();
         for (int i = 0; i < lineCount; i++) {
             components.add(Component.translatable("tooltip.item.confluence." + id + "." + i).withStyle(chatFormatting));

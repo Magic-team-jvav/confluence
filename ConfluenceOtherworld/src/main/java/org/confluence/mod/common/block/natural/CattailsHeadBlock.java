@@ -29,7 +29,7 @@ public class CattailsHeadBlock extends GrowingPlantHeadBlock implements SimpleWa
     public static final IntegerProperty AGE = BlockStateProperties.AGE_25;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty PLACE = BooleanProperty.create("place");
-    protected static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 9.0, 16.0);
+    protected static final VoxelShape SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 10.0, 14.0);
     private static final int MAX_AGE = 3;
 
     public CattailsHeadBlock(Properties properties) {
@@ -40,36 +40,17 @@ public class CattailsHeadBlock extends GrowingPlantHeadBlock implements SimpleWa
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         int currentAge = state.getValue(AGE);
-        BlockPos growthPos = pos.relative(this.growthDirection);
-        BlockState growthPosState = level.getBlockState(growthPos);
+        BlockState lastState = getBodyBlock().defaultBlockState();
         BlockState aboveState = level.getBlockState(pos.above());
-        if (!aboveState.isAir() && !aboveState.is(Blocks.WATER)) return;
-        if (currentAge < MAX_AGE) {
-            boolean isWaterAtGrowthPos = growthPosState.is(Blocks.WATER);
-            boolean shouldGrow = isWaterAtGrowthPos || canCropGrow(level, growthPos, state, random.nextDouble() < 0.20);
-            if (shouldGrow) {
-                BlockState newState = state.setValue(WATERLOGGED, isWaterAtGrowthPos);
-                level.setBlockAndUpdate(growthPos, this.getGrowIntoState(newState, level.random));
-                updateBodyBlock(level, pos.below());
-            }
-        } else {
-            if (state.getValue(WATERLOGGED)) {
-                level.setBlockAndUpdate(pos, state.setValue(AGE, 0));
+        boolean isAirUp = aboveState.isAir();
+        boolean isAirNow = level.getBlockState(pos).getValue(WATERLOGGED);
+        if (!((!aboveState.isAir() && !aboveState.is(Blocks.WATER)) || currentAge >= 3)) {
+            if (isAirUp && isAirNow) {
+                level.setBlock(pos.above(), state.trySetValue(WATERLOGGED, false).trySetValue(AGE, random.nextInt(1, 4)), 3);
             } else {
-                boolean canGrowHere = growthPosState.is(Blocks.WATER) || this.canGrowInto(growthPosState);
-                boolean hasWaterBelow = level.getBlockState(pos.below()).is(Blocks.WATER);
-                if (canGrowHere && hasWaterBelow) {
-                    level.setBlockAndUpdate(growthPos, this.getGrowIntoState(state, level.random));
-                    updateBodyBlock(level, pos.below());
-                }
+                level.setBlock(pos.above(), state.trySetValue(WATERLOGGED, !isAirUp).trySetValue(AGE, isAirUp ? (currentAge + 1) : 0), 3);
             }
-        }
-    }
-
-    private void updateBodyBlock(ServerLevel level, BlockPos bodyPos) {
-        BlockState bodyState = level.getBlockState(bodyPos);
-        if (bodyState.is(getBodyBlock())) {
-            level.setBlockAndUpdate(bodyPos, bodyState);
+            level.setBlock(pos, lastState.trySetValue(WATERLOGGED, isAirNow), 3);
         }
     }
 

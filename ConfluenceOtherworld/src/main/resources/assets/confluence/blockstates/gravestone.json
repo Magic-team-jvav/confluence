@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "confluence:block/gravestone",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "confluence:block/gravestone"
+    },
+    "facing=south": {
+      "model": "confluence:block/gravestone",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "confluence:block/gravestone",
+      "y": 270
+    }
+  }
+}

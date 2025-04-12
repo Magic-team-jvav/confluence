@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "confluence:block/golden_grave_marker",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "confluence:block/golden_grave_marker"
+    },
+    "facing=south": {
+      "model": "confluence:block/golden_grave_marker",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "confluence:block/golden_grave_marker",
+      "y": 270
+    }
+  }
+}

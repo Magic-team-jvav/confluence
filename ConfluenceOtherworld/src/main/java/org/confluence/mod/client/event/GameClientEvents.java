@@ -43,6 +43,7 @@ import org.confluence.lib.client.AntiPushPoseStack;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.terraentity.client.buffer.DebugBlocksHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.gui.TooltipManager;
@@ -199,7 +200,7 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void movementInputUpdate(MovementInputUpdateEvent event) {
         LocalPlayer player = (LocalPlayer) event.getEntity();
-        boolean b = player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN);
+        boolean b = player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN) || player.getInBlockState().is(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get());
         ((ILocalPlayer) player).confluence$setCanMove(!b);
         if (!player.getAbilities().instabuild && (b || player.hasEffect(ModEffects.SHIMMER))) {
             Input input = event.getInput();

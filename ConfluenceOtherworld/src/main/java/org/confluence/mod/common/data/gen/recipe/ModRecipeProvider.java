@@ -47,16 +47,6 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
 
         stonecutting(recipeOutput, "", DecorativeBlocks.BLUE_ICE_BRICKS.toStack(4), Ingredient.of(Blocks.BLUE_ICE));
 
-        shaped(recipeOutput, "", "_from_lead_and_iron", ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(Items.REDSTONE_TORCH),
-                'S', Ingredient.of(Items.STICK),
-                'X', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
-        ), List.of(
-                "XSX",
-                "X#X",
-                "XSX"
-        )), new ItemStack(Items.ACTIVATOR_RAIL, 6));
-
         skyMill(recipeOutput, DecorativeBlocks.BOUNCY_CLOUD_BLOCK.toStack(), Ingredient.of(MaterialItems.PINK_GEL), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
 
         workshop(recipeOutput, AccessoryItems.ANGLER_TACKLE_BAG.toStack(), Ingredient.of(AccessoryItems.HIGH_TEST_FISHING_LINE), Ingredient.of(AccessoryItems.TACKLE_BOX), Ingredient.of(TCItems.ANGLER_EARRING));
@@ -85,17 +75,6 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
     protected void heavyWorkBench(RecipeOutput recipeOutput, String suffix, ShapedRecipePattern pattern, ItemStack result) {
         ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()) + suffix);
         recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, pattern), null);
-    }
-
-    protected void shaped(RecipeOutput recipeOutput, String prefix, String suffix, ShapedRecipePattern pattern, ItemStack result) {
-        ResourceLocation id = Confluence.asResource(prefix + getItemName(result.getItem()) + suffix);
-        recipeOutput.accept(id, new ShapedRecipe("", CraftingBookCategory.MISC, pattern, result, true), null);
-    }
-
-    protected void shapeless(RecipeOutput recipeOutput, String prefix, String suffix, ItemStack result, Ingredient... ingredients) {
-        ResourceLocation id = Confluence.asResource(prefix + getItemName(result.getItem()) + suffix);
-        NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
-        recipeOutput.accept(id, new ShapelessRecipe("", CraftingBookCategory.MISC, result, zingredients), null);
     }
 
     protected void stonecutting(RecipeOutput recipeOutput, String suffix, ItemStack result, Ingredient ingredient) {

@@ -4,6 +4,8 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.monster.piglin.PiglinAi;
@@ -28,8 +30,8 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 public class PiggyBankBlock extends HorizontalDirectionalWaterloggedBlock implements EntityBlock {
     public static final MapCodec<PiggyBankBlock> CODEC = simpleCodec(PiggyBankBlock::new);
     public static final Component TITLE = Component.translatable("container.confluence.piggy_bank");
-    private static final VoxelShape SHAPE_X = box(2, 0, 4, 14, 8, 12);
-    private static final VoxelShape SHAPE_Z = box(4, 0, 2, 12, 8, 14);
+    private static final VoxelShape SHAPE_X = box(2, 0, 4, 14, 10, 12);
+    private static final VoxelShape SHAPE_Z = box(4, 0, 2, 12, 10, 14);
 
     public PiggyBankBlock(Properties properties) {
         super(properties);
@@ -60,6 +62,7 @@ public class PiggyBankBlock extends HorizontalDirectionalWaterloggedBlock implem
             container.setActiveContainer(entity);
             player.openMenu(new SimpleMenuProvider((id, inventory, player1) -> new ChestMenu(MenuType.GENERIC_9x6, id, inventory, container, 6), TITLE));
             PiglinAi.angerNearbyPiglins(player, true);
+            level.playSound(null, pos, SoundEvents.PIG_AMBIENT, SoundSource.BLOCKS);
             return InteractionResult.CONSUME;
         }
         return InteractionResult.sidedSuccess(level.isClientSide);

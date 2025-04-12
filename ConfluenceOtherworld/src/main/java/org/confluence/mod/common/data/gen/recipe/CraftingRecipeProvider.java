@@ -1,19 +1,30 @@
 package org.confluence.mod.common.data.gen.recipe;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.*;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class CraftingRecipeProvider extends AbstractRecipeProvider {
@@ -68,19 +79,43 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 .pattern("III").pattern(" i ").pattern("iii")
                 .unlockedBy("hasitem", inventoryTrigger(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(MaterialItems.LEAD_INGOT)))
                 .save(output);
+
+        shaped(output, "", "_from_lead_and_iron", ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.REDSTONE_TORCH),
+                'S', Ingredient.of(Items.STICK),
+                'X', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+        ), List.of(
+                "XSX",
+                "X#X",
+                "XSX"
+        )), new ItemStack(Items.ACTIVATOR_RAIL, 6));
     }
+
+    protected void shaped(RecipeOutput recipeOutput, String prefix, String suffix, ShapedRecipePattern pattern, ItemStack result) {
+        ResourceLocation id = Confluence.asResource(prefix + getItemName(result.getItem()) + suffix);
+        recipeOutput.accept(id, new ShapedRecipe("", CraftingBookCategory.MISC, pattern, result, true), null);
+    }
+
+    protected void shapeless(RecipeOutput recipeOutput, String prefix, String suffix, ItemStack result, Ingredient... ingredients) {
+        ResourceLocation id = Confluence.asResource(prefix + getItemName(result.getItem()) + suffix);
+        NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
+        recipeOutput.accept(id, new ShapelessRecipe("", CraftingBookCategory.MISC, result, zingredients), null);
+    }
+
     // 九原料合成一块的合成及分解配方
-    protected void compressAndDecompressNine(ItemLike input, TagKey<Item> inputTag, ItemLike result, TagKey<Item> resultTag, @NotNull RecipeOutput output){
+    protected void compressAndDecompressNine(ItemLike input, TagKey<Item> inputTag, ItemLike result, TagKey<Item> resultTag, @NotNull RecipeOutput output) {
         compressNine(input, inputTag, result).save(output);
         decompressNine(result, resultTag, input).save(output, BuiltInRegistries.ITEM.getKey(input.asItem()) + "_from_block");
     }
-    protected ShapedRecipeBuilder compressNine(ItemLike input, TagKey<Item> inputTag, ItemLike result){
+
+    protected ShapedRecipeBuilder compressNine(ItemLike input, TagKey<Item> inputTag, ItemLike result) {
         return ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result)
                 .define('A', inputTag)
                 .pattern("AAA").pattern("AAA").pattern("AAA")
                 .unlockedBy("hasitem", inventoryTrigger(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(input)));
     }
-    protected ShapelessRecipeBuilder decompressNine(ItemLike input, TagKey<Item> inputTag, ItemLike result){
+
+    protected ShapelessRecipeBuilder decompressNine(ItemLike input, TagKey<Item> inputTag, ItemLike result) {
         return ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result, 9)
                 .requires(inputTag)
                 .unlockedBy("hasitem", inventoryTrigger(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(input)));

@@ -26,10 +26,6 @@ public class HeavyWorkBenchRecipe extends AbstractAmountRecipe<EnvironmentRecipe
         pattern.symmetrical = true;
     }
 
-    public static HeavyWorkBenchRecipe of(ShapedRecipePattern pattern, ItemStack result) {
-        return new HeavyWorkBenchRecipe(result, pattern);
-    }
-
     @Override
     public boolean canCraftInDimensions(int width, int height) {
         return width >= pattern.width() && height >= pattern.height();

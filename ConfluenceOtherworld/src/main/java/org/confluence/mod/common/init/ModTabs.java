@@ -10,7 +10,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import nowebsite.makertechno.terra_furniture.common.init.TFTabs;
+import nowebsite.makertechno.terra_furniture.common.init.TFRegistries;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
@@ -18,7 +18,6 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
-//import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TESummonItems;
@@ -54,7 +53,7 @@ public final class ModTabs {
                         LogBlockSet.acceptBuilding(output);
                         DecorativeBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
                         StatueBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
-                    }).withTabsAfter(TFTabs.FURNITURE.getId()).withTabsBefore(NATURAL_BLOCKS.getId()).build()
+                    }).withTabsAfter(TFRegistries.FURNITURE.getId()).withTabsBefore(NATURAL_BLOCKS.getId()).build()
     );
     /* 家具 */
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MECHANICAL = TABS.register("mechanical",
@@ -68,7 +67,7 @@ public final class ModTabs {
                         output.accept(ToolItems.WIRE_CUTTER.get());
                         BaseChestBlock.Variant.acceptTab(output);
                         FunctionalBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
-                    }).withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "materials")).withTabsBefore(TFTabs.FURNITURE.getId()).build());
+                    }).withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "materials")).withTabsBefore(TFRegistries.FURNITURE.getId()).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MATERIALS = TABS.register("materials",
             () -> CreativeModeTab.builder().icon(() -> IconItems.MATERIAL_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.materials"))

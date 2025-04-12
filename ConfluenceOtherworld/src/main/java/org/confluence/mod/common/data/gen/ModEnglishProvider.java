@@ -8,6 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.TooltipManager;
 import org.confluence.mod.common.init.ModEffects;
@@ -17,21 +18,13 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.integration.ponder.PonderHelper;
 import org.confluence.mod.mixin.accessor.LanguageProviderAccessor;
 
-import java.util.Arrays;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import static org.confluence.mod.common.component.prefix.ModPrefix.*;
 
 public class ModEnglishProvider extends LanguageProvider {
     public ModEnglishProvider(PackOutput output) {
         super(output, Confluence.MODID, "en_us");
-    }
-
-    private static String toTitleCase(String raw) {
-        return Arrays.stream(raw.split("_"))
-                .map(word -> Character.toUpperCase(word.charAt(0)) + word.substring(1).toLowerCase())
-                .collect(Collectors.joining(" "));
     }
 
     @Override
@@ -432,7 +425,7 @@ public class ModEnglishProvider extends LanguageProvider {
         Iterables.concat(Universal.VALUES, Common.VALUES, Melee.VALUES, Ranged.VALUES, Magic.VALUES, Accessory.VALUES).forEach(prefix -> {
             String name = prefix.name();
             if ("quick".equals(name) || "deadly".equals(name) || "hasty".equals(name)) return;
-            add("prefix.confluence." + name, toTitleCase(name));
+            add("prefix.confluence." + name, LibUtils.toTitleCase(name));
         });
 
         add("fluid_type.confluence.shimmer", "Shimmer");
@@ -639,7 +632,7 @@ public class ModEnglishProvider extends LanguageProvider {
         PonderHelper.addTranslateKeys(this::add, true);
 
 
-        Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), toTitleCase(block.getId().getPath()));
+        Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
         add(ModBlocks.COPPER_COIN_PILE.get(), "Copper Coin");
         add(ModBlocks.SILVER_COIN_PILE.get(), "Silver Coin");
         add(ModBlocks.GOLDEN_COIN_PILE.get(), "Golden Coin");
@@ -655,7 +648,7 @@ public class ModEnglishProvider extends LanguageProvider {
         PotBlocks.BLOCKS.getEntries().forEach(blockAction);
         StatueBlocks.BLOCKS.getEntries().forEach(blockAction);
 
-        Consumer<DeferredHolder<Item, ? extends Item>> itemAction = item -> add(item.get(), toTitleCase(item.getId().getPath()));
+        Consumer<DeferredHolder<Item, ? extends Item>> itemAction = item -> add(item.get(), LibUtils.toTitleCase(item.getId().getPath()));
         add(AccessoryItems.PHILOSOPHERS_STONE.get(), "Philosopher's Stone");
         add(ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get(), "Boredom's Pact - Falling Resolve");
         AccessoryItems.ITEMS.getEntries().forEach(itemAction);
@@ -691,8 +684,8 @@ public class ModEnglishProvider extends LanguageProvider {
         ToolItems.ITEMS.getEntries().forEach(itemAction);
         TreasureBagItems.ITEMS.getEntries().forEach(itemAction);
 
-        ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), toTitleCase(effect.getId().getPath())));
-        ModEntities.ENTITIES.getEntries().forEach(entity -> add(entity.get(), toTitleCase(entity.getId().getPath())));
+        ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), LibUtils.toTitleCase(effect.getId().getPath())));
+        ModEntities.ENTITIES.getEntries().forEach(entity -> add(entity.get(), LibUtils.toTitleCase(entity.getId().getPath())));
     }
 
     @Override

@@ -40,7 +40,7 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforgespi.locating.IModFile;
 import nowebsite.makertechno.terra_furniture.common.init.TFBlocks;
-import nowebsite.makertechno.terra_furniture.common.init.TFTabs;
+import nowebsite.makertechno.terra_furniture.common.init.TFRegistries;
 import org.confluence.lib.util.ConfluenceResources;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
@@ -233,7 +233,7 @@ public final class ModEvents {
             for (DeferredHolder<Item, ? extends Item> entry : AccessoryItems.ITEMS.getEntries()) {
                 event.insertBefore(everlasting, entry.get().getDefaultInstance(), visibility);
             }
-        } else if (event.getTab() == TFTabs.FURNITURE.get()) {
+        } else if (event.getTab() == TFRegistries.FURNITURE.get()) {
             ItemStack plasticChair = TFBlocks.PLASTIC_CHAIR.toStack();
             for (LogBlockSet logBlockSet : LogBlockSet.LOG_BLOCK_SETS) {
                 if (logBlockSet.getDoor() != null) {

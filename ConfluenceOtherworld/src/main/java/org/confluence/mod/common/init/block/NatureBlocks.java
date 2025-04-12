@@ -290,6 +290,8 @@ public class NatureBlocks {
     public static final DeferredBlock<BaseMossBlock> HELIUM_MOSS = registerWithItem("helium_moss", () -> new BaseMossBlock(5));
     public static final DeferredBlock<BaseMossBlock> GROWING_MUSHROOM_MOSS = registerWithItem("growing_mushroom_moss", () -> new BaseMossBlock(5));
 
+    public static final DeferredBlock<CoconutBlock> COCONUT_BLOCK = registerWithItem("coconut_block", CoconutBlock::new);
+
     private static <B extends Block> DeferredBlock<B> registerWithoutItem(String id, Supplier<B> block) {
         return BLOCKS.register(id, block);
     }

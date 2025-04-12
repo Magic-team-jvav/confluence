@@ -31,16 +31,18 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.FoodItems;
 
 public class GreenDumplingBlock extends Block {
-    public static final IntegerProperty PIECE = IntegerProperty.create("piece", 1, 5);
-    private static final VoxelShape ONE_PIECE = box(3.0, 0.0, 3.0, 13.0, 3.0, 13.0);
-    private static final VoxelShape TWO_PIECE = box(3.0, 0.0, 3.0, 13.0, 4.0, 13.0);
-    private static final VoxelShape THREE_PIECE = box(3.0, 0.0, 3.0, 13.0, 5.0, 13.0);
-    private static final VoxelShape FOUR_PIECE = box(3.0, 0.0, 3.0, 13.0, 9.0, 13.0);
-    private static final VoxelShape FIVE_PIECE = box(3.0, 0.0, 3.0, 13.0, 11.0, 13.0);
+    public static final IntegerProperty PIECE = IntegerProperty.create("piece", 0, 4);
+    private static final VoxelShape[] SHAPE_BY_PIECE = new VoxelShape[]{
+            Block.box(3.0, 0.0, 3.0, 13.0, 3.0, 13.0),
+            Block.box(3.0, 0.0, 3.0, 13.0, 4.0, 13.0),
+            Block.box(3.0, 0.0, 3.0, 13.0, 5.0, 13.0),
+            Block.box(3.0, 0.0, 3.0, 13.0, 9.0, 13.0),
+            Block.box(3.0, 0.0, 3.0, 13.0, 11.0, 13.0)
+    };
 
     public GreenDumplingBlock() {
         super(BlockBehaviour.Properties.of().pushReaction(PushReaction.DESTROY).strength(1.0f));
-        this.registerDefaultState(this.stateDefinition.any().setValue(PIECE, 1));
+        this.registerDefaultState(this.stateDefinition.any().setValue(PIECE, 0));
     }
 
     @Override
@@ -59,7 +61,7 @@ public class GreenDumplingBlock extends Block {
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (!stack.is(FoodItems.GREEN_DUMPLING.get())) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         int currentPiece = state.getValue(PIECE);
-        if (currentPiece >= 5) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (currentPiece >= 4) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         if (!player.isCreative()) stack.shrink(1);
         level.playSound(null, pos, SoundEvents.SLIME_BLOCK_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
         level.setBlockAndUpdate(pos, state.setValue(PIECE, currentPiece + 1));
@@ -109,14 +111,7 @@ public class GreenDumplingBlock extends Block {
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-        int piece = state.getValue(PIECE);
-        return switch (piece) {
-            case 2 -> TWO_PIECE;
-            case 3 -> THREE_PIECE;
-            case 4 -> FOUR_PIECE;
-            case 5 -> FIVE_PIECE;
-            default -> ONE_PIECE;
-        };
+        return SHAPE_BY_PIECE[state.getValue(PIECE)];
     }
 
     @Override

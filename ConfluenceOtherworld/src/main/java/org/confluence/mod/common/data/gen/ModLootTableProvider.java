@@ -25,7 +25,6 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.common.block.natural.LogBlockSet;
-import org.confluence.mod.common.block.natural.food.GreenDumplingBlock;
 import org.confluence.mod.common.block.natural.herbs.BaseHerbBlock;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.AccessoryItems;
@@ -422,44 +421,7 @@ public class ModLootTableProvider extends LootTableProvider {
             dropOther(NatureBlocks.GLOWING_MUSHROOM.get(), MaterialItems.GLOWING_MUSHROOM.get()); // TODO: 掉落概率不是100%；掉落蘑菇草种子
             dropOther(NatureBlocks.LIFE_MUSHROOM.get(), MaterialItems.LIFE_MUSHROOM.get());
             add(NatureBlocks.JUNGLE_SPORE.get(), LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.JUNGLE_SPORE.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))));
-
-            add(GREEN_DUMPLING_BLOCK.get(), LootTable.lootTable()
-                    .withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1))
-
-                            .add(LootItem.lootTableItem(FoodItems.GREEN_DUMPLING.get())
-                                    .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
-                                    .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(GREEN_DUMPLING_BLOCK.get())
-                                            .setProperties(StatePropertiesPredicate.Builder.properties()
-                                                    .hasProperty(GreenDumplingBlock.PIECE, 1))))
-
-                            .add(LootItem.lootTableItem(FoodItems.GREEN_DUMPLING.get())
-                                    .apply(SetItemCountFunction.setCount(ConstantValue.exactly(2)))
-                                    .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(GREEN_DUMPLING_BLOCK.get())
-                                            .setProperties(StatePropertiesPredicate.Builder.properties()
-                                                    .hasProperty(GreenDumplingBlock.PIECE, 2))))
-
-                            .add(LootItem.lootTableItem(FoodItems.GREEN_DUMPLING.get())
-                                    .apply(SetItemCountFunction.setCount(ConstantValue.exactly(3)))
-                                    .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(GREEN_DUMPLING_BLOCK.get())
-                                            .setProperties(StatePropertiesPredicate.Builder.properties()
-                                                    .hasProperty(GreenDumplingBlock.PIECE, 3))))
-
-                            .add(LootItem.lootTableItem(FoodItems.GREEN_DUMPLING.get())
-                                    .apply(SetItemCountFunction.setCount(ConstantValue.exactly(4)))
-                                    .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(GREEN_DUMPLING_BLOCK.get())
-                                            .setProperties(StatePropertiesPredicate.Builder.properties()
-                                                    .hasProperty(GreenDumplingBlock.PIECE, 4))))
-
-                            .add(LootItem.lootTableItem(FoodItems.GREEN_DUMPLING.get())
-                                    .apply(SetItemCountFunction.setCount(ConstantValue.exactly(5)))
-                                    .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(GREEN_DUMPLING_BLOCK.get())
-                                            .setProperties(StatePropertiesPredicate.Builder.properties()
-                                                    .hasProperty(GreenDumplingBlock.PIECE, 5))))
-                    )
-            );
         }
-
 
         @Override
         protected Iterable<Block> getKnownBlocks() {

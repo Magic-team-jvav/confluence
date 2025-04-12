@@ -1,6 +1,6 @@
 {
   "variants": {
-    "piece=1": [
+    "piece=0": [
       {
         "model": "confluence:block/green_dumpling_0"
       },
@@ -17,7 +17,7 @@
         "y": 270
       }
     ],
-    "piece=2": [
+    "piece=1": [
       {
         "model": "confluence:block/green_dumpling_1"
       },
@@ -34,7 +34,7 @@
         "y": 270
       }
     ],
-    "piece=3": [
+    "piece=2": [
       {
         "model": "confluence:block/green_dumpling_2"
       },
@@ -51,7 +51,7 @@
         "y": 270
       }
     ],
-    "piece=4": [
+    "piece=3": [
       {
         "model": "confluence:block/green_dumpling_3"
       },
@@ -68,7 +68,7 @@
         "y": 270
       }
     ],
-    "piece=5": [
+    "piece=4": [
       {
         "model": "confluence:block/green_dumpling_4"
       },

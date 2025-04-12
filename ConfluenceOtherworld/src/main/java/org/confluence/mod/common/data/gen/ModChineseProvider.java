@@ -1261,7 +1261,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.NEON_MOSS.get(), "氖苔藓");
         add(NatureBlocks.HELIUM_MOSS.get(), "氦苔藓");
         add(NatureBlocks.GROWING_MUSHROOM_MOSS.get(), "发光蘑菇苔藓");
-
         add(NatureBlocks.CATTAILS_BODY.get(), "香蒲");
         add(NatureBlocks.JUNGLE_CATTAILS_BODY.get(), "丛林香蒲");
         add(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_BODY.get(), "发光蘑菇香蒲");
@@ -1269,6 +1268,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.EBONY_CATTAILS_BODY.get(), "腐化香蒲");
         add(NatureBlocks.TR_CRIMSON_CATTAILS_BODY.get(), "猩红香蒲");
         add(NatureBlocks.FLOATING_WHEAT.get(), "飘飘麦");
+        add(NatureBlocks.COCONUT_BLOCK.get(), "椰子方块");
 
         add(LightPetItems.SHADOW_ORB.get(), "暗影珠");
         add(LightPetItems.CRIMSON_HEART.get(), "猩红心脏");
@@ -1478,7 +1478,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModBlocks.VINE_ROPE.get(), "藤蔓绳");
         add(ModBlocks.SILK_ROPE.get(), "丝绸绳");
         add(ModBlocks.WEB_ROPE.get(), "蛛丝绳");
-        add(ModBlocks.CURSED_FLAME_BLOCK.get(), "诅咒焰");
 /*
         add(Torches.RED_TORCH.item.get(), "红火把");
         add(Torches.ORANGE_TORCH.item.get(), "橙火把");
@@ -1627,7 +1626,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SHADOW_SCALE.get(), "暗影鳞片");
         add(MaterialItems.TISSUE_SAMPLE.get(), "组织样本");
         add(MaterialItems.ROYAL_WAX.get(), "蜂王蜡");
-        add(MaterialItems.CURSED_FLAME.get(), "诅咒火");
+        add(MaterialItems.CURSED_FLAME.get(), "诅咒焰");
         add(MaterialItems.ICHOR.get(), "灵液");
         add(MaterialItems.PIXIE_DUST.get(), "妖精尘");
         add(MaterialItems.PEARL.get(), "珍珠");

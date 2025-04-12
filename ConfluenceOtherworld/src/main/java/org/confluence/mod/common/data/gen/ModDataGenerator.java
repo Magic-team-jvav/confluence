@@ -3,6 +3,7 @@ package org.confluence.mod.common.data.gen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -11,8 +12,8 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.confluence.lib.common.data.gen.CollectRecipeProvider;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.gen.recipe.ModRecipeProvider;
 import org.confluence.mod.common.data.gen.recipe.CraftingRecipeProvider;
+import org.confluence.mod.common.data.gen.recipe.ModRecipeProvider;
 import org.confluence.mod.common.data.gen.recipe.NPCShopProvider;
 import org.confluence.mod.common.init.ModDamageTypes;
 
@@ -20,12 +21,12 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 @EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD)
-public class DataGenerator {
+public class ModDataGenerator {
     private static final RegistrySetBuilder DATA_BUILDER = new RegistrySetBuilder().add(Registries.DAMAGE_TYPE, ModDamageTypes::createDamageTypes);
 
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
-        net.minecraft.data.DataGenerator generator = event.getGenerator();
+        DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
         ExistingFileHelper helper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookup = event.getLookupProvider();

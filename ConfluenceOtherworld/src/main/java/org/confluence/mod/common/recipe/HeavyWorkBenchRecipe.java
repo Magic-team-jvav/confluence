@@ -23,6 +23,7 @@ public class HeavyWorkBenchRecipe extends AbstractAmountRecipe<EnvironmentRecipe
     public HeavyWorkBenchRecipe(ItemStack pResult, ShapedRecipePattern pattern) {
         super(pResult, pattern.ingredients());
         this.pattern = pattern;
+        pattern.symmetrical = true;
     }
 
     public static HeavyWorkBenchRecipe of(ShapedRecipePattern pattern, ItemStack result) {

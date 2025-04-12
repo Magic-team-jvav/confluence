@@ -73,12 +73,14 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         compressAndDecompressNine(MaterialItems.RAW_HELLSTONE.get(), ModTags.Items.RAW_MATERIALS_HELLSTONE,
                 OreBlocks.RAW_HELLSTONE_BLOCK.asItem(), ModTags.Items.RAW_MATERIALS_HELLSTONE_BLOCK, output);
 
-        // 铅砧
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, FunctionalBlocks.LEAD_ANVIL)
-                .define('I', ModTags.Items.LEAD_BLOCK).define('i', ModTags.Items.INGOTS_LEAD)
-                .pattern("III").pattern(" i ").pattern("iii")
-                .unlockedBy("hasitem", inventoryTrigger(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(MaterialItems.LEAD_INGOT)))
-                .save(output);
+        shaped(output, "", "", ShapedRecipePattern.of(Map.of(
+                'I', Ingredient.of(ModTags.Items.LEAD_BLOCK),
+                'i', Ingredient.of(ModTags.Items.INGOTS_LEAD)
+        ), List.of(
+                "III",
+                " i ",
+                "iii"
+        )), FunctionalBlocks.LEAD_ANVIL.toStack());
 
         shaped(output, "", "_from_lead_and_iron", ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Items.REDSTONE_TORCH),

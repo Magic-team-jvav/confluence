@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.common.data.gen.npc_trade.MoneyTradeItem;
 import org.confluence.mod.common.init.ModMenuTypes;
-import org.confluence.mod.network.c2s.NPCShopPacket;
+import org.confluence.terraentity.network.c2s.NPCShopPacket;
 import org.confluence.terraentity.entity.npc.NPCTrades;
 import org.confluence.terraentity.mixed.IPlayer;
 import org.confluence.terraentity.registries.npc_trade.ITrade;

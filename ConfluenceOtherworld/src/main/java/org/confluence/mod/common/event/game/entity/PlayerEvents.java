@@ -134,11 +134,6 @@ public final class PlayerEvents {
         if (event.getEntity() instanceof ServerPlayer serverPlayer && event.getTarget() instanceof Saddleable saddleable && saddleable.isSaddled()) {
             PlayerUtils.awardAchievement(serverPlayer, "the_cavalry");
         }
-        // 打开商店
-        if (event.getTarget() instanceof AbstractTerraNPC npc) {
-            ((IPlayer) event.getEntity()).terra_entity$setDaveTrades(npc.trades);
-            ((IPlayer) event.getEntity()).terra_entity$setInteractingEntity(npc);
-        }
     }
 
     @SubscribeEvent

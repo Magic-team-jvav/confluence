@@ -11,8 +11,6 @@ import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
 import org.confluence.mod.common.menu.NPCTradesMenu;
 import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.api.event.WhipRegisterModifyEvent;
-import org.confluence.terraentity.entity.npc.brain.DemolitionistNPCAi;
-import org.confluence.terraentity.init.entity.TENpcEntities;
 
 @EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class TEEvents {

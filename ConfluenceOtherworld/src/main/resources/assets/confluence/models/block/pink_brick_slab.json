@@ -1,0 +1,9 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "confluence:block/pink_brick",
+    "top": "confluence:block/pink_brick",
+    "side": "confluence:block/pink_brick"
+  },
+  "render_type": "solid"
+}

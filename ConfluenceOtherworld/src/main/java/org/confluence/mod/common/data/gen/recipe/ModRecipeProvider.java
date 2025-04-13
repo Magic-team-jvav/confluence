@@ -10,11 +10,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Blocks;
+import nowebsite.makertechno.terra_furniture.common.init.TFBlocks;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.mod.common.init.item.*;
@@ -70,6 +72,15 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 " ## ",
                 "####"
         )), StatueBlocks.A_STATUE.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2,ModTags.Items.LEAD_AND_IRON),
+                'a', Ingredient.of(Items.TORCH)
+        ), List.of(
+                " ## ",
+                "#  #",
+                "#  #",
+                "#aa#"
+        )), TFBlocks.GLASS_KILN.toStack());
     }
 
     protected void heavyWorkBench(RecipeOutput recipeOutput, String suffix, ShapedRecipePattern pattern, ItemStack result) {

@@ -7,7 +7,7 @@
         {
           "type": "minecraft:item",
           "name": "terra_curio:flower_boots",
-          "weight": 21
+          "weight": 4
         },
         {
           "type": "minecraft:item",
@@ -17,6 +17,11 @@
         {
           "type": "minecraft:item",
           "name": "terra_curio:feral_claws",
+          "weight": 21
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:staff_of_regrowth",
           "weight": 21
         },
         {

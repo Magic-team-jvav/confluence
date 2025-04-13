@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "confluence:block/blue_brick_slab"
+    },
+    "type=top": {
+      "model": "confluence:block/blue_brick_slab_top"
+    },
+    "type=double": {
+      "model": "confluence:block/blue_brick_slab_full"
+    }
+  }
+}

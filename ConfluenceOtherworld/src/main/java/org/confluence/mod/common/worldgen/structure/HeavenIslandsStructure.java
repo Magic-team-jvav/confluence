@@ -25,6 +25,7 @@ import org.joml.Vector3d;
 import java.util.*;
 
 import static org.confluence.lib.util.StructureUtils.*;
+import static org.confluence.lib.util.VectorUtils.*;
 
 public class HeavenIslandsStructure extends Structure {
     public static final MapCodec<HeavenIslandsStructure> CODEC = simpleCodec(HeavenIslandsStructure::new);
@@ -83,7 +84,7 @@ public class HeavenIslandsStructure extends Structure {
 
             if (type == 0) {
                 ellipsoid(radiusXZ - 4, radiusY - 2, radiusXZ - 4, centerPos, 0, 3, true, blockMap, centerPos.getY() - 2);
-                lineSetEllipsoid(StructureUtils.ellipsoidPos((double) radiusXZ / 2.0D, 1.99, (double) radiusXZ / 2.0D, centerPos, 0.2F, random), (double) radiusXZ / 2.0D - 3, 1.9, (double) radiusXZ / 2.0D - 3, 4, true, blockMap);
+                lineSetEllipsoid(ellipsoidPos((double) radiusXZ / 2.0D, 1.99, (double) radiusXZ / 2.0D, centerPos, 0.2F, random), (double) radiusXZ / 2.0D - 3, 1.9, (double) radiusXZ / 2.0D - 3, 4, true, blockMap);
 
                 roundPos(centerPos.offset(0, 3, 0), (double) radiusXZ / 2.0D + 2, random, vctPosList, 7, 32, 0.0F);
                 lineSetFeature(vctPosList, featureMap, feature, random);

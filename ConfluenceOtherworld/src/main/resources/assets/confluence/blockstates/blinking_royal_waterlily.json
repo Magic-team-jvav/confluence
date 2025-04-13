@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "facing=east,horizontal_four_part=front": {
+      "model": "confluence:block/blinking_royal_waterlily_front",
+      "y": 90
+    },
+    "facing=north,horizontal_four_part=front": {
+      "model": "confluence:block/blinking_royal_waterlily_front"
+    },
+    "facing=south,horizontal_four_part=front": {
+      "model": "confluence:block/blinking_royal_waterlily_front",
+      "y": 180
+    },
+    "facing=west,horizontal_four_part=front": {
+      "model": "confluence:block/blinking_royal_waterlily_front",
+      "y": 270
+    },
+    "facing=east,horizontal_four_part=corner": {
+      "model": "confluence:block/blinking_royal_waterlily_corner",
+      "y": 90
+    },
+    "facing=north,horizontal_four_part=corner": {
+      "model": "confluence:block/blinking_royal_waterlily_corner"
+    },
+    "facing=south,horizontal_four_part=corner": {
+      "model": "confluence:block/blinking_royal_waterlily_corner",
+      "y": 180
+    },
+    "facing=west,horizontal_four_part=corner": {
+      "model": "confluence:block/blinking_royal_waterlily_corner",
+      "y": 270
+    },
+    "facing=east,horizontal_four_part=right": {
+      "model": "confluence:block/blinking_royal_waterlily_right",
+      "y": 90
+    },
+    "facing=north,horizontal_four_part=right": {
+      "model": "confluence:block/blinking_royal_waterlily_right"
+    },
+    "facing=south,horizontal_four_part=right": {
+      "model": "confluence:block/blinking_royal_waterlily_right",
+      "y": 180
+    },
+    "facing=west,horizontal_four_part=right": {
+      "model": "confluence:block/blinking_royal_waterlily_right",
+      "y": 270
+    },
+    "facing=east,horizontal_four_part=base": {
+      "model": "confluence:block/blinking_royal_waterlily_base",
+      "y": 90
+    },
+    "facing=north,horizontal_four_part=base": {
+      "model": "confluence:block/blinking_royal_waterlily_base"
+    },
+    "facing=south,horizontal_four_part=base": {
+      "model": "confluence:block/blinking_royal_waterlily_base",
+      "y": 180
+    },
+    "facing=west,horizontal_four_part=base": {
+      "model": "confluence:block/blinking_royal_waterlily_base",
+      "y": 270
+    }
+  }
+}

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.confluence.lib.util.StructureUtils.*;
+import static org.confluence.lib.util.VectorUtils.ellipsoidPos;
 import static org.confluence.lib.util.VectorUtils.lightningPathList;
 
 public class BaseStructures {

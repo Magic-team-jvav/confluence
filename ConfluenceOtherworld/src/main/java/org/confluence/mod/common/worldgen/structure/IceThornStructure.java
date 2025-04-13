@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.confluence.lib.util.StructureUtils.frustumSet;
-import static org.confluence.lib.util.StructureUtils.frustumSetPos;
+import static org.confluence.lib.util.VectorUtils.frustumSetPos;
 
 public class IceThornStructure extends Structure {
     public static final MapCodec<IceThornStructure> CODEC = simpleCodec(IceThornStructure::new);

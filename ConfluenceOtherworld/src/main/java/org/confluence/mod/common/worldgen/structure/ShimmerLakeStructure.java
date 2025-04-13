@@ -21,6 +21,8 @@ import org.joml.Vector3d;
 import java.util.*;
 
 import static org.confluence.lib.util.StructureUtils.*;
+import static org.confluence.lib.util.VectorUtils.ellipsoidPos;
+import static org.confluence.lib.util.VectorUtils.roundPos;
 
 public class ShimmerLakeStructure extends Structure {
     public static final MapCodec<ShimmerLakeStructure> CODEC = simpleCodec(ShimmerLakeStructure::new);

@@ -84,6 +84,7 @@ public final class ModTabs {
                     .displayItems((parameters, output) -> {
                         Consumer<Supplier<? extends ItemLike>> action = item -> output.accept(item.get());
                         ModItems.ITEMS.getEntries().forEach(action);
+                        output.accept(TCItems.DEMON_HEART.get());
                         ConsumableItems.ITEMS.getEntries().forEach(action);
                         TreasureBagItems.ITEMS.getEntries().forEach(action);
                         ModBlocks.TOMBSTONES.keySet().forEach(action);

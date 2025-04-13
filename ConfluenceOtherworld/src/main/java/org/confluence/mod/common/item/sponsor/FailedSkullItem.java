@@ -14,8 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.item.common.TooltipItem;
 
 import java.util.List;
 

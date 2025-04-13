@@ -13,9 +13,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.FoodItems;
-import org.confluence.mod.common.item.common.TooltipItem;
 
 import java.util.ArrayList;
 import java.util.List;

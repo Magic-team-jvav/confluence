@@ -229,6 +229,19 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.paint_sprayer.0", "自动给放置的物体刷油漆或涂料");
         add("tooltip.item.confluence.coin", "潜行右键合并为上级钱币");
         add("tooltip.item.confluence.hardmode_convertor.0", "右击地面将当前世界立刻开始转变为困难模式");
+        add("tooltip.item.confluence.life_crystal.0", "最大生命永久增加4");
+        add("tooltip.item.confluence.life_fruit.0", "最大生命永久增加1");
+        add("tooltip.item.confluence.mana_crystal.0", "最大魔力永久增加20");
+        add("tooltip.item.confluence.arcane_crystal.0", "永久提高魔力再生");
+        add("tooltip.item.confluence.vital_crystal.0", "永久加速生命再生");
+        add("tooltip.item.confluence.aegis_apple.0", "永久加速生命再生");
+        add("tooltip.item.confluence.ambrosia.0", "永久提高挖矿速度和建造速度");
+        add("tooltip.item.confluence.gummy_worm.0", "永久提高钓鱼技能");
+        add("tooltip.item.confluence.galaxy_pearl.0", "永久提高运气");
+        add("tooltip.item.confluence.minecart_upgrade_kit.0", "永久提高矿车的速度并加装防御探测器");
+        add("tooltip.item.confluence.minecart_upgrade_kit.1", "“内含免费的机械货车！”");
+        add("tooltip.item.confluence.artisan_loaf.0", "使用后可永久扩大方块交互范围");
+        add("tooltip.item.confluence.artisan_loaf.1", "“曾经让泰迪想家的传奇面包”");
 
         add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "蓄满效果");
         add("tooltip.item.confluence.max_count", "多重射击");
@@ -1814,6 +1827,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.JAVELIN.get(), "标枪");
         add(ConsumableItems.VITAL_CRYSTAL.get(), "活力水晶");
         add(ConsumableItems.MINECART_UPGRADE_KIT.get(), "矿车升级包");
+        add(ConsumableItems.ARTISAN_LOAF.get(), "工匠面包");
         add(ConsumableItems.GALAXY_PEARL.get(), "银河珍珠");
         add(ConsumableItems.ARCANE_CRYSTAL.get(), "奥术水晶");
         add(ConsumableItems.AEGIS_APPLE.get(), "神盾果");

@@ -27,6 +27,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.*;
+import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.GetCustomDiggingPowerEvent;
 import org.confluence.mod.common.CommonConfigs;
@@ -41,7 +42,6 @@ import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
-import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
@@ -49,8 +49,6 @@ import org.confluence.mod.mixed.*;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
-import org.confluence.terraentity.mixed.IPlayer;
 
 import static org.confluence.mod.api.event.MinecartAbilityEvent.DismountOnMinecart;
 import static org.confluence.mod.api.event.MinecartAbilityEvent.RightClickRailBlock;
@@ -251,21 +249,12 @@ public final class PlayerEvents {
     public static void respawn(PlayerEvent.PlayerRespawnEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
         EverBeneficial everBeneficial = serverPlayer.getData(ModAttachmentTypes.EVER_BENEFICIAL);
-        if (everBeneficial.getUsedLifeCrystals() > 0) {
-            EverBeneficialItem.LIFE_CRYSTAL.post().accept(EverBeneficialItem.LIFE_CRYSTAL.id(), serverPlayer, everBeneficial, true);
-        }
-        if (everBeneficial.getUsedLifeFruits() > 0) {
-            EverBeneficialItem.LIFE_FRUITS.post().accept(EverBeneficialItem.LIFE_FRUITS.id(), serverPlayer, everBeneficial, true);
-        }
-        if (everBeneficial.isAegisAppleUsed()) {
-            EverBeneficialItem.AEGIS_APPLE.post().accept(EverBeneficialItem.AEGIS_APPLE.id(), serverPlayer, everBeneficial, true);
-        }
-        if (everBeneficial.isAmbrosiaUsed()) {
-            EverBeneficialItem.AMBROSIA.post().accept(EverBeneficialItem.AMBROSIA.id(), serverPlayer, everBeneficial, true);
-        }
-        if (everBeneficial.isGalaxyPearlUsed()) {
-            EverBeneficialItem.GALAXY_PEARL.post().accept(EverBeneficialItem.GALAXY_PEARL.id(), serverPlayer, everBeneficial, true);
-        }
+        EverBeneficialItem.LIFE_CRYSTAL.recovery(everBeneficial, eb -> eb.getUsedLifeCrystals() > 0, serverPlayer);
+        EverBeneficialItem.LIFE_FRUITS.recovery(everBeneficial, eb -> eb.getUsedLifeFruits() > 0, serverPlayer);
+        EverBeneficialItem.AEGIS_APPLE.recovery(everBeneficial, EverBeneficial::isAegisAppleUsed, serverPlayer);
+        EverBeneficialItem.AMBROSIA.recovery(everBeneficial, EverBeneficial::isAmbrosiaUsed, serverPlayer);
+        EverBeneficialItem.GALAXY_PEARL.recovery(everBeneficial, EverBeneficial::isGalaxyPearlUsed, serverPlayer);
+        EverBeneficialItem.ARTISAN_LOAF.recovery(everBeneficial, EverBeneficial::isArtisanLoafUsed, serverPlayer);
         if (event.isEndConquered()) {
             float health = serverPlayer.getPersistentData().getFloat("confluence:cached_health");
             serverPlayer.setHealth(health <= 0.0F ? 20.0F : health);

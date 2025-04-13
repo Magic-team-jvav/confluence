@@ -1,20 +1,18 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.lib.common.item.CustomRarityItem;
+import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.common.item.common.CursedFlameItem;
 import org.confluence.mod.common.item.common.MushroomItem;
-import org.confluence.mod.common.item.common.TooltipItem;
 import org.jetbrains.annotations.NotNull;
 
 public class MaterialItems {

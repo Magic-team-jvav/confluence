@@ -9,8 +9,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
 import org.confluence.mod.common.menu.NPCTradesMenu;
-import org.confluence.terraentity.api.event.InitNPCTradeEvent;
-import org.confluence.terraentity.api.event.InteractNPCEvent;
+import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.api.event.WhipRegisterModifyEvent;
 
 @EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD)
@@ -23,7 +22,7 @@ public class TEEvents {
     }
 
     @SubscribeEvent
-    public static void onInteractNpc(InteractNPCEvent event){
+    public static void onInteractNpc(NPCEvent.InteractNPCEvent event){
         event.setRedirection((npc, player)->{
             if(npc.trades != null) { // 不是所有npc都有菜单
                 player.openMenu(new SimpleMenuProvider((id, inventory, player1) ->
@@ -33,7 +32,7 @@ public class TEEvents {
     }
 
     @SubscribeEvent
-    public static void onInitNpcTrade(InitNPCTradeEvent event){
+    public static void onInitNpcTrade(NPCEvent.InitNPCTradeEvent event){
         event.setRedirection(Confluence.asResource(event.getOrigin().getPath()));
     }
 

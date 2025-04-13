@@ -21,6 +21,6 @@ public abstract class RecipeManagerMixin {
         for (ResourceLocation recipe : TCRemoval.RECIPES) {
             object.remove(recipe);
         }
-        TERemoval.processRecipes(object, resourceManager);
+        TERemoval.processRecipes(object);
     }
 }

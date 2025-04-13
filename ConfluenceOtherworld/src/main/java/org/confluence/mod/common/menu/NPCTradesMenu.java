@@ -7,7 +7,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.mod.common.data.gen.npc_trade.MoneyTradeItem;
+import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeItem;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.terraentity.network.c2s.NPCShopPacket;
 import org.confluence.terraentity.entity.npc.NPCTrades;

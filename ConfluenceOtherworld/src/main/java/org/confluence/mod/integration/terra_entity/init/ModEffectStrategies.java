@@ -1,9 +1,11 @@
-package org.confluence.mod.common.init;
+package org.confluence.mod.integration.terra_entity.init;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModEntities;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.confluence.terraentity.registries.hit_effect.EffectStrategy;
 import org.confluence.terraentity.registries.TERegistries;
@@ -56,7 +58,7 @@ public final class ModEffectStrategies {
 
     /** 魔光剑*/
     private static final  DeferredHolder<EffectStrategy, EffectStrategy> LIGHTS_BANE_EFFECT = createEffect("lights_bane",
-            ON_HIT_PROJECTILE.apply((level)->ModEntities.LIGHTS_BANE_PROJECTILE.get().create(level).addAttackDamage(7f)));
+            ON_HIT_PROJECTILE.apply((level)-> ModEntities.LIGHTS_BANE_PROJECTILE.get().create(level).addAttackDamage(7f)));
 
     /** 养蜂人*/
     private static final  DeferredHolder<EffectStrategy, EffectStrategy> BEE_KEEPER_EFFECT = createEffect("bee_keeper",

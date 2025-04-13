@@ -21,6 +21,7 @@ import org.confluence.mod.common.item.sword.LightSaber;
 import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.item.sword.legacy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
+import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
 import org.confluence.terraentity.init.TEEffectStrategies;
 import org.confluence.terraentity.init.TESounds;
 import org.confluence.terraentity.registries.generation.variant.ForwardGeneration;

@@ -14,12 +14,10 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.data.gen.npc_trade.ModTradeProviders;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.integration.terra_entity.TEEvents;
-import org.confluence.terraentity.init.TEEntityDataSerializers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

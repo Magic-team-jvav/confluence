@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.gen.npc_trade;
+package org.confluence.mod.integration.terra_entity.npc_trade;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.registries.npc_trade.ITrade;
 import org.confluence.terraentity.registries.npc_trade.TradeProvider;

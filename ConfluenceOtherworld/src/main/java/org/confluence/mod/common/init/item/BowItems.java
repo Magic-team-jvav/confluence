@@ -15,7 +15,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.common.entity.projectile.range.arrow.BeeArrow;
-import org.confluence.mod.common.init.ModEffectStrategies;
+import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.bow.BaseArrowItem;
 import org.confluence.mod.common.item.bow.DaedalusStormbow;

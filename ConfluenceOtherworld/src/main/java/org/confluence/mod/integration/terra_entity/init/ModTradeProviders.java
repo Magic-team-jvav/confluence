@@ -1,8 +1,9 @@
-package org.confluence.mod.common.data.gen.npc_trade;
+package org.confluence.mod.integration.terra_entity.init;
 
 import com.mojang.serialization.MapCodec;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeItem;
 import org.confluence.terraentity.registries.TERegistries;
 import org.confluence.terraentity.registries.npc_trade.ITrade;
 import org.confluence.terraentity.registries.npc_trade.TradeProvider;

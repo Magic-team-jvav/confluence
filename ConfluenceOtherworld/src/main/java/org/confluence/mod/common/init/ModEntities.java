@@ -31,7 +31,7 @@ import java.util.function.Supplier;
 /**
  * Fast Link:
  * <p>渲染器 {@link org.confluence.mod.client.event.ModClientEvents#registerEntityRenderers}
- * <p>发包   {@link ModEvents#registerPayloadHandlers)}
+ * <p>发包   {@link ModEvents#registerPayloadHandlers}
  * <p>属性   {@link ModEvents#registerAttributes}
  */
 public final class ModEntities {

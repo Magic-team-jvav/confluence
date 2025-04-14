@@ -16,7 +16,7 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.integration.ponder.PonderHelper;
-import org.confluence.mod.mixin.accessor.LanguageProviderAccessor;
+import org.confluence.lib.mixin.accessor.LanguageProviderAccessor;
 
 import java.util.function.Consumer;
 

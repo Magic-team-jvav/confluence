@@ -11,29 +11,47 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.block.HorizontalDirectionalWithHorizontalFourPartBlock;
 import org.confluence.mod.common.init.ModFluids;
 import org.jetbrains.annotations.Nullable;
 
-public class BlinkingRoyalWaterlilyBlock extends HorizontalDirectionalWithHorizontalFourPartBlock {
-    public static final MapCodec<BlinkingRoyalWaterlilyBlock> CODEC = simpleCodec(BlinkingRoyalWaterlilyBlock::new);
+public class BlinkingRoyalShimmerlilyBlock extends HorizontalDirectionalWithHorizontalFourPartBlock {
+    public static final MapCodec<BlinkingRoyalShimmerlilyBlock> CODEC = simpleCodec(BlinkingRoyalShimmerlilyBlock::new);
+    private static final VoxelShape A_SHAPE = box(3,-1,0,16,0,13); // 南
+    private static final VoxelShape B_SHAPE = box(3,-1,3,16,0,16); // 西
+    private static final VoxelShape C_SHAPE = box(0,-1,3,13,0,16); // 北
+    private static final VoxelShape D_SHAPE = box(0,-1,0,13,0,13); // 东
+    private static final VoxelShape[] BASE_SHAPES = new VoxelShape[]{A_SHAPE, B_SHAPE, C_SHAPE, D_SHAPE};
+    private static final VoxelShape[] RIGHT_SHAPES = new VoxelShape[]{D_SHAPE, A_SHAPE, B_SHAPE, C_SHAPE};
+    private static final VoxelShape[] CORNER_SHAPES = new VoxelShape[]{C_SHAPE, D_SHAPE, A_SHAPE, B_SHAPE};
+    private static final VoxelShape[] FRONT_SHAPES = new VoxelShape[]{B_SHAPE, C_SHAPE, D_SHAPE, A_SHAPE};
 
-    public BlinkingRoyalWaterlilyBlock(Properties properties) {
+    public BlinkingRoyalShimmerlilyBlock(Properties properties) {
         super(properties);
     }
 
     @Override
-    protected MapCodec<BlinkingRoyalWaterlilyBlock> codec() {
+    protected MapCodec<BlinkingRoyalShimmerlilyBlock> codec() {
         return CODEC;
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        int index = state.getValue(FACING).get2DDataValue();
+        return switch (state.getValue(PART)) {
+            case BASE -> BASE_SHAPES[index];
+            case RIGHT -> RIGHT_SHAPES[index];
+            case FRONT -> FRONT_SHAPES[index];
+            case CORNER -> CORNER_SHAPES[index];
+        };
     }
 
     @Override

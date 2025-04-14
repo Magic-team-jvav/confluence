@@ -274,7 +274,7 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> TR_CRIMSON_DROOPING_VINE = registerWithItem("tr_crimson_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
     public static final DeferredBlock<Block> HALLOW_DROOPING_VINE = registerWithItem("hallow_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
 
-    public static final DeferredBlock<Block> BLINKING_ROYAL_WATERLILY = registerWithItem("blinking_royal_waterlily", () -> new BlinkingRoyalWaterlilyBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LILY_PAD)), BlinkingRoyalWaterlilyBlock.Item::new);
+    public static final DeferredBlock<Block> BLINKING_ROYAL_SHIMMERLILY = registerWithItem("blinking_royal_shimmerlily", () -> new BlinkingRoyalShimmerlilyBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LILY_PAD)), BlinkingRoyalShimmerlilyBlock.Item::new);
 
     //苔藓
     public static final DeferredBlock<BaseMossBlock> GREEN_MOSS = registerWithItem("green_moss", () -> new BaseMossBlock(5));

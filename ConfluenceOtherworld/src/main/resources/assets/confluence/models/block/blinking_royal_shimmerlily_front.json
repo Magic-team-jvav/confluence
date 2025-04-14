@@ -3,8 +3,8 @@
 	"texture_size": [64, 64],
 	"render_type": "cutout",
 	"textures": {
-		"0": "confluence:block/blinking_royal_waterlily",
-		"particle": "confluence:block/blinking_royal_waterlily"
+		"0": "confluence:block/blinking_royal_shimmerlily",
+		"particle": "confluence:block/blinking_royal_shimmerlily"
 	},
 	"elements": [
 		{

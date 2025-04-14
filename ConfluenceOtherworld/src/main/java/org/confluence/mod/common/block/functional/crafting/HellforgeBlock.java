@@ -58,16 +58,18 @@ import static org.confluence.mod.common.menu.HellforgeMenu.*;
 
 public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBlock implements EntityBlock {
     public static final MapCodec<HellforgeBlock> CODEC = simpleCodec(HellforgeBlock::new);
-    private static final VoxelShape BASE_SHAPE_SOUTH = box(3, 0, 3, 16, 16, 13);
-    private static final VoxelShape BASE_SHAPE_WEST = box(3, 0, 3, 13, 16, 16);
-    private static final VoxelShape BASE_SHAPE_NORTH = box(0, 0, 3, 13, 16, 13);
-    private static final VoxelShape BASE_SHAPE_EAST = box(3, 0, 0, 13, 16, 13);
-    private static final VoxelShape RIGHT_SHAPE_SOUTH = box(0, 0, 3, 13, 16, 13);
-    private static final VoxelShape RIGHT_SHAPE_WEST = box(3, 0, 0, 13, 16, 13);
-    private static final VoxelShape RIGHT_SHAPE_NORTH = box(3, 0, 3, 16, 16, 13);
-    private static final VoxelShape RIGHT_SHAPE_EAST = box(3, 0, 3, 13, 16, 16);
-    private static final VoxelShape[] BASE_SHAPES = new VoxelShape[]{BASE_SHAPE_SOUTH, BASE_SHAPE_WEST, BASE_SHAPE_NORTH, BASE_SHAPE_EAST};
-    private static final VoxelShape[] RIGHT_SHAPES = new VoxelShape[]{RIGHT_SHAPE_SOUTH, RIGHT_SHAPE_WEST, RIGHT_SHAPE_NORTH, RIGHT_SHAPE_EAST};
+    private static final VoxelShape[] BASE_SHAPES = new VoxelShape[]{
+            box(3, 0, 3, 16, 16, 13),
+            box(3, 0, 3, 13, 16, 16),
+            box(0, 0, 3, 13, 16, 13),
+            box(3, 0, 0, 13, 16, 13)
+    };
+    private static final VoxelShape[] RIGHT_SHAPES = new VoxelShape[]{
+            box(0, 0, 3, 13, 16, 13),
+            box(3, 0, 0, 13, 16, 13),
+            box(3, 0, 3, 16, 16, 13),
+            box(3, 0, 3, 13, 16, 16)
+    };
 
     public HellforgeBlock(Properties properties) {
         super(properties);

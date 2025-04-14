@@ -8,10 +8,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terraentity.registries.npc_trade.ITrade;
+import org.confluence.terraentity.registries.npc_trade.ITradeItem;
 import org.confluence.terraentity.registries.npc_trade.TradeProvider;
 
-public record MoneyTradeItem(ItemStack result, long cost)implements ITrade {
+public record MoneyTradeItem(ItemStack result, long cost)implements ITradeItem {
     public boolean canTrade(Player player) {
         return PlayerUtils.getMoney(player) >= cost;
     }

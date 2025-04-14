@@ -5,6 +5,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.lib.util.MultiplyExplosionDamageCalculator;
@@ -44,11 +45,15 @@ public class BaseGrenadeEntity extends BaseBombEntity {
     protected void explodeFunction() {
         level().explode(
                 this, Explosion.getDefaultDamageSource(level(), this),
-                new MultiplyExplosionDamageCalculator(2.0F),
+                getExplosionDamageCalculator(),
                 getX(), getY(), getZ(), 1.5F, false,
                 Level.ExplosionInteraction.NONE, ParticleTypes.EXPLOSION,
                 ParticleTypes.EXPLOSION_EMITTER, SoundEvents.GENERIC_EXPLODE
         );
+    }
+
+    protected ExplosionDamageCalculator getExplosionDamageCalculator() {
+        return new MultiplyExplosionDamageCalculator(2F);
     }
 
     @Override

@@ -10,6 +10,7 @@ import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -64,7 +65,11 @@ public class BaseBombEntity extends ThrowableItemProjectile {
      * 子类可以覆盖的方法，定义炸弹如何爆炸
      */
     protected void explodeFunction() {
-        level().explode(this, Explosion.getDefaultDamageSource(level(), this), new MultiplyExplosionDamageCalculator(0.2F), getX(), getY(), getZ(), blastPower, false, Level.ExplosionInteraction.BLOCK);
+        level().explode(this, Explosion.getDefaultDamageSource(level(), this), getExplosionDamageCalculator(), getX(), getY(), getZ(), blastPower, false, Level.ExplosionInteraction.BLOCK);
+    }
+
+    protected ExplosionDamageCalculator getExplosionDamageCalculator() {
+        return new MultiplyExplosionDamageCalculator(0.2F);
     }
 
     @Override

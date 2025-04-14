@@ -34,6 +34,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
     private final Player player;
     private Runnable slotUpdateListener = () -> {};
     public final EnvironmentRecipeInput input;
+    private final AmountResultSlot<SkyMillRecipe> resultSlot;
     private final ResultContainer result = new ResultContainer();
     private final DataSlot selectedRecipeIndex = DataSlot.standalone();
     private List<RecipeHolder<SkyMillRecipe>> recipes = Lists.newArrayList();
@@ -53,7 +54,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
                 SkyMillMenu.this.slotUpdateListener.run();
             }
         };
-        addSlot(new AmountResultSlot(input, result, 0, 35, 14) {
+        this.resultSlot = new AmountResultSlot<>(input, result, 0, 35, 14) {
             @Override
             public void onTake(Player pPlayer, ItemStack pStack) {
                 super.onTake(pPlayer, pStack);
@@ -68,7 +69,8 @@ public class SkyMillMenu extends AbstractContainerMenu {
             protected void updateMenu() {
                 SkyMillMenu.this.setupResultSlot();
             }
-        });
+        };
+        addSlot(resultSlot);
         addSlot(new Slot(input, 0, 35, 57));
         addSlot(new Slot(input, 1, 16, 38));
         addSlot(new Slot(input, 2, 54, 38));
@@ -131,7 +133,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
                     if (selectedRecipeIndex.get() == -1) selectedRecipeIndex.set(0);
                     SkyMillRecipe recipe = recipes.get(selectedRecipeIndex.get()).value();
                     itemStack = recipe.getResultItem(null).copy();
-                    setCurrentRecipe(recipe);
+                    resultSlot.setCurrentRecipe(recipe);
                 }
                 result.setItem(0, itemStack);
                 setRemoteSlot(0, itemStack);
@@ -140,19 +142,13 @@ public class SkyMillMenu extends AbstractContainerMenu {
         });
     }
 
-    private void setCurrentRecipe(SkyMillRecipe recipe) {
-        if (getSlot(0) instanceof AmountResultSlot amountResultSlot) {
-            amountResultSlot.setCurrentRecipe(recipe);
-        }
-    }
-
     private void setupResultSlot() {
         if (!recipes.isEmpty() && isValidRecipeIndex(selectedRecipeIndex.get())) {
             SkyMillRecipe recipe = recipes.get(selectedRecipeIndex.get()).value();
             ItemStack itemStack = recipe.getResultItem(null).copy();
             if (itemStack.isItemEnabled(player.level().enabledFeatures())) {
                 result.setItem(0, itemStack);
-                setCurrentRecipe(recipe);
+                resultSlot.setCurrentRecipe(recipe);
             } else {
                 result.setItem(0, ItemStack.EMPTY);
             }

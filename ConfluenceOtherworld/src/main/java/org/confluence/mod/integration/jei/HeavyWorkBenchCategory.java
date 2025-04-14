@@ -17,6 +17,7 @@ import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
 import mezz.jei.api.runtime.IIngredientManager;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
@@ -28,7 +29,6 @@ import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.menu.HeavyWorkBenchMenu;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
-import org.confluence.terra_curio.integration.jei.JeiBackGround;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -38,7 +38,7 @@ import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
 public class HeavyWorkBenchCategory implements IRecipeCategory<HeavyWorkBenchRecipe> {
     public static final RecipeType<HeavyWorkBenchRecipe> TYPE = RecipeType.create(Confluence.MODID, "heavy_work_bench", HeavyWorkBenchRecipe.class);
     private static final Component TITLE = Component.translatable("title.confluence.heavy_work_bench");
-    private static final IDrawable BACKGROUND = new JeiBackGround(144, 80, Confluence.asResource("textures/gui/heavy_work_bench.png"));
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/heavy_work_bench.png");
     private final IDrawable icon;
     private final IIngredientManager ingredientManager;
 
@@ -57,10 +57,14 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<HeavyWorkBenchRec
         return TITLE;
     }
 
-    @SuppressWarnings("removal")
     @Override
-    public IDrawable getBackground() {
-        return BACKGROUND;
+    public int getWidth() {
+        return 144;
+    }
+
+    @Override
+    public int getHeight() {
+        return 80;
     }
 
     @Override
@@ -88,6 +92,7 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<HeavyWorkBenchRec
 
     @Override
     public void draw(HeavyWorkBenchRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        guiGraphics.blit(BACKGROUND, 0, 0, 0, 0, 144, 80, 144, 80);
         if (mouseX >= 80 && mouseX <= 80 + 28 && mouseY >= 29 && mouseY <= 29 + 23) {
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate(0, 80, 0);

@@ -11,13 +11,13 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.container.HellforgeScreen;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.HellforgeRecipe;
-import org.confluence.terra_curio.integration.jei.JeiBackGround;
 import org.jetbrains.annotations.Nullable;
 
 import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
@@ -25,7 +25,7 @@ import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
 public class HellforgeCategory implements IRecipeCategory<HellforgeRecipe> {
     public static final RecipeType<HellforgeRecipe> TYPE = RecipeType.create(Confluence.MODID, "hellforge", HellforgeRecipe.class);
     private static final Component TITLE = Component.translatable("title.confluence.hellforge");
-    private static final IDrawable BACKGROUND = new JeiBackGround(112, 48, Confluence.asResource("textures/gui/hellforge.png"));
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/hellforge.png");
     private final IDrawable icon;
 
     public HellforgeCategory(IJeiHelpers jeiHelpers) {
@@ -42,10 +42,14 @@ public class HellforgeCategory implements IRecipeCategory<HellforgeRecipe> {
         return TITLE;
     }
 
-    @SuppressWarnings("removal")
     @Override
-    public IDrawable getBackground() {
-        return BACKGROUND;
+    public int getWidth() {
+        return 112;
+    }
+
+    @Override
+    public int getHeight() {
+        return 48;
     }
 
     @Override
@@ -71,6 +75,7 @@ public class HellforgeCategory implements IRecipeCategory<HellforgeRecipe> {
 
     @Override
     public void draw(HellforgeRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        guiGraphics.blit(BACKGROUND, 0, 0, 0, 0, 112, 48, 112, 48);
         if (recipe.isRequiresFuel()) {
             guiGraphics.blit(HellforgeScreen.SUPER_LIT_PROGRESS, 54, 25, 0, 0, 14, 14, 14, 14);
             if (mouseX >= 54 && mouseX <= 68 && mouseY >= 25 && mouseY <= 39) {

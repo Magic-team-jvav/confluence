@@ -67,6 +67,7 @@ public final class ModJeiPlugin implements IModPlugin {
             registration.addRecipes(FletchingTableCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.FLETCHING_TABLE_TYPE.get()));
         }
         registration.addRecipes(CookingPotCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.COOKING_POT_TYPE.get()));
+        registration.addRecipes(SawmillCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.SAWMILL_TYPE.get()));
     }
 
     private static <I extends RecipeInput, T extends Recipe<I>> List<T> getAllRecipesFor(RecipeManager recipeManager, RecipeType<T> recipeType) {
@@ -87,11 +88,13 @@ public final class ModJeiPlugin implements IModPlugin {
         }
         registration.addRecipeCatalyst(FunctionalBlocks.LEAD_ANVIL.toStack(), RecipeTypes.ANVIL);
         registration.addRecipeCatalyst(FunctionalBlocks.COOKING_POT.toStack(), CookingPotCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.CAULDRON.toStack(), CookingPotCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.SAWMILL.toStack(), SawmillCategory.TYPE);
     }
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addRecipeClickArea(ShapedAmountContainerScreen4x.class, 95, 32, 28, 23, HeavyWorkBenchCategory.TYPE);
+        registration.addRecipeClickArea(ShapedAmountContainerScreen4x.class, 95, 32, 28, 23, HeavyWorkBenchCategory.TYPE, SawmillCategory.TYPE);
         if (CommonConfigs.FLETCHING_MENU.get()) {
             registration.addRecipeClickArea(FletchingTableScreen.class, 87, 31, 28, 23, FletchingTableCategory.TYPE);
         }

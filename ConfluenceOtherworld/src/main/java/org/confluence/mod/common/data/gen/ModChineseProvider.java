@@ -602,7 +602,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("block.confluence.shimmer", "微光");
         add("block.confluence.honey", "蜂蜜");
 
-        add("title.confluence.shimmer_transmutation", "微光嬗变");
         add("condition.confluence.shimmer_transmutation.before_skeletron", "需要的游戏阶段：骷髅王前");
         add("condition.confluence.shimmer_transmutation.after_skeletron", "需要的游戏阶段：骷髅王后");
         add("condition.confluence.shimmer_transmutation.wall_of_flesh", "需要的游戏阶段：肉后");
@@ -610,25 +609,29 @@ public class ModChineseProvider extends LanguageProvider {
         add("condition.confluence.shimmer_transmutation.plantera", "需要的游戏阶段：世花后");
         add("condition.confluence.shimmer_transmutation.golem", "需要的游戏阶段：石巨人后");
         add("condition.confluence.shimmer_transmutation.moon_lord", "需要的游戏阶段：月后");
-        add("title.confluence.altar", "祭坛");
-        add("title.confluence.sky_mill", "天磨");
+        add("condition.confluence.requires_fuel", "需要燃料");
+
         add("container.confluence.sky_mill", "天磨");
-        add("title.confluence.heavy_work_bench", "重型工作台");
         add("container.confluence.heavy_work_bench", "重型工作台");
-        add("title.confluence.hellforge", "地狱熔炉");
         add("container.confluence.hellforge", "地狱熔炉");
         add("container.confluence.alchemy_table", "炼药桌");
         add("container.confluence.cooking_pot", "烹饪锅");
-        add("title.confluence.alchemy_table", "炼药桌");
-        add("condition.confluence.requires_fuel", "需要燃料");
         add("container.confluence.fletching_table", "制箭台");
+        add("container.confluence.piggy_bank", "猪猪存钱罐");
+        add("container.confluence.npc_shop", "npc商店");
+        add("container.confluence.sawmill", "锯木机");
+
+        add("title.confluence.shimmer_transmutation", "微光嬗变");
+        add("title.confluence.altar", "祭坛");
+        add("title.confluence.sky_mill", "天磨");
+        add("title.confluence.heavy_work_bench", "重型工作台");
+        add("title.confluence.hellforge", "地狱熔炉");
+        add("title.confluence.alchemy_table", "炼药桌");
         add("title.confluence.fletching_table", "制箭台");
         add("title.confluence.touhoulittlemaid", "女仆特供");
         add("title.confluence.npc_trade", "汇流商店");
         add("title.confluence.cooking_pot", "烹饪锅");
-        add("container.confluence.piggy_bank", "猪猪存钱罐");
-        add("container.confluence.npc_shop", "npc商店");
-
+        add("title.confluence.sawmill", "锯木机");
 
 
         add("block.confluence.base_chest_block.locked_golden", "§r上锁的金箱");
@@ -1979,6 +1982,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.SCULK_TRAP.get(), "幽匿陷阱");
         add(FunctionalBlocks.ROLLING_CACTUS_BOULDER.get(), "仙人球");
         add(FunctionalBlocks.PIGGY_BANK.get(), "猪猪存钱罐");
+        add(FunctionalBlocks.CAULDRON.get(), "大锅");
+        add(FunctionalBlocks.SAWMILL.get(), "锯木机");
 
         add(ModBlocks.TOMBSTONE.get(), "墓石");
         add(ModBlocks.GRAVE_MARKER.get(), "墓石碑");

@@ -10,7 +10,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.confluence.terra_furniture.common.init.TFRegistries;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
@@ -18,6 +17,8 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
+import org.confluence.terra_furniture.common.init.TFBlocks;
+import org.confluence.terra_furniture.common.init.TFRegistries;
 import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TESummonItems;
@@ -67,6 +68,8 @@ public final class ModTabs {
                         output.accept(ToolItems.WIRE_CUTTER.get());
                         BaseChestBlock.Variant.acceptTab(output);
                         FunctionalBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
+                        output.accept(TFBlocks.GLASS_KILN.get());
+                        output.accept(TFBlocks.LIVING_LOOM.get());
                     }).withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "materials")).withTabsBefore(TFRegistries.FURNITURE.getId()).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MATERIALS = TABS.register("materials",
             () -> CreativeModeTab.builder().icon(() -> IconItems.MATERIAL_ICON.get().getDefaultInstance())

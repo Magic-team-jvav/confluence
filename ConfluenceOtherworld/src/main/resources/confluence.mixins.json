@@ -17,7 +17,6 @@
         "StructureTemplateMixin",
         "StructureTemplateMixin$StructureBlockInfoMixin",
         "VillagerTrades$EmeraldsForVillagerTypeItemMixin",
-        "accessor.LanguageProviderAccessor",
         "block.AnvilBlockMixin",
         "block.BaseContainerBlockEntityMixin",
         "block.BlockBehaviourMixin",

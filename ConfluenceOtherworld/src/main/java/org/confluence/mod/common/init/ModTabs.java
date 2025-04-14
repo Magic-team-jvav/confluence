@@ -10,7 +10,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import nowebsite.makertechno.terra_furniture.common.init.TFRegistries;
+import org.confluence.terra_furniture.common.init.TFRegistries;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;

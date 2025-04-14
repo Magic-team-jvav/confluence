@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Blocks;
+import org.confluence.lib.client.screen.ShapedAmountContainerScreen4x;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.client.gui.container.*;
@@ -90,7 +91,7 @@ public final class ModJeiPlugin implements IModPlugin {
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addRecipeClickArea(HeavyWorkBenchScreen.class, 95, 32, 28, 23, HeavyWorkBenchCategory.TYPE);
+        registration.addRecipeClickArea(ShapedAmountContainerScreen4x.class, 95, 32, 28, 23, HeavyWorkBenchCategory.TYPE);
         if (CommonConfigs.FLETCHING_MENU.get()) {
             registration.addRecipeClickArea(FletchingTableScreen.class, 87, 31, 28, 23, FletchingTableCategory.TYPE);
         }

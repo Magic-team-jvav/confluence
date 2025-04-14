@@ -55,6 +55,7 @@ public final class MusicHandler {
         if ((playingMusic == null || (nextSong != null && isSameModButDifferentSong(nextSong.getLocation(), playingMusic.getLocation()))) && nextSongDelay-- <= 0) {
             if (volume > 0.0F) {
                 volume -= 0.01F;
+                float v = minecraft.options.getSoundSourceVolume(SoundSource.MUSIC) * volume;
                 Map<SoundInstance, ChannelAccess.ChannelHandle> instanceToChannel = minecraft.getSoundManager().soundEngine.instanceToChannel;
                 for (Map.Entry<SoundInstance, ChannelAccess.ChannelHandle> entry : instanceToChannel.entrySet()) {
                     if (entry.getKey().getSource() != SoundSource.MUSIC) continue;
@@ -62,7 +63,7 @@ public final class MusicHandler {
                         if (volume <= 0.0F) {
                             channel.stop();
                         } else {
-                            channel.setVolume(volume);
+                            channel.setVolume(v);
                         }
                     });
                 }

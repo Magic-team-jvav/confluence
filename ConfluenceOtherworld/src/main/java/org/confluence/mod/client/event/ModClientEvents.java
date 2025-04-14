@@ -26,6 +26,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import org.confluence.lib.client.screen.ShapedAmountContainerScreen4x;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
@@ -126,12 +127,13 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenuTypes.SKY_MILL.get(), SkyMillScreen::new);
-        event.register(ModMenuTypes.HEAVY_WORK_BENCH.get(), HeavyWorkBenchScreen::new);
+        ShapedAmountContainerScreen4x.register(ModMenuTypes.HEAVY_WORK_BENCH.get(), event::register);
         event.register(ModMenuTypes.HELLFORGE.get(), HellforgeScreen::new);
         event.register(ModMenuTypes.FLETCHING_TABLE.get(), FletchingTableScreen::new);
         event.register(ModMenuTypes.ALCHEMY_TABLE.get(), AlchemyTableScreen::new);
         event.register(ModMenuTypes.EXTRA_INVENTORY.get(), ExtraInventoryScreen::new);
         event.register(ModMenuTypes.COOKING_POT.get(), CookingPotScreen::new);
+        ShapedAmountContainerScreen4x.register(ModMenuTypes.SAWMILL.get(), event::register);
         event.register(ModMenuTypes.MAID_TRADES_MENU.get(), NPCTradeScreen::new);
         event.register(ModMenuTypes.REFORGE_MENU.get(), NPCReforgeScreen::new);
     }

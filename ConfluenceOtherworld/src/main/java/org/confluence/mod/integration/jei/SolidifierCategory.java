@@ -14,23 +14,24 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.recipe.SawmillRecipe;
+import org.confluence.mod.common.recipe.SolidifierRecipe;
+import org.confluence.terra_furniture.TerraFurniture;
 import org.jetbrains.annotations.Nullable;
 
 import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
 
-public class SawmillCategory implements IRecipeCategory<SawmillRecipe> {
-    public static final RecipeType<SawmillRecipe> TYPE = RecipeType.create(Confluence.MODID, "sawmill", SawmillRecipe.class);
-    private static final Component TITLE = Component.translatable("title.confluence.sawmill");
-    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/sawmill.png");
+public class SolidifierCategory implements IRecipeCategory<SolidifierRecipe> {
+    public static final RecipeType<SolidifierRecipe> TYPE = RecipeType.create(Confluence.MODID, "solidifier", SolidifierRecipe.class);
+    private static final Component TITLE = Component.translatable("title.confluence.solidifier");
+    private static final ResourceLocation BACKGROUND = TerraFurniture.asResource("textures/gui/solidifier.png");
     private final IDrawable icon;
 
-    public SawmillCategory(IJeiHelpers jeiHelpers) {
-        this.icon = jeiHelpers.getGuiHelper().createDrawableItemStack(FunctionalBlocks.SAWMILL.toStack());
+    public SolidifierCategory(IJeiHelpers jeiHelpers) {
+        this.icon = jeiHelpers.getGuiHelper().createDrawableItemStack(FunctionalBlocks.SOLIDIFIER.toStack());
     }
 
     @Override
-    public RecipeType<SawmillRecipe> getRecipeType() {
+    public RecipeType<SolidifierRecipe> getRecipeType() {
         return TYPE;
     }
 
@@ -55,7 +56,7 @@ public class SawmillCategory implements IRecipeCategory<SawmillRecipe> {
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, SawmillRecipe recipe, IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, SolidifierRecipe recipe, IFocusGroup focuses) {
         ShapedRecipePattern pattern = recipe.pattern;
         int width = pattern.width();
         int height = pattern.height();
@@ -73,7 +74,7 @@ public class SawmillCategory implements IRecipeCategory<SawmillRecipe> {
     }
 
     @Override
-    public void draw(SawmillRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(SolidifierRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         guiGraphics.blit(BACKGROUND, 0, 0, 0, 0, 144, 80, 144, 80);
     }
 }

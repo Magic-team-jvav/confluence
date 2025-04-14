@@ -12,7 +12,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Blocks;
-import org.confluence.lib.client.screen.ShapedAmountContainerScreen4x;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.client.gui.container.*;
@@ -50,6 +49,8 @@ public final class ModJeiPlugin implements IModPlugin {
             registration.addRecipeCategories(new FletchingTableCategory(jeiHelpers));
         }
         registration.addRecipeCategories(new CookingPotCategory(jeiHelpers));
+        registration.addRecipeCategories(new SawmillCategory(jeiHelpers));
+        registration.addRecipeCategories(new SolidifierCategory(jeiHelpers));
     }
 
     @Override
@@ -68,6 +69,7 @@ public final class ModJeiPlugin implements IModPlugin {
         }
         registration.addRecipes(CookingPotCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.COOKING_POT_TYPE.get()));
         registration.addRecipes(SawmillCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.SAWMILL_TYPE.get()));
+        registration.addRecipes(SolidifierCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.SOLIDIFIER_TYPE.get()));
     }
 
     private static <I extends RecipeInput, T extends Recipe<I>> List<T> getAllRecipesFor(RecipeManager recipeManager, RecipeType<T> recipeType) {
@@ -90,11 +92,14 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(FunctionalBlocks.COOKING_POT.toStack(), CookingPotCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.CAULDRON.toStack(), CookingPotCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.SAWMILL.toStack(), SawmillCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.SOLIDIFIER.toStack(), SolidifierCategory.TYPE);
     }
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addRecipeClickArea(ShapedAmountContainerScreen4x.class, 95, 32, 28, 23, HeavyWorkBenchCategory.TYPE, SawmillCategory.TYPE);
+        registration.addRecipeClickArea(HeavyWorkBenchScreen.class, 95, 32, 28, 23, HeavyWorkBenchCategory.TYPE);
+        registration.addRecipeClickArea(SawmillScreen.class, 95, 32, 28, 23, SawmillCategory.TYPE);
+        registration.addRecipeClickArea(SolidifierScreen.class, 95, 32, 28, 23, SolidifierCategory.TYPE);
         if (CommonConfigs.FLETCHING_MENU.get()) {
             registration.addRecipeClickArea(FletchingTableScreen.class, 87, 31, 28, 23, FletchingTableCategory.TYPE);
         }

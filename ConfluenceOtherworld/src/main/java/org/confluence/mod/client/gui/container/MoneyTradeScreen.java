@@ -7,8 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.client.event.ModClientSetups;
-import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeItem;
-import org.confluence.terraentity.client.gui.container.TETradeItemScreen;
+import org.confluence.terraentity.client.gui.container.TETradeScreen;
 import org.confluence.terraentity.entity.npc.NPCTrades;
 import org.confluence.mod.common.menu.NPCTradesMenu;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
@@ -16,11 +15,11 @@ import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.mixed.IPlayer;
 
 
-public class MoneyTradeItemScreen extends TETradeItemScreen<NPCTradesMenu> {
+public class MoneyTradeScreen extends TETradeScreen<NPCTradesMenu> {
 
     ImageButton forgeBt;
 
-    public MoneyTradeItemScreen(NPCTradesMenu menu, Inventory playerInventory, Component title) {
+    public MoneyTradeScreen(NPCTradesMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
         this.imageWidth = 290;
         this.inventoryLabelX = 107;

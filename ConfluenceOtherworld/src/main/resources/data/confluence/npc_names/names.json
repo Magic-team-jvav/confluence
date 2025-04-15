@@ -1,0 +1,14 @@
+{
+  "terra_entity:guide": {
+    "names_weights": {
+      "magic_harp": 10.0,
+      "coffee": 5.0
+    }
+  },
+  "terra_entity:nurse": {
+    "names_weights": {
+      "westernat": 2.0,
+      "gugu": 3.0
+    }
+  }
+}

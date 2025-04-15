@@ -13,9 +13,11 @@ import org.confluence.mod.integration.terra_entity.brain.ConfluenceDemolitionist
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
 import org.confluence.mod.common.menu.NPCTradesMenu;
+import org.confluence.terraentity.api.event.LoadNPCNamesEvent;
 import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.api.event.WhipRegisterModifyEvent;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
+import org.confluence.terraentity.entity.npc.NPCNames;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 
 @EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD)
@@ -67,12 +69,19 @@ public class TEEvents {
 
     }
 
+    @SubscribeEvent
+    public static void onInitNpcName(LoadNPCNamesEvent event){
+        event.addFile(Confluence.asResource(NPCNames.KEY + "/" + NPCNames.FILE_NAME + ".json"));
+    }
+
+
 
     public static void init(IEventBus eventBus){
-        eventBus.addListener(TEEvents::onRegisterWhips);
-        eventBus.addListener(TEEvents::onInteractNpc);
-        eventBus.addListener(TEEvents::onInitNpcTrade);
-        eventBus.addListener(TEEvents::onRegisterBrain);
+//        eventBus.addListener(TEEvents::onRegisterWhips);
+//        eventBus.addListener(TEEvents::onInteractNpc);
+//        eventBus.addListener(TEEvents::onInitNpcTrade);
+//        eventBus.addListener(TEEvents::onRegisterBrain);
+//        eventBus.addListener(TEEvents::onInitNpcName);
 
         ModTradeProviders.TYPES.register(eventBus);
         ModEffectStrategies.EFFECT_STRATEGY.register(eventBus);

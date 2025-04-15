@@ -1,15 +1,13 @@
 {
     "type": "neoforge:add_spawns",
-    "biomes":[
+    "biomes": [
         "minecraft:nether_wastes",
-        "minecraft:crimson_forest",
-        "minecraft:basalt_deltas",
         "confluence:ash_wasteland",
         "confluence:ash_forest"
     ],
     "spawners": {
-        "type": "terra_entity:hell_bat",
-        "weight": 60,
+        "type": "terra_entity:lava_slime",
+        "weight": 480,
         "minCount": 1,
         "maxCount": 1
     }

@@ -30,6 +30,6 @@ public abstract class RegistryDataLoaderMixin {
 
     @WrapWithCondition(method = "loadContentsFromManager", at = @At(value = "INVOKE", target = "Lnet/minecraft/resources/RegistryDataLoader;loadElementFromResource(Lnet/minecraft/core/WritableRegistry;Lcom/mojang/serialization/Decoder;Lnet/minecraft/resources/RegistryOps;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/server/packs/resources/Resource;Lnet/minecraft/core/RegistrationInfo;)V"))
     private static <E> boolean remove(WritableRegistry<E> jsonelement, Decoder<E> dataresult, RegistryOps<JsonElement> candidate, ResourceKey<E> reader, Resource registry, RegistrationInfo codec, @Share("isNotBiomeModifier") LocalBooleanRef isNotBiomeModifier) {
-        return isNotBiomeModifier.get() || reader.location().getNamespace().equals(TerraEntity.MODID);
+        return isNotBiomeModifier.get() || !reader.location().getNamespace().equals(TerraEntity.MODID);
     }
 }

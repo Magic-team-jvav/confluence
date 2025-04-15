@@ -3,6 +3,7 @@ package org.confluence.mod.integration.terra_entity.npc_trade;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -10,6 +11,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.PlayerUtils;
+import org.confluence.terraentity.TerraEntity;
+import org.confluence.terraentity.client.gui.container.TETradeScreen;
 import org.confluence.terraentity.registries.npc_trade.ITrade;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,6 +20,7 @@ import java.awt.*;
 import java.util.List;
 
 import static org.confluence.mod.integration.terra_entity.npc_trade.Util.coinItem;
+import static org.confluence.terraentity.client.gui.container.TETradeScreen.MENU_LOCATION;
 
 public interface IMoneyTrade extends ITrade {
 
@@ -46,6 +50,9 @@ public interface IMoneyTrade extends ITrade {
     @OnlyIn(Dist.CLIENT)
     @Override
     default void renderCosts(GuiGraphics guiGraphics, Font font, int x, int y, int startx, int starty, int mouseX, int mouseY) {
+
+        guiGraphics.blit(MENU_LOCATION,startx + 113,starty + 16,434,59,78,57,512,256);
+
         // 左上方背包的金币
         int []myCoins;
         if (Minecraft.getInstance().player != null) {
@@ -77,18 +84,26 @@ public interface IMoneyTrade extends ITrade {
         }
 
         // 物品花费
-        int[] coins = PlayerUtils.decodeCoin(getCost(Minecraft.getInstance().player));
-        x = startx + 120;
-        y = starty + 21;
-
-        for(int k = 0; k < coins.length; k++){
-            guiGraphics.renderItem(coinItem.get(3-k).getDefaultInstance(), x, y );
-            guiGraphics.drawString(font, String.valueOf(coins[k]), x+4, y+16 , Color.orange.getRGB(), true);
-            x+=20;
-            if( k % 3 == 2){
-                y += 25;
-                x = startx + 130;
+        int[] coins = PlayerUtils.decodeCoin((int)getCost(Minecraft.getInstance().player));
+        x = startx + 165;
+        y = starty + 6 + 13* 3;
+        int index = -1;
+        int i = 0;
+        for (int coin : coins) {
+//            guiGraphics.renderItem(coinItem.get(3-k).getDefaultInstance(), x, y );
+            String s = String.valueOf(coin);
+            guiGraphics.drawString(font, String.valueOf(coin), x + 4 - s.length() * 3, y + 16, Color.orange.getRGB(), true);
+            y -= 13;
+            if(index == -1 && coin >= 1){
+                index = i;
             }
+            i++;
+        }
+        if(index >= 0){
+            int w = 34;
+            int sx = 443 + ((index & 1) == 0? 0: 35);
+            int sy = 118 + ((index & 10) == 0? 0: 35);
+            guiGraphics.blit(MENU_LOCATION,startx + 117,starty + 28,sx,sy,w,w,512,256);
         }
     }
 

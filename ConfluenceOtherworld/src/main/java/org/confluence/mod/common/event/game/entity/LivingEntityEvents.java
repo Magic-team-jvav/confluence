@@ -22,6 +22,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -31,6 +33,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.block.natural.BloodthirstCrystallizedBlock;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
 import org.confluence.mod.common.effect.beneficial.LuckEffect;
 import org.confluence.mod.common.effect.beneficial.ThornsEffect;
@@ -41,6 +44,7 @@ import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulder;
 import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.common.init.item.PickaxeItems;
@@ -96,6 +100,21 @@ public final class LivingEntityEvents {
                 }
             }
         }
+
+        Level level = living.level();
+        if (level.isClientSide) return;
+        if (!living.hasEffect(ModEffects.BLOOD_BUTCHERED)) return;
+        BlockPos livingPos = living.blockPosition();
+        AABB detectionBox = new AABB(livingPos).inflate(20.0);
+        BlockPos.betweenClosedStream(
+                new BlockPos((int) detectionBox.minX,(int) detectionBox.minY,(int) detectionBox.minZ),
+                new BlockPos((int) detectionBox.maxX,(int) detectionBox.maxY,(int) detectionBox.maxZ)
+        ).forEach(blockPos -> {
+            BlockState state = level.getBlockState(blockPos);
+            if (state.is(NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK)) {
+                level.setBlockAndUpdate(blockPos, state.setValue(BloodthirstCrystallizedBlock.VISIBLE, true));
+            }
+        });
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)

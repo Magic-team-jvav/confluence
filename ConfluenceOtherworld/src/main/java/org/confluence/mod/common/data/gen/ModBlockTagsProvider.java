@@ -1158,6 +1158,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 EBONY_SANDSTONE.get(),
                 EBONY_SAND.get()
         );
+        tag(ModTags.Blocks.BLOODTHIRST_CRYSTALL_BASE_BLOCK).add(
+                TR_CRIMSON_GRASS_BLOCK.get(),
+                TR_CRIMSON_JUNGLE_GRASS_BLOCK.get()
+        );
     }
 
     @Override

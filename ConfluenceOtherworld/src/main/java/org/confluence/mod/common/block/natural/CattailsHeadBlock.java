@@ -21,8 +21,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
-import static net.neoforged.neoforge.common.CommonHooks.canCropGrow;
-
 public class CattailsHeadBlock extends GrowingPlantHeadBlock implements SimpleWaterloggedBlock, BonemealableBlock {
     public static final MapCodec<CattailsHeadBlock> CODEC = simpleCodec(CattailsHeadBlock::new);
     public static final BooleanProperty UP = BlockStateProperties.UP;

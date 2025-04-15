@@ -13,6 +13,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
@@ -28,6 +29,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.*;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
 import org.confluence.mod.common.effect.beneficial.LuckEffect;
@@ -71,11 +73,15 @@ public final class LivingEntityEvents {
         // 未知模组导致的null
         if (damageSource != null && damageSource.getEntity() instanceof ServerPlayer serverPlayer) {
             ServerLevel level = serverPlayer.serverLevel();
-            ModUtils.enemyDropMoney(living, level);
+            if (living instanceof Enemy && CommonConfigs.DROP_MONEY.get() && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
+                ModUtils.enemyDropMoney(living, level);
+            }
         }
 
         if (living.level() instanceof ServerLevel level) {
-            ModUtils.bossDeath(level, living);
+            if (living instanceof Boss boss && boss.shouldShowMessage()) {
+                ModUtils.bossDeath(level, living);
+            }
 
             if (living instanceof ServerPlayer serverPlayer) {
                 PlayerUtils.dropMoney(serverPlayer);

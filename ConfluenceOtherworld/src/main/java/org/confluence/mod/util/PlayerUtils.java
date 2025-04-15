@@ -227,7 +227,7 @@ public final class PlayerUtils {
         int[] coins = getCoins(player);
         long res = 0;
         for (int i = 0; i < SIZE_COINS; i++) {
-            res += (long) (coins[i] * Math.pow(100, 3 - i));
+            res += (long) (coins[i] * Math.pow(UPGRADES_COUNT, 3 - i));
         }
         return res;
     }
@@ -267,7 +267,7 @@ public final class PlayerUtils {
 
     public static int[] decodeCoin(long money) {
         int[] coins = new int[SIZE_COINS];
-        while (money > 0x3F3F3F3F) {
+        while (money > 0) {
             int[] ints = decodeCoin(0x3F3F3F3F);
             coins[0] += ints[0];
             coins[1] += ints[1];
@@ -275,11 +275,6 @@ public final class PlayerUtils {
             coins[3] += ints[3];
             money -= 0x3F3F3F3F;
         }
-        int[] ints = decodeCoin((int) money);
-        coins[0] += ints[0];
-        coins[1] += ints[1];
-        coins[2] += ints[2];
-        coins[3] += ints[3];
         return coins;
     }
 

@@ -10,9 +10,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import org.confluence.lib.mixed.LibLivingEntity;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.mixed.ILivingEntity;
 
 public class IceTofuBrickProjectile extends ThrowableItemProjectile {
     public IceTofuBrickProjectile(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
@@ -43,7 +43,7 @@ public class IceTofuBrickProjectile extends ThrowableItemProjectile {
         DamageSource source = damageSources().mobProjectile(this, getOwner() instanceof LivingEntity living ? living : null);
         for (LivingEntity living : level().getEntitiesOfClass(LivingEntity.class, new AABB(position().add(-1, -1, -1), position().add(1, 1, 1)), living -> !(living instanceof Player))) {
             living.hurt(source, 9);
-            ((ILivingEntity) living).confluence$setFreezeTick(100);
+            ((LibLivingEntity) living).confluence$setTickFreezeTime(100);
         }
     }
 

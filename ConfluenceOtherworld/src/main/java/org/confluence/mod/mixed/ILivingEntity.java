@@ -10,6 +10,4 @@ public interface ILivingEntity {
     Object2IntMap<Immunity> confluence$getImmunityTicks();
 
     boolean confluence$deadO(boolean... dead);
-
-    void confluence$setFreezeTick(int tick);
 }

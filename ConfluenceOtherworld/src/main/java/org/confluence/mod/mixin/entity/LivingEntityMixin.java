@@ -58,9 +58,6 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @Unique
     private boolean confluence$deadO;
 
-    @Unique
-    private int confluence$freezeTick = 0;
-
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
@@ -80,19 +77,6 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
         return confluence$entityImmunityTicks;
     }
 
-    @Override
-    public void confluence$setFreezeTick(int tick) {
-        this.confluence$freezeTick = tick;
-    }
-
-    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
-    private void tick(CallbackInfo ci) {
-        if (confluence$freezeTick > 0) {
-            this.confluence$freezeTick--;
-            ci.cancel();
-        }
-    }
-
     @Inject(method = "checkFallDamage", at = @At("HEAD"), cancellable = true)
     private void fall(double motionY, boolean onGround, BlockState blockState, BlockPos blockPos, CallbackInfo ci) {
         LivingEntity self = confluence$self();
@@ -105,13 +89,13 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
                     }
                 });
             }
-            this.confluence$breakingEasyCrashBlock = true;
+            confluence$setBreakEasyCrashBlock(true);
             setOnGround(false);
             super.checkFallDamage(motionY, false, blockState, blockPos);
             ci.cancel();
             return;
         }
-        this.confluence$breakingEasyCrashBlock = false;
+        confluence$setBreakEasyCrashBlock(false);
     }
 
     @WrapOperation(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;multiply(DDD)Lnet/minecraft/world/phys/Vec3;"))

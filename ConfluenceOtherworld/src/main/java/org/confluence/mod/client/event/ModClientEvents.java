@@ -134,7 +134,7 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.COOKING_POT.get(), CookingPotScreen::new);
         event.register(ModMenuTypes.SAWMILL.get(), SawmillScreen::new);
         event.register(ModMenuTypes.SOLIDIFIER.get(), SolidifierScreen::new);
-        event.register(ModMenuTypes.MAID_TRADES_MENU.get(), NPCTradeScreen::new);
+        event.register(ModMenuTypes.NPC_TRADES_MENU.get(), MoneyTradeItemScreen::new);
         event.register(ModMenuTypes.REFORGE_MENU.get(), NPCReforgeScreen::new);
     }
 

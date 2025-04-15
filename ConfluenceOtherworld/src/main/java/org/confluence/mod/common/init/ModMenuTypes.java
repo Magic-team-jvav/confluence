@@ -22,6 +22,8 @@ public final class ModMenuTypes {
     public static final Supplier<MenuType<SawmillMenu>> SAWMILL = TYPES.register("sawmill", () -> new MenuType<>(SawmillMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<SolidifierMenu>> SOLIDIFIER = TYPES.register("solidifier", () -> new MenuType<>(SolidifierMenu::new, FeatureFlags.VANILLA_SET));
 
-    public static final Supplier<MenuType<NPCTradesMenu>> MAID_TRADES_MENU = TYPES.register("maid_trades", () -> new MenuType<>((id, inv)->new NPCTradesMenu(id, inv, null, true), FeatureFlags.VANILLA_SET));
+    public static final Supplier<MenuType<NPCTradesMenu>> NPC_TRADES_MENU = TYPES.register("npc_trades", () -> new MenuType<>(NPCTradesMenu::new, FeatureFlags.VANILLA_SET));
+
+//    public static final Supplier<MenuType<NPCTradesMenu>> MAID_TRADES_MENU = TYPES.register("maid_trades", () -> new MenuType<>((id, inv)->new NPCTradesMenu(id, inv, null, true), FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<NPCReforgeMenu>> REFORGE_MENU = TYPES.register("reforge_menu", () -> new MenuType<>(NPCReforgeMenu::new, FeatureFlags.VANILLA_SET));
 }

@@ -1,5 +1,6 @@
 package org.confluence.mod.mixin.entity;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -7,6 +8,8 @@ import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -21,6 +24,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.api.event.LivingFreezeEvent;
+import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModHookTypes;
@@ -40,6 +44,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.Map;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements ILivingEntity, SelfGetter<LivingEntity> {
@@ -158,5 +164,10 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/DamageSources;freeze()Lnet/minecraft/world/damagesource/DamageSource;"))
     private void confluence$aiStep(CallbackInfo ci) {
         NeoForge.EVENT_BUS.post(new LivingFreezeEvent.Post(confluence$self()));
+    }
+
+    @WrapWithCondition(method = "triggerOnDeathMobEffects", at = @At(value = "INVOKE", target = "Ljava/util/Map;clear()V"))
+    private boolean cacheFlasks(Map<Holder<MobEffect>, MobEffectInstance> instance) {
+        return FlaskEffect.saveFlaskEffects(instance);
     }
 }

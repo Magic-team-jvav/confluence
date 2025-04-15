@@ -2,7 +2,6 @@ package org.confluence.mod.common.event.game.entity;
 
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentManager;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -44,6 +43,7 @@ import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
 import org.confluence.mod.common.effect.beneficial.LuckEffect;
 import org.confluence.mod.common.effect.beneficial.ThornsEffect;
+import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulder;
@@ -79,7 +79,9 @@ public final class LivingEntityEvents {
     @SubscribeEvent
     public static void livingDeath(LivingDeathEvent event) {
         LivingEntity living = event.getEntity();
-        if (event.getSource().getEntity() instanceof ServerPlayer serverPlayer) {
+        DamageSource damageSource = event.getSource();
+        // 未知模组导致的null
+        if (damageSource != null && damageSource.getEntity() instanceof ServerPlayer serverPlayer) {
             ServerLevel level = serverPlayer.serverLevel();
             if (living instanceof Enemy && CommonConfigs.DROP_MONEY.get() && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
                 AttributeInstance attack = living.getAttribute(Attributes.ATTACK_DAMAGE);
@@ -173,7 +175,7 @@ public final class LivingEntityEvents {
             float amount = event.getAmount();
             AccessoryItems.applyHurtGetMana(serverPlayer, damageSource, (int) amount);
         }
-        Immunity cause = ModUtils.getImmunityCause(event.getSource());
+        Immunity cause = Immunity.getCause(event.getSource());
         if (((ILivingEntity) event.getEntity()).confluence$getImmunityTicks().containsKey(cause)) {
             event.setCanceled(true);
         }
@@ -266,32 +268,16 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void livingDamage$Post(LivingDamageEvent.Post event) {
+        LivingEntity victim = event.getEntity();
+        if (!(victim.level() instanceof ServerLevel serverLevel)) return;
         DamageSource damageSource = event.getSource();
-        LivingEntity damagingEntity = event.getEntity();
-        Entity sourceEntity = damageSource.getEntity();
-        if (!(damagingEntity.level() instanceof ServerLevel serverLevel)) return;
-
-        ModAchievements.luckyBreak_watchYourStep(damagingEntity, damageSource, sourceEntity);
-
-        Immunity cause = ModUtils.getImmunityCause(damageSource);
-        if (cause != null) {
-            Object2IntMap<Immunity> invTicks = ((ILivingEntity) damagingEntity).confluence$getImmunityTicks();
-            int time = cause.confluence$getImmunityDuration(damageSource);
-            if (time != 0) {
-                invTicks.put(cause, time);
-            }
-        }
-
-        if (damageSource.is(DamageTypes.GENERIC_KILL)) return;
+        Entity attacker = damageSource.getEntity();
         float amount = event.getNewDamage();
-        float roundedAmount = Math.round(amount * 10) / 10f;
-        int intAmount = (int) roundedAmount;
-        if (roundedAmount == 0F) return;
-        String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
-        Vec3 pos = damagingEntity.position();
-        boolean crit = ((IDamageSource) damageSource).confluence$isCritical();
-        Component component = Component.literal(text).withStyle(crit ? ChatFormatting.DARK_RED : ChatFormatting.GOLD, ChatFormatting.BOLD);
-        serverLevel.sendParticles(new DamageIndicatorOptions(component, crit, DamageIndicatorOptions.Type.DAMAGE), pos.x, damagingEntity.getBoundingBoxForCulling().maxY, pos.z, 1, 0.1, 0.1, 0.1, 0);
+
+        ModAchievements.luckyBreak_watchYourStep(victim, damageSource, attacker);
+        FlaskEffect.onLivingDamage(victim, damageSource, amount);
+        Immunity.calculateInvTicks(damageSource, (ILivingEntity) victim);
+        DamageIndicatorOptions.sendParticles(serverLevel, damageSource, amount, victim);
     }
 
     @SubscribeEvent
@@ -330,6 +316,7 @@ public final class LivingEntityEvents {
     public static void mobEffect$Added(MobEffectEvent.Added event) {
         MobEffectInstance effectInstance = event.getEffectInstance();
         LoveEffect.onAdd(effectInstance.getEffect(), event.getEntity(), event.getEffectSource());
+        FlaskEffect.removeAnotherFlaskEffects(effectInstance, event.getEntity());
     }
 
     @SubscribeEvent

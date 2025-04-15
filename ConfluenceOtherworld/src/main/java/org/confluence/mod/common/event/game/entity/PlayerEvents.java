@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Saddleable;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -232,16 +233,23 @@ public final class PlayerEvents {
 
     @SubscribeEvent // 可以拿到复制前的玩家
     public static void clone(PlayerEvent.Clone event) {
-        CompoundTag old = event.getOriginal().getPersistentData();
-        CompoundTag neo = event.getEntity().getPersistentData();
-        for (String key : old.getAllKeys()) {
+        Player old = event.getOriginal();
+        Player neo = event.getEntity();
+
+        for (MobEffectInstance activeEffect : old.getActiveEffects()) {
+            neo.forceAddEffect(activeEffect, null);
+        }
+
+        CompoundTag oldTag = old.getPersistentData();
+        CompoundTag neoTag = neo.getPersistentData();
+        for (String key : oldTag.getAllKeys()) {
             if (key.startsWith(Confluence.MODID)) {
-                Tag value = old.get(key);
-                if (value != null) neo.put(key, value);
+                Tag value = oldTag.get(key);
+                if (value != null) neoTag.put(key, value);
             }
         }
         if (!event.isWasDeath()) {
-            neo.putFloat("confluence:cached_health", event.getOriginal().getHealth());
+            neoTag.putFloat("confluence:cached_health", old.getHealth());
         }
     }
 

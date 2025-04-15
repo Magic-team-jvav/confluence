@@ -2,16 +2,10 @@ package org.confluence.mod.util;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
@@ -26,7 +20,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
-import org.confluence.mod.mixed.Immunity;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_guns.TerraGuns;
 import org.confluence.terraentity.TerraEntity;
@@ -69,34 +62,6 @@ public final class ModUtils {
         NbtComponent component = itemStack.get(ConfluenceMagicLib.NBT);
         if (component == null) return null;
         return component.nbt();
-    }
-
-    @Nullable
-    public static Immunity getImmunityCause(DamageSource damageSource) {
-        Entity directEntity = damageSource.getDirectEntity();
-        ItemStack weaponItemStack = damageSource.getWeaponItem();
-        if (weaponItemStack != null) {
-            Item weaponItem = weaponItemStack.getItem();
-            boolean fromConfluence = isFromConfluence(BuiltInRegistries.ITEM, weaponItem);
-            if (fromConfluence && (weaponItem instanceof SwordItem) && directEntity instanceof Projectile projectile) { // 汇流剑气
-                return (Immunity) projectile;
-            } else if (weaponItem instanceof Immunity im) { // 非汇流但是实现了Immunity
-                return switch (im.confluence$getImmunityType()) {
-                    case STATIC -> im;
-                    case LOCAL -> (Immunity) (Object) weaponItemStack;
-                };
-            } else if (fromConfluence) { // 其他所有汇流武器
-                return (Immunity) (Object) weaponItemStack;
-            }
-        }
-        if (directEntity instanceof Projectile proj && directEntity instanceof Immunity im && isFromConfluence(BuiltInRegistries.ENTITY_TYPE, directEntity.getType())) { // 汇流射弹
-            return switch (im.confluence$getImmunityType()) {
-                case STATIC -> (Immunity) proj.getType();
-                case LOCAL -> im;
-            };
-        }
-        // TODO: 打表
-        return null;
     }
 
     public static <T> boolean isFromConfluence(Registry<T> registry, T obj) {

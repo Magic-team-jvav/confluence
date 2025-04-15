@@ -10,6 +10,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.effect.PublicMobEffect;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.effect.beneficial.*;
+import org.confluence.mod.common.effect.flask.FlaskEffect;
+import org.confluence.mod.common.effect.flask.FlaskOfFireEffect;
 import org.confluence.mod.common.effect.harmful.*;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
 import org.confluence.mod.common.effect.neutral.ShimmerEffect;
@@ -71,4 +73,7 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> HUNGER_DELAYED = EFFECTS.register("hunger_delayed", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xAA0099));
     public static final DeferredHolder<MobEffect, MobEffect> DELICIOUS = EFFECTS.register("delicious", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xAA0099));
     public static final DeferredHolder<MobEffect, MobEffect> CHOKING = EFFECTS.register("choking", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x708090).addAttributeModifier(Attributes.MOVEMENT_SPEED, Confluence.asResource("choking"), -0.30F, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+
+    // 药剂
+    public static final DeferredHolder<MobEffect, FlaskEffect> FLASK_OF_FIRE = EFFECTS.register("flask_of_fire", FlaskOfFireEffect::new);
 }

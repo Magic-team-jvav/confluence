@@ -17,7 +17,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
 public abstract class EntityClientMixin implements SelfGetter<Entity>, IEntity {
-    @Unique private Vec3 confluence$deathMotion;
+    @Unique
+    private Vec3 confluence$deathMotion;
+
     @Inject(method = "getTeamColor", at = @At("HEAD"), cancellable = true)
     private void getTeamColor(CallbackInfoReturnable<Integer> cir) {
         if (Minecraft.getInstance().player != null && Minecraft.getInstance().player.hasEffect(ModEffects.HUNTER)) {
@@ -51,8 +53,8 @@ public abstract class EntityClientMixin implements SelfGetter<Entity>, IEntity {
     }
 
     @Override
-    public Vec3 confluence$deathMotion(Vec3... motion){
-        if(motion!=null && motion.length>0){
+    public Vec3 confluence$deathMotion(Vec3... motion) {
+        if (motion != null && motion.length > 0) {
             confluence$deathMotion = motion[0];
         }
         return confluence$deathMotion;

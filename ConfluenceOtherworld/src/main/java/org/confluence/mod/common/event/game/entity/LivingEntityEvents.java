@@ -1,12 +1,8 @@
 package org.confluence.mod.common.event.game.entity;
 
-import com.xiaohunao.heaven_destiny_moment.common.moment.MomentManager;
-import com.xiaohunao.terra_moment.common.init.TMMoments;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.DifficultyInstance;
@@ -16,10 +12,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
@@ -28,7 +21,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -36,10 +28,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.*;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
 import org.confluence.mod.common.effect.beneficial.LuckEffect;
 import org.confluence.mod.common.effect.beneficial.ThornsEffect;
@@ -54,7 +43,6 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.common.init.item.PickaxeItems;
 import org.confluence.mod.common.init.item.SwordItems;
-import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
@@ -83,47 +71,11 @@ public final class LivingEntityEvents {
         // 未知模组导致的null
         if (damageSource != null && damageSource.getEntity() instanceof ServerPlayer serverPlayer) {
             ServerLevel level = serverPlayer.serverLevel();
-            if (living instanceof Enemy && CommonConfigs.DROP_MONEY.get() && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
-                AttributeInstance attack = living.getAttribute(Attributes.ATTACK_DAMAGE);
-                AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
-                AttributeInstance knockbackResistance = living.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
-                double healthFactor = living.getMaxHealth() * 0.15;
-                double attackFactor = attack == null ? 0.0 : attack.getValue() * 0.25;
-                double armorFactor = armor == null ? 0.0 : armor.getValue() * 0.1;
-                double knockbackResistanceFactor = knockbackResistance == null ? 10.0 : (1.0 + knockbackResistance.getValue()) * 10.0;
-                double difficultyFactor = level.getCurrentDifficultyAt(living.blockPosition()).getEffectiveDifficulty() * 0.5;
-                int amount = (int) Math.min(Math.round((healthFactor + attackFactor + armorFactor + knockbackResistanceFactor) * difficultyFactor) * 7.0, 100000);
-                ModUtils.dropMoney(amount, living.getX(), living.getEyeY() - 0.3, living.getZ(), level);
-            }
+            ModUtils.enemyDropMoney(living, level);
         }
 
         if (living.level() instanceof ServerLevel level) {
-            if (living instanceof Boss boss && boss.shouldShowMessage()) {
-                EntityType<?> type = living.getType();
-                ConfluenceData data = ConfluenceData.get(level);
-                data.getKillBoard().defeat(type, data);
-                boolean isEaterOfWorlds = type == TEBossEntities.EATER_OF_WORLDS.get();
-                if (isEaterOfWorlds || type == TEBossEntities.BRAIN_OF_CTHULHU.get()) {
-                    if (DateUtils.isWithinDayTime(0, 0, 4, 30, level.getDayTime())) { // 00:00 -> 04:30
-                        MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
-                    } else if (!MeteoriteTracker.INSTANCE.spawnAtNextNight) {
-                        MeteoriteTracker.INSTANCE.spawnAtNextNight = level.random.nextBoolean();
-                    }
-                }
-                boolean stickySituation = type == TEBossEntities.KING_SLIME.get() && MomentManager.of(level).hasMoment(TMMoments.SLIME_RAIN);
-                ResourceKey<Level> dimension = living.level().dimension();
-                level.players().stream()
-                        .filter(player -> player.level().dimension() == dimension)
-                        .forEach(player -> {
-                            TreasureBagItem.createItemEntity(living, player);
-                            if (isEaterOfWorlds) {
-                                PlayerUtils.awardAchievement(player, "worm_fodder");
-                            }
-                            if (stickySituation) {
-                                PlayerUtils.awardAchievement(player, "sticky_situation");
-                            }
-                        });
-            }
+            ModUtils.bossDeath(level, living);
 
             if (living instanceof ServerPlayer serverPlayer) {
                 PlayerUtils.dropMoney(serverPlayer);
@@ -157,15 +109,7 @@ public final class LivingEntityEvents {
             event.setAmount(amount);
         }
 
-        // 治疗数字显示
-        if (living.getHealth() < living.getMaxHealth()) {
-            double y = living.getBoundingBoxForCulling().maxY;
-            Vec3 pos = living.position();
-            float amount = Math.round(event.getAmount() * 10.0F) / 10.0F;
-            String text = amount % 1 == 0 ? Integer.toString((int) amount) : Float.toString(amount);
-            Component component = Component.literal(text).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD);
-            level.sendParticles(new DamageIndicatorOptions(component, false, DamageIndicatorOptions.Type.HEAL), pos.x, y, pos.z, 1, 0.1, 0.1, 0.1, 0.0);
-        }
+        DamageIndicatorOptions.sendHealParticle(event.getAmount(), level, living);
     }
 
     @SubscribeEvent
@@ -277,7 +221,7 @@ public final class LivingEntityEvents {
         ModAchievements.luckyBreak_watchYourStep(victim, damageSource, attacker);
         FlaskEffect.onLivingDamage(victim, damageSource, amount);
         Immunity.calculateInvTicks(damageSource, (ILivingEntity) victim);
-        DamageIndicatorOptions.sendParticles(serverLevel, damageSource, amount, victim);
+        DamageIndicatorOptions.sendDamageParticle(serverLevel, damageSource, amount, victim);
     }
 
     @SubscribeEvent
@@ -305,18 +249,17 @@ public final class LivingEntityEvents {
     }
 
     @SubscribeEvent
-    public static void mobEffect$Remove(MobEffectEvent.Remove event) {
+    public static void mobEffect$Added(MobEffectEvent.Added event) {
         MobEffectInstance effectInstance = event.getEffectInstance();
-        if (effectInstance != null) {
-            LuckEffect.onRemove(event.getEntity(), effectInstance.getEffect(), effectInstance.getAmplifier());
-        }
+        LoveEffect.onAdd(effectInstance, event.getEntity(), event.getEffectSource());
+        FlaskEffect.removeAnotherFlaskEffects(effectInstance, event.getEntity());
     }
 
     @SubscribeEvent
-    public static void mobEffect$Added(MobEffectEvent.Added event) {
+    public static void mobEffect$Remove(MobEffectEvent.Remove event) {
         MobEffectInstance effectInstance = event.getEffectInstance();
-        LoveEffect.onAdd(effectInstance.getEffect(), event.getEntity(), event.getEffectSource());
-        FlaskEffect.removeAnotherFlaskEffects(effectInstance, event.getEntity());
+        if (effectInstance == null) return;
+        LuckEffect.onRemove(event.getEntity(), effectInstance.getEffect(), effectInstance.getAmplifier());
     }
 
     @SubscribeEvent

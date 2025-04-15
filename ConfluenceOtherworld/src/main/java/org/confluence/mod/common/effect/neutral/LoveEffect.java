@@ -1,8 +1,8 @@
 package org.confluence.mod.common.effect.neutral;
 
-import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
@@ -14,8 +14,8 @@ public class LoveEffect extends MobEffect {
         super(MobEffectCategory.NEUTRAL, 0xEE0000);
     }
 
-    public static void onAdd(Holder<MobEffect> mobEffect, LivingEntity living, Entity entity) {
-        if (mobEffect == ModEffects.LOVE && living instanceof Animal animal && !animal.isBaby()) {
+    public static void onAdd(MobEffectInstance mobEffectInstance, LivingEntity living, Entity entity) {
+        if (mobEffectInstance.is(ModEffects.LOVE) && living instanceof Animal animal && !animal.isBaby()) {
             animal.setInLove(entity instanceof Player player ? player : null);
         }
     }

@@ -42,7 +42,7 @@ public record DamageIndicatorOptions(Component text, boolean big, Type type) imp
             DamageIndicatorOptions::new
     );
 
-    public static void sendParticles(ServerLevel serverLevel, DamageSource damageSource, float amount, LivingEntity victim) {
+    public static void sendDamageParticle(ServerLevel serverLevel, DamageSource damageSource, float amount, LivingEntity victim) {
         if (damageSource.is(DamageTypes.GENERIC_KILL)) return;
         float roundedAmount = Math.round(amount * 10) / 10f;
         int intAmount = (int) roundedAmount;
@@ -52,6 +52,17 @@ public record DamageIndicatorOptions(Component text, boolean big, Type type) imp
         boolean crit = ((IDamageSource) damageSource).confluence$isCritical();
         Component component = Component.literal(text).withStyle(crit ? ChatFormatting.DARK_RED : ChatFormatting.GOLD, ChatFormatting.BOLD);
         serverLevel.sendParticles(new DamageIndicatorOptions(component, crit, Type.DAMAGE), pos.x, victim.getBoundingBoxForCulling().maxY, pos.z, 1, 0.1, 0.1, 0.1, 0);
+    }
+
+    public static void sendHealParticle(float amount, ServerLevel level, LivingEntity living) {
+        if (living.getHealth() < living.getMaxHealth()) {
+            double y = living.getBoundingBoxForCulling().maxY;
+            Vec3 pos = living.position();
+            amount = Math.round(amount * 10.0F) / 10.0F;
+            String text = amount % 1 == 0 ? Integer.toString((int) amount) : Float.toString(amount);
+            Component component = Component.literal(text).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD);
+            level.sendParticles(new DamageIndicatorOptions(component, false, Type.HEAL), pos.x, y, pos.z, 1, 0.1, 0.1, 0.1, 0.0);
+        }
     }
 
     public enum Type {

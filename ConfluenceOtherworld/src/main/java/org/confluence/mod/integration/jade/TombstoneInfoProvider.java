@@ -25,7 +25,9 @@ public class TombstoneInfoProvider implements IBlockComponentProvider, IServerDa
             listTag.forEach(tag -> {
                 if (tag instanceof CompoundTag tag0) {
                     String info = tag0.getString("info");
-                    iTooltip.add(Component.nullToEmpty(info));
+                    if(!info.isEmpty()){
+                        iTooltip.add(Component.nullToEmpty(info));
+                    }
                 }
             });
         }

@@ -107,7 +107,10 @@ public interface IMoneyTrade extends ITrade {
         }
     }
 
+    @Override
+    default void renderResultHover(GuiGraphics guiGraphics, Font font, int x, int y, int startx, int starty, int mouseX, int mouseY) {
 
+    }
 
 
 }

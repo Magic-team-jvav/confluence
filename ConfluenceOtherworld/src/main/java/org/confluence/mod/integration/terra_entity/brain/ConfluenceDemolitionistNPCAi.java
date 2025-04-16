@@ -23,10 +23,10 @@ public class ConfluenceDemolitionistNPCAi extends NPCAi {
     }
 
     @Override
-    protected NPCRangeAttackBrain<? super AbstractTerraNPC> createRangeAttackBrain() {
+    protected NPCRangeAttackBrain<? super AbstractTerraNPC> getRangeAttackBrain() {
         return new NPCRangeAttackBrain<>(30, npc.getAttackRange()){
             @Override
-            protected boolean customDoAttack(ServerLevel level, Mob owner, LivingEntity target){
+            protected boolean customDoAttack(ServerLevel level, AbstractTerraNPC owner, LivingEntity target){
                 BaseBombEntity bomb = new BaseGrenadeEntity(npc){
                     @Override
                     protected ExplosionDamageCalculator getExplosionDamageCalculator() {

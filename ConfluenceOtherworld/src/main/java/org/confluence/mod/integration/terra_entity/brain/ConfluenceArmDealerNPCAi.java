@@ -10,8 +10,8 @@ public class ConfluenceArmDealerNPCAi extends ArmDealerNPCAi {
         super(npc);
     }
 
-    protected NPCRangeAttackBrain<? super AbstractTerraNPC> createRangeAttackBrain() {
-        return super.createRangeAttackBrain();
+    protected NPCRangeAttackBrain<? super AbstractTerraNPC> getRangeAttackBrain() {
+        return super.getRangeAttackBrain();
 //        return new NPCRangeAttackBrain<>(10, npc.getAttackRange()){
             // todo 发射子弹
 

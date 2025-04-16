@@ -281,6 +281,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 JUNGLE_HIVE_BLOCK.get(),
                 THIN_ICE_BLOCK.get(),
                 WINTER_MARROW_BLOCK.get(),
+                SAFE.get(),
+                ANNOUNCEMENT_BOX.get(),
+                WALL_ANNOUNCEMENT_BOX.get(),
 
                 TOMBSTONE.get(),
                 GRAVE_MARKER.get(),
@@ -343,7 +346,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CHISELED_ASH_PLANKS.get(),
                 WOOD_STONE_SLATTED_BLOCKS.get(),
                 BASE_CHEST_BLOCK.get(),
-                SPORE_ROOT_BLOCK.get()
+                SPORE_ROOT_BLOCK.get(),
+
+                ANNOUNCEMENT_BOX.get(),
+                WALL_ANNOUNCEMENT_BOX.get()
         );
         tag(ModTags.Blocks.NEEDS_1_LEVEL).add(
                 RAW_TIN_BLOCK.get(),

@@ -9,6 +9,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -73,6 +74,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         compressAndDecompressNine(MaterialItems.RAW_HELLSTONE.get(), ModTags.Items.RAW_MATERIALS_HELLSTONE,
                 OreBlocks.RAW_HELLSTONE_BLOCK.asItem(), ModTags.Items.RAW_MATERIALS_HELLSTONE_BLOCK, output);
 
+        // 铅砧
         shaped(output, "", "", ShapedRecipePattern.of(Map.of(
                 'I', Ingredient.of(ModTags.Items.LEAD_BLOCK),
                 'i', Ingredient.of(ModTags.Items.INGOTS_LEAD)
@@ -81,7 +83,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 " i ",
                 "iii"
         )), FunctionalBlocks.LEAD_ANVIL.toStack());
-
+        //
         shaped(output, "", "_from_lead_and_iron", ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Items.REDSTONE_TORCH),
                 'S', Ingredient.of(Items.STICK),
@@ -91,6 +93,16 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "X#X",
                 "XSX"
         )), new ItemStack(Items.ACTIVATOR_RAIL, 6));
+        // 广播盒
+        shaped(output,"","", ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(ItemTags.SIGNS),
+                'I', Ingredient.of(ModTags.Items.LEAD_AND_IRON),
+                'R', Ingredient.of(Items.REDSTONE)
+        ), List.of(
+                "RIR",
+                "I#I",
+                "RIR"
+        )), new ItemStack(FunctionalBlocks.ANNOUNCEMENT_BOX_ITEM.asItem()));
     }
 
     protected void shaped(RecipeOutput recipeOutput, String prefix, String suffix, ShapedRecipePattern pattern, ItemStack result) {

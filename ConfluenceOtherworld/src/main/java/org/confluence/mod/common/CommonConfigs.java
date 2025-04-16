@@ -14,6 +14,7 @@ public final class CommonConfigs {
     private static IntValue FALLING_STAR_INTERVAL;
     public static BooleanValue RETURN_POTION_GLASS_BOTTLE;
     public static BooleanValue RIGHT_CLICK_RIDE_MINECART;
+    public static IntValue ANNOUNCEMENT_BOX_DISTANCE;
 
     public static BooleanValue SHOW_MONEY_DROPS;
     public static BooleanValue DROPS_TOMBSTONE;
@@ -39,6 +40,7 @@ public final class CommonConfigs {
         FALLING_STAR_INTERVAL = BUILDER.comment("Defines the interval of falling stars appearing at night").defineInRange("fallingStarInterval", 2400, 20, 20000);
         RETURN_POTION_GLASS_BOTTLE = BUILDER.define("returnPotionGlassBottle", false);
         RIGHT_CLICK_RIDE_MINECART = BUILDER.define("rightClickRideMinecart", true);
+        ANNOUNCEMENT_BOX_DISTANCE = BUILDER.comment("The maximum transmission distance of the Announcement Box information.").defineInRange("announcementBoxDistance", 128, 0, Integer.MAX_VALUE);
         BUILDER.pop();
 
         BUILDER.push("PlayerDeath");

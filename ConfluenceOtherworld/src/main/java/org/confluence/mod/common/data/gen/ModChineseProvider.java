@@ -301,6 +301,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "决定你使用药水后是否返还瓶子");
         add("confluence.configuration.rightClickRideMinecart", "右键上矿车");
         add("confluence.configuration.rightClickRideMinecart.tooltip", "开启后，当你右键点击轨道时，将自动乘坐矿车");
+        add("confluence.configuration.announcementBoxDistance", "广播盒距离");
+        add("confluence.configuration.announcementBoxDistance.tooltip", "广播盒的最大信息发送距离");
         add("confluence.configuration.dropsTombstone", "掉落墓石");
         add("confluence.configuration.dropsTombstone.tooltip", "启用时，允许玩家死亡后掉落墓石");
         add("confluence.configuration.defaultRespawnTimeMin", "默认最小重生时间");
@@ -1983,8 +1985,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.SCULK_TRAP.get(), "幽匿陷阱");
         add(FunctionalBlocks.ROLLING_CACTUS_BOULDER.get(), "仙人球");
         add(FunctionalBlocks.PIGGY_BANK.get(), "猪猪存钱罐");
+        add(FunctionalBlocks.SAFE.get(), "保险箱");
         add(FunctionalBlocks.CAULDRON.get(), "大锅");
         add(FunctionalBlocks.SAWMILL.get(), "锯木机");
+        add(FunctionalBlocks.ANNOUNCEMENT_BOX.get(), "广播盒");
 
         add(ModBlocks.TOMBSTONE.get(), "墓石");
         add(ModBlocks.GRAVE_MARKER.get(), "墓石碑");

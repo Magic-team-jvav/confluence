@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init.block;
 
+import com.mojang.datafixers.DSL;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -58,7 +59,7 @@ public final class ModBlocks {
     public static final DeferredBlock<BaseHerbBlock> DAYBLOOM = registerWithoutItem("daybloom", Daybloom::new); // 太阳花
     public static final DeferredBlock<DeathWeed> DEATHWEED = registerWithoutItem("deathweed", DeathWeed::new); // 死亡草
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BaseHerbBlock.Entity>> HERBS_ENTITY = BLOCK_ENTITIES.register("herbs_entity", () -> BlockEntityType.Builder.of(BaseHerbBlock.Entity::new,
-            WATERLEAF.get(), FIREBLOSSOM.get(), MOONGLOW.get(), BLINKROOT.get(), SHIVERTHORN.get(), DAYBLOOM.get(), DEATHWEED.get()).build(null));
+            WATERLEAF.get(), FIREBLOSSOM.get(), MOONGLOW.get(), BLINKROOT.get(), SHIVERTHORN.get(), DAYBLOOM.get(), DEATHWEED.get()).build(DSL.remainderType()));
 
     public static final Supplier<PooBlock> POO = registerWithItem("poo", () -> new PooBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD)));
 
@@ -81,7 +82,7 @@ public final class ModBlocks {
     public static final DeferredBlock<TombstoneBlock> GOLDEN_CROSS_GRAVE_MARKER = registerTombstone("golden_cross_grave_marker", true);
     public static final DeferredBlock<TombstoneBlock> GOLDEN_HEADSTONE = registerTombstone("golden_headstone", true);
     public static final DeferredBlock<TombstoneBlock> GOLDEN_GRAVESTONE = registerTombstone("golden_gravestone", true);
-    public static final Supplier<BlockEntityType<TombstoneBlock.Entity>> TOMBSTONE_ENTITY = BLOCK_ENTITIES.register("tombstone_entity", () -> BlockEntityType.Builder.of(TombstoneBlock.Entity::new, TOMBSTONES.keySet().stream().map(DeferredHolder::get).toArray(TombstoneBlock[]::new)).build(null));
+    public static final Supplier<BlockEntityType<TombstoneBlock.Entity>> TOMBSTONE_ENTITY = BLOCK_ENTITIES.register("tombstone_entity", () -> BlockEntityType.Builder.of(TombstoneBlock.Entity::new, TOMBSTONES.keySet().stream().map(DeferredHolder::get).toArray(TombstoneBlock[]::new)).build(DSL.remainderType()));
 
     public static final DeferredBlock<GreenDumplingBlock> GREEN_DUMPLING_BLOCK = registerWithoutItem("green_dumpling_block", GreenDumplingBlock::new);
     public static final DeferredBlock<BoulderBreadBlock> BOULDER_BREAD_BLOCK = registerWithoutItem("boulder_bread_block", BoulderBreadBlock::new);

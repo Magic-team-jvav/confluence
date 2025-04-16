@@ -42,7 +42,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class SafeBlock extends HorizontalDirectionalWaterloggedBlock implements EntityBlock {
     public static final MapCodec<SafeBlock> CODEC = simpleCodec(SafeBlock::new);
-    public static final Component TITLE = Component.translatable("container.confluence.safe");
     private static final VoxelShape SHAPE = box(1, 0, 1, 15, 16, 15);
 
     public SafeBlock(Properties properties) {
@@ -79,7 +78,7 @@ public class SafeBlock extends HorizontalDirectionalWaterloggedBlock implements 
             level.setBlock(pos, state.setValue(BlockStateProperties.OPEN, true), Block.UPDATE_ALL);
             PlayerSafeContainer container = player.getData(ModAttachmentTypes.SAFE);
             container.setActiveContainer(entity);
-            player.openMenu(new SimpleMenuProvider((id, inventory, player1) -> new ChestMenu(MenuType.GENERIC_9x6, id, inventory, container, 6), TITLE));
+            player.openMenu(new SimpleMenuProvider((id, inventory, player1) -> new ChestMenu(MenuType.GENERIC_9x6, id, inventory, container, 6), Component.translatable("container.confluence.safe")));
             PiglinAi.angerNearbyPiglins(player, true);
             return InteractionResult.CONSUME;
         }

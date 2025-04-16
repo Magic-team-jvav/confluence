@@ -140,7 +140,6 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
     }
 
     public static class Entity extends BaseContainerBlockEntity implements WorldlyContainer, RecipeCraftingHolder {
-        private static final Component TITLE = Component.translatable("container.confluence.hellforge");
         private static final int[] SLOTS_FOR_UP = new int[]{INPUT_SLOT_1, INPUT_SLOT_2, INPUT_SLOT_3, INPUT_SLOT_4};
         private static final int[] SLOTS_FOR_DOWN = new int[]{RESULT_SLOT, FUEL_SLOT};
         private static final int[] SLOTS_FOR_SIDES = new int[]{FUEL_SLOT};
@@ -580,7 +579,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
 
         @Override
         protected Component getDefaultName() {
-            return TITLE;
+            return Component.translatable("container.confluence.hellforge");
         }
 
         @Override

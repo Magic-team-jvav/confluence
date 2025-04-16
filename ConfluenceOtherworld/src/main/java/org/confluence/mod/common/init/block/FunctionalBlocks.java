@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init.block;
 
+import com.mojang.datafixers.DSL;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SignItem;
@@ -40,23 +41,23 @@ public class FunctionalBlocks {
     public static final DeferredBlock<Block> ANDESITE_CASING = registerWithItemButHidden("andesite_casing", () -> new Block(BlockBehaviour.Properties.of()));
 
     public static final DeferredBlock<ExtractinatorBlock> EXTRACTINATOR = registerWithItem("extractinator", () -> new ExtractinatorBlock(BlockBehaviour.Properties.of().strength(2.2F, 5.0F).requiresCorrectToolForDrops()), ExtractinatorBlock.Item::new);
-    public static final Supplier<BlockEntityType<ExtractinatorBlock.Entity>> EXTRACTINATOR_ENTITY = BLOCK_ENTITIES.register("extractinator_entity", () -> BlockEntityType.Builder.of(ExtractinatorBlock.Entity::new, EXTRACTINATOR.get()).build(null));
+    public static final Supplier<BlockEntityType<ExtractinatorBlock.Entity>> EXTRACTINATOR_ENTITY = BLOCK_ENTITIES.register("extractinator_entity", () -> BlockEntityType.Builder.of(ExtractinatorBlock.Entity::new, EXTRACTINATOR.get()).build(DSL.remainderType()));
     public static final DeferredBlock<AltarBlock> DEMON_ALTAR = registerWithItem("demon_altar", () -> new AltarBlock(BlockBehaviour.Properties.of().strength(3.0F, 18000.0F).lightLevel(state -> 5), AltarBlock.Variant.DEMON), AltarBlock.Item::new);
     public static final DeferredBlock<AltarBlock> CRIMSON_ALTAR = registerWithItem("crimson_altar", () -> new AltarBlock(BlockBehaviour.Properties.of().strength(3.0F, 18000.0F).lightLevel(state -> 5), AltarBlock.Variant.CRIMSON), AltarBlock.Item::new);
-    public static final Supplier<BlockEntityType<AltarBlock.Entity>> ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("altar_block_entity", () -> BlockEntityType.Builder.of(AltarBlock.Entity::new, DEMON_ALTAR.get(), CRIMSON_ALTAR.get()).build(null));
+    public static final Supplier<BlockEntityType<AltarBlock.Entity>> ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("altar_block_entity", () -> BlockEntityType.Builder.of(AltarBlock.Entity::new, DEMON_ALTAR.get(), CRIMSON_ALTAR.get()).build(DSL.remainderType()));
     public static final DeferredBlock<SkyMillBlock> SKY_MILL = registerWithItem("sky_mill", () -> new SkyMillBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GRINDSTONE)), SkyMillBlock.Item::new);
-    public static final Supplier<BlockEntityType<SkyMillBlock.Entity>> SKY_MILL_ENTITY = BLOCK_ENTITIES.register("sky_mill_entity", () -> BlockEntityType.Builder.of(SkyMillBlock.Entity::new, SKY_MILL.get()).build(null));
+    public static final Supplier<BlockEntityType<SkyMillBlock.Entity>> SKY_MILL_ENTITY = BLOCK_ENTITIES.register("sky_mill_entity", () -> BlockEntityType.Builder.of(SkyMillBlock.Entity::new, SKY_MILL.get()).build(DSL.remainderType()));
     public static final DeferredBlock<HeavyWorkBenchBlock> HEAVY_WORK_BENCH = registerWithItem("heavy_work_bench", () -> new HeavyWorkBenchBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_BRICKS)));
     public static final DeferredBlock<SawmillBlock> SAWMILL = registerWithItem("sawmill", () -> new SawmillBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)));
     public static final DeferredBlock<HellforgeBlock> HELLFORGE = registerWithItem("hellforge", () -> new HellforgeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MAGMA_BLOCK).lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 15 : 7)));
-    public static final Supplier<BlockEntityType<HellforgeBlock.Entity>> HELLFORGE_ENTITY = BLOCK_ENTITIES.register("hellforge_entity", () -> BlockEntityType.Builder.of(HellforgeBlock.Entity::new, HELLFORGE.get()).build(null));
+    public static final Supplier<BlockEntityType<HellforgeBlock.Entity>> HELLFORGE_ENTITY = BLOCK_ENTITIES.register("hellforge_entity", () -> BlockEntityType.Builder.of(HellforgeBlock.Entity::new, HELLFORGE.get()).build(DSL.remainderType()));
     public static final DeferredBlock<CookingPotBlock> COOKING_POT = registerWithItem("cooking_pot", () -> new CookingPotBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON)), block -> new CookingPotBlock.Item(block, new Item.Properties()));
     public static final DeferredBlock<CookingPotBlock> CAULDRON = registerWithItem("cauldron", () -> new CookingPotBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON)), block -> new CookingPotBlock.Item(block, new Item.Properties()));
-    public static final Supplier<BlockEntityType<CookingPotBlock.Entity>> COOKING_POT_ENTITY = BLOCK_ENTITIES.register("cooking_pot_entity", () -> BlockEntityType.Builder.of(CookingPotBlock.Entity::new, COOKING_POT.get(), CAULDRON.get()).build(null));
+    public static final Supplier<BlockEntityType<CookingPotBlock.Entity>> COOKING_POT_ENTITY = BLOCK_ENTITIES.register("cooking_pot_entity", () -> BlockEntityType.Builder.of(CookingPotBlock.Entity::new, COOKING_POT.get(), CAULDRON.get()).build(DSL.remainderType()));
     public static final DeferredBlock<AlchemyTableBlock> ALCHEMY_TABLE = registerWithItem("alchemy_table", () -> new AlchemyTableBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE)));
     public static final DeferredBlock<SolidifierBlock> SOLIDIFIER = registerWithItem("solidifier", () -> new SolidifierBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL)));
     public static final DeferredBlock<WeatherVaneBlock> WEATHER_VANE = registerWithItem("weather_vane", () -> new WeatherVaneBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)));
-    public static final Supplier<BlockEntityType<WeatherVaneBlock.Entity>> WEATHER_VANE_ENTITY = BLOCK_ENTITIES.register("weather_vane_entity", () -> BlockEntityType.Builder.of(WeatherVaneBlock.Entity::new, WEATHER_VANE.get()).build(null));
+    public static final Supplier<BlockEntityType<WeatherVaneBlock.Entity>> WEATHER_VANE_ENTITY = BLOCK_ENTITIES.register("weather_vane_entity", () -> BlockEntityType.Builder.of(WeatherVaneBlock.Entity::new, WEATHER_VANE.get()).build(DSL.remainderType()));
     /**
      * @see org.confluence.mod.mixin.block.AnvilBlockMixin
      */
@@ -69,15 +70,15 @@ public class FunctionalBlocks {
 
     public static final DeferredBlock<LifeCampfireBlock> LIFE_CAMPFIRE = registerWithItem("life_campfire", () -> new LifeCampfireBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAMPFIRE)));
     public static final DeferredBlock<PiggyBankBlock> PIGGY_BANK = registerWithItem("piggy_bank", () -> new PiggyBankBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DECORATED_POT)));
-    public static final Supplier<BlockEntityType<PiggyBankBlock.Entity>> PIGGY_BANK_ENTITY = BLOCK_ENTITIES.register("piggy_bank_entity", () -> BlockEntityType.Builder.of(PiggyBankBlock.Entity::new, PIGGY_BANK.get()).build(null));
+    public static final Supplier<BlockEntityType<PiggyBankBlock.Entity>> PIGGY_BANK_ENTITY = BLOCK_ENTITIES.register("piggy_bank_entity", () -> BlockEntityType.Builder.of(PiggyBankBlock.Entity::new, PIGGY_BANK.get()).build(DSL.remainderType()));
     public static final DeferredBlock<SafeBlock> SAFE = registerWithItem("safe", () -> new SafeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)));
-    public static final Supplier<BlockEntityType<SafeBlock.Entity>> SAFE_ENTITY = BLOCK_ENTITIES.register("safe_entity", () -> BlockEntityType.Builder.of(SafeBlock.Entity::new, SAFE.get()).build(null));
+    public static final Supplier<BlockEntityType<SafeBlock.Entity>> SAFE_ENTITY = BLOCK_ENTITIES.register("safe_entity", () -> BlockEntityType.Builder.of(SafeBlock.Entity::new, SAFE.get()).build(DSL.remainderType()));
 
     public static final DeferredBlock<EchoBlock> ECHO_BLOCK = registerWithItem("echo_block", EchoBlock::new);
     public static final DeferredBlock<BaseChestBlock> BASE_CHEST_BLOCK = registerWithItemButHidden("base_chest_block", BaseChestBlock::new);
-    public static final Supplier<BlockEntityType<BaseChestBlock.Entity>> BASE_CHEST_BLOCK_ENTITY = BLOCK_ENTITIES.register("base_chest_block_entity", () -> BlockEntityType.Builder.of(BaseChestBlock.Entity::new, BASE_CHEST_BLOCK.get()).build(null));
+    public static final Supplier<BlockEntityType<BaseChestBlock.Entity>> BASE_CHEST_BLOCK_ENTITY = BLOCK_ENTITIES.register("base_chest_block_entity", () -> BlockEntityType.Builder.of(BaseChestBlock.Entity::new, BASE_CHEST_BLOCK.get()).build(DSL.remainderType()));
     public static final DeferredBlock<DeathChestBlock> DEATH_CHEST_BLOCK = registerWithItemButHidden("death_chest_block", DeathChestBlock::new);
-    public static final Supplier<BlockEntityType<DeathChestBlock.Entity>> DEATH_CHEST_BLOCK_ENTITY = BLOCK_ENTITIES.register("death_chest_block_entity", () -> BlockEntityType.Builder.of(DeathChestBlock.Entity::new, DEATH_CHEST_BLOCK.get()).build(null));
+    public static final Supplier<BlockEntityType<DeathChestBlock.Entity>> DEATH_CHEST_BLOCK_ENTITY = BLOCK_ENTITIES.register("death_chest_block_entity", () -> BlockEntityType.Builder.of(DeathChestBlock.Entity::new, DEATH_CHEST_BLOCK.get()).build(DSL.remainderType()));
     public static final DeferredBlock<EverPoweredRailBlock> EVER_POWERED_RAIL = registerWithItem("ever_powered_rail", () -> new EverPoweredRailBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ACTIVATOR_RAIL)));
     public static final DeferredBlock<StepOnTrapBlock> SHIMMER_TRAP = registerWithItem("shimmer_trap", () -> new StepOnTrapBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DISPENSER), StepOnTrapBlock.SHIMMER));
     public static final DeferredBlock<StepOnTrapBlock> GRAVITATION_TRAP = registerWithItem("gravitation_trap", () -> new StepOnTrapBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DISPENSER), StepOnTrapBlock.GRAVITATION));
@@ -90,7 +91,7 @@ public class FunctionalBlocks {
     public static final DeferredBlock<SculkTrapBlock> SCULK_TRAP = registerWithItem("sculk_trap", () -> new SculkTrapBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SCULK_SENSOR)));
 
     public static final DeferredBlock<SillyBalloonMachineBlock> SILLY_BALLOON_MACHINE = registerWithItem("silly_balloon_machine", () -> new SillyBalloonMachineBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)));
-    public static final Supplier<BlockEntityType<SillyBalloonMachineBlock.Entity>> SILLY_BALLOON_MACHINE_ENTITY = BLOCK_ENTITIES.register("silly_balloon_machine_entity", () -> BlockEntityType.Builder.of(SillyBalloonMachineBlock.Entity::new, SILLY_BALLOON_MACHINE.get()).build(null));
+    public static final Supplier<BlockEntityType<SillyBalloonMachineBlock.Entity>> SILLY_BALLOON_MACHINE_ENTITY = BLOCK_ENTITIES.register("silly_balloon_machine_entity", () -> BlockEntityType.Builder.of(SillyBalloonMachineBlock.Entity::new, SILLY_BALLOON_MACHINE.get()).build(DSL.remainderType()));
 
     public static final DeferredBlock<BehaviourPressurePlateBlock> PLAYER_PRESSURE_PLATE = registerWithEntity("player_pressure_plate", () -> new BehaviourPressurePlateBlock(BehaviourPressurePlateBlock.PLAYER, BlockBehaviour.Properties.ofFullCopy(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE), BlockSetType.IRON));
     public static final DeferredBlock<SignalPressurePlateBlock> STONE_PRESSURE_PLATE = registerWithEntity("stone_pressure_plate", () -> new SignalPressurePlateBlock(BlockSetType.STONE, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_PRESSURE_PLATE)));
@@ -120,11 +121,11 @@ public class FunctionalBlocks {
     public static final DeferredBlock<AnnouncementBoxBlock> ANNOUNCEMENT_BOX = BLOCKS.register("announcement_box", () -> new AnnouncementBoxBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_TRAPDOOR).noCollission()));
     public static final DeferredBlock<AnnouncementBoxBlock.Wall> WALL_ANNOUNCEMENT_BOX = BLOCKS.register("wall_announcement_box", () -> new AnnouncementBoxBlock.Wall(BlockBehaviour.Properties.ofFullCopy(ANNOUNCEMENT_BOX.get())));
     public static final DeferredItem<SignItem> ANNOUNCEMENT_BOX_ITEM = ModItems.BLOCK_ITEMS.register("announcement_box", () -> new SignItem(new Item.Properties(), ANNOUNCEMENT_BOX.get(), WALL_ANNOUNCEMENT_BOX.get()));
-    public static final Supplier<BlockEntityType<AnnouncementBoxBlock.Entity>> ANNOUNCEMENT_BOX_ENTITY = BLOCK_ENTITIES.register("announcement_box_entity", () -> BlockEntityType.Builder.of(AnnouncementBoxBlock.Entity::new, ANNOUNCEMENT_BOX.get(), WALL_ANNOUNCEMENT_BOX.get()).build(null));
+    public static final Supplier<BlockEntityType<AnnouncementBoxBlock.Entity>> ANNOUNCEMENT_BOX_ENTITY = BLOCK_ENTITIES.register("announcement_box_entity", () -> BlockEntityType.Builder.of(AnnouncementBoxBlock.Entity::new, ANNOUNCEMENT_BOX.get(), WALL_ANNOUNCEMENT_BOX.get()).build(DSL.remainderType()));
     public static final Supplier<BlockEntityType<AbstractMechanicalBlock.Entity>> MECHANICAL_BLOCK_ENTITY = BLOCK_ENTITIES.register("mechanical_block_entity", () -> {
         Block[] validBlocks = MECHANICAL_BLOCKS.stream().map(DeferredBlock::get).toArray(Block[]::new);
         MECHANICAL_BLOCKS = null;
-        return BlockEntityType.Builder.of(AbstractMechanicalBlock.Entity::new, validBlocks).build(null);
+        return BlockEntityType.Builder.of(AbstractMechanicalBlock.Entity::new, validBlocks).build(DSL.remainderType());
     });
 
     private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> block) {

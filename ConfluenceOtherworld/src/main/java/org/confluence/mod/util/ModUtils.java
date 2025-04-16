@@ -2,6 +2,7 @@ package org.confluence.mod.util;
 
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentManager;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -9,6 +10,10 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -34,9 +39,11 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.terra_curio.TerraCurio;
+import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terra_guns.TerraGuns;
 import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.init.entity.TEBossEntities;
+import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -147,5 +154,46 @@ public final class ModUtils {
         }
 
         dropMoney((int) amount, living.getX(), living.getEyeY() - 0.3, living.getZ(), level);
+    }
+
+    public static void applyBrainOfCthulhuDebuff(ServerLevel level, Entity attacker, LivingEntity living) {
+        if (attacker != null && LibUtils.isAtLeastExpert(level, living.blockPosition())) {
+            EntityType<?> type = attacker.getType();
+            if (type == TEMonsterEntities.VISUAL_NEURON.get() || (type == TEBossEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
+                boolean master = LibUtils.isMaster(level, living.blockPosition());
+                Holder<MobEffect> debuff;
+                float min;
+                int i = attacker.getRandom().nextInt(81);
+                if (i < 11) {
+                    debuff = MobEffects.POISON;
+                    min = master ? 6.56F : 5.25F;
+                } else if (i < 22) {
+                    debuff = MobEffects.BLINDNESS;
+                    min = master ? 3.75F : 3.0F;
+                } else if (i < 24) {
+                    debuff = ModEffects.CURSED;
+                    min = master ? 0.94F : 0.75F;
+                } else if (i < 35) {
+                    debuff = ModEffects.BLEEDING;
+                    min = master ? 9.38F : 7.5F;
+                } else if (i < 37) {
+                    debuff = TCEffects.CONFUSED;
+                    min = master ? 1.88F : 1.5F;
+                } else if (i < 48) {
+                    debuff = MobEffects.MOVEMENT_SLOWDOWN;
+                    min = master ? 6.56F : 5.25F;
+                } else if (i < 59) {
+                    debuff = MobEffects.WEAKNESS;
+                    min = master ? 14.06F : 11.25F;
+                } else if (i < 70) {
+                    debuff = ModEffects.SILENCED;
+                    min = master ? 1.88F : 1.5F;
+                } else {
+                    debuff = ModEffects.BROKEN_ARMOR;
+                    min = master ? 12.19F : 9.75F;
+                }
+                living.addEffect(new MobEffectInstance(debuff, (int) ((attacker.getRandom().nextFloat() * min + min) * 20)));
+            }
+        }
     }
 }

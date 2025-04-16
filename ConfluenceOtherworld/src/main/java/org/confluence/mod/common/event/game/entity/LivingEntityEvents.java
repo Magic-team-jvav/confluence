@@ -22,8 +22,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -33,10 +31,8 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.block.natural.BloodthirstCrystallizedBlock;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
 import org.confluence.mod.common.effect.beneficial.LuckEffect;
-import org.confluence.mod.common.effect.beneficial.ThornsEffect;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
@@ -44,7 +40,6 @@ import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulder;
 import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.common.init.item.PickaxeItems;
@@ -66,7 +61,6 @@ import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.entity.ai.Boss;
 import org.confluence.terraentity.init.TEEffects;
 import org.confluence.terraentity.init.entity.TEBossEntities;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class LivingEntityEvents {
@@ -101,20 +95,20 @@ public final class LivingEntityEvents {
             }
         }
 
-        Level level = living.level();
-        if (level.isClientSide) return;
-        if (!living.hasEffect(ModEffects.BLOOD_BUTCHERED)) return;
-        BlockPos livingPos = living.blockPosition();
-        AABB detectionBox = new AABB(livingPos).inflate(20.0);
-        BlockPos.betweenClosedStream(
-                new BlockPos((int) detectionBox.minX,(int) detectionBox.minY,(int) detectionBox.minZ),
-                new BlockPos((int) detectionBox.maxX,(int) detectionBox.maxY,(int) detectionBox.maxZ)
-        ).forEach(blockPos -> {
-            BlockState state = level.getBlockState(blockPos);
-            if (state.is(NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK)) {
-                level.setBlockAndUpdate(blockPos, state.setValue(BloodthirstCrystallizedBlock.VISIBLE, true));
-            }
-        });
+//        Level level = living.level();
+//        if (level.isClientSide) return;
+//        if (!living.hasEffect(ModEffects.BLOOD_BUTCHERED)) return;
+//        BlockPos livingPos = living.blockPosition();
+//        AABB detectionBox = new AABB(livingPos).inflate(20.0);
+//        BlockPos.betweenClosedStream(
+//                new BlockPos((int) detectionBox.minX,(int) detectionBox.minY,(int) detectionBox.minZ),
+//                new BlockPos((int) detectionBox.maxX,(int) detectionBox.maxY,(int) detectionBox.maxZ)
+//        ).forEach(blockPos -> {
+//            BlockState state = level.getBlockState(blockPos);
+//            if (state.is(NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK)) {
+//                level.setBlockAndUpdate(blockPos, state.setValue(BloodthirstCrystallizedBlock.VISIBLE, true));
+//            }
+//        });
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -163,50 +157,12 @@ public final class LivingEntityEvents {
         float amount = event.getNewDamage();
         Entity attacker = damageSource.getEntity();
 
-        ThornsEffect.apply(living, attacker, damageSource, amount);
         amount = ArcheryEffect.apply(living, damageSource, amount);
         amount = ManaSicknessEffect.apply(damageSource, amount);
         amount = TheConstant.applyAttackDamage(attacker, amount);
 
         // 克苏鲁之脑和飞眼怪给的debuff
-        if (attacker != null && LibUtils.isAtLeastExpert(level, living.blockPosition())) {
-            EntityType<?> type = attacker.getType();
-            if (type == TEMonsterEntities.VISUAL_NEURON.get() || (type == TEBossEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
-                boolean master = LibUtils.isMaster(level, living.blockPosition());
-                Holder<MobEffect> debuff;
-                float min;
-                int i = attacker.getRandom().nextInt(81);
-                if (i < 11) {
-                    debuff = MobEffects.POISON;
-                    min = master ? 6.56F : 5.25F;
-                } else if (i < 22) {
-                    debuff = MobEffects.BLINDNESS;
-                    min = master ? 3.75F : 3.0F;
-                } else if (i < 24) {
-                    debuff = ModEffects.CURSED;
-                    min = master ? 0.94F : 0.75F;
-                } else if (i < 35) {
-                    debuff = ModEffects.BLEEDING;
-                    min = master ? 9.38F : 7.5F;
-                } else if (i < 37) {
-                    debuff = TCEffects.CONFUSED;
-                    min = master ? 1.88F : 1.5F;
-                } else if (i < 48) {
-                    debuff = MobEffects.MOVEMENT_SLOWDOWN;
-                    min = master ? 6.56F : 5.25F;
-                } else if (i < 59) {
-                    debuff = MobEffects.WEAKNESS;
-                    min = master ? 14.06F : 11.25F;
-                } else if (i < 70) {
-                    debuff = ModEffects.SILENCED;
-                    min = master ? 1.88F : 1.5F;
-                } else {
-                    debuff = ModEffects.BROKEN_ARMOR;
-                    min = master ? 12.19F : 9.75F;
-                }
-                living.addEffect(new MobEffectInstance(debuff, (int) ((attacker.getRandom().nextFloat() * min + min) * 20)));
-            }
-        }
+        ModUtils.applyBrainOfCthulhuDebuff(level, attacker, living);
         // 芦苇呼吸管对溺水伤害减半
         if (damageSource.is(DamageTypes.DROWN)) {
             if (LibUtils.anyHandHasItem(living, itemStack -> itemStack.is(SwordItems.BREATHING_REED))) {
@@ -326,12 +282,17 @@ public final class LivingEntityEvents {
         LivingEntity living = event.getEntity();
         if (living.hasEffect(ModEffects.CHOKING)) {
             living.setAirSupply(living.getAirSupply() - 5);
-        } else if (event.canBreathe()) return;
+        }
+        if (event.canBreathe()) return;
+
         if (living.hasEffect(ModEffects.SHIMMER)) {
             event.setCanBreathe(true);
         } else if (LibUtils.anyHandHasItem(living, itemStack -> itemStack.is(SwordItems.BREATHING_REED))) {
-            // todo 管子在水面上时允许呼吸
-            event.setConsumeAirAmount(living.getRandom().nextInt(3) > 0 ? 0 : 1);
+            if (living.canDrownInFluidType(living.level().getFluidState(living.blockPosition().offset(0, 2, 0)).getFluidType())) {
+                event.setConsumeAirAmount(living.getRandom().nextInt(2) > 0 ? 0 : 1);
+            } else {
+                event.setCanBreathe(true);
+            }
         }
     }
 

@@ -39,8 +39,8 @@ authors = "${mod_authors}" #optional
 #displayTest="MATCH_VERSION" # MATCH_VERSION is the default if nothing is specified (#optional)
 
 # The description text for the mod (multi line!) (#mandatory)
-#description = '''${mod_description}'''
-#enumExtensions = "META-INF/enumextensions.json"
+description = '''${mod_description}'''
+enumExtensions = "META-INF/enumextensions.json"
 
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
 [[mixins]]

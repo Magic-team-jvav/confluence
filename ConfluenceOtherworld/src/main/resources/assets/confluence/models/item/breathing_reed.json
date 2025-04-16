@@ -1,0 +1,17 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:item/handheld",
+	"textures": {
+		"layer0": "confluence:item/sword/breathing_reed"
+	},
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [-18, -118, 45],
+			"translation": [-2, 6, -2]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [-18, -118, -45],
+			"translation": [-2, 6, -2]
+		}
+	}
+}

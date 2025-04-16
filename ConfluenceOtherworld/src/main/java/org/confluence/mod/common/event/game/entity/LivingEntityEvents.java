@@ -1,5 +1,6 @@
 package org.confluence.mod.common.event.game.entity;
 
+import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -40,6 +41,7 @@ import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulder;
 import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.common.init.item.PickaxeItems;
@@ -270,10 +272,19 @@ public final class LivingEntityEvents {
     @SubscribeEvent
     public static void livingGetProjectile(LivingGetProjectileEvent event) {
         LivingEntity living = event.getEntity();
-        ItemStack projectile = ExtraInventory.getProjectile(event.getProjectileItemStack(), event.getProjectileWeaponItemStack(), living);
-        event.setProjectileItemStack(projectile);
-        if (!projectile.isEmpty() && living.hasEffect(ModEffects.AMMO_BOX) && living.getRandom().nextFloat() < 0.2F) {
-            event.setProjectileItemStack(projectile.copy());
+        event.setProjectileItemStack(ExtraInventory.getProjectile(event.getProjectileItemStack(), event.getProjectileWeaponItemStack(), living));
+
+        if (!event.getProjectileItemStack().isEmpty()) {
+            if (living.hasEffect(ModEffects.AMMO_BOX) && living.getRandom().nextFloat() < 0.2F) {
+                event.setProjectileItemStack(event.getProjectileItemStack().copy());
+                return;
+            }
+            HookMapManager.postHooks(ModHookTypes.AMMO_CONSUME.get(), (owner, hook, original) -> {
+                if (hook.shouldSkipConsume(owner, original.getEntity(), original.getProjectileItemStack())) {
+                    original.setProjectileItemStack(original.getProjectileItemStack().copy());
+                }
+                return original;
+            }, event.getEntity(), event);
         }
     }
 

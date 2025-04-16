@@ -10,6 +10,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.item.ArmorItems;
 
+// todo
 public class AnglerSet extends EquipmentSet {
     @Override
     protected void init(HookMap.Builder hook, EquippableGroup.Builder equippableGroup) {

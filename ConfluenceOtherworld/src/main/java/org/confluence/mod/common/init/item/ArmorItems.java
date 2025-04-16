@@ -193,6 +193,13 @@ public class ArmorItems {
     public static final DeferredItem<ArmorItem> JUNGLE_LEGGINGS = registerNormalArmor("jungle_leggings", "jungle_armor", ModArmorMaterials.JUNGLE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
     public static final DeferredItem<ArmorItem> JUNGLE_BOOTS = registerNormalArmor("jungle_boots", "jungle_armor", ModArmorMaterials.JUNGLE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
 
+    public static final DeferredItem<ArmorItem> COBALT_MASK = registerNormalArmor("cobalt_mask", "cobalt_mask", ModArmorMaterials.COBALT_MASK_MATERIALS, ArmorItem.Type.HELMET);
+    public static final DeferredItem<ArmorItem> COBALT_HAT = registerNormalArmor("cobalt_hat", "cobalt_hat", ModArmorMaterials.COBALT_HAT_MATERIALS, ArmorItem.Type.HELMET);
+    public static final DeferredItem<ArmorItem> COBALT_HELMET = registerNormalArmor("cobalt_helmet", "cobalt_helmet", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
+    public static final DeferredItem<ArmorItem> COBALT_CHESTPLATE = registerNormalArmor("cobalt_chestplate", "cobalt_armor", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<ArmorItem> COBALT_LEGGINGS = registerNormalArmor("cobalt_leggings", "cobalt_armor", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
+    public static final DeferredItem<ArmorItem> COBALT_BOOTS = registerNormalArmor("cobalt_boots", "cobalt_armor", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
+
     private static DeferredItem<ArmorItem> registerNormalArmor(String name, String geoName, Holder<ArmorMaterial> material, ArmorItem.Type type, int durability) {
         return ITEMS.register(name, () -> new NormalArmorItem("armor/" + geoName, material, type, new Item.Properties().stacksTo(1).durability(durability)));
     }

@@ -1,6 +1,7 @@
 package org.confluence.mod.common.event.game;
 
 import com.xiaohunao.equipment_benediction.common.event.AfterEquipmentBenedictionUpdatedEvent;
+import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import com.xiaohunao.heaven_destiny_moment.common.event.MomentEvent;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstance;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
@@ -29,6 +30,7 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.saved.ConfluenceCommand;
 import org.confluence.mod.common.effect.beneficial.HeartReachEffect;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
@@ -44,6 +46,7 @@ import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
 import org.confluence.terra_curio.api.event.RangePickupItemEvent;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.confluence.terra_curio.util.TCUtils;
+import org.confluence.terra_guns.api.event.GunEvent;
 import org.confluence.terraentity.network.s2c.SyncNPCTradesPacketS2C;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
@@ -199,5 +202,14 @@ public final class GameEvents {
         }
     }
 
-
+    @SubscribeEvent
+    public static void gun$ShrinkBullet(GunEvent.ShrinkBulletEvent event) {
+        if (event.isCanceled()) return;
+        HookMapManager.postHooks(ModHookTypes.AMMO_CONSUME.get(), (owner, hook, original) -> {
+            if (hook.shouldSkipConsume(owner, original.getPlayer(), original.getAmmo())) {
+                original.setCanceled(true);
+            }
+            return original;
+        }, event.getPlayer(), event);
+    }
 }

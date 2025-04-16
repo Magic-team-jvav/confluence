@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
@@ -103,6 +104,11 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "I#I",
                 "RIR"
         )), new ItemStack(FunctionalBlocks.ANNOUNCEMENT_BOX_ITEM.asItem()));
+        // 石头及深板岩压力板
+        shaped(output,"","", ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.STONE.asItem())
+        ), List.of("##")), new ItemStack(FunctionalBlocks.STONE_PRESSURE_PLATE.asItem()));
+        shaped(output,"","", ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.DEEPSLATE.asItem())
+        ), List.of("##")), new ItemStack(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE.asItem()));
     }
 
     protected void shaped(RecipeOutput recipeOutput, String prefix, String suffix, ShapedRecipePattern pattern, ItemStack result) {

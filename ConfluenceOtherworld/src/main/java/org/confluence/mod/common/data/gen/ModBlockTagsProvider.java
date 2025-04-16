@@ -268,6 +268,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 HEAVY_WORK_BENCH.get(),
                 DART_TRAP.get(),
                 STONY_LOG.get(),
+                STONE_PRESSURE_PLATE.get(),
+                DEEPSLATE_PRESSURE_PLATE.get(),
                 SIGNAL_ADAPTER.get(),
                 SWITCH.get(),
                 TIMERS_BLOCK_1_1.get(),

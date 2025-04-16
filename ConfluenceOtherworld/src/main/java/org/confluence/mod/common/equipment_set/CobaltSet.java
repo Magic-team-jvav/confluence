@@ -20,16 +20,17 @@ public class CobaltSet extends EquipmentSet {
                 .addEquippable(VanillaEquippable.HEAD, ArmorItems.COBALT_MASK)
                 .bindHook(builder -> builder
                         .addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(ArmorItems.COBALT_MASK.getId(), 0.1, AttributeModifier.Operation.ADD_VALUE))
-                        .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(ArmorItems.COBALT_MASK.getId(), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
+                        .addBonus(TCAttributes.getRangedDamage(), new AttributeModifier(ArmorItems.COBALT_MASK.getId(), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                 )
-                .bindHook(ModHookTypes.ADDITIONAL_MANA.get(), (owner, player, original) -> original + 40)
                 .build());
         equippableGroup.addEquippableSet("hat", new EquippableSetData.Builder()
                 .addEquippable(VanillaEquippable.HEAD, ArmorItems.COBALT_HAT)
                 .bindHook(builder -> builder
-                        .addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(ArmorItems.COBALT_MASK.getId(), 0.09, AttributeModifier.Operation.ADD_VALUE))
-                        .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(ArmorItems.COBALT_MASK.getId(), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
-                ).build());
+                        .addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(ArmorItems.COBALT_HAT.getId(), 0.09, AttributeModifier.Operation.ADD_VALUE))
+                        .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(ArmorItems.COBALT_HAT.getId(), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
+                )
+                .bindHook(ModHookTypes.ADDITIONAL_MANA.get(), (owner, player, original) -> original + 40)
+                .build());
         equippableGroup.addEquippableSet("helmet", new EquippableSetData.Builder()
                 .addEquippable(VanillaEquippable.HEAD, ArmorItems.COBALT_HELMET)
                 .bindHook(builder -> builder

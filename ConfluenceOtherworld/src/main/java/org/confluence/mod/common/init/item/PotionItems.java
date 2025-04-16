@@ -30,6 +30,8 @@ public class PotionItems {
             }
         }
     });
+    public static final DeferredItem<Item> MUG = ITEMS.register("mug", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<AbstractPotionItem> ALE = ITEMS.register("ale", () -> new EffectPotionItem(ModEffects.TIPSY, 2400));
     public static final DeferredItem<AbstractPotionItem> ARCHERY_POTION = ITEMS.register("archery_potion", () -> new EffectPotionItem(ModEffects.ARCHERY, 9600));
     public static final DeferredItem<AbstractPotionItem> BUILDER_POTION = ITEMS.register("builder_potion", () -> new EffectPotionItem(ModEffects.BUILDER, 54000));
     public static final DeferredItem<AbstractPotionItem> DANGERSENSE_POTION = ITEMS.register("dangersense_potion", () -> new EffectPotionItem(ModEffects.DANGER_SENSE, 4800));

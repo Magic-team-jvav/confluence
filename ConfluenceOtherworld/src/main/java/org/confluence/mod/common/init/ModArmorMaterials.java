@@ -193,6 +193,14 @@ public final class ModArmorMaterials {
 
     public static final Holder<ArmorMaterial> JUNGLE_ARMOR_MATERIALS = registerArmorMaterial("jungle_armor_materials", 3, 6, 6, 3, 15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.JUNGLE_SPORE), "jungle", 0, 0);
 
+    public static final Holder<ArmorMaterial> COBALT_MASK_MATERIALS = registerArmorMaterial("cobalt_mask_materials", 10000, 0, 0, 0, 0, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.COBALT_INGOT), "cobalt_mask", 10000, 10000);
+    public static final Holder<ArmorMaterial> COBALT_HAT_MATERIALS = registerArmorMaterial("cobalt_hat_materials", 10000, 0, 0, 0, 0, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.COBALT_INGOT), "cobalt_hat", 10000, 10000);
+    public static final Holder<ArmorMaterial> COBALT_ARMOR_MATERIALS = registerArmorMaterial("cobalt_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.COBALT_INGOT), "cobalt", 10000, 10000);
+
+    public static final Holder<ArmorMaterial> MYTHRIL_HOOD_MATERIALS = registerArmorMaterial("mythril_hood_materials", 10000, 0, 0, 0, 0, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.MYTHRIL_INGOT), "mythril_hood", 10000, 10000);
+    public static final Holder<ArmorMaterial> MYTHRIL_HAT_MATERIALS = registerArmorMaterial("mythril_hat_materials", 10000, 0, 0, 0, 0, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.MYTHRIL_INGOT), "mythril_hat", 10000, 10000);
+    public static final Holder<ArmorMaterial> MYTHRIL_ARMOR_MATERIALS = registerArmorMaterial("mythril_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.MYTHRIL_INGOT), "mythril", 10000, 10000);
+
     public static Holder<ArmorMaterial> registerArmorMaterial(String name, int helmetArmor, int chestplateArmor, int leggingsArmor, int bootsArmor, int enchantmentValue, Holder<SoundEvent> equipSound, ItemLike fixItem, String layersName, float toughness, float knockbackResistance) {
         return ARMOR_MATERIALS.register(name, () -> new ArmorMaterial(
                 Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {

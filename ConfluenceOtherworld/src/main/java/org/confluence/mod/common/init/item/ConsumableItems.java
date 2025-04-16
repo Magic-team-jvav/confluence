@@ -11,6 +11,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
+import org.confluence.mod.common.entity.projectile.ThrownWaterProjectile;
 import org.confluence.mod.common.entity.projectile.bomb.*;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.item.common.*;
@@ -54,6 +55,9 @@ public class ConsumableItems {
     public static final DeferredItem<ThrowableDropSelfItem> THROWING_KNIVES = ITEMS.register("throwing_knives", () -> new ThrowableDropSelfItem(ModEntities.THROWN_KNIVES_PROJECTILE.get(), 5f, 1.2f, 0.5f, 5, 3, true));
     public static final DeferredItem<ThrowableDropSelfItem> JAVELIN = ITEMS.register("javelin", () -> new ThrowableDropSelfItem(ModEntities.JAVELIN_PROJECTILE.get(), 5f, 1.2f, 0.5f, 5, 5, true));
     public static final DeferredItem<SpikyBallItem> SPIKY_BALL = ITEMS.register("spiky_ball", SpikyBallItem::new);
+    public static final DeferredItem<ThrowableItem<ThrownWaterProjectile>> HOLY_WATER = ITEMS.register("holy_water", () -> new ThrowableItem<>(0.8F, player -> new ThrownWaterProjectile(player, ISpreadable.Type.PURE)));
+    public static final DeferredItem<ThrowableItem<ThrownWaterProjectile>> UNHOLY_WATER = ITEMS.register("unholy_water", () -> new ThrowableItem<>(0.8F, player -> new ThrownWaterProjectile(player, ISpreadable.Type.CORRUPT)));
+    public static final DeferredItem<ThrowableItem<ThrownWaterProjectile>> BLOOD_WATER = ITEMS.register("blood_water", () -> new ThrowableItem<>(0.8F, player -> new ThrownWaterProjectile(player, ISpreadable.Type.CRIMSON)));
 
     public static final DeferredItem<RightClickLootItem> CLAM = ITEMS.register("clam", () -> new RightClickLootItem(ModRarity.BLUE, ModLootTables.CLAM));
     public static final DeferredItem<RightClickLootItem> HERB_BAG = ITEMS.register("herb_bag", () -> new RightClickLootItem(ModRarity.BLUE, ModLootTables.HERB_BAG));

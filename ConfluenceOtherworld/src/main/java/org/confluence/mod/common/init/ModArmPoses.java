@@ -11,10 +11,10 @@ public final class ModArmPoses {
             (model, living, arm) -> {
                 if (arm == HumanoidArm.RIGHT) {
                     model.rightArm.xRot = -Mth.PI * 0.6F;
-                    model.rightArm.yRot = model.head.yRot - (Mth.PI * 0.2F);
+                    model.rightArm.yRot = model.head.yRot - Mth.PI * 0.2F;
                 } else {
                     model.leftArm.xRot = -Mth.PI * 0.6F;
-                    model.leftArm.yRot = model.head.yRot + (Mth.PI * 0.2F);
+                    model.leftArm.yRot = model.head.yRot + Mth.PI * 0.2F;
                 }
             });
 }

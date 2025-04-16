@@ -124,6 +124,7 @@ public final class PlayerUtils {
         float base = TCUtils.getAccessoriesValue(player, AccessoryItems.FISHING$POWER);
         if (player.getData(ModAttachmentTypes.EVER_BENEFICIAL).isGummyWormUsed()) base += 3.0F;
         if (player.isInFluidType() && TCUtils.hasAccessoriesType(player, TCItems.FLOAT$ON$LIQUID$SURFACE)) base += 5.0F;
+        if (player.hasEffect(ModEffects.TIPSY)) base += 5.0F;
         Level level = player.level();
         long dayTime = level.dayTime();
         if (level.isRaining()) base *= 1.1F;

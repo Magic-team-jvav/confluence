@@ -70,6 +70,8 @@ public final class ModTabs {
                         FunctionalBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
                         output.accept(TFBlocks.GLASS_KILN.get());
                         output.accept(TFBlocks.LIVING_LOOM.get());
+                        output.accept(TFBlocks.ICE_MACHINE.get());
+                        output.accept(TFBlocks.TRASH_CAN.get());
                     }).withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "materials")).withTabsBefore(TFRegistries.FURNITURE.getId()).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MATERIALS = TABS.register("materials",
             () -> CreativeModeTab.builder().icon(() -> IconItems.MATERIAL_ICON.get().getDefaultInstance())

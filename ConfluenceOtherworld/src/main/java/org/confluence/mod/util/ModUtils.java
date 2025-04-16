@@ -19,6 +19,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.npc.Npc;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
@@ -195,5 +197,10 @@ public final class ModUtils {
                 living.addEffect(new MobEffectInstance(debuff, (int) ((attacker.getRandom().nextFloat() * min + min) * 20)));
             }
         }
+    }
+
+    public static boolean canHitEntity(Entity target, Entity owner) {
+        if (!target.canBeHitByProjectile() || target instanceof ArmorStand || target instanceof Npc) return false;
+        return owner == null || (owner != target && !owner.isPassengerOfSameVehicle(target));
     }
 }

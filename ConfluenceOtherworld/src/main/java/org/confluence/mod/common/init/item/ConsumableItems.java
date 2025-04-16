@@ -50,9 +50,10 @@ public class ConsumableItems {
     public static final DeferredItem<ThrowableItem<LiquidBombEntity>> WET_BOMB = ITEMS.register("wet_bomb", () -> new ThrowableItem<>(0.8F, player -> new LiquidBombEntity(ModEntities.WET_BOMB.get(), player, Fluids.WATER, 3)));
     public static final DeferredItem<ThrowableItem<LiquidBombEntity>> LAVA_BOMB = ITEMS.register("lava_bomb", () -> new ThrowableItem<>(0.8F, player -> new LiquidBombEntity(ModEntities.LAVA_BOMB.get(), player, Fluids.LAVA, 3)));
     public static final DeferredItem<ThrowableItem<LiquidBombEntity>> HONEY_BOMB = ITEMS.register("honey_bomb", () -> new ThrowableItem<>(0.8F, player -> new LiquidBombEntity(ModEntities.HONEY_BOMB.get(), player, ModFluids.HONEY.fluid().get(), 3)));
-    public static final DeferredItem<ThrowableDropSelfItem> SHURIKEN = ITEMS.register("shuriken", ()-> new ThrowableDropSelfItem(ModEntities.SHURIKEN_PROJECTILE.get(),4.2f, 1.2f, 0.5f, 5, 3,true));
-    public static final DeferredItem<ThrowableDropSelfItem> THROWING_KNIVES = ITEMS.register("throwing_knives", ()-> new ThrowableDropSelfItem(ModEntities.THROWN_KNIVES_PROJECTILE.get(), 5f, 1.2f, 0.5f, 5, 3,true));
-    public static final DeferredItem<ThrowableDropSelfItem> JAVELIN = ITEMS.register("javelin", ()-> new ThrowableDropSelfItem(ModEntities.JAVELIN_PROJECTILE.get(), 5f, 1.2f, 0.5f, 5, 5,true));
+    public static final DeferredItem<ThrowableDropSelfItem> SHURIKEN = ITEMS.register("shuriken", () -> new ThrowableDropSelfItem(ModEntities.SHURIKEN_PROJECTILE.get(), 4.2f, 1.2f, 0.5f, 5, 3, true));
+    public static final DeferredItem<ThrowableDropSelfItem> THROWING_KNIVES = ITEMS.register("throwing_knives", () -> new ThrowableDropSelfItem(ModEntities.THROWN_KNIVES_PROJECTILE.get(), 5f, 1.2f, 0.5f, 5, 3, true));
+    public static final DeferredItem<ThrowableDropSelfItem> JAVELIN = ITEMS.register("javelin", () -> new ThrowableDropSelfItem(ModEntities.JAVELIN_PROJECTILE.get(), 5f, 1.2f, 0.5f, 5, 5, true));
+    public static final DeferredItem<SpikyBallItem> SPIKY_BALL = ITEMS.register("spiky_ball", SpikyBallItem::new);
 
     public static final DeferredItem<RightClickLootItem> CLAM = ITEMS.register("clam", () -> new RightClickLootItem(ModRarity.BLUE, ModLootTables.CLAM));
     public static final DeferredItem<RightClickLootItem> HERB_BAG = ITEMS.register("herb_bag", () -> new RightClickLootItem(ModRarity.BLUE, ModLootTables.HERB_BAG));

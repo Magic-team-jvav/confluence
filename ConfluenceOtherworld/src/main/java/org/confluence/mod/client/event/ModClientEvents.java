@@ -241,6 +241,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(THROWN_KNIVES_PROJECTILE.get(), ThrownKnivesProjectileRenderer::new);
         event.registerEntityRenderer(JAVELIN_PROJECTILE.get(), SpearRenderer::new);
         event.registerEntityRenderer(SHURIKEN_PROJECTILE.get(), ShurikenProjectileRenderer::new);
+        event.registerEntityRenderer(SPIKY_BALL_PROJECTILE.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(GRENADE.get(), BaseGrenadeEntityRenderer::new);
         event.registerEntityRenderer(BOUNCY_GRENADE.get(), BouncyGrenadeEntityRenderer::new);
         event.registerEntityRenderer(STICKY_GRENADE.get(), StickyGrenadeEntityRenderer::new);

@@ -15,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 
 
 public class ThrowableDropSelfItem extends Item {
-
     final EntityType<? extends ThrowableDropSelfProjectile> entityType;
     final boolean dropSelf;
     final float inaccuracy;
@@ -23,7 +22,6 @@ public class ThrowableDropSelfItem extends Item {
     final int cooldown;
     final float damage;
     final int flyTicks;
-
 
     public ThrowableDropSelfItem(@NotNull EntityType<? extends ThrowableDropSelfProjectile> entityType, float damage, float power, float inaccuracy, int cooldown, int flyTicks, boolean dropSelf) {
         super(new Properties());
@@ -36,6 +34,7 @@ public class ThrowableDropSelfItem extends Item {
         this.flyTicks = flyTicks;
     }
 
+    @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
         if (!pLevel.isClientSide) {
@@ -44,7 +43,7 @@ public class ThrowableDropSelfItem extends Item {
             if (projectile != null) {
                 projectile.setOwner(pPlayer);
                 projectile.setItem(getDefaultInstance());
-                if(dropSelf){
+                if (dropSelf) {
                     projectile.setDrop(getDefaultInstance());
                 }
                 projectile.setDamage(damage);
@@ -60,6 +59,6 @@ public class ThrowableDropSelfItem extends Item {
             itemstack.shrink(1);
         }
 
-        return InteractionResultHolder.sidedSuccess(itemstack, pLevel.isClientSide());
+        return InteractionResultHolder.sidedSuccess(itemstack, pLevel.isClientSide);
     }
 }

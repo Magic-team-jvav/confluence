@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init.block;
 
+import com.mojang.datafixers.DSL;
 import net.minecraft.sounds.Music;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -38,7 +39,7 @@ public class MusicBoxBlocks {
     public static final Supplier<BlockEntityType<MusicBoxBlock.Entity>> MUSIC_BOX_ENTITY = BLOCK_ENTITIES.register("music_box_entity", () -> {
         Block[] validBlocks = MUSIC_BOXES.stream().map(Supplier::get).toArray(Block[]::new);
         MUSIC_BOXES = null;
-        return BlockEntityType.Builder.of(MusicBoxBlock.Entity::new, validBlocks).build(null);
+        return BlockEntityType.Builder.of(MusicBoxBlock.Entity::new, validBlocks).build(DSL.remainderType());
     });
 
     private static Supplier<MusicBoxBlock> register(String id, @Nullable Music music) {

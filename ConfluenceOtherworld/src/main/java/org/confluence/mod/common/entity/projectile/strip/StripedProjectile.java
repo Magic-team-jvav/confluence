@@ -10,7 +10,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
@@ -22,6 +21,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.mixed.Immunity;
+import org.confluence.mod.util.ModUtils;
 
 /**
  * 长条形射弹
@@ -137,9 +137,7 @@ public abstract class StripedProjectile extends Projectile implements Immunity {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        if (!target.canBeHitByProjectile() || target instanceof ArmorStand) return false;
-        Entity entity = getOwner();
-        return entity == null || (entity != target && !entity.isPassengerOfSameVehicle(target));
+        return ModUtils.canHitEntity(target, getOwner());
     }
 
     @Override

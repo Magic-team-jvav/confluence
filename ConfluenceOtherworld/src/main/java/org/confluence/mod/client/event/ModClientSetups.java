@@ -6,6 +6,7 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Camera;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.gui.components.WidgetSprites;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -18,6 +19,9 @@ import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,6 +35,7 @@ import org.confluence.lib.color.IntegerRGB;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.MeteorLandingHandler;
 import org.confluence.mod.client.renderer.item.EntityDisplayItemRenderer;
+import org.confluence.mod.common.init.ModArmPoses;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -118,6 +123,12 @@ public final class ModClientSetups {
                 this.renderer = new EntityDisplayItemRenderer();
             }
             return renderer;
+        }
+    };
+    static final IClientItemExtensions BREATHING_REED = new IClientItemExtensions() {
+        @Override
+        public HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
+            return ModArmPoses.BREATHING_REED.getValue();
         }
     };
     static final BlockColor HALLOW_LEAVES_COLOR = new BlockColor() {

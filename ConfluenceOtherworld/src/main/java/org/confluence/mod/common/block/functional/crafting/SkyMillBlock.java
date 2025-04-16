@@ -49,7 +49,6 @@ import java.util.function.Consumer;
 
 public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBlock {
     public static final MapCodec<SkyMillBlock> CODEC = simpleCodec(SkyMillBlock::new);
-    private static final Component CONTAINER_TITLE = Component.translatable("container.confluence.sky_mill");
 
     private static final VoxelShape SHAPE = Shapes.box(0.1875, 0.0, 0.1875, 0.8125, 0.8, 0.8125);
 
@@ -94,7 +93,7 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
 
     @Override
     public @Nullable MenuProvider getMenuProvider(BlockState pState, Level pLevel, BlockPos pPos) {
-        return new SimpleMenuProvider((pContainerId, pPlayerInventory, pPlayer) -> new SkyMillMenu(pContainerId, pPlayerInventory, new LevelAccess(pLevel, pPos)), CONTAINER_TITLE);
+        return new SimpleMenuProvider((pContainerId, pPlayerInventory, pPlayer) -> new SkyMillMenu(pContainerId, pPlayerInventory, new LevelAccess(pLevel, pPos)), Component.translatable("container.confluence.sky_mill"));
     }
 
     @Override

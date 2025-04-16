@@ -15,6 +15,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
+import org.confluence.mod.util.ModUtils;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -101,7 +102,7 @@ public class ThrowableDropSelfProjectile extends ThrowableItemProjectile {
     }
 
     protected boolean canHitEntity(Entity target) {
-        return super.canHitEntity(target) && target.isAlive() && target!= getOwner() && !hitList.contains(target) ;
+        return ModUtils.canHitEntity(target, getOwner()) && !hitList.contains(target) ;
     }
 
     @Override

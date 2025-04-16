@@ -42,7 +42,6 @@ public class AlchemyTableBlock extends HorizontalDirectionalWithVerticalFourPart
     private static final VoxelShape[] RIGHT_SHAPES = new VoxelShape[]{RIGHT_SHAPE_SOUTH, RIGHT_SHAPE_WEST, RIGHT_SHAPE_NORTH, RIGHT_SHAPE_EAST};
     private static final VoxelShape[] UP_SHAPES = new VoxelShape[]{UP_SHAPE_SOUTH, UP_SHAPE_WEST, UP_SHAPE_NORTH, UP_SHAPE_EAST};
     private static final VoxelShape[] RIGHT_UP_SHAPES = new VoxelShape[]{RIGHT_UP_SHAPE_SOUTH, RIGHT_UP_SHAPE_WEST, RIGHT_UP_SHAPE_NORTH, RIGHT_UP_SHAPE_EAST};
-    private static final Component CONTAINER_TITLE = Component.translatable("container.confluence.alchemy_table");
 
     public AlchemyTableBlock(Properties properties) {
         super(properties);
@@ -65,7 +64,7 @@ public class AlchemyTableBlock extends HorizontalDirectionalWithVerticalFourPart
 
     @Override
     public @Nullable MenuProvider getMenuProvider(BlockState pState, Level pLevel, BlockPos pPos) {
-        return new SimpleMenuProvider((pContainerId, pPlayerInventory, pPlayer) -> new AlchemyTableMenu(pContainerId, pPlayerInventory, ContainerLevelAccess.create(pLevel, pPos)), CONTAINER_TITLE);
+        return new SimpleMenuProvider((pContainerId, pPlayerInventory, pPlayer) -> new AlchemyTableMenu(pContainerId, pPlayerInventory, ContainerLevelAccess.create(pLevel, pPos)), Component.translatable("container.confluence.alchemy_table"));
     }
 
     @Override

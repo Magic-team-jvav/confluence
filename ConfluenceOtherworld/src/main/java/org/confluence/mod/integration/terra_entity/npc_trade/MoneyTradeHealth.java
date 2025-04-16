@@ -3,6 +3,8 @@ package org.confluence.mod.integration.terra_entity.npc_trade;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
@@ -20,6 +22,11 @@ public record MoneyTradeHealth(int health, long cost) implements IMoneyTrade, IT
     @Override
     public void onTrade(ServerPlayer player) {
         IMoneyTrade.super.onTrade(player);
+    }
+
+    @Override
+    public void renderResultHover(GuiGraphics guiGraphics, Font font, int x, int y, int startx, int starty, int mouseX, int mouseY) {
+
     }
 
 

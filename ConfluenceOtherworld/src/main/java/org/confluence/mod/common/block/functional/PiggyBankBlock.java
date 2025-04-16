@@ -29,7 +29,6 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 
 public class PiggyBankBlock extends HorizontalDirectionalWaterloggedBlock implements EntityBlock {
     public static final MapCodec<PiggyBankBlock> CODEC = simpleCodec(PiggyBankBlock::new);
-    public static final Component TITLE = Component.translatable("container.confluence.piggy_bank");
     private static final VoxelShape SHAPE_X = box(2, 0, 4, 14, 10, 12);
     private static final VoxelShape SHAPE_Z = box(4, 0, 2, 12, 10, 14);
 
@@ -60,7 +59,7 @@ public class PiggyBankBlock extends HorizontalDirectionalWaterloggedBlock implem
             }
             PlayerPiggyBankContainer container = player.getData(ModAttachmentTypes.PIGGY_BANK);
             container.setActiveContainer(entity);
-            player.openMenu(new SimpleMenuProvider((id, inventory, player1) -> new ChestMenu(MenuType.GENERIC_9x6, id, inventory, container, 6), TITLE));
+            player.openMenu(new SimpleMenuProvider((id, inventory, player1) -> new ChestMenu(MenuType.GENERIC_9x6, id, inventory, container, 6), Component.translatable("container.confluence.piggy_bank")));
             PiglinAi.angerNearbyPiglins(player, true);
             level.playSound(null, pos, SoundEvents.PIG_AMBIENT, SoundSource.BLOCKS);
             return InteractionResult.CONSUME;

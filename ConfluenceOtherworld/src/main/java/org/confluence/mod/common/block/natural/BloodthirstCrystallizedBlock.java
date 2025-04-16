@@ -17,7 +17,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.block.NatureBlocks;
 
 public class BloodthirstCrystallizedBlock extends Block {
     public static final BooleanProperty VISIBLE = BooleanProperty.create("visible");
@@ -26,6 +25,11 @@ public class BloodthirstCrystallizedBlock extends Block {
     public BloodthirstCrystallizedBlock() {
         super(BlockBehaviour.Properties.of().randomTicks());
         this.registerDefaultState(this.stateDefinition.any().setValue(VISIBLE, false));
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return this.defaultBlockState();
     }
 
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {

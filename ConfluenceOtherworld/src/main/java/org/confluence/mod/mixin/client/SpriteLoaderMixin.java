@@ -29,12 +29,12 @@ public abstract class SpriteLoaderMixin {
 
     @ModifyVariable(method = "stitch", at = @At("HEAD"), argsOnly = true)
     private List<SpriteContents> generateGraySprites(List<SpriteContents> contents) {
-        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !StartupConfigs.PAINTS_REPLACE_TEXTURE.get()) return contents;
+        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !StartupConfigs.paintsReplaceTexture()) return contents;
 
         if (location.equals(TextureAtlas.LOCATION_BLOCKS)) {
             ClientUtils.clearCache();
             List<SpriteContents> neoContents = new ArrayList<>();
-            Set<String> bannedModForPaints = new HashSet<>(StartupConfigs.BANNED_MOD_FOR_PAINTS.get());
+            Set<String> bannedModForPaints = new HashSet<>(StartupConfigs.bannedModForPaints());
             for (SpriteContents content : contents) {
                 neoContents.add(content);
                 ResourceLocation name = content.name();

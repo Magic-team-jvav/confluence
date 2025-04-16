@@ -13,10 +13,7 @@ import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.entity.fishing.HotlineFishingHook;
 import org.confluence.mod.common.entity.hook.*;
 import org.confluence.mod.common.entity.minecart.*;
-import org.confluence.mod.common.entity.projectile.EffectThrownPotion;
-import org.confluence.mod.common.entity.projectile.IceTofuBrickProjectile;
-import org.confluence.mod.common.entity.projectile.RopeCoilsProjectile;
-import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
+import org.confluence.mod.common.entity.projectile.*;
 import org.confluence.mod.common.entity.projectile.bomb.*;
 import org.confluence.mod.common.entity.projectile.boulder.*;
 import org.confluence.mod.common.entity.projectile.mana.*;
@@ -75,9 +72,6 @@ public final class ModEntities {
     public static final Supplier<EntityType<BaseArrowEntity>> ARROW_PROJECTILE = ENTITIES.register("arrow_projectile", () -> EntityType.Builder.<BaseArrowEntity>of(BaseArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:arrow_projectile"));
     public static final Supplier<EntityType<BeeArrow>> BEE_ARROW = ENTITIES.register("bee_arrow_projectile", () -> EntityType.Builder.<BeeArrow>of(BeeArrow::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:bee_arrow_projectile"));
 
-//    // 回旋镖
-//    public static final Supplier<EntityType<BoomerangProjectile>> BOOMERANG_PROJECTILE = ENTITIES.register("boomerang_projectile", () -> EntityType.Builder.<BoomerangProjectile>of(BoomerangProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:boomerang_projectile"));
-
     public static final Supplier<EntityType<BoulderEntity>> BOULDER = ENTITIES.register("boulder", () -> EntityType.Builder.<BoulderEntity>of(BoulderEntity::new, MobCategory.MISC).sized(BoulderEntity.DIAMETER, BoulderEntity.DIAMETER).clientTrackingRange(6).build("confluence:boulder"));
     public static final Supplier<EntityType<FollowerBoulderEntity>> FOLLOWER_BOULDER = ENTITIES.register("follower_boulder", () -> EntityType.Builder.<FollowerBoulderEntity>of(FollowerBoulderEntity::new, MobCategory.MISC).sized(BoulderEntity.DIAMETER, BoulderEntity.DIAMETER).clientTrackingRange(6).build("confluence:follower_boulder"));
     public static final Supplier<EntityType<ExplodeBoulderEntity>> EXPLODE_BOULDER = ENTITIES.register("explode_boulder", () -> EntityType.Builder.<ExplodeBoulderEntity>of(ExplodeBoulderEntity::new, MobCategory.MISC).sized(BoulderEntity.DIAMETER, BoulderEntity.DIAMETER).clientTrackingRange(6).build("confluence:explode_boulder"));
@@ -89,6 +83,7 @@ public final class ModEntities {
     public static final Supplier<EntityType<ThrowableDropSelfProjectile>> JAVELIN_PROJECTILE = ENTITIES.register("javelin_projectile", () -> EntityType.Builder.of(ThrowableDropSelfProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:javelin_projectile"));
     public static final Supplier<EntityType<RopeCoilsProjectile>> ROPE_COILS = ENTITIES.register("rope_coils", () -> EntityType.Builder.<RopeCoilsProjectile>of(RopeCoilsProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:rope_coils"));
     public static final Supplier<EntityType<IceTofuBrickProjectile>> ICE_TOFU_BRICK_PROJECTILE = ENTITIES.register("ice_tofu_brick_projectile", () -> EntityType.Builder.<IceTofuBrickProjectile>of(IceTofuBrickProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:ice_tofu_brick_projectile"));
+    public static final Supplier<EntityType<SpikyBallProjectile>> SPIKY_BALL_PROJECTILE = ENTITIES.register("spiky_ball_projectile", () -> EntityType.Builder.<SpikyBallProjectile>of(SpikyBallProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).build("confluence:spiky_ball_projectile"));
 
 
     public static final Supplier<EntityType<BaseFishingHook>> BASE_FISHING_HOOK = ENTITIES.register("base_fishing_hook", () -> EntityType.Builder.<BaseFishingHook>of(BaseFishingHook::new, MobCategory.MISC).noSave().noSummon().sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(5).build("confluence:base_fishing_hook"));

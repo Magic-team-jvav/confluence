@@ -95,6 +95,9 @@ public final class ModEffects {
             .addAttributeModifier(TCAttributes.getCriticalChance(), Confluence.asResource("tipsy"), 0.02, AttributeModifier.Operation.ADD_VALUE)
             .addAttributeModifier(Attributes.ATTACK_SPEED, Confluence.asResource("tipsy"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .addAttributeModifier(Attributes.ATTACK_DAMAGE, Confluence.asResource("tipsy"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+    public static final DeferredHolder<MobEffect, MobEffect> CLAIRVOYANCE = EFFECTS.register("clairvoyance", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x9999FF)
+            .addAttributeModifier(TCAttributes.getMagicDamage(), Confluence.asResource("clairvoyance"), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .addAttributeModifier(TCAttributes.getCriticalChance(), Confluence.asResource("clairvoyance"), 0.02, AttributeModifier.Operation.ADD_VALUE));
 
     // 药剂
     public static final DeferredHolder<MobEffect, FlaskEffect> FLASK_OF_FIRE = EFFECTS.register("flask_of_fire", FlaskOfFireEffect::new);

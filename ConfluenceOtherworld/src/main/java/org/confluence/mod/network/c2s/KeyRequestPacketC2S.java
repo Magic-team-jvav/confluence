@@ -5,16 +5,20 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.potion.HealingPotionItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
 
 public record KeyRequestPacketC2S(int key) implements CustomPacketPayload {
     public static final int KEY_HEALING = 0;
     public static final int KEY_MANA = 1;
+    public static final int KEY_CLAIRVOYANCE = 2; // 水晶球给予的灵视
     public static final Type<KeyRequestPacketC2S> TYPE = new Type<>(Confluence.asResource("key_request"));
     public static final StreamCodec<ByteBuf, KeyRequestPacketC2S> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.INT, p -> p.key,
@@ -28,11 +32,15 @@ public record KeyRequestPacketC2S(int key) implements CustomPacketPayload {
 
     public void handle(IPayloadContext context) {
         context.enqueueWork(() -> {
-            Player player = context.player();
-            if (key == KEY_HEALING) {
-                HealingPotionItem.use(player);
-            } else if (key == KEY_MANA) {
-                ManaPotionItem.use(player);
+            if (context.player() instanceof ServerPlayer serverPlayer) {
+                if (key == KEY_HEALING) {
+                    HealingPotionItem.use(serverPlayer);
+                } else if (key == KEY_MANA) {
+                    ManaPotionItem.use(serverPlayer);
+                } else if (key == KEY_CLAIRVOYANCE) {
+                    serverPlayer.addEffect(new MobEffectInstance(ModEffects.CLAIRVOYANCE, MobEffectInstance.INFINITE_DURATION));
+                    serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).flushAbility(serverPlayer);
+                }
             }
         }).exceptionally(e -> {
             context.disconnect(Component.translatable("neoforge.network.invalid_flow", e.getMessage()));
@@ -46,5 +54,9 @@ public record KeyRequestPacketC2S(int key) implements CustomPacketPayload {
 
     public static void requestMana() {
         PacketDistributor.sendToServer(new KeyRequestPacketC2S(KEY_MANA));
+    }
+
+    public static void requestClairvoyance() {
+        PacketDistributor.sendToServer(new KeyRequestPacketC2S(KEY_CLAIRVOYANCE));
     }
 }

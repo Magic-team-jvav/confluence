@@ -44,8 +44,8 @@ public class HeavyWorkBenchRecipe extends ShapedAmountRecipe4x<EnvironmentRecipe
     }
 
     public static class Serializer implements RecipeSerializer<HeavyWorkBenchRecipe> {
-        public static final MapCodec<HeavyWorkBenchRecipe> CODEC = ShapedAmountRecipe4x.serializerMapCodec(HeavyWorkBenchRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> STREAM_CODEC = ShapedAmountRecipe4x.serializerSteamCodec(HeavyWorkBenchRecipe::new);
+        public static final MapCodec<HeavyWorkBenchRecipe> CODEC = ShapedAmountRecipe4x.shapedSerializerMapCodec(HeavyWorkBenchRecipe::new);
+        public static final StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> STREAM_CODEC = ShapedAmountRecipe4x.shapedSerializerSteamCodec(HeavyWorkBenchRecipe::new);
 
         @Override
         public MapCodec<HeavyWorkBenchRecipe> codec() {

@@ -14,9 +14,9 @@ import org.confluence.lib.common.recipe.EnvironmentRecipeInput;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 
-public class SkyMillRecipe extends AbstractAmountRecipe<EnvironmentRecipeInput> {
-    public SkyMillRecipe(ItemStack pResult, NonNullList<Ingredient> pIngredients) {
-        super(pResult, pIngredients);
+public class CrystalBallRecipe extends AbstractAmountRecipe<EnvironmentRecipeInput> {
+    public CrystalBallRecipe(ItemStack result, NonNullList<Ingredient> ingredients) {
+        super(result, ingredients);
     }
 
     @Override
@@ -26,40 +26,40 @@ public class SkyMillRecipe extends AbstractAmountRecipe<EnvironmentRecipeInput> 
 
     @Override
     protected int maxIngredientSize() {
-        return 3;
+        return 4;
     }
 
     @Override
     public String getGroup() {
-        return "sky_mill";
+        return "crystal_ball";
     }
 
     @Override
     public ItemStack getToastSymbol() {
-        return FunctionalBlocks.SKY_MILL.toStack();
+        return FunctionalBlocks.CRYSTAL_BALL.toStack();
     }
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ModRecipes.SKY_MILL_SERIALIZER.get();
+        return ModRecipes.CRYSTAL_BALL_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return ModRecipes.SKY_MILL_TYPE.get();
+        return ModRecipes.CRYSTAL_BALL_TYPE.get();
     }
 
-    public static class Serializer implements RecipeSerializer<SkyMillRecipe> {
-        public static final MapCodec<SkyMillRecipe> CODEC = shapelessSerializerMapCodec(SkyMillRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, SkyMillRecipe> STREAM_CODEC = shapelessSerializerSteamCodec(SkyMillRecipe::new);
+    public static class Serializer implements RecipeSerializer<CrystalBallRecipe> {
+        public static final MapCodec<CrystalBallRecipe> CODEC = shapelessSerializerMapCodec(CrystalBallRecipe::new);
+        public static final StreamCodec<RegistryFriendlyByteBuf, CrystalBallRecipe> STREAM_CODEC = shapelessSerializerSteamCodec(CrystalBallRecipe::new);
 
         @Override
-        public MapCodec<SkyMillRecipe> codec() {
+        public MapCodec<CrystalBallRecipe> codec() {
             return CODEC;
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, SkyMillRecipe> streamCodec() {
+        public StreamCodec<RegistryFriendlyByteBuf, CrystalBallRecipe> streamCodec() {
             return STREAM_CODEC;
         }
     }

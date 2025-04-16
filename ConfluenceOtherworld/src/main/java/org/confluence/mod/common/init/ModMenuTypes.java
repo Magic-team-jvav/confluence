@@ -21,6 +21,7 @@ public final class ModMenuTypes {
     public static final Supplier<MenuType<CookingPotMenu>> COOKING_POT = TYPES.register("cooking_pot", () -> new MenuType<>(CookingPotMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<SawmillMenu>> SAWMILL = TYPES.register("sawmill", () -> new MenuType<>(SawmillMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<SolidifierMenu>> SOLIDIFIER = TYPES.register("solidifier", () -> new MenuType<>(SolidifierMenu::new, FeatureFlags.VANILLA_SET));
+    public static final Supplier<MenuType<CrystalBallMenu>> CRYSTAL_BALL = TYPES.register("crystal_ball", () -> new MenuType<>(CrystalBallMenu::new, FeatureFlags.VANILLA_SET));
 
     public static final Supplier<MenuType<NPCTradesMenu>> NPC_TRADES_MENU = TYPES.register("npc_trades", () -> new MenuType<>(NPCTradesMenu::new, FeatureFlags.VANILLA_SET));
 

@@ -38,8 +38,8 @@ public class SolidifierRecipe extends ShapedAmountRecipe4x<MenuRecipeInput> {
     }
 
     public static class Serializer implements RecipeSerializer<SolidifierRecipe> {
-        public static final MapCodec<SolidifierRecipe> CODEC = ShapedAmountRecipe4x.serializerMapCodec(SolidifierRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, SolidifierRecipe> STREAM_CODEC = ShapedAmountRecipe4x.serializerSteamCodec(SolidifierRecipe::new);
+        public static final MapCodec<SolidifierRecipe> CODEC = ShapedAmountRecipe4x.shapedSerializerMapCodec(SolidifierRecipe::new);
+        public static final StreamCodec<RegistryFriendlyByteBuf, SolidifierRecipe> STREAM_CODEC = ShapedAmountRecipe4x.shapedSerializerSteamCodec(SolidifierRecipe::new);
 
         @Override
         public MapCodec<SolidifierRecipe> codec() {

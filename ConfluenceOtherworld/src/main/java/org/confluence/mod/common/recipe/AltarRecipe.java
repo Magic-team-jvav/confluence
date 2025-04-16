@@ -1,7 +1,6 @@
 package org.confluence.mod.common.recipe;
 
 import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -10,7 +9,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import org.confluence.lib.common.recipe.AbstractAmountRecipe;
-import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.lib.common.recipe.ItemStackHandlerRecipeInput;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -46,11 +44,8 @@ public class AltarRecipe extends AbstractAmountRecipe<ItemStackHandlerRecipeInpu
     }
 
     public static class Serializer implements RecipeSerializer<AltarRecipe> {
-        public static final MapCodec<AltarRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                INGREDIENTS_CODEC.forGetter(recipe -> recipe.ingredients)
-        ).apply(instance, AltarRecipe::new));
-        public static final StreamCodec<RegistryFriendlyByteBuf, AltarRecipe> STREAM_CODEC = StreamCodec.of(AltarRecipe.Serializer::toNetwork, AltarRecipe.Serializer::fromNetwork);
+        public static final MapCodec<AltarRecipe> CODEC = shapelessSerializerMapCodec(AltarRecipe::new);
+        public static final StreamCodec<RegistryFriendlyByteBuf, AltarRecipe> STREAM_CODEC = shapelessSerializerSteamCodec(AltarRecipe::new);
 
         @Override
         public MapCodec<AltarRecipe> codec() {
@@ -60,22 +55,6 @@ public class AltarRecipe extends AbstractAmountRecipe<ItemStackHandlerRecipeInpu
         @Override
         public StreamCodec<RegistryFriendlyByteBuf, AltarRecipe> streamCodec() {
             return STREAM_CODEC;
-        }
-
-        private static AltarRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
-            int size = buffer.readVarInt();
-            NonNullList<Ingredient> nonnulllist = NonNullList.withSize(size, AmountIngredient.EMPTY);
-            nonnulllist.replaceAll(ignore -> Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
-            ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
-            return new AltarRecipe(itemstack, nonnulllist);
-        }
-
-        private static void toNetwork(RegistryFriendlyByteBuf buffer, AltarRecipe recipe) {
-            buffer.writeVarInt(recipe.ingredients.size());
-            for (Ingredient ingredient : recipe.ingredients) {
-                Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
-            }
-            ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
         }
     }
 }

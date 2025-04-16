@@ -38,8 +38,8 @@ public class SawmillRecipe extends ShapedAmountRecipe4x<MenuRecipeInput> {
     }
 
     public static class Serializer implements RecipeSerializer<SawmillRecipe> {
-        public static final MapCodec<SawmillRecipe> CODEC = ShapedAmountRecipe4x.serializerMapCodec(SawmillRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, SawmillRecipe> STREAM_CODEC = ShapedAmountRecipe4x.serializerSteamCodec(SawmillRecipe::new);
+        public static final MapCodec<SawmillRecipe> CODEC = ShapedAmountRecipe4x.shapedSerializerMapCodec(SawmillRecipe::new);
+        public static final StreamCodec<RegistryFriendlyByteBuf, SawmillRecipe> STREAM_CODEC = ShapedAmountRecipe4x.shapedSerializerSteamCodec(SawmillRecipe::new);
 
         @Override
         public MapCodec<SawmillRecipe> codec() {

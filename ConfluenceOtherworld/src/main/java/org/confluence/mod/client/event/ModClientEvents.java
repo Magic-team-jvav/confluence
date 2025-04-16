@@ -252,6 +252,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(WET_BOMB.get(), WetBombEntityRenderer::new);
         event.registerEntityRenderer(LAVA_BOMB.get(), LavaBombEntityRenderer::new);
         event.registerEntityRenderer(HONEY_BOMB.get(), HoneyBombEntityRenderer::new);
+        event.registerEntityRenderer(THROWN_WATER_PROJECTILE.get(), ThrownItemRenderer::new);
 
 
         event.registerEntityRenderer(HOTLINE_FISHING_HOOK.get(), HotlineFishingHookRenderer::new);

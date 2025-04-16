@@ -10,6 +10,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -300,7 +301,6 @@ public interface ISpreadable {
                 NatureBlocks.JUNGLE_THORN, getSupplier(Blocks.AIR),
                 NatureBlocks.PLANTERA_THORN, getSupplier(Blocks.AIR)
         ),
-
         CRIMSON(
                 getSupplier(DIRT), NatureBlocks.TR_CRIMSON_GRASS_BLOCK,
                 NatureBlocks.JUNGLE_GRASS_BLOCK, NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK,
@@ -391,12 +391,10 @@ public interface ISpreadable {
                 NatureBlocks.RED_HARDENED_SAND_BLOCK, NatureBlocks.TR_CRIMSON_HARDENED_SAND_BLOCK,
                 NatureBlocks.MOIST_SAND_BLOCK, NatureBlocks.TR_CRIMSON_MOIST_SAND_BLOCK,
                 NatureBlocks.RED_MOIST_SAND_BLOCK, NatureBlocks.TR_CRIMSON_MOIST_SAND_BLOCK
-                ),
-
-
+        ),
         CORRUPT(
                 getSupplier(DIRT), NatureBlocks.CORRUPT_GRASS_BLOCK,
-                NatureBlocks.JUNGLE_GRASS_BLOCK,NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK,
+                NatureBlocks.JUNGLE_GRASS_BLOCK, NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK,
                 // 原木
                 getSupplier(OAK_LOG), NatureBlocks.EBONY_LOG_BLOCKS.getLog(),
                 getSupplier(ACACIA_LOG), NatureBlocks.EBONY_LOG_BLOCKS.getLog(),
@@ -515,21 +513,19 @@ public interface ISpreadable {
                 NatureBlocks.JUNGLE_THORN, NatureBlocks.CORRUPTION_THORN,
                 NatureBlocks.PLANTERA_THORN, NatureBlocks.CORRUPTION_THORN
         ),
-
         GLOWING(
-            getSupplier(MUD),NatureBlocks.MUSHROOM_GRASS_BLOCK,
-            NatureBlocks.JUNGLE_SPORE, NatureBlocks.GLOWING_MUSHROOM,
-            NatureBlocks.JUNGLE_DROOPING_VINE, NatureBlocks.GLOWING_MUSHROOM_DROOPING_VINE,
-            NatureBlocks.JUNGLE_THORN, getSupplier(Blocks.AIR),
-            getSupplier(SHORT_GRASS), NatureBlocks.GLOWING_MUSHROOM
-            //getSupplier(TALL_GRASS), NatureBlocks.GLOWING_MUSHROOM
+                getSupplier(MUD), NatureBlocks.MUSHROOM_GRASS_BLOCK,
+                NatureBlocks.JUNGLE_SPORE, NatureBlocks.GLOWING_MUSHROOM,
+                NatureBlocks.JUNGLE_DROOPING_VINE, NatureBlocks.GLOWING_MUSHROOM_DROOPING_VINE,
+                NatureBlocks.JUNGLE_THORN, getSupplier(Blocks.AIR),
+                getSupplier(SHORT_GRASS), NatureBlocks.GLOWING_MUSHROOM
+                //getSupplier(TALL_GRASS), NatureBlocks.GLOWING_MUSHROOM
         ),
         JUNGLE(
-            getSupplier(MUD),NatureBlocks.JUNGLE_GRASS_BLOCK,
-            NatureBlocks.GLOWING_MUSHROOM, getSupplier(SHORT_GRASS),
-            NatureBlocks.GLOWING_MUSHROOM_DROOPING_VINE, NatureBlocks.JUNGLE_DROOPING_VINE
+                getSupplier(MUD), NatureBlocks.JUNGLE_GRASS_BLOCK,
+                NatureBlocks.GLOWING_MUSHROOM, getSupplier(SHORT_GRASS),
+                NatureBlocks.GLOWING_MUSHROOM_DROOPING_VINE, NatureBlocks.JUNGLE_DROOPING_VINE
         ),
-
         PURE(
                 NatureBlocks.ASH_BLOCK, NatureBlocks.ASH_GRASS_BLOCK,
                 NatureBlocks.VICIOUS_MUSHROOM, NatureBlocks.LIFE_MUSHROOM,
@@ -580,6 +576,20 @@ public interface ISpreadable {
 
         public Map<Block, Block> getBlockMap() {
             return blockMap;
+        }
+
+        @SuppressWarnings("unchecked")
+        public <T extends Comparable<T>, V extends T> boolean spread(Level level, BlockPos pos) {
+            BlockState sourceState = level.getBlockState(pos);
+            Block target = blockMap.get(sourceState.getBlock());
+            if (target == null) return false;
+            BlockState targetState = target.defaultBlockState();
+            for (Map.Entry<Property<?>, Comparable<?>> entry1 : sourceState.getValues().entrySet()) {
+                if (targetState.hasProperty(entry1.getKey())) {
+                    targetState = targetState.setValue((Property<T>) entry1.getKey(), (V) entry1.getValue());
+                }
+            }
+            return level.setBlockAndUpdate(pos, targetState);
         }
 
         @Override

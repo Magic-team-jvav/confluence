@@ -137,6 +137,7 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(STONE_DART_TRAP.get());
             dropSelf(DEEPSLATE_DART_TRAP.get());
             dropSelf(PIGGY_BANK.get());
+            dropSelf(ANNOUNCEMENT_BOX.get());
 
             add(SANCTIFICATION_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));
             add(CORRUPTION_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));

@@ -6,10 +6,11 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -22,18 +23,21 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.block.functional.network.NetworkNode;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.Set;
 
 public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkBlock {
-    public static final BlockSetType BLOCK_SET_TYPE = BlockSetType.register(new BlockSetType(Confluence.MODID + ":metal"));
-    public static final WoodType WOOD_TYPE = WoodType.register(new WoodType(Confluence.MODID + ":metal", BLOCK_SET_TYPE));
+    public static final BlockSetType BLOCK_SET_TYPE = BlockSetType.register(new BlockSetType(Confluence.MODID + ":announcement_box"));
+    public static final WoodType WOOD_TYPE = WoodType.register(new WoodType(Confluence.MODID + ":announcement_box", BLOCK_SET_TYPE));
     public static final MapCodec<StandingSignBlock> CODEC = simpleCodec(AnnouncementBoxBlock::new);
 
     public AnnouncementBoxBlock(Properties properties) {
@@ -60,9 +64,20 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
+
     @Override
     public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        
+        Entity entity = (Entity) pEntity;
+        if (!pLevel.isClientSide){
+            Entity.sendMessages(pLevel,pPos,entity.getText(true).getMessages(false));
+        }
+    }
+    @Override
+    public void onUnExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
+        Entity entity = (Entity) pEntity;
+        if (!pLevel.isClientSide){
+            Entity.sendMessages(pLevel,pPos,entity.getText(false).getMessages(false));
+        }
     }
 
     public static class Wall extends WallSignBlock implements INetworkBlock {
@@ -87,7 +102,17 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
         }
         @Override
         public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-
+            Entity entity = (Entity) pEntity;
+            if (!pLevel.isClientSide){
+                Entity.sendMessages(pLevel,pPos,entity.getText(true).getMessages(false));
+            }
+        }
+        @Override
+        public void onUnExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
+            Entity entity = (Entity) pEntity;
+            if (!pLevel.isClientSide){
+                Entity.sendMessages(pLevel,pPos,entity.getText(false).getMessages(false));
+            }
         }
     }
 
@@ -163,5 +188,20 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
         public Int2ObjectMap<Set<BlockPos>> getRelativePoses() {
             return relativePoses;
         }
+
+        public static void sendMessages(ServerLevel pLevel, BlockPos pPos, Component[] messages){
+            if (!Arrays.equals(messages,
+                    new Component[]{CommonComponents.EMPTY, CommonComponents.EMPTY, CommonComponents.EMPTY, CommonComponents.EMPTY}
+            )){
+                for (Component text: messages){
+                    for (Player player: pLevel.players()){
+                        if(player.position().distanceTo(Vec3.atLowerCornerOf(pPos)) <= CommonConfigs.ANNOUNCEMENT_BOX_DISTANCE.get()){
+                            player.sendSystemMessage(text);
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }

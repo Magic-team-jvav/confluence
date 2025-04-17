@@ -99,6 +99,7 @@ public class FunctionalBlocks {
     public static final DeferredBlock<FragilePressureBlock> DEEPSLATE_PRESSURE_BLOCK = registerWithEntity("deepslate_pressure_block", () -> new FragilePressureBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE), BlockSetType.STONE, Blocks.DEEPSLATE::defaultBlockState));
     public static final DeferredBlock<InstantExplosionBlock> INSTANTANEOUS_EXPLOSION_TNT = registerWithEntity("instantaneous_explosion_tnt", InstantExplosionBlock::new);
     public static final DeferredBlock<SwitchBlock> SWITCH = registerWithEntity("switch", SwitchBlock::new);
+    public static final DeferredBlock<SwitchBlock> LEVER = registerWithEntity("lever", SwitchBlock::new);
     public static final DeferredBlock<SignalAdapterBlock> SIGNAL_ADAPTER = registerWithEntity("signal_adapter", SignalAdapterBlock::new);
     public static final DeferredBlock<DartTrapBlock> DART_TRAP = registerWithEntity("dart_trap", DartTrapBlock::new);
     public static final DeferredBlock<DartTrapBlock> STONE_DART_TRAP = registerWithEntity("stone_dart_trap", DartTrapBlock::new);

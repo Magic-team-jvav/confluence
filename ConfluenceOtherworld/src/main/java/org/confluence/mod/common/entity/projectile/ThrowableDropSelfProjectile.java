@@ -36,14 +36,16 @@ public class ThrowableDropSelfProjectile extends ThrowableItemProjectile {
         builder.define(DATA_FLY_TICKS, 5);
     }
 
-    public ThrowableDropSelfProjectile(EntityType<? extends ThrowableItemProjectile> pEntityType, Level pLevel) {
+    public ThrowableDropSelfProjectile(EntityType<? extends ThrowableDropSelfProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
     @Override
     public void setOwner(@Nullable Entity player) {
         super.setOwner(player);
-        setPos(player.getX(), player.getEyeY() - 0.1, player.getZ());
+        if (player != null) {
+            setPos(player.getX(), player.getEyeY() - 0.1, player.getZ());
+        }
     }
 
 

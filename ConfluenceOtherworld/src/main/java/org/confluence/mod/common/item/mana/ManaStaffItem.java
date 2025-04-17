@@ -26,10 +26,10 @@ import java.util.function.Consumer;
 
 public class ManaStaffItem<E extends Projectile> extends CustomRarityItem {
     public static final ResourceLocation ID = Confluence.asResource("mana_staff");
-    private final ProjectileFactory<E> factory;
-    private final int manaCost;
-    private final float velocity;
-    private final int cooldown;
+    protected final ProjectileFactory<E> factory;
+    protected final int manaCost;
+    protected final float velocity;
+    protected final int cooldown;
 
     public ManaStaffItem(Properties properties, ModRarity rarity, ProjectileFactory<E> factory, int manaCost, float rawVelocity, int cooldown) {
         super(properties, rarity);
@@ -76,6 +76,7 @@ public class ManaStaffItem<E extends Projectile> extends CustomRarityItem {
     }
 
     protected void beforeShoot(ServerPlayer player, ItemStack itemStack, E projectile) {
+        projectile.setOwner(player);
         projectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, velocity, 0.0F);
     }
 

@@ -20,6 +20,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.lib.util.VectorUtils;
+import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.ModUtils;
 
@@ -105,9 +106,13 @@ public abstract class StripedProjectile extends Projectile implements Immunity {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
-        if (entity.hurt(damageSources().indirectMagic(this, getOwner()), 2.5f)) {
+        if (entity.hurt(getDamageSource(), 2.5f)) {
             VectorUtils.knockBackA2B(this, entity, 0.5, 0.2);
         }
+    }
+
+    protected DamageSource getDamageSource() {
+        return ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
     }
 
     protected void onRemove() {

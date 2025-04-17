@@ -89,6 +89,7 @@ public final class ModEntities {
     public static final Supplier<EntityType<IceTofuBrickProjectile>> ICE_TOFU_BRICK_PROJECTILE = ENTITIES.register("ice_tofu_brick_projectile", () -> EntityType.Builder.<IceTofuBrickProjectile>of(IceTofuBrickProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:ice_tofu_brick_projectile"));
     public static final Supplier<EntityType<SpikyBallProjectile>> SPIKY_BALL_PROJECTILE = ENTITIES.register("spiky_ball_projectile", () -> EntityType.Builder.<SpikyBallProjectile>of(SpikyBallProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).build("confluence:spiky_ball_projectile"));
     public static final Supplier<EntityType<ThrownWaterProjectile>> THROWN_WATER_PROJECTILE = ENTITIES.register("thrown_water_projectile", () -> EntityType.Builder.<ThrownWaterProjectile>of(ThrownWaterProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).build("confluence:thrown_water_projectile"));
+    public static final Supplier<EntityType<FlowerPetalProjectile>> FLOWER_PETAL_PROJECTILE = ENTITIES.register("flower_petal_projectile", () -> EntityType.Builder.<FlowerPetalProjectile>of(FlowerPetalProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).build("confluence:flower_petal_projectile"));
 
 
     public static final Supplier<EntityType<BaseFishingHook>> BASE_FISHING_HOOK = ENTITIES.register("base_fishing_hook", () -> EntityType.Builder.<BaseFishingHook>of(BaseFishingHook::new, MobCategory.MISC).noSave().noSummon().sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(5).build("confluence:base_fishing_hook"));

@@ -33,5 +33,6 @@ public final class ModEquipmentSets {
     public static final EBDeferredHolder<EquipmentSet> MYTHRIL_SET = EQUIPMENT_SET.register("mythril_set", MythrilSet::new);
     public static final EBDeferredHolder<EquipmentSet> ORICHALCUM_SET = EQUIPMENT_SET.register("orichalcum_set", OrichalcumSet::new);
     public static final EBDeferredHolder<EquipmentSet> ADAMANTITE_SET = EQUIPMENT_SET.register("adamantite_set", AdamantiteSet::new);
+    public static final EBDeferredHolder<EquipmentSet> TITANIUM_SET = EQUIPMENT_SET.register("titanium_set", TitaniumSet::new);
     public static final EBDeferredHolder<EquipmentSet> HALLOWED_SET = EQUIPMENT_SET.register("hallowed_set", HallowedSet::new);
 }

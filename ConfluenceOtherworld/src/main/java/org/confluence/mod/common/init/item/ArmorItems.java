@@ -228,6 +228,13 @@ public class ArmorItems {
     public static final DeferredItem<ArmorItem> ADAMANTITE_LEGGINGS = registerNormalArmor("adamantite_leggings", "adamantite_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
     public static final DeferredItem<ArmorItem> ADAMANTITE_BOOTS = registerNormalArmor("adamantite_boots", "adamantite_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
 
+    public static final DeferredItem<ArmorItem> TITANIUM_HEADGEAR = registerNormalArmor("titanium_headgear", "titanium_armor", ModRarity.LIGHT_RED, ModArmorMaterials.TITANIUM_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET);
+    public static final DeferredItem<ArmorItem> TITANIUM_MASK = registerNormalArmor("titanium_mask", "titanium_armor", ModRarity.LIGHT_RED, ModArmorMaterials.TITANIUM_MASK_MATERIAL, ArmorItem.Type.HELMET);
+    public static final DeferredItem<ArmorItem> TITANIUM_HELMET = registerNormalArmor("titanium_helmet", "titanium_armor", ModRarity.LIGHT_RED, ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
+    public static final DeferredItem<ArmorItem> TITANIUM_CHESTPLATE = registerNormalArmor("titanium_chestplate", "titanium_armor", ModRarity.LIGHT_RED, ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<ArmorItem> TITANIUM_LEGGINGS = registerNormalArmor("titanium_leggings", "titanium_armor", ModRarity.LIGHT_RED, ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
+    public static final DeferredItem<ArmorItem> TITANIUM_BOOTS = registerNormalArmor("titanium_boots", "titanium_armor", ModRarity.LIGHT_RED, ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
+
     public static final DeferredItem<ArmorItem> HALLOWED_MASK = registerNormalArmor("hallowed_mask", "hallowed_armor", ModRarity.PINK, ModArmorMaterials.HALLOWED_MASK_MATERIAL, ArmorItem.Type.HELMET);
     public static final DeferredItem<ArmorItem> HALLOWED_HEADGEAR = registerNormalArmor("hallowed_headgear", "hallowed_armor", ModRarity.PINK, ModArmorMaterials.HALLOWED_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET);
     public static final DeferredItem<ArmorItem> HALLOWED_HOOD = registerNormalArmor("hallowed_hood", "hallowed_armor", ModRarity.PINK, ModArmorMaterials.HALLOWED_HOOD_MATERIAL, ArmorItem.Type.HELMET);

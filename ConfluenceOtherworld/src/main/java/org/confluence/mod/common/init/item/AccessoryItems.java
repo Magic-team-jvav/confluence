@@ -12,14 +12,16 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.data.gen.ModItemTagsProvider;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.MusicBoxBlocks;
 import org.confluence.mod.common.item.accessory.*;
 import org.confluence.mod.util.PlayerUtils;
@@ -32,6 +34,7 @@ import org.confluence.terra_curio.common.item.curio.health.BandOfRegeneration;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.init.TEAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -46,6 +49,7 @@ import static org.confluence.terra_curio.common.component.AccessoriesComponent.u
 @SuppressWarnings("all")
 public class AccessoryItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
+    public static final List<DeferredItem<BaseCurioItem>> WINGS = new ArrayList<>();
 
     public static final ValueType<Unit, UnitValue> LUCKY$COIN = ValueType.ofUnit("lucky_coin");
     public static final ValueType<Unit, UnitValue> VINE$ROPE = ValueType.ofUnit("vine_rope");
@@ -138,9 +142,35 @@ public class AccessoryItems {
             PAPYRUS_SCARAB = registerCurio("papyrus_scarab", builder -> builder.noTooltip().rarity(YELLOW).attribute(TEAttributes.MINION_CAPACITY, 1.0, ADD_VALUE).attribute(TEAttributes.SUMMON_DAMAGE, 0.15, ADD_MULTIPLIED_TOTAL).attribute(TEAttributes.SUMMON_KNOCKBACK, 2.0, ADD_VALUE)), // 甲虫莎草纸
             PYGMY_NECKLACE = registerCurio("pygmy_necklace", builder -> builder.noTooltip().rarity(LIME).attribute(TEAttributes.MINION_CAPACITY, 1.0, ADD_VALUE)); // 矮人项链
 
-    public static final DeferredItem<BaseCurioItem> FLEDGLING_WINGS = registerCurio("fledgling_wings", builder -> builder.rarity(WHITE)
-            .accessories(of(TCItems.MAY$FLY, new MayFlyAbilityValue.Storage(0.3F, 36, true, false)))
-            .attribute(Attributes.FALL_DAMAGE_MULTIPLIER, -100, ADD_VALUE));
+    public static final DeferredItem<BaseCurioItem> FLEDGLING_WINGS = registerWings("fledgling_wings", WHITE, 0.3F, 9, true, false);
+    public static final DeferredItem<BaseCurioItem> ANGEL_WINGS = registerWings("angel_wings", PINK, 0.3F, 34, true, false);
+    public static final DeferredItem<BaseCurioItem> DEMON_WINGS = registerWings("demon_wings", PINK, 0.3F, 34, true, false);
+    public static final DeferredItem<BaseCurioItem> FAIRY_WINGS = registerWings("fairy_wings", PINK, 0.3F, 44, true, false);
+    public static final DeferredItem<BaseCurioItem> FIN_WINGS = registerWings("fin_wings", LIGHT_RED, 0.3F, 44, true, false);
+    public static final DeferredItem<BaseCurioItem> FROZEN_WINGS = registerWings("frozen_wings", PINK, 0.3F, 44, true, false);
+    public static final DeferredItem<BaseCurioItem> HARPY_WINGS = registerWings("harpy_wings", PINK, 0.3F, 44, true, false);
+    public static final DeferredItem<BaseCurioItem> JETPACK = registerWings("jetpack", PINK, 0.3F, 50, true, false);
+    public static final DeferredItem<BaseCurioItem> LEAF_WINGS = registerWings("leaf_wings", PINK, 0.3F, 54, true, false);
+    public static final DeferredItem<BaseCurioItem> BAT_WINGS = registerWings("bat_wings", PINK, 0.3F, 54, true, false);
+    public static final DeferredItem<BaseCurioItem> BEE_WINGS = registerWings("bee_wings", PINK, 0.3F, 54, true, false);
+    public static final DeferredItem<BaseCurioItem> BUTTERFLY_WINGS = registerWings("butterfly_wings", PINK, 0.3F, 54, true, false);
+    public static final DeferredItem<BaseCurioItem> FLAME_WINGS = registerWings("flame_wings", PINK, 0.3F, 54, true, false);
+    public static final DeferredItem<BaseCurioItem> HOVERBOARD = registerWings("hoverboard", PINK, 0.3F, 57, true, true);
+    public static final DeferredItem<BaseCurioItem> BONE_WINGS = registerWings("bone_wings", PINK, 0.3F, 57, true, false);
+    public static final DeferredItem<BaseCurioItem> MOTHRON_WINGS = registerWings("mothron_wings", YELLOW, 0.3F, 57, true, false);
+    public static final DeferredItem<BaseCurioItem> SPECTRE_WINGS = registerWings("spectre_wings", YELLOW, 0.3F, 57, true, false);
+    public static final DeferredItem<BaseCurioItem> BEETLE_WINGS = registerWings("beetle_wings", LIME, 0.3F, 57, true, false);
+    public static final DeferredItem<BaseCurioItem> FESTIVE_WINGS = registerWings("festive_wings", PINK, 0.3F, 60, true, false);
+    public static final DeferredItem<BaseCurioItem> SPOOKY_WINGS = registerWings("spooky_wings", LIME, 0.3F, 60, true, false);
+    public static final DeferredItem<BaseCurioItem> TATTERED_WINGS = registerWings("tattered_wings", LIME, 0.3F, 60, true, false);
+    public static final DeferredItem<BaseCurioItem> STEAMPUNK_WINGS = registerWings("steampunk_wings", YELLOW, 0.3F, 60, true, false);
+    public static final DeferredItem<BaseCurioItem> BETSYS_WINGS = registerWings("betsys_wings", YELLOW, 0.3F, 50, true, true);
+    public static final DeferredItem<BaseCurioItem> EMPRESS_WINGS = registerWings("empress_wings", CYAN, 0.3F, 50, true, false);
+    public static final DeferredItem<BaseCurioItem> FISHRON_WINGS = registerWings("fishron_wings", YELLOW, 0.3F, 60, true, false);
+    public static final DeferredItem<BaseCurioItem> NEBULA_WINGS = registerWings("nebula_wings", RED, 0.3F, 60, true, true);
+    public static final DeferredItem<BaseCurioItem> VORTEX_BOOSTER = registerWings("vortex_booster", RED, 0.3F, 60, true, true);
+    public static final DeferredItem<BaseCurioItem> SOLAR_WINGS = registerWings("solar_wings", RED, 0.3F, 60, true, false);
+    public static final DeferredItem<BaseCurioItem> STARDUST_WINGS = registerWings("stardust", RED, 0.3F, 60, true, false);
 
     public static final DeferredItem<MusicBoxItem> MUSIC_BOX = ITEMS.register("music_box", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX.get()));
     public static final DeferredItem<MusicBoxItem> MUSIC_BOX_OTHERWORLD_DAY = ITEMS.register("music_box_otherworld_day", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_OTHERWORLD_DAY.get()));
@@ -169,10 +199,24 @@ public class AccessoryItems {
         return ITEMS.register(name, () -> function.apply(name));
     }
 
-    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
-        for (DeferredHolder<Item, ? extends Item> accessory : ITEMS.getEntries()) tag.add(accessory.get());
-        tag.add(ModItems.PARADOX_INTERACTIVE_MEDAL.get());
-        tag.add(ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get());
+    private static DeferredItem<BaseCurioItem> registerWings(String name, ModRarity rarity, float flySpeed, int flyTicks, boolean couldGlide, boolean horizontalFlight) {
+        DeferredItem<BaseCurioItem> item = registerCurio(name, builder -> builder.rarity(rarity)
+                .accessories(of(TCItems.MAY$FLY, new MayFlyAbilityValue.Storage(flySpeed, flyTicks, couldGlide, horizontalFlight)))
+                .attribute(Attributes.FALL_DAMAGE_MULTIPLIER, -100, ADD_VALUE));
+        WINGS.add(item);
+        return item;
+    }
+
+    public static void acceptTags(ModItemTagsProvider provider) {
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> accessory = provider.tag(TCTags.ACCESSORY);
+        ITEMS.getEntries().forEach(item -> accessory.add(item.get()));
+        accessory.add(
+                ModItems.PARADOX_INTERACTIVE_MEDAL.get(),
+                ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get()
+        );
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> wings = provider.tag(ModTags.Items.WINGS);
+        WINGS.forEach(item -> wings.add(item.get()));
+        wings.add(TCItems.CELESTIAL_STARBOARD.get());
     }
 
     public static void applyLuckyCoin(ServerPlayer player, Entity target) {

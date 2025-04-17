@@ -6,6 +6,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
@@ -23,9 +24,6 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terra_curio.common.init.TCTags;
-//import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.TETags;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
@@ -490,10 +488,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.RAW_ADAMANTITE.get(),
                 MaterialItems.RAW_TITANIUM.get()
         );
-        tag(ModTags.Items.WINGS).add(
-                AccessoryItems.FLEDGLING_WINGS.get(),
-                TCItems.CELESTIAL_STARBOARD.get()
-        );
         tag(ModTags.Items.BOSS_SUMMONING).add(
                 ConsumableItems.SUSPICIOUS_LOOKING_EYE.get(),
                 ConsumableItems.SLIME_CROWN.get(),
@@ -730,7 +724,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 BowItems.THE_BEES_KNEES.get()
         );
 
-        AccessoryItems.acceptTag(tag(TCTags.ACCESSORY));
+        AccessoryItems.acceptTags(this);
         IntrinsicTagAppender<Item> ammo = tag(ModTags.Items.AMMO)
                 .addTag(ItemTags.ARROWS)
                 .add(Items.FIREWORK_ROCKET, MaterialItems.FALLING_STAR.get());
@@ -1018,5 +1012,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 //        TGItems.ITEM_BULLETS.getEntries().forEach(wipAction);
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
         TMItems.ITEMS.getEntries().forEach(wipAction);
+    }
+
+    @Override
+    public IntrinsicTagAppender<Item> tag(TagKey<Item> tag) {
+        return super.tag(tag);
     }
 }

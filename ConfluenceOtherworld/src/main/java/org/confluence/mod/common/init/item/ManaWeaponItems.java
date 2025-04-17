@@ -36,6 +36,7 @@ public class ManaWeaponItems {
 
     public static final DeferredItem<ManaStaffItem<MagicDaggerProjectile>> MAGIC_DAGGER = ITEMS.register("magic_dagger", MagicDaggerItem::new);
     public static final DeferredItem<ManaStaffItem<CrystalStormProjectile>> CRYSTAL_STORM = ITEMS.register("crystal_storm", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CrystalStormProjectile::new, 5, 16, 7, 0.04));
+    public static final DeferredItem<ManaStaffItem<CursedFlamesProjectile>> CURSED_FLAMES = ITEMS.register("cursed_flames", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CursedFlamesProjectile::new, 9, 10, 5, 0.04));
 //TODO 枪！
 //    public static final Supplier<BeeGunItem> BEE_GUN = ITEMS.register("bee_gun", BeeGunItem::new);
 //    public static final Supplier<SpaceGunItem> SPACE_GUN = ITEMS.register("space_gun", SpaceGunItem::new);

@@ -102,6 +102,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("item.confluence.research_on_cloud_blocks_2", "关于对云块的研究 II");
         add("item.confluence.meteor_diary", "流星日记");
 
+        //note
+        add("item.confluence.mysterious_note.name_0", "带牙印的小纸条");
+        add("item.confluence.mysterious_note.name_1", "带橘子气息的小纸条");
+
         add("text.confluence.afterlife_notes", "  冒险者，新的天地充满了无尽的挑战与机遇，这本手记将帮助你了解这个世界的奥秘，指引你面对怪物和困境，只有不断探索，你才能发现更多的力量与宝藏，你的旅途才刚刚开始。                            —— 向导");
         add("text.confluence.village_exploration", "世界异变悄然降临，生灵阴暗的邪念纷纷爆发，外界的肉体侵扰接踵而至。所有可用的资源，皆被唤醒。新世界的降临，既带来了毁灭的阴影，也打开了新的可能。建筑如腾飞的鸟儿，直抵苍穹，令人惊叹。曾经无法触及的云彩，如今化作实体的方块，映衬出人们心中的渴望。在探索的旅程中，他们掌握了前所未有的知识，发现了新的植物，仿佛在喧嚣中寻得了一隅宁静。在那片");
         add("text.confluence.research_on_wheat_mutation", "我们发现，带来的小麦竟开始发白、发黄。起初，我们以为它们无法适应这陌生的环境，直到一块云块轻盈飘过，它把小麦染上了彩霞的色彩，幻化为一种全新的植物。对这异变的产物，我们心中难免生出怀疑——直到有人忍饥挨饿，迫切渴望食物。奇怪的是，明明吃饱了，身体却似乎愈发轻盈，仿佛与大地的重负渐行渐远。在这奇异的世界里，变化与困惑交织，我们开始重新审");
@@ -116,6 +120,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("lore.confluence.research_on_cloud_blocks_1", "明明很厚一本书，拿在手上却轻飘飘的。看标题的样子好像还有另一本？");
         add("lore.confluence.research_on_cloud_blocks_2", "书页摸起来非常柔软，就好像丝绸一样。看标题的样子好像还有另一本？");
         add("lore.confluence.meteor_diary", "很薄的书，但似乎有些荧荧微光。");
+
+        //note
+        add("lore.confluence.mysterious_note_0", "呜被你发现了，不要告诉别人小狗藏在这里UQYQU");
+        add("lore.confluence.mysterious_note_1", "嘿，既然被你找到了，就告诉你吧。其实，和你在一块睡觉的某只动物，很可能是牢枕的眼线哦");
 
         add("author.confluence.the_ancestor_of_explorers", "最初的发起人");
         add("author.confluence.sheila", "希尔娜");

@@ -214,12 +214,12 @@ public class ArmorItems {
     public static final DeferredItem<ArmorItem> MYTHRIL_LEGGINGS = registerNormalArmor("mythril_leggings", "mythril_armor", ModRarity.LIGHT_RED, ModArmorMaterials.MYTHRIL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
     public static final DeferredItem<ArmorItem> MYTHRIL_BOOTS = registerNormalArmor("mythril_boots", "mythril_armor", ModRarity.LIGHT_RED, ModArmorMaterials.MYTHRIL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
 
-    public static final DeferredItem<ArmorItem> ORICHALCUM_HEADGEAR = registerNormalArmor("mythril_headgear", "mythril_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ORICHALCUM_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET);
-    public static final DeferredItem<ArmorItem> ORICHALCUM_MASK = registerNormalArmor("mythril_mask", "mythril_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ORICHALCUM_MASK_MATERIAL, ArmorItem.Type.HELMET);
-    public static final DeferredItem<ArmorItem> ORICHALCUM_HELMET = registerNormalArmor("mythril_helmet", "mythril_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<ArmorItem> ORICHALCUM_CHESTPLATE = registerNormalArmor("mythril_chestplate", "mythril_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<ArmorItem> ORICHALCUM_LEGGINGS = registerNormalArmor("mythril_leggings", "mythril_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<ArmorItem> ORICHALCUM_BOOTS = registerNormalArmor("mythril_boots", "mythril_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
+    public static final DeferredItem<ArmorItem> ORICHALCUM_HEADGEAR = registerNormalArmor("orichalcum_headgear", "orichalcum_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ORICHALCUM_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET);
+    public static final DeferredItem<ArmorItem> ORICHALCUM_MASK = registerNormalArmor("orichalcum_mask", "orichalcum_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ORICHALCUM_MASK_MATERIAL, ArmorItem.Type.HELMET);
+    public static final DeferredItem<ArmorItem> ORICHALCUM_HELMET = registerNormalArmor("orichalcum_helmet", "orichalcum_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
+    public static final DeferredItem<ArmorItem> ORICHALCUM_CHESTPLATE = registerNormalArmor("orichalcum_chestplate", "orichalcum_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<ArmorItem> ORICHALCUM_LEGGINGS = registerNormalArmor("orichalcum_leggings", "orichalcum_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
+    public static final DeferredItem<ArmorItem> ORICHALCUM_BOOTS = registerNormalArmor("orichalcum_boots", "orichalcum_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
 
     public static final DeferredItem<ArmorItem> ADAMANTITE_HEADGEAR = registerNormalArmor("adamantite_headgear", "adamantite_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ADAMANTITE_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET);
     public static final DeferredItem<ArmorItem> ADAMANTITE_MASK = registerNormalArmor("adamantite_mask", "adamantite_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ADAMANTITE_MASK_MATERIAL, ArmorItem.Type.HELMET);

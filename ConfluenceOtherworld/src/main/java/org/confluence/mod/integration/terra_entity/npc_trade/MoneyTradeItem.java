@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
+import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.registries.npc_trade.ITradeItem;
 import org.confluence.terraentity.registries.npc_trade.TradeProvider;
 
@@ -18,12 +19,12 @@ public record MoneyTradeItem(ItemStack result, long cost)implements ITradeItem, 
 
 
     @Override
-    public void onTrade(ServerPlayer player) {
-        IMoneyTrade.super.onTrade(player);
+    public void onTrade(ServerPlayer player, AbstractTerraNPC npc) {
+        IMoneyTrade.super.onTrade(player, npc);
     }
 
     @Override
-    public void onTradeSuccess(ServerPlayer player) {
+    public void onTradeSuccess(ServerPlayer player, AbstractTerraNPC npc) {
         ItemStack result = this.result();
         if(player.getInventory().getFreeSlot() ==-1){
             player.drop(result.copy(),false);

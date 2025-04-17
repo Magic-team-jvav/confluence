@@ -8,6 +8,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
+import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.registries.npc_trade.ITradeHealth;
 import org.confluence.terraentity.registries.npc_trade.TradeProvider;
 
@@ -20,8 +21,8 @@ public record MoneyTradeHealth(int health, long cost) implements IMoneyTrade, IT
 
 
     @Override
-    public void onTrade(ServerPlayer player) {
-        IMoneyTrade.super.onTrade(player);
+    public void onTrade(ServerPlayer player, AbstractTerraNPC npc) {
+        IMoneyTrade.super.onTrade(player, npc);
     }
 
     @Override
@@ -30,14 +31,14 @@ public record MoneyTradeHealth(int health, long cost) implements IMoneyTrade, IT
     }
 
 
-    public boolean canTrade(Player player) {
-        return IMoneyTrade.super.canTrade(player) && ITradeHealth.super.canTrade(player);
+    public boolean canTrade(Player player, AbstractTerraNPC npc) {
+        return IMoneyTrade.super.canTrade(player, npc) && ITradeHealth.super.canTrade(player, npc);
     }
 
 
     @Override
-    public void onTradeSuccess(ServerPlayer player) {
-        ITradeHealth.super.onTrade(player);
+    public void onTradeSuccess(ServerPlayer player, AbstractTerraNPC npc) {
+        ITradeHealth.super.onTrade(player, npc);
     }
 
     @Override

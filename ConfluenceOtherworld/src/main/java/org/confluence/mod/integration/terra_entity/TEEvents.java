@@ -19,6 +19,8 @@ import org.confluence.terraentity.api.event.WhipRegisterModifyEvent;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.entity.npc.NPCDialogs;
 import org.confluence.terraentity.entity.npc.NPCNames;
+import org.confluence.terraentity.entity.npc.brain.NurseAi;
+import org.confluence.terraentity.entity.npc.mood.MoodInfos;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 
 @EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD)
@@ -48,26 +50,35 @@ public class TEEvents {
     }
 
     @SubscribeEvent
-    public static void onRegisterBrain(NPCEvent.NPCBrainRegisterEvent event){
-        AbstractTerraNPC npc = event.getNPC();
-
-        if (npc.getType() == TENpcEntities.DEMOLITIONIST.get()) {
-            event.setReplace(new ConfluenceDemolitionistNPCAi(npc));
+    public static void onCollectBrains(NPCEvent.NPCBrainCollectionEvent event) {
+        event.register(TENpcEntities.DEMOLITIONIST.get(), (event1)->{
+            AbstractTerraNPC npc = event1.getNPC();
+            event1.setReplace(new ConfluenceDemolitionistNPCAi(npc));
             npc.setAttackRange(5);
             npc.setCanPerformerAttackTest(e->true);
-        } else if(npc.getType() == TENpcEntities.GUIDE.get()){
+        });
+        event.register(TENpcEntities.GUIDE.get(), (event1)->{
+            AbstractTerraNPC npc = event1.getNPC();
             npc.setCanPerformerAttackTest(e->e.getMainHandItem().getItem() instanceof BowItem);
-
-        }else if(npc.getType() == TENpcEntities.ARMS_DEALER.get()){
-            event.setReplace(new ConfluenceArmDealerNPCAi(npc));
+            // TEST
+            event1.getNPC().getMood().addMoodInfo(MoodInfos.GUILD1.get());
+            event1.getNPC().getMood().addMoodInfo(MoodInfos.GUILD2.get());
+        });
+        event.register(TENpcEntities.ARMS_DEALER.get(), (event1)->{
+            AbstractTerraNPC npc = event1.getNPC();
             npc.setAttackRange(10);
             npc.setCooldownTicks(20);
             npc.setCanPerformerAttackTest(e->e.getMainHandItem().getItem() instanceof CrossbowItem);
-        }else if(npc.getType() == TENpcEntities.GOBLIN_TINKERER.get()){
-            // todo 尖顶球
+        });
+        event.register(TENpcEntities.GOBLIN_TINKERER.get(), (event1)->{
+            AbstractTerraNPC npc = event1.getNPC();
+            // todo 尖钉球
             npc.setCanPerformerAttackTest(e->e.getMainHandItem().getItem() instanceof BowItem);
-        }
-
+        });
+        event.register(TENpcEntities.NURSE.get(), (event1)->{
+            // todo 针管
+            event1.setReplace(new NurseAi(event1.getNPC()));
+        });
     }
 
     @SubscribeEvent

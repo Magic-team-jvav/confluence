@@ -10,6 +10,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.PlayerUtils;
+import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
+import org.confluence.terraentity.mixed.IPlayer;
 import org.confluence.terraentity.registries.npc_trade.ITrade;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,25 +26,29 @@ public interface IMoneyTrade extends ITrade {
     long cost();
 
 
-    default long getCost(@Nullable Player player){
-        return cost();
+    default long getCost(@Nullable Player player, AbstractTerraNPC npc){
+        // TODO 心情系统打折
+        int value = npc.getMood().getValue();
+        value = value == 0 ? 100 : value;
+        float discount = (float) (1.0 / value * 100);
+        return (long) (cost() * discount);
     }
 
-    default boolean canTrade(Player player) {
-        return PlayerUtils.getMoney(player) >= getCost(player);
+    default boolean canTrade(Player player, AbstractTerraNPC npc) {
+        return PlayerUtils.getMoney(player) >= getCost(player, npc);
     }
 
     @Override
-    default void onTrade(ServerPlayer player) {
-        if(PlayerUtils.tryCostMoney(player, this.getCost(player))) {
-            onTradeSuccess(player);
+    default void onTrade(ServerPlayer player, AbstractTerraNPC npc) {
+        if(PlayerUtils.tryCostMoney(player, this.getCost(player, npc))) {
+            onTradeSuccess(player, npc);
         }
     }
 
     /**
      * 重复确认钱币足够
      */
-    void onTradeSuccess(ServerPlayer player);
+    void onTradeSuccess(ServerPlayer player, AbstractTerraNPC npc);
 
     @OnlyIn(Dist.CLIENT)
     @Override
@@ -81,17 +87,22 @@ public interface IMoneyTrade extends ITrade {
         }
 
         // 物品花费
-        int[] coins = PlayerUtils.decodeCoin((int)getCost(Minecraft.getInstance().player));
+        AbstractTerraNPC entity = null;
+        IPlayer player = ((IPlayer)Minecraft.getInstance().player);
+        if (player != null && player.terra_entity$getInteractingEntity() instanceof AbstractTerraNPC npc) {
+            entity = npc;
+        }
+        int[] coins = PlayerUtils.decodeCoin(getCost(Minecraft.getInstance().player, entity));
         x = startx + 165;
         y = starty + 6 + 13* 3;
         int index = -1;
-        int i = 0;
+         int i = 0;
         for (int coin : coins) {
 //            guiGraphics.renderItem(coinItem.get(3-k).getDefaultInstance(), x, y );
             String s = String.valueOf(coin);
             guiGraphics.drawString(font, String.valueOf(coin), x + 4 - s.length() * 3, y + 16, Color.orange.getRGB(), true);
             y -= 13;
-            if(index == -1 && coin >= 1){
+            if(coin >= 1){
                 index = i;
             }
             i++;
@@ -103,6 +114,8 @@ public interface IMoneyTrade extends ITrade {
             guiGraphics.blit(MENU_LOCATION,startx + 117,starty + 28,sx,sy,w,w,512,256);
         }
     }
+
+
 
 
 }

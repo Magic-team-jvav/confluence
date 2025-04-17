@@ -268,14 +268,19 @@ public final class PlayerUtils {
 
     public static int[] decodeCoin(long money) {
         int[] coins = new int[SIZE_COINS];
-        while (money > 0) {
-            int[] ints = decodeCoin(0x3F3F3F3F);
-            coins[0] += ints[0];
-            coins[1] += ints[1];
-            coins[2] += ints[2];
-            coins[3] += ints[3];
-            money -= 0x3F3F3F3F;
+        if (money < 0) {
+            throw new IllegalArgumentException("Money cannot be negative");
         }
+
+        // jit自动优化
+        coins[3] = (int) (money / (UPGRADES_COUNT * UPGRADES_COUNT * UPGRADES_COUNT)); // 铂金
+        money %= UPGRADES_COUNT * UPGRADES_COUNT * UPGRADES_COUNT;
+        coins[2] = (int) (money / (UPGRADES_COUNT * UPGRADES_COUNT)); // 金币
+        money %= UPGRADES_COUNT * UPGRADES_COUNT;
+        coins[1] = (int) (money / UPGRADES_COUNT); // 银币
+        money %= UPGRADES_COUNT;
+        coins[0] = (int) money; // 铜币
+
         return coins;
     }
 

@@ -13,10 +13,11 @@ import org.confluence.mod.integration.terra_entity.brain.ConfluenceDemolitionist
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
 import org.confluence.mod.common.menu.NPCTradesMenu;
-import org.confluence.terraentity.api.event.LoadNPCNamesEvent;
+import org.confluence.terraentity.api.event.LoadResourceEvent;
 import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.api.event.WhipRegisterModifyEvent;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
+import org.confluence.terraentity.entity.npc.NPCDialogs;
 import org.confluence.terraentity.entity.npc.NPCNames;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 
@@ -70,8 +71,13 @@ public class TEEvents {
     }
 
     @SubscribeEvent
-    public static void onInitNpcName(LoadNPCNamesEvent event){
-        event.addFile(Confluence.asResource(NPCNames.KEY + "/" + NPCNames.FILE_NAME + ".json"));
+    public static void onInitNpcName(LoadResourceEvent event){
+        if(event.getType() == LoadResourceEvent.Type.NPC_NAMES) {
+            event.addFile(Confluence.asResource(NPCNames.KEY + "/" + NPCNames.FILE_NAME + ".json"));
+        }else if(event.getType() == LoadResourceEvent.Type.NPC_DIALOGS){
+            event.addFile(Confluence.asResource(NPCDialogs.KEY + "/" + NPCDialogs.FILE_NAME + ".json"));
+
+        }
     }
 
 

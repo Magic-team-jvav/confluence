@@ -3,7 +3,6 @@ package org.confluence.mod.integration.terra_entity.npc_trade;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -11,8 +10,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terraentity.TerraEntity;
-import org.confluence.terraentity.client.gui.container.TETradeScreen;
 import org.confluence.terraentity.registries.npc_trade.ITrade;
 import org.jetbrains.annotations.Nullable;
 
@@ -105,11 +102,6 @@ public interface IMoneyTrade extends ITrade {
             int sy = 118 + ((index & 10) == 0? 0: 35);
             guiGraphics.blit(MENU_LOCATION,startx + 117,starty + 28,sx,sy,w,w,512,256);
         }
-    }
-
-    @Override
-    default void renderResultHover(GuiGraphics guiGraphics, Font font, int x, int y, int startx, int starty, int mouseX, int mouseY) {
-
     }
 
 

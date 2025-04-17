@@ -21,8 +21,7 @@ public class CobaltSet extends EquipmentSet {
                 .bindHook(builder -> builder
                         .addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(ArmorItems.COBALT_MASK.getId(), 0.1, AttributeModifier.Operation.ADD_VALUE))
                         .addBonus(TCAttributes.getRangedDamage(), new AttributeModifier(ArmorItems.COBALT_MASK.getId(), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
-                )
-                .build());
+                ).build());
         equippableGroup.addEquippableSet("hat", new EquippableSetData.Builder()
                 .addEquippable(VanillaEquippable.HEAD, ArmorItems.COBALT_HAT)
                 .bindHook(builder -> builder

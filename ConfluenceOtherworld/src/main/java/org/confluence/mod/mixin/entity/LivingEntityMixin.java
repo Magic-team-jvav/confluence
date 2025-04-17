@@ -151,10 +151,13 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @Inject(method = "canFreeze", at = @At(value = "HEAD"), cancellable = true)
     private void confluence$canFreeze(CallbackInfoReturnable<Boolean> cir) {
         LivingFreezeEvent.Pre post = NeoForge.EVENT_BUS.post(new LivingFreezeEvent.Pre(confluence$self()));
-        HookMapManager.postHooks(ModHookTypes.LIVING_FREEZE.get(), (owner, hook, original) -> {
-            hook.livingFreeze(owner, confluence$self(), original);
-            return original;
-        }, confluence$self(), post);
+
+        if (confluence$self() instanceof Player player) {
+            HookMapManager.postHooks(ModHookTypes.LIVING_FREEZE.get(), (owner, hook, original) -> {
+                hook.livingFreeze(owner, confluence$self(), original);
+                return original;
+            }, player, post);
+        }
 
         if (!post.canFreeze()) {
             cir.setReturnValue(false);

@@ -19,7 +19,7 @@ public class AdamantiteSet extends EquipmentSet {
         equippableGroup.addEquippableSet("headgear", new EquippableSetData.Builder()
                 .addEquippable(VanillaEquippable.HEAD, ArmorItems.ADAMANTITE_HEADGEAR)
                 .bindHook(builder -> builder
-                        .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(ArmorItems.ADAMANTITE_HEADGEAR.getId(), 0.12, AttributeModifier.Operation.ADD_VALUE))
+                        .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(ArmorItems.ADAMANTITE_HEADGEAR.getId(), 0.12, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(ArmorItems.ADAMANTITE_HEADGEAR.getId(), 0.12, AttributeModifier.Operation.ADD_VALUE))
                 )
                 .bindHook(ModHookTypes.ADDITIONAL_MANA.get(), (owner, player, original) -> original + 80)
@@ -29,8 +29,7 @@ public class AdamantiteSet extends EquipmentSet {
                 .bindHook(builder -> builder
                         .addBonus(TCAttributes.getRangedDamage(), new AttributeModifier(ArmorItems.ADAMANTITE_MASK.getId(), 0.14, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(ArmorItems.ADAMANTITE_MASK.getId(), 0.10, AttributeModifier.Operation.ADD_VALUE))
-                )
-                .build());
+                ).build());
         equippableGroup.addEquippableSet("helmet", new EquippableSetData.Builder()
                 .addEquippable(VanillaEquippable.HEAD, ArmorItems.ADAMANTITE_HELMET)
                 .bindHook(builder -> builder

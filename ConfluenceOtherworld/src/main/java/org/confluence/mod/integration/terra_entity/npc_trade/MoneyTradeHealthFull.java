@@ -62,6 +62,11 @@ public class MoneyTradeHealthFull implements IMoneyTrade, ITradeHealth {
         IMoneyTrade.super.onTrade(player);
     }
 
+    @Override
+    public void renderResultHover(GuiGraphics guiGraphics, Font font, int x, int y, int startx, int starty, int mouseX, int mouseY) {
+
+    }
+
 
     @Override
     public void onTradeSuccess(ServerPlayer player) {

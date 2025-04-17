@@ -9,6 +9,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.renderer.item.NormalArmorItemRenderer;
 import org.jetbrains.annotations.Nullable;
@@ -26,6 +28,11 @@ public class NormalArmorItem extends ArmorItem implements GeoItem {
 
     public NormalArmorItem(String name, Holder<ArmorMaterial> material, Type type, Properties properties) {
         super(material, type, properties);
+        this.name = name;
+    }
+
+    public NormalArmorItem(String name, ModRarity rarity, Holder<ArmorMaterial> material, Type type, Properties properties) {
+        super(material, type, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.name = name;
     }
 

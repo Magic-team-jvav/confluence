@@ -96,21 +96,6 @@ public final class LivingEntityEvents {
                 }
             }
         }
-
-//        Level level = living.level();
-//        if (level.isClientSide) return;
-//        if (!living.hasEffect(ModEffects.BLOOD_BUTCHERED)) return;
-//        BlockPos livingPos = living.blockPosition();
-//        AABB detectionBox = new AABB(livingPos).inflate(20.0);
-//        BlockPos.betweenClosedStream(
-//                new BlockPos((int) detectionBox.minX,(int) detectionBox.minY,(int) detectionBox.minZ),
-//                new BlockPos((int) detectionBox.maxX,(int) detectionBox.maxY,(int) detectionBox.maxZ)
-//        ).forEach(blockPos -> {
-//            BlockState state = level.getBlockState(blockPos);
-//            if (state.is(NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK)) {
-//                level.setBlockAndUpdate(blockPos, state.setValue(BloodthirstCrystallizedBlock.VISIBLE, true));
-//            }
-//        });
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -203,7 +188,7 @@ public final class LivingEntityEvents {
 
         ModAchievements.luckyBreak_watchYourStep(victim, damageSource, attacker);
         FlaskEffect.onLivingDamage(victim, damageSource, amount);
-        Immunity.calculateInvTicks(damageSource, (ILivingEntity) victim);
+        Immunity.calculateInvTicks(damageSource, victim);
         DamageIndicatorOptions.sendDamageParticle(serverLevel, damageSource, amount, victim);
     }
 
@@ -279,12 +264,15 @@ public final class LivingEntityEvents {
                 event.setProjectileItemStack(event.getProjectileItemStack().copy());
                 return;
             }
-            HookMapManager.postHooks(ModHookTypes.AMMO_CONSUME.get(), (owner, hook, original) -> {
-                if (hook.shouldSkipConsume(owner, original.getEntity(), original.getProjectileItemStack())) {
-                    original.setProjectileItemStack(original.getProjectileItemStack().copy());
-                }
-                return original;
-            }, event.getEntity(), event);
+
+            if (event.getEntity() instanceof Player player) {
+                HookMapManager.postHooks(ModHookTypes.AMMO_CONSUME.get(), (owner, hook, original) -> {
+                    if (hook.shouldSkipConsume(owner, original.getEntity(), original.getProjectileItemStack())) {
+                        original.setProjectileItemStack(original.getProjectileItemStack().copy());
+                    }
+                    return original;
+                }, player, event);
+            }
         }
     }
 

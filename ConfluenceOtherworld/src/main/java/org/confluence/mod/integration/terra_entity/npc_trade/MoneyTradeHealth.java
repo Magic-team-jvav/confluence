@@ -24,7 +24,10 @@ public record MoneyTradeHealth(int health, long cost) implements IMoneyTrade, IT
         IMoneyTrade.super.onTrade(player);
     }
 
+    @Override
+    public void renderResultHover(GuiGraphics guiGraphics, Font font, int x, int y, int startx, int starty, int mouseX, int mouseY) {
 
+    }
 
 
     public boolean canTrade(Player player) {

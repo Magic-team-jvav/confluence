@@ -7,6 +7,7 @@ import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.bow.BaseArrowItem;
@@ -21,9 +22,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class ArrowItemMixin {
     @ModifyArg(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Item;<init>(Lnet/minecraft/world/item/Item$Properties;)V"))
     private static Item.Properties maxStack(Item.Properties properties) {
-        int value = 9999;
-        if (properties.components != null) {
-            int size = (int) properties.components.map.get(DataComponents.MAX_STACK_SIZE);
+        int value = LibUtils.MAX_STACK_SIZE;
+        if (properties.components != null && !properties.components.map.containsKey(DataComponents.DAMAGE)) {
+            int size = (int) properties.components.map.getOrDefault(DataComponents.MAX_STACK_SIZE, 1);
             if (size > value) value = size;
         }
         return properties.stacksTo(value);

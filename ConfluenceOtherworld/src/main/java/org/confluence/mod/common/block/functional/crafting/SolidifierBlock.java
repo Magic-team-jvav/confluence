@@ -8,6 +8,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -46,6 +47,6 @@ public class SolidifierBlock extends HorizontalDirectionalBlock {
 
     @Override
     public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
-        return new SimpleMenuProvider((containerId, inventory, player) -> new SolidifierMenu(containerId, inventory), Component.translatable("container.confluence.crystal_ball"));
+        return new SimpleMenuProvider((containerId, inventory, player) -> new SolidifierMenu(containerId, inventory, ContainerLevelAccess.create(level, pos)), Component.translatable("container.confluence.crystal_ball"));
     }
 }

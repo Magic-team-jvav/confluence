@@ -7,6 +7,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -37,7 +38,7 @@ public class SawmillBlock extends HorizontalDirectionalWithHorizontalTwoPartBloc
     }
 
     @Override
-    public @Nullable MenuProvider getMenuProvider(BlockState pState, Level pLevel, BlockPos pPos) {
-        return new SimpleMenuProvider((pContainerId, pPlayerInventory, pPlayer) -> new SawmillMenu(pContainerId, pPlayerInventory), Component.translatable("container.confluence.sawmill"));
+    public @Nullable MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
+        return new SimpleMenuProvider((containerId, inventory, player) -> new SawmillMenu(containerId, inventory, ContainerLevelAccess.create(level, pos)), Component.translatable("container.confluence.sawmill"));
     }
 }

@@ -1,23 +1,22 @@
 package org.confluence.mod.common.data.gen.recipe;
 
+import com.mojang.datafixers.util.Either;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Blocks;
-import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.*;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -63,28 +62,17 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         alchemyTable(recipeOutput, PotionItems.ARCHERY_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.LENS), Ingredient.of(MaterialItems.DAYBLOOM));
         alchemyTable(recipeOutput, PotionItems.SWIFTNESS_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.BLINKROOT), Ingredient.of(Items.CACTUS));
 
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(ItemTags.STONE_CRAFTING_MATERIALS)
+        hardmodeAnvil(recipeOutput, DrillItems.DRAX.toStack(), ShapedRecipePattern.of(Map.of(
+                'H', AmountIngredient.of(3, MaterialItems.HALLOWED_INGOT),
+                'F', Ingredient.of(MaterialItems.SOUL_OF_FRIGHT),
+                'M', Ingredient.of(MaterialItems.SOUL_OF_MIGHT),
+                'S', Ingredient.of(MaterialItems.SOUL_OF_SIGHT)
         ), List.of(
-                " ## ",
-                " ## ",
-                " ## ",
-                "####"
-        )), StatueBlocks.A_STATUE.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2,ModTags.Items.LEAD_AND_IRON),
-                'a', Ingredient.of(Items.TORCH)
-        ), List.of(
-                " ## ",
-                "#  #",
-                "#  #",
-                "#aa#"
-        )), TFBlocks.GLASS_KILN.toStack());
-    }
-
-    protected void heavyWorkBench(RecipeOutput recipeOutput, String suffix, ShapedRecipePattern pattern, ItemStack result) {
-        ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()) + suffix);
-        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, pattern), null);
+                "HHF ",
+                "H HM",
+                "HHS "
+        )));
+        hardmodeAnvil(recipeOutput, FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.toStack(), AmountIngredient.of(18, MaterialItems.CHLOROPHYTE_INGOT), Ingredient.of(FunctionalBlocks.EXTRACTINATOR));
     }
 
     protected void stonecutting(RecipeOutput recipeOutput, String suffix, ItemStack result, Ingredient ingredient) {
@@ -134,5 +122,16 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         ResourceLocation id = Confluence.asResource("alchemy_table/" + getItemName(result.getItem()));
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
         recipeOutput.accept(id, new AlchemyTableRecipe(result, base, zingredients), null);
+    }
+
+    protected void hardmodeAnvil(RecipeOutput recipeOutput, ItemStack result, ShapedRecipePattern pattern) {
+        ResourceLocation id = Confluence.asResource("hardmode_anvil/" + getItemName(result.getItem()));
+        recipeOutput.accept(id, new HardmodeAnvilRecipe(result, Either.left(pattern)), null);
+    }
+
+    protected void hardmodeAnvil(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
+        ResourceLocation id = Confluence.asResource("hardmode_anvil/" + getItemName(result.getItem()));
+        NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
+        recipeOutput.accept(id, new HardmodeAnvilRecipe(result, Either.right(zingredients)), null);
     }
 }

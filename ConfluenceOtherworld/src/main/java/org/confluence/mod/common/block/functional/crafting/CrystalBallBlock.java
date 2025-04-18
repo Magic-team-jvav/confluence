@@ -32,7 +32,7 @@ public class CrystalBallBlock extends Block {
 
     @Override
     public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
-        return new SimpleMenuProvider((containerId, inventory, player) -> new CrystalBallMenu(containerId, inventory), Component.translatable("container.confluence.crystal_ball"));
+        return new SimpleMenuProvider((containerId, inventory, player) -> new CrystalBallMenu(containerId, inventory, new LevelAccess(level, pos)), Component.translatable("container.confluence.crystal_ball"));
     }
 
     public static class LevelAccess extends EnvironmentLevelAccess {

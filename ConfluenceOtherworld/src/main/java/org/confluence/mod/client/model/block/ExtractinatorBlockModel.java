@@ -24,5 +24,4 @@ public class ExtractinatorBlockModel extends GeoModel<ExtractinatorBlock.Entity>
     public ResourceLocation getAnimationResource(ExtractinatorBlock.Entity animatable) {
         return ANIMATION;
     }
-
 }

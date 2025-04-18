@@ -3,10 +3,6 @@ package org.confluence.mod.common.block.functional.crafting;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -19,10 +15,6 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -31,7 +23,6 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.block.HorizontalDirectionalWithHorizontalTwoPartBlock;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.model.block.ExtractinatorBlockModel;
 import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.data.map.ExtractinatorData;
@@ -95,23 +86,7 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
             ItemStack itemStack = player.getItemInHand(hand);
             ExtractinatorData data = itemStack.getItemHolder().getData(ModDataMaps.EXTRACTINATOR);
             if (data == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-
-            ParticleOptions options = itemStack.getItem() instanceof BlockItem blockItem
-                    ? new BlockParticleOption(ParticleTypes.BLOCK, blockItem.getBlock().defaultBlockState())
-                    : new ItemParticleOption(ParticleTypes.ITEM, itemStack);
-            serverLevel.sendParticles(options, pos.getX() + 0.5F, pos.getY() + 0.75F, pos.getZ() + 0.5F, 100, 0F, 0.0625F, 0F, 0.25F);
-
-            LootTable lootTable = level.getServer().reloadableRegistries().getLootTable(data.lootTable());
-            LootParams lootparams = new LootParams.Builder(serverLevel)
-                    .withParameter(LootContextParams.ORIGIN, player.position())
-                    .withParameter(LootContextParams.THIS_ENTITY, player)
-                    .create(LootContextParamSets.GIFT);
-            for (ItemStack loot : lootTable.getRandomItems(lootparams)) {
-                LibUtils.createItemEntity(loot, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, level, 40);
-            }
-
-            itemStack.shrink(1);
-            if (itemStack.isEmpty()) player.setItemInHand(hand, ItemStack.EMPTY);
+            ExtractinatorData.extract(level, pos, player, hand, serverLevel, itemStack, data);
         } else if (FMLEnvironment.dist.isClient()) {
             ((MinecraftAccessor) Minecraft.getInstance()).setRightClickDelay(1);
         }

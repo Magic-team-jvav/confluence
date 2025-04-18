@@ -21,7 +21,6 @@ public class SimpleGeoItemRenderer<T extends Item & GeoAnimatable> implements Ge
         this.animation = animation;
     }
 
-    @SuppressWarnings("removal")
     @Override
     public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
         if (renderer == null) {

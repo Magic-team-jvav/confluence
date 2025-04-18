@@ -8,7 +8,6 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.integration.terra_entity.brain.ConfluenceArmDealerNPCAi;
 import org.confluence.mod.integration.terra_entity.brain.ConfluenceDemolitionistNPCAi;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
@@ -18,9 +17,9 @@ import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.api.event.WhipRegisterModifyEvent;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.entity.npc.NPCDialogs;
+import org.confluence.terraentity.entity.npc.NPCMoods;
 import org.confluence.terraentity.entity.npc.NPCNames;
 import org.confluence.terraentity.entity.npc.brain.NurseAi;
-import org.confluence.terraentity.entity.npc.mood.MoodInfos;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 
 @EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD)
@@ -51,43 +50,45 @@ public class TEEvents {
 
     @SubscribeEvent
     public static void onCollectBrains(NPCEvent.NPCBrainCollectionEvent event) {
-        event.register(TENpcEntities.DEMOLITIONIST.get(), (event1)->{
-            AbstractTerraNPC npc = event1.getNPC();
-            event1.setReplace(new ConfluenceDemolitionistNPCAi(npc));
+        event.register(TENpcEntities.DEMOLITIONIST.get(), (collector)->{
+            AbstractTerraNPC npc = collector.getNPC();
+            collector.setReplace(new ConfluenceDemolitionistNPCAi(npc));
             npc.setAttackRange(5);
             npc.setCanPerformerAttackTest(e->true);
         });
-        event.register(TENpcEntities.GUIDE.get(), (event1)->{
-            AbstractTerraNPC npc = event1.getNPC();
+        event.register(TENpcEntities.GUIDE.get(), (collector)->{
+            AbstractTerraNPC npc = collector.getNPC();
             npc.setCanPerformerAttackTest(e->e.getMainHandItem().getItem() instanceof BowItem);
             // TEST
-            event1.getNPC().getMood().addMoodInfo(MoodInfos.GUILD1.get());
-            event1.getNPC().getMood().addMoodInfo(MoodInfos.GUILD2.get());
+//            collector.getNPC().getMood().addMoodInfo(MoodInfos.GUILD1.get());
+//            collector.getNPC().getMood().addMoodInfo(MoodInfos.GUILD2.get());
         });
-        event.register(TENpcEntities.ARMS_DEALER.get(), (event1)->{
-            AbstractTerraNPC npc = event1.getNPC();
+        event.register(TENpcEntities.ARMS_DEALER.get(), (collector)->{
+            AbstractTerraNPC npc = collector.getNPC();
             npc.setAttackRange(10);
             npc.setCooldownTicks(20);
             npc.setCanPerformerAttackTest(e->e.getMainHandItem().getItem() instanceof CrossbowItem);
         });
-        event.register(TENpcEntities.GOBLIN_TINKERER.get(), (event1)->{
-            AbstractTerraNPC npc = event1.getNPC();
+        event.register(TENpcEntities.GOBLIN_TINKERER.get(), (collector)->{
+            AbstractTerraNPC npc = collector.getNPC();
             // todo 尖钉球
             npc.setCanPerformerAttackTest(e->e.getMainHandItem().getItem() instanceof BowItem);
         });
-        event.register(TENpcEntities.NURSE.get(), (event1)->{
+        event.register(TENpcEntities.NURSE.get(), (collector)->{
             // todo 针管
-            event1.setReplace(new NurseAi(event1.getNPC()));
+            collector.setReplace(new NurseAi(collector.getNPC()));
         });
     }
 
     @SubscribeEvent
-    public static void onInitNpcName(LoadResourceEvent event){
+    public static void onLoadResource(LoadResourceEvent event){
         if(event.getType() == LoadResourceEvent.Type.NPC_NAMES) {
             event.addFile(Confluence.asResource(NPCNames.KEY + "/" + NPCNames.FILE_NAME + ".json"));
         }else if(event.getType() == LoadResourceEvent.Type.NPC_DIALOGS){
             event.addFile(Confluence.asResource(NPCDialogs.KEY + "/" + NPCDialogs.FILE_NAME + ".json"));
-
+        }else if(event.getType() == LoadResourceEvent.Type.NPC_MOODS){
+            event.setReplace(true);
+            event.addFile(Confluence.asResource(NPCMoods.KEY + "/" + NPCMoods.FILE_NAME + ".json"));
         }
     }
 

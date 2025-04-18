@@ -1,0 +1,52 @@
+{
+  "terra_entity:goblin_tinkerer": {
+    "moodInfos": [
+      {
+        "moodId": "terra_entity:goblin1",
+        "moodInfo": {
+          "entity_type": "terra_entity:demolitionist",
+          "info": "fuck_demolitionist",
+          "mood": "HATE"
+        }
+      },
+      {
+        "moodId": "terra_entity:goblin2",
+        "moodInfo": {
+          "entity_type": "terra_entity:nurse",
+          "info": "love_nurse",
+          "mood": "LIKE"
+        }
+      }
+    ],
+    "setting": {
+      "moodToValue": {
+        "DISLIKE": -10,
+        "HATE": -20,
+        "LIKE": 10,
+        "LOVER": 20,
+        "NEUTRAL": 0
+      }
+    }
+  },
+  "terra_entity:guide": {
+    "moodInfos": [
+      {
+        "moodId": "terra_entity:guild1",
+        "moodInfo": {
+          "entity_type": "terra_entity:goblin_tinkerer",
+          "info": "fuck_goblin",
+          "mood": "HATE"
+        }
+      }
+    ],
+    "setting": {
+      "moodToValue": {
+        "DISLIKE": -10,
+        "HATE": -20,
+        "LIKE": 10,
+        "LOVER": 20,
+        "NEUTRAL": 0
+      }
+    }
+  }
+}

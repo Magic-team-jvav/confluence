@@ -1,0 +1,15 @@
+{
+  "terra_entity:guide": {
+    "dialogs": [
+      "h111",
+      "h222",
+      "h333"
+    ]
+  },
+  "terra_entity:nurse": {
+    "dialogs": [
+      "i'm 111",
+      "i'm 555"
+    ]
+  }
+}

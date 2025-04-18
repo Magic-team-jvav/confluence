@@ -42,7 +42,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class SafeBlock extends HorizontalDirectionalWaterloggedBlock implements EntityBlock {
     public static final MapCodec<SafeBlock> CODEC = simpleCodec(SafeBlock::new);
-    private static final VoxelShape SHAPE = box(1, 0, 1, 15, 16, 15);
+    private static final VoxelShape SHAPE = box(1, 0, 1, 15, 15, 15);
 
     public SafeBlock(Properties properties) {
         super(properties);

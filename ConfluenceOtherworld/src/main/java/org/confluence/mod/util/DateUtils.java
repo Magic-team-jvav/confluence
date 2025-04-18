@@ -42,7 +42,7 @@ public final class DateUtils {
     }
 
     public static boolean isQingMing(Lunar lunar) {
-        return lunar.getMonth() == 3 && (lunar.getDay() >= 7 || lunar.getDay() <= 9);
+        return lunar.getMonth() == 3 && (lunar.getDay() >= 7 && lunar.getDay() <= 9);
     }
 
     public static boolean isDuanWu(Lunar lunar) {

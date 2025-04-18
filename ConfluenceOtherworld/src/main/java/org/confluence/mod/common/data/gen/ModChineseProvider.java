@@ -1752,7 +1752,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(AxeItems.WAR_AXE_OF_THE_NIGHT.get(), "暗夜战斧");
         add(AxeItems.BLOOD_LUST_CLUSTER.get(), "嗜血狂斧");
         add(AxeItems.STAFF_OF_REGROWTH.get(), "再生法杖");
-        add(AxeItems.DRILL_OF_REGROWTH.get(), "再生之斧");
+        add(AxeItems.AXE_OF_REGROWTH.get(), "再生之斧");
         add(HamaxeItems.METEOR_HAMAXE.get(), "流星锤斧");
         add(HamaxeItems.MOLTEN_HAMAXE.get(), "熔火锤斧");
 

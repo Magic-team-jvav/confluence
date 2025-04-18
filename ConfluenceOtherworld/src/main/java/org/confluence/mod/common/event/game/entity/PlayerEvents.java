@@ -44,6 +44,7 @@ import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
+import org.confluence.mod.common.item.drill.DrillItem;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.mixed.*;
@@ -80,6 +81,7 @@ public final class PlayerEvents {
         Level level = event.getLevel();
         BlockPos pos = event.getPos();
         AltarBlock.onLeftClick(level.getBlockState(pos), level, pos, event.getEntity());
+        DrillItem.drillAnimation(event);
     }
 
     @SubscribeEvent

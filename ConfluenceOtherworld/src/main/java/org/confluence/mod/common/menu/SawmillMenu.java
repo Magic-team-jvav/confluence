@@ -4,7 +4,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.lib.common.menu.ShapedAmountContainerMenu4x;
+import org.confluence.lib.common.menu.EitherAmountContainerMenu4x;
 import org.confluence.lib.common.menu.ToggleAmountResultSlot;
 import org.confluence.lib.common.recipe.AbstractAmountRecipe;
 import org.confluence.lib.common.recipe.MenuRecipeInput;
@@ -13,7 +13,7 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.SawmillRecipe;
 
-public class SawmillMenu extends ShapedAmountContainerMenu4x<MenuRecipeInput, SawmillRecipe, ToggleAmountResultSlot<SawmillRecipe>, ContainerLevelAccess> {
+public class SawmillMenu extends EitherAmountContainerMenu4x<MenuRecipeInput, SawmillRecipe, ToggleAmountResultSlot<SawmillRecipe>, ContainerLevelAccess> {
     public SawmillMenu(int containerId, Inventory inventory) {
         this(containerId, inventory, ContainerLevelAccess.NULL);
     }
@@ -29,7 +29,7 @@ public class SawmillMenu extends ShapedAmountContainerMenu4x<MenuRecipeInput, Sa
                     @Override
                     public void onTake(Player player, ItemStack stack) {
                         if (recipe != null) {
-                            AbstractAmountRecipe.consumeShaped(input, 4, 4, recipe.pattern);
+                            AbstractAmountRecipe.consumeShaped(input, 4, 4, recipe.either.orThrow());
                             input.setChanged();
                             updateMenu();
                         }

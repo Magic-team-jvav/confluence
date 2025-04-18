@@ -3,7 +3,7 @@ package org.confluence.mod.common.menu;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.lib.common.menu.ShapedAmountContainerMenu4x;
+import org.confluence.lib.common.menu.EitherAmountContainerMenu4x;
 import org.confluence.lib.common.menu.ToggleAmountResultSlot;
 import org.confluence.lib.common.recipe.AbstractAmountRecipe;
 import org.confluence.lib.common.recipe.EnvironmentRecipeInput;
@@ -13,7 +13,7 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 
-public class HeavyWorkBenchMenu extends ShapedAmountContainerMenu4x<EnvironmentRecipeInput, HeavyWorkBenchRecipe, ToggleAmountResultSlot<HeavyWorkBenchRecipe>, HeavyWorkBenchBlock.LevelAccess> {
+public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentRecipeInput, HeavyWorkBenchRecipe, ToggleAmountResultSlot<HeavyWorkBenchRecipe>, HeavyWorkBenchBlock.LevelAccess> {
     public HeavyWorkBenchMenu(int containerId, Inventory inventory) {
         this(containerId, inventory, new HeavyWorkBenchBlock.LevelAccess(null, null));
     }
@@ -30,7 +30,7 @@ public class HeavyWorkBenchMenu extends ShapedAmountContainerMenu4x<EnvironmentR
                     @Override
                     public void onTake(Player player, ItemStack stack) {
                         if (recipe != null) {
-                            AbstractAmountRecipe.consumeShaped(input, 4, 4, recipe.pattern);
+                            AbstractAmountRecipe.consumeShaped(input, 4, 4, recipe.either.orThrow());
                             input.setChanged();
                             updateMenu();
                         }

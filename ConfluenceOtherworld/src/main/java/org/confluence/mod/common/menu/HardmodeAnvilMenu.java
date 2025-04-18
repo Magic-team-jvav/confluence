@@ -4,6 +4,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.lib.common.menu.EitherAmountContainerMenu4x;
 import org.confluence.lib.common.menu.ToggleAmountResultSlot;
 import org.confluence.lib.common.recipe.AbstractAmountRecipe;
@@ -11,15 +12,15 @@ import org.confluence.lib.common.recipe.MenuRecipeInput;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.recipe.SolidifierRecipe;
+import org.confluence.mod.common.recipe.HardmodeAnvilRecipe;
 
-public class SolidifierMenu extends EitherAmountContainerMenu4x<MenuRecipeInput, SolidifierRecipe, ToggleAmountResultSlot<SolidifierRecipe>, ContainerLevelAccess> {
-    public SolidifierMenu(int containerId, Inventory inventory) {
+public class HardmodeAnvilMenu extends EitherAmountContainerMenu4x<MenuRecipeInput, HardmodeAnvilRecipe, ToggleAmountResultSlot<HardmodeAnvilRecipe>, ContainerLevelAccess> {
+    public HardmodeAnvilMenu(int containerId, Inventory inventory) {
         this(containerId, inventory, ContainerLevelAccess.NULL);
     }
 
-    public SolidifierMenu(int containerId, Inventory inventory, ContainerLevelAccess access) {
-        super(ModMenuTypes.SOLIDIFIER.get(), ModRecipes.SOLIDIFIER_TYPE.get(), containerId, inventory, access, MenuRecipeInput::new,
+    public HardmodeAnvilMenu(int containerId, Inventory inventory, ContainerLevelAccess access) {
+        super(ModMenuTypes.HARDMODE_ANVIL.get(), ModRecipes.HARDMODE_ANVIL_TYPE.get(), containerId, inventory, access, MenuRecipeInput::new,
                 (input, container, slot, x, y, setup) -> new ToggleAmountResultSlot<>(input, container, slot, x, y) {
                     @Override
                     protected void updateMenu() {
@@ -29,7 +30,8 @@ public class SolidifierMenu extends EitherAmountContainerMenu4x<MenuRecipeInput,
                     @Override
                     public void onTake(Player player, ItemStack stack) {
                         if (recipe != null) {
-                            AbstractAmountRecipe.consumeShaped(input, 4, 4, recipe.either.orThrow());
+                            recipe.either.ifLeft(shaped -> AbstractAmountRecipe.consumeShaped(input, 4, 4, shaped));
+                            recipe.either.ifRight(shapeless -> AbstractAmountRecipe.consumeShapeless(input, shapeless));
                             input.setChanged();
                             updateMenu();
                         }
@@ -39,6 +41,10 @@ public class SolidifierMenu extends EitherAmountContainerMenu4x<MenuRecipeInput,
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(access, player, FunctionalBlocks.SOLIDIFIER.get());
+        return access.evaluate((level, pos) -> {
+            BlockState blockState = level.getBlockState(pos);
+            return (blockState.is(FunctionalBlocks.MYTHRIL_ANVIL) || blockState.is(FunctionalBlocks.ORICHALCUM_ANVIL)) &&
+                    player.canInteractWithBlock(pos, 4.0);
+        }, true);
     }
 }

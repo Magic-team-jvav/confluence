@@ -74,7 +74,7 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<HeavyWorkBenchRec
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, HeavyWorkBenchRecipe recipe, IFocusGroup focuses) {
-        ShapedRecipePattern pattern = recipe.pattern;
+        ShapedRecipePattern pattern = recipe.either.orThrow();
         int width = pattern.width();
         int height = pattern.height();
         boolean symmetrical = pattern.symmetrical;

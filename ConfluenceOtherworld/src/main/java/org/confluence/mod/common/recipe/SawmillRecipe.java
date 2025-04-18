@@ -7,12 +7,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
+import org.confluence.lib.common.recipe.EitherAmountRecipe4x;
 import org.confluence.lib.common.recipe.MenuRecipeInput;
-import org.confluence.lib.common.recipe.ShapedAmountRecipe4x;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 
-public class SawmillRecipe extends ShapedAmountRecipe4x<MenuRecipeInput> {
+public class SawmillRecipe extends EitherAmountRecipe4x<MenuRecipeInput> {
     public SawmillRecipe(ItemStack result, ShapedRecipePattern pattern) {
         super(result, pattern);
     }
@@ -38,8 +38,8 @@ public class SawmillRecipe extends ShapedAmountRecipe4x<MenuRecipeInput> {
     }
 
     public static class Serializer implements RecipeSerializer<SawmillRecipe> {
-        public static final MapCodec<SawmillRecipe> CODEC = ShapedAmountRecipe4x.shapedSerializerMapCodec(SawmillRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, SawmillRecipe> STREAM_CODEC = ShapedAmountRecipe4x.shapedSerializerSteamCodec(SawmillRecipe::new);
+        public static final MapCodec<SawmillRecipe> CODEC = EitherAmountRecipe4x.shapedSerializerMapCodec(SawmillRecipe::new);
+        public static final StreamCodec<RegistryFriendlyByteBuf, SawmillRecipe> STREAM_CODEC = EitherAmountRecipe4x.shapedSerializerSteamCodec(SawmillRecipe::new);
 
         @Override
         public MapCodec<SawmillRecipe> codec() {

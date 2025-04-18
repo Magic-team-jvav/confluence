@@ -135,6 +135,7 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.SAWMILL.get(), SawmillScreen::new);
         event.register(ModMenuTypes.SOLIDIFIER.get(), SolidifierScreen::new);
         event.register(ModMenuTypes.CRYSTAL_BALL.get(), CrystalBallScreen::new);
+        event.register(ModMenuTypes.HARDMODE_ANVIL.get(), HardmodeAnvilScreen::new);
 
         event.register(ModMenuTypes.NPC_TRADES_MENU.get(), MoneyTradeScreen::new);
         event.register(ModMenuTypes.REFORGE_MENU.get(), NPCReforgeScreen::new);

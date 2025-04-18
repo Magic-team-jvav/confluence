@@ -57,7 +57,7 @@ public class SolidifierCategory implements IRecipeCategory<SolidifierRecipe> {
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, SolidifierRecipe recipe, IFocusGroup focuses) {
-        ShapedRecipePattern pattern = recipe.pattern;
+        ShapedRecipePattern pattern = recipe.either.orThrow();
         int width = pattern.width();
         int height = pattern.height();
         boolean symmetrical = pattern.symmetrical;

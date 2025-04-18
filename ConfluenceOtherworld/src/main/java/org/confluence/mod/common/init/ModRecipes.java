@@ -58,6 +58,8 @@ public final class ModRecipes {
     public static final Supplier<RecipeSerializer<?>> SOLIDIFIER_SERIALIZER = SERIALIZERS.register("solidifier", SolidifierRecipe.Serializer::new);
     public static final Supplier<RecipeType<CrystalBallRecipe>> CRYSTAL_BALL_TYPE = registerType("crystal_ball");
     public static final Supplier<RecipeSerializer<?>> CRYSTAL_BALL_SERIALIZER = SERIALIZERS.register("crystal_ball", CrystalBallRecipe.Serializer::new);
+    public static final Supplier<RecipeType<HardmodeAnvilRecipe>> HARDMODE_ANVIL_TYPE = registerType("hardmode_anvil");
+    public static final Supplier<RecipeSerializer<?>> HARDMODE_ANVIL_SERIALIZER = SERIALIZERS.register("hardmode_anvil", HardmodeAnvilRecipe.Serializer::new);
 
     private static <R extends Recipe<?>> Supplier<RecipeType<R>> registerType(String id) {
         return TYPES.register(id + "_type", () -> new RecipeType<>() {

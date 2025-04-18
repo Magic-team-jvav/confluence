@@ -51,6 +51,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(new CookingPotCategory(jeiHelpers));
         registration.addRecipeCategories(new SawmillCategory(jeiHelpers));
         registration.addRecipeCategories(new SolidifierCategory(jeiHelpers));
+        registration.addRecipeCategories(new HardmodeAnvilCategory(jeiHelpers));
     }
 
     @Override
@@ -70,6 +71,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipes(CookingPotCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.COOKING_POT_TYPE.get()));
         registration.addRecipes(SawmillCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.SAWMILL_TYPE.get()));
         registration.addRecipes(SolidifierCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.SOLIDIFIER_TYPE.get()));
+        registration.addRecipes(HardmodeAnvilCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.HARDMODE_ANVIL_TYPE.get()));
     }
 
     private static <I extends RecipeInput, T extends Recipe<I>> List<T> getAllRecipesFor(RecipeManager recipeManager, RecipeType<T> recipeType) {
@@ -93,6 +95,8 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(FunctionalBlocks.CAULDRON.toStack(), CookingPotCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.SAWMILL.toStack(), SawmillCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.SOLIDIFIER.toStack(), SolidifierCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.MYTHRIL_ANVIL.toStack(), HardmodeAnvilCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.ORICHALCUM_ANVIL.toStack(), HardmodeAnvilCategory.TYPE);
     }
 
     @Override
@@ -107,6 +111,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeClickArea(SkyMillScreen.class, 34, 35, 18, 18, SkyMillCategory.TYPE);
         registration.addRecipeClickArea(AlchemyTableScreen.class, 79, 38, 18, 20, AlchemyTableCategory.TYPE);
         registration.addRecipeClickArea(CookingPotScreen.class, 78, 36, 46, 15, CookingPotCategory.TYPE);
+        registration.addRecipeClickArea(HardmodeAnvilScreen.class, 78, 36, 46, 15, HardmodeAnvilCategory.TYPE);
     }
 
     @Override

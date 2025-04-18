@@ -1,10 +1,16 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
@@ -20,9 +26,14 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.sponsor.*;
+import org.confluence.terra_curio.common.init.TCAttributes;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
+import java.util.function.Consumer;
 
+import static net.minecraft.world.item.Item.BASE_ATTACK_DAMAGE_ID;
+import static net.minecraft.world.item.Item.BASE_ATTACK_SPEED_ID;
 import static org.confluence.lib.util.LibUtils.MAX_STACK_SIZE;
 
 @SuppressWarnings("unused")
@@ -122,5 +133,33 @@ public final class ModItems {
         ToolItems.ITEMS.register(eventBus);
         TreasureBagItems.ITEMS.register(eventBus);
         VanityArmorItems.ITEMS.register(eventBus);
+    }
+
+    public static Item.@NotNull Properties unbreakable() {
+        return new Item.Properties().component(DataComponents.UNBREAKABLE, UNBREAKABLE);
+    }
+
+    public static Consumer<ItemAttributeModifiers.Builder> attributes(double blockInteractionRange, double attackKnockback) {
+        return builder -> {
+            if (blockInteractionRange != 0)
+                builder.add(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(BASE_BLOCK_INTERACTION_RANGE_ID, blockInteractionRange, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+            if (attackKnockback != 0)
+                builder.add(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(BASE_ATTACK_KNOCKBACK_ID, attackKnockback, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+            builder.add(TCAttributes.getCriticalChance(), new AttributeModifier(BASE_CRITICAL_CHANCE_ID, 0.04, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+        };
+    }
+
+    public static ItemAttributeModifiers createAttributes(Tier tier, float attackDamage, float attackSpeed, Consumer<ItemAttributeModifiers.Builder> consumer) {
+        ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
+        consumer.accept(builder);
+        return builder.add(
+                Attributes.ATTACK_DAMAGE,
+                new AttributeModifier(BASE_ATTACK_DAMAGE_ID, attackDamage + tier.getAttackDamageBonus(), AttributeModifier.Operation.ADD_VALUE),
+                EquipmentSlotGroup.MAINHAND
+        ).add(
+                Attributes.ATTACK_SPEED,
+                new AttributeModifier(BASE_ATTACK_SPEED_ID, attackSpeed, AttributeModifier.Operation.ADD_VALUE),
+                EquipmentSlotGroup.MAINHAND
+        ).build();
     }
 }

@@ -799,7 +799,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         TESummonItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.SUMMONER_WEAPON).add(item.get()));
 
         tag(ModTags.Items.ABLE_TO_DESTROY_ALTAR).add(
-                HammerItems.PWNHAMMER.get()
+                HammerItems.PWNHAMMER.get(),
+                HammerItems.HAMMUSH.get()
         );
         tag(Tags.Items.FOODS_SOUP).add(
                 FoodItems.BOWL_OF_SOUP.get(),
@@ -993,7 +994,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.ANNOUNCEMENT_BOX.asItem(),
                 TEItems.HOUSE_DETECTOR.get(),
                 ToolItems.TARGET_DUMMY.get(),
-                DrillItems.DRAX.get(),
                 ModItems.TOKYO_TEDDY_BEAR.get(),
                 ModItems.ICE_TOFU_BRICK.get(),
                 ModItems.FAILED_SKULL.get(),
@@ -1003,10 +1003,66 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ModItems.CANDY_SWORD.get(),
                 ModItems.PULSAR.get(),
                 ModItems.MYSTERIOUS_NOTE.get(),
-                ModItems.HARDMODE_CONVERTOR.get()
+                ModItems.HARDMODE_CONVERTOR.get(),
+                HamaxeItems.SPECTRE_HAMAXE.get(),
+                HamaxeItems.SOLAR_FLARE_HAMAXE.get(),
+                HamaxeItems.VORTEX_HAMAXE.get(),
+                HamaxeItems.NEBULA_HAMAXE.get(),
+                HamaxeItems.STARDUST_HAMAXE.get(),
+                HammerItems.RICH_MAHOGANY_HAMMER.get(),
+                HammerItems.PALM_WOOD_HAMMER.get(),
+                HammerItems.SPRUCE_WOOD_HAMMER.get(),
+                HammerItems.EBONWOOD_WOOD_HAMMER.get(),
+                HammerItems.SHADEWOOD_HAMMER.get(),
+                HammerItems.ASH_WOOD_HAMMER.get(),
+                HammerItems.PEARLWOOD_HAMMER.get(),
+                HammerItems.HAMMUSH.get(),
+                HammerItems.CHLOROPHYTE_WARHAMMER.get(),
+                PickaxeAxeItems.SHROOMITE_DIGGING_CLAW.get(),
+                PickaxeItems.COBALT_PICKAXE.get(),
+                PickaxeItems.PALLADIUM_PICKAXE.get(),
+                PickaxeItems.MYTHRIL_PICKAXE.get(),
+                PickaxeItems.ORICHALCUM_PICKAXE.get(),
+                PickaxeItems.ADAMANTITE_PICKAXE.get(),
+                PickaxeItems.TITANIUM_PICKAXE.get(),
+                PickaxeItems.SPECTRE_PICKAXE.get(),
+                PickaxeItems.CHLOROPHYTE_PICKAXE.get(),
+                PickaxeItems.SOLAR_FLARE_PICKAXE.get(),
+                PickaxeItems.VORTEX_PICKAXE.get(),
+                PickaxeItems.NEBULA_PICKAXE.get(),
+                PickaxeItems.STARDUST_PICKAXE.get(),
+                AccessoryItems.ANGEL_WINGS.get(),
+                AccessoryItems.DEMON_WINGS.get(),
+                AccessoryItems.FAIRY_WINGS.get(),
+                AccessoryItems.FIN_WINGS.get(),
+                AccessoryItems.FROZEN_WINGS.get(),
+                AccessoryItems.HARPY_WINGS.get(),
+                AccessoryItems.JETPACK.get(),
+                AccessoryItems.LEAF_WINGS.get(),
+                AccessoryItems.BAT_WINGS.get(),
+                AccessoryItems.BEE_WINGS.get(),
+                AccessoryItems.BUTTERFLY_WINGS.get(),
+                AccessoryItems.FLAME_WINGS.get(),
+                AccessoryItems.HOVERBOARD.get(),
+                AccessoryItems.BONE_WINGS.get(),
+                AccessoryItems.MOTHRON_WINGS.get(),
+                AccessoryItems.SPECTRE_WINGS.get(),
+                AccessoryItems.BEETLE_WINGS.get(),
+                AccessoryItems.FESTIVE_WINGS.get(),
+                AccessoryItems.SPOOKY_WINGS.get(),
+                AccessoryItems.TATTERED_WINGS.get(),
+                AccessoryItems.STEAMPUNK_WINGS.get(),
+                AccessoryItems.BETSYS_WINGS.get(),
+                AccessoryItems.EMPRESS_WINGS.get(),
+                AccessoryItems.FISHRON_WINGS.get(),
+                AccessoryItems.NEBULA_WINGS.get(),
+                AccessoryItems.VORTEX_BOOSTER.get(),
+                AccessoryItems.SOLAR_WINGS.get(),
+                AccessoryItems.STARDUST_WINGS.get()
         );
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);
+        DrillItems.ITEMS.getEntries().forEach(wipAction);
         //TODO 枪！
 //        TGItems.ITEM_GUNS.getEntries().forEach(wipAction);
 //        TGItems.ITEM_BULLETS.getEntries().forEach(wipAction);

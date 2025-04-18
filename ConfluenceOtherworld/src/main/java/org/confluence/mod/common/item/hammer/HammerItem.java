@@ -8,20 +8,29 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.item.ModItems;
 
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public class HammerItem extends DiggerItem {
-    public HammerItem(Tier tier, float rawDamage, float rawSpeed) {
-        this(tier, rawDamage, rawSpeed, new Properties());
+    public HammerItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity) {
+        this(tier, rawDamage, rawSpeed, new Properties(), rarity);
     }
 
-    public HammerItem(Tier tier, float rawDamage, float rawSpeed, Properties properties) {
-        super(tier, ModTags.Blocks.MINEABLE_WITH_HAMMER, properties.component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4)));
+    public HammerItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
+        super(tier, ModTags.Blocks.MINEABLE_WITH_HAMMER, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity).component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4)));
+    }
+
+    public HammerItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, Consumer<ItemAttributeModifiers.Builder> consumer, ModRarity rarity) {
+        super(tier, ModTags.Blocks.MINEABLE_WITH_HAMMER, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity).component(DataComponents.ATTRIBUTE_MODIFIERS, ModItems.createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4, consumer)));
     }
 
     @Override

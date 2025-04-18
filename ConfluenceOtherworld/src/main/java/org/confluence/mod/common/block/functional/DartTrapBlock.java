@@ -3,7 +3,6 @@ package org.confluence.mod.common.block.functional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -15,11 +14,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
@@ -27,13 +26,12 @@ import org.confluence.mod.common.init.ModSecretSeeds;
 import static net.minecraft.world.level.block.DirectionalBlock.FACING;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.TRIGGERED;
 
-@SuppressWarnings("deprecation")
 public class DartTrapBlock extends AbstractMechanicalBlock {
     public static final ItemStack PICKUP_ITEM_STACK = Items.SPECTRAL_ARROW.getDefaultInstance();
-    public static final MutableComponent NAME = Component.translatable("entity.confluence.dart");
+    public static final Component NAME = Component.translatable("entity.confluence.dart");
 
-    public DartTrapBlock() {
-        super(Properties.ofFullCopy(Blocks.DISPENSER));
+    public DartTrapBlock(Properties properties) {
+        super(properties);
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(TRIGGERED, false));
     }
 
@@ -46,7 +44,7 @@ public class DartTrapBlock extends AbstractMechanicalBlock {
     }
 
     public BlockState mirror(BlockState pState, Mirror pMirror) {
-        return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
+        return rotate(pState, pMirror.getRotation(pState.getValue(FACING)));
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
@@ -76,7 +74,7 @@ public class DartTrapBlock extends AbstractMechanicalBlock {
         Arrow arrow = new Arrow(pLevel, x, y, z, PICKUP_ITEM_STACK, null);
         arrow.setCustomName(NAME);
         arrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
-        arrow.addEffect(new MobEffectInstance(MobEffects.POISON, 600, 1));
+        arrow.addEffect(new MobEffectInstance(MobEffects.POISON, LibUtils.switchByDifficulty(pLevel, pPos, 300, 600, 750), 1));
         if (ModSecretSeeds.NO_TRAPS.match(pLevel)) {
             arrow.addEffect(new MobEffectInstance(ModEffects.BLEEDING, 1200, 1));
         }

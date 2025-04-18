@@ -1068,6 +1068,33 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 //        TGItems.ITEM_BULLETS.getEntries().forEach(wipAction);
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
         TMItems.ITEMS.getEntries().forEach(wipAction);
+
+        tag(ModTags.Items.DEATH).add(
+                FunctionalBlocks.DEATH_CHEST_BLOCK.asItem(),
+                FunctionalBlocks.SHIMMER_TRAP.asItem(),
+                FunctionalBlocks.GRAVITATION_TRAP.asItem(),
+                FunctionalBlocks.PNEUMATIC_TRAP.asItem(),
+                FunctionalBlocks.SPIKE.asItem(),
+                FunctionalBlocks.FRAGILE_SANDSTONE.asItem(),
+                FunctionalBlocks.FRAGILE_BLUE_BRICKS.asItem(),
+                FunctionalBlocks.FRAGILE_GREEN_BRICKS.asItem(),
+                FunctionalBlocks.FRAGILE_PINK_BRICKS.asItem(),
+                FunctionalBlocks.SCULK_TRAP.asItem(),
+                FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.asItem(),
+                FunctionalBlocks.DART_TRAP.asItem(),
+                FunctionalBlocks.STONE_DART_TRAP.asItem(),
+                FunctionalBlocks.DEEPSLATE_DART_TRAP.asItem(),
+                FunctionalBlocks.GEYSER_BLOCK.asItem(),
+                FunctionalBlocks.NORMAL_BOULDER.asItem(),
+                FunctionalBlocks.OAK_LOG_BOULDER.asItem(),
+                FunctionalBlocks.FOLLOWER_BOULDER.asItem(),
+                FunctionalBlocks.EXPLODE_BOULDER.asItem(),
+                FunctionalBlocks.ROLLING_CACTUS_BOULDER.asItem(),
+                FunctionalBlocks.MECHANICAL_FRAGILE_SANDSTONE.asItem(),
+                FunctionalBlocks.MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.asItem(),
+                FunctionalBlocks.LAND_MINE.asItem(),
+                FunctionalBlocks.SUPER_DART_TRAP.asItem()
+        );
     }
 
     @Override

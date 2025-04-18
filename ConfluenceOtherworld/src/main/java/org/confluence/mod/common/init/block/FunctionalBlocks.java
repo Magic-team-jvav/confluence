@@ -115,9 +115,9 @@ public class FunctionalBlocks {
     public static final DeferredBlock<SwitchBlock> SWITCH = registerWithEntity("switch", SwitchBlock::new);
     public static final DeferredBlock<SwitchBlock> LEVER = registerWithEntity("lever", SwitchBlock::new);
     public static final DeferredBlock<SignalAdapterBlock> SIGNAL_ADAPTER = registerWithEntity("signal_adapter", SignalAdapterBlock::new);
-    public static final DeferredBlock<DartTrapBlock> DART_TRAP = registerWithEntity("dart_trap", DartTrapBlock::new);
-    public static final DeferredBlock<DartTrapBlock> STONE_DART_TRAP = registerWithEntity("stone_dart_trap", DartTrapBlock::new);
-    public static final DeferredBlock<DartTrapBlock> DEEPSLATE_DART_TRAP = registerWithEntity("deepslate_dart_trap", DartTrapBlock::new);
+    public static final DeferredBlock<DartTrapBlock> DART_TRAP = registerWithEntity("dart_trap", () -> new DartTrapBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DISPENSER)));
+    public static final DeferredBlock<DartTrapBlock> STONE_DART_TRAP = registerWithEntity("stone_dart_trap", () -> new DartTrapBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DISPENSER)));
+    public static final DeferredBlock<DartTrapBlock> DEEPSLATE_DART_TRAP = registerWithEntity("deepslate_dart_trap", () -> new DartTrapBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DISPENSER)));
     public static final DeferredBlock<TimersBlock> TIMERS_BLOCK_1_1 = registerWithEntity("timers_1_1", () -> new TimersBlock(20)); // 1s
     public static final DeferredBlock<TimersBlock> TIMERS_BLOCK_3_1 = registerWithEntity("timers_3_1", () -> new TimersBlock(60)); // 3s
     public static final DeferredBlock<TimersBlock> TIMERS_BLOCK_5_1 = registerWithEntity("timers_5_1", () -> new TimersBlock(100)); // 5s
@@ -133,6 +133,7 @@ public class FunctionalBlocks {
     public static final DeferredBlock<MechanicalFragileBlock> MECHANICAL_FRAGILE_SANDSTONE = registerWithEntity("mechanical_fragile_sandstone", () -> new MechanicalFragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE), Blocks.SANDSTONE::defaultBlockState));
     public static final DeferredBlock<MechanicalFragileBlock> MECHANICAL_FRAGILE_OBSIDIAN_BRICKS = registerWithEntity("mechanical_fragile_obsidian_bricks", () -> new MechanicalFragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS), DecorativeBlocks.TR_OBSIDIAN_BRICKS.get()::defaultBlockState));
     public static final DeferredBlock<LandMineBlock> LAND_MINE = registerWithEntity("land_mine", () -> new LandMineBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TNT)));
+    public static final DeferredBlock<SuperDartTrapBlock> SUPER_DART_TRAP = registerWithEntity("super_dart_trap", () -> new SuperDartTrapBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).requiresCorrectToolForDrops().strength(100.0F, ModBlocks.getObsidianBasedExplosionResistance(1000.0F))));
 
     public static final DeferredBlock<AnnouncementBoxBlock> ANNOUNCEMENT_BOX = BLOCKS.register("announcement_box", () -> new AnnouncementBoxBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(5.0F).noCollission().noOcclusion().sound(SoundType.METAL).isValidSpawn(Blocks::never)));
     public static final DeferredBlock<AnnouncementBoxBlock.Wall> WALL_ANNOUNCEMENT_BOX = BLOCKS.register("wall_announcement_box", () -> new AnnouncementBoxBlock.Wall(BlockBehaviour.Properties.ofFullCopy(ANNOUNCEMENT_BOX.get())));

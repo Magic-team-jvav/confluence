@@ -5,6 +5,7 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -37,11 +38,9 @@ public class CrystalStormProjectile extends AbstractManaProjectile {
         HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         checkInsideBlocks();
         HitResult.Type hitresult$type = hitresult.getType();
-        if (hitresult$type == HitResult.Type.BLOCK || tickCount > 60) {
-            discard();
-            return;
-        }
-        if (hitresult$type == HitResult.Type.ENTITY) {
+        if (hitresult$type == HitResult.Type.BLOCK) {
+            onHitBlock((BlockHitResult) hitresult);
+        } else if (hitresult$type == HitResult.Type.ENTITY) {
             onHitEntity((EntityHitResult) hitresult);
         }
 

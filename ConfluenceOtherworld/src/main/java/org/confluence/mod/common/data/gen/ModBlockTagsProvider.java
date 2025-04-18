@@ -596,7 +596,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(ModTags.Blocks.NEEDS_6_LEVEL).addTags(ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
         tag(ModTags.Blocks.NEEDS_7_LEVEL).addTags(ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
         tag(ModTags.Blocks.NEEDS_8_LEVEL).addTags(ModTags.Blocks.NEEDS_9_LEVEL);
-        tag(ModTags.Blocks.NEEDS_9_LEVEL).add(LIHZAHRD_DOOR.get(), LIHZAHRD_BRICKS.get());
+        tag(ModTags.Blocks.NEEDS_9_LEVEL).add(
+                LIHZAHRD_DOOR.get(),
+                LIHZAHRD_BRICKS.get(),
+                SUPER_DART_TRAP.get()
+        );
 
         tag(ModTags.Blocks.MINEABLE_WITH_PICKAXE_AXE).addTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.MINEABLE_WITH_AXE);
         tag(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE).add(

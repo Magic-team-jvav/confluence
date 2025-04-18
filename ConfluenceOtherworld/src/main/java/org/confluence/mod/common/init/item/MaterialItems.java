@@ -28,6 +28,7 @@ public class MaterialItems {
     });
     public static final DeferredItem<Item> PINK_GEL = register("pink_gel", ModRarity.PINK);
     public static final DeferredItem<Item> SILK = register("silk", ModRarity.BLUE);
+    public static final DeferredItem<Item> RAW_ASPHALT = register("raw_asphalt", ModRarity.WHITE); // 生沥青
 
     public static final DeferredItem<Item> RAW_TIN = register("raw_tin");
     public static final DeferredItem<Item> TIN_INGOT = register("tin_ingot");

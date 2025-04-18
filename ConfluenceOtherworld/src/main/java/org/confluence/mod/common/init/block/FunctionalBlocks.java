@@ -3,6 +3,7 @@ package org.confluence.mod.common.init.block;
 import com.mojang.datafixers.DSL;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -21,6 +22,7 @@ import org.confluence.mod.common.block.functional.crafting.*;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.entity.projectile.boulder.ExplodeBoulderEntity;
 import org.confluence.mod.common.entity.projectile.boulder.FollowerBoulderEntity;
+import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.ModItems;
 
 import java.util.ArrayList;
@@ -69,6 +71,15 @@ public class FunctionalBlocks {
     public static final DeferredBlock<HardmodeAnvilBlock> MYTHRIL_ANVIL = registerWithItem("mythril_anvil", () -> new HardmodeAnvilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL)));
     public static final DeferredBlock<HardmodeAnvilBlock> ORICHALCUM_ANVIL = registerWithItem("orichalcum_anvil", () -> new HardmodeAnvilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL)));
     public static final DeferredBlock<ChlorophyteExtractinatorBlock> CHLOROPHYTE_EXTRACTINATOR = registerWithItem("chlorophyte_extractinator", () -> new ChlorophyteExtractinatorBlock(BlockBehaviour.Properties.of().strength(4.4F, 10.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<SingleItemStackSwapperBlock> BLEND_O_MATIC = registerWithItem("blend_o_matic", () -> new SingleItemStackSwapperBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON), 1, itemStack -> itemStack.is(MaterialItems.RAW_ASPHALT) ? DecorativeBlocks.ASPHALT_BLOCK.toStack() : ItemStack.EMPTY));
+    public static final DeferredBlock<SingleItemStackSwapperBlock> MEAT_GRINDER = registerWithItem("meat_grinder", () -> new SingleItemStackSwapperBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON), 2, itemStack -> {
+        if (itemStack.is(NatureBlocks.TR_CRIMSON_COBBLESTONE.asItem())) {
+            return DecorativeBlocks.FLESH_BLOCK.toStack();
+        } else if (itemStack.is(NatureBlocks.EBONY_COBBLESTONE.asItem())) {
+            return DecorativeBlocks.LESION_BLOCK.toStack();
+        }
+        return ItemStack.EMPTY;
+    }));
 
     public static final DeferredBlock<LifeCampfireBlock> LIFE_CAMPFIRE = registerWithItem("life_campfire", () -> new LifeCampfireBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAMPFIRE)));
     public static final DeferredBlock<PiggyBankBlock> PIGGY_BANK = registerWithItem("piggy_bank", () -> new PiggyBankBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DECORATED_POT)));

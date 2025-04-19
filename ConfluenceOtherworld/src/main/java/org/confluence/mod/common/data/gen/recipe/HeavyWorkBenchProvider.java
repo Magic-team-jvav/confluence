@@ -13,7 +13,9 @@ import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 
@@ -37,6 +39,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ItemTags.STONE_CRAFTING_MATERIALS)
         ), statuePattern), StatueBlocks.A_STATUE.toStack());
+        // 玻璃窑
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
                 '#', AmountIngredient.of(2, ModTags.Items.LEAD_AND_IRON),
                 'a', Ingredient.of(Items.TORCH)
@@ -46,6 +49,141 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "#  #",
                 "#aa#"
         )), TFBlocks.GLASS_KILN.toStack());
+        // 基础钩爪
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(MaterialItems.HOOK.get()),
+                'a', Ingredient.of(Items.CHAIN)
+        ), List.of(
+                "  #",
+                " a ",
+                "a  "
+        )), HookItems.GRAPPLING_HOOK.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(DecorativeBlocks.RUBY_BLOCK.get()),
+                'a', Ingredient.of(DecorativeBlocks.RUBY_CHAIN)
+        ), List.of(
+                "  #",
+                " a ",
+                "a  "
+        )), HookItems.RUBY_HOOK.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(DecorativeBlocks.AMBER_BLOCK.get()),
+                'a', Ingredient.of(DecorativeBlocks.AMBER_CHAIN)
+        ), List.of(
+                "  #",
+                " a ",
+                "a  "
+        )), HookItems.AMBER_HOOK.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(DecorativeBlocks.TOPAZ_BLOCK.get()),
+                'a', Ingredient.of(DecorativeBlocks.TOPAZ_CHAIN)
+        ), List.of(
+                "  #",
+                " a ",
+                "a  "
+        )), HookItems.TOPAZ_HOOK.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(DecorativeBlocks.TR_EMERALD_BLOCK.get()),
+                'a', Ingredient.of(DecorativeBlocks.EMERALD_CHAIN)
+        ), List.of(
+                "  #",
+                " a ",
+                "a  "
+        )), HookItems.EMERALD_HOOK.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.DIAMOND_BLOCK),
+                'a', Ingredient.of(DecorativeBlocks.DIAMOND_CHAIN)
+        ), List.of(
+                "  #",
+                " a ",
+                "a  "
+        )), HookItems.DIAMOND_HOOK.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(DecorativeBlocks.SAPPHIRE_BLOCK.get()),
+                'a', Ingredient.of(DecorativeBlocks.SAPPHIRE_CHAIN)
+        ), List.of(
+                "  #",
+                " a ",
+                "a  "
+        )), HookItems.SAPPHIRE_HOOK.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(DecorativeBlocks.TR_AMETHYST_BLOCK.get()),
+                'a', Ingredient.of(DecorativeBlocks.AMETHYST_CHAIN)
+        ), List.of(
+                "  #",
+                " a ",
+                "a  "
+        )), HookItems.AMETHYST_HOOK.toStack());
+        // 金系列
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2,Items.GOLD_INGOT),
+                'a', Ingredient.of(Items.GOLD_INGOT)
+        ), List.of(
+                "#a#",
+                "a a"
+        )), ArmorItems.GOLDEN_HELMET.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2,Items.GOLD_INGOT),
+                'a', Ingredient.of(Items.GOLD_INGOT)
+        ), List.of(
+                "#a#",
+                "# #",
+                "a a"
+        )), ArmorItems.GOLDEN_LEGGINGS.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2,Items.GOLD_INGOT)
+        ), List.of(
+                "# #",
+                "# #"
+        )), ArmorItems.GOLDEN_BOOTS.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2,Items.GOLD_INGOT),
+                'a', Ingredient.of(Items.GOLD_INGOT)
+        ), List.of(
+                "a a",
+                "#a#",
+                "###"
+        )), ArmorItems.GOLDEN_CHESTPLATE.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2,Items.GOLD_INGOT),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "#",
+                "#",
+                "/"
+        )), SwordItems.GOLDEN_BOARD_SWORD.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2,Items.GOLD_INGOT),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "###",
+                " / ",
+                " / "
+        )), PickaxeItems.GOLDEN_PICKAXE.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2,Items.GOLD_INGOT),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "##",
+                "#/",
+                " /"
+        )), AxeItems.GOLDEN_AXE.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2,Items.GOLD_INGOT),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "#",
+                "/",
+                "/"
+        )), ShovelItems.GOLDEN_SHOVEL.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2,Items.GOLD_INGOT),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "##",
+                " /",
+                " /"
+        )), HoeItems.GOLDEN_HOE.toStack());
     }
 
     protected void heavyWorkBench(RecipeOutput recipeOutput, String suffix, ShapedRecipePattern pattern, ItemStack result) {

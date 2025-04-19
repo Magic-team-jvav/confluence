@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
@@ -56,6 +57,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         fletchingTable(recipeOutput, "", ArrowItems.FLAMING_ARROW.toStack(25), Ingredient.EMPTY, AmountIngredient.of(25, Items.ARROW), Ingredient.of(ModTags.Items.TORCH));
 
         cookingPot(recipeOutput, FoodItems.APPLE_PIE.toStack(), Ingredient.of(PotionItems.BOTTLE), CookingPotRecipe.HeatSourcePredicate.EMPTY, 100, Ingredient.of(Items.APPLE));
+        cookingPot(recipeOutput, SwordItems.SWEET_SWORD.toStack(), Ingredient.of(Items.WOODEN_SWORD), CookingPotRecipe.HeatSourcePredicate.EMPTY, 100, Ingredient.of(Items.COOKIE),Ingredient.of(Items.SUGAR),Ingredient.of(Items.COCOA_BEANS));   // 糖果剑
 
         altar(recipeOutput, ConsumableItems.BLOODY_SPINE.toStack(), AmountIngredient.of(30, ConsumableItems.VICIOUS_POWDER), AmountIngredient.of(15, MaterialItems.VERTEBRA));
 

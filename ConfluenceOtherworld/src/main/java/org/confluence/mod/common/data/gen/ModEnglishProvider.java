@@ -55,8 +55,83 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.meteorite_ingot.0", "Warm to the touch");
         add("jukebox_song.confluence.alpha", "C418 - alpha");
 
+        add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
+        add("tooltip.item.confluence.slime_crown.1", "A small crown that seems to be prepared for the coronation ceremony of those cute and harmless gel - like creatures.");
+        add("tooltip.item.confluence.slime_crown.2", "“Wearing it may not be a good choice”");
+        add("tooltip.item.confluence.suspicious_looking_eye.0", "Right - click to summon the Eye of Cthulhu. It only appears at night.");
+        add("tooltip.item.confluence.suspicious_looking_eye.1", "A lifeless and dull - looking eyeball. Although it is not aggressive, it seems more dangerous than its peers that fly in the air at night.");
+        add("tooltip.item.confluence.suspicious_looking_eye.2", "“It seems to be looking at you…”");
+        add("tooltip.item.confluence.worm_food.0", "Right - click to summon the Eater of Worlds. It shuttles through the huge rift filled with corruptive poisonous fog.");
+        add("tooltip.item.confluence.worm_food.1", "It smells like a rotten rib and seems to have a strong attraction to those mutated Terraria creatures.");
+        add("tooltip.item.confluence.worm_food.2", "“It wants to devour more... more and more and more and more…”");
+        add("tooltip.item.confluence.bloody_spine.0", "Right - click to summon the Brain of Cthulhu. It will wake up after smelling the smell of flesh and pus in the Crimson.");
+        add("tooltip.item.confluence.bloody_spine.1", "A piece of detached body tissue, mottled with scabs and muscle tissue. It's hard to imagine how it was taken out of which creature.");
+        add("tooltip.item.confluence.bloody_spine.2", "“It seems to be trying to talk to you... or maybe...”");
+        add("tooltip.item.confluence.abeemination.0", "Right - click to summon the Queen Bee. Only the dirty miasma in the tropical broad - leaved rainforest can suppress her fury.");
+        add("tooltip.item.confluence.abeemination.1", "She seems to extremely dislike the smell of fluorescent fungal spores.");
+        add("tooltip.item.confluence.abeemination.2", "A mass of unformed young bees. It feels like sticky honey when you touch it... The Queen Bee and her subordinates' protectiveness of their sweet territory has somehow gradually developed into extreme repulsion and hatred towards non - similar creatures.");
+        add("tooltip.item.confluence.abeemination.3", "“The flapping of the bees' wings shakes the thickest leaves in the jungle”");
+
+        add("tooltip.item.confluence.tokyo_teddy_bear.0", "A self - abased girl said like a broken teddy bear:");
+        add("tooltip.item.confluence.tokyo_teddy_bear.1", "           Let me tell you");
+        add("tooltip.item.confluence.tokyo_teddy_bear.2", "           The words of all - knowing and all - powerful");
+        add("tooltip.item.confluence.tokyo_teddy_bear.3", "           Other than the mind");
+        add("tooltip.item.confluence.tokyo_teddy_bear.4", "           Is no longer needed");
+        add("tooltip.item.confluence.tokyo_teddy_bear.5", "——A story told by a spider");
+        add("tooltip.item.confluence.paradox_interactive_medal.0", "Proof of having played Hearts of Iron, Victoria, Europa Universalis, Crusader Kings, and Cities: Skylines at the same time.");
+        add("tooltip.item.confluence.kind_miside_ring.0", "“The ring will lead you to the right direction, dear”");
+        add("tooltip.item.confluence.failed_skull.0", "A creeper had its body forcibly transformed by piglins and can explode multiple times. The piglins wanted to use it as a biological weapon to invade the Overworld, but it escaped unexpectedly.");
+        add("tooltip.item.confluence.pink_cola.0", "An ordinary bottle of pink cola. Maybe there was a whole case originally?");
+        add("tooltip.item.confluence.dongdongs_flatbread.0", "Freshly baked flatbread on the Netherrack. Come and have a taste!");
+
+        //  Text items ↓
         add("item.confluence.afterlife_notes", "Afterlife Notes");
-        add("text.confluence.afterlife_notes", "Adventurer, this world is full of challenges and opportunities. Use this journal to uncover its secrets and face its trials. Keep exploring to find power and treasure. Your journey has just begun.                  — The Guide");
+        add("item.confluence.village_exploration", "Origin of Village Exploration");
+        add("item.confluence.research_on_wheat_mutation", "Research on Wheat Mutation");
+        add("item.confluence.research_on_cloud_blocks_1", "Research on Cloud Blocks I");
+        add("item.confluence.research_on_cloud_blocks_2", "Research on Cloud Blocks II");
+        add("item.confluence.meteor_diary", "Meteor Diary");
+
+        //note
+        add("item.confluence.mysterious_note.name_0", "Small Note with Bite Marks");
+        add("item.confluence.mysterious_note.name_1", "Small Note with Orange Scent");
+        add("item.confluence.mysterious_note.name_2", "Digitized Small Note");
+        add("item.confluence.mysterious_note.name_3", "Gentle Small Note");
+        add("item.confluence.mysterious_note.name_4", "Half - Eaten Small Note");
+
+        add("item.confluence.mysterious_slate.name_0", "Serious Slate");
+        add("item.confluence.mysterious_slate.name_1", "Exceptionally Ancient Slate");
+
+        add("text.confluence.afterlife_notes", "Adventurer, the new world is full of endless challenges and opportunities. This notebook will help you understand the mysteries of this world and guide you in the face of monsters and difficulties. Only by continuous exploration can you discover more power and treasures. Your journey has just begun. —— Guide");
+        add("text.confluence.village_exploration", "The world's mutation has quietly arrived. The dark evil thoughts of living beings have erupted one after another, and the physical invasions from the outside world have followed in quick succession. All available resources have been awakened. The arrival of the new world brings both the shadow of destruction and opens up new possibilities. Buildings soar into the sky like flying birds, which is amazing. The clouds that were once out of reach have now turned into solid blocks, reflecting the longings in people's hearts. On the journey of exploration, they have mastered unprecedented knowledge and discovered new plants, as if they have found a corner of tranquility in the hustle and bustle. In that area");
+        add("text.confluence.research_on_wheat_mutation", "We found that the wheat we brought began to turn white and yellow. At first, we thought they couldn't adapt to this strange environment. Until a cloud block floated by gently, it dyed the wheat with the colors of the rosy clouds and transformed it into a new kind of plant. We can't help but be skeptical about this mutated product - until someone is hungry and eager for food. Strangely enough, even though they are full, their bodies seem to become lighter, as if gradually getting away from the burden of the earth. In this strange world, changes and confusions are intertwined, and we begin to re - examine");
+        add("text.confluence.research_on_cloud_blocks_1", "Cloud blocks, non - toxic, are composed of ice crystals condensed in the sky, with different contents. After a long - term contact with the alien planet, these clouds have gradually become solid and can bear the weight of an adult, protecting them from the impact of strong kinetic energy. However, the plants nearby have begun to mutate, and we are still confused about how this strange change came about. At this mysterious intersection, the clouds and plants weave an unknown story, as if nature is quietly writing a new chapter.");
+        add("text.confluence.research_on_cloud_blocks_2", "As the research deepens, we gradually find that cloud blocks and a plant called cloud - weaving grass are actually of the same nature. Cloud - weaving grass grows on cloud blocks, quietly collecting water vapor in the high - altitude until a new cloud block is born. Now, this plant has been transplanted to the cloud flowerbed and has become an important building resource for us. In this mysterious space, plants and clouds blend, weaving endless possibilities and delivering the power to build dreams to the earth.");
+        add("text.confluence.meteor_diary", "They cut through the night sky, making monsters afraid; while we often make quiet wishes on meteors. Perhaps, they really have invisible magic. Children look up, full of joy, chasing that faint light; they grow quietly from the clouds and then gently fall from the clouds. On this night stage, meteors twinkle with the light of hope, warming every expectant heart.");
+        add("text.confluence.village_exploration_0", "On the pure land, new hope is quietly germinating, bringing long - lost peace.");
+        add("text.confluence.research_on_wheat_mutation_0", "Re - examine the essence of food and the miracle of life.");
+
+        add("lore.confluence.village_exploration", "It's hard to tell the exact age, but it seems to be very well - packaged...");
+        add("lore.confluence.research_on_wheat_mutation", "There are some powders mixed in the pages, but it doesn't seem to be the powder from the aging of the pages...");
+        add("lore.confluence.research_on_cloud_blocks_1", "It's obviously a very thick book, but it feels so light in the hand. Judging from the title, it seems there is another volume?");
+        add("lore.confluence.research_on_cloud_blocks_2", "The pages feel very soft, just like silk. Judging from the title, it seems there is another volume?");
+        add("lore.confluence.meteor_diary", "It's a very thin book, but it seems to have a faint glow.");
+
+        //note
+        add("lore.confluence.mysterious_note_0", "Oops, you've found it. Don't tell others that the puppy is hiding here UQYQU");
+        add("lore.confluence.mysterious_note_1", "Hey, since you've found it, I'll tell you. In fact, one of the animals sleeping with you is probably an informant for the prison pillow.");
+        add("lore.confluence.mysterious_note_2", "The original brave didn't ask for anything in return. They only hoped that all souls yearning for adventure could freely pick up these precious gifts and shine their own light in the adventure. Please guard this kindness from the brave and don't let the shadow of interests obscure the light of freedom and hope in the afterlife.");
+        add("lore.confluence.mysterious_note_3", "I hope that the adventurer who sees this note can have a smooth study, a successful job, and everything goes well in life. No matter what the haze is, it will pass quickly because we all have to move forward towards tomorrow.");
+        add("lore.confluence.mysterious_note_4", "When will Confluence Fun Stuff start production? I've been waiting until I'm stupid.");
+
+        add("lore.confluence.mysterious_slate_0", "“A fun fact: In fact, summoners need to communicate with their summoned creatures spiritually. The armor protection can't be too thick, otherwise it will affect the communication.”");
+        add("lore.confluence.mysterious_slate_1", "“It all started when the Moon Lord sold the... (The content is covered by blood, and the whole picture can't be seen clearly)”");
+
+        add("author.confluence.the_ancestor_of_explorers", "The Original Initiator");
+        add("author.confluence.sheila", "Sheila");
+        add("author.confluence.lorissa", "Lorissa");
+        add("author.confluence.annaleigh", "Annaleigh");
+
 
         add("worldgen.confluence.placing_traps", "Placing Traps");
         add("worldgen.confluence.generating_bees", "Generating bees");

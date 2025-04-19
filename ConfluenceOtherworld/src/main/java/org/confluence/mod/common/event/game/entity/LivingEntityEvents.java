@@ -42,10 +42,7 @@ import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModHookTypes;
-import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.ArmorItems;
-import org.confluence.mod.common.init.item.PickaxeItems;
-import org.confluence.mod.common.init.item.SwordItems;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
@@ -344,13 +341,19 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void livingEntityUseItem$Finish(LivingEntityUseItemEvent.Finish event) {
-        if (event.getEntity() instanceof ServerPlayer player && player.hasEffect(ModEffects.CHOKING)) {
+        if (event.getEntity() instanceof ServerPlayer player) {
             ItemStack itemStack = event.getItem();
-            if (ModUtils.isWaterBottle(itemStack)) {
+            if (itemStack.is(FoodItems.GREEN_DUMPLING.get())) {
+                if (player.getRandom().nextInt(6) == 0) {
+                    player.addEffect(new MobEffectInstance(ModEffects.CHOKING, 2400));
+                }
+            }
+            if (player.hasEffect(ModEffects.CHOKING) && ModUtils.isWaterBottle(itemStack)) {
                 player.removeEffect(ModEffects.CHOKING);
                 ItemStack resultItem = itemStack.finishUsingItem(player.level(), player);
                 event.setResultStack(resultItem);
             }
         }
     }
+
 }

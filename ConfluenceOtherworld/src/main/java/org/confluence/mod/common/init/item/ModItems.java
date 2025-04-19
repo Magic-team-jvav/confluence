@@ -68,10 +68,10 @@ public final class ModItems {
 
     public static final DeferredItem<KindMisideRingItem> FERTILE_SINGULARITY = HIDDEN.register("fertile_singularity", KindMisideRingItem::new); // 占位符 丰饶奇点
     public static final DeferredItem<KindMisideRingItem> PERPLEXED_CAT_MEDAL = HIDDEN.register("perplexed_cat_medal", KindMisideRingItem::new); // 占位符 疑惑猫猫勋章
-    public static final DeferredItem<KindMisideRingItem> CANDY_SWORD = HIDDEN.register("candy_sword", KindMisideRingItem::new); // 占位符 糖果剑
     public static final DeferredItem<KindMisideRingItem> PULSAR = HIDDEN.register("pulsar", KindMisideRingItem::new); // 占位符 脉冲星
 
     public static final DeferredItem<Item> MYSTERIOUS_NOTE = HIDDEN.register("mysterious_note", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> MYSTERIOUS_SLATE = HIDDEN.register("mysterious_slate", () -> new Item(new Item.Properties()));
 
     public static final DeferredItem<CoinItem> COPPER_COIN = ITEMS.register("copper_coin", () -> new CoinItem(ModBlocks.COPPER_COIN_PILE.get(), ModRarity.WHITE, ModItems.SILVER_COIN, 100));
     public static final DeferredItem<CoinItem> SILVER_COIN = ITEMS.register("silver_coin", () -> new CoinItem(ModBlocks.SILVER_COIN_PILE.get(), ModRarity.ORANGE, ModItems.GOLDEN_COIN, 100));

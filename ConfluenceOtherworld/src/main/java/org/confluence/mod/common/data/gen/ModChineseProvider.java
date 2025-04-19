@@ -105,6 +105,12 @@ public class ModChineseProvider extends LanguageProvider {
         //note
         add("item.confluence.mysterious_note.name_0", "带牙印的小纸条");
         add("item.confluence.mysterious_note.name_1", "带橘子气息的小纸条");
+        add("item.confluence.mysterious_note.name_2", "数据化的小纸条");
+        add("item.confluence.mysterious_note.name_3", "温柔的小纸条");
+        add("item.confluence.mysterious_note.name_4", "被啃一半的小纸条");
+
+        add("item.confluence.mysterious_slate.name_0", "认真的石板");
+        add("item.confluence.mysterious_slate.name_1", "异常古老的石板");
 
         add("text.confluence.afterlife_notes", "  冒险者，新的天地充满了无尽的挑战与机遇，这本手记将帮助你了解这个世界的奥秘，指引你面对怪物和困境，只有不断探索，你才能发现更多的力量与宝藏，你的旅途才刚刚开始。                            —— 向导");
         add("text.confluence.village_exploration", "世界异变悄然降临，生灵阴暗的邪念纷纷爆发，外界的肉体侵扰接踵而至。所有可用的资源，皆被唤醒。新世界的降临，既带来了毁灭的阴影，也打开了新的可能。建筑如腾飞的鸟儿，直抵苍穹，令人惊叹。曾经无法触及的云彩，如今化作实体的方块，映衬出人们心中的渴望。在探索的旅程中，他们掌握了前所未有的知识，发现了新的植物，仿佛在喧嚣中寻得了一隅宁静。在那片");
@@ -124,16 +130,18 @@ public class ModChineseProvider extends LanguageProvider {
         //note
         add("lore.confluence.mysterious_note_0", "呜被你发现了，不要告诉别人小狗藏在这里UQYQU");
         add("lore.confluence.mysterious_note_1", "嘿，既然被你找到了，就告诉你吧。其实，和你在一块睡觉的某只动物，很可能是牢枕的眼线哦");
+        add("lore.confluence.mysterious_note_2", "最初的勇者不求回报，只愿所有向往冒险的灵魂，都能自由地拾取这些珍贵馈赠，在冒险中绽放属于自己的光芒。请守护这份来自勇者的善意，莫让利益的阴霾，遮蔽了来世自由与希望的光芒。");
+        add("lore.confluence.mysterious_note_3", "希望看到这张字条的冒险者可以学习顺心，工作顺利，生活事事如意，不管什么阴霾都会很快过去的因为我们都要向着明天前进。");
+        add("lore.confluence.mysterious_note_4", "汇流乐事什么时候才开始制作啊，我都已经等的变成傻子了");
+
+        add("lore.confluence.mysterious_slate_0", "“冷知识：其实召唤师要和召唤物进行心灵沟通，盔甲防护不能太厚否则会影响沟通。”");
+        add("lore.confluence.mysterious_slate_1", "“这一切要从月球领主卖的氵......（内容被血迹覆盖了，看不清全貌）”");
 
         add("author.confluence.the_ancestor_of_explorers", "最初的发起人");
         add("author.confluence.sheila", "希尔娜");
         add("author.confluence.lorissa", "洛丽莎");
         add("author.confluence.annaleigh", "安娜莉");
 
-        add("tooltip.item.confluence.mysterious_note_blessing.0", "希望看到这张字条的玩家可以学习顺心，工作顺利，生活事事如意，不管什么阴霾都会很快过去的因为我们都要向着明天前进。");
-        add("tooltip.item.confluence.mysterious_note_urgency.0", "汇流乐事什么时候才开始制作啊，我都已经等的变成傻子了。");
-        add("tooltip.item.confluence.mysterious_note_explanation.0", "“冷知识：其实召唤师要和召唤物进行心灵沟通，盔甲防护不能太厚否则会影响沟通。”");
-        add("tooltip.item.confluence.mysterious_note_warning.0", "呱！快跑吔！是牢镜病毒！");
         // 世界机制
         add("worldgen.confluence.placing_traps", "正在放置机关");
         add("worldgen.confluence.generating_bees", "正在生成蜜蜂");
@@ -272,16 +280,55 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.radio_thing.0", "允许使用者以不同的方式看世界");
         add("tooltip.item.terra_curio.radio_thing.1", "“禁忌的知识在其中回响……”");
 
+        add("tooltip.item.confluence.sweet_sword.0", "来自QQ1471529049一只屑水缡写的au“undertale：虚无之上”");
+
         add("tooltip.item.confluence.copper_short_sword.0", "神兵最微末的那部分力量自两世汇流之初就伴随着你…直至旅途的终点");
         add("tooltip.item.confluence.copper_short_sword.1", "“我们十个真厉害！”铜短剑说。");
         add("tooltip.item.confluence.starfury.0", "神兵的一小部分力量凝聚在云团间，化为晶莹剔透的闪星");
         add("tooltip.item.confluence.starfury.1", "“天域的怒火倾泻而下”");
         add("tooltip.item.confluence.enchanted_sword.0", "神兵的一小部分力量埋藏在洞穴中，凝成了寒碜碜的剑意");
         add("tooltip.item.confluence.enchanted_sword.1", "“昏暗剑冢中一抹流光”");
-
         add("tooltip.item.confluence.bee_keeper.0", "神兵的一小部分力量为丛林中的蜂群所占有，沦为嗡嗡作响的蜂群");
         add("tooltip.item.confluence.bee_keeper.1", "“口蜜腹剑”");
 
+        add("tooltip.item.confluence.soul_of_light.0", "“光明生物的精华”");
+        add("tooltip.item.confluence.soul_of_night.0", "“黑暗生物的精华”");
+        add("tooltip.item.confluence.soul_of_flight.0", "“强大飞行生物的精华”");
+        add("tooltip.item.confluence.soul_of_might.0", "“毁灭者的精华”");
+        add("tooltip.item.confluence.soul_of_sight.0", "“全知看守者的精华”");
+        add("tooltip.item.confluence.soul_of_fright.0", "“纯粹恐惧的精华”");
+        add("tooltip.item.confluence.golden_key.0", "“打开一个锁住的金箱或金锁盒”");
+        add("tooltip.item.confluence.shadow_key.0", "“打开所有暗影箱和黑曜石锁盒”");
+        add("tooltip.item.confluence.temple_key.0", "“打开丛林神庙的大门”");
+
+        add("tooltip.item.confluence.angel_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.demon_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.fairy_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.fin_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.frozen_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.harpy_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.jetpack.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.leaf_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.bat_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.bee_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.butterfly_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.flame_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.hoverboard.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.bone_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.mothron_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.spectre_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.beetle_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.festive_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.spooky_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.tattered_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.steampunk_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.betsys_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.empress_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.fishron_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.nebula_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.vortex_booster.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.solar_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.stardust_wings.0", "可飞行和缓慢坠落");
 
         add("confluence.configuration.achievementToast", "启用泰拉样式成就");
         add("confluence.configuration.achievementToast.tooltip", "如果想使用原版样式进度的话就关闭它");
@@ -1297,6 +1344,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.COCONUT_BLOCK.get(), "椰子方块");
         add(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get(), "猩红捕蝇草");
         add(NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.get(), "嗜血结晶");
+        add(NatureBlocks.DESERT_TAPERED_BLOCK.get(), "沙漠石笋");
+        add(NatureBlocks.BLINKING_ROYAL_SHIMMERLILY.get(), "微光王莲");
 
         add(LightPetItems.SHADOW_ORB.get(), "暗影珠");
         add(LightPetItems.CRIMSON_HEART.get(), "猩红心脏");
@@ -1413,6 +1462,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.CRACKED_PINK_BRICK.get(), "碎裂粉色地牢砖");
         add(DecorativeBlocks.SWORD_IN_STONE.get(), "石中剑");
         add(DecorativeBlocks.REMAINS_BLOCK.get(), "遗骸");
+        add(DecorativeBlocks.LIHZAHRD_DOOR.get(), "丛林蜥蜴门");
 
         // 雕像
         add(StatueBlocks.A_STATUE.get(), "A字雕像");
@@ -1673,6 +1723,15 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.WINTER_MARROW.get(), "霜髓");
         add(MaterialItems.COLD_CRYSTAL.get(), "寒晶");
         add(MaterialItems.LEAD_NUGGET.get(), "铅粒");
+        add(MaterialItems.RAW_ASPHALT.get(), "生沥青");
+        add(MaterialItems.TATTERED_CLOTH.get(), "破布");
+        add(MaterialItems.SOUL_OF_LIGHT.get(), "光明之魂");
+        add(MaterialItems.SOUL_OF_NIGHT.get(), "暗影之魂");
+        add(MaterialItems.SOUL_OF_FLIGHT.get(), "飞翔之魂");
+        add(MaterialItems.SOUL_OF_MIGHT.get(), "力量之魂");
+        add(MaterialItems.SOUL_OF_SIGHT.get(), "视域之魂");
+        add(MaterialItems.SOUL_OF_FRIGHT.get(), "恐惧之魂");
+        add(MaterialItems.SPELL_TOME.get(), "魔法书");
         // 植物
         add(MaterialItems.WATERLEAF.get(), "幌菊");
         add(MaterialItems.FIREBLOSSOM.get(), "火焰花");
@@ -1706,6 +1765,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.CROWBAR.get(), "撬棍");
         add(SwordItems.ZOMBIE_ARM.get(), "僵尸臂");
         add(SwordItems.MANDIBLE_BLADE.get(), "颌骨剑");
+        add(SwordItems.SWEET_SWORD.get(), "糖果剑");
+        add(SwordItems.BROKEN_SWEET_SWORD.get(), "断裂的糖果剑");
         add(SwordItems.STYLISH_SCISSORS.get(), "时尚剪刀");
         add(SwordItems.BONE_SWORD.get(), "骨剑");
         add(SwordItems.GLADIUS.get(), "罗马短剑");
@@ -1752,10 +1813,22 @@ public class ModChineseProvider extends LanguageProvider {
         add(AxeItems.PLATINUM_AXE.get(), "铂金斧");
         add(AxeItems.WAR_AXE_OF_THE_NIGHT.get(), "暗夜战斧");
         add(AxeItems.BLOOD_LUST_CLUSTER.get(), "嗜血狂斧");
+        add(AxeItems.COBALT_WARAXE.get(), "钴战斧");
+        add(AxeItems.PALLADIUM_WARAXE.get(), "钯金战斧");
+        add(AxeItems.MYTHRIL_WARAXE.get(), "秘银战斧");
+        add(AxeItems.ORICHALCUM_WARAXE.get(), "山铜战斧");
+        add(AxeItems.ADAMANTITE_WARAXE.get(), "精金战斧");
+        add(AxeItems.TITANIUM_WARAXE.get(), "钛金战斧");
+        add(AxeItems.CHLOROPHYTE_GREATAXE.get(), "叶绿巨斧");
         add(AxeItems.STAFF_OF_REGROWTH.get(), "再生法杖");
         add(AxeItems.AXE_OF_REGROWTH.get(), "再生之斧");
         add(HamaxeItems.METEOR_HAMAXE.get(), "流星锤斧");
         add(HamaxeItems.MOLTEN_HAMAXE.get(), "熔火锤斧");
+        add(HamaxeItems.SPECTRE_HAMAXE.get(), "幽灵锤斧");
+        add(HamaxeItems.SOLAR_FLARE_HAMAXE.get(), "耀斑锤斧");
+        add(HamaxeItems.VORTEX_HAMAXE.get(), "星旋锤斧");
+        add(HamaxeItems.NEBULA_HAMAXE.get(), "星云锤斧");
+        add(HamaxeItems.STARDUST_HAMAXE.get(), "星尘锤斧");
 
         add(HoeItems.COPPER_HOE.get(), "铜锄");
         add(HoeItems.TIN_HOE.get(), "锡锄");
@@ -1789,14 +1862,45 @@ public class ModChineseProvider extends LanguageProvider {
         add(PickaxeItems.NIGHTMARE_PICKAXE.get(), "恶魔镐");
         add(PickaxeItems.DEATHBRINGER_PICKAXE.get(), "死亡使者镐");
         add(MOLTEN_PICKAXE.get(), "熔岩镐");
+        add(PickaxeItems.COBALT_PICKAXE.get(), "钴镐");
+        add(PickaxeItems.PALLADIUM_PICKAXE.get(), "钯金镐");
+        add(PickaxeItems.MYTHRIL_PICKAXE.get(), "秘银镐");
+        add(PickaxeItems.ORICHALCUM_PICKAXE.get(), "山铜镐");
+        add(PickaxeItems.ADAMANTITE_PICKAXE.get(), "精金镐");
+        add(PickaxeItems.TITANIUM_PICKAXE.get(), "钛金镐");
+        add(PickaxeItems.SPECTRE_PICKAXE.get(), "幽灵镐");
+        add(PickaxeItems.CHLOROPHYTE_PICKAXE.get(), "叶绿镐");
+        add(PickaxeItems.SOLAR_FLARE_PICKAXE.get(), "耀斑镐");
+        add(PickaxeItems.VORTEX_PICKAXE.get(), "星旋镐");
+        add(PickaxeItems.NEBULA_PICKAXE.get(), "星云镐");
+        add(PickaxeItems.STARDUST_PICKAXE.get(), "星尘镐");
+        add(PickaxeAxeItems.SHROOMITE_DIGGING_CLAW.get(), "蘑菇矿挖爪");
 
         add(PickaxeAxeItems.PICKSAW.get(), "锯刃镐");
         add(PickaxeAxeItems.PICKAXE_AXE.get(), "镐斧");
 
         add(DrillItems.DRAX.get(), "斧钻");
+        add(DrillItems.COBALT_DRILL.get(), "钴钻头");
+        add(DrillItems.PALLADIUM_DRILL.get(), "钯金钻头");
+        add(DrillItems.MYTHRIL_DRILL.get(), "秘银钻头");
+        add(DrillItems.ORICHALCUM_DRILL.get(), "山铜钻头");
+        add(DrillItems.ADAMANTITE_DRILL.get(), "精金钻头");
+        add(DrillItems.TITANIUM_DRILL.get(), "钛金钻头");
+        add(DrillItems.CHLOROPHYTE_DRILL.get(), "叶绿钻头");
+        add(DrillItems.SOLAR_FLARE_DRILL.get(), "耀斑钻头");
+        add(DrillItems.VORTEX_DRILL.get(), "星旋钻头");
+        add(DrillItems.NEBULA_DRILL.get(), "星云钻头");
+        add(DrillItems.STARDUST_DRILL.get(), "星尘钻头");
 
         // Hammers
         add(HammerItems.WOODEN_HAMMER.get(), "木锤");
+        add(HammerItems.RICH_MAHOGANY_HAMMER.get(), "红木锤");
+        add(HammerItems.PALM_WOOD_HAMMER.get(), "棕榈木锤");
+        add(HammerItems.SPRUCE_WOOD_HAMMER.get(), "针叶木锤");
+        add(HammerItems.EBONWOOD_WOOD_HAMMER.get(), "乌木锤");
+        add(HammerItems.SHADEWOOD_HAMMER.get(), "暗影木锤");
+        add(HammerItems.ASH_WOOD_HAMMER.get(), "白蜡木锤");
+        add(HammerItems.PEARLWOOD_HAMMER.get(), "珍珠木锤");
         add(HammerItems.COPPER_HAMMER.get(), "铜锤");
         add(HammerItems.TIN_HAMMER.get(), "锡锤");
         add(HammerItems.IRON_HAMMER.get(), "铁锤");
@@ -1808,6 +1912,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(HammerItems.THE_BREAKER.get(), "魔锤");
         add(HammerItems.FLESH_GRINDER.get(), "血肉锤");
         add(HammerItems.PWNHAMMER.get(), "神锤");
+        add(HammerItems.HAMMUSH.get(), "蘑菇锤");
+        add(HammerItems.CHLOROPHYTE_WARHAMMER.get(), "叶绿战锤");
         /* HammerAxes */
 
         // 杂项
@@ -1819,6 +1925,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.WIRE_CUTTER.get(), "钢丝钳");
         add(ToolItems.GOLDEN_KEY.get(), "金钥匙");
         add(ToolItems.SHADOW_KEY.get(), "暗影钥匙");
+        add(ToolItems.TEMPLE_KEY.get(), "神庙钥匙");
+        add(ToolItems.TARGET_DUMMY.get(), "训练假人");
         add(ToolItems.ENCUMBERING_STONE.get(), "负重石");
         add(ToolItems.MAGIC_CONCH.get(), "魔法海螺");
         add(ToolItems.DEMON_CONCH.get(), "恶魔海螺");
@@ -1840,6 +1948,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.SHURIKEN.get(), "手里剑");
         add(ConsumableItems.THROWING_KNIVES.get(), "投刀");
         add(ConsumableItems.JAVELIN.get(), "标枪");
+        add(ConsumableItems.SPIKY_BALL.get(), "尖球");
+        add(ConsumableItems.HOLY_WATER.get(), "圣水");
+        add(ConsumableItems.UNHOLY_WATER.get(), "邪水");
+        add(ConsumableItems.BLOOD_WATER.get(), "血水");
         add(ConsumableItems.VITAL_CRYSTAL.get(), "活力水晶");
         add(ConsumableItems.MINECART_UPGRADE_KIT.get(), "矿车升级包");
         add(ConsumableItems.ARTISAN_LOAF.get(), "工匠面包");
@@ -1922,9 +2034,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.KIND_MISIDE_RING.get(), "善良米塔的戒指");
         add(ModItems.ICE_TOFU_BRICK.get(), "冰豆腐砖");
         add(ModItems.MYSTERIOUS_NOTE.get(), "神秘纸条");
+        add(ModItems.MYSTERIOUS_SLATE.get(), "神秘石板");
         add(ModItems.FERTILE_SINGULARITY.get(), "丰饶奇点");
         add(ModItems.PERPLEXED_CAT_MEDAL.get(), "疑惑猫猫勋章");
-        add(ModItems.CANDY_SWORD.get(), "糖果剑");
         add(ModItems.PULSAR.get(), "脉冲星");
         add(ModItems.ENTITY_DISPLAY.get(), "生物显示");
         add(ModItems.HARDMODE_CONVERTOR.get(), "困难模式转换器");
@@ -1998,6 +2110,18 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.CAULDRON.get(), "大锅");
         add(FunctionalBlocks.SAWMILL.get(), "锯木机");
         add(FunctionalBlocks.ANNOUNCEMENT_BOX.get(), "广播盒");
+        add(FunctionalBlocks.SOLIDIFIER.get(), "固化机");
+        add(FunctionalBlocks.KEG.get(), "酒桶");
+        add(FunctionalBlocks.MYTHRIL_ANVIL.get(), "秘银砧");
+        add(FunctionalBlocks.ORICHALCUM_ANVIL.get(), "山铜砧");
+        add(FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.get(), "叶绿提炼机");
+        add(FunctionalBlocks.BLEND_O_MATIC.get(), "搅拌机");
+        add(FunctionalBlocks.MEAT_GRINDER.get(), "搅肉机");
+        add(FunctionalBlocks.FRAGILE_BLUE_BRICKS.get(), "易碎蓝色地牢砖");
+        add(FunctionalBlocks.FRAGILE_GREEN_BRICKS.get(), "易碎绿色地牢砖");
+        add(FunctionalBlocks.FRAGILE_PINK_BRICKS.get(), "易碎粉色地牢砖");
+        add(FunctionalBlocks.LAND_MINE.get(), "地雷");
+        add(FunctionalBlocks.SUPER_DART_TRAP.get(), "超级飞镖机关");
 
         add(ModBlocks.TOMBSTONE.get(), "墓石");
         add(ModBlocks.GRAVE_MARKER.get(), "墓石碑");
@@ -2142,6 +2266,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeaponItems.AQUA_SCEPTER.get(), "海蓝权杖");
         add(ManaWeaponItems.FLOWER_OF_FIRE.get(), "火之花");
         add(ManaWeaponItems.WATER_BOLT.get(), "水矢");
+        add(ManaWeaponItems.MAGIC_DAGGER.get(), "魔法飞刀");
+        add(ManaWeaponItems.CRYSTAL_STORM.get(), "水晶风暴");
+        add(ManaWeaponItems.CURSED_FLAMES.get(), "诅咒焰");
         /*
         add(ManaWeapons.MAGIC_MISSILE.get(), "魔法导弹");
         add(ManaWeapons.FLAMELASH.get(), "烈焰火鞭");
@@ -2325,6 +2452,77 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.MOLTEN_HELMET.get(), "熔岩头盔");
         add(ArmorItems.MOLTEN_LEGGINGS.get(), "熔岩护腿");
         add(ArmorItems.MOLTEN_BOOTS.get(), "熔岩靴子");
+        add(ArmorItems.NECRO_CHESTPLATE.get(), "死灵胸甲");
+        add(ArmorItems.NECRO_HELMET.get(), "死灵头盔");
+        add(ArmorItems.NECRO_LEGGINGS.get(), "死灵护腿");
+        add(ArmorItems.NECRO_BOOTS.get(), "死灵靴子");
+        add(ArmorItems.JUNGLE_CHESTPLATE.get(), "丛林胸甲");
+        add(ArmorItems.JUNGLE_HELMET.get(), "丛林头盔");
+        add(ArmorItems.JUNGLE_LEGGINGS.get(), "丛林护腿");
+        add(ArmorItems.JUNGLE_BOOTS.get(), "丛林靴子");
+
+        add(ArmorItems.COBALT_MASK.get(), "钴面具");
+        add(ArmorItems.COBALT_HAT.get(), "钴帽");
+        add(ArmorItems.COBALT_HELMET.get(), "钴头盔");
+        add(ArmorItems.COBALT_CHESTPLATE.get(), "钴胸甲");
+        add(ArmorItems.COBALT_LEGGINGS.get(), "钴护腿");
+        add(ArmorItems.COBALT_BOOTS.get(), "钴靴子");
+
+        add(ArmorItems.PALLADIUM_MASK.get(), "钯金面具");
+        add(ArmorItems.PALLADIUM_HEADGEAR.get(), "钯金头饰");
+        add(ArmorItems.PALLADIUM_HELMET.get(), "钯金头盔");
+        add(ArmorItems.PALLADIUM_CHESTPLATE.get(), "钯金胸甲");
+        add(ArmorItems.PALLADIUM_LEGGINGS.get(), "钯金护腿");
+        add(ArmorItems.PALLADIUM_BOOTS.get(), "钯金靴子");
+
+        add(ArmorItems.MYTHRIL_HOOD.get(), "秘银兜帽");
+        add(ArmorItems.MYTHRIL_HAT.get(), "秘银帽");
+        add(ArmorItems.MYTHRIL_HELMET.get(), "秘银头盔");
+        add(ArmorItems.MYTHRIL_CHESTPLATE.get(), "秘银胸甲");
+        add(ArmorItems.MYTHRIL_LEGGINGS.get(), "秘银护腿");
+        add(ArmorItems.MYTHRIL_BOOTS.get(), "秘银靴子");
+        
+        add(ArmorItems.ORICHALCUM_HEADGEAR.get(), "山铜头饰");
+        add(ArmorItems.ORICHALCUM_MASK.get(), "山铜面具");
+        add(ArmorItems.ORICHALCUM_HELMET.get(), "山铜头盔");
+        add(ArmorItems.ORICHALCUM_CHESTPLATE.get(), "山铜胸甲");
+        add(ArmorItems.ORICHALCUM_LEGGINGS.get(), "山铜护腿");
+        add(ArmorItems.ORICHALCUM_BOOTS.get(), "山铜靴子");
+
+        add(ArmorItems.ADAMANTITE_HEADGEAR.get(), "精金头饰");
+        add(ArmorItems.ADAMANTITE_MASK.get(), "精金面具");
+        add(ArmorItems.ADAMANTITE_HELMET.get(), "精金头盔");
+        add(ArmorItems.ADAMANTITE_CHESTPLATE.get(), "精金胸甲");
+        add(ArmorItems.ADAMANTITE_LEGGINGS.get(), "精金护腿");
+        add(ArmorItems.ADAMANTITE_BOOTS.get(), "精金靴子");
+
+        add(ArmorItems.TITANIUM_HEADGEAR.get(), "钛金头饰");
+        add(ArmorItems.TITANIUM_MASK.get(), "钛金面具");
+        add(ArmorItems.TITANIUM_HELMET.get(), "钛金头盔");
+        add(ArmorItems.TITANIUM_CHESTPLATE.get(), "钛金胸甲");
+        add(ArmorItems.TITANIUM_LEGGINGS.get(), "钛金护腿");
+        add(ArmorItems.TITANIUM_BOOTS.get(), "钛金靴子");
+
+        add(ArmorItems.HALLOWED_HEADGEAR.get(), "神圣头饰");
+        add(ArmorItems.HALLOWED_HOOD.get(), "神圣兜帽");
+        add(ArmorItems.HALLOWED_MASK.get(), "神圣面具");
+        add(ArmorItems.HALLOWED_HELMET.get(), "神圣头盔");
+        add(ArmorItems.HALLOWED_CHESTPLATE.get(), "神圣胸甲");
+        add(ArmorItems.HALLOWED_LEGGINGS.get(), "神圣护腿");
+        add(ArmorItems.HALLOWED_BOOTS.get(), "神圣靴子");
+        
+        add(ArmorItems.GOGGLES.get(), "护目镜");
+        add(ArmorItems.WIZARD_HAT.get(), "巫师帽");
+        add(ArmorItems.MAGIC_HAT.get(), "魔法帽");
+        add(ArmorItems.AMETHYST_ROBE.get(), "紫晶长袍");
+        add(ArmorItems.TOPAZ_ROBE.get(), "黄玉长袍");
+        add(ArmorItems.SAPPHIRE_ROBE.get(), "蓝玉长袍");
+        add(ArmorItems.EMERALD_ROBE.get(), "翡翠长袍");
+        add(ArmorItems.RUBY_ROBE.get(), "红玉长袍");
+        add(ArmorItems.MYSTIC_ROBE.get(), "神秘长袍");
+        add(ArmorItems.DIAMOND_ROBE.get(), "钻石长袍");
+        add(ArmorItems.AMBER_ROBE.get(), "琥珀长袍");
+
 
         // 任务鱼
         add(QuestedFishes.AMANITA_FUNGIFIN.get(), "发光蘑菇鱼");
@@ -2519,6 +2717,8 @@ public class ModChineseProvider extends LanguageProvider {
         // 药水
         add(PotionItems.BOTTLE.get(), "玻璃瓶");
         add(PotionItems.BOTTLED_WATER.get(), "瓶装水");
+        add(PotionItems.MUG.get(), "玻璃杯");
+        add(PotionItems.ALE.get(), "麦芽酒");
         add(PotionItems.LESSER_HEALING_POTION.get(), "弱效治疗药水");
         add(PotionItems.HEALING_POTION.get(), "治疗药水");
         add(PotionItems.GREATER_HEALING_POTION.get(), "强效治疗药水");
@@ -2566,6 +2766,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(PotionItems.CRATE_POTION.get(), "宝匣药水");
         add(PotionItems.CHAOS_POTION.get(), "混沌药水");
         add(PotionItems.STINK_POTION.get(), "臭味药水");
+        add(PotionItems.RED_POTION.get(), "红药水");
 
         // 饰品
         add(AccessoryItems.ADHESIVE_BANDAGE.get(), "黏性绷带");
@@ -2627,6 +2828,45 @@ public class ModChineseProvider extends LanguageProvider {
         add(AccessoryItems.RADIO_THING.get(), "收音机");
 
 
+        add(AccessoryItems.MUSIC_BOX_OTHERWORLD_DAY.get(), "八音盒（地表世界）");
+        add(AccessoryItems.MUSIC_BOX_NIGHT.get(), "八音盒（夜间）");
+        add(AccessoryItems.MUSIC_BOX_UNDERGROUND.get(), "八音盒（地下）");
+        add(AccessoryItems.MUSIC_BOX_JUNGLE.get(), "八音盒（丛林）");
+        add(AccessoryItems.MUSIC_BOX_CORRUPTION.get(), "八音盒（腐化之地）");
+        add(AccessoryItems.MUSIC_BOX_UNDERGROUND_CORRUPTION.get(), "八音盒（地下腐化之地）");
+        add(AccessoryItems.MUSIC_BOX_THE_HALLOW.get(), "八音盒（神圣之地）");
+        add(AccessoryItems.MUSIC_BOX_UNDERGROUND_HALLOW.get(), "八音盒（地下神圣之地）");
+
+        add(AccessoryItems.ANGEL_WINGS.get(), "天使之翼");
+        add(AccessoryItems.DEMON_WINGS.get(), "恶魔之翼");
+        add(AccessoryItems.FAIRY_WINGS.get(), "仙灵之翼");
+        add(AccessoryItems.FIN_WINGS.get(), "鳍翼");
+        add(AccessoryItems.FROZEN_WINGS.get(), "冰冻之翼");
+        add(AccessoryItems.HARPY_WINGS.get(), "女妖之翼");
+        add(AccessoryItems.JETPACK.get(), "喷气背包");
+        add(AccessoryItems.LEAF_WINGS.get(), "叶之翼");
+        add(AccessoryItems.BAT_WINGS.get(), "蝙蝠之翼");
+        add(AccessoryItems.BEE_WINGS.get(), "蜜蜂之翼");
+        add(AccessoryItems.BUTTERFLY_WINGS.get(), "蝴蝶之翼");
+        add(AccessoryItems.FLAME_WINGS.get(), "烈焰之翼");
+        add(AccessoryItems.HOVERBOARD.get(), "悬浮板");
+        add(AccessoryItems.BONE_WINGS.get(), "骨之翼");
+        add(AccessoryItems.MOTHRON_WINGS.get(), "蛾怪之翼");
+        add(AccessoryItems.SPECTRE_WINGS.get(), "幽灵之翼");
+        add(AccessoryItems.BEETLE_WINGS.get(), "甲虫之翼");
+        add(AccessoryItems.FESTIVE_WINGS.get(), "喜庆之翼");
+        add(AccessoryItems.SPOOKY_WINGS.get(), "阴森之翼");
+        add(AccessoryItems.TATTERED_WINGS.get(), "褴褛仙灵之翼");
+        add(AccessoryItems.STEAMPUNK_WINGS.get(), "蒸汽朋克之翼");
+        add(AccessoryItems.BETSYS_WINGS.get(), "双足翼龙之翼");
+        add(AccessoryItems.EMPRESS_WINGS.get(), "女皇之翼");
+        add(AccessoryItems.FISHRON_WINGS.get(), "猪鱼龙之翼");
+        add(AccessoryItems.NEBULA_WINGS.get(), "星云斗篷");
+        add(AccessoryItems.VORTEX_BOOSTER.get(), "星旋强化翼");
+        add(AccessoryItems.SOLAR_WINGS.get(), "日耀之翼");
+        add(AccessoryItems.STARDUST_WINGS.get(), "星尘之翼");
+
+
         // 染料
         add(PaintItems.PAINTBRUSH.get(), "漆刷");
         add(PaintItems.PAINT_ROLLER.get(), "油漆滚刷");
@@ -2666,6 +2906,38 @@ public class ModChineseProvider extends LanguageProvider {
         add(PaintItems.ECHO_COATING.get(), "回声漆");
 
         add(VanityArmorItems.DEAD_MANS_SWEATER.get(), "死人毛衣");
+        add(VanityArmorItems.ROBE.get(), "长袍");
+        add(VanityArmorItems.TOP_HAT.get(), "高顶礼貌");
+        add(VanityArmorItems.TUXEDO_SHIRT.get(), "西装衣");
+        add(VanityArmorItems.TUXEDO_PANTS.get(), "西装裤");
+        add(VanityArmorItems.TUXEDO_SHOES.get(), "西装鞋");
+        add(VanityArmorItems.SUMMER_HAT.get(), "夏日草帽");
+        add(VanityArmorItems.BUNNY_HOOD.get(), "兔兔兜帽");
+        add(VanityArmorItems.PLUMBERS_HAT.get(), "管道工帽");
+        add(VanityArmorItems.PLUMBERS_SHIRT.get(), "管道工衣");
+        add(VanityArmorItems.PLUMBERS_PANTS.get(), "管道工背带裤");
+        add(VanityArmorItems.PLUMBERS_SHOES.get(), "管道工鞋");
+        add(VanityArmorItems.HEROS_HAT.get(), "英雄帽");
+        add(VanityArmorItems.HEROS_SHIRT.get(), "英雄衣");
+        add(VanityArmorItems.HEROS_PANTS.get(), "英雄裤");
+        add(VanityArmorItems.HEROS_SHOES.get(), "英雄鞋");
+        add(VanityArmorItems.ARCHAEOLOGISTS_HAT.get(), "考古帽");
+        add(VanityArmorItems.ARCHAEOLOGISTS_JACKET.get(), "考古夹克");
+        add(VanityArmorItems.ARCHAEOLOGISTS_PANTS.get(), "考古裤");
+        add(VanityArmorItems.ARCHAEOLOGISTS_SHOES.get(), "考古鞋");
+        add(VanityArmorItems.CLOTHIERS_HAT.get(), "红帽");
+        add(VanityArmorItems.CLOTHIERS_JACKET.get(), "服装商夹克");
+        add(VanityArmorItems.CLOTHIERS_PANTS.get(), "服装商裤");
+        add(VanityArmorItems.CLOTHIERS_SHOES.get(), "服装商鞋");
+        add(VanityArmorItems.ROBOT_HAT.get(), "机器人帽");
+        add(VanityArmorItems.FAMILIAR_WIG.get(), "便装假发");
+        add(VanityArmorItems.FAMILIAR_SHIRT.get(), "便装衣");
+        add(VanityArmorItems.FAMILIAR_PANTS.get(), "便装裤");
+        add(VanityArmorItems.FAMILIAR_SHOES.get(), "便装鞋");
+        add(VanityArmorItems.MIME_MASK.get(), "丑角面具");
+        add(VanityArmorItems.THE_DOCTORS_SHIRT.get(), "博士衣");
+        add(VanityArmorItems.THE_DOCTORS_PANTS.get(), "博士裤");
+        add(VanityArmorItems.THE_DOCTORS_SHOES.get(), "博士鞋");
         add(VanityArmorItems.GOLD_CROWN.get(), "金冠");
         add(VanityArmorItems.PLATINUM_CROWN.get(), "铂金冠");
         add(VanityArmorItems.RED_DYE.get(), "红染料");
@@ -2696,6 +2968,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(VanityArmorItems.GRAY_DYE.get(), "灰染料");
         add(VanityArmorItems.SILVER_DYE.get(), "银染料");
         add(VanityArmorItems.BROWN_DYE.get(), "棕染料");
+        add(VanityArmorItems.TEAM_DYE.get(), "团队染料");
 
         // 药水效果
         add(ModEffects.MANA_SICKNESS.get(), "耐魔性");
@@ -2747,6 +3020,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.BEWITCHED.get(), "着魔");
         add(ModEffects.HUNGER_DELAYED.get(), "饥饿延缓");
         add(ModEffects.CHOKING.get(), "干噎");
+        add(ModEffects.DELICIOUS.get(), "美味");
 
         add(TooltipManager.prefix, "** 赞助者物品 **");
 

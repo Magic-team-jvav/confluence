@@ -59,7 +59,7 @@ public class BowItems {
     // DIY蓄力弓
     /**如果需要速射，加上tag {@link org.confluence.mod.common.init.ModTags.Items#FAST_BOW}*/
 
-    public static final DeferredItem<TerraBowItem> FOSSIL_BOW = register("fossil_bow", 5.5F, m->m
+    public static final DeferredItem<TerraBowItem> FOSSIL_BOW = register("fossil_bow", 4.7F, m->m
             .setRarity(ModRarity.BLUE)
             .setArrowTransform(ArrowItems.FOSSIL_ARROW.get())
     );
@@ -67,15 +67,15 @@ public class BowItems {
             .setRarity(ModRarity.BLUE)
             .setOnHitEffect(TEEffectStrategies.Components.HUNTING_RIFLE_EFFECT.get())
     );
-    public static final DeferredItem<TerraBowItem> DEMON_BOW = register("demon_bow", 5.5F, m->m
+    public static final DeferredItem<TerraBowItem> DEMON_BOW = register("demon_bow", 4.7F, m->m
             .setRarity(ModRarity.BLUE)
             .setFullPullHitEffect(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get())
     );
-    public static final DeferredItem<TerraBowItem> TENDON_BOW = register("tendon_bow",  6F, m->m
+    public static final DeferredItem<TerraBowItem> TENDON_BOW = register("tendon_bow",  4.8F, m->m
             .setRarity(ModRarity.BLUE)
             .setFullPullHitEffect(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get())
     );
-    public static final DeferredItem<TerraBowItem> MOLTEN_FURY = register("molten_fury",  7F, m->m
+    public static final DeferredItem<TerraBowItem> MOLTEN_FURY = register("molten_fury",  5.3F, m->m
             .setRarity(ModRarity.ORANGE)
             .setArrowTransform(ArrowItems.HELLFIRE_ARROW.get())
     );

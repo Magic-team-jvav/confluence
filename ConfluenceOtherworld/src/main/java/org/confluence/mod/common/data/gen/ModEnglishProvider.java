@@ -205,6 +205,16 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.bee_keeper.0", "A small part of the divine weapon's power is possessed by the swarm of bees in the jungle, becoming a buzzing hive.");
         add("tooltip.item.confluence.bee_keeper.1", "\"Sweet on the outside, sharp on the inside.\"");
 
+        add("tooltip.item.confluence.soul_of_light.0", "'The essence of light creatures'");
+        add("tooltip.item.confluence.soul_of_night.0", "'The essence of dark creatures'");
+        add("tooltip.item.confluence.soul_of_flight.0", "'The essence of powerful flying creatures'");
+        add("tooltip.item.confluence.soul_of_might.0", "'The essence of the destroyer'");
+        add("tooltip.item.confluence.soul_of_sight.0", "'The essence of omniscient watchers'");
+        add("tooltip.item.confluence.soul_of_fright.0", "'The essence of pure terror'");
+        add("tooltip.item.confluence.golden_key.0", "“Opens one locked Gold Chest or Lock Box”");
+        add("tooltip.item.confluence.shadow_key.0", "“Opens all Shadow Chests and Obsidian Lock Boxes”");
+        add("tooltip.item.confluence.temple_key.0", "“Opens the jungle temple door”");
+
 
 
         // new

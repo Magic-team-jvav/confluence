@@ -53,6 +53,81 @@
               "target": "custom_name"
             }
           ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:mysterious_note",
+          "functions": [
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "translate": "lore.confluence.mysterious_note_2",
+                  "color": "gray",
+                  "italic": false
+                }
+              ],
+              "mode": "replace_all"
+            },
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "translate": "item.confluence.mysterious_note.name_2",
+                "italic": false
+              },
+              "target": "custom_name"
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:mysterious_note",
+          "functions": [
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "translate": "lore.confluence.mysterious_note_3",
+                  "color": "gray",
+                  "italic": false
+                }
+              ],
+              "mode": "replace_all"
+            },
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "translate": "item.confluence.mysterious_note.name_3",
+                "italic": false
+              },
+              "target": "custom_name"
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:mysterious_note",
+          "functions": [
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "translate": "lore.confluence.mysterious_note_4",
+                  "color": "gray",
+                  "italic": false
+                }
+              ],
+              "mode": "replace_all"
+            },
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "translate": "item.confluence.mysterious_note.name_4",
+                "italic": false
+              },
+              "target": "custom_name"
+            }
+          ]
         }
       ]
     }

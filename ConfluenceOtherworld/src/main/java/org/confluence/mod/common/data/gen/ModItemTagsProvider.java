@@ -1000,7 +1000,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ModItems.KIND_MISIDE_RING.get(),
                 ModItems.FERTILE_SINGULARITY.get(),
                 ModItems.PERPLEXED_CAT_MEDAL.get(),
-                ModItems.CANDY_SWORD.get(),
                 ModItems.PULSAR.get(),
                 ModItems.MYSTERIOUS_NOTE.get(),
                 ModItems.HARDMODE_CONVERTOR.get(),

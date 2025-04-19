@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.bow.TerraBowItem;
@@ -14,12 +15,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(BowItem.class)
-public abstract class BowItemMixin {
+public abstract class BowItemMixin implements SelfGetter<BowItem> {
     @WrapOperation(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/BowItem;getPowerForTime(I)F"))
     private float shortBowPower(int pCharge, Operation<Float> original, @Local(argsOnly = true) ItemStack itemStack) {
         if (itemStack.getItem() instanceof ShortBowItem shortBow) {
             return shortBow.getShortPowerForTime(pCharge);
-        }else if(itemStack.is(ModTags.Items.FAST_BOW)){
+        } else if (itemStack.is(ModTags.Items.FAST_BOW)) {
             return TerraBowItem.getFastBowPowerForTime(pCharge);
         }
         return original.call(pCharge);
@@ -27,7 +28,7 @@ public abstract class BowItemMixin {
 
     @WrapOperation(method = "shootProjectile", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/Projectile;shootFromRotation(Lnet/minecraft/world/entity/Entity;FFFFF)V"))
     private void shortBowSoot(Projectile instance, Entity shooter, float x, float y, float z, float velocity, float inaccuracy, Operation<Void> original) {
-        if ((Object) this instanceof ShortBowItem shortBow) {
+        if (confluence$self() instanceof ShortBowItem shortBow) {
             original.call(instance, shooter, x, y, z, velocity * shortBow.getVelocityMultiplier() / 3.0F, inaccuracy);
         } else {
             original.call(instance, shooter, x, y, z, velocity, inaccuracy);

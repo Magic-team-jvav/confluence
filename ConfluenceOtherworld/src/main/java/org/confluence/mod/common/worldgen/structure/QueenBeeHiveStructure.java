@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
+import org.confluence.mod.common.block.natural.JungleHiveBlock;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -91,7 +92,7 @@ public class QueenBeeHiveStructure extends Structure {
 
             GridPiece.addPieces(blockMap, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
-                    NatureBlocks.JUNGLE_HIVE_BLOCK.get().defaultBlockState(),
+                    NatureBlocks.JUNGLE_HIVE_BLOCK.get().defaultBlockState().setValue(JungleHiveBlock.NATURAL, true),
                     NatureBlocks.THIN_HONEY_BLOCK.get().defaultBlockState(),
                     ModBlocks.HONEY.get().defaultBlockState()
             ), builder);

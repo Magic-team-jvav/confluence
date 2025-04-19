@@ -70,7 +70,7 @@ public class DrillItem extends PickaxeAxeItem implements GeoItem {
                     this.renderer = new GeoItemRenderer<>(new DefaultedItemGeoModel<>(Confluence.asResource("drill/drax"))) {
                         @Override
                         protected void renderInGui(ItemDisplayContext transformType, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, float partialTick) {
-                            super.renderInGui(transformType, poseStack, bufferSource, packedLight, packedOverlay, partialTick);
+                            //super.renderInGui(transformType, poseStack, bufferSource, packedLight, packedOverlay, partialTick);
                         }
                     };
                 }

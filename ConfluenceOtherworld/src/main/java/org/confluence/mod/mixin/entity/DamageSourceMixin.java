@@ -19,18 +19,18 @@ public abstract class DamageSourceMixin implements IDamageSource, SelfGetter<Dam
     private boolean confluence$critical;
 
     @Override
-    public void confluence$setCritical(boolean critical){
+    public void confluence$setCritical(boolean critical) {
         confluence$critical = critical;
     }
 
     @Override
-    public boolean confluence$isCritical(){
+    public boolean confluence$isCritical() {
         return confluence$critical;
     }
 
     @Inject(method = "is(Lnet/minecraft/tags/TagKey;)Z", at = @At("HEAD"), cancellable = true)
-    private void isTag(TagKey<DamageType> damageTypeKey, CallbackInfoReturnable<Boolean> cir){
-        if(damageTypeKey == DamageTypeTags.BYPASSES_COOLDOWN && Immunity.getCause(confluence$self()) != null){
+    private void isTag(TagKey<DamageType> damageTypeKey, CallbackInfoReturnable<Boolean> cir) {
+        if (damageTypeKey == DamageTypeTags.BYPASSES_COOLDOWN && Immunity.getCause(confluence$self()) != null) {
             cir.setReturnValue(true);
         }
     }

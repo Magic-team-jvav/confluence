@@ -16,34 +16,22 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Mixin(LivingEntityRenderer.class)
-public abstract class LivingEntityRendererMixin<T extends LivingEntity,M extends EntityModel<T>> implements ILivingEntityRenderer, SelfGetter<LivingEntityRenderer<T,M>> {
-
-    //    @Unique private LivingEntity confluence$rendering;
-    @Unique private final List<ModelPart> confluence$partsCache = new ArrayList<>();
-    @Unique private ModelPart confluence$rootModelPart;
-
-//    @Override
-//    public void confluence$setRendering(LivingEntity living){
-//        confluence$rendering = living;
-//    }
-
-
+public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extends EntityModel<T>> implements ILivingEntityRenderer, SelfGetter<LivingEntityRenderer<T, M>> {
+    @Unique
+    private ModelPart confluence$rootModelPart;
     @Override
-    public ModelPart confluence$getRootModelPart(){
-        if(confluence$rootModelPart == null){
+    public ModelPart confluence$getRootModelPart() {
+        if (confluence$rootModelPart == null) {
             confluence$rootModelPart = DeathAnimUtils.findRootModelPart(confluence$self());
         }
         return confluence$rootModelPart;
     }
 
     @Inject(method = "render(Lnet/minecraft/world/entity/LivingEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;getInstance()Lnet/minecraft/client/Minecraft;"),cancellable = true)
-    private void postRender(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo ci){
-        if(poseStack instanceof AntiPushPoseStack){
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;getInstance()Lnet/minecraft/client/Minecraft;"), cancellable = true)
+    private void postRender(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo ci) {
+        if (poseStack instanceof AntiPushPoseStack) {
             ci.cancel();
         }
     }

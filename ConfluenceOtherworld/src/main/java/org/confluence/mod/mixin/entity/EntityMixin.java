@@ -160,17 +160,15 @@ public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
     private void zombieName(CallbackInfoReturnable<Component> cir) {
         Component returnValue = cir.getReturnValue();
         Entity self = confluence$self();
-        if(self instanceof Zombie zombie){
+        if (self instanceof Zombie zombie) {
             ItemStack chestItem = zombie.getItemBySlot(EquipmentSlot.CHEST);
-            if (chestItem.is(ArmorItems.RAINCOAT.get())){
+            if (chestItem.is(ArmorItems.RAINCOAT.get())) {
                 returnValue = Component.translatable("entity.confluence.raincoat_zombie");
-            } else if (chestItem.is(ArmorItems.SNOW_SUITS.get())
-                    || chestItem.is(ArmorItems.PINK_SNOW_SUITS.get())){
+            } else if (chestItem.is(ArmorItems.SNOW_SUITS.get()) || chestItem.is(ArmorItems.PINK_SNOW_SUITS.get())) {
                 returnValue = Component.translatable("entity.confluence.frozen_zombie");
             }
-        }
-        else if(self instanceof Skeleton skeleton){
-            if (skeleton.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.MINING_CHESTPLATE.get())){
+        } else if (self instanceof Skeleton skeleton) {
+            if (skeleton.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.MINING_CHESTPLATE.get())) {
                 returnValue = Component.translatable("entity.confluence.undead_miner");
             }
         }

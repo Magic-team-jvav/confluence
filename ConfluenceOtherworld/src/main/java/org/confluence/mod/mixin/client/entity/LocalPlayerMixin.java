@@ -2,6 +2,7 @@ package org.confluence.mod.mixin.client.entity;
 
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
@@ -22,6 +23,10 @@ public abstract class LocalPlayerMixin implements ILocalPlayer {
     @Shadow
     @Final
     protected Minecraft minecraft;
+
+    @Shadow
+    public Input input;
+
     @Unique
     private boolean confluence$canMove = true;
 

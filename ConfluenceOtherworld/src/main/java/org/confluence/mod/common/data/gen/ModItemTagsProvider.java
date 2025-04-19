@@ -1068,6 +1068,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 //        TGItems.ITEM_BULLETS.getEntries().forEach(wipAction);
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
         TMItems.ITEMS.getEntries().forEach(wipAction);
+        BowItems.acceptTag(tag(LibTags.Items.SKIP_USING_SLOWDOWN));
 
         tag(ModTags.Items.DEATH).add(
                 FunctionalBlocks.DEATH_CHEST_BLOCK.asItem(),

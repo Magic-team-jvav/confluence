@@ -31,5 +31,4 @@ public abstract class AdvancementWidgetMixin {
     private boolean renderIcon(GuiGraphics instance, ItemStack stack, int x, int y) {
         return AchievementToast.renderWidgetIcon(advancementNode.holder().id(), instance, x, y);
     }
-
 }

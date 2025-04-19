@@ -9,12 +9,15 @@ import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(PalettedContainer.class)
 public abstract class PalettedContainerMixin<T> implements IPalettedContainer<T> {
-
-    @Shadow @Final private IdMap<T> registry;
-    @Shadow @Final private PalettedContainer.Strategy strategy;
+    @Shadow
+    @Final
+    private IdMap<T> registry;
+    @Shadow
+    @Final
+    private PalettedContainer.Strategy strategy;
 
     @Override
-    public PalettedContainer<T> confluence$recreateSingle(T ele){
+    public PalettedContainer<T> confluence$recreateSingle(T ele) {
         return new PalettedContainer<>(this.registry, ele, this.strategy);
     }
 }

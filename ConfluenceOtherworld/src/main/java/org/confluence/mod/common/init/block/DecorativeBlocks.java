@@ -53,11 +53,20 @@ public class DecorativeBlocks {
             .isValidSpawn(Blocks::never)
             .isRedstoneConductor((blockState, blockGetter, blockPos) -> false)
             .isSuffocating((blockState, blockGetter, blockPos) -> false)));
-    public static final DeferredBlock<BouncyCloudBlock> BOUNCY_CLOUD_BLOCK = registerWithItem("bouncy_cloud_block", () -> new BouncyCloudBlock(BlockBehaviour.Properties.of()
+    public static final DeferredBlock<CloudBlockTrampoline> CLOUD_BLOCK_TRAMPOLINE = registerWithItem("cloud_block_trampoline", () -> new CloudBlockTrampoline(BlockBehaviour.Properties.of()
             .mapColor(MapColor.COLOR_PINK)
             .strength(0.3F)
             .sound(SoundType.SNOW)
             .noOcclusion()
+            .isValidSpawn(Blocks::never)
+            .isRedstoneConductor((blockState, blockGetter, blockPos) -> false)
+            .isSuffocating((blockState, blockGetter, blockPos) -> false)));
+    public static final DeferredBlock<CloudBlock> BOUNCY_CLOUD_BLOCK = registerWithItem("bouncy_cloud_block", () -> new CloudBlock(BlockBehaviour.Properties.of()
+            .mapColor(MapColor.COLOR_PINK)
+            .strength(0.3F)
+            .sound(SoundType.SNOW)
+            .noOcclusion()
+            .jumpFactor(2.5F)
             .isValidSpawn(Blocks::never)
             .isRedstoneConductor((blockState, blockGetter, blockPos) -> false)
             .isSuffocating((blockState, blockGetter, blockPos) -> false)));

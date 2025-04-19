@@ -21,7 +21,7 @@ public abstract class PrimaryLevelDataMixin {
         HardmodeConvertor.INSTANCE.decode(tag);
     }
 
-    @Inject(method = "setTagData", at=@At("TAIL"))
+    @Inject(method = "setTagData", at = @At("TAIL"))
     private void encode(RegistryAccess registry, CompoundTag nbt, CompoundTag playerNBT, CallbackInfo ci) {
         HardmodeConvertor.INSTANCE.encode(nbt);
     }

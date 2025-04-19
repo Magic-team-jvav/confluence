@@ -80,7 +80,7 @@ public record SwordProjectileComponent (
     public static final Supplier<SwordProjectileComponent> STAR_FURY_PROJ =
             ()->new SwordProjectileComponent(1.5f,1.5f,0.9f,100, 0, 15,
                     ModSoundEvents.STAR.getId(),ModEntities.STAR_FURY_PROJECTILE.getId(),
-                    Optional.empty(), new AboveFallenGeneration(30,30,10,3,20,5),
+                    Optional.empty(), new AboveFallenGeneration(30,30,10,1,20,5),
                     Optional.empty() );
 
     public static final Supplier<SwordProjectileComponent> ENCHANTED_SWORD_PROJ =

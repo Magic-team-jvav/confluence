@@ -16,7 +16,7 @@ import java.util.List;
 
 public class DaedalusStormbow extends TerraBowItem {
 
-    IGeneration generation = new AboveFallenGeneration(30,60,25,5,25,5);
+    IGeneration generation = new AboveFallenGeneration(30,60,25,2,25,5);
 
     public DaedalusStormbow(float baseDamage,  ModRarity rarity) {
         super(baseDamage, new TerraBowItem.Builder().setRarity(rarity));
@@ -25,7 +25,7 @@ public class DaedalusStormbow extends TerraBowItem {
     public void onUseTick(Level level, LivingEntity owner, ItemStack weapon, int remainingUseDuration) {
         super.onUseTick(level, owner, weapon, remainingUseDuration);
         if (!level.isClientSide && owner instanceof Player player && remainingUseDuration % 4 == 0) {
-            generation.genProjectile(player,weapon,1.5f, ()->{
+            generation.genProjectile(player,weapon,2f, ()->{
                 ItemStack itemstack = owner.getProjectile(weapon);
 //            if(player.getRandom().nextFloat() < 0.66f)
                 itemstack.shrink(1);

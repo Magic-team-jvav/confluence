@@ -55,7 +55,7 @@ public abstract class ServerPlayerMixin implements IServerPlayer, SelfGetter<Ser
         this.confluence$marathon = ModAchievements.marathonMedalist(confluence$self(), stats, confluence$marathon);
     }
 
-    @WrapWithCondition(method = "die",at= @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketSendListener;)V"))
+    @WrapWithCondition(method = "die", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketSendListener;)V"))
     private boolean replacePacket(ServerGamePacketListenerImpl instance, Packet<?> packet, PacketSendListener packetSendListener) {
         if (packet instanceof ClientboundPlayerCombatKillPacket combatKillPacket) {
             return PlayerDeathInfoPacketS2C.replaceCombatKillPacket(instance.player, combatKillPacket.message());

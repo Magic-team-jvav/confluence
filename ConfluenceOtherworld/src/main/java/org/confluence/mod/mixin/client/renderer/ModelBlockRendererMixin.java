@@ -8,11 +8,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockAndTintGetter;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.lib.util.LibClientUtils;
-import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.client.textures.LocalBrushData;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.spongepowered.asm.mixin.Mixin;
@@ -41,20 +37,6 @@ public abstract class ModelBlockRendererMixin {
             float g = (float) (color >> 8 & 255) * LibClientUtils.INV_255;
             float b = (float) (color & 255) * LibClientUtils.INV_255;
             original.call(instance, pose, quad, brightness, r, g, b, alpha, lightmap, packedOverlay, readAlpha);
-        }
-    }
-
-    @Mixin(targets = "net.minecraft.client.renderer.block.ModelBlockRenderer$AmbientOcclusionFace")
-    public static class AmbientOcclusionFaceMixin {
-        /**
-         * @see org.confluence.mod.mixin.integration.sodium.LightDataAccessMixin
-         */
-        @WrapOperation(method = "calculate", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/BlockAndTintGetter;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
-        private BlockState replace(BlockAndTintGetter instance, BlockPos blockPos, Operation<BlockState> original, @Local(argsOnly = true) BlockPos pos) {
-            if (!ClientPacketHandler.hasEchoVisible() && !blockPos.equals(pos) && LocalBrushData.hasEcho(blockPos)) {
-                return Blocks.AIR.defaultBlockState();
-            }
-            return original.call(instance, blockPos);
         }
     }
 }

@@ -10,19 +10,25 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface AgeableListModelAccessor {
     @Accessor
     boolean getScaleHead();
+
     @Accessor
     float getBabyYHeadOffset();
+
     @Accessor
     float getBabyZHeadOffset();
+
     @Accessor
     float getBabyHeadScale();
+
     @Accessor
     float getBabyBodyScale();
+
     @Accessor
     float getBodyYOffset();
 
     @Invoker
     Iterable<ModelPart> callHeadParts();
+
     @Invoker
     Iterable<ModelPart> callBodyParts();
 

@@ -159,7 +159,7 @@ dependencies {
     additionalRuntimeClasspath 'cn.6tail:lunar:1.4.0'
 
     compileOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
-    if (false) {
+    if (true) {
         runtimeOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
         runtimeOnly("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
         runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
@@ -179,11 +179,13 @@ dependencies {
 
     compileOnly "curse.maven:ftb-chunks-forge-314906:5968500"
     compileOnly "curse.maven:ftb-library-forge-404465:6016745"
-    //runtimeOnly "curse.maven:ftb-chunks-forge-314906:5968500"
-    //runtimeOnly "curse.maven:ftb-library-forge-404465:6016745"
-    //runtimeOnly "curse.maven:ftb-ultimine-forge-386134:5671703"
-    //runtimeOnly "curse.maven:ftb-teams-forge-404468:5882217"
-    //runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
+    if (false) {
+        runtimeOnly "curse.maven:ftb-chunks-forge-314906:5968500"
+        runtimeOnly "curse.maven:ftb-library-forge-404465:6016745"
+        runtimeOnly "curse.maven:ftb-ultimine-forge-386134:5671703"
+        runtimeOnly "curse.maven:ftb-teams-forge-404468:5882217"
+        runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
+    }
 
     compileOnly "curse.maven:better-advancements-272515:5850587"
     runtimeOnly "curse.maven:better-advancements-272515:5850587"
@@ -226,10 +228,11 @@ dependencies {
     //runtimeOnly "curse.maven:lootr-361276:6294335"
     //runtimeOnly "curse.maven:the-twilight-forest-227639:6087105"
     //runtimeOnly "maven.modrinth:mekanism:10.7.13.78"
+    //runtimeOnly "curse.maven:modern-ui-352491:6200236"
     if (false) {
         runtimeOnly "curse.maven:eternal-starlight-1080592:6383693"
     }
-    if (true) {
+    if (false) {
         runtimeOnly "curse.maven:tweakerge-915857:6387063"
         runtimeOnly "curse.maven:mafglib-910766:6416901"
     }

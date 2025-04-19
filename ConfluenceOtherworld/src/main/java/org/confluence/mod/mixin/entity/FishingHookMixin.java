@@ -61,7 +61,7 @@ public abstract class FishingHookMixin implements IFishingHook, SelfGetter<Fishi
 
     @Shadow
     @Final
-    private int luck;
+    public int luck;
     @Unique
     private ItemStack confluence$bait = null;
     @Unique

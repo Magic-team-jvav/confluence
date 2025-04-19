@@ -1,6 +1,5 @@
 package org.confluence.mod.mixin;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.server.dedicated.DedicatedServerProperties;
 import net.minecraft.world.level.levelgen.WorldOptions;

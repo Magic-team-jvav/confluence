@@ -23,21 +23,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin {
+    @Shadow
+    @Final
+    private Minecraft minecraft;
 
-    @Shadow @Final private Minecraft minecraft;
+    @Shadow
+    public abstract void render(ItemStack itemStack, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight, int combinedOverlay, BakedModel p_model);
 
-    @Shadow public abstract void render(ItemStack itemStack, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight, int combinedOverlay, BakedModel p_model);
-
-    @Shadow public abstract BakedModel getModel(ItemStack stack, @Nullable Level level, @Nullable LivingEntity entity, int seed);
+    @Shadow
+    public abstract BakedModel getModel(ItemStack stack, @Nullable Level level, @Nullable LivingEntity entity, int seed);
 
     @Inject(method = "renderStatic(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/level/Level;III)V", at = @At(value = "TAIL"))
     private void renderStaticMixin(LivingEntity entity, ItemStack itemStack, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, Level level, int combinedLight, int combinedOverlay, int seed, CallbackInfo ci) {
         Player player = minecraft.player;
-        if(entity == player && player.isUsingItem()) {
+        if (entity == player && player.isUsingItem()) {
             InteractionHand hand = player.getUsedItemHand();
             ItemStack bow = player.getItemInHand(hand);
-            boolean shouldRender = hand == InteractionHand.MAIN_HAND && !leftHand
-                    || hand == InteractionHand.OFF_HAND && leftHand;
+            boolean shouldRender = hand == InteractionHand.MAIN_HAND && !leftHand || hand == InteractionHand.OFF_HAND && leftHand;
             if (shouldRender && bow.getItem() instanceof TerraBowItem) {
                 float charge = player.getTicksUsingItem() / 20.0f;
                 if (charge < 0.1f) return;

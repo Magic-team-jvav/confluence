@@ -26,21 +26,22 @@ import java.util.List;
 @Pseudo
 @Mixin(targets = "com/github/tartaricacid/touhoulittlemaid/entity/projectile/MaidFishingHook")
 public abstract class MaidFishingHookMixin implements SelfGetter<MaidFishingHook> {
-
-    @Shadow @Nullable public abstract EntityMaid getMaidOwner();
+    @Shadow
+    @Nullable
+    public abstract EntityMaid getMaidOwner();
 
     @Inject(method = "getLoot", at = @At("RETURN"), cancellable = true)
     private void getLootMixin(MinecraftServer server, LootParams lootParams, CallbackInfoReturnable<List<ItemStack>> cir) {
-        if(this.getMaidOwner() != null && getMaidOwner().getMainHandItem().getItem() instanceof AbstractFishingPole pole){
+        if (this.getMaidOwner() != null && getMaidOwner().getMainHandItem().getItem() instanceof AbstractFishingPole pole) {
             cir.setReturnValue(server.reloadableRegistries().getLootTable(ModLootTables.FISH).getRandomItems(lootParams));
         }
     }
 
     @Inject(method = "addExtraLoot", at = @At("RETURN"))
     private void addExtraLootMixin(List<ItemStack> randomItems, CallbackInfo ci) {
-        if(getMaidOwner() != null) {
+        if (getMaidOwner() != null) {
             float chance = getMaidOwner().hasEffect(ModEffects.CRATE) ? 0.25F : 0.1F;
-            if(getMaidOwner().level() instanceof ServerLevel level) {
+            if (getMaidOwner().level() instanceof ServerLevel level) {
                 if (level.random.nextFloat() < chance) {
                     randomItems.addAll(level.getServer().reloadableRegistries().getLootTable(ModLootTables.CRATE)
                             .getRandomItems(new LootParams.Builder(level)

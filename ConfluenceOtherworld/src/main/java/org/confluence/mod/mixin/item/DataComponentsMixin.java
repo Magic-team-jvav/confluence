@@ -19,11 +19,12 @@ public abstract class DataComponentsMixin {
         return original.call(min, LibUtils.getMaxStackSize(max));
     }
 
-//    @WrapOperation(method = "<clinit>", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/component/DataComponentMap$Builder;set(Lnet/minecraft/core/component/DataComponentType;Ljava/lang/Object;)Lnet/minecraft/core/component/DataComponentMap$Builder;", ordinal = 0))
-//    private static <T> DataComponentMap.Builder maxStackSize(DataComponentMap.Builder instance, DataComponentType<T> component, T value, Operation<DataComponentMap.Builder> original) {
+//    @WrapWithCondition(method = "<clinit>", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/component/DataComponentMap$Builder;set(Lnet/minecraft/core/component/DataComponentType;Ljava/lang/Object;)Lnet/minecraft/core/component/DataComponentMap$Builder;", ordinal = 0))
+//    private static <T> boolean maxStackSize(DataComponentMap.Builder instance, DataComponentType<T> component, T value) {
 //        if (component == MAX_STACK_SIZE) {
-//            return instance.set(MAX_STACK_SIZE, ModUtils.getMaxStackSize((Integer) value));
+//            instance.set(MAX_STACK_SIZE, LibUtils.getMaxStackSize((Integer) value));
+//            return false;
 //        }
-//        return original.call(instance, component, value);
+//        return true;
 //    }
 }

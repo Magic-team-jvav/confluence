@@ -50,10 +50,10 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> PLATINUM_SHORT_SWORD = register("platinum_short_sword", ModTiers.PLATINUM, 3, -1, SHORT_SWORD.get());
     // 初始速度4，攻击2
 
-    public static final DeferredItem<SwordItem> BREATHING_REED = register("breathing_reed", ModTiers.TITANIUM, 0, -2.4F, SHORT_SWORD.get());
-    public static final DeferredItem<SwordItem> GLADIUS = register("gladius", ModTiers.TITANIUM, 4, -1F, SHORT_SWORD.get());
-    public static final DeferredItem<SwordItem> UMBRELLA = register("umbrella", ModTiers.TITANIUM, 0, -2.4F,ModRarity.BLUE, UMBRELLA_SWORD.get());
-    public static final DeferredItem<SwordItem> TRAGIC_UMBRELLA = register("tragic_umbrella", ModTiers.TITANIUM, 0, -2.4F,ModRarity.BLUE, UMBRELLA_SWORD.get());
+    public static final DeferredItem<SwordItem> BREATHING_REED = register("breathing_reed", ModTiers.UNBREAKABLE, 0, -2.4F, SHORT_SWORD.get());
+    public static final DeferredItem<SwordItem> GLADIUS = register("gladius", ModTiers.UNBREAKABLE, 4, -1F, SHORT_SWORD.get());
+    public static final DeferredItem<SwordItem> UMBRELLA = register("umbrella", ModTiers.UNBREAKABLE, 0, -2.4F,ModRarity.BLUE, UMBRELLA_SWORD.get());
+    public static final DeferredItem<SwordItem> TRAGIC_UMBRELLA = register("tragic_umbrella", ModTiers.UNBREAKABLE, 0, -2.4F,ModRarity.BLUE, UMBRELLA_SWORD.get());
 
 
     //普通宽剑 默认横扫*1.5
@@ -65,7 +65,7 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> TUNGSTEN_BOARD_SWORD = register("tungsten_board_sword", ModTiers.TUNGSTEN, 3, -2.4F, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> GOLDEN_BOARD_SWORD = register("golden_board_sword", ModTiers.GOLD, 3, -2.4F, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> PLATINUM_BOARD_SWORD = register("platinum_board_sword", ModTiers.PLATINUM, 4, -2.4F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> MURAMASA = register("muramasa", ModTiers.TITANIUM, 10, -1, NORMAL_SWORD.get()
+    public static final DeferredItem<SwordItem> MURAMASA = register("muramasa", ModTiers.UNBREAKABLE, 10, -1, NORMAL_SWORD.get()
             .setSweepRange(2.5F)
             .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.2f, AttributeModifier.Operation.ADD_VALUE)
     );
@@ -75,62 +75,62 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> FAKE_SWORD = register("fake_sword",ModTiers.CANDY_CANE, 0, -2.4F, ModRarity.GRAY, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> CANDY_CANE_SWORD = register("candy_cane_sword",ModTiers.CANDY_CANE,2,-1.4f,NORMAL_SWORD.get());
 
-    public static final DeferredItem<SwordItem> FALCON_BLADE = register("falcon_blade",ModTiers.TITANIUM, 3, -1.45F, ModRarity.BLUE, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> ZOMBIE_ARM = register("zombie_arm",ModTiers.TITANIUM,3,-1.4f,NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> MANDIBLE_BLADE = register("mandible_blade", ModTiers.TITANIUM, 4,-1.4f,NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> BONE_SWORD = register("bone_sword",ModTiers.TITANIUM, 5, -1.1F, ModRarity.ORANGE, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> PURPLE_CLUBBERFISH = register("purple_clubberfish", ModTiers.TITANIUM, 10,-3.5f,NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> STYLISH_SCISSORS = register("stylish_scissors",ModTiers.TITANIUM, 3, -1.2f, ModRarity.GREEN, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> EXOTIC_SCIMITAR = register("exotic_scimitar",ModTiers.TITANIUM, 5, -1.1f, ModRarity.GREEN, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> KATANA = register("katana",ModTiers.TITANIUM, 4, -0.3f, ModRarity.BLUE, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> FALCON_BLADE = register("falcon_blade",ModTiers.UNBREAKABLE, 3, -1.45F, ModRarity.BLUE, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> ZOMBIE_ARM = register("zombie_arm",ModTiers.UNBREAKABLE,3,-1.4f,NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> MANDIBLE_BLADE = register("mandible_blade", ModTiers.UNBREAKABLE, 4,-1.4f,NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> BONE_SWORD = register("bone_sword",ModTiers.UNBREAKABLE, 5, -1.1F, ModRarity.ORANGE, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> PURPLE_CLUBBERFISH = register("purple_clubberfish", ModTiers.UNBREAKABLE, 10,-3.5f,NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> STYLISH_SCISSORS = register("stylish_scissors",ModTiers.UNBREAKABLE, 3, -1.2f, ModRarity.GREEN, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> EXOTIC_SCIMITAR = register("exotic_scimitar",ModTiers.UNBREAKABLE, 5, -1.1f, ModRarity.GREEN, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> KATANA = register("katana",ModTiers.UNBREAKABLE, 4, -0.3f, ModRarity.BLUE, NORMAL_SWORD.get());
 
 
 
     //改横扫大小的宽剑
-    public static final DeferredItem<SwordItem> TERRAGRIM = register("terragrim", ModTiers.TITANIUM, -1, 5.0F, ModRarity.ORANGE, BOARD_SWORD.apply(1.2f));
+    public static final DeferredItem<SwordItem> TERRAGRIM = register("terragrim", ModTiers.UNBREAKABLE, -1, 5.0F, ModRarity.ORANGE, BOARD_SWORD.apply(1.2f));
 
     //效果剑
-    public static final DeferredItem<SwordItem> LIGHTS_BANE = register("lights_bane",ModTiers.TITANIUM, 5, -1.0f,
+    public static final DeferredItem<SwordItem> LIGHTS_BANE = register("lights_bane",ModTiers.UNBREAKABLE, 5, -1.0f,
             ModRarity.BLUE,     EFFECT_SWORD.apply(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get()));
-    public static final DeferredItem<SwordItem> BLOOD_BUTCHERER = register("blood_butcherer",ModTiers.TITANIUM, 7, -2.7F,
+    public static final DeferredItem<SwordItem> BLOOD_BUTCHERER = register("blood_butcherer",ModTiers.UNBREAKABLE, 7, -2.7F,
             ModRarity.BLUE,     EFFECT_SWORD.apply(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get()));
-    public static final DeferredItem<SwordItem> VOLCANO = register("volcano",ModTiers.TITANIUM, 18, -3F,
+    public static final DeferredItem<SwordItem> VOLCANO = register("volcano",ModTiers.UNBREAKABLE, 18, -3F,
             ModRarity.ORANGE,   EFFECT_SWORD.apply(TEEffectStrategies.Components.HELL_FIRE_EFFECT.get())
                     .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2f, AttributeModifier.Operation.ADD_VALUE)
                     .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.5f, AttributeModifier.Operation.ADD_VALUE)
     );
-    public static final DeferredItem<SwordItem> BAT_BAT = register("bat_bat", ModTiers.TITANIUM,12,-3.7f,
+    public static final DeferredItem<SwordItem> BAT_BAT = register("bat_bat", ModTiers.UNBREAKABLE,12,-3.7f,
             ModRarity.ORANGE,   EFFECT_SWORD.apply(ModEffectStrategies.Components.BAT_FANG_EFFECT.get()));
-    public static final DeferredItem<SwordItem> TENTACLE_MACE = register("tentacle_mace",ModTiers.TITANIUM, 5, -1.4F,
+    public static final DeferredItem<SwordItem> TENTACLE_MACE = register("tentacle_mace",ModTiers.UNBREAKABLE, 5, -1.4F,
             ModRarity.GREEN,    EFFECT_SWORD.apply(ModEffectStrategies.Components.TENTACLE_SPIKES_EFFECT.get()));
-    public static final DeferredItem<SwordItem> BEE_KEEPER = register("bee_keeper",ModTiers.TITANIUM, 11, -2.4F,
+    public static final DeferredItem<SwordItem> BEE_KEEPER = register("bee_keeper",ModTiers.UNBREAKABLE, 11, -2.4F,
             ModRarity.GREEN,    EFFECT_SWORD.apply(ModEffectStrategies.Components.BEE_KEEPER_EFFECT.get()).addTooltip(2));
 
 
 
     //弹幕剑
-    public static final DeferredItem<SwordItem> ICE_BLADE = register("ice_blade",ModTiers.TITANIUM, 5, -1.0F,
+    public static final DeferredItem<SwordItem> ICE_BLADE = register("ice_blade",ModTiers.UNBREAKABLE, 5, -1.0F,
             ModRarity.BLUE,     PROJ_SWORD.apply(SwordProjectileComponent.ICE_PROJ));
-    public static final DeferredItem<SwordItem> STARFURY = register("starfury",ModTiers.TITANIUM, 6, -1.1F,
+    public static final DeferredItem<SwordItem> STARFURY = register("starfury",ModTiers.UNBREAKABLE, 6, -1.1F,
             ModRarity.GREEN,    PROJ_SWORD.apply(SwordProjectileComponent.STAR_FURY_PROJ)  .addTooltip(p -> p.withStyle(style -> style.withColor(0xe44189))).addTooltip(p -> p.withStyle(style -> style.withColor(0xe44189))));
-    public static final DeferredItem<SwordItem> ENCHANTED_SWORD = register("enchanted_sword", ModTiers.TITANIUM, 7, -1.1F,
+    public static final DeferredItem<SwordItem> ENCHANTED_SWORD = register("enchanted_sword", ModTiers.UNBREAKABLE, 7, -1.1F,
             ModRarity.ORANGE,   PROJ_SWORD.apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ).addTooltip(p -> p.withStyle(style -> style.withColor(0x4156e4))).addTooltip(p -> p.withStyle(style -> style.withColor(0x4156e4))));
-    public static final DeferredItem<SwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.TITANIUM, 5, -1.1F,
+    public static final DeferredItem<SwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.UNBREAKABLE, 5, -1.1F,
             ModRarity.GREEN,   PROJ_SWORD.apply(SwordProjectileComponent.GRASS_PROJ));
 
     // 光剑
-    public static final DeferredItem<SwordItem> RED_LIGHT_SABER = register("red_light_saber", ()->new LightSaber.Red(ModTiers.TITANIUM, ModRarity.BLUE,15, -2));
-    public static final DeferredItem<SwordItem> ORANGE_LIGHT_SABER = register("orange_light_saber", ()->new LightSaber.Orange(ModTiers.TITANIUM, ModRarity.BLUE,15, -2));
-    public static final DeferredItem<SwordItem> YELLOW_LIGHT_SABER = register("yellow_light_saber", ()->new LightSaber.Yellow(ModTiers.TITANIUM, ModRarity.BLUE,15, -2));
-    public static final DeferredItem<SwordItem> GREEN_LIGHT_SABER = register("green_light_saber", ()->new LightSaber.Green(ModTiers.TITANIUM, ModRarity.BLUE,15, -2));
-    public static final DeferredItem<SwordItem> BLUE_LIGHT_SABER = register("blue_light_saber", ()->new LightSaber.Blue(ModTiers.TITANIUM, ModRarity.BLUE,15, -2));
-    public static final DeferredItem<SwordItem> PURPLE_LIGHT_SABER = register("purple_light_saber", ()->new LightSaber.Purple(ModTiers.TITANIUM, ModRarity.BLUE,15, -2));
-    public static final DeferredItem<SwordItem> WHITE_LIGHT_SABER = register("white_light_saber", ()->new LightSaber.White(ModTiers.TITANIUM, ModRarity.BLUE,15, -2));
+    public static final DeferredItem<SwordItem> RED_LIGHT_SABER = register("red_light_saber", ()->new LightSaber.Red(ModTiers.UNBREAKABLE, ModRarity.BLUE,15, -2));
+    public static final DeferredItem<SwordItem> ORANGE_LIGHT_SABER = register("orange_light_saber", ()->new LightSaber.Orange(ModTiers.UNBREAKABLE, ModRarity.BLUE,15, -2));
+    public static final DeferredItem<SwordItem> YELLOW_LIGHT_SABER = register("yellow_light_saber", ()->new LightSaber.Yellow(ModTiers.UNBREAKABLE, ModRarity.BLUE,15, -2));
+    public static final DeferredItem<SwordItem> GREEN_LIGHT_SABER = register("green_light_saber", ()->new LightSaber.Green(ModTiers.UNBREAKABLE, ModRarity.BLUE,15, -2));
+    public static final DeferredItem<SwordItem> BLUE_LIGHT_SABER = register("blue_light_saber", ()->new LightSaber.Blue(ModTiers.UNBREAKABLE, ModRarity.BLUE,15, -2));
+    public static final DeferredItem<SwordItem> PURPLE_LIGHT_SABER = register("purple_light_saber", ()->new LightSaber.Purple(ModTiers.UNBREAKABLE, ModRarity.BLUE,15, -2));
+    public static final DeferredItem<SwordItem> WHITE_LIGHT_SABER = register("white_light_saber", ()->new LightSaber.White(ModTiers.UNBREAKABLE, ModRarity.BLUE,15, -2));
 
 
     // 特殊剑
-    public static final DeferredItem<SwordItem> CROWBAR = register("crowbar",ModTiers.TITANIUM, 16, -1.0F,ModRarity.MASTER, BOARD_SWORD.apply(2.0f));
-    public static final DeferredItem<SwordItem> DEVELOPER_SWORD = register("developer_sword",ModTiers.TITANIUM, 20, 20F, ModRarity.MASTER,
+    public static final DeferredItem<SwordItem> CROWBAR = register("crowbar",ModTiers.UNBREAKABLE, 16, -1.0F,ModRarity.MASTER, BOARD_SWORD.apply(2.0f));
+    public static final DeferredItem<SwordItem> DEVELOPER_SWORD = register("developer_sword",ModTiers.UNBREAKABLE, 20, 20F, ModRarity.MASTER,
 //            Stream.of(
             SwordPrefabs.BOARD_SWORD.apply(10.0f)                                //宽剑
                     .addAttributeModifier(Attributes.MOVEMENT_SPEED,1.5f,
@@ -146,9 +146,9 @@ public class SwordItems {
     );
 
     // 赞助者物品
-    public static final DeferredItem<SwordItem> BROKEN_SWEET_SWORD = register("broken_sweet_sword",()->new SweetSword(ModTiers.TITANIUM,ModRarity.EXPERT, 8, -1.0F, new BaseSwordItem.ModifierBuilder()));
+    public static final DeferredItem<SwordItem> BROKEN_SWEET_SWORD = register("broken_sweet_sword",()->new SweetSword(ModTiers.UNBREAKABLE,ModRarity.EXPERT, 3, -2.0F, new BaseSwordItem.ModifierBuilder()));
 
-    public static final DeferredItem<SwordItem> SWEET_SWORD = register("sweet_sword",()->new SweetSword(ModTiers.TITANIUM,ModRarity.EXPERT, 16, -1.0F, new BaseSwordItem.ModifierBuilder().addTooltip(p -> p.withStyle(style -> style.withColor(0xe44189)))
+    public static final DeferredItem<SwordItem> SWEET_SWORD = register("sweet_sword",()->new SweetSword(ModTiers.UNBREAKABLE,ModRarity.EXPERT, 7, -2.0F, new BaseSwordItem.ModifierBuilder().addTooltip(p -> p.withStyle(style -> style.withColor(0xe44189)))
             .modifyProperties(p->p.food(new FoodProperties(1,1,false,2, Optional.of(BROKEN_SWEET_SWORD.get().getDefaultInstance()), List.of(
                             new FoodProperties.PossibleEffect(()->new MobEffectInstance(ModEffects.DELICIOUS, 200),1.0f)
             ))))

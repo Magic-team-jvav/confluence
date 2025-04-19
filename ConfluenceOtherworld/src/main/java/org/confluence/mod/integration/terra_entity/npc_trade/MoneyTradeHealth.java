@@ -21,8 +21,8 @@ public record MoneyTradeHealth(int health, long cost) implements IMoneyTrade, IT
 
 
     @Override
-    public void onTrade(ServerPlayer player, AbstractTerraNPC npc) {
-        IMoneyTrade.super.onTrade(player, npc);
+    public void onTrade(ServerPlayer player, AbstractTerraNPC npc,int index) {
+        IMoneyTrade.super.onTrade(player, npc, index);
     }
 
     @Override
@@ -31,14 +31,14 @@ public record MoneyTradeHealth(int health, long cost) implements IMoneyTrade, IT
     }
 
 
-    public boolean canTrade(Player player, AbstractTerraNPC npc) {
-        return IMoneyTrade.super.canTrade(player, npc) && ITradeHealth.super.canTrade(player, npc);
+    public boolean canTrade(Player player, AbstractTerraNPC npc,int index) {
+        return IMoneyTrade.super.canTrade(player, npc, index) && ITradeHealth.super.canTrade(player, npc,index);
     }
 
 
     @Override
-    public void onTradeSuccess(ServerPlayer player, AbstractTerraNPC npc) {
-        ITradeHealth.super.onTrade(player, npc);
+    public void onTradeSuccess(ServerPlayer player, AbstractTerraNPC npc, int index) {
+        ITradeHealth.super.onTrade(player, npc, index);
     }
 
     @Override

@@ -54,13 +54,13 @@ public class MoneyTradeHealthFull implements IMoneyTrade, ITradeHealth {
     }
 
     @Override
-    public boolean canTrade(Player player, AbstractTerraNPC npc) {
-        return IMoneyTrade.super.canTrade(player, npc) && ITradeHealth.super.canTrade(player, npc);
+    public boolean canTrade(Player player, AbstractTerraNPC npc,int index) {
+        return IMoneyTrade.super.canTrade(player, npc, index) && ITradeHealth.super.canTrade(player, npc, index);
     }
 
     @Override
-    public void onTrade(ServerPlayer player, AbstractTerraNPC npc) {
-        IMoneyTrade.super.onTrade(player, npc);
+    public void onTrade(ServerPlayer player, AbstractTerraNPC npc, int index) {
+        IMoneyTrade.super.onTrade(player, npc, 0);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class MoneyTradeHealthFull implements IMoneyTrade, ITradeHealth {
 
 
     @Override
-    public void onTradeSuccess(ServerPlayer player, AbstractTerraNPC npc) {
+    public void onTradeSuccess(ServerPlayer player, AbstractTerraNPC npc, int index) {
         player.setHealth(player.getMaxHealth());
     }
 

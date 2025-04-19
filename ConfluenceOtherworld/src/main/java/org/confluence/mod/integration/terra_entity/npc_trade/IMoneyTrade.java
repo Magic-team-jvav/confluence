@@ -34,21 +34,21 @@ public interface IMoneyTrade extends ITrade {
         return (long) (cost() * discount);
     }
 
-    default boolean canTrade(Player player, AbstractTerraNPC npc) {
+    default boolean canTrade(Player player, AbstractTerraNPC npc,int index) {
         return PlayerUtils.getMoney(player) >= getCost(player, npc);
     }
 
     @Override
-    default void onTrade(ServerPlayer player, AbstractTerraNPC npc) {
+    default void onTrade(ServerPlayer player, AbstractTerraNPC npc, int index) {
         if(PlayerUtils.tryCostMoney(player, this.getCost(player, npc))) {
-            onTradeSuccess(player, npc);
+            onTradeSuccess(player, npc, index);
         }
     }
 
     /**
      * 重复确认钱币足够
      */
-    void onTradeSuccess(ServerPlayer player, AbstractTerraNPC npc);
+    void onTradeSuccess(ServerPlayer player, AbstractTerraNPC npc, int index);
 
     @OnlyIn(Dist.CLIENT)
     @Override

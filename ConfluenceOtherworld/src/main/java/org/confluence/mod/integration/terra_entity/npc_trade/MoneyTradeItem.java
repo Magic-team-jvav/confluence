@@ -19,12 +19,12 @@ public record MoneyTradeItem(ItemStack result, long cost)implements ITradeItem, 
 
 
     @Override
-    public void onTrade(ServerPlayer player, AbstractTerraNPC npc) {
-        IMoneyTrade.super.onTrade(player, npc);
+    public void onTrade(ServerPlayer player, AbstractTerraNPC npc, int index) {
+        IMoneyTrade.super.onTrade(player, npc, index);
     }
 
     @Override
-    public void onTradeSuccess(ServerPlayer player, AbstractTerraNPC npc) {
+    public void onTradeSuccess(ServerPlayer player, AbstractTerraNPC npc, int index) {
         ItemStack result = this.result();
         if(player.getInventory().getFreeSlot() ==-1){
             player.drop(result.copy(),false);

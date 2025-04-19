@@ -121,6 +121,7 @@ public final class ModBlocks {
      * @param delta 偏差值
      * @return 爆炸抗性
      */
+    @SuppressWarnings("deprecation")
     public static float getObsidianBasedExplosionResistance(float delta) {
         return Blocks.OBSIDIAN.getExplosionResistance() + delta;
     }

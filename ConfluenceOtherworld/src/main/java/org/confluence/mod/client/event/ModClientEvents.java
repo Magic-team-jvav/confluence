@@ -215,6 +215,16 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BOMB_FISH_ENTITY.get(), BombFishEntityRenderer::new);
         event.registerEntityRenderer(DIRT_BOMB.get(), DirtBombEntityRenderer::new);
         event.registerEntityRenderer(STICKY_DIRT_BOMB.get(), StickyDirtBombEntityRenderer::new);
+        event.registerEntityRenderer(GRENADE.get(), BaseGrenadeEntityRenderer::new);
+        event.registerEntityRenderer(BOUNCY_GRENADE.get(), BouncyGrenadeEntityRenderer::new);
+        event.registerEntityRenderer(STICKY_GRENADE.get(), StickyGrenadeEntityRenderer::new);
+        event.registerEntityRenderer(DYNAMITE.get(), BaseDynamiteEntityRenderer::new);
+        event.registerEntityRenderer(BOUNCY_DYNAMITE.get(), BouncyDynamiteEntityRenderer::new);
+        event.registerEntityRenderer(STICKY_DYNAMITE.get(), StickyDynamiteEntityRenderer::new);
+        event.registerEntityRenderer(DRY_BOMB.get(), DryBombEntityRenderer::new);
+        event.registerEntityRenderer(WET_BOMB.get(), WetBombEntityRenderer::new);
+        event.registerEntityRenderer(LAVA_BOMB.get(), LavaBombEntityRenderer::new);
+        event.registerEntityRenderer(HONEY_BOMB.get(), HoneyBombEntityRenderer::new);
 
         event.registerEntityRenderer(BASE_MANA_STAFF_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(VILETHRON_PROJECTILE.get(), VilethronProjectileRenderer::new);
@@ -229,12 +239,8 @@ public final class ModClientEvents {
         event.registerEntityRenderer(LIGHTS_BANE_PROJECTILE.get(), LightsBaneProjectileRenderer::new);
         event.registerEntityRenderer(GRASS_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, null, null));
         event.registerEntityRenderer(BEE_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, new BeeProjectileModel(c.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
-
-
         event.registerEntityRenderer(ARROW_PROJECTILE.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(BEE_ARROW.get(), c -> new ForwardProjRenderer<>(c, new BeeProjectileModel(c.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
-
-
         event.registerEntityRenderer(BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(FOLLOWER_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(EXPLODE_BOULDER.get(), BoulderRenderer::new);
@@ -245,22 +251,21 @@ public final class ModClientEvents {
         event.registerEntityRenderer(JAVELIN_PROJECTILE.get(), SpearRenderer::new);
         event.registerEntityRenderer(SHURIKEN_PROJECTILE.get(), ShurikenProjectileRenderer::new);
         event.registerEntityRenderer(SPIKY_BALL_PROJECTILE.get(), NoopRenderer::new); // todo 模型
-        event.registerEntityRenderer(GRENADE.get(), BaseGrenadeEntityRenderer::new);
-        event.registerEntityRenderer(BOUNCY_GRENADE.get(), BouncyGrenadeEntityRenderer::new);
-        event.registerEntityRenderer(STICKY_GRENADE.get(), StickyGrenadeEntityRenderer::new);
-        event.registerEntityRenderer(DYNAMITE.get(), BaseDynamiteEntityRenderer::new);
-        event.registerEntityRenderer(BOUNCY_DYNAMITE.get(), BouncyDynamiteEntityRenderer::new);
-        event.registerEntityRenderer(STICKY_DYNAMITE.get(), StickyDynamiteEntityRenderer::new);
-        event.registerEntityRenderer(DRY_BOMB.get(), DryBombEntityRenderer::new);
-        event.registerEntityRenderer(WET_BOMB.get(), WetBombEntityRenderer::new);
-        event.registerEntityRenderer(LAVA_BOMB.get(), LavaBombEntityRenderer::new);
-        event.registerEntityRenderer(HONEY_BOMB.get(), HoneyBombEntityRenderer::new);
         event.registerEntityRenderer(THROWN_WATER_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(MAGIC_DAGGER_PROJECTILE.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(CRYSTAL_STORM_PROJECTILE.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(CURSED_FLAMES_PROJECTILE.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(FLOWER_PETAL_PROJECTILE.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(TITANIUM_SHARDS_PROJECTILE.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(FALLING_STAR_ITEM_ENTITY.get(), FallingStarRenderer::new);
+        event.registerEntityRenderer(TREASURE_BAG_ITEM_ENTITY.get(), TreasureBagRenderer::new);
+        event.registerEntityRenderer(COIN_PORTAL.get(), NoopRenderer::new);
+        event.registerEntityRenderer(THROWN_POWDER.get(), NoopRenderer::new);
+        event.registerEntityRenderer(ROPE_COILS.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(ICE_TOFU_BRICK_PROJECTILE.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(BODY_PART.get(), BodyPartRenderer::new);
+        event.registerEntityRenderer(TARGET_DUMMY.get(), TargetDummyRenderer::new);
+        event.registerEntityRenderer(FLAME_CLOUD.get(), NoopRenderer::new); // todo 模型
 
         event.registerEntityRenderer(HOTLINE_FISHING_HOOK.get(), HotlineFishingHookRenderer::new);
         event.registerEntityRenderer(BASE_FISHING_HOOK.get(), BaseFishingHookRenderer::new);
@@ -292,16 +297,6 @@ public final class ModClientEvents {
         event.registerEntityRenderer(DEMONIC_HELLCART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
         event.registerEntityRenderer(MEOWMERE_MINECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
         event.registerEntityRenderer(DIGGING_MOLECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
-
-        event.registerEntityRenderer(FALLING_STAR_ITEM_ENTITY.get(), FallingStarRenderer::new);
-        event.registerEntityRenderer(TREASURE_BAG_ITEM_ENTITY.get(), TreasureBagRenderer::new);
-        event.registerEntityRenderer(COIN_PORTAL.get(), NoopRenderer::new);
-        event.registerEntityRenderer(THROWN_POWDER.get(), NoopRenderer::new);
-        event.registerEntityRenderer(ROPE_COILS.get(), ThrownItemRenderer::new);
-        event.registerEntityRenderer(ICE_TOFU_BRICK_PROJECTILE.get(), ThrownItemRenderer::new);
-        event.registerEntityRenderer(BODY_PART.get(), BodyPartRenderer::new);
-
-        event.registerEntityRenderer(TARGET_DUMMY.get(), TargetDummyRenderer::new);
 
 
         event.registerBlockEntityRenderer(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new AltarBlockModel()));

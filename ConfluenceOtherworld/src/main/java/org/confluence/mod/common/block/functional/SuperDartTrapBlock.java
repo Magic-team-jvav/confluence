@@ -13,9 +13,6 @@ import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 
-import static net.minecraft.world.level.block.DirectionalBlock.FACING;
-import static net.minecraft.world.level.block.state.properties.BlockStateProperties.TRIGGERED;
-
 public class SuperDartTrapBlock extends DartTrapBlock {
     public SuperDartTrapBlock(Properties properties) {
         super(properties);

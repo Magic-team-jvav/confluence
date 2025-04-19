@@ -1,5 +1,7 @@
 package org.confluence.mod.common.block.natural;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,11 +32,12 @@ public class CloudBlockTrampoline extends CloudBlock {
     public static final BooleanProperty SOUTH = PipeBlock.SOUTH;
     public static final BooleanProperty WEST = PipeBlock.WEST;
     private static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 2.0, 16.0);
-    protected static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = PipeBlock.PROPERTY_BY_DIRECTION
-            .entrySet()
-            .stream()
-            .filter(f -> f.getKey().getAxis().isHorizontal())
-            .collect(Util.toMap());
+    protected static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = ImmutableMap.copyOf(Util.make(Maps.newEnumMap(Direction.class), map -> {
+        map.put(Direction.NORTH, NORTH);
+        map.put(Direction.EAST, EAST);
+        map.put(Direction.SOUTH, SOUTH);
+        map.put(Direction.WEST, WEST);
+    }));
 
     public CloudBlockTrampoline(Properties properties) {
         super(properties);
@@ -51,10 +54,10 @@ public class CloudBlockTrampoline extends CloudBlock {
         BlockGetter blockgetter = context.getLevel();
         BlockPos blockpos = context.getClickedPos();
         BlockState state = this.defaultBlockState();
-        for (Direction dir : PROPERTY_BY_DIRECTION.keySet()) {
-            BlockPos adjacentPos = blockpos.relative(dir);
+        for (Map.Entry<Direction, BooleanProperty> entry : PROPERTY_BY_DIRECTION.entrySet()) {
+            BlockPos adjacentPos = blockpos.relative(entry.getKey());
             BlockState adjacentState = blockgetter.getBlockState(adjacentPos);
-            state = state.setValue(PROPERTY_BY_DIRECTION.get(dir), connectsTo(adjacentState, dir.getOpposite()));
+            state = state.setValue(entry.getValue(), connectsTo(adjacentState, entry.getKey().getOpposite()));
         }
         return state;
     }
@@ -66,11 +69,11 @@ public class CloudBlockTrampoline extends CloudBlock {
     @Override
     protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         if (facing.getAxis().getPlane() == Direction.Plane.HORIZONTAL) {
-            for (Direction dir : PROPERTY_BY_DIRECTION.keySet()) {
-                BlockPos adjacentPos = currentPos.relative(dir);
+            for (Map.Entry<Direction, BooleanProperty> entry : PROPERTY_BY_DIRECTION.entrySet()) {
+                BlockPos adjacentPos = currentPos.relative(entry.getKey());
                 BlockState adjacentState = level.getBlockState(adjacentPos);
-                boolean connected = this.connectsTo(adjacentState, dir.getOpposite());
-                state = state.setValue(PROPERTY_BY_DIRECTION.get(dir), connected);
+                boolean connected = this.connectsTo(adjacentState, entry.getKey().getOpposite());
+                state = state.setValue(entry.getValue(), connected);
             }
             return state;
         } else {

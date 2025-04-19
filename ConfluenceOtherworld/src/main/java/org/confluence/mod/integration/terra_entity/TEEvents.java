@@ -37,7 +37,7 @@ public class TEEvents {
 //            if(npc.trades != null) { // 不是所有npc都有菜单
                 boolean canForge = npc.getType() == TENpcEntities.GOBLIN_TINKERER.get();
                 player.openMenu(new SimpleMenuProvider((id, inventory, player1) ->
-                        new NPCTradesMenu(id, inventory, npc.trades, canForge), Component.translatable("container.confluence.npc_shop")));
+                        new NPCTradesMenu(id, inventory, npc.getTrades(), canForge), Component.translatable("container.confluence.npc_shop")));
 
 //            }
         });

@@ -10,7 +10,6 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeHealth;
 import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeHealthFull;
 import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeItem;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -18,11 +17,13 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 //import org.confluence.terra_guns.common.init.TGItems;
-import org.confluence.terraentity.data.gen.recipe.TENPCShopProvider;
 import org.confluence.terraentity.entity.npc.NPCTrades;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.init.item.TEWhipItems;
 import org.confluence.terraentity.registries.npc_trade.ITrade;
+import org.confluence.terraentity.registries.npc_trade.variant.ItemTradeItem;
+import org.confluence.terraentity.registries.npc_trade.variant.TradeTask;
+import org.confluence.terraentity.registries.npc_trade_task.variant.ProgressTradeTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,14 +78,20 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .build());
 
         recipe(TENpcEntities.NURSE.getId()).addRecipe(new Builder()
-//                .add(10,100)
-//                .add(20,200)
-//                .add(30,300)
-//                .add(40,400)
-//                .add(50,500)
                 .add(MoneyTradeHealthFull.create())
                 .build());
 
+        recipe(TENpcEntities.ANGLER.getId()).addRecipe(new Builder()
+                // 渔夫任务
+                .add(TradeTask.create(new ProgressTradeTask(List.of(
+                        ItemTradeItem.of(ConsumableItems.BOMB.toStack(),FoodItems.ARMORED_CAVE_FISH.toStack()),
+                        ItemTradeItem.of(ConsumableItems.DYNAMITE.toStack(),FoodItems.COOK_FISH.toStack()),
+                        ItemTradeItem.of(ConsumableItems.GRENADE.toStack(),FoodItems.CHAOS_FISH.toStack()),
+                        ItemTradeItem.of(ConsumableItems.PURIFICATION_POWDER.toStack(),FoodItems.GOLDFISH.toStack())
+                ))))
+                // 这里还可以加其他的任务或者交易栏
+//                .add(FoodItems.PAD_THAI.get(), 750)
+                .build());
     }
 
     protected Appender<NPCTrades> recipe(ResourceLocation id) {
@@ -105,28 +112,33 @@ public class NPCShopProvider extends AbstractRecipeProvider {
             this.trades = new ArrayList<>();
         }
 
+        /**
+         * 钱换物
+         */
         public Builder add(ItemStack it, int cost) {
             trades.add(new MoneyTradeItem(it, cost));
             return this;
         }
-
+        /**
+         * 钱换物
+         */
         public Builder add(ItemLike it, int amount, int cost) {
             return add(new ItemStack(it, amount), cost);
         }
-
+        /**
+         * 钱换物
+         */
         public Builder add(ItemLike it, int cost) {
             return add(new ItemStack(it), cost);
         }
 
-//        /**
-//         * 分等级的回血
-//         * @param health 血量
-//         * @param cost 价格
-//         */
-//        public Builder add(int health, int cost) {
-//            trades.add(new MoneyTradeHealth(health, cost));
-//            return this;
-//        }
+        /**
+         * 通用交易表
+         */
+        public Builder add(ITrade trade){
+            trades.add(trade);
+            return this;
+        }
 
         /**
          * 护士独有的回满血

@@ -87,12 +87,8 @@ public interface IMoneyTrade extends ITrade {
         }
 
         // 物品花费
-        AbstractTerraNPC entity = null;
-        IPlayer player = ((IPlayer)Minecraft.getInstance().player);
-        if (player != null && player.terra_entity$getInteractingEntity() instanceof AbstractTerraNPC npc) {
-            entity = npc;
-        }
-        int[] coins = PlayerUtils.decodeCoin(getCost(Minecraft.getInstance().player, entity));
+
+        int[] coins = PlayerUtils.decodeCoin(getCost(Minecraft.getInstance().player, npc));
         x = startx + 165;
         y = starty + 6 + 13* 3;
         int index = -1;

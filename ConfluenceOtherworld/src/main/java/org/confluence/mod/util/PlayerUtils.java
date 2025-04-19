@@ -126,9 +126,9 @@ public final class PlayerUtils {
         if (player.isInFluidType() && TCUtils.hasAccessoriesType(player, TCItems.FLOAT$ON$LIQUID$SURFACE)) base += 5.0F;
         if (player.hasEffect(ModEffects.TIPSY)) base += 5.0F;
         Level level = player.level();
-        long dayTime = level.dayTime();
         if (level.isRaining()) base *= 1.1F;
         else if (level.isThundering()) base *= 1.2F;
+        long dayTime = level.dayTime();
         if (isWithinDayTime(4, 30, 6, 0, dayTime)) base *= 1.3F; // 04:30 -> 06:00
         else if (isWithinDayTime(9, 0, 15, 0, dayTime)) base *= 0.8F; // 09:00 -> 15:00
         else if (isWithinDayTime(18, 0, 19, 30, dayTime)) base *= 1.3F; // 18:00 -> 19:30

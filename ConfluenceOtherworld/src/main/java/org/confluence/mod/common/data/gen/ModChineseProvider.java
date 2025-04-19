@@ -1874,8 +1874,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(PickaxeItems.VORTEX_PICKAXE.get(), "星旋镐");
         add(PickaxeItems.NEBULA_PICKAXE.get(), "星云镐");
         add(PickaxeItems.STARDUST_PICKAXE.get(), "星尘镐");
-        add(PickaxeAxeItems.SHROOMITE_DIGGING_CLAW.get(), "蘑菇矿挖爪");
 
+        add(PickaxeAxeItems.SHROOMITE_DIGGING_CLAW.get(), "蘑菇矿挖爪");
         add(PickaxeAxeItems.PICKSAW.get(), "锯刃镐");
         add(PickaxeAxeItems.PICKAXE_AXE.get(), "镐斧");
 
@@ -2122,6 +2122,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.FRAGILE_PINK_BRICKS.get(), "易碎粉色地牢砖");
         add(FunctionalBlocks.LAND_MINE.get(), "地雷");
         add(FunctionalBlocks.SUPER_DART_TRAP.get(), "超级飞镖机关");
+        add(FunctionalBlocks.FLAME_TRAP.get(), "烈焰机关");
 
         add(ModBlocks.TOMBSTONE.get(), "墓石");
         add(ModBlocks.GRAVE_MARKER.get(), "墓石碑");
@@ -2481,7 +2482,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.MYTHRIL_CHESTPLATE.get(), "秘银胸甲");
         add(ArmorItems.MYTHRIL_LEGGINGS.get(), "秘银护腿");
         add(ArmorItems.MYTHRIL_BOOTS.get(), "秘银靴子");
-        
+
         add(ArmorItems.ORICHALCUM_HEADGEAR.get(), "山铜头饰");
         add(ArmorItems.ORICHALCUM_MASK.get(), "山铜面具");
         add(ArmorItems.ORICHALCUM_HELMET.get(), "山铜头盔");
@@ -2510,7 +2511,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.HALLOWED_CHESTPLATE.get(), "神圣胸甲");
         add(ArmorItems.HALLOWED_LEGGINGS.get(), "神圣护腿");
         add(ArmorItems.HALLOWED_BOOTS.get(), "神圣靴子");
-        
+
         add(ArmorItems.GOGGLES.get(), "护目镜");
         add(ArmorItems.WIZARD_HAT.get(), "巫师帽");
         add(ArmorItems.MAGIC_HAT.get(), "魔法帽");

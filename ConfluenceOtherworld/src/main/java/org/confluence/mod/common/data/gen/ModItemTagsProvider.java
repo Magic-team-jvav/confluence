@@ -991,7 +991,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ConsumableItems.GOODIE_BAG.get(),
                 PaintItems.ECHO_COATING.get(),
                 FoodItems.BOULDER_BREAD.get(),
-                FunctionalBlocks.ANNOUNCEMENT_BOX.asItem(),
                 TEItems.HOUSE_DETECTOR.get(),
                 ToolItems.TARGET_DUMMY.get(),
                 ModItems.TOKYO_TEDDY_BEAR.get(),
@@ -1093,7 +1092,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.MECHANICAL_FRAGILE_SANDSTONE.asItem(),
                 FunctionalBlocks.MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.asItem(),
                 FunctionalBlocks.LAND_MINE.asItem(),
-                FunctionalBlocks.SUPER_DART_TRAP.asItem()
+                FunctionalBlocks.SUPER_DART_TRAP.asItem(),
+                FunctionalBlocks.FLAME_TRAP.asItem()
         );
     }
 

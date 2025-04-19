@@ -87,7 +87,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:leaves_wand",
+          "name": "confluence:leaf_wand",
           "weight": 2
         },
         {

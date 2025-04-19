@@ -1936,7 +1936,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.EBONY_CATTAILS.get(), "腐化香蒲");
         add(ModItems.TR_CRIMSON_CATTAILS.get(), "猩红香蒲");
         add(ModItems.LIVING_WOOD_WAND.get(), "生命木魔棒");
-        add(ModItems.LEAVES_WAND.get(), "树叶魔棒");
+        add(ModItems.LEAF_WAND.get(), "树叶魔棒");
         add(ModItems.LIVING_MAHOGANY_WAND.get(), "生命红木魔棒");
         add(ModItems.RICH_MAHOGANY_LEAF_WAND.get(), "红木树叶魔棒");
 

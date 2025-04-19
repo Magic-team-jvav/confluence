@@ -6,7 +6,7 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import org.confluence.mod.common.init.ModEffects;
 
-public class FoodType {
+public class ModFoodProperties {
     //常规熟肉
     public static FoodProperties preparedMeatProperties(int nutrition, float saturationModifier) {
         return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(saturationModifier).fast().alwaysEdible()

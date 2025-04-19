@@ -3,6 +3,7 @@ package org.confluence.mod.common.event.game.entity;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -12,12 +13,15 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Saddleable;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
@@ -41,6 +45,7 @@ import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.MinecartItems;
+import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
@@ -49,6 +54,7 @@ import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.network.s2c.*;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -134,6 +140,18 @@ public final class PlayerEvents {
     public static void playerInteract$EntityInteract(PlayerInteractEvent.EntityInteract event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer && event.getTarget() instanceof Saddleable saddleable && saddleable.isSaddled()) {
             PlayerUtils.awardAchievement(serverPlayer, "the_cavalry");
+        }
+        if (event.getEntity() instanceof ServerPlayer serverPlayer && event.getTarget() instanceof LivingEntity targetEntity) {
+            ItemStack item = serverPlayer.getMainHandItem();
+            boolean isWaterBottle = ModUtils.isWaterBottle(item);
+            if (isWaterBottle && targetEntity.hasEffect(ModEffects.CHOKING)) {
+                targetEntity.removeEffect(ModEffects.CHOKING);
+                ItemStack emptyBottle = item.is(PotionItems.BOTTLED_WATER) ? new ItemStack(PotionItems.BOTTLE.get()) : new ItemStack(Items.GLASS_BOTTLE);
+                if (!serverPlayer.isCreative()) {
+                    serverPlayer.getInventory().add(emptyBottle);
+                    item.shrink(1);
+                }
+            }
         }
     }
 

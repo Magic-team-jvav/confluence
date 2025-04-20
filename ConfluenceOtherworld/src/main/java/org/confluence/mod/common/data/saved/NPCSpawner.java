@@ -19,6 +19,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.common.Tags;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.mixed.IAbstractTerraNPC;
 import org.confluence.mod.util.PlayerUtils;
@@ -143,34 +145,62 @@ public class NPCSpawner {
         }
     }
 
+    // 每两分钟生成一位NPC
     public void checkNpcRespawn(ServerLevel serverLevel) {
         for (ServerPlayer player : serverLevel.players()) {
             BlockPos pos = getNpcSpawnPos(player);
             Region region = new Region(pos);
-            for (EntityType<?> entityType : npcSpawned) { // 省去了两分钟冷却
-                if (hasNPCAlive(region, entityType)) continue;
-                spawnAtPos(serverLevel, pos, entityType);
+            for (EntityType<?> entityType : npcSpawned) {
+                if (!hasNPCAlive(region, entityType) && spawnAtPos(serverLevel, pos, entityType)) {
+                    return;
+                }
             }
-            trySpawnMerchant(player, pos, region);
-            trySpawnNurse(player, pos, region);
+            if (trySpawnMerchant(player, pos, region)) return;
+            if (trySpawnNurse(player, pos, region)) return;
+            if (trySpawnDemolitionist(player, pos, region)) return;
+            if (trySpawnDyeTrader(player, pos, region)) return;
         }
     }
 
     // 省去“所有玩家钱币总和50银”的条件，改为单玩家
-    private void trySpawnMerchant(ServerPlayer serverPlayer, BlockPos pos, Region region) {
-        if (hasNPCAlive(region, TENpcEntities.MERCHANT.get())) return;
-        if (PlayerUtils.getMoney(serverPlayer) >= 50 * CoinItem.UPGRADES_COUNT) {
-            spawnAtPos(serverPlayer.level(), pos, TENpcEntities.MERCHANT.get());
+    private boolean trySpawnMerchant(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+        if (!hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
+            if (PlayerUtils.getMoney(serverPlayer) >= 50 * CoinItem.UPGRADES_COUNT) {
+                return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.MERCHANT.get());
+            }
         }
+        return false;
     }
 
-    private void trySpawnNurse(ServerPlayer serverPlayer, BlockPos pos, Region region) {
-        if (hasNPCAlive(region, TENpcEntities.NURSE.get())) return;
-        if (serverPlayer.getMaxHealth() > 20 && hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
-            spawnAtPos(serverPlayer.level(), pos, TENpcEntities.NURSE.get());
+    private boolean trySpawnNurse(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+        if (!hasNPCAlive(region, TENpcEntities.NURSE.get())) {
+            if (serverPlayer.getMaxHealth() > 20 && hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
+                return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.NURSE.get());
+            }
         }
+        return false;
     }
 
+    private boolean trySpawnDemolitionist(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+        if (!hasNPCAlive(region, TENpcEntities.DEMOLITIONIST.get())) {
+            if (serverPlayer.getInventory().hasAnyMatching(stack -> stack.is(ModTags.Items.EXPLOSIVE)) && hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
+                return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.DEMOLITIONIST.get());
+            }
+        }
+        return false;
+    }
+
+    // todo 可用于做染料的物品
+    private boolean trySpawnDyeTrader(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+        if (!hasNPCAlive(region, TENpcEntities.DYE_TRADER.get())) {
+            if (serverPlayer.getInventory().hasAnyMatching(stack -> stack.is(Tags.Items.DYES)) && hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
+                return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.DYE_TRADER.get());
+            }
+        }
+        return false;
+    }
+
+    // todo 消息
     private boolean spawnAtPos(Level level, BlockPos pos, EntityType<?> entityType) {
         Entity entity = entityType.create(level);
         if (entity == null) return false;

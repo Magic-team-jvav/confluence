@@ -19,8 +19,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.mixed.IAbstractTerraNPC;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
+import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 
 import java.util.*;
@@ -94,17 +95,27 @@ public class NPCSpawner {
         }
     }
 
-    public void onNPCAdded(Entity entity) {
+    /**
+     * @return true表示成功添加NPC，false表示该实体不为NPC
+     */
+    public boolean onNPCAdded(Entity entity) {
         if (entity instanceof IAbstractTerraNPC npc) {
             npc.confluence$setRegion(new Region(entity.chunkPosition()));
             setNPCAlive(npc.confluence$getRegion(), entity.getType(), true);
+            return true;
         }
+        return false;
     }
 
-    public void onNPCRemoved(Entity entity) {
+    /**
+     * @return true表示成功移除NPC，false表示该实体不为NPC
+     */
+    public boolean onNPCRemoved(Entity entity) {
         if (entity instanceof IAbstractTerraNPC npc) {
             setNPCAlive(npc.confluence$getRegion(), entity.getType(), false);
+            return true;
         }
+        return false;
     }
 
     public <T> void decode(Dynamic<T> tag) {
@@ -126,27 +137,46 @@ public class NPCSpawner {
         ServerLevel serverLevel = serverPlayer.serverLevel();
         if (serverLevel.dimension() == Level.OVERWORLD) {
             BlockPos pos = getNpcSpawnPos(serverPlayer);
-            if (hasNPCAlive(new Region(pos), TENpcEntities.GUIDE.get())) return;
-            AbstractTerraNPC npc = TENpcEntities.GUIDE.get().create(serverLevel);
-            if (npc == null) return;
-            npc.setPos(pos.getCenter());
-            serverPlayer.level().addFreshEntity(npc);
-            onNPCAdded(npc);
+            if (!hasNPCAlive(new Region(pos), TENpcEntities.GUIDE.get())) {
+                spawnAtPos(serverLevel, pos, TENpcEntities.GUIDE.get());
+            }
         }
     }
 
     public void checkNpcRespawn(ServerLevel serverLevel) {
         for (ServerPlayer player : serverLevel.players()) {
+            BlockPos pos = getNpcSpawnPos(player);
+            Region region = new Region(pos);
             for (EntityType<?> entityType : npcSpawned) { // 省去了两分钟冷却
-                BlockPos pos = getNpcSpawnPos(player);
-                if (hasNPCAlive(new Region(pos), entityType)) continue;
-                Entity entity = entityType.create(serverLevel);
-                if (entity == null) continue;
-                entity.setPos(pos.getCenter());
-                serverLevel.addFreshEntity(entity);
-                onNPCAdded(entity);
+                if (hasNPCAlive(region, entityType)) continue;
+                spawnAtPos(serverLevel, pos, entityType);
             }
+            trySpawnMerchant(player, pos, region);
+            trySpawnNurse(player, pos, region);
         }
+    }
+
+    // 省去“所有玩家钱币总和50银”的条件，改为单玩家
+    private void trySpawnMerchant(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+        if (hasNPCAlive(region, TENpcEntities.MERCHANT.get())) return;
+        if (PlayerUtils.getMoney(serverPlayer) >= 50 * CoinItem.UPGRADES_COUNT) {
+            spawnAtPos(serverPlayer.level(), pos, TENpcEntities.MERCHANT.get());
+        }
+    }
+
+    private void trySpawnNurse(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+        if (hasNPCAlive(region, TENpcEntities.NURSE.get())) return;
+        if (serverPlayer.getMaxHealth() > 20 && hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
+            spawnAtPos(serverPlayer.level(), pos, TENpcEntities.NURSE.get());
+        }
+    }
+
+    private boolean spawnAtPos(Level level, BlockPos pos, EntityType<?> entityType) {
+        Entity entity = entityType.create(level);
+        if (entity == null) return false;
+        entity.setPos(pos.getCenter());
+        level.addFreshEntity(entity);
+        return onNPCAdded(entity);
     }
 
     public static BlockPos getNpcSpawnPos(ServerPlayer player) {

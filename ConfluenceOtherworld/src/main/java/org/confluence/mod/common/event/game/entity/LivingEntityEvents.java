@@ -32,6 +32,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
 import org.confluence.mod.common.effect.beneficial.LuckEffect;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
@@ -79,7 +80,6 @@ public final class LivingEntityEvents {
             if (living instanceof Boss boss && boss.shouldShowMessage()) {
                 ModUtils.bossDeath(level, living);
             }
-
             if (living instanceof ServerPlayer serverPlayer) {
                 PlayerUtils.dropMoney(serverPlayer);
                 TombstoneBoulder.createTombstone(serverPlayer);
@@ -92,6 +92,7 @@ public final class LivingEntityEvents {
                     LibUtils.createItemEntity(holidayGift.getDefaultInstance(), living.position(), living.level(), 0);
                 }
             }
+            NPCSpawner.INSTANCE.onNPCRemoved(living);
         }
     }
 

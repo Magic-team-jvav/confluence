@@ -17,13 +17,13 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.Objects;
 
-public class ModSkullBlock extends Block {
+public class BaseSkullBlock extends Block {
     public static final int MAX = RotationSegment.getMaxSegmentIndex();
     private static final int ROTATIONS = MAX + 1;
     public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
     protected static final VoxelShape SHAPE = Block.box(4.0, 0.0, 4.0, 12.0, 8.0, 12.0);
 
-    public ModSkullBlock(Properties properties) {
+    public BaseSkullBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(ROTATION, 0));
     }

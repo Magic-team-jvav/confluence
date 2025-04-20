@@ -3,7 +3,6 @@ package org.confluence.mod.mixin.level;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import org.confluence.mod.common.init.ModSecretSeeds;
-import org.confluence.terraentity.api.FTWSetter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,7 +14,6 @@ public abstract class DifficultyInstanceMixin {
     private void levelUp(Difficulty difficulty, long levelTime, long chunkInhabitedTime, float moonPhaseFactor, CallbackInfoReturnable<Float> cir) {
         if (ModSecretSeeds.FOR_THE_WORTHY.match()) {
             cir.setReturnValue(cir.getReturnValue() + 1.0F);
-            FTWSetter.setFTW(true);
         }
     }
 }

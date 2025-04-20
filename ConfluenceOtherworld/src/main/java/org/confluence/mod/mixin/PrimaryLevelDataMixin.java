@@ -8,6 +8,7 @@ import net.minecraft.world.level.LevelSettings;
 import net.minecraft.world.level.levelgen.WorldOptions;
 import net.minecraft.world.level.storage.PrimaryLevelData;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
+import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -19,10 +20,12 @@ public abstract class PrimaryLevelDataMixin {
     @Inject(method = "parse", at = @At("TAIL"))
     private static <T> void decode(Dynamic<T> tag, LevelSettings levelSettings, PrimaryLevelData.SpecialWorldProperty specialWorldProperty, WorldOptions worldOptions, Lifecycle worldGenSettingsLifecycle, CallbackInfoReturnable<PrimaryLevelData> cir) {
         HardmodeConvertor.INSTANCE.decode(tag);
+        NPCSpawner.INSTANCE.decode(tag);
     }
 
     @Inject(method = "setTagData", at = @At("TAIL"))
     private void encode(RegistryAccess registry, CompoundTag nbt, CompoundTag playerNBT, CallbackInfo ci) {
         HardmodeConvertor.INSTANCE.encode(nbt);
+        NPCSpawner.INSTANCE.encode(nbt);
     }
 }

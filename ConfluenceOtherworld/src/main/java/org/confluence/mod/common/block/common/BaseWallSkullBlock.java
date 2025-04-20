@@ -18,7 +18,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.Map;
 
-public class ModWallSkullBlock extends Block {
+public class BaseWallSkullBlock extends Block {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     private static final Map<Direction, VoxelShape> AABBS = Maps.newEnumMap(
             ImmutableMap.of(
@@ -33,7 +33,7 @@ public class ModWallSkullBlock extends Block {
             )
     );
 
-    public ModWallSkullBlock(Properties properties) {
+    public BaseWallSkullBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
     }

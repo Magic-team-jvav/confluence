@@ -3,7 +3,6 @@ package org.confluence.mod.common.event.game.entity;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -20,8 +19,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
@@ -39,6 +36,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
+import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.*;
@@ -79,6 +77,7 @@ public final class PlayerEvents {
             if ((secretFlag & IWorldOptions.HARDMODE) != 0) {
                 PlayerUtils.awardAchievement(serverPlayer, "its_hard");
             }
+            NPCSpawner.INSTANCE.trySpawnGuide(serverPlayer);
         }
     }
 

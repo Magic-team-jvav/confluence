@@ -11,6 +11,7 @@ import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.common.CrackedBrickBlock;
 import org.confluence.mod.common.block.common.LihzahrdDoorBlock;
 import org.confluence.mod.common.block.natural.*;
 import org.confluence.mod.common.block.palettes.ConnectedGlassBlock;

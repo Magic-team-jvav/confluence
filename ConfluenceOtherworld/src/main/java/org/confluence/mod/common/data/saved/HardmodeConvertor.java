@@ -45,7 +45,7 @@ import java.util.function.Function;
  */
 public class HardmodeConvertor {
     public static final HardmodeConvertor INSTANCE = new HardmodeConvertor();
-    public static final Codec<List<Tuple<ChunkPos, BlockPosColumn[][]>>> LIST_CODEC = Codec.lazyInitialized(() -> {
+    public static final Codec<List<Tuple<ChunkPos, BlockPosColumn[][]>>> SANCTIFICATION_CODEC = Codec.lazyInitialized(() -> {
         Codec<BlockPosColumn[][]> codec = new Codec<>() {
             @Override
             public <T> DataResult<Pair<BlockPosColumn[][], T>> decode(DynamicOps<T> ops, T input) {
@@ -208,7 +208,7 @@ public class HardmodeConvertor {
     public <T> void decode(Dynamic<T> tag) {
         this.shouldContinue = false;
         Dynamic<T> dynamic = tag.get("confluence:hardmode_convertor").orElseEmptyMap();
-        dynamic.get("sanctification").orElseEmptyList().read(LIST_CODEC).ifSuccess(result -> this.sanctification = result);
+        dynamic.get("sanctification").orElseEmptyList().read(SANCTIFICATION_CODEC).ifSuccess(result -> this.sanctification = result);
         this.started = dynamic.get("started").asBoolean(false);
         this.completed = dynamic.get("completed").asBoolean(false);
         this.shouldContinue = true;
@@ -217,7 +217,7 @@ public class HardmodeConvertor {
     public void encode(CompoundTag nbt) {
         this.shouldContinue = false;
         CompoundTag tag = new CompoundTag();
-        tag.put("sanctification", LIST_CODEC.encodeStart(NbtOps.INSTANCE, sanctification).getOrThrow());
+        tag.put("sanctification", SANCTIFICATION_CODEC.encodeStart(NbtOps.INSTANCE, sanctification).getOrThrow());
         tag.putBoolean("started", started);
         tag.putBoolean("completed", completed);
         nbt.put("confluence:hardmode_convertor", tag);

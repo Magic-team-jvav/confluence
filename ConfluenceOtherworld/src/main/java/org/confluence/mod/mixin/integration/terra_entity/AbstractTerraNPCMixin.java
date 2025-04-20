@@ -1,5 +1,6 @@
 package org.confluence.mod.mixin.integration.terra_entity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import org.confluence.mod.common.data.saved.NPCSpawner;
@@ -14,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = AbstractTerraNPC.class, remap = false)
 public abstract class AbstractTerraNPCMixin implements IAbstractTerraNPC {
     @Unique
-    private NPCSpawner.Region confluence$region;
+    private NPCSpawner.Region confluence$region = new NPCSpawner.Region(BlockPos.ZERO);
 
     @Override
     public void confluence$setRegion(NPCSpawner.Region region) {

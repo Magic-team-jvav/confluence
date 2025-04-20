@@ -33,7 +33,7 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.NbtComponent;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -117,8 +117,7 @@ public final class ModUtils {
 
     public static void bossDeath(ServerLevel level, LivingEntity living) {
         EntityType<?> type = living.getType();
-        ConfluenceData data = ConfluenceData.get(level);
-        data.getKillBoard().defeat(type, data);
+        KillBoard.INSTANCE.defeat(type);
         boolean isEaterOfWorlds = type == TEBossEntities.EATER_OF_WORLDS.get();
         if (isEaterOfWorlds || type == TEBossEntities.BRAIN_OF_CTHULHU.get()) {
             if (DateUtils.isWithinDayTime(0, 0, 4, 30, level.getDayTime())) { // 00:00 -> 04:30

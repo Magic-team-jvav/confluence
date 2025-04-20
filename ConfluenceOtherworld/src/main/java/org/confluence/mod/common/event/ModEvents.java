@@ -39,6 +39,7 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforgespi.locating.IModFile;
+import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.ConfluenceResources;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
@@ -50,6 +51,9 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.data.saved.HardmodeConvertor;
+import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.TargetDummyEntity;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -123,6 +127,7 @@ public final class ModEvents {
                 interactionMap.put(NatureBlocks.AETHERIUM_BLOCK.asItem(), AetheriumCauldronBlock.FILL_AETHERIUM);
             });
             TERemoval.redirectLootTable();
+            IGlobalData.registerGlobalData(KillBoard.INSTANCE, HardmodeConvertor.INSTANCE, NPCSpawner.INSTANCE);
         });
     }
 

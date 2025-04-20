@@ -35,6 +35,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.CoinPortalEntity;
 import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.init.ModEntities;
@@ -46,7 +47,6 @@ import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
-//import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.jetbrains.annotations.Nullable;
 
@@ -390,7 +390,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                 ratio *= 1.75F;
             }
         }
-        int defeated = ConfluenceData.get((ServerLevel) level).getKillBoard().countDefeated(
+        int defeated = KillBoard.INSTANCE.countDefeated(
                 TEBossEntities.EYE_OF_CTHULHU.get(),
                 TEBossEntities.EATER_OF_WORLDS.get(),
                 TEBossEntities.BRAIN_OF_CTHULHU.get()

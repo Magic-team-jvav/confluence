@@ -45,8 +45,7 @@ public final class TickEvents {
             float factorZ = Mth.nextFloat(serverLevel.random, -1.0F, 1.0F);
             ConfluenceData.get(serverLevel).setWindSpeed(factorX, factorZ);
         } else if (dayTime == 13500L) { // 19:30
-            KillBoard killBoard = ConfluenceData.get(serverLevel).getKillBoard();
-            if (!killBoard.isDefeated(TEBossEntities.EYE_OF_CTHULHU.get())) {
+            if (!KillBoard.INSTANCE.isDefeated(TEBossEntities.EYE_OF_CTHULHU.get())) {
                 boolean attributeFactor = false;
                 boolean npcFactor = false;
                 for (ServerPlayer player : serverLevel.players()) {
@@ -58,11 +57,11 @@ public final class TickEvents {
                     serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("event.confluence.eye_of_cthulhu").withStyle(ChatFormatting.GREEN), false);
                 }
             }
-            if (killBoard.isAnyDefeated(TEBossEntities.EATER_OF_WORLDS.get(), TEBossEntities.BRAIN_OF_CTHULHU.get()) && serverLevel.random.nextFloat() < 0.02F) {
+            if (KillBoard.INSTANCE.isAnyDefeated(TEBossEntities.EATER_OF_WORLDS.get(), TEBossEntities.BRAIN_OF_CTHULHU.get()) && serverLevel.random.nextFloat() < 0.02F) {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
             }
         }
-        if (dayTime < 12000 && serverLevel.getGameTime() % 1200 == 0) {
+        if (dayTime < 12000/* && serverLevel.getGameTime() % 1200 == 0*/) {
             NPCSpawner.INSTANCE.checkNpcRespawn(serverLevel);
         }
 

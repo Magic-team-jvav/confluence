@@ -19,6 +19,7 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_furniture.common.init.TFRegistries;
+import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TESummonItems;
@@ -158,10 +159,10 @@ public final class ModTabs {
                         BowItems.ITEMS.getEntries().forEach(action);
                         ArrowItems.ITEMS.getEntries().forEach(action);
                         //TODO 枪！
-//                        TGItems.ITEM_GUNS.getEntries().forEach(action);
+                        TGItems.GUNS.getEntries().forEach(action);
 //                        output.accept(ManaWeaponItems.BEE_GUN.get());
 //                        output.accept(ManaWeaponItems.SPACE_GUN.get());
-//                        TGItems.ITEM_BULLETS.getEntries().forEach(action);
+                        TGItems.BULLETS.getEntries().forEach(action);
                     }).withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "mages")).withTabsBefore(WARRIORS.getId()).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAGES = TABS.register("mages",
             () -> CreativeModeTab.builder().icon(() -> IconItems.MAGIC_ICON.get().getDefaultInstance())

@@ -8,6 +8,7 @@ import com.mojang.serialization.DynamicOps;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -15,18 +16,23 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import net.neoforged.neoforge.common.Tags;
+import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.mixed.IAbstractTerraNPC;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_guns.common.init.TGTags;
+import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
+import org.confluence.terraentity.entity.npc.AnglerNPC;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 
@@ -36,7 +42,7 @@ import java.util.function.Predicate;
 /**
  * 注：NPC默认生成在对应玩家出生点
  */
-public class NPCSpawner {
+public class NPCSpawner implements IGlobalData {
     public static final NPCSpawner INSTANCE = new NPCSpawner();
     public static final Codec<Map<Region, Object2BooleanMap<EntityType<?>>>> NPC_ALIVE_CODEC = new Codec<>() {
         @Override
@@ -85,20 +91,24 @@ public class NPCSpawner {
     }
 
     public boolean hasNPCAlive(Region region, EntityType<?> entityType) {
-        return npcAlive.computeIfAbsent(region, region1 -> new Object2BooleanOpenHashMap<>()).getOrDefault(entityType, false);
+        Object2BooleanMap<EntityType<?>> map = npcAlive.get(region);
+        if (map == null) return false;
+        return map.getOrDefault(entityType, false);
     }
 
-    public void setNPCAlive(Region region, EntityType<?> entityType, boolean spawned) {
-        npcAlive.computeIfAbsent(region, region1 -> new Object2BooleanOpenHashMap<>()).put(entityType, spawned);
-        if (spawned) {
-            npcSpawned.add(entityType);
-        }
+    public void setNPCAlive(Region region, EntityType<?> entityType, boolean alive) {
+        npcAlive.computeIfAbsent(region, region1 -> new Object2BooleanOpenHashMap<>()).put(entityType, alive);
+        if (alive) npcSpawned.add(entityType);
     }
 
-    public void moveNPCToAnotherRegion(EntityType<?> entityType, Region from, Region to) {
+    public void moveNPCToAnotherRegion(Entity entity, Region from, Region to) {
+        EntityType<?> entityType = entity.getType();
         if (hasNPCAlive(from, entityType)) {
             setNPCAlive(from, entityType, false);
             setNPCAlive(to, entityType, true);
+            if (entity instanceof IAbstractTerraNPC npc) {
+                npc.confluence$setRegion(to);
+            }
         }
     }
 
@@ -127,19 +137,32 @@ public class NPCSpawner {
         return false;
     }
 
+    @Override
     public <T> void decode(Dynamic<T> tag) {
-        Dynamic<T> dynamic = tag.get("confluence:npc_spawner").orElseEmptyMap();
+        Dynamic<T> dynamic = tag.get(serializeKey()).orElseEmptyMap();
         npcAlive.clear();
         dynamic.get("npc_alive").orElseEmptyMap().read(NPC_ALIVE_CODEC).ifSuccess(npcAlive::putAll);
         npcSpawned.clear();
         dynamic.get("npc_spawned").orElseEmptyList().read(NPC_SPAWNED_CODEC).ifSuccess(npcSpawned::addAll);
     }
 
+    @Override
     public void encode(CompoundTag nbt) {
         CompoundTag tag = new CompoundTag();
+        Iterator<Map.Entry<Region, Object2BooleanMap<EntityType<?>>>> iterator = npcAlive.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Region, Object2BooleanMap<EntityType<?>>> next = iterator.next();
+            next.getValue().object2BooleanEntrySet().removeIf(entry -> !entry.getBooleanValue());
+            if (next.getValue().isEmpty()) iterator.remove();
+        }
         tag.put("npc_alive", NPC_ALIVE_CODEC.encodeStart(NbtOps.INSTANCE, npcAlive).getOrThrow());
         tag.put("npc_spawned", NPC_SPAWNED_CODEC.encodeStart(NbtOps.INSTANCE, npcSpawned).getOrThrow());
-        nbt.put("confluence:npc_spawner", tag);
+        nbt.put(serializeKey(), tag);
+    }
+
+    @Override
+    public String serializeKey() {
+        return "confluence:npc_spawner";
     }
 
     public void trySpawnGuide(ServerPlayer serverPlayer) {
@@ -152,7 +175,9 @@ public class NPCSpawner {
         }
     }
 
-    // 每两分钟生成一位NPC
+    /**
+     * 每两分钟生成一位NPC
+     */
     public void checkNpcRespawn(ServerLevel serverLevel) {
         outer:
         for (ServerPlayer player : serverLevel.players()) {
@@ -167,7 +192,7 @@ public class NPCSpawner {
             if (trySpawnNurse(player, pos, region)) continue;
             if (trySpawnDemolitionist(player, pos, region)) continue;
             if (trySpawnDyeTrader(player, pos, region)) continue;
-            // 渔夫
+            if (trySpawnAngler(player, region)) continue;
             // 动物学家
             if (trySpawnDryad(player, pos, region)) continue;
             // 油漆工
@@ -189,7 +214,9 @@ public class NPCSpawner {
         }
     }
 
-    // 省去“所有玩家钱币总和50银”的条件，改为单玩家
+    /**
+     * 省去“所有玩家钱币总和50银”的条件，改为单玩家
+     */
     private boolean trySpawnMerchant(ServerPlayer serverPlayer, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
             if (PlayerUtils.getMoney(serverPlayer) >= 50 * CoinItem.UPGRADES_COUNT) {
@@ -227,9 +254,37 @@ public class NPCSpawner {
         return false;
     }
 
+    /**
+     * 先计入NPC列表，待玩家交互了再转移
+     *
+     * @see org.confluence.mod.mixin.integration.terra_entity.AnglerNPCMixin
+     */
+    private boolean trySpawnAngler(ServerPlayer serverPlayer, Region region) {
+        BlockPos playerPos = serverPlayer.blockPosition();
+        Region playerRegion = new Region(playerPos);
+        if (!hasNPCAlive(playerRegion, TENpcEntities.ANGLER.get()) && !hasNPCAlive(region, TENpcEntities.ANGLER.get())) { // 保证玩家转移渔夫区域时不再生成新的
+            Level level = serverPlayer.level();
+            Pair<BlockPos, Holder<Biome>> closestBiome3d = serverPlayer.serverLevel().findClosestBiome3d(biome -> biome.is(Tags.Biomes.IS_OCEAN), playerPos, 64, 8, 64);
+            if (closestBiome3d != null) {
+                AbstractTerraNPC npc = TENpcEntities.ANGLER.get().create(level);
+                if (npc != null) {
+                    RandomSource random = level.random;
+                    int dx = random.nextInt(4) - 2;
+                    int dz = random.nextInt(4) - 2;
+                    npc.setPos(closestBiome3d.getFirst().atY(level.getSeaLevel()).offset(dx, 0, dz).getCenter());
+                    level.addFreshEntity(npc);
+                    IAbstractTerraNPC.of(npc).confluence$setRegion(playerRegion);
+                    npcAlive.computeIfAbsent(playerRegion, region1 -> new Object2BooleanOpenHashMap<>()).put(TENpcEntities.ANGLER.get(), true);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private boolean trySpawnDryad(ServerPlayer serverPlayer, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.DRYAD.get())) {
-            if (ConfluenceData.get(serverPlayer.serverLevel()).getKillBoard().isAnyDefeated(
+            if (KillBoard.INSTANCE.isAnyDefeated(
                     TEBossEntities.EYE_OF_CTHULHU.get(),
                     TEBossEntities.EATER_OF_WORLDS.get(),
                     TEBossEntities.BRAIN_OF_CTHULHU.get(),
@@ -256,6 +311,9 @@ public class NPCSpawner {
         if (entity == null) return false;
         entity.setPos(pos.getCenter());
         level.addFreshEntity(entity);
+        if (entity instanceof AnglerNPC angler) {
+            angler.setWakeUp(true); // 重生的渔夫默认醒来
+        }
         return onNPCAdded(entity);
     }
 

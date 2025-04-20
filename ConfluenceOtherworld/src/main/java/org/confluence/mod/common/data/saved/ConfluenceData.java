@@ -36,7 +36,6 @@ public class ConfluenceData extends SavedData {
     private final Map<Integer, StarPhase> starPhases = new Hashtable<>();
     private int revealStep = -1;
     private final MeteoriteTracker meteoriteTracker = MeteoriteTracker.INSTANCE;
-    private final KillBoard killBoard = new KillBoard();
     private int evilBrokenCount = 0;
 
     ConfluenceData() {
@@ -56,7 +55,6 @@ public class ConfluenceData extends SavedData {
         }
         this.revealStep = nbt.getInt("revealStep");
         this.meteoriteTracker.deserialize(nbt);
-        this.killBoard.deserializeNBT(registries, nbt.getList("killBoard", Tag.TAG_COMPOUND));
         this.evilBrokenCount = nbt.getInt("evilBrokenCount");
     }
 
@@ -105,7 +103,6 @@ public class ConfluenceData extends SavedData {
         nbt.put("starPhases", listTag);
         nbt.putInt("revealStep", revealStep);
         meteoriteTracker.serialize(nbt);
-        nbt.put("killBoard", killBoard.serializeNBT(registries));
         nbt.putInt("evilBrokenCount", evilBrokenCount);
         return nbt;
     }
@@ -175,10 +172,6 @@ public class ConfluenceData extends SavedData {
         this.meteoriteTracker.tickUntilLanding.set(tickUntilLanding);
         MeteoriteLocationPacketS2C.sendToAll(location, tickUntilLanding);
         setDirty();
-    }
-
-    public KillBoard getKillBoard() {
-        return killBoard;
     }
 
     public boolean updateEvilBrokenCount() {

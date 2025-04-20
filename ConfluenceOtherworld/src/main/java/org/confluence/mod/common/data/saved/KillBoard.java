@@ -1,21 +1,45 @@
 package org.confluence.mod.common.data.saved;
 
+import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.Dynamic;
+import com.mojang.serialization.DynamicOps;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+import org.confluence.lib.common.data.saved.IGlobalData;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Arrays;
 
-@ParametersAreNonnullByDefault
-public class KillBoard implements INBTSerializable<ListTag> {
+public class KillBoard implements IGlobalData {
+    public static final KillBoard INSTANCE = new KillBoard();
+    public static final Codec<Object2BooleanMap<EntityType<?>>> DEFEATED_MAP_CODEC = new Codec<>() {
+        @Override
+        public <T> DataResult<Pair<Object2BooleanMap<EntityType<?>>, T>> decode(DynamicOps<T> ops, T input) {
+            Object2BooleanMap<EntityType<?>> map = new Object2BooleanOpenHashMap<>();
+            ops.getMap(input).getOrThrow().entries().forEach(pair -> {
+                EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(ops.getStringValue(pair.getFirst()).getOrThrow()));
+                boolean defeated = ops.getBooleanValue(pair.getSecond()).getOrThrow();
+                map.put(entityType, defeated);
+            });
+            return DataResult.success(new Pair<>(map, input));
+        }
+
+        @Override
+        public <T> DataResult<T> encode(Object2BooleanMap<EntityType<?>> input, DynamicOps<T> ops, T prefix) {
+            return DataResult.success(ops.createMap(input.object2BooleanEntrySet().stream().map(entry -> {
+                T string = ops.createString(BuiltInRegistries.ENTITY_TYPE.getKey(entry.getKey()).toString());
+                T defeated = ops.createBoolean(entry.getBooleanValue());
+                return new Pair<>(string, defeated);
+            })));
+        }
+    };
+
     private final Object2BooleanMap<EntityType<?>> defeatedMap = new Object2BooleanOpenHashMap<>();
 
     public boolean isDefeated(EntityType<?> entityType) {
@@ -34,34 +58,23 @@ public class KillBoard implements INBTSerializable<ListTag> {
         return count;
     }
 
-    public void defeat(EntityType<?> entityType, ConfluenceData data) {
-        if (!defeatedMap.put(entityType, true)) {
-            data.setDirty();
-        }
+    public void defeat(EntityType<?> entityType) {
+        defeatedMap.put(entityType, true);
     }
 
     @Override
-    public ListTag serializeNBT(HolderLookup.Provider provider) {
-        ListTag list = new ListTag();
-        for (Object2BooleanMap.Entry<EntityType<?>> entry : defeatedMap.object2BooleanEntrySet()) {
-            CompoundTag nbt = new CompoundTag();
-            nbt.putString("Id", BuiltInRegistries.ENTITY_TYPE.getKey(entry.getKey()).toString());
-            nbt.putBoolean("Defeated", entry.getBooleanValue());
-            list.add(nbt);
-        }
-        return list;
-    }
-
-    @Override
-    public void deserializeNBT(HolderLookup.Provider provider, ListTag list) {
+    public <T> void decode(Dynamic<T> tag) {
         defeatedMap.clear();
-        for (Tag tag : list) {
-            if (tag instanceof CompoundTag nbt) {
-                try {
-                    EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(nbt.getString("Id")));
-                    defeatedMap.put(entityType, nbt.getBoolean("Defeated"));
-                } catch (Exception ignored) {}
-            }
-        }
+        tag.get(serializeKey()).orElseEmptyMap().read(DEFEATED_MAP_CODEC).ifSuccess(defeatedMap::putAll);
+    }
+
+    @Override
+    public void encode(CompoundTag nbt) {
+        nbt.put(serializeKey(), DEFEATED_MAP_CODEC.encodeStart(NbtOps.INSTANCE, defeatedMap).getOrThrow());
+    }
+
+    @Override
+    public String serializeKey() {
+        return "confluence:kill_board";
     }
 }

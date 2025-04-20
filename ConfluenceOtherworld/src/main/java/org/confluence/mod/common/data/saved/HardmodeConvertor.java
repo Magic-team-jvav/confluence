@@ -25,6 +25,7 @@ import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import org.apache.commons.lang3.mutable.MutableInt;
+import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.api.event.EnterHardmodeEvent;
 import org.confluence.mod.common.init.ModTags;
@@ -43,7 +44,7 @@ import java.util.function.Function;
 /**
  * <a href="https://terraria.wiki.gg/zh/wiki/%E5%9B%B0%E9%9A%BE%E6%A8%A1%E5%BC%8F%E8%BD%AC%E6%8D%A2">困难模式转换</a>
  */
-public class HardmodeConvertor {
+public class HardmodeConvertor implements IGlobalData {
     public static final HardmodeConvertor INSTANCE = new HardmodeConvertor();
     public static final Codec<List<Tuple<ChunkPos, BlockPosColumn[][]>>> SANCTIFICATION_CODEC = Codec.lazyInitialized(() -> {
         Codec<BlockPosColumn[][]> codec = new Codec<>() {
@@ -205,23 +206,30 @@ public class HardmodeConvertor {
         if (debug) server.getPlayerList().broadcastSystemMessage(component, false);
     }
 
+    @Override
     public <T> void decode(Dynamic<T> tag) {
         this.shouldContinue = false;
-        Dynamic<T> dynamic = tag.get("confluence:hardmode_convertor").orElseEmptyMap();
+        Dynamic<T> dynamic = tag.get(serializeKey()).orElseEmptyMap();
         dynamic.get("sanctification").orElseEmptyList().read(SANCTIFICATION_CODEC).ifSuccess(result -> this.sanctification = result);
         this.started = dynamic.get("started").asBoolean(false);
         this.completed = dynamic.get("completed").asBoolean(false);
         this.shouldContinue = true;
     }
 
+    @Override
     public void encode(CompoundTag nbt) {
         this.shouldContinue = false;
         CompoundTag tag = new CompoundTag();
         tag.put("sanctification", SANCTIFICATION_CODEC.encodeStart(NbtOps.INSTANCE, sanctification).getOrThrow());
         tag.putBoolean("started", started);
         tag.putBoolean("completed", completed);
-        nbt.put("confluence:hardmode_convertor", tag);
+        nbt.put(serializeKey(), tag);
         this.shouldContinue = true;
+    }
+
+    @Override
+    public String serializeKey() {
+        return "confluence:hardmode_convertor";
     }
 
     public void clear() {

@@ -16,11 +16,12 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
+import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.jetbrains.annotations.Nullable;
 
 public class LihzahrdDoorBlock extends DoorBlock {
-    public static final BooleanProperty UNLOCKED = BooleanProperty.create("unlocked");
+    public static final BooleanProperty UNLOCKED = StateProperties.UNLOCKED;
 
     public LihzahrdDoorBlock(BlockSetType type, Properties properties) {
         super(type, properties);

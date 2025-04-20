@@ -39,8 +39,6 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforgespi.locating.IModFile;
-import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.confluence.terra_furniture.common.init.TFRegistries;
 import org.confluence.lib.util.ConfluenceResources;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
@@ -72,6 +70,8 @@ import org.confluence.phase_journey.api.PhaseJourneyEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
+import org.confluence.terra_furniture.common.init.TFBlocks;
+import org.confluence.terra_furniture.common.init.TFRegistries;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.Map;
@@ -193,7 +193,6 @@ public final class ModEvents {
 
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
-
         event.put(ModEntities.TARGET_DUMMY.get(), TargetDummyEntity.createAttributes().build());
     }
 

@@ -9,7 +9,6 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,7 +16,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
@@ -98,48 +98,46 @@ public class BaseChestBlock extends ChestBlock {
     }
 
     @Override
-    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
-        if (pLevel.getBlockEntity(pPos) instanceof Entity entity && entity.isLocked()) {
-            ItemStack itemStack = pPlayer.getMainHandItem();
-            boolean isShadow = itemStack.is(ToolItems.SHADOW_KEY.get());
-            if ((entity.variant == Variant.LOCKED_SHADOW && isShadow) || (entity.variant == Variant.LOCKED_GOLDEN && itemStack.is(ToolItems.GOLDEN_KEY.get()))) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if (level.getBlockEntity(pos) instanceof Entity entity && entity.isLocked()) {
+            boolean isShadow = stack.is(ToolItems.SHADOW_KEY.get());
+            if ((entity.variant == Variant.LOCKED_SHADOW && isShadow) || (entity.variant == Variant.LOCKED_GOLDEN && stack.is(ToolItems.GOLDEN_KEY.get()))) {
                 int unlock = entity.variant.unlock;
                 if (unlock > 0) {
-                    if (!isShadow && !pPlayer.getAbilities().instabuild) {
-                        itemStack.shrink(1);
+                    if (!isShadow && !player.getAbilities().instabuild) {
+                        stack.shrink(1);
                     }
                     entity.variant = Variant.byId(unlock);
-                    MutableComponent name = Component.translatable("block.confluence.base_chest_block." + entity.variant.name);
+                    Component name = Component.translatable("block.confluence.base_chest_block." + entity.variant.name);
                     ((IBaseContainerBlockEntity) entity).confluence$setCustomName(name);
-                    Direction relativeDir = ChestBlock.getConnectedDirection(pState);
+                    Direction relativeDir = ChestBlock.getConnectedDirection(state);
                     boolean isDouble = false;
-                    if (pState.getValue(TYPE) != ChestType.SINGLE && pLevel.getBlockEntity(pPos.relative(relativeDir)) instanceof Entity entity1) {
+                    if (state.getValue(TYPE) != ChestType.SINGLE && level.getBlockEntity(pos.relative(relativeDir)) instanceof Entity entity1) {
                         entity1.variant = entity.variant;
                         ((IBaseContainerBlockEntity) entity).confluence$setCustomName(name);
                         isDouble = true;
                     }
-                    if (pLevel instanceof ServerLevel serverLevel) {
-                        serverLevel.playSound(null, pPos, SoundEvents.CHAIN_BREAK, SoundSource.BLOCKS);
-                        double posX = pPos.getX() + 0.5;
-                        double posZ = pPos.getZ() + 0.5;
+                    if (level instanceof ServerLevel serverLevel) {
+                        serverLevel.playSound(null, pos, SoundEvents.CHAIN_BREAK, SoundSource.BLOCKS);
+                        double posX = pos.getX() + 0.5;
+                        double posZ = pos.getZ() + 0.5;
                         if (isDouble) {
                             posX += relativeDir.getStepX() * 0.5;
                             posZ += relativeDir.getStepZ() * 0.5;
                         }
                         serverLevel.sendParticles(
                                 new BlockParticleOption(ParticleTypes.BLOCK, Blocks.CHAIN.defaultBlockState()),
-                                posX, pPos.getY() + 0.5, posZ, 200, 0.0625, 0.0625, 0.0625, 0.15
+                                posX, pos.getY() + 0.5, posZ, 200, 0.0625, 0.0625, 0.0625, 0.15
                         );
                     }
                 }
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
-            return InteractionResult.PASS;
         }
-        if (pPlayer instanceof ServerPlayer serverPlayer) {
-            CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, pPos, pPlayer.getMainHandItem());
+        if (player instanceof ServerPlayer serverPlayer) {
+            CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, pos, player.getMainHandItem());
         }
-        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHit);
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override

@@ -30,8 +30,8 @@ public class FlameCloudEntity extends Entity {
 
         if (level().isClientSide) {
             for (int i = 0; i < 20; i++) {
-                Vec3 offset = position().offsetRandom(random, 4);
-                level().addParticle(ParticleTypes.FLAME, offset.x, offset.y, offset.z, 0, 0.1, 0);
+                Vec3 offset = position().offsetRandom(random, 5);
+                level().addParticle(ParticleTypes.FLAME, offset.x, offset.y + 2.5, offset.z, 0, 0.1, 0);
             }
         } else {
             for (Entity entity : level().getEntities(this, AABB.encapsulatingFullBlocks(blockPosition().offset(-2, -2, -2), blockPosition().offset(2, 2, 2)))) {

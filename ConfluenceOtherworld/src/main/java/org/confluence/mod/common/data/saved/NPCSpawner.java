@@ -17,16 +17,21 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.Tags;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.mixed.IAbstractTerraNPC;
 import org.confluence.mod.util.PlayerUtils;
+import org.confluence.terra_guns.common.init.TGTags;
+import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * 注：NPC默认生成在对应玩家出生点
@@ -100,6 +105,7 @@ public class NPCSpawner {
     /**
      * @return true表示成功添加NPC，false表示该实体不为NPC
      */
+    // todo 向所在区域玩家发送消息
     public boolean onNPCAdded(Entity entity) {
         if (entity instanceof IAbstractTerraNPC npc) {
             npc.confluence$setRegion(new Region(entity.chunkPosition()));
@@ -112,6 +118,7 @@ public class NPCSpawner {
     /**
      * @return true表示成功移除NPC，false表示该实体不为NPC
      */
+    // todo 向所在区域玩家发送消息
     public boolean onNPCRemoved(Entity entity) {
         if (entity instanceof IAbstractTerraNPC npc) {
             setNPCAlive(npc.confluence$getRegion(), entity.getType(), false);
@@ -147,18 +154,38 @@ public class NPCSpawner {
 
     // 每两分钟生成一位NPC
     public void checkNpcRespawn(ServerLevel serverLevel) {
+        outer:
         for (ServerPlayer player : serverLevel.players()) {
             BlockPos pos = getNpcSpawnPos(player);
             Region region = new Region(pos);
             for (EntityType<?> entityType : npcSpawned) {
                 if (!hasNPCAlive(region, entityType) && spawnAtPos(serverLevel, pos, entityType)) {
-                    return;
+                    continue outer;
                 }
             }
-            if (trySpawnMerchant(player, pos, region)) return;
-            if (trySpawnNurse(player, pos, region)) return;
-            if (trySpawnDemolitionist(player, pos, region)) return;
-            if (trySpawnDyeTrader(player, pos, region)) return;
+            if (trySpawnMerchant(player, pos, region)) continue;
+            if (trySpawnNurse(player, pos, region)) continue;
+            if (trySpawnDemolitionist(player, pos, region)) continue;
+            if (trySpawnDyeTrader(player, pos, region)) continue;
+            // 渔夫
+            // 动物学家
+            if (trySpawnDryad(player, pos, region)) continue;
+            // 油漆工
+            // 高尔夫球手
+            if (trySpawnArmsDealer(player, pos, region)) continue;
+            // 酒馆老板
+            // 发型师
+            // 哥布林工匠
+            // 巫医
+            // 服装商
+            // 机械师
+            // 排队女孩
+            // 巫师
+            // 税收官
+            // 松露人
+            // 海盗
+            // 蒸汽朋克人
+            // 机器侠
         }
     }
 
@@ -200,7 +227,30 @@ public class NPCSpawner {
         return false;
     }
 
-    // todo 消息
+    private boolean trySpawnDryad(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+        if (!hasNPCAlive(region, TENpcEntities.DRYAD.get())) {
+            if (ConfluenceData.get(serverPlayer.serverLevel()).getKillBoard().isAnyDefeated(
+                    TEBossEntities.EYE_OF_CTHULHU.get(),
+                    TEBossEntities.EATER_OF_WORLDS.get(),
+                    TEBossEntities.BRAIN_OF_CTHULHU.get(),
+                    TEBossEntities.SKELETRON.get()
+            )) {
+                return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.DRYAD.get());
+            }
+        }
+        return false;
+    }
+
+    private boolean trySpawnArmsDealer(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+        if (!hasNPCAlive(region, TENpcEntities.ARMS_DEALER.get())) {
+            Predicate<ItemStack> predicate = stack -> stack.is(TGTags.AMMO) || stack.is(TGTags.GUN);
+            if (serverPlayer.getInventory().hasAnyMatching(predicate) || serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).hasAnyMatching(predicate)) {
+                return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.ARMS_DEALER.get());
+            }
+        }
+        return false;
+    }
+
     private boolean spawnAtPos(Level level, BlockPos pos, EntityType<?> entityType) {
         Entity entity = entityType.create(level);
         if (entity == null) return false;

@@ -62,6 +62,11 @@ public class ConfluenceData extends SavedData {
 
     public static ConfluenceData get(ServerLevel serverLevel) {
         ConfluenceData data = serverLevel.getDataStorage().computeIfAbsent(new Factory<>(ConfluenceData::new, ConfluenceData::new), Confluence.MODID);
+        initialize(serverLevel, data);
+        return data;
+    }
+
+    private static void initialize(ServerLevel serverLevel, ConfluenceData data) {
         if (!data.initialized) {
             RandomSource random = new LegacyRandomSource(serverLevel.getSeed());
             List<Float> raList = new ArrayList<>();
@@ -82,7 +87,6 @@ public class ConfluenceData extends SavedData {
             data.initialized = true;
             data.setDirty();
         }
-        return data;
     }
 
     @Override

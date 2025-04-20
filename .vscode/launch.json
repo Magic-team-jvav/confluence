@@ -4,6 +4,182 @@
     {
       "type": "java",
       "request": "launch",
+      "name": "Confluence-Magic-Lib - Client",
+      "presentation": {
+        "group": "Mod Development - Confluence-Magic-Lib",
+        "order": 0
+      },
+      "projectName": "Confluence-Magic-Lib",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@D:\\Desktop\\confluence\\Confluence-Magic-Lib\\build\\moddev\\clientRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@D:\\Desktop\\confluence\\Confluence-Magic-Lib\\build\\moddev\\clientRunVmArgs.txt",
+        "-Dfml.modFolders\u003dconfluence_magic_lib%%D:\\Desktop\\confluence\\Confluence-Magic-Lib\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\Confluence-Magic-Lib\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "Confluence-Magic-Lib - Data",
+      "presentation": {
+        "group": "Mod Development - Confluence-Magic-Lib",
+        "order": 1
+      },
+      "projectName": "Confluence-Magic-Lib",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@D:\\Desktop\\confluence\\Confluence-Magic-Lib\\build\\moddev\\dataRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@D:\\Desktop\\confluence\\Confluence-Magic-Lib\\build\\moddev\\dataRunVmArgs.txt",
+        "-Dfml.modFolders\u003dconfluence_magic_lib%%D:\\Desktop\\confluence\\Confluence-Magic-Lib\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\Confluence-Magic-Lib\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "Confluence-Magic-Lib - GameTestServer",
+      "presentation": {
+        "group": "Mod Development - Confluence-Magic-Lib",
+        "order": 2
+      },
+      "projectName": "Confluence-Magic-Lib",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@D:\\Desktop\\confluence\\Confluence-Magic-Lib\\build\\moddev\\gameTestServerRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@D:\\Desktop\\confluence\\Confluence-Magic-Lib\\build\\moddev\\gameTestServerRunVmArgs.txt",
+        "-Dfml.modFolders\u003dconfluence_magic_lib%%D:\\Desktop\\confluence\\Confluence-Magic-Lib\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\Confluence-Magic-Lib\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "Confluence-Magic-Lib - Server",
+      "presentation": {
+        "group": "Mod Development - Confluence-Magic-Lib",
+        "order": 3
+      },
+      "projectName": "Confluence-Magic-Lib",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@D:\\Desktop\\confluence\\Confluence-Magic-Lib\\build\\moddev\\serverRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@D:\\Desktop\\confluence\\Confluence-Magic-Lib\\build\\moddev\\serverRunVmArgs.txt",
+        "-Dfml.modFolders\u003dconfluence_magic_lib%%D:\\Desktop\\confluence\\Confluence-Magic-Lib\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\Confluence-Magic-Lib\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "ConfluenceDelight - Client",
+      "presentation": {
+        "group": "Mod Development - ConfluenceDelight",
+        "order": 0
+      },
+      "projectName": "ConfluenceDelight",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@D:\\Desktop\\confluence\\ConfluenceDelight\\build\\moddev\\clientRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@D:\\Desktop\\confluence\\ConfluenceDelight\\build\\moddev\\clientRunVmArgs.txt",
+        "-Dfml.modFolders\u003dconfluence_delight%%D:\\Desktop\\confluence\\ConfluenceDelight\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\ConfluenceDelight\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "ConfluenceDelight - Data",
+      "presentation": {
+        "group": "Mod Development - ConfluenceDelight",
+        "order": 1
+      },
+      "projectName": "ConfluenceDelight",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@D:\\Desktop\\confluence\\ConfluenceDelight\\build\\moddev\\dataRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@D:\\Desktop\\confluence\\ConfluenceDelight\\build\\moddev\\dataRunVmArgs.txt",
+        "-Dfml.modFolders\u003dconfluence_delight%%D:\\Desktop\\confluence\\ConfluenceDelight\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\ConfluenceDelight\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "ConfluenceDelight - GameTestServer",
+      "presentation": {
+        "group": "Mod Development - ConfluenceDelight",
+        "order": 2
+      },
+      "projectName": "ConfluenceDelight",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@D:\\Desktop\\confluence\\ConfluenceDelight\\build\\moddev\\gameTestServerRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@D:\\Desktop\\confluence\\ConfluenceDelight\\build\\moddev\\gameTestServerRunVmArgs.txt",
+        "-Dfml.modFolders\u003dconfluence_delight%%D:\\Desktop\\confluence\\ConfluenceDelight\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\ConfluenceDelight\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "ConfluenceDelight - Server",
+      "presentation": {
+        "group": "Mod Development - ConfluenceDelight",
+        "order": 3
+      },
+      "projectName": "ConfluenceDelight",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@D:\\Desktop\\confluence\\ConfluenceDelight\\build\\moddev\\serverRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@D:\\Desktop\\confluence\\ConfluenceDelight\\build\\moddev\\serverRunVmArgs.txt",
+        "-Dfml.modFolders\u003dconfluence_delight%%D:\\Desktop\\confluence\\ConfluenceDelight\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\ConfluenceDelight\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
       "name": "ConfluenceOtherworld - Client",
       "presentation": {
         "group": "Mod Development - ConfluenceOtherworld",

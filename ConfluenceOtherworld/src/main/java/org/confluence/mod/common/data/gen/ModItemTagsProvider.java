@@ -967,6 +967,28 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ItemTags.COMPASSES).add(ToolItems.METEOR_COMPASS.get());
         tag(Tags.Items.FOODS_PIE).add(FoodItems.APPLE_PIE.get());
         tag(Tags.Items.FOODS_COOKIE).add(FoodItems.CHOCOLATE_CHIP_COOKIE.get());
+        tag(ModTags.Items.EXPLOSIVE).add(
+                Items.TNT,
+                ConsumableItems.BOMB.get(),
+                ConsumableItems.BOUNCY_BOMB.get(),
+                ConsumableItems.STICKY_BOMB.get(),
+                ConsumableItems.BOMB_FISH.get(),
+                ConsumableItems.SCARAB_BOMB.get(),
+                ConsumableItems.DYNAMITE.get(),
+                ConsumableItems.BOUNCY_DYNAMITE.get(),
+                ConsumableItems.STICKY_DYNAMITE.get(),
+                ConsumableItems.GRENADE.get(),
+                ConsumableItems.BOUNCY_GRENADE.get(),
+                ConsumableItems.STICKY_GRENADE.get(),
+                ConsumableItems.DIRT_BOMB.get(),
+                ConsumableItems.STICKY_DIRT_BOMB.get(),
+                ConsumableItems.DRY_BOMB.get(),
+                ConsumableItems.WET_BOMB.get(),
+                ConsumableItems.LAVA_BOMB.get(),
+                ConsumableItems.HONEY_BOMB.get(),
+                FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.asItem()
+        );
+
         copy(Tags.Blocks.FENCE_GATES, Tags.Items.FENCE_GATES);
         copy(Tags.Blocks.STRIPPED_LOGS, Tags.Items.STRIPPED_LOGS);
         copy(BlockTags.SIGNS, ItemTags.SIGNS);

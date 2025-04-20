@@ -19,8 +19,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.common.Tags;
+import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.mixed.IAbstractTerraNPC;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
+import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 
 import java.util.*;
@@ -94,17 +97,27 @@ public class NPCSpawner {
         }
     }
 
-    public void onNPCAdded(Entity entity) {
+    /**
+     * @return true表示成功添加NPC，false表示该实体不为NPC
+     */
+    public boolean onNPCAdded(Entity entity) {
         if (entity instanceof IAbstractTerraNPC npc) {
             npc.confluence$setRegion(new Region(entity.chunkPosition()));
             setNPCAlive(npc.confluence$getRegion(), entity.getType(), true);
+            return true;
         }
+        return false;
     }
 
-    public void onNPCRemoved(Entity entity) {
+    /**
+     * @return true表示成功移除NPC，false表示该实体不为NPC
+     */
+    public boolean onNPCRemoved(Entity entity) {
         if (entity instanceof IAbstractTerraNPC npc) {
             setNPCAlive(npc.confluence$getRegion(), entity.getType(), false);
+            return true;
         }
+        return false;
     }
 
     public <T> void decode(Dynamic<T> tag) {
@@ -126,27 +139,74 @@ public class NPCSpawner {
         ServerLevel serverLevel = serverPlayer.serverLevel();
         if (serverLevel.dimension() == Level.OVERWORLD) {
             BlockPos pos = getNpcSpawnPos(serverPlayer);
-            if (hasNPCAlive(new Region(pos), TENpcEntities.GUIDE.get())) return;
-            AbstractTerraNPC npc = TENpcEntities.GUIDE.get().create(serverLevel);
-            if (npc == null) return;
-            npc.setPos(pos.getCenter());
-            serverPlayer.level().addFreshEntity(npc);
-            onNPCAdded(npc);
+            if (!hasNPCAlive(new Region(pos), TENpcEntities.GUIDE.get())) {
+                spawnAtPos(serverLevel, pos, TENpcEntities.GUIDE.get());
+            }
         }
     }
 
+    // 每两分钟生成一位NPC
     public void checkNpcRespawn(ServerLevel serverLevel) {
         for (ServerPlayer player : serverLevel.players()) {
-            for (EntityType<?> entityType : npcSpawned) { // 省去了两分钟冷却
-                BlockPos pos = getNpcSpawnPos(player);
-                if (hasNPCAlive(new Region(pos), entityType)) continue;
-                Entity entity = entityType.create(serverLevel);
-                if (entity == null) continue;
-                entity.setPos(pos.getCenter());
-                serverLevel.addFreshEntity(entity);
-                onNPCAdded(entity);
+            BlockPos pos = getNpcSpawnPos(player);
+            Region region = new Region(pos);
+            for (EntityType<?> entityType : npcSpawned) {
+                if (!hasNPCAlive(region, entityType) && spawnAtPos(serverLevel, pos, entityType)) {
+                    return;
+                }
+            }
+            if (trySpawnMerchant(player, pos, region)) return;
+            if (trySpawnNurse(player, pos, region)) return;
+            if (trySpawnDemolitionist(player, pos, region)) return;
+            if (trySpawnDyeTrader(player, pos, region)) return;
+        }
+    }
+
+    // 省去“所有玩家钱币总和50银”的条件，改为单玩家
+    private boolean trySpawnMerchant(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+        if (!hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
+            if (PlayerUtils.getMoney(serverPlayer) >= 50 * CoinItem.UPGRADES_COUNT) {
+                return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.MERCHANT.get());
             }
         }
+        return false;
+    }
+
+    private boolean trySpawnNurse(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+        if (!hasNPCAlive(region, TENpcEntities.NURSE.get())) {
+            if (serverPlayer.getMaxHealth() > 20 && hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
+                return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.NURSE.get());
+            }
+        }
+        return false;
+    }
+
+    private boolean trySpawnDemolitionist(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+        if (!hasNPCAlive(region, TENpcEntities.DEMOLITIONIST.get())) {
+            if (serverPlayer.getInventory().hasAnyMatching(stack -> stack.is(ModTags.Items.EXPLOSIVE)) && hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
+                return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.DEMOLITIONIST.get());
+            }
+        }
+        return false;
+    }
+
+    // todo 可用于做染料的物品
+    private boolean trySpawnDyeTrader(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+        if (!hasNPCAlive(region, TENpcEntities.DYE_TRADER.get())) {
+            if (serverPlayer.getInventory().hasAnyMatching(stack -> stack.is(Tags.Items.DYES)) && hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
+                return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.DYE_TRADER.get());
+            }
+        }
+        return false;
+    }
+
+    // todo 消息
+    private boolean spawnAtPos(Level level, BlockPos pos, EntityType<?> entityType) {
+        Entity entity = entityType.create(level);
+        if (entity == null) return false;
+        entity.setPos(pos.getCenter());
+        level.addFreshEntity(entity);
+        return onNPCAdded(entity);
     }
 
     public static BlockPos getNpcSpawnPos(ServerPlayer player) {

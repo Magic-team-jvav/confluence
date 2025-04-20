@@ -201,6 +201,7 @@ public final class ModTags {
         public static final TagKey<Item> TREASURE_BAG = register("treasure_bag");
         public static final TagKey<Item> FAST_BOW = register("fast_bow");
         public static final TagKey<Item> ABLE_TO_DESTROY_ALTAR = register("able_to_destroy_altar");
+        public static final TagKey<Item> EXPLOSIVE = register("explosive"); // 爆炸物，用于爆破专家入住
 
         public static final TagKey<Item> DEATH = register("death");
 

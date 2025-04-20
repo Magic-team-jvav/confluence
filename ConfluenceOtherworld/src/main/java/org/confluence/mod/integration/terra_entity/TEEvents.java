@@ -16,9 +16,9 @@ import org.confluence.terraentity.api.event.LoadResourceEvent;
 import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.api.event.WhipRegisterModifyEvent;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
-import org.confluence.terraentity.entity.npc.NPCDialogs;
-import org.confluence.terraentity.entity.npc.NPCMoods;
-import org.confluence.terraentity.entity.npc.NPCNames;
+import org.confluence.terraentity.entity.npc.misc.NPCDialogs;
+import org.confluence.terraentity.entity.npc.mood.NPCMoods;
+import org.confluence.terraentity.entity.npc.misc.NPCNames;
 import org.confluence.terraentity.entity.npc.brain.NurseAi;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 

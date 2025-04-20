@@ -11,7 +11,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
-import org.confluence.terraentity.entity.npc.ITradeHolder;
+import org.confluence.terraentity.entity.npc.trade.ITradeHolder;
 import org.confluence.terraentity.registries.npc_trade.ITrade;
 import org.jetbrains.annotations.Nullable;
 

@@ -2,7 +2,7 @@ package org.confluence.mod.common.menu;
 
 import net.minecraft.world.entity.player.Inventory;
 import org.confluence.mod.common.init.ModMenuTypes;
-import org.confluence.terraentity.entity.npc.ITradeHolder;
+import org.confluence.terraentity.entity.npc.trade.ITradeHolder;
 import org.confluence.terraentity.menu.TETradesMenu;
 import org.jetbrains.annotations.Nullable;
 

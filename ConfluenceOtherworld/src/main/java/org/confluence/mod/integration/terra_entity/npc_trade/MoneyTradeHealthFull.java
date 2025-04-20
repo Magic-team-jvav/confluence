@@ -9,7 +9,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
+import org.confluence.terraentity.entity.npc.ITradeHolder;
 import org.confluence.terraentity.registries.npc_trade.ITradeHealth;
 import org.confluence.terraentity.registries.npc_trade.TradeProvider;
 import org.jetbrains.annotations.Nullable;
@@ -54,23 +54,23 @@ public class MoneyTradeHealthFull implements IMoneyTrade, ITradeHealth {
     }
 
     @Override
-    public boolean canTrade(Player player, AbstractTerraNPC npc,int index) {
+    public boolean canTrade(Player player, ITradeHolder npc, int index) {
         return IMoneyTrade.super.canTrade(player, npc, index) && ITradeHealth.super.canTrade(player, npc, index);
     }
 
     @Override
-    public void onTrade(ServerPlayer player, AbstractTerraNPC npc, int index) {
+    public void onTrade(ServerPlayer player, ITradeHolder npc, int index) {
         IMoneyTrade.super.onTrade(player, npc, 0);
     }
 
     @Override
-    public void renderResultHover(AbstractTerraNPC npc, GuiGraphics guiGraphics, Font font, int x, int y, int startx, int starty, int mouseX, int mouseY) {
+    public void renderResultHover(ITradeHolder npc, GuiGraphics guiGraphics, Font font, int x, int y, int startx, int starty, int mouseX, int mouseY) {
 
     }
 
 
     @Override
-    public void onTradeSuccess(ServerPlayer player, AbstractTerraNPC npc, int index) {
+    public void onTradeSuccess(ServerPlayer player, ITradeHolder npc, int index) {
         player.setHealth(player.getMaxHealth());
     }
 

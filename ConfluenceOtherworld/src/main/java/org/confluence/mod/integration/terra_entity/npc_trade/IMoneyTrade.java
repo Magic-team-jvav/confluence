@@ -11,7 +11,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
-import org.confluence.terraentity.mixed.IPlayer;
+import org.confluence.terraentity.entity.npc.ITradeHolder;
 import org.confluence.terraentity.registries.npc_trade.ITrade;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,20 +26,22 @@ public interface IMoneyTrade extends ITrade {
     long cost();
 
 
-    default long getCost(@Nullable Player player, AbstractTerraNPC npc){
-        // TODO 心情系统打折
-        int value = npc.getMood().getValue();
-        value = value == 0 ? 100 : value;
+    default long getCost(@Nullable Player player,  ITradeHolder npc){
+        int value = 0;
+        if(npc instanceof AbstractTerraNPC npc1){
+            value = npc1.getMood().getValue();
+        }
+        value = (value == 0 ? 100 : value);
         float discount = (float) (1.0 / value * 100);
         return (long) (cost() * discount);
     }
 
-    default boolean canTrade(Player player, AbstractTerraNPC npc,int index) {
+    default boolean canTrade(Player player, ITradeHolder npc, int index) {
         return PlayerUtils.getMoney(player) >= getCost(player, npc);
     }
 
     @Override
-    default void onTrade(ServerPlayer player, AbstractTerraNPC npc, int index) {
+    default void onTrade(ServerPlayer player, ITradeHolder npc, int index) {
         if(PlayerUtils.tryCostMoney(player, this.getCost(player, npc))) {
             onTradeSuccess(player, npc, index);
         }
@@ -48,11 +50,11 @@ public interface IMoneyTrade extends ITrade {
     /**
      * 重复确认钱币足够
      */
-    void onTradeSuccess(ServerPlayer player, AbstractTerraNPC npc, int index);
+    void onTradeSuccess(ServerPlayer player, ITradeHolder npc, int index);
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    default void renderCosts(AbstractTerraNPC npc, GuiGraphics guiGraphics, Font font, int x, int y, int startx, int starty, int mouseX, int mouseY) {
+    default void renderCosts(ITradeHolder npc, GuiGraphics guiGraphics, Font font, int x, int y, int startx, int starty, int mouseX, int mouseY) {
 
         guiGraphics.blit(MENU_LOCATION,startx + 113,starty + 16,434,59,78,57,512,256);
 

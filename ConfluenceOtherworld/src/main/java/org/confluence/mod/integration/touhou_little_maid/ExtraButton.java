@@ -34,7 +34,7 @@ public class ExtraButton {
                     if (player != null) {
                         ItemStack stack = player.containerMenu.getCarried();
                         player.containerMenu.setCarried(ItemStack.EMPTY);
-                        ((IPlayer) player).terra_entity$setDaveTrades(NPCTrades.getTradeById(BuiltInRegistries.ENTITY_TYPE.getKey(TENpcEntities.GUIDE.get())));
+
                         OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.NPC_TRADE_MENU, stack);
                     }
                 }));

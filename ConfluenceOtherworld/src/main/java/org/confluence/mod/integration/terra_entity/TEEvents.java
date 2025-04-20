@@ -11,7 +11,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.integration.terra_entity.brain.ConfluenceDemolitionistNPCAi;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
-import org.confluence.mod.common.menu.NPCTradesMenu;
+import org.confluence.mod.common.menu.NPCTradesForgeMenu;
 import org.confluence.terraentity.api.event.LoadResourceEvent;
 import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.api.event.WhipRegisterModifyEvent;
@@ -37,7 +37,7 @@ public class TEEvents {
 //            if(npc.trades != null) { // 不是所有npc都有菜单
                 boolean canForge = npc.getType() == TENpcEntities.GOBLIN_TINKERER.get();
                 player.openMenu(new SimpleMenuProvider((id, inventory, player1) ->
-                        new NPCTradesMenu(id, inventory, npc.getTrades(), canForge), Component.translatable("container.confluence.npc_shop")));
+                        new NPCTradesForgeMenu(id, inventory, npc, canForge), Component.translatable("container.confluence.npc_shop")));
 
 //            }
         });

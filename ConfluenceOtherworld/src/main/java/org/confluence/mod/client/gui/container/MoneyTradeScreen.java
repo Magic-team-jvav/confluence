@@ -8,18 +8,15 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.terraentity.client.gui.container.TETradeScreen;
-import org.confluence.terraentity.entity.npc.NPCTrades;
-import org.confluence.mod.common.menu.NPCTradesMenu;
+import org.confluence.mod.common.menu.NPCTradesForgeMenu;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
-import org.confluence.terraentity.init.entity.TENpcEntities;
-import org.confluence.terraentity.mixed.IPlayer;
 
 
-public class MoneyTradeScreen extends TETradeScreen<NPCTradesMenu> {
+public class MoneyTradeScreen extends TETradeScreen<NPCTradesForgeMenu> {
 
     ImageButton forgeBt;
 
-    public MoneyTradeScreen(NPCTradesMenu menu, Inventory playerInventory, Component title) {
+    public MoneyTradeScreen(NPCTradesForgeMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
         this.imageWidth = 290;
         this.inventoryLabelX = 107;
@@ -36,7 +33,7 @@ public class MoneyTradeScreen extends TETradeScreen<NPCTradesMenu> {
                 if (player != null) {
                     ItemStack stack = player.containerMenu.getCarried();
                     player.containerMenu.setCarried(ItemStack.EMPTY);
-                    ((IPlayer) player).terra_entity$setDaveTrades(NPCTrades.getTradeById(TENpcEntities.GUIDE.getId()));
+
                     OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.NPC_REFORGE_MENU, stack);
                 }
             });

@@ -17,7 +17,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 //import org.confluence.terra_guns.common.init.TGItems;
-import org.confluence.terraentity.entity.npc.NPCTrades;
+import org.confluence.terraentity.entity.npc.NPCTradeManager;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.init.item.TEWhipItems;
 import org.confluence.terraentity.registries.npc_trade.ITrade;
@@ -32,7 +32,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * 生成单个NPC单个配方
  * @see org.confluence.terraentity.registries.npc_trade.ITrade 生成配方
- * @see NPCTrades 读取配方
+ * @see NPCTradeManager 读取配方
  */
 public class NPCShopProvider extends AbstractRecipeProvider {
     private final PackOutput.PathProvider npcShopPathProvider;
@@ -94,9 +94,9 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .build());
     }
 
-    protected Appender<NPCTrades> recipe(ResourceLocation id) {
+    protected Appender<NPCTradeManager> recipe(ResourceLocation id) {
         // 预处理命名空间
-        return recipe(NPCTrades.CODEC, pathProvider().json(Confluence.asResource(id.getPath())));
+        return recipe(NPCTradeManager.CODEC, pathProvider().json(Confluence.asResource(id.getPath())));
     }
 
 
@@ -149,8 +149,8 @@ public class NPCShopProvider extends AbstractRecipeProvider {
             return this;
         }
 
-        public NPCTrades build() {
-            return new NPCTrades(trades);
+        public NPCTradeManager build() {
+            return new NPCTradeManager(trades);
         }
     }
 }

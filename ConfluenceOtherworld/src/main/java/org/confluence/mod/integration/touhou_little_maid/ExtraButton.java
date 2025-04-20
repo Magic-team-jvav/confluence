@@ -5,15 +5,11 @@ import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import org.confluence.mod.client.event.ModClientSetups;
-import org.confluence.terraentity.entity.npc.NPCTrades;
-import org.confluence.terraentity.init.entity.TENpcEntities;
-import org.confluence.terraentity.mixed.IPlayer;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 
 

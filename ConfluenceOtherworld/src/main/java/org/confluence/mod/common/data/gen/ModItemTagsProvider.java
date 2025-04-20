@@ -90,6 +90,21 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.MOTTLED_OILFISH.get(),
                 FoodItems.STINKY_FISH.get()
         );
+        tag(ModTags.Items.INITIAL_WOOD).add(
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().asItem(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().asItem(),
+                NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks().asItem(),
+                Blocks.OAK_PLANKS.asItem(),
+                Blocks.ACACIA_PLANKS.asItem(),
+                Blocks.BAMBOO_PLANKS.asItem(),
+                Blocks.BIRCH_PLANKS.asItem(),
+                Blocks.CHERRY_PLANKS.asItem(),
+                Blocks.DARK_OAK_PLANKS.asItem(),
+                Blocks.JUNGLE_PLANKS.asItem(),
+                Blocks.MANGROVE_PLANKS.asItem(),
+                Blocks.SPRUCE_PLANKS.asItem()
+        );
         tag(ModTags.Items.GOLD_COOKING).add(
                 BaitItems.GOLD_BUTTERFLY.get(),
                 BaitItems.GOLD_DRAGONFLY.get(),
@@ -103,7 +118,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.TISSUE_SAMPLE.get()
         );
 
-        // 可烧的木材
+    // 可烧的木材
         tag(ModTags.Items.WOODEN_COMBUSTIBLES)
                 .add(NatureBlocks.EBONY_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
                 .add(NatureBlocks.PEARL_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))

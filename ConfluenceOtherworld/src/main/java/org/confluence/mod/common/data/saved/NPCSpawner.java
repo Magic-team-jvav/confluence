@@ -109,14 +109,10 @@ public class NPCSpawner {
 
     public <T> void decode(Dynamic<T> tag) {
         Dynamic<T> dynamic = tag.get("confluence:npc_spawner").orElseEmptyMap();
-        dynamic.get("npc_alive").orElseEmptyMap().read(NPC_ALIVE_CODEC).ifSuccess(result -> {
-            npcAlive.clear();
-            npcAlive.putAll(result);
-        });
-        dynamic.get("npc_spawned").orElseEmptyList().read(NPC_SPAWNED_CODEC).ifSuccess(result -> {
-            npcSpawned.clear();
-            npcSpawned.addAll(result);
-        });
+        npcAlive.clear();
+        dynamic.get("npc_alive").orElseEmptyMap().read(NPC_ALIVE_CODEC).ifSuccess(npcAlive::putAll);
+        npcSpawned.clear();
+        dynamic.get("npc_spawned").orElseEmptyList().read(NPC_SPAWNED_CODEC).ifSuccess(npcSpawned::addAll);
     }
 
     public void encode(CompoundTag nbt) {

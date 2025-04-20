@@ -46,8 +46,14 @@ public final class TickEvents {
             ConfluenceData.get(serverLevel).setWindSpeed(factorX, factorZ);
         } else if (dayTime == 13500L) { // 19:30
             KillBoard killBoard = ConfluenceData.get(serverLevel).getKillBoard();
-            if (!killBoard.isDefeated(TEBossEntities.EYE_OF_CTHULHU.get()) && serverLevel.players().stream().anyMatch(player -> player.getMaxHealth() >= 40 && player.getArmorValue() >= 18)) { //todo 在NPC条件实装时，再改回10点防御值
-                if (/* todo NPC check */serverLevel.random.nextFloat() < 0.3333F) {
+            if (!killBoard.isDefeated(TEBossEntities.EYE_OF_CTHULHU.get())) {
+                boolean attributeFactor = false;
+                boolean npcFactor = false;
+                for (ServerPlayer player : serverLevel.players()) {
+                    if (!attributeFactor) attributeFactor = player.getMaxHealth() >= 40 && player.getArmorValue() >= 10;
+                    if (!npcFactor) npcFactor = NPCSpawner.INSTANCE.getAliveNpcCount(new NPCSpawner.Region(NPCSpawner.getNpcSpawnPos(player))) >= 4;
+                }
+                if (attributeFactor && npcFactor && serverLevel.random.nextFloat() < 0.3333F) {
                     EntityDelaySpawner.INSTANCE.pushBoss(1350, new EyeOfCthulhu(serverLevel));
                     serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("event.confluence.eye_of_cthulhu").withStyle(ChatFormatting.GREEN), false);
                 }
@@ -55,6 +61,9 @@ public final class TickEvents {
             if (killBoard.isAnyDefeated(TEBossEntities.EATER_OF_WORLDS.get(), TEBossEntities.BRAIN_OF_CTHULHU.get()) && serverLevel.random.nextFloat() < 0.02F) {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
             }
+        }
+        if (dayTime < 12000 && dayTime % 1200 == 0) {
+            NPCSpawner.INSTANCE.checkNpcRespawn(serverLevel);
         }
 
         HardmodeConvertor.INSTANCE.scheduleRefill(serverLevel);

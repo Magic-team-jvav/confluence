@@ -36,7 +36,7 @@ public class MoneyTradeScreen extends TETradeScreen<NPCTradesMenu> {
                 if (player != null) {
                     ItemStack stack = player.containerMenu.getCarried();
                     player.containerMenu.setCarried(ItemStack.EMPTY);
-                    ((IPlayer) player).terra_entity$setDaveTrades(NPCTrades.getTrade(TENpcEntities.GUIDE.getId()));
+                    ((IPlayer) player).terra_entity$setDaveTrades(NPCTrades.getTradeById(TENpcEntities.GUIDE.getId()));
                     OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.NPC_REFORGE_MENU, stack);
                 }
             });

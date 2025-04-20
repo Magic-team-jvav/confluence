@@ -11,7 +11,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import org.confluence.mod.client.event.ModClientSetups;
-import org.confluence.mod.common.init.ModEntities;
 import org.confluence.terraentity.entity.npc.NPCTrades;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.mixed.IPlayer;
@@ -35,7 +34,7 @@ public class ExtraButton {
                     if (player != null) {
                         ItemStack stack = player.containerMenu.getCarried();
                         player.containerMenu.setCarried(ItemStack.EMPTY);
-                        ((IPlayer) player).terra_entity$setDaveTrades(NPCTrades.getTrade(BuiltInRegistries.ENTITY_TYPE.getKey(TENpcEntities.GUIDE.get())));
+                        ((IPlayer) player).terra_entity$setDaveTrades(NPCTrades.getTradeById(BuiltInRegistries.ENTITY_TYPE.getKey(TENpcEntities.GUIDE.get())));
                         OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.NPC_TRADE_MENU, stack);
                     }
                 }));

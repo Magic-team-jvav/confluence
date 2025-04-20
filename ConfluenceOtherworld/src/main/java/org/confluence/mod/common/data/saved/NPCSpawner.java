@@ -23,12 +23,14 @@ import org.confluence.mod.mixed.IAbstractTerraNPC;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
+/**
+ * 注：NPC默认生成在对应玩家出生点
+ */
 public class NPCSpawner {
     public static final NPCSpawner INSTANCE = new NPCSpawner();
-    public static final Codec<Map<Region, Object2BooleanMap<EntityType<?>>>> NPC_LIVES_CODEC = new Codec<>() {
+    public static final Codec<Map<Region, Object2BooleanMap<EntityType<?>>>> NPC_ALIVE_CODEC = new Codec<>() {
         @Override
         public <T> DataResult<Pair<Map<Region, Object2BooleanMap<EntityType<?>>>, T>> decode(DynamicOps<T> ops, T input) {
             Map<Region, Object2BooleanMap<EntityType<?>>> map = new HashMap<>();
@@ -58,58 +60,97 @@ public class NPCSpawner {
             })));
         }
     };
+    public static final Codec<Set<EntityType<?>>> NPC_SPAWNED_CODEC = BuiltInRegistries.ENTITY_TYPE.byNameCodec().listOf().xmap(HashSet::new, ArrayList::new);
 
-    private final Map<Region, Object2BooleanMap<EntityType<?>>> npcLives = new HashMap<>();
+    private final Map<Region, Object2BooleanMap<EntityType<?>>> npcAlive = new HashMap<>();
+    /**
+     * 生成过的NPC，可用于NPC复活而无需再次满足条件
+     */
+    private final Set<EntityType<?>> npcSpawned = new HashSet<>();
 
-    public boolean hasNPCSpawned(Region region, EntityType<?> entityType) {
-        return npcLives.computeIfAbsent(region, region1 -> new Object2BooleanOpenHashMap<>()).getOrDefault(entityType, false);
+    public int getAliveNpcCount(Region region) {
+        Object2BooleanMap<EntityType<?>> map = npcAlive.get(region);
+        if (map == null) return 0;
+        int count = 0;
+        for (boolean alive : map.values()) if (alive) count++;
+        return count;
     }
 
-    public void setNPCSpawned(Region region, EntityType<?> entityType, boolean spawned) {
-        npcLives.computeIfAbsent(region, region1 -> new Object2BooleanOpenHashMap<>()).put(entityType, spawned);
+    public boolean hasNPCAlive(Region region, EntityType<?> entityType) {
+        return npcAlive.computeIfAbsent(region, region1 -> new Object2BooleanOpenHashMap<>()).getOrDefault(entityType, false);
+    }
+
+    public void setNPCAlive(Region region, EntityType<?> entityType, boolean spawned) {
+        npcAlive.computeIfAbsent(region, region1 -> new Object2BooleanOpenHashMap<>()).put(entityType, spawned);
+        if (spawned) {
+            npcSpawned.add(entityType);
+        }
     }
 
     public void moveNPCToAnotherRegion(EntityType<?> entityType, Region from, Region to) {
-        if (hasNPCSpawned(from, entityType)) {
-            setNPCSpawned(from, entityType, false);
-            setNPCSpawned(to, entityType, true);
+        if (hasNPCAlive(from, entityType)) {
+            setNPCAlive(from, entityType, false);
+            setNPCAlive(to, entityType, true);
+        }
+    }
+
+    public void onNPCAdded(Entity entity) {
+        if (entity instanceof IAbstractTerraNPC npc) {
+            npc.confluence$setRegion(new Region(entity.chunkPosition()));
+            setNPCAlive(npc.confluence$getRegion(), entity.getType(), true);
         }
     }
 
     public void onNPCRemoved(Entity entity) {
         if (entity instanceof IAbstractTerraNPC npc) {
-            setNPCSpawned(npc.confluence$getRegion(), entity.getType(), false);
+            setNPCAlive(npc.confluence$getRegion(), entity.getType(), false);
         }
     }
 
     public <T> void decode(Dynamic<T> tag) {
         Dynamic<T> dynamic = tag.get("confluence:npc_spawner").orElseEmptyMap();
-        dynamic.get("npc_lives").orElseEmptyMap().read(NPC_LIVES_CODEC).ifSuccess(result -> {
-            npcLives.clear();
-            npcLives.putAll(result);
-        });
+        npcAlive.clear();
+        dynamic.get("npc_alive").orElseEmptyMap().read(NPC_ALIVE_CODEC).ifSuccess(npcAlive::putAll);
+        npcSpawned.clear();
+        dynamic.get("npc_spawned").orElseEmptyList().read(NPC_SPAWNED_CODEC).ifSuccess(npcSpawned::addAll);
     }
 
     public void encode(CompoundTag nbt) {
         CompoundTag tag = new CompoundTag();
-        tag.put("npc_lives", NPC_LIVES_CODEC.encodeStart(NbtOps.INSTANCE, npcLives).getOrThrow());
+        tag.put("npc_alive", NPC_ALIVE_CODEC.encodeStart(NbtOps.INSTANCE, npcAlive).getOrThrow());
+        tag.put("npc_spawned", NPC_SPAWNED_CODEC.encodeStart(NbtOps.INSTANCE, npcSpawned).getOrThrow());
         nbt.put("confluence:npc_spawner", tag);
     }
 
     public void trySpawnGuide(ServerPlayer serverPlayer) {
         ServerLevel serverLevel = serverPlayer.serverLevel();
         if (serverLevel.dimension() == Level.OVERWORLD) {
-            Region region = new Region(serverPlayer.chunkPosition());
-            if (!hasNPCSpawned(region, TENpcEntities.GUIDE.get())) {
-                AbstractTerraNPC npc = TENpcEntities.GUIDE.get().create(serverLevel);
-                if (npc != null) {
-                    npc.setPos(serverLevel.getLevelData().getSpawnPos().getCenter());
-                    IAbstractTerraNPC.of(npc).confluence$setRegion(region);
-                    serverPlayer.level().addFreshEntity(npc);
-                    setNPCSpawned(region, TENpcEntities.GUIDE.get(), true);
-                }
+            BlockPos pos = getNpcSpawnPos(serverPlayer);
+            if (hasNPCAlive(new Region(pos), TENpcEntities.GUIDE.get())) return;
+            AbstractTerraNPC npc = TENpcEntities.GUIDE.get().create(serverLevel);
+            if (npc == null) return;
+            npc.setPos(pos.getCenter());
+            serverPlayer.level().addFreshEntity(npc);
+            onNPCAdded(npc);
+        }
+    }
+
+    public void checkNpcRespawn(ServerLevel serverLevel) {
+        for (ServerPlayer player : serverLevel.players()) {
+            for (EntityType<?> entityType : npcSpawned) { // 省去了两分钟冷却
+                BlockPos pos = getNpcSpawnPos(player);
+                if (hasNPCAlive(new Region(pos), entityType)) continue;
+                Entity entity = entityType.create(serverLevel);
+                if (entity == null) continue;
+                entity.setPos(pos.getCenter());
+                serverLevel.addFreshEntity(entity);
+                onNPCAdded(entity);
             }
         }
+    }
+
+    public static BlockPos getNpcSpawnPos(ServerPlayer player) {
+        return player.getRespawnPosition() == null ? player.level().getLevelData().getSpawnPos() : player.getRespawnPosition();
     }
 
     public record Region(int x, int z) {

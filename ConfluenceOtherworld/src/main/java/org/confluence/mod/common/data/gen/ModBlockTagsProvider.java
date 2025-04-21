@@ -1174,6 +1174,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 TR_CRIMSON_GRASS_BLOCK.get(),
                 TR_CRIMSON_JUNGLE_GRASS_BLOCK.get()
         );
+        tag(ModTags.Blocks.CORRODED_WORM_ROOTS_BASE_BLOCK).add(
+                CORRUPT_GRASS_BLOCK.get(),
+                CORRUPT_JUNGLE_GRASS_BLOCK.get()
+        );
     }
 
     @Override

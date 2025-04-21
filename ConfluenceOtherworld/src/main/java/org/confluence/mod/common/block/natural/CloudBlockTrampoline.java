@@ -111,10 +111,10 @@ public class CloudBlockTrampoline extends CloudBlock {
         level.scheduleTick(pos, this, 20);
     }
 
-    @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return SHAPE;
-    }
+//    @Override
+//    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+//        return SHAPE;
+//    }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

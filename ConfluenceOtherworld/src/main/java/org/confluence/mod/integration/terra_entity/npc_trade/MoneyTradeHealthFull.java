@@ -11,20 +11,27 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.terraentity.entity.npc.trade.ITradeHolder;
 import org.confluence.terraentity.registries.npc_trade.ITradeHealth;
+import org.confluence.terraentity.registries.npc_trade.TradeProperties;
 import org.confluence.terraentity.registries.npc_trade.TradeProvider;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 /**
  * 护士回血直接回满
  */
-public class MoneyTradeHealthFull implements IMoneyTrade, ITradeHealth {
+public record MoneyTradeHealthFull(@Nullable TradeProperties properties) implements IMoneyTrade, ITradeHealth {
 
     public static final MapCodec<MoneyTradeHealthFull> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.EMPTY.fieldOf("void").forGetter(trade -> Unit.INSTANCE)
-    ).apply(instance, (type)-> new MoneyTradeHealthFull()));
+            TradeProperties.CODEC.optionalFieldOf("properties").forGetter(i-> Optional.ofNullable(i.properties))
+    ).apply(instance, (properties)-> new MoneyTradeHealthFull(properties.orElse(null))));
 
     public static MoneyTradeHealthFull create() {
-        return new MoneyTradeHealthFull();
+        return new MoneyTradeHealthFull(null);
+    }
+
+    public static MoneyTradeHealthFull create(TradeProperties properties) {
+        return new MoneyTradeHealthFull(properties);
     }
 
     public long getCost(@Nullable Player player){

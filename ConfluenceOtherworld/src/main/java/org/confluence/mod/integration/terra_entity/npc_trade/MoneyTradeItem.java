@@ -8,14 +8,18 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.terraentity.entity.npc.trade.ITradeHolder;
 import org.confluence.terraentity.registries.npc_trade.ITradeItem;
+import org.confluence.terraentity.registries.npc_trade.TradeProperties;
 import org.confluence.terraentity.registries.npc_trade.TradeProvider;
 
-public record MoneyTradeItem(ItemStack result, long cost)implements ITradeItem, IMoneyTrade {
+import java.util.Optional;
+
+public record MoneyTradeItem(ItemStack result, long cost, TradeProperties properties)implements ITradeItem, IMoneyTrade {
 
     public static final MapCodec<MoneyTradeItem> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ItemStack.CODEC.fieldOf("result").forGetter(MoneyTradeItem::result),
-            Codec.LONG.fieldOf("cost").forGetter(MoneyTradeItem::cost)
-    ).apply(instance, MoneyTradeItem::new));
+            Codec.LONG.fieldOf("cost").forGetter(MoneyTradeItem::cost),
+            TradeProperties.CODEC.optionalFieldOf("properties").forGetter(i-> Optional.ofNullable(i.properties))
+    ).apply(instance, (result, cost, properties)-> new MoneyTradeItem(result, cost, properties.orElse(null))));
 
 
     @Override

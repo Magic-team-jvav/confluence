@@ -17,6 +17,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 //import org.confluence.terra_guns.common.init.TGItems;
+import org.confluence.terraentity.data.gen.recipe.TENPCShopProvider;
 import org.confluence.terraentity.entity.npc.trade.NPCTradeManager;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.init.item.TEWhipItems;
@@ -45,7 +46,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
     @Override
     public void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
         // 命名空间替换成confluence，本体不能覆盖子模块的数据包
-        recipe(TENpcEntities.GUIDE.getId()).addRecipe(new Builder()
+        shop(TENpcEntities.GUIDE.getId()).addRecipe(new Builder()
                 //TODO 枪！
 //                .add(TGItems.MUSKET_BULLET.get(), 100, 80)
                 .add(ConsumableItems.GRENADE.get(), 75)
@@ -77,11 +78,11 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(TEWhipItems.LEATHER_WHIP.get(), 100000)
                 .build());
 
-        recipe(TENpcEntities.NURSE.getId()).addRecipe(new Builder()
+        shop(TENpcEntities.NURSE.getId()).addRecipe(new Builder()
                 .add(MoneyTradeHealthFull.create())
                 .build());
 
-        recipe(TENpcEntities.ANGLER.getId()).addRecipe(new Builder()
+        shop(TENpcEntities.ANGLER.getId()).addRecipe(new Builder()
                 // 渔夫任务
                 .add(TradeTask.create(new ProgressTradeTask(List.of(
                         ItemTradeItem.of(ConsumableItems.BOMB.toStack(),FoodItems.ARMORED_CAVE_FISH.toStack()),
@@ -94,7 +95,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .build());
     }
 
-    protected Appender<NPCTradeManager> recipe(ResourceLocation id) {
+    protected Appender<NPCTradeManager> shop(ResourceLocation id) {
         // 预处理命名空间
         return recipe(NPCTradeManager.CODEC, pathProvider().json(Confluence.asResource(id.getPath())));
     }
@@ -116,7 +117,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
          * 钱换物
          */
         public Builder add(ItemStack it, int cost) {
-            trades.add(new MoneyTradeItem(it, cost));
+            trades.add(new MoneyTradeItem(it, cost, null));
             return this;
         }
         /**

@@ -10,14 +10,18 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.terraentity.entity.npc.trade.ITradeHolder;
 import org.confluence.terraentity.registries.npc_trade.ITradeHealth;
+import org.confluence.terraentity.registries.npc_trade.TradeProperties;
 import org.confluence.terraentity.registries.npc_trade.TradeProvider;
 
-public record MoneyTradeHealth(int health, long cost) implements IMoneyTrade, ITradeHealth  {
+import java.util.Optional;
+
+public record MoneyTradeHealth(int health, long cost, TradeProperties properties) implements IMoneyTrade, ITradeHealth  {
 
     public static final MapCodec<MoneyTradeHealth> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.INT.fieldOf("health").forGetter(MoneyTradeHealth::health),
-            Codec.LONG.fieldOf("cost").forGetter(MoneyTradeHealth::cost)
-    ).apply(instance, MoneyTradeHealth::new));
+            Codec.LONG.fieldOf("cost").forGetter(MoneyTradeHealth::cost),
+            TradeProperties.CODEC.optionalFieldOf("properties").forGetter(i-> Optional.ofNullable(i.properties))
+    ).apply(instance, (health, cost, properties)-> new MoneyTradeHealth(health, cost, properties.orElse(null))));
 
 
     @Override

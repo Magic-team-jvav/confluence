@@ -19,9 +19,7 @@ public class SuperDartTrapBlock extends DartTrapBlock {
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        if (pState.getValue(TRIGGERED)) return;
-        pLevel.setBlockAndUpdate(pPos, pState.setValue(TRIGGERED, true));
+    protected boolean behaviour(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
         Direction direction = pState.getValue(FACING);
         double x = pPos.getX() + 0.5 + 0.7 * direction.getStepX();
         double y = pPos.getY() + 0.5 + 0.7 * direction.getStepY();
@@ -35,8 +33,11 @@ public class SuperDartTrapBlock extends DartTrapBlock {
         }
         arrow.setBaseDamage(LibUtils.switchByDifficulty(pLevel, pPos, 16, 32, 48));
         arrow.shoot(direction.getStepX(), direction.getStepY(), direction.getStepZ(), 3.0F, 0.0F);
-        pLevel.addFreshEntity(arrow);
-        pLevel.setBlockAndUpdate(pPos, pState.setValue(TRIGGERED, true));
-        pLevel.scheduleTick(pPos, this, 67);
+        return pLevel.addFreshEntity(arrow);
+    }
+
+    @Override
+    protected int delay() {
+        return 67;
     }
 }

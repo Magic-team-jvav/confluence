@@ -13,16 +13,17 @@ public class FlameTrapBlock extends AbstractDispenserMechanicalBlock {
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        if (pState.getValue(TRIGGERED)) return;
-        pLevel.setBlockAndUpdate(pPos, pState.setValue(TRIGGERED, true));
+    protected boolean behaviour(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
         Direction direction = pState.getValue(FACING);
         double x = pPos.getX() + 0.5 + 2 * direction.getStepX();
         double y = pPos.getY() + 0.5 + 2 * direction.getStepY();
         double z = pPos.getZ() + 0.5 + 2 * direction.getStepZ();
         FlameCloudEntity entity = new FlameCloudEntity(pLevel, x, y, z);
-        pLevel.addFreshEntity(entity);
-        pLevel.setBlockAndUpdate(pPos, pState.setValue(TRIGGERED, true));
-        pLevel.scheduleTick(pPos, this, 37);
+       return pLevel.addFreshEntity(entity);
+    }
+
+    @Override
+    protected int delay() {
+        return 37;
     }
 }

@@ -8,6 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import org.confluence.lib.mixin.accessor.LanguageProviderAccessor;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.TooltipManager;
@@ -16,7 +17,6 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.integration.ponder.PonderHelper;
-import org.confluence.lib.mixin.accessor.LanguageProviderAccessor;
 
 import java.util.function.Consumer;
 
@@ -31,6 +31,7 @@ public class ModEnglishProvider extends LanguageProvider {
     protected void addTranslations() {
         add("config.jade.plugin_confluence.jade_network_component", "Mechanical Info");
         add("config.jade.plugin_confluence.jade_ponder_component", "Ponder Info");
+        add("config.jade.plugin_confluence.jade_tombstone_info", "Tombstone Info");
 
         add("creativetab.confluence.building_blocks", "Confluence | Buildings");
         add("creativetab.confluence.natural_blocks", "Confluence | Naturals");

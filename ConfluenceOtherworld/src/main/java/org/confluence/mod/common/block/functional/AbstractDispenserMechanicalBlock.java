@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import org.confluence.mod.common.block.functional.network.INetworkEntity;
 
 public abstract class AbstractDispenserMechanicalBlock extends AbstractMechanicalBlock {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
@@ -55,4 +56,16 @@ public abstract class AbstractDispenserMechanicalBlock extends AbstractMechanica
     public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
         pLevel.setBlockAndUpdate(pPos, pState.setValue(TRIGGERED, false));
     }
+
+    @Override
+    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
+        if (!pState.getValue(TRIGGERED) && behaviour(pState, pLevel, pPos, pColor, pEntity)){
+            pLevel.setBlockAndUpdate(pPos, pState.setValue(TRIGGERED, true));
+            pLevel.scheduleTick(pPos, this, delay());
+        }
+    }
+
+    protected abstract boolean behaviour(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity);
+
+    protected abstract int delay();
 }

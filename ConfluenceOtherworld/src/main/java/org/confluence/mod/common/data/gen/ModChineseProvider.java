@@ -21,6 +21,7 @@ public class ModChineseProvider extends LanguageProvider {
     protected void addTranslations() {
         add("config.jade.plugin_confluence.jade_network_component", "机械信息");
         add("config.jade.plugin_confluence.jade_ponder_component", "思索信息");
+        add("config.jade.plugin_confluence.jade_tombstone_info", "墓石信息");
 
         add("creativetab.confluence.building_blocks", "汇流来世 | 建筑方块");
         add("creativetab.confluence.natural_blocks", "汇流来世 | 自然方块");

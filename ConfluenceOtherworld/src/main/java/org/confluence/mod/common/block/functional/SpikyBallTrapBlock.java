@@ -12,10 +12,10 @@ import org.confluence.mod.common.entity.projectile.SuperSpikyBallProjectile;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class SpikyBallTrap extends AbstractDispenserMechanicalBlock {
+public class SpikyBallTrapBlock extends AbstractDispenserMechanicalBlock {
     private static final double sigma = Mth.square(50.0 / 8.0);
 
-    public SpikyBallTrap(Properties pProperties) {
+    public SpikyBallTrapBlock(Properties pProperties) {
         super(pProperties);
     }
 

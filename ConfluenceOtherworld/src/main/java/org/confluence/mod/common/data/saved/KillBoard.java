@@ -1,10 +1,7 @@
 package org.confluence.mod.common.data.saved;
 
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.Dynamic;
-import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.*;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -27,7 +24,7 @@ public class KillBoard implements IGlobalData {
                 boolean defeated = ops.getBooleanValue(pair.getSecond()).getOrThrow();
                 map.put(entityType, defeated);
             });
-            return DataResult.success(new Pair<>(map, input));
+            return DataResult.success(new Pair<>(map, input), Lifecycle.stable());
         }
 
         @Override
@@ -36,7 +33,7 @@ public class KillBoard implements IGlobalData {
                 T string = ops.createString(BuiltInRegistries.ENTITY_TYPE.getKey(entry.getKey()).toString());
                 T defeated = ops.createBoolean(entry.getBooleanValue());
                 return new Pair<>(string, defeated);
-            })));
+            })), Lifecycle.stable());
         }
     };
 

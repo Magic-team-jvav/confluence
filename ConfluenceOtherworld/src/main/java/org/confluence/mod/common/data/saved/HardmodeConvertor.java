@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ChunkMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
@@ -149,9 +150,14 @@ public class HardmodeConvertor implements IGlobalData {
                     BlockState targetState = theHallowConversionTable.get(sourceState);
                     if (targetState != null) {
                         chunkAccess.setBlockState(blockPos, targetState, false);
-                        //overworld.sendBlockUpdated(blockPos, sourceState, targetState, Block.UPDATE_CLIENTS);
                     }
                 }
+            }
+        }
+        ChunkMap chunkMap = overworld.getChunkSource().chunkMap;
+        for (ServerPlayer player : overworld.players()) {
+            if (player.getChunkTrackingView().contains(chunkPos)) {
+                chunkMap.markChunkPendingToSend(player, chunkPos);
             }
         }
         return true;

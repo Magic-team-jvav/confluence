@@ -1,10 +1,7 @@
 package org.confluence.mod.common.data.saved;
 
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.Dynamic;
-import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.*;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -58,7 +55,7 @@ public class NPCSpawner implements IGlobalData {
                 });
                 map.put(region, map1);
             });
-            return DataResult.success(new Pair<>(map, input));
+            return DataResult.success(new Pair<>(map, input), Lifecycle.stable());
         }
 
         @Override
@@ -71,7 +68,7 @@ public class NPCSpawner implements IGlobalData {
                     return new Pair<>(string1, aBoolean);
                 }));
                 return new Pair<>(string, map);
-            })));
+            })), Lifecycle.stable());
         }
     };
     public static final Codec<Set<EntityType<?>>> NPC_SPAWNED_CODEC = BuiltInRegistries.ENTITY_TYPE.byNameCodec().listOf().xmap(HashSet::new, ArrayList::new);

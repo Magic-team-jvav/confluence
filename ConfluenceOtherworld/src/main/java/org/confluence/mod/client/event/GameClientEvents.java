@@ -198,14 +198,19 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void movementInputUpdate(MovementInputUpdateEvent event) {
+        Input input = event.getInput();
         LocalPlayer player = (LocalPlayer) event.getEntity();
-        boolean b = player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN) || player.getInBlockState().is(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get());
+        boolean b = player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN);
         ((ILocalPlayer) player).confluence$setCanMove(!b);
-        if (!player.getAbilities().instabuild && (b || player.hasEffect(ModEffects.SHIMMER))) {
-            Input input = event.getInput();
-            input.jumping = false;
-            input.forwardImpulse = 0.0F;
-            input.leftImpulse = 0.0F;
+        if (!player.getAbilities().instabuild ){
+            if ((b || player.hasEffect(ModEffects.SHIMMER))) {
+                input.jumping = false;
+                input.forwardImpulse = 0.0F;
+                input.leftImpulse = 0.0F;
+            } else if (player.getInBlockState().is(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get())) {
+                input.jumping = false;
+                input.forwardImpulse = 0.0F;
+            }
         }
     }
 

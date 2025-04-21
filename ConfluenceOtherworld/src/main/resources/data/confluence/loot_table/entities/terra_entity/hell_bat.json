@@ -28,6 +28,20 @@
                     "weight": 99
                 }
             ]
+        },
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:bat_bat",
+                    "weight": 4
+                },
+                {
+                    "type": "minecraft:empty",
+                    "weight": 996
+                }
+            ]
         }
     ],
     "random_sequence": "terra_entity:entity/hell_bat"

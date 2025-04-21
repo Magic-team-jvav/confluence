@@ -165,8 +165,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("key.confluence.extra_inventory", "Quick Open Extra Slot");
 
         add("death.attack.falling_star", "%1$s got a response from a meteor");
-        add("death.attack.boulder", "%1$s  is crushed by boulder");
-        add("death.attack.thron", "%1$s  discovered that he had become a hedgehog.");
+        add("death.attack.boulder", "%1$s is crushed by boulder");
         add("death.attack.darkness", "%1$s was killed by something in the dark!");
 
         add("selections.confluence.magic_conch", "Responding to the call of The Ocean [%s]");

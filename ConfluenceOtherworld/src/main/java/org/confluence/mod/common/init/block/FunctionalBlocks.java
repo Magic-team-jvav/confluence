@@ -105,7 +105,8 @@ public class FunctionalBlocks {
     public static final DeferredBlock<StepOnTrapBlock> SHIMMER_TRAP = registerWithItem("shimmer_trap", () -> new StepOnTrapBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DISPENSER), StepOnTrapBlock.SHIMMER));
     public static final DeferredBlock<StepOnTrapBlock> GRAVITATION_TRAP = registerWithItem("gravitation_trap", () -> new StepOnTrapBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DISPENSER), StepOnTrapBlock.GRAVITATION));
     public static final DeferredBlock<StepOnTrapBlock> PNEUMATIC_TRAP = registerWithItem("pneumatic_trap", () -> new StepOnTrapBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DISPENSER), StepOnTrapBlock.PNEUMATIC));
-    public static final DeferredBlock<SpikeBlock> SPIKE = registerWithItem("spike", () -> new SpikeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)));
+    public static final DeferredBlock<SpikeBlock> SPIKE = registerWithItem("spike", () -> new SpikeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS), 12));
+    public static final DeferredBlock<SpikeBlock> WOODEN_SPIKE = registerWithItem("wooden_spike", () -> new SpikeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.JUNGLE_PLANKS), 16));
     public static final DeferredBlock<FragileBlock> FRAGILE_SANDSTONE = registerWithItem("fragile_sandstone", () -> new FragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE), Blocks.SANDSTONE::defaultBlockState));
     public static final DeferredBlock<FragileBlock> FRAGILE_BLUE_BRICKS = registerWithItem("fragile_blue_bricks", () -> new FragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS), () -> DecorativeBlocks.BLUE_BRICKS.get().defaultBlockState()));
     public static final DeferredBlock<FragileBlock> FRAGILE_GREEN_BRICKS = registerWithItem("fragile_green_bricks", () -> new FragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS), () -> DecorativeBlocks.GREEN_BRICKS.get().defaultBlockState()));

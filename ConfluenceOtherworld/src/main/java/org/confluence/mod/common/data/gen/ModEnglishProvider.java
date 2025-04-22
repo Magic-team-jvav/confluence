@@ -289,8 +289,41 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.golden_key.0", "“Opens one locked Gold Chest or Lock Box”");
         add("tooltip.item.confluence.shadow_key.0", "“Opens all Shadow Chests and Obsidian Lock Boxes”");
         add("tooltip.item.confluence.temple_key.0", "“Opens the jungle temple door”");
+        add("tooltip.item.confluence.jungle_key.0", "“Unlocks a Jungle Chest in the dungeon”");
+        add("tooltip.item.confluence.corruption_key.0", "“Unlocks a Corruption Chest in the dungeon”");
+        add("tooltip.item.confluence.crimson_key.0", "“Unlocks a Crimson Chest in the dungeon”");
+        add("tooltip.item.confluence.hallowed_key.0", "“Unlocks a Hallowed Chest in the dungeon”");
+        add("tooltip.item.confluence.frozen_key.0", "“Unlocks an Ice Chest in the dungeon”");
+        add("tooltip.item.confluence.desert_key.0", "“Unlocks a Desert Chest in the dungeon”");
 
-
+        add("tooltip.item.confluence.angel_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.demon_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.fairy_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.fin_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.frozen_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.harpy_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.jetpack.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.leaf_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.bat_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.bee_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.butterfly_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.flame_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.hoverboard.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.bone_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.mothron_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.spectre_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.beetle_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.festive_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.spooky_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.tattered_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.steampunk_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.betsys_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.empress_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.fishron_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.nebula_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.vortex_booster.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.solar_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.stardust_wings.0", "Allows flight and slow fall");
 
         // new
         add("achievements.toast.complete", "Achievement achieved!");

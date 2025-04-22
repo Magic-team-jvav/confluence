@@ -14,6 +14,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import org.confluence.mod.common.block.common.TombstoneBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
 import org.jetbrains.annotations.Nullable;
@@ -216,9 +217,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 BLUE_BRICK_SLAB.get(),
                 GREEN_BRICK_SLAB.get(),
                 PINK_BRICK_SLAB.get(),
-                BLUE_BRICKS_DOOR.get(),
-                GREEN_BRICKS_DOOR.get(),
-                PINK_BRICKS_DOOR.get(),
                 RUBY_CHAIN.get(),
                 AMBER_CHAIN.get(),
                 TOPAZ_CHAIN.get(),
@@ -252,9 +250,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 BLUE_BRICK_SLAB.get(),
                 GREEN_BRICK_SLAB.get(),
                 PINK_BRICK_SLAB.get(),
-                BLUE_BRICKS_DOOR.get(),
-                GREEN_BRICKS_DOOR.get(),
-                PINK_BRICKS_DOOR.get(),
                 DESERT_FOSSIL.get(),
                 EXTRACTINATOR.get(),
                 SKY_MILL.get(),
@@ -297,7 +292,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GOLDEN_GRAVE_MARKER.get(),
                 GOLDEN_CROSS_GRAVE_MARKER.get(),
                 GOLDEN_HEADSTONE.get(),
-                GOLDEN_GRAVESTONE.get()
+                GOLDEN_GRAVESTONE.get(),
+                AETHERIUM_BLOCK.get(),
+                DARK_AETHERIUM_BLOCK.get()
         );
         // 铲子
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithShovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);
@@ -499,7 +496,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GOLDEN_GRAVE_MARKER.get(),
                 GOLDEN_CROSS_GRAVE_MARKER.get(),
                 GOLDEN_HEADSTONE.get(),
-                GOLDEN_GRAVESTONE.get()
+                GOLDEN_GRAVESTONE.get(),
+
+                AETHERIUM_BLOCK.get(),
+                DARK_AETHERIUM_BLOCK.get()
         );
         tag(ModTags.Blocks.NEEDS_2_LEVEL).add(
                 METEORITE_ORE.get(),
@@ -556,10 +556,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 PINK_BRICK_STAIRS.get(),
                 BLUE_BRICK_SLAB.get(),
                 GREEN_BRICK_SLAB.get(),
-                PINK_BRICK_SLAB.get(),
-                BLUE_BRICKS_DOOR.get(),
-                GREEN_BRICKS_DOOR.get(),
-                PINK_BRICKS_DOOR.get()
+                PINK_BRICK_SLAB.get()
         );
         tag(ModTags.Blocks.NEEDS_5_LEVEL).add(
                 DEEPSLATE_COBALT_ORE.get(),
@@ -691,9 +688,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 BLUE_BRICK_SLAB.get(),
                 GREEN_BRICK_SLAB.get(),
                 PINK_BRICK_SLAB.get(),
-                BLUE_BRICKS_DOOR.get(),
-                GREEN_BRICKS_DOOR.get(),
-                PINK_BRICKS_DOOR.get(),
                 HELLSTONE.get(),
                 HELLSTONE_BLOCK.get(),
                 RAW_HELLSTONE_BLOCK.get(),

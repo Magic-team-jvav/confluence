@@ -250,9 +250,6 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(TR_CRIMSON_COBBLESTONE.get());
             dropSelf(TR_CRIMSON_SAND.get());
             dropSelf(ASH_BLOCK.get());
-            dropOther(TR_CRIMSON_STONE.get(), TR_CRIMSON_COBBLESTONE.get());
-            dropOther(EBONY_STONE.get(), EBONY_COBBLESTONE.get());
-            dropOther(PEARL_STONE.get(), PEARL_COBBLESTONE.get());
             dropSelf(EBONY_LOG_BLOCKS.getLog().get());
             dropSelf(YELLOW_WILLOW_LOG_BLOCKS.getLog().get());
             dropSelf(BAOBAB_LOG_BLOCKS.getLog().get());
@@ -378,9 +375,30 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(TR_CRIMSON_HARDENED_SAND_BLOCK.get());
             dropSelf(TR_CRIMSON_MOIST_SAND_BLOCK.get());
 
+            dropSelf(AETHERIUM_BLOCK.get());
+            dropSelf(DARK_AETHERIUM_BLOCK.get());
+
             dropSelf(JUNGLE_ROSE.get());
 
             dropOther(LIFE_CRYSTAL_BLOCK.get(), LIFE_CRYSTAL.get());
+
+            dropWhenSilkTouch(PURE_GLASS.get());
+            dropWhenSilkTouch(WHITE_PURE_GLASS.get());
+            dropWhenSilkTouch(LIGHT_GRAY_PURE_GLASS.get());
+            dropWhenSilkTouch(GRAY_PURE_GLASS.get());
+            dropWhenSilkTouch(BLACK_PURE_GLASS.get());
+            dropWhenSilkTouch(BROWN_PURE_GLASS.get());
+            dropWhenSilkTouch(RED_PURE_GLASS.get());
+            dropWhenSilkTouch(ORANGE_PURE_GLASS.get());
+            dropWhenSilkTouch(YELLOW_PURE_GLASS.get());
+            dropWhenSilkTouch(LIME_PURE_GLASS.get());
+            dropWhenSilkTouch(GREEN_PURE_GLASS.get());
+            dropWhenSilkTouch(CYAN_PURE_GLASS.get());
+            dropWhenSilkTouch(LIGHT_BLUE_PURE_GLASS.get());
+            dropWhenSilkTouch(BLUE_PURE_GLASS.get());
+            dropWhenSilkTouch(PURPLE_PURE_GLASS.get());
+            dropWhenSilkTouch(MAGENTA_PURE_GLASS.get());
+            dropWhenSilkTouch(PINK_PURE_GLASS.get());
 
             //chain
             dropSelf(RUBY_CHAIN.get());

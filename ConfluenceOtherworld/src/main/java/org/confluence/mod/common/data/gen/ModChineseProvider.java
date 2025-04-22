@@ -300,6 +300,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.golden_key.0", "“打开一个锁住的金箱或金锁盒”");
         add("tooltip.item.confluence.shadow_key.0", "“打开所有暗影箱和黑曜石锁盒”");
         add("tooltip.item.confluence.temple_key.0", "“打开丛林神庙的大门”");
+        add("tooltip.item.confluence.jungle_key.0", "“打开地牢中的丛林箱”");
+        add("tooltip.item.confluence.corruption_key.0", "“打开地牢中的腐化箱”");
+        add("tooltip.item.confluence.crimson_key.0", "“打开地牢中的猩红箱”");
+        add("tooltip.item.confluence.hallowed_key.0", "“打开地牢中的神圣箱”");
+        add("tooltip.item.confluence.frozen_key.0", "“打开地牢中的冰雪箱”");
+        add("tooltip.item.confluence.desert_key.0", "“打开地牢中的沙漠箱”");
 
         add("tooltip.item.confluence.angel_wings.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.demon_wings.0", "可飞行和缓慢坠落");
@@ -1447,9 +1453,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.BLUE_BRICK_SLAB.get(), "蓝色地牢砖台阶");
         add(DecorativeBlocks.GREEN_BRICK_SLAB.get(), "绿色地牢砖台阶");
         add(DecorativeBlocks.PINK_BRICK_SLAB.get(), "粉色地牢砖台阶");
-        add(DecorativeBlocks.BLUE_BRICKS_DOOR.get(), "蓝色地牢砖门");
-        add(DecorativeBlocks.GREEN_BRICKS_DOOR.get(), "绿色地牢砖门");
-        add(DecorativeBlocks.PINK_BRICKS_DOOR.get(), "粉色地牢砖门");
         add(DecorativeBlocks.DUNGEON_DOOR.get(), "地牢门");
         add(DecorativeBlocks.CHISELED_BLUE_BRICKS.get(), "雕纹蓝色地牢砖");
         add(DecorativeBlocks.CHISELED_GREEN_BRICKS.get(), "雕纹绿色地牢砖");
@@ -1927,6 +1930,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.GOLDEN_KEY.get(), "金钥匙");
         add(ToolItems.SHADOW_KEY.get(), "暗影钥匙");
         add(ToolItems.TEMPLE_KEY.get(), "神庙钥匙");
+        add(ToolItems.JUNGLE_KEY.get(), "丛林钥匙");
+        add(ToolItems.CORRUPTION_KEY.get(), "腐化钥匙");
+        add(ToolItems.CRIMSON_KEY.get(), "猩红钥匙");
+        add(ToolItems.HALLOWED_KEY.get(), "神圣钥匙");
+        add(ToolItems.FROZEN_KEY.get(), "冰冻钥匙");
+        add(ToolItems.DESERT_KEY.get(), "沙漠钥匙");
         add(ToolItems.TARGET_DUMMY.get(), "训练假人");
         add(ToolItems.ENCUMBERING_STONE.get(), "负重石");
         add(ToolItems.MAGIC_CONCH.get(), "魔法海螺");
@@ -2052,6 +2061,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.LEAF_WAND.get(), "树叶魔棒");
         add(ModItems.LIVING_MAHOGANY_WAND.get(), "生命红木魔棒");
         add(ModItems.RICH_MAHOGANY_LEAF_WAND.get(), "红木树叶魔棒");
+        add(ModItems.HIVE_WAND.get(), "蜂巢魔棒");
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");
         add(FunctionalBlocks.NORMAL_BOULDER.get(), "巨石");
@@ -2104,6 +2114,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.get(), "机械易碎黑曜石砖");
         add(FunctionalBlocks.DETONATOR.get(), "引爆器");
         add(FunctionalBlocks.BASE_CHEST_BLOCK.get(), "箱子");
+        add(FunctionalBlocks.DEATH_CHEST_BLOCK.get(), "死人箱");
+        add(FunctionalBlocks.CRIMSON_CHEST.get(), "猩红箱");
+        add(FunctionalBlocks.CORRUPTION_CHEST.get(), "腐化箱");
+        add(FunctionalBlocks.JUNGLE_CHEST.get(), "丛林箱");
+        add(FunctionalBlocks.ICE_CHEST.get(), "冰雪箱");
+        add(FunctionalBlocks.DESERT_CHEST.get(), "沙漠箱");
+        add(FunctionalBlocks.HALLOWED_CHEST.get(), "神圣箱");
         add(FunctionalBlocks.SCULK_TRAP.get(), "幽匿陷阱");
         add(FunctionalBlocks.ROLLING_CACTUS_BOULDER.get(), "仙人球");
         add(FunctionalBlocks.PIGGY_BANK.get(), "猪猪存钱罐");
@@ -2124,6 +2141,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.LAND_MINE.get(), "地雷");
         add(FunctionalBlocks.SUPER_DART_TRAP.get(), "超级飞镖机关");
         add(FunctionalBlocks.FLAME_TRAP.get(), "烈焰机关");
+        add(FunctionalBlocks.SPIKY_BALL_TRAP.get(), "尖球机关");
+        add(FunctionalBlocks.SPEAR_TRAP.get(), "长矛机关");
+        add(FunctionalBlocks.LEVER.get(), "控制杆");
+        add(FunctionalBlocks.WOODEN_SPIKE.get(), "木尖刺");
 
         add(ModBlocks.TOMBSTONE.get(), "墓石");
         add(ModBlocks.GRAVE_MARKER.get(), "墓石碑");

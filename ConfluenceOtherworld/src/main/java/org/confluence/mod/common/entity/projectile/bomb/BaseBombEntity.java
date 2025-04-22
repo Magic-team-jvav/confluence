@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile.bomb;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -127,6 +128,24 @@ public class BaseBombEntity extends ThrowableItemProjectile {
 
     protected ResourceLocation getLeadParticle() {
         return PARTICLE;
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.delay = compound.getInt("Delay");
+        this.blastPower = compound.getFloat("BlastPower");
+        this.bounceFactor = compound.getDouble("BounceFactor");
+        this.frictionFactor = compound.getDouble("FrictionFactor");
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putInt("Delay", delay);
+        compound.putFloat("BlastPower", blastPower);
+        compound.putDouble("BounceFactor", bounceFactor);
+        compound.putDouble("FrictionFactor", frictionFactor);
     }
 
     public static void itemInvulnerableToExplosion(@Nullable Entity directSourceEntity, List<Entity> affectedEntities) {

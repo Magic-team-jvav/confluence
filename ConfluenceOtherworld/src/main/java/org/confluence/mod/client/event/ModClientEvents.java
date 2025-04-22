@@ -212,6 +212,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BOUNCY_BOMB_ENTITY.get(), BouncyBombEntityRenderer::new);
         event.registerEntityRenderer(SCARAB_BOMB_ENTITY.get(), ScarabBombEntityRenderer::new);
         event.registerEntityRenderer(STICKY_BOMB_ENTITY.get(), StickyBombEntityRenderer::new);
+        event.registerEntityRenderer(SMOKE_BOMB_ENTITY.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(BOMB_FISH_ENTITY.get(), BombFishEntityRenderer::new);
         event.registerEntityRenderer(DIRT_BOMB.get(), DirtBombEntityRenderer::new);
         event.registerEntityRenderer(STICKY_DIRT_BOMB.get(), StickyDirtBombEntityRenderer::new);

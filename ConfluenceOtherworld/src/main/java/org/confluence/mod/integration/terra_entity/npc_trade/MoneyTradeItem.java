@@ -21,6 +21,30 @@ public record MoneyTradeItem(ItemStack result, long cost, TradeProperties proper
             TradeProperties.CODEC.optionalFieldOf("properties").forGetter(i-> Optional.ofNullable(i.properties))
     ).apply(instance, (result, cost, properties)-> new MoneyTradeItem(result, cost, properties.orElse(null))));
 
+    public static class Builder{
+        private ItemStack result;
+        private long cost;
+        private TradeProperties properties;
+        public Builder setCost(long cost){
+            this.cost = cost;
+            return this;
+        }
+        public Builder setCost(int a, int b, int c,int d){
+            this.cost = a * 1000000L + b * 10000L + c * 100L + d;
+            return this;
+        }
+        public Builder setProperties(TradeProperties properties){
+            this.properties = properties;
+            return this;
+        }
+        public Builder setResult(ItemStack result){
+            this.result = result;
+            return this;
+        }
+        public MoneyTradeItem build(){
+            return new MoneyTradeItem(result, cost, properties);
+        }
+    }
 
     @Override
     public void onTrade(ServerPlayer player, ITradeHolder npc, int index) {

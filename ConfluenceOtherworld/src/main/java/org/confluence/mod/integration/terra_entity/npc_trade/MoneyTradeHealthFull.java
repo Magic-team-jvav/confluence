@@ -1,7 +1,5 @@
 package org.confluence.mod.integration.terra_entity.npc_trade;
 
-import com.mojang.datafixers.util.Unit;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.gui.Font;

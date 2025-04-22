@@ -13,6 +13,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -250,6 +251,9 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(TR_CRIMSON_COBBLESTONE.get());
             dropSelf(TR_CRIMSON_SAND.get());
             dropSelf(ASH_BLOCK.get());
+            this.add(TR_CRIMSON_STONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, TR_CRIMSON_COBBLESTONE));
+            this.add(EBONY_STONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, EBONY_COBBLESTONE));
+            this.add(PEARL_STONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, PEARL_COBBLESTONE));
             dropSelf(EBONY_LOG_BLOCKS.getLog().get());
             dropSelf(YELLOW_WILLOW_LOG_BLOCKS.getLog().get());
             dropSelf(BAOBAB_LOG_BLOCKS.getLog().get());
@@ -408,6 +412,13 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(SAPPHIRE_CHAIN.get());
             dropSelf(DIAMOND_CHAIN.get());
             dropSelf(AMETHYST_CHAIN.get());
+
+            //door
+            this.add(OBSIDIAN_BRICKS_DOOR.get(), this::createDoorTable);
+            this.add(SKYWARE_DOOR.get(), this::createDoorTable);
+            this.add(SKYWARE_GLASS_DOOR.get(), this::createDoorTable);
+            this.add(DUNGEON_DOOR.get(), this::createDoorTable);
+
 
 
             for (LogBlockSet logBlocks : LogBlockSet.LOG_BLOCK_SETS) {

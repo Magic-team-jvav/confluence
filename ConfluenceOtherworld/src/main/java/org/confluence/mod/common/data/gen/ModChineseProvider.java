@@ -836,6 +836,15 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("block.confluence.larva", "幼虫");
 
+        // npc对话
+        add("dialogs.confluence.guide.0", "我的工作是为你接下来的任务提供建议。建议你遇到任何困难时都来和我谈谈。");
+        add("dialogs.confluence.guide.1", "他们说，有个人会告诉你如何在这地方上生存……哦等下。那个人就是我。");
+        add("dialogs.confluence.guide.2", "晚上你应该呆在家里。黑夜在外面转悠非常危险。");
+
+        add("dialogs.confluence.nurse.0", "我要和向导认真谈一谈。你一周到底有多少次被熔岩烫成重伤？");
+        add("dialogs.confluence.nurse.1", "看到那个在地牢周围转来转去的老人没？他看上去遇到麻烦了。");
+        add("dialogs.confluence.nurse.2", "嗨，军火商有没有提过要去看医生啥的？就随便问问。");
+
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.ARROW_PROJECTILE.get(), "泰拉箭");
         add(ModEntities.ANTI_GRAVITY_HOOK.get(), "反重力钩");
@@ -905,6 +914,18 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.BOULDER.get(), "巨石");
         add(ModEntities.FOLLOWER_BOULDER.get(), "跟踪巨石");
         add(ModEntities.EXPLODE_BOULDER.get(), "爆炸巨石");
+        add(ModEntities.ROLLING_CACTUS_BOULDER.get(), "仙人球");
+        add(ModEntities.ROLLING_CACTUS_SPIKE.get(), "仙人球尖刺");
+        add(ModEntities.TOMBSTONE_BOULDER.get(), "墓石巨石");
+        add(ModEntities.SPIKY_BALL_PROJECTILE.get(), "尖球");
+        add(ModEntities.THROWN_WATER_PROJECTILE.get(), "掷出的液体瓶");
+        add(ModEntities.FLOWER_PETAL_PROJECTILE.get(), "花瓣射弹");
+        add(ModEntities.TITANIUM_SHARDS_PROJECTILE.get(), "钛金防护碎片");
+        add(ModEntities.FALLING_STAR_ITEM_ENTITY.get(), "坠落之星");
+        add(ModEntities.TREASURE_BAG_ITEM_ENTITY.get(), "宝藏袋");
+        add(ModEntities.FLAME_CLOUD.get(), "火焰云");
+        add(ModEntities.SUPER_SPIKY_BALL_PROJECTILE.get(), "超级尖球射弹");
+        add(ModEntities.SPEAR.get(), "长矛");
 
 
         //region blocks
@@ -3044,6 +3065,14 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.HUNGER_DELAYED.get(), "饥饿延缓");
         add(ModEffects.CHOKING.get(), "干噎");
         add(ModEffects.DELICIOUS.get(), "美味");
+        add(ModEffects.LOVE.get(), "爱情");
+        add(ModEffects.MIDAS.get(), "迈达斯");
+        add(ModEffects.TIPSY.get(), "踉跄");
+        add(ModEffects.CLAIRVOYANCE.get(), "透视");
+        add(ModEffects.HOLY_PROTECTION.get(), "神圣防护");
+        add(ModEffects.TITANIUM_BARRIER.get(), "钛金防护");
+        add(ModEffects.FLASK_OF_FIRE.get(), "武器灌注：火焰");
+        add(ModEffects.FLASK_OF_GOLD.get(), "武器灌注：金");
 
         add(TooltipManager.prefix, "** 赞助者物品 **");
 

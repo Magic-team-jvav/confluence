@@ -760,6 +760,14 @@ public class ModEnglishProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.cactus_set", "Cactus Set");
         add("equipment_benediction.set_switcher.confluence.cactus_set.data.0", "Attackers take damage from cactus thorns");
 
+        // npc
+        add("dialogs.confluence.guide.0", "I am here to give you advice on what to do next.  It is recommended that you talk with me anytime you get stuck."  );
+        add("dialogs.confluence.guide.1", "They say there is a person who will tell you how to survive in this land... oh wait. That's me." );
+        add("dialogs.confluence.guide.2", "You should stay indoors at night. It is very dangerous to be wandering around in the dark." );
+
+        add("dialogs.confluence.nurse.0", "I need to have a serious talk with Guide. How many times a week can you come in with severe lava burns?");
+        add("dialogs.confluence.nurse.1", "Have you seen that old man pacing around the dungeon? He looks troubled."  );
+        add("dialogs.confluence.nurse.2", "Hey, has Dealer mentioned needing to go to the doctor for any reason? Just wondering.");
 
         PonderHelper.addTranslateKeys(this::add, true);
 

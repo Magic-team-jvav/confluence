@@ -1,15 +1,16 @@
 {
   "terra_entity:guide": {
     "dialogs": [
-      "h111",
-      "h222",
-      "h333"
+      "dialogs.confluence.guide.0",
+      "dialogs.confluence.guide.1",
+      "dialogs.confluence.guide.2"
     ]
   },
   "terra_entity:nurse": {
     "dialogs": [
-      "i'm 111",
-      "i'm 555"
+      "dialogs.confluence.nurse.0",
+      "dialogs.confluence.nurse.1",
+      "dialogs.confluence.nurse.2"
     ]
   }
 }

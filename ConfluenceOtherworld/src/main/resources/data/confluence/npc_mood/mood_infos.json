@@ -4,16 +4,8 @@
       {
         "moodId": "terra_entity:goblin1",
         "moodInfo": {
-          "entity_type": "terra_entity:demolitionist",
-          "info": "fuck_demolitionist",
-          "mood": "HATE"
-        }
-      },
-      {
-        "moodId": "terra_entity:goblin2",
-        "moodInfo": {
-          "entity_type": "terra_entity:nurse",
-          "info": "love_nurse",
+          "entity_type": "terra_entity:dye_trader",
+          "info": "like_dye_trader",
           "mood": "LIKE"
         }
       }
@@ -33,9 +25,209 @@
       {
         "moodId": "terra_entity:guild1",
         "moodInfo": {
-          "entity_type": "terra_entity:goblin_tinkerer",
-          "info": "fuck_goblin",
+          "entity_type": "terra_entity:painter",
+          "info": "fuck_painter",
           "mood": "HATE"
+        }
+      }
+    ],
+    "setting": {
+      "moodToValue": {
+        "DISLIKE": -10,
+        "HATE": -20,
+        "LIKE": 10,
+        "LOVER": 20,
+        "NEUTRAL": 0
+      }
+    }
+  },
+  "terra_entity:arms_dealer": {
+    "moodInfos": [
+      {
+        "moodId": "terra_entity:arms_dealer1",
+        "moodInfo": {
+          "entity_type": "terra_entity:demolitionist",
+          "info": "fuck_demolitionist",
+          "mood": "HATE"
+        }
+      },
+      {
+        "moodId": "terra_entity:arms_dealer2",
+        "moodInfo": {
+          "entity_type": "terra_entity:nurse",
+          "info": "love_nurse",
+          "mood": "LOVER"
+        }
+      }
+    ],
+    "setting": {
+      "moodToValue": {
+        "DISLIKE": -10,
+        "HATE": -20,
+        "LIKE": 10,
+        "LOVER": 20,
+        "NEUTRAL": 0
+      }
+    }
+  },
+  "terra_entity:angler": {
+    "moodInfos": [
+      {
+        "moodId": "terra_entity:angler1",
+        "moodInfo": {
+          "entity_type": "terra_entity:demolitionist",
+          "info": "like_demolitionist",
+          "mood": "LIKE"
+        }
+      }
+    ],
+    "setting": {
+      "moodToValue": {
+        "DISLIKE": -10,
+        "HATE": -20,
+        "LIKE": 10,
+        "LOVER": 20,
+        "NEUTRAL": 0
+      }
+    }
+  },
+  "terra_entity:dye_trader": {
+    "moodInfos": [
+      {
+        "moodId": "terra_entity:dye_trader1",
+        "moodInfo": {
+          "entity_type": "terra_entity:arms_dealer",
+          "info": "like_arms_dealer",
+          "mood": "LIKE"
+        }
+      },
+      {
+        "moodId": "terra_entity:dye_trader2",
+        "moodInfo": {
+          "entity_type": "terra_entity:painter",
+          "info": "like_painter",
+          "mood": "LIKE"
+        }
+      }
+    ],
+    "setting": {
+      "moodToValue": {
+        "DISLIKE": -10,
+        "HATE": -20,
+        "LIKE": 10,
+        "LOVER": 20,
+        "NEUTRAL": 0
+      }
+    }
+  },
+  "terra_entity:demolitionist": {
+    "moodInfos": [
+      {
+        "moodId": "terra_entity:demolitionist1",
+        "moodInfo": {
+          "entity_type": "terra_entity:arms_dealer",
+          "info": "dislike_arms_dealer",
+          "mood": "DISLIKE"
+        }
+      },
+      {
+        "moodId": "terra_entity:demolitionist2",
+        "moodInfo": {
+          "entity_type": "terra_entity:goblin_tinkerer",
+          "info": "dislike_goblin_tinkerer",
+          "mood": "DISLIKE"
+        }
+      }
+    ],
+    "setting": {
+      "moodToValue": {
+        "DISLIKE": -10,
+        "HATE": -20,
+        "LIKE": 10,
+        "LOVER": 20,
+        "NEUTRAL": 0
+      }
+    }
+  },
+  "terra_entity:painter": {
+    "moodInfos": [
+      {
+        "moodId": "terra_entity:painter1",
+        "moodInfo": {
+          "entity_type": "terra_entity:dryad",
+          "info": "love_dryad",
+          "mood": "LOVER"
+        }
+      }
+    ],
+    "setting": {
+      "moodToValue": {
+        "DISLIKE": -10,
+        "HATE": -20,
+        "LIKE": 10,
+        "LOVER": 20,
+        "NEUTRAL": 0
+      }
+    }
+  },
+  "terra_entity:dryad": {
+    "moodInfos": [
+      {
+        "moodId": "terra_entity:dryad1",
+        "moodInfo": {
+          "entity_type": "terra_entity:angler",
+          "info": "dislike_angler",
+          "mood": "DISLIKE"
+        }
+      }
+    ],
+    "setting": {
+      "moodToValue": {
+        "DISLIKE": -10,
+        "HATE": -20,
+        "LIKE": 10,
+        "LOVER": 20,
+        "NEUTRAL": 0
+      }
+    }
+  },
+  "terra_entity:merchant": {
+    "moodInfos": [
+      {
+        "moodId": "terra_entity:merchant1",
+        "moodInfo": {
+          "entity_type": "terra_entity:nurse",
+          "info": "like_nurse",
+          "mood": "LIKE"
+        }
+      }
+    ],
+    "setting": {
+      "moodToValue": {
+        "DISLIKE": -10,
+        "HATE": -20,
+        "LIKE": 10,
+        "LOVER": 20,
+        "NEUTRAL": 0
+      }
+    }
+  },
+  "terra_entity:nurse": {
+    "moodInfos": [
+      {
+        "moodId": "terra_entity:nurse1",
+        "moodInfo": {
+          "entity_type": "terra_entity:arms_dealer",
+          "info": "love_arms_dealer",
+          "mood": "LOVER"
+        }
+      },
+      {
+        "moodId": "terra_entity:nurse2",
+        "moodInfo": {
+          "entity_type": "terra_entity:dryad",
+          "info": "dislike_dryad",
+          "mood": "DISLIKE"
         }
       }
     ],

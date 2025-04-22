@@ -45,6 +45,7 @@ public class ConsumableItems {
     public static final DeferredItem<ThrowableItem<BaseGrenadeEntity>> GRENADE = ITEMS.register("grenade", () -> new ThrowableItem<>(0.7F, BaseGrenadeEntity::new));
     public static final DeferredItem<ThrowableItem<BouncyGrenadeEntity>> BOUNCY_GRENADE = ITEMS.register("bouncy_grenade", () -> new ThrowableItem<>(0.7F, BouncyGrenadeEntity::new));
     public static final DeferredItem<ThrowableItem<StickyGrenadeEntity>> STICKY_GRENADE = ITEMS.register("sticky_grenade", () -> new ThrowableItem<>(0.7F, StickyGrenadeEntity::new));
+    public static final DeferredItem<ThrowableItem<BeenadeEntity>> BEENADE = ITEMS.register("beenade", () -> new ThrowableItem<>(0.7F, BeenadeEntity::new));
     public static final DeferredItem<ThrowableItem<BaseDirtBombEntity>> DIRT_BOMB = ITEMS.register("dirt_bomb", () -> new ThrowableItem<>(0.8F, BaseDirtBombEntity::new));
     public static final DeferredItem<ThrowableItem<StickyDirtBombEntity>> STICKY_DIRT_BOMB = ITEMS.register("sticky_dirt_bomb", () -> new ThrowableItem<>(0.8F, StickyDirtBombEntity::new));
     public static final DeferredItem<ThrowableItem<DryBombEntity>> DRY_BOMB = ITEMS.register("dry_bomb", () -> new ThrowableItem<>(0.8F, DryBombEntity::new));

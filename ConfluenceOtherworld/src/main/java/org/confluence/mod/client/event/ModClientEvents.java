@@ -218,6 +218,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(GRENADE.get(), BaseGrenadeEntityRenderer::new);
         event.registerEntityRenderer(BOUNCY_GRENADE.get(), BouncyGrenadeEntityRenderer::new);
         event.registerEntityRenderer(STICKY_GRENADE.get(), StickyGrenadeEntityRenderer::new);
+        event.registerEntityRenderer(BEENADE.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(DYNAMITE.get(), BaseDynamiteEntityRenderer::new);
         event.registerEntityRenderer(BOUNCY_DYNAMITE.get(), BouncyDynamiteEntityRenderer::new);
         event.registerEntityRenderer(STICKY_DYNAMITE.get(), StickyDynamiteEntityRenderer::new);

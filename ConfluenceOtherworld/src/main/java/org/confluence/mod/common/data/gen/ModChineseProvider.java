@@ -1372,6 +1372,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get(), "猩红捕蝇草");
         add(NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.get(), "嗜血结晶");
         add(NatureBlocks.CORRODED_WORM_ROOTS_BLOCK.get(), "腐蚀蠕根");
+        add(NatureBlocks.CORRUPTED_OVARIES_BLOCK.get(), "腐化卵巢");
         add(NatureBlocks.DESERT_TAPERED_BLOCK.get(), "沙漠石笋");
         add(NatureBlocks.BLINKING_ROYAL_SHIMMERLILY.get(), "微光王莲");
 

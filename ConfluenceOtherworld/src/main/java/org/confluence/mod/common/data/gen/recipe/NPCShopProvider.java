@@ -19,17 +19,12 @@ import org.confluence.terra_curio.common.init.TCItems;
 //import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.TerraEntity;
-import org.confluence.terraentity.data.gen.recipe.TENPCShopProvider;
 import org.confluence.terraentity.entity.npc.trade.NPCTradeManager;
-import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.entity.TENpcEntities;
-import org.confluence.terraentity.init.item.TEWhipItems;
 import org.confluence.terraentity.registries.npc_trade.ITrade;
-import org.confluence.terraentity.registries.npc_trade.variant.ItemTradeItem;
 import org.confluence.terraentity.registries.npc_trade.variant.ItemTradeLootTable;
 import org.confluence.terraentity.registries.npc_trade.variant.TradeTask;
 import org.confluence.terraentity.registries.npc_trade_task.variant.DynamicAnglerTradeTask;
-import org.confluence.terraentity.registries.npc_trade_task.variant.ProgressTradeTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,7 +144,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(TradeTask.create(
                         DynamicAnglerTradeTask.builder(
                                         ItemTradeLootTable.builder()
-                                                .setCost(Items.COD, 1)
+                                                .addCost(Items.COD, 1)
                                                 .setLootTable(TerraEntity.fromSpaceAndPath("minecraft", "entities/zombie"))
                                                 .setSprite(TerraEntity.space("random_gift"))
                                                 .build(),

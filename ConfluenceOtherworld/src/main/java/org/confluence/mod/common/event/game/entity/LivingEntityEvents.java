@@ -23,19 +23,15 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.common.NeoForgeEventHandler;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.*;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.block.natural.BloodthirstCrystallizedBlock;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
 import org.confluence.mod.common.effect.beneficial.LuckEffect;
@@ -98,14 +94,7 @@ public final class LivingEntityEvents {
                 }
             }
             NPCSpawner.INSTANCE.onNPCRemoved(living);
-        }
-
-        if (living.level() instanceof ServerLevel serverLevel) {
-            BlockPos blockPos = living.blockPosition();
-            BlockPos.betweenClosedStream(blockPos.offset(-20, 0, -20), blockPos.offset(20, 0, 20))
-                    .forEach(pos -> {BlockState state = serverLevel.getBlockState(pos);
-                        if (state.is(NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK)) serverLevel.setBlockAndUpdate(pos.immutable(), state.setValue(BloodthirstCrystallizedBlock.VISIBLE, true));
-                    });
+            NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.get().checkVisibility(level, living);
         }
     }
 

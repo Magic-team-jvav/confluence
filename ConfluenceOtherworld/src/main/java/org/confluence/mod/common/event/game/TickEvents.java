@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -61,7 +62,7 @@ public final class TickEvents {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
             }
         }
-        if (dayTime < 12000 && serverLevel.getGameTime() % 1200 == 0) {
+        if (dayTime < 12000 && serverLevel.getGameTime() % 1200 == 0 && serverLevel.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
             NPCSpawner.INSTANCE.checkNpcRespawn(serverLevel);
         }
 

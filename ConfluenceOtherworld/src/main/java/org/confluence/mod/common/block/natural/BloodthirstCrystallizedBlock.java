@@ -4,11 +4,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -16,20 +20,26 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.NatureBlocks;
 
-public class BloodthirstCrystallizedBlock extends Block {
-    public static final BooleanProperty VISIBLE = BooleanProperty.create("visible");
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class BloodthirstCrystallizedBlock extends Block implements EntityBlock {
+    public static final Set<BlockPos> ALL_BLOCKS = ConcurrentHashMap.newKeySet();
+    public static final BooleanProperty VISIBLE = StateProperties.VISIBLE;
     private static final VoxelShape SHAPE = Shapes.box(0.1875, 0.0, 0.1875, 0.8125, 1.0, 0.8125);
 
     public BloodthirstCrystallizedBlock() {
         super(BlockBehaviour.Properties.of().randomTicks());
-        this.registerDefaultState(this.stateDefinition.any().setValue(VISIBLE, false));
+        registerDefaultState(stateDefinition.any().setValue(VISIBLE, false));
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState();
+        return defaultBlockState();
     }
 
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
@@ -72,5 +82,48 @@ public class BloodthirstCrystallizedBlock extends Block {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(VISIBLE);
+    }
+
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new Entity(pos, state);
+    }
+
+    @Override
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        super.onRemove(state, level, pos, newState, movedByPiston);
+        if (!state.is(newState.getBlock())) {
+            ALL_BLOCKS.remove(pos);
+        }
+    }
+
+    public void checkVisibility(Level level, LivingEntity living) {
+        BlockPos blockPos = living.blockPosition();
+        for (BlockPos pos : ALL_BLOCKS) {
+            if (pos.distSqr(blockPos) <= 400) {
+                BlockState state = level.getBlockState(pos);
+                if (state.is(this)) {
+                    level.setBlockAndUpdate(pos.immutable(), state.setValue(BloodthirstCrystallizedBlock.VISIBLE, true));
+                }
+            }
+        }
+    }
+
+    public static class Entity extends BlockEntity {
+        public Entity(BlockPos pos, BlockState blockState) {
+            super(NatureBlocks.BLOODTHIRST_CRYSTALLIZED_ENTITY.get(), pos, blockState);
+        }
+
+        @Override
+        public void onLoad() {
+            super.onLoad();
+            ALL_BLOCKS.add(getBlockPos());
+        }
+
+        @Override
+        public void onChunkUnloaded() {
+            super.onChunkUnloaded();
+            ALL_BLOCKS.remove(getBlockPos());
+        }
     }
 }

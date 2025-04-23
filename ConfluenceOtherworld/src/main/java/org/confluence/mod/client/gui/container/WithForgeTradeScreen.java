@@ -12,11 +12,11 @@ import org.confluence.mod.common.menu.NPCTradesForgeMenu;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 
 
-public class MoneyTradeScreen extends TETradeScreen<NPCTradesForgeMenu> {
+public class WithForgeTradeScreen extends TETradeScreen<NPCTradesForgeMenu> {
 
     ImageButton forgeBt;
 
-    public MoneyTradeScreen(NPCTradesForgeMenu menu, Inventory playerInventory, Component title) {
+    public WithForgeTradeScreen(NPCTradesForgeMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
         this.imageWidth = 290;
         this.inventoryLabelX = 107;

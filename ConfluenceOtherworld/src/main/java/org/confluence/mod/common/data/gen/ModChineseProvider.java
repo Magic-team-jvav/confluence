@@ -1596,6 +1596,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.BLUE_BRICKS.get(), "蓝色地牢砖");
         add(DecorativeBlocks.GREEN_BRICKS.get(), "绿色地牢砖");
         add(DecorativeBlocks.PINK_BRICKS.get(), "粉色地牢砖");
+        add(DecorativeBlocks.BLUE_BRICK_COLUMN.get(), "蓝色地牢砖柱");
+        add(DecorativeBlocks.GREEN_BRICK_COLUMN.get(), "绿色地牢砖柱");
+        add(DecorativeBlocks.PINK_BRICK_COLUMN.get(), "粉色地牢砖柱");
+
         add(DecorativeBlocks.BLUE_BRICK_STAIRS.get(), "蓝色地牢砖楼梯");
         add(DecorativeBlocks.GREEN_BRICK_STAIRS.get(), "绿色地牢砖楼梯");
         add(DecorativeBlocks.PINK_BRICK_STAIRS.get(), "粉色地牢砖楼梯");
@@ -1610,9 +1614,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.CLOUD_BLOCK_TRAMPOLINE.get(), "云块蹦床");
         add(DecorativeBlocks.BOUNCY_CLOUD_BLOCK.get(), "弹力云块");
         add(DecorativeBlocks.CRISPY_HONEY_BLOCK.get(), "松脆蜂蜜块");
-        add(DecorativeBlocks.CRACKED_BLUE_BRICK.get(), "碎裂蓝色地牢砖");
-        add(DecorativeBlocks.CRACKED_GREEN_BRICK.get(), "碎裂绿色地牢砖");
-        add(DecorativeBlocks.CRACKED_PINK_BRICK.get(), "碎裂粉色地牢砖");
+        add(DecorativeBlocks.CRACKED_BLUE_BRICKS.get(), "碎裂蓝色地牢砖");
+        add(DecorativeBlocks.CRACKED_GREEN_BRICKS.get(), "碎裂绿色地牢砖");
+        add(DecorativeBlocks.CRACKED_PINK_BRICKS.get(), "碎裂粉色地牢砖");
+        add(DecorativeBlocks.ENCHANTED_BLUE_BRICKS.get(), "蕴魔蓝色地牢砖");
+        add(DecorativeBlocks.ENCHANTED_GREEN_BRICKS.get(), "蕴魔绿色地牢砖");
+        add(DecorativeBlocks.ENCHANTED_PINK_BRICKS.get(), "蕴魔粉色地牢砖");
         add(DecorativeBlocks.SWORD_IN_STONE.get(), "石中剑");
         add(DecorativeBlocks.REMAINS_BLOCK.get(), "遗骸");
         add(DecorativeBlocks.LIHZAHRD_DOOR.get(), "丛林蜥蜴门");

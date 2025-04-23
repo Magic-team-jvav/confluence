@@ -14,7 +14,6 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import org.confluence.mod.common.block.common.TombstoneBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
 import org.jetbrains.annotations.Nullable;
@@ -87,9 +86,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(ModTags.Blocks.EASY_CRASH).add(
                 THIN_ICE_BLOCK.get(),
                 SWORD_IN_STONE.get(),
-                CRACKED_BLUE_BRICK.get(),
-                CRACKED_GREEN_BRICK.get(),
-                CRACKED_PINK_BRICK.get(),
+                CRACKED_BLUE_BRICKS.get(),
+                CRACKED_GREEN_BRICKS.get(),
+                CRACKED_PINK_BRICKS.get(),
                 CRISPY_HONEY_BLOCK.get()
         );
         tag(BlockTags.RAILS).add(EVER_POWERED_RAIL.get());

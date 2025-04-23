@@ -200,7 +200,7 @@ public class DungeonStructure extends Structure {
             GridPiece.addPieces(blockMap, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
                     DecorativeBlocks.BLUE_BRICKS.get().defaultBlockState(),
-                    DecorativeBlocks.CRACKED_BLUE_BRICK.get().defaultBlockState(),
+                    DecorativeBlocks.CRACKED_BLUE_BRICKS.get().defaultBlockState(),
                     Blocks.LAVA.defaultBlockState(),
                     Blocks.POLISHED_DEEPSLATE.defaultBlockState(),
                     Blocks.DEEPSLATE_TILES.defaultBlockState(),

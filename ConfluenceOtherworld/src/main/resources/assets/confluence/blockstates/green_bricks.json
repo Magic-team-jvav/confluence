@@ -20,6 +20,10 @@
       {
         "model": "confluence:block/green_bricks_3",
         "weight": 1
+      },
+      {
+        "model": "confluence:block/green_bricks_4",
+        "weight": 1
       }
     ]
   }

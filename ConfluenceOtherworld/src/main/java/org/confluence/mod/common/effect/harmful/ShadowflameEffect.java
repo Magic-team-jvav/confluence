@@ -9,25 +9,25 @@ import org.confluence.lib.util.LibUtils;
 
 import java.util.Set;
 
-public class FrostbiteEffect extends MobEffect {
-    public FrostbiteEffect() {
-        super(MobEffectCategory.HARMFUL, 0x39C5BB);
-    }
-
-    @Override
-    public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        livingEntity.hurt(livingEntity.damageSources().freeze(), 2);
-        return true;
-    }
-
-    @Override
-    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
-        return duration % 20 == 0;
+public class ShadowflameEffect extends MobEffect {
+    public ShadowflameEffect() {
+        super(MobEffectCategory.HARMFUL, 0x990099);
     }
 
     @Override
     public void fillEffectCures(Set<EffectCure> cures, MobEffectInstance effectInstance) {
         super.fillEffectCures(cures, effectInstance);
         cures.add(LibUtils.DENY_HEAL);
+    }
+
+    @Override
+    public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
+        livingEntity.hurt(livingEntity.damageSources().inFire(), 3);
+        return true;
+    }
+
+    @Override
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
+        return duration % 20 == 0;
     }
 }

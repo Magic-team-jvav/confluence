@@ -61,7 +61,6 @@ import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.entity.ai.Boss;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
-import org.confluence.terraentity.init.TEEffects;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
@@ -99,22 +98,25 @@ public final class LivingEntityEvents {
         }
     }
 
+    /**
+     * 阻止回血的药水效果，已改为使用EffectCure，并提取到Lib了
+     *
+     * @see org.confluence.lib.common.event.LivingEntityEvents#livingHeal(LivingHealEvent)
+     */
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void livingHeal(LivingHealEvent event) {
+        if (event.isCanceled()) return;
         LivingEntity living = event.getEntity();
         if (!(living.level() instanceof ServerLevel level)) return;
-        if (living.hasEffect(TEEffects.FROST_BURN) || living.hasEffect(ModEffects.BLEEDING) || living.hasEffect(TEEffects.HELLFIRE) || living.hasEffect(ModEffects.FROSTBITE)) {
-            event.setCanceled(true); // todo 有些怪物对其免疫
-        } else {
-            float amount = event.getAmount();
-            if (living.getData(ModAttachmentTypes.EVER_BENEFICIAL).isVitalCrystalUsed()) {
-                amount *= 1.2F;
-            }
-            if (living.hasEffect(ModEffects.COZY_FIRE)) {
-                amount *= 1.1F;
-            }
-            event.setAmount(amount);
+
+        float amount = event.getAmount();
+        if (living.getData(ModAttachmentTypes.EVER_BENEFICIAL).isVitalCrystalUsed()) {
+            amount *= 1.2F;
         }
+        if (living.hasEffect(ModEffects.COZY_FIRE)) {
+            amount *= 1.1F;
+        }
+        event.setAmount(amount);
 
         DamageIndicatorOptions.sendHealParticle(event.getAmount(), level, living);
     }

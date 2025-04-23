@@ -148,8 +148,10 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.MELEE_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.warriors"))
                     .displayItems((parameters, output) -> {
-                        SwordItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        TEBoomerangItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                        Consumer<DeferredHolder<Item, ? extends Item>> action = item -> output.accept(item.get());
+                        SwordItems.ITEMS.getEntries().forEach(action);
+                        TEBoomerangItems.ITEMS.getEntries().forEach(action);
+                        LanceItems.ITEMS.getEntries().forEach(action);
                     }).withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "rangers")).withTabsBefore(ARMORS.getId()).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SHOOTERS = TABS.register("rangers",
             () -> CreativeModeTab.builder().icon(() -> IconItems.REMOTE_ICON.get().getDefaultInstance())

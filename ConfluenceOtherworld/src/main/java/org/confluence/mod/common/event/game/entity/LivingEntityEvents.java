@@ -103,7 +103,7 @@ public final class LivingEntityEvents {
     public static void livingHeal(LivingHealEvent event) {
         LivingEntity living = event.getEntity();
         if (!(living.level() instanceof ServerLevel level)) return;
-        if (living.hasEffect(TEEffects.FROST_BURN) || living.hasEffect(ModEffects.BLEEDING) || living.hasEffect(TEEffects.HELLFIRE)) {
+        if (living.hasEffect(TEEffects.FROST_BURN) || living.hasEffect(ModEffects.BLEEDING) || living.hasEffect(TEEffects.HELLFIRE) || living.hasEffect(ModEffects.FROSTBITE)) {
             event.setCanceled(true); // todo 有些怪物对其免疫
         } else {
             float amount = event.getAmount();

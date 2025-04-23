@@ -152,7 +152,7 @@ public final class ModFluids {
         addItem(CrateBlocks.SPACE_CRATE.get().asItem(), CrateBlocks.SKY_CRATE.get().asItem());
         addItem(CrateBlocks.DEFACED_CRATE.get().asItem(), CrateBlocks.CORRUPT_CRATE.get().asItem());
         addItem(CrateBlocks.BLOOD_CRATE.get().asItem(), CrateBlocks.TR_CRIMSON_CRATE.get().asItem());
-        addItem(CrateBlocks.PROVIDENTIAL_CRATE.get().asItem(), CrateBlocks.SACRED_CRATE.get().asItem());
+        addItem(CrateBlocks.PROVIDENTIAL_CRATE.get().asItem(), CrateBlocks.HALLOWED_CRATE.get().asItem());
         addItem(CrateBlocks.FENCING_CRATE.get().asItem(), CrateBlocks.DUNGEON_CRATE.get().asItem());
         addItem(CrateBlocks.CONIFEROUS_WOOD_CRATE.get().asItem(), CrateBlocks.FREEZE_CRATE.get().asItem());
         addItem(CrateBlocks.ILLUSION_CRATE.get().asItem(), CrateBlocks.OASIS_CRATE.get().asItem());

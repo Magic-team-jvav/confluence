@@ -191,7 +191,7 @@ public final class ModClientSetups {
         ItemBlockRenderTypes.setRenderLayer(NatureBlocks.ARGON_MOSS.get(), cutoutMipped);
         ItemBlockRenderTypes.setRenderLayer(NatureBlocks.NEON_MOSS.get(), cutoutMipped);
         ItemBlockRenderTypes.setRenderLayer(NatureBlocks.HELIUM_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.GROWING_MUSHROOM_MOSS.get(), cutoutMipped);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.GLOWING_MUSHROOM_MOSS.get(), cutoutMipped);
     }
 
     static void registerItemProperties() {

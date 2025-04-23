@@ -516,7 +516,7 @@ public interface ISpreadable {
         GLOWING(
                 getSupplier(MUD), NatureBlocks.MUSHROOM_GRASS_BLOCK,
                 NatureBlocks.JUNGLE_SPORE, NatureBlocks.GLOWING_MUSHROOM,
-                NatureBlocks.JUNGLE_DROOPING_VINE, NatureBlocks.GLOWING_MUSHROOM_DROOPING_VINE,
+                NatureBlocks.JUNGLE_DROOPING_VINE, NatureBlocks.GLOWING_MUSHROOM_VINE,
                 NatureBlocks.JUNGLE_THORN, getSupplier(Blocks.AIR),
                 getSupplier(SHORT_GRASS), NatureBlocks.GLOWING_MUSHROOM
                 //getSupplier(TALL_GRASS), NatureBlocks.GLOWING_MUSHROOM
@@ -524,7 +524,7 @@ public interface ISpreadable {
         JUNGLE(
                 getSupplier(MUD), NatureBlocks.JUNGLE_GRASS_BLOCK,
                 NatureBlocks.GLOWING_MUSHROOM, getSupplier(SHORT_GRASS),
-                NatureBlocks.GLOWING_MUSHROOM_DROOPING_VINE, NatureBlocks.JUNGLE_DROOPING_VINE
+                NatureBlocks.GLOWING_MUSHROOM_VINE, NatureBlocks.JUNGLE_DROOPING_VINE
         ),
         PURE(
                 NatureBlocks.ASH_BLOCK, NatureBlocks.ASH_GRASS_BLOCK,

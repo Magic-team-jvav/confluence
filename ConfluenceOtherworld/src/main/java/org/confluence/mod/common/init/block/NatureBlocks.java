@@ -267,7 +267,7 @@ public class NatureBlocks {
 
     //藤蔓方块
     public static final DeferredBlock<Block> YELLOW_WILLOW_DROOPING_LEAVES = registerWithItem("yellow_willow_drooping_leaves", () -> new BaseDroopingPlantsHeadBlock(14, false, false, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get()));
-    public static final DeferredBlock<Block> GLOWING_MUSHROOM_DROOPING_VINE = registerWithItem("glowing_mushroom_vine", () -> new BaseDroopingPlantsHeadBlock(6, true, true));
+    public static final DeferredBlock<Block> GLOWING_MUSHROOM_VINE = registerWithItem("glowing_mushroom_vine", () -> new BaseDroopingPlantsHeadBlock(6, true, true));
     public static final DeferredBlock<Block> FOREST_DROOPING_VINE = registerWithItem("forest_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
     public static final DeferredBlock<Block> JUNGLE_DROOPING_VINE = registerWithItem("jungle_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
     public static final DeferredBlock<Block> CORRUPT_DROOPING_VINE = registerWithItem("corrupt_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
@@ -288,7 +288,7 @@ public class NatureBlocks {
     public static final DeferredBlock<BaseMossBlock> ARGON_MOSS = registerWithItem("argon_moss", () -> new BaseMossBlock(5));
     public static final DeferredBlock<BaseMossBlock> NEON_MOSS = registerWithItem("neon_moss", () -> new BaseMossBlock(5));
     public static final DeferredBlock<BaseMossBlock> HELIUM_MOSS = registerWithItem("helium_moss", () -> new BaseMossBlock(5));
-    public static final DeferredBlock<BaseMossBlock> GROWING_MUSHROOM_MOSS = registerWithItem("growing_mushroom_moss", () -> new BaseMossBlock(5));
+    public static final DeferredBlock<BaseMossBlock> GLOWING_MUSHROOM_MOSS = registerWithItem("glowing_mushroom_moss", () -> new BaseMossBlock(5));
 
     public static final DeferredBlock<CoconutBlock> COCONUT_BLOCK = registerWithItem("coconut_block", CoconutBlock::new);
     public static final DeferredBlock<CrimsonVenusFlytrapBlock> CRIMSON_VENUS_FLYTRAP_BLOCK = registerWithItem("crimson_venus_flytrap_block", CrimsonVenusFlytrapBlock::new);

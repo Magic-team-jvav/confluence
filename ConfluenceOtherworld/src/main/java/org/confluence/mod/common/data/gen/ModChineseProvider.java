@@ -8,7 +8,6 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.item.lance.DarkLanceItem;
 import org.confluence.mod.integration.ponder.PonderHelper;
 
 import static org.confluence.mod.common.init.item.PickaxeItems.MOLTEN_PICKAXE;
@@ -1470,7 +1469,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.NATURES_GIFT.get(), "大自然的恩赐");
         //藤蔓
         add(NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get(), "黄柳垂叶");
-        add(NatureBlocks.GLOWING_MUSHROOM_DROOPING_VINE.get(), "发光蘑菇垂藤");
+        add(NatureBlocks.GLOWING_MUSHROOM_VINE.get(), "发光蘑菇垂藤");
         add(NatureBlocks.FOREST_DROOPING_VINE.get(), "森林垂藤");
         add(NatureBlocks.JUNGLE_DROOPING_VINE.get(), "丛林垂藤");
         add(NatureBlocks.CORRUPT_DROOPING_VINE.get(), "腐化垂藤");
@@ -1488,7 +1487,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.ARGON_MOSS.get(), "氩苔藓");
         add(NatureBlocks.NEON_MOSS.get(), "氖苔藓");
         add(NatureBlocks.HELIUM_MOSS.get(), "氦苔藓");
-        add(NatureBlocks.GROWING_MUSHROOM_MOSS.get(), "发光蘑菇苔藓");
+        add(NatureBlocks.GLOWING_MUSHROOM_MOSS.get(), "发光蘑菇苔藓");
         add(NatureBlocks.CATTAILS_BODY.get(), "香蒲");
         add(NatureBlocks.JUNGLE_CATTAILS_BODY.get(), "丛林香蒲");
         add(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_BODY.get(), "发光蘑菇香蒲");
@@ -1759,7 +1758,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(CrateBlocks.SKY_CRATE.get(), "天空匣");
         add(CrateBlocks.CORRUPT_CRATE.get(), "腐化匣");
         add(CrateBlocks.TR_CRIMSON_CRATE.get(), "猩红匣");
-        add(CrateBlocks.SACRED_CRATE.get(), "神圣匣");
+        add(CrateBlocks.HALLOWED_CRATE.get(), "神圣匣");
         add(CrateBlocks.DUNGEON_CRATE.get(), "地牢匣");
         add(CrateBlocks.FREEZE_CRATE.get(), "冰冻匣");
         add(CrateBlocks.OASIS_CRATE.get(), "绿洲匣");

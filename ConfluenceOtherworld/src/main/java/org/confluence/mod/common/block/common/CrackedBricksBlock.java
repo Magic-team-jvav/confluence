@@ -15,8 +15,8 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class CrackedBrickBlock extends Block {
-    public CrackedBrickBlock(Properties properties) {
+public class CrackedBricksBlock extends Block {
+    public CrackedBricksBlock(Properties properties) {
         super(properties);
     }
 

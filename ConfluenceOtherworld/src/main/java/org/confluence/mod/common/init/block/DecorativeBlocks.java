@@ -11,7 +11,8 @@ import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.block.common.CrackedBrickBlock;
+import org.confluence.mod.common.block.common.CrackedBricksBlock;
+import org.confluence.mod.common.block.common.EnchantedBricksBlock;
 import org.confluence.mod.common.block.common.LihzahrdDoorBlock;
 import org.confluence.mod.common.block.natural.*;
 import org.confluence.mod.common.block.palettes.ConnectedGlassBlock;
@@ -152,9 +153,9 @@ public class DecorativeBlocks {
     public static final DeferredBlock<Block> BLUE_BRICKS = registerWithItem("blue_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(DyeColor.BLUE).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
     public static final DeferredBlock<Block> GREEN_BRICKS = registerWithItem("green_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(DyeColor.GREEN).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
     public static final DeferredBlock<Block> PINK_BRICKS = registerWithItem("pink_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(DyeColor.PINK).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
-    public static final DeferredBlock<CrackedBrickBlock> CRACKED_BLUE_BRICK = registerWithItem("cracked_blue_brick", () -> new CrackedBrickBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).strength(0).mapColor(DyeColor.BLUE)));
-    public static final DeferredBlock<CrackedBrickBlock> CRACKED_GREEN_BRICK = registerWithItem("cracked_green_brick", () -> new CrackedBrickBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).strength(0).mapColor(DyeColor.GREEN)));
-    public static final DeferredBlock<CrackedBrickBlock> CRACKED_PINK_BRICK = registerWithItem("cracked_pink_brick", () -> new CrackedBrickBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).strength(0).mapColor(DyeColor.PINK)));
+    public static final DeferredBlock<CrackedBricksBlock> CRACKED_BLUE_BRICK = registerWithItem("cracked_blue_brick", () -> new CrackedBricksBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).strength(0).mapColor(DyeColor.BLUE)));
+    public static final DeferredBlock<CrackedBricksBlock> CRACKED_GREEN_BRICK = registerWithItem("cracked_green_brick", () -> new CrackedBricksBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).strength(0).mapColor(DyeColor.GREEN)));
+    public static final DeferredBlock<CrackedBricksBlock> CRACKED_PINK_BRICK = registerWithItem("cracked_pink_brick", () -> new CrackedBricksBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).strength(0).mapColor(DyeColor.PINK)));
     public static final DeferredBlock<Block> CHISELED_BLUE_BRICKS = registerWithItem("chiseled_blue_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(DyeColor.BLUE).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
     public static final DeferredBlock<Block> CHISELED_GREEN_BRICKS = registerWithItem("chiseled_green_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(DyeColor.GREEN).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
     public static final DeferredBlock<Block> CHISELED_PINK_BRICKS = registerWithItem("chiseled_pink_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(DyeColor.PINK).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
@@ -165,6 +166,9 @@ public class DecorativeBlocks {
     public static final DeferredBlock<SlabBlock> GREEN_BRICK_SLAB = registerWithItem("green_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_SLAB).mapColor(DyeColor.GREEN).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
     public static final DeferredBlock<SlabBlock> PINK_BRICK_SLAB = registerWithItem("pink_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_SLAB).mapColor(DyeColor.PINK).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
     public static final DeferredBlock<DoorBlock> DUNGEON_DOOR = registerWithItem("dungeon_door", () -> new DoorBlock(BlockSetType.STONE, BlockBehaviour.Properties.ofFullCopy(IRON_DOOR).mapColor(DyeColor.GRAY).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final DeferredBlock<EnchantedBricksBlock> ENCHANTED_BLUE_BRICKS = registerWithItem("enchanted_blue_bricks", () -> new EnchantedBricksBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(DyeColor.BLUE).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final DeferredBlock<EnchantedBricksBlock> ENCHANTED_GREEN_BRICKS = registerWithItem("enchanted_green_bricks", () -> new EnchantedBricksBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(DyeColor.BLUE).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final DeferredBlock<EnchantedBricksBlock> ENCHANTED_PINK_BRICKS = registerWithItem("enchanted_pink_bricks", () -> new EnchantedBricksBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(DyeColor.BLUE).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
 
     // 大宝石块
     public static final DeferredBlock<Block> RUBY_BLOCK = copyBlockRegister("ruby_block", Blocks.DIAMOND_BLOCK);

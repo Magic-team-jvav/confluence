@@ -1,5 +1,7 @@
 package org.confluence.mod.mixin.integration.terra_entity;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -18,11 +20,10 @@ public abstract class AnglerNPCMixin implements SelfGetter<AnglerNPC> {
     @Inject(method = "mobInteract", at = @At(value = "INVOKE", target = "Lorg/confluence/terraentity/entity/npc/AnglerNPC;setWakeUp(Z)V"))
     private void setAnglerAdded(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
         if (player instanceof ServerPlayer serverPlayer) {
-            NPCSpawner.INSTANCE.moveNPCToAnotherRegion(
-                    confluence$self(),
-                    IAbstractTerraNPC.of(confluence$self()).confluence$getRegion(),
-                    new NPCSpawner.Region(NPCSpawner.getNpcSpawnPos(serverPlayer))
-            );
+            AnglerNPC npc = confluence$self();
+            NPCSpawner.Region region = new NPCSpawner.Region(NPCSpawner.getNpcSpawnPos(serverPlayer));
+            NPCSpawner.INSTANCE.moveNPCToAnotherRegion(npc, IAbstractTerraNPC.of(npc).confluence$getRegion(), region);
+            NPCSpawner.broadcastMessageToRegion(player.level(), region, Component.translatable("event.confluence.npc.added", npc.getName()).withStyle(ChatFormatting.BLUE));
         }
     }
 }

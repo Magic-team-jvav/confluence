@@ -43,7 +43,7 @@ public abstract class FlaskEffect extends MobEffect {
     public abstract void doMeleeAttack(LivingEntity attacker, LivingEntity victim, int amplifier, DamageSource damageSource, float amount);
 
     public static boolean saveFlaskEffects(Map<Holder<MobEffect>, MobEffectInstance> activeEffects) {
-        activeEffects.entrySet().removeIf(entry -> !(entry.getValue().getCures().contains(CURE)));
+        activeEffects.entrySet().removeIf(entry -> !entry.getValue().getCures().contains(CURE));
         return false;
     }
 

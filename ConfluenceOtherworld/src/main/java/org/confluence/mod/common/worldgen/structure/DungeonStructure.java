@@ -6,8 +6,6 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -15,16 +13,16 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
+import org.confluence.lib.util.BooleanStorage4;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.joml.Vector3d;
-import org.joml.Vector3i;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.confluence.lib.util.StructureUtils.*;
 import static org.confluence.lib.util.VectorUtils.listRandom;
@@ -62,8 +60,8 @@ public class DungeonStructure extends Structure {
             BlockPos centerPos = startChunk.getMiddleBlockPosition(lowestY);
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
             Vector3d key;
-            List<Boolean> value;
-            List<Boolean> valueB;
+            BooleanStorage4 value;
+            BooleanStorage4 valueB;
             Map<BlockPos, Integer> houseMap = new HashMap<>();
             Map<BlockPos, Integer> bridgeMap = new HashMap<>();
             BlockPos mazeRotatePos;
@@ -92,18 +90,18 @@ public class DungeonStructure extends Structure {
             List<BlockPos> roomPos = new ArrayList<>();
             BlockPos underCenter = new BlockPos(centerPos.getX(), (int) vct.y, centerPos.getZ());
 
-            Map<Vector3d, List<Boolean>> mazeMap = mazePos(new Vector3d(underCenter.getX(), underCenter.getY(), underCenter.getZ()), 40, 2, random, 1.0F);
+            Map<Vector3d, BooleanStorage4> mazeMap = mazePos(new Vector3d(underCenter.getX(), underCenter.getY(), underCenter.getZ()), 40, 2, random, 1.0F);
 
             rectangular(underCenter.offset(-103, -4, -103), underCenter.offset(103, 49, 103), 1, blockMap, 0);
             rectangular(underCenter.offset(-10, 49, -10), underCenter.offset(10, 55, 10), 1, blockMap, 0);
             rectangular(underCenter.offset(-99, 0, -99), underCenter.offset(99, 45, 99), 0, blockMap, 0);
             rectangular(underCenter.offset(-6, 45, -6), underCenter.offset(6, 51, 6), 0, blockMap, 0);
 
-            for (Map.Entry<Vector3d, List<Boolean>> entry : mazeMap.entrySet()) {
+            for (Map.Entry<Vector3d, BooleanStorage4> entry : mazeMap.entrySet()) {
                 key = entry.getKey();
 
-                value = new ArrayList<>(List.copyOf(entry.getValue()));
-                valueB = value.stream().map(b -> !b).toList();
+                value = entry.getValue().copy();
+                valueB = new BooleanStorage4((byte) ~value.getValue());
 
                 mazeRotatePos = new BlockPos((int) key.x, (int) key.y, (int) key.z);
 
@@ -208,63 +206,59 @@ public class DungeonStructure extends Structure {
                     Blocks.DEEPSLATE_TILES.defaultBlockState(),
                     DecorativeBlocks.CHISELED_BLUE_BRICKS.get().defaultBlockState()
             ), builder);
+            StructureTemplateManager manager = context.structureTemplateManager();
             switch (rotation) {
-                case CLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "dungeon/dungeon_gate", centerPos.offset(15, -3, -23), true, true, Rotation.CLOCKWISE_90));
-                case CLOCKWISE_180 -> builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "dungeon/dungeon_gate", centerPos.offset(23, -3, 15), true, true, Rotation.CLOCKWISE_180));
-                case COUNTERCLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "dungeon/dungeon_gate", centerPos.offset(-15, -3, 23), true, true, Rotation.COUNTERCLOCKWISE_90));
-                default -> builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "dungeon/dungeon_gate", centerPos.offset(-23, -3, -15), true, true, Rotation.NONE));
+                case CLOCKWISE_90 ->
+                        builder.addPiece(new SimpleTemplatePiece(manager, "dungeon/dungeon_gate", centerPos.offset(15, -3, -23), true, true, Rotation.CLOCKWISE_90));
+                case CLOCKWISE_180 ->
+                        builder.addPiece(new SimpleTemplatePiece(manager, "dungeon/dungeon_gate", centerPos.offset(23, -3, 15), true, true, Rotation.CLOCKWISE_180));
+                case COUNTERCLOCKWISE_90 ->
+                        builder.addPiece(new SimpleTemplatePiece(manager, "dungeon/dungeon_gate", centerPos.offset(-15, -3, 23), true, true, Rotation.COUNTERCLOCKWISE_90));
+                default -> builder.addPiece(new SimpleTemplatePiece(manager, "dungeon/dungeon_gate", centerPos.offset(-23, -3, -15), true, true, Rotation.NONE));
             }
 
             for (Map.Entry<BlockPos, Integer> entry : houseMap.entrySet()) {
                 houseKey = entry.getKey();
                 houseValue = entry.getValue();
                 switch (houseValue) {
-                    case 4:
+                    case 4, 5, 6, 7:
                         break;
                     case 0:
-                        builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), houses[random.nextInt(houses.length)], houseKey.offset(-1, 0, -1), false, true, Rotation.NONE));
-                        break;
-                    case 5:
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(houses, random), houseKey.offset(-1, 0, -1), false, true, Rotation.NONE));
                         break;
                     case 1:
-                        builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), houses[random.nextInt(houses.length)], houseKey.offset(1, 0, -1), false, true, Rotation.CLOCKWISE_90));
-                        break;
-                    case 6:
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(houses, random), houseKey.offset(1, 0, -1), false, true, Rotation.CLOCKWISE_90));
                         break;
                     case 2:
-                        builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), houses[random.nextInt(houses.length)], houseKey.offset(1, 0, 1), false, true, Rotation.CLOCKWISE_180));
-                        break;
-                    case 7:
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(houses, random), houseKey.offset(1, 0, 1), false, true, Rotation.CLOCKWISE_180));
                         break;
                     default:
-                        builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), houses[random.nextInt(houses.length)], houseKey.offset(-1, 0, 1), false, true, Rotation.COUNTERCLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(houses, random), houseKey.offset(-1, 0, 1), false, true, Rotation.COUNTERCLOCKWISE_90));
                 }
             }
 
             for (Map.Entry<BlockPos, Integer> entry : bridgeMap.entrySet()) {
                 houseKey = entry.getKey();
                 houseValue = entry.getValue();
-                switch (houseValue) {
-                    case 0:
-                        builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), bridge[random.nextInt(bridge.length)], houseKey.offset(0, 3 + 6 * random.nextInt(1,3), 0), true, true, Rotation.COUNTERCLOCKWISE_90));
-                        break;
-                    default:
-                        builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), bridge[random.nextInt(bridge.length)], houseKey.offset(0, 3 + 6 * random.nextInt(1,3), 0), true, true, Rotation.CLOCKWISE_180));
+                if (houseValue == 0) {
+                    builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(bridge, random), houseKey.offset(0, 3 + 6 * random.nextInt(1, 3), 0), true, true, Rotation.COUNTERCLOCKWISE_90));
+                } else {
+                    builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(bridge, random), houseKey.offset(0, 3 + 6 * random.nextInt(1, 3), 0), true, true, Rotation.CLOCKWISE_180));
                 }
             }
 
             switch (stairsFacing) {
                 case 0:
-                    builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), stairs, underCenter.offset(13, 0, 13), false, true, Rotation.CLOCKWISE_180));
+                    builder.addPiece(new SimpleTemplatePiece(manager, stairs, underCenter.offset(13, 0, 13), false, true, Rotation.CLOCKWISE_180));
                     break;
                 case 1:
-                    builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), stairs, underCenter.offset(-13, 0, 13), false, true, Rotation.COUNTERCLOCKWISE_90));
+                    builder.addPiece(new SimpleTemplatePiece(manager, stairs, underCenter.offset(-13, 0, 13), false, true, Rotation.COUNTERCLOCKWISE_90));
                     break;
                 case 2:
-                    builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), stairs, underCenter.offset(-13, 0, -13), false, true, Rotation.NONE));
+                    builder.addPiece(new SimpleTemplatePiece(manager, stairs, underCenter.offset(-13, 0, -13), false, true, Rotation.NONE));
                     break;
                 default:
-                    builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), stairs, underCenter.offset(13, 0, -13), false, true, Rotation.CLOCKWISE_90));
+                    builder.addPiece(new SimpleTemplatePiece(manager, stairs, underCenter.offset(13, 0, -13), false, true, Rotation.CLOCKWISE_90));
             }
 
         });

@@ -60,6 +60,7 @@ import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.entity.ai.Boss;
+import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.init.TEEffects;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 
@@ -196,7 +197,7 @@ public final class LivingEntityEvents {
     public static void mobEffect$Applicable(MobEffectEvent.Applicable event) {
         Holder<MobEffect> effect = event.getEffectInstance().getEffect();
         if (effect == TCEffects.CONFUSED) {
-            if (event.getEntity() instanceof Boss) {
+            if (event.getEntity() instanceof Boss || event.getEntity() instanceof AbstractTerraNPC) {
                 event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
             }
         } else if (effect == ModEffects.SHIMMER) {
@@ -358,5 +359,4 @@ public final class LivingEntityEvents {
             }
         }
     }
-
 }

@@ -4,18 +4,21 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.*;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -112,11 +115,11 @@ public class NPCSpawner implements IGlobalData {
     /**
      * @return true表示成功添加NPC，false表示该实体不为NPC
      */
-    // todo 向所在区域玩家发送消息
     public boolean onNPCAdded(Entity entity) {
         if (entity instanceof IAbstractTerraNPC npc) {
             npc.confluence$setRegion(new Region(entity.chunkPosition()));
             setNPCAlive(npc.confluence$getRegion(), entity.getType(), true);
+            broadcastMessageToRegion(entity.level(), npc.confluence$getRegion(), Component.translatable("event.confluence.npc.added", entity.getName()).withStyle(ChatFormatting.BLUE));
             return true;
         }
         return false;
@@ -125,10 +128,10 @@ public class NPCSpawner implements IGlobalData {
     /**
      * @return true表示成功移除NPC，false表示该实体不为NPC
      */
-    // todo 向所在区域玩家发送消息
     public boolean onNPCRemoved(Entity entity) {
         if (entity instanceof IAbstractTerraNPC npc) {
             setNPCAlive(npc.confluence$getRegion(), entity.getType(), false);
+            broadcastMessageToRegion(entity.level(), npc.confluence$getRegion(), Component.translatable("event.confluence.npc.removed", entity.getName()).withStyle(ChatFormatting.BLUE));
             return true;
         }
         return false;
@@ -316,6 +319,14 @@ public class NPCSpawner implements IGlobalData {
 
     public static BlockPos getNpcSpawnPos(ServerPlayer player) {
         return player.getRespawnPosition() == null ? player.level().getLevelData().getSpawnPos() : player.getRespawnPosition();
+    }
+
+    public static void broadcastMessageToRegion(Level level, Region region, Component message) {
+        for (Player player : level.players()) {
+            if (region.isOnRegion(player.chunkPosition())) {
+                player.sendSystemMessage(message);
+            }
+        }
     }
 
     public record Region(int x, int z) {

@@ -106,7 +106,7 @@ public class BloodthirstCrystallizedBlock extends Block implements EntityBlock {
             if (pos.distSqr(blockPos) <= 400) {
                 BlockState state = level.getBlockState(pos);
                 if (state.is(this)) {
-                    level.setBlockAndUpdate(pos.immutable(), state.setValue(BloodthirstCrystallizedBlock.VISIBLE, true));
+                    level.setBlockAndUpdate(pos.immutable(), state.setValue(VISIBLE, true));
                 } else {
                     iterator.remove();
                 }

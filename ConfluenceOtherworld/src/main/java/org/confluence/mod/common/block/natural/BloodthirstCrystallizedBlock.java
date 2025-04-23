@@ -24,6 +24,7 @@ import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
+import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -99,11 +100,15 @@ public class BloodthirstCrystallizedBlock extends Block implements EntityBlock {
 
     public void checkVisibility(Level level, LivingEntity living) {
         BlockPos blockPos = living.blockPosition();
-        for (BlockPos pos : ALL_BLOCKS) {
+        Iterator<BlockPos> iterator = ALL_BLOCKS.iterator();
+        while (iterator.hasNext()) {
+            BlockPos pos = iterator.next();
             if (pos.distSqr(blockPos) <= 400) {
                 BlockState state = level.getBlockState(pos);
                 if (state.is(this)) {
                     level.setBlockAndUpdate(pos.immutable(), state.setValue(BloodthirstCrystallizedBlock.VISIBLE, true));
+                } else {
+                    iterator.remove();
                 }
             }
         }

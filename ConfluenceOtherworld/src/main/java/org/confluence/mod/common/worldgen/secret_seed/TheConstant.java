@@ -21,7 +21,7 @@ import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
 
 public class TheConstant extends SecretSeed {
-    private static final ResourceLocation POST_EFFECT = Confluence.asResource("shaders/post/the_constant.json");
+    public static final ResourceLocation POST_EFFECT = Confluence.asResource("shaders/post/the_constant.json");
 
     public TheConstant(long flag, ResourceLocation id) {
         super(flag, id);

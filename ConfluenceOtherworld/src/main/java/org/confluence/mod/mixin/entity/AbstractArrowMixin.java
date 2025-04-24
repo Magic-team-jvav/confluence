@@ -2,14 +2,13 @@ package org.confluence.mod.mixin.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.mixed.IAbstractArrow;
+import org.confluence.mod.network.s2c.SetEntityDataPacketS2C;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,23 +17,36 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractArrow.class)
-public abstract class AbstractArrowMixin implements IAbstractArrow, SelfGetter<AbstractArrow> {
+public abstract class AbstractArrowMixin implements IAbstractArrow, SetEntityDataPacketS2C.IExtraSyncedData, SelfGetter<AbstractArrow> {
     @Unique
-    private static final EntityDataAccessor<Boolean> FROM_SHORT_BOW = SynchedEntityData.defineId(AbstractArrow.class, EntityDataSerializers.BOOLEAN);
+    private static final int[] confluence$dataIds = {SetEntityDataPacketS2C.DATA_BOOLEAN};
+    @Unique
+    private boolean confluence$fromShortBow = false;
 
     @Override
     public boolean confluence$isShootFromShortBow() {
-        return confluence$self().getEntityData().get(FROM_SHORT_BOW);
+        return confluence$fromShortBow;
     }
 
     @Override
     public void confluence$setShootFromShortBow(boolean is) {
-        confluence$self().getEntityData().set(FROM_SHORT_BOW, is);
+        confluence$setData(SetEntityDataPacketS2C.DATA_BOOLEAN, is);
     }
 
-    @Inject(method = "defineSynchedData", at = @At("TAIL"))
-    private void defineShortBow(SynchedEntityData.Builder builder, CallbackInfo ci) {
-        builder.define(FROM_SHORT_BOW, false);
+    @Override
+    public void confluence$setData(int dataId, Object o) {
+        this.confluence$fromShortBow = (boolean) o;
+        PacketDistributor.sendToPlayersTrackingEntity(confluence$self(), new SetEntityDataPacketS2C(confluence$self().getId(), dataId, o));
+    }
+
+    @Override
+    public Object confluence$getData(int dataId) {
+        return confluence$fromShortBow;
+    }
+
+    @Override
+    public int[] confluence$getAllDataId() {
+        return confluence$dataIds;
     }
 
     @ModifyVariable(method = "shoot", at = @At("HEAD"), argsOnly = true, ordinal = 0)

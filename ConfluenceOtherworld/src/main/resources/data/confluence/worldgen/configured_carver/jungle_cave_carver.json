@@ -1,5 +1,5 @@
 {
-    "type": "minecraft:cave",
+    "type": "confluence:jungle_cave_carver",
     "config": {
         "floor_level": {
             "type": "minecraft:uniform",

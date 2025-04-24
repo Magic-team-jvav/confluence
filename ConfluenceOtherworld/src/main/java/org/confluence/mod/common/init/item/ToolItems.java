@@ -56,4 +56,5 @@ public class ToolItems {
 
     public static final DeferredItem<TargetDummyItem> TARGET_DUMMY = ITEMS.register("target_dummy", TargetDummyItem::new);
     public static final DeferredItem<Item> METEOR_COMPASS = ITEMS.register("meteor_compass", () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<BinocularsItem> BINOCULARS = ITEMS.register("binoculars", BinocularsItem::new);
 }

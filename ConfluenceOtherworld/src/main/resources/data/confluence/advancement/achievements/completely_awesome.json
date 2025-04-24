@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "minecraft:barrier"
+            "id": "terra_guns:minishark"
         },
         "title": {
             "translate": "achievements.confluence.completely_awesome.title"
@@ -21,7 +21,7 @@
             "conditions": {
                 "items": [
                     {
-                        "items": "minecraft:barrier"
+                        "items": "terra_guns:minishark"
                     }
                 ]
             }

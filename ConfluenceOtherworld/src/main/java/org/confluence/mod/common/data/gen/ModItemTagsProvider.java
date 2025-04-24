@@ -1131,6 +1131,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 AxeItems.ADAMANTITE_WARAXE.get(),
                 AxeItems.TITANIUM_WARAXE.get(),
                 AxeItems.CHLOROPHYTE_GREATAXE.get(),
+                AxeItems.LUCY_THE_AXE.get(),
                 ArmorItems.NECRO_HELMET.get(),
                 ArmorItems.NECRO_CHESTPLATE.get(),
                 ArmorItems.NECRO_LEGGINGS.get(),

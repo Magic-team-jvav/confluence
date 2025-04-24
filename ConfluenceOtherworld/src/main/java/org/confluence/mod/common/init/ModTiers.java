@@ -22,16 +22,16 @@ import java.util.function.Supplier;
  * <a href="https://terraria.wiki.gg/zh/wiki/%E9%95%90">镐的Terraria Wiki页面</a> <p>
  */
 public final class ModTiers {
-    public static final Tier CACTUS = new PoweredTier(35, ModTags.Blocks.NEEDS_2_LEVEL,  220, 4, 1, 4, () -> Ingredient.of(Items.CACTUS));
+    public static final Tier CACTUS = new PoweredTier(35, ModTags.Blocks.NEEDS_2_LEVEL, 220, 4, 1, 4, () -> Ingredient.of(Items.CACTUS));
     public static final Tier COPPER = new PoweredTier(35, ModTags.Blocks.NEEDS_2_LEVEL, 250, 4, 1, 5, () -> Ingredient.of(Items.COPPER_INGOT));
-    public static final Tier TIN = new PoweredTier(35, ModTags.Blocks.NEEDS_2_LEVEL,  270, 4, 1, 6, () -> Ingredient.of(MaterialItems.TIN_INGOT));
+    public static final Tier TIN = new PoweredTier(35, ModTags.Blocks.NEEDS_2_LEVEL, 270, 4, 1, 6, () -> Ingredient.of(MaterialItems.TIN_INGOT));
     public static final Tier IRON = new PoweredTier(40, ModTags.Blocks.NEEDS_2_LEVEL, 286, 5, 2, 7, () -> Ingredient.of(Items.IRON_INGOT));
-    public static final Tier LEAD = new PoweredTier(43, ModTags.Blocks.NEEDS_2_LEVEL,  304, 6, 2, 8, () -> Ingredient.of(MaterialItems.LEAD_INGOT));
-    public static final Tier SILVER = new PoweredTier(45, ModTags.Blocks.NEEDS_2_LEVEL,  546, 6, 2, 9, () -> Ingredient.of(MaterialItems.SILVER_INGOT));
+    public static final Tier LEAD = new PoweredTier(43, ModTags.Blocks.NEEDS_2_LEVEL, 304, 6, 2, 8, () -> Ingredient.of(MaterialItems.LEAD_INGOT));
+    public static final Tier SILVER = new PoweredTier(45, ModTags.Blocks.NEEDS_2_LEVEL, 546, 6, 2, 9, () -> Ingredient.of(MaterialItems.SILVER_INGOT));
     public static final Tier TUNGSTEN = new PoweredTier(50, ModTags.Blocks.NEEDS_3_LEVEL, 890, 7, 2, 10, () -> Ingredient.of(MaterialItems.TUNGSTEN_INGOT));
     public static final Tier GOLD = new PoweredTier(55, ModTags.Blocks.NEEDS_4_LEVEL, 1600, 10, 3, 11, () -> Ingredient.of(Items.GOLD_INGOT));
-    public static final Tier CANDY_CANE = new PoweredTier(55, ModTags.Blocks.NEEDS_4_LEVEL, 10000, 7, 2, 11,() -> Ingredient.of(Items.SUGAR)); // 糖(圣诞限定）
-    public static final Tier FOSSIL = new PoweredTier(55, ModTags.Blocks.NEEDS_4_LEVEL,  10000, 8, 3, 11, () -> Ingredient.of(MaterialItems.STURDY_FOSSIL));
+    public static final Tier CANDY_CANE = new PoweredTier(55, ModTags.Blocks.NEEDS_4_LEVEL, 10000, 7, 2, 11, () -> Ingredient.of(Items.SUGAR));
+    public static final Tier FOSSIL = new PoweredTier(55, ModTags.Blocks.NEEDS_4_LEVEL, 10000, 8, 3, 11, () -> Ingredient.of(MaterialItems.STURDY_FOSSIL));
     public static final Tier BONE = new PoweredTier(55, ModTags.Blocks.NEEDS_4_LEVEL, 10000, 13, 3, 11, () -> Ingredient.of(Items.BONE_BLOCK));
     public static final Tier PLATINUM = new PoweredTier(59, ModTags.Blocks.NEEDS_4_LEVEL, 1661, 10, 3, 11, () -> Ingredient.of(MaterialItems.PLATINUM_INGOT));
     public static final Tier REAVER_SHARK = new PoweredTier(59, ModTags.Blocks.NEEDS_4_LEVEL, 10000, 9, 3, 10, () -> Ingredient.of(MaterialItems.SHARK_FIN));

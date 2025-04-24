@@ -4,6 +4,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Tiers;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.ConfluenceMagicLib;
@@ -35,7 +36,7 @@ public class AxeItems {
     public static final DeferredItem<BaseAxeItem> ADAMANTITE_WARAXE = ITEMS.register("adamantite_waraxe", () -> new BaseAxeItem(ModTiers.ADAMANTITE, 43, 2.0F, unbreakable(), attributes(0, 0.7), ModRarity.LIGHT_RED));
     public static final DeferredItem<BaseAxeItem> TITANIUM_WARAXE = ITEMS.register("titanium_waraxe", () -> new BaseAxeItem(ModTiers.TITANIUM, 35, 2.0F, unbreakable(), attributes(0, 0.475), ModRarity.LIGHT_RED));
     public static final DeferredItem<BaseAxeItem> CHLOROPHYTE_GREATAXE = ITEMS.register("chlorophyte_greataxe", () -> new BaseAxeItem(ModTiers.CHLOROPHYTE, 70, 2.5F, unbreakable(), attributes(1, 0.7), ModRarity.LIME));
-    // todo 路西斧
+    public static final DeferredItem<BaseAxeItem> LUCY_THE_AXE = ITEMS.register("lucy_the_axe", () -> new BaseAxeItem(Tiers.IRON, 27, 4, unbreakable(), attributes(0, 0.5), ModRarity.GREEN));
 
     public static final DeferredItem<Item> STAFF_OF_REGROWTH = ITEMS.register("staff_of_regrowth", () -> new Item(new Item.Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN).component(DataComponents.ATTRIBUTE_MODIFIERS, DiggerItem.createAttributes(ModTiers.PLATINUM, (3 - ModTiers.PLATINUM.getAttackDamageBonus() - 1), 1 - 4)))); // 再生法杖
     public static final DeferredItem<BaseAxeItem> AXE_OF_REGROWTH = ITEMS.register("axe_of_regrowth", () -> new BaseAxeItem(ModTiers.PLATINUM, 7, 1f, ModRarity.LIGHT_RED)); // 再生之斧

@@ -9,7 +9,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -29,12 +28,9 @@ import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.saved.ConfluenceCommand;
-import org.confluence.mod.common.effect.beneficial.HeartReachEffect;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModRecipes;
-import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
@@ -44,9 +40,7 @@ import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
-import org.confluence.terra_curio.api.event.RangePickupItemEvent;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
-import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terra_guns.api.event.GunEvent;
 import org.confluence.terraentity.network.s2c.SyncNPCTradesPacketS2C;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
@@ -79,33 +73,6 @@ public final class GameEvents {
             if (item instanceof ColoredItem) {
                 ColoredItem.setColor(carried, ColoredItem.getColor(onSlot));
             }
-        }
-    }
-
-    @SubscribeEvent
-    public static void rangePickupItem$Pre(RangePickupItemEvent.Pre event) {
-        LivingEntity living = event.getEntity();
-        float mana = TCUtils.getAccessoriesValue(living, AccessoryItems.MANA$PICKUP$RANGE).getA();
-        float coin = TCUtils.getAccessoriesValue(living, AccessoryItems.COIN$PICKUP$RANGE).getA();
-        float life = HeartReachEffect.getRange(living);
-        event.setRange(Math.max(Math.max(Math.max(mana, coin), life), event.getRange()));
-    }
-
-    @SubscribeEvent
-    public static void rangePickupItem$Post(RangePickupItemEvent.Post event) {
-        LivingEntity living = event.getEntity();
-        ItemStack itemStack = event.getItemEntity().getItem();
-        if (itemStack.is(ModTags.Items.PROVIDE_MANA) && !event.canPickupWithin(TCUtils.getAccessoriesValue(living, AccessoryItems.MANA$PICKUP$RANGE).getA())) {
-            event.setCanceled(true);
-        }
-        if (itemStack.is(ModTags.Items.COINS) && !event.canPickupWithin(TCUtils.getAccessoriesValue(living, AccessoryItems.COIN$PICKUP$RANGE).getA())) {
-            event.setCanceled(true);
-        }
-        if (itemStack.is(ModTags.Items.PROVIDE_LIFE) && !event.canPickupWithin(HeartReachEffect.getRange(living))) {
-            event.setCanceled(true);
-        }
-        if (!event.isCanceled() && !event.canPickupWithin(event.getOriginalRange())) {
-            event.setCanceled(true);
         }
     }
 

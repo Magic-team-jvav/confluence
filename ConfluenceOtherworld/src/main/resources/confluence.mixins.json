@@ -52,6 +52,7 @@
         "integration.terra_curio.AccessoriesAttachmentMixin",
         "integration.terra_curio.DemonHeartMixin",
         "integration.terra_curio.StarClockEntityMixin",
+        "integration.terra_curio.TCAttributesMixin",
         "integration.terra_curio.WorkshopBlockMixin",
         "integration.terra_curio.WorkshopMenuMixin",
         "integration.terra_curio.WorkshopRecipeMixin",

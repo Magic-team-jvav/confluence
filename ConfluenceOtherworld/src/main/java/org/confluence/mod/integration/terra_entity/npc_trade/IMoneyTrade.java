@@ -10,7 +10,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
+import org.confluence.terraentity.entity.npc.mood.NPCMood;
 import org.confluence.terraentity.entity.npc.trade.ITradeHolder;
 import org.confluence.terraentity.registries.npc_trade.ITrade;
 import org.jetbrains.annotations.Nullable;
@@ -27,12 +27,11 @@ public interface IMoneyTrade extends ITrade {
 
 
     default long getCost(@Nullable Player player,  ITradeHolder npc){
-        int value = 0;
-        if(npc instanceof AbstractTerraNPC npc1){
-            value = npc1.getMood().getValue();
+        float discount = 1;
+        NPCMood mood = npc.getMood();
+        if(mood!= null){
+            discount = 100.0f / mood.getValue();
         }
-        value = (value == 0 ? 100 : value);
-        float discount = (float) (1.0 / value * 100);
         return (long) (cost() * discount);
     }
 

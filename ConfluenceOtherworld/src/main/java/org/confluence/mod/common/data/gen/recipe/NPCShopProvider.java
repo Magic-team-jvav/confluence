@@ -10,6 +10,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.Keys;
 import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeHealthFull;
 import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeItem;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -38,6 +39,7 @@ import java.util.concurrent.CompletableFuture;
 public class NPCShopProvider extends AbstractRecipeProvider {
     private final PackOutput.PathProvider npcShopPathProvider;
 
+
     public NPCShopProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
         super(output, lookup);
         this.npcShopPathProvider = output.createPathProvider(PackOutput.Target.DATA_PACK, "npc_shop");
@@ -45,7 +47,20 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 
     @Override
     public void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
-        // 命名空间替换成confluence，本体不能覆盖子模块的数据包
+
+        // 女仆商店
+        shop(Keys.MAID_SHOP).addRecipe(new Builder()
+                .add(TCItems.PORTABLE_CEMENT_MIXER.get(), 100000)
+                .add(TCItems.EXTENDO_GRIP.get(), 100000)
+                .add(TCItems.BRICK_LAYER.get(), 100000)
+                .add(TCItems.STOPWATCH.get(), 50000)
+                .add(TCItems.LIFE_FORM_ANALYZER.get(), 50000)
+                .add(TCItems.DPS_METER.get(), 50000)
+                .add(SwordItems.KATANA.get(), 100000)
+                .add(FoodItems.PAD_THAI.get(), 750)
+                .build());
+
+
         shop(TENpcEntities.GUIDE.getId()).addRecipe(new Builder()
                 //TODO 枪！
    //旅商的       .add(AccessoryItems.PAINT_SPRAYER.get(), 100000)
@@ -159,7 +174,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
     }
 
     protected Appender<NPCTradeManager> shop(ResourceLocation id) {
-        // 预处理命名空间
+        // 预处理命名空间，命名空间替换成confluence，本体不能覆盖子模块的数据包
         return recipe(NPCTradeManager.CODEC, pathProvider().json(Confluence.asResource(id.getPath())));
     }
 
@@ -216,5 +231,33 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         public NPCTradeManager build() {
             return new NPCTradeManager(trades);
         }
+    }
+
+    /**
+     * 将钱币数转成cost整数
+     * @param a 铂金
+     * @param b 金
+     * @param c 银
+     * @param d 铜
+     */
+    private int warp(int a,int b, int c,int d){
+        return a * 1000000 + b * 10000 + c * 100 + d;
+    }
+    /**
+     * 将钱币数转成cost整数
+     * @param b 金
+     * @param c 银
+     * @param d 铜
+     */
+    private int warp(int b, int c,int d){
+        return b * 10000 + c * 100 + d;
+    }
+    /**
+     * 将钱币数转成cost整数
+     * @param c 银
+     * @param d 铜
+     */
+    private int warp(int c,int d){
+        return c * 100 + d;
     }
 }

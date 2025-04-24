@@ -226,7 +226,8 @@ dependencies {
     //runtimeOnly "curse.maven:lithium-360438:6290413"
     //runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
     //runtimeOnly "curse.maven:lootr-361276:6294335"
-    //runtimeOnly "curse.maven:the-twilight-forest-227639:6087105"
+    compileOnly "curse.maven:the-twilight-forest-227639:6087105"
+    runtimeOnly "curse.maven:the-twilight-forest-227639:6087105"
     //runtimeOnly "maven.modrinth:mekanism:10.7.13.78"
     //runtimeOnly "curse.maven:modern-ui-352491:6200236"
     if (false) {

@@ -31,7 +31,7 @@ public class ExtraButton {
                         ItemStack stack = player.containerMenu.getCarried();
                         player.containerMenu.setCarried(ItemStack.EMPTY);
 
-                        OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.NPC_TRADE_MENU, stack);
+                        OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.MAID_TRADE_MENU, stack);
                     }
                 }));
             }

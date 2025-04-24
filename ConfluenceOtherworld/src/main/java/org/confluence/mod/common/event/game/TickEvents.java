@@ -87,7 +87,9 @@ public final class TickEvents {
         // 实体身上的无敌帧每刻-1
         if (event.getEntity() instanceof ILivingEntity living) {
             Object2IntMap<Immunity> invTicks = living.confluence$getImmunityTicks();
-            for (ObjectIterator<Object2IntMap.Entry<Immunity>> iterator = invTicks.object2IntEntrySet().iterator(); iterator.hasNext(); ) {
+            if (invTicks.isEmpty()) return;
+            ObjectIterator<Object2IntMap.Entry<Immunity>> iterator = invTicks.object2IntEntrySet().iterator();
+            while (iterator.hasNext()) {
                 Object2IntMap.Entry<Immunity> entry = iterator.next();
                 int remain = entry.getIntValue() - 1;
                 if (remain < 0) {

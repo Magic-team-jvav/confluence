@@ -54,4 +54,11 @@ public record PrefixComponent(PrefixType type, String name, AttributeModifiersVa
     public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, PrefixComponent> streamCodec() {
         return STREAM_CODEC;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        return o instanceof PrefixComponent(PrefixType type1, String name1, AttributeModifiersValue modifiers1, float cost, int mana, int tier1, float value1) &&
+                type1 == type && mana == additionalMana && tier1 == tier && value1 == value && cost == manaCost && name1.equals(name) && modifiers1.equals(modifiers);
+    }
 }

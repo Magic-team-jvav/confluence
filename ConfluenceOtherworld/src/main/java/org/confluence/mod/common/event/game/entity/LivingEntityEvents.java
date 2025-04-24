@@ -282,14 +282,15 @@ public final class LivingEntityEvents {
     @SubscribeEvent
     public static void livingBreathe(LivingBreatheEvent event) {
         LivingEntity living = event.getEntity();
-        if (living.hasEffect(ModEffects.CHOKING)) {
+        boolean b = !living.getActiveEffectsMap().isEmpty();
+        if (b && living.hasEffect(ModEffects.CHOKING)) {
             living.setAirSupply(living.getAirSupply() - 5);
         }
         if (event.canBreathe()) return;
 
-        if (living.hasEffect(ModEffects.SHIMMER)) {
+        if (b && living.hasEffect(ModEffects.SHIMMER)) {
             event.setCanBreathe(true);
-        } else if (LibUtils.anyHandHasItem(living, itemStack -> itemStack.is(SwordItems.BREATHING_REED))) {
+        } else if (LibUtils.anyHandHasItem(living, itemStack -> !itemStack.isEmpty() && itemStack.is(SwordItems.BREATHING_REED))) {
             if (living.canDrownInFluidType(living.level().getFluidState(living.blockPosition().offset(0, 2, 0)).getFluidType())) {
                 event.setConsumeAirAmount(living.getRandom().nextInt(2) > 0 ? 0 : 1);
             } else {

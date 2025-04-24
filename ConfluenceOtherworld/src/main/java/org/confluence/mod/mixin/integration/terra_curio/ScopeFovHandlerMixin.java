@@ -22,7 +22,7 @@ public abstract class ScopeFovHandlerMixin {
     private static void binoculars(Player player, CallbackInfo ci) {
         if (player.isUsingItem() && player.getMainHandItem().is(ToolItems.BINOCULARS)) {
             if (!scoping) {
-                if (fovModifier != 1.0) {
+                if (fovModifier != 1.0F) {
                     player.playSound(SoundEvents.SPYGLASS_USE);
                 }
                 scoping = true;

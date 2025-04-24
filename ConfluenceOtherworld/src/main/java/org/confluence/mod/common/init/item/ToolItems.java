@@ -4,6 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -23,6 +24,11 @@ public class ToolItems {
     public static final DeferredItem<BottomlessBucketItem> BOTTOMLESS_LAVA_BUCKET = ITEMS.register("bottomless_lava_bucket", () -> new BottomlessBucketItem(Fluids.LAVA, ModRarity.LIME));
     public static final DeferredItem<BottomlessBucketItem> BOTTOMLESS_HONEY_BUCKET = ITEMS.register("bottomless_honey_bucket", () -> new BottomlessBucketItem(ModFluids.HONEY.fluid().get(), ModRarity.LIME));
     public static final DeferredItem<BottomlessBucketItem> BOTTOMLESS_SHIMMER_BUCKET = ITEMS.register("bottomless_shimmer_bucket", () -> new BottomlessBucketItem(ModFluids.SHIMMER.fluid().get(), ModRarity.RED));
+
+    public static final DeferredItem<SpongeItem> SUPER_ABSORBANT_SPONGE = ITEMS.register("super_absorbant_sponge", () -> new SpongeItem(ModRarity.LIME, "super_absorbant_sponge", 2, state -> state.is(Blocks.WATER) || state.is(ModBlocks.SHIMMER)));
+    public static final DeferredItem<SpongeItem> HONEY_ABSORBANT_SPONGE = ITEMS.register("honey_absorbant_sponge", () -> new SpongeItem(ModRarity.LIME, "honey_absorbant_sponge", 2, state -> state.is(ModBlocks.HONEY)));
+    public static final DeferredItem<SpongeItem> LAVA_ABSORBANT_SPONGE = ITEMS.register("lava_absorbant_sponge", () -> new SpongeItem(ModRarity.LIME, "lava_absorbant_sponge", 2, state -> state.is(Blocks.LAVA)));
+    public static final DeferredItem<SpongeItem> ULTRA_ABSORBANT_SPONGE = ITEMS.register("ultra_absorbant_sponge", () -> new SpongeItem(ModRarity.YELLOW, "ultra_absorbant_sponge", 2, state -> state.is(Blocks.WATER) || state.is(ModBlocks.SHIMMER) || state.is(ModBlocks.HONEY) || state.is(Blocks.LAVA)));
 
     public static final DeferredItem<TooltipItem> GOLDEN_KEY = ITEMS.register("golden_key", () -> new TooltipItem(new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("golden_key", 1, ChatFormatting.WHITE)));
     public static final DeferredItem<TooltipItem> SHADOW_KEY = ITEMS.register("shadow_key", () -> new TooltipItem(new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("shadow_key", 1, ChatFormatting.WHITE)));

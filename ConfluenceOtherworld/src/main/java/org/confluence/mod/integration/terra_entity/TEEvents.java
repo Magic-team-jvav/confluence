@@ -83,8 +83,10 @@ public class TEEvents {
     @SubscribeEvent
     public static void onLoadResource(LoadResourceEvent event){
         if(event.getType() == LoadResourceEvent.Type.NPC_NAMES) {
+            event.setReplace(true);
             event.addFile(Confluence.asResource(NPCNames.KEY + "/" + NPCNames.FILE_NAME + ".json"));
         }else if(event.getType() == LoadResourceEvent.Type.NPC_DIALOGS){
+            event.setReplace(true);
             event.addFile(Confluence.asResource(NPCDialogs.KEY + "/" + NPCDialogs.FILE_NAME + ".json"));
         }else if(event.getType() == LoadResourceEvent.Type.NPC_MOODS){
             event.setReplace(true);

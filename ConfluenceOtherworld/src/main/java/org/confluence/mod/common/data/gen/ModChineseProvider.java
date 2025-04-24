@@ -808,6 +808,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("container.confluence.piggy_bank", "猪猪存钱罐");
         add("container.confluence.npc_shop", "npc商店");
         add("container.confluence.sawmill", "锯木机");
+        add("container.confluence.tree_holes", "树洞");
 
         add("title.confluence.shimmer_transmutation", "微光嬗变");
         add("title.confluence.altar", "祭坛");
@@ -2288,6 +2289,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.CAULDRON.get(), "大锅");
         add(FunctionalBlocks.SAWMILL.get(), "锯木机");
         add(FunctionalBlocks.ANNOUNCEMENT_BOX.get(), "广播盒");
+        add(FunctionalBlocks.TREE_HOLES_BLOCK.get(), "树洞");
         add(FunctionalBlocks.SOLIDIFIER.get(), "固化机");
         add(FunctionalBlocks.KEG.get(), "酒桶");
         add(FunctionalBlocks.MYTHRIL_ANVIL.get(), "秘银砧");

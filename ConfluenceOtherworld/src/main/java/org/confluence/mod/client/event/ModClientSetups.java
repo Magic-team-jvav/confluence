@@ -131,6 +131,12 @@ public final class ModClientSetups {
             return ModArmPoses.BREATHING_REED.getValue();
         }
     };
+    static final IClientItemExtensions LANCE = new IClientItemExtensions() {
+        @Override
+        public HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
+            return ModArmPoses.LANCE.getValue();
+        }
+    };
     static final BlockColor HALLOW_LEAVES_COLOR = new BlockColor() {
         @Override
         public int getColor(BlockState state, @Nullable BlockAndTintGetter level, @Nullable BlockPos pos, int tintIndex) {

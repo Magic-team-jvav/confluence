@@ -2,10 +2,8 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BowItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -15,12 +13,12 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.common.entity.projectile.range.arrow.BeeArrow;
-import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.bow.BaseArrowItem;
 import org.confluence.mod.common.item.bow.DaedalusStormbow;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.bow.TerraBowItem;
+import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
 import org.confluence.terraentity.init.TEEffectStrategies;
 
 import java.util.function.Function;
@@ -115,11 +113,6 @@ public class BowItems {
      */
     public static DeferredItem<TerraBowItem> register(String name, float damage, Function<TerraBowItem.Builder, TerraBowItem.Builder> modifier) {
         return register(name, () -> new TerraBowItem(damage,  modifier.apply(new TerraBowItem.Builder().setUnBreakable())));
-    }
-
-
-    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
-        ITEMS.getEntries().forEach(entry -> tag.add(entry.get()));
     }
 
     @OnlyIn(Dist.CLIENT)

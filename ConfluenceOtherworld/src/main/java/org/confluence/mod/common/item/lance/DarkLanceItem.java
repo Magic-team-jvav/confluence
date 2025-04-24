@@ -5,7 +5,9 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -14,10 +16,12 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.entity.PartEntity;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.util.LibUtils;
@@ -69,7 +73,7 @@ public class DarkLanceItem extends CustomRarityItem implements GeoItem {
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (isSelected && !entity.level().isClientSide && entity instanceof LivingEntity living) {
+        if (isSelected && level instanceof ServerLevel serverLevel && entity instanceof LivingEntity living) {
             long tickCount = entity.level().getGameTime() - LibUtils.getItemStackNbt(stack).getLong("confluence:last_attack_time");
             if (tickCount <= 15) {
                 Vec3 viewVector = entity.getViewVector(1.0F);
@@ -77,11 +81,20 @@ public class DarkLanceItem extends CustomRarityItem implements GeoItem {
                 Vec3 startVec = position.add(viewVector.scale(-0.5));
                 Vec3 endVec = position.add(viewVector.scale(getDistance(tickCount) * living.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE) / -16));
                 AABB boundingBox = new AABB(startVec, endVec);
-                for (LivingEntity victim : level.getEntitiesOfClass(LivingEntity.class, boundingBox, entity1 -> entity1 != entity)) {
+                for (Entity victim : level.getEntitiesOfClass(Entity.class, boundingBox, entity1 -> entity1 != entity && entity1.isAttackable() && !entity1.skipAttackInteraction(entity))) {
                     AABB aabb = victim.getBoundingBox().inflate(0.3);
-                    if (aabb.clip(startVec, endVec).isPresent() && victim.hurt(ModDamageTypes.of(level, DamageTypes.STING, entity), 6.8F)) {
-                        victim.addEffect(new MobEffectInstance(ModEffects.SHADOWFLAME, 300));
+                    if (aabb.clip(startVec, endVec).isPresent()) {
+                        living.setLastHurtMob(victim);
+                        if (victim instanceof PartEntity<?> partEntity) {
+                            victim = partEntity.getParent();
+                        }
+                        DamageSource damageSource = ModDamageTypes.of(level, DamageTypes.STING, entity);
+                        victim.hurt(damageSource, 6.8F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                        if (victim instanceof LivingEntity living1) {
+                            living1.addEffect(new MobEffectInstance(ModEffects.SHADOWFLAME, 300));
+                        }
                         VectorUtils.knockBackA2B(entity, victim, 0.5, 0.1);
+                        EnchantmentHelper.doPostAttackEffects(serverLevel, victim, damageSource);
                     }
                 }
             }

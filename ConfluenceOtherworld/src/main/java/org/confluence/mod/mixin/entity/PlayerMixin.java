@@ -5,13 +5,10 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.item.LanceItems;
 import org.confluence.mod.mixed.IDamageSource;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -19,9 +16,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Player.class)
 public abstract class PlayerMixin implements SelfGetter<Player> {
-    @Shadow
-    private ItemStack lastItemInMainHand;
-
     @Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
     private void attack(Entity target, CallbackInfo ci, @Local DamageSource damagesource, @Local(ordinal = 2) boolean flag1) {
         ((IDamageSource) damagesource).confluence$setCritical(flag1);
@@ -37,12 +31,5 @@ public abstract class PlayerMixin implements SelfGetter<Player> {
             }
         }
         return exhaustion;
-    }
-
-    @Inject(method = "resetAttackStrengthTicker", at = @At("HEAD"), cancellable = true)
-    private void denyReset(CallbackInfo ci) {
-        if (lastItemInMainHand.is(LanceItems.DARK_LANCE)) {
-            ci.cancel();
-        }
     }
 }

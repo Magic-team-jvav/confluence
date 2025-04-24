@@ -40,7 +40,10 @@ import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.*;
-import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.init.item.MinecartItems;
+import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
@@ -212,7 +215,7 @@ public final class PlayerEvents {
             Entity target = event.getTarget();
             AccessoryItems.applyLuckyCoin(serverPlayer, target);
         }
-        if (player.getMainHandItem().is(LanceItems.DARK_LANCE)) {
+        if (player.getMainHandItem().is(ModTags.Items.LANCES)) {
             event.setCanceled(true);
         }
     }

@@ -117,7 +117,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.TISSUE_SAMPLE.get()
         );
 
-    // 可烧的木材
+        // 可烧的木材
         tag(ModTags.Items.WOODEN_COMBUSTIBLES)
                 .add(NatureBlocks.EBONY_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
                 .add(NatureBlocks.PEARL_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
@@ -750,6 +750,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         // Bow 附魔
         IntrinsicTagAppender<Item> durabilityEnchantable = tag(ItemTags.DURABILITY_ENCHANTABLE);
+        IntrinsicTagAppender<Item> skipUsingSlowdown = tag(LibTags.Items.SKIP_USING_SLOWDOWN);
         BowItems.ITEMS.getEntries().forEach(item -> {
             Item value = item.get();
             durabilityEnchantable.add(value);
@@ -757,17 +758,19 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             tag(Tags.Items.RANGED_WEAPON_TOOLS).add(value);
             weapons.add(value);
             tag(Tags.Items.TOOLS_BOW).add(value);
+            skipUsingSlowdown.add(value);
         });
         //  FishingPole 附魔
         FishingPoleItems.acceptTag(tag(ItemTags.FISHING_ENCHANTABLE));
         // Sword 附魔
+        IntrinsicTagAppender<Item> meleeWeaponTools = tag(Tags.Items.MELEE_WEAPON_TOOLS);
         SwordItems.ITEMS.getEntries().forEach(item -> {
             Item value = item.get();
             tag(ItemTags.SHARP_WEAPON_ENCHANTABLE).add(value);
             tag(ItemTags.SWORD_ENCHANTABLE).add(value);
             durabilityEnchantable.add(value);
             tag(ItemTags.WEAPON_ENCHANTABLE).add(value);
-            tag(Tags.Items.MELEE_WEAPON_TOOLS).add(value);
+            meleeWeaponTools.add(value);
             weapons.add(value);
             tag(ItemTags.SWORDS).add(value);
         });
@@ -1404,7 +1407,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 //        TGItems.ITEM_BULLETS.getEntries().forEach(wipAction);
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
         TMItems.ITEMS.getEntries().forEach(wipAction);
-        BowItems.acceptTag(tag(LibTags.Items.SKIP_USING_SLOWDOWN));
 
         tag(ModTags.Items.DEATH).add(
                 FunctionalBlocks.DEATH_CHEST_BLOCK.asItem(),
@@ -1439,6 +1441,16 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.SPIKY_BALL_TRAP.asItem(),
                 FunctionalBlocks.SPEAR_TRAP.asItem()
         );
+
+        IntrinsicTagAppender<Item> skipResetStrength = tag(LibTags.Items.SKIP_RESET_STRENGTH);
+        DrillItems.ITEMS.getEntries().forEach(item -> skipResetStrength.add(item.get()));
+        LanceItems.ITEMS.getEntries().forEach(item -> {
+            Item value = item.get();
+            skipResetStrength.add(value);
+            meleeWeaponTools.add(value);
+            weapons.add(value);
+            tag(ModTags.Items.LANCES).add(value);
+        });
     }
 
     @Override

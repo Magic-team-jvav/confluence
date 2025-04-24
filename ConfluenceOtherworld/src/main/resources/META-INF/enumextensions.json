@@ -8,6 +8,15 @@
                 "class": "org/confluence/mod/common/init/ModArmPoses",
                 "field": "BREATHING_REED"
             }
+        },
+        {
+            "enum": "net/minecraft/client/model/HumanoidModel$ArmPose",
+            "name": "CONFLUENCE_LANCE",
+            "constructor": "(ZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
+            "parameters": {
+                "class": "org/confluence/mod/common/init/ModArmPoses",
+                "field": "LANCE"
+            }
         }
     ]
 }

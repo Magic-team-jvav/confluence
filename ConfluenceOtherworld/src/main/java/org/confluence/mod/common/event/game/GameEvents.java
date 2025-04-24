@@ -26,6 +26,7 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.saved.ConfluenceCommand;
 import org.confluence.mod.common.effect.beneficial.HeartReachEffect;
@@ -144,7 +145,9 @@ public final class GameEvents {
 
     @SubscribeEvent
     public static void registerBrewingRecipes(RegisterBrewingRecipesEvent event) {
-        ModRecipes.Brewing.registerRecipes(event.getBuilder()::addRecipe);
+        if (CommonConfigs.BREWING_STAND_RECIPE.get()) {
+            ModRecipes.Brewing.registerRecipes(event.getBuilder()::addRecipe);
+        }
     }
 
     @SubscribeEvent

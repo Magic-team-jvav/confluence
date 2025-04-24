@@ -19,6 +19,7 @@ import net.neoforged.neoforge.common.brewing.IBrewingRecipe;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.BaitItems;
@@ -81,6 +82,7 @@ public final class ModRecipes {
         private static final Object2ObjectMap<int[], ItemStack> MATERIAL_TO_RESULT = new Object2ObjectOpenHashMap<>();
 
         public static void initialize() {
+            if (!CommonConfigs.BREWING_STAND_RECIPE.get()) return;
             registerMaterial(MaterialItems.WATERLEAF.get());
             registerMaterial(MaterialItems.FIREBLOSSOM.get());
             registerMaterial(MaterialItems.MOONGLOW.get());

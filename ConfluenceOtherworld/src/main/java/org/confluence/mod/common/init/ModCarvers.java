@@ -2,14 +2,10 @@ package org.confluence.mod.common.init;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
-import net.minecraft.world.level.levelgen.carver.CaveWorldCarver;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.worldgen.carver.DemonicCaveCarver;
-import org.confluence.mod.common.worldgen.carver.DesertCaveCarver;
-import org.confluence.mod.common.worldgen.carver.GlowingMushroomCaveCarver;
-import org.confluence.mod.common.worldgen.carver.WavyCaveCarver;
+import org.confluence.mod.common.worldgen.carver.*;
 
 import java.util.function.Supplier;
 
@@ -21,5 +17,5 @@ public final class ModCarvers {
     public static final Supplier<WavyCaveCarver> WAVY_CAVE_CARVER = CARVERS.register("wavy_cave_carver", () -> new WavyCaveCarver(WavyCaveCarver.Config.CODEC));
     public static final Supplier<DesertCaveCarver> DESERT_CAVE_CARVER = CARVERS.register("desert_cave_carver", () -> new DesertCaveCarver(DesertCaveCarver.Config.CODEC));
     public static final Supplier<GlowingMushroomCaveCarver> GLOWING_MUSHROOM_CAVE_CARVER = CARVERS.register("glowing_mushroom_cave_carver", () -> new GlowingMushroomCaveCarver(GlowingMushroomCaveCarver.Config.CODEC));
-    public static final Supplier<CaveWorldCarver> JUNGLE_CAVE_CARVER = CARVERS.register("jungle_cave_carver", () -> new CaveWorldCarver(CaveCarverConfiguration.CODEC));
+    public static final Supplier<JungleCaveCarver> JUNGLE_CAVE_CARVER = CARVERS.register("jungle_cave_carver", () -> new JungleCaveCarver(CaveCarverConfiguration.CODEC));
 }

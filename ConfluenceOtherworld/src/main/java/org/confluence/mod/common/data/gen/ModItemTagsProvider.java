@@ -1232,6 +1232,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 PotionItems.MUG.get(),
                 PotionItems.ALE.get(),
                 PotionItems.RED_POTION.get(),
+                PotionItems.FLASK_OF_FIRE.get(),
+                PotionItems.FLASK_OF_GOLD.get(),
                 NatureBlocks.ASH_LOG_BLOCKS.getLeaves().asItem(),
                 NatureBlocks.LOOSE_HONEY_BLOCK.asItem(),
                 NatureBlocks.RED_MOIST_SAND_BLOCK.asItem(),

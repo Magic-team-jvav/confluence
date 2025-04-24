@@ -3209,8 +3209,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.CLAIRVOYANCE.get(), "透视");
         add(ModEffects.HOLY_PROTECTION.get(), "神圣防护");
         add(ModEffects.TITANIUM_BARRIER.get(), "钛金防护");
-        add(ModEffects.FLASK_OF_FIRE.get(), "武器灌注：火焰");
-        add(ModEffects.FLASK_OF_GOLD.get(), "武器灌注：金");
+        add(ModEffects.WEAPON_IMBUE_FIRE.get(), "武器灌注：火焰");
+        add(ModEffects.WEAPON_IMBUE_GOLD.get(), "武器灌注：金");
 
         add(TooltipManager.prefix, "** 赞助者物品 **");
 

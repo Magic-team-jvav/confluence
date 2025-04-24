@@ -102,6 +102,6 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> SHADOWFLAME = EFFECTS.register("shadowflame", ShadowflameEffect::new);
 
     // 药剂
-    public static final DeferredHolder<MobEffect, FlaskEffect> FLASK_OF_FIRE = EFFECTS.register("flask_of_fire", FlaskOfFireEffect::new);
-    public static final DeferredHolder<MobEffect, FlaskEffect> FLASK_OF_GOLD = EFFECTS.register("flask_of_gold", FlaskOfGoldEffect::new);
+    public static final DeferredHolder<MobEffect, FlaskEffect> WEAPON_IMBUE_FIRE = EFFECTS.register("weapon_imbue_fire", FlaskOfFireEffect::new);
+    public static final DeferredHolder<MobEffect, FlaskEffect> WEAPON_IMBUE_GOLD = EFFECTS.register("weapon_imbue_gold", FlaskOfGoldEffect::new);
 }

@@ -181,23 +181,11 @@ public class SurfaceRuleData {
 
                 //丛林
                 SurfaceRules.ifTrue(SurfaceRules.isBiome(Biomes.JUNGLE, Biomes.SPARSE_JUNGLE, Biomes.BAMBOO_JUNGLE),
-                        SurfaceRules.ifTrue(SurfaceRules.not(deepslateSeed),
-                                SurfaceRules.sequence(
-                                        SurfaceRules.ifTrue(SurfaceRules.not(sandSeed),
-                                                SurfaceRules.sequence(
-                                                        SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
-                                                                jungleGrassSurface
-                                                        ),
-                                                        MUD
-                                                )
-                                        ),
-                                        SurfaceRules.sequence(
-                                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
-                                                        GRASS_BLOCK
-                                                ),
-                                                DIRT
-                                        )
-                                )
+                        SurfaceRules.sequence(
+                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
+                                        jungleGrassSurface
+                                ),
+                                MUD
                         )
                 ),
 

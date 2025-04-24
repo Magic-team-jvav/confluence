@@ -70,14 +70,7 @@ public class DungeonStructure extends Structure {
             BlockPos mazeRotatePos;
             BlockPos houseKey;
             int houseValue;
-            int outSize = 5;
-            int outSizeHeight = 6;
-            int inSize = 2;
-            int inSizeHeight = 3;
-            int outRoomSize = 15;
             int outRoomSizeHeight = 24;
-            int inRoomSize = 12;
-            int inRoomSizeHeight = 21;
             int stairsFacing = 0;
 
             Rotation rotation = Util.getRandom(Rotation.values(), random);
@@ -89,8 +82,6 @@ public class DungeonStructure extends Structure {
             VectorUtils.lightningPathList(firstChannel, 2, 8, random);
             lineSet(firstChannel, 5.5, 5.5, 1, true, blockMap);
 
-
-            List<BlockPos> roomPos = new ArrayList<>();
             BlockPos underCenter = new BlockPos(centerPos.getX(), (int) vct.y, centerPos.getZ());
 
             Map<Vector3d, BooleanStorage4> mazeMap = mazePos(new Vector3d(underCenter.getX(), underCenter.getY(), underCenter.getZ()), 40, 2, random, 1.0F);

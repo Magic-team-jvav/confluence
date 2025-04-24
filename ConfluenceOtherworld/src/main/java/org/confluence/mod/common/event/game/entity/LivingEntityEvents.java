@@ -6,6 +6,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -59,9 +60,12 @@ import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.init.TCEffects;
+import org.confluence.terraentity.data.gen.tags.TEEntityTypeTagsProvider;
 import org.confluence.terraentity.entity.ai.Boss;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
+import org.confluence.terraentity.init.TETags;
 import org.confluence.terraentity.init.entity.TEBossEntities;
+import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class LivingEntityEvents {
@@ -94,7 +98,8 @@ public final class LivingEntityEvents {
                 }
             }
             NPCSpawner.INSTANCE.onNPCRemoved(living);
-            NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.get().checkVisibility(level, living);
+            if (living.hasEffect(ModEffects.BLOOD_BUTCHERED)) NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.get().checkVisibility(level, living);
+            if (damageSource.getEntity() != null && damageSource.getEntity().getType().is(TETags.EntityTypes.CORRUPT)) NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get().checkVisibilityAndSummonEntity(level, living);
         }
     }
 
@@ -247,7 +252,8 @@ public final class LivingEntityEvents {
         if (event.getEntity() instanceof Player player && !player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
             ExtraInventory data = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
             for (int i = 0; i < data.getContainerSize(); i++) {
-                if (i >= ExtraInventory.COINS_START && i < ExtraInventory.COINS_START + ExtraInventory.SIZE_COINS) continue;
+                if (i >= ExtraInventory.COINS_START && i < ExtraInventory.COINS_START + ExtraInventory.SIZE_COINS)
+                    continue;
                 ItemStack itemStack = data.getItem(i);
                 if (!itemStack.isEmpty()) {
                     data.setItem(i, ItemStack.EMPTY);

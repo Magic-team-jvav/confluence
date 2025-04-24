@@ -56,6 +56,7 @@ public final class ModTags {
         public static final TagKey<Block> CURSED_FLAME_BASE_BLOCK = register("cursed_flame_base_block");
         public static final TagKey<Block> BLOODTHIRST_CRYSTALL_BASE_BLOCK = register("bloodthirst_crystall_base_block");
         public static final TagKey<Block> CORRODED_WORM_ROOTS_BASE_BLOCK = register("corroded_worm_roots_base_block");
+        public static final TagKey<Block> DECOMPOSE_THE_SOURCE_EXTRACT_BASE_BLOCK = register("decompose_the_source_extract_base_block");
 
         public static final TagKey<Block> TIN_BLOCK = c("storage_blocks/tin");
         public static final TagKey<Block> LEAD_BLOCK = c("storage_blocks/lead");

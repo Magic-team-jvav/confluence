@@ -1171,6 +1171,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CORRUPT_GRASS_BLOCK.get(),
                 CORRUPT_JUNGLE_GRASS_BLOCK.get()
         );
+        tag(ModTags.Blocks.DECOMPOSE_THE_SOURCE_EXTRACT_BASE_BLOCK).add(
+                EBONY_STONE.get(),
+                EBONY_COBBLESTONE.get()
+        );
     }
 
     @Override

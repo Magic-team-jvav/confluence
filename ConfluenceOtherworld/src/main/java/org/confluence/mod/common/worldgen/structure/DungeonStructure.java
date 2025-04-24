@@ -34,7 +34,10 @@ public class DungeonStructure extends Structure {
             "dungeon/blue_house_0",
             "dungeon/blue_house_1",
             "dungeon/blue_house_2",
-            "dungeon/blue_house_3"
+            "dungeon/blue_house_3",
+            "dungeon/blue_house_4",
+            "dungeon/blue_house_5",
+            "dungeon/blue_house_6"
     };
     public static final String[] bridge = new String[]{
             "dungeon/blue_bridge_0",
@@ -224,16 +227,16 @@ public class DungeonStructure extends Structure {
                     case 4, 5, 6, 7:
                         break;
                     case 0:
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(houses, random), houseKey.offset(-1, 0, -1), false, true, Rotation.NONE));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(houses, random), houseKey.offset(-1, 0, -1), false, false, Rotation.NONE));
                         break;
                     case 1:
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(houses, random), houseKey.offset(1, 0, -1), false, true, Rotation.CLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(houses, random), houseKey.offset(1, 0, -1), false, false, Rotation.CLOCKWISE_90));
                         break;
                     case 2:
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(houses, random), houseKey.offset(1, 0, 1), false, true, Rotation.CLOCKWISE_180));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(houses, random), houseKey.offset(1, 0, 1), false, false, Rotation.CLOCKWISE_180));
                         break;
                     default:
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(houses, random), houseKey.offset(-1, 0, 1), false, true, Rotation.COUNTERCLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(houses, random), houseKey.offset(-1, 0, 1), false, false, Rotation.COUNTERCLOCKWISE_90));
                 }
             }
 

@@ -42,18 +42,19 @@ public class ModChineseProvider extends LanguageProvider {
         add("chat.confluence.demon_conch", "你听取恶魔呼喊的位置[%s]已记录");
         add("options.difficulty.legendary", "§a传奇");
         add("message.confluence.choking", "你被噎住了,需要喝水才行");
-
         add("jukebox_song.confluence.song", "C418 - alpha");
-
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
         add("generator.confluence.the_corruption", "腐化之地");
         add("generator.confluence.tr_crimson", "猩红之地");
 
-
         add("tooltip.item.confluence.meteorite_ingot.0", "摸起来是温的");
+        add("tooltip.item.confluence.encumbering_stone.0", "锁上时能防止拾取物品");
+        add("tooltip.item.confluence.encumbering_stone.1", "背包内右键点击可解锁");
+        add("tooltip.item.confluence.encumbering_stone.2", "“你负重过多”");
         add("item.confluence.encumbering_stone.disable", "负重石：关闭");
         add("item.confluence.paint", "油漆");
+
         add("tooltip.item.confluence.slime_crown.0", "右键使用以召唤史莱姆王");
         add("tooltip.item.confluence.slime_crown.1", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");
         add("tooltip.item.confluence.slime_crown.2", "“戴上它可能不是个好选择”");
@@ -169,9 +170,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("key.confluence.healing", "快捷喝药（生命）");
         add("key.confluence.mana", "快捷喝药（魔力）");
         add("key.confluence.extra_inventory", "快捷打开额外栏");
-
         add("key.confluence.hook", "使用钩爪");
-
         add("key.confluence.specular_detail", "视觉药水细节观测");
 
         add("death.attack.falling_star", "%1$s 得到了流星的回应");
@@ -180,7 +179,6 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("selections.confluence.magic_conch", "回应海的召唤[%s]");
         add("selections.confluence.demon_conch", "回应熔岩的召唤[%s]");
-
 
         add("tooltip.item.confluence.adhesive_bandage.0", "对流血免疫");
         add("tooltip.item.confluence.medicated_bandage.0", "对中毒和流血免疫");
@@ -263,13 +261,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.max_count", "多重射击");
         add("tooltip.item.confluence.on_hit_effects", "命中效果");
 
-
         add("tooltip.item.confluence.has_proj", "剑气");
         add("tooltip.item.confluence.has_proj.damage", "- 伤害");
         add("tooltip.item.confluence.has_proj.speed", "- 速度");
         add("tooltip.item.confluence.has_proj.cooldown", "- 冷却");
         add("tooltip.item.confluence.has_proj.track_type", "- 追踪");
-
 
         add("tooltip.item.confluence.arrow_transform", "木箭转换");
         add("tooltip.item.confluence.additional_attack_damage", "额外伤害");
@@ -280,7 +276,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.radio_thing.0", "允许使用者以不同的方式看世界");
         add("tooltip.item.terra_curio.radio_thing.1", "“禁忌的知识在其中回响……”");
 
-        add("tooltip.item.confluence.sweet_sword.0", "来自QQ1471529049一只屑水缡写的au“undertale：虚无之上”");
+        add("tooltip.item.confluence.sweet_sword.0", "来自一只屑水缡写的au“undertale：虚无之上”");
 
         add("tooltip.item.confluence.copper_short_sword.0", "神兵最微末的那部分力量自两世汇流之初就伴随着你…直至旅途的终点");
         add("tooltip.item.confluence.copper_short_sword.1", "“我们十个真厉害！”铜短剑说。");
@@ -434,7 +430,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.HUD.tooltip", "关于HUD显示");
         add("confluence.configuration.showWindParticles.tooltip", "通过调整数值，来决定你能看见风粒子的数量");
         add("confluence.configuration.HUD.button", "关于HUD显示");
-
         add("confluence.configuration.terraStyleHealth.tooltip", "开启后，生命值显示为泰拉样式");
         add("confluence.configuration.healthStyle.tooltip", "生命值显示");
         add("confluence.configuration.Health.tooltip", "关于生命值显示");
@@ -443,9 +438,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.title", "配置界面");
         add("confluence.configuration.section.confluence.client.toml.title", "客户端配置");
         add("confluence.configuration.Entity.tooltip", "与生物有关的视觉效果");
-
         add("confluence.configuration.section.confluence.common.toml.title", "服务端配置");
-
 
         add("biome.confluence.the_corruption", "腐化之地");
         add("biome.confluence.the_corruption_desert", "腐化沙漠");
@@ -459,7 +452,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("biome.confluence.glowing_mushroom", "发光蘑菇群系");
         add("biome.confluence.ash_wasteland", "灰烬荒地");
         add("biome.confluence.ash_forest", "白蜡木林");
-
 
         // new
         add("achievements.toast.complete", "成就达成！");
@@ -696,8 +688,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("achievements.confluence.quiet_neighborhood.title", "安静的邻里 ");
         add("achievements.confluence.quiet_neighborhood.description", "进入笼罩着薄雾的墓地，墓地中到处都是粗鲁无礼的死人。");
 
-
-
         add("prefix.confluence.tooltip.plus", "+%s%% %s");
         add("prefix.confluence.tooltip.take", "-%s%% %s");
         add("prefix.confluence.tooltip.add", "+%s %s");
@@ -822,7 +812,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.cooking_pot", "烹饪锅");
         add("title.confluence.sawmill", "锯木机");
 
-
         add("block.confluence.base_chest_block.locked_golden", "§r上锁的金箱");
         add("block.confluence.base_chest_block.unlocked_golden", "§r金箱");
         add("block.confluence.base_chest_block.death_golden", "§r死人金箱");
@@ -843,7 +832,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("block.confluence.base_chest_block.death_sandstone", "§r死人砂岩箱");
         add("block.confluence.base_chest_block.unlocked_living_wood", "§r生命木箱");
         add("block.confluence.base_chest_block.death_living_wood", "§r死人生命木箱");
-
 
         add("resourcepack.terraria_art", "泰拉艺术");
         add("resourcepack.terraria_armor", "泰拉盔甲样式材质");
@@ -961,8 +949,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.heim_set.data.2", "增加2%暴击率，近战伤害提高1%");
         add("equipment_benediction.set_switcher.confluence.heim_set.data.3", "提高水下移动速度5%，近战伤害提高1%");
         add("equipment_benediction.set_switcher.confluence.heim_set.data.4", "赋予你4点血量的伤害吸收，每隔5分钟再次赋予");
-
-        add("block.confluence.larva", "幼虫");
 
         // npc对话
         add("dialogs.confluence.guide.0", "我的工作是为你接下来的任务提供建议。建议你遇到任何困难时都来和我谈谈。");
@@ -1504,6 +1490,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.CORRUPTED_OVARIES_BLOCK.get(), "腐化卵巢");
         add(NatureBlocks.DESERT_TAPERED_BLOCK.get(), "沙漠石笋");
         add(NatureBlocks.BLINKING_ROYAL_SHIMMERLILY.get(), "微光王莲");
+        add(NatureBlocks.LARVA.get(), "幼虫");
 
         add(LightPetItems.SHADOW_ORB.get(), "暗影珠");
         add(LightPetItems.CRIMSON_HEART.get(), "猩红心脏");
@@ -3218,11 +3205,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(TooltipManager.prefix, "** 赞助者物品 **");
 
         // 车万女仆
-
         add("task.confluence.use_life_crystal", "生命水晶");
         add("task.confluence.use_life_crystal.desc", "女仆会主动使用生命水晶增加最大生命值");
         add("task.confluence.use_life_crystal.condition.has_life_crystal", "主手持有生命水晶");
-
 
         PonderHelper.addTranslateKeys(this::add, false);
     }

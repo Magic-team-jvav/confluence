@@ -44,7 +44,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("creativetab.confluence.misc", "Confluence | Miscellaneous");
         add("creativetab.confluence.food_and_potions", "Confluence | Food & Potions");
         add("creativetab.confluence.armors", "Confluence | Armors");
-        add("creativetab.terra_curio", "Confluence | Accessories");
         add("creativetab.confluence.mechanical", "Confluence | Mechanical");
         add("creativetab.confluence.developer", "Confluence | Developer");
 
@@ -52,9 +51,19 @@ public class ModEnglishProvider extends LanguageProvider {
         add("chat.confluence.magic_conch", "The location where you listen to the sound of the ocean [%s] has been recorded");
         add("chat.confluence.demon_conch", "The location where you listen to the sound of the demon [%s] has been recorded");
         add("options.difficulty.legendary", "§aLegendary");
+        add("message.confluence.choking", "You're choking and need to drink water");
+        add("jukebox_song.confluence.alpha", "C418 - alpha");
+
+        add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
+        add("generator.confluence.the_corruption", "The Corruption");
+        add("generator.confluence.tr_crimson", "The Crimson");
 
         add("tooltip.item.confluence.meteorite_ingot.0", "Warm to the touch");
-        add("jukebox_song.confluence.alpha", "C418 - alpha");
+        add("tooltip.item.confluence.encumbering_stone.0", "Prevents item pickups while locked");
+        add("tooltip.item.confluence.encumbering_stone.1", "Right click in inventory to unlock");
+        add("tooltip.item.confluence.encumbering_stone.2", "'You are over-encumbered'");
+        add("item.confluence.encumbering_stone.disable", "Encumbering Stone: Disable");
+        add("item.confluence.paint", "Paint");
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
         add("tooltip.item.confluence.slime_crown.1", "A small crown that seems to be prepared for the coronation ceremony of those cute and harmless gel - like creatures.");
@@ -98,7 +107,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("item.confluence.mysterious_note.name_1", "Small Note with Orange Scent");
         add("item.confluence.mysterious_note.name_2", "Digitized Small Note");
         add("item.confluence.mysterious_note.name_3", "Gentle Small Note");
-        add("item.confluence.mysterious_note.name_4", "Half - Eaten Small Note");
+        add("item.confluence.mysterious_note.name_4", "Half-Eaten Small Note");
 
         add("item.confluence.mysterious_slate.name_0", "Serious Slate");
         add("item.confluence.mysterious_slate.name_1", "Exceptionally Ancient Slate");
@@ -157,8 +166,6 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add("key.confluence.hook", "Throwing Hook");
         add("key.confluence.specular_detail", "Detail observation of visual potions");
-
-
         add("key.confluence.gameplay", "Confluence Key Settings");
         add("key.confluence.healing", "Quick Use Health Potion");
         add("key.confluence.mana", "Quick Use Mana Potion");
@@ -258,17 +265,16 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.has_proj.cooldown", "- Cooldown");
         add("tooltip.item.confluence.has_proj.track_type", "- Track Type");
 
-
         add("tooltip.item.confluence.arrow_transform", "Wooden Arrow Transform");
         add("tooltip.item.confluence.additional_attack_damage", "Additional Attack Damage");
         add("tooltip.item.confluence.no_gravity", "No Gravity");
         add("tooltip.item.confluence.cause_fire", "Causes Fire");
         add("tooltip.item.confluence.can_penetrate", "Can Penetrate");
 
-
         add("tooltip.item.confluence.radio_thing.0", "Allows the user to see the world differently");
         add("tooltip.item.terra_curio.radio_thing.1", "'Forbidden Knowledge echoes from the radio...'");
 
+        add("tooltip.item.confluence.sweet_sword.0", "au'undertale: above nothingness' written by 一只屑水缡");
 
         add("tooltip.item.confluence.copper_short_sword.0", "The smallest fragment of the divine weapon's power has been with you since the convergence of the two worlds... until the journey's end.");
         add("tooltip.item.confluence.copper_short_sword.1", "\"We are so awesome!\" said the copper short sword.");
@@ -276,7 +282,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.starfury.1", "\"The wrath of the heavens pours down.\"");
         add("tooltip.item.confluence.enchanted_sword.0", "A small part of the divine weapon's power is buried in a cave, condensed into a bleak sword intent.");
         add("tooltip.item.confluence.enchanted_sword.1", "\"A flash of light in the dim sword tomb.\"");
-
         add("tooltip.item.confluence.bee_keeper.0", "A small part of the divine weapon's power is possessed by the swarm of bees in the jungle, becoming a buzzing hive.");
         add("tooltip.item.confluence.bee_keeper.1", "\"Sweet on the outside, sharp on the inside.\"");
 
@@ -324,6 +329,126 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.vortex_booster.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.solar_wings.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.stardust_wings.0", "Allows flight and slow fall");
+
+        add("confluence.configuration.achievementToast", "Enable Terra Style Achievements");
+        add("confluence.configuration.achievementToast.tooltip", "Disable it if you want to use the default progress style.");
+        add("confluence.configuration.playerOurMusic", "Enable Terra Music");
+        add("confluence.configuration.playerOurMusic.tooltip", "Enable Terra's music, it will play in appropriate environments");
+        add("confluence.configuration.dropsMoney", "Coin Drops");
+        add("confluence.configuration.dropsMoney.tooltip", "When enabled, characters will drop coins upon death.");
+        add("confluence.configuration.Paints", "Paint Function Settings");
+        add("confluence.configuration.Paints.tooltip", "Some compatibility issues may be caused by the paint function, so you need to adjust the relevant options here.");
+        add("confluence.configuration.Paints.button", "About Paint");
+        add("confluence.configuration.paintsReplaceTexture", "Paint Replace Texture");
+        add("confluence.configuration.paintsReplaceTexture.tooltip", "When enabled, the paint will use a replacement grayscale texture, making the appearance on materials more natural.");
+        add("confluence.configuration.autoStackGelsColor", "Auto Stack Gels by Color");
+        add("confluence.configuration.autoStackGelsColor.tooltip", "When enabled, gels of different colors you pick up will stack together");
+        add("confluence.configuration.bannedModForPaints", "Mod Paints Blacklist");
+        add("confluence.configuration.bannedModForPaints.button", "Enter Mod ID to use the blacklist");
+        add("confluence.configuration.bannedModForPaints.tooltip", "If the paints from this mod cause rendering issues with blocks from other mods, enter the MOD ID to prevent that mod's blocks from using the paint color");
+        add("confluence.configuration.fletchingMenu", "Fletching Table Menu");
+        add("confluence.configuration.fletchingMenu.tooltip", "When enabled, the fletching table will be modified by Conflux");
+        add("confluence.configuration.shimmer_decompose", "Shimmer Decompose");
+        add("confluence.configuration.shimmer_decompose.tooltip", "When enabled, Shimmer liquid can decompose items into raw materials");
+        add("confluence.configuration.fallingStarInterval", "Falling Star Interval");
+        add("confluence.configuration.fallingStarInterval.tooltip", "Defines the interval of falling stars appearing at night");
+        add("confluence.configuration.returnPotionGlassBottle", "Return Glass Bottles for Potions");
+        add("confluence.configuration.returnPotionGlassBottle.tooltip", "Decides whether to return the glass bottle after using a potion");
+        add("confluence.configuration.rightClickRideMinecart", "Right click to ride a minecart");
+        add("confluence.configuration.rightClickRideMinecart.tooltip", "When enabled, when you right-click on a rail, it will automatically ride a minecart");
+        add("confluence.configuration.announcementBoxDistance", "Announcement Box Distance");
+        add("confluence.configuration.dropsTombstone", "Drops Tombstone");
+        add("confluence.configuration.dropsTombstone.tooltip", "When enabled，allows player to drops tombstone after death");
+        add("confluence.configuration.defaultRespawnTimeMin", "Default Minimum Respawn Time");
+        add("confluence.configuration.defaultRespawnTimeMin.tooltip", "Set the default minimum respawn time");
+        add("confluence.configuration.defaultRespawnTimeMax", "Default Maximum Respawn Time");
+        add("confluence.configuration.defaultRespawnTimeMax.tooltip", "Set the default maximum respawn time");
+        add("confluence.configuration.bossRespawnTimeMin", "Minimum Respawn Time (Boss Battle)");
+        add("confluence.configuration.bossRespawnTimeMax", "Maximum Respawn Time (Boss Battle)");
+        add("confluence.configuration.bossRespawnTimeMax.tooltip", "Maximum respawn time for when dying in a boss battle");
+        add("confluence.configuration.bossRespawnTimeMin.tooltip", "Minimum respawn time for when dying in a boss battle");
+        add("confluence.configuration.showWindParticles", "Wind Particles Ratio");
+        add("confluence.configuration.HUD", "HUD");
+        add("confluence.configuration.Mana", "Mana");
+        add("confluence.configuration.Armor", "Armor");
+        add("confluence.configuration.Health", "Health");
+        add("confluence.configuration.Food", "Food Saturation");
+        add("confluence.configuration.terraStyleHealth", "Terra Style Health");
+        add("confluence.configuration.terraStyleArmor", "Terra Style Armor");
+        add("confluence.configuration.terraStyleFood", "Terra Style Food Saturation");
+        add("confluence.configuration.healthStyle", "Health Style");
+        add("confluence.configuration.manaStyle", "Mana Style");
+        add("confluence.configuration.armorStyle", "Armor Style");
+        add("confluence.configuration.foodStyle", "Food Saturation Style");
+        add("confluence.configuration.armorStyle.legacy_horizontal", "Armor Style: Elegant - Horizontal");
+        add("confluence.configuration.armorStyle.legacy_diagonal", "Armor Style: Elegant - Diagonal");
+        add("confluence.configuration.armorStyle.legacy_vertical", "Armor Style: Elegant - Vertical");
+        add("confluence.configuration.armorStyle.overlay", "Armor Style: Overlay");
+        add("confluence.configuration.manaStyle.legacy", "Mana Style: Elegant");
+        add("confluence.configuration.manaStyle.overlay", "Mana Style: Overlay");
+        add("confluence.configuration.healthStyle.legacy", "Health Style: Elegant");
+        add("confluence.configuration.healthStyle.overlay", "Health Style: Overlay");
+        add("confluence.configuration.foodStyle.legacy", "Food Saturation Style: Elegant");
+        add("confluence.configuration.foodStyle.overlay", "Food Saturation Style: Overlay");
+        add("confluence.configuration.leftEffectIcon", "Left Potion Effect Icon");
+        add("confluence.configuration.Entity", "Entity Effects");
+        add("confluence.configuration.bloodyEffect", "Blood Effect");
+        add("confluence.configuration.bloodyEffect.tooltip", "Blood particle splashing");
+        add("confluence.configuration.goreEffect", "Gore Effect");
+        add("confluence.configuration.goreEffect.off", "Off");
+        add("confluence.configuration.goreEffect.confluence", "Only Conflux Entities");
+        add("confluence.configuration.goreEffect.confluence_vanilla", "Conflux and Vanilla Entities");
+        add("confluence.configuration.goreEffect.all", "All Entities");
+        add("confluence.configuration.goreEffect.tooltip", "The gore effect will be specially adapted to Conflux and Vanilla entities, while other mod entities will use a generic method with no guaranteed effect.");
+        add("confluence.configuration.damageIndicator", "Damage Indicator");
+        add("confluence.configuration.healIndicator", "Heal Indicator");
+        add("confluence.configuration.damageIndicator.tooltip", "Enable to display damage numbers");
+        add("confluence.configuration.healIndicator.tooltip", "Enable to display heal numbers");
+        add("confluence.configuration.Gameplay", "Gameplay Mechanics");
+        add("confluence.configuration.Gameplay.button", "Define Gameplay Mechanics");
+        add("confluence.configuration.Gameplay.tooltip", "Some gameplay mechanics can be defined by you");
+        add("confluence.configuration.PlayerDeath", "Player Death Mechanics");
+        add("confluence.configuration.PlayerDeath.button", "Player Death Mechanics");
+        add("confluence.configuration.PlayerDeath.tooltip", "Defines the effects when a player dies");
+        add("confluence.configuration.showMoneyDrops", "Show Coin Drops on Death Screen");
+        add("confluence.configuration.showMoneyDrops.tooltip", "Enable to display the amount of coins dropped on the death screen");
+        // Separator
+        add("confluence.configuration.Mana.button", "Mana");
+        add("confluence.configuration.Armor.button", "Armor");
+        add("confluence.configuration.Health.button", "Health");
+        add("confluence.configuration.Food.button", "Food Saturation");
+        add("confluence.configuration.manaStyle.tooltip", "Mana Style");
+        add("confluence.configuration.Mana.tooltip", "About Mana Display");
+        add("confluence.configuration.Food.tooltip", "About Food Display");
+        add("confluence.configuration.section.confluence.client.toml", "Client Display Settings");
+        add("confluence.configuration.section.confluence.common.toml", "Gameplay Settings");
+        add("confluence.configuration.leftEffectIcon.tooltip", "When enabled, potion effect icons are displayed on the left side of the screen.");
+        add("confluence.configuration.Entity.button", "Entity-related Visual Effects");
+        add("confluence.configuration.HUD.tooltip", "About HUD Display");
+        add("confluence.configuration.showWindParticles.tooltip", "Adjust the value to decide how many wind particles are visible.");
+        add("confluence.configuration.HUD.button", "About HUD Display");
+        add("confluence.configuration.terraStyleHealth.tooltip", "When enabled, health is displayed in Terra style.");
+        add("confluence.configuration.healthStyle.tooltip", "Health Display");
+        add("confluence.configuration.Health.tooltip", "About Health Display");
+        add("confluence.configuration.terraStyleArmor.tooltip", "When enabled, armor is displayed in Terra style.");
+        add("confluence.configuration.Armor.tooltip", "About Armor Display");
+        add("confluence.configuration.title", "Configuration Screen");
+        add("confluence.configuration.section.confluence.client.toml.title", "Client-side Configuration");
+        add("confluence.configuration.Entity.tooltip", "Entity-related Visual Effects");
+        add("confluence.configuration.section.confluence.common.toml.title", "Server-side Configuration");
+
+        add("biome.confluence.ash_forest", "Ash Forest");
+        add("biome.confluence.ash_wasteland", "Ash Wasteland");
+        add("biome.confluence.glowing_mushroom", "Glowing Mushroom");
+        add("biome.confluence.the_corruption", "The Corruption");
+        add("biome.confluence.the_corruption_desert", "The Corruption Desert");
+        add("biome.confluence.the_corruption_tundra", "The Corruption Tundra");
+        add("biome.confluence.the_hallow", "The Hallow");
+        add("biome.confluence.the_hallow_desert", "The Hallow Desert");
+        add("biome.confluence.the_hallow_tundra", "The Hallow Tundra");
+        add("biome.confluence.tr_crimson", "The Crimson");
+        add("biome.confluence.tr_crimson_desert", "The Crimson Desert");
+        add("biome.confluence.tr_crimson_tundra", "The Crimson Tundra");
 
         // new
         add("achievements.toast.complete", "Achievement achieved!");
@@ -558,117 +683,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("achievements.confluence.quiet_neighborhood.title", "Quiet Neighborhood");
         add("achievements.confluence.quiet_neighborhood.description", "Enter a misty graveyard filled with the surly dead.");
 
-
-
-        add("confluence.configuration.achievementToast", "Enable Terra Style Achievements");
-        add("confluence.configuration.achievementToast.tooltip", "Disable it if you want to use the default progress style.");
-        add("confluence.configuration.playerOurMusic", "Enable Terra Music");
-        add("confluence.configuration.playerOurMusic.tooltip", "Enable Terra's music, it will play in appropriate environments");
-        add("confluence.configuration.dropsMoney", "Coin Drops");
-        add("confluence.configuration.dropsMoney.tooltip", "When enabled, characters will drop coins upon death.");
-        add("confluence.configuration.Paints", "Paint Function Settings");
-        add("confluence.configuration.Paints.tooltip", "Some compatibility issues may be caused by the paint function, so you need to adjust the relevant options here.");
-        add("confluence.configuration.Paints.button", "About Paint");
-        add("confluence.configuration.paintsReplaceTexture", "Paint Replace Texture");
-        add("confluence.configuration.paintsReplaceTexture.tooltip", "When enabled, the paint will use a replacement grayscale texture, making the appearance on materials more natural.");
-        add("confluence.configuration.autoStackGelsColor", "Auto Stack Gels by Color");
-        add("confluence.configuration.autoStackGelsColor.tooltip", "When enabled, gels of different colors you pick up will stack together");
-        add("confluence.configuration.bannedModForPaints", "Mod Paints Blacklist");
-        add("confluence.configuration.bannedModForPaints.button", "Enter Mod ID to use the blacklist");
-        add("confluence.configuration.bannedModForPaints.tooltip", "If the paints from this mod cause rendering issues with blocks from other mods, enter the MOD ID to prevent that mod's blocks from using the paint color");
-        add("confluence.configuration.fletchingMenu", "Fletching Table Menu");
-        add("confluence.configuration.fletchingMenu.tooltip", "When enabled, the fletching table will be modified by Conflux");
-        add("confluence.configuration.shimmer_decompose", "Shimmer Decompose");
-        add("confluence.configuration.shimmer_decompose.tooltip", "When enabled, Shimmer liquid can decompose items into raw materials");
-        add("confluence.configuration.fallingStarInterval", "Falling Star Interval");
-        add("confluence.configuration.fallingStarInterval.tooltip", "Defines the interval of falling stars appearing at night");
-        add("confluence.configuration.returnPotionGlassBottle", "Return Glass Bottles for Potions");
-        add("confluence.configuration.returnPotionGlassBottle.tooltip", "Decides whether to return the glass bottle after using a potion");
-        add("confluence.configuration.rightClickRideMinecart", "Right click to ride a minecart");
-        add("confluence.configuration.rightClickRideMinecart.tooltip", "When enabled, when you right-click on a rail, it will automatically ride a minecart");
-        add("confluence.configuration.announcementBoxDistance", "Announcement Box Distance");
-        add("confluence.configuration.dropsTombstone", "Drops Tombstone");
-        add("confluence.configuration.dropsTombstone.tooltip", "When enabled，allows player to drops tombstone after death");
-        add("confluence.configuration.defaultRespawnTimeMin", "Default Minimum Respawn Time");
-        add("confluence.configuration.defaultRespawnTimeMin.tooltip", "Set the default minimum respawn time");
-        add("confluence.configuration.defaultRespawnTimeMax", "Default Maximum Respawn Time");
-        add("confluence.configuration.defaultRespawnTimeMax.tooltip", "Set the default maximum respawn time");
-        add("confluence.configuration.bossRespawnTimeMin", "Minimum Respawn Time (Boss Battle)");
-        add("confluence.configuration.bossRespawnTimeMax", "Maximum Respawn Time (Boss Battle)");
-        add("confluence.configuration.bossRespawnTimeMax.tooltip", "Maximum respawn time for when dying in a boss battle");
-        add("confluence.configuration.bossRespawnTimeMin.tooltip", "Minimum respawn time for when dying in a boss battle");
-        add("confluence.configuration.showWindParticles", "Wind Particles Ratio");
-        add("confluence.configuration.HUD", "HUD");
-        add("confluence.configuration.Mana", "Mana");
-        add("confluence.configuration.Armor", "Armor");
-        add("confluence.configuration.Health", "Health");
-        add("confluence.configuration.Food", "Food Saturation");
-        add("confluence.configuration.terraStyleHealth", "Terra Style Health");
-        add("confluence.configuration.terraStyleArmor", "Terra Style Armor");
-        add("confluence.configuration.terraStyleFood", "Terra Style Food Saturation");
-        add("confluence.configuration.healthStyle", "Health Style");
-        add("confluence.configuration.manaStyle", "Mana Style");
-        add("confluence.configuration.armorStyle", "Armor Style");
-        add("confluence.configuration.foodStyle", "Food Saturation Style");
-        add("confluence.configuration.armorStyle.legacy_horizontal", "Armor Style: Elegant - Horizontal");
-        add("confluence.configuration.armorStyle.legacy_diagonal", "Armor Style: Elegant - Diagonal");
-        add("confluence.configuration.armorStyle.legacy_vertical", "Armor Style: Elegant - Vertical");
-        add("confluence.configuration.armorStyle.overlay", "Armor Style: Overlay");
-        add("confluence.configuration.manaStyle.legacy", "Mana Style: Elegant");
-        add("confluence.configuration.manaStyle.overlay", "Mana Style: Overlay");
-        add("confluence.configuration.healthStyle.legacy", "Health Style: Elegant");
-        add("confluence.configuration.healthStyle.overlay", "Health Style: Overlay");
-        add("confluence.configuration.foodStyle.legacy", "Food Saturation Style: Elegant");
-        add("confluence.configuration.foodStyle.overlay", "Food Saturation Style: Overlay");
-        add("confluence.configuration.leftEffectIcon", "Left Potion Effect Icon");
-        add("confluence.configuration.Entity", "Entity Effects");
-        add("confluence.configuration.bloodyEffect", "Blood Effect");
-        add("confluence.configuration.bloodyEffect.tooltip", "Blood particle splashing");
-        add("confluence.configuration.goreEffect", "Gore Effect");
-        add("confluence.configuration.goreEffect.off", "Off");
-        add("confluence.configuration.goreEffect.confluence", "Only Conflux Entities");
-        add("confluence.configuration.goreEffect.confluence_vanilla", "Conflux and Vanilla Entities");
-        add("confluence.configuration.goreEffect.all", "All Entities");
-        add("confluence.configuration.goreEffect.tooltip", "The gore effect will be specially adapted to Conflux and Vanilla entities, while other mod entities will use a generic method with no guaranteed effect.");
-        add("confluence.configuration.damageIndicator", "Damage Indicator");
-        add("confluence.configuration.healIndicator", "Heal Indicator");
-        add("confluence.configuration.damageIndicator.tooltip", "Enable to display damage numbers");
-        add("confluence.configuration.healIndicator.tooltip", "Enable to display heal numbers");
-        add("confluence.configuration.Gameplay", "Gameplay Mechanics");
-        add("confluence.configuration.Gameplay.button", "Define Gameplay Mechanics");
-        add("confluence.configuration.Gameplay.tooltip", "Some gameplay mechanics can be defined by you");
-        add("confluence.configuration.PlayerDeath", "Player Death Mechanics");
-        add("confluence.configuration.PlayerDeath.button", "Player Death Mechanics");
-        add("confluence.configuration.PlayerDeath.tooltip", "Defines the effects when a player dies");
-        add("confluence.configuration.showMoneyDrops", "Show Coin Drops on Death Screen");
-        add("confluence.configuration.showMoneyDrops.tooltip", "Enable to display the amount of coins dropped on the death screen");
-// Separator
-        add("confluence.configuration.Mana.button", "Mana");
-        add("confluence.configuration.Armor.button", "Armor");
-        add("confluence.configuration.Health.button", "Health");
-        add("confluence.configuration.Food.button", "Food Saturation");
-        add("confluence.configuration.manaStyle.tooltip", "Mana Style");
-        add("confluence.configuration.Mana.tooltip", "About Mana Display");
-        add("confluence.configuration.Food.tooltip", "About Food Display");
-        add("confluence.configuration.section.confluence.client.toml", "Client Display Settings");
-        add("confluence.configuration.section.confluence.common.toml", "Gameplay Settings");
-        add("confluence.configuration.leftEffectIcon.tooltip", "When enabled, potion effect icons are displayed on the left side of the screen.");
-        add("confluence.configuration.Entity.button", "Entity-related Visual Effects");
-        add("confluence.configuration.HUD.tooltip", "About HUD Display");
-        add("confluence.configuration.showWindParticles.tooltip", "Adjust the value to decide how many wind particles are visible.");
-        add("confluence.configuration.HUD.button", "About HUD Display");
-
-        add("confluence.configuration.terraStyleHealth.tooltip", "When enabled, health is displayed in Terra style.");
-        add("confluence.configuration.healthStyle.tooltip", "Health Display");
-        add("confluence.configuration.Health.tooltip", "About Health Display");
-        add("confluence.configuration.terraStyleArmor.tooltip", "When enabled, armor is displayed in Terra style.");
-        add("confluence.configuration.Armor.tooltip", "About Armor Display");
-        add("confluence.configuration.title", "Configuration Screen");
-        add("confluence.configuration.section.confluence.client.toml.title", "Client-side Configuration");
-        add("confluence.configuration.Entity.tooltip", "Entity-related Visual Effects");
-
-        add("confluence.configuration.section.confluence.common.toml.title", "Server-side Configuration");
-
         add("prefix.confluence.tooltip.plus", "+%s%% %s");
         add("prefix.confluence.tooltip.take", "-%s%% %s");
         add("prefix.confluence.tooltip.add", "+%s %s");
@@ -686,7 +700,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("fluid_type.confluence.shimmer", "Shimmer");
         add("fluid_type.confluence.honey", "Honey");
 
-        add("title.confluence.shimmer_transmutation", "Shimmer Transmutation");
         add("condition.confluence.shimmer_transmutation.before_skeletron", "Required game phase: Before Skeletron");
         add("condition.confluence.shimmer_transmutation.after_skeletron", "Required game phase: After Skeletron");
         add("condition.confluence.shimmer_transmutation.wall_of_flesh", "Required game phase: After Wall Of Flesh");
@@ -694,22 +707,26 @@ public class ModEnglishProvider extends LanguageProvider {
         add("condition.confluence.shimmer_transmutation.plantera", "Required game phase: After Plantera");
         add("condition.confluence.shimmer_transmutation.golem", "Required game phase: After Golem");
         add("condition.confluence.shimmer_transmutation.moon_lord", "Required game phase: After Moon Lord");
-        add("title.confluence.altar", "Altar");
-        add("title.confluence.sky_mill", "Sky Mill");
+
         add("container.confluence.sky_mill", "Sky Mill");
-        add("title.confluence.heavy_work_bench", "Heavy Work Bench");
         add("container.confluence.heavy_work_bench", "Heavy Work Bench");
-        add("title.confluence.hellforge", "Hell Forge");
         add("container.confluence.hellforge", "Hell Forge");
         add("container.confluence.alchemy_table", "Alchemy Table");
-        add("title.confluence.alchemy_table", "Alchemy Table");
         add("condition.confluence.requires_fuel", "Requires Fuel");
         add("container.confluence.fletching_table", "Fletching Table");
+        add("container.confluence.piggy_bank", "Piggy Bank");
+
+        add("title.confluence.shimmer_transmutation", "Shimmer Transmutation");
+        add("title.confluence.altar", "Altar");
+        add("title.confluence.sky_mill", "Sky Mill");
+        add("title.confluence.heavy_work_bench", "Heavy Work Bench");
+        add("title.confluence.hellforge", "Hell Forge");
+        add("title.confluence.alchemy_table", "Alchemy Table");
         add("title.confluence.fletching_table", "Fletching Table");
         add("title.confluence.touhoulittlemaid", "Touhou Little Maid Supplies");
         add("title.confluence.npc_trade", "NPC Trading");
         add("title.confluence.cooking_pot", "Cooking Pot");
-        add("container.confluence.piggy_bank", "Piggy Bank");
+        add("title.confluence.sawmill", "Sawmill");
 
         add("block.confluence.timers_block_1_1", "1 Second Timer");
         add("block.confluence.timers_block_3_1", "3 Second Timer");
@@ -737,10 +754,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("block.confluence.base_chest_block.unlocked_living_wood", "§rLiving Wood Chest");
         add("block.confluence.base_chest_block.death_living_wood", "§rDeath Living Wood Chest");
 
-
         add("resourcepack.terraria_art", "Terraria Art");
         add("resourcepack.terraria_armor", "Terraria-Like Armor");
-
 
         add("event.confluence.blood_moon", "The Blood Moon is rising...");
         add("event.confluence.meteorite", "A meteorite has landed!");
@@ -770,35 +785,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.confluence.frozen_zombie", "Frozen Zombie");
         add("entity.confluence.raincoat_zombie", "Raincoat Zombie");
         add("entity.confluence.undead_miner", "Undead Miner");
-
-        add("container.confluence.workshop", "Workshop");
-        add("title.confluence.workshop", "Workshop");
-
-        add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
-        add("generator.confluence.the_corruption", "The Corruption");
-        add("generator.confluence.tr_crimson", "The Crimson");
-
-        add("biome.confluence.ash_forest", "Ash Forest");
-        add("biome.confluence.ash_wasteland", "Ash Wasteland");
-        add("biome.confluence.glowing_mushroom", "Glowing Mushroom");
-        add("biome.confluence.the_corruption", "The Corruption");
-        add("biome.confluence.the_corruption_desert", "The Corruption Desert");
-        add("biome.confluence.the_corruption_tundra", "The Corruption Tundra");
-        add("biome.confluence.the_hallow", "The Hallow");
-        add("biome.confluence.the_hallow_desert", "The Hallow Desert");
-        add("biome.confluence.the_hallow_tundra", "The Hallow Tundra");
-        add("biome.confluence.tr_crimson", "The Crimson");
-        add("biome.confluence.tr_crimson_desert", "The Crimson Desert");
-        add("biome.confluence.tr_crimson_tundra", "The Crimson Tundra");
-
-        add(TooltipManager.prefix, "** Sponsor Item **");
-
-        // TouhouLittleMaid
-
-        add("task.confluence.use_life_crystal", "Use Life Crystal");
-        add("task.confluence.use_life_crystal.desc", "Mail will use life crystal to heal herself");
-        add("task.confluence.use_life_crystal.condition.has_life_crystal", "Mainhand holds life crystal");
-
 
         add("equipment_benediction.set_switcher.confluence.cold_crystal_set", "Cold Crystal Set");
         add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.0", "Increase maximum mana by 20, Critical Hit Rate increased by 4%");
@@ -886,16 +872,13 @@ public class ModEnglishProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.cactus_set.data.0", "Attackers take damage from cactus thorns");
 
         // npc
-        add("dialogs.confluence.guide.0", "I am here to give you advice on what to do next.  It is recommended that you talk with me anytime you get stuck."  );
-        add("dialogs.confluence.guide.1", "They say there is a person who will tell you how to survive in this land... oh wait. That's me." );
-        add("dialogs.confluence.guide.2", "You should stay indoors at night. It is very dangerous to be wandering around in the dark." );
+        add("dialogs.confluence.guide.0", "I am here to give you advice on what to do next.  It is recommended that you talk with me anytime you get stuck.");
+        add("dialogs.confluence.guide.1", "They say there is a person who will tell you how to survive in this land... oh wait. That's me.");
+        add("dialogs.confluence.guide.2", "You should stay indoors at night. It is very dangerous to be wandering around in the dark.");
 
         add("dialogs.confluence.nurse.0", "I need to have a serious talk with Guide. How many times a week can you come in with severe lava burns?");
-        add("dialogs.confluence.nurse.1", "Have you seen that old man pacing around the dungeon? He looks troubled."  );
+        add("dialogs.confluence.nurse.1", "Have you seen that old man pacing around the dungeon? He looks troubled.");
         add("dialogs.confluence.nurse.2", "Hey, has Dealer mentioned needing to go to the doctor for any reason? Just wondering.");
-
-        PonderHelper.addTranslateKeys(this::add, true);
-
 
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
         add(ModBlocks.COPPER_COIN_PILE.get(), "Copper Coin");
@@ -951,6 +934,15 @@ public class ModEnglishProvider extends LanguageProvider {
 
         ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), LibUtils.toTitleCase(effect.getId().getPath())));
         ModEntities.ENTITIES.getEntries().forEach(entity -> add(entity.get(), LibUtils.toTitleCase(entity.getId().getPath())));
+
+        add(TooltipManager.prefix, "** Sponsor Item **");
+
+        // TouhouLittleMaid
+        add("task.confluence.use_life_crystal", "Use Life Crystal");
+        add("task.confluence.use_life_crystal.desc", "Mail will use life crystal to heal herself");
+        add("task.confluence.use_life_crystal.condition.has_life_crystal", "Mainhand holds life crystal");
+
+        PonderHelper.addTranslateKeys(this::add, true);
     }
 
     @Override

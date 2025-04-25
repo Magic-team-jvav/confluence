@@ -106,8 +106,8 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
     protected abstract void onHitEntity(DamageSource damageSource, Entity entity, LivingEntity living, Entity victim);
 
     protected boolean canHitEntity(Entity target, LivingEntity owner) {
-        if (!target.canBeHitByProjectile() || target instanceof ArmorStand || target instanceof Npc) return false;
-        return owner == null || (owner != target && !owner.isPassengerOfSameVehicle(target) && target.isAttackable() && !target.skipAttackInteraction(owner));
+        if (owner == target || !target.canBeHitByProjectile() || target instanceof ArmorStand || target instanceof Npc) return false;
+        return !owner.isPassengerOfSameVehicle(target) && target.isAttackable() && !target.skipAttackInteraction(owner);
     }
 
     protected double getDistance(long tickCount, LivingEntity owner) {

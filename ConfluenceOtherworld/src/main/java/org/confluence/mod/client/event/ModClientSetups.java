@@ -161,7 +161,10 @@ public final class ModClientSetups {
     static final List<Pair<ModelResourceLocation, ModelResourceLocation>> MODELS_HIGH_WITH_16X = Lists.newArrayList(
             new Pair<>(ModelResourceLocation.inventory(Confluence.asResource("bee_keeper")), ModelResourceLocation.standalone(Confluence.asResource("item/bee_keeper_inventory"))),
             new Pair<>(ModelResourceLocation.inventory(Confluence.asResource("ice_blade")), ModelResourceLocation.standalone(Confluence.asResource("item/ice_blade_inventory"))),
-            new Pair<>(ModelResourceLocation.inventory(Confluence.asResource("muramasa")), ModelResourceLocation.standalone(Confluence.asResource("item/muramasa_inventory")))
+            new Pair<>(ModelResourceLocation.inventory(Confluence.asResource("muramasa")), ModelResourceLocation.standalone(Confluence.asResource("item/muramasa_inventory"))),
+            new Pair<>(ModelResourceLocation.inventory(Confluence.asResource("lights_bane")), ModelResourceLocation.standalone(Confluence.asResource("item/lights_bane_inventory"))),
+            new Pair<>(ModelResourceLocation.inventory(Confluence.asResource("the_breaker")), ModelResourceLocation.standalone(Confluence.asResource("item/the_breaker_inventory"))),
+            new Pair<>(ModelResourceLocation.inventory(Confluence.asResource("war_axe_of_the_night")), ModelResourceLocation.standalone(Confluence.asResource("item/war_axe_of_the_night_inventory")))
     );
 
 

@@ -51,7 +51,7 @@ import javax.annotation.Nullable;
 @Mixin(FishingHook.class)
 public abstract class FishingHookMixin implements IFishingHook, IExtraSyncedData<FishingHook> {
     @Unique
-    private static final int[] confluence$dataIds = {SetEntityDataPacketS2C.DATA_BOOLEAN};
+    private static final byte[] confluence$dataIds = {SetEntityDataPacketS2C.DATA_BOOLEAN};
 
     @Shadow
     @Nullable
@@ -80,18 +80,18 @@ public abstract class FishingHookMixin implements IFishingHook, IExtraSyncedData
     }
 
     @Override
-    public void confluence$setData(int dataId, Object o) {
+    public void confluence$setData(byte dataId, Object o) {
         IExtraSyncedData.super.confluence$setData(dataId, o);
         this.confluence$lavaHook = (boolean) o;
     }
 
     @Override
-    public Object confluence$getData(int dataId) {
+    public Object confluence$getData(byte dataId) {
         return confluence$lavaHook;
     }
 
     @Override
-    public int[] confluence$getAllDataId() {
+    public byte[] confluence$getAllDataId() {
         return confluence$dataIds;
     }
 

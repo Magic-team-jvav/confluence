@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(AbstractArrow.class)
 public abstract class AbstractArrowMixin implements IAbstractArrow, IExtraSyncedData<AbstractArrow> {
     @Unique
-    private static final int[] confluence$dataIds = {SetEntityDataPacketS2C.DATA_BOOLEAN};
+    private static final byte[] confluence$dataIds = {SetEntityDataPacketS2C.DATA_BOOLEAN};
     @Unique
     private boolean confluence$fromShortBow = false;
 
@@ -33,18 +33,18 @@ public abstract class AbstractArrowMixin implements IAbstractArrow, IExtraSynced
     }
 
     @Override
-    public void confluence$setData(int dataId, Object o) {
+    public void confluence$setData(byte dataId, Object o) {
         IExtraSyncedData.super.confluence$setData(dataId, o);
         this.confluence$fromShortBow = (boolean) o;
     }
 
     @Override
-    public Object confluence$getData(int dataId) {
+    public Object confluence$getData(byte dataId) {
         return confluence$fromShortBow;
     }
 
     @Override
-    public int[] confluence$getAllDataId() {
+    public byte[] confluence$getAllDataId() {
         return confluence$dataIds;
     }
 

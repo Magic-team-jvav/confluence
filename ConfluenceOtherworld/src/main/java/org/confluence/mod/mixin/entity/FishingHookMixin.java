@@ -26,8 +26,8 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.lib.mixed.SelfGetter;
+import org.confluence.lib.mixed.IExtraSyncedData;
+import org.confluence.lib.network.SetEntityDataPacketS2C;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModTags;
@@ -35,7 +35,6 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.fishing.IBait;
 import org.confluence.mod.mixed.IFishingHook;
-import org.confluence.mod.network.s2c.SetEntityDataPacketS2C;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.spongepowered.asm.mixin.Final;
@@ -50,7 +49,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import javax.annotation.Nullable;
 
 @Mixin(FishingHook.class)
-public abstract class FishingHookMixin implements IFishingHook, SetEntityDataPacketS2C.IExtraSyncedData, SelfGetter<FishingHook> {
+public abstract class FishingHookMixin implements IFishingHook, IExtraSyncedData<FishingHook> {
     @Unique
     private static final int[] confluence$dataIds = {SetEntityDataPacketS2C.DATA_BOOLEAN};
 
@@ -82,8 +81,8 @@ public abstract class FishingHookMixin implements IFishingHook, SetEntityDataPac
 
     @Override
     public void confluence$setData(int dataId, Object o) {
+        IExtraSyncedData.super.confluence$setData(dataId, o);
         this.confluence$lavaHook = (boolean) o;
-        PacketDistributor.sendToPlayersTrackingEntity(confluence$self(), new SetEntityDataPacketS2C(confluence$self().getId(), dataId, o));
     }
 
     @Override

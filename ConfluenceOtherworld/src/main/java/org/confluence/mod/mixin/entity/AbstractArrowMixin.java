@@ -4,11 +4,10 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.lib.mixed.SelfGetter;
+import org.confluence.lib.mixed.IExtraSyncedData;
+import org.confluence.lib.network.SetEntityDataPacketS2C;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.mixed.IAbstractArrow;
-import org.confluence.mod.network.s2c.SetEntityDataPacketS2C;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractArrow.class)
-public abstract class AbstractArrowMixin implements IAbstractArrow, SetEntityDataPacketS2C.IExtraSyncedData, SelfGetter<AbstractArrow> {
+public abstract class AbstractArrowMixin implements IAbstractArrow, IExtraSyncedData<AbstractArrow> {
     @Unique
     private static final int[] confluence$dataIds = {SetEntityDataPacketS2C.DATA_BOOLEAN};
     @Unique
@@ -35,8 +34,8 @@ public abstract class AbstractArrowMixin implements IAbstractArrow, SetEntityDat
 
     @Override
     public void confluence$setData(int dataId, Object o) {
+        IExtraSyncedData.super.confluence$setData(dataId, o);
         this.confluence$fromShortBow = (boolean) o;
-        PacketDistributor.sendToPlayersTrackingEntity(confluence$self(), new SetEntityDataPacketS2C(confluence$self().getId(), dataId, o));
     }
 
     @Override

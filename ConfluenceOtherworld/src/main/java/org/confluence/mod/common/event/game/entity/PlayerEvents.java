@@ -29,7 +29,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.*;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.GetCustomDiggingPowerEvent;
@@ -342,16 +341,8 @@ public final class PlayerEvents {
 
     @SubscribeEvent
     public static void startTracking(PlayerEvent.StartTracking event) {
-        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-            Entity target = event.getTarget();
-            if (target instanceof ServerPlayer player) {
-                ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, player, player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
-            }
-            if (target instanceof SetEntityDataPacketS2C.IExtraSyncedData extraSyncedData) {
-                for (int id : extraSyncedData.confluence$getAllDataId()) {
-                    PacketDistributor.sendToPlayer(serverPlayer, new SetEntityDataPacketS2C(target.getId(), id, extraSyncedData.confluence$getData(id)));
-                }
-            }
+        if (event.getEntity() instanceof ServerPlayer serverPlayer && event.getTarget() instanceof ServerPlayer player) {
+            ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, player, player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
         }
     }
 }

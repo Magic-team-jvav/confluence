@@ -12,7 +12,6 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
-import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.animation.EasingType;
 import software.bernie.geckolib.animation.keyframe.Keyframe;
 import software.bernie.geckolib.loading.math.value.Constant;
@@ -25,7 +24,6 @@ public class DarkLanceItem extends AbstractLanceItem {
                 new Keyframe<>(5.0, new Constant(6.0), new Constant(-16.0), EasingType.EASE_IN_EXPO),
                 new Keyframe<>(5.0, new Constant(-16.0), new Constant(0.0), EasingType.LINEAR)
         ));
-        SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
 
     @Override

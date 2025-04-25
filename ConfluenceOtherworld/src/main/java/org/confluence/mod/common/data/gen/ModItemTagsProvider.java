@@ -23,6 +23,7 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
+import org.confluence.terra_guns.common.init.TGTags;
 import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.TETags;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
@@ -739,11 +740,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
 
         AccessoryItems.acceptTags(this);
-        IntrinsicTagAppender<Item> ammo = tag(ModTags.Items.AMMO)
+        tag(ModTags.Items.AMMO)
                 .addTag(ItemTags.ARROWS)
+                .addTag(TGTags.AMMO)
                 .add(Items.FIREWORK_ROCKET, MaterialItems.FALLING_STAR.get());
-        //TODO 枪！
-//        TGItems.ITEM_BULLETS.getEntries().forEach(item -> ammo.add(item.get()));
         IntrinsicTagAppender<Item> dye = tag(ModTags.Items.DYE);
         VanityArmorItems.DYE_ITEMS.forEach(dye::add);
         dye.add(VanityArmorItems.TEAM_DYE.get());

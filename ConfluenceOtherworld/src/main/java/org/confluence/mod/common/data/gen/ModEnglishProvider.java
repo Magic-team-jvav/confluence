@@ -66,6 +66,29 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.honey_absorbant_sponge.0", "Capable of soaking up an endless amount of lava");
         add("tooltip.item.confluence.lava_absorbant_sponge.0", "Capable of soaking up an endless amount of honey");
         add("tooltip.item.confluence.ultra_absorbant_sponge.0", "Capable of soaking up an endless amount of liquid");
+        add("tooltip.item.confluence.wire_cutter.0", "Removes wire");
+        add("tooltip.item.confluence.extractinator.0", "Placing silt/slush/fossil/gravel/marine_gravel piles into the extractinator turns them into something more useful");
+        add("tooltip.item.confluence.sky_mill.0", "Used for special crafting");
+        add("tooltip.item.confluence.heavy_work_bench.0", "Used for advanced crafting");
+        add("tooltip.item.confluence.sawmill.0", "Used for advanced wood crafting");
+        add("tooltip.item.confluence.alchemy_table.0", "33% chance to not consume potion crafting ingredients");
+        add("tooltip.item.confluence.solidifier.0", "Used to craft objects");
+        add("tooltip.item.confluence.hardmode_anvil.0", "Used to craft items from mythril, orichalcum, adamantite, and titanium ingots");
+        add("tooltip.item.confluence.sharpening_station.0", "Increases armor penetration for melee weapons");
+        add("tooltip.item.confluence.ammo_box.0", "20% chance to save ammo");
+        add("tooltip.item.confluence.bewitching_table.0", "Right click to have more minions");
+        add("tooltip.item.confluence.keg.0", "Used for brewing ale");
+        add("tooltip.item.confluence.chlorophyte_extractinator.0", "Placing silt/slush/fossil/gravel/marine_gravel piles into the extractinator turns them into something more useful");
+        add("tooltip.item.confluence.chlorophyte_extractinator.1", "Place contaminated blocks into the extractinator to purify them");
+        add("tooltip.item.confluence.chlorophyte_extractinator.2", "Other items placed inside may have interesting effects");
+        add("tooltip.item.confluence.blend_o_matic.0", "Used to craft objects");
+        add("tooltip.item.confluence.meat_grinder.0", "Used to craft objects");
+        add("tooltip.item.confluence.life_campfire.0", "Life regen is increased when near a campfire");
+        add("tooltip.item.confluence.piggy_bank.0", "Can be used to store your items");
+        add("tooltip.item.confluence.piggy_bank.1", "Stored items can only be accessed by you");
+        add("tooltip.item.confluence.safe.0", "Can be used to store your items");
+        add("tooltip.item.confluence.safe.1", "Stored items can only be accessed by you");
+        add("tooltip.item.confluence.echo_block.0", "Only visible with Echo Sight");
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
         add("tooltip.item.confluence.slime_crown.1", "A small crown that seems to be prepared for the coronation ceremony of those cute and harmless gel - like creatures.");
@@ -730,8 +753,17 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.cooking_pot", "Cooking Pot");
         add("title.confluence.sawmill", "Sawmill");
 
+        // Override
         add("item.confluence.encumbering_stone.disable", "Encumbering Stone: Disable");
         add("item.confluence.paint", "Paint");
+        add(AccessoryItems.PHILOSOPHERS_STONE.get(), "Philosopher's Stone");
+        add(ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get(), "Boredom's Pact - Falling Resolve");
+        add(ModBlocks.COPPER_COIN_PILE.get(), "Copper Coin");
+        add(ModBlocks.SILVER_COIN_PILE.get(), "Silver Coin");
+        add(ModBlocks.GOLDEN_COIN_PILE.get(), "Golden Coin");
+        add(ModBlocks.PLATINUM_COIN_PILE.get(), "Platinum Coin");
+        add(ModBlocks.EMERALD_COIN_PILE.get(), "Emerald Coin");
+        add(FunctionalBlocks.BLEND_O_MATIC.get(), "Blend-O-Matic");
 
         add("block.confluence.timers_block_1_1", "1 Second Timer");
         add("block.confluence.timers_block_3_1", "3 Second Timer");
@@ -886,11 +918,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("dialogs.confluence.nurse.2", "Hey, has Dealer mentioned needing to go to the doctor for any reason? Just wondering.");
 
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
-        add(ModBlocks.COPPER_COIN_PILE.get(), "Copper Coin");
-        add(ModBlocks.SILVER_COIN_PILE.get(), "Silver Coin");
-        add(ModBlocks.GOLDEN_COIN_PILE.get(), "Golden Coin");
-        add(ModBlocks.PLATINUM_COIN_PILE.get(), "Platinum Coin");
-        add(ModBlocks.EMERALD_COIN_PILE.get(), "Emerald Coin");
         CrateBlocks.BLOCKS.getEntries().forEach(blockAction);
         DecorativeBlocks.BLOCKS.getEntries().forEach(blockAction);
         FunctionalBlocks.BLOCKS.getEntries().forEach(blockAction);
@@ -902,8 +929,6 @@ public class ModEnglishProvider extends LanguageProvider {
         StatueBlocks.BLOCKS.getEntries().forEach(blockAction);
 
         Consumer<DeferredHolder<Item, ? extends Item>> itemAction = item -> add(item.get(), LibUtils.toTitleCase(item.getId().getPath()));
-        add(AccessoryItems.PHILOSOPHERS_STONE.get(), "Philosopher's Stone");
-        add(ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get(), "Boredom's Pact - Falling Resolve");
         AccessoryItems.ITEMS.getEntries().forEach(itemAction);
         ArmorItems.ITEMS.getEntries().forEach(itemAction);
         ArrowItems.ITEMS.getEntries().forEach(itemAction);

@@ -1,6 +1,7 @@
 package org.confluence.mod.common.init.block;
 
 import com.mojang.datafixers.DSL;
+import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -15,6 +16,10 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.TooltipBlockItem;
+import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.common.BiomeChestBlock;
@@ -57,16 +62,16 @@ public class FunctionalBlocks {
     public static final Supplier<BlockEntityType<AltarBlock.Entity>> ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("altar_block_entity", () -> BlockEntityType.Builder.of(AltarBlock.Entity::new, DEMON_ALTAR.get(), CRIMSON_ALTAR.get()).build(DSL.remainderType()));
     public static final DeferredBlock<SkyMillBlock> SKY_MILL = registerWithItem("sky_mill", () -> new SkyMillBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GRINDSTONE)), SkyMillBlock.Item::new);
     public static final Supplier<BlockEntityType<SkyMillBlock.Entity>> SKY_MILL_ENTITY = BLOCK_ENTITIES.register("sky_mill_entity", () -> BlockEntityType.Builder.of(SkyMillBlock.Entity::new, SKY_MILL.get()).build(DSL.remainderType()));
-    public static final DeferredBlock<HeavyWorkBenchBlock> HEAVY_WORK_BENCH = registerWithItem("heavy_work_bench", () -> new HeavyWorkBenchBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_BRICKS)));
-    public static final DeferredBlock<SawmillBlock> SAWMILL = registerWithItem("sawmill", () -> new SawmillBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)));
+    public static final DeferredBlock<HeavyWorkBenchBlock> HEAVY_WORK_BENCH = registerWithItem("heavy_work_bench", () -> new HeavyWorkBenchBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_BRICKS)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.heavy_work_bench.0"));
+    public static final DeferredBlock<SawmillBlock> SAWMILL = registerWithItem("sawmill", () -> new SawmillBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.sawmill.0"));
     public static final DeferredBlock<HellforgeBlock> HELLFORGE = registerWithItem("hellforge", () -> new HellforgeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MAGMA_BLOCK).lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 15 : 7)));
     public static final Supplier<BlockEntityType<HellforgeBlock.Entity>> HELLFORGE_ENTITY = BLOCK_ENTITIES.register("hellforge_entity", () -> BlockEntityType.Builder.of(HellforgeBlock.Entity::new, HELLFORGE.get()).build(DSL.remainderType()));
     public static final DeferredBlock<CookingPotBlock> COOKING_POT = registerWithItem("cooking_pot", () -> new CookingPotBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON)), block -> new CookingPotBlock.Item(block, new Item.Properties()));
     public static final DeferredBlock<CookingPotBlock> CAULDRON = registerWithItem("cauldron", () -> new CookingPotBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON)), block -> new CookingPotBlock.Item(block, new Item.Properties()));
     public static final Supplier<BlockEntityType<CookingPotBlock.Entity>> COOKING_POT_ENTITY = BLOCK_ENTITIES.register("cooking_pot_entity", () -> BlockEntityType.Builder.of(CookingPotBlock.Entity::new, COOKING_POT.get(), CAULDRON.get()).build(DSL.remainderType()));
-    public static final DeferredBlock<AlchemyTableBlock> ALCHEMY_TABLE = registerWithItem("alchemy_table", () -> new AlchemyTableBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE)));
-    public static final DeferredBlock<SolidifierBlock> SOLIDIFIER = registerWithItem("solidifier", () -> new SolidifierBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL)));
-    public static final DeferredBlock<WeatherVaneBlock> WEATHER_VANE = registerWithItem("weather_vane", () -> new WeatherVaneBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)));
+    public static final DeferredBlock<AlchemyTableBlock> ALCHEMY_TABLE = registerWithItem("alchemy_table", () -> new AlchemyTableBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.BLUE, "tooltip.item.confluence.alchemy_table.0"));
+    public static final DeferredBlock<SolidifierBlock> SOLIDIFIER = registerWithItem("solidifier", () -> new SolidifierBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.solidifier.0"));
+    public static final DeferredBlock<WeatherVaneBlock> WEATHER_VANE = registerWithItem("weather_vane", () -> new WeatherVaneBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)), block -> new BlockItem(block, new Item.Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE)));
     public static final Supplier<BlockEntityType<WeatherVaneBlock.Entity>> WEATHER_VANE_ENTITY = BLOCK_ENTITIES.register("weather_vane_entity", () -> BlockEntityType.Builder.of(WeatherVaneBlock.Entity::new, WEATHER_VANE.get()).build(DSL.remainderType()));
     /**
      * @see org.confluence.mod.mixin.block.AnvilBlockMixin
@@ -74,15 +79,15 @@ public class FunctionalBlocks {
     public static final DeferredBlock<AnvilBlock> LEAD_ANVIL = registerWithItem("lead_anvil", () -> new AnvilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL)));
     public static final DeferredBlock<AnvilBlock> CHIPPED_LEAD_ANVIL = registerWithItem("chipped_lead_anvil", () -> new AnvilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHIPPED_ANVIL)));
     public static final DeferredBlock<AnvilBlock> DAMAGED_LEAD_ANVIL = registerWithItem("damaged_lead_anvil", () -> new AnvilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DAMAGED_ANVIL)));
-    public static final DeferredBlock<SharpeningStationBlock> SHARPENING_STATION = registerWithItem("sharpening_station", () -> new SharpeningStationBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONECUTTER)));
-    public static final DeferredBlock<AmmoBoxBlock> AMMO_BOX = registerWithItem("ammo_box", () -> new AmmoBoxBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHEST)));
-    public static final DeferredBlock<BewitchingTableBlock> BEWITCHING_TABLE = registerWithItem("bewitching_table", () -> new BewitchingTableBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE)));
-    public static final DeferredBlock<KegBlock> KEG = registerWithItem("keg", () -> new KegBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL)));
-    public static final DeferredBlock<CrystalBallBlock> CRYSTAL_BALL = registerWithItem("crystal_ball", () -> new CrystalBallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BEACON)));
-    public static final DeferredBlock<HardmodeAnvilBlock> MYTHRIL_ANVIL = registerWithItem("mythril_anvil", () -> new HardmodeAnvilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL)));
-    public static final DeferredBlock<HardmodeAnvilBlock> ORICHALCUM_ANVIL = registerWithItem("orichalcum_anvil", () -> new HardmodeAnvilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL)));
-    public static final DeferredBlock<ChlorophyteExtractinatorBlock> CHLOROPHYTE_EXTRACTINATOR = registerWithItem("chlorophyte_extractinator", () -> new ChlorophyteExtractinatorBlock(BlockBehaviour.Properties.of().strength(4.4F, 10.0F).requiresCorrectToolForDrops()));
-    public static final DeferredBlock<SingleItemStackSwapperBlock> BLEND_O_MATIC = registerWithItem("blend_o_matic", () -> new SingleItemStackSwapperBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON), 1, itemStack -> itemStack.is(MaterialItems.RAW_ASPHALT) ? DecorativeBlocks.ASPHALT_BLOCK.toStack() : ItemStack.EMPTY));
+    public static final DeferredBlock<SharpeningStationBlock> SHARPENING_STATION = registerWithItem("sharpening_station", () -> new SharpeningStationBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONECUTTER)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.BLUE, "tooltip.item.confluence.sharpening_station.0"));
+    public static final DeferredBlock<AmmoBoxBlock> AMMO_BOX = registerWithItem("ammo_box", () -> new AmmoBoxBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHEST)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.LIGHT_PURPLE, "tooltip.item.confluence.ammo_box.0"));
+    public static final DeferredBlock<BewitchingTableBlock> BEWITCHING_TABLE = registerWithItem("bewitching_table", () -> new BewitchingTableBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.BLUE, "tooltip.item.confluence.bewitching_table.0"));
+    public static final DeferredBlock<KegBlock> KEG = registerWithItem("keg", () -> new KegBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.keg.0"));
+    public static final DeferredBlock<CrystalBallBlock> CRYSTAL_BALL = registerWithItem("crystal_ball", () -> new CrystalBallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BEACON)), block -> new BlockItem(block, new Item.Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE)));
+    public static final DeferredBlock<HardmodeAnvilBlock> MYTHRIL_ANVIL = registerWithItem("mythril_anvil", () -> new HardmodeAnvilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.ORANGE, "tooltip.item.confluence.hardmode_anvil.0"));
+    public static final DeferredBlock<HardmodeAnvilBlock> ORICHALCUM_ANVIL = registerWithItem("orichalcum_anvil", () -> new HardmodeAnvilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.ORANGE, "tooltip.item.confluence.hardmode_anvil.0"));
+    public static final DeferredBlock<ChlorophyteExtractinatorBlock> CHLOROPHYTE_EXTRACTINATOR = registerWithItem("chlorophyte_extractinator", () -> new ChlorophyteExtractinatorBlock(BlockBehaviour.Properties.of().strength(4.4F, 10.0F).requiresCorrectToolForDrops()), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.LIME, TooltipItem.getTooltipsFromString("chlorophyte_extractinator", 3, ChatFormatting.WHITE)));
+    public static final DeferredBlock<SingleItemStackSwapperBlock> BLEND_O_MATIC = registerWithItem("blend_o_matic", () -> new SingleItemStackSwapperBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON), 1, itemStack -> itemStack.is(MaterialItems.RAW_ASPHALT) ? DecorativeBlocks.ASPHALT_BLOCK.toStack() : ItemStack.EMPTY), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.blend_o_matic.0"));
     public static final DeferredBlock<SingleItemStackSwapperBlock> MEAT_GRINDER = registerWithItem("meat_grinder", () -> new SingleItemStackSwapperBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON), 2, itemStack -> {
         if (itemStack.is(NatureBlocks.TR_CRIMSON_COBBLESTONE.asItem())) {
             return DecorativeBlocks.FLESH_BLOCK.toStack();
@@ -90,15 +95,15 @@ public class FunctionalBlocks {
             return DecorativeBlocks.LESION_BLOCK.toStack();
         }
         return ItemStack.EMPTY;
-    }));
+    }), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.meat_grinder.0"));
 
-    public static final DeferredBlock<LifeCampfireBlock> LIFE_CAMPFIRE = registerWithItem("life_campfire", () -> new LifeCampfireBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAMPFIRE)));
-    public static final DeferredBlock<PiggyBankBlock> PIGGY_BANK = registerWithItem("piggy_bank", () -> new PiggyBankBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DECORATED_POT)));
+    public static final DeferredBlock<LifeCampfireBlock> LIFE_CAMPFIRE = registerWithItem("life_campfire", () -> new LifeCampfireBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAMPFIRE)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.life_campfire.0"));
+    public static final DeferredBlock<PiggyBankBlock> PIGGY_BANK = registerWithItem("piggy_bank", () -> new PiggyBankBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DECORATED_POT)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("piggy_bank", 2, ChatFormatting.WHITE)));
     public static final Supplier<BlockEntityType<PiggyBankBlock.Entity>> PIGGY_BANK_ENTITY = BLOCK_ENTITIES.register("piggy_bank_entity", () -> BlockEntityType.Builder.of(PiggyBankBlock.Entity::new, PIGGY_BANK.get()).build(DSL.remainderType()));
-    public static final DeferredBlock<SafeBlock> SAFE = registerWithItem("safe", () -> new SafeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)));
+    public static final DeferredBlock<SafeBlock> SAFE = registerWithItem("safe", () -> new SafeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("safe", 2, ChatFormatting.WHITE)));
     public static final Supplier<BlockEntityType<SafeBlock.Entity>> SAFE_ENTITY = BLOCK_ENTITIES.register("safe_entity", () -> BlockEntityType.Builder.of(SafeBlock.Entity::new, SAFE.get()).build(DSL.remainderType()));
 
-    public static final DeferredBlock<EchoBlock> ECHO_BLOCK = registerWithItem("echo_block", EchoBlock::new);
+    public static final DeferredBlock<EchoBlock> ECHO_BLOCK = registerWithItem("echo_block", EchoBlock::new, block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.BLUE, "tooltip.item.confluence.echo_block.0"));
     public static final DeferredBlock<BaseChestBlock> BASE_CHEST_BLOCK = registerWithItemButHidden("base_chest_block", BaseChestBlock::new);
     public static final Supplier<BlockEntityType<BaseChestBlock.Entity>> BASE_CHEST_BLOCK_ENTITY = BLOCK_ENTITIES.register("base_chest_block_entity", () -> BlockEntityType.Builder.of(BaseChestBlock.Entity::new, BASE_CHEST_BLOCK.get()).build(DSL.remainderType()));
     public static final DeferredBlock<DeathChestBlock> DEATH_CHEST_BLOCK = registerWithItemButHidden("death_chest_block", DeathChestBlock::new);

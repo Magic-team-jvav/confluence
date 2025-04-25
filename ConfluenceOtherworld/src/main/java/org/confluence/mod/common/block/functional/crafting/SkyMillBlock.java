@@ -9,6 +9,7 @@ import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.BlockGetter;
@@ -45,6 +46,7 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBlock {
@@ -126,6 +128,11 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
 
         public Item(SkyMillBlock pBlock) {
             super(pBlock, new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE));
+        }
+
+        @Override
+        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.sky_mill.0"));
         }
 
         @Override

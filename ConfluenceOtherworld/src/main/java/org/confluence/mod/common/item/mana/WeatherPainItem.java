@@ -14,7 +14,7 @@ public class WeatherPainItem extends ManaStaffItem<HurtnadoProjectile> {
     public WeatherPainItem() {
         super(ModRarity.GREEN, HurtnadoProjectile::new, 30, 1.0F, 45, builder -> builder
                 .add(TCAttributes.getCriticalChance(), new AttributeModifier(ID, 0.04, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                .add(TCAttributes.ARMOR_PASS, new AttributeModifier(ID, 10, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND));
+                .add(TCAttributes.ARMOR_PENETRATION, new AttributeModifier(ID, 10, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND));
     }
 
     @Override

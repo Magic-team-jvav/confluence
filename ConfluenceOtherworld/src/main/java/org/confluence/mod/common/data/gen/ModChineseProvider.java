@@ -56,6 +56,29 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.honey_absorbant_sponge.0", "能够吸收无限多熔岩");
         add("tooltip.item.confluence.lava_absorbant_sponge.0", "能够吸收无限多蜂蜜");
         add("tooltip.item.confluence.ultra_absorbant_sponge.0", "能够吸收无限多液体");
+        add("tooltip.item.confluence.wire_cutter.0", "移除电线");
+        add("tooltip.item.confluence.extractinator.0", "将泥沙/雪泥/化石/沙砾/海洋沙砾堆放到提炼机中可将其变成更有用的东西");
+        add("tooltip.item.confluence.sky_mill.0", "用于特殊制作");
+        add("tooltip.item.confluence.heavy_work_bench.0", "用于高级制作");
+        add("tooltip.item.confluence.sawmill.0", "用于高级木工制作");
+        add("tooltip.item.confluence.alchemy_table.0", "33%几率不消耗药水的制作材料");
+        add("tooltip.item.confluence.solidifier.0", "用于制作物件");
+        add("tooltip.item.confluence.hardmode_anvil.0", "用于制作以秘银锭、山铜锭、精金锭和钛金锭为原料的物品");
+        add("tooltip.item.confluence.sharpening_station.0", "提高近战武器的盔甲穿透力");
+        add("tooltip.item.confluence.ammo_box.0", "20%几率省下弹药");
+        add("tooltip.item.confluence.bewitching_table.0", "右键点击可拥有更多仆从");
+        add("tooltip.item.confluence.keg.0", "用于酿造麦芽酒");
+        add("tooltip.item.confluence.chlorophyte_extractinator.0", "将泥沙/雪泥/化石/沙砾/海洋沙砾堆放到提炼机中可将其变成更有用的东西");
+        add("tooltip.item.confluence.chlorophyte_extractinator.1", "将受污染的物块放入提炼机可净化之");
+        add("tooltip.item.confluence.chlorophyte_extractinator.2", "放入其他物品可能会产生有趣的效果");
+        add("tooltip.item.confluence.blend_o_matic.0", "用于制作物件");
+        add("tooltip.item.confluence.meat_grinder.0", "用于制作物件");
+        add("tooltip.item.confluence.life_campfire.0", "靠近篝火时生命再生提速");
+        add("tooltip.item.confluence.piggy_bank.0", "可用来储存你的物品");
+        add("tooltip.item.confluence.piggy_bank.1", "储存的物品只有你能存取");
+        add("tooltip.item.confluence.safe.0", "可用来储存你的物品");
+        add("tooltip.item.confluence.safe.1", "储存的物品只有你能存取");
+        add("tooltip.item.confluence.echo_block.0", "只在回声视觉下才能看到");
 
         add("tooltip.item.confluence.slime_crown.0", "右键使用以召唤史莱姆王");
         add("tooltip.item.confluence.slime_crown.1", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");
@@ -813,6 +836,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.cooking_pot", "烹饪锅");
         add("title.confluence.sawmill", "锯木机");
 
+        // 覆盖
         add("item.confluence.encumbering_stone.disable", "负重石：关闭");
         add("item.confluence.paint", "油漆");
 

@@ -15,6 +15,7 @@
         "ServerPlayerGameModeMixin",
         "StructureTemplateMixin",
         "StructureTemplateMixin$StructureBlockInfoMixin",
+        "accessor.DataMapProviderAccessor",
         "accessor.LevelAccessor",
         "block.AnvilBlockMixin",
         "block.BaseContainerBlockEntityMixin",

@@ -11,13 +11,12 @@ import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.Keys;
-import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeHealthFull;
-import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeItem;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeHealthFull;
+import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeItem;
 import org.confluence.terra_curio.common.init.TCItems;
-//import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.entity.npc.trade.NPCTradeManager;
@@ -33,6 +32,7 @@ import java.util.concurrent.CompletableFuture;
 
 /**
  * 生成单个NPC单个配方
+ *
  * @see org.confluence.terraentity.registries.npc_trade.ITrade 生成配方
  * @see NPCTradeManager 读取配方
  */
@@ -50,52 +50,52 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 
         // 女仆商店
         shop(Keys.MAID_SHOP).addRecipe(new Builder()
-                .add(TCItems.PORTABLE_CEMENT_MIXER.get(), 100000)
-                .add(TCItems.EXTENDO_GRIP.get(), 100000)
-                .add(TCItems.BRICK_LAYER.get(), 100000)
-                .add(TCItems.STOPWATCH.get(), 50000)
-                .add(TCItems.LIFE_FORM_ANALYZER.get(), 50000)
-                .add(TCItems.DPS_METER.get(), 50000)
-                .add(SwordItems.KATANA.get(), 100000)
-                .add(FoodItems.PAD_THAI.get(), 750)
+                .add(TCItems.PORTABLE_CEMENT_MIXER.get())
+                .add(TCItems.EXTENDO_GRIP.get())
+                .add(TCItems.BRICK_LAYER.get())
+                .add(TCItems.STOPWATCH.get())
+                .add(TCItems.LIFE_FORM_ANALYZER.get())
+                .add(TCItems.DPS_METER.get())
+                .add(SwordItems.KATANA.get())
+                .add(FoodItems.PAD_THAI.get())
                 .build());
 
 
         shop(TENpcEntities.GUIDE.getId()).addRecipe(new Builder()
                 //TODO 枪！
-   //旅商的       .add(AccessoryItems.PAINT_SPRAYER.get(), 100000)
-                .add(TCItems.PORTABLE_CEMENT_MIXER.get(), 100000)
-                .add(TCItems.EXTENDO_GRIP.get(), 100000)
-                .add(TCItems.BRICK_LAYER.get(), 100000)
-                .add(TCItems.STOPWATCH.get(), 50000)
-                .add(TCItems.LIFE_FORM_ANALYZER.get(), 50000)
-                .add(TCItems.DPS_METER.get(), 50000)
-                .add(SwordItems.KATANA.get(), 100000)
-                .add(FoodItems.PAD_THAI.get(), 750)
-  //动物学家的              .add(TEWhipItems.LEATHER_WHIP.get(), 100000)
+                //旅商的       .add(AccessoryItems.PAINT_SPRAYER.get())
+                .add(TCItems.PORTABLE_CEMENT_MIXER.get())
+                .add(TCItems.EXTENDO_GRIP.get())
+                .add(TCItems.BRICK_LAYER.get())
+                .add(TCItems.STOPWATCH.get())
+                .add(TCItems.LIFE_FORM_ANALYZER.get())
+                .add(TCItems.DPS_METER.get())
+                .add(SwordItems.KATANA.get())
+                .add(FoodItems.PAD_THAI.get())
+                //动物学家的              .add(TEWhipItems.LEATHER_WHIP.get())
                 .build());
 
         shop(TENpcEntities.DEMOLITIONIST.getId()).addRecipe(new Builder()
-                .add(ConsumableItems.GRENADE.get(), 75)
-                .add(ConsumableItems.BOMB.get(), 300)
-                .add(ConsumableItems.DYNAMITE.get(), 2000)
+                .add(ConsumableItems.GRENADE.get())
+                .add(ConsumableItems.BOMB.get())
+                .add(ConsumableItems.DYNAMITE.get())
                 .build());
 
         shop(TENpcEntities.MERCHANT.getId()).addRecipe(new Builder()
-                .add(Blocks.TORCH.asItem(), 10, 500)
-                .add(Items.ARROW.asItem(), 10, 50)
-                .add(ModBlocks.ROPE.get(), 10, 50)
-                .add(ConsumableItems.SHURIKEN.get(), 10, 150)
-                .add(PickaxeItems.COPPER_PICKAXE.get(), 500)
-                .add(AxeItems.COPPER_AXE.get(), 400)
-                .add(PotionItems.LESSER_HEALING_POTION.get(), 300)
+                .add(Blocks.TORCH.asItem())
+                .add(Items.ARROW.asItem())
+                .add(ModBlocks.ROPE.get())
+                .add(ConsumableItems.SHURIKEN.get())
+                .add(PickaxeItems.COPPER_PICKAXE.get())
+                .add(AxeItems.COPPER_AXE.get())
+                .add(PotionItems.LESSER_HEALING_POTION.get())
                 .build());
 
         shop(TENpcEntities.GOBLIN_TINKERER.getId()).addRecipe(new Builder()
-                .add(HookItems.GRAPPLING_HOOK.asItem(), 10000)
-                .add(TCItems.ROCKET_BOOTS.get(), 50000)
-                .add(TCItems.TOOLBELT.get(), 100000)
-                .add(TCItems.WORKSHOP.get(), 100000)
+                .add(HookItems.GRAPPLING_HOOK.asItem())
+                .add(TCItems.ROCKET_BOOTS.get())
+                .add(TCItems.TOOLBELT.get())
+                .add(TCItems.WORKSHOP.get())
                 .build());
 
         shop(TENpcEntities.NURSE.getId()).addRecipe(new Builder()
@@ -103,55 +103,55 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .build());
 
         shop(TENpcEntities.ARMS_DEALER.getId()).addRecipe(new Builder()
-                .add(TGItems.MUSKET_BULLET.get(),100, 700)
+                .add(TGItems.MUSKET_BULLET.get())
                 .build());
 
         shop(TENpcEntities.DRYAD.getId()).addRecipe(new Builder()
-                .add(ConsumableItems.PURIFICATION_POWDER.get(), 75)
-                .add(NatureBlocks.YELLOW_WILLOW_SAPLING.asItem(), 10000)
-                .add(Blocks.OAK_SAPLING.asItem(), 50)
-                .add(Items.PUMPKIN_SEEDS.asItem(), 250)
+                .add(ConsumableItems.PURIFICATION_POWDER.get())
+                .add(NatureBlocks.YELLOW_WILLOW_SAPLING.asItem())
+                .add(Blocks.OAK_SAPLING.asItem())
+                .add(Items.PUMPKIN_SEEDS.asItem())
                 .build());
 
         shop(TENpcEntities.DYE_TRADER.getId()).addRecipe(new Builder()
-                .add(VanityArmorItems.SILVER_DYE.get(), 10000)
-                .add(VanityArmorItems.BROWN_DYE.get(), 10000)
-                .add(VanityArmorItems.TEAM_DYE.get(), 10000)
+                .add(VanityArmorItems.SILVER_DYE.get())
+                .add(VanityArmorItems.BROWN_DYE.get())
+                .add(VanityArmorItems.TEAM_DYE.get())
                 .build());
 
 
         shop(TENpcEntities.PAINTER.getId()).addRecipe(new Builder()
-                .add(PaintItems.PAINTBRUSH.get(),10000)
-                .add(PaintItems.PAINT_ROLLER.get(),10000)
-                .add(PaintItems.PAINT_SCRAPER.get(),10000)
-                .add(PaintItems.RED_PAINT.get(),25)
-                .add(PaintItems.DEEP_RED_PAINT.get(),25)
-                .add(PaintItems.ORANGE_PAINT.get(),25)
-                .add(PaintItems.DEEP_ORANGE_PAINT.get(),25)
-                .add(PaintItems.YELLOW_PAINT.get(),25)
-                .add(PaintItems.DEEP_YELLOW_PAINT.get(),25)
-                .add(PaintItems.LIME_PAINT.get(),25)
-                .add(PaintItems.DEEP_LIME_PAINT.get(),25)
-                .add(PaintItems.GREEN_PAINT.get(),25)
-                .add(PaintItems.DEEP_GREEN_PAINT.get(),25)
-                .add(PaintItems.TEAL_PAINT.get(),25)
-                .add(PaintItems.DEEP_TEAL_PAINT.get(),25)
-                .add(PaintItems.CYAN_PAINT.get(),25)
-                .add(PaintItems.DEEP_CYAN_PAINT.get(),25)
-                .add(PaintItems.SKY_BLUE_PAINT.get(),25)
-                .add(PaintItems.DEEP_SKY_BLUE_PAINT.get(),25)
-                .add(PaintItems.BLUE_PAINT.get(),25)
-                .add(PaintItems.DEEP_BLUE_PAINT.get(),25)
-                .add(PaintItems.PURPLE_PAINT.get(),25)
-                .add(PaintItems.DEEP_PURPLE_PAINT.get(),25)
-                .add(PaintItems.VIOLET_PAINT.get(),25)
-                .add(PaintItems.DEEP_VIOLET_PAINT.get(),25)
-                .add(PaintItems.PINK_PAINT.get(),25)
-                .add(PaintItems.DEEP_PINK_PAINT.get(),25)
-                .add(PaintItems.BLACK_PAINT.get(),25)
-                .add(PaintItems.GRAY_PAINT.get(),25)
-                .add(PaintItems.WHITE_PAINT.get(),25)
-                .add(PaintItems.BROWN_PAINT.get(),25)
+                .add(PaintItems.PAINTBRUSH.get())
+                .add(PaintItems.PAINT_ROLLER.get())
+                .add(PaintItems.PAINT_SCRAPER.get())
+                .add(PaintItems.RED_PAINT.get())
+                .add(PaintItems.DEEP_RED_PAINT.get())
+                .add(PaintItems.ORANGE_PAINT.get())
+                .add(PaintItems.DEEP_ORANGE_PAINT.get())
+                .add(PaintItems.YELLOW_PAINT.get())
+                .add(PaintItems.DEEP_YELLOW_PAINT.get())
+                .add(PaintItems.LIME_PAINT.get())
+                .add(PaintItems.DEEP_LIME_PAINT.get())
+                .add(PaintItems.GREEN_PAINT.get())
+                .add(PaintItems.DEEP_GREEN_PAINT.get())
+                .add(PaintItems.TEAL_PAINT.get())
+                .add(PaintItems.DEEP_TEAL_PAINT.get())
+                .add(PaintItems.CYAN_PAINT.get())
+                .add(PaintItems.DEEP_CYAN_PAINT.get())
+                .add(PaintItems.SKY_BLUE_PAINT.get())
+                .add(PaintItems.DEEP_SKY_BLUE_PAINT.get())
+                .add(PaintItems.BLUE_PAINT.get())
+                .add(PaintItems.DEEP_BLUE_PAINT.get())
+                .add(PaintItems.PURPLE_PAINT.get())
+                .add(PaintItems.DEEP_PURPLE_PAINT.get())
+                .add(PaintItems.VIOLET_PAINT.get())
+                .add(PaintItems.DEEP_VIOLET_PAINT.get())
+                .add(PaintItems.PINK_PAINT.get())
+                .add(PaintItems.DEEP_PINK_PAINT.get())
+                .add(PaintItems.BLACK_PAINT.get())
+                .add(PaintItems.GRAY_PAINT.get())
+                .add(PaintItems.WHITE_PAINT.get())
+                .add(PaintItems.BROWN_PAINT.get())
                 .build());
 
         shop(TENpcEntities.ANGLER.getId()).addRecipe(new Builder()
@@ -194,33 +194,36 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         /**
          * 钱换物
          */
-        public Builder add(ItemStack it, int cost) {
-            trades.add(new MoneyTradeItem(it, cost, null));
+        public Builder add(ItemStack it) {
+            trades.add(new MoneyTradeItem(it, null));
             return this;
         }
+
         /**
          * 钱换物
          */
-        public Builder add(ItemLike it, int amount, int cost) {
-            return add(new ItemStack(it, amount), cost);
+        public Builder add(ItemLike it, int amount) {
+            return add(new ItemStack(it, amount));
         }
+
         /**
          * 钱换物
          */
-        public Builder add(ItemLike it, int cost) {
-            return add(new ItemStack(it), cost);
+        public Builder add(ItemLike it) {
+            return add(new ItemStack(it));
         }
 
         /**
          * 通用交易表
          */
-        public Builder add(ITrade trade){
+        public Builder add(ITrade trade) {
             trades.add(trade);
             return this;
         }
 
         /**
          * 护士独有的回满血
+         *
          * @param trade instance
          */
         public Builder add(MoneyTradeHealthFull trade) {
@@ -231,33 +234,5 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         public NPCTradeManager build() {
             return new NPCTradeManager(trades);
         }
-    }
-
-    /**
-     * 将钱币数转成cost整数
-     * @param a 铂金
-     * @param b 金
-     * @param c 银
-     * @param d 铜
-     */
-    private int warp(int a,int b, int c,int d){
-        return a * 1000000 + b * 10000 + c * 100 + d;
-    }
-    /**
-     * 将钱币数转成cost整数
-     * @param b 金
-     * @param c 银
-     * @param d 铜
-     */
-    private int warp(int b, int c,int d){
-        return b * 10000 + c * 100 + d;
-    }
-    /**
-     * 将钱币数转成cost整数
-     * @param c 银
-     * @param d 铜
-     */
-    private int warp(int c,int d){
-        return c * 100 + d;
     }
 }

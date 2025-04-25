@@ -58,7 +58,6 @@ public class ModDataGenerator {
                 CraftingRecipeProvider::new,
                 HeavyWorkBenchProvider::new
         ));
-
-        //generator.addProvider(server, new CraftingRecipeProvider(output,lookup));
+        generator.addProvider(server, new ModDataMapProvider(output, lookup));
     }
 }

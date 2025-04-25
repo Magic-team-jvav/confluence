@@ -1,10 +1,10 @@
 package org.confluence.mod.integration.terra_entity.npc_trade;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.terraentity.entity.npc.trade.ITradeHolder;
 import org.confluence.terraentity.registries.npc_trade.ITradeItem;
@@ -13,36 +13,28 @@ import org.confluence.terraentity.registries.npc_trade.TradeProvider;
 
 import java.util.Optional;
 
-public record MoneyTradeItem(ItemStack result, long cost, TradeProperties properties)implements ITradeItem, IMoneyTrade {
-
+public record MoneyTradeItem(ItemStack result, TradeProperties properties) implements ITradeItem, IMoneyTrade {
     public static final MapCodec<MoneyTradeItem> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ItemStack.CODEC.fieldOf("result").forGetter(MoneyTradeItem::result),
-            Codec.LONG.fieldOf("cost").forGetter(MoneyTradeItem::cost),
-            TradeProperties.CODEC.optionalFieldOf("properties").forGetter(i-> Optional.ofNullable(i.properties))
-    ).apply(instance, (result, cost, properties)-> new MoneyTradeItem(result, cost, properties.orElse(null))));
+            TradeProperties.CODEC.optionalFieldOf("properties").forGetter(i -> Optional.ofNullable(i.properties))
+    ).apply(instance, (result, properties) -> new MoneyTradeItem(result, properties.orElse(null))));
 
-    public static class Builder{
+    public static class Builder {
         private ItemStack result;
-        private long cost;
         private TradeProperties properties;
-        public Builder setCost(long cost){
-            this.cost = cost;
-            return this;
-        }
-        public Builder setCost(int a, int b, int c,int d){
-            this.cost = a * 1000000L + b * 10000L + c * 100L + d;
-            return this;
-        }
-        public Builder setProperties(TradeProperties properties){
+
+        public Builder setProperties(TradeProperties properties) {
             this.properties = properties;
             return this;
         }
-        public Builder setResult(ItemStack result){
+
+        public Builder setResult(ItemStack result) {
             this.result = result;
             return this;
         }
-        public MoneyTradeItem build(){
-            return new MoneyTradeItem(result, cost, properties);
+
+        public MoneyTradeItem build() {
+            return new MoneyTradeItem(result, properties);
         }
     }
 
@@ -54,18 +46,18 @@ public record MoneyTradeItem(ItemStack result, long cost, TradeProperties proper
     @Override
     public void onTradeSuccess(ServerPlayer player, ITradeHolder npc, int index) {
         ItemStack result = this.result();
-        if(player.getInventory().getFreeSlot() ==-1){
-            player.drop(result.copy(),false);
-        }
-        else player.addItem(result.copy());
+        if (player.getInventory().getFreeSlot() == -1) {
+            player.drop(result.copy(), false);
+        } else player.addItem(result.copy());
     }
 
+    @Override
+    public long cost() {
+        return ValueComponent.getValue(result);
+    }
 
     @Override
     public TradeProvider getCodec() {
         return ModTradeProviders.MONEY_TRADE_ITEM.get();
     }
-
-
-
 }

@@ -75,6 +75,7 @@ public class KillBoard implements IGlobalData {
         return "confluence:kill_board";
     }
 
+    @Override
     public void clear() {
         defeatedMap.clear();
     }

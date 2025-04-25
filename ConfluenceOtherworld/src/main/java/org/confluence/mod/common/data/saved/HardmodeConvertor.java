@@ -238,6 +238,7 @@ public class HardmodeConvertor implements IGlobalData {
         return "confluence:hardmode_convertor";
     }
 
+    @Override
     public void clear() {
         this.started = false;
         this.completed = false;

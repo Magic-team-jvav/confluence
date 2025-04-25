@@ -165,6 +165,7 @@ public class NPCSpawner implements IGlobalData {
         return "confluence:npc_spawner";
     }
 
+    @Override
     public void clear() {
         npcAlive.clear();
         npcSpawned.clear();

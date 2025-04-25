@@ -7,10 +7,6 @@ import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.NetworkService;
 import org.confluence.mod.common.block.functional.network.PathService;
-import org.confluence.mod.common.data.saved.EntityDelaySpawner;
-import org.confluence.mod.common.data.saved.HardmodeConvertor;
-import org.confluence.mod.common.data.saved.KillBoard;
-import org.confluence.mod.common.data.saved.NPCSpawner;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class ServerEvents {
@@ -24,9 +20,5 @@ public final class ServerEvents {
     public static void serverStop(ServerStoppedEvent event) {
         PathService.INSTANCE.onServerStop();
         NetworkService.INSTANCE.onServerStop();
-        KillBoard.INSTANCE.clear();
-        EntityDelaySpawner.INSTANCE.clear();
-        HardmodeConvertor.INSTANCE.clear();
-        NPCSpawner.INSTANCE.clear();
     }
 }

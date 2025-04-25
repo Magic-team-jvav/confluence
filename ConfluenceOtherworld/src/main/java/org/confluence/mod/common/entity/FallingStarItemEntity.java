@@ -78,8 +78,10 @@ public class FallingStarItemEntity extends ItemEntity {
                 if (ProjectileUtil.getHitResultOnMoveVector(this, entity -> true) instanceof EntityHitResult entityHitResult) {
                     entityHitResult.getEntity().hurt(ModDamageTypes.of(level(), ModDamageTypes.FALLING_STAR), 100);
                     onRemove();
+                    return;
                 }
-            } else if (getInBlockState().liquid() || getBlockStateOn().liquid()) {
+            }
+            if (getInBlockState().liquid() || getBlockStateOn().liquid()) {
                 setWasOnGround(true);
                 setOnGround(true);
             }

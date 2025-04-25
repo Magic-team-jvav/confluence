@@ -52,8 +52,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.encumbering_stone.0", "锁上时能防止拾取物品");
         add("tooltip.item.confluence.encumbering_stone.1", "背包内右键点击可解锁");
         add("tooltip.item.confluence.encumbering_stone.2", "“你负重过多”");
-        add("item.confluence.encumbering_stone.disable", "负重石：关闭");
-        add("item.confluence.paint", "油漆");
+        add("tooltip.item.confluence.super_absorbant_sponge.0", "能够吸收无限多水");
+        add("tooltip.item.confluence.honey_absorbant_sponge.0", "能够吸收无限多熔岩");
+        add("tooltip.item.confluence.lava_absorbant_sponge.0", "能够吸收无限多蜂蜜");
+        add("tooltip.item.confluence.ultra_absorbant_sponge.0", "能够吸收无限多液体");
 
         add("tooltip.item.confluence.slime_crown.0", "右键使用以召唤史莱姆王");
         add("tooltip.item.confluence.slime_crown.1", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");
@@ -83,7 +85,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.failed_skull.0", "一只苦力怕被猪灵强制改造了身体，可以多次自爆。猪灵想用它作为入侵主世界的生物兵器，却被其意外逃脱");
         add("tooltip.item.confluence.pink_cola.0", "一瓶普通的粉色可乐，或许原来有一整箱？");
         add("tooltip.item.confluence.dongdongs_flatbread.0", "刚在下界岩上考好的饼，快来尝尝吧！");
-
 
         add("tooltip.item.confluence.boredoms_pact_falling_resolve.0", "「无聊之咒·陨志」");
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.1", "(Boredom's Pact - Falling Resolve)");
@@ -811,6 +812,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.npc_trade", "汇流商店");
         add("title.confluence.cooking_pot", "烹饪锅");
         add("title.confluence.sawmill", "锯木机");
+
+        add("item.confluence.encumbering_stone.disable", "负重石：关闭");
+        add("item.confluence.paint", "油漆");
 
         add("block.confluence.base_chest_block.locked_golden", "§r上锁的金箱");
         add("block.confluence.base_chest_block.unlocked_golden", "§r金箱");

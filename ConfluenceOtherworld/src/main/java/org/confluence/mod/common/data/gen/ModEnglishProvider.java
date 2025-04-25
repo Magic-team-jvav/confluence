@@ -62,8 +62,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.encumbering_stone.0", "Prevents item pickups while locked");
         add("tooltip.item.confluence.encumbering_stone.1", "Right click in inventory to unlock");
         add("tooltip.item.confluence.encumbering_stone.2", "'You are over-encumbered'");
-        add("item.confluence.encumbering_stone.disable", "Encumbering Stone: Disable");
-        add("item.confluence.paint", "Paint");
+        add("tooltip.item.confluence.super_absorbant_sponge.0", "Capable of soaking up an endless amount of water");
+        add("tooltip.item.confluence.honey_absorbant_sponge.0", "Capable of soaking up an endless amount of lava");
+        add("tooltip.item.confluence.lava_absorbant_sponge.0", "Capable of soaking up an endless amount of honey");
+        add("tooltip.item.confluence.ultra_absorbant_sponge.0", "Capable of soaking up an endless amount of liquid");
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
         add("tooltip.item.confluence.slime_crown.1", "A small crown that seems to be prepared for the coronation ceremony of those cute and harmless gel - like creatures.");
@@ -727,6 +729,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.npc_trade", "NPC Trading");
         add("title.confluence.cooking_pot", "Cooking Pot");
         add("title.confluence.sawmill", "Sawmill");
+
+        add("item.confluence.encumbering_stone.disable", "Encumbering Stone: Disable");
+        add("item.confluence.paint", "Paint");
 
         add("block.confluence.timers_block_1_1", "1 Second Timer");
         add("block.confluence.timers_block_3_1", "3 Second Timer");

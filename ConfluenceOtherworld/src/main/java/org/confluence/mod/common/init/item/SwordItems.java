@@ -162,7 +162,7 @@ public class SwordItems {
         return register(name, tier, rawDamage, rawSpeed, ModRarity.WHITE, modifierBuilder);
     }
     public static DeferredItem<SwordItem> register(String name, Tier tier, int rawDamage, float rawSpeed ,ModRarity rarity, BaseSwordItem.ModifierBuilder modifierBuilder) {
-        if(tier == ModTiers.TITANIUM) {
+        if(tier == ModTiers.UNBREAKABLE) {
             modifierBuilder.modifyProperties(p->p.component(DataComponents.UNBREAKABLE, new Unbreakable(true)));
         }
         return register(name, () -> new BaseSwordItem(tier, rarity, rawDamage, rawSpeed, modifierBuilder));

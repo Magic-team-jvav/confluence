@@ -16,8 +16,8 @@
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:heart",
-          "weight": 42
+          "name": "confluence:spelunker_potion",
+          "weight": 24
         },
         {
           "type": "minecraft:item",
@@ -31,7 +31,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:invisibility_potion",
+          "name": "confluence:wormhole_potion",
           "weight": 24
         },
         {

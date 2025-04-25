@@ -815,6 +815,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("container.confluence.sky_mill", "天磨");
         add("container.confluence.heavy_work_bench", "重型工作台");
+        add("container.confluence.crystal_ball", "水晶球");
         add("container.confluence.hellforge", "地狱熔炉");
         add("container.confluence.alchemy_table", "炼药桌");
         add("container.confluence.cooking_pot", "烹饪锅");
@@ -828,6 +829,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.altar", "祭坛");
         add("title.confluence.sky_mill", "天磨");
         add("title.confluence.heavy_work_bench", "重型工作台");
+        add("title.confluence.crystal_ball", "水晶球");
         add("title.confluence.hellforge", "地狱熔炉");
         add("title.confluence.alchemy_table", "炼药桌");
         add("title.confluence.fletching_table", "制箭台");
@@ -879,8 +881,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("event.confluence.hardmode_conversion.started", "转换数据准备完毕，正在开始转换");
         add("event.confluence.hardmode_conversion.finished", "“古老的光明与黑暗之魂已经释放。”");
         add("event.confluence.hardmode_conversion.welcome", "欢迎来到泰拉瑞亚");
-        add("event.confluence.npc.removed", "有人离开了城镇！");
-        add("event.confluence.npc.added", "有人来到了城镇！");
+        add("event.confluence.npc.removed", "%s，%s被杀死了……");
+        add("event.confluence.npc.added", "%s，%s已到达！");
 
         add("entity.minecraft.villager.confluence.sky_miller", "天师");
         add("entity.minecraft.villager.confluence.chef", "厨师");
@@ -982,10 +984,85 @@ public class ModChineseProvider extends LanguageProvider {
         add("dialogs.confluence.guide.0", "我的工作是为你接下来的任务提供建议。建议你遇到任何困难时都来和我谈谈。");
         add("dialogs.confluence.guide.1", "他们说，有个人会告诉你如何在这地方上生存……哦等下。那个人就是我。");
         add("dialogs.confluence.guide.2", "晚上你应该呆在家里。黑夜在外面转悠非常危险。");
+        add("dialogs.confluence.guide.3", "在融合的世界中，你会收获多倍的宝藏，但这也以为着承担多倍的风险。");
+        add("dialogs.confluence.guide.4", "据我所知这个世界上的人类比我们原来的世界更多。");
+        add("dialogs.confluence.guide.5", "抱歉，有时候我不得不开门。");
+        add("dialogs.confluence.guide.6", "那些会爆炸的家伙比一般的地表怪物更具威胁！");
+        add("dialogs.confluence.guide.7", "草地上的生命蘑菇有时候可以救你一命。");
+        add("dialogs.confluence.guide.8", "地下有水晶之心，可以用来提高你的最大生命值。你可以用镐来打碎它们。");
+        add("dialogs.confluence.guide.9", "地底下有一种具有神奇魔力的湖，它非常稀有。");
+        add("dialogs.confluence.guide.10", "夜晚，星星在坠落，洒满全世界。它们的用途极为广泛。如果你看到了，一定要拿到手，因为星星在日出后就会消失。");
+        add("dialogs.confluence.guide.11", "无论是什么东西在疯狂蔓延，你都将意识到是时候阻止它们。");
+        add("dialogs.confluence.guide.12", "如果你想活下来，你需要制造武器和建造房屋。首先要砍树并收集木材。");
+        add("dialogs.confluence.guide.13", "拥有一把剑后，你可以试试从史莱姆身上收集一些凝胶。用木棍和凝胶制作火把！");
+        add("dialogs.confluence.guide.14", "如果你拥有了一些矿石，你需要将它铸成矿锭，才能用来制作物品。这需要熔炉！");
+        add("dialogs.confluence.guide.15", "如果在祭坛上合成晶状体，你也许能够找到方法来召唤一个强大的怪物。不过，最好等到夜晚再用它。");
+
 
         add("dialogs.confluence.nurse.0", "我要和向导认真谈一谈。你一周到底有多少次被熔岩烫成重伤？");
         add("dialogs.confluence.nurse.1", "看到那个在地牢周围转来转去的老人没？他看上去遇到麻烦了。");
         add("dialogs.confluence.nurse.2", "嗨，军火商有没有提过要去看医生啥的？就随便问问。");
+        add("dialogs.confluence.nurse.3", "又惹上混混了？");
+        add("dialogs.confluence.nurse.4", "别像个孩子似的！我见过更糟的。");
+        add("dialogs.confluence.nurse.5", "你这么做的时候疼吗？别那么做。");
+
+        add("dialogs.confluence.demolitionist.0", "炸药如今十分火爆。马上买一些！");
+        add("dialogs.confluence.demolitionist.1", "今天是个找死的好日子！");
+        add("dialogs.confluence.demolitionist.2", "让我看看这样会怎……（轰！）……哦，对不起，你还要那条腿吗？");
+        add("dialogs.confluence.demolitionist.3", "看看我的商品；都是惊爆价");
+        add("dialogs.confluence.demolitionist.4", "雷管，这是我特别为你准备的灵丹妙药，包治百病。");
+        add("dialogs.confluence.demolitionist.5", "想穿过那些邪恶石头，嗯？为什么不用炸药炸掉它！");
+
+        add("dialogs.confluence.goblin_tinkerer.0", "哥布林太容易生气了。事实上，他们能为了一些破布发动战争！");
+        add("dialogs.confluence.goblin_tinkerer.1", "老实说，大部分哥布林都不是真正的火箭科学家。好吧，有一些是。");
+        add("dialogs.confluence.goblin_tinkerer.2", "你知不知道为什么大家到哪儿都带着这些尖刺球？因为我不知道。");
+        add("dialogs.confluence.goblin_tinkerer.3", "我刚刚完成了最新的作品！这个版本就算你对着它猛力吹吸也不会猛烈爆炸。");
+        add("dialogs.confluence.goblin_tinkerer.4", "哥布林盗贼不太擅长偷东西。没上锁的箱子都不会偷！");
+        add("dialogs.confluence.goblin_tinkerer.5", "唷，我听说你喜欢火箭和跑鞋，所以我在你的跑鞋上加了一些火箭。");
+
+        add("dialogs.confluence.arms_dealer.0", "哥们，把手从我的枪上拿开！");
+        add("dialogs.confluence.arms_dealer.1", "嘿，兄弟，这可不是演电影。需要另行准备弹药。");
+        add("dialogs.confluence.arms_dealer.2", "我看你在盯着迷你鲨……你绝对想不到它是怎么做成的。");
+        add("dialogs.confluence.arms_dealer.3", "我想买护士卖的东西。你说啥？她什么也不卖？");
+        add("dialogs.confluence.arms_dealer.4", "飞鱼？我把它叫作打靶！");
+        add("dialogs.confluence.arms_dealer.5", "别和爆破专家浪费时间了。我这边有你要的一切。");
+
+        add("dialogs.confluence.merchant.0", "剑克纸！赶紧买一把。");
+        add("dialogs.confluence.merchant.1", "你想要苹果？你想要胡萝卜？你想要菠萝？我们只有火把。");
+        add("dialogs.confluence.merchant.2", "看看我的土块；它们特别土。");
+        add("dialogs.confluence.merchant.3", "你是不知道土块能在国外卖多少钱。");
+        add("dialogs.confluence.merchant.4", "总有一天他们会讲述你的传奇……肯定会是好故事。");
+        add("dialogs.confluence.merchant.5", "Kosh, kapleck Mog。哦，对不起，这是克林贡语，意思是“要么买，要么死。");
+
+        add("dialogs.confluence.painter.0", "我知道青绿色和蓝绿色之间的差别。但我不会告诉你。");
+        add("dialogs.confluence.painter.1", "钛白色用完了，别问了。");
+        add("dialogs.confluence.painter.2", "尝试调合粉色和紫色，肯定管用，我发誓！");
+        add("dialogs.confluence.painter.3", "不、不、不……灰色也分很多种！别让我开始……");
+        add("dialogs.confluence.painter.4", "我希望别下雨了，漆还没干。下雨就惨了！");
+        add("dialogs.confluence.painter.5", "我试过举办一次彩弹大战，但是每个人都只想要食物和装饰品。");
+
+        add("dialogs.confluence.dryad.0", "注意安全！两边的世界都需要你！");
+        add("dialogs.confluence.dryad.1", "时间的沙漏在缓缓流逝。而你并没有优雅地变老。");
+        add("dialogs.confluence.dryad.2", "两个哥布林走进酒吧，其中一个对另一个说：“来杯啤酒？！");
+        add("dialogs.confluence.dryad.3", "说我雷声大雨点小是啥意思？");
+        add("dialogs.confluence.dryad.4", "你必须停止邪恶的蔓延。");
+        add("dialogs.confluence.dryad.5", "这个世界更为广阔……自然的力量也更强大了");
+
+        add("dialogs.confluence.dye_trader.0", "我带给你最丰富的色彩，以换取你的财富。");
+        add("dialogs.confluence.dye_trader.1", "亲爱的，你的穿着太单调了。你一定得好好学学，怎么给单调的衣服染色！");
+        add("dialogs.confluence.dye_trader.2", "我唯一愿意染的木材是红木。给任何其他木材染色都是浪费。");
+        add("dialogs.confluence.dye_trader.3", "噢，不行，不行，这样是不行的。有钱也没用，你必须拿稀有的植物样本来和我交换！");
+        add("dialogs.confluence.dye_trader.4", "这些染料瓶？抱歉，亲爱的朋友，这些是非卖品。我只接受用最珍稀的植物来交换它们！");
+        add("dialogs.confluence.dye_trader.5", "你以为可以骗过我的眼睛？我可不这么想！我只接受用最稀有的花来交换这些特别的瓶子。");
+
+        add("dialogs.confluence.angler.0", "谢谢，我想，谢谢你救了我之类的。你是个优秀的得力仆从！");
+        add("dialogs.confluence.angler.1", "啥？你是哪位？我绝对不是溺水之类的！");
+        add("dialogs.confluence.angler.2", "你救了我！你太好了，我可以使唤你……呃，我是说，雇你帮我做些了不起的事！");
+        add("dialogs.confluence.angler.3", "我没有妈妈，也没有爸爸，但我有很多鱼！这就够了！");
+        add("dialogs.confluence.angler.4", "嘿！当心！我设了许多陷阱，用来实施史上最大的恶作剧！没人会发觉！你敢告诉别人试试！");
+        add("dialogs.confluence.angler.5", "听说过会叫的鱼吗？！我没听说过，只是想知道你听说过没！");
+
+
 
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.ARROW_PROJECTILE.get(), "泰拉箭");
@@ -2273,6 +2350,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.EXTRACTINATOR.get(), "提炼机");
         add(FunctionalBlocks.SKY_MILL.get(), "天磨");
         add(FunctionalBlocks.HEAVY_WORK_BENCH.get(), "重型工作台");
+        add(FunctionalBlocks.CRYSTAL_BALL.get(), "水晶球");
         add(FunctionalBlocks.HELLFORGE.get(), "地狱熔炉");
         add(FunctionalBlocks.ALCHEMY_TABLE.get(), "炼药桌");
         add(FunctionalBlocks.WEATHER_VANE.get(), "风向标");
@@ -3229,6 +3307,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.TITANIUM_BARRIER.get(), "钛金防护");
         add(ModEffects.WEAPON_IMBUE_FIRE.get(), "武器灌注：火焰");
         add(ModEffects.WEAPON_IMBUE_GOLD.get(), "武器灌注：金");
+        add(ModEffects.FROSTBITE.get(), "冻伤");
+        add(ModEffects.SHADOWFLAME.get(), "暗影焰");
 
         add(TooltipManager.prefix, "** 赞助者物品 **");
 

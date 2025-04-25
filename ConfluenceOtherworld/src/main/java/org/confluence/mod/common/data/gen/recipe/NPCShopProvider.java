@@ -64,14 +64,14 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         shop(TENpcEntities.GUIDE.getId()).addRecipe(new Builder()
                 //TODO 枪！
                 //旅商的       .add(AccessoryItems.PAINT_SPRAYER.get())
-                .add(TCItems.PORTABLE_CEMENT_MIXER.get())
-                .add(TCItems.EXTENDO_GRIP.get())
-                .add(TCItems.BRICK_LAYER.get())
-                .add(TCItems.STOPWATCH.get())
-                .add(TCItems.LIFE_FORM_ANALYZER.get())
-                .add(TCItems.DPS_METER.get())
-                .add(SwordItems.KATANA.get())
-                .add(FoodItems.PAD_THAI.get())
+                //.add(TCItems.PORTABLE_CEMENT_MIXER.get())
+                //.add(TCItems.EXTENDO_GRIP.get())
+                //.add(TCItems.BRICK_LAYER.get())
+                //.add(TCItems.STOPWATCH.get())
+                // .add(TCItems.LIFE_FORM_ANALYZER.get())
+                // .add(TCItems.DPS_METER.get())
+                // .add(SwordItems.KATANA.get())
+                // .add(FoodItems.PAD_THAI.get())
                 //动物学家的              .add(TEWhipItems.LEATHER_WHIP.get())
                 .build());
 

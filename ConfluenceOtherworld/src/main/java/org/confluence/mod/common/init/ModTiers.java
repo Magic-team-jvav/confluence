@@ -55,7 +55,7 @@ public final class ModTiers {
     public static final Tier LIHZAHRD = new PoweredTier(210, ModTags.Blocks.UNBREAKABLE, 10000, 80, 32, 24, () -> Ingredient.of(DecorativeBlocks.LIHZAHRD_BRICKS));
     public static final Tier LUMINITE = new PoweredTier(225, ModTags.Blocks.UNBREAKABLE, 10000, 95, 38, 25, () -> Ingredient.of(MaterialItems.LUMINITE_INGOT));
 
-    // 给一些无限耐久的物品食用的
+    // 给一些无限耐久的物品使用的
     public static final Tier UNBREAKABLE = new PoweredTier(190, ModTags.Blocks.NEEDS_2_LEVEL, 10000, 4, 1, 18, () -> Ingredient.of(MaterialItems.LUMINITE_INGOT));
 
     /**

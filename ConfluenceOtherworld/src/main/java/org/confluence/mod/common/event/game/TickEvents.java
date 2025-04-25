@@ -52,6 +52,7 @@ public final class TickEvents {
                 for (ServerPlayer player : serverLevel.players()) {
                     if (!attributeFactor) attributeFactor = player.getMaxHealth() >= 40 && player.getArmorValue() >= 10;
                     if (!npcFactor) npcFactor = NPCSpawner.INSTANCE.getAliveNpcCount(new NPCSpawner.Region(NPCSpawner.getNpcSpawnPos(player))) >= 4;
+                    if (attributeFactor && npcFactor) break;
                 }
                 if (attributeFactor && npcFactor && serverLevel.random.nextFloat() < 0.3333F) {
                     EntityDelaySpawner.INSTANCE.pushBoss(1350, new EyeOfCthulhu(serverLevel));

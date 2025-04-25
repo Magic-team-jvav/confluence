@@ -146,7 +146,7 @@ public class TargetDummyEntity extends Mob {
             damage = getMaxHealth() - getHealth();
             setHealth(getMaxHealth());
         }
-        super.baseTick();
+        super.tick();
     }
 
     public static AttributeSupplier.@NotNull Builder createAttributes() {

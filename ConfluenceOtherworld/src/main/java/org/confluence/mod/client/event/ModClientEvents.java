@@ -1,5 +1,7 @@
 package org.confluence.mod.client.event;
 
+import com.google.common.collect.ImmutableMap;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
@@ -16,6 +18,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
@@ -27,6 +30,8 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.neoforged.neoforge.client.model.SeparateTransformsModel;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
@@ -378,10 +383,39 @@ public final class ModClientEvents {
     }
 
     @SubscribeEvent
+    private static void onRegisterAdditionalModels(ModelEvent.RegisterAdditional event) {
+        for (Pair<ModelResourceLocation, ModelResourceLocation> pair : ModClientSetups.MODELS_HIGH_WITH_16X) {
+            event.register(pair.getSecond());
+        }
+    }
+
+    @SubscribeEvent
     public static void model$ModifyBakingResult(ModelEvent.ModifyBakingResult event) {
+        Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
+
+        for (Pair<ModelResourceLocation, ModelResourceLocation> pair : ModClientSetups.MODELS_HIGH_WITH_16X) {
+            BakedModel inventoryModel = modelRegistry.get(pair.getFirst());
+            if (inventoryModel == null) continue;
+            BakedModel standaloneModel = modelRegistry.get(pair.getSecond());
+            if (standaloneModel == null) continue;
+            modelRegistry.put(pair.getFirst(), new SeparateTransformsModel.Baked(
+                    inventoryModel.useAmbientOcclusion(),
+                    inventoryModel.isGui3d(),
+                    inventoryModel.usesBlockLight(),
+                    inventoryModel.getParticleIcon(ModelData.EMPTY),
+                    inventoryModel.getOverrides(),
+                    inventoryModel,
+                    ImmutableMap.of(
+                            ItemDisplayContext.HEAD, standaloneModel,
+                            ItemDisplayContext.GUI, standaloneModel,
+                            ItemDisplayContext.GROUND, standaloneModel,
+                            ItemDisplayContext.FIXED, standaloneModel
+                    )
+            ));
+        }
+
         if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !StartupConfigs.paintsReplaceTexture()) return;
 
-        Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
         CustomBlockModels customBlockModels = ModConnectives.MODEL_SWAPPER.getCustomBlockModels();
         Set<String> bannedModForPaints = new HashSet<>(StartupConfigs.bannedModForPaints());
         for (Map.Entry<Block, Holder.Reference<Block>> entry : ((DefaultedMappedRegistry<Block>) BuiltInRegistries.BLOCK).byValue.entrySet()) {

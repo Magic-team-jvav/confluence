@@ -119,7 +119,7 @@ public class NPCSpawner implements IGlobalData {
         if (entity instanceof IAbstractTerraNPC npc) {
             npc.confluence$setRegion(new Region(entity.chunkPosition()));
             setNPCAlive(npc.confluence$getRegion(), entity.getType(), true);
-            broadcastMessageToRegion(entity.level(), npc.confluence$getRegion(), Component.translatable("event.confluence.npc.added", entity.getName()).withStyle(ChatFormatting.BLUE));
+            broadcastMessageToRegion(entity.level(), npc.confluence$getRegion(), Component.translatable("event.confluence.npc.added", entity.getType().getDescription(), entity.getName()).withStyle(ChatFormatting.BLUE));
             return true;
         }
         return false;
@@ -131,7 +131,7 @@ public class NPCSpawner implements IGlobalData {
     public boolean onNPCRemoved(Entity entity) {
         if (entity instanceof IAbstractTerraNPC npc) {
             setNPCAlive(npc.confluence$getRegion(), entity.getType(), false);
-            broadcastMessageToRegion(entity.level(), npc.confluence$getRegion(), Component.translatable("event.confluence.npc.removed", entity.getName()).withStyle(ChatFormatting.BLUE));
+            broadcastMessageToRegion(entity.level(), npc.confluence$getRegion(), Component.translatable("event.confluence.npc.removed", entity.getType().getDescription(), entity.getName()).withStyle(ChatFormatting.BLUE));
             return true;
         }
         return false;
@@ -163,6 +163,11 @@ public class NPCSpawner implements IGlobalData {
     @Override
     public String serializeKey() {
         return "confluence:npc_spawner";
+    }
+
+    public void clear() {
+        npcAlive.clear();
+        npcSpawned.clear();
     }
 
     public void trySpawnGuide(ServerPlayer serverPlayer) {

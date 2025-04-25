@@ -74,4 +74,8 @@ public class KillBoard implements IGlobalData {
     public String serializeKey() {
         return "confluence:kill_board";
     }
+
+    public void clear() {
+        defeatedMap.clear();
+    }
 }

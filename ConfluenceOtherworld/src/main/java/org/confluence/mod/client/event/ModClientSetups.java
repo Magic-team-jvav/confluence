@@ -1,7 +1,9 @@
 package org.confluence.mod.client.event;
 
+import com.google.common.collect.Lists;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Camera;
 import net.minecraft.client.color.block.BlockColor;
@@ -16,6 +18,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -49,6 +52,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
 import java.util.function.Consumer;
 
 @SuppressWarnings("deprecation")
@@ -153,6 +157,12 @@ public final class ModClientSetups {
             return IntegerRGB.HALLOW_C.mixture(IntegerRGB.HALLOW_A, (m - 8) * 0.25F);
         }
     };
+    // 手持高清但是物品栏16x
+    static final List<Pair<ModelResourceLocation, ModelResourceLocation>> MODELS_HIGH_WITH_16X = Lists.newArrayList(
+            new Pair<>(ModelResourceLocation.inventory(Confluence.asResource("bee_keeper")), ModelResourceLocation.standalone(Confluence.asResource("item/bee_keeper_inventory"))),
+            new Pair<>(ModelResourceLocation.inventory(Confluence.asResource("ice_blade")), ModelResourceLocation.standalone(Confluence.asResource("item/ice_blade_inventory"))),
+            new Pair<>(ModelResourceLocation.inventory(Confluence.asResource("muramasa")), ModelResourceLocation.standalone(Confluence.asResource("item/muramasa_inventory")))
+    );
 
 
     static void setRenderLayers() {

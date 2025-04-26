@@ -4,7 +4,6 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.*;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
@@ -12,6 +11,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -29,6 +29,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.common.data.saved.IGlobalData;
+import org.confluence.lib.util.GlobalColors;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
@@ -139,7 +140,7 @@ public class NPCSpawner implements IGlobalData {
             if (isAdvancedCombatTechniquesUsed()) {
                 applyAdvancedCombatTechniques(living);
             }
-            broadcastMessageToRegion(living.level(), npc.confluence$getRegion(), Component.translatable("event.confluence.npc.added", living.getType().getDescription(), living.getName()).withStyle(ChatFormatting.BLUE));
+            broadcastMessageToRegion(living.level(), npc.confluence$getRegion(), Component.translatable("event.confluence.npc.arrived", living.getType().getDescription(), living.getName()).withColor(GlobalColors.NPC_ARRIVED.getRGB()));
             return true;
         }
         return false;
@@ -151,7 +152,13 @@ public class NPCSpawner implements IGlobalData {
     public boolean onNPCRemoved(LivingEntity living) {
         if (living instanceof IAbstractTerraNPC npc) {
             setNPCAlive(npc.confluence$getRegion(), living.getType(), false);
-            broadcastMessageToRegion(living.level(), npc.confluence$getRegion(), Component.translatable("event.confluence.npc.removed", living.getType().getDescription(), living.getName()).withStyle(ChatFormatting.BLUE));
+            MutableComponent message;
+            if (living instanceof AnglerNPC /* todo 或宠物/公主 */) {
+                message = Component.translatable("event.confluence.npc.left", living.getName());
+            } else { // todo 旅商已离去！
+                message = Component.translatable("event.confluence.npc.slain", living.getType().getDescription(), living.getName());
+            }
+            broadcastMessageToRegion(living.level(), npc.confluence$getRegion(), message.withColor(GlobalColors.NPC_SLAIN.getRGB()));
             return true;
         }
         return false;

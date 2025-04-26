@@ -1,7 +1,9 @@
 package org.confluence.mod.common.item.common;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.AbortableIterationConsumer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -11,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.util.GlobalColors;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
@@ -30,6 +33,9 @@ public class AdvancedCombatTechniquesItem extends TooltipItem {
                     NPCSpawner.applyAdvancedCombatTechniques(npc);
                     return AbortableIterationConsumer.Continuation.CONTINUE;
                 });
+                for (ServerPlayer serverPlayer : serverLevel.players()) {
+                    serverPlayer.sendSystemMessage(Component.translatable("message.confluence.advancement_combat_techniques").withColor(GlobalColors.MESSAGE.getRGB()));
+                }
                 if (!player.getAbilities().instabuild) {
                     itemStack.shrink(1);
                 }

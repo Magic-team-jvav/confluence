@@ -52,6 +52,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("chat.confluence.demon_conch", "The location where you listen to the sound of the demon [%s] has been recorded");
         add("options.difficulty.legendary", "§aLegendary");
         add("message.confluence.choking", "You're choking and need to drink water");
+        add("message.confluence.advancement_combat_techniques", "The book's knowledge empowers your villagers!");
         add("jukebox_song.confluence.alpha", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
@@ -796,7 +797,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("resourcepack.terraria_art", "Terraria Art");
         add("resourcepack.terraria_armor", "Terraria-Like Armor");
 
-        add("event.confluence.blood_moon", "The Blood Moon is rising...");
         add("event.confluence.meteorite", "A meteorite has landed!");
         add("event.confluence.meteorite.ready", "A meteorite will falling!");
         add("event.confluence.shadow_orb_broken.0", "A horrible chill goes down your spine...");
@@ -811,8 +811,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("event.confluence.hardmode_conversion.started", "Conversation data is ready, and the conversion is begining");
         add("event.confluence.hardmode_conversion.finished", "\"The ancient spirits of light and dark have been released.\"");
         add("event.confluence.hardmode_conversion.welcome", "Welcome to Terraria");
-        add("event.confluence.npc.removed", "%s,the %s has arrived!");
-        add("event.confluence.npc.added", "%s,the %s was slain...");
+        add("event.confluence.npc.arrived", "%s,the %s has arrived!");
+        add("event.confluence.npc.slain", "%s,the %s was slain...");
+        add("event.confluence.npc.left", "%s,the %s has left!");
+        add("event.confluence.npc.departed", "%s the Traveling Merchant has departed!");
 
         add("entity.minecraft.villager.confluence.sky_miller", "Sky Miller");
         add("entity.minecraft.villager.confluence.chef", "Chef");

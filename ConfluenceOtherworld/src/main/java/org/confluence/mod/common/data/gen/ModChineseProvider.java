@@ -42,6 +42,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("chat.confluence.demon_conch", "你听取恶魔呼喊的位置[%s]已记录");
         add("options.difficulty.legendary", "§a传奇");
         add("message.confluence.choking", "你被噎住了,需要喝水才行");
+        add("message.confluence.advancement_combat_techniques", "书中的知识赋予了城镇居民力量！");
         add("jukebox_song.confluence.song", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
@@ -868,8 +869,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("resourcepack.terraria_art", "泰拉艺术");
         add("resourcepack.terraria_armor", "泰拉盔甲样式材质");
 
-        add("event.confluence.blood_moon", "血月正在升起...");
-        add("event.confluence.meteorite", "陨石已落地！");
+        add("event.confluence.meteorite", "有一颗陨石落地了！");
         add("event.confluence.meteorite.ready", "陨石即将落下！");
         add("event.confluence.shadow_orb_broken.0", "不寒而栗，毛骨悚然……");
         add("event.confluence.shadow_orb_broken.1", "四面回荡着尖叫声……");
@@ -883,8 +883,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("event.confluence.hardmode_conversion.started", "转换数据准备完毕，正在开始转换");
         add("event.confluence.hardmode_conversion.finished", "“古老的光明与黑暗之魂已经释放。”");
         add("event.confluence.hardmode_conversion.welcome", "欢迎来到泰拉瑞亚");
-        add("event.confluence.npc.removed", "%s，%s被杀死了……");
-        add("event.confluence.npc.added", "%s，%s已到达！");
+        add("event.confluence.npc.arrived", "%s%s已到达！");
+        add("event.confluence.npc.slain", "%s%s被杀死了……");
+        add("event.confluence.npc.left", "%s已离开！");
+        add("event.confluence.npc.departed", "旅商%s已离去！");
 
         add("entity.minecraft.villager.confluence.sky_miller", "天师");
         add("entity.minecraft.villager.confluence.chef", "厨师");

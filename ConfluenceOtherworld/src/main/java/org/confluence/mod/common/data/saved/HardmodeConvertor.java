@@ -3,7 +3,6 @@ package org.confluence.mod.common.data.saved;
 import com.google.common.collect.AbstractIterator;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.*;
-import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -27,6 +26,7 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.confluence.lib.common.data.saved.IGlobalData;
+import org.confluence.lib.util.GlobalColors;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.api.event.EnterHardmodeEvent;
 import org.confluence.mod.common.init.ModTags;
@@ -115,8 +115,8 @@ public class HardmodeConvertor implements IGlobalData {
                 }
                 ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.hardmode"), !FMLEnvironment.production);
-                print(server, Component.translatable("event.confluence.hardmode_conversion.finished").withStyle(ChatFormatting.GREEN), true);
-                print(server, Component.translatable("event.confluence.hardmode_conversion.welcome").withStyle(ChatFormatting.RED), true);
+                print(server, Component.translatable("event.confluence.hardmode_conversion.finished").withColor(GlobalColors.MESSAGE.getRGB()), true);
+                print(server, Component.translatable("event.confluence.hardmode_conversion.welcome").withColor(GlobalColors.EVENT.getRGB()), true);
                 NeoForge.EVENT_BUS.post(new EnterHardmodeEvent(server));
             }
             this.started = false;

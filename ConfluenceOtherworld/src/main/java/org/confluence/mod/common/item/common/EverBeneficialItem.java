@@ -33,6 +33,9 @@ import java.util.function.Supplier;
 public class EverBeneficialItem extends TooltipItem {
     public static final Post DO_NOTHING = (id, player, everBeneficial, isRespawn) -> {};
     public static final Beneficial LIFE_CRYSTAL = new Beneficial(Confluence.asResource("life_crystal"), EverBeneficial::increaseCrystals, (id, player, everBeneficial, isRespawn) -> {
+        if (everBeneficial.isLifeCrystalsMaximum() && everBeneficial.isLifeFruitsMaximum() && player.getData(ModAttachmentTypes.MANA_STORAGE).isStarMaximum()) {
+            PlayerUtils.awardAchievement(player, "topped_off");
+        }
         AttributeInstance attributeInstance = player.getAttributes().getInstance(Attributes.MAX_HEALTH);
         if (attributeInstance == null) return;
         attributeInstance.addOrReplacePermanentModifier(new AttributeModifier(id, everBeneficial.getUsedLifeCrystals() * 4.0, AttributeModifier.Operation.ADD_VALUE));
@@ -95,21 +98,17 @@ public class EverBeneficialItem extends TooltipItem {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        if (level.isClientSide && sound != null) {
-            player.playSound(sound.get());
-        }
+        if (level.isClientSide && sound != null) player.playSound(sound.get());
+
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (player instanceof ServerPlayer serverPlayer) {
             EverBeneficial data = player.getData(ModAttachmentTypes.EVER_BENEFICIAL);
             if (beneficial.pre.test(data)) {
                 beneficial.post.accept(beneficial.id, serverPlayer, data, false);
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
-                if (!player.isCreative()) {
+                if (!player.getAbilities().instabuild) {
                     itemStack.shrink(1);
                 }
-            }
-            if (data.isLifeCrystalsMaximum() && data.isLifeFruitsMaximum() && player.getData(ModAttachmentTypes.MANA_STORAGE).isStarMaximum()) {
-                PlayerUtils.awardAchievement(serverPlayer, "topped_off");
             }
         }
         return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide);

@@ -11,6 +11,8 @@ import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.Keys;
+import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.CrateBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
@@ -64,14 +66,14 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         shop(TENpcEntities.GUIDE.getId()).addRecipe(new Builder()
                 //TODO 枪！
                 //旅商的       .add(AccessoryItems.PAINT_SPRAYER.get())
-                .add(TCItems.PORTABLE_CEMENT_MIXER.get())
-                .add(TCItems.EXTENDO_GRIP.get())
-                .add(TCItems.BRICK_LAYER.get())
-                .add(TCItems.STOPWATCH.get())
-                .add(TCItems.LIFE_FORM_ANALYZER.get())
-                .add(TCItems.DPS_METER.get())
-                .add(SwordItems.KATANA.get())
-                .add(FoodItems.PAD_THAI.get())
+                //.add(TCItems.PORTABLE_CEMENT_MIXER.get())
+                //.add(TCItems.EXTENDO_GRIP.get())
+                //.add(TCItems.BRICK_LAYER.get())
+                //.add(TCItems.STOPWATCH.get())
+                // .add(TCItems.LIFE_FORM_ANALYZER.get())
+                // .add(TCItems.DPS_METER.get())
+                // .add(SwordItems.KATANA.get())
+                // .add(FoodItems.PAD_THAI.get())
                 //动物学家的              .add(TEWhipItems.LEATHER_WHIP.get())
                 .build());
 
@@ -159,14 +161,17 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(TradeTask.create(
                         DynamicAnglerTradeTask.builder(
                                         ItemTradeLootTable.builder()
-                                                .addCost(Items.COD, 1)
-                                                .setLootTable(TerraEntity.fromSpaceAndPath("minecraft", "entities/zombie"))
+                                                .addCost(CrateBlocks.WOODEN_CRATE.toStack().getItem(),1) //在没有任务鱼机制前，用木匣代替
+                                                .setLootTable(TerraEntity.fromSpaceAndPath("confluence", "gameplay/fishing_quests_0"))
                                                 .setSprite(TerraEntity.space("random_gift"))
                                                 .build(),
                                         List.of(Items.DIRT.getDefaultInstance(), Items.ICE.getDefaultInstance(), Items.EMERALD.getDefaultInstance())
                                 )
-                                .addResult(1, List.of(Items.DIAMOND.getDefaultInstance(), Items.EMERALD.getDefaultInstance()))
-                                .addResult(3, List.of(Items.ICE.getDefaultInstance(), Items.EMERALD.getDefaultInstance()))
+                                .addResult(10, List.of(ArmorItems.ANGLER_HAT.toStack()))
+                                .addResult(15, List.of(ArmorItems.ANGLER_VEST.toStack()))
+                                .addResult(20, List.of(ArmorItems.ANGLER_PANTS.toStack()))
+                                .addResult(25, List.of(ToolItems.BOTTOMLESS_WATER_BUCKET.toStack()))
+                                .addResult(30, List.of(FishingPoleItems.GOLDEN_FISHING_ROD.toStack()))
 //                                .setTitle("title.terra_entity.npc_trade.task.fishman")
                                 .build()
                 ))

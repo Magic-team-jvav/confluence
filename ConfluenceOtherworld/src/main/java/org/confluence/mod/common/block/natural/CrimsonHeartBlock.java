@@ -19,14 +19,14 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.confluence.lib.color.IntegerRGB;
+import org.confluence.lib.util.GlobalColors;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.item.LightPetItems;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.init.TCItems;
-//import org.confluence.terra_guns.common.init.TGItems;
+import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.entity.boss.BrainOfCthulhu;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.jetbrains.annotations.Nullable;
@@ -52,9 +52,8 @@ public class CrimsonHeartBlock extends Block {
             int count = data.getEvilBrokenCount() % 3;
 
             if (count == 0 || level.random.nextFloat() < 0.2F) {
-                //TODO 枪！
-//                LibUtils.createItemEntity(TGItems.THE_UNDERTAKER.toStack(), center.x, center.y, center.z, level, 0);
-//                LibUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(TGItems.THE_UNDERTAKER.toStack(), center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
                 LibUtils.createItemEntity(LightPetItems.CRIMSON_HEART.get(), 1, center.x, center.y, center.z, level, 0);
@@ -74,7 +73,7 @@ public class CrimsonHeartBlock extends Block {
             }
 
             if (count != 2) {
-                Component component = Component.translatable("event.confluence.crimson_heart_broken." + count).withColor(IntegerRGB.GREEN.get());
+                Component component = Component.translatable("event.confluence.crimson_heart_broken." + count).withColor(GlobalColors.MESSAGE.getRGB());
                 serverLevel.getServer().getPlayerList().broadcastSystemMessage(component, false);
             }
 

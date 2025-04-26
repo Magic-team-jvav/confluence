@@ -1,12 +1,12 @@
 package org.confluence.mod.mixin.integration.terra_entity;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.mixed.SelfGetter;
+import org.confluence.lib.util.GlobalColors;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.mixed.IAbstractTerraNPC;
 import org.confluence.terraentity.entity.npc.AnglerNPC;
@@ -17,13 +17,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = AnglerNPC.class, remap = false)
 public abstract class AnglerNPCMixin implements SelfGetter<AnglerNPC> {
-    @Inject(method = "mobInteract", at = @At(value = "INVOKE", target = "Lorg/confluence/terraentity/entity/npc/AnglerNPC;setWakeUp(Z)V"))
+    @Inject(method = "mobInteract", at = @At(value = "RETURN", ordinal = 0))
     private void setAnglerAdded(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
         if (player instanceof ServerPlayer serverPlayer) {
             AnglerNPC npc = confluence$self();
             NPCSpawner.Region region = new NPCSpawner.Region(NPCSpawner.getNpcSpawnPos(serverPlayer));
             NPCSpawner.INSTANCE.moveNPCToAnotherRegion(npc, IAbstractTerraNPC.of(npc).confluence$getRegion(), region);
-            NPCSpawner.broadcastMessageToRegion(player.level(), region, Component.translatable("event.confluence.npc.added", npc.getName()).withStyle(ChatFormatting.BLUE));
+            NPCSpawner.broadcastMessageToRegion(player.level(), region, Component.translatable("event.confluence.npc.arrived", npc.getType().getDescription(), npc.getName()).withColor(GlobalColors.NPC_ARRIVED.getRGB()));
         }
     }
 }

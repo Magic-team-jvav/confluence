@@ -57,7 +57,7 @@ public class BowItems {
     // DIY蓄力弓
     /**如果需要速射，加上tag {@link org.confluence.mod.common.init.ModTags.Items#FAST_BOW}*/
 
-    public static final DeferredItem<TerraBowItem> FOSSIL_BOW = register("fossil_bow", 4.7F, m->m
+    public static final DeferredItem<TerraBowItem> FOSSIL_BOW = register("fossil_bow", 5.0F, m->m
             .setRarity(ModRarity.BLUE)
             .setArrowTransform(ArrowItems.FOSSIL_ARROW.get())
     );
@@ -77,7 +77,7 @@ public class BowItems {
             .setRarity(ModRarity.ORANGE)
             .setArrowTransform(ArrowItems.HELLFIRE_ARROW.get())
     );
-    public static final DeferredItem<TerraBowItem> THE_BEES_KNEES = register("the_bees_knees",  2.5F, m->m
+    public static final DeferredItem<TerraBowItem> THE_BEES_KNEES = register("the_bees_knees",  2.0F, m->m
             .setRarity(ModRarity.YELLOW)
             .setMultiShoot(3, (i, c)->new Vec3(-i*0.25f,0,0))
             .setCanMultiShoot(ammo->!(ammo.getItem() instanceof BaseArrowItem))

@@ -1,6 +1,0 @@
-{
-    "parent": "confluence:item/hunting_bow",
-    "textures": {
-        "layer0": "confluence:item/bow/hunting_bow_pulling_1"
-    }
-}

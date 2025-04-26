@@ -148,16 +148,16 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     public record Variant(int id, String name, float damage, double gravity, float knockBack, ResourceLocation particleId) implements StringRepresentable {
         public static final List<Variant> VALUES = new ArrayList<>();
 
-        public static final Variant AMETHYST = register("amethyst", 6.0F, -1.0, 3.25F, Confluence.asResource("amethyst_projectile"));
-        public static final Variant TOPAZ = register("topaz", 6.4F, -1.0, 3.5F, Confluence.asResource("topaz_projectile"));
-        public static final Variant SAPPHIRE = register("sapphire", 7.2F, -1.0, 4.0F, Confluence.asResource("sapphire_projectile"));
-        public static final Variant EMERALD = register("emerald", 7.6F, -1.0, 4.25F, Confluence.asResource("emerald_projectile"));
-        public static final Variant RUBY = register("ruby", 8.4F, -1.0, 4.75F, Confluence.asResource("ruby_projectile"));
-        public static final Variant AMBER = register("amber", 8.4F, -1.0, 4.75F, Confluence.asResource("amber_projectile"));
-        public static final Variant DIAMOND = register("diamond", 9.2F, -1.0, 5.5F, Confluence.asResource("diamond_projectile"));
-        public static final Variant FROST = register("frost", 3.0F, 0.04, 0.0F, Confluence.asResource("frost_projectile"));
-        public static final Variant SPARK = register("spark", 2.6F, 0.2, 0.0F, Confluence.asResource("spark_projectile"));
-        public static final Variant THUNDER_ZAPPER = register("thunder_zapper", 7.8F, -1.0, 0.0F, Confluence.asResource("thunder_zapper"));
+        public static final Variant AMETHYST = register("amethyst", 8.0F, -1.0, 3.25F, Confluence.asResource("amethyst_projectile"));
+        public static final Variant TOPAZ = register("topaz", 8.4F, -1.0, 3.5F, Confluence.asResource("topaz_projectile"));
+        public static final Variant SAPPHIRE = register("sapphire", 9.2F, -1.0, 4.0F, Confluence.asResource("sapphire_projectile"));
+        public static final Variant EMERALD = register("emerald", 9.6F, -1.0, 4.25F, Confluence.asResource("emerald_projectile"));
+        public static final Variant RUBY = register("ruby", 10.4F, -1.0, 4.75F, Confluence.asResource("ruby_projectile"));
+        public static final Variant AMBER = register("amber", 10.4F, -1.0, 4.75F, Confluence.asResource("amber_projectile"));
+        public static final Variant DIAMOND = register("diamond", 11.2F, -1.0, 5.5F, Confluence.asResource("diamond_projectile"));
+        public static final Variant FROST = register("frost", 5.0F, 0.04, 0.0F, Confluence.asResource("frost_projectile"));
+        public static final Variant SPARK = register("spark", 3.6F, 0.2, 0.0F, Confluence.asResource("spark_projectile"));
+        public static final Variant THUNDER_ZAPPER = register("thunder_zapper", 9.8F, -1.0, 0.0F, Confluence.asResource("thunder_zapper"));
 
         public static final Codec<Variant> CODEC = StringRepresentable.fromValues(() -> VALUES.toArray(Variant[]::new));
 

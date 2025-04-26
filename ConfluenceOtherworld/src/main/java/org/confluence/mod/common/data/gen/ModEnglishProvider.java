@@ -52,6 +52,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("chat.confluence.demon_conch", "The location where you listen to the sound of the demon [%s] has been recorded");
         add("options.difficulty.legendary", "§aLegendary");
         add("message.confluence.choking", "You're choking and need to drink water");
+        add("message.confluence.advancement_combat_techniques", "The book's knowledge empowers your villagers!");
         add("jukebox_song.confluence.alpha", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
@@ -89,6 +90,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.safe.0", "Can be used to store your items");
         add("tooltip.item.confluence.safe.1", "Stored items can only be accessed by you");
         add("tooltip.item.confluence.echo_block.0", "Only visible with Echo Sight");
+        add("tooltip.item.confluence.advanced_combat_techniques.0", "Increases the defense and strength of all villagers");
+        add("tooltip.item.confluence.advanced_combat_techniques.1", "'Contains offensive and defensive fighting techniques'");
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
         add("tooltip.item.confluence.slime_crown.1", "A small crown that seems to be prepared for the coronation ceremony of those cute and harmless gel - like creatures.");
@@ -794,7 +797,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("resourcepack.terraria_art", "Terraria Art");
         add("resourcepack.terraria_armor", "Terraria-Like Armor");
 
-        add("event.confluence.blood_moon", "The Blood Moon is rising...");
         add("event.confluence.meteorite", "A meteorite has landed!");
         add("event.confluence.meteorite.ready", "A meteorite will falling!");
         add("event.confluence.shadow_orb_broken.0", "A horrible chill goes down your spine...");
@@ -809,8 +811,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("event.confluence.hardmode_conversion.started", "Conversation data is ready, and the conversion is begining");
         add("event.confluence.hardmode_conversion.finished", "\"The ancient spirits of light and dark have been released.\"");
         add("event.confluence.hardmode_conversion.welcome", "Welcome to Terraria");
-        add("event.confluence.npc.removed", "Someone has left the town!");
-        add("event.confluence.npc.added", "Someone has come to the town!");
+        add("event.confluence.npc.arrived", "The %s, %s has arrived!");
+        add("event.confluence.npc.slain", "The %s, %s was slain...");
+        add("event.confluence.npc.left", "%s has left!");
+        add("event.confluence.npc.departed", "%s the Traveling Merchant has departed!");
 
         add("entity.minecraft.villager.confluence.sky_miller", "Sky Miller");
         add("entity.minecraft.villager.confluence.chef", "Chef");
@@ -909,13 +913,86 @@ public class ModEnglishProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.cactus_set.data.0", "Attackers take damage from cactus thorns");
 
         // npc
-        add("dialogs.confluence.guide.0", "I am here to give you advice on what to do next.  It is recommended that you talk with me anytime you get stuck.");
-        add("dialogs.confluence.guide.1", "They say there is a person who will tell you how to survive in this land... oh wait. That's me.");
-        add("dialogs.confluence.guide.2", "You should stay indoors at night. It is very dangerous to be wandering around in the dark.");
+        add("dialogs.confluence.guide.0", "My job is to offer suggestions for your upcoming tasks. I recommend that you come and talk to me whenever you encounter any difficulties.");
+        add("dialogs.confluence.guide.1", "They said there would be someone to tell you how to survive in this place... Oh, wait a moment. That person is me.");
+        add("dialogs.confluence.guide.2", "You should stay at home at night. It's very dangerous to wander outside in the dark.");
+        add("dialogs.confluence.guide.3", "In the Confluence world, you will obtain multiple times the treasure, but this also means taking on multiple times the risk.");
+        add("dialogs.confluence.guide.4", "As far as I know, there are more humans in this world than in our original world.");
+        add("dialogs.confluence.guide.5", "Sorry, sometimes I have to open the door.");
+        add("dialogs.confluence.guide.6", "Those guys that can explode are more threatening than the average surface monsters!");
+        add("dialogs.confluence.guide.7", "The life mushrooms on the grass can sometimes save your life.");
+        add("dialogs.confluence.guide.8", "There are Crystal Hearts underground, which can be used to increase your maximum health. You can use a pickaxe to break them.");
+        add("dialogs.confluence.guide.9", "There is a lake with magical powers underground, and it's very rare.");
+        add("dialogs.confluence.guide.10", "At night, stars are falling and spreading all over the world. They have extremely wide uses. If you see them, you must get them, because the stars will disappear after sunrise.");
+        add("dialogs.confluence.guide.11", "No matter what is spreading wildly, you will realize that it's time to stop them.");
+        add("dialogs.confluence.guide.12", "If you want to survive, you need to make weapons and build a house. First, cut down trees and collect wood.");
+        add("dialogs.confluence.guide.13", "After you have a sword, you can try to collect some gel from slimes. Use wooden sticks and gel to make torches!");
+        add("dialogs.confluence.guide.14", "If you have some ores, you need to smelt them into ingots before you can use them to make items. This requires a furnace!");
+        add("dialogs.confluence.guide.15", "If you combine lenses on the altar, you may be able to find a way to summon a powerful monster. However, it's better to use it at night.");
 
-        add("dialogs.confluence.nurse.0", "I need to have a serious talk with Guide. How many times a week can you come in with severe lava burns?");
-        add("dialogs.confluence.nurse.1", "Have you seen that old man pacing around the dungeon? He looks troubled.");
-        add("dialogs.confluence.nurse.2", "Hey, has Dealer mentioned needing to go to the doctor for any reason? Just wondering.");
+        add("dialogs.confluence.nurse.0", "I need to have a serious talk with the Guide. How many times a week do you get severely burned by lava exactly?");
+        add("dialogs.confluence.nurse.1", "See that old man wandering around the dungeon? He looks like he's in trouble.");
+        add("dialogs.confluence.nurse.2", "Hey, has the Arms Dealer ever mentioned going to see a doctor or something? Just asking.");
+        add("dialogs.confluence.nurse.3", "Got into trouble with the thugs again?");
+        add("dialogs.confluence.nurse.4", "Don't be such a child! I've seen worse.");
+        add("dialogs.confluence.nurse.5", "Did it hurt when you did that? Don't do that.");
+
+        add("dialogs.confluence.demolitionist.0", "Explosives are really popular nowadays. Buy some right away!");
+        add("dialogs.confluence.demolitionist.1", "Today is a great day to court death!");
+        add("dialogs.confluence.demolitionist.2", "Let me see what happens if I do this... (BOOM!)... Oh, sorry, did you still need that leg?");
+        add("dialogs.confluence.demolitionist.3", "Take a look at my goods; they're all at amazing prices.");
+        add("dialogs.confluence.demolitionist.4", "Dynamite, this is my special panacea prepared just for you. It can cure all kinds of problems.");
+        add("dialogs.confluence.demolitionist.5", "Want to get through those evil stones, huh? Why not just blow them up with explosives!");
+
+        add("dialogs.confluence.goblin_tinkerer.0", "Goblins get angry so easily. In fact, they can start a war over some rags!");
+        add("dialogs.confluence.goblin_tinkerer.1", "To be honest, most goblins aren't real rocket scientists. Well, some of them are.");
+        add("dialogs.confluence.goblin_tinkerer.2", "Do you know why everyone carries these spiky balls around? Because I don't.");
+        add("dialogs.confluence.goblin_tinkerer.3", "I've just finished my latest creation! This version won't explode violently even if you blow or suck on it really hard.");
+        add("dialogs.confluence.goblin_tinkerer.4", "Goblin thieves aren't very good at stealing. They can't even steal from an unlocked chest!");
+        add("dialogs.confluence.goblin_tinkerer.5", "Yo, I heard you like rockets and running shoes, so I added some rockets to your running shoes.");
+
+        add("dialogs.confluence.arms_dealer.0", "Dude, get your hands off my gun!");
+        add("dialogs.confluence.arms_dealer.1", "Hey, bro, this isn't a movie. You need to prepare ammunition separately.");
+        add("dialogs.confluence.arms_dealer.2", "I see you're eyeing the Minishark... You can't even imagine how it's made.");
+        add("dialogs.confluence.arms_dealer.3", "I want to buy something from the Nurse. What did you say? She doesn't sell anything?");
+        add("dialogs.confluence.arms_dealer.4", "Flying Fish? I call it target practice!");
+        add("dialogs.confluence.arms_dealer.5", "Don't waste your time with the Demolitionist. I've got everything you need right here.");
+
+        add("dialogs.confluence.merchant.0", "Swords beat paper! Buy one right away.");
+        add("dialogs.confluence.merchant.1", "Do you want apples? Do you want carrots? Do you want pineapples? All we have are torches.");
+        add("dialogs.confluence.merchant.2", "Take a look at my dirt blocks; they're really earthy.");
+        add("dialogs.confluence.merchant.3", "You have no idea how much dirt blocks can sell for in other places.");
+        add("dialogs.confluence.merchant.4", "One day they will tell your legend... It's sure to be a good story.");
+        add("dialogs.confluence.merchant.5", "Kosh, kapleck Mog. Oh, sorry, that's Klingon, which means 'Buy or die.'");
+
+        add("dialogs.confluence.painter.0", "I know the difference between turquoise and teal. But I'm not going to tell you.");
+        add("dialogs.confluence.painter.1", "The titanium white is all used up. Don't ask.");
+        add("dialogs.confluence.painter.2", "Try mixing pink and purple. It'll definitely work, I swear!");
+        add("dialogs.confluence.painter.3", "No, no, no... There are many kinds of gray! Don't make me start...");
+        add("dialogs.confluence.painter.4", "I hope it stops raining. The paint still hasn't dried. It would be a disaster if it rains!");
+        add("dialogs.confluence.painter.5", "I tried organizing a paintball war, but everyone just wanted food and decorations.");
+
+        add("dialogs.confluence.dryad.0", "Stay safe! Both worlds need you!");
+        add("dialogs.confluence.dryad.1", "The hourglass of time is slowly running out. And you're not aging gracefully.");
+        add("dialogs.confluence.dryad.2", "Two goblins walked into a bar, and one of them said to the other: 'A glass of beer?'");
+        add("dialogs.confluence.dryad.3", "What does it mean by saying I'm all talk and no action?");
+        add("dialogs.confluence.dryad.4", "You must stop the spread of evil.");
+        add("dialogs.confluence.dryad.5", "This world is much vaster... And the power of nature is stronger too.");
+
+        add("dialogs.confluence.dye_trader.0", "I bring you the richest colors in exchange for your wealth.");
+        add("dialogs.confluence.dye_trader.1", "Honey, your clothes are so monotonous. You really have to learn how to dye your dull clothes!");
+        add("dialogs.confluence.dye_trader.2", "The only wood I'm willing to dye is mahogany. Dyeing any other wood is a waste.");
+        add("dialogs.confluence.dye_trader.3", "Oh, no, no, that won't do. Even if you have money, you have to trade me with rare plant samples!");
+        add("dialogs.confluence.dye_trader.4", "These dye bottles? Sorry, my dear friend, these are not for sale. I only accept the rarest plants in exchange for them!");
+        add("dialogs.confluence.dye_trader.5", "You think you can fool my eyes? I don't think so! I only accept the rarest flowers in exchange for these special bottles.");
+
+        add("dialogs.confluence.angler.0", "Thanks, I guess, for saving me and all that. You're an excellent lackey!");
+        add("dialogs.confluence.angler.1", "What? Who are you? I definitely wasn't drowning or anything!");
+        add("dialogs.confluence.angler.2", "You saved me! You're so kind. I can boss you around... Uh, I mean, hire you to do some amazing things for me!");
+        add("dialogs.confluence.angler.3", "I don't have a mom or a dad, but I have a lot of fish! That's enough!");
+        add("dialogs.confluence.angler.4", "Hey! Watch out! I've set a lot of traps for the greatest prank in history! No one will notice! Try telling anyone and see what happens!");
+        add("dialogs.confluence.angler.5", "Have you ever heard of a fish that can make noise?! I haven't. I just want to know if you have!");
+
 
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
         CrateBlocks.BLOCKS.getEntries().forEach(blockAction);

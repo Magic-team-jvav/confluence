@@ -23,10 +23,9 @@ import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.item.PaintItems;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.Set;
 
 import static org.confluence.mod.common.data.saved.ConfluenceData.STAR_PHASES_SIZE;
 
@@ -142,19 +141,18 @@ public class ConfluenceCommand {
     private static int fillPaints(CommandContext<CommandSourceStack> context, int[] list) throws CommandSyntaxException {
         BlockPos start = BlockPosArgument.getLoadedBlockPos(context, "start");
         BlockPos end = BlockPosArgument.getLoadedBlockPos(context, "end");
-        Map<BlockPos, int[]> colors = new Hashtable<>();
-        Set<ChunkPos> chunkPosSet = new HashSet<>();
+        Map<ChunkPos, Map<BlockPos, int[]>> chunkPosMap = new HashMap<>();
         for (BlockPos blockPos : BlockPos.betweenClosed(start, end)) {
-            colors.put(blockPos.immutable(), list);
-            chunkPosSet.add(new ChunkPos(blockPos));
+            chunkPosMap.computeIfAbsent(new ChunkPos(blockPos), pos -> new HashMap<>()).put(blockPos.immutable(), list);
         }
-        BrushData brushData = new BrushData(colors);
         ServerLevel level = context.getSource().getLevel();
         Map<ChunkPos, BrushData> dataMap = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap();
-        for (ChunkPos chunkPos : chunkPosSet) {
+        for (Map.Entry<ChunkPos, Map<BlockPos, int[]>> entry : chunkPosMap.entrySet()) {
+            BrushData brushData = new BrushData(entry.getValue());
+            ChunkPos chunkPos = entry.getKey();
             dataMap.computeIfAbsent(chunkPos, pos -> new BrushData(new Hashtable<>())).merge(brushData);
-            PacketDistributor.sendToPlayersTrackingChunk(level, chunkPos, new BrushingColorPacketS2C(brushData));
+            PacketDistributor.sendToPlayersTrackingChunk(level, chunkPos, new BrushingColorPacketS2C(chunkPos, brushData));
         }
-        return colors.size();
+        return 1;
     }
 }

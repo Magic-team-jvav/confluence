@@ -4,7 +4,6 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.*;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
@@ -12,12 +11,17 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
@@ -25,6 +29,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.common.data.saved.IGlobalData;
+import org.confluence.lib.util.GlobalColors;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.common.CoinItem;
@@ -81,6 +87,15 @@ public class NPCSpawner implements IGlobalData {
      * 生成过的NPC，可用于NPC复活而无需再次满足条件
      */
     private final Set<EntityType<?>> npcSpawned = new HashSet<>();
+    private boolean isAdvancedCombatTechniquesUsed = false; // 先进战斗技术
+
+    public void setAdvancedCombatTechniquesUsed(boolean used) {
+        this.isAdvancedCombatTechniquesUsed = used;
+    }
+
+    public boolean isAdvancedCombatTechniquesUsed() {
+        return isAdvancedCombatTechniquesUsed;
+    }
 
     public int getAliveNpcCount(Region region) {
         Object2BooleanMap<EntityType<?>> map = npcAlive.get(region);
@@ -101,13 +116,16 @@ public class NPCSpawner implements IGlobalData {
         if (alive) npcSpawned.add(entityType);
     }
 
-    public void moveNPCToAnotherRegion(Entity entity, Region from, Region to) {
-        EntityType<?> entityType = entity.getType();
-        if (hasNPCAlive(from, entityType)) {
-            setNPCAlive(from, entityType, false);
-            setNPCAlive(to, entityType, true);
-            if (entity instanceof IAbstractTerraNPC npc) {
+    public void moveNPCToAnotherRegion(LivingEntity living, Region from, Region to) {
+        if (living instanceof IAbstractTerraNPC npc) {
+            EntityType<?> entityType = living.getType();
+            if (hasNPCAlive(from, entityType)) {
+                setNPCAlive(from, entityType, false);
+                setNPCAlive(to, entityType, true);
                 npc.confluence$setRegion(to);
+                if (isAdvancedCombatTechniquesUsed()) {
+                    applyAdvancedCombatTechniques(living);
+                }
             }
         }
     }
@@ -115,11 +133,14 @@ public class NPCSpawner implements IGlobalData {
     /**
      * @return true表示成功添加NPC，false表示该实体不为NPC
      */
-    public boolean onNPCAdded(Entity entity) {
-        if (entity instanceof IAbstractTerraNPC npc) {
-            npc.confluence$setRegion(new Region(entity.chunkPosition()));
-            setNPCAlive(npc.confluence$getRegion(), entity.getType(), true);
-            broadcastMessageToRegion(entity.level(), npc.confluence$getRegion(), Component.translatable("event.confluence.npc.added", entity.getType().getDescription(), entity.getName()).withStyle(ChatFormatting.BLUE));
+    public boolean onNPCAdded(LivingEntity living) {
+        if (living instanceof IAbstractTerraNPC npc) {
+            npc.confluence$setRegion(new Region(living.chunkPosition()));
+            setNPCAlive(npc.confluence$getRegion(), living.getType(), true);
+            if (isAdvancedCombatTechniquesUsed()) {
+                applyAdvancedCombatTechniques(living);
+            }
+            broadcastMessageToRegion(living.level(), npc.confluence$getRegion(), Component.translatable("event.confluence.npc.arrived", living.getType().getDescription(), living.getName()).withColor(GlobalColors.NPC_ARRIVED.getRGB()));
             return true;
         }
         return false;
@@ -128,10 +149,16 @@ public class NPCSpawner implements IGlobalData {
     /**
      * @return true表示成功移除NPC，false表示该实体不为NPC
      */
-    public boolean onNPCRemoved(Entity entity) {
-        if (entity instanceof IAbstractTerraNPC npc) {
-            setNPCAlive(npc.confluence$getRegion(), entity.getType(), false);
-            broadcastMessageToRegion(entity.level(), npc.confluence$getRegion(), Component.translatable("event.confluence.npc.removed", entity.getType().getDescription(), entity.getName()).withStyle(ChatFormatting.BLUE));
+    public boolean onNPCRemoved(LivingEntity living) {
+        if (living instanceof IAbstractTerraNPC npc) {
+            setNPCAlive(npc.confluence$getRegion(), living.getType(), false);
+            MutableComponent message;
+            if (living instanceof AnglerNPC /* todo 或宠物/公主 */) {
+                message = Component.translatable("event.confluence.npc.left", living.getName());
+            } else { // todo 旅商已离去！
+                message = Component.translatable("event.confluence.npc.slain", living.getType().getDescription(), living.getName());
+            }
+            broadcastMessageToRegion(living.level(), npc.confluence$getRegion(), message.withColor(GlobalColors.NPC_SLAIN.getRGB()));
             return true;
         }
         return false;
@@ -139,16 +166,15 @@ public class NPCSpawner implements IGlobalData {
 
     @Override
     public <T> void decode(Dynamic<T> tag) {
-        Dynamic<T> dynamic = tag.get(serializeKey()).orElseEmptyMap();
         npcAlive.clear();
-        dynamic.get("npc_alive").orElseEmptyMap().read(NPC_ALIVE_CODEC).ifSuccess(npcAlive::putAll);
+        tag.get("npc_alive").orElseEmptyMap().read(NPC_ALIVE_CODEC).ifSuccess(npcAlive::putAll);
         npcSpawned.clear();
-        dynamic.get("npc_spawned").orElseEmptyList().read(NPC_SPAWNED_CODEC).ifSuccess(npcSpawned::addAll);
+        tag.get("npc_spawned").orElseEmptyList().read(NPC_SPAWNED_CODEC).ifSuccess(npcSpawned::addAll);
+        this.isAdvancedCombatTechniquesUsed = tag.get("advanced_combat_techniques").asBoolean(false);
     }
 
     @Override
-    public void encode(CompoundTag nbt) {
-        CompoundTag tag = new CompoundTag();
+    public void encode(CompoundTag tag) {
         Iterator<Map.Entry<Region, Object2BooleanMap<EntityType<?>>>> iterator = npcAlive.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<Region, Object2BooleanMap<EntityType<?>>> next = iterator.next();
@@ -157,7 +183,7 @@ public class NPCSpawner implements IGlobalData {
         }
         tag.put("npc_alive", NPC_ALIVE_CODEC.encodeStart(NbtOps.INSTANCE, npcAlive).getOrThrow());
         tag.put("npc_spawned", NPC_SPAWNED_CODEC.encodeStart(NbtOps.INSTANCE, npcSpawned).getOrThrow());
-        nbt.put(serializeKey(), tag);
+        tag.putBoolean("advanced_combat_techniques", isAdvancedCombatTechniquesUsed);
     }
 
     @Override
@@ -169,6 +195,7 @@ public class NPCSpawner implements IGlobalData {
     public void clear() {
         npcAlive.clear();
         npcSpawned.clear();
+        this.isAdvancedCombatTechniquesUsed = false;
     }
 
     public void trySpawnGuide(ServerPlayer serverPlayer) {
@@ -314,13 +341,13 @@ public class NPCSpawner implements IGlobalData {
 
     private boolean spawnAtPos(Level level, BlockPos pos, EntityType<?> entityType) {
         Entity entity = entityType.create(level);
-        if (entity == null) return false;
-        entity.setPos(pos.getCenter());
-        level.addFreshEntity(entity);
-        if (entity instanceof AnglerNPC angler) {
+        if (!(entity instanceof LivingEntity living)) return false;
+        living.setPos(pos.getCenter());
+        level.addFreshEntity(living);
+        if (living instanceof AnglerNPC angler) {
             angler.setWakeUp(true); // 重生的渔夫默认醒来
         }
-        return onNPCAdded(entity);
+        return onNPCAdded(living);
     }
 
     public static BlockPos getNpcSpawnPos(ServerPlayer player) {
@@ -332,6 +359,21 @@ public class NPCSpawner implements IGlobalData {
             if (region.isOnRegion(player.chunkPosition())) {
                 player.sendSystemMessage(message);
             }
+        }
+    }
+
+    /**
+     * 调用前需检查是否已使用过先进战斗技术
+     */
+    public static void applyAdvancedCombatTechniques(LivingEntity living) {
+        AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
+        ResourceLocation id = Confluence.asResource("advanced_combat_techniques");
+        if (armor != null) {
+            armor.addOrReplacePermanentModifier(new AttributeModifier(id, 3, AttributeModifier.Operation.ADD_VALUE));
+        }
+        AttributeInstance attackDamage = living.getAttribute(Attributes.ATTACK_DAMAGE);
+        if (attackDamage != null) {
+            attackDamage.addOrReplacePermanentModifier(new AttributeModifier(id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
         }
     }
 

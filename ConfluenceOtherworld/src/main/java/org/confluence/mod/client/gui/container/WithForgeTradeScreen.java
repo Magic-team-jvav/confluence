@@ -40,6 +40,4 @@ public class WithForgeTradeScreen extends TETradeScreen<NPCTradesForgeMenu> {
             addRenderableWidget(forgeBt);
         }
     }
-
-
 }

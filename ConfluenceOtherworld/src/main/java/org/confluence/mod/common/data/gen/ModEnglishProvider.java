@@ -119,6 +119,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.paradox_interactive_medal.0", "Proof of having played Hearts of Iron, Victoria, Europa Universalis, Crusader Kings, and Cities: Skylines at the same time.");
         add("tooltip.item.confluence.kind_miside_ring.0", "“The ring will lead you to the right direction, dear”");
         add("tooltip.item.confluence.failed_skull.0", "A creeper had its body forcibly transformed by piglins and can explode multiple times. The piglins wanted to use it as a biological weapon to invade the Overworld, but it escaped unexpectedly.");
+        add("tooltip.item.confluence.ice_tofu_brick.0", "它现在不能吃了，但不妨碍它把你吃了");
         add("tooltip.item.confluence.pink_cola.0", "An ordinary bottle of pink cola. Maybe there was a whole case originally?");
         add("tooltip.item.confluence.dongdongs_flatbread.0", "Freshly baked flatbread on the Netherrack. Come and have a taste!");
 
@@ -993,6 +994,20 @@ public class ModEnglishProvider extends LanguageProvider {
         add("dialogs.confluence.angler.4", "Hey! Watch out! I've set a lot of traps for the greatest prank in history! No one will notice! Try telling anyone and see what happens!");
         add("dialogs.confluence.angler.5", "Have you ever heard of a fish that can make noise?! I haven't. I just want to know if you have!");
 
+        add("goblin_tinkerer_like_dye_trader", "Dye Trader understands how fun it is to mix things together, I can respect that!");
+        add("guide_hate_painter", "I hate that Painter is around. The world is fine the way it was made!");
+        add("arms_dealer_hate_demolitionist", "I'd REALLY like to use the Demolitionist as a range target sometime.");
+        add("arms_dealer_love_nurse", "Think Nurse the Nurse ever, ya know, checks me out?");
+        add("angler_like_demolitionist", "the Demolitionist actually knows what they're doing, unlike some OTHER people! I kinda like that!");
+        add("dye_trader_like_arms_dealer", "Arms Dealer has good eyes for vividness and business, I like it, yes?");
+        add("dye_trader_like_painter", "Painter has good eyes for vividness and business, I like it, yes?");
+        add("demolitionist_dislike_arms_dealer", "I wanna strap Arms Dealer to a rocket and watch what happens!");
+        add("demolitionist_dislike_goblin_tinkerer", "I wanna strap Goblin Tinkerer to a rocket and watch what happens!");
+        add("painter_love_dryad", "I would really love to paint Dryad... because of the vivid colors, of course!");
+        add("dryad_dislike_angler", "I don't like that Angler has no respect for other beings.");
+        add("merchant_like_nurse", "Nurse makes loads of money, I like deep pockets.");
+        add("nurse_love_arms_dealer", "What? Arms Dealer? I don't have a crush! I don't! Shut up!");
+        add("nurse_dislike_dryad", "I don't like Dryad that much, kinda weirds me out.");
 
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
         CrateBlocks.BLOCKS.getEntries().forEach(blockAction);

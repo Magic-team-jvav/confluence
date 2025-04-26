@@ -5,7 +5,7 @@
         "moodId": "terra_entity:goblin1",
         "moodInfo": {
           "entity_type": "terra_entity:dye_trader",
-          "info": "like_dye_trader",
+          "info": "goblin_tinkerer_like_dye_trader",
           "mood": "LIKE"
         }
       }
@@ -26,7 +26,7 @@
         "moodId": "terra_entity:guild1",
         "moodInfo": {
           "entity_type": "terra_entity:painter",
-          "info": "fuck_painter",
+          "info": "guide_hate_painter",
           "mood": "HATE"
         }
       }
@@ -47,7 +47,7 @@
         "moodId": "terra_entity:arms_dealer1",
         "moodInfo": {
           "entity_type": "terra_entity:demolitionist",
-          "info": "fuck_demolitionist",
+          "info": "arms_dealer_hate_demolitionist",
           "mood": "HATE"
         }
       },
@@ -55,7 +55,7 @@
         "moodId": "terra_entity:arms_dealer2",
         "moodInfo": {
           "entity_type": "terra_entity:nurse",
-          "info": "love_nurse",
+          "info": "arms_dealer_love_nurse",
           "mood": "LOVER"
         }
       }
@@ -76,7 +76,7 @@
         "moodId": "terra_entity:angler1",
         "moodInfo": {
           "entity_type": "terra_entity:demolitionist",
-          "info": "like_demolitionist",
+          "info": "angler_like_demolitionist",
           "mood": "LIKE"
         }
       }
@@ -97,7 +97,7 @@
         "moodId": "terra_entity:dye_trader1",
         "moodInfo": {
           "entity_type": "terra_entity:arms_dealer",
-          "info": "like_arms_dealer",
+          "info": "dye_trader_like_arms_dealer",
           "mood": "LIKE"
         }
       },
@@ -105,7 +105,7 @@
         "moodId": "terra_entity:dye_trader2",
         "moodInfo": {
           "entity_type": "terra_entity:painter",
-          "info": "like_painter",
+          "info": "dye_trader_like_painter",
           "mood": "LIKE"
         }
       }
@@ -126,7 +126,7 @@
         "moodId": "terra_entity:demolitionist1",
         "moodInfo": {
           "entity_type": "terra_entity:arms_dealer",
-          "info": "dislike_arms_dealer",
+          "info": "demolitionist_dislike_arms_dealer",
           "mood": "DISLIKE"
         }
       },
@@ -134,7 +134,7 @@
         "moodId": "terra_entity:demolitionist2",
         "moodInfo": {
           "entity_type": "terra_entity:goblin_tinkerer",
-          "info": "dislike_goblin_tinkerer",
+          "info": "demolitionist_dislike_goblin_tinkerer",
           "mood": "DISLIKE"
         }
       }
@@ -155,7 +155,7 @@
         "moodId": "terra_entity:painter1",
         "moodInfo": {
           "entity_type": "terra_entity:dryad",
-          "info": "love_dryad",
+          "info": "painter_love_dryad",
           "mood": "LOVER"
         }
       }
@@ -176,7 +176,7 @@
         "moodId": "terra_entity:dryad1",
         "moodInfo": {
           "entity_type": "terra_entity:angler",
-          "info": "dislike_angler",
+          "info": "dryad_dislike_angler",
           "mood": "DISLIKE"
         }
       }
@@ -197,7 +197,7 @@
         "moodId": "terra_entity:merchant1",
         "moodInfo": {
           "entity_type": "terra_entity:nurse",
-          "info": "like_nurse",
+          "info": "merchant_like_nurse",
           "mood": "LIKE"
         }
       }
@@ -218,7 +218,7 @@
         "moodId": "terra_entity:nurse1",
         "moodInfo": {
           "entity_type": "terra_entity:arms_dealer",
-          "info": "love_arms_dealer",
+          "info": "nurse_love_arms_dealer",
           "mood": "LOVER"
         }
       },
@@ -226,7 +226,7 @@
         "moodId": "terra_entity:nurse2",
         "moodInfo": {
           "entity_type": "terra_entity:dryad",
-          "info": "dislike_dryad",
+          "info": "nurse_dislike_dryad",
           "mood": "DISLIKE"
         }
       }

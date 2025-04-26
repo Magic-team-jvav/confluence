@@ -109,6 +109,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.paradox_interactive_medal.0", "同时玩过钢铁雄心、维多利亚、欧陆风云、十字军之王、都市天际线的证明。");
         add("tooltip.item.confluence.kind_miside_ring.0", "“戒指会带你找到正确的方向，亲爱的”");
         add("tooltip.item.confluence.failed_skull.0", "一只苦力怕被猪灵强制改造了身体，可以多次自爆。猪灵想用它作为入侵主世界的生物兵器，却被其意外逃脱");
+        add("tooltip.item.confluence.ice_tofu_brick.0", "它现在不能吃了，但不妨碍它把你吃了");
         add("tooltip.item.confluence.pink_cola.0", "一瓶普通的粉色可乐，或许原来有一整箱？");
         add("tooltip.item.confluence.dongdongs_flatbread.0", "刚在下界岩上考好的饼，快来尝尝吧！");
 
@@ -1065,6 +1066,22 @@ public class ModChineseProvider extends LanguageProvider {
         add("dialogs.confluence.angler.3", "我没有妈妈，也没有爸爸，但我有很多鱼！这就够了！");
         add("dialogs.confluence.angler.4", "嘿！当心！我设了许多陷阱，用来实施史上最大的恶作剧！没人会发觉！你敢告诉别人试试！");
         add("dialogs.confluence.angler.5", "听说过会叫的鱼吗？！我没听说过，只是想知道你听说过没！");
+
+        add("goblin_tinkerer_like_dye_trader", "染料商知道把东西混在一起是多么有趣，我能理解！");
+        add("guide_hate_painter", "我讨厌油漆工在附近。世界本来挺美好的！");
+        add("arms_dealer_hate_demolitionist", "爆破专家怎么回事啊？难道他没发现我们卖的东西完全不同？");
+        add("arms_dealer_love_nurse", "那啥，你觉得护士对我有意思吗");
+        add("angler_like_demolitionist", "爆破专家其实知道他们在做什么，不像某些其他人！我挺喜欢的！");
+        add("dye_trader_like_arms_dealer", "军火商善于发现鲜艳的颜色和商机，对吧？我喜欢。");
+        add("dye_trader_like_painter", "油漆工善于发现鲜艳的颜色和商机，对吧？我喜欢。”");
+        add("demolitionist_dislike_arms_dealer", "我想把军火商绑到火箭上，看看会发生什么！");
+        add("demolitionist_dislike_goblin_tinkerer", "我想把哥布林工匠绑到火箭上，看看会发生什么！");
+        add("painter_love_dryad", "我真的很想画树妖……当然是因为色彩鲜艳！");
+        add("dryad_dislike_angler", "我不喜欢渔夫不尊重其他生物。");
+        add("merchant_like_nurse", "护士赚了很多钱，我喜欢有钱人。");
+        add("nurse_love_arms_dealer", "什么？军火商？我才没有暗恋他！我没有！闭嘴！");
+        add("nurse_dislike_dryad", "我不太喜欢树妖，这个人有点奇怪。");
+
 
 
 

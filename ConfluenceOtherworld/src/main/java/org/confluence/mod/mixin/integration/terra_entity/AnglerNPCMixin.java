@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = AnglerNPC.class, remap = false)
 public abstract class AnglerNPCMixin implements SelfGetter<AnglerNPC> {
-    @Inject(method = "mobInteract", at = @At(value = "INVOKE", target = "Lorg/confluence/terraentity/entity/npc/AnglerNPC;setWakeUp(Z)V"))
+    @Inject(method = "mobInteract", at = @At(value = "RETURN", ordinal = 0))
     private void setAnglerAdded(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
         if (player instanceof ServerPlayer serverPlayer) {
             AnglerNPC npc = confluence$self();

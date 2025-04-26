@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.gen;
 
+import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
@@ -144,7 +145,10 @@ public class ModItemModelProvider extends ItemModelProvider {
         String path = deferredItem.getId().getPath();
         getBuilder(path).customLoader((builder, helper) -> {
             ResourceLocation texture = Confluence.asResource("item/" + parentPath + path);
-            ItemModelBuilder standaloneModel = new ItemModelBuilder(Confluence.asResource("item/" + path + "_inventory"), existingFileHelper).parent(itemGenerated).texture("layer0", texture.withSuffix("_inventory"));
+            ItemModelBuilder standaloneModel = new ItemModelBuilder(Confluence.asResource("item/" + path + "_inventory"), existingFileHelper)
+                    .parent(itemGenerated)
+                    .texture("layer0", texture.withSuffix("_inventory"))
+                    .guiLight(BlockModel.GuiLight.FRONT);
             return SeparateTransformsModelBuilder.begin(builder, existingFileHelper)
                     .base(new ItemModelBuilder(Confluence.asResource("item/" + path + "_base"), existingFileHelper).parent(parentModel).texture("layer0", texture))
                     .perspective(ItemDisplayContext.HEAD, standaloneModel)

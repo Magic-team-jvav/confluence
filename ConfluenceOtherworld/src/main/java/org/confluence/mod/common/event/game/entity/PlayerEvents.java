@@ -55,6 +55,7 @@ import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
+import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 
 import static org.confluence.mod.api.event.MinecartAbilityEvent.DismountOnMinecart;
 import static org.confluence.mod.api.event.MinecartAbilityEvent.RightClickRailBlock;
@@ -341,8 +342,14 @@ public final class PlayerEvents {
 
     @SubscribeEvent
     public static void startTracking(PlayerEvent.StartTracking event) {
-        if (event.getEntity() instanceof ServerPlayer serverPlayer && event.getTarget() instanceof ServerPlayer player) {
-            ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, player, player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
+        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
+            if (event.getTarget() instanceof ServerPlayer player) {
+                ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, player, player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
+            } else if (NPCSpawner.INSTANCE.isAdvancedCombatTechniquesUsed()) {
+                if (event.getTarget() instanceof AbstractTerraNPC npc) {
+                    NPCSpawner.INSTANCE.applyAdvancedCombatTechniques(npc);
+                }
+            }
         }
     }
 }

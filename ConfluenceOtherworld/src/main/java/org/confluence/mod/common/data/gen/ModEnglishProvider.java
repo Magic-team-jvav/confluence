@@ -89,6 +89,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.safe.0", "Can be used to store your items");
         add("tooltip.item.confluence.safe.1", "Stored items can only be accessed by you");
         add("tooltip.item.confluence.echo_block.0", "Only visible with Echo Sight");
+        add("tooltip.item.confluence.advanced_combat_techniques.0", "Increases the defense and strength of all villagers");
+        add("tooltip.item.confluence.advanced_combat_techniques.1", "'Contains offensive and defensive fighting techniques'");
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
         add("tooltip.item.confluence.slime_crown.1", "A small crown that seems to be prepared for the coronation ceremony of those cute and harmless gel - like creatures.");

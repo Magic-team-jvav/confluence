@@ -162,7 +162,7 @@ public class NPCSpawner implements IGlobalData {
         this.isAdvancedCombatTechniquesUsed = tag.get("advanced_combat_techniques").asBoolean(false);
     }
 
-    private void applyAdvancedCombatTechniques(LivingEntity living) {
+    public void applyAdvancedCombatTechniques(LivingEntity living) {
         if (isAdvancedCombatTechniquesUsed()) {
             AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
             ResourceLocation id = Confluence.asResource("advanced_combat_techniques");

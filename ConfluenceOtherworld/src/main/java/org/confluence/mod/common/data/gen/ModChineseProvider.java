@@ -79,6 +79,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.safe.0", "可用来储存你的物品");
         add("tooltip.item.confluence.safe.1", "储存的物品只有你能存取");
         add("tooltip.item.confluence.echo_block.0", "只在回声视觉下才能看到");
+        add("tooltip.item.confluence.advanced_combat_techniques.0", "增强所有城镇居民的防御力和力量");
+        add("tooltip.item.confluence.advanced_combat_techniques.1", "“包含攻防战斗技能”");
 
         add("tooltip.item.confluence.slime_crown.0", "右键使用以召唤史莱姆王");
         add("tooltip.item.confluence.slime_crown.1", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");
@@ -2262,6 +2264,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.LIFE_FRUIT.get(), "生命果");
         add(ConsumableItems.ROTTEN_BONE_DUST.get(), "朽骨齑尘");
         add(ConsumableItems.BLOODSTAINED_POWDER.get(), "血凝痂粉");
+        add(ConsumableItems.ADVANCED_COMBAT_TECHNIQUES.get(), "先进战斗技术");
 
         add(TreasureBagItems.KING_SLIME_TREASURE_BAG.get(), "史莱姆王宝藏袋");
         add(TreasureBagItems.EYE_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之眼宝藏袋");

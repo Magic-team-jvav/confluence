@@ -1,6 +1,0 @@
-{
-    "parent": "minecraft:item/handheld",
-    "textures": {
-        "layer0": "confluence:item/axe/war_axe_of_the_night_inventory"
-    }
-}

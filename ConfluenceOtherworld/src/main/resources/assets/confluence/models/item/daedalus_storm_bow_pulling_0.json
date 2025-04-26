@@ -1,6 +1,0 @@
-{
-    "parent": "confluence:item/copper_bow",
-    "textures": {
-        "layer0": "confluence:item/bow/daedalus_storm_bow_pulling_0"
-    }
-}

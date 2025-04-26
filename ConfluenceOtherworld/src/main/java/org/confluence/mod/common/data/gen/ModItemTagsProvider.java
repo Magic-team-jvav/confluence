@@ -741,11 +741,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         AccessoryItems.acceptTags(this);
         tag(ModTags.Items.AMMO)
+                .add(Items.FIREWORK_ROCKET, MaterialItems.FALLING_STAR.get())
                 .addTag(ItemTags.ARROWS)
-                .addTag(TGTags.AMMO)
-                .add(Items.FIREWORK_ROCKET, MaterialItems.FALLING_STAR.get());
+                .addOptionalTag(TGTags.AMMO);
         IntrinsicTagAppender<Item> dye = tag(ModTags.Items.DYE);
-        VanityArmorItems.DYE_ITEMS.forEach(dye::add);
+        VanityArmorItems.DYE_ITEMS.forEach(item -> dye.add(item.get()));
         dye.add(VanityArmorItems.TEAM_DYE.get());
 
         // Bow 附魔

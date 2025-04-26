@@ -811,9 +811,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("event.confluence.hardmode_conversion.started", "Conversation data is ready, and the conversion is begining");
         add("event.confluence.hardmode_conversion.finished", "\"The ancient spirits of light and dark have been released.\"");
         add("event.confluence.hardmode_conversion.welcome", "Welcome to Terraria");
-        add("event.confluence.npc.arrived", "%s,the %s has arrived!");
-        add("event.confluence.npc.slain", "%s,the %s was slain...");
-        add("event.confluence.npc.left", "%s,the %s has left!");
+        add("event.confluence.npc.arrived", "The %s, %s has arrived!");
+        add("event.confluence.npc.slain", "The %s, %s was slain...");
+        add("event.confluence.npc.left", "%s has left!");
         add("event.confluence.npc.departed", "%s the Traveling Merchant has departed!");
 
         add("entity.minecraft.villager.confluence.sky_miller", "Sky Miller");

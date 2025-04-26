@@ -122,7 +122,9 @@ public class NPCSpawner implements IGlobalData {
                 setNPCAlive(from, entityType, false);
                 setNPCAlive(to, entityType, true);
                 npc.confluence$setRegion(to);
-                applyAdvancedCombatTechniques(living);
+                if (isAdvancedCombatTechniquesUsed()) {
+                    applyAdvancedCombatTechniques(living);
+                }
             }
         }
     }
@@ -134,7 +136,9 @@ public class NPCSpawner implements IGlobalData {
         if (living instanceof IAbstractTerraNPC npc) {
             npc.confluence$setRegion(new Region(living.chunkPosition()));
             setNPCAlive(npc.confluence$getRegion(), living.getType(), true);
-            applyAdvancedCombatTechniques(living);
+            if (isAdvancedCombatTechniquesUsed()) {
+                applyAdvancedCombatTechniques(living);
+            }
             broadcastMessageToRegion(living.level(), npc.confluence$getRegion(), Component.translatable("event.confluence.npc.added", living.getType().getDescription(), living.getName()).withStyle(ChatFormatting.BLUE));
             return true;
         }
@@ -160,20 +164,6 @@ public class NPCSpawner implements IGlobalData {
         npcSpawned.clear();
         tag.get("npc_spawned").orElseEmptyList().read(NPC_SPAWNED_CODEC).ifSuccess(npcSpawned::addAll);
         this.isAdvancedCombatTechniquesUsed = tag.get("advanced_combat_techniques").asBoolean(false);
-    }
-
-    public void applyAdvancedCombatTechniques(LivingEntity living) {
-        if (isAdvancedCombatTechniquesUsed()) {
-            AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
-            ResourceLocation id = Confluence.asResource("advanced_combat_techniques");
-            if (armor != null) {
-                armor.addOrReplacePermanentModifier(new AttributeModifier(id, 3, AttributeModifier.Operation.ADD_VALUE));
-            }
-            AttributeInstance attackDamage = living.getAttribute(Attributes.ATTACK_DAMAGE);
-            if (attackDamage != null) {
-                attackDamage.addOrReplacePermanentModifier(new AttributeModifier(id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-            }
-        }
     }
 
     @Override
@@ -362,6 +352,21 @@ public class NPCSpawner implements IGlobalData {
             if (region.isOnRegion(player.chunkPosition())) {
                 player.sendSystemMessage(message);
             }
+        }
+    }
+
+    /**
+     * 调用前需检查是否已使用过先进战斗技术
+     */
+    public static void applyAdvancedCombatTechniques(LivingEntity living) {
+        AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
+        ResourceLocation id = Confluence.asResource("advanced_combat_techniques");
+        if (armor != null) {
+            armor.addOrReplacePermanentModifier(new AttributeModifier(id, 3, AttributeModifier.Operation.ADD_VALUE));
+        }
+        AttributeInstance attackDamage = living.getAttribute(Attributes.ATTACK_DAMAGE);
+        if (attackDamage != null) {
+            attackDamage.addOrReplacePermanentModifier(new AttributeModifier(id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
         }
     }
 

@@ -215,21 +215,18 @@ public class HardmodeConvertor implements IGlobalData {
     @Override
     public <T> void decode(Dynamic<T> tag) {
         this.shouldContinue = false;
-        Dynamic<T> dynamic = tag.get(serializeKey()).orElseEmptyMap();
-        dynamic.get("sanctification").orElseEmptyList().read(SANCTIFICATION_CODEC).ifSuccess(result -> this.sanctification = result);
-        this.started = dynamic.get("started").asBoolean(false);
-        this.completed = dynamic.get("completed").asBoolean(false);
+        tag.get("sanctification").orElseEmptyList().read(SANCTIFICATION_CODEC).ifSuccess(result -> this.sanctification = result);
+        this.started = tag.get("started").asBoolean(false);
+        this.completed = tag.get("completed").asBoolean(false);
         this.shouldContinue = true;
     }
 
     @Override
-    public void encode(CompoundTag nbt) {
+    public void encode(CompoundTag tag) {
         this.shouldContinue = false;
-        CompoundTag tag = new CompoundTag();
         tag.put("sanctification", SANCTIFICATION_CODEC.encodeStart(NbtOps.INSTANCE, sanctification).getOrThrow());
         tag.putBoolean("started", started);
         tag.putBoolean("completed", completed);
-        nbt.put(serializeKey(), tag);
         this.shouldContinue = true;
     }
 

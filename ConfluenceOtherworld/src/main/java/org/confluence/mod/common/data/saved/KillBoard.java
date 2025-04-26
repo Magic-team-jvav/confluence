@@ -62,12 +62,12 @@ public class KillBoard implements IGlobalData {
     @Override
     public <T> void decode(Dynamic<T> tag) {
         defeatedMap.clear();
-        tag.get(serializeKey()).orElseEmptyMap().read(DEFEATED_MAP_CODEC).ifSuccess(defeatedMap::putAll);
+        tag.get("defeated_map").orElseEmptyMap().read(DEFEATED_MAP_CODEC).ifSuccess(defeatedMap::putAll);
     }
 
     @Override
-    public void encode(CompoundTag nbt) {
-        nbt.put(serializeKey(), DEFEATED_MAP_CODEC.encodeStart(NbtOps.INSTANCE, defeatedMap).getOrThrow());
+    public void encode(CompoundTag tag) {
+        tag.put("defeated_map", DEFEATED_MAP_CODEC.encodeStart(NbtOps.INSTANCE, defeatedMap).getOrThrow());
     }
 
     @Override

@@ -39,11 +39,24 @@ public class DungeonStructure extends Structure {
             "dungeon/blue_house_5",
             "dungeon/blue_house_6"
     };
+    public static final String[] corners = new String[]{
+            "dungeon/blue_house_corner_0",
+            "dungeon/blue_house_corner_1"
+    };
+    public static final String[] cornersIn = new String[]{
+            "dungeon/blue_house_corner_in_0",
+            "dungeon/blue_house_corner_in_1",
+            "dungeon/blue_house_corner_in_2",
+            "dungeon/blue_house_corner_in_3",
+            "dungeon/blue_house_corner_in_4",
+            "dungeon/blue_house_corner_in_5"
+    };
     public static final String[] bridge = new String[]{
             "dungeon/blue_bridge_0",
             "dungeon/blue_bridge_1"
     };
     public static final String stairs = "dungeon/blue_stairs";
+    public static final String gate = "dungeon/dungeon_gate";
 
     protected DungeonStructure(StructureSettings settings) {
         super(settings);
@@ -66,6 +79,7 @@ public class DungeonStructure extends Structure {
             BooleanStorage4 value;
             BooleanStorage4 valueB;
             Map<BlockPos, Integer> houseMap = new HashMap<>();
+            Map<BlockPos, Integer> cornersInMap = new HashMap<>();
             Map<BlockPos, Integer> bridgeMap = new HashMap<>();
             BlockPos mazeRotatePos;
             BlockPos houseKey;
@@ -75,6 +89,21 @@ public class DungeonStructure extends Structure {
 
             Rotation rotation = Util.getRandom(Rotation.values(), random);
             List<Vector3d> firstChannel = new ArrayList<>();
+            List<Integer> housesList = new ArrayList<>();
+            int goldenCount = random.nextInt(7, 9);
+            int commonCount = random.nextInt(5, 7);
+            int clockCount = random.nextInt(4, 7);
+
+            for (int i = 0; i < goldenCount; i++) {
+                housesList.add(2);
+            }
+            for (int i = 0; i < commonCount; i++) {
+                housesList.add(0);
+            }
+            for (int i = 0; i < clockCount; i++) {
+                housesList.add(1);
+            }
+
             Vector3d vct = new Vector3d(centerPos.getX(), centerPos.getY() - 4, centerPos.getZ());
             firstChannel.add(vct);
             vct = new Vector3d(centerPos.getX(), random.nextInt(-25, -10), centerPos.getZ());
@@ -179,11 +208,30 @@ public class DungeonStructure extends Structure {
                     houseMap.put(mazeRotatePos.offset(12, -1, -12), 7);
                 }
 
+                if (!value.get(0) && !value.get(1)) {
+                    cornersInMap.put(mazeRotatePos.offset(12, -1, 12), 0);
+                }
+                if (!value.get(1) && !value.get(2)) {
+                    cornersInMap.put(mazeRotatePos.offset(-12, -1, 12), 1);
+                }
+                if (!value.get(2) && !value.get(3)) {
+                    cornersInMap.put(mazeRotatePos.offset(-12, -1, -12), 2);
+                }
+                if (!value.get(3) && !value.get(0)) {
+                    cornersInMap.put(mazeRotatePos.offset(12, -1, -12), 3);
+                }
+
                 if (!value.get(0) && !value.get(2) && !(value.get(0) && value.get(2) && value.get(1) && value.get(3)) && random.nextBoolean() && ((mazeRotatePos.getX() != underCenter.getX()) || (mazeRotatePos.getX() != underCenter.getX()))) {
                     bridgeMap.put(mazeRotatePos.offset(13, -1, 5), 1);
                 }
                 if (!value.get(1) && !value.get(3) && !(value.get(0) && value.get(2) && value.get(1) && value.get(3)) && random.nextBoolean() && ((mazeRotatePos.getX() != underCenter.getX()) || (mazeRotatePos.getX() != underCenter.getX()))) {
                     bridgeMap.put(mazeRotatePos.offset(-5, 0, 13), 0);
+                }
+            }
+
+            for (Map.Entry<BlockPos, Integer> entry : houseMap.entrySet()) {
+                if ((entry.getValue() < 4) && (housesList.size() < houseMap.size())) {
+                    housesList.add(random.nextInt(housesList.size() + 1), random.nextInt(3, houses.length));
                 }
             }
 
@@ -203,31 +251,97 @@ public class DungeonStructure extends Structure {
             StructureTemplateManager manager = context.structureTemplateManager();
             switch (rotation) {
                 case CLOCKWISE_90 ->
-                        builder.addPiece(new SimpleTemplatePiece(manager, "dungeon/dungeon_gate", centerPos.offset(15, -3, -23), true, true, Rotation.CLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(15, -3, -23), true, true, Rotation.CLOCKWISE_90));
                 case CLOCKWISE_180 ->
-                        builder.addPiece(new SimpleTemplatePiece(manager, "dungeon/dungeon_gate", centerPos.offset(23, -3, 15), true, true, Rotation.CLOCKWISE_180));
+                        builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(23, -3, 15), true, true, Rotation.CLOCKWISE_180));
                 case COUNTERCLOCKWISE_90 ->
-                        builder.addPiece(new SimpleTemplatePiece(manager, "dungeon/dungeon_gate", centerPos.offset(-15, -3, 23), true, true, Rotation.COUNTERCLOCKWISE_90));
-                default -> builder.addPiece(new SimpleTemplatePiece(manager, "dungeon/dungeon_gate", centerPos.offset(-23, -3, -15), true, true, Rotation.NONE));
+                        builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(-15, -3, 23), true, true, Rotation.COUNTERCLOCKWISE_90));
+                default -> builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(-23, -3, -15), true, true, Rotation.NONE));
             }
+
+            int listCount = 0;
 
             for (Map.Entry<BlockPos, Integer> entry : houseMap.entrySet()) {
                 houseKey = entry.getKey();
                 houseValue = entry.getValue();
                 switch (houseValue) {
-                    case 4, 5, 6, 7:
+                    case 4:
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners, random), houseKey.offset(-1, 0, -1), false, false, Rotation.NONE));
+                        break;
+                    case 5:
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners, random), houseKey.offset(1, 0, -1), false, false, Rotation.CLOCKWISE_90));
+                        break;
+                    case 6:
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners, random), houseKey.offset(1, 0, 1), false, false, Rotation.CLOCKWISE_180));
+                        break;
+                    case 7:
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners, random), houseKey.offset(-1, 0, 1), false, false, Rotation.COUNTERCLOCKWISE_90));
+                        break;
+                    case 8:
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 0, -1), true, false, Rotation.NONE));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 6, -1), true, false, Rotation.NONE));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 12, -1), true, false, Rotation.NONE));
+                        break;
+                    case 9:
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 0, -1), true, false, Rotation.CLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 6, -1), true, false, Rotation.CLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 12, -1), true, false, Rotation.CLOCKWISE_90));
+                        break;
+                    case 10:
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 0, 1), true, false, Rotation.CLOCKWISE_180));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 6, 1), true, false, Rotation.CLOCKWISE_180));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 12, 1), true, false, Rotation.CLOCKWISE_180));
+                        break;
+                    case 11:
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 0, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 6, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 12, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
                         break;
                     case 0:
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(houses, random), houseKey.offset(-1, 0, -1), false, false, Rotation.NONE));
+                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(-1, 0, -1), false, false, Rotation.NONE));
+                        listCount++;
                         break;
                     case 1:
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(houses, random), houseKey.offset(1, 0, -1), false, false, Rotation.CLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(1, 0, -1), false, false, Rotation.CLOCKWISE_90));
+                        listCount++;
                         break;
                     case 2:
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(houses, random), houseKey.offset(1, 0, 1), false, false, Rotation.CLOCKWISE_180));
+                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(1, 0, 1), false, false, Rotation.CLOCKWISE_180));
+                        listCount++;
                         break;
                     default:
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(houses, random), houseKey.offset(-1, 0, 1), false, false, Rotation.COUNTERCLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(-1, 0, 1), false, false, Rotation.COUNTERCLOCKWISE_90));
+                        listCount++;
+                }
+            }
+
+            for (Map.Entry<BlockPos, Integer> entry : cornersInMap.entrySet()) {
+                houseKey = entry.getKey();
+                houseValue = entry.getValue();
+                switch (houseValue) {
+                    case 0:
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 18, -1), true, false, Rotation.NONE));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 12, -1), true, false, Rotation.NONE));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 6, -1), true, false, Rotation.NONE));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 0, -1), true, false, Rotation.NONE));
+                        break;
+                    case 1:
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 18, -1), true, false, Rotation.CLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 12, -1), true, false, Rotation.CLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 6, -1), true, false, Rotation.CLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 0, -1), true, false, Rotation.CLOCKWISE_90));
+                        break;
+                    case 2:
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 18, 1), true, false, Rotation.CLOCKWISE_180));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 12, 1), true, false, Rotation.CLOCKWISE_180));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 6, 1), true, false, Rotation.CLOCKWISE_180));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 0, 1), true, false, Rotation.CLOCKWISE_180));
+                        break;
+                    default:
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 18, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 12, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 6, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 0, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
                 }
             }
 

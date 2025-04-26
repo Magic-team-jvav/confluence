@@ -149,8 +149,9 @@ public class ConfluenceCommand {
         Map<ChunkPos, BrushData> dataMap = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap();
         for (Map.Entry<ChunkPos, Map<BlockPos, int[]>> entry : chunkPosMap.entrySet()) {
             BrushData brushData = new BrushData(entry.getValue());
-            dataMap.computeIfAbsent(entry.getKey(), pos -> new BrushData(new Hashtable<>())).merge(brushData);
-            PacketDistributor.sendToPlayersTrackingChunk(level, entry.getKey(), new BrushingColorPacketS2C(brushData));
+            ChunkPos chunkPos = entry.getKey();
+            dataMap.computeIfAbsent(chunkPos, pos -> new BrushData(new Hashtable<>())).merge(brushData);
+            PacketDistributor.sendToPlayersTrackingChunk(level, chunkPos, new BrushingColorPacketS2C(chunkPos, brushData));
         }
         return 1;
     }

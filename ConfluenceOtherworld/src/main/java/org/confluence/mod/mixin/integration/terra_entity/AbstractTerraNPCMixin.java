@@ -6,6 +6,7 @@ import net.minecraft.nbt.NbtOps;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.mixed.IAbstractTerraNPC;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
+import org.confluence.terraentity.entity.npc.house.House;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,5 +38,10 @@ public abstract class AbstractTerraNPCMixin implements IAbstractTerraNPC {
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
     private void save(CompoundTag tag, CallbackInfo ci) {
         tag.put("confluence:region", NPCSpawner.Region.CODEC.encodeStart(NbtOps.INSTANCE, confluence$region).getOrThrow());
+    }
+
+    @Inject(method = "setHouse", at = @At("HEAD"))
+    private void setRegion(House house, CallbackInfo ci) {
+        confluence$setRegion(new NPCSpawner.Region(house.center()));
     }
 }

@@ -44,8 +44,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         separateModel(HammerItems.THE_BREAKER, templateReverse24x, "hammer/");
         separateModel(AxeItems.WAR_AXE_OF_THE_NIGHT, templateReverse24x, "axe/");
 
+        ResourceLocation templateDye = Confluence.asResource("item/template_dye");
         for (DeferredHolder<Item, ? extends Item> item : VanityArmorItems.DYE_ITEMS) {
-            withExistingParent(item.getId().getPath(), Confluence.asResource("item/template_dye"));
+            withExistingParent(item.getId().getPath(), templateDye);
             skip.add(item);
         }
 

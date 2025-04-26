@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -27,6 +28,7 @@ public class CorruptedOvariesBlock extends Block {
     @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (entity instanceof LivingEntity livingEntity) {
+            if (!livingEntity.getItemBySlot(EquipmentSlot.LEGS).isEmpty()) return;
             entity.makeStuckInBlock(state, new Vec3(0.8F, 0.75, 0.8F));
             if (!level.isClientSide && (entity.xOld != entity.getX() || entity.zOld != entity.getZ())) {
                 double d0 = Math.abs(entity.getX() - entity.xOld);
@@ -35,12 +37,11 @@ public class CorruptedOvariesBlock extends Block {
                     entity.hurt(level.damageSources().magic(), 3.0F);
                     if (level.random.nextFloat() < 0.15F) {
                         livingEntity.addEffect(new MobEffectInstance(TEEffects.DEMONIC_THOUGHTS, 200));
+                    }
                 }
-            }
             }
         }
     }
-
 
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {

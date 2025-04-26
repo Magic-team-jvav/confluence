@@ -27,7 +27,7 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
+import org.confluence.terraentity.init.TETags;
 
 import java.util.List;
 import java.util.Map;
@@ -100,7 +100,7 @@ public class CorrodedWormRootsBlock extends Block {
                 player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 1000, 1));
                 player.addEffect(new MobEffectInstance(MobEffects.POISON, 1000, 1));
                 List<Mob> corruptEntity = level.getEntitiesOfClass(Mob.class, new AABB(pos).inflate(radius),
-                        e -> e.getType() == TEMonsterEntities.EATER_OF_SOULS.get() || e.getType() == TEMonsterEntities.DECAYEDER.get() || e.getType() == TEMonsterEntities.DEVOURER.get());
+                        e -> e.getType().is(TETags.EntityTypes.CORRUPT));
                 corruptEntity.forEach(e -> e.setTarget(player));
             }
         }

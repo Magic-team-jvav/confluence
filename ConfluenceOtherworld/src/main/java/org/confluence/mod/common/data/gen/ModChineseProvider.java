@@ -1603,6 +1603,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(LightPetItems.SHADOW_ORB.get(), "暗影珠");
         add(LightPetItems.CRIMSON_HEART.get(), "猩红心脏");
+        add(LightPetItems.MAGIC_LANTERN.get(), "魔法灯笼");
 
         add(DecorativeBlocks.RUBY_BLOCK.get(), "红玉块");
         add(DecorativeBlocks.AMBER_BLOCK.get(), "琥珀块");

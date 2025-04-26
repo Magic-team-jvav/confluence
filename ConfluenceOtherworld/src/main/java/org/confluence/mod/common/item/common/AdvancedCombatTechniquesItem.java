@@ -27,7 +27,7 @@ public class AdvancedCombatTechniquesItem extends TooltipItem {
             if (!NPCSpawner.INSTANCE.isAdvancedCombatTechniquesUsed()) {
                 NPCSpawner.INSTANCE.setAdvancedCombatTechniquesUsed(true);
                 serverLevel.getEntities().get(EntityTypeTest.forClass(AbstractTerraNPC.class), npc -> {
-                    NPCSpawner.INSTANCE.applyAdvancedCombatTechniques(npc);
+                    NPCSpawner.applyAdvancedCombatTechniques(npc);
                     return AbortableIterationConsumer.Continuation.CONTINUE;
                 });
                 if (!player.getAbilities().instabuild) {

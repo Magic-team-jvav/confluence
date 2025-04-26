@@ -347,7 +347,7 @@ public final class PlayerEvents {
                 ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, player, player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
             } else if (NPCSpawner.INSTANCE.isAdvancedCombatTechniquesUsed()) {
                 if (event.getTarget() instanceof AbstractTerraNPC npc) {
-                    NPCSpawner.INSTANCE.applyAdvancedCombatTechniques(npc);
+                    NPCSpawner.applyAdvancedCombatTechniques(npc);
                 }
             }
         }

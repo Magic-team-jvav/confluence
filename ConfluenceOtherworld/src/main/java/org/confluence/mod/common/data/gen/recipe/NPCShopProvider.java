@@ -161,17 +161,17 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(TradeTask.create(
                         DynamicAnglerTradeTask.builder(
                                         ItemTradeLootTable.builder()
-                                                .addCost(CrateBlocks.WOODEN_CRATE.get(),1) //在没有任务鱼机制前，用木匣代替
+                                                .addCost(CrateBlocks.WOODEN_CRATE.toStack().getItem(),1) //在没有任务鱼机制前，用木匣代替
                                                 .setLootTable(TerraEntity.fromSpaceAndPath("confluence", "gameplay/fishing_quests_0"))
                                                 .setSprite(TerraEntity.space("random_gift"))
                                                 .build(),
                                         List.of(Items.DIRT.getDefaultInstance(), Items.ICE.getDefaultInstance(), Items.EMERALD.getDefaultInstance())
                                 )
-                                .addResult(10, List.of(ArmorItems.ANGLER_HAT.get().getDefaultInstance()))
-                                .addResult(15, List.of(ArmorItems.ANGLER_VEST.get().getDefaultInstance()))
-                                .addResult(20, List.of(ArmorItems.ANGLER_PANTS.get().getDefaultInstance()))
-                                .addResult(25, List.of(ToolItems.BOTTOMLESS_WATER_BUCKET.get().getDefaultInstance()))
-                                .addResult(30, List.of(FishingPoleItems.GOLDEN_FISHING_ROD.get().getDefaultInstance()))
+                                .addResult(10, List.of(ArmorItems.ANGLER_HAT.toStack()))
+                                .addResult(15, List.of(ArmorItems.ANGLER_VEST.toStack()))
+                                .addResult(20, List.of(ArmorItems.ANGLER_PANTS.toStack()))
+                                .addResult(25, List.of(ToolItems.BOTTOMLESS_WATER_BUCKET.toStack()))
+                                .addResult(30, List.of(FishingPoleItems.GOLDEN_FISHING_ROD.toStack()))
 //                                .setTitle("title.terra_entity.npc_trade.task.fishman")
                                 .build()
                 ))

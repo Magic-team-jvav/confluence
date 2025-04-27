@@ -89,6 +89,7 @@ public final class ModEvents {
     public static void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             CommonConfigs.onLoad();
+            ModGunProperties.init();
             Confluence.registerGameRules();
             ModFluids.registerInteraction();
             ModFluids.registerShimmerTransform();

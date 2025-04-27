@@ -10,6 +10,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.item.ArmorItems;
+import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.terra_curio.common.init.TCAttributes;
 
 public class MeteorSet extends EquipmentSet {
@@ -27,10 +28,9 @@ public class MeteorSet extends EquipmentSet {
                         VanillaEquippable.LEGS, ArmorItems.METEOR_LEGGINGS,
                         VanillaEquippable.FEET, ArmorItems.METEOR_BOOTS
                 ).bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> {
-                    //TODO 枪！
-//                    if (itemStack.is(ManaWeaponItems.SPACE_GUN.get())) {
-//                        return () -> 0;
-//                    }
+                    if (itemStack.is(ManaWeaponItems.SPACE_GUN.get())) {
+                        return () -> 0;
+                    }
                     return original;
                 }).build());
     }

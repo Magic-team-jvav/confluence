@@ -160,10 +160,9 @@ public final class ModTabs {
                         Consumer<DeferredHolder<Item, ? extends Item>> action = item -> output.accept(item.get());
                         BowItems.ITEMS.getEntries().forEach(action);
                         ArrowItems.ITEMS.getEntries().forEach(action);
-                        //TODO 枪！
                         TGItems.GUNS.getEntries().forEach(action);
-//                        output.accept(ManaWeaponItems.BEE_GUN.get());
-//                        output.accept(ManaWeaponItems.SPACE_GUN.get());
+                        output.accept(ManaWeaponItems.BEE_GUN.get());
+                        output.accept(ManaWeaponItems.SPACE_GUN.get());
                         TGItems.BULLETS.getEntries().forEach(action);
                     }).withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "mages")).withTabsBefore(WARRIORS.getId()).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAGES = TABS.register("mages",

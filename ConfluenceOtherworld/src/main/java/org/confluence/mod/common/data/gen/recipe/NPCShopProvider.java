@@ -67,7 +67,6 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 
 
         shop(TENpcEntities.GUIDE.getId()).addRecipe(new Builder()
-                //TODO 枪！
                 //旅商的       .add(AccessoryItems.PAINT_SPRAYER.get())
                 //.add(TCItems.PORTABLE_CEMENT_MIXER.get())
                 //.add(TCItems.EXTENDO_GRIP.get())

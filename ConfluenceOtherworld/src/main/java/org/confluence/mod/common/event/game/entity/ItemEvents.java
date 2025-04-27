@@ -12,10 +12,15 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.item.gun.ManaGunItem;
+import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
+import org.confluence.terra_guns.api.event.GunEvent;
 
 import java.util.Collection;
 import java.util.Map;
@@ -54,6 +59,14 @@ public final class ItemEvents {
             itemEntity.level().addFreshEntity(entity);
             itemEntity.discard();
             event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void gunFire(GunEvent.GunFireEvent event){
+        if (event.getGun() instanceof ManaGunItem manaGunItem) {
+            ManaStorage manaStorage = event.getPlayer().getData(ModAttachmentTypes.MANA_STORAGE);
+            event.setAlwaysFire(manaStorage.getCurrentMana() >= manaGunItem.getManaCost());
         }
     }
 }

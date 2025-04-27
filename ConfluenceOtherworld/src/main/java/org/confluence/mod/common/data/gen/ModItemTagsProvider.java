@@ -1492,6 +1492,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
         TMItems.ITEMS.getEntries().forEach(wipAction);
 
+        tag(TGTags.GUN).add(
+                ManaWeaponItems.BEE_GUN.get(),
+                ManaWeaponItems.SPACE_GUN.get()
+        );
+        tag(TGTags.AUTOMATIC_GUN).add(
+                ManaWeaponItems.BEE_GUN.get(),
+                ManaWeaponItems.SPACE_GUN.get()
+        );
         tag(ModTags.Items.DEATH).add(
                 FunctionalBlocks.DEATH_CHEST_BLOCK.asItem(),
                 FunctionalBlocks.SHIMMER_TRAP.asItem(),

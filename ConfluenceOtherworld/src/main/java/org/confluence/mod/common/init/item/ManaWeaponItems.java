@@ -9,6 +9,8 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.mana.*;
 import org.confluence.mod.common.entity.projectile.mana.BaseManaStaffProjectileEntity.Variant;
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
+import org.confluence.mod.common.item.gun.BeeGunItem;
+import org.confluence.mod.common.item.gun.SpaceGunItem;
 import org.confluence.mod.common.item.mana.MagicDaggerItem;
 import org.confluence.mod.common.item.mana.ManaStaffItem;
 import org.confluence.mod.common.item.mana.WeatherPainItem;
@@ -38,9 +40,9 @@ public class ManaWeaponItems {
     public static final DeferredItem<ManaStaffItem<CrystalStormProjectile>> CRYSTAL_STORM = ITEMS.register("crystal_storm", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CrystalStormProjectile::new, 5, 16, 7, 0.04));
     public static final DeferredItem<ManaStaffItem<CursedFlamesProjectile>> CURSED_FLAMES = ITEMS.register("cursed_flames", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CursedFlamesProjectile::new, 9, 10, 5, 0.04));
     public static final DeferredItem<ManaStaffItem<BallOfFrostProjectile>> FLOWER_OF_FROST = ITEMS.register("flower_of_frost", () -> new ManaStaffItem<>(ModRarity.PINK, BallOfFrostProjectile::new, 11, 9, 4, 0.04));
-//TODO 枪！
-//    public static final Supplier<BeeGunItem> BEE_GUN = ITEMS.register("bee_gun", BeeGunItem::new);
-//    public static final Supplier<SpaceGunItem> SPACE_GUN = ITEMS.register("space_gun", SpaceGunItem::new);
+
+    public static final DeferredItem<BeeGunItem> BEE_GUN = ITEMS.registerItem("bee_gun", BeeGunItem::new);
+    public static final DeferredItem<SpaceGunItem> SPACE_GUN = ITEMS.registerItem("space_gun", SpaceGunItem::new);
 
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
         ITEMS.getEntries().forEach(item -> tag.add(item.get()));

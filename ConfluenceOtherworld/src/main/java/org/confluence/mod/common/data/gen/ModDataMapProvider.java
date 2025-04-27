@@ -7,12 +7,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.DataMapProvider;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.init.ModDataMaps;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.mixin.accessor.DataMapProviderAccessor;
 import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 
 import java.util.concurrent.CompletableFuture;
@@ -44,6 +49,12 @@ public class ModDataMapProvider extends DataMapProvider {
             .add(Items.IRON_INGOT,  300)
             .add(Items.GOLD_INGOT,  1200)
             .add(Items.NETHERITE_INGOT,4000)
+
+            .add(Items.ARROW,5)
+
+            .add(Blocks.ANVIL.asItem(),20000)
+            .add(Blocks.TORCH.asItem(),50)
+            .add(Blocks.OAK_SAPLING.asItem(),100)
 
             .add(MaterialItems.TIN_INGOT.get(), 225)
             .add(MaterialItems.LEAD_INGOT.get(),450)
@@ -108,6 +119,7 @@ public class ModDataMapProvider extends DataMapProvider {
             .add(SwordItems.COPPER_BOARD_SWORD.get(), 630)
             .add(SwordItems.TIN_SHORT_SWORD.get(), 315)
             .add(SwordItems.TIN_BOARD_SWORD.get(), 945)
+            .add(SwordItems.KATANA.get(),100000)
 
             .add(TEBoomerangItems.FLAMARANG.get(), 20000)
             .add(TEBoomerangItems.TRIMARANG.get(), 20000)
@@ -372,7 +384,87 @@ public class ModDataMapProvider extends DataMapProvider {
             .add(TCItems.WEATHER_RADIO.get(), 10000)
             .add(TCItems.WHITE_HORSESHOE_BALLOON.get(), 30000)
             .add(TCItems.WORM_SCARF.get(), 20000)
-            .add(TCItems.YELLOW_HORSESHOE_BALLOON.get(), 30000);
+            .add(TCItems.YELLOW_HORSESHOE_BALLOON.get(), 30000)
+
+
+            .add(FoodItems.PAD_THAI.get(),5500)
+            .add(TGItems.SHOTGUN.get(),50000)
+            .add(TGItems.BOOMSTICK.get(),20000)
+            .add(TGItems.HAND_GUN.get(),17500)
+            .add(TGItems.THE_UNDERTAKER.get(),15000)
+            .add(TGItems.MUSKET.get(),15000)
+            .add(TGItems.MINISHARK.get(),350000)
+
+
+            .add(TGItems.MUSKET_BULLET.get(),7)
+
+            .add(ConsumableItems.GRENADE.get(),75)
+            .add(ConsumableItems.BOMB.get(),300)
+            .add(ConsumableItems.DYNAMITE.get(),2000)
+            .add(ConsumableItems.SHURIKEN.get(),15)
+            .add(ConsumableItems.PURIFICATION_POWDER.get(),75)
+
+            .add(ToolItems.BUG_NET.get(),2500)
+
+
+            .add(ArmorItems.MINING_HELMET.get(),40000)
+
+
+            .add(ModBlocks.ROPE.get(),10)
+
+            .add(FunctionalBlocks.PIGGY_BANK.get(),10000)
+
+            .add(PotionItems.LESSER_HEALING_POTION.get(),300)
+            .add(PotionItems.LESSER_MANA_POTION.get(),250)
+
+            .add(PaintItems.PAINTBRUSH.get(),10000)
+            .add(PaintItems.PAINT_ROLLER.get(),10000)
+            .add(PaintItems.PAINT_SCRAPER.get(),10000)
+            .add(PaintItems.RED_PAINT.get(),25)
+            .add(PaintItems.DEEP_RED_PAINT.get(),25)
+            .add(PaintItems.ORANGE_PAINT.get(),25)
+            .add(PaintItems.DEEP_ORANGE_PAINT.get(),25)
+            .add(PaintItems.YELLOW_PAINT.get(),25)
+            .add(PaintItems.DEEP_YELLOW_PAINT.get(),25)
+            .add(PaintItems.LIME_PAINT.get(),25)
+            .add(PaintItems.DEEP_LIME_PAINT.get(),25)
+            .add(PaintItems.GREEN_PAINT.get(),25)
+            .add(PaintItems.DEEP_GREEN_PAINT.get(),25)
+            .add(PaintItems.TEAL_PAINT.get(),25)
+            .add(PaintItems.DEEP_TEAL_PAINT.get(),25)
+            .add(PaintItems.CYAN_PAINT.get(),25)
+            .add(PaintItems.DEEP_CYAN_PAINT.get(),25)
+            .add(PaintItems.SKY_BLUE_PAINT.get(),25)
+            .add(PaintItems.DEEP_SKY_BLUE_PAINT.get(),25)
+            .add(PaintItems.BLUE_PAINT.get(),25)
+            .add(PaintItems.DEEP_BLUE_PAINT.get(),25)
+            .add(PaintItems.PURPLE_PAINT.get(),25)
+            .add(PaintItems.DEEP_PURPLE_PAINT.get(),25)
+            .add(PaintItems.VIOLET_PAINT.get(),25)
+            .add(PaintItems.DEEP_VIOLET_PAINT.get(),25)
+            .add(PaintItems.PINK_PAINT.get(),25)
+            .add(PaintItems.DEEP_PINK_PAINT.get(),25)
+            .add(PaintItems.BLACK_PAINT.get(),25)
+            .add(PaintItems.GRAY_PAINT.get(),25)
+            .add(PaintItems.WHITE_PAINT.get(),25)
+            .add(PaintItems.BROWN_PAINT.get(),25)
+
+
+            .add(VanityArmorItems.SILVER_DYE.get(),10000)
+            .add(VanityArmorItems.BROWN_DYE.get(),10000)
+            .add(VanityArmorItems.TEAM_DYE.get(),10000)
+
+
+            .add(NatureBlocks.YELLOW_WILLOW_SAPLING.get(),10000)
+
+
+            .add(Items.PUMPKIN_SEEDS.asItem(),250)
+            .add(ModItems.GRASS_SEED.get(),20)
+
+            .add(HookItems.GRAPPLING_HOOK.get(),20000)
+            .add(TCItems.WORKSHOP.get(),100000)
+
+            .add(TGItems.SHOTGUN.get(),50000);
     }
 
     public ValueBuilder valueBuilder() {

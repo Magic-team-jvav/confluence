@@ -12,6 +12,7 @@ import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.Keys;
 import org.confluence.mod.common.init.block.CrateBlocks;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
@@ -87,18 +88,23 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .build());
 
         shop(TENpcEntities.MERCHANT.getId()).addRecipe(new Builder()
+                .add(ToolItems.BUG_NET)
+                .add(ArmorItems.MINING_HELMET)
+                .add(Blocks.ANVIL.asItem())
                 .add(Blocks.TORCH.asItem())
-                .add(Items.ARROW.asItem())
+                .add(Items.ARROW)
                 .add(ModBlocks.ROPE.get())
                 .add(ConsumableItems.SHURIKEN.get())
+                .add(FunctionalBlocks.PIGGY_BANK.get())
                 .add(PickaxeItems.COPPER_PICKAXE.get())
                 .add(AxeItems.COPPER_AXE.get())
                 .add(PotionItems.LESSER_HEALING_POTION.get())
+                .add(PotionItems.LESSER_MANA_POTION.get())
                 .add(SellTrade.INSTANCE)
                 .build());
 
         shop(TENpcEntities.GOBLIN_TINKERER.getId()).addRecipe(new Builder()
-                .add(HookItems.GRAPPLING_HOOK.asItem())
+                .add(HookItems.GRAPPLING_HOOK.get())
                 .add(TCItems.ROCKET_BOOTS.get())
                 .add(TCItems.TOOLBELT.get())
                 .add(TCItems.WORKSHOP.get())
@@ -111,6 +117,8 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 
         shop(TENpcEntities.ARMS_DEALER.getId()).addRecipe(new Builder()
                 .add(TGItems.MUSKET_BULLET.get())
+                .add(TGItems.FLINTLOCK_PISTOL.get())
+                .add(TGItems.MINISHARK.get())         //先不管晚上的条件，迷你鲨塞一手
                 .add(SellTrade.INSTANCE)
                 .build());
 
@@ -118,7 +126,8 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(ConsumableItems.PURIFICATION_POWDER.get())
                 .add(NatureBlocks.YELLOW_WILLOW_SAPLING.asItem())
                 .add(Blocks.OAK_SAPLING.asItem())
-                .add(Items.PUMPKIN_SEEDS.asItem())
+                .add(Items.PUMPKIN_SEEDS)
+                .add(ModItems.GRASS_SEED.get())
                 .add(SellTrade.INSTANCE)
                 .build());
 

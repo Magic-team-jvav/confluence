@@ -13,7 +13,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -363,7 +362,7 @@ public class ModLootTableProvider extends LootTableProvider {
             dropSelf(CHISELED_GREEN_BRICKS.get());
             dropSelf(CHISELED_PINK_BRICKS.get());
             dropSelf(AETHERIUM_BRICKS.get());
-            dropSelf(CRYSTAL_BLOCKS.get());
+            dropSelf(CRYSTAL_BLOCK.get());
             dropSelf(RAINBOW_BRICKS.get());
             dropSelf(FLOATING_WHEAT_BALE.get());
             dropSelf(BOUNCY_CLOUD_BLOCK.get());

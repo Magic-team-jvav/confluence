@@ -1670,7 +1670,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.OBSIDIAN_BRICKS_DOOR.get(), "黑曜石砖门");
         add(DecorativeBlocks.TR_SMOOTH_OBSIDIAN.get(), "异域光滑黑曜石块");
         add(DecorativeBlocks.CHISELED_TR_OBSIDIAN_BRICKS.get(), "雕纹异域黑曜石块");
-        add(DecorativeBlocks.CRYSTAL_BLOCKS.get(), "水晶块");
+        add(DecorativeBlocks.CRYSTAL_BLOCK.get(), "水晶块");
         add(DecorativeBlocks.RAINBOW_BRICKS.get(), "彩虹砖");
         add(DecorativeBlocks.TR_OAK_PLANKS.get(), "经典风情木板");
         add(DecorativeBlocks.TR_NORTHLAND_PLANKS.get(), "北地风情木板");

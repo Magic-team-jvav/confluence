@@ -123,7 +123,16 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.ice_tofu_brick.0", "它现在不能吃了，但不妨碍它把你吃了");
         add("tooltip.item.confluence.pink_cola.0", "An ordinary bottle of pink cola. Maybe there was a whole case originally?");
         add("tooltip.item.confluence.dongdongs_flatbread.0", "Freshly baked flatbread on the Netherrack. Come and have a taste!");
-
+        add("tooltip.item.confluence.boredoms_pact_falling_resolve.0", "「无聊之咒·陨志」");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.1", "(Boredom's Pact - Falling Resolve)");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.2", "           ");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.3", "The blood of the indolent has soaked into the stardust core, condensing into this breathing cursed stone.");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.4", "When in motion, the veins of the earth surge, and blades cleave through the long night; when still, the earth's heart beats, and the sky opens its single eye.");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.5", "The ancient god inscribed punishment into the contract: eight heartbeats of stillness summon the judgment of a falling star.");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.6", "It doesn't remain silent like a golem - it cackles when boulders shatter shinbones:");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.7", "'Look, even the stones understand the way of survival better than your legs.'");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.8", "The wearer will eventually understand that so - called 'invincibility' merely means outrunning death by a single second.");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.9", "And the soul has long been crushed into dust in the rock crevices, more desolate than the empty shell of a golem.");
         //  Text items ↓
         add("item.confluence.afterlife_notes", "Afterlife Notes");
         add("item.confluence.village_exploration", "Origin of Village Exploration");
@@ -387,6 +396,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.rightClickRideMinecart", "Right click to ride a minecart");
         add("confluence.configuration.rightClickRideMinecart.tooltip", "When enabled, when you right-click on a rail, it will automatically ride a minecart");
         add("confluence.configuration.announcementBoxDistance", "Announcement Box Distance");
+        add("confluence.configuration.announcementBoxDistance.tooltip", "The maximum information sending distance of the Announcement Box");
         add("confluence.configuration.dropsTombstone", "Drops Tombstone");
         add("confluence.configuration.dropsTombstone.tooltip", "When enabled，allows player to drops tombstone after death");
         add("confluence.configuration.defaultRespawnTimeMin", "Default Minimum Respawn Time");
@@ -712,6 +722,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("achievements.confluence.to_infinity_and_beyond.description", "Fly a Kwad Racer into outer space.");
         add("achievements.confluence.quiet_neighborhood.title", "Quiet Neighborhood");
         add("achievements.confluence.quiet_neighborhood.description", "Enter a misty graveyard filled with the surly dead.");
+        add("achievements.confluence.robbing_the_grave.title", "Robbing the Grave");
+        add("achievements.confluence.robbing_the_grave.description", "Obtain a rare treasure from a difficult monster in the dungeon.");
 
         add("prefix.confluence.tooltip.plus", "+%s%% %s");
         add("prefix.confluence.tooltip.take", "-%s%% %s");
@@ -742,21 +754,33 @@ public class ModEnglishProvider extends LanguageProvider {
         add("container.confluence.heavy_work_bench", "Heavy Work Bench");
         add("container.confluence.hellforge", "Hell Forge");
         add("container.confluence.alchemy_table", "Alchemy Table");
+        add("title.confluence.cooking_pot", "Cooking Pot");
+        add("container.confluence.crystal_ball", "Crystal Ball");
         add("condition.confluence.requires_fuel", "Requires Fuel");
         add("container.confluence.fletching_table", "Fletching Table");
         add("container.confluence.piggy_bank", "Piggy Bank");
+        add("container.confluence.sawmill", "Sawmill");
+        add("container.confluence.tree_holes", "Tree Holes");
+        add("container.confluence.npc_shop", "Npc Shop");
 
         add("title.confluence.shimmer_transmutation", "Shimmer Transmutation");
         add("title.confluence.altar", "Altar");
         add("title.confluence.sky_mill", "Sky Mill");
         add("title.confluence.heavy_work_bench", "Heavy Work Bench");
         add("title.confluence.hellforge", "Hell Forge");
+        add("title.confluence.crystal_ball", "Crystal Ball");
         add("title.confluence.alchemy_table", "Alchemy Table");
+        add("title.confluence.cooking_pot", "Cooking Pot");
         add("title.confluence.fletching_table", "Fletching Table");
         add("title.confluence.touhoulittlemaid", "Touhou Little Maid Supplies");
         add("title.confluence.npc_trade", "NPC Trading");
         add("title.confluence.cooking_pot", "Cooking Pot");
         add("title.confluence.sawmill", "Sawmill");
+
+        add("jukebox_song.confluence.song", "C418 - alpha");
+        add("text.building_0", "Under construction");
+        add("text.building_1", "Expected to be completed by %s");
+        add("text.building_2", "Do not approach!");
 
         // Override
         add("item.confluence.encumbering_stone.disable", "Encumbering Stone: Disable");
@@ -1054,6 +1078,7 @@ public class ModEnglishProvider extends LanguageProvider {
         SwordItems.ITEMS.getEntries().forEach(itemAction);
         ToolItems.ITEMS.getEntries().forEach(itemAction);
         TreasureBagItems.ITEMS.getEntries().forEach(itemAction);
+        LanceItems.ITEMS.getEntries().forEach(itemAction);
 
         ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), LibUtils.toTitleCase(effect.getId().getPath())));
         ModEntities.ENTITIES.getEntries().forEach(entity -> add(entity.get(), LibUtils.toTitleCase(entity.getId().getPath())));

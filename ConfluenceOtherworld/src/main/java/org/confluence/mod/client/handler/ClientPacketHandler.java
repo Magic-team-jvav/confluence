@@ -23,6 +23,7 @@ public final class ClientPacketHandler {
     private static float fishingPower = 0.0F;
     private static boolean echoVisible = false;
     private static long secretFlag = 0L;
+    private static boolean sprintable = false;
 
     public static int getCurrentMana() {
         return currentMana;
@@ -46,6 +47,20 @@ public final class ClientPacketHandler {
 
     public static long getSecretFlag() {
         return secretFlag;
+    }
+
+    public static boolean isSprintable() {
+        return sprintable;
+    }
+
+    public static void reset() {
+        maxMana = 20;
+        currentMana = 20;
+        gamePhase = GamePhase.BEFORE_SKELETRON;
+        fishingPower = 0.0F;
+        echoVisible = false;
+        secretFlag = 0L;
+        sprintable = false;
     }
 
     public static void handleMana(ManaPacketS2C packet, Player player) {
@@ -100,5 +115,9 @@ public final class ClientPacketHandler {
                 deathScreen.confluence$setDropsMoney(component);
             }
         }
+    }
+
+    public static void handleSprintable(boolean sprintable) {
+        ClientPacketHandler.sprintable = sprintable;
     }
 }

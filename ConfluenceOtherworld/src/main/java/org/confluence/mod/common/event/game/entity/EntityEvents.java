@@ -1,6 +1,5 @@
 package org.confluence.mod.common.event.game.entity;
 
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -13,7 +12,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
-import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
@@ -21,7 +19,6 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.EQUIPMENT_START;
 
@@ -59,13 +56,6 @@ public final class EntityEvents {
             event.setInvulnerable(true); // 微光状态时免疫小怪和环境伤害
         } else if (damageSource.is(DamageTypeTags.IS_FIRE) && living.hasEffect(ModEffects.OBSIDIAN_SKIN)) {
             event.setInvulnerable(true); // 喝黑曜石皮免疫火系
-        }
-    }
-
-    @SubscribeEvent
-    public static void entityJoinWorld(EntityJoinLevelEvent event) {
-        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-            ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, serverPlayer, serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY));
         }
     }
 }

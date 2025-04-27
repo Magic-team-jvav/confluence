@@ -69,6 +69,7 @@ public final class PlayerEvents {
         if (player instanceof ServerPlayer serverPlayer) {
             PlayerUtils.syncMana2Client(serverPlayer);
             PlayerUtils.syncSavedData(serverPlayer);
+            ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, serverPlayer, serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY));
             FishingPowerInfoPacketS2C.sendAndGet(serverPlayer);
             EchoVisibilityPacketS2C.sendToClient(serverPlayer);
             BoulderWorld.forceSetAccessory(serverPlayer);

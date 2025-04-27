@@ -2,7 +2,7 @@ package org.confluence.mod.common.equipment_set;
 
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSet;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
-import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableSetData;
+import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -20,7 +20,7 @@ public class MeteorSet extends EquipmentSet {
         equippableGroup.addEquippableSet("leggings", magicDamageBonus(VanillaEquippable.LEGS, ArmorItems.METEOR_LEGGINGS));
         equippableGroup.addEquippableSet("boots", magicDamageBonus(VanillaEquippable.FEET, ArmorItems.METEOR_BOOTS));
 
-        equippableGroup.addEquippableSet("full_set", new EquippableSetData.Builder()
+        equippableGroup.addEquippableSet("full_set", new EquipmentSetBranch.Builder()
                 .addEquippable(
                         VanillaEquippable.HEAD, ArmorItems.METEOR_HELMET,
                         VanillaEquippable.CHEST, ArmorItems.METEOR_CHESTPLATE,
@@ -35,8 +35,8 @@ public class MeteorSet extends EquipmentSet {
                 }).build());
     }
 
-    private static EquippableSetData magicDamageBonus(VanillaEquippable slot, DeferredItem<ArmorItem> item) {
-        return new EquippableSetData.Builder().addEquippable(slot, item)
+    private static EquipmentSetBranch magicDamageBonus(VanillaEquippable slot, DeferredItem<ArmorItem> item) {
+        return new EquipmentSetBranch.Builder().addEquippable(slot, item)
                 .bindHook(builder -> builder.addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(item.getId(), 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .build();
     }

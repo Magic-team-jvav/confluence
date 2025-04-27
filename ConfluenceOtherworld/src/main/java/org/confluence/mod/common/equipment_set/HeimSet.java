@@ -1,14 +1,11 @@
 package org.confluence.mod.common.equipment_set;
 
-import com.xiaohunao.equipment_benediction.common.context.LivingEquipmentChangeContext;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSet;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
-import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableSetData;
+import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
-import com.xiaohunao.equipment_benediction.common.hook.hooks.EquipEquipmentHook;
 import com.xiaohunao.equipment_benediction.common.init.EBHookTypes;
-import com.xiaohunao.equipment_benediction.common.interfaces.IBenediction;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,7 +16,7 @@ import org.confluence.mod.common.init.item.ArmorItems;
 public class HeimSet extends EquipmentSet {
     @Override
     protected void init(HookMap.Builder hook, EquippableGroup.Builder equippableGroup) {
-        equippableGroup.addEquippableSet("helmet", new EquippableSetData.Builder()
+        equippableGroup.addEquippableSet("helmet", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.HEAD, ArmorItems.HEIM_HELMET)
                 .bindHook(builder -> builder.addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(ArmorItems.HEIM_HELMET.getId(), 0.01, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .bindHook(EBHookTypes.LIVING_BREATHE.get(), (owner, event) -> {
@@ -29,22 +26,22 @@ public class HeimSet extends EquipmentSet {
                     }
                 })
                 .build());
-        equippableGroup.addEquippableSet("chestplate", new EquippableSetData.Builder()
+        equippableGroup.addEquippableSet("chestplate", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.CHEST, ArmorItems.HEIM_CHESTPLATE)
                 .bindDelayHook(EBHookTypes.LIVING_SHIELD_BLOCK.get(), (owner, event) -> {
                     event.getEntity().addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 40, 1));
                 },60)
                 .build());
-        equippableGroup.addEquippableSet("leggings", new EquippableSetData.Builder()
+        equippableGroup.addEquippableSet("leggings", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.LEGS, ArmorItems.HEIM_LEGGINGS)
                 .bindHook(builder -> builder.addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(ArmorItems.HEIM_LEGGINGS.getId(), 0.01, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .build());
-        equippableGroup.addEquippableSet("boots", new EquippableSetData.Builder()
+        equippableGroup.addEquippableSet("boots", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.FEET, ArmorItems.HEIM_BOOTS)
                 .bindHook(builder -> builder.addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(ArmorItems.HEIM_BOOTS.getId(), 0.01, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .build());
 
-        equippableGroup.addEquippableSet("heim_set", new EquippableSetData.Builder()
+        equippableGroup.addEquippableSet("heim_set", new EquipmentSetBranch.Builder()
                         .addEquippable(
                                 VanillaEquippable.HEAD, ArmorItems.HEIM_HELMET,
                                 VanillaEquippable.CHEST, ArmorItems.HEIM_CHESTPLATE,

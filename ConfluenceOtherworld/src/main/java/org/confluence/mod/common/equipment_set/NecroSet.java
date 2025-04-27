@@ -2,7 +2,7 @@ package org.confluence.mod.common.equipment_set;
 
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSet;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
-import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableSetData;
+import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -20,7 +20,7 @@ public class NecroSet extends EquipmentSet {
         equippableGroup.addEquippableSet("leggings", rangedDamageBonus(VanillaEquippable.LEGS, ArmorItems.NECRO_LEGGINGS, 4));
         equippableGroup.addEquippableSet("boots", rangedDamageBonus(VanillaEquippable.FEET, ArmorItems.NECRO_BOOTS, 3));
 
-        equippableGroup.addEquippableSet("full_set", new EquippableSetData.Builder()
+        equippableGroup.addEquippableSet("full_set", new EquipmentSetBranch.Builder()
                 .addEquippable(
                         VanillaEquippable.HEAD, ArmorItems.NECRO_HELMET,
                         VanillaEquippable.CHEST, ArmorItems.NECRO_CHESTPLATE,
@@ -31,8 +31,8 @@ public class NecroSet extends EquipmentSet {
                 .build());
     }
 
-    private static EquippableSetData rangedDamageBonus(VanillaEquippable slot, DeferredItem<ArmorItem> item, double value) {
-        return new EquippableSetData.Builder().addEquippable(slot, item)
+    private static EquipmentSetBranch rangedDamageBonus(VanillaEquippable slot, DeferredItem<ArmorItem> item, double value) {
+        return new EquipmentSetBranch.Builder().addEquippable(slot, item)
                 .bindHook(builder -> builder.addBonus(TCAttributes.getRangedDamage(), new AttributeModifier(item.getId(), value, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .build();
     }

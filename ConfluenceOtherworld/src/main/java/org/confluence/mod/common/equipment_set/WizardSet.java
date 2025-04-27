@@ -2,7 +2,7 @@ package org.confluence.mod.common.equipment_set;
 
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSet;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
-import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableSetData;
+import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -17,11 +17,11 @@ import org.confluence.terra_curio.common.init.TCAttributes;
 public class WizardSet extends EquipmentSet {
     @Override
     protected void init(HookMap.Builder hook, EquippableGroup.Builder equippableGroup) {
-        equippableGroup.addEquippableSet("wizard_hat", new EquippableSetData.Builder()
+        equippableGroup.addEquippableSet("wizard_hat", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.HEAD, ArmorItems.WIZARD_HAT)
                 .bindHook(builder -> builder.addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(ArmorItems.WIZARD_HAT.getId(), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .build());
-        equippableGroup.addEquippableSet("magic_hat", new EquippableSetData.Builder()
+        equippableGroup.addEquippableSet("magic_hat", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.HEAD, ArmorItems.MAGIC_HAT)
                 .bindHook(builder -> builder
                         .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(ArmorItems.MAGIC_HAT.getId(), 0.06, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
@@ -33,7 +33,7 @@ public class WizardSet extends EquipmentSet {
         equippableGroup.addEquippableSet("sapphire_robe", robeBonus(ArmorItems.SAPPHIRE_ROBE, 40, 0.91F));
         equippableGroup.addEquippableSet("emerald_robe", robeBonus(ArmorItems.EMERALD_ROBE, 60, 0.89F));
         equippableGroup.addEquippableSet("ruby_robe", robeBonus(ArmorItems.RUBY_ROBE, 60, 0.87F));
-        equippableGroup.addEquippableSet("amethyst_robe", new EquippableSetData.Builder()
+        equippableGroup.addEquippableSet("amethyst_robe", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.CHEST, ArmorItems.MYSTIC_ROBE)
                 .bindHook(builder -> builder
                         .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(ArmorItems.MYSTIC_ROBE.getId(), 0.06, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
@@ -54,14 +54,14 @@ public class WizardSet extends EquipmentSet {
                 ArmorItems.DIAMOND_ROBE,
                 ArmorItems.AMBER_ROBE
         );
-        equippableGroup.addEquippableSet("wizard_set", new EquippableSetData.Builder()
+        equippableGroup.addEquippableSet("wizard_set", new EquipmentSetBranch.Builder()
                 .addEquippable(
                         VanillaEquippable.HEAD, ArmorItems.WIZARD_HAT,
                         VanillaEquippable.CHEST, robes
                 )
                 .bindHook(builder -> builder.addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(Confluence.asResource("wizard_set"), 0.1, AttributeModifier.Operation.ADD_VALUE)))
                 .build());
-        equippableGroup.addEquippableSet("magic_set", new EquippableSetData.Builder()
+        equippableGroup.addEquippableSet("magic_set", new EquipmentSetBranch.Builder()
                 .addEquippable(
                         VanillaEquippable.HEAD, ArmorItems.MAGIC_HAT,
                         VanillaEquippable.CHEST, robes
@@ -70,8 +70,8 @@ public class WizardSet extends EquipmentSet {
                 .build());
     }
 
-    private static EquippableSetData robeBonus(DeferredItem<ArmorItem> item, int additionalMana, float manaConsume) {
-        return new EquippableSetData.Builder().addEquippable(VanillaEquippable.CHEST, item)
+    private static EquipmentSetBranch robeBonus(DeferredItem<ArmorItem> item, int additionalMana, float manaConsume) {
+        return new EquipmentSetBranch.Builder().addEquippable(VanillaEquippable.CHEST, item)
                 .bindHook(ModHookTypes.ADDITIONAL_MANA.get(), (owner, player, original) -> original + additionalMana)
                 .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> (int) (original.getAsInt() * manaConsume))
                 .build();

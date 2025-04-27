@@ -2,7 +2,7 @@ package org.confluence.mod.common.equipment_set;
 
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSet;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
-import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableSetData;
+import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -21,7 +21,7 @@ public class NinjaSet extends EquipmentSet {
         equippableGroup.addEquippableSet("leggings", critChanceBonus(VanillaEquippable.LEGS, ArmorItems.NINJA_LEGGINGS));
         equippableGroup.addEquippableSet("boots", critChanceBonus(VanillaEquippable.FEET, ArmorItems.NINJA_BOOTS));
 
-        equippableGroup.addEquippableSet("full_set", new EquippableSetData.Builder()
+        equippableGroup.addEquippableSet("full_set", new EquipmentSetBranch.Builder()
                 .addEquippable(
                         VanillaEquippable.HEAD, ArmorItems.NINJA_HELMET,
                         VanillaEquippable.CHEST, ArmorItems.NINJA_CHESTPLATE,
@@ -32,8 +32,8 @@ public class NinjaSet extends EquipmentSet {
                 .build());
     }
 
-    private static EquippableSetData critChanceBonus(VanillaEquippable slot, DeferredItem<ArmorItem> item) {
-        return new EquippableSetData.Builder().addEquippable(slot, item)
+    private static EquipmentSetBranch critChanceBonus(VanillaEquippable slot, DeferredItem<ArmorItem> item) {
+        return new EquipmentSetBranch.Builder().addEquippable(slot, item)
                 .bindHook(builder -> builder.addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(item.getId(), 0.02, AttributeModifier.Operation.ADD_VALUE)))
                 .build();
     }

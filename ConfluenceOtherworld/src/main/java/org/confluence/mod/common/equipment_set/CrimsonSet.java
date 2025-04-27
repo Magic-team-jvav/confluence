@@ -2,7 +2,7 @@ package org.confluence.mod.common.equipment_set;
 
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSet;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
-import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableSetData;
+import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import com.xiaohunao.equipment_benediction.common.init.EBHookTypes;
@@ -22,7 +22,7 @@ public class CrimsonSet extends EquipmentSet {
         equippableGroup.addEquippableSet("leggings", attackDamageBonus(VanillaEquippable.LEGS, ArmorItems.CRIMSON_LEGGINGS));
         equippableGroup.addEquippableSet("boots", attackDamageBonus(VanillaEquippable.FEET, ArmorItems.CRIMSON_BOOTS));
 
-        equippableGroup.addEquippableSet("full_set", new EquippableSetData.Builder()
+        equippableGroup.addEquippableSet("full_set", new EquipmentSetBranch.Builder()
                 .addEquippable(
                         VanillaEquippable.HEAD, ArmorItems.CRIMSON_HELMET,
                         VanillaEquippable.CHEST, ArmorItems.CRIMSON_CHESTPLATE,
@@ -33,8 +33,8 @@ public class CrimsonSet extends EquipmentSet {
                 .build());
     }
 
-    private static EquippableSetData attackDamageBonus(VanillaEquippable slot, DeferredItem<ArmorItem> item) {
-        return new EquippableSetData.Builder().addEquippable(slot, item)
+    private static EquipmentSetBranch attackDamageBonus(VanillaEquippable slot, DeferredItem<ArmorItem> item) {
+        return new EquipmentSetBranch.Builder().addEquippable(slot, item)
                 .bindHook(builder -> builder
                         .addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(item.getId(), 0.02, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(item.getId(), 0.02, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))

@@ -2,7 +2,7 @@ package org.confluence.mod.common.equipment_set;
 
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSet;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
-import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableSetData;
+import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import com.xiaohunao.equipment_benediction.common.init.EBHookTypes;
@@ -16,24 +16,24 @@ import org.confluence.terra_curio.util.TCUtils;
 public class MoltenSet extends EquipmentSet {
     @Override
     protected void init(HookMap.Builder hook, EquippableGroup.Builder equippableGroup) {
-        equippableGroup.addEquippableSet("helmet", new EquippableSetData.Builder()
+        equippableGroup.addEquippableSet("helmet", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.HEAD, ArmorItems.MOLTEN_HELMET)
                 .bindHook(builder -> builder.addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(ArmorItems.MOLTEN_HELMET.getId(), 0.07, AttributeModifier.Operation.ADD_VALUE)))
                 .build());
-        equippableGroup.addEquippableSet("chestplate", new EquippableSetData.Builder()
+        equippableGroup.addEquippableSet("chestplate", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.CHEST, ArmorItems.MOLTEN_CHESTPLATE)
                 .bindHook(builder -> builder.addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(ArmorItems.MOLTEN_CHESTPLATE.getId(), 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .build());
-        equippableGroup.addEquippableSet("leggings", new EquippableSetData.Builder()
+        equippableGroup.addEquippableSet("leggings", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.LEGS, ArmorItems.MOLTEN_LEGGINGS)
                 .bindHook(builder -> builder.addBonus(Attributes.ATTACK_SPEED, new AttributeModifier(ArmorItems.MOLTEN_LEGGINGS.getId(), 0.035, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .build());
-        equippableGroup.addEquippableSet("boots", new EquippableSetData.Builder()
+        equippableGroup.addEquippableSet("boots", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.FEET, ArmorItems.MOLTEN_BOOTS)
                 .bindHook(builder -> builder.addBonus(Attributes.ATTACK_SPEED, new AttributeModifier(ArmorItems.MOLTEN_BOOTS.getId(), 0.035, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .build());
 
-        equippableGroup.addEquippableSet("full_set", new EquippableSetData.Builder()
+        equippableGroup.addEquippableSet("full_set", new EquipmentSetBranch.Builder()
                 .addEquippable(
                         VanillaEquippable.HEAD, ArmorItems.MOLTEN_HELMET,
                         VanillaEquippable.CHEST, ArmorItems.MOLTEN_CHESTPLATE,

@@ -3339,6 +3339,8 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(TooltipManager.prefix, "** 赞助者物品 **");
 
+        add("item.confluence.spawn_eggs", "%s刷怪蛋");
+
         // 车万女仆
         add("task.confluence.use_life_crystal", "生命水晶");
         add("task.confluence.use_life_crystal.desc", "女仆会主动使用生命水晶增加最大生命值");

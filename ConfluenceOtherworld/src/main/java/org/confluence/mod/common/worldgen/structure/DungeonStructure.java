@@ -99,10 +99,10 @@ public class DungeonStructure extends Structure {
                 housesList.add(2);
             }
             for (int i = 0; i < commonCount; i++) {
-                housesList.add(0);
+                housesList.add(random.nextInt(housesList.size()), 0);
             }
             for (int i = 0; i < clockCount; i++) {
-                housesList.add(1);
+                housesList.add(random.nextInt(housesList.size()), 1);
             }
 
             Vector3d vct = new Vector3d(centerPos.getX(), centerPos.getY() - 4, centerPos.getZ());

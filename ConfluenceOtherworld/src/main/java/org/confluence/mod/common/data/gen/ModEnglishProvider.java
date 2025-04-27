@@ -774,7 +774,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.fletching_table", "Fletching Table");
         add("title.confluence.touhoulittlemaid", "Touhou Little Maid Supplies");
         add("title.confluence.npc_trade", "NPC Trading");
-
         add("title.confluence.sawmill", "Sawmill");
 
         add("jukebox_song.confluence.song", "C418 - alpha");

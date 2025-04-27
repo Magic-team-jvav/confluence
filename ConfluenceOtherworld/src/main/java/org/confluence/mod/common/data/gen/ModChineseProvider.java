@@ -82,6 +82,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.echo_block.0", "只在回声视觉下才能看到");
         add("tooltip.item.confluence.advanced_combat_techniques.0", "增强所有城镇居民的防御力和力量");
         add("tooltip.item.confluence.advanced_combat_techniques.1", "“包含攻防战斗技能”");
+        add("tooltip.item.confluence.binoculars.0", "使用时扩大视野，鼠标滚轮可调整缩放");
 
         add("tooltip.item.confluence.slime_crown.0", "右键使用以召唤史莱姆王");
         add("tooltip.item.confluence.slime_crown.1", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");

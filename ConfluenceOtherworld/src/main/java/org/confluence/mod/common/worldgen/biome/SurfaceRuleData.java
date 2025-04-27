@@ -185,7 +185,9 @@ public class SurfaceRuleData {
                                 SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
                                         jungleGrassSurface
                                 ),
-                                MUD
+                                SurfaceRules.ifTrue(SurfaceRules.not(bedrockFloorSeed),
+                                        MUD
+                                )
                         )
                 ),
 

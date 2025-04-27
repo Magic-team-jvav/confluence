@@ -71,7 +71,7 @@ public class AdamantiteSet extends EquipmentSet {
                         VanillaEquippable.LEGS, ArmorItems.ADAMANTITE_LEGGINGS,
                         VanillaEquippable.FEET, ArmorItems.ADAMANTITE_BOOTS
                 )
-                .bindHook(ModHookTypes.AMMO_CONSUME.get(), (owner, player, ammoStack) -> player.getRandom().nextFloat() < 0.25F)
+                .bindHook(ModHookTypes.SKIP_AMMO_CONSUME.get(), (owner, player, ammoStack) -> player.getRandom().nextFloat() < 0.25F)
                 .build());
         equippableGroup.addEquippableSet("headgear_set", new EquippableSetData.Builder()
                 .addEquippable(

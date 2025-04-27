@@ -206,7 +206,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 TR_SMOOTH_OBSIDIAN.get(),
                 TR_GRANITE_COLUMN.get(),
                 CHISELED_TR_OBSIDIAN_BRICKS.get(),
-                CRYSTAL_BLOCKS.get(),
+                CRYSTAL_BLOCK.get(),
                 BLUE_BRICKS.get(),
                 GREEN_BRICKS.get(),
                 PINK_BRICKS.get(),
@@ -446,7 +446,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 TR_SMOOTH_OBSIDIAN.get(),
                 TR_GRANITE_COLUMN.get(),
                 CHISELED_TR_OBSIDIAN_BRICKS.get(),
-                CRYSTAL_BLOCKS.get(),
+                CRYSTAL_BLOCK.get(),
                 RUBY_CHAIN.get(),
                 AMBER_CHAIN.get(),
                 TOPAZ_CHAIN.get(),
@@ -693,7 +693,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 ASH_HELLSTONE.get()
         );
         tag(Tags.Blocks.BUDS).add(  // 塞之后的神圣地水晶装饰
-                CRYSTAL_BLOCKS.get()
+                CRYSTAL_BLOCK.get()
         );
         tag(Tags.Blocks.CHAINS).add(
                 AMBER_CHAIN.get(),
@@ -707,13 +707,13 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 AMETHYST_CHAIN.get()
         );
         tag(Tags.Blocks.CHESTS).add(  // 箱子
-                CRYSTAL_BLOCKS.get()
+                CRYSTAL_BLOCK.get()
         );
         tag(Tags.Blocks.CHESTS_TRAPPED).add(  // 陷阱箱
-                CRYSTAL_BLOCKS.get()
+                CRYSTAL_BLOCK.get()
         );
         tag(Tags.Blocks.CHESTS_WOODEN).add(  // 陷阱箱
-                CRYSTAL_BLOCKS.get()
+                CRYSTAL_BLOCK.get()
         );
         tag(Tags.Blocks.COBBLESTONES).add(
                 EBONY_COBBLESTONE.get(),

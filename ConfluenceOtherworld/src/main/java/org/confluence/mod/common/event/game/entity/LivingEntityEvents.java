@@ -273,7 +273,7 @@ public final class LivingEntityEvents {
             }
 
             if (event.getEntity() instanceof Player player) {
-                HookMapManager.postHooks(ModHookTypes.AMMO_CONSUME.get(), (owner, hook, original) -> {
+                HookMapManager.postHooks(ModHookTypes.SKIP_AMMO_CONSUME.get(), (owner, hook, original) -> {
                     if (hook.shouldSkipConsume(owner, original.getEntity(), original.getProjectileItemStack())) {
                         original.setProjectileItemStack(original.getProjectileItemStack().copy());
                     }

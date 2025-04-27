@@ -26,6 +26,7 @@ public final class ModEquipmentSets {
     public static final EBDeferredHolder<EquipmentSet> CACTUS_SET = EQUIPMENT_SET.register("cactus_set", CactusSet::new);
     public static final EBDeferredHolder<EquipmentSet> SNOW_SET = EQUIPMENT_SET.register("snow_set", SnowSet::new);
     public static final EBDeferredHolder<EquipmentSet> NECRO_SET = EQUIPMENT_SET.register("necro_set", NecroSet::new);
+    public static final EBDeferredHolder<EquipmentSet> SPIDER_SET = EQUIPMENT_SET.register("spider_set", SpiderSet::new);
     public static final EBDeferredHolder<EquipmentSet> WIZARD_SET = EQUIPMENT_SET.register("wizard_set", WizardSet::new);
     public static final EBDeferredHolder<EquipmentSet> JUNGLE_SET = EQUIPMENT_SET.register("jungle_set", JungleSet::new);
     public static final EBDeferredHolder<EquipmentSet> COBALT_SET = EQUIPMENT_SET.register("cobalt_set", CobaltSet::new);
@@ -34,5 +35,6 @@ public final class ModEquipmentSets {
     public static final EBDeferredHolder<EquipmentSet> ORICHALCUM_SET = EQUIPMENT_SET.register("orichalcum_set", OrichalcumSet::new);
     public static final EBDeferredHolder<EquipmentSet> ADAMANTITE_SET = EQUIPMENT_SET.register("adamantite_set", AdamantiteSet::new);
     public static final EBDeferredHolder<EquipmentSet> TITANIUM_SET = EQUIPMENT_SET.register("titanium_set", TitaniumSet::new);
+    public static final EBDeferredHolder<EquipmentSet> CRYSTAL_ASSASSIN_SET = EQUIPMENT_SET.register("crystal_assassin_set", CrystalAssassinSet::new);
     public static final EBDeferredHolder<EquipmentSet> HALLOWED_SET = EQUIPMENT_SET.register("hallowed_set", HallowedSet::new);
 }

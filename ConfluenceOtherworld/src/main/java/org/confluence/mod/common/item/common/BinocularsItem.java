@@ -16,6 +16,6 @@ public class BinocularsItem extends SpyglassItem {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("tooltip.confluence.item.binoculars.0"));
+        tooltipComponents.add(Component.translatable("tooltip.item.confluence.binoculars.0"));
     }
 }

@@ -75,7 +75,7 @@ public class MythrilSet extends EquipmentSet {
                         VanillaEquippable.LEGS, ArmorItems.MYTHRIL_LEGGINGS,
                         VanillaEquippable.FEET, ArmorItems.MYTHRIL_BOOTS
                 )
-                .bindHook(ModHookTypes.AMMO_CONSUME.get(), (owner, player, ammoStack) -> player.getRandom().nextFloat() < 0.2F)
+                .bindHook(ModHookTypes.SKIP_AMMO_CONSUME.get(), (owner, player, ammoStack) -> player.getRandom().nextFloat() < 0.2F)
                 .build());
     }
 }

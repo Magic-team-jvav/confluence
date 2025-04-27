@@ -179,6 +179,10 @@ public final class ModArmorMaterials {
             3, 7, 6, 3,
             16, SoundEvents.ARMOR_EQUIP_LEATHER, Items.BONE,
             "necro", 0.0F, 0.0F);
+    public static final Holder<ArmorMaterial> SPIDER_ARMOR_MATERIALS = registerArmorMaterial("spider_armor_materials",
+            5, 8, 4, 3,
+            16, SoundEvents.ARMOR_EQUIP_LEATHER, Items.BONE,
+            "necro", 0.0F, 0.0F);
 
     public static final Holder<ArmorMaterial> GOGGLES_MATERIAL = registerSingletonMaterial("goggles_material", ArmorItem.Type.HELMET, 1, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "goggles", 0, 0);
     public static final Holder<ArmorMaterial> WIZARD_HAT_MATERIAL = registerSingletonMaterial("wizard_hat_material", ArmorItem.Type.HELMET, 4, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "wizard_hat", 0, 0);

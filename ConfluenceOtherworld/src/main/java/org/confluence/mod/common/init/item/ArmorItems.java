@@ -176,6 +176,11 @@ public class ArmorItems {
     public static final DeferredItem<ArmorItem> NECRO_LEGGINGS = registerNormalArmor("necro_leggings", "necro_armor", ModArmorMaterials.NECRO_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
     public static final DeferredItem<ArmorItem> NECRO_BOOTS = registerNormalArmor("necro_boots", "necro_armor", ModArmorMaterials.NECRO_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
 
+    public static final DeferredItem<ArmorItem> SPIDER_HELMET = registerNormalArmor("spider_helmet", "spider_armor", ModRarity.LIGHT_RED, ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
+    public static final DeferredItem<ArmorItem> SPIDER_CHESTPLATE = registerNormalArmor("spider_chestplate", "spider_armor", ModRarity.LIGHT_RED, ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<ArmorItem> SPIDER_LEGGINGS = registerNormalArmor("spider_leggings", "spider_armor", ModRarity.LIGHT_RED, ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
+    public static final DeferredItem<ArmorItem> SPIDER_BOOTS = registerNormalArmor("spider_boots", "spider_armor", ModRarity.LIGHT_RED, ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
+
     public static final DeferredItem<ArmorItem> GOGGLES = ITEMS.register("goggles", () -> new ArmorItem(ModArmorMaterials.GOGGLES_MATERIAL, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.WHITE)));
     public static final DeferredItem<ArmorItem> WIZARD_HAT = ITEMS.register("wizard_hat", () -> new ArmorItem(ModArmorMaterials.WIZARD_HAT_MATERIAL, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN)));
     public static final DeferredItem<ArmorItem> MAGIC_HAT = ITEMS.register("magic_hat", () -> new ArmorItem(ModArmorMaterials.MAGIC_HAT_ARMOR_MATERIAL, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN)));

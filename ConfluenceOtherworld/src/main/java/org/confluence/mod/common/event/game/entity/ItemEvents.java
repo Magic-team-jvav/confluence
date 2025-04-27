@@ -12,6 +12,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
@@ -65,8 +66,8 @@ public final class ItemEvents {
     @SubscribeEvent
     public static void gunFire(GunEvent.GunFireEvent event){
         if (event.getGun() instanceof ManaGunItem manaGunItem) {
-            ManaStorage manaStorage = event.getPlayer().getData(ModAttachmentTypes.MANA_STORAGE);
-            event.setAlwaysFire(manaStorage.getCurrentMana() >= manaGunItem.getManaCost());
+            int currentMana = ClientPacketHandler.getCurrentMana();
+            event.setAlwaysFire(currentMana >= manaGunItem.getManaCost());
         }
     }
 }

@@ -175,7 +175,7 @@ public final class GameEvents {
     @SubscribeEvent
     public static void gun$ShrinkBullet(GunEvent.ShrinkBulletEvent event) {
         if (event.isCanceled() || event.isInfinity()) return;
-        HookMapManager.postHooks(ModHookTypes.AMMO_CONSUME.get(), (owner, hook, original) -> {
+        HookMapManager.postHooks(ModHookTypes.SKIP_AMMO_CONSUME.get(), (owner, hook, original) -> {
             if (hook.shouldSkipConsume(owner, original.getPlayer(), original.getBulletStack())) {
                 original.setCanceled(true);
             }

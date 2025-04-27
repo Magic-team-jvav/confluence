@@ -18,7 +18,7 @@ public final class ModHookTypes {
     public static final DeferredHolder<HookType<?>, HookType<AdditionalManaHook>> ADDITIONAL_MANA = register("additional_mana", AdditionalManaHook.class);
     public static final DeferredHolder<HookType<?>, HookType<FishingPowerHook>> FISHING_POWER = register("fishing_power", FishingPowerHook.class);
     public static final DeferredHolder<HookType<?>, HookType<LivingFreezeHook>> LIVING_FREEZE = register("living_freeze", LivingFreezeHook.class);
-    public static final DeferredHolder<HookType<?>, HookType<AmmoConsumeHook>> AMMO_CONSUME = register("ammo_consume", AmmoConsumeHook.class);
+    public static final DeferredHolder<HookType<?>, HookType<SkipAmmoConsumeHook>> SKIP_AMMO_CONSUME = register("skip_ammo_consume", SkipAmmoConsumeHook.class);
 
     private static <T extends IHook> DeferredHolder<HookType<?>, HookType<T>> register(String id, Class<T> hookClass) {
         return TYPES.register(id, () -> HookType.createHook(EquipmentBenediction.asResource(id), hookClass));

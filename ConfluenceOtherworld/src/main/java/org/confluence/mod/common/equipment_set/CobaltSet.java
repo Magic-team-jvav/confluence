@@ -69,7 +69,7 @@ public class CobaltSet extends EquipmentSet {
                         VanillaEquippable.LEGS, ArmorItems.COBALT_LEGGINGS,
                         VanillaEquippable.FEET, ArmorItems.COBALT_BOOTS
                 )
-                .bindHook(ModHookTypes.AMMO_CONSUME.get(), (owner, player, ammoStack) -> player.getRandom().nextFloat() < 0.2F)
+                .bindHook(ModHookTypes.SKIP_AMMO_CONSUME.get(), (owner, player, ammoStack) -> player.getRandom().nextFloat() < 0.2F)
                 .build());
         equippableGroup.addEquippableSet("hat_set", new EquipmentSetBranch.Builder()
                 .addEquippable(

@@ -23,6 +23,7 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
+import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terra_guns.common.init.TGTags;
 import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.TETags;
@@ -344,7 +345,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DecorativeBlocks.TR_LAVA_BRICKS.asItem(),
                 DecorativeBlocks.TR_OBSIDIAN_BRICKS.asItem(),
                 DecorativeBlocks.TR_OBSIDIAN_SMALL_BRICKS.asItem(),
-                DecorativeBlocks.CRYSTAL_BLOCKS.asItem(),
+                DecorativeBlocks.CRYSTAL_BLOCK.asItem(),
                 DecorativeBlocks.RAINBOW_BRICKS.asItem(),
                 DecorativeBlocks.BLUE_BRICKS.asItem(),
                 DecorativeBlocks.CHISELED_BLUE_BRICKS.asItem(),
@@ -1078,6 +1079,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ConsumableItems.UNHOLY_WATER.get(),
                 ConsumableItems.BLOOD_WATER.get(),
                 ConsumableItems.GOODIE_BAG.get(),
+                ConsumableItems.ADVANCED_COMBAT_TECHNIQUES.get(),
                 PaintItems.ECHO_COATING.get(),
                 FoodItems.BOULDER_BREAD.get(),
                 TEItems.HOUSE_DETECTOR.get(),
@@ -1093,6 +1095,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ToolItems.FROZEN_KEY.get(),
                 ToolItems.DESERT_KEY.get(),
                 ToolItems.TARGET_DUMMY.get(),
+                ToolItems.BINOCULARS.get(),
                 ModItems.WHOOPIE_CUSHION.get(),
                 ModItems.TOKYO_TEDDY_BEAR.get(),
                 ModItems.ICE_TOFU_BRICK.get(),
@@ -1241,6 +1244,15 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ArmorItems.HALLOWED_CHESTPLATE.get(),
                 ArmorItems.HALLOWED_LEGGINGS.get(),
                 ArmorItems.HALLOWED_BOOTS.get(),
+                ArmorItems.SPIDER_BOOTS.get(),
+                ArmorItems.SPIDER_CHESTPLATE.get(),
+                ArmorItems.SPIDER_LEGGINGS.get(),
+                ArmorItems.SPIDER_BOOTS.get(),
+                ArmorItems.CRYSTAL_ASSASSIN_HELMET.get(),
+                ArmorItems.CRYSTAL_ASSASSIN_CHESTPLATE.get(),
+                ArmorItems.CRYSTAL_ASSASSIN_LEGGINGS.get(),
+                ArmorItems.CRYSTAL_ASSASSIN_BOOTS.get(),
+                VanityArmorItems.DEAD_MANS_SWEATER.get(),
                 VanityArmorItems.ROBE.get(),
                 VanityArmorItems.TOP_HAT.get(),
                 VanityArmorItems.TUXEDO_SHIRT.get(),
@@ -1311,6 +1323,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getStrippedWood().asItem(),
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getTrapdoor().asItem(),
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getDoor().asItem(),
+                NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.asItem(),
+                PotBlocks.OCEAN_POT.asItem(),
                 OreBlocks.RAW_METEORITE_BLOCK.asItem(),
                 OreBlocks.METEORITE_BLOCK.asItem(),
                 OreBlocks.HALLOWED_BLOCK.asItem(),
@@ -1342,6 +1356,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DecorativeBlocks.ENCHANTED_PINK_BRICKS.asItem(),
                 DecorativeBlocks.LIHZAHRD_DOOR.asItem(),
                 DecorativeBlocks.LIHZAHRD_BRICKS.asItem(),
+                DecorativeBlocks.AETHERIUM_BRICKS.asItem(),
+                DecorativeBlocks.CRYSTAL_BLOCK.asItem(),
+                DecorativeBlocks.RAINBOW_BRICKS.asItem(),
+                DecorativeBlocks.CLOUD_BLOCK_TRAMPOLINE.asItem(),
+                DecorativeBlocks.ASPHALT_BLOCK.asItem(),
+                DecorativeBlocks.FLESH_BLOCK.asItem(),
+                DecorativeBlocks.LESION_BLOCK.asItem(),
+                DecorativeBlocks.REMAINS_BLOCK.asItem(),
                 StatueBlocks.ARMOR_STATUE.asItem(),
                 StatueBlocks.AXE_STATUE.asItem(),
                 StatueBlocks.BOOMERANG_STATUE.asItem(),
@@ -1364,6 +1386,16 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 StatueBlocks.LIHZAHRD_STATUE.asItem(),
                 StatueBlocks.LIHZAHRD_GUARDIAN_STATUE.asItem(),
                 StatueBlocks.LIHZAHRD_WATCHER_STATUE.asItem(),
+                StatueBlocks.BONE_SKELETON_STATUE.asItem(),
+                StatueBlocks.CORRUPT_STATUE.asItem(),
+                StatueBlocks.DRIPPLER_STATUE.asItem(),
+                StatueBlocks.EYEBALL_STATUE.asItem(),
+                StatueBlocks.SKELETON_STATUE.asItem(),
+                StatueBlocks.SLIME_STATUE.asItem(),
+                StatueBlocks.BOMB_STATUE.asItem(),
+                StatueBlocks.HEART_STATUE.asItem(),
+                StatueBlocks.STAR_STATUE.asItem(),
+                StatueBlocks.BAST_STATUE.asItem(),
                 TFBlocks.GLASS_KILN.asItem(),
                 TFBlocks.LIVING_LOOM.asItem(),
                 TFBlocks.ICE_MACHINE.asItem(),
@@ -1423,6 +1455,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.FLAME_TRAP.asItem(),
                 FunctionalBlocks.SPIKY_BALL_TRAP.asItem(),
                 FunctionalBlocks.SPEAR_TRAP.asItem(),
+                FunctionalBlocks.TREE_HOLES_BLOCK.asItem(),
                 MaterialItems.RAW_ASPHALT.get(),
                 MaterialItems.TATTERED_CLOTH.get(),
                 MaterialItems.SOUL_OF_LIGHT.get(),
@@ -1454,9 +1487,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);
         DrillItems.ITEMS.getEntries().forEach(wipAction);
-        //TODO 枪！
-//        TGItems.ITEM_GUNS.getEntries().forEach(wipAction);
-//        TGItems.ITEM_BULLETS.getEntries().forEach(wipAction);
+        TGItems.GUNS.getEntries().forEach(wipAction);
+        TGItems.BULLETS.getEntries().forEach(wipAction);
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
         TMItems.ITEMS.getEntries().forEach(wipAction);
 

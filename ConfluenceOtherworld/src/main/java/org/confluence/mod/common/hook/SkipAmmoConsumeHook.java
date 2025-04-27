@@ -5,6 +5,6 @@ import com.xiaohunao.equipment_benediction.common.interfaces.IBenediction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
-public interface AmmoConsumeHook extends IHook {
+public interface SkipAmmoConsumeHook extends IHook {
     boolean shouldSkipConsume(IBenediction owner, LivingEntity shooter, ItemStack ammoStack);
 }

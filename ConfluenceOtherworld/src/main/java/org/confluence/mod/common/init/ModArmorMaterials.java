@@ -182,7 +182,7 @@ public final class ModArmorMaterials {
     public static final Holder<ArmorMaterial> SPIDER_ARMOR_MATERIALS = registerArmorMaterial("spider_armor_materials",
             5, 8, 4, 3,
             16, SoundEvents.ARMOR_EQUIP_LEATHER, Items.BONE,
-            "necro", 0.0F, 0.0F);
+            "spider", 0.0F, 0.0F);
 
     public static final Holder<ArmorMaterial> GOGGLES_MATERIAL = registerSingletonMaterial("goggles_material", ArmorItem.Type.HELMET, 1, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "goggles", 0, 0);
     public static final Holder<ArmorMaterial> WIZARD_HAT_MATERIAL = registerSingletonMaterial("wizard_hat_material", ArmorItem.Type.HELMET, 4, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "wizard_hat", 0, 0);
@@ -221,6 +221,11 @@ public final class ModArmorMaterials {
     public static final Holder<ArmorMaterial> TITANIUM_HEADGEAR_MATERIAL = registerSingletonMaterial("titanium_headgear_material", ArmorItem.Type.HELMET, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.TITANIUM_INGOT), "titanium_headgear", 10000, 10000);
     public static final Holder<ArmorMaterial> TITANIUM_MASK_MATERIAL = registerSingletonMaterial("titanium_mask_material", ArmorItem.Type.HELMET, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.TITANIUM_INGOT), "titanium_mask", 10000, 10000);
     public static final Holder<ArmorMaterial> TITANIUM_ARMOR_MATERIALS = registerArmorMaterial("titanium_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.TITANIUM_INGOT), "titanium", 10000, 10000);
+
+    public static final Holder<ArmorMaterial> CRYSTAL_ASSASSIN_ARMOR_MATERIALS = registerArmorMaterial("crystal_assassin_armor_materials",
+            12, 14, 5, 5,
+            16, SoundEvents.ARMOR_EQUIP_LEATHER, Items.BONE,
+            "crystal_assassin", 0.0F, 0.0F);
 
     public static final Holder<ArmorMaterial> HALLOWED_MASK_MATERIAL = registerSingletonMaterial("hallowed_mask_material", ArmorItem.Type.HELMET, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed_mask", 10000, 10000);
     public static final Holder<ArmorMaterial> HALLOWED_HEADGEAR_MATERIAL = registerSingletonMaterial("hallowed_headgear_material", ArmorItem.Type.HELMET, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed_headgear", 10000, 10000);

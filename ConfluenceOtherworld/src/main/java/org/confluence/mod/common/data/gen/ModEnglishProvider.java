@@ -92,6 +92,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.echo_block.0", "Only visible with Echo Sight");
         add("tooltip.item.confluence.advanced_combat_techniques.0", "Increases the defense and strength of all villagers");
         add("tooltip.item.confluence.advanced_combat_techniques.1", "'Contains offensive and defensive fighting techniques'");
+        add("tooltip.item.confluence.binoculars.0", "Expand the FOV when in use, and adjust the zoom with the mouse wheel");
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
         add("tooltip.item.confluence.slime_crown.1", "A small crown that seems to be prepared for the coronation ceremony of those cute and harmless gel - like creatures.");

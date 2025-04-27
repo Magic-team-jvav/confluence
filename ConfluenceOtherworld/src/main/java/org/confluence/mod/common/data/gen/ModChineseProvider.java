@@ -82,6 +82,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.echo_block.0", "只在回声视觉下才能看到");
         add("tooltip.item.confluence.advanced_combat_techniques.0", "增强所有城镇居民的防御力和力量");
         add("tooltip.item.confluence.advanced_combat_techniques.1", "“包含攻防战斗技能”");
+        add("tooltip.item.confluence.binoculars.0", "使用时扩大视野，鼠标滚轮可调整缩放");
 
         add("tooltip.item.confluence.slime_crown.0", "右键使用以召唤史莱姆王");
         add("tooltip.item.confluence.slime_crown.1", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");
@@ -124,6 +125,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.8", "佩戴者终将明白：所谓'不摧'，不过是逃得比死亡快一秒。");
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.9", "而灵魂早被碾成岩缝里的尘，比魔像的空壳更荒芜。");
 
+        add("text.building_0", "施工中");
+        add("text.building_1", "预计%s完成");
+        add("text.building_2", "请勿靠近!");
+
         //  文本物品↓
         add("item.confluence.afterlife_notes", "来世手记");
         add("item.confluence.village_exploration", "村庄环游起源");
@@ -165,7 +170,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("lore.confluence.mysterious_note_4", "汇流乐事什么时候才开始制作啊，我都已经等的变成傻子了");
 
         add("lore.confluence.mysterious_slate_0", "“冷知识：其实召唤师要和召唤物进行心灵沟通，盔甲防护不能太厚否则会影响沟通。”");
-        add("lore.confluence.mysterious_slate_1", "“这一切要从月球领主卖的氵......（内容被血迹覆盖了，看不清全貌）”");
+        add("lore.confluence.mysterious_slate_1", "“这一切要从月球领主卖的氵……（内容被血迹覆盖了，看不清全貌）”");
 
         add("author.confluence.the_ancestor_of_explorers", "最初的发起人");
         add("author.confluence.sheila", "希尔娜");

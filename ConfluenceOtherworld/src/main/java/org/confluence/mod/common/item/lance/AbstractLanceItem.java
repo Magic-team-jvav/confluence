@@ -58,9 +58,9 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
 
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity, InteractionHand hand) {
-        if (!entity.level().isClientSide && entity.level().getGameTime() - LibUtils.getItemStackNbt(stack).getLong("confluence:last_attack_time") > attackDuration) {
+        if (entity.level() instanceof ServerLevel serverLevel && entity.level().getGameTime() - LibUtils.getItemStackNbt(stack).getLong("confluence:last_attack_time") > attackDuration) {
             LibUtils.updateItemStackNbt(stack, tag -> tag.putLong("confluence:last_attack_time", entity.level().getGameTime()));
-            triggerAnim(entity, GeoItem.getId(stack), "lance", "use");
+            triggerAnim(entity, GeoItem.getOrAssignId(stack, serverLevel), "lance", "use");
         }
         return true;
     }

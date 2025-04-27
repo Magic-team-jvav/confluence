@@ -43,7 +43,7 @@ public class DungeonStructure extends Structure {
             "dungeon/blue_house_corner_0",
             "dungeon/blue_house_corner_1"
     };
-    public static final String[] cornersIn = new String[]{
+    public static final String[] corners_in = new String[]{
             "dungeon/blue_house_corner_in_0",
             "dungeon/blue_house_corner_in_1",
             "dungeon/blue_house_corner_in_2",
@@ -56,6 +56,7 @@ public class DungeonStructure extends Structure {
             "dungeon/blue_bridge_1"
     };
     public static final String stairs = "dungeon/blue_stairs";
+    public static final String stairs_down = "dungeon/blue_stairs_down";
     public static final String gate = "dungeon/dungeon_gate";
 
     protected DungeonStructure(StructureSettings settings) {
@@ -238,6 +239,8 @@ public class DungeonStructure extends Structure {
             lineSet(firstChannel, 2.5, 2.5, 0, true, blockMap);
             rectangular(underCenter.offset(-2, 48, -2), underCenter.offset(2, 48, 2), 6, blockMap, 0);
             rectangular(underCenter.offset(-1, 48, -1), underCenter.offset(1, 48, 1), 1, blockMap, 0);
+            rectangular(underCenter.offset(-7, -11, -7), underCenter.offset(7, 0, 7), 0, blockMap, 0);
+            rectangular(underCenter.offset(-7, -12, -7), underCenter.offset(7, -12, 7), 1, blockMap, 0);
 
             GridPiece.addPieces(blockMap, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
@@ -278,24 +281,24 @@ public class DungeonStructure extends Structure {
                         builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners, random), houseKey.offset(-1, 0, 1), false, false, Rotation.COUNTERCLOCKWISE_90));
                         break;
                     case 8:
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 0, -1), true, false, Rotation.NONE));
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 6, -1), true, false, Rotation.NONE));
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 12, -1), true, false, Rotation.NONE));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 0, -1), true, false, Rotation.NONE));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 6, -1), true, false, Rotation.NONE));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 12, -1), true, false, Rotation.NONE));
                         break;
                     case 9:
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 0, -1), true, false, Rotation.CLOCKWISE_90));
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 6, -1), true, false, Rotation.CLOCKWISE_90));
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 12, -1), true, false, Rotation.CLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(1, 0, -1), true, false, Rotation.CLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(1, 6, -1), true, false, Rotation.CLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(1, 12, -1), true, false, Rotation.CLOCKWISE_90));
                         break;
                     case 10:
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 0, 1), true, false, Rotation.CLOCKWISE_180));
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 6, 1), true, false, Rotation.CLOCKWISE_180));
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 12, 1), true, false, Rotation.CLOCKWISE_180));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(1, 0, 1), true, false, Rotation.CLOCKWISE_180));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(1, 6, 1), true, false, Rotation.CLOCKWISE_180));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(1, 12, 1), true, false, Rotation.CLOCKWISE_180));
                         break;
                     case 11:
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 0, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 6, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 12, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 0, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 6, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 12, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
                         break;
                     case 0:
                         builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(-1, 0, -1), false, false, Rotation.NONE));
@@ -320,28 +323,28 @@ public class DungeonStructure extends Structure {
                 houseValue = entry.getValue();
                 switch (houseValue) {
                     case 0:
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 18, -1), true, false, Rotation.NONE));
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 12, -1), true, false, Rotation.NONE));
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 6, -1), true, false, Rotation.NONE));
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 0, -1), true, false, Rotation.NONE));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 18, -1), true, false, Rotation.NONE));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 12, -1), true, false, Rotation.NONE));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 6, -1), true, false, Rotation.NONE));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 0, -1), true, false, Rotation.NONE));
                         break;
                     case 1:
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 18, -1), true, false, Rotation.CLOCKWISE_90));
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 12, -1), true, false, Rotation.CLOCKWISE_90));
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 6, -1), true, false, Rotation.CLOCKWISE_90));
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 0, -1), true, false, Rotation.CLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(1, 18, -1), true, false, Rotation.CLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(1, 12, -1), true, false, Rotation.CLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(1, 6, -1), true, false, Rotation.CLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(1, 0, -1), true, false, Rotation.CLOCKWISE_90));
                         break;
                     case 2:
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 18, 1), true, false, Rotation.CLOCKWISE_180));
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 12, 1), true, false, Rotation.CLOCKWISE_180));
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 6, 1), true, false, Rotation.CLOCKWISE_180));
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(1, 0, 1), true, false, Rotation.CLOCKWISE_180));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(1, 18, 1), true, false, Rotation.CLOCKWISE_180));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(1, 12, 1), true, false, Rotation.CLOCKWISE_180));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(1, 6, 1), true, false, Rotation.CLOCKWISE_180));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(1, 0, 1), true, false, Rotation.CLOCKWISE_180));
                         break;
                     default:
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 18, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 12, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 6, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
-                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(cornersIn, random), houseKey.offset(-1, 0, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 18, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 12, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 6, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 0, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
                 }
             }
 
@@ -368,6 +371,7 @@ public class DungeonStructure extends Structure {
                 default:
                     builder.addPiece(new SimpleTemplatePiece(manager, stairs, underCenter.offset(13, 0, -13), false, true, Rotation.CLOCKWISE_90));
             }
+            builder.addPiece(new SimpleTemplatePiece(manager, stairs_down, underCenter.offset(-13, -11, -13), false, false, Rotation.NONE));
 
         });
     }

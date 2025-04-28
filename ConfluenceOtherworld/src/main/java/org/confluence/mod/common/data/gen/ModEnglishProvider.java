@@ -1088,6 +1088,8 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add(TooltipManager.prefix, "** Sponsor Item **");
 
+        add("item.confluence.spawn_eggs", "%s Spawn Egg");
+
         // TouhouLittleMaid
         add("task.confluence.use_life_crystal", "Use Life Crystal");
         add("task.confluence.use_life_crystal.desc", "Mail will use life crystal to heal herself");

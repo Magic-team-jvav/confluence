@@ -36,7 +36,7 @@ public class HammerItems {
     public static final DeferredItem<HammerItem> SILVER_HAMMER = ITEMS.register("silver_hammer", () -> new HammerItem(ModTiers.SILVER, 9, 1.2F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
     public static final DeferredItem<HammerItem> TUNGSTEN_HAMMER = ITEMS.register("tungsten_hammer", () -> new HammerItem(ModTiers.TUNGSTEN, 9, 1.3F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
     public static final DeferredItem<HammerItem> GOLDEN_HAMMER = ITEMS.register("golden_hammer", () -> new HammerItem(ModTiers.GOLD, 9, 1.5F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
-    public static final DeferredItem<HammerItem> PLATINUM_HAMMER = ITEMS.register("platinum_hammer", () -> new HammerItem(ModTiers.PLATINUM, 10, 1.6F, unbreakable(), attributes(0, 0.55), ModRarity.WHITE));
+    public static final DeferredItem<HammerItem> PLATINUM_HAMMER = ITEMS.register("platinum_hammer", () -> new HammerItem(ModTiers.PLATINUM, 10, 1.6F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
     public static final DeferredItem<HammerItem> THE_BREAKER = ITEMS.register("the_breaker", () -> new HammerItem(ModTiers.DEMONITE, 24, 1.6F, unbreakable(), attributes(0, 0.6), ModRarity.BLUE));
     public static final DeferredItem<HammerItem> FLESH_GRINDER = ITEMS.register("flesh_grinder", () -> new HammerItem(ModTiers.TR_CRIMSON, 23, 1.6F, unbreakable(), attributes(0, 0.6), ModRarity.BLUE));
     public static final DeferredItem<HammerItem> ROCKFISH = ITEMS.register("rockfish", () -> new HammerItem(new SimpleTier(ModTags.Blocks.NEEDS_4_LEVEL, 10000, 9, 3, 10, () -> Ingredient.of(ItemTags.FISHES)), 24, 1.2F, unbreakable(), attributes(0, 0.6), ModRarity.ORANGE));

@@ -43,7 +43,7 @@ public final class ModItems {
     public static final DeferredRegister.Items HIDDEN = DeferredRegister.createItems(Confluence.MODID);
     public static final DeferredRegister.Items BLOCK_ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
-    public static final Unbreakable UNBREAKABLE = new Unbreakable(false);
+    public static final Unbreakable UNBREAKABLE = new Unbreakable(true);
 
     public static final ResourceLocation BASE_ATTACK_KNOCKBACK_ID = Confluence.asResource("base_attack_knockback");
     public static final ResourceLocation BASE_CRITICAL_CHANCE_ID = Confluence.asResource("base_critical_chance");

@@ -133,7 +133,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.7", "'Look, even the stones understand the way of survival better than your legs.'");
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.8", "The wearer will eventually understand that so - called 'invincibility' merely means outrunning death by a single second.");
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.9", "And the soul has long been crushed into dust in the rock crevices, more desolate than the empty shell of a golem.");
-        //  Text items ↓
+
+        // Text items ↓
         add("item.confluence.afterlife_notes", "Afterlife Notes");
         add("item.confluence.village_exploration", "Origin of Village Exploration");
         add("item.confluence.research_on_wheat_mutation", "Research on Wheat Mutation");
@@ -141,46 +142,49 @@ public class ModEnglishProvider extends LanguageProvider {
         add("item.confluence.research_on_cloud_blocks_2", "Research on Cloud Blocks II");
         add("item.confluence.meteor_diary", "Meteor Diary");
 
-        //note
+        // note
         add("item.confluence.mysterious_note.name_0", "Small Note with Bite Marks");
-        add("item.confluence.mysterious_note.name_1", "Small Note with Orange Scent");
-        add("item.confluence.mysterious_note.name_2", "Digitized Small Note");
-        add("item.confluence.mysterious_note.name_3", "Gentle Small Note");
-        add("item.confluence.mysterious_note.name_4", "Half-Eaten Small Note");
-
-        add("item.confluence.mysterious_slate.name_0", "Serious Slate");
-        add("item.confluence.mysterious_slate.name_1", "Exceptionally Ancient Slate");
-
-        add("text.confluence.afterlife_notes", "Adventurer, the new world is full of endless challenges and opportunities. This notebook will help you understand the mysteries of this world and guide you in the face of monsters and difficulties. Only by continuous exploration can you discover more power and treasures. Your journey has just begun. —— Guide");
-        add("text.confluence.village_exploration", "The world's mutation has quietly arrived. The dark evil thoughts of living beings have erupted one after another, and the physical invasions from the outside world have followed in quick succession. All available resources have been awakened. The arrival of the new world brings both the shadow of destruction and opens up new possibilities. Buildings soar into the sky like flying birds, which is amazing. The clouds that were once out of reach have now turned into solid blocks, reflecting the longings in people's hearts. On the journey of exploration, they have mastered unprecedented knowledge and discovered new plants, as if they have found a corner of tranquility in the hustle and bustle. In that area");
-        add("text.confluence.research_on_wheat_mutation", "We found that the wheat we brought began to turn white and yellow. At first, we thought they couldn't adapt to this strange environment. Until a cloud block floated by gently, it dyed the wheat with the colors of the rosy clouds and transformed it into a new kind of plant. We can't help but be skeptical about this mutated product - until someone is hungry and eager for food. Strangely enough, even though they are full, their bodies seem to become lighter, as if gradually getting away from the burden of the earth. In this strange world, changes and confusions are intertwined, and we begin to re - examine");
-        add("text.confluence.research_on_cloud_blocks_1", "Cloud blocks, non - toxic, are composed of ice crystals condensed in the sky, with different contents. After a long - term contact with the alien planet, these clouds have gradually become solid and can bear the weight of an adult, protecting them from the impact of strong kinetic energy. However, the plants nearby have begun to mutate, and we are still confused about how this strange change came about. At this mysterious intersection, the clouds and plants weave an unknown story, as if nature is quietly writing a new chapter.");
-        add("text.confluence.research_on_cloud_blocks_2", "As the research deepens, we gradually find that cloud blocks and a plant called cloud - weaving grass are actually of the same nature. Cloud - weaving grass grows on cloud blocks, quietly collecting water vapor in the high - altitude until a new cloud block is born. Now, this plant has been transplanted to the cloud flowerbed and has become an important building resource for us. In this mysterious space, plants and clouds blend, weaving endless possibilities and delivering the power to build dreams to the earth.");
-        add("text.confluence.meteor_diary", "They cut through the night sky, making monsters afraid; while we often make quiet wishes on meteors. Perhaps, they really have invisible magic. Children look up, full of joy, chasing that faint light; they grow quietly from the clouds and then gently fall from the clouds. On this night stage, meteors twinkle with the light of hope, warming every expectant heart.");
-        add("text.confluence.village_exploration_0", "On the pure land, new hope is quietly germinating, bringing long - lost peace.");
-        add("text.confluence.research_on_wheat_mutation_0", "Re - examine the essence of food and the miracle of life.");
-
-        add("lore.confluence.village_exploration", "It's hard to tell the exact age, but it seems to be very well - packaged...");
-        add("lore.confluence.research_on_wheat_mutation", "There are some powders mixed in the pages, but it doesn't seem to be the powder from the aging of the pages...");
-        add("lore.confluence.research_on_cloud_blocks_1", "It's obviously a very thick book, but it feels so light in the hand. Judging from the title, it seems there is another volume?");
-        add("lore.confluence.research_on_cloud_blocks_2", "The pages feel very soft, just like silk. Judging from the title, it seems there is another volume?");
-        add("lore.confluence.meteor_diary", "It's a very thin book, but it seems to have a faint glow.");
-
-        //note
         add("lore.confluence.mysterious_note_0", "Oops, you've found it. Don't tell others that the puppy is hiding here UQYQU");
+        add("item.confluence.mysterious_note.name_1", "Small Note with Orange Scent");
         add("lore.confluence.mysterious_note_1", "Hey, since you've found it, I'll tell you. In fact, one of the animals sleeping with you is probably an informant for the prison pillow.");
+        add("item.confluence.mysterious_note.name_2", "Digitized Small Note");
         add("lore.confluence.mysterious_note_2", "The original brave didn't ask for anything in return. They only hoped that all souls yearning for adventure could freely pick up these precious gifts and shine their own light in the adventure. Please guard this kindness from the brave and don't let the shadow of interests obscure the light of freedom and hope in the afterlife.");
+        add("item.confluence.mysterious_note.name_3", "Gentle Small Note");
         add("lore.confluence.mysterious_note_3", "I hope that the adventurer who sees this note can have a smooth study, a successful job, and everything goes well in life. No matter what the haze is, it will pass quickly because we all have to move forward towards tomorrow.");
+        add("item.confluence.mysterious_note.name_4", "Half-Eaten Small Note");
         add("lore.confluence.mysterious_note_4", "When will Confluence Fun Stuff start production? I've been waiting until I'm stupid.");
 
+        add("item.confluence.mysterious_slate.name_0", "Serious Slate");
         add("lore.confluence.mysterious_slate_0", "“A fun fact: In fact, summoners need to communicate with their summoned creatures spiritually. The armor protection can't be too thick, otherwise it will affect the communication.”");
+        add("item.confluence.mysterious_slate.name_1", "Exceptionally Ancient Slate");
         add("lore.confluence.mysterious_slate_1", "“It all started when the Moon Lord sold the... (The content is covered by blood, and the whole picture can't be seen clearly)”");
+
+        add("text.building_0", "Under construction");
+        add("text.building_1", "Version %s is expected to be complete");
+        add("text.building_2", "Don't come close!");
+
+        add("text.confluence.afterlife_notes", "Adventurer, the new world is full of endless challenges and opportunities. This notebook will help you understand the mysteries of this world and guide you in the face of monsters and difficulties. Only by continuous exploration can you discover more power and treasures. Your journey has just begun. —— Guide");
+
+        add("text.confluence.village_exploration", "The world's mutation has quietly arrived. The dark evil thoughts of living beings have erupted one after another, and the physical invasions from the outside world have followed in quick succession. All available resources have been awakened. The arrival of the new world brings both the shadow of destruction and opens up new possibilities. Buildings soar into the sky like flying birds, which is amazing. The clouds that were once out of reach have now turned into solid blocks, reflecting the longings in people's hearts. On the journey of exploration, they have mastered unprecedented knowledge and discovered new plants, as if they have found a corner of tranquility in the hustle and bustle. In that area");
+        add("lore.confluence.village_exploration", "It's hard to tell the exact age, but it seems to be very well - packaged...");
+        add("text.confluence.village_exploration_0", "On the pure land, new hope is quietly germinating, bringing long - lost peace.");
+
+        add("text.confluence.research_on_wheat_mutation", "We found that the wheat we brought began to turn white and yellow. At first, we thought they couldn't adapt to this strange environment. Until a cloud block floated by gently, it dyed the wheat with the colors of the rosy clouds and transformed it into a new kind of plant. We can't help but be skeptical about this mutated product - until someone is hungry and eager for food. Strangely enough, even though they are full, their bodies seem to become lighter, as if gradually getting away from the burden of the earth. In this strange world, changes and confusions are intertwined, and we begin to re - examine");
+        add("lore.confluence.research_on_wheat_mutation", "There are some powders mixed in the pages, but it doesn't seem to be the powder from the aging of the pages...");
+        add("text.confluence.research_on_wheat_mutation_0", "Re - examine the essence of food and the miracle of life.");
+
+        add("text.confluence.research_on_cloud_blocks_1", "Cloud blocks, non - toxic, are composed of ice crystals condensed in the sky, with different contents. After a long - term contact with the alien planet, these clouds have gradually become solid and can bear the weight of an adult, protecting them from the impact of strong kinetic energy. However, the plants nearby have begun to mutate, and we are still confused about how this strange change came about. At this mysterious intersection, the clouds and plants weave an unknown story, as if nature is quietly writing a new chapter.");
+        add("lore.confluence.research_on_cloud_blocks_1", "It's obviously a very thick book, but it feels so light in the hand. Judging from the title, it seems there is another volume?");
+        add("text.confluence.research_on_cloud_blocks_2", "As the research deepens, we gradually find that cloud blocks and a plant called cloud - weaving grass are actually of the same nature. Cloud - weaving grass grows on cloud blocks, quietly collecting water vapor in the high - altitude until a new cloud block is born. Now, this plant has been transplanted to the cloud flowerbed and has become an important building resource for us. In this mysterious space, plants and clouds blend, weaving endless possibilities and delivering the power to build dreams to the earth.");
+        add("lore.confluence.research_on_cloud_blocks_2", "The pages feel very soft, just like silk. Judging from the title, it seems there is another volume?");
+
+        add("text.confluence.meteor_diary", "They cut through the night sky, making monsters afraid; while we often make quiet wishes on meteors. Perhaps, they really have invisible magic. Children look up, full of joy, chasing that faint light; they grow quietly from the clouds and then gently fall from the clouds. On this night stage, meteors twinkle with the light of hope, warming every expectant heart.");
+        add("lore.confluence.meteor_diary", "It's a very thin book, but it seems to have a faint glow.");
 
         add("author.confluence.the_ancestor_of_explorers", "The Original Initiator");
         add("author.confluence.sheila", "Sheila");
         add("author.confluence.lorissa", "Lorissa");
         add("author.confluence.annaleigh", "Annaleigh");
-
 
         add("worldgen.confluence.placing_traps", "Placing Traps");
         add("worldgen.confluence.generating_bees", "Generating bees");

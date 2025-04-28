@@ -143,14 +143,15 @@ public class ModItemModelProvider extends ItemModelProvider {
      */
     private void separateModel(DeferredItem<?> deferredItem, ModelFile parentModel, String parentPath) {
         String path = deferredItem.getId().getPath();
-        getBuilder(path).customLoader((builder, helper) -> {
+        getBuilder(path).guiLight(BlockModel.GuiLight.FRONT).customLoader((builder, helper) -> {
             ResourceLocation texture = Confluence.asResource("item/" + parentPath + path);
             ItemModelBuilder standaloneModel = new ItemModelBuilder(Confluence.asResource("item/" + path + "_inventory"), existingFileHelper)
                     .parent(itemGenerated)
-                    .texture("layer0", texture.withSuffix("_inventory"))
-                    .guiLight(BlockModel.GuiLight.FRONT);
+                    .texture("layer0", texture.withSuffix("_inventory"));
             return SeparateTransformsModelBuilder.begin(builder, existingFileHelper)
-                    .base(new ItemModelBuilder(Confluence.asResource("item/" + path + "_base"), existingFileHelper).parent(parentModel).texture("layer0", texture))
+                    .base(new ItemModelBuilder(Confluence.asResource("item/" + path + "_base"), existingFileHelper)
+                            .parent(parentModel)
+                            .texture("layer0", texture))
                     .perspective(ItemDisplayContext.HEAD, standaloneModel)
                     .perspective(ItemDisplayContext.GUI, standaloneModel)
                     .perspective(ItemDisplayContext.GROUND, standaloneModel)

@@ -1006,7 +1006,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("dialogs.confluence.guide.14", "如果你拥有了一些矿石，你需要将它铸成矿锭，才能用来制作物品。这需要熔炉！");
         add("dialogs.confluence.guide.15", "如果在祭坛上合成晶状体，你也许能够找到方法来召唤一个强大的怪物。不过，最好等到夜晚再用它。");
 
-
         add("dialogs.confluence.nurse.0", "我要和向导认真谈一谈。你一周到底有多少次被熔岩烫成重伤？");
         add("dialogs.confluence.nurse.1", "看到那个在地牢周围转来转去的老人没？他看上去遇到麻烦了。");
         add("dialogs.confluence.nurse.2", "嗨，军火商有没有提过要去看医生啥的？就随便问问。");
@@ -1084,7 +1083,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("merchant_like_nurse", "护士赚了很多钱，我喜欢有钱人。");
         add("nurse_love_arms_dealer", "什么？军火商？我才没有暗恋他！我没有！闭嘴！");
         add("nurse_dislike_dryad", "我不太喜欢树妖，这个人有点奇怪。");
-
 
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.ARROW_PROJECTILE.get(), "泰拉箭");

@@ -53,7 +53,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("options.difficulty.legendary", "§aLegendary");
         add("message.confluence.choking", "You're choking and need to drink water");
         add("message.confluence.advancement_combat_techniques", "The book's knowledge empowers your villagers!");
-        add("jukebox_song.confluence.alpha", "C418 - alpha");
+        add("jukebox_song.confluence.song", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
         add("generator.confluence.the_corruption", "The Corruption");
@@ -780,11 +780,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.npc_trade", "NPC Trading");
         add("title.confluence.sawmill", "Sawmill");
 
-        add("jukebox_song.confluence.song", "C418 - alpha");
-        add("text.building_0", "Under construction");
-        add("text.building_1", "Expected to be completed by %s");
-        add("text.building_2", "Do not approach!");
-
         // Override
         add("item.confluence.encumbering_stone.disable", "Encumbering Stone: Disable");
         add("item.confluence.paint", "Paint");
@@ -931,17 +926,17 @@ public class ModEnglishProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.spore_root_set.data.3", "Summon damage increased by 2%");
         add("equipment_benediction.set_switcher.confluence.spore_root_set.data.4", "Summon limit increased by 1");
 
-        add("equipment_benediction.set_switcher.confluence.heim_set", "Abyssal Scale Set");
+        add("equipment_benediction.set_switcher.confluence.cactus_set", "Cactus Set");
+        add("equipment_benediction.set_switcher.confluence.cactus_set.data.0", "Attackers take damage from cactus thorns");
+
+        add("equipment_benediction.set_switcher.confluence.heim_set", "Heim Set");
         add("equipment_benediction.set_switcher.confluence.heim_set.data.0", "Extend underwater breathing time by 5% and increase melee damage by 1%");
         add("equipment_benediction.set_switcher.confluence.heim_set.data.1", "After successfully using the shield to intercept the next attack, increase damage by 20% within three seconds. The damage increase stops when you launch an attack and hit or get hit during these three seconds. Increase melee damage by 1%");
         add("equipment_benediction.set_switcher.confluence.heim_set.data.2", "Increase critical hit rate by 2% and increase melee damage by 1%");
         add("equipment_benediction.set_switcher.confluence.heim_set.data.3", "Increase underwater movement speed by 5% and increase melee damage by 1%");
         add("equipment_benediction.set_switcher.confluence.heim_set.data.4", "Grant you 4 HP of damage absorption, and grant it again every 5 minutes");
 
-        add("equipment_benediction.set_switcher.confluence.cactus_set", "Cactus Set");
-        add("equipment_benediction.set_switcher.confluence.cactus_set.data.0", "Attackers take damage from cactus thorns");
-
-        // npc
+        // npc dialogs
         add("dialogs.confluence.guide.0", "My job is to offer suggestions for your upcoming tasks. I recommend that you come and talk to me whenever you encounter any difficulties.");
         add("dialogs.confluence.guide.1", "They said there would be someone to tell you how to survive in this place... Oh, wait a moment. That person is me.");
         add("dialogs.confluence.guide.2", "You should stay at home at night. It's very dangerous to wander outside in the dark.");

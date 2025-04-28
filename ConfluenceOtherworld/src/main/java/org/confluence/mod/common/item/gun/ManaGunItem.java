@@ -45,4 +45,24 @@ public class ManaGunItem extends BaseGun {
             baseBulletEntities.clear();
         }
     }
+
+    public float getDamage() {
+        return damage;
+    }
+
+    public float getInaccuracy() {
+        return inaccuracy;
+    }
+
+    public float getVelocity() {
+        return velocity;
+    }
+
+    public int getPenetrate() {
+        return penetrate;
+    }
+
+    public float getKnockback() {
+        return knockback;
+    }
 }

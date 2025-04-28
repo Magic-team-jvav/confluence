@@ -22,6 +22,7 @@ import org.confluence.mod.common.item.gun.ManaGunItem;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_guns.api.event.GunEvent;
+import org.confluence.terra_guns.common.init.TGItems;
 
 import java.util.Collection;
 import java.util.Map;
@@ -68,6 +69,24 @@ public final class ItemEvents {
         if (event.getGun() instanceof ManaGunItem manaGunItem) {
             int currentMana = ClientPacketHandler.getCurrentMana();
             event.setAlwaysFire(currentMana >= manaGunItem.getManaCost());
+        }
+    }
+
+    @SubscribeEvent
+    public static void shirkAmmo(GunEvent.ShrinkBulletEvent event){
+        if (event.getGun() instanceof ManaGunItem) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void ammoData(GunEvent.AmmoDataEvent event){
+        if (event.getGun() instanceof ManaGunItem manaGunItem){
+            event.setDamage(manaGunItem.getDamage());
+            event.setInaccuracy(manaGunItem.getInaccuracy());
+            event.setVelocity(manaGunItem.getVelocity());
+            event.setPenetrate(manaGunItem.getPenetrate());
+            event.setKnockback(manaGunItem.getKnockback());
         }
     }
 }

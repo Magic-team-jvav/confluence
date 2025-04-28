@@ -42,8 +42,11 @@ public class ModItemModelProvider extends ItemModelProvider {
         separateModel(SwordItems.LIGHTS_BANE, templateReverse24x, "sword/");
         separateModel(SwordItems.BLADE_OF_GRASS, templateReverse24x, "sword/");
         separateModel(SwordItems.BONE_SWORD, templateReverse24x, "sword/");
+        separateModel(SwordItems.BLOOD_BUTCHERER, templateReverse24x, "sword/");
         separateModel(HammerItems.THE_BREAKER, templateReverse24x, "hammer/");
+        separateModel(HammerItems.FLESH_GRINDER, templateReverse24x, "hammer/");
         separateModel(AxeItems.WAR_AXE_OF_THE_NIGHT, templateReverse24x, "axe/");
+        separateModel(AxeItems.BLOOD_LUST_CLUSTER, templateReverse24x, "axe/");
 
         ResourceLocation templateDye = Confluence.asResource("item/template_dye");
         for (DeferredHolder<Item, ? extends Item> item : VanityArmorItems.DYE_ITEMS) {

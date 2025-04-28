@@ -16,6 +16,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,19 +25,24 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.functional.DeathChestBlock;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -50,13 +56,20 @@ import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
 public class BaseChestBlock extends ChestBlock {
+    public static final BooleanProperty UNLOCKED = StateProperties.UNLOCKED;
+
     public BaseChestBlock() {
-        super(Properties.ofFullCopy(Blocks.CHEST), FunctionalBlocks.BASE_CHEST_BLOCK_ENTITY::get);
+        this(Properties.ofFullCopy(Blocks.CHEST), FunctionalBlocks.BASE_CHEST_BLOCK_ENTITY::get);
     }
 
     public BaseChestBlock(Properties properties, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier) {
         super(properties, supplier);
+        registerDefaultState(defaultBlockState().setValue(UNLOCKED, false));
+    }
 
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder.add(UNLOCKED));
     }
 
     @Override
@@ -76,8 +89,12 @@ public class BaseChestBlock extends ChestBlock {
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
         CompoundTag tag = LibUtils.getItemStackNbt(pStack);
+        Variant variantId = Variant.byId(tag.getInt("VariantId"));
+        BlockState state = pState.setValue(UNLOCKED, variantId.unlock < 0);
+        pLevel.setBlockAndUpdate(pPos, state);
         if (pLevel.getBlockEntity(pPos) instanceof Entity entity) {
-            entity.variant = Variant.byId(tag.getInt("VariantId"));
+            entity.variant = variantId;
+            entity.setBlockState(state);
         }
     }
 
@@ -129,6 +146,7 @@ public class BaseChestBlock extends ChestBlock {
                                 new BlockParticleOption(ParticleTypes.BLOCK, Blocks.CHAIN.defaultBlockState()),
                                 posX, pos.getY() + 0.5, posZ, 200, 0.0625, 0.0625, 0.0625, 0.15
                         );
+                        level.setBlockAndUpdate(pos, state.setValue(UNLOCKED, true));
                     }
                 }
                 return ItemInteractionResult.SUCCESS;
@@ -147,6 +165,16 @@ public class BaseChestBlock extends ChestBlock {
             return setData(itemStack, entity.variant);
         }
         return itemStack;
+    }
+
+    @Override
+    public boolean canEntityDestroy(BlockState state, BlockGetter level, BlockPos pos, net.minecraft.world.entity.Entity entity) {
+        return state.getValue(UNLOCKED) && super.canEntityDestroy(state, level, pos, entity);
+    }
+
+    @Override
+    protected float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+        return state.getValue(UNLOCKED) ? super.getDestroyProgress(state, player, level, pos) : 0;
     }
 
     public static ItemStack setData(ItemStack itemStack, Variant variant) {
@@ -197,6 +225,16 @@ public class BaseChestBlock extends ChestBlock {
             CompoundTag nbt = super.getUpdateTag(registries);
             nbt.putInt("VariantId", variant.id);
             return nbt;
+        }
+
+        @Override
+        public boolean canTakeItem(Container target, int slot, ItemStack stack) {
+            return !isLocked();
+        }
+
+        @Override
+        public boolean canPlaceItem(int slot, ItemStack stack) {
+            return !isLocked();
         }
     }
 

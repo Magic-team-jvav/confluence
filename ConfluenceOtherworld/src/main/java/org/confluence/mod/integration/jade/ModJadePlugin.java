@@ -11,7 +11,7 @@ import org.confluence.mod.common.block.functional.SignalPressurePlateBlock;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.integration.ponder.PonderHelper;
+import org.confluence.mod.integration.create.ponder.PonderHelper;
 import snownee.jade.api.*;
 
 @WailaPlugin

@@ -1,4 +1,4 @@
-package org.confluence.mod.integration.ponder;
+package org.confluence.mod.integration.create.ponder;
 
 import net.createmod.ponder.foundation.PonderIndex;
 import net.neoforged.fml.ModList;

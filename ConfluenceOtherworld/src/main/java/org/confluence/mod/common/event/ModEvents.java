@@ -301,7 +301,7 @@ public final class ModEvents {
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, blockEntity, side) -> {
-            if (blockEntity instanceof BaseChestBlock.Entity entity && entity.isLocked()) return null;
+            if (!state.getValue(BaseChestBlock.UNLOCKED)) return null;
             Container container = ChestBlock.getContainer((ChestBlock) state.getBlock(), state, level, pos, true);
             if (container == null) return null;
             return new InvWrapper(container);

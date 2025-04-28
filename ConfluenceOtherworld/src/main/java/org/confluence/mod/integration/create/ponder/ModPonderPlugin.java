@@ -1,4 +1,4 @@
-package org.confluence.mod.integration.ponder;
+package org.confluence.mod.integration.create.ponder;
 
 import net.createmod.catnip.math.Pointing;
 import net.createmod.ponder.api.registration.PonderPlugin;

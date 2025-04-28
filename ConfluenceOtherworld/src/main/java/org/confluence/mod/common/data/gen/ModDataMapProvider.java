@@ -1,9 +1,7 @@
 package org.confluence.mod.common.data.gen;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
@@ -204,9 +202,9 @@ public class ModDataMapProvider extends DataMapProvider {
             .add(ManaWeaponItems.FLOWER_OF_FIRE.get(), 25000)
             .add(ManaWeaponItems.WATER_BOLT.get(), 15000)
 
-             // 还没复活
-            .add("confluence:bee_gun", 20000)
-            .add("confluence:space_gun", 4000)
+            // todo 还没复活
+            //.add("confluence:bee_gun", 20000)
+            //.add("confluence:space_gun", 4000)
 
             .add(TCItems.AGLET, 25000)
             .add(TCItems.AMBER_HORSESHOE_BALLOON.get(), 30000)
@@ -478,11 +476,6 @@ public class ModDataMapProvider extends DataMapProvider {
 
         public ValueBuilder add(ItemLike itemLike, int value) {
             return (ValueBuilder) super.add(itemLike.asItem().builtInRegistryHolder(), new ValueComponent(value), false);
-        }
-
-        @Deprecated
-        public ValueBuilder add(String id, int value) {
-            return add(BuiltInRegistries.ITEM.get(ResourceLocation.parse(id)), value);
         }
     }
 

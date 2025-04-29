@@ -11,6 +11,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import org.confluence.mod.common.CommonConfigs;
 
 import static org.confluence.lib.util.FeatureUtils.ball;
 import static org.confluence.lib.util.FeatureUtils.ellipsoid;
@@ -22,6 +23,8 @@ public class AmethystGeodeFeature extends Feature<AmethystGeodeFeature.Config> {
 
     @Override
     public boolean place(FeaturePlaceContext<Config> pContext) {
+        if (!CommonConfigs.REPLACE_VANILLA_GEODE_FEATURE.get()) return false;
+
         Config config = pContext.config();
         WorldGenLevel level = pContext.level();
         BlockPos centerPos = pContext.origin();

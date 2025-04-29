@@ -10,10 +10,12 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.EntityType;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.GamePhasePacketS2C;
+import org.confluence.terraentity.init.entity.TEBossEntities;
 
 import java.util.Arrays;
 
@@ -62,6 +64,9 @@ public class KillBoard implements IGlobalData {
 
     public void defeat(EntityType<?> entityType) {
         defeatedMap.put(entityType, true);
+        if (entityType == TEBossEntities.SKELETRON.get()) {
+            KillBoard.INSTANCE.setGamePhase(ServerLifecycleHooks.getCurrentServer(), GamePhase.AFTER_SKELETRON);
+        }
     }
 
     public GamePhase getGamePhase() {

@@ -2,22 +2,34 @@ package org.confluence.mod.common.worldgen.structure;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.MapCodec;
+import it.unimi.dsi.fastutil.longs.LongSet;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.lib.util.BooleanStorage4;
 import org.confluence.lib.util.VectorUtils;
+import org.confluence.mod.common.data.saved.GamePhase;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.joml.Vector3d;
@@ -253,12 +265,9 @@ public class DungeonStructure extends Structure {
             ), builder);
             StructureTemplateManager manager = context.structureTemplateManager();
             switch (rotation) {
-                case CLOCKWISE_90 ->
-                        builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(15, -3, -23), true, true, Rotation.CLOCKWISE_90));
-                case CLOCKWISE_180 ->
-                        builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(23, -3, 15), true, true, Rotation.CLOCKWISE_180));
-                case COUNTERCLOCKWISE_90 ->
-                        builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(-15, -3, 23), true, true, Rotation.COUNTERCLOCKWISE_90));
+                case CLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(15, -3, -23), true, true, Rotation.CLOCKWISE_90));
+                case CLOCKWISE_180 -> builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(23, -3, 15), true, true, Rotation.CLOCKWISE_180));
+                case COUNTERCLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(-15, -3, 23), true, true, Rotation.COUNTERCLOCKWISE_90));
                 default -> builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(-23, -3, -15), true, true, Rotation.NONE));
             }
 
@@ -379,5 +388,28 @@ public class DungeonStructure extends Structure {
     @Override
     public StructureType<?> type() {
         return ModStructures.DUNGEON.get();
+    }
+
+    public static void checkSkeletronDefeated(ServerPlayer player, ServerLevel level) {
+        if (KillBoard.INSTANCE.getGamePhase() == GamePhase.BEFORE_SKELETRON && player.gameMode.getGameModeForPlayer().isSurvival() && level.getGameTime() % 101 == 0) {
+            Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
+            if (structure == null) return;
+            ChunkPos chunkPos = player.chunkPosition();
+            LongSet structureRefs = level.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.STRUCTURE_REFERENCES).getReferencesForStructure(structure);
+            for (long i : structureRefs) {
+                SectionPos sectionPos = SectionPos.of(new ChunkPos(i), level.getMinSection());
+                StructureStart structureStart = level.structureManager().getStartForStructure(sectionPos, structure, level.getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS));
+                if (structureStart == null || !structureStart.isValid()) continue;
+                BoundingBox boundingBox = structureStart.getBoundingBox(); // getBoundingBox已优化过缓存
+                if (player.getY() >= boundingBox.minY() + 4 && player.getY() <= boundingBox.minY() + 51) {
+                    // todo 生成地牢守卫者
+                    Creeper creeper = new Creeper(EntityType.CREEPER, level);
+                    creeper.setPos(player.position());
+                    creeper.getEntityData().set(Creeper.DATA_IS_POWERED, true);
+                    level.addFreshEntity(creeper);
+                    return;
+                }
+            }
+        }
     }
 }

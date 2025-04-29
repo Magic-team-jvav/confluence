@@ -148,11 +148,11 @@ public class ModItemModelProvider extends ItemModelProvider {
         String path = deferredItem.getId().getPath();
         getBuilder(path).guiLight(BlockModel.GuiLight.FRONT).customLoader((builder, helper) -> {
             ResourceLocation texture = Confluence.asResource("item/" + parentPath + path);
-            ItemModelBuilder standaloneModel = new ItemModelBuilder(Confluence.asResource("item/" + path + "_inventory"), existingFileHelper)
+            ItemModelBuilder standaloneModel = new ItemModelBuilder(Confluence.asResource("item/" + path + "_inventory"), helper)
                     .parent(itemGenerated)
                     .texture("layer0", texture.withSuffix("_inventory"));
-            return SeparateTransformsModelBuilder.begin(builder, existingFileHelper)
-                    .base(new ItemModelBuilder(Confluence.asResource("item/" + path + "_base"), existingFileHelper)
+            return SeparateTransformsModelBuilder.begin(builder, helper)
+                    .base(new ItemModelBuilder(Confluence.asResource("item/" + path + "_base"), helper)
                             .parent(parentModel)
                             .texture("layer0", texture))
                     .perspective(ItemDisplayContext.HEAD, standaloneModel)

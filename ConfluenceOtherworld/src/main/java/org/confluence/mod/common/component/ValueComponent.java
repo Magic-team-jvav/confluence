@@ -14,10 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 public record ValueComponent(int value) implements DataComponentType<ValueComponent> {
     public static final Codec<ValueComponent> CODEC = Codec.INT.xmap(ValueComponent::new, ValueComponent::value);
-    public static final StreamCodec<ByteBuf, ValueComponent> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, ValueComponent::value,
-            ValueComponent::new
-    );
+    public static final StreamCodec<ByteBuf, ValueComponent> STREAM_CODEC = ByteBufCodecs.INT.map(ValueComponent::new, ValueComponent::value);
 
     @Override
     public @Nullable Codec<ValueComponent> codec() {

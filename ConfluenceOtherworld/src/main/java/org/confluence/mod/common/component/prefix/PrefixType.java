@@ -28,7 +28,7 @@ public enum PrefixType implements StringRepresentable {
     UNKNOWN(new ModPrefix[]{});
 
     public static final Codec<PrefixType> CODEC = StringRepresentable.fromEnum(PrefixType::values);
-    public static final StreamCodec<ByteBuf, PrefixType> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.STRING_UTF8, PrefixType::name, PrefixType::valueOf);
+    public static final StreamCodec<ByteBuf, PrefixType> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.INT, PrefixType::ordinal, PrefixType::byId);
     private static final PrefixType[] VALUES = values();
     private ModPrefix[] available;
 

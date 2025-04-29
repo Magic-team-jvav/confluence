@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.properties.Property;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
-import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 
@@ -41,7 +41,7 @@ public interface ISpreadable {
     default void spread(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
         if (!blockState.getValue(STILL_ALIVE)) return;
         if (randomSource.nextInt(100) >= serverLevel.getGameRules().getInt(Confluence.SPREADABLE_CHANCE)) return;
-        int phase = ConfluenceData.get(serverLevel).getGamePhase().ordinal();
+        int phase = KillBoard.INSTANCE.getGamePhase().ordinal();
         for (int i = 0; i < 4; ++i) {
             BlockPos targetPos = blockPos.offset(randomSource.nextInt(3) - 1, randomSource.nextInt(5) - 3, randomSource.nextInt(3) - 1);
             BlockState beforeTransformState = serverLevel.getBlockState(targetPos);

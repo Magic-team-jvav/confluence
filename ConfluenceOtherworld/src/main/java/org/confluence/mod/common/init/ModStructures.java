@@ -1,6 +1,9 @@
 package org.confluence.mod.common.init;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
@@ -21,4 +24,6 @@ public final class ModStructures {
     public static final Supplier<StructureType<HeavenIslandsStructure>> HEAVEN_ISLANDS = TYPES.register("heaven_islands", () -> () -> HeavenIslandsStructure.CODEC);
     public static final Supplier<StructureType<IceThornStructure>> ICE_THORN = TYPES.register("ice_thorn", () -> () -> IceThornStructure.CODEC);
     public static final Supplier<StructureType<MineTunnelsStructure>> MINE_TUNNELS = TYPES.register("mine_tunnels", () -> () -> MineTunnelsStructure.CODEC);
+
+    public static final ResourceKey<Structure> DUNGEON_KEY = Confluence.asResourceKey(Registries.STRUCTURE, "dungeon");
 }

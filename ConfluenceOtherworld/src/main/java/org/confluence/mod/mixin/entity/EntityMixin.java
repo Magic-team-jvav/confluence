@@ -1,7 +1,6 @@
 package org.confluence.mod.mixin.entity;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.Entity;
@@ -20,8 +19,8 @@ import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.api.event.ShimmerEntityTransmutationEvent;
-import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.GamePhase;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.item.ArmorItems;
@@ -189,7 +188,7 @@ public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
     @Unique
     private static void confluence$initTarget(ShimmerEntityTransmutationEvent.Post event) {
         Entity sourceEntity = event.getSource();
-        GamePhase gamePhase = ConfluenceData.get((ServerLevel) sourceEntity.level()).getGamePhase();
+        GamePhase gamePhase = KillBoard.INSTANCE.getGamePhase();
         for (ShimmerEntityTransmutationEvent.EntityTransmutation transmutation : ENTITY_TRANSMUTATION) {
             if (transmutation.gamePhase().isOtherBelowThenMe(gamePhase)) continue;
             if (transmutation.source().test(sourceEntity)) {

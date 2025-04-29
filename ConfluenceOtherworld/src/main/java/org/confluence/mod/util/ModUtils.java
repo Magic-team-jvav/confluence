@@ -33,6 +33,7 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.NbtComponent;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.init.ModEffects;
@@ -137,6 +138,9 @@ public final class ModUtils {
                 PlayerUtils.awardAchievement(player, "sticky_situation");
             }
         });
+        if (type == TEBossEntities.SKELETRON.get()) {
+            KillBoard.INSTANCE.setGamePhase(level.getServer(), GamePhase.AFTER_SKELETRON);
+        }
     }
 
     public static void enemyDropMoney(LivingEntity living, ServerLevel level) {

@@ -59,14 +59,14 @@ public class ConfluenceCommand {
                 )
                 .then(Commands.literal("gamePhase")
                         .then(Commands.literal("get").executes(context -> {
-                            String gamePhase = ConfluenceData.get(context.getSource().getLevel()).getGamePhase().getSerializedName();
+                            String gamePhase = KillBoard.INSTANCE.getGamePhase().getSerializedName();
                             context.getSource().sendSystemMessage(Component.literal("GamePhase: " + gamePhase));
                             return 1;
                         }))
                         .then(Commands.literal("set").then(Commands.argument("value", EnumArgument.enumArgument(GamePhase.class)).executes(context -> {
                             GamePhase gamePhase = context.getArgument("value", GamePhase.class);
                             ServerLevel serverLevel = context.getSource().getLevel();
-                            ConfluenceData.get(serverLevel).setGamePhase(serverLevel.getServer(), gamePhase);
+                            KillBoard.INSTANCE.setGamePhase(serverLevel.getServer(), gamePhase);
                             context.getSource().sendSuccess(() -> Component.literal("Has been set to " + gamePhase.getSerializedName()), true);
                             return 1;
                         })))

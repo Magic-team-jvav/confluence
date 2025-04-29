@@ -5,16 +5,12 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.mixed.IMinecraftServer;
-import org.confluence.mod.mixed.IWorldOptions;
-import org.confluence.mod.network.s2c.GamePhasePacketS2C;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
 import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
 import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
@@ -31,7 +27,6 @@ public class ConfluenceData extends SavedData {
     public static final int STAR_PHASES_SIZE = 10;
 
     private boolean initialized = false;
-    private GamePhase gamePhase = GamePhase.BEFORE_SKELETRON;
     private final Vector3f windSpeed = new Vector3f();
     private final Map<Integer, StarPhase> starPhases = new Hashtable<>();
     private int revealStep = -1;
@@ -46,7 +41,6 @@ public class ConfluenceData extends SavedData {
 
     ConfluenceData(CompoundTag nbt, HolderLookup.@NotNull Provider registries) {
         this.initialized = nbt.getBoolean("initialized");
-        this.gamePhase = GamePhase.getById(nbt.getInt("gamePhase"));
         this.windSpeed.x = nbt.getFloat("windSpeedX");
         this.windSpeed.z = nbt.getFloat("windSpeedZ");
         for (Tag tag : nbt.getList("starPhases", Tag.TAG_COMPOUND)) {
@@ -90,7 +84,6 @@ public class ConfluenceData extends SavedData {
     @Override
     public @NotNull CompoundTag save(CompoundTag nbt, HolderLookup.@NotNull Provider registries) {
         nbt.putBoolean("initialized", initialized);
-        nbt.putInt("gamePhase", gamePhase.ordinal());
         nbt.putFloat("windSpeedX", windSpeed.x);
         nbt.putFloat("windSpeedZ", windSpeed.z);
         ListTag listTag = new ListTag();
@@ -105,21 +98,6 @@ public class ConfluenceData extends SavedData {
         meteoriteTracker.serialize(nbt);
         nbt.putInt("evilBrokenCount", evilBrokenCount);
         return nbt;
-    }
-
-    public void setGamePhase(MinecraftServer server, GamePhase gamePhase) {
-        this.gamePhase = gamePhase;
-        GamePhasePacketS2C.sendToAll(gamePhase);
-        if (gamePhase.isGraduated()) {
-            ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.GRADUATED);
-        } else if (gamePhase.isHardmode()) {
-            ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
-        }
-        setDirty();
-    }
-
-    public GamePhase getGamePhase() {
-        return gamePhase;
     }
 
     public void setWindSpeed(float x, float z) {

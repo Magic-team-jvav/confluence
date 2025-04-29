@@ -24,6 +24,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ModItems;
@@ -116,8 +117,8 @@ public final class PlayerUtils {
     public static void syncSavedData(ServerPlayer serverPlayer) {
         ConfluenceData data = ConfluenceData.get(serverPlayer.serverLevel());
         WindSpeedPacketS2C.sendToClient(serverPlayer, data.getWindSpeedX(), data.getWindSpeedZ());
-        GamePhasePacketS2C.sendToClient(serverPlayer, data.getGamePhase());
         StarPhasesPacketS2C.sendToClient(serverPlayer, data.getStarPhases());
+        GamePhasePacketS2C.sendToClient(serverPlayer, KillBoard.INSTANCE.getGamePhase());
     }
 
     public static float getFishingPower(ServerPlayer player) {

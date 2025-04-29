@@ -11,6 +11,8 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
+import org.confluence.lib.common.entitiy.IAxisZRotate;
+import org.confluence.lib.common.entitiy.IBouncy;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModDamageTypes;
@@ -19,7 +21,7 @@ import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.ModUtils;
 
 public class SuperSpikyBallProjectile extends Projectile implements Immunity, IAxisZRotate, IBouncy {
-    public Rotate rotate = new Rotate();
+    public final Rotate rotate = new Rotate();
 
     public SuperSpikyBallProjectile(EntityType<SuperSpikyBallProjectile> entityType, Level level) {
         super(entityType, level);
@@ -38,7 +40,7 @@ public class SuperSpikyBallProjectile extends Projectile implements Immunity, IA
             discard();
             return;
         }
-        super.baseTick();
+        super.tick();
 
         bounce(this::move, this::getDeltaMovement, this::setDeltaMovement, getDefaultGravity(), 0.99);
 

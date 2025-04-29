@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -78,5 +79,17 @@ public class BallOfFireProjectile extends AbstractManaProjectile {
                 VectorUtils.knockBackA2B(this, entity, 0.6, 0.2);
             }
         }
+    }
+
+    @Override
+    protected void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.collideCount = compound.getInt("CollideCount");
+    }
+
+    @Override
+    protected void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putInt("CollideCount", collideCount);
     }
 }

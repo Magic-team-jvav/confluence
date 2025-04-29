@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.ArmorItems;
-import org.confluence.terra_curio.common.entity.projectile.BeeProjectile;
+import org.confluence.terra_curio.common.entity.BeeProjectile;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 

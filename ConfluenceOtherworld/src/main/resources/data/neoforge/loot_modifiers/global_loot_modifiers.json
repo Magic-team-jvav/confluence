@@ -19,6 +19,7 @@
         "confluence:entities/parrot",
         "confluence:entities/wither_skeleton",
         "confluence:entities/elder_guardian",
+        "confluence:entities/piglin",
         "confluence:chests/shipwreck_supply",
         "confluence:chests/shipwreck_treasure",
         "confluence:chests/underwater_ruin_small",

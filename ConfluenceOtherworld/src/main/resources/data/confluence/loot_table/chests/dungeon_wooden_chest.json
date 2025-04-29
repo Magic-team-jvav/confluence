@@ -17,21 +17,6 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:shadow_key",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:empty",
-          "weight": 2
-        }
-      ],
-      "rolls": 1
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
           "name": "confluence:silver_ingot",
           "functions": [
             {

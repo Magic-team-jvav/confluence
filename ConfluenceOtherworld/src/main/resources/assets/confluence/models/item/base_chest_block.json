@@ -51,6 +51,24 @@
                 "confluence:variant": 9
             },
             "model": "confluence:item/chest_unlocked_sandstone"
+        },
+        {
+            "predicate": {
+                "confluence:variant": 10
+            },
+            "model": "confluence:item/chest_unlocked_living_wood"
+        },
+        {
+            "predicate": {
+                "confluence:variant": 11
+            },
+            "model": "confluence:item/chest_locked_dungeon"
+        },
+        {
+            "predicate": {
+                "confluence:variant": 12
+            },
+            "model": "confluence:item/chest_unlocked_dungeon"
         }
     ]
 }

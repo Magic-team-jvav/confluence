@@ -869,6 +869,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("block.confluence.base_chest_block.death_sandstone", "§r死人砂岩箱");
         add("block.confluence.base_chest_block.unlocked_living_wood", "§r生命木箱");
         add("block.confluence.base_chest_block.death_living_wood", "§r死人生命木箱");
+        add("block.confluence.base_chest_block.locked_dungeon", "§r上锁的地牢箱");
+        add("block.confluence.base_chest_block.unlocked_dungeon", "§r地牢箱");
+        add("block.confluence.base_chest_block.death_dungeon", "§r死人地牢箱");
 
         add("resourcepack.terraria_art", "泰拉艺术");
         add("resourcepack.terraria_armor", "泰拉盔甲样式材质");

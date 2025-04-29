@@ -149,6 +149,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 QuestedFishes.WYVERNTAIL.get(),
                 QuestedFishes.ZOMBIE_FISH.get()
                 );
+        tag(ModTags.Items.EMBLEM).add(
+                AccessoryItems.SUMMONER_EMBLEM.get(),
+                TCItems.RANGER_EMBLEM.get(),
+                TCItems.SORCERER_EMBLEM.get(),
+                TCItems.WARRIOR_EMBLEM.get()
+        );
         tag(ModTags.Items.GOLD_COOKING).add(
                 BaitItems.GOLD_BUTTERFLY.get(),
                 BaitItems.GOLD_DRAGONFLY.get(),

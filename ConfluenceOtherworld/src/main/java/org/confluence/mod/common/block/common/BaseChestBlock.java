@@ -118,10 +118,11 @@ public class BaseChestBlock extends ChestBlock {
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (level.getBlockEntity(pos) instanceof Entity entity && entity.isLocked()) {
             boolean isShadow = stack.is(ToolItems.SHADOW_KEY.get());
-            if ((entity.variant == Variant.LOCKED_SHADOW && isShadow) || (entity.variant == Variant.LOCKED_GOLDEN && stack.is(ToolItems.GOLDEN_KEY.get()))) {
+            boolean isGolden = stack.is(ToolItems.GOLDEN_KEY.get());
+            if ((entity.variant == Variant.LOCKED_SHADOW && isShadow) || (entity.variant == Variant.LOCKED_GOLDEN && isGolden) || (entity.variant == Variant.LOCKED_DUNGEON && isGolden)) {
                 int unlock = entity.variant.unlock;
                 if (unlock > 0) {
-                    if (!isShadow && !player.getAbilities().instabuild) {
+                    if (!isShadow &&!isGolden &&!player.getAbilities().instabuild) {
                         stack.shrink(1);
                     }
                     entity.variant = Variant.byId(unlock);
@@ -238,7 +239,7 @@ public class BaseChestBlock extends ChestBlock {
         }
     }
 
-    public enum Variant implements StringRepresentable { // 对于死人箱，只使用unlocked开头的
+    public enum Variant implements StringRepresentable {
         LOCKED_GOLDEN(0, "locked_golden", 1),
         UNLOCKED_GOLDEN(1, "unlocked_golden"),
         LOCKED_SHADOW(2, "locked_shadow", 3),
@@ -249,7 +250,9 @@ public class BaseChestBlock extends ChestBlock {
         UNLOCKED_SKYWARE(7, "unlocked_skyware"),
         UNLOCKED_NORMAL(8, "unlocked_normal"),
         UNLOCKED_SANDSTONE(9, "unlocked_sandstone"),
-        UNLOCKED_LIVING_WOOD(10, "unlocked_living_wood");
+        UNLOCKED_LIVING_WOOD(10, "unlocked_living_wood"),
+        LOCKED_DUNGEON(11, "locked_dungeon", 12),
+        UNLOCKED_DUNGEON(12, "unlocked_dungeon");
 
         private static final IntFunction<Variant> BY_ID = ByIdMap.continuous(Variant::getId, values(), ByIdMap.OutOfBoundsStrategy.CLAMP);
         private final int id;

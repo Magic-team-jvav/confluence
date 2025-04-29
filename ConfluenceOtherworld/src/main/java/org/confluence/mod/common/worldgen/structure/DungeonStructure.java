@@ -401,7 +401,7 @@ public class DungeonStructure extends Structure {
                 StructureStart structureStart = level.structureManager().getStartForStructure(sectionPos, structure, level.getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS));
                 if (structureStart == null || !structureStart.isValid()) continue;
                 BoundingBox boundingBox = structureStart.getBoundingBox(); // getBoundingBox已优化过缓存
-                if (player.getY() >= boundingBox.minY() + 4 && player.getY() <= boundingBox.minY() + 51) {
+                if (boundingBox.isInside(player.blockPosition()) && player.getY() <= boundingBox.minY() + 51) {
                     // todo 生成地牢守卫者
                     Creeper creeper = new Creeper(EntityType.CREEPER, level);
                     creeper.setPos(player.position());

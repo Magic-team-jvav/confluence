@@ -16,7 +16,7 @@ import java.util.List;
 public class KindMisideRingItem extends TooltipItem {
 
     public KindMisideRingItem() {
-        super(new Properties(), ModRarity.COMMON, TooltipItem.getTooltipsFromString("kind_miside_ring", 1, ChatFormatting.DARK_GRAY));
+        super(new Properties(), ModRarity.COMMON, TooltipItem.getTooltipsFromString("kind_miside_ring", 1, ChatFormatting.GRAY));
     }
 
     @Override

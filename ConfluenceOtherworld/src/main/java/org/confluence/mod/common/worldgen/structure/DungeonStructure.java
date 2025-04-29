@@ -27,6 +27,7 @@ import org.confluence.lib.common.worldgen.structure.GridPiece;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.lib.util.BooleanStorage4;
 import org.confluence.lib.util.VectorUtils;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModStructures;
@@ -397,22 +398,28 @@ public class DungeonStructure extends Structure {
         if (KillBoard.INSTANCE.getGamePhase() == GamePhase.BEFORE_SKELETRON && player.gameMode.getGameModeForPlayer().isSurvival() && level.getGameTime() % 101 == 0) {
             Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
             if (structure == null) return;
+
             ChunkPos chunkPos = player.chunkPosition();
             LongSet structureRefs = level.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.STRUCTURE_REFERENCES).getReferencesForStructure(structure);
             for (long i : structureRefs) {
                 SectionPos sectionPos = SectionPos.of(new ChunkPos(i), level.getMinSection());
                 StructureStart structureStart = level.structureManager().getStartForStructure(sectionPos, structure, level.getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS));
                 if (structureStart == null || !structureStart.isValid()) continue;
+
                 BoundingBox boundingBox = structureStart.getBoundingBox(); // getBoundingBox已优化过缓存
+                boolean shouldAlert = CommonConfigs.ALERT_PLAYER_IN_DUNGEON.get();
                 if (boundingBox.isInside(player.blockPosition()) && player.getY() <= boundingBox.minY() + 51) {
-                    byte alert = player.getPersistentData().getByte("confluence:dungeon_guardian_alert");
-                    player.getPersistentData().putByte("confluence:dungeon_guardian_alert", (byte) (alert + 1));
                     level.playSound(null, player.blockPosition(), TESounds.ROAR.get(), SoundSource.HOSTILE);
-                    if (alert < 3) return;
+                    if (shouldAlert) {
+                        byte alert = player.getPersistentData().getByte("confluence:dungeon_guardian_alert");
+                        player.getPersistentData().putByte("confluence:dungeon_guardian_alert", (byte) (alert + 1));
+                        if (alert < 3) return;
+                    }
                     ModUtils.summonBoss(level, player.position(), new DungeonGuardian(TEBossEntities.DUNGEON_GUARDIAN.get(), level));
+                    if (shouldAlert) player.getPersistentData().putByte("confluence:dungeon_guardian_alert", (byte) 0);
                     return;
                 }
-                player.getPersistentData().putByte("confluence:dungeon_guardian_alert", (byte) 0);
+                if (shouldAlert) player.getPersistentData().putByte("confluence:dungeon_guardian_alert", (byte) 0);
             }
         }
     }

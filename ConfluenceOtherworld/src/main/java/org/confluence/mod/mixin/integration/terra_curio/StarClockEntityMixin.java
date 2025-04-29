@@ -3,7 +3,7 @@ package org.confluence.mod.mixin.integration.terra_curio;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terra_curio.common.entity.projectile.StarCloakEntity;
+import org.confluence.terra_curio.common.entity.StarCloakEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

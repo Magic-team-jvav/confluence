@@ -11,8 +11,7 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -28,10 +27,15 @@ import org.confluence.lib.common.worldgen.structure.GridPiece;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.lib.util.BooleanStorage4;
 import org.confluence.lib.util.VectorUtils;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
+import org.confluence.mod.util.ModUtils;
+import org.confluence.terraentity.entity.boss.DungeonGuardian;
+import org.confluence.terraentity.init.TESounds;
+import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.joml.Vector3d;
 
 import java.util.*;
@@ -394,21 +398,28 @@ public class DungeonStructure extends Structure {
         if (KillBoard.INSTANCE.getGamePhase() == GamePhase.BEFORE_SKELETRON && player.gameMode.getGameModeForPlayer().isSurvival() && level.getGameTime() % 101 == 0) {
             Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
             if (structure == null) return;
+
             ChunkPos chunkPos = player.chunkPosition();
             LongSet structureRefs = level.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.STRUCTURE_REFERENCES).getReferencesForStructure(structure);
             for (long i : structureRefs) {
                 SectionPos sectionPos = SectionPos.of(new ChunkPos(i), level.getMinSection());
                 StructureStart structureStart = level.structureManager().getStartForStructure(sectionPos, structure, level.getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS));
                 if (structureStart == null || !structureStart.isValid()) continue;
+
                 BoundingBox boundingBox = structureStart.getBoundingBox(); // getBoundingBox已优化过缓存
+                boolean shouldAlert = CommonConfigs.ALERT_PLAYER_IN_DUNGEON.get();
                 if (boundingBox.isInside(player.blockPosition()) && player.getY() <= boundingBox.minY() + 51) {
-                    // todo 生成地牢守卫者
-                    Creeper creeper = new Creeper(EntityType.CREEPER, level);
-                    creeper.setPos(player.position());
-                    creeper.getEntityData().set(Creeper.DATA_IS_POWERED, true);
-                    level.addFreshEntity(creeper);
+                    level.playSound(null, player.blockPosition(), TESounds.ROAR.get(), SoundSource.HOSTILE);
+                    if (shouldAlert) {
+                        byte alert = player.getPersistentData().getByte("confluence:dungeon_guardian_alert");
+                        player.getPersistentData().putByte("confluence:dungeon_guardian_alert", (byte) (alert + 1));
+                        if (alert < 3) return;
+                    }
+                    ModUtils.summonBoss(level, player.position(), new DungeonGuardian(TEBossEntities.DUNGEON_GUARDIAN.get(), level));
+                    if (shouldAlert) player.getPersistentData().putByte("confluence:dungeon_guardian_alert", (byte) 0);
                     return;
                 }
+                if (shouldAlert) player.getPersistentData().putByte("confluence:dungeon_guardian_alert", (byte) 0);
             }
         }
     }

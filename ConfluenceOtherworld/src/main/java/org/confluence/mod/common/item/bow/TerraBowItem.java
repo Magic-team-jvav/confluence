@@ -75,7 +75,7 @@ public class TerraBowItem extends BowItem {
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
         super.releaseUsing(stack, level, entity, timeLeft);
-        if(entity instanceof Player p){
+        if(stack.is(ModTags.Items.FAST_BOW) && entity instanceof Player p){
             p.getCooldowns().addCooldown(this, 5);
             ItemStack off = p.getOffhandItem();
             if(off.getItem() instanceof BowItem){

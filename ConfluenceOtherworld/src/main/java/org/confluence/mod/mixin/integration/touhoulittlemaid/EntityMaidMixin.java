@@ -54,7 +54,7 @@ public abstract class EntityMaidMixin implements ITradeHolder, SelfGetter<Entity
 
         // 如果是第一次生成
         if (trades == null) {
-            trades = NPCTradeManager.getCopy(Keys.MAID_SHOP);
+            trades = NPCTradeManager.getCopy(Keys.MAID_SHOP,this.level().registryAccess());
             if (trades != null) {
                 trades.initTrades(this);
             }

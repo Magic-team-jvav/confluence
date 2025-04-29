@@ -22,6 +22,7 @@ import org.confluence.mod.common.entity.FallingStarItemEntity;
 import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
+import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
@@ -80,6 +81,7 @@ public final class TickEvents {
             ServerLevel serverLevel = serverPlayer.serverLevel();
             ModAchievements.youCanDoIt(serverPlayer, serverLevel);
             TheConstant.applyDarkness(serverPlayer, serverLevel);
+            DungeonStructure.checkSkeletronDefeated(serverPlayer, serverLevel);
         }
     }
 

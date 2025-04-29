@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = AbstractTerraNPC.class, remap = false)
 public abstract class AbstractTerraNPCMixin implements IAbstractTerraNPC {
@@ -43,5 +44,10 @@ public abstract class AbstractTerraNPCMixin implements IAbstractTerraNPC {
     @Inject(method = "setHouse", at = @At("HEAD"))
     private void setRegion(House house, CallbackInfo ci) {
         confluence$setRegion(new NPCSpawner.Region(house.center()));
+    }
+
+    @Inject(method = "removeWhenFarAway", at = @At("HEAD"), cancellable = true)
+    private void deny(double distanceToClosestPlayer, CallbackInfoReturnable<Boolean> cir) {
+        cir.setReturnValue(false);
     }
 }

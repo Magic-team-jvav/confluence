@@ -1020,20 +1020,21 @@ public class ModEnglishProvider extends LanguageProvider {
         add("dialogs.confluence.angler.4", "Hey! Watch out! I've set a lot of traps for the greatest prank in history! No one will notice! Try telling anyone and see what happens!");
         add("dialogs.confluence.angler.5", "Have you ever heard of a fish that can make noise?! I haven't. I just want to know if you have!");
 
-        add("goblin_tinkerer_like_dye_trader", "Dye Trader understands how fun it is to mix things together, I can respect that!");
-        add("guide_hate_painter", "I hate that Painter is around. The world is fine the way it was made!");
-        add("arms_dealer_hate_demolitionist", "I'd REALLY like to use the Demolitionist as a range target sometime.");
-        add("arms_dealer_love_nurse", "Think Nurse the Nurse ever, ya know, checks me out?");
-        add("angler_like_demolitionist", "the Demolitionist actually knows what they're doing, unlike some OTHER people! I kinda like that!");
-        add("dye_trader_like_arms_dealer", "Arms Dealer has good eyes for vividness and business, I like it, yes?");
-        add("dye_trader_like_painter", "Painter has good eyes for vividness and business, I like it, yes?");
-        add("demolitionist_dislike_arms_dealer", "I wanna strap Arms Dealer to a rocket and watch what happens!");
-        add("demolitionist_dislike_goblin_tinkerer", "I wanna strap Goblin Tinkerer to a rocket and watch what happens!");
-        add("painter_love_dryad", "I would really love to paint Dryad... because of the vivid colors, of course!");
-        add("dryad_dislike_angler", "I don't like that Angler has no respect for other beings.");
-        add("merchant_like_nurse", "Nurse makes loads of money, I like deep pockets.");
-        add("nurse_love_arms_dealer", "What? Arms Dealer? I don't have a crush! I don't! Shut up!");
-        add("nurse_dislike_dryad", "I don't like Dryad that much, kinda weirds me out.");
+        add("mood.terra_entity.goblin_tinkerer.like.dye_trader", "Dye Trader understands how fun it is to mix things together, I can respect that!");
+        add("mood.terra_entity.guide.hate.painter", "I hate that Painter is around. The world is fine the way it was made!");
+        add("mood.terra_entity.arms_dealer.hate.demolitionist", "I'd REALLY like to use the Demolitionist as a range target sometime.");
+        add("mood.terra_entity.arms_dealer.love.nurse", "Think Nurse the Nurse ever, ya know, checks me out?");
+        add("mood.terra_entity.angler.like.demolitionist", "the Demolitionist actually knows what they're doing, unlike some OTHER people! I kinda like that!");
+        add("mood.terra_entity.dye_trader.like.arms_dealer", "Arms Dealer has good eyes for vividness and business, I like it, yes?");
+        add("mood.terra_entity.dye_trader.like.painter", "Painter has good eyes for vividness and business, I like it, yes?");
+        add("mood.terra_entity.demolitionist.dislike.arms_dealer", "I wanna strap Arms Dealer to a rocket and watch what happens!");
+        add("mood.terra_entity.demolitionist.dislike.goblin_tinkerer", "I wanna strap Goblin Tinkerer to a rocket and watch what happens!");
+        add("mood.terra_entity.painter.love.dryad", "I would really love to paint Dryad... because of the vivid colors, of course!");
+        add("mood.terra_entity.dryad.dislike.angler", "I don't like that Angler has no respect for other beings.");
+        add("mood.terra_entity.merchant.like.nurse", "Nurse makes loads of money, I like deep pockets.");
+        add("mood.terra_entity.nurse.love.arms_dealer", "What? Arms Dealer? I don't have a crush! I don't! Shut up!");
+        add("mood.terra_entity.nurse.dislike.dryad", "I don't like Dryad that much, kinda weirds me out.");
+
 
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
         CrateBlocks.BLOCKS.getEntries().forEach(blockAction);

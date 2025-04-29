@@ -1072,20 +1072,20 @@ public class ModChineseProvider extends LanguageProvider {
         add("dialogs.confluence.angler.4", "嘿！当心！我设了许多陷阱，用来实施史上最大的恶作剧！没人会发觉！你敢告诉别人试试！");
         add("dialogs.confluence.angler.5", "听说过会叫的鱼吗？！我没听说过，只是想知道你听说过没！");
 
-        add("goblin_tinkerer_like_dye_trader", "染料商知道把东西混在一起是多么有趣，我能理解！");
-        add("guide_hate_painter", "我讨厌油漆工在附近。世界本来挺美好的！");
-        add("arms_dealer_hate_demolitionist", "爆破专家怎么回事啊？难道他没发现我们卖的东西完全不同？");
-        add("arms_dealer_love_nurse", "那啥，你觉得护士对我有意思吗");
-        add("angler_like_demolitionist", "爆破专家其实知道他们在做什么，不像某些其他人！我挺喜欢的！");
-        add("dye_trader_like_arms_dealer", "军火商善于发现鲜艳的颜色和商机，对吧？我喜欢。");
-        add("dye_trader_like_painter", "油漆工善于发现鲜艳的颜色和商机，对吧？我喜欢。”");
-        add("demolitionist_dislike_arms_dealer", "我想把军火商绑到火箭上，看看会发生什么！");
-        add("demolitionist_dislike_goblin_tinkerer", "我想把哥布林工匠绑到火箭上，看看会发生什么！");
-        add("painter_love_dryad", "我真的很想画树妖……当然是因为色彩鲜艳！");
-        add("dryad_dislike_angler", "我不喜欢渔夫不尊重其他生物。");
-        add("merchant_like_nurse", "护士赚了很多钱，我喜欢有钱人。");
-        add("nurse_love_arms_dealer", "什么？军火商？我才没有暗恋他！我没有！闭嘴！");
-        add("nurse_dislike_dryad", "我不太喜欢树妖，这个人有点奇怪。");
+        add("mood.terra_entity.goblin_tinkerer.like.dye_trader", "染料商知道把东西混在一起是多么有趣，我能理解！");
+        add("mood.terra_entity.guide.hate.painter", "我讨厌油漆工在附近。世界本来挺美好的！");
+        add("mood.terra_entity.arms_dealer.hate.demolitionist", "爆破专家怎么回事啊？难道他没发现我们卖的东西完全不同？");
+        add("mood.terra_entity.arms_dealer.love.nurse", "那啥，你觉得护士对我有意思吗");
+        add("mood.terra_entity.angler.like.demolitionist", "爆破专家其实知道他们在做什么，不像某些其他人！我挺喜欢的！");
+        add("mood.terra_entity.dye_trader.like.arms_dealer", "军火商善于发现鲜艳的颜色和商机，对吧？我喜欢。");
+        add("mood.terra_entity.dye_trader.like.painter", "油漆工善于发现鲜艳的颜色和商机，对吧？我喜欢。”");
+        add("mood.terra_entity.demolitionist.dislike.arms_dealer", "我想把军火商绑到火箭上，看看会发生什么！");
+        add("mood.terra_entity.demolitionist.dislike.goblin_tinkerer", "我想把哥布林工匠绑到火箭上，看看会发生什么！");
+        add("mood.terra_entity.painter.love.dryad", "我真的很想画树妖……当然是因为色彩鲜艳！");
+        add("mood.terra_entity.dryad.dislike.angler", "我不喜欢渔夫不尊重其他生物。");
+        add("mood.terra_entity.merchant.like.nurse", "护士赚了很多钱，我喜欢有钱人。");
+        add("mood.terra_entity.nurse.love.arms_dealer", "什么？军火商？我才没有暗恋他！我没有！闭嘴！");
+        add("mood.terra_entity.nurse.dislike.dryad", "我不太喜欢树妖，这个人有点奇怪。");
 
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.ARROW_PROJECTILE.get(), "泰拉箭");

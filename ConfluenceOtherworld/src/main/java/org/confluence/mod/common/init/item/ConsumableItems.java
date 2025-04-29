@@ -34,6 +34,7 @@ public class ConsumableItems {
     public static final DeferredItem<EverBeneficialItem> MINECART_UPGRADE_KIT = ITEMS.register("minecart_upgrade_kit", () -> new EverBeneficialItem(ModRarity.EXPERT, EverBeneficialItem.MINECART_UPGRADE_KIT, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("minecart_upgrade_kit", 2, ChatFormatting.GREEN)));
     public static final DeferredItem<EverBeneficialItem> ARTISAN_LOAF = ITEMS.register("artisan_loaf", () -> new EverBeneficialItem(ModRarity.ORANGE, EverBeneficialItem.ARTISAN_LOAF, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("artisan_loaf", 2, ChatFormatting.GREEN)));
     public static final DeferredItem<AdvancedCombatTechniquesItem> ADVANCED_COMBAT_TECHNIQUES = ITEMS.register("advanced_combat_techniques", AdvancedCombatTechniquesItem::new);
+    public static final DeferredItem<AdvancedCombatTechniquesVolumeTwoItem> ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO = ITEMS.register("advanced_combat_techniques_volume_two", AdvancedCombatTechniquesVolumeTwoItem::new);
 
     public static final DeferredItem<ThrowableItem<BaseBombEntity>> BOMB = ITEMS.register("bomb", () -> new ThrowableItem<>(0.8F, BaseBombEntity::new));
     public static final DeferredItem<ThrowableItem<BouncyBombEntity>> BOUNCY_BOMB = ITEMS.register("bouncy_bomb", () -> new ThrowableItem<>(0.8F, BouncyBombEntity::new));

@@ -142,12 +142,12 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void livingDamage$Pre(LivingDamageEvent.Pre event) {
+        float amount = event.getNewDamage();
+        if (amount <= 0.0F) return; // 防止莫名的负数伤害
         LivingEntity living = event.getEntity();
         if (!(living.level() instanceof ServerLevel level)) return;
         DamageSource damageSource = event.getSource();
         if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) return;
-
-        float amount = event.getNewDamage();
         Entity attacker = damageSource.getEntity();
 
         amount = ArcheryEffect.apply(living, damageSource, amount);

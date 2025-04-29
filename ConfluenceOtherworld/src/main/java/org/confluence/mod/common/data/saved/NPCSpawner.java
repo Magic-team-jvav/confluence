@@ -88,6 +88,7 @@ public class NPCSpawner implements IGlobalData {
      */
     private final Set<EntityType<?>> npcSpawned = new HashSet<>();
     private boolean isAdvancedCombatTechniquesUsed = false; // 先进战斗技术
+    private boolean isAdvancedCombatTechniquesVolumeTwoUsed = false; // 先进战斗技术：卷二
 
     public void setAdvancedCombatTechniquesUsed(boolean used) {
         this.isAdvancedCombatTechniquesUsed = used;
@@ -95,6 +96,14 @@ public class NPCSpawner implements IGlobalData {
 
     public boolean isAdvancedCombatTechniquesUsed() {
         return isAdvancedCombatTechniquesUsed;
+    }
+
+    public void setAdvancedCombatTechniquesVolumeTwoUsed(boolean used) {
+        this.isAdvancedCombatTechniquesVolumeTwoUsed = used;
+    }
+
+    public boolean isAdvancedCombatTechniquesVolumeTwoUsed() {
+        return isAdvancedCombatTechniquesVolumeTwoUsed;
     }
 
     public int getAliveNpcCount(Region region) {
@@ -123,9 +132,7 @@ public class NPCSpawner implements IGlobalData {
                 setNPCAlive(from, entityType, false);
                 setNPCAlive(to, entityType, true);
                 npc.confluence$setRegion(to);
-                if (isAdvancedCombatTechniquesUsed()) {
-                    applyAdvancedCombatTechniques(living);
-                }
+                applyBenedictions(living);
             }
         }
     }
@@ -137,13 +144,20 @@ public class NPCSpawner implements IGlobalData {
         if (living instanceof IAbstractTerraNPC npc) {
             npc.confluence$setRegion(new Region(living.chunkPosition()));
             setNPCAlive(npc.confluence$getRegion(), living.getType(), true);
-            if (isAdvancedCombatTechniquesUsed()) {
-                applyAdvancedCombatTechniques(living);
-            }
+            applyBenedictions(living);
             broadcastMessageToRegion(living.level(), npc.confluence$getRegion(), Component.translatable("event.confluence.npc.arrived", living.getType().getDescription(), living.getName()).withColor(GlobalColors.NPC_ARRIVED.getRGB()));
             return true;
         }
         return false;
+    }
+
+    public void applyBenedictions(LivingEntity living) {
+        if (isAdvancedCombatTechniquesUsed()) {
+            applyAdvancedCombatTechniques(living);
+        }
+        if (isAdvancedCombatTechniquesVolumeTwoUsed()) {
+            applyAdvancedCombatTechniquesVolumeTwo(living);
+        }
     }
 
     /**
@@ -368,6 +382,23 @@ public class NPCSpawner implements IGlobalData {
     public static void applyAdvancedCombatTechniques(LivingEntity living) {
         AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
         ResourceLocation id = Confluence.asResource("advanced_combat_techniques");
+        if (armor != null) {
+            armor.addOrReplacePermanentModifier(new AttributeModifier(id, 3, AttributeModifier.Operation.ADD_VALUE));
+        }
+        AttributeInstance attackDamage = living.getAttribute(Attributes.ATTACK_DAMAGE);
+        if (attackDamage != null) {
+            attackDamage.addOrReplacePermanentModifier(new AttributeModifier(id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+        }
+    }
+
+    /**
+     * 调用前需检查是否已使用过先进战斗技术
+     * <p>
+     * 不与上个方法通用
+     */
+    public static void applyAdvancedCombatTechniquesVolumeTwo(LivingEntity living) {
+        AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
+        ResourceLocation id = Confluence.asResource("advanced_combat_techniques_volume_two");
         if (armor != null) {
             armor.addOrReplacePermanentModifier(new AttributeModifier(id, 3, AttributeModifier.Operation.ADD_VALUE));
         }

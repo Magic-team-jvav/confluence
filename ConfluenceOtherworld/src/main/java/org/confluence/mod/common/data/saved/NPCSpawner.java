@@ -153,10 +153,10 @@ public class NPCSpawner implements IGlobalData {
 
     public void applyBenedictions(LivingEntity living) {
         if (isAdvancedCombatTechniquesUsed()) {
-            applyAdvancedCombatTechniques(living);
+            applyAdvancedCombatTechniques(living, Confluence.asResource("advanced_combat_techniques"));
         }
         if (isAdvancedCombatTechniquesVolumeTwoUsed()) {
-            applyAdvancedCombatTechniquesVolumeTwo(living);
+            applyAdvancedCombatTechniques(living, Confluence.asResource("advanced_combat_techniques_volume_two"));
         }
     }
 
@@ -379,26 +379,8 @@ public class NPCSpawner implements IGlobalData {
     /**
      * 调用前需检查是否已使用过先进战斗技术
      */
-    public static void applyAdvancedCombatTechniques(LivingEntity living) {
+    public static void applyAdvancedCombatTechniques(LivingEntity living, ResourceLocation id) {
         AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
-        ResourceLocation id = Confluence.asResource("advanced_combat_techniques");
-        if (armor != null) {
-            armor.addOrReplacePermanentModifier(new AttributeModifier(id, 3, AttributeModifier.Operation.ADD_VALUE));
-        }
-        AttributeInstance attackDamage = living.getAttribute(Attributes.ATTACK_DAMAGE);
-        if (attackDamage != null) {
-            attackDamage.addOrReplacePermanentModifier(new AttributeModifier(id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-        }
-    }
-
-    /**
-     * 调用前需检查是否已使用过先进战斗技术
-     * <p>
-     * 不与上个方法通用
-     */
-    public static void applyAdvancedCombatTechniquesVolumeTwo(LivingEntity living) {
-        AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
-        ResourceLocation id = Confluence.asResource("advanced_combat_techniques_volume_two");
         if (armor != null) {
             armor.addOrReplacePermanentModifier(new AttributeModifier(id, 3, AttributeModifier.Operation.ADD_VALUE));
         }

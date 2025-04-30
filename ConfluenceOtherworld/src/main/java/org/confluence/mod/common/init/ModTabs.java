@@ -161,6 +161,7 @@ public final class ModTabs {
                         BowItems.ITEMS.getEntries().forEach(action);
                         ArrowItems.ITEMS.getEntries().forEach(action);
                         TGItems.GUNS.getEntries().forEach(action);
+                        GunItems.ITEMS.getEntries().forEach(action);
                         output.accept(ManaWeaponItems.BEE_GUN.get());
                         output.accept(ManaWeaponItems.SPACE_GUN.get());
                         TGItems.BULLETS.getEntries().forEach(action);

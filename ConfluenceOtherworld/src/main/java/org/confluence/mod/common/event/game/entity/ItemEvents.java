@@ -93,7 +93,10 @@ public final class ItemEvents {
             event.setVelocity(manaGunItem.getVelocity());
             event.setPenetrate(manaGunItem.getPenetrate());
             event.setKnockback(manaGunItem.getKnockback());
+            event.setCritical(manaGunItem.getCritical());
         }
+
+        PrefixComponent prefix = PrefixUtils.getPrefix(event.getGunStack());
     }
 
     @SubscribeEvent

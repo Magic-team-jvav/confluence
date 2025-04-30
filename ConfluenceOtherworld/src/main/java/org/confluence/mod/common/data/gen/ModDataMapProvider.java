@@ -12,6 +12,7 @@ import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.mixin.accessor.DataMapProviderAccessor;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -28,11 +29,13 @@ public class ModDataMapProvider extends DataMapProvider {
     @Override
     protected void gather(HolderLookup.Provider provider) {
         valueBuilder()
+            .add(Items.DRAGON_EGG, 10000)
+            .add(Items.NETHER_STAR, 5000)
+
             .add(Items.NETHERITE_SWORD, 6000)
             .add(Items.NETHERITE_PICKAXE, 6000)
             .add(Items.NETHERITE_AXE, 6000)
 
-            .add(Items.NETHERITE_AXE, 3000)
             .add(Items.DIAMOND_SWORD, 3000)
             .add(Items.DIAMOND_AXE, 3000)
 
@@ -47,6 +50,17 @@ public class ModDataMapProvider extends DataMapProvider {
             .add(Items.IRON_INGOT,  300)
             .add(Items.GOLD_INGOT,  1200)
             .add(Items.NETHERITE_INGOT,4000)
+
+            .add(Items.DIAMOND,3000)
+            .add(Items.EMERALD,1500)
+
+            .add(Blocks.COPPER_BLOCK.asItem(), 150 * 9)
+            .add(Blocks.IRON_BLOCK.asItem(),  300 * 9)
+            .add(Blocks.GOLD_BLOCK.asItem(),  1200 * 9)
+            .add(Blocks.NETHERITE_BLOCK.asItem(),4000 * 9)
+
+            .add(Blocks.DIAMOND_BLOCK.asItem(),3000 * 9)
+            .add(Blocks.EMERALD_BLOCK.asItem(),1500 * 9)
 
             .add(Items.ARROW,5)
 
@@ -64,6 +78,16 @@ public class ModDataMapProvider extends DataMapProvider {
             .add(MaterialItems.TR_CRIMSON_INGOT.get(), 3900)
             .add(MaterialItems.HELLSTONE_INGOT.get(), 4000)
 
+            .add(OreBlocks.TIN_BLOCK.get().asItem(), 225 * 9)
+            .add(OreBlocks.LEAD_BLOCK.get().asItem(),450 * 9)
+            .add(OreBlocks.SILVER_BLOCK.get().asItem(), 600 * 9)
+            .add(OreBlocks.TUNGSTEN_BLOCK.get().asItem(), 900 * 9)
+            .add(OreBlocks.PLATINUM_BLOCK.get().asItem(), 1800 * 9)
+            .add(OreBlocks.METEORITE_BLOCK.get().asItem(),1400 * 9)
+            .add(OreBlocks.DEMONITE_BLOCK.get().asItem(), 3000 * 9)
+            .add(OreBlocks.TR_CRIMSON_BLOCK.get().asItem(), 3900 * 9)
+            .add(OreBlocks.HELLSTONE_BLOCK.get().asItem(), 4000 * 9)
+
             .add(MaterialItems.COBALT_INGOT.get(), 2100)
             .add(MaterialItems.PALLADIUM_INGOT.get(), 2700)
             .add(MaterialItems.MYTHRIL_INGOT.get(), 4400)
@@ -76,9 +100,25 @@ public class ModDataMapProvider extends DataMapProvider {
             .add(MaterialItems.SPECTRE_INGOT.get(), 10000)
             .add(MaterialItems.LUMINITE_INGOT.get(), 12000)
 
+            .add(OreBlocks.COBALT_BLOCK.get().asItem(), 2100 * 9)
+            .add(OreBlocks.PALLADIUM_BLOCK.get().asItem(), 2700 * 9)
+            .add(OreBlocks.MYTHRIL_BLOCK.get().asItem(), 4400 * 9)
+            .add(OreBlocks.ORICHALCUM_BLOCK.get().asItem(), 5200 * 9)
+            .add(OreBlocks.ADAMANTITE_BLOCK.get().asItem(), 6000 * 9)
+            .add(OreBlocks.TITANIUM_BLOCK.get().asItem(), 6800 * 9)
+            .add(OreBlocks.HALLOWED_BLOCK.get().asItem(), 4000 * 9)
+            .add(OreBlocks.CHLOROPHYTE_BLOCK.get().asItem(), 9000 * 9)
+            .add(OreBlocks.SHROOMITE_BLOCK.get().asItem(), 10000 * 9)
+            .add(OreBlocks.SPECTRE_BLOCK.get().asItem(), 10000 * 9)
+            .add(OreBlocks.LUMINITE_BLOCK.get().asItem(), 12000 * 9)
+
             .add(Items.RAW_COPPER, 50)
             .add(Items.RAW_IRON, 100)
             .add(Items.RAW_GOLD, 300)
+
+            .add(Blocks.RAW_COPPER_BLOCK, 50 * 9)
+            .add(Blocks.RAW_IRON_BLOCK, 100 * 9)
+            .add(Blocks.RAW_GOLD_BLOCK, 300 * 9)
 
             .add(MaterialItems.RAW_TIN.get(), 75)
             .add(MaterialItems.RAW_LEAD.get(), 150)
@@ -90,6 +130,16 @@ public class ModDataMapProvider extends DataMapProvider {
             .add(MaterialItems.RAW_TR_CRIMSON.get(), 1300)
             .add(MaterialItems.RAW_HELLSTONE.get(), 250)
 
+            .add(OreBlocks.RAW_TIN_BLOCK.get().asItem(), 75 * 9)
+            .add(OreBlocks.RAW_LEAD_BLOCK.get().asItem(), 150 * 9)
+            .add(OreBlocks.RAW_SILVER_BLOCK.get().asItem(), 150 * 9)
+            .add(OreBlocks.RAW_TUNGSTEN_BLOCK.get().asItem(), 225 * 9)
+            .add(OreBlocks.RAW_PLATINUM_BLOCK.get().asItem(), 450 * 9)
+            .add(OreBlocks.RAW_METEORITE_BLOCK.get().asItem(), 200 * 9)
+            .add(OreBlocks.RAW_DEMONITE_BLOCK.get().asItem(), 1000 * 9)
+            .add(OreBlocks.RAW_TR_CRIMSON_BLOCK.get().asItem(), 1300 * 9)
+            .add(OreBlocks.RAW_HELLSTONE_BLOCK.get().asItem(), 250 * 9)
+
             .add(MaterialItems.RAW_COBALT.get(), 700)
             .add(MaterialItems.RAW_PALLADIUM.get(), 900)
             .add(MaterialItems.RAW_MYTHRIL.get(), 1100)
@@ -98,6 +148,15 @@ public class ModDataMapProvider extends DataMapProvider {
             .add(MaterialItems.RAW_TITANIUM.get(), 1700)
             .add(MaterialItems.RAW_CHLOROPHYTE.get(), 1500)
             .add(MaterialItems.RAW_LUMINITE.get(), 3000)
+
+            .add(OreBlocks.RAW_COBALT_BLOCK.get().asItem(), 700 * 9)
+            .add(OreBlocks.RAW_PALLADIUM_BLOCK.get().asItem(), 900 * 9)
+            .add(OreBlocks.RAW_MYTHRIL_BLOCK.get().asItem(), 1100 * 9)
+            .add(OreBlocks.RAW_ORICHALCUM_BLOCK.get().asItem(), 1300 * 9)
+            .add(OreBlocks.RAW_ADAMANTITE_BLOCK.get().asItem(), 1500 * 9)
+            .add(OreBlocks.RAW_TITANIUM_BLOCK.get().asItem(), 1700 * 9)
+            .add(OreBlocks.RAW_CHLOROPHYTE_BLOCK.get().asItem(), 1500 * 9)
+            .add(OreBlocks.RAW_LUMINITE_BLOCK.get().asItem(), 3000 * 9)
 
             .add(MaterialItems.GEL.get(), 1)
             .add(MaterialItems.PINK_GEL.get(), 3)

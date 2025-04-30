@@ -298,8 +298,8 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     // todo 掉火把
     private boolean dropTorch(ServerLevel level, BlockPos blockPos, Vec3 center) {
 //        boolean tundra = this == TUNDRA_POTS.get();
-//        int amount = tundra ? level.random.nextInt(2, 7) : level.random.nextInt(4, 13);
-//        Item item;
+        int amount = /*tundra ? level.random.nextInt(2, 7) : */level.random.nextInt(4, 13);
+        Item item;
 //        if (level.getFluidState(blockPos).is(FluidTags.WATER)) {
 //            if (tundra) {
 //                item = ModItems.STICKY_GLOW_STICK.get();
@@ -318,10 +318,10 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
 //            } else if (this == UNDERGROUND_DESERT_POTS.get()) {
 //                item = Torches.DESERT_TORCH.item.get();
 //            } else {
-//                item = Items.TORCH;
+                item = Items.TORCH;
 //            }
 //        }
-//        ModUtils.createItemEntity(item, amount, center, level, 0);
+        LibUtils.createItemEntity(item, amount, center, level, 0);
         return true;
     }
 

@@ -41,15 +41,16 @@ public interface IMoneyTrade extends ITrade {
 
     @Override
     default void onTrade(ServerPlayer player, ITradeHolder npc, int index) {
-        if(PlayerUtils.tryCostMoney(player, this.getCost(player, npc))) {
-            onTradeSuccess(player, npc, index);
+        long cost = this.getCost(player, npc);
+        if(PlayerUtils.tryCostMoney(player, cost)) {
+            onTradeSuccess(player, npc, index, cost);
         }
     }
 
     /**
      * 重复确认钱币足够
      */
-    void onTradeSuccess(ServerPlayer player, ITradeHolder npc, int index);
+    void onTradeSuccess(ServerPlayer player, ITradeHolder npc, int index, long cost);
 
     @OnlyIn(Dist.CLIENT)
     @Override

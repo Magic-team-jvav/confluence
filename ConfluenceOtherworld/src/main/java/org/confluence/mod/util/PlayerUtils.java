@@ -4,8 +4,6 @@ import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentManager;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
@@ -18,7 +16,6 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.GetCustomDiggingPowerEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
@@ -177,18 +174,6 @@ public final class PlayerUtils {
             }
         }
         return new Tuple<>(ret, max);
-    }
-
-    public static void awardAchievement(ServerPlayer serverPlayer, String path) {
-        CompoundTag data = serverPlayer.getPersistentData();
-        String key = Confluence.MODID + ":" + path;
-        if (!data.getBoolean(key)) {
-            AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource("achievements/" + path));
-            if (advancement != null) {
-                serverPlayer.getAdvancements().award(advancement, "never");
-            }
-            data.putBoolean(key, true);
-        }
     }
 
     public static void consumeItemCount(List<ItemStack> have, Item item, int consumeCount) {

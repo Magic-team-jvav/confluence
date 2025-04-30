@@ -76,7 +76,7 @@ public final class PlayerEvents {
             long secretFlag = ((IMinecraftServer) serverPlayer.server).confluence$getSecretFlag();
             SecretFlagSyncPacketS2C.sendToAll(secretFlag);
             if ((secretFlag & IWorldOptions.HARDMODE) != 0) {
-                PlayerUtils.awardAchievement(serverPlayer, "its_hard");
+                ModAchievements.awardAchievement(serverPlayer, "its_hard");
             }
             NPCSpawner.INSTANCE.trySpawnGuide(serverPlayer);
         }

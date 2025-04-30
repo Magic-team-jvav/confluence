@@ -31,11 +31,11 @@ public record ValueComponent(int value) implements DataComponentType<ValueCompon
         return obj instanceof ValueComponent(int value1) && value1 == value;
     }
 
-    public static int getValue(ItemStack itemStack) {
+    public static int getValue(ItemStack itemStack, int defaultValue) {
         ValueComponent value = itemStack.get(ModDataComponentTypes.VALUE);
         if (value == null) {
             value = itemStack.getItemHolder().getData(ModDataMaps.VALUE);
-            return value == null ? 5000 : value.value();
+            return value == null ? defaultValue : value.value();
         }
         return value.value();
     }

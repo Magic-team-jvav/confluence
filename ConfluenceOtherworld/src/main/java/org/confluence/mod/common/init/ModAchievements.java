@@ -2,6 +2,7 @@ package org.confluence.mod.common.init;
 
 import com.google.common.collect.Streams;
 import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,7 +18,6 @@ import net.minecraft.world.phys.Vec2;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.DartTrapBlock;
-import org.confluence.mod.util.PlayerUtils;
 
 import java.util.Hashtable;
 
@@ -46,7 +46,7 @@ public final class ModAchievements {
         offset("new_world", 0, 0);
         offset("timber", 1, 0);
         offset("benched", 2, 0);
-        offset("hammer_time", 3,0);
+        offset("hammer_time", 3, 0);
         offset("heavy_metal", 4, 0);
         offset("star_power", 5, 0);
         offset("hold_on_tight", 0, 1);
@@ -153,7 +153,7 @@ public final class ModAchievements {
         offset("servant_in_training", 7, 9);
         offset("good_little_slave", 8, 9);
         offset("trout_monkey", 9, 9);
-        offset("fast_and_fishious", 10 ,9);
+        offset("fast_and_fishious", 10, 9);
         offset("supreme_helper_minion", 6, 10);
         offset("topped_off", 7, 10);
         offset("slayer_of_worlds", 8, 10);
@@ -210,10 +210,10 @@ public final class ModAchievements {
         if (damagingEntity instanceof ServerPlayer serverPlayer) {
             if (damagingEntity.isAlive()) {
                 if (damagingEntity.getHealth() / damagingEntity.getMaxHealth() < 0.1F && damageSource.is(DamageTypeTags.IS_FALL)) {
-                    PlayerUtils.awardAchievement(serverPlayer, "lucky_break");
+                    awardAchievement(serverPlayer, "lucky_break");
                 }
             } else if (sourceEntity != null && DartTrapBlock.NAME.equals(sourceEntity.getCustomName())) {
-                PlayerUtils.awardAchievement(serverPlayer, "watch_your_step");
+                awardAchievement(serverPlayer, "watch_your_step");
             }
         }
     }
@@ -221,7 +221,7 @@ public final class ModAchievements {
     public static void matchingAttire_fashionStatement(EquipmentSlot slot, LivingEntity living) {
         if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR && living instanceof ServerPlayer serverPlayer) {
             if (Streams.stream(serverPlayer.getArmorSlots()).noneMatch(ItemStack::isEmpty)) {
-                PlayerUtils.awardAchievement(serverPlayer, "matching_attire");
+                awardAchievement(serverPlayer, "matching_attire");
                 ExtraInventory extraInventory = serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY);
                 boolean fashionStatement = true;
                 for (int i = 0; i < SIZE_VANITY_ARMOR; i++) {
@@ -230,8 +230,33 @@ public final class ModAchievements {
                         break;
                     }
                 }
-                if (fashionStatement) PlayerUtils.awardAchievement(serverPlayer, "fashion_statement");
+                if (fashionStatement) awardAchievement(serverPlayer, "fashion_statement");
             }
+        }
+    }
+
+    public static void theFrequentFlyer(ServerPlayer player, long cost) {
+        short before = player.getPersistentData().getShort("confluence:the_frequent_flyer");
+        if (before > 10000) return;
+        long total = before + cost;
+        if (total >= 10000) {
+            AdvancementHolder advancement = player.server.getAdvancements().get(Confluence.asResource("achievements/the_frequent_flyer"));
+            if (advancement != null) {
+                player.getAdvancements().award(advancement, "never");
+            }
+        }
+        player.getPersistentData().putShort("confluence:the_frequent_flyer", (short) total);
+    }
+
+    public static void awardAchievement(ServerPlayer serverPlayer, String path) {
+        CompoundTag data = serverPlayer.getPersistentData();
+        String key = Confluence.MODID + ":" + path;
+        if (!data.getBoolean(key)) {
+            AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource("achievements/" + path));
+            if (advancement != null) {
+                serverPlayer.getAdvancements().award(advancement, "never");
+            }
+            data.putBoolean(key, true);
         }
     }
 }

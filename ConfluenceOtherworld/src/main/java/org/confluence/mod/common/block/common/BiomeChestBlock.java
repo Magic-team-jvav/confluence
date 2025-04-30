@@ -29,8 +29,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.lib.common.block.StateProperties;
+import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.util.PlayerUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
@@ -88,7 +88,7 @@ public class BiomeChestBlock extends ChestBlock {
             if (!player.getAbilities().instabuild) {
                 stack.shrink(1);
             }
-            PlayerUtils.awardAchievement(serverPlayer, "big_booty");
+            ModAchievements.awardAchievement(serverPlayer, "big_booty");
             return ItemInteractionResult.SUCCESS;
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;

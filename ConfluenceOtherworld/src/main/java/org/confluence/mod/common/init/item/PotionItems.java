@@ -12,9 +12,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.potion.*;
-import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +26,7 @@ public class PotionItems {
         @Override
         protected void apply(@NotNull ItemStack itemStack, @NotNull Level level, @NotNull LivingEntity living) {
             if (living.getAirSupply() <= 0 && living instanceof ServerPlayer serverPlayer) {
-                PlayerUtils.awardAchievement(serverPlayer, "unusual_survival_strategies");
+                ModAchievements.awardAchievement(serverPlayer, "unusual_survival_strategies");
             }
         }
     });

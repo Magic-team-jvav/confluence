@@ -1,6 +1,5 @@
 package org.confluence.mod.integration.terra_entity.npc_trade;
 
-import com.mojang.math.Axis;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.Decoder;
 import com.mojang.serialization.Encoder;
@@ -8,21 +7,16 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.gui.container.WithForgeTradeScreen;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.menu.NPCTradesForgeMenu;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.mod.network.c2s.SellTradePacketC2S;
@@ -30,7 +24,6 @@ import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.client.gui.container.TETradeScreen;
 import org.confluence.terraentity.entity.npc.mood.NPCMood;
 import org.confluence.terraentity.entity.npc.trade.ITradeHolder;
-import org.confluence.terraentity.network.c2s.NPCShopPacket;
 import org.confluence.terraentity.registries.npc_trade.ITrade;
 import org.confluence.terraentity.registries.npc_trade.TradeProperties;
 import org.confluence.terraentity.registries.npc_trade.TradeProvider;
@@ -57,7 +50,7 @@ public class SellTrade implements ITrade {
         if(mood!= null){
             discount = mood.getValue() / 100f;
         }
-        return (long) (ValueComponent.getValue(stack) * discount) * stack.getCount();
+        return (long) (ValueComponent.getValue(stack, 0) * discount) * stack.getCount();
     }
 
     public static final MapCodec<SellTrade> CODEC = Codec.of(Encoder.empty(), Decoder.unit(INSTANCE));
@@ -76,14 +69,14 @@ public class SellTrade implements ITrade {
     public void onSell(ServerPlayer player, ITradeHolder npc, int index) {
 
         if(player.containerMenu instanceof NPCTradesForgeMenu menu){
-            ItemStack stack = menu.slots.get(0).getItem();
-            int res = ValueComponent.getValue(stack) * stack.getCount();
+            ItemStack stack = menu.slots.getFirst().getItem();
+            int res = ValueComponent.getValue(stack, 0) * stack.getCount();
             int[] coins = PlayerUtils.decodeCoin(res);
             for(int i=0;i<4;i++){
                 Item item = PlayerUtils.INDEX_2_COIN.apply(i);
                 player.getInventory().add(new ItemStack(item, coins[i]));
             }
-            menu.slots.get(0).set(ItemStack.EMPTY);
+            menu.slots.getFirst().set(ItemStack.EMPTY);
 
         }
     }

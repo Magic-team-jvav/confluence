@@ -6,6 +6,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.terraentity.entity.npc.trade.ITradeHolder;
 import org.confluence.terraentity.registries.npc_trade.ITradeHealth;
@@ -32,7 +33,7 @@ public record MoneyTradeHealthFull(@Nullable TradeProperties properties) impleme
         return new MoneyTradeHealthFull(properties);
     }
 
-    public long getCost(@Nullable Player player){
+    public long getCost(@Nullable Player player, ITradeHolder holder){
         if(player == null){
             return cost();
         }
@@ -75,8 +76,9 @@ public record MoneyTradeHealthFull(@Nullable TradeProperties properties) impleme
 
 
     @Override
-    public void onTradeSuccess(ServerPlayer player, ITradeHolder npc, int index) {
+    public void onTradeSuccess(ServerPlayer player, ITradeHolder npc, int index, long cost) {
         player.setHealth(player.getMaxHealth());
+        ModAchievements.theFrequentFlyer(player, cost);
     }
 
     @Override

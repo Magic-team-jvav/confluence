@@ -44,7 +44,7 @@ public record MoneyTradeItem(ItemStack result, TradeProperties properties) imple
     }
 
     @Override
-    public void onTradeSuccess(ServerPlayer player, ITradeHolder npc, int index) {
+    public void onTradeSuccess(ServerPlayer player, ITradeHolder npc, int index, long cost) {
         ItemStack result = this.result();
         if (player.getInventory().getFreeSlot() == -1) {
             player.drop(result.copy(), false);
@@ -53,7 +53,7 @@ public record MoneyTradeItem(ItemStack result, TradeProperties properties) imple
 
     @Override
     public long cost() {
-        return ValueComponent.getValue(result);
+        return ValueComponent.getValue(result, 0);
     }
 
     @Override

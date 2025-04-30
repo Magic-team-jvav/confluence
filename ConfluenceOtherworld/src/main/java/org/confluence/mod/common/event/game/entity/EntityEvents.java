@@ -17,10 +17,10 @@ import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.util.PlayerUtils;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.EQUIPMENT_START;
 
@@ -31,7 +31,7 @@ public final class EntityEvents {
         Entity beingMounted = event.getEntityBeingMounted();
         if (beingMounted.isRemoved() || !(event.getEntityMounting() instanceof ServerPlayer player)) return;
         if (beingMounted instanceof LivingEntity) {
-            PlayerUtils.awardAchievement(player, "the_cavalry");
+            ModAchievements.awardAchievement(player, "the_cavalry");
         }
         if (event.isDismounting() && beingMounted instanceof AbstractMinecart minecart) {
             MinecartAbilityEvent.DismountOnMinecart e = NeoForge.EVENT_BUS.post(new MinecartAbilityEvent.DismountOnMinecart(player, minecart));

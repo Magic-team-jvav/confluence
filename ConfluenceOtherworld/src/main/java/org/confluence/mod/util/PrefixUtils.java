@@ -389,7 +389,7 @@ public final class PrefixUtils {
             else if (rarity > 11) rarity = 11;
         }
         itemStack.set(ConfluenceMagicLib.MOD_RARITY, ModRarity.ID_MAP.getOrDefault(rarity, ModRarity.WHITE));
-        itemStack.set(ModDataComponentTypes.VALUE, new ValueComponent((int) (ValueComponent.getValue(copy) * num14 * num14)));
+        itemStack.set(ModDataComponentTypes.VALUE, new ValueComponent((int) (ValueComponent.getValue(copy, 5000) * num14 * num14)));
     }
 
     public static void unknown(ItemStack itemStack) {
@@ -403,7 +403,7 @@ public final class PrefixUtils {
     }
 
     public static int getReforgeCost(Player player, ItemStack itemStack) {
-        int price = ValueComponent.getValue(itemStack);
+        int price = ValueComponent.getValue(itemStack, 5000);
         if (TCUtils.getAccessoriesValue(player, AccessoryItems.SPECIAL$PRICE) > 0) {
             price = (int) ((double) price * 0.8);
         }

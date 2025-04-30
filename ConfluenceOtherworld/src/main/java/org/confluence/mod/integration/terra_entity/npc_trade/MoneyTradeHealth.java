@@ -41,7 +41,7 @@ public record MoneyTradeHealth(int health, long cost, TradeProperties properties
 
 
     @Override
-    public void onTradeSuccess(ServerPlayer player, ITradeHolder npc, int index) {
+    public void onTradeSuccess(ServerPlayer player, ITradeHolder npc, int index, long cost) {
         ITradeHealth.super.onTrade(player, npc, index);
     }
 

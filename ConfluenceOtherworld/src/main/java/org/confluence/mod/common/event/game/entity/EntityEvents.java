@@ -1,10 +1,11 @@
 package org.confluence.mod.common.event.game.entity;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -19,6 +20,7 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.util.PlayerUtils;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.EQUIPMENT_START;
 
@@ -26,8 +28,12 @@ import static org.confluence.mod.common.attachment.ExtraInventory.EQUIPMENT_STAR
 public final class EntityEvents {
     @SubscribeEvent
     public static void entityMount(EntityMountEvent event) {
-        if (event.isMounting() || event.getLevel().isClientSide || event.getEntityBeingMounted().isRemoved()) return;
-        if (event.getEntityMounting() instanceof Player player && event.getEntityBeingMounted() instanceof AbstractMinecart minecart) {
+        Entity beingMounted = event.getEntityBeingMounted();
+        if (beingMounted.isRemoved() || !(event.getEntityMounting() instanceof ServerPlayer player)) return;
+        if (beingMounted instanceof LivingEntity) {
+            PlayerUtils.awardAchievement(player, "the_cavalry");
+        }
+        if (event.isDismounting() && beingMounted instanceof AbstractMinecart minecart) {
             MinecartAbilityEvent.DismountOnMinecart e = NeoForge.EVENT_BUS.post(new MinecartAbilityEvent.DismountOnMinecart(player, minecart));
             ItemStack itemStack = e.getMinecartItem();
             if (e.isCanceled() || itemStack == null) return;

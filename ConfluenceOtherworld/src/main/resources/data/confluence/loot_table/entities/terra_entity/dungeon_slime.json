@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:golden_key",
+          "name": "confluence:golden_dungeon_key",
           "weight": 1
         }
       ]

@@ -324,7 +324,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.soul_of_might.0", "“毁灭者的精华”");
         add("tooltip.item.confluence.soul_of_sight.0", "“全知看守者的精华”");
         add("tooltip.item.confluence.soul_of_fright.0", "“纯粹恐惧的精华”");
-        add("tooltip.item.confluence.golden_key.0", "“打开一个锁住的金箱或金锁盒”");
+        add("tooltip.item.confluence.golden_dungeon_key.0", "“打开一个锁住的地牢箱或金锁盒”");
+        add("tooltip.item.confluence.golden_key.0", "“打开一个锁住的金箱”");
         add("tooltip.item.confluence.shadow_key.0", "“打开所有暗影箱和黑曜石锁盒”");
         add("tooltip.item.confluence.temple_key.0", "“打开丛林神庙的大门”");
         add("tooltip.item.confluence.jungle_key.0", "“打开地牢中的丛林箱”");
@@ -363,6 +364,14 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.solar_wings.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.stardust_wings.0", "可飞行和缓慢坠落");
 
+        add("confluence.configuration.WorldGeneration", "世界生成机制");
+        add("confluence.configuration.WorldGeneration.tooltip", "一些世界生成相关设置");
+        add("confluence.configuration.replaceVanillaGeodeFeature", "替换原版晶洞地物");
+        add("confluence.configuration.replaceVanillaGeodeFeature.tooltip", "原版晶洞地物有可能对部分结构造成影响，启用此选项可解决其带来的问题");
+        add("confluence.configuration.brewing_stand_recipe", "泰拉药水酿造台配方");
+        add("confluence.configuration.brewing_stand_recipe.tooltip", "启用时，酿造台可以酿造泰拉药水");
+        add("confluence.configuration.alertPlayerDungeon", "地牢守卫警告");
+        add("confluence.configuration.alertPlayerDungeon.tooltip", "启用时，地牢守卫出现前将有三次吼叫警告");
         add("confluence.configuration.achievementToast", "启用泰拉样式成就");
         add("confluence.configuration.achievementToast.tooltip", "如果想使用原版样式进度的话就关闭它");
         add("confluence.configuration.playerOurMusic", "启用泰拉音乐");
@@ -533,7 +542,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("achievements.confluence.extra_shiny.title", "光彩夺目");
         add("achievements.confluence.extra_shiny.description", "开采你的世界新获赐的强大矿石。");
         add("achievements.confluence.dungeon_heist.title", "地牢大劫案");
-        add("achievements.confluence.dungeon_heist.description", "从地牢的亡灵居民处偷取钥匙，并打开一个它们的宝贵金宝箱。");
+        add("achievements.confluence.dungeon_heist.description", "从地牢的亡灵居民处偷取钥匙，并打开一个它们的宝贵地牢金宝箱。");
         add("achievements.confluence.drax_attax.title", "斧钻战队");
         add("achievements.confluence.drax_attax.description", "用神圣锭和三个机械Boss的灵魂制作斧钻或镐斧。");
         add("achievements.confluence.dead_men_tell_no_tales.title", "死人不会告密");
@@ -1071,6 +1080,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("dialogs.confluence.angler.3", "我没有妈妈，也没有爸爸，但我有很多鱼！这就够了！");
         add("dialogs.confluence.angler.4", "嘿！当心！我设了许多陷阱，用来实施史上最大的恶作剧！没人会发觉！你敢告诉别人试试！");
         add("dialogs.confluence.angler.5", "听说过会叫的鱼吗？！我没听说过，只是想知道你听说过没！");
+
+        add("dialogs.confluence.old_man.0", "如果你不解除我的诅咒，我是不会让你进的。");
+        add("dialogs.confluence.old_man.1", "陌生人，你是否拥有能打败我主人的力量？");
+        add("dialogs.confluence.old_man.2", "打败我的主人，我就让你进入地牢。");
+        add("dialogs.confluence.old_man.3", "你要想进去的话就晚上再来。");
 
         add("mood.terra_entity.goblin_tinkerer.like.dye_trader", "染料商知道把东西混在一起是多么有趣，我能理解！");
         add("mood.terra_entity.guide.hate.painter", "我讨厌油漆工在附近。世界本来挺美好的！");
@@ -1983,6 +1997,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SHADOW_SCALE.get(), "暗影鳞片");
         add(MaterialItems.TISSUE_SAMPLE.get(), "组织样本");
         add(MaterialItems.ROYAL_WAX.get(), "蜂王蜡");
+        add(MaterialItems.NECROTIC_FRAGMENT.get(), "死灵残片");
         add(MaterialItems.CURSED_FLAME.get(), "诅咒焰");
         add(MaterialItems.ICHOR.get(), "灵液");
         add(MaterialItems.PIXIE_DUST.get(), "妖精尘");
@@ -2204,6 +2219,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.GREEN_WRENCH.get(), "绿扳手");
         add(ToolItems.YELLOW_WRENCH.get(), "黄扳手");
         add(ToolItems.WIRE_CUTTER.get(), "钢丝钳");
+        add(ToolItems.GOLDEN_DUNGEON_KEY.get(), "地牢金钥匙");
         add(ToolItems.GOLDEN_KEY.get(), "金钥匙");
         add(ToolItems.SHADOW_KEY.get(), "暗影钥匙");
         add(ToolItems.TEMPLE_KEY.get(), "神庙钥匙");

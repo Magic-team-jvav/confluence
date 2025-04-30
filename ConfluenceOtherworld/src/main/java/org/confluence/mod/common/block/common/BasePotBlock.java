@@ -184,7 +184,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                     SectionPos sectionPos = SectionPos.of(new ChunkPos(i), level.getMinSection());
                     StructureStart structureStart = level.structureManager().getStartForStructure(sectionPos, structure, level.getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS));
                     if (structureStart != null && structureStart.isValid() && structureStart.getBoundingBox().isInside(blockPos)) { // getBoundingBox已优化过缓存
-                        LibUtils.createItemEntity(ToolItems.GOLDEN_KEY.toStack(), center, level, 0);
+                        LibUtils.createItemEntity(ToolItems.GOLDEN_DUNGEON_KEY.toStack(), center, level, 0);
                         return true;
                     }
                 }

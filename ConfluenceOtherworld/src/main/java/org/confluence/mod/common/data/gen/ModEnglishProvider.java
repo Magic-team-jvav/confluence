@@ -334,7 +334,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.soul_of_might.0", "'The essence of the destroyer'");
         add("tooltip.item.confluence.soul_of_sight.0", "'The essence of omniscient watchers'");
         add("tooltip.item.confluence.soul_of_fright.0", "'The essence of pure terror'");
-        add("tooltip.item.confluence.golden_key.0", "“Opens one locked Gold Chest or Lock Box”");
+        add("tooltip.item.confluence.golden_key.0", "“Opens one locked Gold Chest”");
+        add("tooltip.item.confluence.golden_dungeon_key.0", "“Open a locked dungeon chest or a golden lockbox”");
         add("tooltip.item.confluence.shadow_key.0", "“Opens all Shadow Chests and Obsidian Lock Boxes”");
         add("tooltip.item.confluence.temple_key.0", "“Opens the jungle temple door”");
         add("tooltip.item.confluence.jungle_key.0", "“Unlocks a Jungle Chest in the dungeon”");
@@ -373,6 +374,14 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.solar_wings.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.stardust_wings.0", "Allows flight and slow fall");
 
+        add("confluence.configuration.WorldGeneration", "World Generation Mechanism");
+        add("confluence.configuration.WorldGeneration.tooltip", "Some settings related to world generation");
+        add("confluence.configuration.replaceVanillaGeodeFeature", "Replace Vanilla Geode Feature");
+        add("confluence.configuration.replaceVanillaGeodeFeature.tooltip", "The vanilla geode feature may affect some structures. Enabling this option can solve the problems it brings.");
+        add("confluence.configuration.brewing_stand_recipe", "Terra Potion Brewing Stand Recipe");
+        add("confluence.configuration.brewing_stand_recipe.tooltip", "When enabled, the brewing stand can brew Terra potions.");
+        add("confluence.configuration.alertPlayerDungeon", "Dungeon Guardian Warning");
+        add("confluence.configuration.alertPlayerDungeon.tooltip", "When enabled, there will be three roars as warnings before the dungeon guardian appears.");
         add("confluence.configuration.achievementToast", "Enable Terra Style Achievements");
         add("confluence.configuration.achievementToast.tooltip", "Disable it if you want to use the default progress style.");
         add("confluence.configuration.playerOurMusic", "Enable Terra Music");
@@ -543,7 +552,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("achievements.confluence.extra_shiny.title", "Extra Shiny! ");
         add("achievements.confluence.extra_shiny.description", "Mine a powerful ore that has been newly blessed upon your world.");
         add("achievements.confluence.dungeon_heist.title", "Dungeon Heist  ");
-        add("achievements.confluence.dungeon_heist.description", "Steal a key from the dungeon's undead denizens, and unlock one of their precious golden chest.");
+        add("achievements.confluence.dungeon_heist.description", "Steal a key from the undead residents of the dungeon and open one of their precious golden dungeon chests.");
         add("achievements.confluence.drax_attax.title", "Drax Attax");
         add("achievements.confluence.drax_attax.description", "Craft a drax or pickaxe axe using hallowed bars, and the souls of the three mechanical bosses.");
         add("achievements.confluence.dead_men_tell_no_tales.title", "Dead Men Tell No Tales");
@@ -1019,6 +1028,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("dialogs.confluence.angler.3", "I don't have a mom or a dad, but I have a lot of fish! That's enough!");
         add("dialogs.confluence.angler.4", "Hey! Watch out! I've set a lot of traps for the greatest prank in history! No one will notice! Try telling anyone and see what happens!");
         add("dialogs.confluence.angler.5", "Have you ever heard of a fish that can make noise?! I haven't. I just want to know if you have!");
+
+        add("dialogs.confluence.old_man.0", "I cannot let you enter until you free me of my curse.");
+        add("dialogs.confluence.old_man.1", "Stranger, do you possess the strength to defeat my master?");
+        add("dialogs.confluence.old_man.2", "Defeat my master, and I will grant you passage into the Dungeon.。");
+        add("dialogs.confluence.old_man.3", "Come back at night if you wish to enter.");
 
         add("mood.terra_entity.goblin_tinkerer.like.dye_trader", "Dye Trader understands how fun it is to mix things together, I can respect that!");
         add("mood.terra_entity.guide.hate.painter", "I hate that Painter is around. The world is fine the way it was made!");

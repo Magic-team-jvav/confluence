@@ -23,6 +23,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.terraentity.init.TEItems;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -84,6 +85,15 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 " i ",
                 "iii"
         )), FunctionalBlocks.LEAD_ANVIL.toStack());
+        // 房屋探测器
+        shaped(output, "", "", ShapedRecipePattern.of(Map.of(
+                'B', Ingredient.of(ItemTags.PLANKS),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                " B ",
+                "B/B",
+                "/ /"
+        )), TEItems.HOUSE_DETECTOR.get().getDefaultInstance());
         //
         shaped(output, "", "_from_lead_and_iron", ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Items.REDSTONE_TORCH),

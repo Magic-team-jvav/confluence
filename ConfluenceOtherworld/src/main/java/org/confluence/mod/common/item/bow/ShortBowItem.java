@@ -5,7 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.mixed.IAbstractArrow;
 
 public class ShortBowItem extends TerraBowItem {
-    public static final int MAX_DRAW_DURATION = 4; // 满蓄力时间为4 tick
+    public static final int MAX_DRAW_DURATION = 8; // 满蓄力时间为8 tick
 
 
     public ShortBowItem(float baseDamage, int durability) {

@@ -146,9 +146,9 @@ public class SwordItems {
     );
 
     // 赞助者物品
-    public static final DeferredItem<SwordItem> BROKEN_SWEET_SWORD = register("broken_sweet_sword",()->new SweetSword(ModTiers.UNBREAKABLE,ModRarity.EXPERT, 3, -2.0F, new BaseSwordItem.ModifierBuilder()));
+    public static final DeferredItem<SwordItem> BROKEN_SWEET_SWORD = register("broken_sweet_sword",()->new SweetSword(ModTiers.UNBREAKABLE,ModRarity.EXPERT, 1, -2.0F, new BaseSwordItem.ModifierBuilder()));
 
-    public static final DeferredItem<SwordItem> SWEET_SWORD = register("sweet_sword",()->new SweetSword(ModTiers.UNBREAKABLE,ModRarity.EXPERT, 7, -2.0F, new BaseSwordItem.ModifierBuilder()
+    public static final DeferredItem<SwordItem> SWEET_SWORD = register("sweet_sword",()->new SweetSword(ModTiers.UNBREAKABLE,ModRarity.EXPERT, 4, -2.0F, new BaseSwordItem.ModifierBuilder()
             .addTooltip(p -> p.withStyle(style -> style.withColor(0xe44189)))
             .modifyProperties(p->p.food(new FoodProperties(1,1,false,2, Optional.of(BROKEN_SWEET_SWORD.get().getDefaultInstance()), List.of(
                             new FoodProperties.PossibleEffect(()->new MobEffectInstance(ModEffects.DELICIOUS, 200),1.0f)

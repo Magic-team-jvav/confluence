@@ -117,7 +117,8 @@ public class BaseChestBlock extends ChestBlock {
         if (level.getBlockEntity(pos) instanceof Entity entity && entity.isLocked()) {
             boolean isShadow = stack.is(ToolItems.SHADOW_KEY.get());
             boolean isGolden = stack.is(ToolItems.GOLDEN_KEY.get());
-            if ((isShadow && entity.variant == Variant.LOCKED_SHADOW) || (isGolden && (entity.variant == Variant.LOCKED_GOLDEN || entity.variant == Variant.LOCKED_DUNGEON))) {
+            boolean isDungeonGolden = stack.is(ToolItems.GOLDEN_DUNGEON_KEY.get());
+            if ((isShadow && entity.variant == Variant.LOCKED_SHADOW) || (isGolden && (entity.variant == Variant.LOCKED_GOLDEN) || (isDungeonGolden && (entity.variant == Variant.LOCKED_DUNGEON)))) {
                 int unlock = entity.variant.unlock;
                 if (unlock > 0) {
                     if (!isShadow && !player.getAbilities().instabuild) {

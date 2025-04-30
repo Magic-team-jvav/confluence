@@ -20,6 +20,7 @@ import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 import org.confluence.terra_furniture.common.init.TFBlocks;
+import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.item.TEWhipItems;
 
 import java.util.List;
@@ -280,6 +281,16 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " /",
                 " /"
         )), HoeItems.GOLDEN_HOE.toStack());
+        // 星星炮
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(4,MaterialItems.METEORITE_INGOT),
+                'A', Ingredient.of(TGItems.MINISHARK),
+                '/', AmountIngredient.of(5,MaterialItems.FALLING_STAR)
+        ), List.of(
+                " ## ",
+                "# A/",
+                " ## "
+        )), GunItems.STAR_CANNON.toStack());
     }
 
     protected void heavyWorkBench(RecipeOutput recipeOutput, String suffix, ShapedRecipePattern pattern, ItemStack result) {

@@ -1092,7 +1092,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ConsumableItems.ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO.get(),
                 PaintItems.ECHO_COATING.get(),
                 FoodItems.BOULDER_BREAD.get(),
-                TEItems.HOUSE_DETECTOR.get(),
                 ToolItems.SUPER_ABSORBANT_SPONGE.get(),
                 ToolItems.HONEY_ABSORBANT_SPONGE.get(),
                 ToolItems.LAVA_ABSORBANT_SPONGE.get(),

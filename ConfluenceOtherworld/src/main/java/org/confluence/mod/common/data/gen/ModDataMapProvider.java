@@ -47,12 +47,17 @@ public class ModDataMapProvider extends DataMapProvider {
             .add(Items.IRON_AXE,2800)
 
             .add(Items.COPPER_INGOT, 150)
-            .add(Items.IRON_INGOT,  300)
-            .add(Items.GOLD_INGOT,  1200)
+            .add(Items.IRON_INGOT, 300)
+            .add(Items.GOLD_INGOT, 1200)
             .add(Items.NETHERITE_INGOT,4000)
 
-            .add(Items.DIAMOND,3000)
-            .add(Items.EMERALD,1500)
+            .add(Items.DIAMOND, 3000)
+            .add(Items.EMERALD, 1500)
+            
+            .add(Items.LAPIS_LAZULI, 50)
+            .add(Items.REDSTONE, 40)
+            .add(Items.COAL, 40)
+            .add(Items.CHARCOAL, 40)
 
             .add(Blocks.COPPER_BLOCK.asItem(), 150 * 9)
             .add(Blocks.IRON_BLOCK.asItem(),  300 * 9)
@@ -61,6 +66,10 @@ public class ModDataMapProvider extends DataMapProvider {
 
             .add(Blocks.DIAMOND_BLOCK.asItem(),3000 * 9)
             .add(Blocks.EMERALD_BLOCK.asItem(),1500 * 9)
+
+            .add(Blocks.LAPIS_BLOCK.asItem(), 50 * 9)
+            .add(Blocks.REDSTONE_BLOCK.asItem(), 40 * 9)
+            .add(Blocks.COAL_BLOCK.asItem(), 40 * 9)
 
             .add(Items.ARROW,5)
 
@@ -116,9 +125,9 @@ public class ModDataMapProvider extends DataMapProvider {
             .add(Items.RAW_IRON, 100)
             .add(Items.RAW_GOLD, 300)
 
-            .add(Blocks.RAW_COPPER_BLOCK, 50 * 9)
-            .add(Blocks.RAW_IRON_BLOCK, 100 * 9)
-            .add(Blocks.RAW_GOLD_BLOCK, 300 * 9)
+            .add(Blocks.RAW_COPPER_BLOCK.asItem(), 50 * 9)
+            .add(Blocks.RAW_IRON_BLOCK.asItem(), 100 * 9)
+            .add(Blocks.RAW_GOLD_BLOCK.asItem(), 300 * 9)
 
             .add(MaterialItems.RAW_TIN.get(), 75)
             .add(MaterialItems.RAW_LEAD.get(), 150)

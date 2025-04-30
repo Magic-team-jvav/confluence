@@ -37,7 +37,7 @@ public class ManaGunItem extends BaseGun {
     @Override
     public void shoot(ServerPlayer player, ItemStack bullet, ItemStack gunStack) {
         if (PlayerUtils.extractMana(player, gunStack, () -> manaCost)) {
-            GunEvent.AmmoDataEvent ammoDataEvent = new GunEvent.AmmoDataEvent(player, this, damage, knockback, velocity, penetrate, inaccuracy);
+            GunEvent.AmmoDataEvent ammoDataEvent = new GunEvent.AmmoDataEvent(player, this, gunStack, damage, knockback, velocity, penetrate, inaccuracy);
             NeoForge.EVENT_BUS.post(ammoDataEvent);
 
             prepareBulletEntity(baseBulletEntities, player, TGItems.EMPTY_BULLET.toStack(), gunStack, ammoDataEvent.getDamage(), ammoDataEvent.getKnockback(), ammoDataEvent.getVelocity(), ammoDataEvent.getPenetrate(), ammoDataEvent.getInaccuracy());

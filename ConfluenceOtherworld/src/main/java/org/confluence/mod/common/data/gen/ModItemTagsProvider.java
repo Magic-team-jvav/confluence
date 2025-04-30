@@ -525,6 +525,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         ManaWeaponItems.acceptTag(tag(ModTags.Items.MANA_WEAPON));
         IntrinsicTagAppender<Item> weapons = tag(ModTags.Items.WEAPONS);
         ManaWeaponItems.acceptTag(weapons);
+        GunItems.acceptTag(weapons);
+        GunItems.acceptTag(tag(TGTags.GUN));
         IntrinsicTagAppender<Item> mining_tool_tools = tag(Tags.Items.MINING_TOOL_TOOLS);
         PickaxeItems.acceptTag(mining_tool_tools);
         PickaxeAxeItems.acceptTag(mining_tool_tools);
@@ -1493,18 +1495,21 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);
         DrillItems.ITEMS.getEntries().forEach(wipAction);
-        TGItems.GUNS.getEntries().forEach(wipAction);
-        TGItems.BULLETS.getEntries().forEach(wipAction);
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
         TMItems.ITEMS.getEntries().forEach(wipAction);
 
         tag(TGTags.GUN).add(
                 ManaWeaponItems.BEE_GUN.get(),
-                ManaWeaponItems.SPACE_GUN.get()
+                ManaWeaponItems.SPACE_GUN.get(),
+                GunItems.STAR_CANNON.get()
         );
         tag(TGTags.AUTOMATIC_GUN).add(
                 ManaWeaponItems.BEE_GUN.get(),
-                ManaWeaponItems.SPACE_GUN.get()
+                ManaWeaponItems.SPACE_GUN.get(),
+                GunItems.STAR_CANNON.get()
+        );
+        tag(TGTags.AMMO).add(
+                MaterialItems.FALLING_STAR.get()
         );
         tag(ModTags.Items.DEATH).add(
                 FunctionalBlocks.DEATH_CHEST_BLOCK.asItem(),

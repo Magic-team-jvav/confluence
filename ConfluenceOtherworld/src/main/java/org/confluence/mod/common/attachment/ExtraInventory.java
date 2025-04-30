@@ -17,6 +17,7 @@ import org.confluence.terra_curio.TerraCurio;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 public class ExtraInventory extends ItemStackHandler implements Container {
@@ -71,6 +72,10 @@ public class ExtraInventory extends ItemStackHandler implements Container {
     public ItemStack getAmmo(int index) {
         validateIndex(index, SIZE_AMMO);
         return getItem(AMMO_START + index);
+    }
+
+    public List<ItemStack> getAllAmmo() {
+        return this.stacks.subList(AMMO_START, AMMO_START + SIZE_AMMO);
     }
 
     public ItemStack getPet() {

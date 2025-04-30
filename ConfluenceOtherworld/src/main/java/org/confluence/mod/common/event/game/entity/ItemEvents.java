@@ -5,6 +5,7 @@ import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -13,16 +14,21 @@ import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
+import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.item.GunItems;
+import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.item.gun.ManaGunItem;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_guns.api.event.GunEvent;
 import org.confluence.terra_guns.common.init.TGItems;
+import org.confluence.terra_guns.common.init.TGTags;
+import org.confluence.terra_guns.common.item.bullet.BaseBullet;
 
 import java.util.Collection;
 import java.util.Map;
@@ -88,5 +94,19 @@ public final class ItemEvents {
             event.setPenetrate(manaGunItem.getPenetrate());
             event.setKnockback(manaGunItem.getKnockback());
         }
+    }
+
+    @SubscribeEvent
+    public static void ammoSelection(GunEvent.AmmoSelectionEvent event){
+        if (GunItems.STAR_CANNON.toStack().is(event.getGun())) {
+            event.setSelected(event.getAmmo().is(MaterialItems.FALLING_STAR.get()));
+        }
+    }
+
+    @SubscribeEvent
+    public static void extraInventory(GunEvent.InventoryExtraEvent event){
+        Player player = event.getPlayer();
+        ExtraInventory data = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+        event.addAmmoFirst(data.getAllAmmo());
     }
 }

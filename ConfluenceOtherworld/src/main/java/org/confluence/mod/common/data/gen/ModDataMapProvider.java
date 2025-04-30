@@ -202,9 +202,8 @@ public class ModDataMapProvider extends DataMapProvider {
             .add(ManaWeaponItems.FLOWER_OF_FIRE.get(), 25000)
             .add(ManaWeaponItems.WATER_BOLT.get(), 15000)
 
-            // todo 还没复活
-            //.add("confluence:bee_gun", 20000)
-            //.add("confluence:space_gun", 4000)
+            .add(ManaWeaponItems.BEE_GUN, 20000)
+            .add(ManaWeaponItems.SPACE_GUN, 4000)
 
             .add(TCItems.AGLET, 25000)
             .add(TCItems.AMBER_HORSESHOE_BALLOON.get(), 30000)

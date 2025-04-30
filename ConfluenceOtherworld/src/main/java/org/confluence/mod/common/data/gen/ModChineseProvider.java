@@ -2601,6 +2601,7 @@ public class ModChineseProvider extends LanguageProvider {
          */
         add(ManaWeaponItems.BEE_GUN.get(), "蜜蜂枪");
         add(ManaWeaponItems.SPACE_GUN.get(), "太空枪");
+        add(GunItems.STAR_CANNON.get(), "星星炮");
 
         // 弓
         add(BowItems.WOODEN_SHORT_BOW.get(), "木短弓");

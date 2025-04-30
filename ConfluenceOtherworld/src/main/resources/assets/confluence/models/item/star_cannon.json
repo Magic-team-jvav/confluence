@@ -2,73 +2,68 @@
   "credit": "Made with Blockbench",
   "parent": "builtin/entity",
   "texture_size": [
-    64,
-    64
+    128,
+    128
   ],
   "display": {
     "thirdperson_righthand": {
       "translation": [
         0,
-        -0.75,
-        2.25
+        -1.75,
+        -7.75
       ],
       "scale": [
-        0.7,
-        0.7,
-        0.7
+        0.6,
+        0.6,
+        0.6
       ]
     },
     "thirdperson_lefthand": {
       "translation": [
         0,
-        -0.75,
-        2.25
+        -1.75,
+        -7.75
       ],
       "scale": [
-        0.7,
-        0.7,
-        0.7
+        0.6,
+        0.6,
+        0.6
       ]
     },
     "firstperson_righthand": {
       "translation": [
-        0.75,
+        1.25,
         0.5,
-        3.75
+        -4.5
       ],
       "scale": [
-        0.7,
-        0.7,
-        0.7
+        0.6,
+        0.6,
+        0.6
       ]
     },
     "firstperson_lefthand": {
       "translation": [
-        0.75,
+        1.25,
         0.5,
-        3.75
+        -4.5
       ],
       "scale": [
-        0.7,
-        0.7,
-        0.7
+        0.6,
+        0.6,
+        0.6
       ]
     },
     "ground": {
-      "rotation": [
-        0,
-        -90,
-        0
-      ],
       "translation": [
-        -6,
-        -1.5,
-        0
+        0,
+        0,
+        -3
       ],
       "scale": [
-        0.65,
-        0.65,
-        0.65
+        0.5,
+        0.5,
+        0.5
       ]
     },
     "gui": {
@@ -78,14 +73,14 @@
         0
       ],
       "translation": [
-        -4.75,
-        -3.25,
+        3.75,
+        -2,
         0
       ],
       "scale": [
-        0.8,
-        0.8,
-        0.8
+        0.45999999999999996,
+        0.45999999999999996,
+        0.45999999999999996
       ]
     },
     "fixed": {
@@ -95,18 +90,15 @@
         0
       ],
       "translation": [
-        5,
-        -2.5,
+        -3.5,
+        -2.25,
         0
       ],
       "scale": [
-        0.8,
-        0.8,
-        0.8
+        0.5,
+        0.5,
+        0.5
       ]
     }
-  },
-  "textures": {
-    "particle": "terra_guns:item/texture"
   }
 }

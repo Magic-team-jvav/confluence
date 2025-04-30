@@ -1081,6 +1081,7 @@ public class ModEnglishProvider extends LanguageProvider {
         ToolItems.ITEMS.getEntries().forEach(itemAction);
         TreasureBagItems.ITEMS.getEntries().forEach(itemAction);
         LanceItems.ITEMS.getEntries().forEach(itemAction);
+        GunItems.ITEMS.getEntries().forEach(itemAction);
 
         ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), LibUtils.toTitleCase(effect.getId().getPath())));
         ModEntities.ENTITIES.getEntries().forEach(entity -> add(entity.get(), LibUtils.toTitleCase(entity.getId().getPath())));

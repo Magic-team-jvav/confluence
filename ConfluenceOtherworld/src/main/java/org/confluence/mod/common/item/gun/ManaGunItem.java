@@ -16,6 +16,7 @@ public class ManaGunItem extends BaseGun {
     private final int manaCost;
     private final float damage;
     private final float knockback;
+    private final float critical;
     private final float velocity;
     private final int penetrate;
     private final float inaccuracy;
@@ -24,6 +25,7 @@ public class ManaGunItem extends BaseGun {
         super(properties, cooldown, damage, velocity, knockback, critical, penetrate, inaccuracy, rarity);
         this.manaCost=manaCost;
         this.damage = damage;
+        this.critical = critical;
         this.knockback = knockback;
         this.velocity = velocity;
         this.penetrate = penetrate;
@@ -37,7 +39,7 @@ public class ManaGunItem extends BaseGun {
     @Override
     public void shoot(ServerPlayer player, ItemStack bullet, ItemStack gunStack) {
         if (PlayerUtils.extractMana(player, gunStack, () -> manaCost)) {
-            GunEvent.AmmoDataEvent ammoDataEvent = new GunEvent.AmmoDataEvent(player, this, gunStack, damage, knockback, velocity, penetrate, inaccuracy);
+            GunEvent.AmmoDataEvent ammoDataEvent = new GunEvent.AmmoDataEvent(player, this, gunStack, damage, critical, knockback, velocity, penetrate, inaccuracy);
             NeoForge.EVENT_BUS.post(ammoDataEvent);
 
             prepareBulletEntity(baseBulletEntities, player, TGItems.EMPTY_BULLET.toStack(), gunStack, ammoDataEvent.getDamage(), ammoDataEvent.getKnockback(), ammoDataEvent.getVelocity(), ammoDataEvent.getPenetrate(), ammoDataEvent.getInaccuracy());
@@ -64,5 +66,9 @@ public class ManaGunItem extends BaseGun {
 
     public float getKnockback() {
         return knockback;
+    }
+
+    public float getCritical() {
+        return critical;
     }
 }

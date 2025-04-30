@@ -1499,8 +1499,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         TMItems.ITEMS.getEntries().forEach(wipAction);
 
         tag(TGTags.GUN).add(
-                ManaWeaponItems.BEE_GUN.get(),
-                ManaWeaponItems.SPACE_GUN.get(),
                 GunItems.STAR_CANNON.get()
         );
         tag(TGTags.AUTOMATIC_GUN).add(

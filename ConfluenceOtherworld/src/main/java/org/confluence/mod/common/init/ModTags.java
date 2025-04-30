@@ -165,14 +165,12 @@ public final class ModTags {
         public static final TagKey<Item> MARINE_GRAVEL = register("marine_gravel");
         public static final TagKey<Item> CORALS = register("corals");
         public static final TagKey<Item> EVIL_MATERIAL = register("evil_material");
-        // public static final TagKey<Item> FISH_COOKING = register("fish_cooking");// 制作熟鱼
         public static final TagKey<Item> SEAFOOD_DINNER_MATERIALS = register("seafood_dinner_materials");// 制作海鲜大餐
         public static final TagKey<Item> GOLD_COOKING = register("gold_cooking");// 制作金美味
         public static final TagKey<Item> WOODEN_COMBUSTIBLES = register("wooden_combustibles");  // 可燃木材系列
         public static final TagKey<Item> INITIAL_WOOD = register("initial_wood");  // 木套tag，用于合成木套而分离其他套装
         public static final TagKey<Item> QUESTED_FISHES = register("quested_fishes");  // 任务鱼
         public static final TagKey<Item> EMBLEM = register("emblem");  // 徽章
-        // public static final TagKey<Item> CHARCOAL_CAN_BE_BURNED = register("charcoal_can_be_burned");  // 可烧成木炭
         public static final TagKey<Item> LEAD_AND_IRON = register("lead_and_iron");
         public static final TagKey<Item> SHADOW_SCALE_AND_TISSUE_SAMPLE = register("shadow_scale_and_tissue_sample");
         public static final TagKey<Item> EVIL_INGOT = register("evil_ingot");

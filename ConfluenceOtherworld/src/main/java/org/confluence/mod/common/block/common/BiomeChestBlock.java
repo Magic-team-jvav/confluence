@@ -6,7 +6,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.util.PlayerUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
@@ -75,18 +76,19 @@ public class BiomeChestBlock extends ChestBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (level instanceof ServerLevel serverLevel && isKey.test(stack) && !state.getValue(UNLOCKED)) {
+        if (player instanceof ServerPlayer serverPlayer && isKey.test(stack) && !state.getValue(UNLOCKED)) {
             level.setBlock(pos, state.setValue(UNLOCKED, true), Block.UPDATE_ALL);
-            serverLevel.playSound(null, pos, SoundEvents.CHAIN_BREAK, SoundSource.BLOCKS);
+            serverPlayer.level().playSound(null, pos, SoundEvents.CHAIN_BREAK, SoundSource.BLOCKS);
             double posX = pos.getX() + 0.5;
             double posZ = pos.getZ() + 0.5;
-            serverLevel.sendParticles(
+            serverPlayer.serverLevel().sendParticles(
                     new BlockParticleOption(ParticleTypes.BLOCK, Blocks.CHAIN.defaultBlockState()),
                     posX, pos.getY() + 0.5, posZ, 200, 0.0625, 0.0625, 0.0625, 0.15
             );
             if (!player.getAbilities().instabuild) {
                 stack.shrink(1);
             }
+            PlayerUtils.awardAchievement(serverPlayer, "big_booty");
             return ItemInteractionResult.SUCCESS;
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;

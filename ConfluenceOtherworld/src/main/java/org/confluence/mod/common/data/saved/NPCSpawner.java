@@ -16,9 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -125,33 +123,26 @@ public class NPCSpawner implements IGlobalData {
         if (alive) npcSpawned.add(entityType);
     }
 
-    public void moveNPCToAnotherRegion(LivingEntity living, Region from, Region to) {
-        if (living instanceof IAbstractTerraNPC npc) {
-            EntityType<?> entityType = living.getType();
-            if (hasNPCAlive(from, entityType)) {
-                setNPCAlive(from, entityType, false);
-                setNPCAlive(to, entityType, true);
-                npc.confluence$setRegion(to);
-                applyBenedictions(living);
-            }
-        }
-    }
-
-    /**
-     * @return true表示成功添加NPC，false表示该实体不为NPC
-     */
-    public boolean onNPCAdded(LivingEntity living) {
-        if (living instanceof IAbstractTerraNPC npc) {
-            npc.confluence$setRegion(new Region(living.chunkPosition()));
-            setNPCAlive(npc.confluence$getRegion(), living.getType(), true);
+    public void moveNPCToAnotherRegion(AbstractTerraNPC living, Region from, Region to) {
+        IAbstractTerraNPC npc = (IAbstractTerraNPC) living;
+        EntityType<?> entityType = living.getType();
+        if (hasNPCAlive(from, entityType)) {
+            setNPCAlive(from, entityType, false);
+            setNPCAlive(to, entityType, true);
+            npc.confluence$setRegion(to);
             applyBenedictions(living);
-            broadcastMessageToRegion(living.level(), npc.confluence$getRegion(), Component.translatable("event.confluence.npc.arrived", living.getType().getDescription(), living.getName()).withColor(GlobalColors.NPC_ARRIVED.getRGB()));
-            return true;
         }
-        return false;
     }
 
-    public void applyBenedictions(LivingEntity living) {
+    public void onNPCAdded(AbstractTerraNPC living) {
+        IAbstractTerraNPC npc = (IAbstractTerraNPC) living;
+        npc.confluence$setRegion(new Region(living.chunkPosition()));
+        setNPCAlive(npc.confluence$getRegion(), living.getType(), true);
+        applyBenedictions(living);
+        broadcastMessageToRegion(living.level(), npc.confluence$getRegion(), Component.translatable("event.confluence.npc.arrived", living.getType().getDescription(), living.getName()).withColor(GlobalColors.NPC_ARRIVED.getRGB()));
+    }
+
+    public void applyBenedictions(AbstractTerraNPC living) {
         if (isAdvancedCombatTechniquesUsed()) {
             applyAdvancedCombatTechniques(living, Confluence.asResource("advanced_combat_techniques"));
         }
@@ -160,22 +151,16 @@ public class NPCSpawner implements IGlobalData {
         }
     }
 
-    /**
-     * @return true表示成功移除NPC，false表示该实体不为NPC
-     */
-    public boolean onNPCRemoved(LivingEntity living) {
-        if (living instanceof IAbstractTerraNPC npc) {
-            setNPCAlive(npc.confluence$getRegion(), living.getType(), false);
-            MutableComponent message;
-            if (living instanceof AnglerNPC /* todo 或宠物/公主 */) {
-                message = Component.translatable("event.confluence.npc.left", living.getName());
-            } else { // todo 旅商已离去！
-                message = Component.translatable("event.confluence.npc.slain", living.getType().getDescription(), living.getName());
-            }
-            broadcastMessageToRegion(living.level(), npc.confluence$getRegion(), message.withColor(GlobalColors.NPC_SLAIN.getRGB()));
-            return true;
+    public void onNPCRemoved(AbstractTerraNPC living) {
+        IAbstractTerraNPC npc = (IAbstractTerraNPC) living;
+        setNPCAlive(npc.confluence$getRegion(), living.getType(), false);
+        MutableComponent message;
+        if (living instanceof AnglerNPC /* todo 或宠物/公主 */) {
+            message = Component.translatable("event.confluence.npc.left", living.getName());
+        } else { // todo 旅商已离去！
+            message = Component.translatable("event.confluence.npc.slain", living.getType().getDescription(), living.getName());
         }
-        return false;
+        broadcastMessageToRegion(living.level(), npc.confluence$getRegion(), message.withColor(GlobalColors.NPC_SLAIN.getRGB()));
     }
 
     @Override
@@ -354,14 +339,14 @@ public class NPCSpawner implements IGlobalData {
     }
 
     private boolean spawnAtPos(Level level, BlockPos pos, EntityType<?> entityType) {
-        Entity entity = entityType.create(level);
-        if (!(entity instanceof LivingEntity living)) return false;
+        if (!(entityType.create(level) instanceof AbstractTerraNPC living)) return false;
         living.setPos(pos.getCenter());
         level.addFreshEntity(living);
         if (living instanceof AnglerNPC angler) {
             angler.setWakeUp(true); // 重生的渔夫默认醒来
         }
-        return onNPCAdded(living);
+        onNPCAdded(living);
+        return true;
     }
 
     public static BlockPos getNpcSpawnPos(ServerPlayer player) {
@@ -379,7 +364,7 @@ public class NPCSpawner implements IGlobalData {
     /**
      * 调用前需检查是否已使用过先进战斗技术
      */
-    public static void applyAdvancedCombatTechniques(LivingEntity living, ResourceLocation id) {
+    public static void applyAdvancedCombatTechniques(AbstractTerraNPC living, ResourceLocation id) {
         AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
         if (armor != null) {
             armor.addOrReplacePermanentModifier(new AttributeModifier(id, 3, AttributeModifier.Operation.ADD_VALUE));

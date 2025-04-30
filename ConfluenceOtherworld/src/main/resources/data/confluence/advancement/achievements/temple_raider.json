@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "minecraft:barrier"
+            "id": "confluence:temple_key"
         },
         "title": {
             "translate": "achievements.confluence.temple_raider.title"
@@ -16,8 +16,26 @@
     },
     "parent": "confluence:achievements/new_world",
     "criteria": {
-        "never": {
-            "trigger": "minecraft:impossible"
+        "requirement": {
+            "trigger": "minecraft:any_block_use",
+            "conditions": {
+                "location": [
+                    {
+                        "condition": "minecraft:location_check",
+                        "predicate": {
+                            "block": {
+                                "blocks": "confluence:lihzahrd_door"
+                            }
+                        }
+                    },
+                    {
+                        "condition": "minecraft:match_tool",
+                        "predicate": {
+                            "items": "confluence:temple_key"
+                        }
+                    }
+                ]
+            }
         }
     }
 }

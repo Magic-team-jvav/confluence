@@ -95,7 +95,9 @@ public final class LivingEntityEvents {
                     LibUtils.createItemEntity(holidayGift.getDefaultInstance(), living.position(), living.level(), 0);
                 }
             }
-            NPCSpawner.INSTANCE.onNPCRemoved(living);
+            if (living instanceof AbstractTerraNPC npc) {
+                NPCSpawner.INSTANCE.onNPCRemoved(npc);
+            }
             if (living.hasEffect(ModEffects.BLOOD_BUTCHERED)) NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.get().checkVisibility(level, living);
             if (damageSource.getEntity() != null && damageSource.getEntity().getType().is(TETags.EntityTypes.CORRUPT)) NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get().checkVisibilityAndSummonEntity(level, living);
         }

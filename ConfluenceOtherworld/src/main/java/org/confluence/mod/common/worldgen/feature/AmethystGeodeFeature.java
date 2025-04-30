@@ -40,7 +40,7 @@ public class AmethystGeodeFeature extends Feature<AmethystGeodeFeature.Config> {
         ball(5.5, centerPos, inBlockState, true, level);
         ball(5.5, centerPos, inRandomBlockState, true, level, 0.05F, pContext.random());
         ball(4.5, centerPos, breakBlockState, true, level);
-        ellipsoid(3.5, 6.5, 3.5, centerPos.offset((int) (3 * Mth.sin(r)), 0, (int) (3 * Mth.cos(r))), breakBlockState, true, level);
+        if (pContext.random().nextFloat() < 0.95F) ellipsoid(4.9, 6.5, 4.9, centerPos.offset((int) (4 * Mth.sin(r)), 0, (int) (4 * Mth.cos(r))), breakBlockState, true, level);
         return true;
     }
 

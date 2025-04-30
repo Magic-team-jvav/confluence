@@ -33,7 +33,7 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           automatic_release_tag: nightly
-          prerelease: true*
+          prerelease: true
           title: "Confluence Automate Build"
           files: |
             ./Confluence-Magic-Lib/build/libs/*.jar

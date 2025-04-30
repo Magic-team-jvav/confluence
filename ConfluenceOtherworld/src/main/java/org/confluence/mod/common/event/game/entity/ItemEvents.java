@@ -4,6 +4,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -25,6 +26,7 @@ import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.item.gun.ManaGunItem;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
+import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_guns.api.event.GunEvent;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terra_guns.common.init.TGTags;
@@ -44,6 +46,7 @@ public final class ItemEvents {
                 itemStack.is(Tags.Items.MINING_TOOL_TOOLS) ||
                 itemStack.is(Tags.Items.RANGED_WEAPON_TOOLS) ||
                 itemStack.is(ModTags.Items.MANA_WEAPON) ||
+                itemStack.is(TGTags.GUN) ||
                 itemStack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY)
         ) {
             for (Map.Entry<Holder<Attribute>, Collection<AttributeModifier>> entry : prefix.modifiers().get().asMap().entrySet()) {
@@ -87,6 +90,12 @@ public final class ItemEvents {
 
     @SubscribeEvent
     public static void ammoData(GunEvent.AmmoDataEvent event){
+        Player player = event.getPlayer();
+        float velocityModify = (float) player.getAttributeValue(TCAttributes.getRangedVelocity());
+        float damageModify = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE);
+        float knockbackModify = (float) player.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
+        float criticalModify = (float) player.getAttributeValue(TCAttributes.getCriticalChance());
+
         if (event.getGun() instanceof ManaGunItem manaGunItem){
             event.setDamage(manaGunItem.getDamage());
             event.setInaccuracy(manaGunItem.getInaccuracy());
@@ -96,7 +105,10 @@ public final class ItemEvents {
             event.setCritical(manaGunItem.getCritical());
         }
 
-        PrefixComponent prefix = PrefixUtils.getPrefix(event.getGunStack());
+        event.setVelocity(event.getVelocity() * velocityModify);
+        event.setDamage(event.getDamage() * damageModify);
+        event.setKnockback(event.getKnockback() * knockbackModify);
+        event.setCritical(event.getCritical() * criticalModify);
     }
 
     @SubscribeEvent

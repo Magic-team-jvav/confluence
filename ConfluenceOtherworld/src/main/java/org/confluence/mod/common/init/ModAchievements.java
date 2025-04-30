@@ -18,6 +18,8 @@ import net.minecraft.world.phys.Vec2;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.DartTrapBlock;
+import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 
 import java.util.Hashtable;
 
@@ -174,6 +176,18 @@ public final class ModAchievements {
         DISPLAY_OFFSET.put(Confluence.asResource("achievements/" + path), new Vec2(x, y));
     }
 
+    public static void awardAchievement(ServerPlayer serverPlayer, String path) {
+        CompoundTag data = serverPlayer.getPersistentData();
+        String key = Confluence.MODID + ":" + path;
+        if (!data.getBoolean(key)) {
+            AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource("achievements/" + path));
+            if (advancement != null) {
+                serverPlayer.getAdvancements().award(advancement, "never");
+            }
+            data.putBoolean(key, true);
+        }
+    }
+
     public static void youCanDoIt(ServerPlayer serverPlayer, ServerLevel level) {
         if (level.getDayTime() % 1200L == 0L) { // 每分钟检查一次
             long firstNight = serverPlayer.getPersistentData().getLong("confluence:you_can_do_it");
@@ -248,15 +262,13 @@ public final class ModAchievements {
         player.getPersistentData().putShort("confluence:the_frequent_flyer", (short) total);
     }
 
-    public static void awardAchievement(ServerPlayer serverPlayer, String path) {
-        CompoundTag data = serverPlayer.getPersistentData();
-        String key = Confluence.MODID + ":" + path;
-        if (!data.getBoolean(key)) {
-            AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource("achievements/" + path));
-            if (advancement != null) {
-                serverPlayer.getAdvancements().award(advancement, "never");
+    public static void noHobo(AbstractTerraNPC npc, NPCSpawner.Region region) {
+        if (npc.level() instanceof ServerLevel serverLevel) {
+            for (ServerPlayer player : serverLevel.players()) {
+                if (region.isOnRegion(player.chunkPosition())) {
+                    ModAchievements.awardAchievement(player, "no_hobo");
+                }
             }
-            data.putBoolean(key, true);
         }
     }
 }

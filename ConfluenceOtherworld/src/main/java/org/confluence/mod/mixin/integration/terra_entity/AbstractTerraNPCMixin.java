@@ -6,6 +6,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.mixed.IAbstractTerraNPC;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.entity.npc.house.House;
@@ -54,7 +55,9 @@ public abstract class AbstractTerraNPCMixin implements IAbstractTerraNPC {
 
     @Inject(method = "setHouse", at = @At("HEAD"))
     private void setRegion(House house, CallbackInfo ci) {
-        confluence$setRegion(new NPCSpawner.Region(house.center()));
+        NPCSpawner.Region region = new NPCSpawner.Region(house.center());
+        confluence$setRegion(region);
+        ModAchievements.noHobo((AbstractTerraNPC) (Object) this, region);
     }
 
     @Inject(method = "removeWhenFarAway", at = @At("HEAD"), cancellable = true)

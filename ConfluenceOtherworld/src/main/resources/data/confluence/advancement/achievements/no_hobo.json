@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "minecraft:barrier"
+            "id": "terra_entity:house_detector"
         },
         "title": {
             "translate": "achievements.confluence.no_hobo.title"

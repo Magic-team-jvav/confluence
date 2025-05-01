@@ -23,9 +23,7 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terra_guns.common.init.TGTags;
-import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.TETags;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TESummonItems;
@@ -1326,6 +1324,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getStrippedWood().asItem(),
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getTrapdoor().asItem(),
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getDoor().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getLeaves().asItem(),
                 NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.asItem(),
                 PotBlocks.OCEAN_POT.asItem(),
                 OreBlocks.RAW_METEORITE_BLOCK.asItem(),

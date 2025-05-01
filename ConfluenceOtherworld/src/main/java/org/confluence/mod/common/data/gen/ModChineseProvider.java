@@ -1566,6 +1566,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getSign().get(), "阴森告示牌");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getStairs().get(), "阴森楼梯");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getSlab().get(), "阴森台阶");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getLeaves().get(), "阴森树叶");
 
 
         add(NatureBlocks.STELLAR_BLOSSOM.get(), "星辰花");

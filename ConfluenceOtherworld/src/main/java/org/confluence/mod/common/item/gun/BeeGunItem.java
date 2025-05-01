@@ -16,7 +16,6 @@ import org.confluence.terra_curio.util.TCUtils;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.IntStream;
 
 public class BeeGunItem extends ManaGunItem{
     public BeeGunItem(Properties properties) {
@@ -33,14 +32,13 @@ public class BeeGunItem extends ManaGunItem{
     protected void prepareBulletEntity(List<Projectile> baseBulletEntities, ServerPlayer player, ItemStack bullet, ItemStack gun, float damage, float knockback, float velocity, int penetrate, float inaccuracy) {
         boolean hasHivePack = TCUtils.hasAccessoriesType(player, TCItems.HIVE$PACK);
         int times = ThreadLocalRandom.current().nextInt(1, hasHivePack ? 5 :4);
-
-        IntStream.range(0, times).forEach(i -> {
+        for (int i = 0; i < times; i++) {
             BeeProjectile beeProjectile = new BeeProjectile(player.serverLevel(), player, hasHivePack && player.getRandom().nextBoolean());
             beeProjectile.setPos(player.getX(), player.getEyeY(), player.getZ());
             beeProjectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, velocity, inaccuracy);
 
             baseBulletEntities.add(beeProjectile);
-        });
+        }
     }
 
     private static void notTheBees(Player player) {

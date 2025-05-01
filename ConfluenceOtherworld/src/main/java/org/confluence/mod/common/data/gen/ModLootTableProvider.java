@@ -43,7 +43,6 @@ import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.loot.DateLootItemCondition;
 import org.confluence.mod.mixin.accessor.EntityLootSubProviderAccessor;
-import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.init.TEEntities;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 
@@ -534,22 +533,22 @@ public class ModLootTableProvider extends LootTableProvider {
             DateLootItemCondition.Builder halloweens = DateLootItemCondition.builder().from(Calendar.OCTOBER, 10).to(Calendar.NOVEMBER, 1);
             DateLootItemCondition.Builder christmas = DateLootItemCondition.builder().from(Calendar.DECEMBER, 15).to(Calendar.DECEMBER, 31);
             add(TEBossEntities.EATER_OF_WORLDS.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/eater_of_worlds"), LootTable.lootTable()
-                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                    .withPool(LootPool.lootPool()
                             .add(AlternativesEntry.alternatives(
                                     LootItem.lootTableItem(ModItems.HEART).when(AllOfCondition.allOf(halloweens, christmas).invert()),
                                     LootItem.lootTableItem(ModItems.CANDY_APPLE).when(halloweens),
                                     LootItem.lootTableItem(ModItems.CANDY_CANE).when(christmas)
                             ).append(EmptyLootItem.emptyItem().setWeight(3)))
                     )
-                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                    .withPool(LootPool.lootPool()
                             .add(LootItem.lootTableItem(RAW_DEMONITE).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5))))
                             .add(EmptyLootItem.emptyItem())
                     )
-                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                    .withPool(LootPool.lootPool()
                             .add(LootItem.lootTableItem(SHADOW_SCALE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
                             .add(EmptyLootItem.emptyItem())
                     )
-                    .setRandomSequence(TerraEntity.space("entity/eater_of_worlds")));
+            );
         }
 
         @Override

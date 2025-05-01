@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "confluence:base_chest_block"
+            "id": "confluence:golden_dungeon_key"
         },
         "title": {
             "translate": "achievements.confluence.dungeon_heist.title"

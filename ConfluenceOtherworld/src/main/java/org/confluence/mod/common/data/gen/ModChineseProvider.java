@@ -82,6 +82,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.echo_block.0", "只在回声视觉下才能看到");
         add("tooltip.item.confluence.advanced_combat_techniques.0", "增强所有城镇居民的防御力和力量");
         add("tooltip.item.confluence.advanced_combat_techniques.1", "“包含攻防战斗技能”");
+        add("tooltip.item.confluence.advanced_combat_techniques_volume_two.0", "增强所有城镇居民的防御力和力量");
+        add("tooltip.item.confluence.advanced_combat_techniques_volume_two.1", "“包含攻防战斗技术，卷二！”");
         add("tooltip.item.confluence.binoculars.0", "使用时扩大视野，鼠标滚轮可调整缩放");
 
         add("tooltip.item.confluence.slime_crown.0", "右键使用以召唤史莱姆王");
@@ -542,7 +544,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("achievements.confluence.extra_shiny.title", "光彩夺目");
         add("achievements.confluence.extra_shiny.description", "开采你的世界新获赐的强大矿石。");
         add("achievements.confluence.dungeon_heist.title", "地牢大劫案");
-        add("achievements.confluence.dungeon_heist.description", "从地牢的亡灵居民处偷取钥匙，并打开一个它们的宝贵地牢金宝箱。");
+        add("achievements.confluence.dungeon_heist.description", "从地牢的亡灵居民处偷取钥匙，并打开一个它们的宝贵地牢宝箱。");
         add("achievements.confluence.drax_attax.title", "斧钻战队");
         add("achievements.confluence.drax_attax.description", "用神圣锭和三个机械Boss的灵魂制作斧钻或镐斧。");
         add("achievements.confluence.dead_men_tell_no_tales.title", "死人不会告密");

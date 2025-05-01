@@ -92,6 +92,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.echo_block.0", "Only visible with Echo Sight");
         add("tooltip.item.confluence.advanced_combat_techniques.0", "Increases the defense and strength of all villagers");
         add("tooltip.item.confluence.advanced_combat_techniques.1", "'Contains offensive and defensive fighting techniques'");
+        add("tooltip.item.confluence.advanced_combat_techniques_volume_two.0", "Increases the defense and strength of all villagers");
+        add("tooltip.item.confluence.advanced_combat_techniques_volume_two.1", "'Contains offensive and defensive fighting techniques, volume two!'");
         add("tooltip.item.confluence.binoculars.0", "Expand the FOV when in use, and adjust the zoom with the mouse wheel");
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
@@ -552,7 +554,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("achievements.confluence.extra_shiny.title", "Extra Shiny! ");
         add("achievements.confluence.extra_shiny.description", "Mine a powerful ore that has been newly blessed upon your world.");
         add("achievements.confluence.dungeon_heist.title", "Dungeon Heist  ");
-        add("achievements.confluence.dungeon_heist.description", "Steal a key from the undead residents of the dungeon and open one of their precious golden dungeon chests.");
+        add("achievements.confluence.dungeon_heist.description", "Steal a key from the undead residents of the dungeon and open one of their precious dungeon chests.");
         add("achievements.confluence.drax_attax.title", "Drax Attax");
         add("achievements.confluence.drax_attax.description", "Craft a drax or pickaxe axe using hallowed bars, and the souls of the three mechanical bosses.");
         add("achievements.confluence.dead_men_tell_no_tales.title", "Dead Men Tell No Tales");

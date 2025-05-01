@@ -125,6 +125,7 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(STONE_DART_TRAP.get());
         dropSelf(DEEPSLATE_DART_TRAP.get());
         dropSelf(PIGGY_BANK.get());
+        dropSelf(SAFE.get());
         dropSelf(ANNOUNCEMENT_BOX.get());
         dropSelf(KEG.get());
         dropSelf(SOLIDIFIER.get());

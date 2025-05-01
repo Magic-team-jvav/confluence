@@ -322,6 +322,17 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "/ /",
                 "A A"
         )), ArmorItems.NECRO_BOOTS.toStack());
+        // 草剑
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(7,MaterialItems.JUNGLE_SPORE),
+                'b', Ingredient.of(MaterialItems.MAN_EATER_VINE),
+                'c', AmountIngredient.of(4,MaterialItems.STINGER)
+        ), List.of(
+                "   c",
+                " cb ",
+                "abc ",
+                "ba  "
+        )), SwordItems.BLADE_OF_GRASS.toStack());
     }
 
     protected void heavyWorkBench(RecipeOutput recipeOutput, String suffix, ShapedRecipePattern pattern, ItemStack result) {

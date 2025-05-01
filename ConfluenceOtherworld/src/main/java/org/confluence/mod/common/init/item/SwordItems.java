@@ -149,7 +149,7 @@ public class SwordItems {
     );
 
     // 赞助者物品
-    public static final DeferredItem<SwordItem> BROKEN_SWEET_SWORD = register("broken_sweet_sword",()->new SweetSword(ModTiers.UNBREAKABLE,ModRarity.EXPERT, 1, -2.0F, new BaseSwordItem.ModifierBuilder()));
+    public static final DeferredItem<SwordItem> BROKEN_SWEET_SWORD = register("broken_sweet_sword",()->new SweetSword(ModTiers.UNBREAKABLE,ModRarity.EXPERT, 0, -3.0F, new BaseSwordItem.ModifierBuilder()));
 
     public static final DeferredItem<SwordItem> SWEET_SWORD = register("sweet_sword",()->new SweetSword(ModTiers.UNBREAKABLE,ModRarity.EXPERT, 4, -2.0F, new BaseSwordItem.ModifierBuilder()
             .addTooltip(p -> p.withColor(0xe44189))

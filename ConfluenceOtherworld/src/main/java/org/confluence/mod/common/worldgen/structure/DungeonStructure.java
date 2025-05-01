@@ -272,10 +272,10 @@ public class DungeonStructure extends Structure {
             ), builder);
             StructureTemplateManager manager = context.structureTemplateManager();
             switch (rotation) {
-                case CLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(15, -3, -23), true, true, Rotation.CLOCKWISE_90));
-                case CLOCKWISE_180 -> builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(23, -3, 15), true, true, Rotation.CLOCKWISE_180));
-                case COUNTERCLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(-15, -3, 23), true, true, Rotation.COUNTERCLOCKWISE_90));
-                default -> builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(-23, -3, -15), true, true, Rotation.NONE));
+                case CLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(15, -3, -23), true, false, Rotation.CLOCKWISE_90));
+                case CLOCKWISE_180 -> builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(23, -3, 15), true, false, Rotation.CLOCKWISE_180));
+                case COUNTERCLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(-15, -3, 23), true, false, Rotation.COUNTERCLOCKWISE_90));
+                default -> builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(-23, -3, -15), true, false, Rotation.NONE));
             }
 
             int listCount = 0;

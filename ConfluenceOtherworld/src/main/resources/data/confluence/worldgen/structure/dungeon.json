@@ -42,6 +42,12 @@
           "maxCount": 9
         },
         {
+          "type": "terra_entity:dark_caster",
+          "weight": 240,
+          "minCount": 2,
+          "maxCount": 3
+        },
+        {
           "type": "terra_entity:cursed_skull",
           "weight": 120,
           "minCount": 3,

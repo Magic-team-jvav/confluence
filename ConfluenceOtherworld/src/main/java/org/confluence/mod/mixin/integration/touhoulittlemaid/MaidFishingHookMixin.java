@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 @Pseudo
-@Mixin(targets = "com/github/tartaricacid/touhoulittlemaid/entity/projectile/MaidFishingHook")
+@Mixin(targets = "com/github/tartaricacid/touhoulittlemaid/entity/projectile/MaidFishingHook", remap = false)
 public abstract class MaidFishingHookMixin implements SelfGetter<MaidFishingHook> {
     @Shadow
     @Nullable

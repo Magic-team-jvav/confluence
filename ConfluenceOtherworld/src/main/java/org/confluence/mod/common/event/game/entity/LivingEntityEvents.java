@@ -50,6 +50,7 @@ import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
+import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.IDamageSource;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
@@ -348,6 +349,15 @@ public final class LivingEntityEvents {
                 player.removeEffect(ModEffects.CHOKING);
                 ItemStack resultItem = itemStack.finishUsingItem(player.level(), player);
                 event.setResultStack(resultItem);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void mobSpawn$PositionCheck(MobSpawnEvent.PositionCheck event) {
+        if (event.getSpawnType() == MobSpawnType.NATURAL && event.getResult() != MobSpawnEvent.PositionCheck.Result.FAIL) {
+            if (DungeonStructure.skipSpawn(event.getEntity(), event.getLevel().getLevel())) {
+                event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
             }
         }
     }

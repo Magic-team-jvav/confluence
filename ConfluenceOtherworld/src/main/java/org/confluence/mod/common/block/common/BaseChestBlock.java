@@ -115,10 +115,8 @@ public class BaseChestBlock extends ChestBlock {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (level.getBlockEntity(pos) instanceof Entity entity && entity.isLocked()) {
-            boolean isShadow = stack.is(ToolItems.SHADOW_KEY.get());
-            boolean isGolden = stack.is(ToolItems.GOLDEN_KEY.get());
-            boolean isDungeonGolden = stack.is(ToolItems.GOLDEN_DUNGEON_KEY.get());
-            if ((isShadow && entity.variant == Variant.LOCKED_SHADOW) || (isGolden && (entity.variant == Variant.LOCKED_GOLDEN) || (isDungeonGolden && (entity.variant == Variant.LOCKED_DUNGEON)))) {
+            boolean isShadow = stack.is(ToolItems.SHADOW_KEY);
+            if ((isShadow && entity.variant == Variant.LOCKED_SHADOW) || (stack.is(ToolItems.GOLDEN_KEY) && entity.variant == Variant.LOCKED_GOLDEN) || (stack.is(ToolItems.GOLDEN_DUNGEON_KEY) && entity.variant == Variant.LOCKED_DUNGEON)) {
                 int unlock = entity.variant.unlock;
                 if (unlock > 0) {
                     if (!isShadow && !player.getAbilities().instabuild) {

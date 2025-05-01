@@ -13,6 +13,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.ValueComponent;
@@ -86,6 +88,7 @@ public class SellTrade implements ITrade {
         return null;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void renderCosts(ITradeHolder npc, GuiGraphics guiGraphics, Font font, int x, int y, int startx, int starty, int mouseX, int mouseY) {
 
@@ -156,6 +159,7 @@ public class SellTrade implements ITrade {
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void renderResult(ITradeHolder npc, GuiGraphics guiGraphics, Font font, int x, int y, int startx, int starty, int mouseX, int mouseY, int slotIndex) {
 
@@ -166,11 +170,13 @@ public class SellTrade implements ITrade {
         guiGraphics.renderItem(it.getDefaultInstance(), x , y );
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void renderResultHover(ITradeHolder npc, GuiGraphics guiGraphics, Font font, int x, int y, int startx, int starty, int mouseX, int mouseY) {
 
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void renderResultSlot(ITradeHolder npc, GuiGraphics guiGraphics, Font font, int x, int y, int startx, int starty, int mouseX, int mouseY, boolean canBuy, Slot slot) {
 

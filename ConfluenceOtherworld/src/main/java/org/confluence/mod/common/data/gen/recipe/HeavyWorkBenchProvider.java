@@ -291,6 +291,37 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "# A/",
                 " ## "
         )), GunItems.STAR_CANNON.toStack());
+        // 死灵套装
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'A', AmountIngredient.of(10,MaterialItems.DUNGEON_DEMON_BONE),
+                '/', AmountIngredient.of(10,Items.COBWEB)
+        ), List.of(
+                "/A/",
+                "A A"
+        )), ArmorItems.NECRO_HELMET.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'A', AmountIngredient.of(10,MaterialItems.DUNGEON_DEMON_BONE),
+                '/', AmountIngredient.of(5,Items.COBWEB)
+        ), List.of(
+                "/ /",
+                "/A/",
+                "AAA"
+        )), ArmorItems.NECRO_CHESTPLATE.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'A', AmountIngredient.of(10,MaterialItems.DUNGEON_DEMON_BONE),
+                '/', AmountIngredient.of(5,Items.COBWEB)
+        ), List.of(
+                "/A/",
+                "/ /",
+                "A A"
+        )), ArmorItems.NECRO_LEGGINGS.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'A', AmountIngredient.of(10,MaterialItems.DUNGEON_DEMON_BONE),
+                '/', AmountIngredient.of(10,Items.COBWEB)
+        ), List.of(
+                "/ /",
+                "A A"
+        )), ArmorItems.NECRO_BOOTS.toStack());
     }
 
     protected void heavyWorkBench(RecipeOutput recipeOutput, String suffix, ShapedRecipePattern pattern, ItemStack result) {

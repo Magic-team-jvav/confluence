@@ -497,6 +497,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GOLDEN_HEADSTONE.get(),
                 GOLDEN_GRAVESTONE.get(),
 
+                SAFE.get(),
+
                 AETHERIUM_BLOCK.get(),
                 DARK_AETHERIUM_BLOCK.get()
         );

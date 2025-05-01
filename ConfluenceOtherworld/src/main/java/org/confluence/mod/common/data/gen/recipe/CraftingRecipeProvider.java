@@ -94,6 +94,14 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "B/B",
                 "/ /"
         )), TEItems.HOUSE_DETECTOR.get().getDefaultInstance());
+        // 蛛网
+        shaped(output, "", "", ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(Items.STRING)
+        ), List.of(
+                "/ /",
+                " / ",
+                "/ /"
+        )), Items.COBWEB.getDefaultInstance());
         //
         shaped(output, "", "_from_lead_and_iron", ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Items.REDSTONE_TORCH),

@@ -177,8 +177,8 @@ public final class ModArmorMaterials {
     );
     public static final Holder<ArmorMaterial> NECRO_ARMOR_MATERIALS = registerArmorMaterial("necro_armor_materials",
             3, 7, 6, 3,
-            16, SoundEvents.ARMOR_EQUIP_LEATHER, Items.BONE,
-            "necro", 0.0F, 0.0F);
+            16, SoundEvents.ARMOR_EQUIP_LEATHER, MaterialItems.DUNGEON_DEMON_BONE,
+            "necro", 2.0F, 0.0F);
     public static final Holder<ArmorMaterial> SPIDER_ARMOR_MATERIALS = registerArmorMaterial("spider_armor_materials",
             5, 8, 4, 3,
             16, SoundEvents.ARMOR_EQUIP_LEATHER, Items.BONE,

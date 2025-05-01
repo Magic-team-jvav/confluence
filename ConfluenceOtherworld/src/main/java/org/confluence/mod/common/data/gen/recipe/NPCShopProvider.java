@@ -95,6 +95,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(ModBlocks.ROPE.get())
                 .add(ConsumableItems.SHURIKEN.get())
                 .add(FunctionalBlocks.PIGGY_BANK.get())
+                .add(FunctionalBlocks.SAFE.get())
                 .add(PickaxeItems.COPPER_PICKAXE.get())
                 .add(AxeItems.COPPER_AXE.get())
                 .add(PotionItems.LESSER_HEALING_POTION.get())
@@ -187,7 +188,11 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 //                        .setTitle("title.terra_entity.npc_trade.task.fishman")
                         .build()))
                 .build());
+
+        shop(TENpcEntities.OLD_MAN.getId()).addRecipe(new Builder()
+                .build());
     }
+
 
     protected Appender<NPCTradeManager> shop(ResourceLocation id) {
         // 预处理命名空间，命名空间替换成confluence，本体不能覆盖子模块的数据包

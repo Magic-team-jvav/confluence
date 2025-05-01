@@ -478,6 +478,7 @@ public class ModDataMapProvider extends DataMapProvider {
             .add(ModBlocks.ROPE,10)
 
             .add(FunctionalBlocks.PIGGY_BANK,10000)
+            .add(FunctionalBlocks.SAFE,40000)
 
             .add(PotionItems.LESSER_HEALING_POTION,300)
             .add(PotionItems.LESSER_MANA_POTION,250)

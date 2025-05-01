@@ -764,6 +764,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("condition.confluence.shimmer_transmutation.moon_lord", "Required game phase: After Moon Lord");
 
         add("container.confluence.sky_mill", "Sky Mill");
+        add("container.confluence.safe", "Safe");
         add("container.confluence.heavy_work_bench", "Heavy Work Bench");
         add("container.confluence.hellforge", "Hell Forge");
         add("container.confluence.alchemy_table", "Alchemy Table");
@@ -946,7 +947,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.heim_set.data.1", "After successfully using the shield to intercept the next attack, increase damage by 20% within three seconds. The damage increase stops when you launch an attack and hit or get hit during these three seconds. Increase melee damage by 1%");
         add("equipment_benediction.set_switcher.confluence.heim_set.data.2", "Increase critical hit rate by 2% and increase melee damage by 1%");
         add("equipment_benediction.set_switcher.confluence.heim_set.data.3", "Increase underwater movement speed by 5% and increase melee damage by 1%");
-        add("equipment_benediction.set_switcher.confluence.heim_set.data.4", "Grant you 4 HP of damage absorption, and grant it again every 5 minutes");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.4", "Grant you 4 HP of damage absorption, and grant it again every 3 seconds");
 
         // npc dialogs
         add("dialogs.confluence.guide.0", "My job is to offer suggestions for your upcoming tasks. I recommend that you come and talk to me whenever you encounter any difficulties.");

@@ -830,6 +830,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("condition.confluence.requires_fuel", "需要燃料");
 
         add("container.confluence.sky_mill", "天磨");
+        add("container.confluence.safe", "保险箱");
         add("container.confluence.heavy_work_bench", "重型工作台");
         add("container.confluence.crystal_ball", "水晶球");
         add("container.confluence.hellforge", "地狱熔炉");
@@ -998,7 +999,14 @@ public class ModChineseProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.heim_set.data.1", "成功使用护盾拦截下一次攻击后三秒内伤害提高20%，三秒提高过程中你发动攻击命中或被击中时停止，近战伤害提高1%");
         add("equipment_benediction.set_switcher.confluence.heim_set.data.2", "增加2%暴击率，近战伤害提高1%");
         add("equipment_benediction.set_switcher.confluence.heim_set.data.3", "提高水下移动速度5%，近战伤害提高1%");
-        add("equipment_benediction.set_switcher.confluence.heim_set.data.4", "赋予你4点血量的伤害吸收，每隔5分钟再次赋予");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.4", "赋予你4点血量的伤害吸收，每隔3秒钟再次赋予");
+
+        add("equipment_benediction.set_switcher.confluence.necro_set", "死灵套装");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.0", "远程伤害提高5%");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.1", "远程伤害提高5%");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.2", "远程伤害提高2.5%");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.3", "远程伤害提高2.5%");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.4", "远程暴击率提高10%，不消耗弹药几率提高20%");
 
         // npc对话
         add("dialogs.confluence.guide.0", "我的工作是为你接下来的任务提供建议。建议你遇到任何困难时都来和我谈谈。");
@@ -1997,7 +2005,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SHADOW_SCALE.get(), "暗影鳞片");
         add(MaterialItems.TISSUE_SAMPLE.get(), "组织样本");
         add(MaterialItems.ROYAL_WAX.get(), "蜂王蜡");
-        add(MaterialItems.NECROTIC_FRAGMENT.get(), "死灵残片");
+        add(MaterialItems.DUNGEON_DEMON_BONE.get(), "地牢魔骨");
         add(MaterialItems.CURSED_FLAME.get(), "诅咒焰");
         add(MaterialItems.ICHOR.get(), "灵液");
         add(MaterialItems.PIXIE_DUST.get(), "妖精尘");
@@ -2310,6 +2318,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(TreasureBagItems.EATER_OF_WORLDS_TREASURE_BAG.get(), "世界吞噬怪宝藏袋");
         add(TreasureBagItems.BRAIN_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之脑宝藏袋");
         add(TreasureBagItems.QUEEN_BEE_TREASURE_BAG.get(), "蜂王宝藏袋");
+        add(TreasureBagItems.SKELETRON_TREASURE_BAG.get(), "骷髅王宝藏袋");
 
         // 杂项
         add(ModItems.COPPER_COIN.get(), "铜币");

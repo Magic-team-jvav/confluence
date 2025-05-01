@@ -1,12 +1,16 @@
 package org.confluence.mod.common.data.gen;
 
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Streams;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
+import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -15,25 +19,39 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.AlternativesEntry;
+import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.herbs.BaseHerbBlock;
+import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.FoodItems;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.loot.DateLootItemCondition;
+import org.confluence.mod.mixin.accessor.EntityLootSubProviderAccessor;
+import org.confluence.terraentity.TerraEntity;
+import org.confluence.terraentity.init.TEEntities;
+import org.confluence.terraentity.init.entity.TEBossEntities;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.confluence.mod.common.init.block.DecorativeBlocks.*;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
@@ -46,12 +64,13 @@ import static org.confluence.mod.common.init.item.MaterialItems.*;
 public class ModLootTableProvider extends LootTableProvider {
     public ModLootTableProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
         super(output, Set.of(), List.of(
-                new SubProviderEntry(BlockSub::new, LootContextParamSets.BLOCK)
+                new SubProviderEntry(BlockSub::new, LootContextParamSets.BLOCK),
+                new SubProviderEntry(EntitySub::new, LootContextParamSets.ENTITY)
         ), lookup);
     }
 
     public static class BlockSub extends BlockLootSubProvider {
-        public BlockSub(HolderLookup.Provider provider) {
+        protected BlockSub(HolderLookup.Provider provider) {
             super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
         }
 
@@ -419,7 +438,6 @@ public class ModLootTableProvider extends LootTableProvider {
             this.add(DUNGEON_DOOR.get(), this::createDoorTable);
 
 
-
             for (LogBlockSet logBlocks : LogBlockSet.LOG_BLOCK_SETS) {
                 dropSelf(logBlocks.getPlanks().get());
                 if (logBlocks.getStrippedLog() != null) dropSelf(logBlocks.getStrippedLog().get());
@@ -503,6 +521,80 @@ public class ModLootTableProvider extends LootTableProvider {
                             .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
                                     .setProperties(StatePropertiesPredicate.Builder.properties()
                                             .hasProperty(BaseHerbBlock.AGE, 1)))));
+        }
+    }
+
+    public static class EntitySub extends EntityLootSubProvider {
+        protected EntitySub(HolderLookup.Provider registries) {
+            super(FeatureFlags.REGISTRY.allFlags(), registries);
+        }
+
+        @Override
+        public void generate() {
+            DateLootItemCondition.Builder halloweens = DateLootItemCondition.builder().from(Calendar.OCTOBER, 10).to(Calendar.NOVEMBER, 1);
+            DateLootItemCondition.Builder christmas = DateLootItemCondition.builder().from(Calendar.DECEMBER, 15).to(Calendar.DECEMBER, 31);
+            add(TEBossEntities.EATER_OF_WORLDS.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/eater_of_worlds"), LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                            .add(AlternativesEntry.alternatives(
+                                    LootItem.lootTableItem(ModItems.HEART).when(AllOfCondition.allOf(halloweens, christmas).invert()),
+                                    LootItem.lootTableItem(ModItems.CANDY_APPLE).when(halloweens),
+                                    LootItem.lootTableItem(ModItems.CANDY_CANE).when(christmas)
+                            ).append(EmptyLootItem.emptyItem().setWeight(3)))
+                    )
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(RAW_DEMONITE).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5))))
+                            .add(EmptyLootItem.emptyItem())
+                    )
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(SHADOW_SCALE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+                            .add(EmptyLootItem.emptyItem())
+                    )
+                    .setRandomSequence(TerraEntity.space("entity/eater_of_worlds")));
+        }
+
+        @Override
+        protected Stream<EntityType<?>> getKnownEntityTypes() {
+            return Streams.concat(
+                    ModEntities.ENTITIES.getEntries().stream().map(DeferredHolder::get),
+                    TEEntities.ENTITIES.getEntries().stream().map(DeferredHolder::get)
+            );
+        }
+
+        @Override
+        public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> output) {
+            generate();
+            EntityLootSubProviderAccessor accessor = (EntityLootSubProviderAccessor) this;
+            Set<ResourceKey<LootTable>> set = new HashSet<>();
+            getKnownEntityTypes().map(EntityType::builtInRegistryHolder).forEach(holder -> {
+                EntityType<?> entityType = holder.value();
+                if (entityType.isEnabled(accessor.getAllowed())) {
+                    if (canHaveLootTable(entityType)) {
+                        Map<ResourceKey<LootTable>, LootTable.Builder> map = accessor.getMap().remove(entityType);
+                        if (map != null) {
+                            map.forEach((key, builder) -> {
+                                if (!set.add(key)) {
+                                    throw new IllegalStateException(String.format(Locale.ROOT, "Duplicate loottable '%s' for '%s'", key, holder.key().location()));
+                                } else {
+                                    output.accept(key, builder);
+                                }
+                            });
+                        }
+                    } else {
+                        Map<ResourceKey<LootTable>, LootTable.Builder> map1 = accessor.getMap().remove(entityType);
+                        if (map1 != null) {
+                            throw new IllegalStateException(String.format(
+                                    Locale.ROOT,
+                                    "Weird loottables '%s' for '%s', not a LivingEntity so should not have loot",
+                                    map1.keySet().stream().map(p_335190_ -> p_335190_.location().toString()).collect(Collectors.joining(",")),
+                                    holder.key().location()
+                            ));
+                        }
+                    }
+                }
+            });
+            if (!accessor.getMap().isEmpty()) {
+                throw new IllegalStateException("Created loot tables for entities not supported by datapack: " + accessor.getMap().keySet());
+            }
         }
     }
 }

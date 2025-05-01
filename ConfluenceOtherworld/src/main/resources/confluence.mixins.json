@@ -16,6 +16,7 @@
         "StructureTemplateMixin",
         "StructureTemplateMixin$StructureBlockInfoMixin",
         "accessor.DataMapProviderAccessor",
+        "accessor.EntityLootSubProviderAccessor",
         "accessor.LevelAccessor",
         "block.AnvilBlockMixin",
         "block.BaseContainerBlockEntityMixin",

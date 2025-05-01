@@ -36,6 +36,12 @@
         },
         {
             "predicate": {
+                "confluence:variant": 6
+            },
+            "model": "confluence:item/chest_unlocked_water"
+        },
+        {
+            "predicate": {
                 "confluence:variant": 7
             },
             "model": "confluence:item/chest_unlocked_skyware"

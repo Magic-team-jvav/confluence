@@ -30,7 +30,7 @@ public class ToolItems {
     public static final DeferredItem<SpongeItem> LAVA_ABSORBANT_SPONGE = ITEMS.register("lava_absorbant_sponge", () -> new SpongeItem(ModRarity.LIME, "lava_absorbant_sponge", 2, state -> state.is(Blocks.LAVA)));
     public static final DeferredItem<SpongeItem> ULTRA_ABSORBANT_SPONGE = ITEMS.register("ultra_absorbant_sponge", () -> new SpongeItem(ModRarity.YELLOW, "ultra_absorbant_sponge", 2, state -> state.is(Blocks.WATER) || state.is(ModBlocks.SHIMMER) || state.is(ModBlocks.HONEY) || state.is(Blocks.LAVA)));
 
-    public static final DeferredItem<TooltipItem> GOLDEN_DUNGEON_KEY = ITEMS.register("golden_dungeon_key", () -> new TooltipItem(new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("golden_key", 1, ChatFormatting.GRAY)));
+    public static final DeferredItem<TooltipItem> GOLDEN_DUNGEON_KEY = ITEMS.register("golden_dungeon_key", () -> new TooltipItem(new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("golden_dungeon_key", 1, ChatFormatting.GRAY)));
     public static final DeferredItem<TooltipItem> GOLDEN_KEY = ITEMS.register("golden_key", () -> new TooltipItem(new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("golden_key", 1, ChatFormatting.GRAY)));
     public static final DeferredItem<TooltipItem> SHADOW_KEY = ITEMS.register("shadow_key", () -> new TooltipItem(new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("shadow_key", 1, ChatFormatting.GRAY)));
     public static final DeferredItem<TooltipItem> TEMPLE_KEY = ITEMS.register("temple_key", () -> new TooltipItem(new Item.Properties(), ModRarity.LIME, TooltipItem.getTooltipsFromString("temple_key", 1, ChatFormatting.GRAY)));

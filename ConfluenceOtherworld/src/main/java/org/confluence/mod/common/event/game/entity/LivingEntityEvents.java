@@ -11,7 +11,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
@@ -60,11 +59,9 @@ import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
-import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.entity.ai.Boss;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.init.TETags;
-import org.confluence.terraentity.init.entity.TEBossEntities;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class LivingEntityEvents {
@@ -203,25 +200,10 @@ public final class LivingEntityEvents {
     }
 
     @SubscribeEvent
-    public static void mobEffect$Applicable(MobEffectEvent.Applicable event) {
+    public static void mobEffect$Applicable(MobEffectEvent.Applicable event) { // 泰拉生物的免疫全扔mixin了
         Holder<MobEffect> effect = event.getEffectInstance().getEffect();
-        if (effect == TCEffects.CONFUSED) {
-            if (event.getEntity() instanceof Boss || event.getEntity() instanceof AbstractTerraNPC) {
-                event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
-            }
-        } else if (effect == ModEffects.SHIMMER) {
-            if (!(event.getEntity() instanceof Player)) {
-                event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
-            }
-        } else {
-            boolean flag = false;
-            EntityType<?> type = event.getEntity().getType();
-            if (type == TEBossEntities.KING_SLIME.get()) {
-                flag = effect == MobEffects.POISON;
-            } else if (type == TEBossEntities.QUEEN_BEE.get()) {
-                flag = effect == MobEffects.POISON;
-            }
-            if (flag) event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
+        if (effect == ModEffects.SHIMMER && !(event.getEntity() instanceof Player)) {
+            event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
         }
         SweetSword.applyEffects(event);
     }

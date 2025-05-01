@@ -3,14 +3,11 @@ package org.confluence.mod.common.block.functional.crafting;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
@@ -21,10 +18,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.fml.loading.FMLEnvironment;
-import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.block.HorizontalDirectionalWithHorizontalTwoPartBlock;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.TooltipBlockItem;
 import org.confluence.mod.client.model.block.ExtractinatorBlockModel;
 import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.data.map.ExtractinatorData;
@@ -41,7 +38,6 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPartBlock implements EntityBlock {
@@ -116,16 +112,11 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
         }
     }
 
-    public static class Item extends BlockItem implements GeoItem {
+    public static class Item extends TooltipBlockItem implements GeoItem {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
         public Item(ExtractinatorBlock pBlock) {
-            super(pBlock, new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.WHITE).stacksTo(1));
-        }
-
-        @Override
-        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.extractinator.0"));
+            super(pBlock, new Properties(), ModRarity.WHITE, "tooltip.item.confluence.extractinator.0");
         }
 
         @Override

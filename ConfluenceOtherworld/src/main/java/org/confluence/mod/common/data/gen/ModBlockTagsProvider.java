@@ -1177,6 +1177,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 EBONY_STONE.get(),
                 EBONY_COBBLESTONE.get()
         );
+        tag(BlockTags.FEATURES_CANNOT_REPLACE).add(
+                BLUE_BRICKS.get(),
+                GREEN_BRICKS.get(),
+                PINK_BRICKS.get()
+        );
     }
 
     @Override

@@ -6,6 +6,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -232,4 +233,6 @@ public final class ModTags {
 
     public static final TagKey<Fluid> FISHING_ABLE = FluidTags.create(Confluence.asResource("fishing_able"));
     public static final TagKey<Fluid> NOT_LAVA = FluidTags.create(Confluence.asResource("not_lava"));
+
+    public static final TagKey<EntityType<?>> SPAWN_AT_DUNGEON = TagKey.create(Registries.ENTITY_TYPE, Confluence.asResource("spawn_at_dungeon")); // 允许生成在地牢的生物
 }

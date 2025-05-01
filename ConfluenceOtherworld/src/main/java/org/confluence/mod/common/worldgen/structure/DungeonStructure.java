@@ -12,6 +12,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -31,11 +32,13 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModStructures;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.entity.boss.DungeonGuardian;
 import org.confluence.terraentity.init.TESounds;
 import org.confluence.terraentity.init.entity.TEBossEntities;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
 import java.util.*;
@@ -394,15 +397,24 @@ public class DungeonStructure extends Structure {
         return ModStructures.DUNGEON.get();
     }
 
+    private static Structure structure;
+
+    private static @Nullable Structure getStructure(ServerLevel level) {
+        if (structure == null) {
+            structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
+        }
+        return structure;
+    }
+
     public static void checkSkeletronDefeated(ServerPlayer player, ServerLevel level) {
         if (KillBoard.INSTANCE.getGamePhase() == GamePhase.BEFORE_SKELETRON && player.gameMode.getGameModeForPlayer().isSurvival() && level.getGameTime() % 100 == 1) {
-            Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
+            Structure structure = getStructure(level);
             if (structure == null) return;
 
             ChunkPos chunkPos = player.chunkPosition();
             LongSet structureRefs = level.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.STRUCTURE_REFERENCES).getReferencesForStructure(structure);
-            for (long i : structureRefs) {
-                SectionPos sectionPos = SectionPos.of(new ChunkPos(i), level.getMinSection());
+            for (long packed : structureRefs) {
+                SectionPos sectionPos = SectionPos.of(ChunkPos.getX(packed), level.getMinSection(), ChunkPos.getZ(packed));
                 StructureStart structureStart = level.structureManager().getStartForStructure(sectionPos, structure, level.getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS));
                 if (structureStart == null || !structureStart.isValid()) continue;
 
@@ -422,5 +434,26 @@ public class DungeonStructure extends Structure {
                 if (shouldAlert) player.getPersistentData().putByte("confluence:dungeon_guardian_alert", (byte) 0);
             }
         }
+    }
+
+    public static boolean skipSpawn(Mob mob, ServerLevel level) {
+        if (!mob.getType().is(ModTags.SPAWN_AT_DUNGEON)/* && level.getBlockState(mob.blockPosition().below()).is(Blocks.NETHER_BRICKS)*/) {
+            Structure structure = getStructure(level);
+            if (structure == null) return false;
+
+            ChunkPos chunkPos = mob.chunkPosition();
+            LongSet structureRefs = level.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.STRUCTURE_REFERENCES).getReferencesForStructure(structure);
+            for (long packed : structureRefs) {
+                SectionPos sectionPos = SectionPos.of(ChunkPos.getX(packed), level.getMinSection(), ChunkPos.getZ(packed));
+                StructureStart structureStart = level.structureManager().getStartForStructure(sectionPos, structure, level.getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS));
+                if (structureStart == null || !structureStart.isValid()) continue;
+
+                BoundingBox boundingBox = structureStart.getBoundingBox(); // getBoundingBox已优化过缓存
+                if (boundingBox.isInside(mob.blockPosition())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

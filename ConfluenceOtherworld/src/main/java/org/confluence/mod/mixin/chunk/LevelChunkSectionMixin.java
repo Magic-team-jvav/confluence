@@ -13,6 +13,7 @@ import net.minecraft.world.level.chunk.PalettedContainerRO;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.IChunkSection;
+import org.confluence.mod.mixin.accessor.PalettedContainerAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;

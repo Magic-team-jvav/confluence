@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.chunk;
+package org.confluence.mod.mixin.accessor;
 
 import net.minecraft.core.IdMap;
 import net.minecraft.world.level.chunk.PalettedContainer;

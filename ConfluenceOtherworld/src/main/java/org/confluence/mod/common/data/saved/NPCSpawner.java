@@ -261,7 +261,7 @@ public class NPCSpawner implements IGlobalData {
     private boolean trySpawnMerchant(ServerPlayer serverPlayer, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
             if (PlayerUtils.getMoney(serverPlayer) >= 50 * CoinItem.UPGRADES_COUNT) {
-                return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.MERCHANT.get());
+                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.MERCHANT.get());
             }
         }
         return false;
@@ -270,7 +270,7 @@ public class NPCSpawner implements IGlobalData {
     private boolean trySpawnNurse(ServerPlayer serverPlayer, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.NURSE.get())) {
             if (serverPlayer.getMaxHealth() > 20 && hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
-                return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.NURSE.get());
+                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.NURSE.get());
             }
         }
         return false;
@@ -279,7 +279,7 @@ public class NPCSpawner implements IGlobalData {
     private boolean trySpawnDemolitionist(ServerPlayer serverPlayer, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.DEMOLITIONIST.get())) {
             if (serverPlayer.getInventory().hasAnyMatching(stack -> stack.is(ModTags.Items.EXPLOSIVE)) && hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
-                return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.DEMOLITIONIST.get());
+                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.DEMOLITIONIST.get());
             }
         }
         return false;
@@ -289,7 +289,7 @@ public class NPCSpawner implements IGlobalData {
     private boolean trySpawnDyeTrader(ServerPlayer serverPlayer, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.DYE_TRADER.get())) {
             if (serverPlayer.getInventory().hasAnyMatching(stack -> stack.is(Tags.Items.DYES)) && hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
-                return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.DYE_TRADER.get());
+                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.DYE_TRADER.get());
             }
         }
         return false;
@@ -304,7 +304,7 @@ public class NPCSpawner implements IGlobalData {
         BlockPos playerPos = serverPlayer.blockPosition();
         Region playerRegion = new Region(playerPos);
         if (!hasNPCAlive(playerRegion, TENpcEntities.ANGLER.get()) && !hasNPCAlive(region, TENpcEntities.ANGLER.get())) { // 保证玩家转移渔夫区域时不再生成新的
-            Level level = serverPlayer.level();
+            Level level = serverPlayer.serverLevel();
             Pair<BlockPos, Holder<Biome>> closestBiome3d = serverPlayer.serverLevel().findClosestBiome3d(biome -> biome.is(Tags.Biomes.IS_OCEAN), playerPos, 64, 8, 64);
             if (closestBiome3d != null) {
                 AbstractTerraNPC npc = TENpcEntities.ANGLER.get().create(level);
@@ -331,7 +331,7 @@ public class NPCSpawner implements IGlobalData {
                     TEBossEntities.BRAIN_OF_CTHULHU.get(),
                     TEBossEntities.SKELETRON.get()
             )) {
-                return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.DRYAD.get());
+                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.DRYAD.get());
             }
         }
         return false;
@@ -349,7 +349,7 @@ public class NPCSpawner implements IGlobalData {
                     // todo 还差动物学家
                     map.getOrDefault(TENpcEntities.DRYAD.get(), false)
             ) {
-                return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.PAINTER.get());
+                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.PAINTER.get());
             }
         }
         return false;
@@ -359,7 +359,7 @@ public class NPCSpawner implements IGlobalData {
         if (!hasNPCAlive(region, TENpcEntities.ARMS_DEALER.get())) {
             Predicate<ItemStack> predicate = stack -> stack.is(TGTags.AMMO) || stack.is(TGTags.GUN);
             if (serverPlayer.getInventory().hasAnyMatching(predicate) || serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).hasAnyMatching(predicate)) {
-                return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.ARMS_DEALER.get());
+                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.ARMS_DEALER.get());
             }
         }
         return false;
@@ -368,7 +368,7 @@ public class NPCSpawner implements IGlobalData {
     private boolean trySpawnGoblinTinkerer(ServerPlayer serverPlayer, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.GOBLIN_TINKERER.get())) {
             // todo 等哥布林入侵事件
-            return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.GOBLIN_TINKERER.get());
+            return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.GOBLIN_TINKERER.get());
         }
         return false;
     }
@@ -377,7 +377,7 @@ public class NPCSpawner implements IGlobalData {
     private boolean trySpawnClothier(ServerPlayer serverPlayer, BlockPos pos, Region region) {
 //        if (!hasNPCAlive(region, TENpcEntities.CLOTHIER.get())) {
 //            if (KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.BEFORE_SKELETRON)) {
-//                return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.CLOTHIER.get());
+//                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.CLOTHIER.get());
 //            }
 //        }
         if (!KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.BEFORE_SKELETRON)) {
@@ -416,10 +416,18 @@ public class NPCSpawner implements IGlobalData {
         return false;
     }
 
-    private boolean spawnAtPos(Level level, BlockPos pos, EntityType<?> entityType) {
+    private boolean spawnAtPos(ServerLevel level, BlockPos pos, EntityType<?> entityType) {
         if (!(entityType.create(level) instanceof AbstractTerraNPC living)) return false;
         living.setPos(pos.getCenter());
-        level.addFreshEntity(living);
+        if (level.isLoaded(pos)) {
+            level.addFreshEntity(living);
+        } else {
+            ChunkPos chunkPos = new ChunkPos(pos);
+            boolean forceBefore = level.getForcedChunks().contains(chunkPos.toLong());
+            if (!forceBefore) level.setChunkForced(chunkPos.x, chunkPos.z, true);
+            level.addFreshEntity(living);
+            if (!forceBefore) level.setChunkForced(chunkPos.x, chunkPos.z, false);
+        }
         if (living instanceof AnglerNPC angler) {
             angler.setWakeUp(true); // 重生的渔夫默认醒来
         }
@@ -428,7 +436,7 @@ public class NPCSpawner implements IGlobalData {
     }
 
     public static BlockPos getNpcSpawnPos(ServerPlayer player) {
-        return player.getRespawnPosition() == null ? player.level().getLevelData().getSpawnPos() : player.getRespawnPosition();
+        return player.getRespawnPosition() == null ? player.serverLevel().getSharedSpawnPos() : player.getRespawnPosition();
     }
 
     public static void broadcastMessageToRegion(Level level, Region region, Component message) {

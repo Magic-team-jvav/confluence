@@ -11,7 +11,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
@@ -51,6 +50,7 @@ import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
+import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.IDamageSource;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
@@ -59,11 +59,9 @@ import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
-import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.entity.ai.Boss;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.init.TETags;
-import org.confluence.terraentity.init.entity.TEBossEntities;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class LivingEntityEvents {
@@ -95,9 +93,12 @@ public final class LivingEntityEvents {
                     LibUtils.createItemEntity(holidayGift.getDefaultInstance(), living.position(), living.level(), 0);
                 }
             }
-            NPCSpawner.INSTANCE.onNPCRemoved(living);
+            if (living instanceof AbstractTerraNPC npc) {
+                NPCSpawner.INSTANCE.onNPCRemoved(npc);
+            }
             if (living.hasEffect(ModEffects.BLOOD_BUTCHERED)) NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.get().checkVisibility(level, living);
-            if (damageSource.getEntity() != null && damageSource.getEntity().getType().is(TETags.EntityTypes.CORRUPT)) NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get().checkVisibilityAndSummonEntity(level, living);
+            if (damageSource.getEntity() != null && damageSource.getEntity().getType().is(TETags.EntityTypes.CORRUPT))
+                NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get().checkVisibilityAndSummonEntity(level, living);
         }
     }
 
@@ -142,12 +143,12 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void livingDamage$Pre(LivingDamageEvent.Pre event) {
+        float amount = event.getNewDamage();
+        if (amount <= 0.0F) return; // 防止莫名的负数伤害
         LivingEntity living = event.getEntity();
         if (!(living.level() instanceof ServerLevel level)) return;
         DamageSource damageSource = event.getSource();
         if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) return;
-
-        float amount = event.getNewDamage();
         Entity attacker = damageSource.getEntity();
 
         amount = ArcheryEffect.apply(living, damageSource, amount);
@@ -199,25 +200,10 @@ public final class LivingEntityEvents {
     }
 
     @SubscribeEvent
-    public static void mobEffect$Applicable(MobEffectEvent.Applicable event) {
+    public static void mobEffect$Applicable(MobEffectEvent.Applicable event) { // 泰拉生物的免疫全扔mixin了
         Holder<MobEffect> effect = event.getEffectInstance().getEffect();
-        if (effect == TCEffects.CONFUSED) {
-            if (event.getEntity() instanceof Boss || event.getEntity() instanceof AbstractTerraNPC) {
-                event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
-            }
-        } else if (effect == ModEffects.SHIMMER) {
-            if (!(event.getEntity() instanceof Player)) {
-                event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
-            }
-        } else {
-            boolean flag = false;
-            EntityType<?> type = event.getEntity().getType();
-            if (type == TEBossEntities.KING_SLIME.get()) {
-                flag = effect == MobEffects.POISON;
-            } else if (type == TEBossEntities.QUEEN_BEE.get()) {
-                flag = effect == MobEffects.POISON;
-            }
-            if (flag) event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
+        if (effect == ModEffects.SHIMMER && !(event.getEntity() instanceof Player)) {
+            event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
         }
         SweetSword.applyEffects(event);
     }
@@ -363,6 +349,15 @@ public final class LivingEntityEvents {
                 player.removeEffect(ModEffects.CHOKING);
                 ItemStack resultItem = itemStack.finishUsingItem(player.level(), player);
                 event.setResultStack(resultItem);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void mobSpawn$PositionCheck(MobSpawnEvent.PositionCheck event) {
+        if (event.getSpawnType() == MobSpawnType.NATURAL && event.getResult() != MobSpawnEvent.PositionCheck.Result.FAIL) {
+            if (DungeonStructure.skipSpawn(event.getEntity(), event.getLevel().getLevel())) {
+                event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
             }
         }
     }

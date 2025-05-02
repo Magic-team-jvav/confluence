@@ -6,5 +6,5 @@
             "loot_table_id": "minecraft:entities/zombified_piglin"
         }
     ],
-    "table": "terra_curio:with/entities/zombified_piglin"
+    "table": "confluence:with/entities/zombified_piglin"
 }

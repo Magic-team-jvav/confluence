@@ -1,0 +1,66 @@
+{
+	"format_version": "1.21.20",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.bee_gun",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "Root",
+					"pivot": [0, 2.08579, -3.58579],
+					"cubes": [
+						{"origin": [-2.5, 3.5, -7], "size": [5, 5, 6], "inflate": 0.0008, "uv": [0, 32]},
+						{"origin": [-1.0045, -0.66478, -2.54406], "size": [2, 3.25, 2.75], "inflate": 0.008, "pivot": [-0.002, 2.20504, -1.40123], "rotation": [7.5, 0, 0], "uv": [32, 0]},
+						{"origin": [-0.9995, 1.94395, -2.51437], "size": [2, 3, 2.75], "pivot": [-0.002, 2.20504, -1.40123], "rotation": [30, 0, 0], "uv": [32, 5]},
+						{"origin": [-0.75, 5.08579, -1.08579], "size": [1.5, 1.82842, 0.25], "inflate": -0.005, "pivot": [0, 3.08579, 0.41421], "rotation": [45, 0, 0], "uv": [32, 10]}
+					]
+				},
+				{
+					"name": "Part1",
+					"parent": "Root",
+					"pivot": [0, 6, -6.5],
+					"cubes": [
+						{"origin": [-4, 2, -12], "size": [8, 8, 5], "inflate": 0.0008, "uv": [1, 0]}
+					]
+				},
+				{
+					"name": "Part2",
+					"parent": "Part1",
+					"pivot": [0, 6, -13.5],
+					"cubes": [
+						{"origin": [-3.5, 7.5, -15], "size": [7, 3, 3], "inflate": 0.0008, "uv": [32, 29]},
+						{"origin": [-4.5, 4.5, -15], "size": [9, 3, 3], "inflate": 0.0008, "uv": [30, 11]},
+						{"origin": [-3.5, 1.5, -15], "size": [7, 3, 3], "inflate": 0.0008, "uv": [32, 23]}
+					]
+				},
+				{
+					"name": "Fire",
+					"pivot": [0, 6, -15],
+					"cubes": [
+						{"origin": [-7, -1, -16], "size": [14, 14, 2], "uv": [0, 51]}
+					]
+				},
+				{
+					"name": "Fire2",
+					"pivot": [0, 6, -15],
+					"cubes": [
+						{"origin": [-7, -1, -16], "size": [14, 14, 2], "uv": [22, 35]}
+					]
+				},
+				{
+					"name": "Fire3",
+					"pivot": [0, 6, -15],
+					"cubes": [
+						{"origin": [-7, -1, -16], "size": [14, 14, 2], "inflate": 0.5, "uv": [32, 51]}
+					]
+				}
+			]
+		}
+	]
+}

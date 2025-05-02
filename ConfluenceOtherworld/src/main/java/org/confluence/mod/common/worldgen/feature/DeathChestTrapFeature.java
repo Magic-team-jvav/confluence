@@ -48,7 +48,7 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
             mutablePos.move(0, -1, 0);
         }
         BlockPos chestPos = mutablePos.above();
-        BlockState chestState = StructurePiece.reorient(level, chestPos, FunctionalBlocks.DEATH_CHEST_BLOCK.get().defaultBlockState());
+        BlockState chestState = StructurePiece.reorient(level, chestPos, FunctionalBlocks.DEATH_CHEST_BLOCK.get().defaultBlockState().setValue(BaseChestBlock.UNLOCKED, true));
         if (FeatureUtils.safeSetBlock(level, chestPos, chestState, ModFeatures.IS_REPLACEABLE)) {
             RandomizableContainer.setBlockEntityLootTable(level, random, chestPos, config.lootTable);
             INetworkEntity chest = ModFeatures.getNetworkEntity(level, chestPos);

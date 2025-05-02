@@ -9,6 +9,8 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.confluence.lib.common.menu.ToggleSlot;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModAttachmentTypes;
@@ -48,6 +50,12 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                             if (slotIndex == 3) return equipmentSlot == EquipmentSlot.FEET;
                         }
                         return false;
+                    }
+
+                    @Override
+                    public boolean mayPickup(Player player) {
+                        ItemStack itemstack = getItem();
+                        return (itemstack.isEmpty() || player.isCreative() || !EnchantmentHelper.has(itemstack, EnchantmentEffectComponents.PREVENT_ARMOR_CHANGE)) && super.mayPickup(player);
                     }
                 });
             } else if (i < AMMO_START) { // 4, 5, 6 ,7

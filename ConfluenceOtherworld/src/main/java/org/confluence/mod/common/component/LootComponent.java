@@ -10,12 +10,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.Nullable;
 
-public record LootComponent(ResourceKey<LootTable> lootTable) implements DataComponentType<LootComponent> {
-    public static final Codec<LootComponent> CODEC = ResourceKey.codec(Registries.LOOT_TABLE).xmap(LootComponent::new, LootComponent::lootTable);
-    public static final StreamCodec<ByteBuf, LootComponent> STREAM_CODEC = StreamCodec.composite(
-            ResourceKey.streamCodec(Registries.LOOT_TABLE), LootComponent::lootTable,
-            LootComponent::new
-    );
+public record LootComponent(ResourceKey<LootTable> value) implements DataComponentType<LootComponent> {
+    public static final Codec<LootComponent> CODEC = ResourceKey.codec(Registries.LOOT_TABLE).xmap(LootComponent::new, LootComponent::value);
+    public static final StreamCodec<ByteBuf, LootComponent> STREAM_CODEC = ResourceKey.streamCodec(Registries.LOOT_TABLE).map(LootComponent::new, LootComponent::value);
 
     @Override
     public @Nullable Codec<LootComponent> codec() {

@@ -54,8 +54,9 @@ public class Confluence {
         ModChunkGenerators.GENERATORS.register(eventBus);
         ModCarvers.CARVERS.register(eventBus);
         ModStructures.TYPES.register(eventBus);
-        ModEquipmentSets.EQUIPMENT_SET.register(eventBus);
+        ModEquipmentSets.SETS.register(eventBus);
         ModHookTypes.TYPES.register(eventBus);
+        ModLootTables.ItemConditions.TYPES.register(eventBus);
     }
 
     public static void registerGameRules() {

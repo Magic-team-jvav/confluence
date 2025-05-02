@@ -11,8 +11,23 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Locale;
 import java.util.function.IntFunction;
 
+
+/**
+ * BEFORE_SKELETRON:骷髅王前
+ * <p>
+ * AFTER_SKELETRON:骷髅王后
+ * <p>
+ * WALL_OF_FLESH:肉后
+ * <p>
+ * MECHANICAL_BOSSES:新三王后
+ * <p>
+ * PLANTERA:世花后
+ * <p>
+ * GOLEM:石巨人后
+ * <p>
+ * MOON_LORD:月后
+ */
 public enum GamePhase implements StringRepresentable {
-    // 0:骷髅王前, 1:骷髅王后, 2:肉后, 3:新三王后, 4:世花后, 5:石巨人后, 6:月后
     BEFORE_SKELETRON,
     AFTER_SKELETRON,
     WALL_OF_FLESH,
@@ -42,7 +57,10 @@ public enum GamePhase implements StringRepresentable {
         return this == MOON_LORD;
     }
 
-    public boolean isOtherBelowThenMe(GamePhase other) {
-        return other.ordinal() < ordinal();
+    /**
+     * 判断阶段是否高于other
+     */
+    public boolean isAboveThan(GamePhase other) {
+        return ordinal() > other.ordinal();
     }
 }

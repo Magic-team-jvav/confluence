@@ -36,14 +36,23 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         ModelFile.UncheckedModelFile templateReverse24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_reverse24x"));
+        //ModelFile.UncheckedModelFile templateNormal24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_normal24x"));
         separateModel(SwordItems.BEE_KEEPER, templateReverse24x, "sword/");
         separateModel(SwordItems.ICE_BLADE, templateReverse24x, "sword/");
         separateModel(SwordItems.MURAMASA, templateReverse24x, "sword/");
         separateModel(SwordItems.LIGHTS_BANE, templateReverse24x, "sword/");
         separateModel(SwordItems.BLADE_OF_GRASS, templateReverse24x, "sword/");
         separateModel(SwordItems.BONE_SWORD, templateReverse24x, "sword/");
+        separateModel(SwordItems.BLOOD_BUTCHERER, templateReverse24x, "sword/");
+        separateModel(SwordItems.PURPLE_CLUBBERFISH, templateReverse24x, "sword/");
+        separateModel(SwordItems.CANDY_CANE_SWORD, templateReverse24x, "sword/");
+        separateModel(SwordItems.BAT_BAT, templateReverse24x, "sword/");
+        separateModel(SwordItems.KATANA, templateReverse24x, "sword/");
         separateModel(HammerItems.THE_BREAKER, templateReverse24x, "hammer/");
+        separateModel(HammerItems.FLESH_GRINDER, templateReverse24x, "hammer/");
         separateModel(AxeItems.WAR_AXE_OF_THE_NIGHT, templateReverse24x, "axe/");
+        separateModel(AxeItems.BLOOD_LUST_CLUSTER, templateReverse24x, "axe/");
+        separateModel(PickaxeItems.REAVER_SHARK_PICKAXE, templateReverse24x, "pickaxe/");
 
         ResourceLocation templateDye = Confluence.asResource("item/template_dye");
         for (DeferredHolder<Item, ? extends Item> item : VanityArmorItems.DYE_ITEMS) {
@@ -143,14 +152,15 @@ public class ModItemModelProvider extends ItemModelProvider {
      */
     private void separateModel(DeferredItem<?> deferredItem, ModelFile parentModel, String parentPath) {
         String path = deferredItem.getId().getPath();
-        getBuilder(path).customLoader((builder, helper) -> {
+        getBuilder(path).guiLight(BlockModel.GuiLight.FRONT).customLoader((builder, helper) -> {
             ResourceLocation texture = Confluence.asResource("item/" + parentPath + path);
-            ItemModelBuilder standaloneModel = new ItemModelBuilder(Confluence.asResource("item/" + path + "_inventory"), existingFileHelper)
+            ItemModelBuilder standaloneModel = new ItemModelBuilder(Confluence.asResource("item/" + path + "_inventory"), helper)
                     .parent(itemGenerated)
-                    .texture("layer0", texture.withSuffix("_inventory"))
-                    .guiLight(BlockModel.GuiLight.FRONT);
-            return SeparateTransformsModelBuilder.begin(builder, existingFileHelper)
-                    .base(new ItemModelBuilder(Confluence.asResource("item/" + path + "_base"), existingFileHelper).parent(parentModel).texture("layer0", texture))
+                    .texture("layer0", texture.withSuffix("_inventory"));
+            return SeparateTransformsModelBuilder.begin(builder, helper)
+                    .base(new ItemModelBuilder(Confluence.asResource("item/" + path + "_base"), helper)
+                            .parent(parentModel)
+                            .texture("layer0", texture))
                     .perspective(ItemDisplayContext.HEAD, standaloneModel)
                     .perspective(ItemDisplayContext.GUI, standaloneModel)
                     .perspective(ItemDisplayContext.GROUND, standaloneModel)

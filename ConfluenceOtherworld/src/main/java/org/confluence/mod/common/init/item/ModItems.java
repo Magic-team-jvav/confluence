@@ -43,7 +43,7 @@ public final class ModItems {
     public static final DeferredRegister.Items HIDDEN = DeferredRegister.createItems(Confluence.MODID);
     public static final DeferredRegister.Items BLOCK_ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
-    public static final Unbreakable UNBREAKABLE = new Unbreakable(false);
+    public static final Unbreakable UNBREAKABLE = new Unbreakable(true);
 
     public static final ResourceLocation BASE_ATTACK_KNOCKBACK_ID = Confluence.asResource("base_attack_knockback");
     public static final ResourceLocation BASE_CRITICAL_CHANCE_ID = Confluence.asResource("base_critical_chance");
@@ -61,7 +61,7 @@ public final class ModItems {
     // 赞助物品
     public static final DeferredItem<BoredomsPactFallingResolve> BOREDOMS_PACT_FALLING_RESOLVE = HIDDEN.register(BoredomsPactFallingResolve.ID.getPath(), BoredomsPactFallingResolve::new);
     public static final DeferredItem<ParadoxInteractiveMedal> PARADOX_INTERACTIVE_MEDAL = HIDDEN.register("paradox_interactive_medal", ParadoxInteractiveMedal::new);
-    public static final DeferredItem<TooltipItem> TOKYO_TEDDY_BEAR = HIDDEN.register("tokyo_teddy_bear", () -> new TooltipItem(new Item.Properties(), ModRarity.MASTER, TooltipItem.getTooltipsFromString("tokyo_teddy_bear", 6, ChatFormatting.DARK_GRAY)));
+    public static final DeferredItem<TooltipItem> TOKYO_TEDDY_BEAR = HIDDEN.register("tokyo_teddy_bear", () -> new TooltipItem(new Item.Properties(), ModRarity.MASTER, TooltipItem.getTooltipsFromString("tokyo_teddy_bear", 6, ChatFormatting.GRAY)));
     public static final DeferredItem<IceTofuBrickItem> ICE_TOFU_BRICK = HIDDEN.register("ice_tofu_brick", IceTofuBrickItem::new);
     public static final DeferredItem<FailedSkullItem> FAILED_SKULL = HIDDEN.register("failed_skull", FailedSkullItem::new);
     public static final DeferredItem<KindMisideRingItem> KIND_MISIDE_RING = HIDDEN.register("kind_miside_ring", KindMisideRingItem::new);
@@ -136,6 +136,7 @@ public final class ModItems {
         ToolItems.ITEMS.register(eventBus);
         TreasureBagItems.ITEMS.register(eventBus);
         VanityArmorItems.ITEMS.register(eventBus);
+        GunItems.ITEMS.register(eventBus);
     }
 
     public static Item.@NotNull Properties unbreakable() {

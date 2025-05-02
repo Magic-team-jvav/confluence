@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "minecraft:barrier"
+            "id": "confluence:heart"
         },
         "title": {
             "translate": "achievements.confluence.the_frequent_flyer.title"

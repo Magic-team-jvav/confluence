@@ -15,6 +15,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.common.block.StateProperties;
+import org.confluence.mod.common.block.common.BaseChestBlock;
+import org.confluence.mod.common.block.common.BiomeChestBlock;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
@@ -54,7 +57,7 @@ public abstract class BlockBehaviourMixin {
 
         @Inject(method = "getCollisionShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;", at = @At("RETURN"), cancellable = true)
         private void shimmer(BlockGetter pLevel, BlockPos pPos, CollisionContext pContext, CallbackInfoReturnable<VoxelShape> cir) {
-            if (asState().getDestroySpeed(pLevel, pPos) < 0) return;
+            if (asState().getDestroySpeed(pLevel, pPos) == -1) return;
             if (pContext instanceof EntityCollisionContext context && context.getEntity() instanceof LivingEntity living && living.hasEffect(ModEffects.SHIMMER)) {
                 cir.setReturnValue(Shapes.empty());
             }
@@ -67,6 +70,14 @@ public abstract class BlockBehaviourMixin {
                 if (!dataMap.isEmpty()) {
                     BrushingColorPacketS2C.remove((ServerLevel) level, pos);
                 }
+            }
+        }
+
+        @Inject(method = "getDestroySpeed", at = @At("RETURN"), cancellable = true)
+        private void modify(BlockGetter level, BlockPos pos, CallbackInfoReturnable<Float> cir) {
+            if (cir.getReturnValue() == -1) return;
+            if ((getBlock() instanceof BaseChestBlock || getBlock() instanceof BiomeChestBlock) && !asState().getValue(StateProperties.UNLOCKED)) {
+                cir.setReturnValue(-1.0F);
             }
         }
     }

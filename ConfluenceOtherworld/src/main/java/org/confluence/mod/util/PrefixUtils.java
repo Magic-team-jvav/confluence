@@ -16,6 +16,7 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_curio.util.TCUtils;
+import org.confluence.terra_guns.common.init.TGTags;
 import org.jetbrains.annotations.Nullable;
 
 public final class PrefixUtils {
@@ -32,6 +33,7 @@ public final class PrefixUtils {
                 itemStack.is(Tags.Items.RANGED_WEAPON_TOOLS) ||
                 itemStack.is(TCTags.ACCESSORY) ||
                 itemStack.is(ModTags.Items.MANA_WEAPON) ||
+                itemStack.is(TGTags.GUN) ||
                 itemStack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY);
     }
 
@@ -63,7 +65,7 @@ public final class PrefixUtils {
             return PrefixType.UNIVERSAL;
         } else if (itemStack.is(Tags.Items.MELEE_WEAPON_TOOLS) || itemStack.is(Tags.Items.MINING_TOOL_TOOLS)) {
             return PrefixType.MELEE;
-        } else if (itemStack.is(Tags.Items.RANGED_WEAPON_TOOLS)) { // todo 三叉戟会从背包里飞出去，而吃不到加成
+        } else if (itemStack.is(Tags.Items.RANGED_WEAPON_TOOLS) || itemStack.is(TGTags.GUN)) { // todo 三叉戟会从背包里飞出去，而吃不到加成
             return PrefixType.RANGED;
         } else if (itemStack.is(ModTags.Items.MANA_WEAPON) || itemStack.is(ModTags.Items.SUMMONER_WEAPON)) {
             return PrefixType.MAGIC;
@@ -389,7 +391,7 @@ public final class PrefixUtils {
             else if (rarity > 11) rarity = 11;
         }
         itemStack.set(ConfluenceMagicLib.MOD_RARITY, ModRarity.ID_MAP.getOrDefault(rarity, ModRarity.WHITE));
-        itemStack.set(ModDataComponentTypes.VALUE, new ValueComponent((int) (ValueComponent.getValue(copy) * num14 * num14)));
+        itemStack.set(ModDataComponentTypes.VALUE, new ValueComponent((int) (ValueComponent.getValue(copy, 5000) * num14 * num14)));
     }
 
     public static void unknown(ItemStack itemStack) {
@@ -403,7 +405,7 @@ public final class PrefixUtils {
     }
 
     public static int getReforgeCost(Player player, ItemStack itemStack) {
-        int price = ValueComponent.getValue(itemStack);
+        int price = ValueComponent.getValue(itemStack, 5000);
         if (TCUtils.getAccessoriesValue(player, AccessoryItems.SPECIAL$PRICE) > 0) {
             price = (int) ((double) price * 0.8);
         }

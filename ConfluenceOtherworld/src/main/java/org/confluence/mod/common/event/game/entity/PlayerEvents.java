@@ -13,7 +13,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Saddleable;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -69,6 +68,7 @@ public final class PlayerEvents {
         if (player instanceof ServerPlayer serverPlayer) {
             PlayerUtils.syncMana2Client(serverPlayer);
             PlayerUtils.syncSavedData(serverPlayer);
+            ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, serverPlayer, serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY));
             FishingPowerInfoPacketS2C.sendAndGet(serverPlayer);
             EchoVisibilityPacketS2C.sendToClient(serverPlayer);
             BoulderWorld.forceSetAccessory(serverPlayer);
@@ -76,7 +76,7 @@ public final class PlayerEvents {
             long secretFlag = ((IMinecraftServer) serverPlayer.server).confluence$getSecretFlag();
             SecretFlagSyncPacketS2C.sendToAll(secretFlag);
             if ((secretFlag & IWorldOptions.HARDMODE) != 0) {
-                PlayerUtils.awardAchievement(serverPlayer, "its_hard");
+                ModAchievements.awardAchievement(serverPlayer, "its_hard");
             }
             NPCSpawner.INSTANCE.trySpawnGuide(serverPlayer);
         }
@@ -104,7 +104,8 @@ public final class PlayerEvents {
                 !(itemStack.getItem() instanceof BlockItem) &&
                 !itemStack.is(ModTags.Items.MINECART) &&
                 block instanceof BaseRailBlock railBlock &&
-                !player.isSpectator()
+                !player.isSpectator() &&
+                !player.isPassenger()
         ) {
             player.swing(InteractionHand.MAIN_HAND);
             if (!level.isClientSide) {
@@ -138,16 +139,13 @@ public final class PlayerEvents {
 
     @SubscribeEvent
     public static void playerInteract$EntityInteract(PlayerInteractEvent.EntityInteract event) {
-        if (event.getEntity() instanceof ServerPlayer serverPlayer && event.getTarget() instanceof Saddleable saddleable && saddleable.isSaddled()) {
-            PlayerUtils.awardAchievement(serverPlayer, "the_cavalry");
-        }
         if (event.getEntity() instanceof ServerPlayer serverPlayer && event.getTarget() instanceof LivingEntity targetEntity) {
             ItemStack item = serverPlayer.getMainHandItem();
             boolean isWaterBottle = ModUtils.isWaterBottle(item);
             if (isWaterBottle && targetEntity.hasEffect(ModEffects.CHOKING)) {
                 targetEntity.removeEffect(ModEffects.CHOKING);
-                ItemStack emptyBottle = item.is(PotionItems.BOTTLED_WATER) ? new ItemStack(PotionItems.BOTTLE.get()) : new ItemStack(Items.GLASS_BOTTLE);
-                if (!serverPlayer.isCreative()) {
+                ItemStack emptyBottle = item.is(PotionItems.BOTTLED_WATER) ? PotionItems.BOTTLE.toStack() : Items.GLASS_BOTTLE.getDefaultInstance();
+                if (!serverPlayer.getAbilities().instabuild) {
                     serverPlayer.getInventory().add(emptyBottle);
                     item.shrink(1);
                 }
@@ -345,10 +343,8 @@ public final class PlayerEvents {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             if (event.getTarget() instanceof ServerPlayer player) {
                 ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, player, player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
-            } else if (NPCSpawner.INSTANCE.isAdvancedCombatTechniquesUsed()) {
-                if (event.getTarget() instanceof AbstractTerraNPC npc) {
-                    NPCSpawner.applyAdvancedCombatTechniques(npc);
-                }
+            } else if (event.getTarget() instanceof AbstractTerraNPC npc) {
+                NPCSpawner.INSTANCE.applyBenedictions(npc);
             }
         }
     }

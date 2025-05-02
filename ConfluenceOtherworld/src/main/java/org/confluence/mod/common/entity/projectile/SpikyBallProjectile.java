@@ -11,6 +11,8 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
+import org.confluence.lib.common.entitiy.IAxisZRotate;
+import org.confluence.lib.common.entitiy.IBouncy;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.mixed.Immunity;
@@ -20,7 +22,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZRotate, IBouncy {
-    public Rotate rotate = new Rotate();
+    public final Rotate rotate = new Rotate();
     private final Set<Entity> passThrough = new HashSet<>();
 
     public SpikyBallProjectile(EntityType<SpikyBallProjectile> entityType, Level level) {

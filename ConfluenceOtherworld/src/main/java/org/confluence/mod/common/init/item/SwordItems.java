@@ -15,7 +15,10 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SwordProjectileComponent;
-import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.init.ModDataComponentTypes;
+import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.LightSaber;
 import org.confluence.mod.common.item.sword.SweetSword;
@@ -40,7 +43,7 @@ public class SwordItems {
 
     // 普通短剑
     public static final DeferredItem<SwordItem> COPPER_SHORT_SWORD = register("copper_short_sword", ModTiers.COPPER, 0, -1, ModRarity.WHITE, SHORT_SWORD.get()
-            .addTooltip(p -> p.withStyle(style -> style.withColor(0x984c11))).addTooltip(p -> p.withStyle(style -> style.withColor(0x984c11))));
+            .addTooltip(p -> p.withColor(0x984c11)).addTooltip(p -> p.withColor(0x984c11)));
     public static final DeferredItem<SwordItem> TIN_SHORT_SWORD = register("tin_short_sword", ModTiers.TIN, 0, -1, SHORT_SWORD.get());
     public static final DeferredItem<SwordItem> IRON_SHORT_SWORD = register("iron_short_sword", ModTiers.IRON, 1, -1, SHORT_SWORD.get());
     public static final DeferredItem<SwordItem> LEAD_SHORT_SWORD = register("lead_short_sword", ModTiers.LEAD, 1, -1, SHORT_SWORD.get());
@@ -112,9 +115,9 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> ICE_BLADE = register("ice_blade",ModTiers.UNBREAKABLE, 5, -1.0F,
             ModRarity.BLUE,     PROJ_SWORD.apply(SwordProjectileComponent.ICE_PROJ));
     public static final DeferredItem<SwordItem> STARFURY = register("starfury",ModTiers.UNBREAKABLE, 6, -1.1F,
-            ModRarity.GREEN,    PROJ_SWORD.apply(SwordProjectileComponent.STAR_FURY_PROJ)  .addTooltip(p -> p.withStyle(style -> style.withColor(0xe44189))).addTooltip(p -> p.withStyle(style -> style.withColor(0xe44189))));
+            ModRarity.GREEN,    PROJ_SWORD.apply(SwordProjectileComponent.STAR_FURY_PROJ)  .addTooltip(p -> p.withColor(0xe44189)).addTooltip(p -> p.withColor(0xe44189)));
     public static final DeferredItem<SwordItem> ENCHANTED_SWORD = register("enchanted_sword", ModTiers.UNBREAKABLE, 7, -1.1F,
-            ModRarity.ORANGE,   PROJ_SWORD.apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ).addTooltip(p -> p.withStyle(style -> style.withColor(0x4156e4))).addTooltip(p -> p.withStyle(style -> style.withColor(0x4156e4))));
+            ModRarity.ORANGE,   PROJ_SWORD.apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ).addTooltip(p -> p.withColor(0x4156e4)).addTooltip(p -> p.withColor(0x4156e4)));
     public static final DeferredItem<SwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.UNBREAKABLE, 5, -1.1F,
             ModRarity.GREEN,   PROJ_SWORD.apply(SwordProjectileComponent.GRASS_PROJ));
 
@@ -146,9 +149,10 @@ public class SwordItems {
     );
 
     // 赞助者物品
-    public static final DeferredItem<SwordItem> BROKEN_SWEET_SWORD = register("broken_sweet_sword",()->new SweetSword(ModTiers.UNBREAKABLE,ModRarity.EXPERT, 3, -2.0F, new BaseSwordItem.ModifierBuilder()));
+    public static final DeferredItem<SwordItem> BROKEN_SWEET_SWORD = register("broken_sweet_sword",()->new SweetSword(ModTiers.UNBREAKABLE,ModRarity.EXPERT, 0, -3.0F, new BaseSwordItem.ModifierBuilder()));
 
-    public static final DeferredItem<SwordItem> SWEET_SWORD = register("sweet_sword",()->new SweetSword(ModTiers.UNBREAKABLE,ModRarity.EXPERT, 7, -2.0F, new BaseSwordItem.ModifierBuilder().addTooltip(p -> p.withStyle(style -> style.withColor(0xe44189)))
+    public static final DeferredItem<SwordItem> SWEET_SWORD = register("sweet_sword",()->new SweetSword(ModTiers.UNBREAKABLE,ModRarity.EXPERT, 4, -2.0F, new BaseSwordItem.ModifierBuilder()
+            .addTooltip(p -> p.withColor(0xe44189))
             .modifyProperties(p->p.food(new FoodProperties(1,1,false,2, Optional.of(BROKEN_SWEET_SWORD.get().getDefaultInstance()), List.of(
                             new FoodProperties.PossibleEffect(()->new MobEffectInstance(ModEffects.DELICIOUS, 200),1.0f)
             ))))

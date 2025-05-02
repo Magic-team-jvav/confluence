@@ -72,8 +72,8 @@ import org.confluence.mod.client.renderer.entity.projectile.sword.LightsBaneProj
 import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjectileRenderer;
 import org.confluence.mod.client.textures.GrayBlockModelSwapper;
 import org.confluence.mod.client.textures.GraySpriteShifterEntry;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModFluids;
-import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -84,10 +84,11 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
 import org.confluence.mod.integration.appleskin.AppleskinHelper;
-import org.confluence.mod.integration.ponder.PonderHelper;
+import org.confluence.mod.integration.create.ponder.PonderHelper;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.model.entity.BeeProjectileModel;
+import org.confluence.terra_guns.util.TGUtil;
 import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
@@ -107,7 +108,6 @@ public final class ModClientEvents {
             FishingPoleItems.registerCast();
             ArrowInBowHud.initAdaptionMap();
             AchievementToast.registerAll();
-            ModLootTables.registerDataForClient();
 
             ModClientSetups.registerItemProperties();
             ModClientSetups.setRenderLayers();
@@ -344,6 +344,10 @@ public final class ModClientEvents {
         event.registerItem(ModClientSetups.ENTITY_DISPLAY, ModItems.ENTITY_DISPLAY.get());
         event.registerItem(ModClientSetups.BREATHING_REED, SwordItems.BREATHING_REED);
         event.registerItem(ModClientSetups.LANCE, LanceItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
+        TGUtil.registerOtherGunModel(event, Confluence.MODID, ManaWeaponItems.BEE_GUN);
+        TGUtil.registerOtherGunModel(event, Confluence.MODID, ManaWeaponItems.SPACE_GUN);
+        GunItems.ITEMS.getEntries().forEach(holder -> TGUtil.registerOtherGunModel(event, Confluence.MODID, holder));
+        event.registerMobEffect(ModClientSetups.TRANSLUCENT_EFFECT_ICON, ModEffects.LUCK_EFFECT.get());
     }
 
     @SubscribeEvent

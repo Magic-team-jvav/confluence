@@ -1,6 +1,0 @@
-{
-  "parent": "confluence:item/template_normal24x",
-  "textures": {
-    "layer0": "confluence:item/hammer/flesh_grinder"
-  }
-}

@@ -54,7 +54,6 @@ import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -185,9 +184,18 @@ public class CookingPotBlock extends HorizontalDirectionalBlock implements Entit
 
         public static void serverTick(Level level, BlockPos pos, BlockState state, Entity blockEntity) {
             BlockInWorld heatSource = new BlockInWorld(level, pos.below(), true);
-            blockEntity.heatSourceItem = Item.getId(heatSource.getState().getBlock().asItem());
+            if (level.getGameTime() % 20 == 1) { // 每秒获取一次
+                blockEntity.heatSourceItem = Item.getId(heatSource.getState().getBlock().asItem());
+            }
             ItemStack[] itemStacks = blockEntity.getItemStacks();
-            if (Arrays.stream(itemStacks).anyMatch(itemStack -> !itemStack.isEmpty())) {
+            boolean hasItem = false;
+            for (ItemStack stack : itemStacks) {
+                if (!stack.isEmpty()) {
+                    hasItem = true;
+                    break;
+                }
+            }
+            if (hasItem) {
                 CookingPotRecipe.Input input = new CookingPotRecipe.Input(itemStacks, blockEntity.getItem(CookingPotMenu.CONTAINER_SLOT), heatSource);
                 Optional<RecipeHolder<CookingPotRecipe>> recipeFor = blockEntity.cachedCheck.getRecipeFor(input, level);
                 if (recipeFor.isPresent()) {

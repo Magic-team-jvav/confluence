@@ -12,11 +12,13 @@ import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.Keys;
 import org.confluence.mod.common.init.block.CrateBlocks;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeHealthFull;
 import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeItem;
+import org.confluence.mod.integration.terra_entity.npc_trade.SellTrade;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.TerraEntity;
@@ -60,11 +62,11 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(TCItems.DPS_METER.get())
                 .add(SwordItems.KATANA.get())
                 .add(FoodItems.PAD_THAI.get())
+                .add(SellTrade.INSTANCE)
                 .build());
 
 
         shop(TENpcEntities.GUIDE.getId()).addRecipe(new Builder()
-                //TODO 枪！
                 //旅商的       .add(AccessoryItems.PAINT_SPRAYER.get())
                 //.add(TCItems.PORTABLE_CEMENT_MIXER.get())
                 //.add(TCItems.EXTENDO_GRIP.get())
@@ -81,23 +83,32 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(ConsumableItems.GRENADE.get())
                 .add(ConsumableItems.BOMB.get())
                 .add(ConsumableItems.DYNAMITE.get())
+                .add(SellTrade.INSTANCE)
                 .build());
 
         shop(TENpcEntities.MERCHANT.getId()).addRecipe(new Builder()
+                .add(ToolItems.BUG_NET)
+                .add(ArmorItems.MINING_HELMET)
+                .add(Blocks.ANVIL.asItem())
                 .add(Blocks.TORCH.asItem())
-                .add(Items.ARROW.asItem())
+                .add(Items.ARROW)
                 .add(ModBlocks.ROPE.get())
                 .add(ConsumableItems.SHURIKEN.get())
+                .add(FunctionalBlocks.PIGGY_BANK.get())
+                .add(FunctionalBlocks.SAFE.get())
                 .add(PickaxeItems.COPPER_PICKAXE.get())
                 .add(AxeItems.COPPER_AXE.get())
                 .add(PotionItems.LESSER_HEALING_POTION.get())
+                .add(PotionItems.LESSER_MANA_POTION.get())
+                .add(SellTrade.INSTANCE)
                 .build());
 
         shop(TENpcEntities.GOBLIN_TINKERER.getId()).addRecipe(new Builder()
-                .add(HookItems.GRAPPLING_HOOK.asItem())
+                .add(HookItems.GRAPPLING_HOOK.get())
                 .add(TCItems.ROCKET_BOOTS.get())
                 .add(TCItems.TOOLBELT.get())
                 .add(TCItems.WORKSHOP.get())
+                .add(SellTrade.INSTANCE)
                 .build());
 
         shop(TENpcEntities.NURSE.getId()).addRecipe(new Builder()
@@ -106,19 +117,25 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 
         shop(TENpcEntities.ARMS_DEALER.getId()).addRecipe(new Builder()
                 .add(TGItems.MUSKET_BULLET.get())
+                .add(TGItems.FLINTLOCK_PISTOL.get())
+                .add(TGItems.MINISHARK.get())         //先不管晚上的条件，迷你鲨塞一手
+                .add(SellTrade.INSTANCE)
                 .build());
 
         shop(TENpcEntities.DRYAD.getId()).addRecipe(new Builder()
                 .add(ConsumableItems.PURIFICATION_POWDER.get())
                 .add(NatureBlocks.YELLOW_WILLOW_SAPLING.asItem())
                 .add(Blocks.OAK_SAPLING.asItem())
-                .add(Items.PUMPKIN_SEEDS.asItem())
+                .add(Items.PUMPKIN_SEEDS)
+                .add(ModItems.GRASS_SEED.get())
+                .add(SellTrade.INSTANCE)
                 .build());
 
         shop(TENpcEntities.DYE_TRADER.getId()).addRecipe(new Builder()
                 .add(VanityArmorItems.SILVER_DYE.get())
                 .add(VanityArmorItems.BROWN_DYE.get())
                 .add(VanityArmorItems.TEAM_DYE.get())
+                .add(SellTrade.INSTANCE)
                 .build());
 
 
@@ -154,6 +171,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(PaintItems.GRAY_PAINT.get())
                 .add(PaintItems.WHITE_PAINT.get())
                 .add(PaintItems.BROWN_PAINT.get())
+                .add(SellTrade.INSTANCE)
                 .build());
 
         shop(TENpcEntities.ANGLER.getId()).addRecipe(new Builder()
@@ -170,7 +188,11 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 //                        .setTitle("title.terra_entity.npc_trade.task.fishman")
                         .build()))
                 .build());
+
+        shop(TENpcEntities.OLD_MAN.getId()).addRecipe(new Builder()
+                .build());
     }
+
 
     protected Appender<NPCTradeManager> shop(ResourceLocation id) {
         // 预处理命名空间，命名空间替换成confluence，本体不能覆盖子模块的数据包

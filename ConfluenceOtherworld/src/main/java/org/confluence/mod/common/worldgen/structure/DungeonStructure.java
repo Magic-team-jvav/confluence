@@ -2,24 +2,43 @@ package org.confluence.mod.common.worldgen.structure;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.MapCodec;
+import it.unimi.dsi.fastutil.longs.LongSet;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.lib.util.BooleanStorage4;
 import org.confluence.lib.util.VectorUtils;
+import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.data.saved.GamePhase;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModStructures;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
+import org.confluence.mod.util.ModUtils;
+import org.confluence.terraentity.entity.boss.DungeonGuardian;
+import org.confluence.terraentity.init.TESounds;
+import org.confluence.terraentity.init.entity.TEBossEntities;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
 import java.util.*;
@@ -99,10 +118,10 @@ public class DungeonStructure extends Structure {
                 housesList.add(2);
             }
             for (int i = 0; i < commonCount; i++) {
-                housesList.add(0);
+                housesList.add(random.nextInt(housesList.size()), 0);
             }
             for (int i = 0; i < clockCount; i++) {
-                housesList.add(1);
+                housesList.add(random.nextInt(housesList.size()), 1);
             }
 
             Vector3d vct = new Vector3d(centerPos.getX(), centerPos.getY() - 4, centerPos.getZ());
@@ -253,13 +272,10 @@ public class DungeonStructure extends Structure {
             ), builder);
             StructureTemplateManager manager = context.structureTemplateManager();
             switch (rotation) {
-                case CLOCKWISE_90 ->
-                        builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(15, -3, -23), true, true, Rotation.CLOCKWISE_90));
-                case CLOCKWISE_180 ->
-                        builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(23, -3, 15), true, true, Rotation.CLOCKWISE_180));
-                case COUNTERCLOCKWISE_90 ->
-                        builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(-15, -3, 23), true, true, Rotation.COUNTERCLOCKWISE_90));
-                default -> builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(-23, -3, -15), true, true, Rotation.NONE));
+                case CLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(15, -3, -23), true, false, Rotation.CLOCKWISE_90));
+                case CLOCKWISE_180 -> builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(23, -3, 15), true, false, Rotation.CLOCKWISE_180));
+                case COUNTERCLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(-15, -3, 23), true, false, Rotation.COUNTERCLOCKWISE_90));
+                default -> builder.addPiece(new SimpleTemplatePiece(manager, gate, centerPos.offset(-23, -3, -15), true, false, Rotation.NONE));
             }
 
             int listCount = 0;
@@ -268,6 +284,18 @@ public class DungeonStructure extends Structure {
                 houseKey = entry.getKey();
                 houseValue = entry.getValue();
                 switch (houseValue) {
+                    case 0:
+                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(-1, 0, -1), false, false, Rotation.NONE));
+                        listCount++;
+                        break;
+                    case 1:
+                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(1, 0, -1), false, false, Rotation.CLOCKWISE_90));
+                        listCount++;
+                        break;
+                    case 2:
+                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(1, 0, 1), false, false, Rotation.CLOCKWISE_180));
+                        listCount++;
+                        break;
                     case 4:
                         builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners, random), houseKey.offset(-1, 0, -1), false, false, Rotation.NONE));
                         break;
@@ -299,18 +327,6 @@ public class DungeonStructure extends Structure {
                         builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 0, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
                         builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 6, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
                         builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 12, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
-                        break;
-                    case 0:
-                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(-1, 0, -1), false, false, Rotation.NONE));
-                        listCount++;
-                        break;
-                    case 1:
-                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(1, 0, -1), false, false, Rotation.CLOCKWISE_90));
-                        listCount++;
-                        break;
-                    case 2:
-                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(1, 0, 1), false, false, Rotation.CLOCKWISE_180));
-                        listCount++;
                         break;
                     default:
                         builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(-1, 0, 1), false, false, Rotation.COUNTERCLOCKWISE_90));
@@ -379,5 +395,68 @@ public class DungeonStructure extends Structure {
     @Override
     public StructureType<?> type() {
         return ModStructures.DUNGEON.get();
+    }
+
+    private static Structure structure;
+
+    public static @Nullable Structure getStructure(ServerLevel level) {
+        if (structure == null) {
+            structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
+        }
+        return structure;
+    }
+
+    public static void checkSkeletronDefeated(ServerPlayer player, ServerLevel level) {
+        if (KillBoard.INSTANCE.getGamePhase() == GamePhase.BEFORE_SKELETRON && player.gameMode.getGameModeForPlayer().isSurvival() && level.getGameTime() % 100 == 1) {
+            Structure structure = getStructure(level);
+            if (structure == null) return;
+
+            ChunkPos chunkPos = player.chunkPosition();
+            LongSet structureRefs = level.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.STRUCTURE_REFERENCES).getReferencesForStructure(structure);
+            for (long packed : structureRefs) {
+                SectionPos sectionPos = SectionPos.of(ChunkPos.getX(packed), level.getMinSection(), ChunkPos.getZ(packed));
+                StructureStart structureStart = level.structureManager().getStartForStructure(sectionPos, structure, level.getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS));
+                if (structureStart == null || !structureStart.isValid()) continue;
+
+                BoundingBox boundingBox = structureStart.getBoundingBox(); // getBoundingBox已优化过缓存
+                boolean shouldAlert = CommonConfigs.ALERT_PLAYER_IN_DUNGEON.get();
+                if (boundingBox.isInside(player.blockPosition()) && player.getY() <= boundingBox.minY() + 51) {
+                    level.playSound(null, player.blockPosition(), TESounds.ROAR.get(), SoundSource.HOSTILE);
+                    if (shouldAlert) {
+                        byte alert = player.getPersistentData().getByte("confluence:dungeon_guardian_alert");
+                        player.getPersistentData().putByte("confluence:dungeon_guardian_alert", (byte) (alert + 1));
+                        if (alert < 3) return;
+                    }
+                    ModUtils.summonBoss(level, player.position(), new DungeonGuardian(TEBossEntities.DUNGEON_GUARDIAN.get(), level));
+                    if (shouldAlert) player.getPersistentData().putByte("confluence:dungeon_guardian_alert", (byte) 0);
+                    return;
+                }
+                if (shouldAlert) player.getPersistentData().putByte("confluence:dungeon_guardian_alert", (byte) 0);
+            }
+        }
+    }
+
+    /**
+     * 不允许生成在地牢主体之外的地方
+     */
+    public static boolean skipSpawn(Mob mob, ServerLevel level) {
+        if (mob.getType().is(ModTags.SPAWN_AT_DUNGEON)) {
+            Structure structure = getStructure(level);
+            if (structure == null) return false;
+
+            ChunkPos chunkPos = mob.chunkPosition();
+            LongSet structureRefs = level.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.STRUCTURE_REFERENCES).getReferencesForStructure(structure);
+            for (long packed : structureRefs) {
+                SectionPos sectionPos = SectionPos.of(ChunkPos.getX(packed), level.getMinSection(), ChunkPos.getZ(packed));
+                StructureStart structureStart = level.structureManager().getStartForStructure(sectionPos, structure, level.getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS));
+                if (structureStart == null || !structureStart.isValid()) continue;
+
+                BoundingBox boundingBox = structureStart.getBoundingBox(); // getBoundingBox已优化过缓存
+                if (mob.getY() >= boundingBox.minY() + 51) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

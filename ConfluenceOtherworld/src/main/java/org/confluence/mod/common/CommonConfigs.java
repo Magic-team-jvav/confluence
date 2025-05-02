@@ -16,6 +16,7 @@ public final class CommonConfigs {
     public static BooleanValue RIGHT_CLICK_RIDE_MINECART;
     public static IntValue ANNOUNCEMENT_BOX_DISTANCE;
     public static BooleanValue BREWING_STAND_RECIPE;
+    public static BooleanValue ALERT_PLAYER_IN_DUNGEON;
 
     public static BooleanValue SHOW_MONEY_DROPS;
     public static BooleanValue DROPS_TOMBSTONE;
@@ -23,6 +24,8 @@ public final class CommonConfigs {
     public static IntValue DEFAULT_RESPAWN_TIME_MAX;
     public static IntValue BOSS_RESPAWN_TIME_MIN;
     public static IntValue BOSS_RESPAWN_TIME_MAX;
+
+    public static BooleanValue REPLACE_VANILLA_GEODE_FEATURE;
 
     public static long fallingStarInterval = 2400;
 
@@ -43,6 +46,7 @@ public final class CommonConfigs {
         RIGHT_CLICK_RIDE_MINECART = BUILDER.define("rightClickRideMinecart", true);
         ANNOUNCEMENT_BOX_DISTANCE = BUILDER.comment("The maximum transmission distance of the Announcement Box information.").defineInRange("announcementBoxDistance", 128, 0, Integer.MAX_VALUE);
         BREWING_STAND_RECIPE = BUILDER.define("brewing_stand_recipe", false);
+        ALERT_PLAYER_IN_DUNGEON = BUILDER.define("alertPlayerDungeon", false);
         BUILDER.pop();
 
         BUILDER.push("PlayerDeath");
@@ -52,6 +56,10 @@ public final class CommonConfigs {
         DEFAULT_RESPAWN_TIME_MAX = BUILDER.comment("The max value of the default respawn time").defineInRange("defaultRespawnTimeMax", 8, 0, Integer.MAX_VALUE);
         BOSS_RESPAWN_TIME_MIN = BUILDER.comment("The min respawn time when the boss is present").defineInRange("bossRespawnTimeMin", 9, 0, Integer.MAX_VALUE);
         BOSS_RESPAWN_TIME_MAX = BUILDER.comment("The max respawn time when the boss is present").defineInRange("bossRespawnTimeMax", 18, 0, Integer.MAX_VALUE);
+        BUILDER.pop();
+
+        BUILDER.push("WorldGeneration");
+        REPLACE_VANILLA_GEODE_FEATURE = BUILDER.define("replaceVanillaGeodeFeature", true);
         BUILDER.pop();
 
         container.registerConfig(ModConfig.Type.COMMON, BUILDER.build());

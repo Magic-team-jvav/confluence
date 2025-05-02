@@ -3,7 +3,7 @@ name: Nightly Build
 on:
   workflow_dispatch:
   schedule:
-    # Run this job everyday at 5:30 AM UTC+8
+    # Run this job every day at 5:30 AM UTC+8
     - cron: "30 21 * * *"
 
 jobs:
@@ -34,6 +34,19 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           automatic_release_tag: nightly
           prerelease: true
-          title: "Nightly Build"
+          title: "Confluence Automate Build"
           files: |
+            ./Confluence-Magic-Lib/build/libs/*.jar
             ./ConfluenceOtherworld/build/libs/*.jar
+            ./EntityTrackerHUD/build/libs/*.jar
+            ./EquipmentBenediction/build/libs/*.jar
+            ./HeavenDestinyMoment/build/libs/*.jar
+            ./IsekaiInvaded/build/libs/*.jar
+            ./MineTeam/build/libs/*.jar
+            ./ParticleStorm/build/libs/*.jar
+            ./PhaseJourney/build/libs/*.jar
+            ./TerraCurio/build/libs/*.jar
+            ./TerraEntity/build/libs/*.jar
+            ./TerraFurniture/build/libs/*.jar
+            ./TerraGuns/build/libs/*.jar
+            ./TerraMoment/build/libs/*.jar

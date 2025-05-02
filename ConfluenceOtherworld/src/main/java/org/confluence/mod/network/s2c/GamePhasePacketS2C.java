@@ -15,10 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 public record GamePhasePacketS2C(GamePhase gamePhase) implements CustomPacketPayload {
     public static final Type<GamePhasePacketS2C> TYPE = new Type<>(Confluence.asResource("game_phase"));
-    public static final StreamCodec<ByteBuf, GamePhasePacketS2C> STREAM_CODEC = StreamCodec.composite(
-            GamePhase.STREAM_CODEC, p -> p.gamePhase,
-            GamePhasePacketS2C::new
-    );
+    public static final StreamCodec<ByteBuf, GamePhasePacketS2C> STREAM_CODEC = GamePhase.STREAM_CODEC.map(GamePhasePacketS2C::new, GamePhasePacketS2C::gamePhase);
 
     @Override
     public @NotNull Type<GamePhasePacketS2C> type() {

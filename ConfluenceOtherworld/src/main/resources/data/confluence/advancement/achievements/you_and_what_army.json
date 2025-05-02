@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "minecraft:barrier"
+            "id": "terra_entity:slime_staff"
         },
         "title": {
             "translate": "achievements.confluence.you_and_what_army.title"

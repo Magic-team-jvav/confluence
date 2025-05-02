@@ -22,6 +22,7 @@ import org.confluence.mod.common.entity.FallingStarItemEntity;
 import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
+import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
@@ -63,7 +64,7 @@ public final class TickEvents {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
             }
         }
-        if (dayTime < 12000 && serverLevel.getGameTime() % 1200 == 0 && serverLevel.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
+        if (serverLevel.isDay() && serverLevel.getGameTime() % 2400 == 0 && serverLevel.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
             NPCSpawner.INSTANCE.checkNpcRespawn(serverLevel);
         }
 
@@ -80,6 +81,7 @@ public final class TickEvents {
             ServerLevel serverLevel = serverPlayer.serverLevel();
             ModAchievements.youCanDoIt(serverPlayer, serverLevel);
             TheConstant.applyDarkness(serverPlayer, serverLevel);
+            DungeonStructure.checkSkeletronDefeated(serverPlayer, serverLevel);
         }
     }
 

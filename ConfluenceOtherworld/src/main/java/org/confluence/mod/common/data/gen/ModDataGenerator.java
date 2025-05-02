@@ -48,10 +48,10 @@ public class ModDataGenerator {
         ModBlockTagsProvider blockTagsProvider = new ModBlockTagsProvider(output, lookup, helper);
         generator.addProvider(server, blockTagsProvider);
         generator.addProvider(server, new ModItemTagsProvider(output, lookup, blockTagsProvider.contentsGetter(), helper));
-        generator.addProvider(server, new ModLootTableProvider(output, lookup));
         generator.addProvider(server, new ModDamageTypeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModPoiTypeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModBiomeTagsProvider(output, lookup, helper));
+        generator.addProvider(server, new ModEntityTypeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new CollectRecipeProvider(output, lookup,
                 NPCShopProvider::new,
                 ModRecipeProvider::new,
@@ -59,5 +59,6 @@ public class ModDataGenerator {
                 HeavyWorkBenchProvider::new
         ));
         generator.addProvider(server, new ModDataMapProvider(output, lookup));
+        generator.addProvider(server, new ModLootTableProvider(output, lookup));
     }
 }

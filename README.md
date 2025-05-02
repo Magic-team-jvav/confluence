@@ -1,3 +1,5 @@
+- [English](README-en_us.md)
+
 | 项目名                                          | 备注                | 是否独立运行                |
 |----------------------------------------------|-------------------|-----------------------|
 | [ConfluenceOtherworld](ConfluenceOtherworld) | 本体                | 依赖所有                  |
@@ -29,6 +31,6 @@
     git submodule add -b "分支名" "url"
   ~~~
   > 还需要在[settings.gradle](settings.gradle)
-  以及[ConfluenceOtherworld/build.gradle](ConfluenceOtherworld/build.gradle)里加上子模块名
+  > 以及[ConfluenceOtherworld/build.gradle](ConfluenceOtherworld/build.gradle)里加上子模块名
 
 - 全部拉取完成后,在gradle插件中启动ConfluenceOtherworld本体项目中的runClient命令

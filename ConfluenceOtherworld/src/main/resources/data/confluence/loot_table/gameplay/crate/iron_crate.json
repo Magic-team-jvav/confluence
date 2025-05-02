@@ -56,7 +56,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:raw_gold",
+          "name": "minecraft:raw_iron",
           "functions": [
             {
               "function": "set_count",
@@ -67,11 +67,11 @@
               }
             }
           ],
-          "weight": 1667
+          "weight": 4
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:raw_platinum",
+          "name": "confluence:raw_lead",
           "functions": [
             {
               "function": "set_count",
@@ -82,7 +82,37 @@
               }
             }
           ],
-          "weight": 1667
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:raw_copper",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 3,
+                "max": 6
+              }
+            }
+          ],
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:raw_tin",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "type": "uniform",
+                "min": 3,
+                "max": 6
+              }
+            }
+          ],
+          "weight": 4
         },
         {
           "type": "minecraft:item",
@@ -97,7 +127,7 @@
               }
             }
           ],
-          "weight": 1667
+          "weight": 4
         },
         {
           "type": "minecraft:item",
@@ -112,7 +142,7 @@
               }
             }
           ],
-          "weight": 1667
+          "weight": 4
         },
         {
           "type": "minecraft:item",
@@ -127,7 +157,7 @@
               }
             }
           ],
-          "weight": 2083
+          "weight": 5
         },
         {
           "type": "minecraft:item",
@@ -142,7 +172,7 @@
               }
             }
           ],
-          "weight": 2083
+          "weight": 5
         },
         {
           "type": "minecraft:item",
@@ -157,7 +187,7 @@
               }
             }
           ],
-          "weight": 2083
+          "weight": 5
         },
         {
           "type": "minecraft:item",
@@ -172,7 +202,7 @@
               }
             }
           ],
-          "weight": 2083
+          "weight": 5
         },
         {
           "type": "minecraft:item",
@@ -187,7 +217,7 @@
               }
             }
           ],
-          "weight": 2083
+          "weight": 5
         },
         {
           "type": "minecraft:item",
@@ -202,11 +232,11 @@
               }
             }
           ],
-          "weight": 2083
+          "weight": 5
         },
         {
           "type": "minecraft:empty",
-          "weight": 15000
+          "weight": 18
         }
       ],
       "rolls": 1

@@ -23,9 +23,7 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terra_guns.common.init.TGTags;
-import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.TETags;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TESummonItems;
@@ -149,6 +147,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 QuestedFishes.WYVERNTAIL.get(),
                 QuestedFishes.ZOMBIE_FISH.get()
                 );
+        tag(ModTags.Items.EMBLEM).add(
+                AccessoryItems.SUMMONER_EMBLEM.get(),
+                TCItems.RANGER_EMBLEM.get(),
+                TCItems.SORCERER_EMBLEM.get(),
+                TCItems.WARRIOR_EMBLEM.get()
+        );
         tag(ModTags.Items.GOLD_COOKING).add(
                 BaitItems.GOLD_BUTTERFLY.get(),
                 BaitItems.GOLD_DRAGONFLY.get(),
@@ -519,6 +523,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         ManaWeaponItems.acceptTag(tag(ModTags.Items.MANA_WEAPON));
         IntrinsicTagAppender<Item> weapons = tag(ModTags.Items.WEAPONS);
         ManaWeaponItems.acceptTag(weapons);
+        GunItems.acceptTag(weapons);
+        GunItems.acceptTag(tag(TGTags.GUN));
         IntrinsicTagAppender<Item> mining_tool_tools = tag(Tags.Items.MINING_TOOL_TOOLS);
         PickaxeItems.acceptTag(mining_tool_tools);
         PickaxeAxeItems.acceptTag(mining_tool_tools);
@@ -776,6 +782,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.CROP_FORTUNE).add(AxeItems.STAFF_OF_REGROWTH.get(), AxeItems.AXE_OF_REGROWTH.get());
         // 速发弓：恶魔弓、肌腱弓
         tag(ModTags.Items.FAST_BOW).add(
+                BowItems.FOSSIL_BOW.get(),
                 BowItems.DEMON_BOW.get(),
                 BowItems.TENDON_BOW.get(),
                 BowItems.DAEDALUS_STORM_BOW.get(),
@@ -1067,6 +1074,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         copy(Tags.Blocks.VILLAGER_JOB_SITES, Tags.Items.VILLAGER_JOB_SITES);
         copy(Tags.Blocks.CHESTS_TRAPPED, Tags.Items.CHESTS_TRAPPED);
         copy(Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES, Tags.Items.PLAYER_WORKSTATIONS_CRAFTING_TABLES);
+        copy(Tags.Blocks.GLASS_BLOCKS_COLORLESS, Tags.Items.GLASS_BLOCKS_COLORLESS);
 
         IntrinsicTagAppender<Item> wip = tag(LibTags.Items.WIP);
         wip.add(
@@ -1080,9 +1088,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ConsumableItems.BLOOD_WATER.get(),
                 ConsumableItems.GOODIE_BAG.get(),
                 ConsumableItems.ADVANCED_COMBAT_TECHNIQUES.get(),
+                ConsumableItems.ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO.get(),
                 PaintItems.ECHO_COATING.get(),
                 FoodItems.BOULDER_BREAD.get(),
-                TEItems.HOUSE_DETECTOR.get(),
                 ToolItems.SUPER_ABSORBANT_SPONGE.get(),
                 ToolItems.HONEY_ABSORBANT_SPONGE.get(),
                 ToolItems.LAVA_ABSORBANT_SPONGE.get(),
@@ -1104,8 +1112,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ModItems.FERTILE_SINGULARITY.get(),
                 ModItems.PERPLEXED_CAT_MEDAL.get(),
                 ModItems.PULSAR.get(),
-                ModItems.MYSTERIOUS_NOTE.get(),
-                ModItems.HARDMODE_CONVERTOR.get(),
                 ModItems.HIVE_WAND.get(),
                 HamaxeItems.SPECTRE_HAMAXE.get(),
                 HamaxeItems.SOLAR_FLARE_HAMAXE.get(),
@@ -1182,10 +1188,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 AxeItems.TITANIUM_WARAXE.get(),
                 AxeItems.CHLOROPHYTE_GREATAXE.get(),
                 AxeItems.LUCY_THE_AXE.get(),
-                ArmorItems.NECRO_HELMET.get(),
-                ArmorItems.NECRO_CHESTPLATE.get(),
-                ArmorItems.NECRO_LEGGINGS.get(),
-                ArmorItems.NECRO_BOOTS.get(),
                 ArmorItems.GOGGLES.get(),
                 ArmorItems.WIZARD_HAT.get(),
                 ArmorItems.MAGIC_HAT.get(),
@@ -1197,10 +1199,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ArmorItems.MYSTIC_ROBE.get(),
                 ArmorItems.DIAMOND_ROBE.get(),
                 ArmorItems.AMBER_ROBE.get(),
-                ArmorItems.JUNGLE_HELMET.get(),
-                ArmorItems.JUNGLE_CHESTPLATE.get(),
-                ArmorItems.JUNGLE_LEGGINGS.get(),
-                ArmorItems.JUNGLE_BOOTS.get(),
                 ArmorItems.COBALT_MASK.get(),
                 ArmorItems.COBALT_HAT.get(),
                 ArmorItems.COBALT_HELMET.get(),
@@ -1244,7 +1242,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ArmorItems.HALLOWED_CHESTPLATE.get(),
                 ArmorItems.HALLOWED_LEGGINGS.get(),
                 ArmorItems.HALLOWED_BOOTS.get(),
-                ArmorItems.SPIDER_BOOTS.get(),
+                ArmorItems.SPIDER_HELMET.get(),
                 ArmorItems.SPIDER_CHESTPLATE.get(),
                 ArmorItems.SPIDER_LEGGINGS.get(),
                 ArmorItems.SPIDER_BOOTS.get(),
@@ -1323,6 +1321,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getStrippedWood().asItem(),
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getTrapdoor().asItem(),
                 NatureBlocks.SPOOKY_LOG_BLOCKS.getDoor().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getLeaves().asItem(),
                 NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.asItem(),
                 PotBlocks.OCEAN_POT.asItem(),
                 OreBlocks.RAW_METEORITE_BLOCK.asItem(),
@@ -1350,8 +1350,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 OreBlocks.RAW_TITANIUM_BLOCK.asItem(),
                 OreBlocks.TITANIUM_BLOCK.asItem(),
                 DecorativeBlocks.OBSIDIAN_BRICKS_DOOR.asItem(),
-                DecorativeBlocks.DUNGEON_DOOR.asItem(),
-                DecorativeBlocks.ENCHANTED_BLUE_BRICKS.asItem(),
                 DecorativeBlocks.ENCHANTED_GREEN_BRICKS.asItem(),
                 DecorativeBlocks.ENCHANTED_PINK_BRICKS.asItem(),
                 DecorativeBlocks.LIHZAHRD_DOOR.asItem(),
@@ -1386,6 +1384,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 StatueBlocks.LIHZAHRD_STATUE.asItem(),
                 StatueBlocks.LIHZAHRD_GUARDIAN_STATUE.asItem(),
                 StatueBlocks.LIHZAHRD_WATCHER_STATUE.asItem(),
+                StatueBlocks.ARMED_ZOMBIE_STATUE.asItem(),
                 StatueBlocks.BONE_SKELETON_STATUE.asItem(),
                 StatueBlocks.CORRUPT_STATUE.asItem(),
                 StatueBlocks.DRIPPLER_STATUE.asItem(),
@@ -1429,14 +1428,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.AMMO_BOX.asItem(),
                 FunctionalBlocks.BEWITCHING_TABLE.asItem(),
                 FunctionalBlocks.KEG.asItem(),
-                FunctionalBlocks.CRYSTAL_BALL.asItem(),
                 FunctionalBlocks.MYTHRIL_ANVIL.asItem(),
                 FunctionalBlocks.ORICHALCUM_ANVIL.asItem(),
                 FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.asItem(),
                 FunctionalBlocks.BLEND_O_MATIC.asItem(),
                 FunctionalBlocks.MEAT_GRINDER.asItem(),
                 FunctionalBlocks.LIFE_CAMPFIRE.asItem(),
-                FunctionalBlocks.SAFE.asItem(),
                 FunctionalBlocks.SPIKE.asItem(),
                 FunctionalBlocks.WOODEN_SPIKE.asItem(),
                 FunctionalBlocks.FRAGILE_BLUE_BRICKS.asItem(),
@@ -1487,11 +1484,20 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);
         DrillItems.ITEMS.getEntries().forEach(wipAction);
-        TGItems.GUNS.getEntries().forEach(wipAction);
-        TGItems.BULLETS.getEntries().forEach(wipAction);
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
         TMItems.ITEMS.getEntries().forEach(wipAction);
 
+        tag(TGTags.GUN).add(
+                GunItems.STAR_CANNON.get()
+        );
+        tag(TGTags.AUTOMATIC_GUN).add(
+                ManaWeaponItems.BEE_GUN.get(),
+                ManaWeaponItems.SPACE_GUN.get(),
+                GunItems.STAR_CANNON.get()
+        );
+        tag(TGTags.AMMO).add(
+                MaterialItems.FALLING_STAR.get()
+        );
         tag(ModTags.Items.DEATH).add(
                 FunctionalBlocks.DEATH_CHEST_BLOCK.asItem(),
                 FunctionalBlocks.SHIMMER_TRAP.asItem(),

@@ -133,6 +133,10 @@ public final class ModFluids {
         addItem(ANGLER_EARRING.get(), TACKLE_BOX.get());
         addItem(TACKLE_BOX.get(), HIGH_TEST_FISHING_LINE.get());
         addItem(STAR_CLOAK.get(), CHROMATIC_CLOAK.get());
+        addItem(SUMMONER_EMBLEM.get(), WARRIOR_EMBLEM.get());
+        addItem(WARRIOR_EMBLEM.get(), RANGER_EMBLEM.get());
+        addItem(RANGER_EMBLEM.get(), SORCERER_EMBLEM.get());
+        addItem(SORCERER_EMBLEM.get(), SUMMONER_EMBLEM.get());
         // todo 火把转化
         // 临时转化
         addItem(Blocks.SCULK.asItem(), FunctionalBlocks.ECHO_BLOCK.get().asItem());

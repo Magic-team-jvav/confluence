@@ -103,5 +103,13 @@
       "dialogs.confluence.angler.4",
       "dialogs.confluence.angler.5"
     ]
+  },
+  "terra_entity:old_man": {
+    "dialogs": [
+      "dialogs.confluence.old_man.0",
+      "dialogs.confluence.old_man.1",
+      "dialogs.confluence.old_man.2",
+      "dialogs.confluence.old_man.3"
+    ]
   }
 }

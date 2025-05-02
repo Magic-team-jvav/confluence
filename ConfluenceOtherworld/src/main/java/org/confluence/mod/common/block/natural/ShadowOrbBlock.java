@@ -22,11 +22,11 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.util.GlobalColors;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.LightPetItems;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.entity.boss.EaterOfWorlds;
 import org.jetbrains.annotations.Nullable;
@@ -69,7 +69,7 @@ public class ShadowOrbBlock extends Block {
             }
 
             for (ServerPlayer player : serverLevel.getPlayers(serverPlayer -> serverPlayer.distanceToSqr(center) <= 32 * 32)) {
-                PlayerUtils.awardAchievement(player, "smashing_poppet");
+                ModAchievements.awardAchievement(player, "smashing_poppet");
             }
 
             if (count != 2) {
@@ -87,7 +87,7 @@ public class ShadowOrbBlock extends Block {
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
         super.playerDestroy(level, player, pos, state, blockEntity, tool);
         if (player instanceof ServerPlayer serverPlayer) {
-            PlayerUtils.awardAchievement(serverPlayer, "smashing_poppet");
+            ModAchievements.awardAchievement(serverPlayer, "smashing_poppet");
         }
     }
 

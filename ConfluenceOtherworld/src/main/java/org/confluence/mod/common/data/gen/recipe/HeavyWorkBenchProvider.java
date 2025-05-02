@@ -20,6 +20,7 @@ import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 import org.confluence.terra_furniture.common.init.TFBlocks;
+import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.item.TEWhipItems;
 
 import java.util.List;
@@ -280,6 +281,89 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " /",
                 " /"
         )), HoeItems.GOLDEN_HOE.toStack());
+        // 星星炮
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(4,MaterialItems.METEORITE_INGOT),
+                'A', Ingredient.of(TGItems.MINISHARK),
+                '/', AmountIngredient.of(5,MaterialItems.FALLING_STAR)
+        ), List.of(
+                " ## ",
+                "# A/",
+                " ## "
+        )), GunItems.STAR_CANNON.toStack());
+        // 死灵套装
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'A', AmountIngredient.of(10,MaterialItems.DUNGEON_DEMON_BONE),
+                '/', AmountIngredient.of(10,Items.COBWEB)
+        ), List.of(
+                "/A/",
+                "A A"
+        )), ArmorItems.NECRO_HELMET.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'A', AmountIngredient.of(10,MaterialItems.DUNGEON_DEMON_BONE),
+                '/', AmountIngredient.of(5,Items.COBWEB)
+        ), List.of(
+                "/ /",
+                "/A/",
+                "AAA"
+        )), ArmorItems.NECRO_CHESTPLATE.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'A', AmountIngredient.of(10,MaterialItems.DUNGEON_DEMON_BONE),
+                '/', AmountIngredient.of(5,Items.COBWEB)
+        ), List.of(
+                "/A/",
+                "/ /",
+                "A A"
+        )), ArmorItems.NECRO_LEGGINGS.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'A', AmountIngredient.of(10,MaterialItems.DUNGEON_DEMON_BONE),
+                '/', AmountIngredient.of(10,Items.COBWEB)
+        ), List.of(
+                "/ /",
+                "A A"
+        )), ArmorItems.NECRO_BOOTS.toStack());
+        // 丛林套装
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'A', AmountIngredient.of(2,MaterialItems.JUNGLE_SPORE)
+        ), List.of(
+                "AAA",
+                "A A"
+        )), ArmorItems.JUNGLE_HELMET.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'A', AmountIngredient.of(2,MaterialItems.JUNGLE_SPORE),
+                '/', AmountIngredient.of(2,MaterialItems.STINGER)
+        ), List.of(
+                "A A",
+                "/A/",
+                "/A/"
+        )), ArmorItems.JUNGLE_CHESTPLATE.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'A', AmountIngredient.of(2,MaterialItems.JUNGLE_SPORE),
+                '/', Ingredient.of(MaterialItems.STINGER),
+                'b', Ingredient.of(MaterialItems.MAN_EATER_VINE)
+        ), List.of(
+                "bAb",
+                "/ /",
+                "A A"
+        )), ArmorItems.JUNGLE_LEGGINGS.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(MaterialItems.JUNGLE_SPORE),
+                '/', Ingredient.of(MaterialItems.STINGER)
+        ), List.of(
+                "/ /",
+                "A A"
+        )), ArmorItems.JUNGLE_BOOTS.toStack());
+        // 草剑
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(7,MaterialItems.JUNGLE_SPORE),
+                'b', Ingredient.of(MaterialItems.MAN_EATER_VINE),
+                'c', AmountIngredient.of(4,MaterialItems.STINGER)
+        ), List.of(
+                "   c",
+                " cb ",
+                "abc ",
+                "ba  "
+        )), SwordItems.BLADE_OF_GRASS.toStack());
     }
 
     protected void heavyWorkBench(RecipeOutput recipeOutput, String suffix, ShapedRecipePattern pattern, ItemStack result) {

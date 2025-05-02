@@ -6,23 +6,8 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:golden_key",
+          "name": "confluence:golden_dungeon_key",
           "weight": 1
-        }
-      ],
-      "rolls": 1
-    },
-    {
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "confluence:shadow_key",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:empty",
-          "weight": 2
         }
       ],
       "rolls": 1

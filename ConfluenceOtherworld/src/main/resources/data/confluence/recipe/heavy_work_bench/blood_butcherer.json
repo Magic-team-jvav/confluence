@@ -1,0 +1,24 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        "  cc",
+        " cc ",
+        "c/  ",
+        "/   "
+    ],
+    "key": {
+        "c": {
+            "type": "confluence_magic_lib:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:tr_crimson_ingot"
+            },
+            "count": 2
+        },
+        "/": {
+            "item": "confluence:vertebra"
+        }
+    },
+    "result": {
+        "id": "confluence:blood_butcherer"
+    }
+}

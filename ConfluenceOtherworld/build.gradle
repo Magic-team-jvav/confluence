@@ -140,7 +140,7 @@ repositories {
 
 var vanillin = false // 香兰素
 var delight = true
-var observable = true // 可视性能侦测
+var observable = false // 可视性能侦测
 var ftb = false
 
 dependencies {

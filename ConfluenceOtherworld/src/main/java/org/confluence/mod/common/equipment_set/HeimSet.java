@@ -1,12 +1,11 @@
 package org.confluence.mod.common.equipment_set;
 
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSet;
-import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
+import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import com.xiaohunao.equipment_benediction.common.init.EBHookTypes;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -28,9 +27,9 @@ public class HeimSet extends EquipmentSet {
                 .build());
         equippableGroup.addEquippableSet("chestplate", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.CHEST, ArmorItems.HEIM_CHESTPLATE)
-                .bindDelayHook(EBHookTypes.LIVING_SHIELD_BLOCK.get(), (owner, event) -> {
-                    event.getEntity().addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 40, 1));
-                },60)
+//                .bindDelayHook(EBHookTypes.LIVING_SHIELD_BLOCK.get(), (owner, event) -> {
+//                    event.getEntity().addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 40, 1));
+//                }, 60)
                 .build());
         equippableGroup.addEquippableSet("leggings", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.LEGS, ArmorItems.HEIM_LEGGINGS)
@@ -42,17 +41,18 @@ public class HeimSet extends EquipmentSet {
                 .build());
 
         equippableGroup.addEquippableSet("heim_set", new EquipmentSetBranch.Builder()
-                        .addEquippable(
-                                VanillaEquippable.HEAD, ArmorItems.HEIM_HELMET,
-                                VanillaEquippable.CHEST, ArmorItems.HEIM_CHESTPLATE,
-                                VanillaEquippable.LEGS, ArmorItems.HEIM_LEGGINGS,
-                                VanillaEquippable.FEET, ArmorItems.HEIM_BOOTS
-                        )
-                        .bindHook(EBHookTypes.UNEQUIP_EQUIPMENT.get(), (owner, changeContext) -> {
-                            changeContext.livingEntity().removeEffect(MobEffects.ABSORPTION);
-                        })
-                        .bindTimerHook(EBHookTypes.EQUIP_EQUIPMENT.get(), (Owner, changeContext) ->
-                                changeContext.livingEntity().addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 40, 1)),80)
+                .addEquippable(
+                        VanillaEquippable.HEAD, ArmorItems.HEIM_HELMET,
+                        VanillaEquippable.CHEST, ArmorItems.HEIM_CHESTPLATE,
+                        VanillaEquippable.LEGS, ArmorItems.HEIM_LEGGINGS,
+                        VanillaEquippable.FEET, ArmorItems.HEIM_BOOTS
+                )
+                .bindHook(EBHookTypes.UNEQUIP_EQUIPMENT.get(), (owner, changeContext) -> {
+                    changeContext.livingEntity().removeEffect(MobEffects.ABSORPTION);
+                })
+//                .bindTimerHook(EBHookTypes.EQUIP_EQUIPMENT.get(), (Owner, changeContext) -> {
+//                    changeContext.livingEntity().addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 40, 1));
+//                }, 80)
                 .build()
         );
     }

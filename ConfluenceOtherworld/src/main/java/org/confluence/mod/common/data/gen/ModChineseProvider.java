@@ -8,7 +8,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.integration.ponder.PonderHelper;
+import org.confluence.mod.integration.create.ponder.PonderHelper;
 
 import static org.confluence.mod.common.init.item.PickaxeItems.MOLTEN_PICKAXE;
 
@@ -82,7 +82,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.echo_block.0", "只在回声视觉下才能看到");
         add("tooltip.item.confluence.advanced_combat_techniques.0", "增强所有城镇居民的防御力和力量");
         add("tooltip.item.confluence.advanced_combat_techniques.1", "“包含攻防战斗技能”");
+        add("tooltip.item.confluence.advanced_combat_techniques_volume_two.0", "增强所有城镇居民的防御力和力量");
+        add("tooltip.item.confluence.advanced_combat_techniques_volume_two.1", "“包含攻防战斗技术，卷二！”");
         add("tooltip.item.confluence.binoculars.0", "使用时扩大视野，鼠标滚轮可调整缩放");
+        add("tooltip.item.confluence.meteor_compass.0", "退出存档将会失去之前记录的坐标");
 
         add("tooltip.item.confluence.slime_crown.0", "右键使用以召唤史莱姆王");
         add("tooltip.item.confluence.slime_crown.1", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");
@@ -113,7 +116,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.ice_tofu_brick.0", "它现在不能吃了，但不妨碍它把你吃了");
         add("tooltip.item.confluence.pink_cola.0", "一瓶普通的粉色可乐，或许原来有一整箱？");
         add("tooltip.item.confluence.dongdongs_flatbread.0", "刚在下界岩上考好的饼，快来尝尝吧！");
-
         add("tooltip.item.confluence.boredoms_pact_falling_resolve.0", "「无聊之咒·陨志」");
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.1", "(Boredom's Pact - Falling Resolve)");
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.2", "           ");
@@ -125,11 +127,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.8", "佩戴者终将明白：所谓'不摧'，不过是逃得比死亡快一秒。");
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.9", "而灵魂早被碾成岩缝里的尘，比魔像的空壳更荒芜。");
 
-        add("text.building_0", "施工中");
-        add("text.building_1", "预计%s完成");
-        add("text.building_2", "请勿靠近!");
-
-        //  文本物品↓
+        // 文本物品↓
         add("item.confluence.afterlife_notes", "来世手记");
         add("item.confluence.village_exploration", "村庄环游起源");
         add("item.confluence.research_on_wheat_mutation", "关于小麦异变的研究");
@@ -137,47 +135,50 @@ public class ModChineseProvider extends LanguageProvider {
         add("item.confluence.research_on_cloud_blocks_2", "关于对云块的研究 II");
         add("item.confluence.meteor_diary", "流星日记");
 
-        //note
+        // note
         add("item.confluence.mysterious_note.name_0", "带牙印的小纸条");
-        add("item.confluence.mysterious_note.name_1", "带橘子气息的小纸条");
-        add("item.confluence.mysterious_note.name_2", "数据化的小纸条");
-        add("item.confluence.mysterious_note.name_3", "温柔的小纸条");
-        add("item.confluence.mysterious_note.name_4", "被啃一半的小纸条");
-
-        add("item.confluence.mysterious_slate.name_0", "认真的石板");
-        add("item.confluence.mysterious_slate.name_1", "异常古老的石板");
-
-        add("text.confluence.afterlife_notes", "  冒险者，新的天地充满了无尽的挑战与机遇，这本手记将帮助你了解这个世界的奥秘，指引你面对怪物和困境，只有不断探索，你才能发现更多的力量与宝藏，你的旅途才刚刚开始。                            —— 向导");
-        add("text.confluence.village_exploration", "世界异变悄然降临，生灵阴暗的邪念纷纷爆发，外界的肉体侵扰接踵而至。所有可用的资源，皆被唤醒。新世界的降临，既带来了毁灭的阴影，也打开了新的可能。建筑如腾飞的鸟儿，直抵苍穹，令人惊叹。曾经无法触及的云彩，如今化作实体的方块，映衬出人们心中的渴望。在探索的旅程中，他们掌握了前所未有的知识，发现了新的植物，仿佛在喧嚣中寻得了一隅宁静。在那片");
-        add("text.confluence.research_on_wheat_mutation", "我们发现，带来的小麦竟开始发白、发黄。起初，我们以为它们无法适应这陌生的环境，直到一块云块轻盈飘过，它把小麦染上了彩霞的色彩，幻化为一种全新的植物。对这异变的产物，我们心中难免生出怀疑——直到有人忍饥挨饿，迫切渴望食物。奇怪的是，明明吃饱了，身体却似乎愈发轻盈，仿佛与大地的重负渐行渐远。在这奇异的世界里，变化与困惑交织，我们开始重新审");
-        add("text.confluence.research_on_cloud_blocks_1", "云块，无毒的存在，成分为天际凝结的冰晶，含量各异。随着与异星的长时间接触，这些云彩逐渐实体化，能够承载成年人的重量，护佑他们免受强烈动能的冲击。然而，靠近的植物却开始出现异变，我们对此仍感到困惑，不知这奇异的变迁何以而生。在这神秘的交汇处，云与植物编织出未知的故事，仿佛大自然正悄然书写着新篇章。");
-        add("text.confluence.research_on_cloud_blocks_2", "随着研究的深入，我们渐渐发现，云块与一种名为云织草的植物其实是同质的存在。云织草在云块之上生长，静静收集高空的水汽，直到孕育出全新的云块。如今，这种植物已被移植到云的花圃中，成为我们重要的建筑资源。在这神秘的空间里，植物与云彩交融，编织出无尽的可能，将构筑梦想的力量交付于大地。");
-        add("text.confluence.meteor_diary", "它们划破夜空，令怪物们心生畏惧；而我们却常常对着流星，静静许下愿望。或许，它们真的拥有无形的魔力。孩子们仰望，满怀喜悦，追逐着那微弱的光辉；它们从云间悄然生长，又轻盈地从云中坠落。在这夜的舞台上，流星闪烁着希望的光芒，温暖着每一个期待的心灵。");
-        add("text.confluence.village_exploration_0", "净土上，新的希望悄然滋生，带来了久违的安详。");
-        add("text.confluence.research_on_wheat_mutation_0", "视，食物的本质和生命的奇迹。");
-
-        add("lore.confluence.village_exploration", "看不出详细的年代，但是感觉包装很精良的样子......");
-        add("lore.confluence.research_on_wheat_mutation", "书页中混杂着一些粉末，但是好像并不是书页老化出来的粉末......");
-        add("lore.confluence.research_on_cloud_blocks_1", "明明很厚一本书，拿在手上却轻飘飘的。看标题的样子好像还有另一本？");
-        add("lore.confluence.research_on_cloud_blocks_2", "书页摸起来非常柔软，就好像丝绸一样。看标题的样子好像还有另一本？");
-        add("lore.confluence.meteor_diary", "很薄的书，但似乎有些荧荧微光。");
-
-        //note
         add("lore.confluence.mysterious_note_0", "呜被你发现了，不要告诉别人小狗藏在这里UQYQU");
+        add("item.confluence.mysterious_note.name_1", "带橘子气息的小纸条");
         add("lore.confluence.mysterious_note_1", "嘿，既然被你找到了，就告诉你吧。其实，和你在一块睡觉的某只动物，很可能是牢枕的眼线哦");
+        add("item.confluence.mysterious_note.name_2", "数据化的小纸条");
         add("lore.confluence.mysterious_note_2", "最初的勇者不求回报，只愿所有向往冒险的灵魂，都能自由地拾取这些珍贵馈赠，在冒险中绽放属于自己的光芒。请守护这份来自勇者的善意，莫让利益的阴霾，遮蔽了来世自由与希望的光芒。");
+        add("item.confluence.mysterious_note.name_3", "温柔的小纸条");
         add("lore.confluence.mysterious_note_3", "希望看到这张字条的冒险者可以学习顺心，工作顺利，生活事事如意，不管什么阴霾都会很快过去的因为我们都要向着明天前进。");
+        add("item.confluence.mysterious_note.name_4", "被啃一半的小纸条");
         add("lore.confluence.mysterious_note_4", "汇流乐事什么时候才开始制作啊，我都已经等的变成傻子了");
 
+        add("item.confluence.mysterious_slate.name_0", "认真的石板");
         add("lore.confluence.mysterious_slate_0", "“冷知识：其实召唤师要和召唤物进行心灵沟通，盔甲防护不能太厚否则会影响沟通。”");
+        add("item.confluence.mysterious_slate.name_1", "异常古老的石板");
         add("lore.confluence.mysterious_slate_1", "“这一切要从月球领主卖的氵……（内容被血迹覆盖了，看不清全貌）”");
+
+        add("text.building_0", "施工中");
+        add("text.building_1", "预计版本%s完成");
+        add("text.building_2", "请勿靠近!");
+
+        add("text.confluence.afterlife_notes", "冒险者，新的天地充满了无尽的挑战与机遇，这本手记将帮助你了解这个世界的奥秘，指引你面对怪物和困境，只有不断探索，你才能发现更多的力量与宝藏，你的旅途才刚刚开始。 —— 向导");
+
+        add("text.confluence.village_exploration", "世界异变悄然降临，生灵阴暗的邪念纷纷爆发，外界的肉体侵扰接踵而至。所有可用的资源，皆被唤醒。新世界的降临，既带来了毁灭的阴影，也打开了新的可能。建筑如腾飞的鸟儿，直抵苍穹，令人惊叹。曾经无法触及的云彩，如今化作实体的方块，映衬出人们心中的渴望。在探索的旅程中，他们掌握了前所未有的知识，发现了新的植物，仿佛在喧嚣中寻得了一隅宁静。在那片");
+        add("lore.confluence.village_exploration", "看不出详细的年代，但是感觉包装很精良的样子......");
+        add("text.confluence.village_exploration_0", "净土上，新的希望悄然滋生，带来了久违的安详。");
+
+        add("text.confluence.research_on_wheat_mutation", "我们发现，带来的小麦竟开始发白、发黄。起初，我们以为它们无法适应这陌生的环境，直到一块云块轻盈飘过，它把小麦染上了彩霞的色彩，幻化为一种全新的植物。对这异变的产物，我们心中难免生出怀疑——直到有人忍饥挨饿，迫切渴望食物。奇怪的是，明明吃饱了，身体却似乎愈发轻盈，仿佛与大地的重负渐行渐远。在这奇异的世界里，变化与困惑交织，我们开始重新审");
+        add("lore.confluence.research_on_wheat_mutation", "书页中混杂着一些粉末，但是好像并不是书页老化出来的粉末......");
+        add("text.confluence.research_on_wheat_mutation_0", "视，食物的本质和生命的奇迹。");
+
+        add("text.confluence.research_on_cloud_blocks_1", "云块，无毒的存在，成分为天际凝结的冰晶，含量各异。随着与异星的长时间接触，这些云彩逐渐实体化，能够承载成年人的重量，护佑他们免受强烈动能的冲击。然而，靠近的植物却开始出现异变，我们对此仍感到困惑，不知这奇异的变迁何以而生。在这神秘的交汇处，云与植物编织出未知的故事，仿佛大自然正悄然书写着新篇章。");
+        add("lore.confluence.research_on_cloud_blocks_1", "明明很厚一本书，拿在手上却轻飘飘的。看标题的样子好像还有另一本？");
+        add("text.confluence.research_on_cloud_blocks_2", "随着研究的深入，我们渐渐发现，云块与一种名为云织草的植物其实是同质的存在。云织草在云块之上生长，静静收集高空的水汽，直到孕育出全新的云块。如今，这种植物已被移植到云的花圃中，成为我们重要的建筑资源。在这神秘的空间里，植物与云彩交融，编织出无尽的可能，将构筑梦想的力量交付于大地。");
+        add("lore.confluence.research_on_cloud_blocks_2", "书页摸起来非常柔软，就好像丝绸一样。看标题的样子好像还有另一本？");
+
+        add("text.confluence.meteor_diary", "它们划破夜空，令怪物们心生畏惧；而我们却常常对着流星，静静许下愿望。或许，它们真的拥有无形的魔力。孩子们仰望，满怀喜悦，追逐着那微弱的光辉；它们从云间悄然生长，又轻盈地从云中坠落。在这夜的舞台上，流星闪烁着希望的光芒，温暖着每一个期待的心灵。");
+        add("lore.confluence.meteor_diary", "很薄的书，但似乎有些荧荧微光。");
 
         add("author.confluence.the_ancestor_of_explorers", "最初的发起人");
         add("author.confluence.sheila", "希尔娜");
         add("author.confluence.lorissa", "洛丽莎");
         add("author.confluence.annaleigh", "安娜莉");
 
-        // 世界机制
         add("worldgen.confluence.placing_traps", "正在放置机关");
         add("worldgen.confluence.generating_bees", "正在生成蜜蜂");
         add("worldgen.confluence.generating_wavy_caves", "正在生成皱曲洞穴");
@@ -326,7 +327,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.soul_of_might.0", "“毁灭者的精华”");
         add("tooltip.item.confluence.soul_of_sight.0", "“全知看守者的精华”");
         add("tooltip.item.confluence.soul_of_fright.0", "“纯粹恐惧的精华”");
-        add("tooltip.item.confluence.golden_key.0", "“打开一个锁住的金箱或金锁盒”");
+        add("tooltip.item.confluence.golden_dungeon_key.0", "“打开一个锁住的地牢箱或金锁盒”");
+        add("tooltip.item.confluence.golden_key.0", "“打开一个锁住的金箱”");
         add("tooltip.item.confluence.shadow_key.0", "“打开所有暗影箱和黑曜石锁盒”");
         add("tooltip.item.confluence.temple_key.0", "“打开丛林神庙的大门”");
         add("tooltip.item.confluence.jungle_key.0", "“打开地牢中的丛林箱”");
@@ -365,6 +367,14 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.solar_wings.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.stardust_wings.0", "可飞行和缓慢坠落");
 
+        add("confluence.configuration.WorldGeneration", "世界生成机制");
+        add("confluence.configuration.WorldGeneration.tooltip", "一些世界生成相关设置");
+        add("confluence.configuration.replaceVanillaGeodeFeature", "替换原版晶洞地物");
+        add("confluence.configuration.replaceVanillaGeodeFeature.tooltip", "原版晶洞地物有可能对部分结构造成影响，启用此选项可解决其带来的问题");
+        add("confluence.configuration.brewing_stand_recipe", "泰拉药水酿造台配方");
+        add("confluence.configuration.brewing_stand_recipe.tooltip", "启用时，酿造台可以酿造泰拉药水");
+        add("confluence.configuration.alertPlayerDungeon", "地牢守卫警告");
+        add("confluence.configuration.alertPlayerDungeon.tooltip", "启用时，地牢守卫出现前将有三次吼叫警告");
         add("confluence.configuration.achievementToast", "启用泰拉样式成就");
         add("confluence.configuration.achievementToast.tooltip", "如果想使用原版样式进度的话就关闭它");
         add("confluence.configuration.playerOurMusic", "启用泰拉音乐");
@@ -535,7 +545,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("achievements.confluence.extra_shiny.title", "光彩夺目");
         add("achievements.confluence.extra_shiny.description", "开采你的世界新获赐的强大矿石。");
         add("achievements.confluence.dungeon_heist.title", "地牢大劫案");
-        add("achievements.confluence.dungeon_heist.description", "从地牢的亡灵居民处偷取钥匙，并打开一个它们的宝贵金宝箱。");
+        add("achievements.confluence.dungeon_heist.description", "从地牢的亡灵居民处偷取钥匙，并打开一个它们的宝贵地牢宝箱。");
         add("achievements.confluence.drax_attax.title", "斧钻战队");
         add("achievements.confluence.drax_attax.description", "用神圣锭和三个机械Boss的灵魂制作斧钻或镐斧。");
         add("achievements.confluence.dead_men_tell_no_tales.title", "死人不会告密");
@@ -823,6 +833,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("condition.confluence.requires_fuel", "需要燃料");
 
         add("container.confluence.sky_mill", "天磨");
+        add("container.confluence.safe", "保险箱");
         add("container.confluence.heavy_work_bench", "重型工作台");
         add("container.confluence.crystal_ball", "水晶球");
         add("container.confluence.hellforge", "地狱熔炉");
@@ -871,6 +882,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("block.confluence.base_chest_block.death_sandstone", "§r死人砂岩箱");
         add("block.confluence.base_chest_block.unlocked_living_wood", "§r生命木箱");
         add("block.confluence.base_chest_block.death_living_wood", "§r死人生命木箱");
+        add("block.confluence.base_chest_block.locked_dungeon", "§r上锁的地牢箱");
+        add("block.confluence.base_chest_block.unlocked_dungeon", "§r地牢箱");
+        add("block.confluence.base_chest_block.death_dungeon", "§r死人地牢箱");
 
         add("resourcepack.terraria_art", "泰拉艺术");
         add("resourcepack.terraria_armor", "泰拉盔甲样式材质");
@@ -988,7 +1002,21 @@ public class ModChineseProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.heim_set.data.1", "成功使用护盾拦截下一次攻击后三秒内伤害提高20%，三秒提高过程中你发动攻击命中或被击中时停止，近战伤害提高1%");
         add("equipment_benediction.set_switcher.confluence.heim_set.data.2", "增加2%暴击率，近战伤害提高1%");
         add("equipment_benediction.set_switcher.confluence.heim_set.data.3", "提高水下移动速度5%，近战伤害提高1%");
-        add("equipment_benediction.set_switcher.confluence.heim_set.data.4", "赋予你4点血量的伤害吸收，每隔5分钟再次赋予");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.4", "赋予你4点血量的伤害吸收，每隔3秒钟再次赋予");
+
+        add("equipment_benediction.set_switcher.confluence.necro_set", "死灵套装");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.0", "远程伤害提高5%");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.1", "远程伤害提高5%");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.2", "远程伤害提高2.5%");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.3", "远程伤害提高2.5%");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.4", "远程暴击率提高10%，不消耗弹药几率提高20%");
+
+        add("equipment_benediction.set_switcher.confluence.jungle_set", "丛林套装");
+        add("equipment_benediction.set_switcher.confluence.jungle_set.data.0", "最大魔力增加40，暴击率提高6%");
+        add("equipment_benediction.set_switcher.confluence.jungle_set.data.1", "最大魔力增加20，魔法伤害提高6%");
+        add("equipment_benediction.set_switcher.confluence.jungle_set.data.2", "最大魔力增加10，暴击率提高3%");
+        add("equipment_benediction.set_switcher.confluence.jungle_set.data.3", "最大魔力增加10，暴击率提高3%");
+        add("equipment_benediction.set_switcher.confluence.jungle_set.data.4", "魔力消耗降低16%");
 
         // npc对话
         add("dialogs.confluence.guide.0", "我的工作是为你接下来的任务提供建议。建议你遇到任何困难时都来和我谈谈。");
@@ -1007,7 +1035,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("dialogs.confluence.guide.13", "拥有一把剑后，你可以试试从史莱姆身上收集一些凝胶。用木棍和凝胶制作火把！");
         add("dialogs.confluence.guide.14", "如果你拥有了一些矿石，你需要将它铸成矿锭，才能用来制作物品。这需要熔炉！");
         add("dialogs.confluence.guide.15", "如果在祭坛上合成晶状体，你也许能够找到方法来召唤一个强大的怪物。不过，最好等到夜晚再用它。");
-
 
         add("dialogs.confluence.nurse.0", "我要和向导认真谈一谈。你一周到底有多少次被熔岩烫成重伤？");
         add("dialogs.confluence.nurse.1", "看到那个在地牢周围转来转去的老人没？他看上去遇到麻烦了。");
@@ -1072,23 +1099,25 @@ public class ModChineseProvider extends LanguageProvider {
         add("dialogs.confluence.angler.4", "嘿！当心！我设了许多陷阱，用来实施史上最大的恶作剧！没人会发觉！你敢告诉别人试试！");
         add("dialogs.confluence.angler.5", "听说过会叫的鱼吗？！我没听说过，只是想知道你听说过没！");
 
-        add("goblin_tinkerer_like_dye_trader", "染料商知道把东西混在一起是多么有趣，我能理解！");
-        add("guide_hate_painter", "我讨厌油漆工在附近。世界本来挺美好的！");
-        add("arms_dealer_hate_demolitionist", "爆破专家怎么回事啊？难道他没发现我们卖的东西完全不同？");
-        add("arms_dealer_love_nurse", "那啥，你觉得护士对我有意思吗");
-        add("angler_like_demolitionist", "爆破专家其实知道他们在做什么，不像某些其他人！我挺喜欢的！");
-        add("dye_trader_like_arms_dealer", "军火商善于发现鲜艳的颜色和商机，对吧？我喜欢。");
-        add("dye_trader_like_painter", "油漆工善于发现鲜艳的颜色和商机，对吧？我喜欢。”");
-        add("demolitionist_dislike_arms_dealer", "我想把军火商绑到火箭上，看看会发生什么！");
-        add("demolitionist_dislike_goblin_tinkerer", "我想把哥布林工匠绑到火箭上，看看会发生什么！");
-        add("painter_love_dryad", "我真的很想画树妖……当然是因为色彩鲜艳！");
-        add("dryad_dislike_angler", "我不喜欢渔夫不尊重其他生物。");
-        add("merchant_like_nurse", "护士赚了很多钱，我喜欢有钱人。");
-        add("nurse_love_arms_dealer", "什么？军火商？我才没有暗恋他！我没有！闭嘴！");
-        add("nurse_dislike_dryad", "我不太喜欢树妖，这个人有点奇怪。");
+        add("dialogs.confluence.old_man.0", "如果你不解除我的诅咒，我是不会让你进的。");
+        add("dialogs.confluence.old_man.1", "陌生人，你是否拥有能打败我主人的力量？");
+        add("dialogs.confluence.old_man.2", "打败我的主人，我就让你进入地牢。");
+        add("dialogs.confluence.old_man.3", "你要想进去的话就晚上再来。");
 
-
-
+        add("mood.terra_entity.goblin_tinkerer.like.dye_trader", "染料商知道把东西混在一起是多么有趣，我能理解！");
+        add("mood.terra_entity.guide.hate.painter", "我讨厌油漆工在附近。世界本来挺美好的！");
+        add("mood.terra_entity.arms_dealer.hate.demolitionist", "爆破专家怎么回事啊？难道他没发现我们卖的东西完全不同？");
+        add("mood.terra_entity.arms_dealer.love.nurse", "那啥，你觉得护士对我有意思吗");
+        add("mood.terra_entity.angler.like.demolitionist", "爆破专家其实知道他们在做什么，不像某些其他人！我挺喜欢的！");
+        add("mood.terra_entity.dye_trader.like.arms_dealer", "军火商善于发现鲜艳的颜色和商机，对吧？我喜欢。");
+        add("mood.terra_entity.dye_trader.like.painter", "油漆工善于发现鲜艳的颜色和商机，对吧？我喜欢。”");
+        add("mood.terra_entity.demolitionist.dislike.arms_dealer", "我想把军火商绑到火箭上，看看会发生什么！");
+        add("mood.terra_entity.demolitionist.dislike.goblin_tinkerer", "我想把哥布林工匠绑到火箭上，看看会发生什么！");
+        add("mood.terra_entity.painter.love.dryad", "我真的很想画树妖……当然是因为色彩鲜艳！");
+        add("mood.terra_entity.dryad.dislike.angler", "我不喜欢渔夫不尊重其他生物。");
+        add("mood.terra_entity.merchant.like.nurse", "护士赚了很多钱，我喜欢有钱人。");
+        add("mood.terra_entity.nurse.love.arms_dealer", "什么？军火商？我才没有暗恋他！我没有！闭嘴！");
+        add("mood.terra_entity.nurse.dislike.dryad", "我不太喜欢树妖，这个人有点奇怪。");
 
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.ARROW_PROJECTILE.get(), "泰拉箭");
@@ -1547,6 +1576,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getSign().get(), "阴森告示牌");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getStairs().get(), "阴森楼梯");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getSlab().get(), "阴森台阶");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getLeaves().get(), "阴森树叶");
 
 
         add(NatureBlocks.STELLAR_BLOSSOM.get(), "星辰花");
@@ -1986,6 +2016,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SHADOW_SCALE.get(), "暗影鳞片");
         add(MaterialItems.TISSUE_SAMPLE.get(), "组织样本");
         add(MaterialItems.ROYAL_WAX.get(), "蜂王蜡");
+        add(MaterialItems.DUNGEON_DEMON_BONE.get(), "地牢魔骨");
         add(MaterialItems.CURSED_FLAME.get(), "诅咒焰");
         add(MaterialItems.ICHOR.get(), "灵液");
         add(MaterialItems.PIXIE_DUST.get(), "妖精尘");
@@ -2207,6 +2238,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.GREEN_WRENCH.get(), "绿扳手");
         add(ToolItems.YELLOW_WRENCH.get(), "黄扳手");
         add(ToolItems.WIRE_CUTTER.get(), "钢丝钳");
+        add(ToolItems.GOLDEN_DUNGEON_KEY.get(), "地牢金钥匙");
         add(ToolItems.GOLDEN_KEY.get(), "金钥匙");
         add(ToolItems.SHADOW_KEY.get(), "暗影钥匙");
         add(ToolItems.TEMPLE_KEY.get(), "神庙钥匙");
@@ -2290,12 +2322,14 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.ROTTEN_BONE_DUST.get(), "朽骨齑尘");
         add(ConsumableItems.BLOODSTAINED_POWDER.get(), "血凝痂粉");
         add(ConsumableItems.ADVANCED_COMBAT_TECHNIQUES.get(), "先进战斗技术");
+        add(ConsumableItems.ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO.get(), "先进战斗技术：卷二");
 
         add(TreasureBagItems.KING_SLIME_TREASURE_BAG.get(), "史莱姆王宝藏袋");
         add(TreasureBagItems.EYE_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之眼宝藏袋");
         add(TreasureBagItems.EATER_OF_WORLDS_TREASURE_BAG.get(), "世界吞噬怪宝藏袋");
         add(TreasureBagItems.BRAIN_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之脑宝藏袋");
         add(TreasureBagItems.QUEEN_BEE_TREASURE_BAG.get(), "蜂王宝藏袋");
+        add(TreasureBagItems.SKELETRON_TREASURE_BAG.get(), "骷髅王宝藏袋");
 
         // 杂项
         add(ModItems.COPPER_COIN.get(), "铜币");
@@ -2601,9 +2635,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeapons.RAZORPINE.get(), "剃刀松");
         add(ManaWeapons.BETSYS_WRATH.get(), "双足翼龙怒气");
          */
-        //TODO 枪！
-//        add(ManaWeaponItems.BEE_GUN.get(), "蜜蜂枪");
-//        add(ManaWeaponItems.SPACE_GUN.get(), "太空枪");
+        add(ManaWeaponItems.BEE_GUN.get(), "蜜蜂枪");
+        add(ManaWeaponItems.SPACE_GUN.get(), "太空枪");
+        add(GunItems.STAR_CANNON.get(), "星星炮");
 
         // 弓
         add(BowItems.WOODEN_SHORT_BOW.get(), "木短弓");
@@ -3339,6 +3373,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.SHADOWFLAME.get(), "暗影焰");
 
         add(TooltipManager.prefix, "** 赞助者物品 **");
+
+        add("item.confluence.spawn_eggs", "%s刷怪蛋");
 
         // 车万女仆
         add("task.confluence.use_life_crystal", "生命水晶");

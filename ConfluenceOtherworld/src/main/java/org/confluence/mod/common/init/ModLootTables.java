@@ -1,23 +1,17 @@
 package org.confluence.mod.common.init;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.item.ConsumableItems;
-import org.confluence.mod.common.init.item.FoodItems;
-import org.confluence.mod.common.init.item.MaterialItems;
-import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.integration.jei.JeiHelper;
+import org.confluence.mod.common.loot.DateLootItemCondition;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.Supplier;
 
 public final class ModLootTables {
-    public static final List<Data> LOOT_TABLES = new ArrayList<>();
-
     public static final ResourceKey<LootTable> WOODEN_CRATE = register("gameplay/crate/wooden_crate");
     public static final ResourceKey<LootTable> IRON_CRATE = register("gameplay/crate/iron_crate");
     public static final ResourceKey<LootTable> GOLDEN_CRATE = register("gameplay/crate/golden_crate");
@@ -70,35 +64,9 @@ public final class ModLootTables {
         return Confluence.asResourceKey(Registries.LOOT_TABLE, name);
     }
 
-    public static void registerDataForClient() {
-        if (JeiHelper.IS_LOADED) {
-            registerData(ConsumableItems.CLAM.get(),
-                    new Stack(MaterialItems.PEARL.get(), 1),
-                    new Stack(MaterialItems.BLACK_PEARL.get(), 1),
-                    new Stack(MaterialItems.PINK_PEARL.get(), 1),
-                    new Stack(FoodItems.SHUCKED_OYSTER.get(), 1)
-            );
-            registerData(ConsumableItems.RED_ENVELOPE.get(),
-                    new Stack(ModItems.COPPER_COIN.get(), 8),
-                    new Stack(ModItems.SILVER_COIN.get(), 8),
-                    new Stack(ModItems.GOLDEN_COIN.get(), 8)
-            );
-        }
-    }
+    public static class ItemConditions {
+        public static final DeferredRegister<LootItemConditionType> TYPES = DeferredRegister.create(BuiltInRegistries.LOOT_CONDITION_TYPE, Confluence.MODID);
 
-    private static void registerData(ItemLike itemLike, Stack... stacks) {
-        LOOT_TABLES.add(new Data(new ItemStack(itemLike), stacks));
-    }
-
-    public record Data(ItemStack itemStack, Stack[] stacks) {}
-
-    public record Stack(ItemStack itemStack, int min, int max) {
-        public Stack(ItemLike itemLike, int min, int max) {
-            this(new ItemStack(itemLike), min, max);
-        }
-
-        public Stack(ItemLike itemLike, int count) {
-            this(new ItemStack(itemLike), count, count);
-        }
+        public static final Supplier<LootItemConditionType> DATE = TYPES.register("date", () -> new LootItemConditionType(DateLootItemCondition.CODEC));
     }
 }

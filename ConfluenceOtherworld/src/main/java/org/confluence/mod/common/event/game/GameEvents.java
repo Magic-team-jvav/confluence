@@ -28,6 +28,7 @@ import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.saved.ConfluenceCommand;
+import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModRecipes;
@@ -37,7 +38,6 @@ import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.EchoVisibilityPacketS2C;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
-import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
@@ -137,7 +137,7 @@ public final class GameEvents {
         if (momentInstance.getLevel() instanceof ServerLevel) {
             if (momentInstance.is(TMMoments.BLOOD_MOON)) {
                 for (Player player : momentInstance.getPlayers()) {
-                    PlayerUtils.awardAchievement((ServerPlayer) player, "bloodbath");
+                    ModAchievements.awardAchievement((ServerPlayer) player, "bloodbath");
                 }
             }
         }

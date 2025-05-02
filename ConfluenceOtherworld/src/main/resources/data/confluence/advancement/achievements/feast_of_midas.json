@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "minecraft:barrier"
+            "id": "confluence:golden_delight"
         },
         "title": {
             "translate": "achievements.confluence.feast_of_midas.title"
@@ -16,8 +16,17 @@
     },
     "parent": "confluence:achievements/new_world",
     "criteria": {
-        "never": {
-            "trigger": "minecraft:impossible"
+        "requirement": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "confluence:golden_delight"
+                        ]
+                    }
+                ]
+            }
         }
     }
 }

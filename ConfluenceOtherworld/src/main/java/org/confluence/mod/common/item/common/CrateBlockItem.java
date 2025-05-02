@@ -37,11 +37,14 @@ public class CrateBlockItem extends BlockItem {
                         .withParameter(LootContextParams.THIS_ENTITY, player)
                         .withLuck(fishingPower)
                         .create(LootContextParamSets.GIFT);
-                LootTable loottable = serverLevel.getServer().reloadableRegistries().getLootTable(itemStack.get(ModDataComponentTypes.LOOT).lootTable());
-                for (ItemStack loot : loottable.getRandomItems(lootparams)) {
-                    if (!player.addItem(loot)) player.drop(loot, false, false);
+                LootComponent lootComponent = itemStack.get(ModDataComponentTypes.LOOT);
+                if (lootComponent != null) {
+                    LootTable loottable = serverLevel.getServer().reloadableRegistries().getLootTable(lootComponent.value());
+                    for (ItemStack loot : loottable.getRandomItems(lootparams)) {
+                        if (!player.addItem(loot)) player.drop(loot, false, false);
+                    }
+                    itemStack.shrink(1);
                 }
-                itemStack.shrink(1);
             }
         } else {
             player.playSound(ModSoundEvents.TERRA_OPERATION.get(), 0.5F, 1.0F);

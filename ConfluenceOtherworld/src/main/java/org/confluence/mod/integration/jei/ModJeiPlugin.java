@@ -112,6 +112,8 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeClickArea(AlchemyTableScreen.class, 79, 38, 18, 20, AlchemyTableCategory.TYPE);
         registration.addRecipeClickArea(CookingPotScreen.class, 78, 36, 46, 15, CookingPotCategory.TYPE);
         registration.addRecipeClickArea(HardmodeAnvilScreen.class, 78, 36, 46, 15, HardmodeAnvilCategory.TYPE);
+
+        registration.addGlobalGuiHandler(new ExtraInventoryHandler());
     }
 
     @Override

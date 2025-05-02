@@ -16,7 +16,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.integration.ponder.PonderHelper;
+import org.confluence.mod.integration.create.ponder.PonderHelper;
 
 import java.util.function.Consumer;
 
@@ -53,7 +53,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("options.difficulty.legendary", "§aLegendary");
         add("message.confluence.choking", "You're choking and need to drink water");
         add("message.confluence.advancement_combat_techniques", "The book's knowledge empowers your villagers!");
-        add("jukebox_song.confluence.alpha", "C418 - alpha");
+        add("jukebox_song.confluence.song", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
         add("generator.confluence.the_corruption", "The Corruption");
@@ -92,7 +92,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.echo_block.0", "Only visible with Echo Sight");
         add("tooltip.item.confluence.advanced_combat_techniques.0", "Increases the defense and strength of all villagers");
         add("tooltip.item.confluence.advanced_combat_techniques.1", "'Contains offensive and defensive fighting techniques'");
+        add("tooltip.item.confluence.advanced_combat_techniques_volume_two.0", "Increases the defense and strength of all villagers");
+        add("tooltip.item.confluence.advanced_combat_techniques_volume_two.1", "'Contains offensive and defensive fighting techniques, volume two!'");
         add("tooltip.item.confluence.binoculars.0", "Expand the FOV when in use, and adjust the zoom with the mouse wheel");
+        add("tooltip.item.confluence.meteor_compass.0", "Exiting the level will result in the loss of previously recorded position");
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
         add("tooltip.item.confluence.slime_crown.1", "A small crown that seems to be prepared for the coronation ceremony of those cute and harmless gel - like creatures.");
@@ -123,8 +126,18 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.ice_tofu_brick.0", "它现在不能吃了，但不妨碍它把你吃了");
         add("tooltip.item.confluence.pink_cola.0", "An ordinary bottle of pink cola. Maybe there was a whole case originally?");
         add("tooltip.item.confluence.dongdongs_flatbread.0", "Freshly baked flatbread on the Netherrack. Come and have a taste!");
+        add("tooltip.item.confluence.boredoms_pact_falling_resolve.0", "「无聊之咒·陨志」");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.1", "(Boredom's Pact - Falling Resolve)");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.2", "           ");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.3", "The blood of the indolent has soaked into the stardust core, condensing into this breathing cursed stone.");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.4", "When in motion, the veins of the earth surge, and blades cleave through the long night; when still, the earth's heart beats, and the sky opens its single eye.");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.5", "The ancient god inscribed punishment into the contract: eight heartbeats of stillness summon the judgment of a falling star.");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.6", "It doesn't remain silent like a golem - it cackles when boulders shatter shinbones:");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.7", "'Look, even the stones understand the way of survival better than your legs.'");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.8", "The wearer will eventually understand that so - called 'invincibility' merely means outrunning death by a single second.");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.9", "And the soul has long been crushed into dust in the rock crevices, more desolate than the empty shell of a golem.");
 
-        //  Text items ↓
+        // Text items ↓
         add("item.confluence.afterlife_notes", "Afterlife Notes");
         add("item.confluence.village_exploration", "Origin of Village Exploration");
         add("item.confluence.research_on_wheat_mutation", "Research on Wheat Mutation");
@@ -132,46 +145,49 @@ public class ModEnglishProvider extends LanguageProvider {
         add("item.confluence.research_on_cloud_blocks_2", "Research on Cloud Blocks II");
         add("item.confluence.meteor_diary", "Meteor Diary");
 
-        //note
+        // note
         add("item.confluence.mysterious_note.name_0", "Small Note with Bite Marks");
-        add("item.confluence.mysterious_note.name_1", "Small Note with Orange Scent");
-        add("item.confluence.mysterious_note.name_2", "Digitized Small Note");
-        add("item.confluence.mysterious_note.name_3", "Gentle Small Note");
-        add("item.confluence.mysterious_note.name_4", "Half-Eaten Small Note");
-
-        add("item.confluence.mysterious_slate.name_0", "Serious Slate");
-        add("item.confluence.mysterious_slate.name_1", "Exceptionally Ancient Slate");
-
-        add("text.confluence.afterlife_notes", "Adventurer, the new world is full of endless challenges and opportunities. This notebook will help you understand the mysteries of this world and guide you in the face of monsters and difficulties. Only by continuous exploration can you discover more power and treasures. Your journey has just begun. —— Guide");
-        add("text.confluence.village_exploration", "The world's mutation has quietly arrived. The dark evil thoughts of living beings have erupted one after another, and the physical invasions from the outside world have followed in quick succession. All available resources have been awakened. The arrival of the new world brings both the shadow of destruction and opens up new possibilities. Buildings soar into the sky like flying birds, which is amazing. The clouds that were once out of reach have now turned into solid blocks, reflecting the longings in people's hearts. On the journey of exploration, they have mastered unprecedented knowledge and discovered new plants, as if they have found a corner of tranquility in the hustle and bustle. In that area");
-        add("text.confluence.research_on_wheat_mutation", "We found that the wheat we brought began to turn white and yellow. At first, we thought they couldn't adapt to this strange environment. Until a cloud block floated by gently, it dyed the wheat with the colors of the rosy clouds and transformed it into a new kind of plant. We can't help but be skeptical about this mutated product - until someone is hungry and eager for food. Strangely enough, even though they are full, their bodies seem to become lighter, as if gradually getting away from the burden of the earth. In this strange world, changes and confusions are intertwined, and we begin to re - examine");
-        add("text.confluence.research_on_cloud_blocks_1", "Cloud blocks, non - toxic, are composed of ice crystals condensed in the sky, with different contents. After a long - term contact with the alien planet, these clouds have gradually become solid and can bear the weight of an adult, protecting them from the impact of strong kinetic energy. However, the plants nearby have begun to mutate, and we are still confused about how this strange change came about. At this mysterious intersection, the clouds and plants weave an unknown story, as if nature is quietly writing a new chapter.");
-        add("text.confluence.research_on_cloud_blocks_2", "As the research deepens, we gradually find that cloud blocks and a plant called cloud - weaving grass are actually of the same nature. Cloud - weaving grass grows on cloud blocks, quietly collecting water vapor in the high - altitude until a new cloud block is born. Now, this plant has been transplanted to the cloud flowerbed and has become an important building resource for us. In this mysterious space, plants and clouds blend, weaving endless possibilities and delivering the power to build dreams to the earth.");
-        add("text.confluence.meteor_diary", "They cut through the night sky, making monsters afraid; while we often make quiet wishes on meteors. Perhaps, they really have invisible magic. Children look up, full of joy, chasing that faint light; they grow quietly from the clouds and then gently fall from the clouds. On this night stage, meteors twinkle with the light of hope, warming every expectant heart.");
-        add("text.confluence.village_exploration_0", "On the pure land, new hope is quietly germinating, bringing long - lost peace.");
-        add("text.confluence.research_on_wheat_mutation_0", "Re - examine the essence of food and the miracle of life.");
-
-        add("lore.confluence.village_exploration", "It's hard to tell the exact age, but it seems to be very well - packaged...");
-        add("lore.confluence.research_on_wheat_mutation", "There are some powders mixed in the pages, but it doesn't seem to be the powder from the aging of the pages...");
-        add("lore.confluence.research_on_cloud_blocks_1", "It's obviously a very thick book, but it feels so light in the hand. Judging from the title, it seems there is another volume?");
-        add("lore.confluence.research_on_cloud_blocks_2", "The pages feel very soft, just like silk. Judging from the title, it seems there is another volume?");
-        add("lore.confluence.meteor_diary", "It's a very thin book, but it seems to have a faint glow.");
-
-        //note
         add("lore.confluence.mysterious_note_0", "Oops, you've found it. Don't tell others that the puppy is hiding here UQYQU");
+        add("item.confluence.mysterious_note.name_1", "Small Note with Orange Scent");
         add("lore.confluence.mysterious_note_1", "Hey, since you've found it, I'll tell you. In fact, one of the animals sleeping with you is probably an informant for the prison pillow.");
+        add("item.confluence.mysterious_note.name_2", "Digitized Small Note");
         add("lore.confluence.mysterious_note_2", "The original brave didn't ask for anything in return. They only hoped that all souls yearning for adventure could freely pick up these precious gifts and shine their own light in the adventure. Please guard this kindness from the brave and don't let the shadow of interests obscure the light of freedom and hope in the afterlife.");
+        add("item.confluence.mysterious_note.name_3", "Gentle Small Note");
         add("lore.confluence.mysterious_note_3", "I hope that the adventurer who sees this note can have a smooth study, a successful job, and everything goes well in life. No matter what the haze is, it will pass quickly because we all have to move forward towards tomorrow.");
+        add("item.confluence.mysterious_note.name_4", "Half-Eaten Small Note");
         add("lore.confluence.mysterious_note_4", "When will Confluence Fun Stuff start production? I've been waiting until I'm stupid.");
 
+        add("item.confluence.mysterious_slate.name_0", "Serious Slate");
         add("lore.confluence.mysterious_slate_0", "“A fun fact: In fact, summoners need to communicate with their summoned creatures spiritually. The armor protection can't be too thick, otherwise it will affect the communication.”");
+        add("item.confluence.mysterious_slate.name_1", "Exceptionally Ancient Slate");
         add("lore.confluence.mysterious_slate_1", "“It all started when the Moon Lord sold the... (The content is covered by blood, and the whole picture can't be seen clearly)”");
+
+        add("text.building_0", "Under construction");
+        add("text.building_1", "Version %s is expected to be complete");
+        add("text.building_2", "Don't come close!");
+
+        add("text.confluence.afterlife_notes", "Adventurer, the new world is full of endless challenges and opportunities. This notebook will help you understand the mysteries of this world and guide you in the face of monsters and difficulties. Only by continuous exploration can you discover more power and treasures. Your journey has just begun. —— Guide");
+
+        add("text.confluence.village_exploration", "The world's mutation has quietly arrived. The dark evil thoughts of living beings have erupted one after another, and the physical invasions from the outside world have followed in quick succession. All available resources have been awakened. The arrival of the new world brings both the shadow of destruction and opens up new possibilities. Buildings soar into the sky like flying birds, which is amazing. The clouds that were once out of reach have now turned into solid blocks, reflecting the longings in people's hearts. On the journey of exploration, they have mastered unprecedented knowledge and discovered new plants, as if they have found a corner of tranquility in the hustle and bustle. In that area");
+        add("lore.confluence.village_exploration", "It's hard to tell the exact age, but it seems to be very well - packaged...");
+        add("text.confluence.village_exploration_0", "On the pure land, new hope is quietly germinating, bringing long - lost peace.");
+
+        add("text.confluence.research_on_wheat_mutation", "We found that the wheat we brought began to turn white and yellow. At first, we thought they couldn't adapt to this strange environment. Until a cloud block floated by gently, it dyed the wheat with the colors of the rosy clouds and transformed it into a new kind of plant. We can't help but be skeptical about this mutated product - until someone is hungry and eager for food. Strangely enough, even though they are full, their bodies seem to become lighter, as if gradually getting away from the burden of the earth. In this strange world, changes and confusions are intertwined, and we begin to re - examine");
+        add("lore.confluence.research_on_wheat_mutation", "There are some powders mixed in the pages, but it doesn't seem to be the powder from the aging of the pages...");
+        add("text.confluence.research_on_wheat_mutation_0", "Re - examine the essence of food and the miracle of life.");
+
+        add("text.confluence.research_on_cloud_blocks_1", "Cloud blocks, non - toxic, are composed of ice crystals condensed in the sky, with different contents. After a long - term contact with the alien planet, these clouds have gradually become solid and can bear the weight of an adult, protecting them from the impact of strong kinetic energy. However, the plants nearby have begun to mutate, and we are still confused about how this strange change came about. At this mysterious intersection, the clouds and plants weave an unknown story, as if nature is quietly writing a new chapter.");
+        add("lore.confluence.research_on_cloud_blocks_1", "It's obviously a very thick book, but it feels so light in the hand. Judging from the title, it seems there is another volume?");
+        add("text.confluence.research_on_cloud_blocks_2", "As the research deepens, we gradually find that cloud blocks and a plant called cloud - weaving grass are actually of the same nature. Cloud - weaving grass grows on cloud blocks, quietly collecting water vapor in the high - altitude until a new cloud block is born. Now, this plant has been transplanted to the cloud flowerbed and has become an important building resource for us. In this mysterious space, plants and clouds blend, weaving endless possibilities and delivering the power to build dreams to the earth.");
+        add("lore.confluence.research_on_cloud_blocks_2", "The pages feel very soft, just like silk. Judging from the title, it seems there is another volume?");
+
+        add("text.confluence.meteor_diary", "They cut through the night sky, making monsters afraid; while we often make quiet wishes on meteors. Perhaps, they really have invisible magic. Children look up, full of joy, chasing that faint light; they grow quietly from the clouds and then gently fall from the clouds. On this night stage, meteors twinkle with the light of hope, warming every expectant heart.");
+        add("lore.confluence.meteor_diary", "It's a very thin book, but it seems to have a faint glow.");
 
         add("author.confluence.the_ancestor_of_explorers", "The Original Initiator");
         add("author.confluence.sheila", "Sheila");
         add("author.confluence.lorissa", "Lorissa");
         add("author.confluence.annaleigh", "Annaleigh");
-
 
         add("worldgen.confluence.placing_traps", "Placing Traps");
         add("worldgen.confluence.generating_bees", "Generating bees");
@@ -321,7 +337,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.soul_of_might.0", "'The essence of the destroyer'");
         add("tooltip.item.confluence.soul_of_sight.0", "'The essence of omniscient watchers'");
         add("tooltip.item.confluence.soul_of_fright.0", "'The essence of pure terror'");
-        add("tooltip.item.confluence.golden_key.0", "“Opens one locked Gold Chest or Lock Box”");
+        add("tooltip.item.confluence.golden_key.0", "“Opens one locked Gold Chest”");
+        add("tooltip.item.confluence.golden_dungeon_key.0", "“Open a locked dungeon chest or a golden lockbox”");
         add("tooltip.item.confluence.shadow_key.0", "“Opens all Shadow Chests and Obsidian Lock Boxes”");
         add("tooltip.item.confluence.temple_key.0", "“Opens the jungle temple door”");
         add("tooltip.item.confluence.jungle_key.0", "“Unlocks a Jungle Chest in the dungeon”");
@@ -360,6 +377,14 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.solar_wings.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.stardust_wings.0", "Allows flight and slow fall");
 
+        add("confluence.configuration.WorldGeneration", "World Generation Mechanism");
+        add("confluence.configuration.WorldGeneration.tooltip", "Some settings related to world generation");
+        add("confluence.configuration.replaceVanillaGeodeFeature", "Replace Vanilla Geode Feature");
+        add("confluence.configuration.replaceVanillaGeodeFeature.tooltip", "The vanilla geode feature may affect some structures. Enabling this option can solve the problems it brings.");
+        add("confluence.configuration.brewing_stand_recipe", "Terra Potion Brewing Stand Recipe");
+        add("confluence.configuration.brewing_stand_recipe.tooltip", "When enabled, the brewing stand can brew Terra potions.");
+        add("confluence.configuration.alertPlayerDungeon", "Dungeon Guardian Warning");
+        add("confluence.configuration.alertPlayerDungeon.tooltip", "When enabled, there will be three roars as warnings before the dungeon guardian appears.");
         add("confluence.configuration.achievementToast", "Enable Terra Style Achievements");
         add("confluence.configuration.achievementToast.tooltip", "Disable it if you want to use the default progress style.");
         add("confluence.configuration.playerOurMusic", "Enable Terra Music");
@@ -387,6 +412,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.rightClickRideMinecart", "Right click to ride a minecart");
         add("confluence.configuration.rightClickRideMinecart.tooltip", "When enabled, when you right-click on a rail, it will automatically ride a minecart");
         add("confluence.configuration.announcementBoxDistance", "Announcement Box Distance");
+        add("confluence.configuration.announcementBoxDistance.tooltip", "The maximum information sending distance of the Announcement Box");
         add("confluence.configuration.dropsTombstone", "Drops Tombstone");
         add("confluence.configuration.dropsTombstone.tooltip", "When enabled，allows player to drops tombstone after death");
         add("confluence.configuration.defaultRespawnTimeMin", "Default Minimum Respawn Time");
@@ -529,7 +555,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("achievements.confluence.extra_shiny.title", "Extra Shiny! ");
         add("achievements.confluence.extra_shiny.description", "Mine a powerful ore that has been newly blessed upon your world.");
         add("achievements.confluence.dungeon_heist.title", "Dungeon Heist  ");
-        add("achievements.confluence.dungeon_heist.description", "Steal a key from the dungeon's undead denizens, and unlock one of their precious golden chest.");
+        add("achievements.confluence.dungeon_heist.description", "Steal a key from the undead residents of the dungeon and open one of their precious dungeon chests.");
         add("achievements.confluence.drax_attax.title", "Drax Attax");
         add("achievements.confluence.drax_attax.description", "Craft a drax or pickaxe axe using hallowed bars, and the souls of the three mechanical bosses.");
         add("achievements.confluence.dead_men_tell_no_tales.title", "Dead Men Tell No Tales");
@@ -712,6 +738,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("achievements.confluence.to_infinity_and_beyond.description", "Fly a Kwad Racer into outer space.");
         add("achievements.confluence.quiet_neighborhood.title", "Quiet Neighborhood");
         add("achievements.confluence.quiet_neighborhood.description", "Enter a misty graveyard filled with the surly dead.");
+        add("achievements.confluence.robbing_the_grave.title", "Robbing the Grave");
+        add("achievements.confluence.robbing_the_grave.description", "Obtain a rare treasure from a difficult monster in the dungeon.");
 
         add("prefix.confluence.tooltip.plus", "+%s%% %s");
         add("prefix.confluence.tooltip.take", "-%s%% %s");
@@ -739,23 +767,30 @@ public class ModEnglishProvider extends LanguageProvider {
         add("condition.confluence.shimmer_transmutation.moon_lord", "Required game phase: After Moon Lord");
 
         add("container.confluence.sky_mill", "Sky Mill");
+        add("container.confluence.safe", "Safe");
         add("container.confluence.heavy_work_bench", "Heavy Work Bench");
         add("container.confluence.hellforge", "Hell Forge");
         add("container.confluence.alchemy_table", "Alchemy Table");
+        add("container.confluence.cooking_pot", "Cooking Pot");
+        add("container.confluence.crystal_ball", "Crystal Ball");
         add("condition.confluence.requires_fuel", "Requires Fuel");
         add("container.confluence.fletching_table", "Fletching Table");
         add("container.confluence.piggy_bank", "Piggy Bank");
+        add("container.confluence.sawmill", "Sawmill");
+        add("container.confluence.tree_holes", "Tree Holes");
+        add("container.confluence.npc_shop", "Npc Shop");
 
         add("title.confluence.shimmer_transmutation", "Shimmer Transmutation");
         add("title.confluence.altar", "Altar");
         add("title.confluence.sky_mill", "Sky Mill");
         add("title.confluence.heavy_work_bench", "Heavy Work Bench");
         add("title.confluence.hellforge", "Hell Forge");
+        add("title.confluence.crystal_ball", "Crystal Ball");
         add("title.confluence.alchemy_table", "Alchemy Table");
+        add("title.confluence.cooking_pot", "Cooking Pot");
         add("title.confluence.fletching_table", "Fletching Table");
         add("title.confluence.touhoulittlemaid", "Touhou Little Maid Supplies");
         add("title.confluence.npc_trade", "NPC Trading");
-        add("title.confluence.cooking_pot", "Cooking Pot");
         add("title.confluence.sawmill", "Sawmill");
 
         // Override
@@ -795,6 +830,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("block.confluence.base_chest_block.death_sandstone", "§rDeath Sandstone Chest");
         add("block.confluence.base_chest_block.unlocked_living_wood", "§rLiving Wood Chest");
         add("block.confluence.base_chest_block.death_living_wood", "§rDeath Living Wood Chest");
+        add("block.confluence.base_chest_block.locked_dungeon", "§rLocked Dungeon Chest");
+        add("block.confluence.base_chest_block.unlocked_dungeon", "§rDungeon Chest");
+        add("block.confluence.base_chest_block.death_dungeon", "§rDeath Dungeon Chest");
 
         add("resourcepack.terraria_art", "Terraria Art");
         add("resourcepack.terraria_armor", "Terraria-Like Armor");
@@ -904,17 +942,17 @@ public class ModEnglishProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.spore_root_set.data.3", "Summon damage increased by 2%");
         add("equipment_benediction.set_switcher.confluence.spore_root_set.data.4", "Summon limit increased by 1");
 
-        add("equipment_benediction.set_switcher.confluence.heim_set", "Abyssal Scale Set");
+        add("equipment_benediction.set_switcher.confluence.cactus_set", "Cactus Set");
+        add("equipment_benediction.set_switcher.confluence.cactus_set.data.0", "Attackers take damage from cactus thorns");
+
+        add("equipment_benediction.set_switcher.confluence.heim_set", "Heim Set");
         add("equipment_benediction.set_switcher.confluence.heim_set.data.0", "Extend underwater breathing time by 5% and increase melee damage by 1%");
         add("equipment_benediction.set_switcher.confluence.heim_set.data.1", "After successfully using the shield to intercept the next attack, increase damage by 20% within three seconds. The damage increase stops when you launch an attack and hit or get hit during these three seconds. Increase melee damage by 1%");
         add("equipment_benediction.set_switcher.confluence.heim_set.data.2", "Increase critical hit rate by 2% and increase melee damage by 1%");
         add("equipment_benediction.set_switcher.confluence.heim_set.data.3", "Increase underwater movement speed by 5% and increase melee damage by 1%");
-        add("equipment_benediction.set_switcher.confluence.heim_set.data.4", "Grant you 4 HP of damage absorption, and grant it again every 5 minutes");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.4", "Grant you 4 HP of damage absorption, and grant it again every 3 seconds");
 
-        add("equipment_benediction.set_switcher.confluence.cactus_set", "Cactus Set");
-        add("equipment_benediction.set_switcher.confluence.cactus_set.data.0", "Attackers take damage from cactus thorns");
-
-        // npc
+        // npc dialogs
         add("dialogs.confluence.guide.0", "My job is to offer suggestions for your upcoming tasks. I recommend that you come and talk to me whenever you encounter any difficulties.");
         add("dialogs.confluence.guide.1", "They said there would be someone to tell you how to survive in this place... Oh, wait a moment. That person is me.");
         add("dialogs.confluence.guide.2", "You should stay at home at night. It's very dangerous to wander outside in the dark.");
@@ -995,20 +1033,26 @@ public class ModEnglishProvider extends LanguageProvider {
         add("dialogs.confluence.angler.4", "Hey! Watch out! I've set a lot of traps for the greatest prank in history! No one will notice! Try telling anyone and see what happens!");
         add("dialogs.confluence.angler.5", "Have you ever heard of a fish that can make noise?! I haven't. I just want to know if you have!");
 
-        add("goblin_tinkerer_like_dye_trader", "Dye Trader understands how fun it is to mix things together, I can respect that!");
-        add("guide_hate_painter", "I hate that Painter is around. The world is fine the way it was made!");
-        add("arms_dealer_hate_demolitionist", "I'd REALLY like to use the Demolitionist as a range target sometime.");
-        add("arms_dealer_love_nurse", "Think Nurse the Nurse ever, ya know, checks me out?");
-        add("angler_like_demolitionist", "the Demolitionist actually knows what they're doing, unlike some OTHER people! I kinda like that!");
-        add("dye_trader_like_arms_dealer", "Arms Dealer has good eyes for vividness and business, I like it, yes?");
-        add("dye_trader_like_painter", "Painter has good eyes for vividness and business, I like it, yes?");
-        add("demolitionist_dislike_arms_dealer", "I wanna strap Arms Dealer to a rocket and watch what happens!");
-        add("demolitionist_dislike_goblin_tinkerer", "I wanna strap Goblin Tinkerer to a rocket and watch what happens!");
-        add("painter_love_dryad", "I would really love to paint Dryad... because of the vivid colors, of course!");
-        add("dryad_dislike_angler", "I don't like that Angler has no respect for other beings.");
-        add("merchant_like_nurse", "Nurse makes loads of money, I like deep pockets.");
-        add("nurse_love_arms_dealer", "What? Arms Dealer? I don't have a crush! I don't! Shut up!");
-        add("nurse_dislike_dryad", "I don't like Dryad that much, kinda weirds me out.");
+        add("dialogs.confluence.old_man.0", "I cannot let you enter until you free me of my curse.");
+        add("dialogs.confluence.old_man.1", "Stranger, do you possess the strength to defeat my master?");
+        add("dialogs.confluence.old_man.2", "Defeat my master, and I will grant you passage into the Dungeon.。");
+        add("dialogs.confluence.old_man.3", "Come back at night if you wish to enter.");
+
+        add("mood.terra_entity.goblin_tinkerer.like.dye_trader", "Dye Trader understands how fun it is to mix things together, I can respect that!");
+        add("mood.terra_entity.guide.hate.painter", "I hate that Painter is around. The world is fine the way it was made!");
+        add("mood.terra_entity.arms_dealer.hate.demolitionist", "I'd REALLY like to use the Demolitionist as a range target sometime.");
+        add("mood.terra_entity.arms_dealer.love.nurse", "Think Nurse the Nurse ever, ya know, checks me out?");
+        add("mood.terra_entity.angler.like.demolitionist", "the Demolitionist actually knows what they're doing, unlike some OTHER people! I kinda like that!");
+        add("mood.terra_entity.dye_trader.like.arms_dealer", "Arms Dealer has good eyes for vividness and business, I like it, yes?");
+        add("mood.terra_entity.dye_trader.like.painter", "Painter has good eyes for vividness and business, I like it, yes?");
+        add("mood.terra_entity.demolitionist.dislike.arms_dealer", "I wanna strap Arms Dealer to a rocket and watch what happens!");
+        add("mood.terra_entity.demolitionist.dislike.goblin_tinkerer", "I wanna strap Goblin Tinkerer to a rocket and watch what happens!");
+        add("mood.terra_entity.painter.love.dryad", "I would really love to paint Dryad... because of the vivid colors, of course!");
+        add("mood.terra_entity.dryad.dislike.angler", "I don't like that Angler has no respect for other beings.");
+        add("mood.terra_entity.merchant.like.nurse", "Nurse makes loads of money, I like deep pockets.");
+        add("mood.terra_entity.nurse.love.arms_dealer", "What? Arms Dealer? I don't have a crush! I don't! Shut up!");
+        add("mood.terra_entity.nurse.dislike.dryad", "I don't like Dryad that much, kinda weirds me out.");
+
 
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
         CrateBlocks.BLOCKS.getEntries().forEach(blockAction);
@@ -1054,11 +1098,15 @@ public class ModEnglishProvider extends LanguageProvider {
         SwordItems.ITEMS.getEntries().forEach(itemAction);
         ToolItems.ITEMS.getEntries().forEach(itemAction);
         TreasureBagItems.ITEMS.getEntries().forEach(itemAction);
+        LanceItems.ITEMS.getEntries().forEach(itemAction);
+        GunItems.ITEMS.getEntries().forEach(itemAction);
 
         ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), LibUtils.toTitleCase(effect.getId().getPath())));
         ModEntities.ENTITIES.getEntries().forEach(entity -> add(entity.get(), LibUtils.toTitleCase(entity.getId().getPath())));
 
         add(TooltipManager.prefix, "** Sponsor Item **");
+
+        add("item.confluence.spawn_eggs", "%s Spawn Egg");
 
         // TouhouLittleMaid
         add("task.confluence.use_life_crystal", "Use Life Crystal");

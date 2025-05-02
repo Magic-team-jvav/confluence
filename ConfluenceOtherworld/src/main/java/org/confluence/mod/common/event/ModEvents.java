@@ -1,6 +1,7 @@
 package org.confluence.mod.common.event;
 
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackSelectionConfig;
@@ -14,8 +15,8 @@ import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -59,7 +60,6 @@ import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
-import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.accessory.MusicBoxItem;
@@ -74,8 +74,6 @@ import org.confluence.phase_journey.api.PhaseJourneyEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
-import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.confluence.terra_furniture.common.init.TFRegistries;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.Map;
@@ -89,6 +87,7 @@ public final class ModEvents {
     public static void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             CommonConfigs.onLoad();
+            ModGunProperties.init();
             Confluence.registerGameRules();
             ModFluids.registerInteraction();
             ModFluids.registerShimmerTransform();
@@ -194,6 +193,8 @@ public final class ModEvents {
         registrar.playToServer(ReplaceMusicBoxItemPacketC2S.TYPE, ReplaceMusicBoxItemPacketC2S.STREAM_CODEC, ReplaceMusicBoxItemPacketC2S::handle);
         registrar.playToServer(SwordShootingPacketC2S.TYPE, SwordShootingPacketC2S.STREAM_CODEC, SwordShootingPacketC2S::receive);
         registrar.playToServer(WormholeToPlayerPacketC2S.TYPE, WormholeToPlayerPacketC2S.STREAM_CODEC, WormholeToPlayerPacketC2S::handle);
+        registrar.playToServer(SellTradePacketC2S.TYPE, SellTradePacketC2S.STREAM_CODEC, SellTradePacketC2S::handle);
+
     }
 
     @SubscribeEvent
@@ -239,22 +240,6 @@ public final class ModEvents {
             for (DeferredHolder<Item, ? extends Item> entry : AccessoryItems.ITEMS.getEntries()) {
                 event.insertBefore(everlasting, entry.get().getDefaultInstance(), visibility);
             }
-        } else if (event.getTab() == TFRegistries.FURNITURE.get()) {
-            ItemStack plasticChair = TFBlocks.PLASTIC_CHAIR.toStack();
-            for (LogBlockSet logBlockSet : LogBlockSet.LOG_BLOCK_SETS) {
-                if (logBlockSet.getDoor() != null) {
-                    event.insertBefore(plasticChair, logBlockSet.getDoor().toStack(), visibility);
-                }
-                if (logBlockSet.getTrapdoor() != null) {
-                    event.insertBefore(plasticChair, logBlockSet.getTrapdoor().toStack(), visibility);
-                }
-                if (logBlockSet.getSignItem() != null) {
-                    event.insertBefore(plasticChair, logBlockSet.getSignItem().toStack(), visibility);
-                }
-            }
-            for (DeferredHolder<Block, ? extends Block> entry : StatueBlocks.BLOCKS.getEntries()) {
-                event.insertBefore(plasticChair, entry.get().asItem().getDefaultInstance(), visibility);
-            }
         }
     }
 
@@ -293,12 +278,13 @@ public final class ModEvents {
     @SubscribeEvent
     public static void modifyDefaultComponents(ModifyDefaultComponentsEvent event) {
         TEItemComponentModify.modifyDefaultComponents(event);
+        event.modify(Items.SNOWBALL, builder -> builder.set(DataComponents.MAX_STACK_SIZE, 9999));
     }
 
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, blockEntity, side) -> {
-            if (blockEntity instanceof BaseChestBlock.Entity entity && entity.isLocked()) return null;
+            if (!state.getValue(BaseChestBlock.UNLOCKED)) return null;
             Container container = ChestBlock.getContainer((ChestBlock) state.getBlock(), state, level, pos, true);
             if (container == null) return null;
             return new InvWrapper(container);

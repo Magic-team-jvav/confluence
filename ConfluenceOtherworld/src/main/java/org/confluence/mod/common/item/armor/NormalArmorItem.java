@@ -44,16 +44,16 @@ public class NormalArmorItem extends ArmorItem implements GeoItem {
     @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {
-            private NormalArmorItemRenderer renderer;
+            private NormalArmorItemRenderer<NormalArmorItem> renderer;
 
             @Override
             public <T extends LivingEntity> HumanoidModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable HumanoidModel<T> original) {
                 if (renderer == null) {
                     ResourceLocation textureResource = Confluence.asResource("textures/item/" + name + ".png");
                     if (Minecraft.getInstance().getResourceManager().getResource(textureResource).isEmpty()) {
-                        this.renderer = new NormalArmorItemRenderer("armor/cactus_armor"); // as a fallback
+                        this.renderer = new NormalArmorItemRenderer<>("armor/cactus_armor"); // as a fallback
                     } else {
-                        this.renderer = new NormalArmorItemRenderer(name);
+                        this.renderer = new NormalArmorItemRenderer<>(name);
                     }
                 }
                 return renderer;

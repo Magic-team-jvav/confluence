@@ -48,8 +48,8 @@ public class PotionItems {
     public static final DeferredItem<AbstractPotionItem> IRON_SKIN_POTION = ITEMS.register("iron_skin_potion", () -> new EffectPotionItem(ModEffects.IRON_SKIN, 9600));
     public static final DeferredItem<AbstractPotionItem> LIFEFORCE_POTION = ITEMS.register("lifeforce_potion", () -> new EffectPotionItem(ModEffects.LIFE_FORCE, 9600));
     public static final DeferredItem<AbstractPotionItem> LOVE_POTION = ITEMS.register("love_potion", () -> new EffectThrowablePotionItem(ModEffects.LOVE, 600));
-    public static final DeferredItem<AbstractPotionItem> LUCK_POTION = ITEMS.register("luck_potion", () -> new EffectPotionItem(ModEffects.LUCK_EFFECT, 6000));
-    public static final DeferredItem<AbstractPotionItem> LESSER_LUCK_POTION = ITEMS.register("lesser_luck_potion", () -> new EffectPotionItem(ModEffects.LUCK_EFFECT, 6000, 1));
+    public static final DeferredItem<AbstractPotionItem> LESSER_LUCK_POTION = ITEMS.register("lesser_luck_potion", () -> new EffectPotionItem(ModEffects.LUCK_EFFECT, 6000));
+    public static final DeferredItem<AbstractPotionItem> LUCK_POTION = ITEMS.register("luck_potion", () -> new EffectPotionItem(ModEffects.LUCK_EFFECT, 6000, 1));
     public static final DeferredItem<AbstractPotionItem> GREATER_LUCK_POTION = ITEMS.register("greater_luck_potion", () -> new EffectPotionItem(ModEffects.LUCK_EFFECT, 6000, 2));
     public static final DeferredItem<AbstractPotionItem> MANA_REGENERATION_POTION = ITEMS.register("mana_regeneration_potion", () -> new EffectPotionItem(ModEffects.MANA_REGENERATION, 9600));
     public static final DeferredItem<AbstractPotionItem> MAGIC_POWER_POTION = ITEMS.register("magic_power_potion", () -> new EffectPotionItem(ModEffects.MAGIC_POWER, 4800));

@@ -1,6 +1,7 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -62,6 +63,6 @@ public class ToolItems {
     public static final DeferredItem<RopeCoilItem> WEB_ROPE_COIL = ITEMS.register("web_rope_coil", () -> new RopeCoilItem(new Item.Properties(), ModBlocks.WEB_ROPE.get()));
 
     public static final DeferredItem<TargetDummyItem> TARGET_DUMMY = ITEMS.register("target_dummy", TargetDummyItem::new);
-    public static final DeferredItem<Item> METEOR_COMPASS = ITEMS.register("meteor_compass", () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<TooltipItem> METEOR_COMPASS = ITEMS.register("meteor_compass", () -> new TooltipItem(new Item.Properties().stacksTo(1), ModRarity.BLUE, Component.translatable("tooltip.item.confluence.meteor_compass.0").withStyle(ChatFormatting.RED)));
     public static final DeferredItem<BinocularsItem> BINOCULARS = ITEMS.register("binoculars", BinocularsItem::new);
 }

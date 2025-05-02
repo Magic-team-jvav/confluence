@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.mixed.IAbstractTerraNPC;
@@ -19,10 +20,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = AbstractTerraNPC.class, remap = false)
-public abstract class AbstractTerraNPCMixin implements IAbstractTerraNPC {
+public abstract class AbstractTerraNPCMixin implements IAbstractTerraNPC, SelfGetter<AbstractTerraNPC> {
     @Shadow
     protected abstract void initName();
 
+    @Shadow
+    public House house;
     @Unique
     private NPCSpawner.Region confluence$region = new NPCSpawner.Region(BlockPos.ZERO);
 
@@ -55,9 +58,11 @@ public abstract class AbstractTerraNPCMixin implements IAbstractTerraNPC {
 
     @Inject(method = "setHouse", at = @At("HEAD"))
     private void setRegion(House house, CallbackInfo ci) {
-        NPCSpawner.Region region = new NPCSpawner.Region(house.center());
-        confluence$setRegion(region);
-        ModAchievements.noHobo((AbstractTerraNPC) (Object) this, region);
+        if (!house.isEmpty()) {
+            NPCSpawner.Region region = new NPCSpawner.Region(house.center());
+            NPCSpawner.INSTANCE.moveNPCToAnotherRegion(confluence$self(), confluence$getRegion(), region);
+            ModAchievements.noHobo(confluence$self(), region);
+        }
     }
 
     @Inject(method = "removeWhenFarAway", at = @At("HEAD"), cancellable = true)

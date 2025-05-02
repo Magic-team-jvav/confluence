@@ -419,15 +419,16 @@ public class NPCSpawner implements IGlobalData {
     private boolean spawnAtPos(ServerLevel level, BlockPos pos, EntityType<?> entityType) {
         if (!(entityType.create(level) instanceof AbstractTerraNPC living)) return false;
         living.setPos(pos.getCenter());
-        if (level.isLoaded(pos)) {
-            level.addFreshEntity(living);
-        } else {
-            ChunkPos chunkPos = new ChunkPos(pos);
-            boolean forceBefore = level.getForcedChunks().contains(chunkPos.toLong());
-            if (!forceBefore) level.setChunkForced(chunkPos.x, chunkPos.z, true);
-            level.addFreshEntity(living);
-            if (!forceBefore) level.setChunkForced(chunkPos.x, chunkPos.z, false);
-        }
+//        if (level.isLoaded(pos)) {
+//            level.addFreshEntity(living);
+//        } else {
+//            ChunkPos chunkPos = new ChunkPos(pos);
+//            boolean forceBefore = level.getForcedChunks().contains(chunkPos.toLong());
+//            if (!forceBefore) level.setChunkForced(chunkPos.x, chunkPos.z, true);
+//            level.addFreshEntity(living);
+//            if (!forceBefore) level.setChunkForced(chunkPos.x, chunkPos.z, false);
+//        }
+        level.addFreshEntity(living);
         if (living instanceof AnglerNPC angler) {
             angler.setWakeUp(true); // 重生的渔夫默认醒来
         }

@@ -64,7 +64,7 @@ public final class TickEvents {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
             }
         }
-        if (dayTime < 12000 && serverLevel.getGameTime() % 2400 == 0 && serverLevel.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
+        if (dayTime < 12000 && serverLevel.isDay() && serverLevel.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
             NPCSpawner.INSTANCE.checkNpcRespawn(serverLevel);
         }
 

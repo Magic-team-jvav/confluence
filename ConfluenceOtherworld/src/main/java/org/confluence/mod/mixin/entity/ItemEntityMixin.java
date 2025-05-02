@@ -118,7 +118,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
 
         GamePhase gamePhase = KillBoard.INSTANCE.getGamePhase();
         for (ShimmerItemTransmutationEvent.ItemTransmutation transmutation : ITEM_TRANSMUTATION) {
-            if (transmutation.gamePhase().isOtherBelowThenMe(gamePhase)) continue;
+            if (transmutation.gamePhase().isAboveThan(gamePhase)) continue;
             if (transmutation.source().test(sourceItem)) {
                 int times = sourceItem.getCount() / transmutation.shrink();
                 List<ItemStack> results = new ArrayList<>();

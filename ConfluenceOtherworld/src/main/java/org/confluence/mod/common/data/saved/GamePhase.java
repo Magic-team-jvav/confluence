@@ -57,7 +57,10 @@ public enum GamePhase implements StringRepresentable {
         return this == MOON_LORD;
     }
 
-    public boolean isOtherBelowThenMe(GamePhase other) {
-        return other.ordinal() < ordinal();
+    /**
+     * 判断阶段是否高于other
+     */
+    public boolean isAboveThan(GamePhase other) {
+        return ordinal() > other.ordinal();
     }
 }

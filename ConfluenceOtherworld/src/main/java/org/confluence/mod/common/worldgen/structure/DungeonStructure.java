@@ -284,6 +284,18 @@ public class DungeonStructure extends Structure {
                 houseKey = entry.getKey();
                 houseValue = entry.getValue();
                 switch (houseValue) {
+                    case 0:
+                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(-1, 0, -1), false, false, Rotation.NONE));
+                        listCount++;
+                        break;
+                    case 1:
+                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(1, 0, -1), false, false, Rotation.CLOCKWISE_90));
+                        listCount++;
+                        break;
+                    case 2:
+                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(1, 0, 1), false, false, Rotation.CLOCKWISE_180));
+                        listCount++;
+                        break;
                     case 4:
                         builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners, random), houseKey.offset(-1, 0, -1), false, false, Rotation.NONE));
                         break;
@@ -315,18 +327,6 @@ public class DungeonStructure extends Structure {
                         builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 0, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
                         builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 6, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
                         builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 12, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
-                        break;
-                    case 0:
-                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(-1, 0, -1), false, false, Rotation.NONE));
-                        listCount++;
-                        break;
-                    case 1:
-                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(1, 0, -1), false, false, Rotation.CLOCKWISE_90));
-                        listCount++;
-                        break;
-                    case 2:
-                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(1, 0, 1), false, false, Rotation.CLOCKWISE_180));
-                        listCount++;
                         break;
                     default:
                         builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(-1, 0, 1), false, false, Rotation.COUNTERCLOCKWISE_90));
@@ -399,7 +399,7 @@ public class DungeonStructure extends Structure {
 
     private static Structure structure;
 
-    private static @Nullable Structure getStructure(ServerLevel level) {
+    public static @Nullable Structure getStructure(ServerLevel level) {
         if (structure == null) {
             structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
         }

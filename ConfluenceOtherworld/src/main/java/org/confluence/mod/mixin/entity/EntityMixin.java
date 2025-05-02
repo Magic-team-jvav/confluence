@@ -190,7 +190,7 @@ public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
         Entity sourceEntity = event.getSource();
         GamePhase gamePhase = KillBoard.INSTANCE.getGamePhase();
         for (ShimmerEntityTransmutationEvent.EntityTransmutation transmutation : ENTITY_TRANSMUTATION) {
-            if (transmutation.gamePhase().isOtherBelowThenMe(gamePhase)) continue;
+            if (transmutation.gamePhase().isAboveThan(gamePhase)) continue;
             if (transmutation.source().test(sourceEntity)) {
                 Entity target = transmutation.target().create(sourceEntity.level());
                 if (target == null) continue;

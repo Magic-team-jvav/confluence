@@ -2,6 +2,7 @@ package org.confluence.mod.common.data.saved;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.*;
+import it.unimi.dsi.fastutil.longs.LongSet;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -25,13 +26,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.common.data.saved.IGlobalData;
+import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.lib.util.GlobalColors;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.common.CoinItem;
+import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.IAbstractTerraNPC;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_guns.common.init.TGTags;
@@ -154,6 +162,8 @@ public class NPCSpawner implements IGlobalData {
     public void onNPCRemoved(AbstractTerraNPC living) {
         IAbstractTerraNPC npc = (IAbstractTerraNPC) living;
         setNPCAlive(npc.confluence$getRegion(), living.getType(), false);
+
+        if (living.getType() == TENpcEntities.OLD_MAN.get()) return; // 老人不用广播死亡信息
         MutableComponent message;
         if (living instanceof AnglerNPC /* todo 或宠物/公主 */) {
             message = Component.translatable("event.confluence.npc.left", living.getName());
@@ -234,7 +244,7 @@ public class NPCSpawner implements IGlobalData {
             // 发型师
             // 哥布林工匠
             // 巫医
-            // 服装商
+            if (trySpawnClothier(player, pos, region)) continue;
             // 机械师
             // 排队女孩
             // 巫师
@@ -333,6 +343,48 @@ public class NPCSpawner implements IGlobalData {
             Predicate<ItemStack> predicate = stack -> stack.is(TGTags.AMMO) || stack.is(TGTags.GUN);
             if (serverPlayer.getInventory().hasAnyMatching(predicate) || serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).hasAnyMatching(predicate)) {
                 return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.ARMS_DEALER.get());
+            }
+        }
+        return false;
+    }
+
+    private boolean trySpawnClothier(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+//        if (!hasNPCAlive(region, TENpcEntities.CLOTHIER.get())) {
+//            if (KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.BEFORE_SKELETRON)) {
+//                return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.CLOTHIER.get());
+//            }
+//        }
+        if (!KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.BEFORE_SKELETRON)) {
+            ServerLevel level = serverPlayer.serverLevel();
+            Structure structure = DungeonStructure.getStructure(level);
+            if (structure == null) return false;
+
+            ChunkPos chunkPos = serverPlayer.chunkPosition();
+            LongSet structureRefs = level.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.STRUCTURE_REFERENCES).getReferencesForStructure(structure);
+            for (long packed : structureRefs) {
+                SectionPos sectionPos = SectionPos.of(ChunkPos.getX(packed), level.getMinSection(), ChunkPos.getZ(packed));
+                StructureStart structureStart = level.structureManager().getStartForStructure(sectionPos, structure, level.getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS));
+                if (structureStart == null || !structureStart.isValid()) continue;
+
+                BoundingBox boundingBox = structureStart.getBoundingBox(); // getBoundingBox已优化过缓存
+                if (boundingBox.isInside(serverPlayer.blockPosition())) {
+                    for (StructurePiece piece : structureStart.getPieces()) {
+                        if (piece instanceof SimpleTemplatePiece templatePiece && DungeonStructure.gate.equals(templatePiece.getTemplateName())) {
+                            if (!hasNPCAlive(new Region(templatePiece.templatePosition()), TENpcEntities.OLD_MAN.get())) {
+                                AbstractTerraNPC npc = TENpcEntities.OLD_MAN.get().create(level);
+                                if (npc == null) return false;
+                                BlockPos offset = templatePiece.templatePosition().offset(15, 6, 15);
+                                npc.setPos(offset.getBottomCenter());
+                                level.addFreshEntity(npc);
+                                Region npcRegion = new Region(offset);
+                                IAbstractTerraNPC.of(npc).confluence$setRegion(npcRegion);
+                                npcAlive.computeIfAbsent(npcRegion, region1 -> new Object2BooleanOpenHashMap<>()).put(TENpcEntities.OLD_MAN.get(), true);
+                                return true;
+                            }
+                            return false;
+                        }
+                    }
+                }
             }
         }
         return false;

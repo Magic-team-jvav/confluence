@@ -288,7 +288,7 @@ public class NPCSpawner implements IGlobalData {
     // todo 可用于做染料的物品
     private boolean trySpawnDyeTrader(ServerPlayer serverPlayer, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.DYE_TRADER.get())) {
-            if (serverPlayer.getInventory().hasAnyMatching(stack -> stack.is(Tags.Items.DYES)) && hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
+            if (hasNPCAlive(region, TENpcEntities.MERCHANT.get()) && serverPlayer.getInventory().hasAnyMatching(stack -> stack.is(Tags.Items.DYES))) {
                 return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.DYE_TRADER.get());
             }
         }

@@ -17,7 +17,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -61,7 +60,6 @@ import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
-import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.accessory.MusicBoxItem;
@@ -76,8 +74,6 @@ import org.confluence.phase_journey.api.PhaseJourneyEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
-import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.confluence.terra_furniture.common.init.TFRegistries;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.Map;
@@ -243,22 +239,6 @@ public final class ModEvents {
 
             for (DeferredHolder<Item, ? extends Item> entry : AccessoryItems.ITEMS.getEntries()) {
                 event.insertBefore(everlasting, entry.get().getDefaultInstance(), visibility);
-            }
-        } else if (event.getTab() == TFRegistries.FURNITURE.get()) {
-            ItemStack plasticChair = TFBlocks.PLASTIC_CHAIR.toStack();
-            for (LogBlockSet logBlockSet : LogBlockSet.LOG_BLOCK_SETS) {
-                if (logBlockSet.getDoor() != null) {
-                    event.insertBefore(plasticChair, logBlockSet.getDoor().toStack(), visibility);
-                }
-                if (logBlockSet.getTrapdoor() != null) {
-                    event.insertBefore(plasticChair, logBlockSet.getTrapdoor().toStack(), visibility);
-                }
-                if (logBlockSet.getSignItem() != null) {
-                    event.insertBefore(plasticChair, logBlockSet.getSignItem().toStack(), visibility);
-                }
-            }
-            for (DeferredHolder<Block, ? extends Block> entry : StatueBlocks.BLOCKS.getEntries()) {
-                event.insertBefore(plasticChair, entry.get().asItem().getDefaultInstance(), visibility);
             }
         }
     }

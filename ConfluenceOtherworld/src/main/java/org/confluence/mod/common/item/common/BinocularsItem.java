@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.common;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpyglassItem;
@@ -16,6 +17,6 @@ public class BinocularsItem extends SpyglassItem {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("tooltip.item.confluence.binoculars.0"));
+        tooltipComponents.add(Component.translatable("tooltip.item.confluence.binoculars.0").withStyle(ChatFormatting.GRAY));
     }
 }

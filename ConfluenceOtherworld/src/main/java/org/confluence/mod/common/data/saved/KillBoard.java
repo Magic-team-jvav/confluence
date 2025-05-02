@@ -74,6 +74,7 @@ public class KillBoard implements IGlobalData {
     }
 
     public void setGamePhase(MinecraftServer server, GamePhase gamePhase) {
+        this.gamePhase = gamePhase;
         GamePhasePacketS2C.sendToAll(gamePhase);
         if (gamePhase.isGraduated()) {
             ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.GRADUATED);

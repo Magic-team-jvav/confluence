@@ -18,8 +18,15 @@ public class NPCTradesForgeMenu extends TETradesMenu {
 
     public NPCTradesForgeMenu(int containerId, Inventory playerInventory) {
         this(containerId, playerInventory, null, false);
-        if(((IPlayer)playerInventory.player).terra_entity$getTradeHolder() instanceof AbstractTerraNPC npc && npc.getType() == TENpcEntities.GOBLIN_TINKERER.get()){
+        ITradeHolder holder = ((IPlayer)playerInventory.player).terra_entity$getTradeHolder();
+        if (holder instanceof AbstractTerraNPC npc && npc.getType() == TENpcEntities.GOBLIN_TINKERER.get()){
             this.forge = true;
+        }else{
+            try {
+                if(holder != null && holder.getClass().isAssignableFrom(Class.forName("com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid"))) {
+                    this.forge = true;
+                }
+            } catch (ClassNotFoundException ignored) {}
         }
 
     }

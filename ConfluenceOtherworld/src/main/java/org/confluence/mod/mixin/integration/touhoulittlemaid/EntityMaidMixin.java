@@ -1,6 +1,9 @@
 package org.confluence.mod.mixin.integration.touhoulittlemaid;
 
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
+import com.google.gson.JsonElement;
+import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.JsonOps;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.data.Keys;
 import org.confluence.terraentity.entity.npc.mood.NPCMood;
@@ -54,7 +57,8 @@ public abstract class EntityMaidMixin implements ITradeHolder, SelfGetter<Entity
 
         // 如果是第一次生成
         if (trades == null) {
-            trades = NPCTradeManager.getCopy(Keys.MAID_SHOP,this.level().registryAccess());
+            DynamicOps<JsonElement> ops = this.level().registryAccess().createSerializationContext(JsonOps.INSTANCE);
+            trades = NPCTradeManager.getCopy(Keys.MAID_SHOP,ops);
             if (trades != null) {
                 trades.initTrades(this);
             }

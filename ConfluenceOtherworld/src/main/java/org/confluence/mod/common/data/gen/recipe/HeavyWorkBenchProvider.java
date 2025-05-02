@@ -322,6 +322,37 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "/ /",
                 "A A"
         )), ArmorItems.NECRO_BOOTS.toStack());
+        // 丛林套装
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'A', AmountIngredient.of(2,MaterialItems.JUNGLE_SPORE)
+        ), List.of(
+                "AAA",
+                "A A"
+        )), ArmorItems.JUNGLE_HELMET.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'A', AmountIngredient.of(2,MaterialItems.JUNGLE_SPORE),
+                '/', AmountIngredient.of(2,MaterialItems.STINGER)
+        ), List.of(
+                "A A",
+                "/A/",
+                "/A/"
+        )), ArmorItems.JUNGLE_CHESTPLATE.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'A', AmountIngredient.of(2,MaterialItems.JUNGLE_SPORE),
+                '/', Ingredient.of(MaterialItems.STINGER),
+                'b', Ingredient.of(MaterialItems.MAN_EATER_VINE)
+        ), List.of(
+                "bAb",
+                "/ /",
+                "A A"
+        )), ArmorItems.JUNGLE_LEGGINGS.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(MaterialItems.JUNGLE_SPORE),
+                '/', Ingredient.of(MaterialItems.STINGER)
+        ), List.of(
+                "/ /",
+                "A A"
+        )), ArmorItems.JUNGLE_BOOTS.toStack());
         // 草剑
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(7,MaterialItems.JUNGLE_SPORE),

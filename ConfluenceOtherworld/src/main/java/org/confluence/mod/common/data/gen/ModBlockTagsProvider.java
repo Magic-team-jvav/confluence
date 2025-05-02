@@ -293,7 +293,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GOLDEN_HEADSTONE.get(),
                 GOLDEN_GRAVESTONE.get(),
                 AETHERIUM_BLOCK.get(),
-                DARK_AETHERIUM_BLOCK.get()
+                DARK_AETHERIUM_BLOCK.get(),
+                CRISPY_HONEY_BLOCK.get()
         );
         // 铲子
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithShovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);
@@ -484,6 +485,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 WINTER_MARROW_BLOCK.get(),
                 COLD_CRYSTAL_ORE.get(),
                 THIN_ICE_BLOCK.get(),
+                CRISPY_HONEY_BLOCK.get(),
 
                 TOMBSTONE.get(),
                 GRAVE_MARKER.get(),

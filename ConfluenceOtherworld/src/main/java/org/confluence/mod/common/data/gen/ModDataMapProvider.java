@@ -458,6 +458,7 @@ public class ModDataMapProvider extends DataMapProvider {
             .add(TGItems.HAND_GUN,17500)
             .add(TGItems.THE_UNDERTAKER,15000)
             .add(TGItems.MUSKET,15000)
+            .add(TGItems.FLINTLOCK_PISTOL,50000)
             .add(TGItems.MINISHARK,350000)
 
 

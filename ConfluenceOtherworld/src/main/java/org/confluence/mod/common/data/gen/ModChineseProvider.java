@@ -1010,6 +1010,13 @@ public class ModChineseProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.necro_set.data.3", "远程伤害提高2.5%");
         add("equipment_benediction.set_switcher.confluence.necro_set.data.4", "远程暴击率提高10%，不消耗弹药几率提高20%");
 
+        add("equipment_benediction.set_switcher.confluence.jungle_set", "丛林套装");
+        add("equipment_benediction.set_switcher.confluence.jungle_set.data.0", "最大魔力增加40，暴击率提高6%");
+        add("equipment_benediction.set_switcher.confluence.jungle_set.data.1", "最大魔力增加20，魔法伤害提高6%");
+        add("equipment_benediction.set_switcher.confluence.jungle_set.data.2", "最大魔力增加10，暴击率提高3%");
+        add("equipment_benediction.set_switcher.confluence.jungle_set.data.3", "最大魔力增加10，暴击率提高3%");
+        add("equipment_benediction.set_switcher.confluence.jungle_set.data.4", "魔力消耗降低16%");
+
         // npc对话
         add("dialogs.confluence.guide.0", "我的工作是为你接下来的任务提供建议。建议你遇到任何困难时都来和我谈谈。");
         add("dialogs.confluence.guide.1", "他们说，有个人会告诉你如何在这地方上生存……哦等下。那个人就是我。");

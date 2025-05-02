@@ -395,7 +395,7 @@ public class NPCSpawner implements IGlobalData {
                 BoundingBox boundingBox = structureStart.getBoundingBox(); // getBoundingBox已优化过缓存
                 if (boundingBox.isInside(serverPlayer.blockPosition())) {
                     for (StructurePiece piece : structureStart.getPieces()) {
-                        if (piece instanceof SimpleTemplatePiece templatePiece && DungeonStructure.gate.equals(templatePiece.getTemplateName())) {
+                        if (piece instanceof SimpleTemplatePiece templatePiece && DungeonStructure.gate.equals(templatePiece.templateName)) {
                             if (!hasNPCAlive(new Region(templatePiece.templatePosition()), TENpcEntities.OLD_MAN.get())) {
                                 AbstractTerraNPC npc = TENpcEntities.OLD_MAN.get().create(level);
                                 if (npc == null) return false;

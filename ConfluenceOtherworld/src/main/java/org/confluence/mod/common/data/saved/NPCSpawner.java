@@ -122,8 +122,7 @@ public class NPCSpawner implements IGlobalData {
 
     public boolean hasNPCAlive(Region region, EntityType<?> entityType) {
         Object2BooleanMap<EntityType<?>> map = npcAlive.get(region);
-        if (map == null) return false;
-        return map.getOrDefault(entityType, false);
+        return map != null && map.getOrDefault(entityType, false);
     }
 
     public void setNPCAlive(Region region, EntityType<?> entityType, boolean alive) {
@@ -237,16 +236,16 @@ public class NPCSpawner implements IGlobalData {
             if (trySpawnAngler(player, region)) continue;
             // 动物学家
             if (trySpawnDryad(player, pos, region)) continue;
-            // 油漆工
+            if (trySpawnPainter(player, pos, region)) continue;
             // 高尔夫球手
             if (trySpawnArmsDealer(player, pos, region)) continue;
             // 酒馆老板
             // 发型师
-            // 哥布林工匠
+            if (trySpawnGoblinTinkerer(player, pos, region)) continue;
             // 巫医
             if (trySpawnClothier(player, pos, region)) continue;
             // 机械师
-            // 排队女孩
+            // 派对女孩
             // 巫师
             // 税收官
             // 松露人
@@ -338,6 +337,24 @@ public class NPCSpawner implements IGlobalData {
         return false;
     }
 
+    private boolean trySpawnPainter(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+        Object2BooleanMap<EntityType<?>> map = npcAlive.get(region);
+        if (map != null && !map.getOrDefault(TENpcEntities.PAINTER.get(), false)) {
+            if (map.getOrDefault(TENpcEntities.GUIDE.get(), false) &&
+                    map.getOrDefault(TENpcEntities.MERCHANT.get(), false) &&
+                    map.getOrDefault(TENpcEntities.NURSE.get(), false) &&
+                    map.getOrDefault(TENpcEntities.DEMOLITIONIST.get(), false) &&
+                    map.getOrDefault(TENpcEntities.DYE_TRADER.get(), false) &&
+                    map.getOrDefault(TENpcEntities.ANGLER.get(), false) &&
+                    // todo 还差动物学家
+                    map.getOrDefault(TENpcEntities.DRYAD.get(), false)
+            ) {
+                return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.PAINTER.get());
+            }
+        }
+        return false;
+    }
+
     private boolean trySpawnArmsDealer(ServerPlayer serverPlayer, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.ARMS_DEALER.get())) {
             Predicate<ItemStack> predicate = stack -> stack.is(TGTags.AMMO) || stack.is(TGTags.GUN);
@@ -348,6 +365,15 @@ public class NPCSpawner implements IGlobalData {
         return false;
     }
 
+    private boolean trySpawnGoblinTinkerer(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+        if (!hasNPCAlive(region, TENpcEntities.GOBLIN_TINKERER.get())) {
+            // todo 等哥布林入侵事件
+            return spawnAtPos(serverPlayer.level(), pos, TENpcEntities.GOBLIN_TINKERER.get());
+        }
+        return false;
+    }
+
+    // todo 等服装商做好
     private boolean trySpawnClothier(ServerPlayer serverPlayer, BlockPos pos, Region region) {
 //        if (!hasNPCAlive(region, TENpcEntities.CLOTHIER.get())) {
 //            if (KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.BEFORE_SKELETRON)) {

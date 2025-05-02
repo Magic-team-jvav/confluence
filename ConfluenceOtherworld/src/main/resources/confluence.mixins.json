@@ -86,8 +86,6 @@
         "level.DifficultyInstanceMixin",
         "level.DifficultyMixin",
         "level.GeodeFeatureMixin",
-        "level.LevelMixin",
-        "level.NoiseGeneratorSettingsMixin",
         "level.TreeFeatureMixin",
         "level.WorldOptionsMixin"
     ],

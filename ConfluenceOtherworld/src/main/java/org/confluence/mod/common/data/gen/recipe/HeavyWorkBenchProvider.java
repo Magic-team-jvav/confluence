@@ -22,116 +22,44 @@ import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.item.TEWhipItems;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
+    private final List<String> baseHookPattern = List.of(
+            "  #",
+            " a ",
+            "a  "
+    );
+    private final List<@NotNull String> baseWhipPattern = List.of(
+            "  a ",
+            " a a",
+            " # a",
+            "#   "
+    );
+    private final List<String> baseStaffPattern = List.of(
+            "  a#",
+            "  aa",
+            " a  ",
+            "a   "
+    );
+    private final List<String> baseLightSaberPattern = List.of(
+            "   #",
+            "  # ",
+            "aa  ",
+            "a   "
+    );
+
     public HeavyWorkBenchProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
         super(output, lookup);
-    }
-    private static class HookRecipeData {
-        Ingredient material1;
-        Ingredient material2;
-        ItemLike resultItem;
-
-        public HookRecipeData(Ingredient material1, Ingredient material2, ItemLike resultItem) {
-            this.material1 = material1;
-            this.material2 = material2;
-            this.resultItem = resultItem;
-        }
-    }
-    private static class WhipRecipeData {
-        Ingredient material1;
-        Ingredient material2;
-        ItemLike resultItem;
-
-        public WhipRecipeData(Ingredient material1, Ingredient material2, ItemLike resultItem) {
-            this.material1 = material1;
-            this.material2 = material2;
-            this.resultItem = resultItem;
-        }
-    }
-    private static class StaffRecipeData {
-        Ingredient material1;
-        Ingredient material2;
-        ItemLike resultItem;
-
-        public StaffRecipeData(Ingredient material1, Ingredient material2, ItemLike resultItem) {
-            this.material1 = material1;
-            this.material2 = material2;
-            this.resultItem = resultItem;
-        }
-    }
-    private static class LightSaberRecipeData {
-        Ingredient material1;
-        Ingredient material2;
-        ItemLike resultItem;
-
-        public LightSaberRecipeData(Ingredient material1, Ingredient material2, ItemLike resultItem) {
-            this.material1 = material1;
-            this.material2 = material2;
-            this.resultItem = resultItem;
-        }
     }
 
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
-        List<String> statuePattern = List.of(
-                " ## ",
-                " ## ",
-                " ## ",
-                "####"
-        );
-        Map<Character, Ingredient> statueIngredientMap = Map.of(
-                '#', Ingredient.of(ItemTags.STONE_CRAFTING_MATERIALS)
-        );
-        ItemLike[] statueItems = {
-                StatueBlocks.A_STATUE.get(),
-                StatueBlocks.B_STATUE.get(),
-                StatueBlocks.C_STATUE.get(),
-                StatueBlocks.D_STATUE.get(),
-                StatueBlocks.E_STATUE.get(),
-                StatueBlocks.F_STATUE.get(),
-                StatueBlocks.G_STATUE.get(),
-                StatueBlocks.H_STATUE.get(),
-                StatueBlocks.I_STATUE.get(),
-                StatueBlocks.J_STATUE.get(),
-                StatueBlocks.K_STATUE.get(),
-                StatueBlocks.L_STATUE.get(),
-                StatueBlocks.M_STATUE.get(),
-                StatueBlocks.N_STATUE.get(),
-                StatueBlocks.O_STATUE.get(),
-                StatueBlocks.P_STATUE.get(),
-                StatueBlocks.Q_STATUE.get(),
-                StatueBlocks.R_STATUE.get(),
-                StatueBlocks.S_STATUE.get(),
-                StatueBlocks.T_STATUE.get(),
-                StatueBlocks.U_STATUE.get(),
-                StatueBlocks.V_STATUE.get(),
-                StatueBlocks.W_STATUE.get(),
-                StatueBlocks.X_STATUE.get(),
-                StatueBlocks.Y_STATUE.get(),
-                StatueBlocks.Z_STATUE.get(),
-                StatueBlocks.N0_STATUE.get(),
-                StatueBlocks.N1_STATUE.get(),
-                StatueBlocks.N2_STATUE.get(),
-                StatueBlocks.N3_STATUE.get(),
-                StatueBlocks.N4_STATUE.get(),
-                StatueBlocks.N5_STATUE.get(),
-                StatueBlocks.N6_STATUE.get(),
-                StatueBlocks.N7_STATUE.get(),
-                StatueBlocks.N8_STATUE.get(),
-                StatueBlocks.N9_STATUE.get(),
-                StatueBlocks.PERIOD_STATUE.get(),
-                StatueBlocks.EXCLAMATION_MARK_STATUE.get(),
-                StatueBlocks.QUESTION_MARK_STATUE.get()
-        };
-        // 雕像
-        for (ItemLike statueItem : statueItems) {
-            heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(statueIngredientMap, statuePattern), new ItemStack(statueItem.asItem()));
-        }
+        buildBaseStatues(recipeOutput);
 
         // 玻璃窑
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
@@ -145,82 +73,54 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         )), TFBlocks.GLASS_KILN.toStack());
 
         // 基础钩爪
-        List<String> hookPattern = List.of(
-                "  #",
-                " a ",
-                "a  "
-        );
-        generateRecipes(recipeOutput, hookPattern,
-                new RecipeData<>(Ingredient.of(MaterialItems.HOOK.get()), Ingredient.of(Items.CHAIN), HookItems.GRAPPLING_HOOK.get()),
-                new RecipeData<>(Ingredient.of(DecorativeBlocks.RUBY_BLOCK.get()), Ingredient.of(DecorativeBlocks.RUBY_CHAIN), HookItems.RUBY_HOOK.get()),
-                new RecipeData<>(Ingredient.of(DecorativeBlocks.AMBER_BLOCK.get()), Ingredient.of(DecorativeBlocks.AMBER_CHAIN), HookItems.AMBER_HOOK.get()),
-                new RecipeData<>(Ingredient.of(DecorativeBlocks.TOPAZ_BLOCK.get()), Ingredient.of(DecorativeBlocks.TOPAZ_CHAIN), HookItems.TOPAZ_HOOK.get()),
-                new RecipeData<>(Ingredient.of(DecorativeBlocks.TR_EMERALD_BLOCK.get()), Ingredient.of(DecorativeBlocks.EMERALD_CHAIN), HookItems.EMERALD_HOOK.get()),
-                new RecipeData<>(Ingredient.of(Items.DIAMOND_BLOCK), Ingredient.of(DecorativeBlocks.DIAMOND_CHAIN), HookItems.DIAMOND_HOOK.get()),
-                new RecipeData<>(Ingredient.of(DecorativeBlocks.SAPPHIRE_BLOCK.get()), Ingredient.of(DecorativeBlocks.SAPPHIRE_CHAIN), HookItems.SAPPHIRE_HOOK.get()),
-                new RecipeData<>(Ingredient.of(DecorativeBlocks.TR_AMETHYST_BLOCK.get()), Ingredient.of(DecorativeBlocks.AMETHYST_CHAIN), HookItems.AMETHYST_HOOK.get())
-        );
+        baseHook(recipeOutput, Ingredient.of(MaterialItems.HOOK), Ingredient.of(Items.CHAIN), HookItems.GRAPPLING_HOOK.toStack());
+        baseHook(recipeOutput, Ingredient.of(DecorativeBlocks.RUBY_BLOCK), Ingredient.of(DecorativeBlocks.RUBY_CHAIN), HookItems.RUBY_HOOK.toStack());
+        baseHook(recipeOutput, Ingredient.of(DecorativeBlocks.AMBER_BLOCK), Ingredient.of(DecorativeBlocks.AMBER_CHAIN), HookItems.AMBER_HOOK.toStack());
+        baseHook(recipeOutput, Ingredient.of(DecorativeBlocks.TOPAZ_BLOCK), Ingredient.of(DecorativeBlocks.TOPAZ_CHAIN), HookItems.TOPAZ_HOOK.toStack());
+        baseHook(recipeOutput, Ingredient.of(DecorativeBlocks.TR_EMERALD_BLOCK), Ingredient.of(DecorativeBlocks.EMERALD_CHAIN), HookItems.EMERALD_HOOK.toStack());
+        baseHook(recipeOutput, Ingredient.of(Items.DIAMOND_BLOCK), Ingredient.of(DecorativeBlocks.DIAMOND_CHAIN), HookItems.DIAMOND_HOOK.toStack());
+        baseHook(recipeOutput, Ingredient.of(DecorativeBlocks.SAPPHIRE_BLOCK), Ingredient.of(DecorativeBlocks.SAPPHIRE_CHAIN), HookItems.SAPPHIRE_HOOK.toStack());
+        baseHook(recipeOutput, Ingredient.of(DecorativeBlocks.TR_AMETHYST_BLOCK), Ingredient.of(DecorativeBlocks.AMETHYST_CHAIN), HookItems.AMETHYST_HOOK.toStack());
 
         // 基础鞭子
-        List<String> whipPattern = List.of(
-                "  a ",
-                " a a",
-                " # a",
-                "#   "
-        );
-        generateRecipes(recipeOutput, whipPattern,
-                new RecipeData<>(AmountIngredient.of(4, Items.BAMBOO), Ingredient.of(Items.BAMBOO_FENCE), TEWhipItems.SLUB_WHIP.get()),
-                new RecipeData<>(AmountIngredient.of(4, Tags.Items.INGOTS_GOLD), Ingredient.of(DecorativeBlocks.RUBY_CHAIN), TEWhipItems.RUBY_WHIP.get()),
-                new RecipeData<>(AmountIngredient.of(4, MaterialItems.STURDY_FOSSIL), Ingredient.of(DecorativeBlocks.AMBER_CHAIN), TEWhipItems.AMBER_WHIP.get()),
-                new RecipeData<>(AmountIngredient.of(4, ModTags.Items.INGOTS_TIN), Ingredient.of(DecorativeBlocks.TOPAZ_CHAIN), TEWhipItems.TOPAZ_WHIP.get()),
-                new RecipeData<>(AmountIngredient.of(4, ModTags.Items.INGOTS_TUNGSTEN), Ingredient.of(DecorativeBlocks.EMERALD_CHAIN), TEWhipItems.EMERALD_WHIP.get()),
-                new RecipeData<>(AmountIngredient.of(4, ModTags.Items.INGOTS_PLATINUM), Ingredient.of(DecorativeBlocks.DIAMOND_CHAIN), TEWhipItems.DIAMOND_WHIP.get()),
-                new RecipeData<>(AmountIngredient.of(4, ModTags.Items.INGOTS_SILVER), Ingredient.of(DecorativeBlocks.SAPPHIRE_CHAIN), TEWhipItems.SAPPHIRE_WHIP.get()),
-                new RecipeData<>(AmountIngredient.of(4, Tags.Items.INGOTS_COPPER), Ingredient.of(DecorativeBlocks.AMETHYST_CHAIN), TEWhipItems.AMETHYST_WHIP.get()),
-                new RecipeData<>(AmountIngredient.of(4, MaterialItems.SPORE_ROOT), Ingredient.of(MaterialItems.GELSTONE), TEWhipItems.SWAMP_WHIP.get())
-        );
+        baseWhip(recipeOutput, AmountIngredient.of(4, Items.BAMBOO), Ingredient.of(Items.BAMBOO_FENCE), TEWhipItems.SLUB_WHIP.toStack());
+        baseWhip(recipeOutput, AmountIngredient.of(4, Tags.Items.INGOTS_GOLD), Ingredient.of(DecorativeBlocks.RUBY_CHAIN), TEWhipItems.RUBY_WHIP.toStack());
+        baseWhip(recipeOutput, AmountIngredient.of(4, MaterialItems.STURDY_FOSSIL), Ingredient.of(DecorativeBlocks.AMBER_CHAIN), TEWhipItems.AMBER_WHIP.toStack());
+        baseWhip(recipeOutput, AmountIngredient.of(4, ModTags.Items.INGOTS_TIN), Ingredient.of(DecorativeBlocks.TOPAZ_CHAIN), TEWhipItems.TOPAZ_WHIP.toStack());
+        baseWhip(recipeOutput, AmountIngredient.of(4, ModTags.Items.INGOTS_TUNGSTEN), Ingredient.of(DecorativeBlocks.EMERALD_CHAIN), TEWhipItems.EMERALD_WHIP.toStack());
+        baseWhip(recipeOutput, AmountIngredient.of(4, ModTags.Items.INGOTS_PLATINUM), Ingredient.of(DecorativeBlocks.DIAMOND_CHAIN), TEWhipItems.DIAMOND_WHIP.toStack());
+        baseWhip(recipeOutput, AmountIngredient.of(4, ModTags.Items.INGOTS_SILVER), Ingredient.of(DecorativeBlocks.SAPPHIRE_CHAIN), TEWhipItems.SAPPHIRE_WHIP.toStack());
+        baseWhip(recipeOutput, AmountIngredient.of(4, Tags.Items.INGOTS_COPPER), Ingredient.of(DecorativeBlocks.AMETHYST_CHAIN), TEWhipItems.AMETHYST_WHIP.toStack());
+        baseWhip(recipeOutput, AmountIngredient.of(4, MaterialItems.SPORE_ROOT), Ingredient.of(MaterialItems.GELSTONE), TEWhipItems.SWAMP_WHIP.toStack());
+
         // 基础法杖
-        List<String> staffPattern = List.of(
-                "  a#",
-                "  aa",
-                " a  ",
-                "a   "
-        );
-        generateRecipes(recipeOutput, staffPattern,
-                new RecipeData<>(AmountIngredient.of(5, Items.DIAMOND), AmountIngredient.of(2, ModTags.Items.INGOTS_PLATINUM), ManaWeaponItems.DIAMOND_STAFF.get()),
-                new RecipeData<>(AmountIngredient.of(5, MaterialItems.RUBY), AmountIngredient.of(2, Tags.Items.INGOTS_GOLD), ManaWeaponItems.RUBY_STAFF.get()),
-                new RecipeData<>(AmountIngredient.of(5, MaterialItems.AMBER), AmountIngredient.of(2, MaterialItems.STURDY_FOSSIL), ManaWeaponItems.AMBER_STAFF.get()),
-                new RecipeData<>(AmountIngredient.of(5, MaterialItems.TOPAZ), AmountIngredient.of(2, ModTags.Items.INGOTS_TIN), ManaWeaponItems.TOPAZ_STAFF.get()),
-                new RecipeData<>(AmountIngredient.of(5, MaterialItems.TR_EMERALD), AmountIngredient.of(2, ModTags.Items.INGOTS_TUNGSTEN), ManaWeaponItems.EMERALD_STAFF.get()),
-                new RecipeData<>(AmountIngredient.of(5, MaterialItems.SAPPHIRE), AmountIngredient.of(2, ModTags.Items.INGOTS_SILVER), ManaWeaponItems.SAPPHIRE_STAFF.get()),
-                new RecipeData<>(AmountIngredient.of(5, MaterialItems.TR_AMETHYST), AmountIngredient.of(2, Tags.Items.INGOTS_COPPER), ManaWeaponItems.AMETHYST_STAFF.get())
-        );
+        baseStaff(recipeOutput, AmountIngredient.of(5, Items.DIAMOND), AmountIngredient.of(2, ModTags.Items.INGOTS_PLATINUM), ManaWeaponItems.DIAMOND_STAFF.toStack());
+        baseStaff(recipeOutput, AmountIngredient.of(5, MaterialItems.RUBY), AmountIngredient.of(2, Tags.Items.INGOTS_GOLD), ManaWeaponItems.RUBY_STAFF.toStack());
+        baseStaff(recipeOutput, AmountIngredient.of(5, MaterialItems.AMBER), AmountIngredient.of(2, MaterialItems.STURDY_FOSSIL), ManaWeaponItems.AMBER_STAFF.toStack());
+        baseStaff(recipeOutput, AmountIngredient.of(5, MaterialItems.TOPAZ), AmountIngredient.of(2, ModTags.Items.INGOTS_TIN), ManaWeaponItems.TOPAZ_STAFF.toStack());
+        baseStaff(recipeOutput, AmountIngredient.of(5, MaterialItems.TR_EMERALD), AmountIngredient.of(2, ModTags.Items.INGOTS_TUNGSTEN), ManaWeaponItems.EMERALD_STAFF.toStack());
+        baseStaff(recipeOutput, AmountIngredient.of(5, MaterialItems.SAPPHIRE), AmountIngredient.of(2, ModTags.Items.INGOTS_SILVER), ManaWeaponItems.SAPPHIRE_STAFF.toStack());
+        baseStaff(recipeOutput, AmountIngredient.of(5, MaterialItems.TR_AMETHYST), AmountIngredient.of(2, Tags.Items.INGOTS_COPPER), ManaWeaponItems.AMETHYST_STAFF.toStack());
+
         // 基础光剑
-        List<String> lightSaberPattern = List.of(
-                "   #",
-                "  # ",
-                "aa  ",
-                "a   "
-        );
-        generateRecipes(recipeOutput, lightSaberPattern,
-                new RecipeData<>(AmountIngredient.of(5, Items.DIAMOND), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.WHITE_LIGHT_SABER.get()),
-                new RecipeData<>(AmountIngredient.of(5, MaterialItems.RUBY), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.RED_LIGHT_SABER.get()),
-                new RecipeData<>(AmountIngredient.of(5, MaterialItems.AMBER), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.ORANGE_LIGHT_SABER.get()),
-                new RecipeData<>(AmountIngredient.of(5, MaterialItems.TOPAZ), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.YELLOW_LIGHT_SABER.get()),
-                new RecipeData<>(AmountIngredient.of(5, MaterialItems.TR_EMERALD), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.GREEN_LIGHT_SABER.get()),
-                new RecipeData<>(AmountIngredient.of(5, MaterialItems.SAPPHIRE), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.BLUE_LIGHT_SABER.get()),
-                new RecipeData<>(AmountIngredient.of(5, MaterialItems.TR_AMETHYST), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.PURPLE_LIGHT_SABER.get())
-        );
+        baseLightSaber(recipeOutput, AmountIngredient.of(5, Items.DIAMOND), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.WHITE_LIGHT_SABER.toStack());
+        baseLightSaber(recipeOutput, AmountIngredient.of(5, MaterialItems.RUBY), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.RED_LIGHT_SABER.toStack());
+        baseLightSaber(recipeOutput, AmountIngredient.of(5, MaterialItems.AMBER), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.ORANGE_LIGHT_SABER.toStack());
+        baseLightSaber(recipeOutput, AmountIngredient.of(5, MaterialItems.TOPAZ), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.YELLOW_LIGHT_SABER.toStack());
+        baseLightSaber(recipeOutput, AmountIngredient.of(5, MaterialItems.TR_EMERALD), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.GREEN_LIGHT_SABER.toStack());
+        baseLightSaber(recipeOutput, AmountIngredient.of(5, MaterialItems.SAPPHIRE), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.BLUE_LIGHT_SABER.toStack());
+        baseLightSaber(recipeOutput, AmountIngredient.of(5, MaterialItems.TR_AMETHYST), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.PURPLE_LIGHT_SABER.toStack());
+
         // 金系列
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2,Items.GOLD_INGOT),
+                '#', AmountIngredient.of(2, Items.GOLD_INGOT),
                 'a', Ingredient.of(Items.GOLD_INGOT)
         ), List.of(
                 "#a#",
                 "a a"
         )), ArmorItems.GOLDEN_HELMET.toStack());
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2,Items.GOLD_INGOT),
+                '#', AmountIngredient.of(2, Items.GOLD_INGOT),
                 'a', Ingredient.of(Items.GOLD_INGOT)
         ), List.of(
                 "#a#",
@@ -228,13 +128,13 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "a a"
         )), ArmorItems.GOLDEN_LEGGINGS.toStack());
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2,Items.GOLD_INGOT)
+                '#', AmountIngredient.of(2, Items.GOLD_INGOT)
         ), List.of(
                 "# #",
                 "# #"
         )), ArmorItems.GOLDEN_BOOTS.toStack());
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2,Items.GOLD_INGOT),
+                '#', AmountIngredient.of(2, Items.GOLD_INGOT),
                 'a', Ingredient.of(Items.GOLD_INGOT)
         ), List.of(
                 "a a",
@@ -242,7 +142,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "###"
         )), ArmorItems.GOLDEN_CHESTPLATE.toStack());
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2,Items.GOLD_INGOT),
+                '#', AmountIngredient.of(2, Items.GOLD_INGOT),
                 '/', Ingredient.of(Items.STICK)
         ), List.of(
                 "#",
@@ -250,7 +150,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "/"
         )), SwordItems.GOLDEN_BOARD_SWORD.toStack());
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2,Items.GOLD_INGOT),
+                '#', AmountIngredient.of(2, Items.GOLD_INGOT),
                 '/', Ingredient.of(Items.STICK)
         ), List.of(
                 "###",
@@ -258,7 +158,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " / "
         )), PickaxeItems.GOLDEN_PICKAXE.toStack());
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2,Items.GOLD_INGOT),
+                '#', AmountIngredient.of(2, Items.GOLD_INGOT),
                 '/', Ingredient.of(Items.STICK)
         ), List.of(
                 "##",
@@ -266,7 +166,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " /"
         )), AxeItems.GOLDEN_AXE.toStack());
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2,Items.GOLD_INGOT),
+                '#', AmountIngredient.of(2, Items.GOLD_INGOT),
                 '/', Ingredient.of(Items.STICK)
         ), List.of(
                 "#",
@@ -274,7 +174,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "/"
         )), ShovelItems.GOLDEN_SHOVEL.toStack());
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2,Items.GOLD_INGOT),
+                '#', AmountIngredient.of(2, Items.GOLD_INGOT),
                 '/', Ingredient.of(Items.STICK)
         ), List.of(
                 "##",
@@ -283,9 +183,9 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         )), HoeItems.GOLDEN_HOE.toStack());
         // 星星炮
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(4,MaterialItems.METEORITE_INGOT),
+                '#', AmountIngredient.of(4, MaterialItems.METEORITE_INGOT),
                 'A', Ingredient.of(TGItems.MINISHARK),
-                '/', AmountIngredient.of(5,MaterialItems.FALLING_STAR)
+                '/', AmountIngredient.of(5, MaterialItems.FALLING_STAR)
         ), List.of(
                 " ## ",
                 "# A/",
@@ -293,52 +193,52 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         )), GunItems.STAR_CANNON.toStack());
         // 死灵套装
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                'A', AmountIngredient.of(10,MaterialItems.DUNGEON_DEMON_BONE),
-                '/', AmountIngredient.of(10,Items.COBWEB)
+                'A', AmountIngredient.of(10, MaterialItems.DUNGEON_DEMON_BONE),
+                '/', AmountIngredient.of(10, Items.COBWEB)
         ), List.of(
                 "/A/",
                 "A A"
         )), ArmorItems.NECRO_HELMET.toStack());
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                'A', AmountIngredient.of(10,MaterialItems.DUNGEON_DEMON_BONE),
-                '/', AmountIngredient.of(5,Items.COBWEB)
+                'A', AmountIngredient.of(10, MaterialItems.DUNGEON_DEMON_BONE),
+                '/', AmountIngredient.of(5, Items.COBWEB)
         ), List.of(
                 "/ /",
                 "/A/",
                 "AAA"
         )), ArmorItems.NECRO_CHESTPLATE.toStack());
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                'A', AmountIngredient.of(10,MaterialItems.DUNGEON_DEMON_BONE),
-                '/', AmountIngredient.of(5,Items.COBWEB)
+                'A', AmountIngredient.of(10, MaterialItems.DUNGEON_DEMON_BONE),
+                '/', AmountIngredient.of(5, Items.COBWEB)
         ), List.of(
                 "/A/",
                 "/ /",
                 "A A"
         )), ArmorItems.NECRO_LEGGINGS.toStack());
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                'A', AmountIngredient.of(10,MaterialItems.DUNGEON_DEMON_BONE),
-                '/', AmountIngredient.of(10,Items.COBWEB)
+                'A', AmountIngredient.of(10, MaterialItems.DUNGEON_DEMON_BONE),
+                '/', AmountIngredient.of(10, Items.COBWEB)
         ), List.of(
                 "/ /",
                 "A A"
         )), ArmorItems.NECRO_BOOTS.toStack());
         // 丛林套装
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                'A', AmountIngredient.of(2,MaterialItems.JUNGLE_SPORE)
+                'A', AmountIngredient.of(2, MaterialItems.JUNGLE_SPORE)
         ), List.of(
                 "AAA",
                 "A A"
         )), ArmorItems.JUNGLE_HELMET.toStack());
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                'A', AmountIngredient.of(2,MaterialItems.JUNGLE_SPORE),
-                '/', AmountIngredient.of(2,MaterialItems.STINGER)
+                'A', AmountIngredient.of(2, MaterialItems.JUNGLE_SPORE),
+                '/', AmountIngredient.of(2, MaterialItems.STINGER)
         ), List.of(
                 "A A",
                 "/A/",
                 "/A/"
         )), ArmorItems.JUNGLE_CHESTPLATE.toStack());
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                'A', AmountIngredient.of(2,MaterialItems.JUNGLE_SPORE),
+                'A', AmountIngredient.of(2, MaterialItems.JUNGLE_SPORE),
                 '/', Ingredient.of(MaterialItems.STINGER),
                 'b', Ingredient.of(MaterialItems.MAN_EATER_VINE)
         ), List.of(
@@ -355,9 +255,9 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         )), ArmorItems.JUNGLE_BOOTS.toStack());
         // 草剑
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(7,MaterialItems.JUNGLE_SPORE),
+                'a', AmountIngredient.of(7, MaterialItems.JUNGLE_SPORE),
                 'b', Ingredient.of(MaterialItems.MAN_EATER_VINE),
-                'c', AmountIngredient.of(4,MaterialItems.STINGER)
+                'c', AmountIngredient.of(4, MaterialItems.STINGER)
         ), List.of(
                 "   c",
                 " cb ",
@@ -366,30 +266,62 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         )), SwordItems.BLADE_OF_GRASS.toStack());
     }
 
+    private void buildBaseStatues(RecipeOutput recipeOutput) {
+        ShapedRecipePattern baseStatuePattern = ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(ItemTags.STONE_CRAFTING_MATERIALS)
+        ), List.of(
+                " ## ",
+                " ## ",
+                " ## ",
+                "####"
+        ));
+        ItemLike[] statueItems = {
+                StatueBlocks.A_STATUE, StatueBlocks.B_STATUE, StatueBlocks.C_STATUE, StatueBlocks.D_STATUE, StatueBlocks.E_STATUE, StatueBlocks.F_STATUE, StatueBlocks.G_STATUE, StatueBlocks.H_STATUE, StatueBlocks.I_STATUE, StatueBlocks.J_STATUE, StatueBlocks.K_STATUE, StatueBlocks.L_STATUE, StatueBlocks.M_STATUE, StatueBlocks.N_STATUE, StatueBlocks.O_STATUE, StatueBlocks.P_STATUE, StatueBlocks.Q_STATUE, StatueBlocks.R_STATUE, StatueBlocks.S_STATUE, StatueBlocks.T_STATUE, StatueBlocks.U_STATUE, StatueBlocks.V_STATUE, StatueBlocks.W_STATUE, StatueBlocks.X_STATUE, StatueBlocks.Y_STATUE, StatueBlocks.Z_STATUE,
+                StatueBlocks.N0_STATUE, StatueBlocks.N1_STATUE, StatueBlocks.N2_STATUE, StatueBlocks.N3_STATUE, StatueBlocks.N4_STATUE, StatueBlocks.N5_STATUE, StatueBlocks.N6_STATUE, StatueBlocks.N7_STATUE, StatueBlocks.N8_STATUE, StatueBlocks.N9_STATUE,
+                StatueBlocks.PERIOD_STATUE,
+                StatueBlocks.EXCLAMATION_MARK_STATUE,
+                StatueBlocks.QUESTION_MARK_STATUE
+        };
+        // 雕像
+        for (ItemLike statueItem : statueItems) {
+            heavyWorkBench(recipeOutput, "", baseStatuePattern, statueItem.asItem().getDefaultInstance());
+        }
+    }
+
     protected void heavyWorkBench(RecipeOutput recipeOutput, String suffix, ShapedRecipePattern pattern, ItemStack result) {
         ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()) + suffix);
         recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, pattern), null);
     }
 
-    private static class RecipeData<T extends ItemLike> {
-        Ingredient material1;
-        Ingredient material2;
-        T resultItem;
-
-        public RecipeData(Ingredient material1, Ingredient material2, T resultItem) {
-            this.material1 = material1;
-            this.material2 = material2;
-            this.resultItem = resultItem;
-        }
+    protected void baseHook(RecipeOutput recipeOutput, Ingredient hook, Ingredient chain, ItemStack result) {
+        ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()));
+        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, ShapedRecipePattern.of(Map.of(
+                '#', hook,
+                'a', chain
+        ), baseHookPattern)), null);
     }
 
-    private <T extends ItemLike> void generateRecipes(RecipeOutput recipeOutput, List<String> pattern, RecipeData<T>... recipeDataList) {
-        for (RecipeData<T> data : recipeDataList) {
-            Map<Character, Ingredient> ingredientMap = Map.of(
-                    '#', data.material1,
-                    'a', data.material2
-            );
-            heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(ingredientMap, pattern), new ItemStack(data.resultItem.asItem()));
-        }
+    protected void baseWhip(RecipeOutput recipeOutput, Ingredient handle, Ingredient strip, ItemStack result) {
+        ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()));
+        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, ShapedRecipePattern.of(Map.of(
+                '#', handle,
+                'a', strip
+        ), baseWhipPattern)), null);
+    }
+
+    protected void baseStaff(RecipeOutput recipeOutput, Ingredient gem, Ingredient handle, ItemStack result) {
+        ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()));
+        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, ShapedRecipePattern.of(Map.of(
+                '#', gem,
+                'a', handle
+        ), baseStaffPattern)), null);
+    }
+
+    protected void baseLightSaber(RecipeOutput recipeOutput, Ingredient gem, Ingredient handle, ItemStack result) {
+        ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()));
+        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, ShapedRecipePattern.of(Map.of(
+                '#', gem,
+                'a', handle
+        ), baseLightSaberPattern)), null);
     }
 }

@@ -804,6 +804,16 @@ public class ModEnglishProvider extends LanguageProvider {
         add(ModBlocks.PLATINUM_COIN_PILE.get(), "Platinum Coin");
         add(ModBlocks.EMERALD_COIN_PILE.get(), "Emerald Coin");
         add(FunctionalBlocks.BLEND_O_MATIC.get(), "Blend-O-Matic");
+        add(StatueBlocks.N0_STATUE.get(), "'0' Statue");
+        add(StatueBlocks.N1_STATUE.get(), "'1' Statue");
+        add(StatueBlocks.N2_STATUE.get(), "'2' Statue");
+        add(StatueBlocks.N3_STATUE.get(), "'3' Statue");
+        add(StatueBlocks.N4_STATUE.get(), "'4' Statue");
+        add(StatueBlocks.N5_STATUE.get(), "'5' Statue");
+        add(StatueBlocks.N6_STATUE.get(), "'6' Statue");
+        add(StatueBlocks.N7_STATUE.get(), "'7' Statue");
+        add(StatueBlocks.N8_STATUE.get(), "'8' Statue");
+        add(StatueBlocks.N9_STATUE.get(), "'9' Statue");
 
         add("block.confluence.timers_block_1_1", "1 Second Timer");
         add("block.confluence.timers_block_3_1", "3 Second Timer");

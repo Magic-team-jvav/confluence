@@ -61,7 +61,7 @@ public class Confluence {
 
     public static void registerGameRules() {
         if (SPREADABLE_CHANCE == null) {
-            SPREADABLE_CHANCE = GameRules.register("confluenceSpreadableChance", GameRules.Category.MISC, GameRules.IntegerValue.create(10, 0, 100, (server, value) -> {}));
+            SPREADABLE_CHANCE = GameRules.register("confluenceSpreadableChance", GameRules.Category.UPDATES, GameRules.IntegerValue.create(10, 0, 100, (server, value) -> {}));
         }
     }
 

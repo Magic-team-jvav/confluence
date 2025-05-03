@@ -117,6 +117,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 
         shop(TENpcEntities.ARMS_DEALER.getId()).addRecipe(new Builder()
                 .add(TGItems.MUSKET_BULLET.get())
+                .add(TGItems.MUSKET_BULLET.get(),100)
                 .add(TGItems.FLINTLOCK_PISTOL.get())
                 .add(TGItems.MINISHARK.get())         //先不管晚上的条件，迷你鲨塞一手
                 .add(SellTrade.INSTANCE)

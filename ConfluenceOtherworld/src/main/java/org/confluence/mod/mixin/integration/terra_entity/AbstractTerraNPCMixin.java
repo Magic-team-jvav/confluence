@@ -1,6 +1,5 @@
 package org.confluence.mod.mixin.integration.terra_entity;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.world.entity.EntityType;
@@ -24,10 +23,8 @@ public abstract class AbstractTerraNPCMixin implements IAbstractTerraNPC, SelfGe
     @Shadow
     protected abstract void initName();
 
-    @Shadow
-    public House house;
     @Unique
-    private NPCSpawner.Region confluence$region = new NPCSpawner.Region(BlockPos.ZERO);
+    private NPCSpawner.Region confluence$region = NPCSpawner.Region.ZERO;
 
     @Override
     public void confluence$setRegion(NPCSpawner.Region region) {
@@ -47,13 +44,13 @@ public abstract class AbstractTerraNPCMixin implements IAbstractTerraNPC, SelfGe
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
     private void read(CompoundTag tag, CallbackInfo ci) {
         if (tag.contains("confluence:region")) {
-            this.confluence$region = NPCSpawner.Region.CODEC.parse(NbtOps.INSTANCE, tag.get("confluence:region")).getOrThrow();
+            this.confluence$region = NPCSpawner.Region.CODEC.parse(NbtOps.INSTANCE, tag.get("confluence:region")).result().orElse(NPCSpawner.Region.ZERO);
         }
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
     private void save(CompoundTag tag, CallbackInfo ci) {
-        tag.put("confluence:region", NPCSpawner.Region.CODEC.encodeStart(NbtOps.INSTANCE, confluence$region).getOrThrow());
+        NPCSpawner.Region.CODEC.encodeStart(NbtOps.INSTANCE, confluence$region).ifSuccess(tag1 -> tag.put("confluence:region", tag1));
     }
 
     @Inject(method = "setHouse", at = @At("HEAD"))

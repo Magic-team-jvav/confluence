@@ -471,6 +471,7 @@ public class NPCSpawner implements IGlobalData {
     }
 
     public record Region(int x, int z) {
+        public static final Region ZERO = new NPCSpawner.Region(BlockPos.ZERO);
         public static final Codec<Region> CODEC = Codec.LONG.xmap(Region::new, Region::toLong);
 
         public Region(BlockPos pos) {

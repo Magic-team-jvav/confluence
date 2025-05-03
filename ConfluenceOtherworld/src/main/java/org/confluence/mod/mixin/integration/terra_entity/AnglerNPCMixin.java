@@ -23,7 +23,7 @@ public abstract class AnglerNPCMixin implements SelfGetter<AnglerNPC> {
             AnglerNPC npc = confluence$self();
             NPCSpawner.Region region = new NPCSpawner.Region(NPCSpawner.getNpcSpawnPos(serverPlayer));
             NPCSpawner.INSTANCE.moveNPCToAnotherRegion(npc, IAbstractTerraNPC.of(npc).confluence$getRegion(), region);
-            NPCSpawner.broadcastMessageToRegion(player.level(), region, Component.translatable("event.confluence.npc.arrived", npc.getType().getDescription(), npc.getName()).withColor(GlobalColors.NPC_ARRIVED.getRGB()));
+            NPCSpawner.broadcastMessageToRegion(player.level(), npc, Component.translatable("event.confluence.npc.arrived", npc.getType().getDescription(), npc.getName()).withColor(GlobalColors.NPC_ARRIVED.getRGB()));
         }
     }
 }

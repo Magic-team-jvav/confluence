@@ -43,6 +43,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.IAbstractTerraNPC;
+import org.confluence.mod.mixin.integration.terra_entity.AnglerNPCMixin;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_guns.common.init.TGTags;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
@@ -148,7 +149,7 @@ public class NPCSpawner implements IGlobalData {
         npc.confluence$setRegion(new Region(living.chunkPosition()));
         setNPCAlive(npc.confluence$getRegion(), living.getType(), true);
         applyBenedictions(living);
-        broadcastMessageToRegion(living.level(), npc.confluence$getRegion(), Component.translatable("event.confluence.npc.arrived", living.getType().getDescription(), living.getName()).withColor(GlobalColors.NPC_ARRIVED.getRGB()));
+        broadcastMessageToRegion(living.level(), living, Component.translatable("event.confluence.npc.arrived", living.getType().getDescription(), living.getName()).withColor(GlobalColors.NPC_ARRIVED.getRGB()));
     }
 
     public void applyBenedictions(AbstractTerraNPC living) {
@@ -161,8 +162,7 @@ public class NPCSpawner implements IGlobalData {
     }
 
     public void onNPCRemoved(AbstractTerraNPC living) {
-        IAbstractTerraNPC npc = (IAbstractTerraNPC) living;
-        setNPCAlive(npc.confluence$getRegion(), living.getType(), false);
+        setNPCAlive(((IAbstractTerraNPC) living).confluence$getRegion(), living.getType(), false);
 
         if (living.getType() == TENpcEntities.OLD_MAN.get()) return; // 老人不用广播死亡信息
         MutableComponent message;
@@ -171,7 +171,7 @@ public class NPCSpawner implements IGlobalData {
         } else { // todo 旅商已离去！
             message = Component.translatable("event.confluence.npc.slain", living.getType().getDescription(), living.getName());
         }
-        broadcastMessageToRegion(living.level(), npc.confluence$getRegion(), message.withColor(GlobalColors.NPC_SLAIN.getRGB()));
+        broadcastMessageToRegion(living.level(), living, message.withColor(GlobalColors.NPC_SLAIN.getRGB()));
     }
 
     @Override
@@ -226,6 +226,7 @@ public class NPCSpawner implements IGlobalData {
         for (ServerPlayer player : serverLevel.players()) {
             BlockPos pos = getNpcSpawnPos(player);
             Region region = new Region(pos);
+            if (trySpawnClothier(player, pos, region)) continue;
             for (EntityType<?> entityType : npcSpawned) {
                 if (!hasNPCAlive(region, entityType) && spawnAtPos(serverLevel, pos, entityType)) {
                     continue outer;
@@ -245,7 +246,6 @@ public class NPCSpawner implements IGlobalData {
             // 发型师
             if (trySpawnGoblinTinkerer(player, pos, region)) continue;
             // 巫医
-            if (trySpawnClothier(player, pos, region)) continue;
             // 机械师
             // 派对女孩
             // 巫师
@@ -300,7 +300,7 @@ public class NPCSpawner implements IGlobalData {
     /**
      * 先计入NPC列表，待玩家交互了再转移
      *
-     * @see org.confluence.mod.mixin.integration.terra_entity.AnglerNPCMixin
+     * @see AnglerNPCMixin
      */
     private boolean trySpawnAngler(ServerPlayer serverPlayer, Region region) {
         BlockPos playerPos = serverPlayer.blockPosition();
@@ -398,13 +398,18 @@ public class NPCSpawner implements IGlobalData {
                 if (boundingBox.isInside(serverPlayer.blockPosition())) {
                     for (StructurePiece piece : structureStart.getPieces()) {
                         if (piece instanceof SimpleTemplatePiece templatePiece && DungeonStructure.gate.equals(templatePiece.templateName)) {
-                            if (!hasNPCAlive(new Region(templatePiece.templatePosition()), TENpcEntities.OLD_MAN.get())) {
+                            BlockPos offset = switch (templatePiece.getRotation()) {
+                                case CLOCKWISE_90 -> templatePiece.templatePosition().offset(-15, 6, 15);
+                                case CLOCKWISE_180 -> templatePiece.templatePosition().offset(-15, 6, -15);
+                                case COUNTERCLOCKWISE_90 -> templatePiece.templatePosition().offset(15, 6, -15);
+                                default -> templatePiece.templatePosition().offset(15, 6, 15);
+                            };
+                            Region npcRegion = new Region(offset);
+                            if (!hasNPCAlive(npcRegion, TENpcEntities.OLD_MAN.get())) {
                                 AbstractTerraNPC npc = TENpcEntities.OLD_MAN.get().create(level);
                                 if (npc == null) return false;
-                                BlockPos offset = templatePiece.templatePosition().offset(15, 6, 15);
                                 npc.setPos(offset.getBottomCenter());
                                 level.addFreshEntity(npc);
-                                Region npcRegion = new Region(offset);
                                 IAbstractTerraNPC.of(npc).confluence$setRegion(npcRegion);
                                 npcAlive.computeIfAbsent(npcRegion, region1 -> new Object2BooleanOpenHashMap<>()).put(TENpcEntities.OLD_MAN.get(), true);
                                 return true;
@@ -442,9 +447,10 @@ public class NPCSpawner implements IGlobalData {
         return player.getRespawnPosition() == null ? player.serverLevel().getSharedSpawnPos() : player.getRespawnPosition();
     }
 
-    public static void broadcastMessageToRegion(Level level, Region region, Component message) {
+    public static void broadcastMessageToRegion(Level level, AbstractTerraNPC npc, Component message) {
+        Region region = ((IAbstractTerraNPC) npc).confluence$getRegion();
         for (Player player : level.players()) {
-            if (region.isOnRegion(player.chunkPosition())) {
+            if (region.isOnRegion(player.chunkPosition()) || npc.distanceToSqr(player) < 96 * 96) {
                 player.sendSystemMessage(message);
             }
         }

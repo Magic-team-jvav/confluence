@@ -18,6 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
@@ -78,7 +79,9 @@ public final class PlayerEvents {
             if ((secretFlag & IWorldOptions.HARDMODE) != 0) {
                 ModAchievements.awardAchievement(serverPlayer, "its_hard");
             }
-            NPCSpawner.INSTANCE.trySpawnGuide(serverPlayer);
+            if (serverPlayer.serverLevel().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
+                NPCSpawner.INSTANCE.trySpawnGuide(serverPlayer);
+            }
         }
     }
 

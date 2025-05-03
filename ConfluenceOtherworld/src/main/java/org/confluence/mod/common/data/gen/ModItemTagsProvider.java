@@ -1428,6 +1428,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.AMMO_BOX.asItem(),
                 FunctionalBlocks.BEWITCHING_TABLE.asItem(),
                 FunctionalBlocks.KEG.asItem(),
+                FunctionalBlocks.CRYSTAL_BALL.asItem(),
                 FunctionalBlocks.MYTHRIL_ANVIL.asItem(),
                 FunctionalBlocks.ORICHALCUM_ANVIL.asItem(),
                 FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.asItem(),

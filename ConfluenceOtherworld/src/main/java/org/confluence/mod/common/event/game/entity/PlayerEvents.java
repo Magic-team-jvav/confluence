@@ -292,6 +292,7 @@ public final class PlayerEvents {
             serverPlayer.setHealth(health <= 0.0F ? 20.0F : health);
         }
         BoulderWorld.forceSetAccessory(serverPlayer);
+        ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, serverPlayer, serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY));
     }
 
     @SubscribeEvent

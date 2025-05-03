@@ -5,7 +5,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.neoforged.fml.common.asm.enumextension.EnumProxy;
 import net.neoforged.neoforge.client.IArmPoseTransformer;
-import org.confluence.mod.common.data.saved.NPCSpawner;
 
 public final class ModArmPoses {
     public static final EnumProxy<ArmPose> BREATHING_REED = new EnumProxy<>(ArmPose.class, false, (IArmPoseTransformer)

@@ -375,7 +375,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.nebula_wings.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.vortex_booster.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.solar_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.stardust_wings.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.stardust.0", "Allows flight and slow fall");
 
         add("confluence.configuration.WorldGeneration", "World Generation Mechanism");
         add("confluence.configuration.WorldGeneration.tooltip", "Some settings related to world generation");

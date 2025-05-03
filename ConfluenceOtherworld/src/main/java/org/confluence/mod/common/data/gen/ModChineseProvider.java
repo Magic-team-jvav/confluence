@@ -365,7 +365,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.nebula_wings.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.vortex_booster.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.solar_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.stardust_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.stardust.0", "可飞行和缓慢坠落");
 
         add("confluence.configuration.WorldGeneration", "世界生成机制");
         add("confluence.configuration.WorldGeneration.tooltip", "一些世界生成相关设置");
@@ -2044,6 +2044,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SOUL_OF_SIGHT.get(), "视域之魂");
         add(MaterialItems.SOUL_OF_FRIGHT.get(), "恐惧之魂");
         add(MaterialItems.SPELL_TOME.get(), "魔法书");
+        add(MaterialItems.HARPY_FEATHER.get(), "鸟妖之羽");
+        add(MaterialItems.GIANT_HARPY_FEATHER.get(), "巨型鸟妖之羽");
         // 植物
         add(MaterialItems.WATERLEAF.get(), "幌菊");
         add(MaterialItems.FIREBLOSSOM.get(), "火焰花");

@@ -92,6 +92,16 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "confluence:solidifier",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
           "name": "confluence:ninja_helmet",
           "weight": 2
         },

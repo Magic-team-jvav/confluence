@@ -37,7 +37,7 @@ public class CookingPotBlock extends BaseCauldronBlock {
 
     @Override
     protected RenderShape getRenderShape(BlockState state) {
-        return RenderShape.ENTITYBLOCK_ANIMATED;
+        return (this == FunctionalBlocks.CAULDRON.get()) ? RenderShape.MODEL : RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
     @Override

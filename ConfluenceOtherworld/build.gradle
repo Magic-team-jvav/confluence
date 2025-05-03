@@ -217,7 +217,7 @@ dependencies {
     }
 
     compileOnly "curse.maven:appleskin-248787:5586600"
-    //runtimeOnly "curse.maven:appleskin-248787:5586600"
+    runtimeOnly "curse.maven:appleskin-248787:5586600"
 
     /**********************************************************/
 

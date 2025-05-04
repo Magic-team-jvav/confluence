@@ -46,7 +46,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-
+// todo 将原始值公式加回来
 public class BaseSwordItem extends SwordItem {
     public ModifierBuilder modifier;
 
@@ -64,7 +64,7 @@ public class BaseSwordItem extends SwordItem {
                 .durability(tier.getUses())
                 .component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS,
-                        createAttributes(tier,rawDamage, rawSpeed))
+                        createAttributes(tier,rawDamage - tier.getAttackDamageBonus() - 1, rawSpeed - 4))
         );
         this.modifier = new ModifierBuilder();
     }
@@ -214,8 +214,8 @@ public class BaseSwordItem extends SwordItem {
                     .component(ConfluenceMagicLib.MOD_RARITY, rarity)
                     .component(DataComponents.ATTRIBUTE_MODIFIERS,
                             attributeModifiersBuilder
-                                    .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, rawDamage + tier.getAttackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                                    .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, rawSpeed, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                                    .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, rawDamage - 1, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                                    .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, rawSpeed - 4, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                                     .build());
             return properties;
         }

@@ -9,6 +9,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -20,6 +21,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.menu.SolidifierMenu;
+import org.jetbrains.annotations.Nullable;
 
 public class SolidifierBlock extends HorizontalDirectionalBlock {
     public static final MapCodec<SolidifierBlock> CODEC = simpleCodec(SolidifierBlock::new);
@@ -51,6 +53,11 @@ public class SolidifierBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
+    public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+    }
+
+    @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
@@ -62,6 +69,6 @@ public class SolidifierBlock extends HorizontalDirectionalBlock {
 
     @Override
     public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
-        return new SimpleMenuProvider((containerId, inventory, player) -> new SolidifierMenu(containerId, inventory, ContainerLevelAccess.create(level, pos)), Component.translatable("container.confluence.crystal_ball"));
+        return new SimpleMenuProvider((containerId, inventory, player) -> new SolidifierMenu(containerId, inventory, ContainerLevelAccess.create(level, pos)), Component.translatable("container.confluence.solidifier"));
     }
 }

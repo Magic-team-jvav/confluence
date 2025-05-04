@@ -26,7 +26,7 @@ public class EchoBlock extends HalfTransparentBlock implements ISimulatorBlock {
     public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext context) {
         if (context instanceof EntityCollisionContext context1 && context1.getEntity() instanceof Player player) {
             if (player.isLocalPlayer()) return ClientPacketHandler.hasEchoVisible() ? Shapes.block() : Shapes.empty();
-            return player.getPersistentData().getBoolean("confluence:hasEchoVisibility") ? Shapes.block() : Shapes.empty();
+            return player.getPersistentData().getBoolean("confluence:has_echo_visibility") ? Shapes.block() : Shapes.empty();
         }
         return Shapes.block();
     }

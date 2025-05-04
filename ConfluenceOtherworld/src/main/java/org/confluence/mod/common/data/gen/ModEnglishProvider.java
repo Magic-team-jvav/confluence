@@ -766,6 +766,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("condition.confluence.shimmer_transmutation.plantera", "Required game phase: After Plantera");
         add("condition.confluence.shimmer_transmutation.golem", "Required game phase: After Golem");
         add("condition.confluence.shimmer_transmutation.moon_lord", "Required game phase: After Moon Lord");
+        add("condition.confluence.requires_fuel", "Requires Fuel");
 
         add("container.confluence.sky_mill", "Sky Mill");
         add("container.confluence.safe", "Safe");
@@ -774,12 +775,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("container.confluence.alchemy_table", "Alchemy Table");
         add("container.confluence.cooking_pot", "Cooking Pot");
         add("container.confluence.crystal_ball", "Crystal Ball");
-        add("condition.confluence.requires_fuel", "Requires Fuel");
         add("container.confluence.fletching_table", "Fletching Table");
         add("container.confluence.piggy_bank", "Piggy Bank");
         add("container.confluence.sawmill", "Sawmill");
         add("container.confluence.tree_holes", "Tree Holes");
         add("container.confluence.npc_shop", "Npc Shop");
+        add("container.confluence.solidifier", "固化机");
 
         add("title.confluence.shimmer_transmutation", "Shimmer Transmutation");
         add("title.confluence.altar", "Altar");

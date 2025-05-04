@@ -46,7 +46,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-// todo 将原始值公式加回来
 public class BaseSwordItem extends SwordItem {
     public ModifierBuilder modifier;
 

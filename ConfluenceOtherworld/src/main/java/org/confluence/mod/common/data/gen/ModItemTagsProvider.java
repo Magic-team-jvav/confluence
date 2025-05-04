@@ -1539,6 +1539,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             weapons.add(value);
             tag(ModTags.Items.LANCES).add(value);
         });
+
+        tag(ModTags.Items.SHOW_SIGNAL).add(
+                ToolItems.RED_WRENCH.get(),
+                ToolItems.GREEN_WRENCH.get(),
+                ToolItems.BLUE_WRENCH.get(),
+                ToolItems.YELLOW_WRENCH.get(),
+                ToolItems.WIRE_CUTTER.get()
+        );
     }
 
     @Override

@@ -232,8 +232,8 @@ public final class ModAchievements {
         }
     }
 
-    public static void matchingAttire_fashionStatement(EquipmentSlot slot, LivingEntity living) {
-        if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR && living instanceof ServerPlayer serverPlayer) {
+    public static void matchingAttire_fashionStatement(EquipmentSlot slot, ServerPlayer serverPlayer) {
+        if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
             if (Streams.stream(serverPlayer.getArmorSlots()).noneMatch(ItemStack::isEmpty)) {
                 awardAchievement(serverPlayer, "matching_attire");
                 ExtraInventory extraInventory = serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY);

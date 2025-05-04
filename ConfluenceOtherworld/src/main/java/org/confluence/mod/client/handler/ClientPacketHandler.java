@@ -10,6 +10,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.mixed.IDeathScreen;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.*;
@@ -24,6 +25,7 @@ public final class ClientPacketHandler {
     private static boolean echoVisible = false;
     private static long secretFlag = 0L;
     private static boolean sprintable = false;
+    private static boolean showSignal = false;
 
     public static int getCurrentMana() {
         return currentMana;
@@ -53,6 +55,10 @@ public final class ClientPacketHandler {
         return sprintable;
     }
 
+    public static boolean isShowSignal() {
+        return showSignal;
+    }
+
     public static void reset() {
         maxMana = 20;
         currentMana = 20;
@@ -61,6 +67,7 @@ public final class ClientPacketHandler {
         echoVisible = false;
         secretFlag = 0L;
         sprintable = false;
+        showSignal = false;
     }
 
     public static void handleMana(ManaPacketS2C packet, Player player) {
@@ -79,10 +86,18 @@ public final class ClientPacketHandler {
         fishingPower = packet.value();
     }
 
-    public static void handleEcho(boolean visible) {
-        if (echoVisible != visible) {
-            ((ILevelRenderer) Minecraft.getInstance().levelRenderer).phase_journey$rebuildAllChunks();
-            echoVisible = visible;
+    public static void handleVisibility(byte mask, boolean visible) {
+        if ((mask & VisibilityPacketS2C.ECHO) != 0) {
+            if (echoVisible != visible) {
+                ((ILevelRenderer) Minecraft.getInstance().levelRenderer).phase_journey$rebuildAllChunks();
+                echoVisible = visible;
+            }
+        }
+        if ((mask & VisibilityPacketS2C.THE_CONSTANT_POST_EFFECT) != 0) {
+            TheConstant.postEffect(visible);
+        }
+        if ((mask & VisibilityPacketS2C.SIGNAL) != 0) {
+            showSignal = visible;
         }
     }
 
@@ -117,7 +132,7 @@ public final class ClientPacketHandler {
         }
     }
 
-    public static void handleSprintable(boolean sprintable) {
-        ClientPacketHandler.sprintable = sprintable;
+    public static void handleSprintable(boolean able) {
+        sprintable = able;
     }
 }

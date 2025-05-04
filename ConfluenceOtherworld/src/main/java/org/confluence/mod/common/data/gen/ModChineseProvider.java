@@ -845,6 +845,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("container.confluence.npc_shop", "npc商店");
         add("container.confluence.sawmill", "锯木机");
         add("container.confluence.tree_holes", "树洞");
+        add("container.confluence.solidifier", "固化机");
 
         add("title.confluence.shimmer_transmutation", "微光嬗变");
         add("title.confluence.altar", "祭坛");

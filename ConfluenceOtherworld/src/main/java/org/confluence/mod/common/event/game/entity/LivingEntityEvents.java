@@ -63,6 +63,7 @@ import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.entity.ai.Boss;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.init.TETags;
+import org.jetbrains.annotations.Nullable;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class LivingEntityEvents {
@@ -150,14 +151,15 @@ public final class LivingEntityEvents {
         if (!(living.level() instanceof ServerLevel level)) return;
         DamageSource damageSource = event.getSource();
         if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) return;
-        Entity attacker = damageSource.getEntity();
+        @Nullable Entity attacker = damageSource.getEntity();
 
         amount = ArcheryEffect.apply(living, damageSource, amount);
         amount = ManaSicknessEffect.apply(damageSource, amount);
         amount = TheConstant.applyAttackDamage(attacker, amount);
 
-        // 克苏鲁之脑和飞眼怪给的debuff
         ModUtils.applyBrainOfCthulhuDebuff(level, attacker, living);
+        ModUtils.applyCursedSkullDebuff(attacker, living);
+
         // 芦苇呼吸管对溺水伤害减半
         if (damageSource.is(DamageTypes.DROWN)) {
             if (LibUtils.anyHandHasItem(living, itemStack -> itemStack.is(SwordItems.BREATHING_REED))) {

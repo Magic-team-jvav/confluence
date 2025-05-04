@@ -40,7 +40,8 @@ public interface ISpreadable {
 
     default void spread(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
         if (!blockState.getValue(STILL_ALIVE)) return;
-        if (randomSource.nextInt(100) >= serverLevel.getGameRules().getInt(Confluence.SPREADABLE_CHANCE)) return;
+        int chance = serverLevel.getGameRules().getInt(Confluence.SPREADABLE_CHANCE);
+        if (chance == 0 || randomSource.nextInt(100) >= chance) return;
         int phase = KillBoard.INSTANCE.getGamePhase().ordinal();
         for (int i = 0; i < 4; ++i) {
             BlockPos targetPos = blockPos.offset(randomSource.nextInt(3) - 1, randomSource.nextInt(5) - 3, randomSource.nextInt(3) - 1);

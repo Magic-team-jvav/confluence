@@ -1,0 +1,93 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "Client",
+      "presentation": {
+        "group": "Mod Development - XHN-Lib",
+        "order": 0
+      },
+      "projectName": "XHN-Lib",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@D:\\Desktop\\confluence\\XHN-Lib\\build\\moddev\\clientRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@D:\\Desktop\\confluence\\XHN-Lib\\build\\moddev\\clientRunVmArgs.txt",
+        "-Dfml.modFolders\u003dxhn_lib%%D:\\Desktop\\confluence\\XHN-Lib\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "Data",
+      "presentation": {
+        "group": "Mod Development - XHN-Lib",
+        "order": 1
+      },
+      "projectName": "XHN-Lib",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@D:\\Desktop\\confluence\\XHN-Lib\\build\\moddev\\dataRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@D:\\Desktop\\confluence\\XHN-Lib\\build\\moddev\\dataRunVmArgs.txt",
+        "-Dfml.modFolders\u003dxhn_lib%%D:\\Desktop\\confluence\\XHN-Lib\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "GameTestServer",
+      "presentation": {
+        "group": "Mod Development - XHN-Lib",
+        "order": 2
+      },
+      "projectName": "XHN-Lib",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@D:\\Desktop\\confluence\\XHN-Lib\\build\\moddev\\gameTestServerRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@D:\\Desktop\\confluence\\XHN-Lib\\build\\moddev\\gameTestServerRunVmArgs.txt",
+        "-Dfml.modFolders\u003dxhn_lib%%D:\\Desktop\\confluence\\XHN-Lib\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "Server",
+      "presentation": {
+        "group": "Mod Development - XHN-Lib",
+        "order": 3
+      },
+      "projectName": "XHN-Lib",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@D:\\Desktop\\confluence\\XHN-Lib\\build\\moddev\\serverRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@D:\\Desktop\\confluence\\XHN-Lib\\build\\moddev\\serverRunVmArgs.txt",
+        "-Dfml.modFolders\u003dxhn_lib%%D:\\Desktop\\confluence\\XHN-Lib\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.xiaohunao.xhn_lib.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "xhn_lib.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

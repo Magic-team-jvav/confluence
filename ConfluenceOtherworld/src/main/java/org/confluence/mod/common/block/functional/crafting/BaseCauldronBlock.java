@@ -35,6 +35,7 @@ import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModRecipes;
@@ -49,7 +50,7 @@ import static org.confluence.mod.common.menu.HellforgeMenu.RESULT_SLOT;
 
 public class BaseCauldronBlock extends HorizontalDirectionalBlock implements EntityBlock {
     public static final MapCodec<BaseCauldronBlock> CODEC = simpleCodec(BaseCauldronBlock::new);
-    private static final VoxelShape SHAPE = box(1, 0, 1, 15, 14, 15);
+    private static final VoxelShape SHAPE = Shapes.or(box(1, -3.984, 1, 15, 4.016, 15), box(1, 6.016, 1, 15, 8.016, 15), box(2, 4.016, 2, 14, 6.016, 14));
 
     public BaseCauldronBlock(Properties properties) {
         super(properties);

@@ -6,6 +6,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -337,19 +338,17 @@ public final class LivingEntityEvents {
     }
 
     @SubscribeEvent
-    public static void livingEntityUseItem$Finish(LivingEntityUseItemEvent.Finish event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            ItemStack itemStack = event.getItem();
-            if (itemStack.is(FoodItems.GREEN_DUMPLING.get())) {
-                if (player.getRandom().nextInt(6) == 0) {
-                    player.addEffect(new MobEffectInstance(ModEffects.CHOKING, 2400));
-                }
-            }
-            if (player.hasEffect(ModEffects.CHOKING) && ModUtils.isWaterBottle(itemStack)) {
-                player.removeEffect(ModEffects.CHOKING);
-                ItemStack resultItem = itemStack.finishUsingItem(player.level(), player);
-                event.setResultStack(resultItem);
-            }
+    public static void livingEntityUseItemFinish(LivingEntityUseItemEvent.Finish event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        ItemStack itemStack = event.getItem();
+        RandomSource random = player.getRandom();
+        if (itemStack.is(FoodItems.GREEN_DUMPLING.get()) && random.nextInt(6) == 0) {
+            player.addEffect(new MobEffectInstance(ModEffects.CHOKING, 2400));
+        }
+        if (player.hasEffect(ModEffects.CHOKING) && ModUtils.isWaterBottle(itemStack)) {
+            player.removeEffect(ModEffects.CHOKING);
+            ItemStack resultItem = itemStack.finishUsingItem(player.level(), player);
+            event.setResultStack(resultItem);
         }
     }
 

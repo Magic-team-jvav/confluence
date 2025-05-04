@@ -359,7 +359,7 @@ public class NPCSpawner implements IGlobalData {
 
     private boolean trySpawnArmsDealer(ServerPlayer serverPlayer, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.ARMS_DEALER.get())) {
-            Predicate<ItemStack> predicate = stack -> stack.is(TGTags.AMMO) || stack.is(TGTags.GUN);
+            Predicate<ItemStack> predicate = stack -> stack.is(TGTags.BULLET) || stack.is(TGTags.GUN);
             if (serverPlayer.getInventory().hasAnyMatching(predicate) || serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).hasAnyMatching(predicate)) {
                 return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.ARMS_DEALER.get());
             }

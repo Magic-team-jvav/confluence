@@ -27,6 +27,8 @@ import org.confluence.terraentity.utils.TEUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
+import java.util.Comparator;
+
 /**
  * 基础属性如伤害、击退、初始位置由弹幕容器设置，弹幕实体只定义运动、伤害公式、碰撞检测
  */
@@ -63,6 +65,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     protected static final EntityDataAccessor<Vector3f> DATA_INIT_SPEED = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.VECTOR3);
     protected static final EntityDataAccessor<Float> DATA_INIT_GRAVITY = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.FLOAT);
 
+    @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> data){
         super.onSyncedDataUpdated(data);
         if(level().isClientSide) {
@@ -80,6 +83,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         }
     }
 
+    @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_INIT_SPEED, new Vector3f(0, 0, 0));
@@ -124,6 +128,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
     LivingEntity target;
 
+    @Override
     public void onAddedToLevel(){
         super.onAddedToLevel();
         var owner1 = getOwner();
@@ -141,7 +146,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
             }
 
             var entities = level().getEntities(this, getBoundingBox().inflate(50), e-> e instanceof LivingEntity living && living.isAlive() && e != owner1);
-            entities.sort((a, b) -> (int) (a.distanceToSqr(this) - b.distanceToSqr(this)));
+            entities.sort(Comparator.comparingDouble(a -> a.distanceToSqr(this)));
             for (Entity entity : entities) {
                 if(entity instanceof LivingEntity living){
                     target = living;
@@ -215,6 +220,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         else return damageSources().magic();
     }
 
+    @Override
     public CollisionProperties getCollisionProperties() {
         return collisionProperties;
     }
@@ -280,6 +286,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         return 1;
     }
 
+    @Override
     @Nullable
     protected ParticleOptions getTrailParticle() {
         return null;

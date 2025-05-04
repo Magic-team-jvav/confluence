@@ -35,8 +35,8 @@ public record ValueComponent(int value) implements DataComponentType<ValueCompon
         ValueComponent value = itemStack.get(ModDataComponentTypes.VALUE);
         if (value == null) {
             value = itemStack.getItemHolder().getData(ModDataMaps.VALUE);
-            return value == null ? defaultValue : value.value();
+            return (value == null ? defaultValue : value.value()) * itemStack.getCount();
         }
-        return value.value();
+        return value.value() * itemStack.getCount();
     }
 }

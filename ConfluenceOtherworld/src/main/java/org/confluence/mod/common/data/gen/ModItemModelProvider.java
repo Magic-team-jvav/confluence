@@ -36,7 +36,8 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         ModelFile.UncheckedModelFile templateReverse24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_reverse24x"));
-        //ModelFile.UncheckedModelFile templateNormal24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_normal24x"));
+
+        ModelFile.UncheckedModelFile templateNormal24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_normal24x"));
         separateModel(SwordItems.BEE_KEEPER, templateReverse24x, "sword/");
         separateModel(SwordItems.ICE_BLADE, templateReverse24x, "sword/");
         separateModel(SwordItems.MURAMASA, templateReverse24x, "sword/");
@@ -49,9 +50,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         separateModel(SwordItems.BAT_BAT, templateReverse24x, "sword/");
         separateModel(SwordItems.KATANA, templateReverse24x, "sword/");
         separateModel(HammerItems.THE_BREAKER, templateReverse24x, "hammer/");
-        separateModel(HammerItems.FLESH_GRINDER, templateReverse24x, "hammer/");
+        separateModel(HammerItems.FLESH_GRINDER, templateNormal24x, "hammer/");
         separateModel(AxeItems.WAR_AXE_OF_THE_NIGHT, templateReverse24x, "axe/");
-        separateModel(AxeItems.BLOOD_LUST_CLUSTER, templateReverse24x, "axe/");
+        separateModel(AxeItems.BLOOD_LUST_CLUSTER, templateNormal24x, "axe/");
         separateModel(PickaxeItems.REAVER_SHARK_PICKAXE, templateReverse24x, "pickaxe/");
 
         ResourceLocation templateDye = Confluence.asResource("item/template_dye");

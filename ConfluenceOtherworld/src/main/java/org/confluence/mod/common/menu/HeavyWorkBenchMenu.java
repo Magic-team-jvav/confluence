@@ -20,7 +20,10 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
 
     public HeavyWorkBenchMenu(int containerId, Inventory inventory, HeavyWorkBenchBlock.LevelAccess access) {
         super(ModMenuTypes.HEAVY_WORK_BENCH.get(), ModRecipes.HEAVY_WORK_BENCH_TYPE.get(), containerId, inventory, access,
-                (menu, size) -> new EnvironmentRecipeInput(menu, size, access),
+                (menu, size) -> {
+                    access.initializeIfNeeded(inventory.player);
+                    return new EnvironmentRecipeInput(menu, size, access);
+                },
                 (input, container, slot, x, y, setup) -> new ToggleAmountResultSlot<>(input, container, slot, x, y) {
                     @Override
                     protected void updateMenu() {

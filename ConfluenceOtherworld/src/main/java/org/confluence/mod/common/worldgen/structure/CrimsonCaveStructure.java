@@ -112,8 +112,8 @@ public class CrimsonCaveStructure extends Structure {
                 lineSet(VctList, 4, 8, 1, false, blockMap);
                 lineSet(VctList, 2, 6, 0, true, blockMap);
                 pos = new BlockPos((int) VctList.getFirst().x, (int) VctList.getFirst().y, (int) VctList.getFirst().z);
-                StructureUtils.ball(4, pos, 1, true, blockMap);
-                StructureUtils.ball(2, pos, 0, true, blockMap);
+                //StructureUtils.ball(4, pos, 1, true, blockMap);
+                //StructureUtils.ball(2, pos, 0, true, blockMap);
                 blockMap.put(pos, 2);
             }
 

@@ -12,20 +12,14 @@ import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.common.CursedFlameItem;
+import org.confluence.mod.common.item.common.GelItem;
 import org.confluence.mod.common.item.common.MushroomItem;
 import org.jetbrains.annotations.NotNull;
 
 public class MaterialItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
-    public static final DeferredItem<Item> GEL = ITEMS.register("gel", () -> new ColoredItem(ModRarity.WHITE) {
-        @Override
-        public @NotNull ItemStack getDefaultInstance() {
-            ItemStack itemStack = new ItemStack(GEL.get());
-            setColor(itemStack, 0xFF66CCFF);
-            return itemStack;
-        }
-    });
+    public static final DeferredItem<Item> GEL = ITEMS.register("gel", GelItem::new);
     public static final DeferredItem<Item> PINK_GEL = register("pink_gel", ModRarity.PINK);
     public static final DeferredItem<Item> SILK = register("silk", ModRarity.BLUE);
     public static final DeferredItem<Item> RAW_ASPHALT = register("raw_asphalt", ModRarity.WHITE); // 生沥青
@@ -108,6 +102,8 @@ public class MaterialItems {
     public static final DeferredItem<Item> TISSUE_SAMPLE = register("tissue_sample", ModRarity.BLUE);
     public static final DeferredItem<Item> ROYAL_WAX = register("royal_wax", ModRarity.BLUE);
     public static final DeferredItem<Item> DUNGEON_DEMON_BONE = register("dungeon_demon_bone", ModRarity.BLUE);
+    public static final DeferredItem<Item> HARPY_FEATHER = register("harpy_feather", ModRarity.BLUE);
+    public static final DeferredItem<Item> GIANT_HARPY_FEATHER = register("giant_harpy_feather", ModRarity.BLUE);
 
     public static final DeferredItem<Item> PEARL = register("pearl", ModRarity.BLUE);
     public static final DeferredItem<Item> BLACK_PEARL = register("black_pearl", ModRarity.BLUE);

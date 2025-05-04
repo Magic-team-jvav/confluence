@@ -12,6 +12,7 @@ import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.bow.BaseArrowItem;
 import org.confluence.mod.common.item.bow.TerraBowItem;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -31,8 +32,8 @@ public abstract class ArrowItemMixin {
     }
 
     @Inject(method = "createArrow", at = @At("HEAD"), cancellable = true)
-    public void createArrow(Level level, ItemStack ammo, LivingEntity shooter, ItemStack weapon, CallbackInfoReturnable<AbstractArrow> cir) {
-        if (weapon.getItem() instanceof TerraBowItem bow) {
+    public void createArrow(Level level, ItemStack ammo, LivingEntity shooter, @Nullable ItemStack weapon, CallbackInfoReturnable<AbstractArrow> cir) {
+        if (weapon != null && weapon.getItem() instanceof TerraBowItem bow) {
             TerraBowItem.Builder builder = bow.modifyArrowBuilder;
             if(builder.entityTransform != null){
                 // 非物品箭的箭实体转化

@@ -86,6 +86,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.advanced_combat_techniques_volume_two.1", "“包含攻防战斗技术，卷二！”");
         add("tooltip.item.confluence.binoculars.0", "使用时扩大视野，鼠标滚轮可调整缩放");
         add("tooltip.item.confluence.meteor_compass.0", "退出存档将会失去之前记录的坐标");
+        add("tooltip.item.confluence.gel.0", "“既好吃，又易燃”");
 
         add("tooltip.item.confluence.slime_crown.0", "右键使用以召唤史莱姆王");
         add("tooltip.item.confluence.slime_crown.1", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");
@@ -365,7 +366,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.nebula_wings.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.vortex_booster.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.solar_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.stardust_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.stardust.0", "可飞行和缓慢坠落");
 
         add("confluence.configuration.WorldGeneration", "世界生成机制");
         add("confluence.configuration.WorldGeneration.tooltip", "一些世界生成相关设置");
@@ -2044,6 +2045,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SOUL_OF_SIGHT.get(), "视域之魂");
         add(MaterialItems.SOUL_OF_FRIGHT.get(), "恐惧之魂");
         add(MaterialItems.SPELL_TOME.get(), "魔法书");
+        add(MaterialItems.HARPY_FEATHER.get(), "鸟妖之羽");
+        add(MaterialItems.GIANT_HARPY_FEATHER.get(), "巨型鸟妖之羽");
         // 植物
         add(MaterialItems.WATERLEAF.get(), "幌菊");
         add(MaterialItems.FIREBLOSSOM.get(), "火焰花");

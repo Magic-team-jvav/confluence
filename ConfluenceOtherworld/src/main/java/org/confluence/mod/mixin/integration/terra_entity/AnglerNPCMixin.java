@@ -13,6 +13,7 @@ import org.confluence.terraentity.entity.npc.AnglerNPC;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = AnglerNPC.class, remap = false)
@@ -23,7 +24,14 @@ public abstract class AnglerNPCMixin implements SelfGetter<AnglerNPC> {
             AnglerNPC npc = confluence$self();
             NPCSpawner.Region region = new NPCSpawner.Region(NPCSpawner.getNpcSpawnPos(serverPlayer));
             NPCSpawner.INSTANCE.moveNPCToAnotherRegion(npc, IAbstractTerraNPC.of(npc).confluence$getRegion(), region);
-            NPCSpawner.broadcastMessageToRegion(player.level(), region, Component.translatable("event.confluence.npc.arrived", npc.getType().getDescription(), npc.getName()).withColor(GlobalColors.NPC_ARRIVED.getRGB()));
+            NPCSpawner.broadcastMessageToRegion(player.level(), npc, Component.translatable("event.confluence.npc.arrived", npc.getType().getDescription(), npc.getName()).withColor(GlobalColors.NPC_ARRIVED.getRGB()));
+        }
+    }
+
+    @Inject(method = "checkDespawn", at = @At("TAIL"))
+    private void onRemove(CallbackInfo ci) {
+        if (confluence$self().isRemoved()) {
+            NPCSpawner.INSTANCE.onNPCRemoved(confluence$self());
         }
     }
 }

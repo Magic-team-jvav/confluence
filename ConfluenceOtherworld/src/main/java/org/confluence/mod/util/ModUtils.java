@@ -158,7 +158,7 @@ public final class ModUtils {
         dropMoney((int) amount, living.getX(), living.getEyeY() - 0.3, living.getZ(), level);
     }
 
-    public static void applyBrainOfCthulhuDebuff(ServerLevel level, Entity attacker, LivingEntity living) {
+    public static void applyBrainOfCthulhuDebuff(ServerLevel level, @Nullable Entity attacker, LivingEntity living) {
         if (attacker != null && LibUtils.isAtLeastExpert(level, living.blockPosition())) {
             EntityType<?> type = attacker.getType();
             if (type == TEMonsterEntities.VISUAL_NEURON.get() || (type == TEBossEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
@@ -196,6 +196,12 @@ public final class ModUtils {
                 }
                 living.addEffect(new MobEffectInstance(debuff, (int) ((attacker.getRandom().nextFloat() * min + min) * 20)));
             }
+        }
+    }
+
+    public static void applyCursedSkullDebuff(@Nullable Entity attacker, LivingEntity living) {
+        if (attacker != null && attacker.getType() == TEMonsterEntities.CURSED_SKULL.get() && attacker.getRandom().nextFloat() < 0.33F) {
+            living.addEffect(new MobEffectInstance(ModEffects.CURSED, 80));
         }
     }
 

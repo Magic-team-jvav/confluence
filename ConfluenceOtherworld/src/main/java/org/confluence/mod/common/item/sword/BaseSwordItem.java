@@ -39,6 +39,7 @@ import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.confluence.terraentity.init.TEDataComponentTypes;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +80,7 @@ public class BaseSwordItem extends SwordItem {
 
     }
 
-    public void applyHitEffects(ItemStack weapon, Entity attacker, LivingEntity hurter, DamageSource damageSource, float damage){
+    public void applyHitEffects(ItemStack weapon, @Nullable Entity attacker, LivingEntity hurter, DamageSource damageSource, float damage){
         if (modifier != null &&
 //                damageSource.is(DamageTypeTags.IS_PLAYER_ATTACK) &&
                 damageSource.is(DamageTypeTags.PANIC_CAUSES)) {

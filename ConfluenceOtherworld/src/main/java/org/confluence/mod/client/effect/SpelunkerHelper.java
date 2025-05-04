@@ -11,19 +11,23 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
@@ -352,22 +356,25 @@ public class SpelunkerHelper extends AbstractBufferManager {
         blockMap.clear();
 
         Player player = Minecraft.getInstance().player;
-        Level level = player.level();
-        BlockPos center = player.blockPosition();
-        for (int i = -range; i <= range; i++) {
-            for (int j = -range; j < range; j++) {
-                for (int k = -range; k < range; k++) {
-                    BlockPos pos = center.offset(i, j, k);
-                    Block block = level.getBlockState(pos).getBlock();
-                    if (targets.containsKey(block) /*&&//有目标且
+        if (player != null){
+            Level level = player.level();
+            BlockPos center = player.blockPosition();
+            for (int i = -range; i <= range; i++) {
+                for (int j = -range; j < range; j++) {
+                    for (int k = -range; k < range; k++) {
+                        BlockPos pos = center.offset(i, j, k);
+                        Block block = level.getBlockState(pos).getBlock();
+                        if ((targets.containsKey(block) /*&&//有目标且
                             (!centerCache.containsKey(pos) ||//未已缓存或
                                     centerCache.containsKey(pos) && player.level().getBlockState(pos).is(Blocks.AIR))*/
-                            && (targets.get(block).showType == ShowType.SPELUNKER && mc.player.hasEffect(ModEffects.SPELUNKER) ||
-                            targets.get(block).showType == ShowType.DANGER && mc.player.hasEffect(ModEffects.DANGER_SENSE))
-                    ) {//已缓存但为空
+                                && (targets.get(block).showType == ShowType.SPELUNKER && player.hasEffect(ModEffects.SPELUNKER) ||
+                                targets.get(block).showType == ShowType.DANGER && player.hasEffect(ModEffects.DANGER_SENSE)) ||
+                                level.getBlockState(pos).is(Tags.Blocks.ORES) && player.hasEffect(ModEffects.SPELUNKER) // 显示所有带矿物标签的方块
+                        )) {//已缓存但为空
 
-                        var list = blockMap.computeIfAbsent(block, k1 -> new ArrayList<>());
-                        list.add(pos);
+                            var list = blockMap.computeIfAbsent(block, k1 -> new ArrayList<>());
+                            list.add(pos);
+                        }
                     }
                 }
             }
@@ -389,7 +396,13 @@ public class SpelunkerHelper extends AbstractBufferManager {
             //初始化键
             centers.put(n.getKey(), new ArrayList<>());
 
-            Color color = blockGen.targets.get(n.getKey()).color();
+            Tuple target = blockGen.targets.get(n.getKey());
+            Color color = new Color(0xFFFFFF);
+            if (target != null){
+                color = target.color();
+            }else {
+                color = new Color(n.getKey().defaultBlockState().getMapColor(player.level(),n.getValue().getFirst()).calculateRGBColor(MapColor.Brightness.HIGH));
+            }
             int colorInt = color.getRGB();
             if (n.getValue() == null) return;
             int r = color.getRed();
@@ -418,7 +431,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
                     }
                 }
 
-                if (blockGen.targets.get(n.getKey()).showType == ShowType.SPELUNKER) {//矿透方块
+                if ((target != null && target.showType == ShowType.SPELUNKER) || n.getKey().defaultBlockState().is(Tags.Blocks.ORES)) {//矿透方块
                     if (!player.hasEffect(ModEffects.SPELUNKER)) continue;
                     //todo 可以优化
                     for (BlockPos centerPos : centers.get(n.getKey())) {//否则查找所有的中心块
@@ -436,7 +449,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
                         centers.get(n.getKey()).add(blockProps);//太远则自己成为中心块
                         centerCacheFrame.put(blockProps, n.getKey());//只渲染中心块文本
                     }
-                } else if (blockGen.targets.get(n.getKey()).showType == ShowType.DANGER) {//危险方块
+                } else if (target != null && target.showType == ShowType.DANGER) {//危险方块
                     if (!player.hasEffect(ModEffects.DANGER_SENSE)) continue;
                     centerCacheFrame.put(blockProps, n.getKey());//渲染所有危险方块
                 }

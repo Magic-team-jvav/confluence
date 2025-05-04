@@ -19,6 +19,7 @@ import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
+import org.jetbrains.annotations.Nullable;
 
 public class TheConstant extends SecretSeed {
     public static final ResourceLocation POST_EFFECT = Confluence.asResource("shaders/post/the_constant.json");
@@ -32,7 +33,7 @@ public class TheConstant extends SecretSeed {
         return "constant".equals(seed) || "theconstant".equals(seed) || "the constant".equals(seed) || "eye4aneye".equals(seed) || "eyeforaneye".equals(seed);
     }
 
-    public static float applyAttackDamage(Entity causer, float amount) {
+    public static float applyAttackDamage(@Nullable Entity causer, float amount) {
         if (causer instanceof ServerPlayer serverPlayer && serverPlayer.getFoodData().needsFood() && ModSecretSeeds.THE_CONSTANT.match(serverPlayer.server)) {
             return amount * 0.8F;
         }

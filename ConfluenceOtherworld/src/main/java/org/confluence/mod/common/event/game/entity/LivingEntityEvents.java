@@ -6,6 +6,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -62,6 +63,7 @@ import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.entity.ai.Boss;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.init.TETags;
+import org.jetbrains.annotations.Nullable;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class LivingEntityEvents {
@@ -149,14 +151,15 @@ public final class LivingEntityEvents {
         if (!(living.level() instanceof ServerLevel level)) return;
         DamageSource damageSource = event.getSource();
         if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) return;
-        Entity attacker = damageSource.getEntity();
+        @Nullable Entity attacker = damageSource.getEntity();
 
         amount = ArcheryEffect.apply(living, damageSource, amount);
         amount = ManaSicknessEffect.apply(damageSource, amount);
         amount = TheConstant.applyAttackDamage(attacker, amount);
 
-        // 克苏鲁之脑和飞眼怪给的debuff
         ModUtils.applyBrainOfCthulhuDebuff(level, attacker, living);
+        ModUtils.applyCursedSkullDebuff(attacker, living);
+
         // 芦苇呼吸管对溺水伤害减半
         if (damageSource.is(DamageTypes.DROWN)) {
             if (LibUtils.anyHandHasItem(living, itemStack -> itemStack.is(SwordItems.BREATHING_REED))) {
@@ -337,19 +340,17 @@ public final class LivingEntityEvents {
     }
 
     @SubscribeEvent
-    public static void livingEntityUseItem$Finish(LivingEntityUseItemEvent.Finish event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            ItemStack itemStack = event.getItem();
-            if (itemStack.is(FoodItems.GREEN_DUMPLING.get())) {
-                if (player.getRandom().nextInt(6) == 0) {
-                    player.addEffect(new MobEffectInstance(ModEffects.CHOKING, 2400));
-                }
-            }
-            if (player.hasEffect(ModEffects.CHOKING) && ModUtils.isWaterBottle(itemStack)) {
-                player.removeEffect(ModEffects.CHOKING);
-                ItemStack resultItem = itemStack.finishUsingItem(player.level(), player);
-                event.setResultStack(resultItem);
-            }
+    public static void livingEntityUseItemFinish(LivingEntityUseItemEvent.Finish event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        ItemStack itemStack = event.getItem();
+        RandomSource random = player.getRandom();
+        if (itemStack.is(FoodItems.GREEN_DUMPLING.get()) && random.nextInt(6) == 0) {
+            player.addEffect(new MobEffectInstance(ModEffects.CHOKING, 2400));
+        }
+        if (player.hasEffect(ModEffects.CHOKING) && ModUtils.isWaterBottle(itemStack)) {
+            player.removeEffect(ModEffects.CHOKING);
+            ItemStack resultItem = itemStack.finishUsingItem(player.level(), player);
+            event.setResultStack(resultItem);
         }
     }
 

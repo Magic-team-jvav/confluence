@@ -38,7 +38,6 @@ import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.entity.boss.DungeonGuardian;
 import org.confluence.terraentity.init.TESounds;
 import org.confluence.terraentity.init.entity.TEBossEntities;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
 import java.util.*;
@@ -397,18 +396,9 @@ public class DungeonStructure extends Structure {
         return ModStructures.DUNGEON.get();
     }
 
-    private static Structure structure;
-
-    public static @Nullable Structure getStructure(ServerLevel level) {
-        if (structure == null) {
-            structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
-        }
-        return structure;
-    }
-
     public static void checkSkeletronDefeated(ServerPlayer player, ServerLevel level) {
-        if (KillBoard.INSTANCE.getGamePhase() == GamePhase.BEFORE_SKELETRON && player.gameMode.getGameModeForPlayer().isSurvival() && level.getGameTime() % 100 == 1) {
-            Structure structure = getStructure(level);
+        if (KillBoard.INSTANCE.getGamePhase() == GamePhase.BEFORE_SKELETRON && player.isAlive() && player.gameMode.getGameModeForPlayer().isSurvival() && level.getGameTime() % 100 == 1) {
+            Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
             if (structure == null) return;
 
             ChunkPos chunkPos = player.chunkPosition();
@@ -441,7 +431,7 @@ public class DungeonStructure extends Structure {
      */
     public static boolean skipSpawn(Mob mob, ServerLevel level) {
         if (mob.getType().is(ModTags.SPAWN_AT_DUNGEON)) {
-            Structure structure = getStructure(level);
+            Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
             if (structure == null) return false;
 
             ChunkPos chunkPos = mob.chunkPosition();

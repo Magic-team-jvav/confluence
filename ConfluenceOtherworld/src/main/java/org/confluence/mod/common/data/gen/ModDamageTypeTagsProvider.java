@@ -31,7 +31,7 @@ public class ModDamageTypeTagsProvider extends DamageTypeTagsProvider {
                 ModDamageTypes.SWORD_PROJECTILE
         );
         tag(Tags.DamageTypes.IS_MAGIC).add(ModDamageTypes.MAGICAL_PROJECTILE);
-
+        tag(DamageTypeTags.BYPASSES_ARMOR).add(TETags.DamageTypes.PASS_ARMOR);
 
     }
 }

@@ -67,8 +67,6 @@ public class BaseSwordItem extends SwordItem {
                         createAttributes(tier,rawDamage, rawSpeed))
         );
         this.modifier = new ModifierBuilder();
-        modifier.damage =rawDamage + tier.getAttackDamageBonus();
-        modifier.speed = rawSpeed + tier.getSpeed();
     }
     /**TR带特殊效果的剑。
      * @param modifier 效果修饰器
@@ -124,17 +122,15 @@ public class BaseSwordItem extends SwordItem {
     }
 
     public static class ModifierBuilder {
-        public float damage;
-        public float speed;
         public boolean canPerformSweep = true;
         public float sweepRange = 1.0F;
 
-        private Item.Properties properties = new Item.Properties();
+        protected Item.Properties properties = new Item.Properties();
 //        private final List<DeferredHolder<EffectStrategy,? extends EffectStrategy>> onHitEffects = new ArrayList<>();
         private QuaConsumer<ItemStack,Level,Entity,Boolean> inventoryTick;
         private final ItemAttributeModifiers.Builder attributeModifiersBuilder = ItemAttributeModifiers.builder();
         private int modifyCount = 0;
-        private List<Function<Item.Properties,Item.Properties>> modifier = new ArrayList<>();
+        protected List<Function<Item.Properties,Item.Properties>> modifier = new ArrayList<>();
         List<Function<MutableComponent, MutableComponent>> tooltipsModifier = new ArrayList<>();
 
 
@@ -221,8 +217,6 @@ public class BaseSwordItem extends SwordItem {
                                     .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, rawDamage + tier.getAttackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                                     .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, rawSpeed, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                                     .build());
-            damage = rawDamage + tier.getAttackDamageBonus();
-            speed = rawSpeed + tier.getSpeed();
             return properties;
         }
 

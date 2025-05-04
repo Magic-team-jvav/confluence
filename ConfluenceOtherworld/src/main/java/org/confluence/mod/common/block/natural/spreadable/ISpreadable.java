@@ -44,6 +44,7 @@ public interface ISpreadable {
         int phase = KillBoard.INSTANCE.getGamePhase().ordinal();
         for (int i = 0; i < 4; ++i) {
             BlockPos targetPos = blockPos.offset(randomSource.nextInt(3) - 1, randomSource.nextInt(5) - 3, randomSource.nextInt(3) - 1);
+            if (!serverLevel.isLoaded(targetPos)) continue;
             BlockState beforeTransformState = serverLevel.getBlockState(targetPos);
             Block targetBlock = getType().blockMap.get(beforeTransformState.getBlock());
             if (targetBlock == null || beforeTransformState.is(SHORT_GRASS) || beforeTransformState.is(FERN) || beforeTransformState.is(TALL_GRASS)) {

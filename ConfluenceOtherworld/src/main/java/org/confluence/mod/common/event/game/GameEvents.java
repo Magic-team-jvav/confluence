@@ -5,7 +5,9 @@ import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import com.xiaohunao.heaven_destiny_moment.common.event.MomentEvent;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstance;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,11 +23,14 @@ import net.neoforged.neoforge.event.ItemStackedOnOtherEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.item.ColoredItem;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.saved.ConfluenceCommand;
 import org.confluence.mod.common.init.ModAchievements;
@@ -38,6 +43,7 @@ import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
@@ -181,5 +187,19 @@ public final class GameEvents {
             }
             return original;
         }, event.getPlayer(), event);
+    }
+
+    @SubscribeEvent
+    public static void addTooltip(ItemTooltipEvent event){
+        ItemStack stack = event.getItemStack();
+        LibUtils.devRun(() -> {
+            int priceAll = ValueComponent.getValue(stack, -1);
+            if (priceAll > 0){
+                int price = priceAll / stack.getCount();
+                event.getToolTip().add(Component.translatable("tooltip.item.price").withStyle(ChatFormatting.DARK_GRAY));
+                event.getToolTip().add(Component.literal("x1: ").withStyle(ChatFormatting.DARK_GRAY).append(ModUtils.formatPrice(price)));
+                if (price != priceAll) event.getToolTip().add(Component.literal("x" + stack.getCount() + ": ").withStyle(ChatFormatting.DARK_GRAY).append(ModUtils.formatPrice(priceAll)));
+            }
+        });
     }
 }

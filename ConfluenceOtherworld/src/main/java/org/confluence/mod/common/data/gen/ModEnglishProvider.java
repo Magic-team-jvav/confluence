@@ -59,6 +59,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("generator.confluence.the_corruption", "The Corruption");
         add("generator.confluence.tr_crimson", "The Crimson");
 
+        add("tooltip.price.platinum", "Platinum");
+        add("tooltip.price.gold", "Gold");
+        add("tooltip.price.silver", "Silver");
+        add("tooltip.price.copper", "Copper");
+
+        add("tooltip.item.price", "Price: ");
         add("tooltip.item.confluence.meteorite_ingot.0", "Warm to the touch");
         add("tooltip.item.confluence.encumbering_stone.0", "Prevents item pickups while locked");
         add("tooltip.item.confluence.encumbering_stone.1", "Right click in inventory to unlock");

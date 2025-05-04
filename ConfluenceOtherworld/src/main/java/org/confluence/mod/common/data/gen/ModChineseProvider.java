@@ -49,6 +49,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("generator.confluence.the_corruption", "腐化之地");
         add("generator.confluence.tr_crimson", "猩红之地");
 
+        add("tooltip.price.platinum", "铂金");
+        add("tooltip.price.gold", "金");
+        add("tooltip.price.silver", "银");
+        add("tooltip.price.copper", "铜");
+
+        add("tooltip.item.price", "价格：");
         add("tooltip.item.confluence.meteorite_ingot.0", "摸起来是温的");
         add("tooltip.item.confluence.encumbering_stone.0", "锁上时能防止拾取物品");
         add("tooltip.item.confluence.encumbering_stone.1", "背包内右键点击可解锁");

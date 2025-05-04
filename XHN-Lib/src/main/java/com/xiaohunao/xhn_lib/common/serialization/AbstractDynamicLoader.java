@@ -32,4 +32,9 @@ public abstract class AbstractDynamicLoader extends SimpleJsonResourceReloadList
         return false;
     }
 
+    @Override
+    protected Map<ResourceLocation, JsonElement> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
+
+        return super.prepare(resourceManager, profiler);
+    }
 }

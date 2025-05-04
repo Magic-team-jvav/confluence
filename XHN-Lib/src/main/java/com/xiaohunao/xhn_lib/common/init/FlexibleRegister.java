@@ -310,4 +310,18 @@ public class FlexibleRegister<T> {
     public int getTotalEntryCount() {
         return getStaticEntryCount() + getDynamicEntryCount();
     }
+    
+    /**
+     * 移除动态注册的条目
+     * @param name 要移除的条目名称
+     * @return 如果成功移除则返回true，如果条目不存在则返回false
+     */
+    public boolean removeDynamicEntry(String name) {
+        if (!isDynamicallyRegistered(name)) {
+            return false;
+        }
+        
+        dynamicEntries.remove(name);
+        return true;
+    }
 }

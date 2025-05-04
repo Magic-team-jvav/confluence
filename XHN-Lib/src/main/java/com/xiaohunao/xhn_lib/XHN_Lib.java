@@ -35,9 +35,7 @@ public class XHN_Lib {
         
         // 注册通用设置事件
         modEventBus.addListener(this::onCommonSetup);
-        
-        // 注册客户端重载监听器事件处理器
-        modEventBus.addListener(DynamicContentHelper::registerClientReloadListeners);
+
     }
     
     /**
@@ -47,9 +45,6 @@ public class XHN_Lib {
     private void onCommonSetup(final FMLCommonSetupEvent event) {
         // 注册所有动态加载器
         event.enqueueWork(DynamicContentHelper::registerAllDynamicLoaders);
-        
-        // 执行所有后置任务
-        event.enqueueWork(DynamicContentHelper::executePostSetupTasks);
     }
     
 

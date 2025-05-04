@@ -40,7 +40,7 @@ public class QualityRegistry {
                     new ItemQuality("legendary", "传说", 4, ChatFormatting.GOLD, 1.0f));
 
     // 存储品质加载器实例
-    private static QualityLoader qualityLoader = new QualityLoader();
+    private static final QualityLoader qualityLoader = new QualityLoader();
     
     /**
      * 初始化品质注册表
@@ -50,20 +50,12 @@ public class QualityRegistry {
     public static void init(IEventBus eventBus) {
         // 注册静态品质
         QUALITIES.register(eventBus);
-        // 预注册所有预期的JSON品质
-        qualityLoader.preRegisterQualities();
         
         // 设置动态加载器
         QUALITIES.setDynamicManager(qualityLoader);
         
         // 注册动态内容加载器
         DynamicContentHelper.<ItemQuality>registerDynamicLoader(qualityLoader);
-        
-        // 代码注册一个"神圣"品质
-        // 使用静态注册而不是动态注册，因为动态注册需要在游戏运行时进行
-        QUALITIES.registerStatic("divine", () -> 
-            new MutableItemQualityImpl("divine", "神圣", 5, ChatFormatting.LIGHT_PURPLE, 1.5f)
-        );
     }
     
     /**

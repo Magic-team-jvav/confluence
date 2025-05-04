@@ -40,6 +40,16 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "confluence:solidifier",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
           "name": "confluence:golden_coin",
           "weight": 1,
           "functions": [

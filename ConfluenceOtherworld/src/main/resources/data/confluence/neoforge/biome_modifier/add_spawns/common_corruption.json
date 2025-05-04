@@ -4,19 +4,19 @@
     "spawners": [
         {
             "type": "terra_entity:decayeder",
-            "weight": 15,
+            "weight": 22,
             "minCount": 1,
             "maxCount": 1
         },
         {
             "type": "terra_entity:devourer",
-            "weight": 5,
+            "weight": 3,
             "minCount": 1,
             "maxCount": 1
         },
         {
             "type": "terra_entity:eater_of_souls",
-            "weight": 80,
+            "weight": 75,
             "minCount": 1,
             "maxCount": 2
         }

@@ -51,7 +51,6 @@ import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
 import java.util.Set;
 
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
@@ -213,20 +212,20 @@ public final class ModUtils {
         return owner == null || (owner != target && !owner.isPassengerOfSameVehicle(target));
     }
 
-    public static Component formatPrice(int price){
+    public static Component formatPrice(int price) {
         int platinum = 0;
         int gold = 0;
         int silver = 0;
         int copper;
-        if (price >= 1000000){
+        if (price >= 1000000) {
             platinum = price / 1000000;
             price -= platinum * 1000000;
         }
-        if (price >= 10000){
+        if (price >= 10000) {
             gold = price / 10000;
             price -= gold * 10000;
         }
-        if (price >= 100){
+        if (price >= 100) {
             silver = price / 100;
             price -= silver * 100;
         }

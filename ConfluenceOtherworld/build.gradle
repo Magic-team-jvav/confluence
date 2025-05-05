@@ -95,13 +95,6 @@ repositories {
         }
     }
     maven {
-        // saps.dev Maven (KubeJS and Rhino)
-        url = "https://maven.saps.dev/minecraft"
-        content {
-            includeGroup "dev.latvian.mods"
-        }
-    }
-    maven {
         url = "https://maven.bawnorton.com/releases"
     }
     maven {
@@ -114,6 +107,12 @@ repositories {
         url = "https://maven.saps.dev/releases"
         content {
             includeGroup "dev.latvian.mods"
+            includeGroup "dev.latvian.apps"
+        }
+    }
+    maven {
+        url "https://maven.latvian.dev/releases"
+        content {
             includeGroup "dev.latvian.apps"
         }
     }
@@ -138,10 +137,10 @@ repositories {
     }
 }
 
-var vanillin = false // 香兰素
-var delight = true
-var observable = false // 可视性能侦测
-var ftb = false
+boolean vanillin = false // 香兰素
+boolean delight = true
+boolean observable = false // 可视性能侦测
+boolean ftb = false
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
@@ -218,6 +217,12 @@ dependencies {
 
     compileOnly "curse.maven:appleskin-248787:5586600"
     runtimeOnly "curse.maven:appleskin-248787:5586600"
+
+    compileOnly "dev.latvian.mods:kubejs-neoforge:$kubejs_version"
+    if (true) {
+        runtimeOnly "dev.latvian.mods:kubejs-neoforge:$kubejs_version"
+        runtimeOnly "dev.latvian.mods:rhino:$rhino_version"
+    }
 
     /**********************************************************/
 

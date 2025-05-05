@@ -1,6 +1,6 @@
 package org.confluence.mod.util;
 
-import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
+import com.xiaohunao.heaven_destiny_moment.common.moment.MomentManager;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -129,7 +129,7 @@ public final class ModUtils {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = level.random.nextBoolean();
             }
         }
-        boolean stickySituation = type == TEBossEntities.KING_SLIME.get() && MomentInstanceManager.of(level).hasMoment(TMMoments.SLIME_RAIN);
+        boolean stickySituation = type == TEBossEntities.KING_SLIME.get() && MomentManager.of(level).hasMoment(TMMoments.SLIME_RAIN);
         ResourceKey<Level> dimension = living.level().dimension();
         level.players().stream().filter(player -> player.level().dimension() == dimension).forEach(player -> {
             TreasureBagItem.createItemEntity(living, player);

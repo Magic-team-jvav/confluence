@@ -289,7 +289,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.mana_crystal.0", "最大魔力永久增加20");
         add("tooltip.item.confluence.arcane_crystal.0", "永久提高魔力再生");
         add("tooltip.item.confluence.vital_crystal.0", "永久加速生命再生");
-        add("tooltip.item.confluence.aegis_apple.0", "永久加速生命再生");
+        add("tooltip.item.confluence.aegis_apple.0", "永久提高防御力");
         add("tooltip.item.confluence.ambrosia.0", "永久提高挖矿速度和建造速度");
         add("tooltip.item.confluence.gummy_worm.0", "永久提高钓鱼技能");
         add("tooltip.item.confluence.galaxy_pearl.0", "永久提高运气");

@@ -846,6 +846,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("container.confluence.hellforge", "地狱熔炉");
         add("container.confluence.alchemy_table", "炼药桌");
         add("container.confluence.cooking_pot", "烹饪锅");
+        add("container.confluence.cauldron", "大锅");
         add("container.confluence.fletching_table", "制箭台");
         add("container.confluence.piggy_bank", "猪猪存钱罐");
         add("container.confluence.npc_shop", "npc商店");

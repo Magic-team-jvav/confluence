@@ -780,6 +780,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("container.confluence.hellforge", "Hell Forge");
         add("container.confluence.alchemy_table", "Alchemy Table");
         add("container.confluence.cooking_pot", "Cooking Pot");
+        add("container.confluence.cauldron", "Cauldron");
         add("container.confluence.crystal_ball", "Crystal Ball");
         add("container.confluence.fletching_table", "Fletching Table");
         add("container.confluence.piggy_bank", "Piggy Bank");

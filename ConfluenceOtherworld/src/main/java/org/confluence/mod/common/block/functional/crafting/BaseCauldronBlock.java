@@ -46,7 +46,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-import static org.confluence.mod.common.menu.HellforgeMenu.RESULT_SLOT;
+import static org.confluence.mod.common.menu.CookingPotMenu.RESULT_SLOT;
 
 public class BaseCauldronBlock extends HorizontalDirectionalBlock implements EntityBlock {
     public static final MapCodec<BaseCauldronBlock> CODEC = simpleCodec(BaseCauldronBlock::new);
@@ -77,7 +77,7 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
-            if (level.getBlockEntity(pos) instanceof CookingPotBlock.Entity entity) {
+            if (level.getBlockEntity(pos) instanceof Entity entity) {
                 player.openMenu(entity);
             }
             return InteractionResult.CONSUME;
@@ -175,13 +175,7 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
                 blockEntity.heatSourceItem = Item.getId(heatSource.getState().getBlock().asItem());
             }
             ItemStack[] itemStacks = blockEntity.getItemStacks();
-            boolean hasItem = false;
-            for (ItemStack stack : itemStacks) {
-                if (!stack.isEmpty()) {
-                    hasItem = true;
-                    break;
-                }
-            }
+            boolean hasItem = !itemStacks[0].isEmpty() || !itemStacks[1].isEmpty() || !itemStacks[2].isEmpty() || !itemStacks[3].isEmpty();
             if (hasItem) {
                 CookingPotRecipe.Input input = new CookingPotRecipe.Input(itemStacks, blockEntity.getItem(CookingPotMenu.CONTAINER_SLOT), heatSource);
                 Optional<RecipeHolder<CookingPotRecipe>> recipeFor = blockEntity.cachedCheck.getRecipeFor(input, level);
@@ -232,7 +226,7 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
 
         @Override
         protected Component getDefaultName() {
-            return Component.translatable("container.confluence.cooking_pot");
+            return Component.translatable("container.confluence.cauldron");
         }
 
         @Override

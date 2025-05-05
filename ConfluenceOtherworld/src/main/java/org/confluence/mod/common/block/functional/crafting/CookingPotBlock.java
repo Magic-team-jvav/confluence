@@ -2,6 +2,7 @@ package org.confluence.mod.common.block.functional.crafting;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -60,6 +61,11 @@ public class CookingPotBlock extends BaseCauldronBlock {
 
         public Entity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.COOKING_POT_ENTITY.get(), pos, blockState);
+        }
+
+        @Override
+        protected Component getDefaultName() {
+            return Component.translatable("container.confluence.cooking_pot");
         }
 
         @Override

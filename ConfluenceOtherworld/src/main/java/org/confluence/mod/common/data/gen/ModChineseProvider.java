@@ -376,8 +376,6 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("confluence.configuration.WorldGeneration", "世界生成机制");
         add("confluence.configuration.WorldGeneration.tooltip", "一些世界生成相关设置");
-        add("confluence.configuration.replaceVanillaGeodeFeature", "替换原版晶洞地物");
-        add("confluence.configuration.replaceVanillaGeodeFeature.tooltip", "原版晶洞地物有可能对部分结构造成影响，启用此选项可解决其带来的问题");
         add("confluence.configuration.brewing_stand_recipe", "泰拉药水酿造台配方");
         add("confluence.configuration.brewing_stand_recipe.tooltip", "启用时，酿造台可以酿造泰拉药水");
         add("confluence.configuration.alertPlayerDungeon", "地牢守卫警告");

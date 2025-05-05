@@ -386,8 +386,6 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add("confluence.configuration.WorldGeneration", "World Generation Mechanism");
         add("confluence.configuration.WorldGeneration.tooltip", "Some settings related to world generation");
-        add("confluence.configuration.replaceVanillaGeodeFeature", "Replace Vanilla Geode Feature");
-        add("confluence.configuration.replaceVanillaGeodeFeature.tooltip", "The vanilla geode feature may affect some structures. Enabling this option can solve the problems it brings.");
         add("confluence.configuration.brewing_stand_recipe", "Terra Potion Brewing Stand Recipe");
         add("confluence.configuration.brewing_stand_recipe.tooltip", "When enabled, the brewing stand can brew Terra potions.");
         add("confluence.configuration.alertPlayerDungeon", "Dungeon Guardian Warning");

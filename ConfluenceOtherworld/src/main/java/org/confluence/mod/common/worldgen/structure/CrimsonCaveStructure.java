@@ -19,6 +19,7 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
 import org.confluence.lib.util.StructureUtils;
 import org.confluence.lib.util.VectorUtils;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -104,6 +105,7 @@ public class CrimsonCaveStructure extends Structure {
             }
             lineSet(VctList, 3, 3, 0, true, blockMap);
 
+            boolean wrappedCrimsonHeart = CommonConfigs.WRAPPED_CRIMSON_HEART.get();
             for (int i = 0; i < fingerCount; i++) {
                 VctList.clear();
                 VctList.add(new Vector3d(endPos.getX() + (3.0D + 1.5D * random.nextDouble()) * radiusEnd * Mth.cos(fingerRotate + i * fingerRotateStep), endPos.getY() + (random.nextDouble() - 0.5D) * 4 * radiusEnd, endPos.getZ() + (3.0D + 1.5D * random.nextDouble()) * radiusEnd * Mth.sin(fingerRotate + i * fingerRotateStep)));
@@ -112,8 +114,10 @@ public class CrimsonCaveStructure extends Structure {
                 lineSet(VctList, 4, 8, 1, false, blockMap);
                 lineSet(VctList, 2, 6, 0, true, blockMap);
                 pos = new BlockPos((int) VctList.getFirst().x, (int) VctList.getFirst().y, (int) VctList.getFirst().z);
-                //StructureUtils.ball(4, pos, 1, true, blockMap);
-                //StructureUtils.ball(2, pos, 0, true, blockMap);
+                if (wrappedCrimsonHeart) {
+                    StructureUtils.ball(4, pos, 1, true, blockMap);
+                    StructureUtils.ball(2, pos, 0, true, blockMap);
+                }
                 blockMap.put(pos, 2);
             }
 

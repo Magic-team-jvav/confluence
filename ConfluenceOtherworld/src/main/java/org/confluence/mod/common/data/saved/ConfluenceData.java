@@ -70,7 +70,6 @@ public class ConfluenceData extends SavedData {
                 float Q = (float) ((i < wEarth - 1) ? (1.0F / Math.pow(q, wEarth - 1 - i)) : q * Math.pow(q, i + 2 - wEarth));
                 float ra = 100.0F * Q;
                 ra += random.nextFloat() * (ra * 0.1F) * (random.nextBoolean() ? 1 : -1);
-                ra = Math.min(900.0F, ra);
                 raList.add(random.nextInt(raList.size() + 1), ra);
             }
             for (int i = 0; i < STAR_PHASES_SIZE; i++) {

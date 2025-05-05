@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
-import com.xiaohunao.xhn_lib.common.init.FlexibleRegister;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Objects;

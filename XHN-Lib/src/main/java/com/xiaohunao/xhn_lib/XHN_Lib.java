@@ -1,9 +1,6 @@
 package com.xiaohunao.xhn_lib;
 
-import com.xiaohunao.xhn_lib.common.events.QualityTestEvents;
-import com.xiaohunao.xhn_lib.common.serialization.DynamicContentHelper;
-import com.xiaohunao.xhn_lib.example.init.ModRegistries;
-import com.xiaohunao.xhn_lib.example.quality.QualityRegistry;
+import com.xiaohunao.xhn_lib.common.DynamicLoaderHelper;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +8,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.common.NeoForge;
+
 
 /**
  * XHN Lib
@@ -21,30 +18,12 @@ import net.neoforged.neoforge.common.NeoForge;
 @Mod(XHN_Lib.MODID)
 public class XHN_Lib {
     public static final String MODID = "xhn_lib";
-
-
     public XHN_Lib(IEventBus modEventBus, ModContainer modContainer) {
-        // 注册自定义注册表
-        modEventBus.addListener(ModRegistries::registerRegistries);
-        
-        // 初始化品质系统
-        QualityRegistry.init(modEventBus);
-        
-        // 注册测试事件
-        NeoForge.EVENT_BUS.register(QualityTestEvents.class);
-        
-        // 注册通用设置事件
         modEventBus.addListener(this::onCommonSetup);
-
     }
-    
-    /**
-     * 通用设置事件处理
-     * 在这里注册所有动态加载器
-     */
+
     private void onCommonSetup(final FMLCommonSetupEvent event) {
-        // 注册所有动态加载器
-        event.enqueueWork(DynamicContentHelper::registerAllDynamicLoaders);
+        event.enqueueWork(DynamicLoaderHelper::registerAllDynamicLoaders);
     }
     
 
@@ -62,4 +41,7 @@ public class XHN_Lib {
     public static <T> ResourceKey<T> asResourceKey(ResourceKey<? extends Registry<T>> registryKey, String path) {
         return ResourceKey.create(registryKey, asResource(path));
     }
+
+
+
 }

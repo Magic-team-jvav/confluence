@@ -5,7 +5,6 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "xhn_lib.refmap.json",
   "mixins": [
-    "MappedRegistryMixin"
   ],
   "client": [
   ],

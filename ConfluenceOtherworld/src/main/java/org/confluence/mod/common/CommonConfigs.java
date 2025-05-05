@@ -25,7 +25,7 @@ public final class CommonConfigs {
     public static IntValue BOSS_RESPAWN_TIME_MIN;
     public static IntValue BOSS_RESPAWN_TIME_MAX;
 
-    public static BooleanValue REPLACE_VANILLA_GEODE_FEATURE;
+    public static BooleanValue WRAPPED_CRIMSON_HEART;
 
     public static long fallingStarInterval = 2400;
 
@@ -59,7 +59,7 @@ public final class CommonConfigs {
         BUILDER.pop();
 
         BUILDER.push("WorldGeneration");
-        REPLACE_VANILLA_GEODE_FEATURE = BUILDER.define("replaceVanillaGeodeFeature", true);
+        WRAPPED_CRIMSON_HEART = BUILDER.define("wrappedCrimson_heart", false);
         BUILDER.pop();
 
         container.registerConfig(ModConfig.Type.COMMON, BUILDER.build());

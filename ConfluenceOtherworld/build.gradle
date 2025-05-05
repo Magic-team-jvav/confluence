@@ -231,6 +231,7 @@ dependencies {
     //runtimeOnly "maven.modrinth:mekanism:10.7.13.78"
     //runtimeOnly "curse.maven:modern-ui-352491:6200236"
     //runtimeOnly "curse.maven:eternal-starlight-1080592:6383693"
+    //runtimeOnly "curse.maven:refined-storage-243076:6391989"
     if (observable) {
         runtimeOnly "curse.maven:observable-509575:5733591"
         runtimeOnly "curse.maven:kotlin-for-forge-351264:5978393"

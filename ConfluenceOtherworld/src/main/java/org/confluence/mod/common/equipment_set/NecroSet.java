@@ -15,10 +15,10 @@ import org.confluence.terra_curio.common.init.TCAttributes;
 public class NecroSet extends EquipmentSet {
     @Override
     protected void init(HookMap.Builder hook, EquippableGroup.Builder equippableGroup) {
-        equippableGroup.addEquippableSet("helmet", rangedDamageBonus(VanillaEquippable.HEAD, ArmorItems.NECRO_HELMET, 0.04));
-        equippableGroup.addEquippableSet("chestplate", rangedDamageBonus(VanillaEquippable.CHEST, ArmorItems.NECRO_CHESTPLATE, 0.04));
-        equippableGroup.addEquippableSet("leggings", rangedDamageBonus(VanillaEquippable.LEGS, ArmorItems.NECRO_LEGGINGS, 0.04));
-        equippableGroup.addEquippableSet("boots", rangedDamageBonus(VanillaEquippable.FEET, ArmorItems.NECRO_BOOTS, 0.03));
+        equippableGroup.addEquippableSet("helmet", rangedDamageBonus(VanillaEquippable.HEAD, ArmorItems.NECRO_HELMET, 0.05));
+        equippableGroup.addEquippableSet("chestplate", rangedDamageBonus(VanillaEquippable.CHEST, ArmorItems.NECRO_CHESTPLATE, 0.05));
+        equippableGroup.addEquippableSet("leggings", rangedDamageBonus(VanillaEquippable.LEGS, ArmorItems.NECRO_LEGGINGS, 0.025));
+        equippableGroup.addEquippableSet("boots", rangedDamageBonus(VanillaEquippable.FEET, ArmorItems.NECRO_BOOTS, 0.025));
 
         equippableGroup.addEquippableSet("full_set", new EquipmentSetBranch.Builder()
                 .addEquippable(

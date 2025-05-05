@@ -23,4 +23,9 @@ public abstract class InformationHandlerMixin {
     private static void modifyWeather(Player player, CallbackInfoReturnable<Component> cir, @Local String weather) {
         cir.setReturnValue(Component.translatable("info.confluence.weather_radio." + weather, WeatherHandler.windSpeedInfo));
     }
+
+    @Inject(method = "hasMechanicalView", at = @At("RETURN"), cancellable = true)
+    private static void modifyView(CallbackInfoReturnable<Boolean> cir) {
+        if (!cir.getReturnValue()) cir.setReturnValue(ClientPacketHandler.isShowSignal());
+    }
 }

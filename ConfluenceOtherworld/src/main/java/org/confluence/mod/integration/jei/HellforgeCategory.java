@@ -79,7 +79,7 @@ public class HellforgeCategory implements IRecipeCategory<HellforgeRecipe> {
         if (recipe.isRequiresFuel()) {
             guiGraphics.blit(HellforgeScreen.SUPER_LIT_PROGRESS, 54, 25, 0, 0, 14, 14, 14, 14);
             if (mouseX >= 54 && mouseX <= 68 && mouseY >= 25 && mouseY <= 39) {
-                Component text = Component.translatable("condition.confluence.requires_fuel").withColor(ModRarity.CYAN.getColor());
+                Component text = Component.translatable("condition.confluence.requires_fuel").withColor(ModRarity.CYAN.color());
                 guiGraphics.renderTooltip(Minecraft.getInstance().font, text, (int) mouseX, (int) mouseY);
             }
         }

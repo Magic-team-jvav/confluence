@@ -59,6 +59,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("generator.confluence.the_corruption", "The Corruption");
         add("generator.confluence.tr_crimson", "The Crimson");
 
+        add("tooltip.price.platinum", "Platinum");
+        add("tooltip.price.gold", "Gold");
+        add("tooltip.price.silver", "Silver");
+        add("tooltip.price.copper", "Copper");
+        add("tooltip.price.sell", "Sell: ");
+
         add("tooltip.item.confluence.meteorite_ingot.0", "Warm to the touch");
         add("tooltip.item.confluence.encumbering_stone.0", "Prevents item pickups while locked");
         add("tooltip.item.confluence.encumbering_stone.1", "Right click in inventory to unlock");
@@ -380,8 +386,6 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add("confluence.configuration.WorldGeneration", "World Generation Mechanism");
         add("confluence.configuration.WorldGeneration.tooltip", "Some settings related to world generation");
-        add("confluence.configuration.replaceVanillaGeodeFeature", "Replace Vanilla Geode Feature");
-        add("confluence.configuration.replaceVanillaGeodeFeature.tooltip", "The vanilla geode feature may affect some structures. Enabling this option can solve the problems it brings.");
         add("confluence.configuration.brewing_stand_recipe", "Terra Potion Brewing Stand Recipe");
         add("confluence.configuration.brewing_stand_recipe.tooltip", "When enabled, the brewing stand can brew Terra potions.");
         add("confluence.configuration.alertPlayerDungeon", "Dungeon Guardian Warning");
@@ -766,6 +770,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("condition.confluence.shimmer_transmutation.plantera", "Required game phase: After Plantera");
         add("condition.confluence.shimmer_transmutation.golem", "Required game phase: After Golem");
         add("condition.confluence.shimmer_transmutation.moon_lord", "Required game phase: After Moon Lord");
+        add("condition.confluence.requires_fuel", "Requires Fuel");
 
         add("container.confluence.sky_mill", "Sky Mill");
         add("container.confluence.safe", "Safe");
@@ -773,13 +778,14 @@ public class ModEnglishProvider extends LanguageProvider {
         add("container.confluence.hellforge", "Hell Forge");
         add("container.confluence.alchemy_table", "Alchemy Table");
         add("container.confluence.cooking_pot", "Cooking Pot");
+        add("container.confluence.cauldron", "Cauldron");
         add("container.confluence.crystal_ball", "Crystal Ball");
-        add("condition.confluence.requires_fuel", "Requires Fuel");
         add("container.confluence.fletching_table", "Fletching Table");
         add("container.confluence.piggy_bank", "Piggy Bank");
         add("container.confluence.sawmill", "Sawmill");
         add("container.confluence.tree_holes", "Tree Holes");
         add("container.confluence.npc_shop", "Npc Shop");
+        add("container.confluence.solidifier", "固化机");
 
         add("title.confluence.shimmer_transmutation", "Shimmer Transmutation");
         add("title.confluence.altar", "Altar");

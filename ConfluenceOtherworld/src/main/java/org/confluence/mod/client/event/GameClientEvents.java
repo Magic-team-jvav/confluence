@@ -43,6 +43,7 @@ import org.confluence.mod.client.gui.TooltipManager;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.textures.LocalBrushData;
 import org.confluence.mod.common.block.functional.MusicBoxBlock;
+import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.ModEffects;
@@ -148,7 +149,7 @@ public final class GameClientEvents {
                     Component.empty()
             ));
             tooltipElements.add(Either.left(
-                    Component.translatable(TooltipManager.prefix).withColor(ModRarity.EXPERT.getColor())
+                    Component.translatable(TooltipManager.prefix).withColor(ModRarity.EXPERT.color())
                             .append("  ")
                             .append(Component.literal(ins.getTooltip(item))))
             );
@@ -158,26 +159,33 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void itemToolTip(ItemTooltipEvent event) {
         ItemStack itemStack = event.getItemStack();
+        if (itemStack.isEmpty()) return;
         PrefixComponent prefix = PrefixUtils.getPrefix(itemStack);
-        if (prefix == null) return;
-
-        List<Component> toolTip = event.getToolTip();
-        if (prefix.type() == PrefixType.MAGIC) {
-            if (prefix.manaCost() != 0.0) {
-                boolean b = prefix.manaCost() > 0.0;
-                toolTip.add(toolTip.isEmpty() ? 0 : 1, Component.translatable(
-                        "prefix.confluence.tooltip." + (b ? "plus" : "take"),
-                        ATTRIBUTE_MODIFIER_FORMAT.format(prefix.manaCost() * (b ? 100.0 : -100.0)),
-                        Component.translatable("prefix.confluence.tooltip.mana_cost")
-                ).withStyle(b ? ChatFormatting.RED : ChatFormatting.BLUE));
+        if (prefix != null) {
+            List<Component> toolTip = event.getToolTip();
+            if (prefix.type() == PrefixType.MAGIC) {
+                if (prefix.manaCost() != 0.0) {
+                    boolean b = prefix.manaCost() > 0.0;
+                    toolTip.add(toolTip.isEmpty() ? 0 : 1, Component.translatable(
+                            "prefix.confluence.tooltip." + (b ? "plus" : "take"),
+                            ATTRIBUTE_MODIFIER_FORMAT.format(prefix.manaCost() * (b ? 100.0 : -100.0)),
+                            Component.translatable("prefix.confluence.tooltip.mana_cost")
+                    ).withStyle(b ? ChatFormatting.RED : ChatFormatting.BLUE));
+                }
+            } else if (prefix.type() == PrefixType.ACCESSORY) {
+                if (prefix.additionalMana() > 0) {
+                    toolTip.add(toolTip.isEmpty() ? 0 : 1, Component.translatable(
+                            "prefix.confluence.tooltip.add",
+                            prefix.additionalMana(),
+                            Component.translatable("prefix.confluence.tooltip.additional_mana")
+                    ).withStyle(ChatFormatting.BLUE));
+                }
             }
-        } else if (prefix.type() == PrefixType.ACCESSORY) {
-            if (prefix.additionalMana() > 0) {
-                toolTip.add(toolTip.isEmpty() ? 0 : 1, Component.translatable(
-                        "prefix.confluence.tooltip.add",
-                        prefix.additionalMana(),
-                        Component.translatable("prefix.confluence.tooltip.additional_mana")
-                ).withStyle(ChatFormatting.BLUE));
+        }
+        if (ClientConfigs.showItemPrice) {
+            int price = ValueComponent.getValue(itemStack, 0);
+            if (price > 0) {
+                event.getToolTip().add(Component.translatable("tooltip.price.sell").withStyle(ChatFormatting.GRAY).append(ModUtils.formatPrice(price)));
             }
         }
     }
@@ -188,7 +196,7 @@ public final class GameClientEvents {
         LocalPlayer player = (LocalPlayer) event.getEntity();
         boolean b = player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN);
         ((ILocalPlayer) player).confluence$setCanMove(!b);
-        if (!player.getAbilities().instabuild ){
+        if (!player.getAbilities().instabuild) {
             if ((b || player.hasEffect(ModEffects.SHIMMER))) {
                 input.jumping = false;
                 input.forwardImpulse = 0.0F;

@@ -16,6 +16,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -27,6 +28,7 @@ import org.confluence.lib.util.EnchantmentUtil;
 import org.confluence.mod.common.item.bow.BaseArrowItem;
 import org.confluence.mod.common.item.bow.TerraBowItem;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ import java.util.function.Supplier;
 public class BaseArrowEntity extends AbstractArrow {
 
     protected float minSpeedAttackFactor = 0.5f;//速度影响伤害的最小系数
+    Item arrowItem;
 
     public static class Tuple {
         public String path;
@@ -68,10 +71,10 @@ public class BaseArrowEntity extends AbstractArrow {
      * @param firedFromWeapon 发射的武器
      * @param arrow 预定义的箭的类型
      */
-    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType,LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @Nullable BaseArrowItem arrow) {
+    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType,LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @NotNull BaseArrowItem arrow) {
         super(pEntityType, owner, owner.level(), pickupItemStack, firedFromWeapon);
-        if(arrow!=null)
-            this.baseArrowTuple = arrow.getModifier();
+        this.arrowItem = arrow;
+        this.baseArrowTuple = arrow.getModifier();
         if(baseArrowTuple==null)// 这时候应该为实体的木箭转化
             this.modify = new Builder();
         else
@@ -87,7 +90,7 @@ public class BaseArrowEntity extends AbstractArrow {
      * @param arrow 预定义的箭的类型
      * @param modifyConsumer 属性额外修饰
      */
-    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType,LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @Nullable BaseArrowItem arrow, TerraBowItem.Builder modifyConsumer) {
+    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType,LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @NotNull BaseArrowItem arrow, TerraBowItem.Builder modifyConsumer) {
         this(pEntityType, owner,pickupItemStack,firedFromWeapon, arrow);
         if(modifyConsumer!=null)
             modifyConsumer.applyModifiers(modify);
@@ -274,6 +277,13 @@ public class BaseArrowEntity extends AbstractArrow {
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
+        if(this.getPickupItemStackOrigin().isEmpty()){
+            if(this.arrowItem != null) {
+                this.setPickupItemStack(arrowItem.getDefaultInstance());
+            }else{
+                this.setPickupItemStack(getDefaultPickupItem());
+            }
+        }
         super.addAdditionalSaveData(tag);
     }
     @Override

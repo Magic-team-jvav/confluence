@@ -52,7 +52,7 @@ public class SellTrade implements ITrade {
         if(mood!= null){
             discount = mood.getValue() / 100f;
         }
-        return (long) (ValueComponent.getValue(stack, 0) * discount) * stack.getCount();
+        return (long) (ValueComponent.getValue(stack, 0) * discount);
     }
 
     public static final MapCodec<SellTrade> CODEC = Codec.of(Encoder.empty(), Decoder.unit(INSTANCE));
@@ -72,7 +72,7 @@ public class SellTrade implements ITrade {
 
         if(player.containerMenu instanceof NPCTradesForgeMenu menu){
             ItemStack stack = menu.slots.getFirst().getItem();
-            int res = ValueComponent.getValue(stack, 0) * stack.getCount();
+            int res = ValueComponent.getValue(stack, 0);
             int[] coins = PlayerUtils.decodeCoin(res);
             for(int i=0;i<4;i++){
                 Item item = PlayerUtils.INDEX_2_COIN.apply(i);
@@ -128,7 +128,7 @@ public class SellTrade implements ITrade {
         // 物品花费
         if(Minecraft.getInstance().screen instanceof TETradeScreen<?> screen) {
 
-            int[] coins = PlayerUtils.decodeCoin(getCost(Minecraft.getInstance().player, npc, screen.getMenu().slots.get(0).getItem()));
+            int[] coins = PlayerUtils.decodeCoin(getCost(Minecraft.getInstance().player, npc, screen.getMenu().slots.getFirst().getItem()));
             x = startx + 165;
             y = starty + 6 + 13* 3;
             int index = -1;

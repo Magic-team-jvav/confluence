@@ -96,8 +96,6 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
     enum ShowType {SPELUNKER, DANGER}
 
-    private final Minecraft mc;
-
     private record Tuple(Color color, Boolean showText, ShowType showType) {
         public static final Codec<Tuple> CODEC = RecordCodecBuilder.create((builder) -> builder.group(
                 Codec.INT.fieldOf("color").forGetter(t -> t.color.getRGB()),
@@ -109,7 +107,9 @@ public class SpelunkerHelper extends AbstractBufferManager {
                 Codec.unboundedMap(ResourceLocation.CODEC.xmap(BuiltInRegistries.BLOCK::get,BuiltInRegistries.BLOCK::getKey), Tuple.CODEC).fieldOf("targets").fieldOf("values");
 
     }
-
+    protected boolean shouldRefresh() {
+        return System.currentTimeMillis() - lastRefreshTime > 100;
+    }
     private static SpelunkerHelper blockGen;
     public static volatile boolean lock = true;
 
@@ -124,8 +124,6 @@ public class SpelunkerHelper extends AbstractBufferManager {
     public SpelunkerHelper(int refreshTime) {
         super(refreshTime);
         refreshBlocks();
-        mc = Minecraft.getInstance();
-
 
         this.defaultBlocks();
     }
@@ -349,6 +347,9 @@ public class SpelunkerHelper extends AbstractBufferManager {
     }
 
 
+    /**
+     * 刷新周围的矿
+     */
     private void refreshBlocks() {
         for (var n : blockMap.entrySet()) {
             n.getValue().clear();
@@ -381,6 +382,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         }
     }
 
+    int buildCount = 10;
 
     @Override
     protected void buildBuffer(BufferBuilder buffer) {
@@ -390,7 +392,12 @@ public class SpelunkerHelper extends AbstractBufferManager {
         Player player = Minecraft.getInstance().player;
         if(player == null)
             return;
-        refreshBlocks();
+        if(--buildCount <= 0){
+            // 提高周围矿物刷新间隔
+            buildCount = 10;
+            refreshBlocks();
+        }
+
 
         for (var n : blockMap.entrySet()) {//每种矿石
             //初始化键
@@ -494,7 +501,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
             var block = n.getValue();
             if (block.asItem() == Blocks.ANCIENT_DEBRIS.asItem()) count.getAndIncrement();
             if (playerPos.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < textRange * textRange) {
-                if (SHOW_DETAIL_SPECULAR.get().isDown() && map.get(block).showText()) {
+                if (SHOW_DETAIL_SPECULAR.get().isDown() && map.get(block)!= null && map.get(block).showText()) {
                     double x = pos.getX() + 0.5;
                     double y = pos.getY() + 0.5;
                     double z = pos.getZ() + 0.5;
@@ -536,7 +543,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         }
 
         poseStack.popPose();
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
+//        GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_LINE_SMOOTH);
     }

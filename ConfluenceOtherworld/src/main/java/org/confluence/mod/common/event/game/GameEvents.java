@@ -35,9 +35,9 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
-import org.confluence.mod.network.s2c.EchoVisibilityPacketS2C;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
+import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
@@ -64,7 +64,7 @@ public final class GameEvents {
             if (item instanceof IFunctionCouldEnable couldEnable) {
                 if (player instanceof ServerPlayer serverPlayer) {
                     couldEnable.cycleEnable(onSlot);
-                    EchoVisibilityPacketS2C.sendToClient(serverPlayer);
+                    VisibilityPacketS2C.sendEcho(serverPlayer);
                 }
                 event.setCanceled(true);
             }
@@ -81,7 +81,7 @@ public final class GameEvents {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).flushAbility(serverPlayer);
             FishingPowerInfoPacketS2C.sendAndGet(serverPlayer);
-            EchoVisibilityPacketS2C.sendToClient(serverPlayer);
+            VisibilityPacketS2C.sendEcho(serverPlayer);
         }
     }
 

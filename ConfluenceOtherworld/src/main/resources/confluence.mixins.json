@@ -85,7 +85,6 @@
         "item.ProjectileWeaponItemMixin",
         "level.DifficultyInstanceMixin",
         "level.DifficultyMixin",
-        "level.GeodeFeatureMixin",
         "level.TreeFeatureMixin",
         "level.WorldOptionsMixin"
     ],

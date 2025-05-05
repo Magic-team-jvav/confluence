@@ -49,6 +49,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("generator.confluence.the_corruption", "腐化之地");
         add("generator.confluence.tr_crimson", "猩红之地");
 
+        add("tooltip.price.platinum", "铂");
+        add("tooltip.price.gold", "金");
+        add("tooltip.price.silver", "银");
+        add("tooltip.price.copper", "铜");
+        add("tooltip.price.sell", "售价：");
+
         add("tooltip.item.confluence.meteorite_ingot.0", "摸起来是温的");
         add("tooltip.item.confluence.encumbering_stone.0", "锁上时能防止拾取物品");
         add("tooltip.item.confluence.encumbering_stone.1", "背包内右键点击可解锁");
@@ -283,7 +289,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.mana_crystal.0", "最大魔力永久增加20");
         add("tooltip.item.confluence.arcane_crystal.0", "永久提高魔力再生");
         add("tooltip.item.confluence.vital_crystal.0", "永久加速生命再生");
-        add("tooltip.item.confluence.aegis_apple.0", "永久加速生命再生");
+        add("tooltip.item.confluence.aegis_apple.0", "永久提高防御力");
         add("tooltip.item.confluence.ambrosia.0", "永久提高挖矿速度和建造速度");
         add("tooltip.item.confluence.gummy_worm.0", "永久提高钓鱼技能");
         add("tooltip.item.confluence.galaxy_pearl.0", "永久提高运气");
@@ -370,8 +376,6 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("confluence.configuration.WorldGeneration", "世界生成机制");
         add("confluence.configuration.WorldGeneration.tooltip", "一些世界生成相关设置");
-        add("confluence.configuration.replaceVanillaGeodeFeature", "替换原版晶洞地物");
-        add("confluence.configuration.replaceVanillaGeodeFeature.tooltip", "原版晶洞地物有可能对部分结构造成影响，启用此选项可解决其带来的问题");
         add("confluence.configuration.brewing_stand_recipe", "泰拉药水酿造台配方");
         add("confluence.configuration.brewing_stand_recipe.tooltip", "启用时，酿造台可以酿造泰拉药水");
         add("confluence.configuration.alertPlayerDungeon", "地牢守卫警告");
@@ -840,11 +844,13 @@ public class ModChineseProvider extends LanguageProvider {
         add("container.confluence.hellforge", "地狱熔炉");
         add("container.confluence.alchemy_table", "炼药桌");
         add("container.confluence.cooking_pot", "烹饪锅");
+        add("container.confluence.cauldron", "大锅");
         add("container.confluence.fletching_table", "制箭台");
         add("container.confluence.piggy_bank", "猪猪存钱罐");
         add("container.confluence.npc_shop", "npc商店");
         add("container.confluence.sawmill", "锯木机");
         add("container.confluence.tree_holes", "树洞");
+        add("container.confluence.solidifier", "固化机");
 
         add("title.confluence.shimmer_transmutation", "微光嬗变");
         add("title.confluence.altar", "祭坛");

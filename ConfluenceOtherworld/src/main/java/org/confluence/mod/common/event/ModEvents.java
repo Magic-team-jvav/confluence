@@ -169,7 +169,7 @@ public final class ModEvents {
         PayloadRegistrar registrar = event.registrar("1");
         registrar.playToClient(BrushingColorPacketS2C.TYPE, BrushingColorPacketS2C.STREAM_CODEC, BrushingColorPacketS2C::handle);
         registrar.playToClient(DeathMotionPacketS2C.TYPE, DeathMotionPacketS2C.STREAM_CODEC, DeathMotionPacketS2C::handle);
-        registrar.playToClient(EchoVisibilityPacketS2C.TYPE, EchoVisibilityPacketS2C.STREAM_CODEC, EchoVisibilityPacketS2C::handle);
+        registrar.playToClient(VisibilityPacketS2C.TYPE, VisibilityPacketS2C.STREAM_CODEC, VisibilityPacketS2C::handle);
         registrar.playToClient(ExtraInventoryStackPacketS2C.TYPE, ExtraInventoryStackPacketS2C.STREAM_CODEC, ExtraInventoryStackPacketS2C::handle);
         registrar.playToClient(ExtraInventorySyncPacketS2C.TYPE, ExtraInventorySyncPacketS2C.STREAM_CODEC, ExtraInventorySyncPacketS2C::handle);
         registrar.playToClient(FishingPowerInfoPacketS2C.TYPE, FishingPowerInfoPacketS2C.STREAM_CODEC, FishingPowerInfoPacketS2C::handle);
@@ -180,7 +180,6 @@ public final class ModEvents {
         registrar.playToClient(PlayerDeathInfoPacketS2C.TYPE, PlayerDeathInfoPacketS2C.STREAM_CODEC, PlayerDeathInfoPacketS2C::handle);
         registrar.playToClient(SecretFlagSyncPacketS2C.TYPE, SecretFlagSyncPacketS2C.STREAM_CODEC, SecretFlagSyncPacketS2C::handle);
         registrar.playToClient(StarPhasesPacketS2C.TYPE, StarPhasesPacketS2C.STREAM_CODEC, StarPhasesPacketS2C::handle);
-        registrar.playToClient(TheConstantPostEffectPacketS2C.TYPE, TheConstantPostEffectPacketS2C.STREAM_CODEC, TheConstantPostEffectPacketS2C::handle);
         registrar.playToClient(WindSpeedPacketS2C.TYPE, WindSpeedPacketS2C.STREAM_CODEC, WindSpeedPacketS2C::handle);
         if (PatchouliHelper.IS_LOADED) {
             registrar.playToClient(PatchouliEntityEntriesPacketS2C.TYPE, PatchouliEntityEntriesPacketS2C.STREAM_CODEC, PatchouliEntityEntriesPacketS2C::handle);

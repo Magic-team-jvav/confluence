@@ -51,7 +51,10 @@ import org.confluence.mod.common.item.drill.DrillItem;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.mixed.*;
-import org.confluence.mod.network.s2c.*;
+import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
+import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
+import org.confluence.mod.network.s2c.SecretFlagSyncPacketS2C;
+import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
@@ -71,9 +74,9 @@ public final class PlayerEvents {
             PlayerUtils.syncSavedData(serverPlayer);
             ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, serverPlayer, serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY));
             FishingPowerInfoPacketS2C.sendAndGet(serverPlayer);
-            EchoVisibilityPacketS2C.sendToClient(serverPlayer);
+            VisibilityPacketS2C.sendEcho(serverPlayer);
             BoulderWorld.forceSetAccessory(serverPlayer);
-            TheConstantPostEffectPacketS2C.sendToClient(serverPlayer);
+            VisibilityPacketS2C.sendTheConstantPostEffect(serverPlayer);
             long secretFlag = ((IMinecraftServer) serverPlayer.server).confluence$getSecretFlag();
             SecretFlagSyncPacketS2C.sendToAll(secretFlag);
             if ((secretFlag & IWorldOptions.HARDMODE) != 0) {

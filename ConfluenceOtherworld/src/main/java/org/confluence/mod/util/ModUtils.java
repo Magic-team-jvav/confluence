@@ -6,6 +6,8 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -208,5 +210,31 @@ public final class ModUtils {
     public static boolean canHitEntity(Entity target, Entity owner) {
         if (!target.canBeHitByProjectile() || target instanceof ArmorStand || target instanceof Npc) return false;
         return owner == null || (owner != target && !owner.isPassengerOfSameVehicle(target));
+    }
+
+    public static Component formatPrice(int price) {
+        int platinum = 0;
+        int gold = 0;
+        int silver = 0;
+        int copper;
+        if (price >= 1000000) {
+            platinum = price / 1000000;
+            price -= platinum * 1000000;
+        }
+        if (price >= 10000) {
+            gold = price / 10000;
+            price -= gold * 10000;
+        }
+        if (price >= 100) {
+            silver = price / 100;
+            price -= silver * 100;
+        }
+        copper = price;
+        MutableComponent cmp = Component.empty();
+        if (platinum > 0) cmp.append(Component.literal(" " + platinum + " ").withColor(-4996668)).append(Component.translatable("tooltip.price.platinum").withColor(-4996668));
+        if (gold > 0) cmp.append(Component.literal(" " + gold + " ").withColor(-3891380)).append(Component.translatable("tooltip.price.gold").withColor(-3891380));
+        if (silver > 0) cmp.append(Component.literal(" " + silver + " ").withColor(-4532777)).append(Component.translatable("tooltip.price.silver").withColor(-4532777));
+        if (copper > 0) cmp.append(Component.literal(" " + copper + " ").withColor(-3837899)).append(Component.translatable("tooltip.price.copper").withColor(-3837899));
+        return cmp;
     }
 }

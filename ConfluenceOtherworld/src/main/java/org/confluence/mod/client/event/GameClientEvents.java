@@ -149,7 +149,7 @@ public final class GameClientEvents {
                     Component.empty()
             ));
             tooltipElements.add(Either.left(
-                    Component.translatable(TooltipManager.prefix).withColor(ModRarity.EXPERT.getColor())
+                    Component.translatable(TooltipManager.prefix).withColor(ModRarity.EXPERT.color())
                             .append("  ")
                             .append(Component.literal(ins.getTooltip(item))))
             );

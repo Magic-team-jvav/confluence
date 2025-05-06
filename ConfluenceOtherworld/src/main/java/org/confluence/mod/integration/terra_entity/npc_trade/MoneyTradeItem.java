@@ -53,7 +53,7 @@ public record MoneyTradeItem(ItemStack result, TradeProperties properties) imple
 
     @Override
     public long cost() {
-        return ValueComponent.getValue(result, 0);
+        return ValueComponent.getValue(result, 0) * 5L; // 买入价是卖出价的五倍
     }
 
     @Override

@@ -15,6 +15,8 @@ import org.confluence.mod.mixin.accessor.DataMapProviderAccessor;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
+import org.confluence.terraentity.init.item.TESummonItems;
+import org.confluence.terraentity.init.item.TEWhipItems;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -25,24 +27,21 @@ public class ModDataMapProvider extends DataMapProvider {
 
     @Override
     protected void gather(HolderLookup.Provider provider) {
+        valueBuilder() // 原版物品
+                .add(Items.DRAGON_EGG, 2000)
+                .add(Items.NETHER_STAR, 1000)
+                .add(Blocks.ANVIL.asItem(), 4000)
+                .add(Blocks.TORCH.asItem(), 10)
+                .add(Blocks.OAK_SAPLING.asItem(), 20);
         valueBuilder()
-                .add(Items.DRAGON_EGG, 10000)
-                .add(Items.NETHER_STAR, 5000)
-
-                .add(Items.ARROW,5)
-
-                .add(Blocks.ANVIL.asItem(),20000)
-                .add(Blocks.TORCH.asItem(),50)
-                .add(Blocks.OAK_SAPLING.asItem(),100)
-
                 .add(Items.COPPER_INGOT, wrap(1, 50))
                 .add(MaterialItems.TR_CRIMSON_INGOT, 3900)
                 .add(MaterialItems.DEMONITE_INGOT, 3000)
                 .add(Items.GOLD_INGOT, 1200)
                 .add(Items.IRON_INGOT, 300)
-                .add(Items.NETHERITE_INGOT,4000)
-                .add(MaterialItems.LEAD_INGOT,450)
-                .add(MaterialItems.METEORITE_INGOT,1400)
+                .add(Items.NETHERITE_INGOT, 4000)
+                .add(MaterialItems.LEAD_INGOT, 450)
+                .add(MaterialItems.METEORITE_INGOT, 1400)
                 .add(MaterialItems.PLATINUM_INGOT, 1800)
                 .add(MaterialItems.SILVER_INGOT, 600)
                 .add(MaterialItems.TIN_INGOT, 225)
@@ -58,16 +57,16 @@ public class ModDataMapProvider extends DataMapProvider {
                 .add(MaterialItems.MYTHRIL_INGOT, 4400)
                 .add(MaterialItems.ORICHALCUM_INGOT, 5200)
                 .add(MaterialItems.PALLADIUM_INGOT, 2700)
-                .add(MaterialItems.HALLOWED_INGOT, 4000)
-
+                .add(MaterialItems.HALLOWED_INGOT, 4000);
+        valueBuilder()
                 .add(Blocks.COPPER_BLOCK.asItem(), 150 * 9)
                 .add(OreBlocks.TR_CRIMSON_BLOCK, 3900 * 9)
                 .add(OreBlocks.DEMONITE_BLOCK, 3000 * 9)
                 .add(Blocks.GOLD_BLOCK.asItem(), 1200 * 9)
                 .add(Blocks.IRON_BLOCK.asItem(), 300 * 9)
-                .add(Blocks.NETHERITE_BLOCK.asItem(),4000 * 9)
-                .add(OreBlocks.LEAD_BLOCK,450 * 9)
-                .add(OreBlocks.METEORITE_BLOCK,1400 * 9)
+                .add(Blocks.NETHERITE_BLOCK.asItem(), 4000 * 9)
+                .add(OreBlocks.LEAD_BLOCK, 450 * 9)
+                .add(OreBlocks.METEORITE_BLOCK, 1400 * 9)
                 .add(OreBlocks.PLATINUM_BLOCK, 1800 * 9)
                 .add(OreBlocks.SILVER_BLOCK, 600 * 9)
                 .add(OreBlocks.TIN_BLOCK, 225 * 9)
@@ -83,8 +82,8 @@ public class ModDataMapProvider extends DataMapProvider {
                 .add(OreBlocks.MYTHRIL_BLOCK, 4400 * 9)
                 .add(OreBlocks.ORICHALCUM_BLOCK, 5200 * 9)
                 .add(OreBlocks.PALLADIUM_BLOCK, 2700 * 9)
-                .add(OreBlocks.HALLOWED_BLOCK, 4000 * 9)
-
+                .add(OreBlocks.HALLOWED_BLOCK, 4000 * 9);
+        valueBuilder()
                 .add(Items.DIAMOND, 3000)
                 .add(MaterialItems.AMBER, wrap(30, 0))
                 .add(MaterialItems.RUBY, wrap(22, 50))
@@ -95,19 +94,19 @@ public class ModDataMapProvider extends DataMapProvider {
                 .add(Items.LAPIS_LAZULI, 50)
                 .add(Items.REDSTONE, 40)
                 .add(Items.COAL, 40)
-                .add(Items.CHARCOAL, 40)
-
-                .add(Blocks.DIAMOND_BLOCK.asItem(),3000 * 9)
+                .add(Items.CHARCOAL, 40);
+        valueBuilder()
+                .add(Blocks.DIAMOND_BLOCK.asItem(), 3000 * 9)
                 .add(DecorativeBlocks.AMBER_BLOCK, wrap(30, 0) * 9)
                 .add(MaterialItems.RUBY, wrap(22, 50) * 9)
-                .add(Blocks.EMERALD_BLOCK.asItem(),1500 * 9)
+                .add(Blocks.EMERALD_BLOCK.asItem(), 1500 * 9)
                 .add(DecorativeBlocks.SAPPHIRE_BLOCK, wrap(11, 25) * 9)
                 .add(DecorativeBlocks.SAPPHIRE_BLOCK, wrap(7, 50) * 9)
                 .add(DecorativeBlocks.TR_AMETHYST_BLOCK, wrap(3, 75) * 9)
                 .add(Blocks.LAPIS_BLOCK.asItem(), 50 * 9)
                 .add(Blocks.REDSTONE_BLOCK.asItem(), 40 * 9)
-                .add(Blocks.COAL_BLOCK.asItem(), 40 * 9)
-
+                .add(Blocks.COAL_BLOCK.asItem(), 40 * 9);
+        valueBuilder()
                 .add(Items.RAW_COPPER, 50)
                 .add(MaterialItems.RAW_TIN, 75)
                 .add(Items.RAW_IRON, 100)
@@ -127,8 +126,8 @@ public class ModDataMapProvider extends DataMapProvider {
                 .add(MaterialItems.RAW_ADAMANTITE, 1500)
                 .add(MaterialItems.RAW_TITANIUM, 1700)
                 .add(MaterialItems.RAW_CHLOROPHYTE, 1500)
-                .add(MaterialItems.RAW_LUMINITE, 3000)
-
+                .add(MaterialItems.RAW_LUMINITE, 3000);
+        valueBuilder()
                 .add(Blocks.RAW_COPPER_BLOCK.asItem(), 50 * 9)
                 .add(OreBlocks.RAW_TIN_BLOCK, 75 * 9)
                 .add(Blocks.RAW_IRON_BLOCK.asItem(), 100 * 9)
@@ -148,13 +147,13 @@ public class ModDataMapProvider extends DataMapProvider {
                 .add(OreBlocks.RAW_ADAMANTITE_BLOCK, 1500 * 9)
                 .add(OreBlocks.RAW_TITANIUM_BLOCK, 1700 * 9)
                 .add(OreBlocks.RAW_CHLOROPHYTE_BLOCK, 1500 * 9)
-                .add(OreBlocks.RAW_LUMINITE_BLOCK, 3000 * 9)
-
+                .add(OreBlocks.RAW_LUMINITE_BLOCK, 3000 * 9);
+        valueBuilder()
                 .add(MaterialItems.GEL, 1)
                 .add(MaterialItems.PINK_GEL, 3)
                 .add(MaterialItems.SILK, 200)
-                .add(MaterialItems.RAW_ASPHALT, 1)
-
+                .add(MaterialItems.RAW_ASPHALT, 1);
+        valueBuilder()
                 // Adamantite Sword 2 gold 76 silver
                 // Ash Wood Sword  20 copper
                 .add(SwordItems.BAT_BAT, wrap(25, 0))
@@ -269,27 +268,27 @@ public class ModDataMapProvider extends DataMapProvider {
                 .add(TEBoomerangItems.SHROOMERANG, wrap(60, 0))
                 // Thorn Chakram 1 gold
                 .add(TEBoomerangItems.TRIMARANG, wrap(2, 0, 0))
-                .add(TEBoomerangItems.WOOD_BOOMERANG, wrap(20, 0))
-
+                .add(TEBoomerangItems.WOOD_BOOMERANG, wrap(20, 0));
+        valueBuilder()
                 // Adamantite Glaive 1 gold 80 silver
                 // Chlorophyte Partisan 3 gold 60 silver
                 // Cobalt Naginata 90 silver
-                .add(LanceItems.DARK_LANCE, wrap(2, 50))
-                // Ghastly Glaive 1 gold
-                // Gungnir 4 gold 60 silver
-                // Mushroom Spear 14 gold
-                // Mythril Halberd 1 gold 35 silver
-                // North Pole 9 gold
-                // Obsidian Swordfish 1 gold
-                // Orichalcum Halberd 1 gold 65 silver
-                // Palladium Pike 1 gold 20 silver
-                // Spear 2 silver
-                // Storm Spear 30 silver
-                // Swordfish 50 silver
-                // The Rotted Fork 1 gold 50 silver
-                // Titanium Trident 2 gold 10 silver
-                // Trident 20 silver
-
+                .add(LanceItems.DARK_LANCE, wrap(2, 50));
+        // Ghastly Glaive 1 gold
+        // Gungnir 4 gold 60 silver
+        // Mushroom Spear 14 gold
+        // Mythril Halberd 1 gold 35 silver
+        // North Pole 9 gold
+        // Obsidian Swordfish 1 gold
+        // Orichalcum Halberd 1 gold 65 silver
+        // Palladium Pike 1 gold 20 silver
+        // Spear 2 silver
+        // Storm Spear 30 silver
+        // Swordfish 50 silver
+        // The Rotted Fork 1 gold 50 silver
+        // Titanium Trident 2 gold 10 silver
+        // Trident 20 silver
+        valueBuilder()
                 // Aerial Bane 5 gold
                 // Ash Wood Bow 20 copper
                 // Blood Rain Bow 1 gold
@@ -331,9 +330,9 @@ public class ModDataMapProvider extends DataMapProvider {
                 .add(Items.BOW, 40)
                 .add(BowItems.FOSSIL_BOW, 3000)
                 .add(BowItems.HUNTING_BOW, 3800)
-                .add(BowItems.WOODEN_SHORT_BOW, 40)
-
-                .add(PickaxeItems.REAVER_SHARK_PICKAXE, wrap(1, 50, 0, 0))
+                .add(BowItems.WOODEN_SHORT_BOW, 40);
+        valueBuilder()
+                .add(PickaxeItems.REAVER_SHARK_PICKAXE, wrap(1, 50, 0))
                 .add(Items.NETHERITE_PICKAXE, 6000)
                 .add(PickaxeItems.MOLTEN_PICKAXE, 5400)
                 .add(PickaxeItems.DEATHBRINGER_PICKAXE, 3600)
@@ -348,8 +347,8 @@ public class ModDataMapProvider extends DataMapProvider {
                 .add(PickaxeItems.LEAD_PICKAXE, 600)
                 .add(Items.IRON_PICKAXE, 400)
                 .add(PickaxeItems.TIN_PICKAXE, 150)
-                .add(PickaxeItems.COPPER_PICKAXE, 50)
-
+                .add(PickaxeItems.COPPER_PICKAXE, 50);
+        valueBuilder()
                 .add(HammerItems.ROCKFISH, wrap(1, 50, 0))
                 .add(HammerItems.THE_BREAKER, 3000)
                 .add(HammerItems.FLESH_GRINDER, 3000)
@@ -361,8 +360,8 @@ public class ModDataMapProvider extends DataMapProvider {
                 .add(HammerItems.IRON_HAMMER, 320)
                 .add(HammerItems.TIN_HAMMER, 120)
                 .add(HammerItems.COPPER_HAMMER, 80)
-                .add(HammerItems.WOODEN_HAMMER, 10)
-
+                .add(HammerItems.WOODEN_HAMMER, 10);
+        valueBuilder()
                 .add(FishingPoleItems.WOOD_FISHING_POLE, 60)
                 .add(FishingPoleItems.REINFORCED_FISHING_POLE, wrap(24, 0))
                 .add(FishingPoleItems.FISHER_OF_SOULS, wrap(2, 40, 0))
@@ -373,14 +372,14 @@ public class ModDataMapProvider extends DataMapProvider {
                 .add(FishingPoleItems.MECHANICS_ROD, wrap(4, 0, 0))
                 .add(FishingPoleItems.SITTING_DUCKS_FISHING_POLE, wrap(7, 0, 0))
                 .add(FishingPoleItems.HOTLINE_FISHING_HOOK, wrap(10, 0, 0))
-                .add(FishingPoleItems.HOTLINE_FISHING_HOOK, wrap(17, 20, 0))
-
+                .add(FishingPoleItems.HOTLINE_FISHING_HOOK, wrap(17, 20, 0));
+        valueBuilder()
                 .add(AxeItems.AXE_OF_REGROWTH, wrap(1, 50, 0))
                 .add(AxeItems.LUCY_THE_AXE, wrap(1, 50, 0))
                 .add(Items.NETHERITE_AXE, 6000)
                 .add(Items.DIAMOND_AXE, 3000)
                 .add(Items.GOLDEN_AXE, 2800)
-                .add(Items.IRON_AXE,2800)
+                .add(Items.IRON_AXE, 2800)
                 .add(AxeItems.WAR_AXE_OF_THE_NIGHT, 2700)
                 .add(AxeItems.BLOOD_LUST_CLUSTER, 2700)
                 .add(AxeItems.PLATINUM_AXE, 1200)
@@ -390,26 +389,45 @@ public class ModDataMapProvider extends DataMapProvider {
                 .add(AxeItems.LEAD_AXE, 240)
                 .add(Items.IRON_AXE, 160)
                 .add(AxeItems.TIN_AXE, 60)
-                .add(AxeItems.COPPER_AXE, 40)
-
-                .add(ManaWeaponItems.BEE_GUN, 20000)
-                .add(ManaWeaponItems.FLOWER_OF_FIRE, 25000)
-                .add(ManaWeaponItems.AQUA_SCEPTER, 17500)
-                .add(ManaWeaponItems.WEATHER_PAIN, 15000)
-                .add(ManaWeaponItems.VILETHRON, 15000)
-                .add(ManaWeaponItems.WATER_BOLT, 15000)
+                .add(AxeItems.COPPER_AXE, 40);
+        valueBuilder()
                 .add(ManaWeaponItems.WAND_OF_SPARKING, 10000)
-                .add(ManaWeaponItems.SPACE_GUN, 4000)
                 .add(ManaWeaponItems.WAND_OF_FROSTING, 3500)
-                .add(ManaWeaponItems.RUBY_STAFF, 2800)
-                .add(ManaWeaponItems.AMBER_STAFF, 2800)
-                .add(ManaWeaponItems.TOPAZ_STAFF, 2800)
-                .add(ManaWeaponItems.EMERALD_STAFF, 2800)
-                .add(ManaWeaponItems.SAPPHIRE_STAFF, 2800)
-                .add(ManaWeaponItems.DIAMOND_STAFF, 2800)
                 .add(ManaWeaponItems.AMETHYST_STAFF, 2800)
-                .add(ManaWeaponItems.THUNDER_ZAPPER, 2100)
-
+                .add(ManaWeaponItems.TOPAZ_STAFF, 2800)
+                .add(ManaWeaponItems.SAPPHIRE_STAFF, 2800)
+                .add(ManaWeaponItems.EMERALD_STAFF, 2800)
+                .add(ManaWeaponItems.RUBY_STAFF, 2800)
+                .add(ManaWeaponItems.DIAMOND_STAFF, 2800)
+                .add(ManaWeaponItems.AMBER_STAFF, 2800)
+                .add(ManaWeaponItems.VILETHRON, 15000)
+                // 猩红魔杖
+                .add(ManaWeaponItems.WEATHER_PAIN, 15000)
+                // 魔法飞弹
+                .add(ManaWeaponItems.AQUA_SCEPTER, 17500)
+                // 烈焰火鞭
+                .add(ManaWeaponItems.BEE_GUN, 20000)
+                .add(ManaWeaponItems.SPACE_GUN, 4000)
+                .add(ManaWeaponItems.WATER_BOLT, 15000)
+                // 恶魔之镰
+                // 骷髅头法书
+                .add(ManaWeaponItems.FLOWER_OF_FIRE, 25000)
+                .add(ManaWeaponItems.THUNDER_ZAPPER, 2100);
+        // 灰冲击枪
+        valueBuilder()
+                .add(TESummonItems.SLIME_STAFF, wrap(2, 0, 0))
+                .add(TESummonItems.HORNET_STAFF, wrap(70, 0))
+                // 小鬼法杖
+                // 吸血鬼青蛙法杖
+                .add(TESummonItems.FINCH_STAFF, wrap(1, 0, 0));
+        // 小雪怪法杖
+        // 阿比盖尔的花
+        // 眼球激光塔
+        valueBuilder()
+                .add(TEWhipItems.LEATHER_WHIP, wrap(2, 0, 0));
+        // 荆鞭
+        // 脊柱骨鞭
+        valueBuilder()
                 .add(TCItems.AGLET, 25000)
                 .add(TCItems.AMBER_HORSESHOE_BALLOON, 30000)
                 .add(TCItems.AMBHIPIAN_BOOTS, 20000)
@@ -418,7 +436,7 @@ public class ModDataMapProvider extends DataMapProvider {
                 .add(TCItems.ANKH_CHARM, 30000)
                 .add(TCItems.ANKH_SHIELD, 50000)
                 .add(TCItems.ANKLET_OF_THE_WIND, 10000)
-                .add(TCItems.ARCHITECT_GIZMO_PACK, 40000)
+                .add(TCItems.ARCHITECT_GIZMO_PACK, 40000 / 5)
                 .add(TCItems.ARCTIC_DIVING_GEAR, 50000)
                 .add(TCItems.AVENGER_EMBLEM, 60000)
                 .add(TCItems.BALLOON_PUFFERFISH, 25000)
@@ -587,85 +605,153 @@ public class ModDataMapProvider extends DataMapProvider {
                 .add(TCItems.WHITE_HORSESHOE_BALLOON, 30000)
                 .add(TCItems.WORM_SCARF, 20000)
                 .add(TCItems.YELLOW_HORSESHOE_BALLOON, 30000)
-                .add(TCItems.WORKSHOP,100000)
+                .add(TCItems.WORKSHOP, wrap(2, 0, 0));
+        // todo AccessoryItems
+        valueBuilder()
+                .add(FoodItems.PAD_THAI, 5500);
+        valueBuilder()
+                .add(TGItems.BOOMSTICK, wrap(2, 0, 0))
+                // Candy Corn Rifle 10 gold
+                // Chain Gun 9 gold
+                // Clockwork Assault Rifle 3 gold
+                .add(TGItems.FLINTLOCK_PISTOL, wrap(1, 0, 0))
+                // Gatligator 7 gold
+                .add(TGItems.HAND_GUN, wrap(1, 75, 0))
+                // Megashark 7 gold
+                .add(TGItems.MINISHARK, wrap(7, 0, 0))
+                .add(TGItems.MUSKET, wrap(1, 50, 0))
+                // Onyx Blaster 5 gold
+                // Pew-matic Horn 1 gold 50 silver
+                // Phoenix Blaster 3 gold 50 silver
+                // Quad-Barrel Shotgun 7 gold
+                // Red Ryder 2 gold
+                // Revolver 2 gold
+                // S.D.M.G. 15 gold
+                .add(TGItems.SHOTGUN, wrap(5, 0, 0))
+                // Sniper Rifle 8 gold
+                .add(TGItems.TACTICAL_SHOTGUN, wrap(8, 0, 0))
+                .add(TGItems.THE_UNDERTAKER, wrap(1, 50, 0))
+                // Uzi 7 gold
+                // Venus Magnum 5 gold
+                // Vortex Beater 10 gold
+                // Xenopopper 10 gold
+                .add(TGItems.MUSKET_BULLET, 1)
+                .add(TGItems.METEOR_SHOT, 1)
+                .add(TGItems.SILVER_BULLET, 3)
+                .add(TGItems.CRYSTAL_BULLET, 6)
+                .add(TGItems.CURSED_BULLET, 6)
+                .add(TGItems.CHLOROPHYTE_BULLET, 10)
+                .add(TGItems.HIGH_VELOCITY_BULLET, 8)
+                .add(TGItems.ICHOR_BULLET, 6)
+                .add(TGItems.VENOM_BULLET, 8)
+                .add(TGItems.PARTY_BULLET, 2)
+                .add(TGItems.NANO_BULLET, 8)
+                .add(TGItems.EXPLODING_BULLET, 8)
+                .add(TGItems.GOLDEN_BULLET, 8)
+                .add(TGItems.ENDLESS_MUSKET_POUCH, wrap(1, 0, 0))
+                .add(TGItems.LUMINITE_BULLET, 2)
+                .add(TGItems.TUNGSTEN_BULLET, 3);
+        valueBuilder()
+                .add(ConsumableItems.SHURIKEN, 15)
+                .add(ConsumableItems.THROWING_KNIVES, 50)
+                // 毒刀 12铜
+                .add(ConsumableItems.GRENADE, 75)
+                .add(ConsumableItems.STICKY_GRENADE, 15)
+                .add(ConsumableItems.BOUNCY_GRENADE, 20)
+                .add(ConsumableItems.SPIKY_BALL, 16)
+                .add(MaterialItems.DUNGEON_DEMON_BONE, 10)
+                // 骨投刀 10铜
+                // 星形茴香 5铜
+                // 莫洛托夫鸡尾酒 1 银
+                // 寒霜飞鱼 16 铜
+                .add(ConsumableItems.JAVELIN, 5)
+                // 骨头标枪 10铜
+                .add(ConsumableItems.BEENADE, wrap(5, 0));
+        valueBuilder()
+                .add(ConsumableItems.BOMB, 60)
+                .add(ConsumableItems.STICKY_BOMB, wrap(1, 0))
+                .add(ConsumableItems.BOUNCY_BOMB, 80)
+                .add(ConsumableItems.STICKY_DIRT_BOMB, wrap(1, 0))
+                .add(ConsumableItems.DYNAMITE, wrap(4, 0))
+                .add(ConsumableItems.STICKY_DYNAMITE, wrap(4, 0))
+                .add(ConsumableItems.BOUNCY_DYNAMITE, wrap(4, 0))
+                .add(ConsumableItems.BOMB_FISH, wrap(2, 0));
+        // 快乐手榴弹
+        valueBuilder()
+                .add(ConsumableItems.PURIFICATION_POWDER, 15);
+        valueBuilder()
+                .add(Items.ARROW, 1)
+                .add(ArrowItems.FLAMING_ARROW, 2)
+                .add(ArrowItems.UNHOLY_ARROW, 8)
+                .add(ArrowItems.STAR_ARROW, 20)
+                .add(ArrowItems.HELLFIRE_ARROW, 20)
+                // Holy Arrow 16 copper
+                // Cursed Arrow 8 copper
+                .add(ArrowItems.FROSTBURN_ARROW, 3)
+                // Chlorophyte Arrow 20 copper
+                // Ichor Arrow 8 copper
+                // Venom Arrow 18 copper
+                .add(ArrowItems.BONE_ARROW, 3)
+                // Endless Quiver 1 gold
+                // Luminite Arrow 2 copper
+                .add(ArrowItems.SHIMMER_ARROW, 3);
+        valueBuilder()
+                .add(ToolItems.BUG_NET, 2500);
+        valueBuilder()
+                .add(ArmorItems.MINING_HELMET, 40000);
+        valueBuilder()
+                .add(ModBlocks.ROPE, 10);
+        valueBuilder()
+                .add(FunctionalBlocks.PIGGY_BANK, 10000)
+                .add(FunctionalBlocks.SAFE, 40000);
+        valueBuilder()
+                .add(PotionItems.LESSER_HEALING_POTION, 300)
+                .add(PotionItems.LESSER_MANA_POTION, 250);
+        valueBuilder()
+                .add(PaintItems.PAINTBRUSH, 10000)
+                .add(PaintItems.PAINT_ROLLER, 10000)
+                .add(PaintItems.PAINT_SCRAPER, 10000)
+                .add(PaintItems.RED_PAINT, 25)
+                .add(PaintItems.DEEP_RED_PAINT, 25)
+                .add(PaintItems.ORANGE_PAINT, 25)
+                .add(PaintItems.DEEP_ORANGE_PAINT, 25)
+                .add(PaintItems.YELLOW_PAINT, 25)
+                .add(PaintItems.DEEP_YELLOW_PAINT, 25)
+                .add(PaintItems.LIME_PAINT, 25)
+                .add(PaintItems.DEEP_LIME_PAINT, 25)
+                .add(PaintItems.GREEN_PAINT, 25)
+                .add(PaintItems.DEEP_GREEN_PAINT, 25)
+                .add(PaintItems.TEAL_PAINT, 25)
+                .add(PaintItems.DEEP_TEAL_PAINT, 25)
+                .add(PaintItems.CYAN_PAINT, 25)
+                .add(PaintItems.DEEP_CYAN_PAINT, 25)
+                .add(PaintItems.SKY_BLUE_PAINT, 25)
+                .add(PaintItems.DEEP_SKY_BLUE_PAINT, 25)
+                .add(PaintItems.BLUE_PAINT, 25)
+                .add(PaintItems.DEEP_BLUE_PAINT, 25)
+                .add(PaintItems.PURPLE_PAINT, 25)
+                .add(PaintItems.DEEP_PURPLE_PAINT, 25)
+                .add(PaintItems.VIOLET_PAINT, 25)
+                .add(PaintItems.DEEP_VIOLET_PAINT, 25)
+                .add(PaintItems.PINK_PAINT, 25)
+                .add(PaintItems.DEEP_PINK_PAINT, 25)
+                .add(PaintItems.BLACK_PAINT, 25)
+                .add(PaintItems.GRAY_PAINT, 25)
+                .add(PaintItems.WHITE_PAINT, 25)
+                .add(PaintItems.BROWN_PAINT, 25);
 
+        valueBuilder()
+                .add(VanityArmorItems.SILVER_DYE, 10000)
+                .add(VanityArmorItems.BROWN_DYE, 10000)
+                .add(VanityArmorItems.TEAM_DYE, 10000);
 
-                .add(FoodItems.PAD_THAI,5500)
-                .add(TGItems.SHOTGUN,50000)
-                .add(TGItems.BOOMSTICK,20000)
-                .add(TGItems.HAND_GUN,17500)
-                .add(TGItems.THE_UNDERTAKER,15000)
-                .add(TGItems.MUSKET,15000)
-                .add(TGItems.FLINTLOCK_PISTOL,50000)
-                .add(TGItems.MINISHARK,350000)
+        valueBuilder()
+                .add(NatureBlocks.YELLOW_WILLOW_SAPLING, 10000);
 
-
-                .add(TGItems.MUSKET_BULLET,7)
-
-                .add(ConsumableItems.GRENADE,75)
-                .add(ConsumableItems.BOMB,300)
-                .add(ConsumableItems.DYNAMITE,2000)
-                .add(ConsumableItems.SHURIKEN,15)
-                .add(ConsumableItems.PURIFICATION_POWDER,75)
-
-                .add(ToolItems.BUG_NET,2500)
-
-
-                .add(ArmorItems.MINING_HELMET,40000)
-
-
-                .add(ModBlocks.ROPE,10)
-
-                .add(FunctionalBlocks.PIGGY_BANK,10000)
-                .add(FunctionalBlocks.SAFE,40000)
-
-                .add(PotionItems.LESSER_HEALING_POTION,300)
-                .add(PotionItems.LESSER_MANA_POTION,250)
-
-                .add(PaintItems.PAINTBRUSH,10000)
-                .add(PaintItems.PAINT_ROLLER,10000)
-                .add(PaintItems.PAINT_SCRAPER,10000)
-                .add(PaintItems.RED_PAINT,25)
-                .add(PaintItems.DEEP_RED_PAINT,25)
-                .add(PaintItems.ORANGE_PAINT,25)
-                .add(PaintItems.DEEP_ORANGE_PAINT,25)
-                .add(PaintItems.YELLOW_PAINT,25)
-                .add(PaintItems.DEEP_YELLOW_PAINT,25)
-                .add(PaintItems.LIME_PAINT,25)
-                .add(PaintItems.DEEP_LIME_PAINT,25)
-                .add(PaintItems.GREEN_PAINT,25)
-                .add(PaintItems.DEEP_GREEN_PAINT,25)
-                .add(PaintItems.TEAL_PAINT,25)
-                .add(PaintItems.DEEP_TEAL_PAINT,25)
-                .add(PaintItems.CYAN_PAINT,25)
-                .add(PaintItems.DEEP_CYAN_PAINT,25)
-                .add(PaintItems.SKY_BLUE_PAINT,25)
-                .add(PaintItems.DEEP_SKY_BLUE_PAINT,25)
-                .add(PaintItems.BLUE_PAINT,25)
-                .add(PaintItems.DEEP_BLUE_PAINT,25)
-                .add(PaintItems.PURPLE_PAINT,25)
-                .add(PaintItems.DEEP_PURPLE_PAINT,25)
-                .add(PaintItems.VIOLET_PAINT,25)
-                .add(PaintItems.DEEP_VIOLET_PAINT,25)
-                .add(PaintItems.PINK_PAINT,25)
-                .add(PaintItems.DEEP_PINK_PAINT,25)
-                .add(PaintItems.BLACK_PAINT,25)
-                .add(PaintItems.GRAY_PAINT,25)
-                .add(PaintItems.WHITE_PAINT,25)
-                .add(PaintItems.BROWN_PAINT,25)
-
-
-                .add(VanityArmorItems.SILVER_DYE,10000)
-                .add(VanityArmorItems.BROWN_DYE,10000)
-                .add(VanityArmorItems.TEAM_DYE,10000)
-
-
-                .add(NatureBlocks.YELLOW_WILLOW_SAPLING,10000)
-
-
-                .add(Items.PUMPKIN_SEEDS,250)
-                .add(ModItems.GRASS_SEED,20)
-
+        valueBuilder()
+                .add(Items.PUMPKIN_SEEDS, 250)
+                .add(ModItems.GRASS_SEED, 20);
+        valueBuilder()
                 .add(HookItems.GRAPPLING_HOOK, wrap(40, 0))
                 .add(HookItems.AMETHYST_HOOK, wrap(40, 0))
                 .add(HookItems.TOPAZ_HOOK, wrap(40, 0))
@@ -680,9 +766,10 @@ public class ModDataMapProvider extends DataMapProvider {
                 .add(HookItems.FISH_HOOK, wrap(40, 0))
                 .add(HookItems.IVY_WHIP, wrap(40, 0))
                 .add(HookItems.BAT_HOOK, wrap(1, 50, 0))
-                .add(HookItems.CANDY_CANE_HOOK, wrap(2, 0, 0))
-
-                .add(TGItems.SHOTGUN,50000);
+                .add(HookItems.CANDY_CANE_HOOK, wrap(2, 0, 0));
+        valueBuilder() // 小玩具物品
+                .add(ModItems.WHOOPIE_CUSHION, 20)
+                .add(ConsumableItems.SMOKE_BOMB, 4);
     }
 
     public ValueBuilder valueBuilder() {

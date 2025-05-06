@@ -1018,7 +1018,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("dialogs.confluence.merchant.0", "Swords beat paper! Buy one right away.");
         add("dialogs.confluence.merchant.1", "Do you want apples? Do you want carrots? Do you want pineapples? All we have are torches.");
         add("dialogs.confluence.merchant.2", "Take a look at my dirt blocks; they're really earthy.");
-        add("dialogs.confluence.merchant.3", "You have no idea how much dirt blocks can sell for in other places.");
+        add("dialogs.confluence.merchant.3", "You have no idea how cheap these trees can be overseas.");
         add("dialogs.confluence.merchant.4", "One day they will tell your legend... It's sure to be a good story.");
         add("dialogs.confluence.merchant.5", "Kosh, kapleck Mog. Oh, sorry, that's Klingon, which means 'Buy or die.'");
 

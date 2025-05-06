@@ -1074,7 +1074,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("dialogs.confluence.merchant.0", "剑克纸！赶紧买一把。");
         add("dialogs.confluence.merchant.1", "你想要苹果？你想要胡萝卜？你想要菠萝？我们只有火把。");
         add("dialogs.confluence.merchant.2", "看看我的土块；它们特别土。");
-        add("dialogs.confluence.merchant.3", "你是不知道土块能在国外卖多少钱。");
+        add("dialogs.confluence.merchant.3", "你根本不知道这些树能在国外有多便宜");
         add("dialogs.confluence.merchant.4", "总有一天他们会讲述你的传奇……肯定会是好故事。");
         add("dialogs.confluence.merchant.5", "Kosh, kapleck Mog。哦，对不起，这是克林贡语，意思是“要么买，要么死。");
 

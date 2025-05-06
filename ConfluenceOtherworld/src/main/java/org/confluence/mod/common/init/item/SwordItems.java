@@ -113,7 +113,7 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.UNBREAKABLE, 7, 2.9F, ModRarity.GREEN, PROJ_SWORD
             .apply(SwordProjectileComponent.GRASS_PROJ));
 
-    // 光剑
+    // 光剑 todo 重命名为phaseblade
     public static final DeferredItem<SwordItem> RED_LIGHT_SABER = register("red_light_saber", () -> new LightSaber(ModTiers.UNBREAKABLE, ModRarity.BLUE, 10, 2, "red"));
     public static final DeferredItem<SwordItem> ORANGE_LIGHT_SABER = register("orange_light_saber", () -> new LightSaber(ModTiers.UNBREAKABLE, ModRarity.BLUE, 10, 2, "orange"));
     public static final DeferredItem<SwordItem> YELLOW_LIGHT_SABER = register("yellow_light_saber", () -> new LightSaber(ModTiers.UNBREAKABLE, ModRarity.BLUE, 10, 2, "yellow"));

@@ -21,7 +21,7 @@ public class HellStoneBlock extends Block {
         super(BlockBehaviour.Properties
                 .ofFullCopy(Blocks.ANCIENT_DEBRIS)
                 .mapColor(MapColor.COLOR_RED)
-                .lightLevel(value -> 5)
+                .lightLevel(value -> 10)
                 .requiresCorrectToolForDrops());
     }
 

@@ -258,6 +258,8 @@ public class ValueSubProvider {
                 .add(TEBoomerangItems.WOOD_BOOMERANG, wrap(20, 0));
         appender.create() // 探索
                 .add(ModBlocks.ROPE, 2)
+                .add(ModBlocks.SILK_ROPE, 2)
+                .add(ModBlocks.WEB_ROPE, 2)
                 .add(SwordItems.UMBRELLA, wrap(20, 0))
                 .add(SwordItems.TRAGIC_UMBRELLA, wrap(2, 0, 0))
                 .add(TCItems.MAGIC_MIRROR, wrap(1, 0, 0))
@@ -266,6 +268,9 @@ public class ValueSubProvider {
                 // 信号枪
                 .add(SwordItems.BREATHING_REED, wrap(20, 0))
                 .add(ToolItems.ROPE_COIL, 20)
+                .add(ToolItems.VINE_ROPE_COIL, 20)
+                .add(ToolItems.SILK_ROPE_COIL, 20)
+                .add(ToolItems.WEB_ROPE_COIL, 20)
                 // 耍蛇者长笛
                 .add(ToolItems.MAGIC_CONCH, wrap(1, 0, 0))
                 .add(ToolItems.DEMON_CONCH, wrap(1, 0, 0))
@@ -550,7 +555,6 @@ public class ValueSubProvider {
                 .add(TCItems.COMPASS, 1750)
                 .add(TCItems.COPPER_WATCH, 140)
                 .add(TCItems.CROSS_NECKLACE, 20000)
-                .add(TCItems.DEMON_HEART, 20000)
                 .add(TCItems.DEPTH_METER, 1750)
                 .add(TCItems.DESTROYER_EMBLEM, 60000)
                 .add(TCItems.DETOXIFICATION_CAPSULE, 25000)
@@ -1064,6 +1068,19 @@ public class ValueSubProvider {
                 .add(MinecartItems.DIGGING_MOLECART, wrap(10, 0, 0))
                 .add(MinecartItems.FART_KART, wrap(50, 0))
                 .add(MinecartItems.TERRA_FART_KART, wrap(1, 0, 0));
+        appender.create()
+                .add(ConsumableItems.LIFE_CRYSTAL, wrap(1, 50, 0))
+                .add(ConsumableItems.LIFE_FRUIT, wrap(2, 0, 0))
+                .add(ConsumableItems.MANA_CRYSTAL, wrap(25, 0))
+                .add(TCItems.DEMON_HEART, wrap(2, 0, 0))
+                .add(ConsumableItems.ARTISAN_LOAF, wrap(2, 0, 0))
+                .add(ConsumableItems.VITAL_CRYSTAL, wrap(1, 50, 0))
+                .add(ConsumableItems.AEGIS_APPLE, wrap(2, 0, 0))
+                .add(ConsumableItems.ARCANE_CRYSTAL, wrap(25, 0))
+                .add(ConsumableItems.AMBROSIA, wrap(50, 0))
+                .add(ConsumableItems.GUMMY_WORM, wrap(10, 0, 0))
+                .add(ConsumableItems.GALAXY_PEARL, wrap(15, 0, 0))
+                .add(ConsumableItems.MINECART_UPGRADE_KIT, wrap(2, 0, 0));
     }
 
     private static int wrap(int platinum, int gold, int silver, int copper) {
@@ -1078,6 +1095,7 @@ public class ValueSubProvider {
         return silver * 100 + copper;
     }
 
+    @SuppressWarnings({"unchecked", "deprecation"})
     public static class Builder extends DataMapProvider.Builder<ValueComponent, Item> {
         public Builder(DataMapType<?, ?> type) {
             super((DataMapType<Item, ValueComponent>) type);

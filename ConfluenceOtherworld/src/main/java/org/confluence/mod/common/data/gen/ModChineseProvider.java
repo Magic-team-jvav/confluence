@@ -1949,6 +1949,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(CrateBlocks.HELL_STONE_CRATE.get(), "狱石匣");
         add(CrateBlocks.BEACH_CRATE.get(), "海滩匣");
 
+        add(CrateBlocks.GOLDEN_LOCK_BOX.get(), "金锁盒");
+
 
         add(ArrowItems.FLAMING_ARROW.get(), "烈焰箭");
         add(ArrowItems.UNHOLY_ARROW.get(), "邪箭");

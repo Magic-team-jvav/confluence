@@ -335,6 +335,7 @@ public class BlockSubProvider extends BlockLootSubProvider {
 
         dropSelf(TR_OBSIDIAN_SMALL_BRICKS.get());
         dropSelf(TR_SMOOTH_OBSIDIAN.get());
+        dropSelf(TR_POLISHED_GRANITE.get());
         dropSelf(TR_GRANITE_COLUMN.get());
 
         dropSelf(CHISELED_TR_OBSIDIAN_BRICKS.get());

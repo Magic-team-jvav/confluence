@@ -6,6 +6,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -70,6 +72,7 @@ public class HamaxeItem extends DiggerItem {
             if (player instanceof ServerPlayer) {
                 ((ServerPlayer)player).sendSystemMessage(Component.translatable("tooltip.item.confluence.toolmode.mode", String.format("%1$s", getModeName(toolItem))).withStyle(ChatFormatting.WHITE), true);
             }
+            level.playSound(player, BlockPos.containing(player.position()), SoundEvents.TRIPWIRE_CLICK_ON, SoundSource.PLAYERS, 0.4F, 0.6F);
         }
         return super.use(level,player,usedHand);
     }

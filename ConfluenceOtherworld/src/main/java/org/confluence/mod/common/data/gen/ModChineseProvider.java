@@ -314,6 +314,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.cause_fire", "点燃");
         add("tooltip.item.confluence.can_penetrate", "穿透");
 
+        add("tooltip.item.confluence.toolmode","对空中潜行右击切换模式");
+        add("tooltip.item.confluence.toolmode.mode","当前模式：%1$s");
+        add("tooltip.item.confluence.hamaxe.mode.0","锤与斧");
+        add("tooltip.item.confluence.hamaxe.mode.1","斧");
+
         add("tooltip.item.confluence.radio_thing.0", "允许使用者以不同的方式看世界");
         add("tooltip.item.terra_curio.radio_thing.1", "“禁忌的知识在其中回响……”");
 

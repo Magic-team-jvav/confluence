@@ -11,11 +11,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -430,12 +428,17 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
 //                        System.out.println("block break");
                     centerCache.remove(blockProps);
+                    ArrayList<BlockPos> newCenters = new ArrayList<>();
                     for (BlockPos centerPos : centers.get(n.getKey())) {//刷新周围中心块
                         double distance = centerPos.distSqr(blockProps);
-                        if (distance < 25) {//附近有中心块，清除改块
-                            centers.get(n.getKey()).remove(centerPos);
+                        if (distance > 25) {//附近有中心块，清除改块
+                            newCenters.add(centerPos);
+                            // 之前使用的方法是小于25时，从列表中清除元素，这会导致崩溃。
+                            //centers.get(n.getKey()).remove(centerPos);
                         }
                     }
+                    centers.get(n.getKey()).clear();
+                    centers.get(n.getKey()).addAll(newCenters);
                 }
 
                 if ((target != null && target.showType == ShowType.SPELUNKER) || n.getKey().defaultBlockState().is(Tags.Blocks.ORES)) {//矿透方块

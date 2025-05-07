@@ -2220,8 +2220,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(HammerItems.WOODEN_HAMMER.get(), "木锤");
         add(HammerItems.RICH_MAHOGANY_HAMMER.get(), "红木锤");
         add(HammerItems.PALM_WOOD_HAMMER.get(), "棕榈木锤");
-        add(HammerItems.SPRUCE_WOOD_HAMMER.get(), "针叶木锤");
-        add(HammerItems.EBONWOOD_WOOD_HAMMER.get(), "乌木锤");
+        add(HammerItems.SPRUCE_WOOD_HAMMER.get(), "云杉木锤");
+        add(HammerItems.EBONWOOD_HAMMER.get(), "乌木锤");
         add(HammerItems.SHADEWOOD_HAMMER.get(), "暗影木锤");
         add(HammerItems.ASH_WOOD_HAMMER.get(), "白蜡木锤");
         add(HammerItems.PEARLWOOD_HAMMER.get(), "珍珠木锤");

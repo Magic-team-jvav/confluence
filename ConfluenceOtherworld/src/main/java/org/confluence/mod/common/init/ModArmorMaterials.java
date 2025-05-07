@@ -185,6 +185,8 @@ public final class ModArmorMaterials {
             "spider", 0.0F, 0.0F);
 
     public static final Holder<ArmorMaterial> GOGGLES_MATERIAL = registerSingletonMaterial("goggles_material", ArmorItem.Type.HELMET, 1, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "goggles", 0, 0);
+    public static final Holder<ArmorMaterial> GREEN_CAP_MATERIAL = registerSingletonMaterial("green_cap_material", ArmorItem.Type.HELMET, 2, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "green_cap", 0, 0);
+
     public static final Holder<ArmorMaterial> WIZARD_HAT_MATERIAL = registerSingletonMaterial("wizard_hat_material", ArmorItem.Type.HELMET, 4, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "wizard_hat", 0, 0);
     public static final Holder<ArmorMaterial> MAGIC_HAT_ARMOR_MATERIAL = registerSingletonMaterial("magic_hat_material", ArmorItem.Type.HELMET, 2, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "magic_hat", 0, 0);
     public static final Holder<ArmorMaterial> AMETHYST_ROBE_ARMOR_MATERIAL = registerSingletonMaterial("amethyst_robe_material", ArmorItem.Type.CHESTPLATE, 0, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.TR_AMETHYST), "amethyst_robe", 0, 0);

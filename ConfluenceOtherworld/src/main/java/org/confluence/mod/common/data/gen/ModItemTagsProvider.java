@@ -1121,7 +1121,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 HammerItems.RICH_MAHOGANY_HAMMER.get(),
                 HammerItems.PALM_WOOD_HAMMER.get(),
                 HammerItems.SPRUCE_WOOD_HAMMER.get(),
-                HammerItems.EBONWOOD_WOOD_HAMMER.get(),
+                HammerItems.EBONWOOD_HAMMER.get(),
                 HammerItems.SHADEWOOD_HAMMER.get(),
                 HammerItems.ASH_WOOD_HAMMER.get(),
                 HammerItems.PEARLWOOD_HAMMER.get(),
@@ -1477,7 +1477,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 CrateBlocks.ILLUSION_CRATE.asItem(),
                 CrateBlocks.HELL_STONE_CRATE.asItem(),
                 CrateBlocks.BEACH_CRATE.asItem(),
-                LanceItems.DARK_LANCE.get()
+                LanceItems.DARK_LANCE.get(),
+                HookItems.STATIC_HOOK.get()
         );
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);
@@ -1527,7 +1528,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.SUPER_DART_TRAP.asItem(),
                 FunctionalBlocks.FLAME_TRAP.asItem(),
                 FunctionalBlocks.SPIKY_BALL_TRAP.asItem(),
-                FunctionalBlocks.SPEAR_TRAP.asItem()
+                FunctionalBlocks.SPEAR_TRAP.asItem(),
+                HookItems.STATIC_HOOK.get()
         );
 
         IntrinsicTagAppender<Item> skipResetStrength = tag(LibTags.Items.SKIP_RESET_STRENGTH);

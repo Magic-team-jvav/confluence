@@ -438,7 +438,7 @@ public class ModDataMapProvider extends DataMapProvider {
                 .add(FishingPoleItems.MECHANICS_ROD, wrap(4, 0, 0))
                 .add(FishingPoleItems.SITTING_DUCKS_FISHING_POLE, wrap(7, 0, 0))
                 .add(FishingPoleItems.HOTLINE_FISHING_HOOK, wrap(10, 0, 0))
-                .add(FishingPoleItems.HOTLINE_FISHING_HOOK, wrap(17, 20, 0));
+                .add(FishingPoleItems.GOLDEN_FISHING_ROD, wrap(17, 20, 0));
         valueBuilder()
                 .add(AxeItems.COPPER_AXE, 80)
                 .add(AxeItems.TIN_AXE, wrap(1, 20))

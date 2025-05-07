@@ -30,8 +30,9 @@ public abstract class AnglerNPCMixin implements SelfGetter<AnglerNPC> {
 
     @Inject(method = "checkDespawn", at = @At("TAIL"))
     private void onRemove(CallbackInfo ci) {
-        if (confluence$self().isRemoved()) {
-            NPCSpawner.INSTANCE.onNPCRemoved(confluence$self());
+        AnglerNPC npc = confluence$self();
+        if (npc.isRemoved()) {
+            NPCSpawner.INSTANCE.setNPCAlive(((IAbstractTerraNPC) npc).confluence$getRegion(), npc.getType(), false);
         }
     }
 }

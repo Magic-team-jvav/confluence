@@ -268,7 +268,6 @@ public class ValueSubProvider {
                 // 信号枪
                 .add(SwordItems.BREATHING_REED, wrap(20, 0))
                 .add(ToolItems.ROPE_COIL, 20)
-                .add(ToolItems.VINE_ROPE_COIL, 20)
                 .add(ToolItems.SILK_ROPE_COIL, 20)
                 .add(ToolItems.WEB_ROPE_COIL, 20)
                 // 耍蛇者长笛

@@ -5,7 +5,6 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -37,11 +36,6 @@ import java.util.function.Consumer;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class HamaxeItem extends DiggerItem {
-    public static final MutableComponent MODE = Component.translatable("message.confluence.toolmode.tip").withStyle(ChatFormatting.GRAY);
-    public static final MutableComponent TOOLMODE = Component.translatable("message.confluence.toolmode.current").withStyle(ChatFormatting.GRAY);
-    public static final MutableComponent MODE_0 = Component.translatable("message.confluence.hamaxe.mode.0").withStyle(ChatFormatting.WHITE);
-    public static final MutableComponent MODE_1 = Component.translatable("message.confluence.hamaxe.mode.1").withStyle(ChatFormatting.WHITE);
-
     public HamaxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
         super(tier, ModTags.Blocks.MINEABLE_WITH_HAMAXE, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4))
@@ -78,7 +72,7 @@ public class HamaxeItem extends DiggerItem {
             } else if (toolMode == null || toolMode.mode() == 1) {
                 toolItem.set(ConfluenceMagicLib.TOOL_MODE, new ToolMode(0));
             }
-            serverPlayer.sendSystemMessage(MODE.append(getModeName(toolItem)), true);
+            serverPlayer.sendSystemMessage(Component.translatable("message.confluence.toolmode.tip").withStyle(ChatFormatting.GRAY).append(getModeName(toolItem)), true);
             level.playSound(null, player.blockPosition(), SoundEvents.TRIPWIRE_CLICK_ON, SoundSource.PLAYERS, 0.4F, 0.6F);
         }
         return super.use(level, player, usedHand);
@@ -97,14 +91,14 @@ public class HamaxeItem extends DiggerItem {
     public Component getModeName(ItemStack stack) {
         ToolMode toolMode = stack.get(ConfluenceMagicLib.TOOL_MODE.get());
         if (toolMode != null && toolMode.mode() == 1) {
-            return MODE_1;
+            return Component.translatable("message.confluence.hamaxe.mode.1").withStyle(ChatFormatting.WHITE);
         }
-        return MODE_0;
+        return Component.translatable("message.confluence.hamaxe.mode.0").withStyle(ChatFormatting.WHITE);
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(TOOLMODE);
-        tooltipComponents.add(MODE.append(getModeName(stack)));
+        tooltipComponents.add(Component.translatable("message.confluence.toolmode.current").withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable("message.confluence.toolmode.tip").withStyle(ChatFormatting.GRAY).append(getModeName(stack)));
     }
 }

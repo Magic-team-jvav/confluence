@@ -22,7 +22,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 @EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD)
-public class ModDataGenerator {
+public final class ModDataGenerator {
     private static final RegistrySetBuilder DATA_BUILDER = new RegistrySetBuilder().add(Registries.DAMAGE_TYPE, ModDamageTypes::createDamageTypes);
 
     @SubscribeEvent

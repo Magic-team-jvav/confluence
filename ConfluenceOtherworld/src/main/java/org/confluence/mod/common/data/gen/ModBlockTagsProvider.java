@@ -14,6 +14,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import org.confluence.mod.common.block.common.TombstoneBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.CrateBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
 import org.jetbrains.annotations.Nullable;
@@ -295,7 +296,31 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GOLDEN_GRAVESTONE.get(),
                 AETHERIUM_BLOCK.get(),
                 DARK_AETHERIUM_BLOCK.get(),
-                CRISPY_HONEY_BLOCK.get()
+                CRISPY_HONEY_BLOCK.get(),
+
+                TR_POLISHED_GRANITE.get(),
+
+                CrateBlocks.IRON_CRATE.get(),
+                CrateBlocks.GOLDEN_CRATE.get(),
+                CrateBlocks.SKY_CRATE.get(),
+                CrateBlocks.CORRUPT_CRATE.get(),
+                CrateBlocks.TR_CRIMSON_CRATE.get(),
+                CrateBlocks.HALLOWED_CRATE.get(),
+                CrateBlocks.DUNGEON_CRATE.get(),
+                CrateBlocks.OASIS_CRATE.get(),
+                CrateBlocks.OBSIDIAN_CRATE.get(),
+                CrateBlocks.OCEAN_CRATE.get(),
+
+                CrateBlocks.MYTHRIL_CRATE.get(),
+                CrateBlocks.TITANIUM_CRATE.get(),
+                CrateBlocks.SPACE_CRATE.get(),
+                CrateBlocks.DEFACED_CRATE.get(),
+                CrateBlocks.BLOOD_CRATE.get(),
+                CrateBlocks.PROVIDENTIAL_CRATE.get(),
+                CrateBlocks.FENCING_CRATE.get(),
+                CrateBlocks.ILLUSION_CRATE.get(),
+                CrateBlocks.HELL_STONE_CRATE.get(),
+                CrateBlocks.BEACH_CRATE.get()
         );
         // 铲子
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithShovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);
@@ -349,7 +374,16 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SPORE_ROOT_BLOCK.get(),
 
                 ANNOUNCEMENT_BOX.get(),
-                WALL_ANNOUNCEMENT_BOX.get()
+                WALL_ANNOUNCEMENT_BOX.get(),
+
+                CrateBlocks.WOODEN_CRATE.get(),
+                CrateBlocks.PEARLWOOD_CRATE.get(),
+                CrateBlocks.FREEZE_CRATE.get(),
+                CrateBlocks.CONIFEROUS_WOOD_CRATE.get(),
+                CrateBlocks.JUNGLE_CRATE.get(),
+                CrateBlocks.THORNS_CRATE.get(),
+                CrateBlocks.SAVANNA_CRATE.get(),
+                CrateBlocks.WILD_CRATE.get()
         );
         tag(ModTags.Blocks.NEEDS_1_LEVEL).add(
                 RAW_TIN_BLOCK.get(),

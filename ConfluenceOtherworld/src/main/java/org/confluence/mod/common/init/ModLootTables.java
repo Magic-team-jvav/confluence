@@ -57,6 +57,8 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> FISH = register("gameplay/fishing");
     public static final ResourceKey<LootTable> CRATE = register("gameplay/crate");
 
+
+    public static final ResourceKey<LootTable> INITIAL_WORLD_UNDERGROUND_CHEST = register("chests/initial_world_underground_chest");
     public static final ResourceKey<LootTable> CAVE_CHESTS = register("chests/cave_chests");
 
     public static final ResourceKey<LootTable> OPAL_BLOCK = register("archaeology/opal_ore");

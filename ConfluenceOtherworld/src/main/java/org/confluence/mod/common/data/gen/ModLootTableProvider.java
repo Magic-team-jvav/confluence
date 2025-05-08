@@ -7,6 +7,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import org.confluence.mod.common.data.gen.loot.BlockSubProvider;
 import org.confluence.mod.common.data.gen.loot.ChestSubProvider;
 import org.confluence.mod.common.data.gen.loot.EntitySubProvider;
+import org.confluence.mod.common.data.gen.loot.GiftSubProvider;
 
 import java.util.List;
 import java.util.Set;
@@ -17,7 +18,8 @@ public class ModLootTableProvider extends LootTableProvider {
         super(output, Set.of(), List.of(
                 new SubProviderEntry(BlockSubProvider::new, LootContextParamSets.BLOCK),
                 new SubProviderEntry(EntitySubProvider::new, LootContextParamSets.ENTITY),
-                new SubProviderEntry(ChestSubProvider::new, LootContextParamSets.CHEST)
+                new SubProviderEntry(ChestSubProvider::new, LootContextParamSets.CHEST),
+                new SubProviderEntry(GiftSubProvider::new, LootContextParamSets.GIFT)
         ), lookup);
     }
 }

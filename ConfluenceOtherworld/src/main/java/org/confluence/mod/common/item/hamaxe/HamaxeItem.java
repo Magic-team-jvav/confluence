@@ -1,10 +1,11 @@
 package org.confluence.mod.common.item.hamaxe;
 
-import com.google.common.collect.Lists;
 import net.minecraft.ChatFormatting;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -28,12 +29,19 @@ import org.confluence.lib.common.component.ToolMode;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.hammer.HammerItem;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.function.Consumer;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class HamaxeItem extends DiggerItem {
+    public static final MutableComponent MODE = Component.translatable("message.confluence.toolmode.tip").withStyle(ChatFormatting.GRAY);
+    public static final MutableComponent TOOLMODE = Component.translatable("message.confluence.toolmode.current").withStyle(ChatFormatting.GRAY);
+    public static final MutableComponent MODE_0 = Component.translatable("message.confluence.hamaxe.mode.0").withStyle(ChatFormatting.WHITE);
+    public static final MutableComponent MODE_1 = Component.translatable("message.confluence.hamaxe.mode.1").withStyle(ChatFormatting.WHITE);
+
     public HamaxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
         super(tier, ModTags.Blocks.MINEABLE_WITH_HAMAXE, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4))
@@ -49,7 +57,7 @@ public class HamaxeItem extends DiggerItem {
     @Override
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miningEntity) {
         ToolMode toolMode = stack.get(ConfluenceMagicLib.TOOL_MODE.get());
-        if (toolMode == null || toolMode.mode() == 0){
+        if (toolMode == null || toolMode.mode() == 0) {
             HammerItem.hammerMineBlock(stack, level, state, pos, miningEntity);
         }
         return true;
@@ -59,22 +67,21 @@ public class HamaxeItem extends DiggerItem {
     public InteractionResult useOn(UseOnContext context) {
         return Items.NETHERITE_AXE.useOn(context);
     }
+
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand){
-        if (getPlayerPOVHitResult(level,player, ClipContext.Fluid.NONE).getType() == HitResult.Type.MISS && player.isShiftKeyDown()){
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+        if (player instanceof ServerPlayer serverPlayer && getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE).getType() == HitResult.Type.MISS && player.isCrouching()) {
             ItemStack toolItem = player.getItemInHand(usedHand);
             ToolMode toolMode = toolItem.get(ConfluenceMagicLib.TOOL_MODE.get());
-            if (toolMode != null && toolMode.mode() == 0){
-                toolItem.set(ConfluenceMagicLib.TOOL_MODE.get(), new ToolMode(1));
-            }else if (toolMode == null || toolMode.mode() == 1){
-                toolItem.set(ConfluenceMagicLib.TOOL_MODE.get(), new ToolMode(0));
+            if (toolMode != null && toolMode.mode() == 0) {
+                toolItem.set(ConfluenceMagicLib.TOOL_MODE, new ToolMode(1));
+            } else if (toolMode == null || toolMode.mode() == 1) {
+                toolItem.set(ConfluenceMagicLib.TOOL_MODE, new ToolMode(0));
             }
-            if (player instanceof ServerPlayer) {
-                ((ServerPlayer)player).sendSystemMessage(Component.translatable("tooltip.item.confluence.toolmode.mode", String.format("%1$s", getModeName(toolItem))).withStyle(ChatFormatting.WHITE), true);
-            }
-            level.playSound(player, BlockPos.containing(player.position()), SoundEvents.TRIPWIRE_CLICK_ON, SoundSource.PLAYERS, 0.4F, 0.6F);
+            serverPlayer.sendSystemMessage(MODE.append(getModeName(toolItem)), true);
+            level.playSound(null, player.blockPosition(), SoundEvents.TRIPWIRE_CLICK_ON, SoundSource.PLAYERS, 0.4F, 0.6F);
         }
-        return super.use(level,player,usedHand);
+        return super.use(level, player, usedHand);
     }
 
     @Override
@@ -87,20 +94,17 @@ public class HamaxeItem extends DiggerItem {
         return true;
     }
 
-    public String getModeName(ItemStack stack){
+    public Component getModeName(ItemStack stack) {
         ToolMode toolMode = stack.get(ConfluenceMagicLib.TOOL_MODE.get());
-        if (toolMode != null && toolMode.mode() == 1){
-            return Component.translatable("tooltip.item.confluence.hamaxe.mode.1").getString();
+        if (toolMode != null && toolMode.mode() == 1) {
+            return MODE_1;
         }
-        return Component.translatable("tooltip.item.confluence.hamaxe.mode.0").getString();
+        return MODE_0;
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack pStack, Item.@NotNull TooltipContext pContext, @NotNull List<Component> pTooltipComponents, @NotNull TooltipFlag pTooltipFlag){
-        super.appendHoverText(pStack, pContext, pTooltipComponents, pTooltipFlag);
-        List<Component> list = Lists.newArrayList();
-        list.add(Component.translatable("tooltip.item.confluence.toolmode").withStyle(ChatFormatting.GRAY));
-        list.add(Component.translatable("tooltip.item.confluence.toolmode.mode", String.format("%1$s", getModeName(pStack))).withStyle(ChatFormatting.GRAY));
-        pTooltipComponents.addAll(list);
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        tooltipComponents.add(TOOLMODE);
+        tooltipComponents.add(MODE.append(getModeName(stack)));
     }
 }

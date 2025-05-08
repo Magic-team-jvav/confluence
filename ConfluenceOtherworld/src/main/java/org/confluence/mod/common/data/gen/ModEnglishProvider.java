@@ -53,6 +53,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("options.difficulty.legendary", "§aLegendary");
         add("message.confluence.choking", "You're choking and need to drink water");
         add("message.confluence.advancement_combat_techniques", "The book's knowledge empowers your villagers!");
+        add("message.confluence.toolmode.tip","Shift & Right click on the air to switch mode");
+        add("message.confluence.toolmode.current","Current Mode: ");
+        add("message.confluence.hamaxe.mode.0","Hammer & Axe");
+        add("message.confluence.hamaxe.mode.1","Axe");
         add("jukebox_song.confluence.song", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
@@ -323,11 +327,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.no_gravity", "No Gravity");
         add("tooltip.item.confluence.cause_fire", "Causes Fire");
         add("tooltip.item.confluence.can_penetrate", "Can Penetrate");
-
-        add("tooltip.item.confluence.toolmode","Shift & Right click on the air to switch mode");
-        add("tooltip.item.confluence.toolmode.mode","Current Mode: %1$s");
-        add("tooltip.item.confluence.hamaxe.mode.0","Hammer & Axe");
-        add("tooltip.item.confluence.hamaxe.mode.1","Axe");
 
         add("tooltip.item.confluence.radio_thing.0", "Allows the user to see the world differently");
         add("tooltip.item.terra_curio.radio_thing.1", "'Forbidden Knowledge echoes from the radio...'");

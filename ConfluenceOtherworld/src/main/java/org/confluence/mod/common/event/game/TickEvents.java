@@ -16,6 +16,7 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.confluence.lib.util.GlobalColors;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
@@ -64,7 +65,7 @@ public final class TickEvents {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
             }
         }
-        if (dayTime < 12000 && serverLevel.getGameTime() % 2400 == 0 && serverLevel.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
+        if (dayTime < 12000 && serverLevel.getGameTime() % 2400 == 0 && CommonConfigs.DO_NPC_SPAWNING.get() && serverLevel.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
             NPCSpawner.INSTANCE.checkNpcRespawn(serverLevel);
         }
 

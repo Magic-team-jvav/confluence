@@ -33,11 +33,10 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext pContext) {
-        Level level = pContext.getLevel();
-        if (!level.isClientSide && pContext.getHand() == InteractionHand.MAIN_HAND && checkAvailable(pContext)) {
-            BlockPos clickedPos = pContext.getClickedPos();
-            LibUtils.updateItemStackNbt(pContext.getItemInHand(), tag -> {
+    public InteractionResult useOn(UseOnContext context) {
+        if (context.getPlayer() instanceof ServerPlayer serverPlayer && context.getHand() == InteractionHand.MAIN_HAND && checkAvailable(context)) {
+            BlockPos clickedPos = context.getClickedPos();
+            LibUtils.updateItemStackNbt(context.getItemInHand(), tag -> {
                 if (!tag.contains("pos1")) {
                     tag.put("pos1", NbtUtils.writeBlockPos(clickedPos));
                 } else if (!tag.contains("pos2")) {
@@ -55,8 +54,7 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
                         tag.put(distanceToPos1 > distanceToPos2 ? "pos2" : "pos1", NbtUtils.writeBlockPos(clickedPos));
                     }
                 }
-                Player player = pContext.getPlayer();
-                if (player != null) player.sendSystemMessage(successStoreMessage(clickedPos));
+                serverPlayer.sendSystemMessage(successStoreMessage(clickedPos), false);
             });
         }
         return InteractionResult.SUCCESS;

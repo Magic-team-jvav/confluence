@@ -17,6 +17,7 @@ public final class CommonConfigs {
     public static IntValue ANNOUNCEMENT_BOX_DISTANCE;
     public static BooleanValue BREWING_STAND_RECIPE;
     public static BooleanValue ALERT_PLAYER_IN_DUNGEON;
+    public static BooleanValue DO_NPC_SPAWNING;
 
     public static BooleanValue SHOW_MONEY_DROPS;
     public static BooleanValue DROPS_TOMBSTONE;
@@ -47,6 +48,7 @@ public final class CommonConfigs {
         ANNOUNCEMENT_BOX_DISTANCE = BUILDER.comment("The maximum transmission distance of the Announcement Box information.").defineInRange("announcementBoxDistance", 128, 0, Integer.MAX_VALUE);
         BREWING_STAND_RECIPE = BUILDER.define("brewing_stand_recipe", false);
         ALERT_PLAYER_IN_DUNGEON = BUILDER.define("alertPlayerDungeon", false);
+        DO_NPC_SPAWNING = BUILDER.define("doNPCSpawning", true);
         BUILDER.pop();
 
         BUILDER.push("PlayerDeath");

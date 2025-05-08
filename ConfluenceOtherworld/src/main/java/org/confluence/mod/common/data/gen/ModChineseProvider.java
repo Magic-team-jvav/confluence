@@ -43,6 +43,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("options.difficulty.legendary", "§a传奇");
         add("message.confluence.choking", "你被噎住了,需要喝水才行");
         add("message.confluence.advancement_combat_techniques", "书中的知识赋予了城镇居民力量！");
+        add("message.confluence.toolmode.tip","对空气潜行右击切换模式");
+        add("message.confluence.toolmode.current","当前模式：");
+        add("message.confluence.hamaxe.mode.0","锤与斧");
+        add("message.confluence.hamaxe.mode.1","斧");
         add("jukebox_song.confluence.song", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
@@ -314,15 +318,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.cause_fire", "点燃");
         add("tooltip.item.confluence.can_penetrate", "穿透");
 
-        add("tooltip.item.confluence.toolmode","对空中潜行右击切换模式");
-        add("tooltip.item.confluence.toolmode.mode","当前模式：%1$s");
-        add("tooltip.item.confluence.hamaxe.mode.0","锤与斧");
-        add("tooltip.item.confluence.hamaxe.mode.1","斧");
-
         add("tooltip.item.confluence.radio_thing.0", "允许使用者以不同的方式看世界");
         add("tooltip.item.terra_curio.radio_thing.1", "“禁忌的知识在其中回响……”");
 
-        add("tooltip.item.confluence.sweet_sword.0", "来自一只屑水缡写的au“undertale：虚无之上”");
+        add("tooltip.item.confluence.sweet_sword.0", "来自一只屑水缡写的au“传说之下：虚无之上”");
 
         add("tooltip.item.confluence.copper_short_sword.0", "神兵最微末的那部分力量自两世汇流之初就伴随着你…直至旅途的终点");
         add("tooltip.item.confluence.copper_short_sword.1", "“我们十个真厉害！”铜短剑说。");

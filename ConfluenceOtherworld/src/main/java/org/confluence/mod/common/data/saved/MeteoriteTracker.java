@@ -7,7 +7,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ChunkMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -70,7 +69,6 @@ public class MeteoriteTracker {
             // 获取未被加载的区块
             ChunkPos chunkPos;
             int x = 0, z = 0;
-            ChunkMap chunkMap = level.getChunkSource().chunkMap;
             List<ServerPlayer> players = new ArrayList<>(level.players());
             do {
                 if (!players.isEmpty()) {
@@ -95,13 +93,22 @@ public class MeteoriteTracker {
                     }
                 }
                 chunkPos = new ChunkPos(x += xStep, z += zStep);
-            } while (chunkMap.getVisibleChunkIfPresent(chunkPos.toLong()) != null);
+            } while (level.getChunkSource().hasChunk(chunkPos.x, chunkPos.z));
             // 获取能放陨石的区块
-            BlockPos.MutableBlockPos landingPos;
             int maxBuildHeight = level.getMaxBuildHeight();
+            BlockPos.MutableBlockPos landingPos = new BlockPos.MutableBlockPos(
+                    SectionPos.sectionToBlockCoord(chunkPos.x, 7),
+                    maxBuildHeight,
+                    SectionPos.sectionToBlockCoord(chunkPos.z, 7)
+            );
             do {
+                if (level.getChunkSource().hasChunk(chunkPos.x, chunkPos.z)) continue;
                 level.setChunkForced(x, z, true);
-                landingPos = new ChunkPos(x, z).getBlockAt(7, maxBuildHeight, 7).mutable();
+                landingPos.set(
+                        SectionPos.sectionToBlockCoord(chunkPos.x, 7),
+                        maxBuildHeight,
+                        SectionPos.sectionToBlockCoord(chunkPos.z, 7)
+                );
                 while (level.getBlockState(landingPos).isAir()) {
                     landingPos.move(0, -1, 0);
                 }

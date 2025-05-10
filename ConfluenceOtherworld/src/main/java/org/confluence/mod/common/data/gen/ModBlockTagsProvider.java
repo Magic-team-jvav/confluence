@@ -13,10 +13,13 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import org.confluence.mod.common.block.common.TombstoneBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
+import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.CrateBlocks;
+import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
+import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -155,7 +158,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
         tag(BlockTags.LEAVES).add(YELLOW_WILLOW_DROOPING_LEAVES.get());
         tag(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE).addTag(BlockTags.LEAVES);
-
+        tag(TETags.Blocks.HONEY).add(HONEY.get());
 
         tag(BlockTags.OVERWORLD_NATURAL_LOGS).add(
                 EBONY_LOG_BLOCKS.getLog().get(),

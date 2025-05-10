@@ -7,27 +7,32 @@ import net.minecraft.world.item.Item;
 import org.confluence.mod.common.init.ModEffects;
 
 public class ModFoodProperties {
+    private static float calcSaturationModifier(float rawSaturation, int nutrition) {
+        return rawSaturation / nutrition / 2;
+    }
+
     //常规熟肉
     public static FoodProperties preparedMeatProperties(int nutrition, float rawSaturation) {
-        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(rawSaturation / nutrition / 2).fast().alwaysEdible()
+        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(calcSaturationModifier(rawSaturation, nutrition)).fast().alwaysEdible()
                 .effect(() -> new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, 3000), 1.0f)
                 .build();
     }
+
     //无效果食物
     public static FoodProperties noEffectProperties(int nutrition, float rawSaturation) {
-        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(rawSaturation / nutrition / 2).fast().alwaysEdible().build();
+        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(calcSaturationModifier(rawSaturation, nutrition)).fast().alwaysEdible().build();
     }
 
     //吃得好
     public static FoodProperties WellFedProperties(int duration, int nutrition, float rawSaturation) {
-        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(rawSaturation / nutrition / 2).fast().alwaysEdible()
+        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(calcSaturationModifier(rawSaturation, nutrition)).fast().alwaysEdible()
                 .effect(() -> new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, duration), 1.0f)
                 .build();
     }
 
     //很满意
     public static FoodProperties PlentySatisfiedProperties(int duration, int nutrition, float rawSaturation) {
-        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(rawSaturation / nutrition / 2).fast().alwaysEdible()
+        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(calcSaturationModifier(rawSaturation, nutrition)).fast().alwaysEdible()
                 .effect(() -> new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, duration, 1), 1.0f)
                 .effect(() -> new MobEffectInstance(ModEffects.HUNGER_DELAYED, duration / 6), 1.0f)
                 .build();
@@ -35,7 +40,7 @@ public class ModFoodProperties {
 
     //吃饱喝足
     public static FoodProperties ExquisitelyStuffedProperties(int duration, int nutrition, float rawSaturation) {
-        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(rawSaturation / nutrition / 2).fast().alwaysEdible()
+        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(calcSaturationModifier(rawSaturation, nutrition)).fast().alwaysEdible()
                 .effect(() -> new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, duration, 2), 1.0f)
                 .effect(() -> new MobEffectInstance(ModEffects.HUNGER_DELAYED, duration / 6, 1), 1.0f)
                 .build();
@@ -43,14 +48,14 @@ public class ModFoodProperties {
 
     //吃得好 返还容器
     public static FoodProperties WellFedProperties(int duration, int nutrition, float rawSaturation, Item item) {
-        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(rawSaturation / nutrition / 2).fast().alwaysEdible().usingConvertsTo(item)
+        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(calcSaturationModifier(rawSaturation, nutrition)).fast().alwaysEdible().usingConvertsTo(item)
                 .effect(() -> new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, duration), 1.0f)
                 .build();
     }
 
     //很满意 返还容器
     public static FoodProperties PlentySatisfiedProperties(int duration, int nutrition, float rawSaturation, Item item) {
-        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(rawSaturation / nutrition / 2).fast().alwaysEdible().usingConvertsTo(item)
+        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(calcSaturationModifier(rawSaturation, nutrition)).fast().alwaysEdible().usingConvertsTo(item)
                 .effect(() -> new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, duration, 1), 1.0f)
                 .effect(() -> new MobEffectInstance(ModEffects.HUNGER_DELAYED, duration / 6), 1.0f)
                 .build();
@@ -58,7 +63,7 @@ public class ModFoodProperties {
 
     //吃饱喝足 返还容器
     public static FoodProperties ExquisitelyStuffedProperties(int duration, int nutrition, float rawSaturation, Item item) {
-        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(rawSaturation / nutrition / 2).fast().alwaysEdible().usingConvertsTo(item)
+        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(calcSaturationModifier(rawSaturation, nutrition)).fast().alwaysEdible().usingConvertsTo(item)
                 .effect(() -> new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, duration, 2), 1.0f)
                 .effect(() -> new MobEffectInstance(ModEffects.HUNGER_DELAYED, duration / 6, 1), 1.0f)
                 .build();

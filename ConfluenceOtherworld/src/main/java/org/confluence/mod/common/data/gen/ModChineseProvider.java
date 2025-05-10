@@ -97,6 +97,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.binoculars.0", "使用时扩大视野，鼠标滚轮可调整缩放");
         add("tooltip.item.confluence.meteor_compass.0", "退出存档将会失去之前记录的坐标");
         add("tooltip.item.confluence.gel.0", "“既好吃，又易燃”");
+        add("tooltip.item.confluence.npc_invitation.0", "使用它，在当前区域邀请一批新的NPC吧！");
 
         add("tooltip.item.confluence.slime_crown.0", "右键使用以召唤史莱姆王");
         add("tooltip.item.confluence.slime_crown.1", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");
@@ -490,7 +491,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.title", "配置界面");
         add("confluence.configuration.section.confluence.client.toml.title", "客户端配置");
         add("confluence.configuration.Entity.tooltip", "与生物有关的视觉效果");
-        add("confluence.configuration.section.confluence.common.toml.title", "服务端配置");
+        add("confluence.configuration.section.confluence.common.toml.title", "通用配置");
 
         add("biome.confluence.the_corruption", "腐化之地");
         add("biome.confluence.the_corruption_desert", "腐化沙漠");
@@ -2244,7 +2245,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(HammerItems.PWNHAMMER.get(), "神锤");
         add(HammerItems.HAMMUSH.get(), "蘑菇锤");
         add(HammerItems.CHLOROPHYTE_WARHAMMER.get(), "叶绿战锤");
-        /* HammerAxes */
 
         // 杂项
         add(ToolItems.ICE_MIRROR.get(), "冰雪镜");
@@ -2280,6 +2280,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.SILK_ROPE_COIL.get(), "丝绸绳圈");
         add(ToolItems.WEB_ROPE_COIL.get(), "蛛丝绳圈");
         add(ToolItems.METEOR_COMPASS.get(), "陨石指南针");
+        add(ToolItems.NPC_INVITATION.get(), "NPC请柬");
 
 
         add(ConsumableItems.SHURIKEN.get(), "手里剑");

@@ -99,6 +99,10 @@ public class NPCSpawner implements IGlobalData {
     private boolean isAdvancedCombatTechniquesUsed = false; // 先进战斗技术
     private boolean isAdvancedCombatTechniquesVolumeTwoUsed = false; // 先进战斗技术：卷二
 
+    public Iterable<EntityType<?>> getNpcSpawned() {
+        return npcSpawned;
+    }
+
     public void setAdvancedCombatTechniquesUsed(boolean used) {
         this.isAdvancedCombatTechniquesUsed = used;
     }
@@ -129,8 +133,15 @@ public class NPCSpawner implements IGlobalData {
     }
 
     public void setNPCAlive(Region region, EntityType<?> entityType, boolean alive) {
-        npcAlive.computeIfAbsent(region, region1 -> new Object2BooleanOpenHashMap<>()).put(entityType, alive);
-        if (alive) npcSpawned.add(entityType);
+        if (alive) {
+            npcAlive.computeIfAbsent(region, area -> new Object2BooleanOpenHashMap<>()).put(entityType, true);
+            npcSpawned.add(entityType);
+        } else {
+            Object2BooleanMap<EntityType<?>> map = npcAlive.get(region);
+            if (map != null && map.getBoolean(entityType)) {
+                map.put(entityType, false);
+            }
+        }
     }
 
     public void moveNPCToAnotherRegion(AbstractTerraNPC living, Region from, Region to) {
@@ -423,18 +434,9 @@ public class NPCSpawner implements IGlobalData {
         return false;
     }
 
-    private boolean spawnAtPos(ServerLevel level, BlockPos pos, EntityType<?> entityType) {
+    public boolean spawnAtPos(ServerLevel level, BlockPos pos, EntityType<?> entityType) {
         if (!(entityType.create(level) instanceof AbstractTerraNPC living)) return false;
         living.setPos(pos.getCenter());
-//        if (level.isLoaded(pos)) {
-//            level.addFreshEntity(living);
-//        } else {
-//            ChunkPos chunkPos = new ChunkPos(pos);
-//            boolean forceBefore = level.getForcedChunks().contains(chunkPos.toLong());
-//            if (!forceBefore) level.setChunkForced(chunkPos.x, chunkPos.z, true);
-//            level.addFreshEntity(living);
-//            if (!forceBefore) level.setChunkForced(chunkPos.x, chunkPos.z, false);
-//        }
         level.addFreshEntity(living);
         if (living instanceof AnglerNPC angler) {
             angler.setWakeUp(true); // 重生的渔夫默认醒来

@@ -19,6 +19,8 @@ public class ShovelItems {
     public static final DeferredItem<BaseShovelItem> TUNGSTEN_SHOVEL = ITEMS.register("tungsten_shovel", () -> new BaseShovelItem(ModTiers.TUNGSTEN, 4.7f, 1,ModRarity.COMMON));
     public static final DeferredItem<BaseShovelItem> GOLDEN_SHOVEL = ITEMS.register("golden_shovel", () -> new BaseShovelItem(ModTiers.GOLD, 5.0f, 1,ModRarity.COMMON));
     public static final DeferredItem<BaseShovelItem> PLATINUM_SHOVEL = ITEMS.register("platinum_shovel", () -> new BaseShovelItem(ModTiers.PLATINUM, 5.5f, 1,ModRarity.COMMON));
+    public static final DeferredItem<BaseShovelItem> DARK_EROSION_SHOVEL = ITEMS.register("dark_erosion_shovel", () -> new BaseShovelItem(ModTiers.DEMONITE, 6f, 1,ModRarity.BLUE));
+    public static final DeferredItem<BaseShovelItem> FRENZIED_DIGGING_SHOVEL = ITEMS.register("frenzied_digging_shovel", () -> new BaseShovelItem(ModTiers.TR_CRIMSON, 6.5f, 1,ModRarity.BLUE));
 
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
         ITEMS.getEntries().forEach(shovel -> tag.add(shovel.get()));

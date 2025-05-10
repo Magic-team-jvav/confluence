@@ -264,6 +264,39 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "abc ",
                 "ba  "
         )), SwordItems.BLADE_OF_GRASS.toStack());
+        // 邪恶工具
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(4, MaterialItems.DEMONITE_INGOT),
+                '/', AmountIngredient.of(2, MaterialItems.ROTTEN_BONE)
+        ), List.of(
+                "a",
+                "/",
+                "/"
+        )), ShovelItems.DARK_EROSION_SHOVEL.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(4, MaterialItems.TR_CRIMSON_INGOT),
+                '/', AmountIngredient.of(2, MaterialItems.VERTEBRA)
+        ), List.of(
+                "a",
+                "/",
+                "/"
+        )), ShovelItems.FRENZIED_DIGGING_SHOVEL.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, MaterialItems.DEMONITE_INGOT),
+                '/', AmountIngredient.of(2, MaterialItems.ROTTEN_BONE)
+        ), List.of(
+                "aa",
+                " /",
+                " /"
+        )), HoeItems.EVIL_SHADOW_HOE.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, MaterialItems.TR_CRIMSON_INGOT),
+                '/', AmountIngredient.of(2, MaterialItems.VERTEBRA)
+        ), List.of(
+                "aa",
+                " /",
+                " /"
+        )), HoeItems.MUSCLE_HOE.toStack());
     }
 
     private void buildBaseStatues(RecipeOutput recipeOutput) {

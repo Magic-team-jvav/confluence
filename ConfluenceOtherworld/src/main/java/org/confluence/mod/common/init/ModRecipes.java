@@ -27,7 +27,6 @@ import org.confluence.mod.common.init.item.FoodItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.recipe.*;
-import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -559,7 +558,7 @@ public final class ModRecipes {
         }
 
         public static int[] getMaterials(ItemStack potion) {
-            CompoundTag tag = ModUtils.getItemStackNbt(potion);
+            CompoundTag tag = LibUtils.getItemStackNbtIfPresent(potion);
             if (tag == null) return new int[0];
             return tag.getIntArray("confluence:potion_materials");
         }

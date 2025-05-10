@@ -13,12 +13,12 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.item.HookItems;
 import org.confluence.mod.network.c2s.HookThrowingPacketC2S;
-import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.client.handler.PlayerJumpHandler;
 import org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S;
 
@@ -35,7 +35,7 @@ public final class HookThrowingHandler {
         if (isDown) HookThrowingPacketC2S.push();
         if (localPlayer.isCrouching()) return;
         ItemStack itemStack = localPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).getHook();
-        CompoundTag tag = ModUtils.getItemStackNbt(itemStack);
+        CompoundTag tag = LibUtils.getItemStackNbtIfPresent(itemStack);
         if (tag == null) return;
 
         ListTag list = tag.getList("hooks", Tag.TAG_COMPOUND);

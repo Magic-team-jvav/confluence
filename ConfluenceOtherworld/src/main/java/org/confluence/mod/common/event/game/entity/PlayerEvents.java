@@ -82,7 +82,7 @@ public final class PlayerEvents {
             if ((secretFlag & IWorldOptions.HARDMODE) != 0) {
                 ModAchievements.awardAchievement(serverPlayer, "its_hard");
             }
-            if (serverPlayer.serverLevel().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
+            if (CommonConfigs.DO_NPC_SPAWNING.get() && serverPlayer.serverLevel().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
                 NPCSpawner.INSTANCE.trySpawnGuide(serverPlayer);
             }
         }

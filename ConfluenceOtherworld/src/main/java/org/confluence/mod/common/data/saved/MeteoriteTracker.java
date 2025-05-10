@@ -7,6 +7,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ChunkHolder;
 import net.minecraft.server.level.ChunkMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -39,11 +40,13 @@ public class MeteoriteTracker {
         }
         if (tickUntilLanding.get() == 0) {
             this.location = BlockPos.ZERO;
+            this.shouldGenerate = true;
         } else if (tickUntilLanding.get() > 0) {
             tickUntilLanding.decrementAndGet();
             if (tickUntilLanding.get() == 0) {
                 ChunkPos chunkPos = new ChunkPos(location);
                 place(level, chunkPos.x, chunkPos.z, !level.getForcedChunks().contains(chunkPos.toLong()), new BlockPos(location));
+                ConfluenceData.get(level).setDirty();
             }
         }
     }
@@ -67,10 +70,10 @@ public class MeteoriteTracker {
             int xStep = quadrant[min][0];
             int zStep = quadrant[min][1];
             // 获取未被加载的区块
-            ChunkPos chunkPos;
             int x = 0, z = 0;
-            ChunkMap chunkMap = level.getChunkSource().chunkMap;
             List<ServerPlayer> players = new ArrayList<>(level.players());
+            ChunkHolder chunkHolder;
+            ChunkMap chunkMap = level.getChunkSource().chunkMap;
             do {
                 if (!players.isEmpty()) {
                     Iterator<ServerPlayer> iterator = players.iterator();
@@ -93,20 +96,25 @@ public class MeteoriteTracker {
                         }
                     }
                 }
-                chunkPos = new ChunkPos(x += xStep, z += zStep);
-            } while (chunkMap.getVisibleChunkIfPresent(chunkPos.toLong()) != null);
+                x += xStep;
+                z += zStep;
+            } while ((chunkHolder = chunkMap.getVisibleChunkIfPresent(ChunkPos.asLong(x, z))) != null && chunkHolder.getTicketLevel() >= 34);
             // 获取能放陨石的区块
             BlockPos.MutableBlockPos landingPos = new BlockPos.MutableBlockPos();
             int maxBuildHeight = level.getMaxBuildHeight();
             do {
+                while ((chunkHolder = chunkMap.getVisibleChunkIfPresent(ChunkPos.asLong(x, z))) != null && chunkHolder.getTicketLevel() >= 34) {
+                    if (level.random.nextBoolean()) x += xStep;
+                    else z += zStep;
+                }
                 level.setChunkForced(x, z, true);
                 landingPos.set(new ChunkPos(x, z).getBlockAt(7, maxBuildHeight, 7).mutable());
                 while (level.getBlockState(landingPos).isAir()) {
                     landingPos.move(0, -1, 0);
                 }
                 level.setChunkForced(x, z, false);
-                if (level.random.nextBoolean()) x += xStep;
-                else z += zStep;
+                x += xStep;
+                z += zStep;
             } while (!level.getBlockState(landingPos).getFluidState().isEmpty());
 
             return landingPos.immutable();
@@ -115,6 +123,7 @@ public class MeteoriteTracker {
             this.location = blockPos;
             this.tickUntilLanding.set(landingTime);
             MeteoriteLocationPacketS2C.sendToAll(location, landingTime);
+            ConfluenceData.get(level).setDirty();
         });
     }
 
@@ -134,7 +143,7 @@ public class MeteoriteTracker {
             if (success) {
                 Component message = Component.translatable("event.confluence.meteorite").withColor(GlobalColors.MESSAGE.getRGB());
                 level.getServer().getPlayerList().broadcastSystemMessage(message, false);
-                Confluence.LOGGER.debug("A meteorite has been landed, which at [{}]", location.toShortString());
+                Confluence.LOGGER.debug("A meteorite has been landed, which at [{}]", origin.toShortString());
             }
         });
     }

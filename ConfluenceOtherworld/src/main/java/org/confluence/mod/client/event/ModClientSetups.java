@@ -39,6 +39,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtension
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientMobEffectExtensions;
 import org.confluence.lib.color.IntegerRGB;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.MeteorLandingHandler;
 import org.confluence.mod.client.renderer.item.EntityDisplayItemRenderer;
@@ -50,7 +51,6 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ToolItems;
-import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -220,7 +220,7 @@ public final class ModClientSetups {
     static void registerItemProperties() {
         ResourceLocation enable = Confluence.asResource("enable");
         ItemPropertyFunction enableFunction = (itemStack, level, living, speed) -> {
-            CompoundTag tag = ModUtils.getItemStackNbt(itemStack);
+            CompoundTag tag = LibUtils.getItemStackNbtIfPresent(itemStack);
             if (tag == null) return 1;
             return tag.getBoolean(IFunctionCouldEnable.DISABLE) ? 0 : 1;
         };
@@ -229,7 +229,7 @@ public final class ModClientSetups {
         ItemProperties.register(ToolItems.ENCUMBERING_STONE.get(), enable, enableFunction);
         ResourceLocation variant = Confluence.asResource("variant");
         ItemPropertyFunction variantFunction = (itemStack, level, living, speed) -> {
-            CompoundTag tag = ModUtils.getItemStackNbt(itemStack);
+            CompoundTag tag = LibUtils.getItemStackNbtIfPresent(itemStack);
             if (tag == null) return 0;
             return tag.getInt("VariantId");
         };

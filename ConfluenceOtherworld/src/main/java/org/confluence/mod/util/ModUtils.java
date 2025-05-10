@@ -5,7 +5,6 @@ import com.xiaohunao.terra_moment.common.init.TMMoments;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
@@ -31,8 +30,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.ConfluenceMagicLib;
-import org.confluence.lib.common.component.NbtComponent;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -77,17 +74,6 @@ public final class ModUtils {
             amount -= 0x3F3F3F3F;
         }
         dropMoney((int) amount, x, y, z, level);
-    }
-
-    /**
-     * 仅获取
-     *
-     * @see LibUtils#getItemStackNbt(ItemStack) 获取或创建
-     */
-    public static @Nullable CompoundTag getItemStackNbt(ItemStack itemStack) {
-        NbtComponent component = itemStack.get(ConfluenceMagicLib.NBT);
-        if (component == null) return null;
-        return component.nbt();
     }
 
     public static <T> boolean isFromConfluence(Registry<T> registry, T obj) {

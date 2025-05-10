@@ -133,9 +133,9 @@ public final class GameEvents {
 
     @SubscribeEvent
     public static void moment$End(MomentEvent.End event) {
-        MomentInstance<?> momentInstance = event.getMomentInstance();
+        MomentInstance momentInstance = event.getMomentInstance();
         if (momentInstance.getLevel() instanceof ServerLevel) {
-            if (momentInstance.is(TMMoments.BLOOD_MOON)) {
+            if (momentInstance.getMoment() == TMMoments.BLOOD_MOON.get()) {
                 for (Player player : momentInstance.getPlayers()) {
                     ModAchievements.awardAchievement((ServerPlayer) player, "bloodbath");
                 }

@@ -1,7 +1,7 @@
 package org.confluence.mod.util;
 
 import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
-import com.xiaohunao.heaven_destiny_moment.common.moment.MomentManager;
+import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.server.level.ServerPlayer;
@@ -138,7 +138,7 @@ public final class PlayerUtils {
             case 4 -> 0.9F; // 新月
             default -> 1.0F;
         };
-        if (MomentManager.of(level).hasMoment(TMMoments.BLOOD_MOON)) {
+        if (MomentInstanceManager.of(level).hasMoment(TMMoments.BLOOD_MOON.getKey().location())) {
             base *= 1.1F;
         }
         base = HookMapManager.postHooks(ModHookTypes.FISHING_POWER.get(), (owner, hook, original) -> hook.modifyFishingPower(owner, player, original), player, base);

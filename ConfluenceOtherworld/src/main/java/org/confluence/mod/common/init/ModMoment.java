@@ -11,13 +11,13 @@ import net.minecraft.world.entity.MobCategory;
 import org.confluence.mod.Confluence;
 
 public final class ModMoment {
-    public static final ResourceKey<Moment<?>> BATTLE_MOB_EFFECT = Confluence.asResourceKey(HDMRegistries.Keys.MOMENT, "battle_mob_effect");
-    public static final ResourceKey<Moment<?>> WATER_CANDLE_MOB_EFFECT = Confluence.asResourceKey(HDMRegistries.Keys.MOMENT, "water_candle_mob_effect");
-    public static final ResourceKey<Moment<?>> HAPPY_MOB_EFFECT = Confluence.asResourceKey(HDMRegistries.Keys.MOMENT, "happy_mob_effect");
-    public static final ResourceKey<Moment<?>> CALM_MOB_EFFECT = Confluence.asResourceKey(HDMRegistries.Keys.MOMENT, "calm_mob_effect");
-    public static final ResourceKey<Moment<?>> PEACE_CANDLE_MOB_EFFECT = Confluence.asResourceKey(HDMRegistries.Keys.MOMENT, "peace_candle_mob_effect");
+    public static final ResourceKey<Moment> BATTLE_MOB_EFFECT = Confluence.asResourceKey(HDMRegistries.Keys.MOMENT, "battle_mob_effect");
+    public static final ResourceKey<Moment> WATER_CANDLE_MOB_EFFECT = Confluence.asResourceKey(HDMRegistries.Keys.MOMENT, "water_candle_mob_effect");
+    public static final ResourceKey<Moment> HAPPY_MOB_EFFECT = Confluence.asResourceKey(HDMRegistries.Keys.MOMENT, "happy_mob_effect");
+    public static final ResourceKey<Moment> CALM_MOB_EFFECT = Confluence.asResourceKey(HDMRegistries.Keys.MOMENT, "calm_mob_effect");
+    public static final ResourceKey<Moment> PEACE_CANDLE_MOB_EFFECT = Confluence.asResourceKey(HDMRegistries.Keys.MOMENT, "peace_candle_mob_effect");
 
-    public static void bootstrap(BootstrapContext<Moment<?>> context) {
+    public static void bootstrap(BootstrapContext<Moment> context) {
         context.register(BATTLE_MOB_EFFECT, new DefaultMoment()
                 .setMomentData(momentData -> momentData
                         .entitySpawnSettings(entitySpawnSettings -> entitySpawnSettings
@@ -46,7 +46,7 @@ public final class ModMoment {
 
     }
 
-    public static void registerSimpleSpawnCategoryMultiplier(BootstrapContext<Moment<?>> context, ResourceKey<Moment<?>> key, MobCategory mobCategory, ResourceLocation id, double amount, SpawnCategoryMultiplierModifier.Operation operation) {
+    public static void registerSimpleSpawnCategoryMultiplier(BootstrapContext<Moment> context, ResourceKey<Moment> key, MobCategory mobCategory, ResourceLocation id, double amount, SpawnCategoryMultiplierModifier.Operation operation) {
         context.register(key, new DefaultMoment()
                 .setMomentData(momentData -> momentData
                         .entitySpawnSettings(entitySpawnSettings -> entitySpawnSettings

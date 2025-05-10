@@ -16,6 +16,7 @@ import org.confluence.mod.common.data.gen.recipe.CraftingRecipeProvider;
 import org.confluence.mod.common.data.gen.recipe.HeavyWorkBenchProvider;
 import org.confluence.mod.common.data.gen.recipe.ModRecipeProvider;
 import org.confluence.mod.common.data.gen.recipe.NPCShopProvider;
+import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModDamageTypes;
 
 import java.util.Set;
@@ -23,7 +24,9 @@ import java.util.concurrent.CompletableFuture;
 
 @EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD)
 public final class ModDataGenerator {
-    private static final RegistrySetBuilder DATA_BUILDER = new RegistrySetBuilder().add(Registries.DAMAGE_TYPE, ModDamageTypes::createDamageTypes);
+    private static final RegistrySetBuilder DATA_BUILDER = new RegistrySetBuilder()
+            .add(Registries.DAMAGE_TYPE, ModDamageTypes::createDamageTypes)
+            .add(Registries.BIOME, ModBiomes::boostrap);
 
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {

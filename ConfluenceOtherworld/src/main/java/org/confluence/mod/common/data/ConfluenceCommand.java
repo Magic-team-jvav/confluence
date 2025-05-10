@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.saved;
+package org.confluence.mod.common.data;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;
@@ -19,6 +19,7 @@ import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.ChunkPos;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.command.EnumArgument;
+import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.item.PaintItems;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
@@ -85,12 +86,19 @@ public class ConfluenceCommand {
                             return 1;
                         }))))
                 )
-                .then(Commands.literal("meteorite").then(Commands.argument("location", BlockPosArgument.blockPos()).then(Commands.argument("tickUntilLanding", IntegerArgumentType.integer(0)).executes(context -> {
-                    BlockPos location = BlockPosArgument.getBlockPos(context, "location");
-                    int tickUntilLanding = IntegerArgumentType.getInteger(context, "tickUntilLanding");
-                    ConfluenceData.get(context.getSource().getLevel()).setMeteorite(location, tickUntilLanding);
-                    return 1;
-                }))))
+                .then(Commands.literal("meteorite")
+                        .then(Commands.literal("random").then(Commands.argument("tickUntilLanding", IntegerArgumentType.integer(0)).executes(context -> {
+                            int tickUntilLanding = IntegerArgumentType.getInteger(context, "tickUntilLanding");
+                            MeteoriteTracker.INSTANCE.generateLandingDetail(context.getSource().getLevel(), tickUntilLanding);
+                            return 1;
+                        })))
+                        .then(Commands.argument("location", BlockPosArgument.blockPos()).then(Commands.argument("tickUntilLanding", IntegerArgumentType.integer(0)).executes(context -> {
+                            BlockPos location = BlockPosArgument.getBlockPos(context, "location");
+                            int tickUntilLanding = IntegerArgumentType.getInteger(context, "tickUntilLanding");
+                            ConfluenceData.get(context.getSource().getLevel()).setMeteorite(location, tickUntilLanding);
+                            return 1;
+                        })))
+                )
                 .then(Commands.literal("paint")
                         .then(Commands.argument("start", BlockPosArgument.blockPos()).then(Commands.argument("end", BlockPosArgument.blockPos())
                                 .then(Commands.literal("brush")

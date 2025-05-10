@@ -27,7 +27,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
-import org.confluence.mod.common.data.saved.ConfluenceCommand;
+import org.confluence.mod.common.data.ConfluenceCommand;
 import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModHookTypes;

@@ -501,7 +501,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.title", "Configuration Screen");
         add("confluence.configuration.section.confluence.client.toml.title", "Client-side Configuration");
         add("confluence.configuration.Entity.tooltip", "Entity-related Visual Effects");
-        add("confluence.configuration.section.confluence.common.toml.title", "Server-side Configuration");
+        add("confluence.configuration.section.confluence.common.toml.title", "Common Configuration");
 
         add("biome.confluence.ash_forest", "Ash Forest");
         add("biome.confluence.ash_wasteland", "Ash Wasteland");

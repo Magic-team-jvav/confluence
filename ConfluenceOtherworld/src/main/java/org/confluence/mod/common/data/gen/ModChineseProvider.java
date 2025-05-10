@@ -491,7 +491,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.title", "配置界面");
         add("confluence.configuration.section.confluence.client.toml.title", "客户端配置");
         add("confluence.configuration.Entity.tooltip", "与生物有关的视觉效果");
-        add("confluence.configuration.section.confluence.common.toml.title", "服务端配置");
+        add("confluence.configuration.section.confluence.common.toml.title", "通用配置");
 
         add("biome.confluence.the_corruption", "腐化之地");
         add("biome.confluence.the_corruption_desert", "腐化沙漠");

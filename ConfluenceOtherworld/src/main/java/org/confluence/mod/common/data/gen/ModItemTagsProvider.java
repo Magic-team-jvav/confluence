@@ -1104,6 +1104,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ToolItems.DESERT_KEY.get(),
                 ToolItems.TARGET_DUMMY.get(),
                 ToolItems.BINOCULARS.get(),
+                ToolItems.NPC_INVITATION.get(),
                 ModItems.WHOOPIE_CUSHION.get(),
                 ModItems.TOKYO_TEDDY_BEAR.get(),
                 ModItems.ICE_TOFU_BRICK.get(),

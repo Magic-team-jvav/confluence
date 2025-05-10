@@ -15,6 +15,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import org.confluence.lib.util.GlobalColors;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class MeteoriteTracker {
     volatile AtomicInteger tickUntilLanding = new AtomicInteger();
 
     public void tick(ServerLevel level) {
+        if (!CommonConfigs.DO_METEORITE_SPAWNING.get()) return;
         if (spawnAtNextNight && level.getDayTime() % 24000L == 18000L) { // midnight
             this.spawnAtNextNight = false;
             generateLandingDetail(level, level.random.nextInt(200, 401));
@@ -52,7 +54,7 @@ public class MeteoriteTracker {
     }
 
     public void generateLandingDetail(ServerLevel level, int landingTime) {
-        if (!shouldGenerate) return;
+        if (!shouldGenerate || !CommonConfigs.DO_METEORITE_SPAWNING.get()) return;
         this.shouldGenerate = false;
         CompletableFuture.supplyAsync(() -> {
             // 获取玩家数量最小的象限

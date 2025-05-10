@@ -94,34 +94,31 @@ repositories {
             includeGroup "dev.architectury"
         }
     }
+
     maven {
-        url = "https://maven.bawnorton.com/releases"
-    }
-    maven {
-        // For Terra Blender
-        name = 'Forge'
-        url = "https://maven.minecraftforge.net"
-    }
-    maven {
-        // saps.dev Maven (KubeJS and Rhino)
-        url = "https://maven.saps.dev/releases"
+        url "https://maven.latvian.dev/releases"
         content {
             includeGroup "dev.latvian.mods"
             includeGroup "dev.latvian.apps"
         }
     }
+
     maven {
-        url "https://maven.latvian.dev/releases"
-        content {
-            includeGroup "dev.latvian.apps"
-        }
-    }
-    maven {
-        url = 'https://jitpack.io'
+        url 'https://jitpack.io'
         content {
             includeGroup "com.github.rtyley"
         }
     }
+
+
+    maven {
+        url = "https://maven.bawnorton.com/releases"
+    }
+
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net/' }
+    }
+
     maven {
         name = "Curios"
         url = uri("https://maven.theillusivec4.top/")
@@ -147,6 +144,9 @@ dependencies {
     if (delight) {
         implementation(project(":ConfluenceDelight"))
     }
+
+    //    implementation jarJar(project(":XHN-Lib"))
+    implementation(jarJar(group: 'com.xiaohunao.xhn_lib', name: 'xhn_lib', version: '1.21.1-0.0.1'))
 
     implementation(jarJar("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"))
 
@@ -218,11 +218,11 @@ dependencies {
     compileOnly "curse.maven:appleskin-248787:5586600"
     runtimeOnly "curse.maven:appleskin-248787:5586600"
 
-    compileOnly "dev.latvian.mods:kubejs-neoforge:$kubejs_version"
-    if (true) {
-        runtimeOnly "dev.latvian.mods:kubejs-neoforge:$kubejs_version"
-        runtimeOnly "dev.latvian.mods:rhino:$rhino_version"
-    }
+    api("dev.latvian.mods:kubejs-neoforge:$kubejs_version")
+//    if (true) {
+//        runtimeOnly "dev.latvian.mods:kubejs-neoforge:$kubejs_version"
+//        runtimeOnly "dev.latvian.mods:rhino:$rhino_version"
+//    }
 
     /**********************************************************/
 

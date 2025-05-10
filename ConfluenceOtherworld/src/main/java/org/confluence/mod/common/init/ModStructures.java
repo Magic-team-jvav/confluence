@@ -24,6 +24,7 @@ public final class ModStructures {
     public static final Supplier<StructureType<HeavenIslandsStructure>> HEAVEN_ISLANDS = TYPES.register("heaven_islands", () -> () -> HeavenIslandsStructure.CODEC);
     public static final Supplier<StructureType<IceThornStructure>> ICE_THORN = TYPES.register("ice_thorn", () -> () -> IceThornStructure.CODEC);
     public static final Supplier<StructureType<MineTunnelsStructure>> MINE_TUNNELS = TYPES.register("mine_tunnels", () -> () -> MineTunnelsStructure.CODEC);
+    public static final Supplier<StructureType<PyramidStructure>> PYRAMID = TYPES.register("pyramid", () -> () -> PyramidStructure.CODEC);
 
     public static final ResourceKey<Structure> DUNGEON_KEY = Confluence.asResourceKey(Registries.STRUCTURE, "dungeon");
 }

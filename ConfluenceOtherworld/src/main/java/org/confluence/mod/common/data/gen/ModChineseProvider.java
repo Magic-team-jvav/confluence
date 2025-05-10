@@ -1950,6 +1950,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(CrateBlocks.BEACH_CRATE.get(), "海滩匣");
 
         add(CrateBlocks.GOLDEN_LOCK_BOX.get(), "金锁盒");
+        add(CrateBlocks.OBSIDIAN_LOCK_BOX.get(), "黑曜石锁盒");
 
 
         add(ArrowItems.FLAMING_ARROW.get(), "烈焰箭");

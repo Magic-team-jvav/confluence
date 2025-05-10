@@ -205,7 +205,7 @@ public abstract class FishingHookMixin implements IFishingHook, IExtraSyncedData
     private ResourceKey<LootTable> modifyLoot(ResourceKey<LootTable> lootTableKey) {
         if (confluence$isInLava()) return ModLootTables.FISHING_LAVA;
         if (confluence$self().getType() == EntityType.FISHING_BOBBER) return lootTableKey;
-        return ModLootTables.FISH;
+        return ModLootTables.FISHING;
     }
 
     @Unique

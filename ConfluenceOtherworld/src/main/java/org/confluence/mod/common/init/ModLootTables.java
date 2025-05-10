@@ -12,7 +12,8 @@ import org.confluence.mod.common.loot.DateLootItemCondition;
 import java.util.function.Supplier;
 
 public final class ModLootTables {
-    public static final ResourceKey<LootTable> INITIAL_WORLD_ENVIRONMENT_CRATE = register("gameplay/crate/initial_world_environment_crate");
+    public static final ResourceKey<LootTable> ENVIRONMENT_CRATE = register("gameplay/crate/environment_crate");
+    public static final ResourceKey<LootTable> ENVIRONMENT_CRATE_HARDMODE = register("gameplay/crate/environment_crate_hardmode");
     public static final ResourceKey<LootTable> WOODEN_CRATE = register("gameplay/crate/wooden_crate");
     public static final ResourceKey<LootTable> IRON_CRATE = register("gameplay/crate/iron_crate");
     public static final ResourceKey<LootTable> GOLDEN_CRATE = register("gameplay/crate/golden_crate");
@@ -43,6 +44,7 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> HELL_STONE_CRATE = register("gameplay/crate/hell_stone_crate");
     public static final ResourceKey<LootTable> BEACH_CRATE = register("gameplay/crate/beach_crate");
     public static final ResourceKey<LootTable> GOLDEN_LOCK_BOX = register("gameplay/crate/golden_lock_box");
+    public static final ResourceKey<LootTable> OBSIDIAN_LOCK_BOX = register("gameplay/crate/obsidian_lock_box");
 
     public static final ResourceKey<LootTable> CLAM = register("gameplay/clam");
     public static final ResourceKey<LootTable> CHRISTMAS_GIFT = register("gameplay/christmas_gift");
@@ -54,7 +56,10 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> CAN_OF_WORMS = register("gameplay/can_of_worms");
 
     public static final ResourceKey<LootTable> FISHING_LAVA = register("gameplay/fishing/lava");
-    public static final ResourceKey<LootTable> FISH = register("gameplay/fishing");
+    public static final ResourceKey<LootTable> FISHING = register("gameplay/fishing");
+    public static final ResourceKey<LootTable> FISH = register("gameplay/fishing/fish");
+    public static final ResourceKey<LootTable> JUNK = register("gameplay/fishing/junk");
+    public static final ResourceKey<LootTable> TREASURE = register("gameplay/fishing/treasure");
     public static final ResourceKey<LootTable> CRATE = register("gameplay/crate");
 
 

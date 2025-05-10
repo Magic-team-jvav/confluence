@@ -33,7 +33,7 @@ public abstract class MaidFishingHookMixin implements SelfGetter<MaidFishingHook
     @Inject(method = "getLoot", at = @At("RETURN"), cancellable = true)
     private void getLootMixin(MinecraftServer server, LootParams lootParams, CallbackInfoReturnable<List<ItemStack>> cir) {
         if (this.getMaidOwner() != null && getMaidOwner().getMainHandItem().getItem() instanceof AbstractFishingPole pole) {
-            cir.setReturnValue(server.reloadableRegistries().getLootTable(ModLootTables.FISH).getRandomItems(lootParams));
+            cir.setReturnValue(server.reloadableRegistries().getLootTable(ModLootTables.FISHING).getRandomItems(lootParams));
         }
     }
 

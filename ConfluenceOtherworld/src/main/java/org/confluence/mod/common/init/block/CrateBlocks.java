@@ -46,6 +46,7 @@ public class CrateBlocks {
     public static final DeferredBlock<Block> BEACH_CRATE = register("beach_crate", ModLootTables.BEACH_CRATE);
 
     public static final DeferredBlock<Block> GOLDEN_LOCK_BOX = register("golden_lock_box", ModLootTables.GOLDEN_LOCK_BOX);
+    public static final DeferredBlock<Block> OBSIDIAN_LOCK_BOX = register("obsidian_lock_box", ModLootTables.OBSIDIAN_LOCK_BOX);
 
     private static DeferredBlock<Block> register(String name, ResourceKey<LootTable> lootTable) {
         DeferredBlock<Block> block = BLOCKS.register(name, () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)));

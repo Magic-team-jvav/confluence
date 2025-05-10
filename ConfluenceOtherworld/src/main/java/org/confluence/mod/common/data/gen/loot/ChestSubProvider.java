@@ -31,7 +31,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
     public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> output) {
         // VanillaChestLoot
         HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
-        // 困难模式前匣子通用
+
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/frozen_chests"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.BLIZZARD_IN_A_BOTTLE).setWeight(15))
@@ -50,6 +50,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(NestedLootTable.lootTableReference(ModLootTables.INITIAL_WORLD_UNDERGROUND_CHEST).setWeight(1))
                 )
         );
+        // 困难模式前箱子通用
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/initial_world_underground_chest"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ConsumableItems.BOMB).apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 19))).setWeight(1))

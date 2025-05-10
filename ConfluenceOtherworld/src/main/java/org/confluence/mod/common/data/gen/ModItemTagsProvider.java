@@ -543,8 +543,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ModItems.PLATINUM_COIN.get()
                 // 不要加回来，会出bug。ModItems.EMERALD_COIN.get()
         );
-        tag(TETags.Items.HONEY_TRANSLATION_BUCKET).add(ToolItems.HONEY_BUCKET.get());
-        tag(TETags.Items.HONEY_TRANSLATION_NOT_CONSUMED).add(ToolItems.BOTTOMLESS_HONEY_BUCKET.get());
         tag(ModTags.Items.HARDMODE_RAW_MATERIALS).add(
                 MaterialItems.RAW_COBALT.get(),
                 MaterialItems.RAW_PALLADIUM.get(),

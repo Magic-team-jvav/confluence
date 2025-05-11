@@ -2663,6 +2663,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.SAWMILL.get(), "锯木机");
         add(FunctionalBlocks.ANNOUNCEMENT_BOX.get(), "广播盒");
         add(FunctionalBlocks.TREE_HOLES_BLOCK.get(), "树洞");
+        add(FunctionalBlocks.MAGIC_MAIL_BOX.get(), "魔法邮箱");
         add(FunctionalBlocks.SOLIDIFIER.get(), "固化机");
         add(FunctionalBlocks.KEG.get(), "酒桶");
         add(FunctionalBlocks.MYTHRIL_ANVIL.get(), "秘银砧");

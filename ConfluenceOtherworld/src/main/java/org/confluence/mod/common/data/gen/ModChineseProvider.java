@@ -2174,8 +2174,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(HoeItems.TUNGSTEN_HOE.get(), "钨锄");
         add(HoeItems.GOLDEN_HOE.get(), "金锄");
         add(HoeItems.PLATINUM_HOE.get(), "铂金锄");
-        add(HoeItems.MUSCLE_HOE.get(), "筋肉锄");
-        add(HoeItems.EVIL_SHADOW_HOE.get(), "邪影锄");
+        add(HoeItems.CULTIVATOR.get(), "耕耘者");
+        add(HoeItems.SHADOW_HOE.get(), "暗影锄");
 
         add(ShovelItems.COPPER_SHOVEL.get(), "铜锹");
         add(ShovelItems.TIN_SHOVEL.get(), "锡锹");
@@ -2184,8 +2184,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ShovelItems.TUNGSTEN_SHOVEL.get(), "钨锹");
         add(ShovelItems.GOLDEN_SHOVEL.get(), "金锹");
         add(ShovelItems.PLATINUM_SHOVEL.get(), "铂金锹");
-        add(ShovelItems.DARK_EROSION_SHOVEL.get(), "暗蚀锹");
-        add(ShovelItems.FRENZIED_DIGGING_SHOVEL.get(), "狂掘锹");
+        add(ShovelItems.SHADOW_SHOVEL.get(), "暗影锹");
+        add(ShovelItems.MINER.get(), "采掘者");
 
 
         add(PickaxeItems.COPPER_PICKAXE.get(), "铜镐");

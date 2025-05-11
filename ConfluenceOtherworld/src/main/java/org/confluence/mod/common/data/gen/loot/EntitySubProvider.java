@@ -7,6 +7,7 @@ import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.AlternativesEntry;
@@ -18,11 +19,15 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.item.FoodItems;
+import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.loot.DateLootItemCondition;
 import org.confluence.mod.mixin.accessor.EntityLootSubProviderAccessor;
 import org.confluence.terraentity.init.TEEntities;
 import org.confluence.terraentity.init.entity.TEBossEntities;
+import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -56,6 +61,39 @@ public class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SHADOW_SCALE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
                         .add(EmptyLootItem.emptyItem())
+                )
+        );
+        add(TEMonsterEntities.GOBLIN_SCOUT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/goblin_scout"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.TATTERED_CLOTH).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+                      )
+                );
+        add(TEMonsterEntities.ANTLION_SWARMER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/antlion_swarmer"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.ANTLION_MANDIBLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.BANANA_SPLIT).setWeight(2))
+                        .add(EmptyLootItem.emptyItem().setWeight(98))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SwordItems.MANDIBLE_BLADE).setWeight(2))
+                        .add(EmptyLootItem.emptyItem().setWeight(98))
+                )
+        );
+        add(TEMonsterEntities.GIANT_ANTLION_SWARMER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/giant_antlion_swarmer"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.ANTLION_MANDIBLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.BANANA_SPLIT).setWeight(2))
+                        .add(EmptyLootItem.emptyItem().setWeight(98))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SwordItems.MANDIBLE_BLADE).setWeight(2))
+                        .add(EmptyLootItem.emptyItem().setWeight(98))
                 )
         );
     }

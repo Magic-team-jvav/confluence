@@ -433,8 +433,8 @@ public class ValueSubProvider {
                 .add(HoeItems.GOLDEN_HOE, wrap(5, 60))
                 .add(HoeItems.PLATINUM_HOE, wrap(6, 60))
                 .add(Items.DIAMOND_HOE, wrap(8, 20))
-                .add(HoeItems.EVIL_SHADOW_HOE, wrap(24, 20))
-                .add(HoeItems.MUSCLE_HOE, wrap(25, 20))
+                .add(HoeItems.SHADOW_HOE, wrap(24, 20))
+                .add(HoeItems.CULTIVATOR, wrap(25, 20))
                 .add(Items.NETHERITE_HOE, wrap(32, 0));
         appender.create()
                 .add(Items.WOODEN_SHOVEL, 5)
@@ -447,8 +447,8 @@ public class ValueSubProvider {
                 .add(ShovelItems.GOLDEN_SHOVEL, wrap(4, 40))
                 .add(ShovelItems.PLATINUM_SHOVEL, wrap(5, 40))
                 .add(Items.DIAMOND_SHOVEL, wrap(6, 20))
-                .add(ShovelItems.DARK_EROSION_SHOVEL, wrap(22, 10))
-                .add(ShovelItems.FRENZIED_DIGGING_SHOVEL, wrap(24, 10))
+                .add(ShovelItems.SHADOW_SHOVEL, wrap(22, 10))
+                .add(ShovelItems.MINER, wrap(24, 10))
                 .add(Items.NETHERITE_SHOVEL, wrap(30, 0));
         appender.create()
                 .add(FishingPoleItems.WOOD_FISHING_POLE, 60)

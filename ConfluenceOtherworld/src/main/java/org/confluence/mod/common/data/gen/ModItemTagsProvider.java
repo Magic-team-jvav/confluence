@@ -1454,7 +1454,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.SPEAR_TRAP.asItem(),
                 FunctionalBlocks.TREE_HOLES_BLOCK.asItem(),
                 MaterialItems.RAW_ASPHALT.get(),
-                MaterialItems.TATTERED_CLOTH.get(),
                 MaterialItems.SOUL_OF_LIGHT.get(),
                 MaterialItems.SOUL_OF_NIGHT.get(),
                 MaterialItems.SOUL_OF_FLIGHT.get(),

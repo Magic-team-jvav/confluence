@@ -319,6 +319,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.cause_fire", "点燃");
         add("tooltip.item.confluence.can_penetrate", "穿透");
 
+        add("tooltip.confluence.damage", "伤害：%s");
+        add("tooltip.confluence.mana_cost", "魔力消耗：%s");
+        add("tooltip.confluence.velocity", "射弹速度：%s");
+        add("tooltip.confluence.cooldown", "冷却：%s");
+
         add("tooltip.item.confluence.radio_thing.0", "允许使用者以不同的方式看世界");
         add("tooltip.item.terra_curio.radio_thing.1", "“禁忌的知识在其中回响……”");
 

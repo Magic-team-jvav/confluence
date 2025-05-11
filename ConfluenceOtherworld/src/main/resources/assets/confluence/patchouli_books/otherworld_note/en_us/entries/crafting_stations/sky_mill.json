@@ -1,0 +1,30 @@
+{
+    "name": "patchouli.confluence.otherworld_note.crafting_stations.sky_mill.name",
+    "icon": "confluence:sky_mill",
+    "category": "confluence:crafting_stations",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "confluence:sky_mill",
+            "text": "patchouli.confluence.otherworld_note.crafting_stations.sky_mill.0"
+        },
+        {
+            "type": "patchouli:text",
+            "title": "patchouli.confluence.otherworld_note.crafting_stations.how_to_use",
+            "text": "patchouli.confluence.otherworld_note.crafting_stations.sky_mill.1"
+        },
+        {
+            "type": "patchouli:image",
+            "images": [
+                "minecraft:textures/block/grass_block.png"
+            ],
+            "text": "patchouli.confluence.otherworld_note.crafting_stations.sky_mill.2",
+            "title": "patchouli.confluence.otherworld_note.crafting_stations.gui"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe":"minecraft:diamond", 
+            "text": "patchouli.confluence.otherworld_note.crafting_stations.example"
+        }
+    ]
+}

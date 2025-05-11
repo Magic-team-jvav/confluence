@@ -1,0 +1,37 @@
+{
+    "name": "箭",
+    "icon": "minecraft:arrow",
+    "category": "confluence:weapon",
+    "pages": [
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:arrow",
+            "text": ""
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:arrow",
+            "text": ""
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:arrow",
+            "text": ""
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:arrow",
+            "text": ""
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:arrow",
+            "text": ""
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:arrow",
+            "text": ""
+        }
+    ]
+}

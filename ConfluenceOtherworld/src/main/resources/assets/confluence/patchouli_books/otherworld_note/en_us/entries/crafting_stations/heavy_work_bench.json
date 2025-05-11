@@ -1,0 +1,30 @@
+{
+    "name": "patchouli.confluence.otherworld_note.crafting_stations.heavy_work_bench.name",
+    "icon": "confluence:heavy_work_bench",
+    "category": "confluence:crafting_stations",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "confluence:heavy_work_bench",
+            "text": "patchouli.confluence.otherworld_note.crafting_stations.heavy_work_bench.0"
+        },
+        {
+            "type": "patchouli:text",
+            "text": "patchouli.confluence.otherworld_note.crafting_stations.heavy_work_bench.1",
+            "title": "patchouli.confluence.otherworld_note_crafting_stations.how_to_use"
+        },
+        {
+            "type": "patchouli:image",
+            "images": [
+                "minecraft:textures/block/grass_block.png"
+            ],
+            "text": "patchouli.confluence.otherworld_note.crafting_stations.heavy_work_bench.2",
+            "title": "patchouli.confluence.otherworld_note_crafting_stations.gui"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe":"minecraft:diamond", 
+            "text": "patchouli.confluence.otherworld_note_crafting_stations.example"
+        }
+    ]
+}

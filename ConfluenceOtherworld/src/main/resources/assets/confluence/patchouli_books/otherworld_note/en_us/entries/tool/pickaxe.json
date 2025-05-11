@@ -1,0 +1,47 @@
+{
+    "name": "镐",
+    "icon": "minecraft:diamond_pickaxe",
+    "category": "confluence:tool",
+    "pages": [
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:iron_pickaxe",
+            "text": "仙人掌镐是使用仙人掌制作的镐，可在骷髅王前获得。"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:golden_pickaxe",
+            "text": "金镐是使用红玉、金镐和金锭制作的镐，可在骷髅王前获得。_br__o_不要与原版的金镐混淆。"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:golden_pickaxe",
+            "text": "恶魔镐是使用魔矿锭和暗影鳞片制作的镐，可在骷髅王前获得。"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:golden_pickaxe",
+            "text": "死亡使者镐是使用猩红矿锭和组织样本制作的镐，可在骷髅王前获得。"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:iron_pickaxe",
+            "text": "化石镐是使用坚固化石制作的镐，可在骷髅王前获得。"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:golden_pickaxe",
+            "text": "熔岩镐是一个骷髅王前的镐，使用狱石矿锭和烈焰棒制作。"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:iron_pickaxe",
+            "text": "骨镐是一把骷髅王前的镐，相较同等级的其他镐，它的挖掘速度更快。"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:golden_pickaxe",
+            "text": "掠夺鲨是一把通过钓鱼获取的镐，可在骷髅王前获得。"
+        }
+    ]
+}

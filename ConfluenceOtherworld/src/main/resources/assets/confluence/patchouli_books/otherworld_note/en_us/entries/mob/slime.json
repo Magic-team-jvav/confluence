@@ -1,0 +1,35 @@
+{
+    "name": "史莱姆",
+    "icon": "confluence:gel",
+    "category": "confluence:mob",
+    "pages": [
+        {
+            "type": "patchouli:entity",
+            "entity": "terra_entity:blue_slime",
+            "text": "相较于原有的史莱姆，这些新的史莱姆更加多元化。"
+        },
+        {
+            "type": "patchouli:entity",
+            "entity": "terra_entity:green_slime",
+            "text": "绿色史莱姆≠Minecraft史莱姆。"
+        },
+        {
+            "type": "patchouli:entity",
+            "entity": "terra_entity:purple_slime",
+            "text": "这个不是腐化，可能是踩到青金石了。"
+        },
+        {
+            "type": "patchouli:entity",
+            "entity": "terra_entity:red_slime",
+            "text": "这个不是猩红，可能是吃到虞美人了。"
+        },
+        {
+            "type": "patchouli:entity",
+            "entity": "terra_entity:yellow_slime"
+        },
+        {
+            "type": "patchouli:entity",
+            "entity": "terra_entity:pink_slime"
+        }
+    ]
+}

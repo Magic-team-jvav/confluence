@@ -1,5 +1,0 @@
-{
-    "name": "Boss",
-    "description": "Bosses are aggressive and tough enemies that present significant challenges to players. Defeating a Boss typically helps advance the game in some way, such as providing new materials needed for higher-level tools. Each Boss has its own specific method of summoning. For example, most Bosses have corresponding summoning items that can be used to trigger their appearance manually under specific conditions, while other Bosses appear after the player interacts with the environment in a certain way. Event Bosses only appear during their respective events and leave once the event ends. There are also mini-Bosses, which appear only in special events and exhibit similar difficulty to many normal Bosses.",
-    "icon": "confluence:suspicious_looking_eye"
-}

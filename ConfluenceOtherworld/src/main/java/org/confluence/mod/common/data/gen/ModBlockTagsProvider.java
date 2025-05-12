@@ -215,6 +215,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 BLUE_BRICKS.get(),
                 GREEN_BRICKS.get(),
                 PINK_BRICKS.get(),
+                CHISELED_BLUE_BRICKS.get(),
+                CHISELED_GREEN_BRICKS.get(),
+                CHISELED_PINK_BRICKS.get(),
                 BLUE_BRICK_STAIRS.get(),
                 GREEN_BRICK_STAIRS.get(),
                 PINK_BRICK_STAIRS.get(),
@@ -245,15 +248,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 TR_CRIMSON_SANDSTONE.get(),
                 PEARL_STONE.get(),
                 PEARL_SANDSTONE.get(),
-                BLUE_BRICKS.get(),
-                GREEN_BRICKS.get(),
-                PINK_BRICKS.get(),
-                BLUE_BRICK_STAIRS.get(),
-                GREEN_BRICK_STAIRS.get(),
-                PINK_BRICK_STAIRS.get(),
-                BLUE_BRICK_SLAB.get(),
-                GREEN_BRICK_SLAB.get(),
-                PINK_BRICK_SLAB.get(),
                 DESERT_FOSSIL.get(),
                 EXTRACTINATOR.get(),
                 SKY_MILL.get(),
@@ -593,6 +587,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 BLUE_BRICKS.get(),
                 GREEN_BRICKS.get(),
                 PINK_BRICKS.get(),
+                CHISELED_BLUE_BRICKS.get(),
+                CHISELED_GREEN_BRICKS.get(),
+                CHISELED_PINK_BRICKS.get(),
                 BLUE_BRICK_STAIRS.get(),
                 GREEN_BRICK_STAIRS.get(),
                 PINK_BRICK_STAIRS.get(),
@@ -724,6 +721,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 BLUE_BRICKS.get(),
                 GREEN_BRICKS.get(),
                 PINK_BRICKS.get(),
+                CHISELED_BLUE_BRICKS.get(),
+                CHISELED_GREEN_BRICKS.get(),
+                CHISELED_PINK_BRICKS.get(),
                 BLUE_BRICK_STAIRS.get(),
                 GREEN_BRICK_STAIRS.get(),
                 PINK_BRICK_STAIRS.get(),
@@ -1221,7 +1221,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.FEATURES_CANNOT_REPLACE).add(
                 BLUE_BRICKS.get(),
                 GREEN_BRICKS.get(),
-                PINK_BRICKS.get()
+                PINK_BRICKS.get(),
+                CHISELED_BLUE_BRICKS.get(),
+                CHISELED_GREEN_BRICKS.get(),
+                CHISELED_PINK_BRICKS.get()
         );
     }
 

@@ -27,6 +27,7 @@ import org.confluence.mod.common.block.common.EnchantedFragileBricksBlock;
 import org.confluence.mod.common.block.functional.*;
 import org.confluence.mod.common.block.functional.crafting.*;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
+import org.confluence.mod.common.block.natural.MagicMailBox;
 import org.confluence.mod.common.block.natural.TreeHolesBlock;
 import org.confluence.mod.common.entity.projectile.boulder.ExplodeBoulderEntity;
 import org.confluence.mod.common.entity.projectile.boulder.FollowerBoulderEntity;
@@ -171,6 +172,7 @@ public class FunctionalBlocks {
 
     public static final DeferredBlock<TreeHolesBlock> TREE_HOLES_BLOCK = registerWithItem("tree_holes", () -> new TreeHolesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL)));
     public static final Supplier<BlockEntityType<TreeHolesBlock.Entity>> TREE_HOLES_ENTITY = BLOCK_ENTITIES.register("tree_holes", () -> BlockEntityType.Builder.of(TreeHolesBlock.Entity::new, TREE_HOLES_BLOCK.get()).build(DSL.remainderType()));
+    public static final DeferredBlock<MagicMailBox>  MAGIC_MAIL_BOX = registerWithItem("magic_mail_box", MagicMailBox::new);
 
     private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> block) {
         DeferredBlock<B> object = BLOCKS.register(id, block);

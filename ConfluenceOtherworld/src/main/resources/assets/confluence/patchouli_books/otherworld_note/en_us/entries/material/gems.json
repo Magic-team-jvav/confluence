@@ -1,0 +1,16 @@
+{
+    "name": "宝石",
+    "icon": "confluence:ruby",
+    "category": "confluence:material",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "confluence:ruby",
+            "text": "宝石是一种材料，用于合成。*b会在提炼机和箱子中出现。*2为了规避“紫水晶”，原“紫晶”改为“异域紫晶石”"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:emerald"
+        }
+    ]
+}

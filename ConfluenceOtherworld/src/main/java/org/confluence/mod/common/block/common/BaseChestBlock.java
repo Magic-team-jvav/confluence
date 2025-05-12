@@ -16,6 +16,7 @@ import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -43,6 +44,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.DeathChestBlock;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
@@ -157,6 +159,15 @@ public class BaseChestBlock extends ChestBlock {
             }
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    }
+
+    // 修正方块状态
+    @Override
+    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
+        if(!pState.getValue(UNLOCKED) && pLevel.getBlockEntity(pPos) instanceof Entity entity && !entity.isLocked()){
+            pLevel.setBlock(pPos,pState.setValue(UNLOCKED,true),3);
+        }
+        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHit);
     }
 
     @Override

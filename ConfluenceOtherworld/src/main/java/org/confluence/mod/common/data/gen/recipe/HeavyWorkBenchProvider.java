@@ -272,7 +272,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "a",
                 "/",
                 "/"
-        )), ShovelItems.DARK_EROSION_SHOVEL.toStack());
+        )), ShovelItems.SHADOW_SHOVEL.toStack());
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(4, MaterialItems.TR_CRIMSON_INGOT),
                 '/', AmountIngredient.of(2, MaterialItems.VERTEBRA)
@@ -280,7 +280,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "a",
                 "/",
                 "/"
-        )), ShovelItems.FRENZIED_DIGGING_SHOVEL.toStack());
+        )), ShovelItems.MINER.toStack());
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, MaterialItems.DEMONITE_INGOT),
                 '/', AmountIngredient.of(2, MaterialItems.ROTTEN_BONE)
@@ -288,7 +288,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "aa",
                 " /",
                 " /"
-        )), HoeItems.EVIL_SHADOW_HOE.toStack());
+        )), HoeItems.SHADOW_HOE.toStack());
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, MaterialItems.TR_CRIMSON_INGOT),
                 '/', AmountIngredient.of(2, MaterialItems.VERTEBRA)
@@ -296,7 +296,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "aa",
                 " /",
                 " /"
-        )), HoeItems.MUSCLE_HOE.toStack());
+        )), HoeItems.CULTIVATOR.toStack());
     }
 
     private void buildBaseStatues(RecipeOutput recipeOutput) {

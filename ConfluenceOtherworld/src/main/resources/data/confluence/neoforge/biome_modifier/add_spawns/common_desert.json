@@ -14,7 +14,19 @@
         },
         {
             "type": "terra_entity:tomb_crawler",
-            "weight": 560,
+            "weight": 250,
+            "minCount": 1,
+            "maxCount": 1
+        },
+        {
+            "type": "terra_entity:antlion_swarmer",
+            "weight": 500,
+            "minCount": 1,
+            "maxCount": 1
+        },
+        {
+            "type": "terra_entity:giant_antlion_swarmer",
+            "weight": 200,
             "minCount": 1,
             "maxCount": 1
         }

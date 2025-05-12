@@ -329,6 +329,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.cause_fire", "Causes Fire");
         add("tooltip.item.confluence.can_penetrate", "Can Penetrate");
 
+        add("tooltip.confluence.damage", "Damage: %s");
+        add("tooltip.confluence.mana_cost", "Mana Cost: %s");
+        add("tooltip.confluence.velocity", "Projectile Speed: %s");
+        add("tooltip.confluence.cooldown", "Cooldown: %s");
+
         add("tooltip.item.confluence.radio_thing.0", "Allows the user to see the world differently");
         add("tooltip.item.terra_curio.radio_thing.1", "'Forbidden Knowledge echoes from the radio...'");
 

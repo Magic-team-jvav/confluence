@@ -255,6 +255,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 HELLFORGE.get(),
                 ALCHEMY_TABLE.get(),
                 WEATHER_VANE.get(),
+                SOLIDIFIER.get(),
+                CAULDRON.get(),
                 CHIPPED_LEAD_ANVIL.get(),
                 LEAD_ANVIL.get(),
                 DAMAGED_LEAD_ANVIL.get(),
@@ -372,6 +374,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
                 ANNOUNCEMENT_BOX.get(),
                 WALL_ANNOUNCEMENT_BOX.get(),
+                TREE_HOLES_BLOCK.get(),
+                MAGIC_MAIL_BOX.get(),
+                KEG.get(),
+                SAWMILL.get(),
 
                 CrateBlocks.WOODEN_CRATE.get(),
                 CrateBlocks.PEARLWOOD_CRATE.get(),

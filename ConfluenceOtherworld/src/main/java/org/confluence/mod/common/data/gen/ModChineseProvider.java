@@ -47,6 +47,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.toolmode.current","当前模式：");
         add("message.confluence.hamaxe.mode.0","锤与斧");
         add("message.confluence.hamaxe.mode.1","斧");
+        add("message.confluence.hoe_shovel.mode.0","锹");
+        add("message.confluence.hoe_shovel.mode.1","锄");
         add("jukebox_song.confluence.song", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
@@ -2352,7 +2354,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(AxeItems.STAFF_OF_REGROWTH.get(), "再生法杖");
         add(AxeItems.AXE_OF_REGROWTH.get(), "再生之斧");
         add(HamaxeItems.METEOR_HAMAXE.get(), "流星锤斧");
+        add(HoeShovelItems.METEOR_HOE_SHOVEL.get(), "流星锄锹");
         add(HamaxeItems.MOLTEN_HAMAXE.get(), "熔火锤斧");
+        add(HoeShovelItems.MOLTEN_HOE_SHOVEL.get(), "熔火锄锹");
         add(HamaxeItems.SPECTRE_HAMAXE.get(), "幽灵锤斧");
         add(HamaxeItems.SOLAR_FLARE_HAMAXE.get(), "耀斑锤斧");
         add(HamaxeItems.VORTEX_HAMAXE.get(), "星旋锤斧");

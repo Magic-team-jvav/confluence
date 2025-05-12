@@ -511,12 +511,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         HamaxeItems.acceptTag(axes);
         AxeItems.acceptTag(axes);
         PickaxeAxeItems.acceptTag(axes);
+        IntrinsicTagAppender<Item> hoes = tag(ItemTags.HOES);
+        HoeShovelItems.acceptTag(hoes);
+        IntrinsicTagAppender<Item> shovels = tag(ItemTags.SHOVELS);
+        HoeShovelItems.acceptTag(shovels);
 
         IntrinsicTagAppender<Item> tools = tag(Tags.Items.TOOLS);
         PickaxeAxeItems.acceptTag(tools);
         AxeItems.acceptTag(tools);
         PickaxeItems.acceptTag(tools);
         HamaxeItems.acceptTag(tools);
+        HoeShovelItems.acceptTag(hammer);
         HammerItems.acceptTag(tools);
         FishingPoleItems.acceptTag(tools);
 
@@ -530,6 +535,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         PickaxeAxeItems.acceptTag(mining_tool_tools);
         AxeItems.acceptTag(mining_tool_tools);
         HamaxeItems.acceptTag(mining_tool_tools);
+        HoeShovelItems.acceptTag(mining_tool_tools);
         HammerItems.acceptTag(mining_tool_tools);
         DrillItems.acceptTag(mining_tool_tools);
         IntrinsicTagAppender<Item> prefix_universal_only = tag(ModTags.Items.PREFIX_UNIVERSAL_ONLY);
@@ -831,6 +837,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         ShovelItems.acceptTag(durabilityEnchantable);
         ShovelItems.acceptTag(tag(ItemTags.SHOVELS));
         HamaxeItems.acceptTag(durabilityEnchantable);
+        HoeShovelItems.acceptTag(tag(ItemTags.HOES));
+        HoeShovelItems.acceptTag(tag(ItemTags.SHOVELS));
+        HoeShovelItems.acceptTag(durabilityEnchantable);
 
 
         // Armor 附魔

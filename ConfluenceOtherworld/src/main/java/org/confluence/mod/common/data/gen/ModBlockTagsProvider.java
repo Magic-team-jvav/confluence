@@ -713,6 +713,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CRIMSON_ALTAR.get()
         );
         tag(ModTags.Blocks.MINEABLE_WITH_HAMAXE).addTag(ModTags.Blocks.MINEABLE_WITH_HAMMER).addTag(BlockTags.MINEABLE_WITH_AXE);
+        tag(ModTags.Blocks.MINEABLE_WITH_HOE_SHOVEL).addTag(BlockTags.MINEABLE_WITH_SHOVEL).addTag(BlockTags.MINEABLE_WITH_HOE);
         // neoforge标签
         tag(Tags.Blocks.NEEDS_NETHERITE_TOOL).add(
                 EBONY_HARDENED_SAND_BLOCK.get(),

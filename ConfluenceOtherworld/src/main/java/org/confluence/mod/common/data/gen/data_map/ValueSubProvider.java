@@ -487,7 +487,9 @@ public class ValueSubProvider {
                 .add(AxeItems.AXE_OF_REGROWTH, wrap(1, 50, 0));
         appender.create()
                 .add(HamaxeItems.METEOR_HAMAXE, wrap(30, 0))
+                .add(HoeShovelItems.METEOR_HOE_SHOVEL, wrap(30, 0))
                 .add(HamaxeItems.MOLTEN_HAMAXE, wrap(54, 0))
+                .add(HoeShovelItems.MOLTEN_HOE_SHOVEL, wrap(54, 0))
                 .add(HamaxeItems.HAEMORRHAXE, wrap(2, 0, 0))
                 .add(HamaxeItems.SPECTRE_HAMAXE, wrap(4, 32, 0))
                 .add(HamaxeItems.SOLAR_FLARE_HAMAXE, wrap(5, 0, 0))

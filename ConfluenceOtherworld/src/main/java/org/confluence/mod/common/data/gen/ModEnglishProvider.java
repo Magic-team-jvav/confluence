@@ -57,6 +57,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.toolmode.current","Current Mode: ");
         add("message.confluence.hamaxe.mode.0","Hammer & Axe");
         add("message.confluence.hamaxe.mode.1","Axe");
+        add("message.confluence.hoe_shovel.mode.0","Shovel");
+        add("message.confluence.hoe_shovel.mode.1","Hoe");
         add("jukebox_song.confluence.song", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
@@ -1105,6 +1107,7 @@ public class ModEnglishProvider extends LanguageProvider {
         FishingPoleItems.ITEMS.getEntries().forEach(itemAction);
         FoodItems.ITEMS.getEntries().forEach(itemAction);
         HamaxeItems.ITEMS.getEntries().forEach(itemAction);
+        HoeShovelItems.ITEMS.getEntries().forEach(itemAction);
         HammerItems.ITEMS.getEntries().forEach(itemAction);
         HoeItems.ITEMS.getEntries().forEach(itemAction);
         HookItems.ITEMS.getEntries().forEach(itemAction);

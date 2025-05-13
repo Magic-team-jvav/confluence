@@ -3,8 +3,9 @@ package org.confluence.mod.common.item.potion;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.effect.harmful.PotionSicknessEffect;
 import org.confluence.mod.common.init.ModEffects;
 
@@ -12,8 +13,8 @@ import org.confluence.mod.common.init.ModEffects;
 public class HealingPotionItem extends AbstractPotionItem {
     private final int amount;
 
-    public HealingPotionItem(int amount, Rarity rarity) {
-        super(new Properties().rarity(rarity));
+    public HealingPotionItem(int amount, ModRarity rarity) {
+        super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.amount = amount;
     }
 

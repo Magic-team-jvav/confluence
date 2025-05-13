@@ -78,9 +78,11 @@ public class ValueSubProvider {
                 .add(MaterialItems.AMBER, wrap(30, 0))
                 .add(MaterialItems.RUBY, wrap(22, 50))
                 .add(Items.EMERALD, 1500)
+                .add(MaterialItems.TR_EMERALD, 1500)
                 .add(MaterialItems.SAPPHIRE, wrap(11, 25))
                 .add(MaterialItems.SAPPHIRE, wrap(7, 50))
                 .add(MaterialItems.TR_AMETHYST, wrap(3, 75))
+                .add(MaterialItems.TOPAZ, wrap(7, 50))
                 .add(Items.LAPIS_LAZULI, 50)
                 .add(Items.REDSTONE, 40)
                 .add(Items.COAL, 40)
@@ -142,7 +144,9 @@ public class ValueSubProvider {
                 .add(MaterialItems.GEL, 1)
                 .add(MaterialItems.PINK_GEL, 3)
                 .add(MaterialItems.SILK, 200)
-                .add(MaterialItems.RAW_ASPHALT, 1);
+                .add(MaterialItems.RAW_ASPHALT, 1)
+                .add(MaterialItems.FALLING_STAR, wrap(5, 0))
+        ;
         appender.create()
                 // Adamantite Sword 2 gold 76 silver
                 // Ash Wood Sword  20 copper
@@ -726,8 +730,6 @@ public class ValueSubProvider {
                 .add(TCItems.WORKSHOP, wrap(2, 0, 0));
         // todo AccessoryItems
         appender.create()
-                .add(FoodItems.PAD_THAI, 5500);
-        appender.create()
                 .add(TGItems.BOOMSTICK, wrap(2, 0, 0))
                 // Candy Corn Rifle 10 gold
                 // Chain Gun 9 gold
@@ -987,8 +989,73 @@ public class ValueSubProvider {
                 .add(FunctionalBlocks.PIGGY_BANK, wrap(20, 0))
                 .add(FunctionalBlocks.SAFE, wrap(80, 0));
         appender.create()
-                .add(PotionItems.LESSER_HEALING_POTION, 300)
-                .add(PotionItems.LESSER_MANA_POTION, 250);
+                .add(Items.POTION, wrap(2, 0))
+                .add(Items.SPLASH_POTION, wrap(4, 0))
+                .add(Items.LINGERING_POTION, wrap(8, 0))
+                .add(MaterialItems.LIFE_MUSHROOM, wrap(2, 50))
+                .add(Items.HONEY_BOTTLE, 8)
+                .add(Items.GLASS_BOTTLE, 4)
+                .add(PotionItems.GREATER_HEALING_POTION, wrap(10, 0))
+                .add(PotionItems.HEALING_POTION, wrap(2, 0))
+                .add(PotionItems.LESSER_HEALING_POTION, 60)
+                .add(PotionItems.MANA_POTION, 50)
+                .add(PotionItems.RESTORATION_POTION, wrap(3, 0))
+                .add(PotionItems.SUPER_HEALING_POTION, wrap(30, 0))
+                .add(PotionItems.SUPER_MANA_POTION, wrap(3, 0))
+                .add(PotionItems.BOTTLED_WATER, 4)
+                .add(PotionItems.GREATER_MANA_POTION, wrap(1, 0))
+                .add(PotionItems.LESSER_MANA_POTION, 20)
+                .add(PotionItems.EGGNOG, 20)
+                .add(PotionItems.STRANGE_BREW, wrap(1, 0))
+                .add(PotionItems.AMMO_RESERVATION_POTION, wrap(2, 0))
+                .add(PotionItems.ARCHERY_POTION, wrap(2, 0))
+                // battle
+                // biome sight
+                .add(PotionItems.BUILDER_POTION, wrap(2, 0))
+                // calming
+                .add(PotionItems.CRATE_POTION, wrap(2, 0))
+                .add(PotionItems.DANGERSENSE_POTION, wrap(2, 0))
+                .add(PotionItems.ENDURANCE_POTION, wrap(2, 0))
+                .add(PotionItems.FEATHERFALL_POTION, wrap(2, 0))
+                .add(PotionItems.FISHING_POTION, wrap(2, 0))
+                .add(PotionItems.FLIPPER_POTION, wrap(2, 0))
+                .add(PotionItems.GILLS_POTION, wrap(2, 0))
+                .add(PotionItems.GRAVITATION_POTION, wrap(2, 0))
+                .add(PotionItems.HEART_REACH_POTION, wrap(2, 0))
+                .add(PotionItems.HUNTER_POTION, wrap(2, 0))
+                .add(PotionItems.INFERNO_POTION, wrap(2, 0))
+                .add(PotionItems.INVISIBILITY_POTION, wrap(2, 0))
+                .add(PotionItems.IRON_SKIN_POTION, wrap(2, 0))
+                .add(PotionItems.LIFEFORCE_POTION, wrap(2, 0))
+                .add(PotionItems.LOVE_POTION, wrap(2, 0))
+                .add(PotionItems.MAGIC_POWER_POTION, wrap(2, 0))
+                .add(PotionItems.MANA_REGENERATION_POTION, wrap(2, 0))
+                .add(PotionItems.MINING_POTION, wrap(2, 0))
+                .add(PotionItems.NIGHT_OWL_POTION, wrap(2, 0))
+                .add(PotionItems.OBSIDIAN_SKIN_POTION, wrap(2, 0))
+                .add(PotionItems.RAGE_POTION, wrap(2, 0))
+                .add(PotionItems.REGENERATION_POTION, wrap(2, 0))
+                .add(PotionItems.SHINE_POTION, wrap(2, 0))
+                // sonar
+                .add(PotionItems.SPELUNKER_POTION, wrap(2, 0))
+                .add(PotionItems.STINK_POTION, 40)
+                .add(PotionItems.SUMMONING_POTION, wrap(2, 0))
+                .add(PotionItems.SWIFTNESS_POTION, wrap(2, 0))
+                .add(PotionItems.THORNS_POTION, wrap(2, 0))
+                .add(PotionItems.TITAN_POTION, wrap(2, 0))
+                // warmth
+                .add(PotionItems.WATER_WALKING_POTION, wrap(2, 0))
+                .add(PotionItems.WRATH_POTION, wrap(2, 0))
+                .add(PotionItems.FLASK_OF_FIRE, wrap(5, 0))
+                .add(PotionItems.FLASK_OF_GOLD, wrap(5, 0))
+                // gender change
+                // return
+                .add(PotionItems.RECALL_POTION, wrap(2, 0))
+                // teleportation
+                .add(PotionItems.WORMHOLE_POTION, wrap(2, 0));
+        appender.create()
+                .add(FoodItems.PAD_THAI, 5500)
+                .add(FoodItems.HONEYFIN, wrap(15, 0));
         appender.create()
                 .add(PaintItems.PAINTBRUSH, wrap(20, 0))
                 .add(PaintItems.PAINT_ROLLER, wrap(20, 0))
@@ -1023,6 +1090,34 @@ public class ValueSubProvider {
                 .add(PaintItems.BROWN_PAINT, 5);
 
         appender.create()
+                .add(VanityArmorItems.GOLD_CROWN, wrap(20, 0))
+                .add(VanityArmorItems.PLATINUM_CROWN, wrap(30, 0))
+                .add(VanityArmorItems.RED_DYE, wrap(20, 0))
+                .add(VanityArmorItems.BRIGHT_RED_DYE, wrap(20, 0))
+                .add(VanityArmorItems.ORANGE_DYE, wrap(20, 0))
+                .add(VanityArmorItems.BRIGHT_ORANGE_DYE, wrap(20, 0))
+                .add(VanityArmorItems.YELLOW_DYE, wrap(20, 0))
+                .add(VanityArmorItems.BRIGHT_YELLOW_DYE, wrap(20, 0))
+                .add(VanityArmorItems.LIME_DYE, wrap(20, 0))
+                .add(VanityArmorItems.BRIGHT_LIME_DYE, wrap(20, 0))
+                .add(VanityArmorItems.GREEN_DYE, wrap(20, 0))
+                .add(VanityArmorItems.BRIGHT_GREEN_DYE, wrap(20, 0))
+                .add(VanityArmorItems.TEAL_DYE, wrap(20, 0))
+                .add(VanityArmorItems.BRIGHT_TEAL_DYE, wrap(20, 0))
+                .add(VanityArmorItems.CYAN_DYE, wrap(20, 0))
+                .add(VanityArmorItems.BRIGHT_CYAN_DYE, wrap(20, 0))
+                .add(VanityArmorItems.SKY_BLUE_DYE, wrap(20, 0))
+                .add(VanityArmorItems.BRIGHT_SKY_BLUE_DYE, wrap(20, 0))
+                .add(VanityArmorItems.BLUE_DYE, wrap(20, 0))
+                .add(VanityArmorItems.BRIGHT_BLUE_DYE, wrap(20, 0))
+                .add(VanityArmorItems.PURPLE_DYE, wrap(20, 0))
+                .add(VanityArmorItems.BRIGHT_PURPLE_DYE, wrap(20, 0))
+                .add(VanityArmorItems.VIOLET_DYE, wrap(20, 0))
+                .add(VanityArmorItems.BRIGHT_VIOLET_DYE, wrap(20, 0))
+                .add(VanityArmorItems.PINK_DYE, wrap(20, 0))
+                .add(VanityArmorItems.BRIGHT_PINK_DYE, wrap(20, 0))
+                .add(VanityArmorItems.BLACK_DYE, wrap(20, 0))
+                .add(VanityArmorItems.GRAY_DYE, wrap(20, 0))
                 .add(VanityArmorItems.SILVER_DYE, wrap(20, 0))
                 .add(VanityArmorItems.BROWN_DYE, wrap(20, 0))
                 .add(VanityArmorItems.TEAM_DYE, wrap(20, 0));

@@ -21,6 +21,7 @@ import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.mixed.ILivingEntity;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.EQUIPMENT_START;
 
@@ -53,6 +54,8 @@ public final class EntityEvents {
     @SubscribeEvent
     public static void entityInvulnerabilityCheck(EntityInvulnerabilityCheckEvent event) {
         if (event.isInvulnerable() || !(event.getEntity() instanceof LivingEntity living)) return;
+        if (((ILivingEntity) living).confluence$getExtraInvulnerableTicks() > 0) return;
+
         DamageSource damageSource = event.getSource();
         if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) return;
 

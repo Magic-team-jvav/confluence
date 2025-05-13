@@ -37,54 +37,55 @@ public final class CommonConfigs {
 
     public static void register(ModContainer container) {
         Builder BUILDER = new Builder();
-
-        BUILDER.push("Gameplay");
-        DROP_MONEY = BUILDER.comment("Determines if entity drops money after death").define("dropsMoney", true);
-        AUTO_STACK_GELS_COLOR = BUILDER.comment("Auto stack when pickup colorful gels").define("autoStackGelsColor", true);
-        RETURN_POTION_GLASS_BOTTLE = BUILDER.define("returnPotionGlassBottle", false);
-        RIGHT_CLICK_RIDE_MINECART = BUILDER.define("rightClickRideMinecart", true);
-        ANNOUNCEMENT_BOX_DISTANCE = BUILDER.comment("The maximum transmission distance of the Announcement Box information.").defineInRange("announcementBoxDistance", 128, 0, Integer.MAX_VALUE);
-        ALERT_PLAYER_IN_DUNGEON = BUILDER.define("alertPlayerDungeon", false);
-        BUILDER.pop();
-
-
-        BUILDER.push("Recipe");
-        FLETCHING_MENU = BUILDER.comment("Allows you to open menu through right click the Fletching Table").define("fletchingMenu", true);
-        SHIMMER_DECOMPOSE = BUILDER.comment("Allows Shimmer fluid to decomposing items").define("shimmer_decompose", true);
-        BREWING_STAND_RECIPE = BUILDER.define("brewing_stand_recipe", false);
-        BUILDER.pop();
-
-
-        BUILDER.push("Spawning");
-
-        BUILDER.push("Falling Star");
-        DO_FALLING_STAR_SPAWNING = BUILDER.define("doFallingStarSpawning", true);
-        FALLING_STAR_INTERVAL = BUILDER.comment("Defines the interval of falling stars appearing at night").defineInRange("fallingStarInterval", 2400, 20, 20000);
-        BUILDER.pop();
-
-        BUILDER.push("NPC");
-        DO_NPC_SPAWNING = BUILDER.define("doNPCSpawning", true);
-        NPC_SPAWN_INTERVAL = BUILDER.defineInRange("npcSpawnInterval", 2400, 20, 20000);
-        BUILDER.pop();
-
-        DO_METEORITE_SPAWNING = BUILDER.define("doMeteoriteSpawning", true);
-        BUILDER.pop();
-
-
-        BUILDER.push("PlayerDeath");
-        SHOW_MONEY_DROPS = BUILDER.define("showMoneyDrops", true);
-        DROPS_TOMBSTONE = BUILDER.define("dropsTombstone", true);
-        DEFAULT_RESPAWN_TIME_MIN = BUILDER.comment("The min value of the default respawn time").defineInRange("defaultRespawnTimeMin", 3, 0, Integer.MAX_VALUE);
-        DEFAULT_RESPAWN_TIME_MAX = BUILDER.comment("The max value of the default respawn time").defineInRange("defaultRespawnTimeMax", 8, 0, Integer.MAX_VALUE);
-        BOSS_RESPAWN_TIME_MIN = BUILDER.comment("The min respawn time when the boss is present").defineInRange("bossRespawnTimeMin", 9, 0, Integer.MAX_VALUE);
-        BOSS_RESPAWN_TIME_MAX = BUILDER.comment("The max respawn time when the boss is present").defineInRange("bossRespawnTimeMax", 18, 0, Integer.MAX_VALUE);
-        BUILDER.pop();
-
-
-        BUILDER.push("WorldGeneration");
-        WRAPPED_CRIMSON_HEART = BUILDER.define("wrappedCrimson_heart", false);
-        BUILDER.pop();
-
+        {
+            BUILDER.push("Gameplay");
+            DROP_MONEY = BUILDER.define("dropsMoney", true);
+            AUTO_STACK_GELS_COLOR = BUILDER.define("autoStackGelsColor", true);
+            RETURN_POTION_GLASS_BOTTLE = BUILDER.define("returnPotionGlassBottle", false);
+            RIGHT_CLICK_RIDE_MINECART = BUILDER.define("rightClickRideMinecart", true);
+            ANNOUNCEMENT_BOX_DISTANCE = BUILDER.defineInRange("announcementBoxDistance", 128, 0, Integer.MAX_VALUE);
+            ALERT_PLAYER_IN_DUNGEON = BUILDER.define("alertPlayerDungeon", false);
+            BUILDER.pop();
+        }
+        {
+            BUILDER.push("Recipe");
+            FLETCHING_MENU = BUILDER.define("fletchingMenu", true);
+            SHIMMER_DECOMPOSE = BUILDER.define("shimmer_decompose", true);
+            BREWING_STAND_RECIPE = BUILDER.define("brewing_stand_recipe", false);
+            BUILDER.pop();
+        }
+        {
+            BUILDER.push("Spawning");
+            {
+                BUILDER.push("Falling Star");
+                DO_FALLING_STAR_SPAWNING = BUILDER.define("doFallingStarSpawning", true);
+                FALLING_STAR_INTERVAL = BUILDER.defineInRange("fallingStarInterval", 2400, 20, 20000);
+                BUILDER.pop();
+            }
+            {
+                BUILDER.push("NPC");
+                DO_NPC_SPAWNING = BUILDER.define("doNPCSpawning", true);
+                NPC_SPAWN_INTERVAL = BUILDER.defineInRange("npcSpawnInterval", 2400, 20, 20000);
+                BUILDER.pop();
+            }
+            DO_METEORITE_SPAWNING = BUILDER.define("doMeteoriteSpawning", true);
+            BUILDER.pop();
+        }
+        {
+            BUILDER.push("PlayerDeath");
+            SHOW_MONEY_DROPS = BUILDER.define("showMoneyDrops", true);
+            DROPS_TOMBSTONE = BUILDER.define("dropsTombstone", true);
+            DEFAULT_RESPAWN_TIME_MIN = BUILDER.defineInRange("defaultRespawnTimeMin", 3, 0, Integer.MAX_VALUE);
+            DEFAULT_RESPAWN_TIME_MAX = BUILDER.defineInRange("defaultRespawnTimeMax", 8, 0, Integer.MAX_VALUE);
+            BOSS_RESPAWN_TIME_MIN = BUILDER.defineInRange("bossRespawnTimeMin", 9, 0, Integer.MAX_VALUE);
+            BOSS_RESPAWN_TIME_MAX = BUILDER.defineInRange("bossRespawnTimeMax", 18, 0, Integer.MAX_VALUE);
+            BUILDER.pop();
+        }
+        {
+            BUILDER.push("WorldGeneration");
+            WRAPPED_CRIMSON_HEART = BUILDER.define("wrappedCrimson_heart", false);
+            BUILDER.pop();
+        }
         container.registerConfig(ModConfig.Type.COMMON, BUILDER.build());
     }
 }

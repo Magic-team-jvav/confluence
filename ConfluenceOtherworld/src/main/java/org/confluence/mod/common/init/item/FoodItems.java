@@ -3,6 +3,7 @@ package org.confluence.mod.common.init.item;
 import net.minecraft.ChatFormatting;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
@@ -11,12 +12,15 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.common.HerbSeedItem;
 import org.confluence.mod.common.item.food.BaseFoodItem;
 import org.confluence.mod.common.item.food.ModFoodProperties;
 
+import java.util.Collections;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -35,7 +39,7 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> FROGGLE_BUNWICH = registerNormalFood("froggle_bunwich", ModFoodProperties.PlentySatisfiedProperties(7200, 6, 3.5f));
     public static final DeferredItem<BaseFoodItem> GOLDEN_DELIGHT = registerNormalFood("golden_delight", ModFoodProperties.GOLDEN_CARP); //金美味
     public static final DeferredItem<BaseFoodItem> GRILLED_SQUIRREL = registerNormalFood("grilled_squirrel", ModFoodProperties.preparedMeatProperties(8, 12.8f)); //松鼠尾
-    public static final DeferredItem<BaseFoodItem> LOBSTER_TAIL = registerNormalFood("lobster_tail", ModFoodProperties.PlentySatisfiedProperties(6000,6, 3.5f)); //龙虾尾
+    public static final DeferredItem<BaseFoodItem> LOBSTER_TAIL = registerNormalFood("lobster_tail", ModFoodProperties.PlentySatisfiedProperties(6000, 6, 3.5f)); //龙虾尾
     public static final DeferredItem<BaseFoodItem> MONSTER_LASAGNA = registerNormalFood("monster_lasagna", ModFoodProperties.PlentySatisfiedProperties(9600, 6, 3.5f)); //怪物千层面
     public static final DeferredItem<BaseFoodItem> COOK_FISH = registerNormalFood("cook_fish", ModFoodProperties.WellFedProperties(9600, 6, 3.5f)); //熟鱼
     public static final DeferredItem<BaseFoodItem> SASHIMI = registerNormalFood("sashimi", ModFoodProperties.PlentySatisfiedProperties(9600, 5, 3.0f)); //生鱼片
@@ -73,9 +77,9 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> CLOUD_DOUGH = registerNormalFood("cloud_dough", ModFoodProperties.WellFedProperties(1200, 4, 1.5f)); // 粗制云朵面包
     public static final DeferredItem<BaseFoodItem> CLOUD_BREAD = registerNormalFood("cloud_bread", ModFoodProperties.CLOUD_BREAD); // 云朵面包
     public static final DeferredItem<BaseFoodItem> FLUTTERING_LAMB_CHOPS = registerNormalFood("fluttering_lamb_chops", ModFoodProperties.noEffectProperties(3, 1.8f));
-    public static final DeferredItem<BaseFoodItem> COOKED_FLUTTERING_LAMB_CHOPS = registerNormalFood("cooked_fluttering_lamb_chops", ModFoodProperties.preparedMeatProperties( 8, 12.8f));
+    public static final DeferredItem<BaseFoodItem> COOKED_FLUTTERING_LAMB_CHOPS = registerNormalFood("cooked_fluttering_lamb_chops", ModFoodProperties.preparedMeatProperties(8, 12.8f));
     public static final DeferredItem<BaseFoodItem> BAOBAB_FRUIT = registerNormalFood("baobab_fruit", ModFoodProperties.noEffectProperties(3, 1.8f)); //猴面包果
-    public static final DeferredItem<BaseFoodItem> COOKED_BAOBAB_FRUIT = registerNormalFood("cooked_baobab_fruit",ModFoodProperties.noEffectProperties(5, 3.8f));  //烤猴面包果
+    public static final DeferredItem<BaseFoodItem> COOKED_BAOBAB_FRUIT = registerNormalFood("cooked_baobab_fruit", ModFoodProperties.noEffectProperties(5, 3.8f));  //烤猴面包果
     public static final DeferredItem<BaseFoodItem.BlockItem> BOULDER_BREAD = registerBlockItemFood("boulder_bread", builder -> builder.initialize().food(ModFoodProperties.BOULDER_BREAD).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.BOULDER_BREAD_BLOCK); //巨石面包
     // 水果
     public static final DeferredItem<BaseFoodItem> APRICOT = registerNormalFood("apricot", ModFoodProperties.WellFedProperties(6000, 4, 1.5f));
@@ -110,8 +114,8 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> TROPICAL_SMOOTHIE = registerDrinkingFood("tropical_smoothie", ModFoodProperties.WellFedProperties(24000, 4, 1.5f, GLASS_BOTTLE), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //热带冰沙
     public static final DeferredItem<BaseFoodItem> SMOOTHIE_OF_DARKNESS = registerDrinkingFood("smoothie_of_darkness", ModFoodProperties.WellFedProperties(24000, 4, 1.5f, GLASS_BOTTLE), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //黑暗奶昔
     public static final DeferredItem<BaseFoodItem> BLOODY_MOSCATO = registerDrinkingFood("bloody_moscato", ModFoodProperties.WellFedProperties(24000, 4, 1.5f, GLASS_BOTTLE), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK);
-    public static final DeferredItem<BaseFoodItem> CREAM_SODA = registerDrinkingFood("cream_soda", ModFoodProperties.PlentySatisfiedProperties(19200,6, 3.5f, GLASS_BOTTLE), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //奶油苏打
-    public static final DeferredItem<BaseFoodItem> ICE_CREAM = registerDrinkingFood("ice_cream", ModFoodProperties.PlentySatisfiedProperties(16800,6, 3.5f, GLASS_BOTTLE), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //冰淇淋
+    public static final DeferredItem<BaseFoodItem> CREAM_SODA = registerDrinkingFood("cream_soda", ModFoodProperties.PlentySatisfiedProperties(19200, 6, 3.5f, GLASS_BOTTLE), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //奶油苏打
+    public static final DeferredItem<BaseFoodItem> ICE_CREAM = registerDrinkingFood("ice_cream", ModFoodProperties.PlentySatisfiedProperties(16800, 6, 3.5f, GLASS_BOTTLE), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //冰淇淋
     public static final DeferredItem<BaseFoodItem> MILKSHAKE = registerDrinkingFood("milkshake", ModFoodProperties.ExquisitelyStuffedProperties(19200, 8, 5.5f, GLASS_BOTTLE), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //奶昔
     public static final DeferredItem<BaseFoodItem> BUNNY_STEW = registerDrinkingFood("bunny_stew", ModFoodProperties.WellFedProperties(12000, 4, 1.5f, BOWL), 20, UseAnim.DRINK, SoundEvents.GENERIC_DRINK, SoundEvents.GENERIC_DRINK); //炖兔兔
     //不返还容器
@@ -148,23 +152,26 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> YELLOW_EEL = registerNormalFood("yellow_eel", ModFoodProperties.noEffectProperties(2, 0.4f));
     public static final DeferredItem<BaseFoodItem> TILAPIA = registerNormalFood("tilapia", ModFoodProperties.noEffectProperties(2, 0.4f));
     public static final DeferredItem<BaseFoodItem> GOLDEN_CARP = registerNormalFood("golden_carp", ModFoodProperties.GOLDEN_CARP);
-    public static final DeferredItem<BaseFoodItem> OBSIDIAN_FISH = registerFood("obsidian_fish", builder -> builder.initialize().food(ModFoodProperties.noEffectProperties(2, 0.4f)).isFireResistant());
-    public static final DeferredItem<BaseFoodItem> FLASHFIN_KOI = registerFood("flashfin_koi", builder -> builder.initialize().food(ModFoodProperties.noEffectProperties(2, 0.4f)).isFireResistant());
+    public static final DeferredItem<BaseFoodItem> OBSIDIAN_FISH = registerFood("obsidian_fish", builder -> builder.food(ModFoodProperties.noEffectProperties(2, 0.4f)).isFireResistant());
+    public static final DeferredItem<BaseFoodItem> FLASHFIN_KOI = registerFood("flashfin_koi", builder -> builder.food(ModFoodProperties.noEffectProperties(2, 0.4f)).isFireResistant());
+    public static final DeferredItem<BaseFoodItem> HONEYFIN = registerFood("honeyfin", builder -> builder.food(new FoodProperties(1, 1, true, 1, Optional.empty(), Collections.singletonList(new FoodProperties.PossibleEffect(() -> new MobEffectInstance(ModEffects.POTION_SICKNESS, 1200), 1.0F)))).setFinishUsingCallback((k, v, s) -> {
+        if (!s.level().isClientSide) s.heal(24);
+    }));
 
     //赞助
-    public static final DeferredItem<BaseFoodItem> PINK_COLA = registerToolTipFood("pink_cola", builder -> builder.initialize().food(ModFoodProperties.PINK_COLA).drinkingSound(s -> SoundEvents.GENERIC_DRINK).duration(d -> 15).useAnim(u -> UseAnim.DRINK), 1, ChatFormatting.GRAY);
-    public static final DeferredItem<BaseFoodItem> DONGDONGS_FLATBREAD = registerToolTipFood("dongdongs_flatbread", builder -> builder.initialize().food(ModFoodProperties.DONGDONGS_FLATBREAD).eatingSound(s -> SoundEvents.GENERIC_EAT).duration(d -> 15).useAnim(u -> UseAnim.EAT), 1, ChatFormatting.GRAY);
+    public static final DeferredItem<BaseFoodItem> PINK_COLA = registerToolTipFood("pink_cola", builder -> builder.food(ModFoodProperties.PINK_COLA).drinkingSound(s -> SoundEvents.GENERIC_DRINK).duration(d -> 15).useAnim(u -> UseAnim.DRINK), 1, ChatFormatting.GRAY);
+    public static final DeferredItem<BaseFoodItem> DONGDONGS_FLATBREAD = registerToolTipFood("dongdongs_flatbread", builder -> builder.food(ModFoodProperties.DONGDONGS_FLATBREAD).eatingSound(s -> SoundEvents.GENERIC_EAT).duration(d -> 15).useAnim(u -> UseAnim.EAT), 1, ChatFormatting.GRAY);
     //节日特有
-    public static final DeferredItem<BaseFoodItem> ZONGZI = registerFood("zongzi", builder -> builder.initialize().food(ModFoodProperties.WellFedProperties(6000, 4, 1.5f)).isFireResistant());
+    public static final DeferredItem<BaseFoodItem> ZONGZI = registerFood("zongzi", builder -> builder.food(ModFoodProperties.WellFedProperties(6000, 4, 1.5f)).isFireResistant());
 
-    public static final DeferredItem<BaseFoodItem> HONEY_MOONCAKES = registerFood("honey_mooncakes", builder -> builder.initialize().food(ModFoodProperties.PlentySatisfiedProperties(6000, 6, 3.5f)).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
-    public static final DeferredItem<BaseFoodItem> HONEY_MOONCAKES_CHUNKS = registerFood("honey_mooncakes_chunks", builder -> builder.initialize().food(ModFoodProperties.MOONCAKES).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
-    public static final DeferredItem<BaseFoodItem> EGG_YOLK_MOONCAKES = registerFood("egg_yolk_mooncakes", builder -> builder.initialize().food(ModFoodProperties.PlentySatisfiedProperties(6000, 6, 3.5f)).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
-    public static final DeferredItem<BaseFoodItem> EGG_YOLK_MOONCAKES_CHUNKS = registerFood("egg_yolk_mooncakes_chunks", builder -> builder.initialize().food(ModFoodProperties.PlentySatisfiedProperties(6000, 6, 3.5f)).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
+    public static final DeferredItem<BaseFoodItem> HONEY_MOONCAKES = registerFood("honey_mooncakes", builder -> builder.food(ModFoodProperties.PlentySatisfiedProperties(6000, 6, 3.5f)).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
+    public static final DeferredItem<BaseFoodItem> HONEY_MOONCAKES_CHUNKS = registerFood("honey_mooncakes_chunks", builder -> builder.food(ModFoodProperties.MOONCAKES).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
+    public static final DeferredItem<BaseFoodItem> EGG_YOLK_MOONCAKES = registerFood("egg_yolk_mooncakes", builder -> builder.food(ModFoodProperties.PlentySatisfiedProperties(6000, 6, 3.5f)).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
+    public static final DeferredItem<BaseFoodItem> EGG_YOLK_MOONCAKES_CHUNKS = registerFood("egg_yolk_mooncakes_chunks", builder -> builder.food(ModFoodProperties.PlentySatisfiedProperties(6000, 6, 3.5f)).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
 
     public static final DeferredItem<BaseFoodItem> LONGEVITY_NOODLES = registerNormalFood("longevity_noodles", ModFoodProperties.WellFedProperties(6000, 4, 1.5f));
 
-    public static final Supplier<BaseFoodItem.BlockItem> GREEN_DUMPLING = registerBlockItemFood("green_dumpling", builder -> builder.initialize().food(ModFoodProperties.PlentySatisfiedProperties(6000, 4, 1.5f)).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.GREEN_DUMPLING_BLOCK);
+    public static final Supplier<BaseFoodItem.BlockItem> GREEN_DUMPLING = registerBlockItemFood("green_dumpling", builder -> builder.food(ModFoodProperties.PlentySatisfiedProperties(6000, 4, 1.5f)).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.GREEN_DUMPLING_BLOCK);
 
     // 种子
     public static final Supplier<Item> STELLAR_BLOSSOM_SEED = ITEMS.register("stellar_blossom_seed", () -> new ItemNameBlockItem(NatureBlocks.STELLAR_BLOSSOM.get(), new Item.Properties()));
@@ -180,7 +187,7 @@ public class FoodItems {
 
     public static DeferredItem<BaseFoodItem> registerFood(String name, Consumer<BaseFoodItem.Builder> consumer) {
         return ITEMS.register(name, () -> {
-            BaseFoodItem.Builder builder = BaseFoodItem.builder();
+            BaseFoodItem.Builder builder = BaseFoodItem.builder().initialize();
             consumer.accept(builder);
             return builder.build();
         });
@@ -188,7 +195,7 @@ public class FoodItems {
 
     public static DeferredItem<BaseFoodItem.BlockItem> registerBlockItemFood(String name, Consumer<BaseFoodItem.Builder> consumer, Supplier<? extends Block> block) {
         return ITEMS.register(name, () -> {
-            BaseFoodItem.Builder builder = BaseFoodItem.builder();
+            BaseFoodItem.Builder builder = BaseFoodItem.builder().initialize();
             consumer.accept(builder);
             return new BaseFoodItem.BlockItem(block.get(), builder.getProperties());
         });
@@ -196,7 +203,7 @@ public class FoodItems {
 
     public static DeferredItem<BaseFoodItem> registerToolTipFood(String name, Consumer<BaseFoodItem.Builder> consumer, int line, ChatFormatting chatFormatting) {
         return ITEMS.register(name, () -> {
-            BaseFoodItem.Builder builder = BaseFoodItem.builder().tooltip(name, line, chatFormatting);
+            BaseFoodItem.Builder builder = BaseFoodItem.builder().initialize().tooltip(name, line, chatFormatting);
             consumer.accept(builder);
             return builder.build();
         });

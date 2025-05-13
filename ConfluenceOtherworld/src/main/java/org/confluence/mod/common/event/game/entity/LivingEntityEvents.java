@@ -71,9 +71,13 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
         // 未知模组导致的null
         if (damageSource != null && damageSource.getEntity() instanceof ServerPlayer serverPlayer) {
-            ServerLevel level = serverPlayer.serverLevel();
-            if (living instanceof Enemy && CommonConfigs.DROP_MONEY.get() && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
-                ModUtils.enemyDropMoney(living, level);
+            if (living instanceof Enemy) {
+                ServerLevel level = serverPlayer.serverLevel();
+                if (CommonConfigs.DROP_MONEY.get() && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
+                    ModUtils.enemyDropMoney(living, level);
+                } else if (serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).canReceive() && serverPlayer.getRandom().nextFloat() < 0.083F) {
+                    LibUtils.createItemEntity(DateUtils.getStarItem().getDefaultInstance(), living.position(), level, 0);
+                }
             }
         }
 

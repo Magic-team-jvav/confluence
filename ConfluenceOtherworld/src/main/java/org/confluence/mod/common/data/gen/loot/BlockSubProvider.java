@@ -129,6 +129,10 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(ANNOUNCEMENT_BOX.get());
         dropSelf(KEG.get());
         dropSelf(SOLIDIFIER.get());
+        dropSelf(CAULDRON.get());
+        dropSelf(TREE_HOLES_BLOCK.get());
+        dropSelf(MAGIC_MAIL_BOX.get());
+        dropSelf(SAWMILL.get());
 
         add(SANCTIFICATION_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));
         add(CORRUPTION_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));

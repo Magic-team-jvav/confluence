@@ -2,6 +2,7 @@ package org.confluence.mod.common.worldgen.structure;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.MapCodec;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -12,6 +13,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
@@ -40,7 +42,10 @@ import org.confluence.terraentity.init.TESounds;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.joml.Vector3d;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static org.confluence.lib.util.StructureUtils.*;
 import static org.confluence.lib.util.VectorUtils.listRandom;
@@ -87,20 +92,18 @@ public class DungeonStructure extends Structure {
         int x = startChunk.getMiddleBlockX();
         int z = startChunk.getMiddleBlockZ();
         int lowestY = getHeight(x, z, context);
-        if ((x * x + z * z) <= 5760000 || lowestY < context.chunkGenerator().getSeaLevel() - 16) {
+        if (x * x + z * z <= 2400 * 2400 || lowestY < context.chunkGenerator().getSeaLevel() - 16) {
             return Optional.empty();
         }
         return onTopOfChunkCenter(context, Heightmap.Types.WORLD_SURFACE_WG, builder -> {
             WorldgenRandom random = context.random();
             BlockPos centerPos = startChunk.getMiddleBlockPosition(lowestY);
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
-            Vector3d key;
-            BooleanStorage4 value;
-            BooleanStorage4 valueB;
-            Map<BlockPos, Integer> houseMap = new HashMap<>();
-            Map<BlockPos, Integer> cornersInMap = new HashMap<>();
-            Map<BlockPos, Integer> bridgeMap = new HashMap<>();
-            BlockPos mazeRotatePos;
+            BooleanStorage4 valueB = new BooleanStorage4();
+            Object2IntMap<BlockPos> houseMap = new Object2IntOpenHashMap<>();
+            Object2IntMap<BlockPos> cornersInMap = new Object2IntOpenHashMap<>();
+            Object2IntMap<BlockPos> bridgeMap = new Object2IntOpenHashMap<>();
+            BlockPos.MutableBlockPos mazeRotatePos = new BlockPos.MutableBlockPos();
             BlockPos houseKey;
             int houseValue;
             int outRoomSizeHeight = 24;
@@ -108,7 +111,7 @@ public class DungeonStructure extends Structure {
 
             Rotation rotation = Util.getRandom(Rotation.values(), random);
             List<Vector3d> firstChannel = new ArrayList<>();
-            List<Integer> housesList = new ArrayList<>();
+            IntArrayList housesList = new IntArrayList();
             int goldenCount = random.nextInt(7, 9);
             int commonCount = random.nextInt(5, 7);
             int clockCount = random.nextInt(4, 7);
@@ -123,14 +126,13 @@ public class DungeonStructure extends Structure {
                 housesList.add(random.nextInt(housesList.size()), 1);
             }
 
-            Vector3d vct = new Vector3d(centerPos.getX(), centerPos.getY() - 4, centerPos.getZ());
-            firstChannel.add(vct);
-            vct = new Vector3d(centerPos.getX(), random.nextInt(-25, -10), centerPos.getZ());
+            firstChannel.add(new Vector3d(centerPos.getX(), centerPos.getY() - 4, centerPos.getZ()));
+            Vector3d vct = new Vector3d(centerPos.getX(), random.nextInt(-25, -10), centerPos.getZ());
             firstChannel.add(new Vector3d(vct.x, vct.y + outRoomSizeHeight + 10, vct.z));
             VectorUtils.lightningPathList(firstChannel, 2, 8, random);
             lineSet(firstChannel, 5.5, 5.5, 1, true, blockMap);
 
-            BlockPos underCenter = new BlockPos(centerPos.getX(), (int) vct.y, centerPos.getZ());
+            BlockPos underCenter = new BlockPos(centerPos.getX(), Mth.floor(vct.y), centerPos.getZ());
 
             Map<Vector3d, BooleanStorage4> mazeMap = mazePos(new Vector3d(underCenter.getX(), underCenter.getY(), underCenter.getZ()), 40, 2, random, 1.0F);
 
@@ -140,12 +142,12 @@ public class DungeonStructure extends Structure {
             rectangular(underCenter.offset(-6, 45, -6), underCenter.offset(6, 51, 6), 0, blockMap, 0);
 
             for (Map.Entry<Vector3d, BooleanStorage4> entry : mazeMap.entrySet()) {
-                key = entry.getKey();
+                Vector3d key = entry.getKey();
 
-                value = entry.getValue().copy();
-                valueB = new BooleanStorage4((byte) ~value.getValue());
+                BooleanStorage4 value = entry.getValue();
+                valueB.set((byte) ~value.getValue());
 
-                mazeRotatePos = new BlockPos((int) key.x, (int) key.y, (int) key.z);
+                mazeRotatePos.set(Mth.floor(key.x), Mth.floor(key.y), Mth.floor(key.z));
 
                 if ((mazeRotatePos.getX() == underCenter.getX()) && (mazeRotatePos.getZ() == underCenter.getZ())) stairsFacing = listRandom(valueB, random);
 
@@ -248,8 +250,8 @@ public class DungeonStructure extends Structure {
                 }
             }
 
-            for (Map.Entry<BlockPos, Integer> entry : houseMap.entrySet()) {
-                if ((entry.getValue() < 4) && (housesList.size() < houseMap.size())) {
+            for (Object2IntMap.Entry<BlockPos> entry : houseMap.object2IntEntrySet()) {
+                if ((entry.getIntValue() < 4) && (housesList.size() < houseMap.size())) {
                     housesList.add(random.nextInt(housesList.size() + 1), random.nextInt(3, houses.length));
                 }
             }
@@ -279,20 +281,20 @@ public class DungeonStructure extends Structure {
 
             int listCount = 0;
 
-            for (Map.Entry<BlockPos, Integer> entry : houseMap.entrySet()) {
+            for (Object2IntMap.Entry<BlockPos> entry : houseMap.object2IntEntrySet()) {
                 houseKey = entry.getKey();
-                houseValue = entry.getValue();
+                houseValue = entry.getIntValue();
                 switch (houseValue) {
                     case 0:
-                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(-1, 0, -1), false, false, Rotation.NONE));
+                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.getInt(listCount)], houseKey.offset(-1, 0, -1), false, false, Rotation.NONE));
                         listCount++;
                         break;
                     case 1:
-                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(1, 0, -1), false, false, Rotation.CLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.getInt(listCount)], houseKey.offset(1, 0, -1), false, false, Rotation.CLOCKWISE_90));
                         listCount++;
                         break;
                     case 2:
-                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(1, 0, 1), false, false, Rotation.CLOCKWISE_180));
+                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.getInt(listCount)], houseKey.offset(1, 0, 1), false, false, Rotation.CLOCKWISE_180));
                         listCount++;
                         break;
                     case 4:
@@ -328,14 +330,14 @@ public class DungeonStructure extends Structure {
                         builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 12, 1), true, false, Rotation.COUNTERCLOCKWISE_90));
                         break;
                     default:
-                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.get(listCount)], houseKey.offset(-1, 0, 1), false, false, Rotation.COUNTERCLOCKWISE_90));
+                        builder.addPiece(new SimpleTemplatePiece(manager, houses[housesList.getInt(listCount)], houseKey.offset(-1, 0, 1), false, false, Rotation.COUNTERCLOCKWISE_90));
                         listCount++;
                 }
             }
 
-            for (Map.Entry<BlockPos, Integer> entry : cornersInMap.entrySet()) {
+            for (Object2IntMap.Entry<BlockPos> entry : cornersInMap.object2IntEntrySet()) {
                 houseKey = entry.getKey();
-                houseValue = entry.getValue();
+                houseValue = entry.getIntValue();
                 switch (houseValue) {
                     case 0:
                         builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(corners_in, random), houseKey.offset(-1, 18, -1), true, false, Rotation.NONE));
@@ -363,9 +365,9 @@ public class DungeonStructure extends Structure {
                 }
             }
 
-            for (Map.Entry<BlockPos, Integer> entry : bridgeMap.entrySet()) {
+            for (Object2IntMap.Entry<BlockPos> entry : bridgeMap.object2IntEntrySet()) {
                 houseKey = entry.getKey();
-                houseValue = entry.getValue();
+                houseValue = entry.getIntValue();
                 if (houseValue == 0) {
                     builder.addPiece(new SimpleTemplatePiece(manager, Util.getRandom(bridge, random), houseKey.offset(0, 3 + 6 * random.nextInt(1, 3), 0), true, true, Rotation.COUNTERCLOCKWISE_90));
                 } else {

@@ -94,6 +94,11 @@ public final class TickEvents {
     public static void entityTick$Post(EntityTickEvent.Post event) {
         // 实体身上的无敌帧每刻-1
         if (event.getEntity() instanceof ILivingEntity living) {
+            int extraInvulnerableTicks = living.confluence$getExtraInvulnerableTicks();
+            if (extraInvulnerableTicks > 0) {
+                living.confluence$setExtraInvulnerableTicks(extraInvulnerableTicks - 1);
+            }
+
             Object2IntMap<Immunity> invTicks = living.confluence$getImmunityTicks();
             if (invTicks.isEmpty()) return;
             ObjectIterator<Object2IntMap.Entry<Immunity>> iterator = invTicks.object2IntEntrySet().iterator();

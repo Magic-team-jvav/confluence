@@ -47,6 +47,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.toolmode.current","当前模式：");
         add("message.confluence.hamaxe.mode.0","锤与斧");
         add("message.confluence.hamaxe.mode.1","斧");
+        add("message.confluence.hoe_shovel.mode.0","锹");
+        add("message.confluence.hoe_shovel.mode.1","锄");
         add("jukebox_song.confluence.song", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
@@ -98,6 +100,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.meteor_compass.0", "退出存档将会失去之前记录的坐标");
         add("tooltip.item.confluence.gel.0", "“既好吃，又易燃”");
         add("tooltip.item.confluence.npc_invitation.0", "使用它，在当前区域邀请一批新的NPC吧！");
+        add("tooltip.item.confluence.red_potion.0", "“仅献给配得上的人”");
 
         add("tooltip.item.confluence.slime_crown.0", "右键使用以召唤史莱姆王");
         add("tooltip.item.confluence.slime_crown.1", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");
@@ -2352,7 +2355,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(AxeItems.STAFF_OF_REGROWTH.get(), "再生法杖");
         add(AxeItems.AXE_OF_REGROWTH.get(), "再生之斧");
         add(HamaxeItems.METEOR_HAMAXE.get(), "流星锤斧");
+        add(HoeShovelItems.METEOR_HOE_SHOVEL.get(), "流星锄锹");
         add(HamaxeItems.MOLTEN_HAMAXE.get(), "熔火锤斧");
+        add(HoeShovelItems.MOLTEN_HOE_SHOVEL.get(), "熔火锄锹");
         add(HamaxeItems.SPECTRE_HAMAXE.get(), "幽灵锤斧");
         add(HamaxeItems.SOLAR_FLARE_HAMAXE.get(), "耀斑锤斧");
         add(HamaxeItems.VORTEX_HAMAXE.get(), "星旋锤斧");

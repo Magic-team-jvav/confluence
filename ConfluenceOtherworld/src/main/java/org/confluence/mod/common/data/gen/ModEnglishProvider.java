@@ -57,6 +57,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.toolmode.current","Current Mode: ");
         add("message.confluence.hamaxe.mode.0","Hammer & Axe");
         add("message.confluence.hamaxe.mode.1","Axe");
+        add("message.confluence.hoe_shovel.mode.0","Shovel");
+        add("message.confluence.hoe_shovel.mode.1","Hoe");
         add("jukebox_song.confluence.song", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
@@ -108,6 +110,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.meteor_compass.0", "Exiting the level will result in the loss of previously recorded position");
         add("tooltip.item.confluence.gel.0", "'Both tasty and flammable'");
         add("tooltip.item.confluence.npc_invitation.0", "Use it to invite a new batch of NPCs in the current area!");
+        add("tooltip.item.confluence.red_potion.0", "'Only for those who are worthy'");
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
         add("tooltip.item.confluence.slime_crown.1", "A small crown that seems to be prepared for the coronation ceremony of those cute and harmless gel - like creatures.");
@@ -831,6 +834,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add(StatueBlocks.N7_STATUE.get(), "'7' Statue");
         add(StatueBlocks.N8_STATUE.get(), "'8' Statue");
         add(StatueBlocks.N9_STATUE.get(), "'9' Statue");
+        add(VanityArmorItems.DEAD_MANS_SWEATER.get(), "Dead Man's Sweater");
 
         add("block.confluence.timers_block_1_1", "1 Second Timer");
         add("block.confluence.timers_block_3_1", "3 Second Timer");
@@ -1105,6 +1109,7 @@ public class ModEnglishProvider extends LanguageProvider {
         FishingPoleItems.ITEMS.getEntries().forEach(itemAction);
         FoodItems.ITEMS.getEntries().forEach(itemAction);
         HamaxeItems.ITEMS.getEntries().forEach(itemAction);
+        HoeShovelItems.ITEMS.getEntries().forEach(itemAction);
         HammerItems.ITEMS.getEntries().forEach(itemAction);
         HoeItems.ITEMS.getEntries().forEach(itemAction);
         HookItems.ITEMS.getEntries().forEach(itemAction);

@@ -13,10 +13,8 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import org.confluence.mod.common.block.common.TombstoneBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
-import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.CrateBlocks;
-import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.terraentity.init.TETags;
@@ -255,6 +253,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 HELLFORGE.get(),
                 ALCHEMY_TABLE.get(),
                 WEATHER_VANE.get(),
+                SOLIDIFIER.get(),
+                CAULDRON.get(),
                 CHIPPED_LEAD_ANVIL.get(),
                 LEAD_ANVIL.get(),
                 DAMAGED_LEAD_ANVIL.get(),
@@ -372,6 +372,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
                 ANNOUNCEMENT_BOX.get(),
                 WALL_ANNOUNCEMENT_BOX.get(),
+                TREE_HOLES_BLOCK.get(),
+                MAGIC_MAIL_BOX.get(),
+                KEG.get(),
+                SAWMILL.get(),
 
                 CrateBlocks.WOODEN_CRATE.get(),
                 CrateBlocks.PEARLWOOD_CRATE.get(),
@@ -707,6 +711,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CRIMSON_ALTAR.get()
         );
         tag(ModTags.Blocks.MINEABLE_WITH_HAMAXE).addTag(ModTags.Blocks.MINEABLE_WITH_HAMMER).addTag(BlockTags.MINEABLE_WITH_AXE);
+        tag(ModTags.Blocks.MINEABLE_WITH_HOE_SHOVEL).addTag(BlockTags.MINEABLE_WITH_SHOVEL).addTag(BlockTags.MINEABLE_WITH_HOE);
         // neoforge标签
         tag(Tags.Blocks.NEEDS_NETHERITE_TOOL).add(
                 EBONY_HARDENED_SAND_BLOCK.get(),

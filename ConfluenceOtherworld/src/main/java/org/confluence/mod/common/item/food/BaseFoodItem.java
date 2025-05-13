@@ -13,6 +13,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import org.apache.commons.lang3.function.TriConsumer;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.FoodItems;
@@ -22,7 +23,7 @@ import java.util.List;
 import java.util.function.Function;
 
 public class BaseFoodItem extends Item {
-    protected Builder builder;
+    protected final Builder builder;
 
     public BaseFoodItem(Builder builder) {
         super(builder.properties);
@@ -62,6 +63,9 @@ public class BaseFoodItem extends Item {
         if (stack.is(FoodItems.CHERRY) && level instanceof ServerLevel serverLevel && ModSecretSeeds.NO_TRAPS.match(serverLevel) && level.random.nextFloat() < 0.7F) {
             level.explode(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), 2.5F, false, Level.ExplosionInteraction.MOB);
         }
+        if (builder.finishUsingCallback != null) {
+            builder.finishUsingCallback.accept(stack, level, livingEntity);
+        }
         return super.finishUsingItem(stack, level, livingEntity);
     }
 
@@ -78,6 +82,7 @@ public class BaseFoodItem extends Item {
         private Function<Void, SoundEvent> eatingSoundType = sound -> SoundEvents.EMPTY;
         private Function<ItemStack, UseAnim> useAnim = useAnim -> UseAnim.NONE;
         private final List<Component> tooltips = new ArrayList<>();
+        private TriConsumer<ItemStack, Level, LivingEntity> finishUsingCallback;
 
         Builder(Properties properties) {
             this.properties = properties;
@@ -117,12 +122,9 @@ public class BaseFoodItem extends Item {
             return this;
         }
 
-        public static List<Component> tooltips(String id, int lineCount) {
-            List<Component> components = new ArrayList<>();
-            for (int i = 1; i <= lineCount; i++) {
-                components.add(Component.translatable("tooltip.item.confluence." + id + "." + i).withStyle(ChatFormatting.DARK_GRAY));
-            }
-            return components;
+        public Builder setFinishUsingCallback(TriConsumer<ItemStack, Level, LivingEntity> finishUsingCallback) {
+            this.finishUsingCallback = finishUsingCallback;
+            return this;
         }
 
         public Properties getProperties() {

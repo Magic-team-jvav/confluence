@@ -9,6 +9,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -57,12 +58,12 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
 
     @Unique
     private final Object2IntMap<Immunity> confluence$entityImmunityTicks = new Object2IntOpenHashMap<>();
-
     @Unique
     private boolean confluence$breakingEasyCrashBlock = false;
-
     @Unique
     private boolean confluence$deadO;
+    @Unique
+    private int confluence$extraInvulnerableTicks;
 
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
@@ -81,6 +82,16 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @Override
     public Object2IntMap<Immunity> confluence$getImmunityTicks() {
         return confluence$entityImmunityTicks;
+    }
+
+    @Override
+    public void confluence$setExtraInvulnerableTicks(int ticks) {
+        this.confluence$extraInvulnerableTicks = ticks;
+    }
+
+    @Override
+    public int confluence$getExtraInvulnerableTicks() {
+        return confluence$extraInvulnerableTicks;
     }
 
     @Inject(method = "checkFallDamage", at = @At("HEAD"), cancellable = true)
@@ -172,5 +183,15 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @WrapWithCondition(method = "triggerOnDeathMobEffects", at = @At(value = "INVOKE", target = "Ljava/util/Map;clear()V"))
     private boolean cacheFlasks(Map<Holder<MobEffect>, MobEffectInstance> instance) {
         return FlaskEffect.saveFlaskEffects(instance);
+    }
+
+    @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
+    private void readData(CompoundTag compound, CallbackInfo ci) {
+        this.confluence$extraInvulnerableTicks = compound.getInt("ExtraInvulnerableTicks");
+    }
+
+    @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
+    private void saveData(CompoundTag compound, CallbackInfo ci) {
+        compound.putInt("ExtraInvulnerableTicks", confluence$extraInvulnerableTicks);
     }
 }

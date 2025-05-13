@@ -69,19 +69,19 @@ public final class LivingEntityEvents {
     public static void livingDeath(LivingDeathEvent event) {
         LivingEntity living = event.getEntity();
         DamageSource damageSource = event.getSource();
-        // 未知模组导致的null
-        if (damageSource != null && damageSource.getEntity() instanceof ServerPlayer serverPlayer) {
-            if (living instanceof Enemy) {
-                ServerLevel level = serverPlayer.serverLevel();
-                if (CommonConfigs.DROP_MONEY.get() && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
-                    ModUtils.enemyDropMoney(living, level);
-                } else if (serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).canReceive() && serverPlayer.getRandom().nextFloat() < 0.083F) {
-                    LibUtils.createItemEntity(DateUtils.getStarItem().getDefaultInstance(), living.position(), level, 0);
-                }
-            }
-        }
 
         if (living.level() instanceof ServerLevel level) {
+            // 未知模组导致的null
+            if (damageSource != null) {
+                if (living instanceof Enemy && damageSource.getEntity() instanceof ServerPlayer) {
+                    if (CommonConfigs.DROP_MONEY.get() && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
+                        ModUtils.enemyDropMoney(living, level);
+                    }
+                }
+                if (damageSource.getEntity() != null && damageSource.getEntity().getType().is(TETags.EntityTypes.CORRUPT)) {
+                    NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get().checkVisibilityAndSummonEntity(level, living);
+                }
+            }
             if (living instanceof Boss boss && boss.shouldShowMessage()) {
                 ModUtils.bossDeath(level, living);
             }
@@ -89,20 +89,27 @@ public final class LivingEntityEvents {
                 PlayerUtils.dropMoney(serverPlayer);
                 TombstoneBoulder.createTombstone(serverPlayer);
             }
-            DeathMotionPacketS2C.sendToAll(living);
-            NoTraps.entityDropsGrenade(living);
             if (living.getRandom().nextFloat() < 0.011F) {
                 Item holidayGift = DateUtils.getHolidayGift();
                 if (holidayGift != Items.AIR) {
-                    LibUtils.createItemEntity(holidayGift.getDefaultInstance(), living.position(), living.level(), 0);
+                    LibUtils.createItemEntity(holidayGift.getDefaultInstance(), living.position(), level, 0);
+                }
+            }
+            for (ServerPlayer serverPlayer : level.players()) {
+                if (serverPlayer.position().distanceToSqr(living.position()) > 32 * 32) continue;
+                if (serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).canReceive() && serverPlayer.getRandom().nextFloat() < 0.083F) {
+                    LibUtils.createItemEntity(DateUtils.getStarItem().getDefaultInstance(), living.position(), level, 0);
+                    break;
                 }
             }
             if (living instanceof AbstractTerraNPC npc) {
                 NPCSpawner.INSTANCE.onNPCRemoved(npc);
             }
-            if (living.hasEffect(ModEffects.BLOOD_BUTCHERED)) NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.get().checkVisibility(level, living);
-            if (damageSource.getEntity() != null && damageSource.getEntity().getType().is(TETags.EntityTypes.CORRUPT))
-                NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get().checkVisibilityAndSummonEntity(level, living);
+            if (living.hasEffect(ModEffects.BLOOD_BUTCHERED)) {
+                NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.get().checkVisibility(level, living);
+            }
+            DeathMotionPacketS2C.sendToAll(living);
+            NoTraps.entityDropsGrenade(living);
         }
     }
 

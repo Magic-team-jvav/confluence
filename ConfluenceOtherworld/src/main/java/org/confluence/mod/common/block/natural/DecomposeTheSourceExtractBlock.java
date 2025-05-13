@@ -105,12 +105,10 @@ public class DecomposeTheSourceExtractBlock extends Block implements EntityBlock
                 BlockState state = level.getBlockState(pos);
                 if (state.is(this)) {
                     level.setBlockAndUpdate(pos.immutable(), state.setValue(VISIBLE, true));
-                    if (!level.isClientSide) {
-                        AbstractMonster entity = TEMonsterEntities.EATER_OF_SOULS.get().create(level);
-                        if (entity != null) {
-                            entity.setPos(pos.getX() - 0.5, pos.getY() - 1.5, pos.getZ() - 0.5);
-                            level.addFreshEntity(entity);
-                        }
+                    AbstractMonster entity = TEMonsterEntities.EATER_OF_SOULS.get().create(level);
+                    if (entity != null) {
+                        entity.setPos(pos.getX() - 0.5, pos.getY() - 1.5, pos.getZ() - 0.5);
+                        level.addFreshEntity(entity);
                     }
                 } else {
                     iterator.remove();

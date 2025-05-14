@@ -80,7 +80,7 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> COOKED_FLUTTERING_LAMB_CHOPS = registerNormalFood("cooked_fluttering_lamb_chops", ModFoodProperties.preparedMeatProperties(8, 12.8f));
     public static final DeferredItem<BaseFoodItem> BAOBAB_FRUIT = registerNormalFood("baobab_fruit", ModFoodProperties.noEffectProperties(3, 1.8f)); //猴面包果
     public static final DeferredItem<BaseFoodItem> COOKED_BAOBAB_FRUIT = registerNormalFood("cooked_baobab_fruit", ModFoodProperties.noEffectProperties(5, 3.8f));  //烤猴面包果
-    public static final DeferredItem<BaseFoodItem.BlockItem> BOULDER_BREAD = registerBlockItemFood("boulder_bread", builder -> builder.initialize().food(ModFoodProperties.BOULDER_BREAD).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.BOULDER_BREAD_BLOCK); //巨石面包
+    public static final DeferredItem<BaseFoodItem.BlockItem> BOULDER_BREAD = registerBlockItemFood("boulder_bread", builder -> builder.food(ModFoodProperties.BOULDER_BREAD).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.BOULDER_BREAD_BLOCK); //巨石面包
     // 水果
     public static final DeferredItem<BaseFoodItem> APRICOT = registerNormalFood("apricot", ModFoodProperties.WellFedProperties(6000, 4, 1.5f));
     public static final DeferredItem<BaseFoodItem> BANANA = registerNormalFood("banana", ModFoodProperties.WellFedProperties(6000, 4, 1.5f));

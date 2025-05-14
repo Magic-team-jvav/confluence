@@ -2,7 +2,7 @@ plugins {
     id 'net.neoforged.moddev'
 }
 var projectName = ["Confluence-Magic-Lib","TerraEntity", "MineTeam", "EquipmentBenediction",
-                   "TerraCurio", "ParticleStorm", "HeavenDestinyMoment", "PhaseJourney",
+                   "TerraCurio", "HeavenDestinyMoment", "PhaseJourney",
                    "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture",
                    "EntityTrackerHUD","EnemyBanner"
 ]
@@ -145,10 +145,9 @@ dependencies {
         implementation(project(":ConfluenceDelight"))
     }
 
-    //    implementation jarJar(project(":XHN-Lib"))
     implementation(jarJar(group: 'com.xiaohunao.xhn_lib', name: 'xhn_lib', version: '1.21.1-0.0.1'))
-
     implementation(jarJar("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"))
+    implementation(jarJar("curse.maven:particle-storm-1124172:${particle_storm_version}"))
 
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
     implementation jarJar('com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version)

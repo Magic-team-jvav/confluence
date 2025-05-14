@@ -10,10 +10,6 @@
     path = EquipmentBenediction
     url = https://github.com/XiaoHuNao/EquipmentBenediction
     branch = neoforge-dev/1.21.1
-[submodule "ParticleStorm"]
-	path = ParticleStorm
-	url = https://github.com/westernat/ParticleStorm
-	branch = neoforge-dev/1.21.1
 [submodule "HeavenDestinyMoment"]
 	path = HeavenDestinyMoment
 	url = https://github.com/XiaoHuNao/HeavenDestinyMoment

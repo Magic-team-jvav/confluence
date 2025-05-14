@@ -187,7 +187,7 @@ public class FoodItems {
 
     public static DeferredItem<BaseFoodItem> registerFood(String name, Consumer<BaseFoodItem.Builder> consumer) {
         return ITEMS.register(name, () -> {
-            BaseFoodItem.Builder builder = BaseFoodItem.builder().initialize();
+            BaseFoodItem.Builder builder = BaseFoodItem.builder().stackTo(64);
             consumer.accept(builder);
             return builder.build();
         });
@@ -195,7 +195,7 @@ public class FoodItems {
 
     public static DeferredItem<BaseFoodItem.BlockItem> registerBlockItemFood(String name, Consumer<BaseFoodItem.Builder> consumer, Supplier<? extends Block> block) {
         return ITEMS.register(name, () -> {
-            BaseFoodItem.Builder builder = BaseFoodItem.builder().initialize();
+            BaseFoodItem.Builder builder = BaseFoodItem.builder().stackTo(64);
             consumer.accept(builder);
             return new BaseFoodItem.BlockItem(block.get(), builder.getProperties());
         });
@@ -203,7 +203,7 @@ public class FoodItems {
 
     public static DeferredItem<BaseFoodItem> registerToolTipFood(String name, Consumer<BaseFoodItem.Builder> consumer, int line, ChatFormatting chatFormatting) {
         return ITEMS.register(name, () -> {
-            BaseFoodItem.Builder builder = BaseFoodItem.builder().initialize().tooltip(name, line, chatFormatting);
+            BaseFoodItem.Builder builder = BaseFoodItem.builder().stackTo(64).tooltip(name, line, chatFormatting);
             consumer.accept(builder);
             return builder.build();
         });
@@ -211,14 +211,14 @@ public class FoodItems {
 
     public static DeferredItem<BaseFoodItem> registerNormalFood(String name, FoodProperties foodProperties) {
         return ITEMS.register(name, () -> {
-            BaseFoodItem.Builder builder = BaseFoodItem.builder().initialize().food(foodProperties).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT);
+            BaseFoodItem.Builder builder = BaseFoodItem.builder().stackTo(64).food(foodProperties).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT);
             return builder.build();
         });
     }
 
     public static DeferredItem<BaseFoodItem> registerDrinkingFood(String name, FoodProperties foodProperties, int duration, UseAnim useAnim, SoundEvent drinkingSoundType, SoundEvent eatingSoundType) {
         return ITEMS.register(name, () -> {
-            BaseFoodItem.Builder builder = BaseFoodItem.builder().initialize().food(foodProperties).duration(d -> duration).useAnim(u -> useAnim).drinkingSound(s -> drinkingSoundType).eatingSound(e -> eatingSoundType);
+            BaseFoodItem.Builder builder = BaseFoodItem.builder().stackTo(64).food(foodProperties).duration(d -> duration).useAnim(u -> useAnim).drinkingSound(s -> drinkingSoundType).eatingSound(e -> eatingSoundType);
             return builder.build();
         });
     }

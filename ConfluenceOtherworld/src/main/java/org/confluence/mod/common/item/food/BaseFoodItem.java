@@ -131,13 +131,13 @@ public class BaseFoodItem extends Item {
             return properties;
         }
 
-        public Builder initialize() {
-            properties.stacksTo(64);
+        public Builder stackTo(int stack) {
+            properties.stacksTo(stack);
             return this;
         }
 
         public BaseFoodItem build() {
-            return new BaseFoodItem(initialize());
+            return new BaseFoodItem(stackTo(64));
         }
     }
 

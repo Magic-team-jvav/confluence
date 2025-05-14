@@ -798,7 +798,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("container.confluence.sawmill", "Sawmill");
         add("container.confluence.tree_holes", "Tree Holes");
         add("container.confluence.npc_shop", "Npc Shop");
-        add("container.confluence.solidifier", "固化机");
+        add("container.confluence.solidifier", "Solidifier");
 
         add("title.confluence.shimmer_transmutation", "Shimmer Transmutation");
         add("title.confluence.altar", "Altar");
@@ -869,7 +869,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("resourcepack.terraria_armor", "Terraria-Like Armor");
 
         add("event.confluence.meteorite", "A meteorite has landed!");
-        add("event.confluence.meteorite.ready", "A meteorite will falling!");
+        add("event.confluence.meteorite.ready", "A meteorite is falling!");
         add("event.confluence.shadow_orb_broken.0", "A horrible chill goes down your spine...");
         add("event.confluence.shadow_orb_broken.1", "Screams echo around you...");
         add("event.confluence.crimson_heart_broken.0", "A horrible chill goes down your spine...");

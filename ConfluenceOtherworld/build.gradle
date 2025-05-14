@@ -135,15 +135,11 @@ repositories {
 }
 
 boolean vanillin = false // 香兰素
-boolean delight = true
 boolean observable = false // 可视性能侦测
 boolean ftb = false
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
-    if (delight) {
-        implementation(project(":ConfluenceDelight"))
-    }
 
     implementation(jarJar(group: 'com.xiaohunao.xhn_lib', name: 'xhn_lib', version: '1.21.1-0.0.1'))
     implementation(jarJar("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"))

@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.Confluence;
@@ -46,6 +47,8 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         ), null);
 
         stonecutting(recipeOutput, "", DecorativeBlocks.BLUE_ICE_BRICKS.toStack(4), Ingredient.of(Blocks.BLUE_ICE));
+        stonecutting(recipeOutput, "", MaterialItems.CHINA_BOWL.toStack(1), Ingredient.of(Items.WHITE_TERRACOTTA));
+        stonecutting(recipeOutput, "", MaterialItems.CHINA_PLATE.toStack(1), Ingredient.of(Items.WHITE_TERRACOTTA));
 
         skyMill(recipeOutput, DecorativeBlocks.BOUNCY_CLOUD_BLOCK.toStack(), Ingredient.of(MaterialItems.PINK_GEL), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
 

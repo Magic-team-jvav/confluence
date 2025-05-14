@@ -9,16 +9,20 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.CookingPotRecipe;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
 
@@ -71,9 +75,25 @@ public class CookingPotCategory implements IRecipeCategory<CookingPotRecipe> {
             }
         }
         builder.addSlot(RecipeIngredientRole.INPUT, 79, 1).addIngredients(recipe.getContainer());
-        if (recipe.getHeatSource().tag().isPresent()) {
-            Ingredient heatSource = Ingredient.of(Streams.stream(BuiltInRegistries.BLOCK.getTagOrEmpty(recipe.getHeatSource().tag().get())).map(holder -> holder.value().asItem().getDefaultInstance()).toArray(ItemStack[]::new));
-            builder.addSlot(RecipeIngredientRole.CATALYST, 79, 32).addIngredients(heatSource);
+        if (recipe.getHeatSource().blocks().isPresent()) {
+            Ingredient heatSource = Ingredient.of(recipe.getHeatSource().blocks().get().map(
+                    tag -> Streams.stream(BuiltInRegistries.BLOCK.getTagOrEmpty(tag)), HolderSet::stream
+            ).map(holder -> holder.value().asItem().getDefaultInstance()));
+            builder.addSlot(RecipeIngredientRole.CATALYST, 79, 32).addIngredients(heatSource)
+                    .addRichTooltipCallback((slotView, tooltip) -> recipe.getHeatSource().properties().ifPresent(predicate -> {
+                        tooltip.add(Component.translatable("tooltip.jei.state_properties"));
+                        for (StatePropertiesPredicate.PropertyMatcher property : predicate.properties()) {
+                            String name = "  " + property.name() + '=';
+                            StatePropertiesPredicate.ValueMatcher valueMatcher = property.valueMatcher();
+                            if (valueMatcher instanceof StatePropertiesPredicate.ExactMatcher(String value)) {
+                                tooltip.add(Component.literal(name + value));
+                            } else if (valueMatcher instanceof StatePropertiesPredicate.RangedMatcher(Optional<String> minValue, Optional<String> maxValue)) {
+                                tooltip.add(Component.literal(name + '[' + minValue.orElse("") + ',' + maxValue.orElse("") + ']'));
+                            } else {
+                                LibUtils.forConfluence$Inject();
+                            }
+                        }
+                    }));
         }
         builder.addSlot(RecipeIngredientRole.OUTPUT, 121, 16).addItemStack(recipe.getResultItem(null));
     }
@@ -84,7 +104,7 @@ public class CookingPotCategory implements IRecipeCategory<CookingPotRecipe> {
         if (recipe.getContainer().isEmpty()) {
             guiGraphics.blit(BACKGROUND, 79, 1, 143, 0, 16, 16, 159, 49);
         }
-        if (recipe.getHeatSource().tag().isEmpty()) {
+        if (recipe.getHeatSource().blocks().isEmpty()) {
             guiGraphics.blit(BACKGROUND, 79, 32, 143, 33, 16, 16, 159, 49);
         }
     }

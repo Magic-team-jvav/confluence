@@ -36,7 +36,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
     }
 
     @Override
-    protected void buildRecipes(@NotNull RecipeOutput output) {
+    protected void buildRecipes(RecipeOutput output, HolderLookup.Provider holderLookup) {
         // 注册矿物块的合成与分解配方
         compressAndDecompressNine(MaterialItems.TIN_INGOT.get(), ModTags.Items.INGOTS_TIN,
                 OreBlocks.TIN_BLOCK.asItem(), ModTags.Items.TIN_BLOCK, output);

@@ -65,9 +65,6 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
 
         fletchingTable(recipeOutput, "", ArrowItems.FLAMING_ARROW.toStack(25), Ingredient.EMPTY, AmountIngredient.of(25, Items.ARROW), Ingredient.of(ModTags.Items.TORCH));
 
-        cookingPot(recipeOutput, FoodItems.APPLE_PIE.toStack(), Ingredient.of(PotionItems.BOTTLE), CookingPotRecipe.HeatSourcePredicate.EMPTY, 100, Ingredient.of(Items.APPLE));
-        cookingPot(recipeOutput, SwordItems.SWEET_SWORD.toStack(), Ingredient.of(Items.WOODEN_SWORD), CookingPotRecipe.HeatSourcePredicate.EMPTY, 100, Ingredient.of(Items.COOKIE), Ingredient.of(Items.SUGAR), Ingredient.of(Items.COCOA_BEANS));   // 糖果剑
-
         altar(recipeOutput, ConsumableItems.BLOODY_SPINE.toStack(), AmountIngredient.of(30, ConsumableItems.VICIOUS_POWDER), AmountIngredient.of(15, MaterialItems.VERTEBRA));
 
         alchemyTable(recipeOutput, PotionItems.ARCHERY_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.LENS), Ingredient.of(MaterialItems.DAYBLOOM));
@@ -115,12 +112,6 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
     protected void fletchingTable(RecipeOutput recipeOutput, String suffix, ItemStack result, Ingredient tail, Ingredient body, Ingredient head) {
         ResourceLocation id = Confluence.asResource("fletching_table/" + getItemName(result.getItem()) + suffix);
         recipeOutput.accept(id, new FletchingTableRecipe(result, tail, body, head), null);
-    }
-
-    protected void cookingPot(RecipeOutput recipeOutput, ItemStack result, Ingredient container, CookingPotRecipe.HeatSourcePredicate heatSource, int cookingTime, Ingredient... ingredients) {
-        ResourceLocation id = Confluence.asResource("cooking_pot/" + getItemName(result.getItem()));
-        NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
-        recipeOutput.accept(id, new CookingPotRecipe(result, zingredients, container, heatSource, cookingTime), null);
     }
 
     protected void altar(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {

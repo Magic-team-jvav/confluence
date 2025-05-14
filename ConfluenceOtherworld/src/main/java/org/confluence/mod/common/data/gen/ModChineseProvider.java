@@ -61,6 +61,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.price.copper", "铜");
         add("tooltip.price.sell", "售价：");
 
+        add("tooltip.jei.state_properties", "需要的方块属性：");
+
         add("tooltip.item.confluence.meteorite_ingot.0", "摸起来是温的");
         add("tooltip.item.confluence.encumbering_stone.0", "锁上时能防止拾取物品");
         add("tooltip.item.confluence.encumbering_stone.1", "背包内右键点击可解锁");

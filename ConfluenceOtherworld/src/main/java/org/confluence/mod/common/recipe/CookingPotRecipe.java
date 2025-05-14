@@ -1,11 +1,14 @@
 package org.confluence.mod.common.recipe;
 
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancements.critereon.NbtPredicate;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -150,20 +153,17 @@ public class CookingPotRecipe extends AbstractAmountRecipe<CookingPotRecipe.Inpu
         }
     }
 
-    public record HeatSourcePredicate(Optional<TagKey<Block>> tag, Optional<StatePropertiesPredicate> properties, Optional<NbtPredicate> nbt) {
+    public record HeatSourcePredicate(Optional<Either<TagKey<Block>, HolderSet<Block>>> blocks, Optional<StatePropertiesPredicate> properties, Optional<NbtPredicate> nbt) {
         public static final HeatSourcePredicate EMPTY = new HeatSourcePredicate(Optional.empty(), Optional.empty(), Optional.empty());
         public static final Codec<HeatSourcePredicate> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                TagKey.codec(Registries.BLOCK).optionalFieldOf("tag").forGetter(HeatSourcePredicate::tag),
+                Codec.either(TagKey.codec(Registries.BLOCK), RegistryCodecs.homogeneousList(Registries.BLOCK, true)).optionalFieldOf("blocks").forGetter(HeatSourcePredicate::blocks),
                 StatePropertiesPredicate.CODEC.optionalFieldOf("state").forGetter(HeatSourcePredicate::properties),
                 NbtPredicate.CODEC.optionalFieldOf("nbt").forGetter(HeatSourcePredicate::nbt)
         ).apply(instance, HeatSourcePredicate::new));
         public static final StreamCodec<RegistryFriendlyByteBuf, HeatSourcePredicate> STREAM_CODEC = StreamCodec.composite(
-                ByteBufCodecs.optional(ExtraByteBufCodecs.tagKey(Registries.BLOCK)),
-                HeatSourcePredicate::tag,
-                ByteBufCodecs.optional(StatePropertiesPredicate.STREAM_CODEC),
-                HeatSourcePredicate::properties,
-                ByteBufCodecs.optional(NbtPredicate.STREAM_CODEC),
-                HeatSourcePredicate::nbt,
+                ByteBufCodecs.optional(ByteBufCodecs.either(ExtraByteBufCodecs.tagKey(Registries.BLOCK), ByteBufCodecs.holderSet(Registries.BLOCK))), HeatSourcePredicate::blocks,
+                ByteBufCodecs.optional(StatePropertiesPredicate.STREAM_CODEC), HeatSourcePredicate::properties,
+                ByteBufCodecs.optional(NbtPredicate.STREAM_CODEC), HeatSourcePredicate::nbt,
                 HeatSourcePredicate::new
         );
 
@@ -172,28 +172,35 @@ public class CookingPotRecipe extends AbstractAmountRecipe<CookingPotRecipe.Inpu
         }
 
         private boolean matchesState(BlockState state) {
-            return (tag.isEmpty() || state.is(tag.get())) && (properties.isEmpty() || properties.get().matches(state));
+            return (blocks.isEmpty() || blocks.get().map(state::is, state::is)) && (properties.isEmpty() || properties.get().matches(state));
         }
 
         private boolean matchesBlockEntity(LevelReader level, @Nullable BlockEntity blockEntity) {
             return nbt.isEmpty() || (blockEntity != null && nbt.get().matches(blockEntity.saveWithFullMetadata(level.registryAccess())));
         }
 
+        public static Builder builder() {
+            return new Builder();
+        }
+
         @SuppressWarnings("all")
         public static class Builder {
-            private Optional<TagKey<Block>> blocks = Optional.empty();
+            private Optional<Either<TagKey<Block>, HolderSet<Block>>> blocks = Optional.empty();
             private Optional<StatePropertiesPredicate> properties = Optional.empty();
             private Optional<NbtPredicate> nbt = Optional.empty();
 
-            private Builder() {
-            }
-
-            public static Builder block() {
-                return new Builder();
-            }
-
             public Builder of(TagKey<Block> tag) {
-                this.blocks = Optional.of(tag);
+                this.blocks = Optional.of(Either.left(tag));
+                return this;
+            }
+
+            public Builder of(HolderSet<Block> set) {
+                this.blocks = Optional.of(Either.right(set));
+                return this;
+            }
+
+            public Builder of(Block... set) {
+                this.blocks = Optional.of(Either.right(HolderSet.direct(Block::builtInRegistryHolder, set)));
                 return this;
             }
 

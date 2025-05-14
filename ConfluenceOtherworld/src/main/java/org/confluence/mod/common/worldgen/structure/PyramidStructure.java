@@ -12,16 +12,11 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModStructures;
-import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.init.block.OreBlocks;
 import org.joml.Vector3d;
 
-import java.util.Map;
 import java.util.Optional;
 
-import static net.minecraft.world.level.block.LeavesBlock.PERSISTENT;
 import static org.confluence.lib.util.StructureUtils.*;
 
 public class PyramidStructure extends Structure {
@@ -37,7 +32,7 @@ public class PyramidStructure extends Structure {
         int x = startChunk.getMiddleBlockX();
         int z = startChunk.getMiddleBlockZ();
         int lowestY = getHeight(x, z, context);
-        if ((x * x + z * z) <= 160000 || lowestY < context.chunkGenerator().getSeaLevel() - 16) {
+        if (x * x + z * z <= 400 * 400 || lowestY < context.chunkGenerator().getSeaLevel() - 16) {
             return Optional.empty();
         }
         return onTopOfChunkCenter(context, Heightmap.Types.WORLD_SURFACE_WG, builder -> {

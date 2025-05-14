@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.*;
@@ -28,11 +29,11 @@ import static org.confluence.lib.util.StructureUtils.*;
 
 public class MineTunnelsStructure extends Structure {
     public static final MapCodec<MineTunnelsStructure> CODEC = simpleCodec(MineTunnelsStructure::new);
-    public static final BlockPos[] facing = new BlockPos[]{
-            new BlockPos(1, 0, 0),
-            new BlockPos(-1, 0, 0),
-            new BlockPos(0, 0, 1),
-            new BlockPos(0, 0, -1)
+    public static final Direction[] facing = new Direction[]{
+            Direction.EAST,
+            Direction.WEST,
+            Direction.SOUTH,
+            Direction.NORTH
     };
     public static final int[] railShape = new int[]{5, 4, 7, 6};
 
@@ -133,10 +134,10 @@ public class MineTunnelsStructure extends Structure {
                 blockMap.put(blockPos, 12);
                 blockMap.put(blockPos.offset(0, 1, 0), 13);
             }
-            for (Map.Entry<BlockPos, Integer> translation : translationMap.entrySet()) {
+            for (Object2IntMap.Entry<BlockPos> translation : translationMap.object2IntEntrySet()) {
                 translationPos = translation.getKey();
-                type4 = translation.getValue() % 4;
-                facing2 = translation.getValue() / 4;
+                type4 = translation.getIntValue() % 4;
+                facing2 = translation.getIntValue() / 4;
                 blockMap.put(translationPos, (facing2 == 0) ? 20 : 21);
                 switch (type4) {
                     case 0:
@@ -254,7 +255,7 @@ public class MineTunnelsStructure extends Structure {
         int upDown = ownFacing / 4;
         int setFacing;
         int face = (facing4 == 0 || facing4 == 1) ? 0 : 4;
-        BlockPos offset = facing[facing4];
+        Direction offset = facing[facing4];
         if (length < maxLength) {
             if (upDown == 1) {
                 if (translationCD <= 0) {
@@ -287,25 +288,25 @@ public class MineTunnelsStructure extends Structure {
                 }
                 float randomCount = random.nextFloat();
                 if (0.025F >= randomCount && ownPos.getY() <= maxY) {
-                    tunnels(maxY, minY, length + 1, maxLength, facing4 + (upDown + 1) * 4, rotateCD - 1, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getX(), 0, offset.getZ()));
+                    tunnels(maxY, minY, length + 1, maxLength, facing4 + (upDown + 1) * 4, rotateCD - 1, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), 0, offset.getStepZ()));
                 } else if (0.975F <= randomCount && ownPos.getY() >= minY) {
-                    tunnels(maxY, minY, length + 1, maxLength, facing4, rotateCD - 1, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getX(), 0, offset.getZ()));
+                    tunnels(maxY, minY, length + 1, maxLength, facing4, rotateCD - 1, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), 0, offset.getStepZ()));
                 } else {
-                    tunnels(maxY, minY, length + 1, maxLength, facing4 + upDown * 4, rotateCD - 1, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getX(), 0, offset.getZ()));
+                    tunnels(maxY, minY, length + 1, maxLength, facing4 + upDown * 4, rotateCD - 1, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), 0, offset.getStepZ()));
                 }
                 tunnelsMap.put(ownPos, ownFacing);
             } else if (upDown == 0) {
                 if (ownPos.getY() <= minY || 0.1F >= random.nextFloat()) {
-                    tunnels(maxY, minY, length + 1, maxLength, facing4 + (upDown + 1) * 4, 2, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getX(), -1, offset.getZ()));
+                    tunnels(maxY, minY, length + 1, maxLength, facing4 + (upDown + 1) * 4, 2, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), -1, offset.getStepZ()));
                 } else {
-                    tunnels(maxY, minY, length + 1, maxLength, facing4, 2, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getX(), -1, offset.getZ()));
+                    tunnels(maxY, minY, length + 1, maxLength, facing4, 2, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), -1, offset.getStepZ()));
                 }
                 tunnelsMap.put(ownPos.offset(0, -1, 0), ownFacing);
             } else if (upDown == 2) {
                 if (ownPos.getY() >= maxY || 0.1F >= random.nextFloat()) {
-                    tunnels(maxY, minY, length + 1, maxLength, facing4 + (upDown - 1) * 4, 2, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getX(), 1, offset.getZ()));
+                    tunnels(maxY, minY, length + 1, maxLength, facing4 + (upDown - 1) * 4, 2, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), 1, offset.getStepZ()));
                 } else {
-                    tunnels(maxY, minY, length + 1, maxLength, facing4 + upDown * 4, 2, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getX(), 1, offset.getZ()));
+                    tunnels(maxY, minY, length + 1, maxLength, facing4 + upDown * 4, 2, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), 1, offset.getStepZ()));
                 }
                 tunnelsMap.put(ownPos, ownFacing);
             }

@@ -37,7 +37,7 @@ public class LivingMahoganyTreeStructure extends Structure {
         int x = startChunk.getMiddleBlockX();
         int z = startChunk.getMiddleBlockZ();
         int lowestY = getHeight(x, z, context);
-        if ((x * x + z * z) <= 160000 || lowestY < context.chunkGenerator().getSeaLevel() - 16) {
+        if (x * x + z * z <= 400 * 400 || lowestY < context.chunkGenerator().getSeaLevel() - 16) {
             return Optional.empty();
         }
         return onTopOfChunkCenter(context, Heightmap.Types.WORLD_SURFACE_WG, builder -> {

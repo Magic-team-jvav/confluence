@@ -171,7 +171,7 @@ public class FoodItems {
 
     public static final DeferredItem<BaseFoodItem> LONGEVITY_NOODLES = registerNormalFood("longevity_noodles", ModFoodProperties.WellFedProperties(6000, 4, 1.5f));
 
-    public static final Supplier<BaseFoodItem.BlockItem> GREEN_DUMPLING = registerBlockItemFood("green_dumpling", builder -> builder.food(ModFoodProperties.PlentySatisfiedProperties(6000, 4, 1.5f)).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.GREEN_DUMPLING_BLOCK);
+    public static final Supplier<BaseFoodItem.BlockItem> GREEN_DUMPLING = registerBlockItemFood("green_dumpling", builder -> builder.food(ModFoodProperties.PlentySatisfiedProperties(6000, 3, 1.5f)).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.GREEN_DUMPLING_BLOCK);
 
     // 种子
     public static final Supplier<Item> STELLAR_BLOSSOM_SEED = ITEMS.register("stellar_blossom_seed", () -> new ItemNameBlockItem(NatureBlocks.STELLAR_BLOSSOM.get(), new Item.Properties()));

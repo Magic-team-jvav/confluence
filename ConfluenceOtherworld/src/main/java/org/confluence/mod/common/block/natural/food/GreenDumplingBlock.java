@@ -86,7 +86,7 @@ public class GreenDumplingBlock extends Block {
     protected static InteractionResult eat(LevelAccessor level, BlockPos pos, BlockState state, Player player) {
         ItemStack itemStack = player.getItemInHand(InteractionHand.MAIN_HAND);
         if (!player.canEat(false)) return InteractionResult.PASS;
-        player.getFoodData().eat(3, 2.5F);
+        player.getFoodData().eat(3, 0.25F);
         player.addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, 6000, 1));
         player.addEffect(new MobEffectInstance(ModEffects.CHOKING, 2400));
         player.addEffect(new MobEffectInstance(ModEffects.HUNGER_DELAYED, 1000));

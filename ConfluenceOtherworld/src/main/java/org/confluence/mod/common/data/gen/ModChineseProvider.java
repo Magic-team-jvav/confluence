@@ -2261,6 +2261,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SPELL_TOME.get(), "魔法书");
         add(MaterialItems.HARPY_FEATHER.get(), "鸟妖之羽");
         add(MaterialItems.GIANT_HARPY_FEATHER.get(), "巨型鸟妖之羽");
+        add(MaterialItems.CHINA_PLATE.get(), "陶瓷盘");
+        add(MaterialItems.CHINA_BOWL.get(), "陶瓷碗");
         // 植物
         add(MaterialItems.WATERLEAF.get(), "幌菊");
         add(MaterialItems.FIREBLOSSOM.get(), "火焰花");

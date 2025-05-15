@@ -637,7 +637,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                 )
                                 .add(LootItem.lootTableItem(Items.BOWL).setWeight(10))
                                 .add(LootItem.lootTableItem(Items.STICK).setWeight(5))
-                                .add(LootItem.lootTableItem(Items.INK_SAC).setWeight(1).apply(SetItemCountFunction.setCount(ConstantValue.exactly(10.0F))))
+                                .add(LootItem.lootTableItem(Items.INK_SAC).apply(SetItemCountFunction.setCount(ConstantValue.exactly(10.0F))))
                                 .add(LootItem.lootTableItem(Blocks.TRIPWIRE_HOOK).setWeight(10))
                                 .add(LootItem.lootTableItem(Blocks.SEAGRASS).setWeight(10))
                                 .add(LootItem.lootTableItem(FoodItems.JOJA_COLA).setWeight(10))
@@ -939,7 +939,6 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                         )
                                         .setWeight(72).setQuality(1)
                         )
-                        /*
                         // 地牢
                         .add(
                                 LootItem.lootTableItem(CrateBlocks.DUNGEON_CRATE)
@@ -956,7 +955,6 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                         )
                                         .setWeight(72).setQuality(1)
                         )
-                         */
                 )
         );
         // 匣子-困难模式
@@ -1140,7 +1138,6 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                         )
                                         .setWeight(72).setQuality(1)
                         )
-                        /*
                         // 地牢
                         .add(
                                 LootItem.lootTableItem(CrateBlocks.FENCING_CRATE)
@@ -1157,7 +1154,6 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                         )
                                         .setWeight(72).setQuality(1)
                         )
-                        */
                 )
         );
         // 岩浆

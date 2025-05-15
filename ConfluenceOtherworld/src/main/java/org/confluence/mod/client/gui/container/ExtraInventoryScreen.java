@@ -2,6 +2,9 @@ package org.confluence.mod.client.gui.container;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.player.LocalPlayer;
@@ -17,6 +20,7 @@ import org.confluence.lib.common.menu.IToggleSlot;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.menu.ExtraInventoryMenu;
+import org.confluence.mod.integration.mine_team.ExtraTeamRender;
 import org.confluence.terra_curio.TerraCurio;
 import top.theillusivec4.curios.common.network.client.CPacketOpenVanilla;
 
@@ -30,6 +34,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     private boolean buttonPressed = false;
     private float xMouse;
     private float yMouse;
+    private final ExtraTeamRender teamRender = new ExtraTeamRender(this);
 
     public ExtraInventoryScreen(ExtraInventoryMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -37,6 +42,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
 
     @Override
     public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+        teamRender.renderTeamIcon(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
         this.xMouse = (float) pMouseX;
@@ -46,7 +52,8 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     @Override
     protected void init() {
         super.init();
-
+        teamRender.initButton();
+        // better experience mixin here
     }
 
     @Override
@@ -153,5 +160,10 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         minecraft.setScreen(inventory);
         player.containerMenu.setCarried(stack);
         PacketDistributor.sendToServer(new CPacketOpenVanilla(stack));
+    }
+
+    @Override
+    public <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget) {
+        return super.addRenderableWidget(widget);
     }
 }

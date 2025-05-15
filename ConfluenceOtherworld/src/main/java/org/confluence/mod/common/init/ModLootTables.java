@@ -62,6 +62,11 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> TREASURE = register("gameplay/fishing/treasure");
     public static final ResourceKey<LootTable> CRATE = register("gameplay/crate");
 
+    public static final ResourceKey<LootTable> CORRUPTION_CARRY = register("gameplay/corruption_carry");
+    public static final ResourceKey<LootTable> SLIME_CARRY = register("gameplay/slime_carry");
+
+    public static final ResourceKey<LootTable> HERB_BAG_INNER = register("gameplay/herb_bag_inner");
+
 
     public static final ResourceKey<LootTable> INITIAL_WORLD_UNDERGROUND_CHEST = register("chests/initial_world_underground_chest");
     public static final ResourceKey<LootTable> CAVE_CHESTS = register("chests/cave_chests");

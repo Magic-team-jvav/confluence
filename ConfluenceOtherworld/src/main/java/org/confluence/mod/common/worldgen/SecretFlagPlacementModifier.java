@@ -1,9 +1,8 @@
 package org.confluence.mod.common.worldgen;
 
-import com.google.gson.JsonPrimitive;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.JsonOps;
+import com.mojang.serialization.JavaOps;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -31,7 +30,7 @@ public class SecretFlagPlacementModifier extends PlacementModifier {
                 ret = Long.parseLong(str.substring(1), 2);
             } catch (NumberFormatException ignored) {}
         } else {
-            ret = ModSecretSeeds.CODEC.parse(JsonOps.INSTANCE, new JsonPrimitive(str)).mapOrElse(SecretSeed::getFlag, err -> {
+            ret = ModSecretSeeds.CODEC.parse(JavaOps.INSTANCE, str).mapOrElse(SecretSeed::getFlag, err -> {
                 try {
                     return Long.parseLong(str);
                 } catch (NumberFormatException ignored) {

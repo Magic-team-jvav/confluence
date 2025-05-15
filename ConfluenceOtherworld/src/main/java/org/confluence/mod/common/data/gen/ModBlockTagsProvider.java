@@ -353,6 +353,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 FLOATING_WHEAT_BALE.get(),
                 SCULK_TRAP.get()
         );
+        CrateBlocks.BLOCKS.getEntries().forEach(block -> mineableWithHoe.add(block.get()));
         // 斧头
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithAxe = tag(BlockTags.MINEABLE_WITH_AXE);
         mineableWithAxe.add(

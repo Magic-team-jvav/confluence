@@ -13,10 +13,10 @@ plugins {
 
 include ":ConfluenceOtherworld"
 
-var projectName = ["Confluence-Magic-Lib","TerraEntity","MineTeam","EquipmentBenediction",
-                   "TerraCurio","ParticleStorm","HeavenDestinyMoment","PhaseJourney",
-                    "TerraMoment","TerraGuns","IsekaiInvaded","TerraFurniture",
-                   "EntityTrackerHUD","ConfluenceDelight","EnemyBanner"
+var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam", "EquipmentBenediction",
+                   "TerraCurio", "HeavenDestinyMoment", "PhaseJourney",
+                   "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture",
+                   "EntityTrackerHUD", "EnemyBanner"
 ]
-projectName.forEach {name -> include ":" + name}
+projectName.forEach { name -> include ":" + name }
 

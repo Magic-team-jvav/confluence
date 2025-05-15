@@ -2,11 +2,9 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
@@ -14,7 +12,6 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.common.CursedFlameItem;
 import org.confluence.mod.common.item.common.GelItem;
 import org.confluence.mod.common.item.common.MushroomItem;
-import org.jetbrains.annotations.NotNull;
 
 public class MaterialItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -108,6 +105,9 @@ public class MaterialItems {
     public static final DeferredItem<Item> PEARL = register("pearl", ModRarity.BLUE);
     public static final DeferredItem<Item> BLACK_PEARL = register("black_pearl", ModRarity.BLUE);
     public static final DeferredItem<Item> PINK_PEARL = register("pink_pearl", ModRarity.BLUE);
+    
+    public static final DeferredItem<Item> CHINA_PLATE = register("china_plate");
+    public static final DeferredItem<Item> CHINA_BOWL = register("china_bowl");
 
     // 草药
     public static final DeferredItem<Item> WATERLEAF = ITEMS.registerSimpleItem("waterleaf");

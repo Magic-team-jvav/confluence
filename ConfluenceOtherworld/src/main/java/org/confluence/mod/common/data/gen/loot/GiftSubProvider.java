@@ -6,29 +6,35 @@ import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.AlternativesEntry;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModLootTables;
-import org.confluence.mod.common.init.block.CrateBlocks;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.loot.DateLootItemCondition;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 
+import java.util.Calendar;
 import java.util.function.BiConsumer;
 
 public record GiftSubProvider(HolderLookup.Provider registries) implements LootTableSubProvider {
     @Override
     public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> output) {
         // VanillaChestLoot
+        DateLootItemCondition.Builder halloweens = DateLootItemCondition.builder().from(Calendar.OCTOBER, 10).to(Calendar.NOVEMBER, 1);
+        DateLootItemCondition.Builder christmas = DateLootItemCondition.builder().from(Calendar.DECEMBER, 15).to(Calendar.DECEMBER, 31);
+
         HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
         // 困难模式前匣子通用
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/environment_crate"), LootTable.lootTable()
@@ -259,9 +265,9 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(EmptyLootItem.emptyItem().setWeight(15))
                 )
                 .withPool(LootPool.lootPool()
-                .add(LootItem.lootTableItem(ModItems.SILVER_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 90))).setWeight(2))
-                .add(LootItem.lootTableItem(ModItems.GOLDEN_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5))).setWeight(1))
-                .add(EmptyLootItem.emptyItem().setWeight(18))
+                        .add(LootItem.lootTableItem(ModItems.SILVER_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 90))).setWeight(2))
+                        .add(LootItem.lootTableItem(ModItems.GOLDEN_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5))).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(18))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.RAW_COPPER).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6))).setWeight(1))
@@ -804,5 +810,252 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 )
         );
 
+        // 暗影套噬魂怪掉落
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/corruption_carry"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ArmorItems.SHADOW_HELMET))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ArmorItems.SHADOW_CHESTPLATE))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ArmorItems.SHADOW_LEGGINGS))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ArmorItems.SHADOW_BOOTS))
+                )
+        );
+
+        // 牡蛎
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/clam"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.SHUCKED_OYSTER))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.PEARL).setWeight(28))
+                        .add(LootItem.lootTableItem(MaterialItems.BLACK_PEARL).setWeight(14))
+                        .add(LootItem.lootTableItem(MaterialItems.PINK_PEARL).setWeight(2))
+                        .add(EmptyLootItem.emptyItem().setWeight(175))
+                )
+        );
+        // 蠕虫罐头
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/can_of_worms"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(BaitItems.WORM))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 8)))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(BaitItems.ENCHANTED_NIGHTCRAWLER)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
+                                .setWeight(3))
+                        .add(EmptyLootItem.emptyItem().setWeight(7))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(BaitItems.WORM).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(19))
+                )
+        );
+        // 圣诞礼物
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/christmas_gift"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(DecorativeBlocks.GREEN_CANDY_BLOCK)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 29)))
+                                .setWeight(1680))
+                        .add(LootItem.lootTableItem(DecorativeBlocks.RED_CANDY_BLOCK)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 29)))
+                                .setWeight(1680))
+                        .add(LootItem.lootTableItem(FoodItems.SUGAR_COOKIE)
+                                .setWeight(360))
+                        .add(LootItem.lootTableItem(FoodItems.GINGERBREAD_COOKIE)
+                                .setWeight(360))
+                        .add(LootItem.lootTableItem(FoodItems.CHRISTMAS_PUDDING)
+                                .setWeight(360))
+                        .add(LootItem.lootTableItem(TCItems.HAND_WARMER)
+                                .setWeight(63))
+                        .add(LootItem.lootTableItem(TCItems.TOOLBOX)
+                                .setWeight(31))
+                        .add(LootItem.lootTableItem(SwordItems.CANDY_CANE_SWORD)
+                                .setWeight(63))
+                        .add(LootItem.lootTableItem(Items.COAL)
+                                .setWeight(333).setQuality(-2))
+                        .add(LootItem.lootTableItem(PickaxeItems.CANDY_CANE_PICKAXE)
+                                .setWeight(63))
+                        .add(LootItem.lootTableItem(HookItems.CANDY_CANE_HOOK)
+                                .setWeight(63))
+                )
+        );
+        // 套餐
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/deluxe_package"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.ROASTED_DUCK))
+                        .add(LootItem.lootTableItem(Items.COOKED_CHICKEN))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.BURGER))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.FRIES))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.CHICKEN_NUGGET))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 6)))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.ICE_CREAM))
+                        .add(LootItem.lootTableItem(FoodItems.JOJA_COLA))
+                )
+        );
+        // 草药袋内部池
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/herb_bag_inner"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.WATERLEAF).setWeight(1))
+                        .add(LootItem.lootTableItem((ItemLike) FoodItems.WATERLEAF_SEED).setWeight(1))
+                        .add(LootItem.lootTableItem(MaterialItems.FIREBLOSSOM).setWeight(1))
+                        .add(LootItem.lootTableItem((ItemLike) FoodItems.FIREBLOSSOM_SEED).setWeight(1))
+                        .add(LootItem.lootTableItem(MaterialItems.MOONGLOW).setWeight(1))
+                        .add(LootItem.lootTableItem((ItemLike) FoodItems.MOONGLOW_SEED).setWeight(1))
+                        .add(LootItem.lootTableItem(MaterialItems.BLINKROOT).setWeight(1))
+                        .add(LootItem.lootTableItem((ItemLike) FoodItems.BLINKROOT_SEED).setWeight(1))
+                        .add(LootItem.lootTableItem(MaterialItems.SHIVERTHORN).setWeight(1))
+                        .add(LootItem.lootTableItem((ItemLike) FoodItems.SHIVERTHORN_SEED).setWeight(1))
+                        .add(LootItem.lootTableItem(MaterialItems.DAYBLOOM).setWeight(1))
+                        .add(LootItem.lootTableItem((ItemLike) FoodItems.DAYBLOOM_SEED).setWeight(1))
+                        .add(LootItem.lootTableItem(MaterialItems.DEATHWEED).setWeight(1))
+                        .add(LootItem.lootTableItem((ItemLike) FoodItems.DEATHWEED_SEED).setWeight(1))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6)))
+                )
+        );
+        // 草药袋内部池
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/herb_bag"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(NestedLootTable.lootTableReference(ModLootTables.HERB_BAG_INNER))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5)))
+                )
+        );
+        // 红包
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/red_envelope"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ModItems.COPPER_COIN).setWeight(888).setQuality(-3))
+                        .add(LootItem.lootTableItem(ModItems.SILVER_COIN).setWeight(88).setQuality(1))
+                        .add(LootItem.lootTableItem(ModItems.GOLDEN_COIN).setWeight(8).setQuality(2))
+                        .add(LootItem.lootTableItem(ModItems.PLATINUM_COIN).setWeight(1).setQuality(3))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(8,8)))
+                )
+        );
+        // 生命木魔棒捆绑
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/living_mahogany_carry"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ModItems.LIVING_MAHOGANY_WAND))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ModItems.RICH_MAHOGANY_LEAF_WAND))
+                )
+        );
+        // 砂糖橘
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/sugar_tangerine"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.PEELED_SUGAR_TANGERINE))
+                )
+        );
+        // 史莱姆嵌套携带
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/slime_carry"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.TORCH)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10)))
+                                .setWeight(42))
+                        .add(LootItem.lootTableItem(ConsumableItems.BOMB)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
+                                .setWeight(42))
+                        .add(LootItem.lootTableItem(MaterialItems.RAW_TIN)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
+                                .setWeight(21))
+                        .add(LootItem.lootTableItem(MaterialItems.RAW_SILVER)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
+                                .setWeight(21))
+                        .add(LootItem.lootTableItem(MaterialItems.RAW_TUNGSTEN)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
+                                .setWeight(21))
+                        .add(LootItem.lootTableItem(MaterialItems.RAW_PLATINUM)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
+                                .setWeight(21))
+                        .add(LootItem.lootTableItem(Items.RAW_COPPER)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
+                                .setWeight(21))
+                        .add(LootItem.lootTableItem(Items.RAW_GOLD)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
+                                .setWeight(21))
+                        .add(LootItem.lootTableItem(Items.RAW_IRON)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
+                                .setWeight(21))
+                        .add(LootItem.lootTableItem(ModItems.GOLDEN_COIN)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
+                                .setWeight(56))
+                        .add(LootItem.lootTableItem(ModItems.SILVER_COIN)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 99)))
+                                .setWeight(56))
+                        .add(LootItem.lootTableItem(ModItems.COPPER_COIN)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 99)))
+                                .setWeight(56))
+                        .add(LootItem.lootTableItem(ModBlocks.ROPE)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6)))
+                                .setWeight(42))
+                        .add(AlternativesEntry.alternatives(
+                                LootItem.lootTableItem(ModItems.HEART).when(AllOfCondition.allOf(halloweens, christmas).invert()),
+                                LootItem.lootTableItem(ModItems.CANDY_APPLE).when(halloweens),
+                                LootItem.lootTableItem(ModItems.CANDY_CANE).when(christmas)
+                        ).append(EmptyLootItem.emptyItem().setWeight(42)))
+                        .add(LootItem.lootTableItem(PotionItems.SWIFTNESS_POTION)
+                                .setWeight(24))
+                        .add(LootItem.lootTableItem(PotionItems.IRON_SKIN_POTION)
+                                .setWeight(24))
+                        .add(LootItem.lootTableItem(PotionItems.SPELUNKER_POTION)
+                                .setWeight(24))
+                        .add(LootItem.lootTableItem(PotionItems.MINING_POTION)
+                                .setWeight(24))
+                        .add(LootItem.lootTableItem(PotionItems.RECALL_POTION)
+                                .setWeight(24))
+                        .add(LootItem.lootTableItem(PotionItems.WORMHOLE_POTION)
+                                .setWeight(24))
+                        .add(LootItem.lootTableItem(PotionItems.WORMHOLE_POTION)
+                                .setWeight(24))
+                )
+        );
+        // 渔夫奖励列表其一
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/fishing_quests_0"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(PotionItems.FISHING_POTION)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5)))
+                                .setWeight(300))
+                        .add(LootItem.lootTableItem(PotionItems.CRATE_POTION)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5)))
+                                .setWeight(300))
+                        .add(LootItem.lootTableItem(ToolItems.GOLDEN_BUG_NET)
+                                .setWeight(15))
+                        .add(LootItem.lootTableItem(HookItems.FISH_HOOK)
+                                .setWeight(20))
+                        .add(LootItem.lootTableItem(MinecartItems.MINECARP)
+                                .setWeight(20))
+                        .add(LootItem.lootTableItem(AccessoryItems.HIGH_TEST_FISHING_LINE)
+                                .setWeight(30))
+                        .add(LootItem.lootTableItem(TCItems.ANGLER_EARRING)
+                                .setWeight(30))
+                        .add(LootItem.lootTableItem(TCItems.FISHERMANS_POCKET_GUIDE)
+                                .setWeight(40))
+                        .add(LootItem.lootTableItem(TCItems.WEATHER_RADIO)
+                                .setWeight(40))
+                        .add(LootItem.lootTableItem(TCItems.SEXTANT)
+                                .setWeight(40))
+                        .add(LootItem.lootTableItem(AccessoryItems.TACKLE_BOX)
+                                .setWeight(30))
+                        .add(LootItem.lootTableItem(AccessoryItems.FISHING_BOBBER)
+                                .setWeight(48))
+                        .add(LootItem.lootTableItem(PotionItems.RECALL_POTION)
+                                .setWeight(24))
+                        .add(LootItem.lootTableItem(PotionItems.WORMHOLE_POTION)
+                                .setWeight(24))
+                        .add(LootItem.lootTableItem(PotionItems.WORMHOLE_POTION)
+                                .setWeight(24))
+                )
+        );
     }
 }

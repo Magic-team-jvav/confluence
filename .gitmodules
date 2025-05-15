@@ -10,10 +10,6 @@
     path = EquipmentBenediction
     url = https://github.com/XiaoHuNao/EquipmentBenediction
     branch = neoforge-dev/1.21.1
-[submodule "ParticleStorm"]
-	path = ParticleStorm
-	url = https://github.com/westernat/ParticleStorm
-	branch = neoforge-dev/1.21.1
 [submodule "HeavenDestinyMoment"]
 	path = HeavenDestinyMoment
 	url = https://github.com/XiaoHuNao/HeavenDestinyMoment
@@ -49,14 +45,6 @@
 [submodule "Confluence-Magic-Lib"]
 	path = Confluence-Magic-Lib
 	url = https://github.com/westernat/Confluence-Magic-Lib.git
-	branch = neoforge-dev/1.21.1
-[submodule "ConfluenceDelight"]
-	path = ConfluenceDelight
-	url = https://github.com/XiaoHuNao/ConfluenceDelight.git
-	branch = neoforge-dev/1.21.1
-[submodule "CustomInfection"]
-	path = CustomInfection
-	url = https://github.com/XiaoHuNao/CustomInfection
 	branch = neoforge-dev/1.21.1
 [submodule "EnemyBanner"]
 	path = EnemyBanner

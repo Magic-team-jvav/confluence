@@ -16,7 +16,6 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
-import org.confluence.lib.util.StructureUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -50,7 +49,6 @@ public class HeavenIslandsStructure extends Structure {
 
     @Override
     protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
-        int lowestY = getLowestY(context, 16, 16);
         ChunkPos startChunk = context.chunkPos();
         int x = startChunk.getMiddleBlockX();
         int z = startChunk.getMiddleBlockZ();

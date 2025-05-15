@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.Confluence;
@@ -46,6 +47,8 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         ), null);
 
         stonecutting(recipeOutput, "", DecorativeBlocks.BLUE_ICE_BRICKS.toStack(4), Ingredient.of(Blocks.BLUE_ICE));
+        stonecutting(recipeOutput, "", MaterialItems.CHINA_BOWL.toStack(1), Ingredient.of(Items.WHITE_TERRACOTTA));
+        stonecutting(recipeOutput, "", MaterialItems.CHINA_PLATE.toStack(1), Ingredient.of(Items.WHITE_TERRACOTTA));
 
         skyMill(recipeOutput, DecorativeBlocks.BOUNCY_CLOUD_BLOCK.toStack(), Ingredient.of(MaterialItems.PINK_GEL), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
 
@@ -64,9 +67,6 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         hellforge(recipeOutput, MaterialItems.HELLSTONE_INGOT.toStack(), 0, 100, true, AmountIngredient.of(3, MaterialItems.RAW_HELLSTONE), Ingredient.of(Items.OBSIDIAN));
 
         fletchingTable(recipeOutput, "", ArrowItems.FLAMING_ARROW.toStack(25), Ingredient.EMPTY, AmountIngredient.of(25, Items.ARROW), Ingredient.of(ModTags.Items.TORCH));
-
-        cookingPot(recipeOutput, FoodItems.APPLE_PIE.toStack(), Ingredient.of(PotionItems.BOTTLE), CookingPotRecipe.HeatSourcePredicate.EMPTY, 100, Ingredient.of(Items.APPLE));
-        cookingPot(recipeOutput, SwordItems.SWEET_SWORD.toStack(), Ingredient.of(Items.WOODEN_SWORD), CookingPotRecipe.HeatSourcePredicate.EMPTY, 100, Ingredient.of(Items.COOKIE), Ingredient.of(Items.SUGAR), Ingredient.of(Items.COCOA_BEANS));   // 糖果剑
 
         altar(recipeOutput, ConsumableItems.BLOODY_SPINE.toStack(), AmountIngredient.of(30, ConsumableItems.VICIOUS_POWDER), AmountIngredient.of(15, MaterialItems.VERTEBRA));
 
@@ -115,12 +115,6 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
     protected void fletchingTable(RecipeOutput recipeOutput, String suffix, ItemStack result, Ingredient tail, Ingredient body, Ingredient head) {
         ResourceLocation id = Confluence.asResource("fletching_table/" + getItemName(result.getItem()) + suffix);
         recipeOutput.accept(id, new FletchingTableRecipe(result, tail, body, head), null);
-    }
-
-    protected void cookingPot(RecipeOutput recipeOutput, ItemStack result, Ingredient container, CookingPotRecipe.HeatSourcePredicate heatSource, int cookingTime, Ingredient... ingredients) {
-        ResourceLocation id = Confluence.asResource("cooking_pot/" + getItemName(result.getItem()));
-        NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
-        recipeOutput.accept(id, new CookingPotRecipe(result, zingredients, container, heatSource, cookingTime), null);
     }
 
     protected void altar(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {

@@ -12,10 +12,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.confluence.lib.common.data.gen.CollectRecipeProvider;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.gen.recipe.CraftingRecipeProvider;
-import org.confluence.mod.common.data.gen.recipe.HeavyWorkBenchProvider;
-import org.confluence.mod.common.data.gen.recipe.ModRecipeProvider;
-import org.confluence.mod.common.data.gen.recipe.NPCShopProvider;
+import org.confluence.mod.common.data.gen.recipe.*;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModDamageTypes;
 
@@ -59,7 +56,8 @@ public final class ModDataGenerator {
                 NPCShopProvider::new,
                 ModRecipeProvider::new,
                 CraftingRecipeProvider::new,
-                HeavyWorkBenchProvider::new
+                HeavyWorkBenchProvider::new,
+                CookingPotProvider::new
         ));
         generator.addProvider(server, new ModDataMapProvider(output, lookup));
         generator.addProvider(server, new ModLootTableProvider(output, lookup));

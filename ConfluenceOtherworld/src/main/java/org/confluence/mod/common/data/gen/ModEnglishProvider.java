@@ -53,12 +53,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("options.difficulty.legendary", "§aLegendary");
         add("message.confluence.choking", "You're choking and need to drink water");
         add("message.confluence.advancement_combat_techniques", "The book's knowledge empowers your villagers!");
-        add("message.confluence.toolmode.tip","Shift & Right click on the air to switch mode");
-        add("message.confluence.toolmode.current","Current Mode: ");
-        add("message.confluence.hamaxe.mode.0","Hammer & Axe");
-        add("message.confluence.hamaxe.mode.1","Axe");
-        add("message.confluence.hoe_shovel.mode.0","Shovel");
-        add("message.confluence.hoe_shovel.mode.1","Hoe");
+        add("message.confluence.toolmode.tip", "Shift & Right click on the air to switch mode");
+        add("message.confluence.toolmode.current", "Current Mode: ");
+        add("message.confluence.hamaxe.mode.0", "Hammer & Axe");
+        add("message.confluence.hamaxe.mode.1", "Axe");
+        add("message.confluence.hoe_shovel.mode.0", "Shovel");
+        add("message.confluence.hoe_shovel.mode.1", "Hoe");
         add("jukebox_song.confluence.song", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
@@ -70,6 +70,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.price.silver", "Silver");
         add("tooltip.price.copper", "Copper");
         add("tooltip.price.sell", "Sell: ");
+
+        add("tooltip.jei.state_properties", "Required State Properties:");
 
         add("tooltip.item.confluence.meteorite_ingot.0", "Warm to the touch");
         add("tooltip.item.confluence.encumbering_stone.0", "Prevents item pickups while locked");
@@ -798,7 +800,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("container.confluence.sawmill", "Sawmill");
         add("container.confluence.tree_holes", "Tree Holes");
         add("container.confluence.npc_shop", "Npc Shop");
-        add("container.confluence.solidifier", "固化机");
+        add("container.confluence.solidifier", "Solidifier");
 
         add("title.confluence.shimmer_transmutation", "Shimmer Transmutation");
         add("title.confluence.altar", "Altar");
@@ -869,7 +871,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("resourcepack.terraria_armor", "Terraria-Like Armor");
 
         add("event.confluence.meteorite", "A meteorite has landed!");
-        add("event.confluence.meteorite.ready", "A meteorite will falling!");
+        add("event.confluence.meteorite.ready", "A meteorite is falling!");
         add("event.confluence.shadow_orb_broken.0", "A horrible chill goes down your spine...");
         add("event.confluence.shadow_orb_broken.1", "Screams echo around you...");
         add("event.confluence.crimson_heart_broken.0", "A horrible chill goes down your spine...");

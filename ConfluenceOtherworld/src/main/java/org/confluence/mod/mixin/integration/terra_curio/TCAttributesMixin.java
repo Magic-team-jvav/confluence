@@ -26,7 +26,7 @@ public abstract class TCAttributesMixin {
         return ranges;
     }
 
-    @Inject(method = "forConfluence$skip", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "forMixin$skip", at = @At("HEAD"), cancellable = true)
     private static void skip(Player player, ItemEntity itemEntity, float[] ranges, CallbackInfoReturnable<Boolean> cir) {
         ItemStack itemStack = itemEntity.getItem();
         double v = itemEntity.position().distanceToSqr(player.position());

@@ -14,12 +14,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = InformationHandler.class, remap = false)
 public abstract class InformationHandlerMixin {
-    @ModifyExpressionValue(method = "getFishingPowerInfo", at = @At(value = "INVOKE", target = "Lorg/confluence/lib/util/LibUtils;forConfluence$ModifyExpression(Ljava/lang/Object;)Ljava/lang/Object;"))
+    @ModifyExpressionValue(method = "getFishingPowerInfo", at = @At(value = "INVOKE", target = "Lorg/confluence/lib/util/LibUtils;forMixin$ModifyExpression(Ljava/lang/Object;)Ljava/lang/Object;"))
     private static Object modifyFishingPower(Object original, @Local(argsOnly = true) Player player) {
         return ClientPacketHandler.getFishingPower();
     }
 
-    @Inject(method = "getWeatherInfo", at = @At(value = "INVOKE", target = "Lorg/confluence/lib/util/LibUtils;forConfluence$Inject()V"), cancellable = true)
+    @Inject(method = "getWeatherInfo", at = @At(value = "INVOKE", target = "Lorg/confluence/lib/util/LibUtils;forMixin$Inject()V"), cancellable = true)
     private static void modifyWeather(Player player, CallbackInfoReturnable<Component> cir, @Local String weather) {
         cir.setReturnValue(Component.translatable("info.confluence.weather_radio." + weather, WeatherHandler.windSpeedInfo));
     }

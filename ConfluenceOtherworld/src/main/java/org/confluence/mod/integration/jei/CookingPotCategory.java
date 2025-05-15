@@ -83,14 +83,14 @@ public class CookingPotCategory implements IRecipeCategory<CookingPotRecipe> {
                     .addRichTooltipCallback((slotView, tooltip) -> recipe.getHeatSource().properties().ifPresent(predicate -> {
                         tooltip.add(Component.translatable("tooltip.jei.state_properties"));
                         for (StatePropertiesPredicate.PropertyMatcher property : predicate.properties()) {
-                            String name = "  " + property.name() + '=';
+                            String prefix = "  " + property.name() + '=';
                             StatePropertiesPredicate.ValueMatcher valueMatcher = property.valueMatcher();
                             if (valueMatcher instanceof StatePropertiesPredicate.ExactMatcher(String value)) {
-                                tooltip.add(Component.literal(name + value));
+                                tooltip.add(Component.literal(prefix + value));
                             } else if (valueMatcher instanceof StatePropertiesPredicate.RangedMatcher(Optional<String> minValue, Optional<String> maxValue)) {
-                                tooltip.add(Component.literal(name + '[' + minValue.orElse("") + ',' + maxValue.orElse("") + ']'));
+                                tooltip.add(Component.literal(prefix + '[' + minValue.orElse("") + ',' + maxValue.orElse("") + ']'));
                             } else {
-                                LibUtils.forConfluence$Inject();
+                                LibUtils.forMixin$Inject();
                             }
                         }
                     }));

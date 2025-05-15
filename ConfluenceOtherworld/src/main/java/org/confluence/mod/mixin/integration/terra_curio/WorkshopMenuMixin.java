@@ -22,7 +22,7 @@ public abstract class WorkshopMenuMixin implements SelfGetter<WorkshopMenu> {
     @Final
     private ContainerLevelAccess access;
 
-    @ModifyExpressionValue(method = "<init>(ILnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/world/inventory/ContainerLevelAccess;)V", at = @At(value = "INVOKE", target = "Lorg/confluence/lib/util/LibUtils;forConfluence$ModifyExpression(Ljava/lang/Object;)Ljava/lang/Object;", ordinal = 0))
+    @ModifyExpressionValue(method = "<init>(ILnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/world/inventory/ContainerLevelAccess;)V", at = @At(value = "INVOKE", target = "Lorg/confluence/lib/util/LibUtils;forMixin$ModifyExpression(Ljava/lang/Object;)Ljava/lang/Object;", ordinal = 0))
     private Object modifyAccess(Object original) {
         if (original == ContainerLevelAccess.NULL) {
             WorkshopLevelAccess access = new WorkshopLevelAccess(null, null);
@@ -32,7 +32,7 @@ public abstract class WorkshopMenuMixin implements SelfGetter<WorkshopMenu> {
         return original;
     }
 
-    @ModifyExpressionValue(method = "<init>(ILnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/world/inventory/ContainerLevelAccess;)V", at = @At(value = "INVOKE", target = "Lorg/confluence/lib/util/LibUtils;forConfluence$ModifyExpression(Ljava/lang/Object;)Ljava/lang/Object;", ordinal = 1))
+    @ModifyExpressionValue(method = "<init>(ILnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/world/inventory/ContainerLevelAccess;)V", at = @At(value = "INVOKE", target = "Lorg/confluence/lib/util/LibUtils;forMixin$ModifyExpression(Ljava/lang/Object;)Ljava/lang/Object;", ordinal = 1))
     private Object modifyRecipeInput(Object original) {
         return new EnvironmentRecipeInput(confluence$self(), 12, (WorkshopLevelAccess) access);
     }

@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(value = WorkshopRecipe.class, remap = false)
 public abstract class WorkshopRecipeMixin implements SelfGetter<WorkshopRecipe> {
-    @ModifyExpressionValue(method = "matches", at = @At(value = "INVOKE", target = "Lorg/confluence/lib/util/LibUtils;forConfluence$ModifyExpression(Ljava/lang/Object;)Ljava/lang/Object;"))
+    @ModifyExpressionValue(method = "matches", at = @At(value = "INVOKE", target = "Lorg/confluence/lib/util/LibUtils;forMixin$ModifyExpression(Ljava/lang/Object;)Ljava/lang/Object;"))
     private Object modify(Object original, @Local(argsOnly = true) RecipeInput input) {
         if (((Boolean) original) && input instanceof EnvironmentRecipeInput recipeInput) {
             return recipeInput.getAccess().matches(confluence$self());

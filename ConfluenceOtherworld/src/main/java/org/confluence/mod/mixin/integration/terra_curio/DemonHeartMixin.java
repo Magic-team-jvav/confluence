@@ -15,7 +15,7 @@ import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 @Mixin(value = DemonHeart.class, remap = false)
 public abstract class DemonHeartMixin {
-    @Inject(method = "lambda$use$0", at = @At(value = "INVOKE", target = "Lorg/confluence/lib/util/LibUtils;forConfluence$ModifyExpression(Ljava/lang/Object;)Ljava/lang/Object;"))
+    @Inject(method = "lambda$use$0", at = @At(value = "INVOKE", target = "Lorg/confluence/lib/util/LibUtils;forMixin$ModifyExpression(Ljava/lang/Object;)Ljava/lang/Object;"))
     private static void update(ItemStack itemStack, ServerPlayer serverPlayer, ICuriosItemHandler iCuriosItemHandler, CallbackInfo ci, @Local ICurioStacksHandler iCurioStacksHandler) {
         int slots = iCurioStacksHandler.getSlots();
         serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).updateAccessorySize(slots);

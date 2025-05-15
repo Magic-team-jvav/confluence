@@ -62,11 +62,7 @@ public class FallingStarItemEntity extends ItemEntity {
         if (level().getDayTime() % 24000 < 12000) {
             onRemove();
         } else {
-            boolean onGround = onGround();
-            if (!onGround || (tickCount & 1) == 0) { // 落地后给tick降频
-                super.tick();
-            }
-            if (onGround) {
+            if (onGround()) {
                 if (hasPickUpDelay()) setNoPickUpDelay();
                 if (!wasOnGround()) {
                     setWasOnGround(true);

@@ -11,8 +11,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
@@ -246,6 +248,15 @@ public class BlockSubProvider extends BlockLootSubProvider {
         this.add(TR_CRIMSON_STONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, TR_CRIMSON_COBBLESTONE));
         this.add(EBONY_STONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, EBONY_COBBLESTONE));
         this.add(PEARL_STONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, PEARL_COBBLESTONE));
+        this.add(ASH_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, ASH_BLOCK));
+        this.add(CORRUPT_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.DIRT));
+        this.add(CORRUPT_JUNGLE_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
+        this.add(JUNGLE_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
+        this.add(TR_CRIMSON_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.DIRT));
+        this.add(TR_CRIMSON_JUNGLE_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
+        this.add(MUSHROOM_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
+        this.add(HALLOW_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.DIRT));
+
         dropSelf(EBONY_LOG_BLOCKS.getLog().get());
         dropSelf(YELLOW_WILLOW_LOG_BLOCKS.getLog().get());
         dropSelf(BAOBAB_LOG_BLOCKS.getLog().get());
@@ -397,6 +408,8 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropWhenSilkTouch(MAGENTA_PURE_GLASS.get());
         dropWhenSilkTouch(PINK_PURE_GLASS.get());
 
+
+
         //chain
         dropSelf(RUBY_CHAIN.get());
         dropSelf(AMBER_CHAIN.get());
@@ -406,11 +419,14 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(DIAMOND_CHAIN.get());
         dropSelf(AMETHYST_CHAIN.get());
 
+
         //door
         this.add(OBSIDIAN_BRICKS_DOOR.get(), this::createDoorTable);
         this.add(SKYWARE_DOOR.get(), this::createDoorTable);
         this.add(SKYWARE_GLASS_DOOR.get(), this::createDoorTable);
         this.add(DUNGEON_DOOR.get(), this::createDoorTable);
+
+
 
 
         for (LogBlockSet logBlocks : LogBlockSet.LOG_BLOCK_SETS) {
@@ -430,7 +446,6 @@ public class BlockSubProvider extends BlockLootSubProvider {
         }
 
         CrateBlocks.BLOCKS.getEntries().forEach(block -> dropSelf(block.get()));
-
         // 草药
         addHerbDrop(ModBlocks.WATERLEAF.get(), MaterialItems.WATERLEAF.get(), FoodItems.WATERLEAF_SEED.get());
         addHerbDrop(ModBlocks.FIREBLOSSOM.get(), MaterialItems.FIREBLOSSOM.get(), FoodItems.FIREBLOSSOM_SEED.get());
@@ -445,6 +460,108 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropOther(NatureBlocks.GLOWING_MUSHROOM.get(), MaterialItems.GLOWING_MUSHROOM.get()); // TODO: 掉落概率不是100%；掉落蘑菇草种子
         dropOther(NatureBlocks.LIFE_MUSHROOM.get(), MaterialItems.LIFE_MUSHROOM.get());
         add(NatureBlocks.JUNGLE_SPORE.get(), LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.JUNGLE_SPORE.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))));
+        add(NatureBlocks.AMBER_BRANCHES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(AMBER).setWeight(1))
+                                .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .withPool(LootPool.lootPool()
+                                .add(LootItem.lootTableItem(AMBER_SAPLING).setWeight(1))
+                                .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        );
+        add(NatureBlocks.RUBY_BRANCHES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(RUBY).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(RUBY_SAPLING).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+        );
+        add(NatureBlocks.TOPAZ_BRANCHES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TOPAZ).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TOPAZ_SAPLING).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+        );
+        add(NatureBlocks.EMERALD_BRANCHES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TR_EMERALD).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(EMERALD_SAPLING).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+        );
+        add(NatureBlocks.DIAMOND_BRANCHES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.DIAMOND).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(DIAMOND_SAPLING).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+        );
+        add(NatureBlocks.SAPPHIRE_BRANCHES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SAPPHIRE).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SAPPHIRE_SAPLING).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+        );
+        add(NatureBlocks.TR_AMETHYST_BRANCHES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TR_AMETHYST).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TR_AMETHYST_SAPLING).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+        );
+        add(NatureBlocks.ASH_BRANCHES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.SPICY_PEPPER.get()).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(199)))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.POMEGRANATE.get()).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(199)))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ASH_SAPLING.get()).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(19)))
+        );
+        add(NatureBlocks.ASH_BRANCHES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.SPICY_PEPPER.get()).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(199)))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.POMEGRANATE.get()).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(199)))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ASH_SAPLING.get()).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(19)))
+        );
+        add(NatureBlocks.ASH_GRASS.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ASH_GRASS.get()))
+                        .when(this.hasSilkTouch())
+                        .when(HAS_SHEARS))
+        );
+        add(CORRUPT_GRASS.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(CORRUPT_GRASS.get()))
+                        .when(this.hasSilkTouch())
+                        .when(HAS_SHEARS))
+        );
+        add(HALLOW_GRASS.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(HALLOW_GRASS.get()))
+                        .when(this.hasSilkTouch())
+                        .when(HAS_SHEARS))
+        );
+        add(TR_CRIMSON_GRASS.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TR_CRIMSON_GRASS.get()))
+                        .when(this.hasSilkTouch())
+                        .when(HAS_SHEARS))
+        );
     }
 
     @Override

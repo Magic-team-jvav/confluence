@@ -214,10 +214,10 @@ dependencies {
     runtimeOnly "curse.maven:appleskin-248787:5586600"
 
     api("dev.latvian.mods:kubejs-neoforge:$kubejs_version")
-//    if (true) {
-//        runtimeOnly "dev.latvian.mods:kubejs-neoforge:$kubejs_version"
-//        runtimeOnly "dev.latvian.mods:rhino:$rhino_version"
-//    }
+    if (false) {
+        runtimeOnly "dev.latvian.mods:kubejs-neoforge:$kubejs_version"
+        runtimeOnly "dev.latvian.mods:rhino:$rhino_version"
+    }
 
     /**********************************************************/
 
@@ -245,7 +245,7 @@ dependencies {
         runtimeOnly "curse.maven:mafglib-910766:6416901"
     }
     if (vanillin) {
-        runtimeOnly "curse.maven:vanillin-965702:6282987"
+        runtimeOnly "curse.maven:vanillin-965702:6446560"
     }
     if (false) {
         runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"

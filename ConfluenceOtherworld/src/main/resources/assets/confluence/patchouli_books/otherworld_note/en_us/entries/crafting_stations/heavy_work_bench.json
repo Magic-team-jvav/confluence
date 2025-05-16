@@ -1,5 +1,5 @@
 {
-    "name": "patchouli.confluence.otherworld_note.crafting_stations.heavy_work_bench.name",
+    "name": "block.confluence.heavy_work_bench",
     "icon": "confluence:heavy_work_bench",
     "category": "confluence:crafting_stations",
     "pages": [

@@ -44,12 +44,14 @@ public class TreasureBagItems {
     public static final DeferredItem<TreasureBagItem> WALL_OF_FLESH_TREASURE_BAG = ITEMS.register("wall_of_flesh_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/wall_of_flesh")) {
         @Override
         protected void collectItems(ServerLevel serverLevel, Player player, ItemStack itemStack, ObjectArrayList<ItemStack> items) {
-            CuriosApi.getCuriosInventory(player).ifPresent(iCuriosItemHandler -> {
-                ICurioStacksHandler iCurioStacksHandler = iCuriosItemHandler.getCurios().get(TerraCurio.CURIO_SLOT);
-                if (TCCommonConfigs.MAX_ACCESSORIES.get() - iCurioStacksHandler.getSlots() > 0) {
-                    items.add(TCItems.DEMON_HEART.toStack());
-                }
-            });
+            if (LibUtils.isAtLeastExpert(serverLevel, player.blockPosition())) {
+                CuriosApi.getCuriosInventory(player).ifPresent(iCuriosItemHandler -> {
+                    ICurioStacksHandler iCurioStacksHandler = iCuriosItemHandler.getCurios().get(TerraCurio.CURIO_SLOT);
+                    if (TCCommonConfigs.MAX_ACCESSORIES.get() - iCurioStacksHandler.getSlots() > 0) {
+                        items.add(TCItems.DEMON_HEART.toStack());
+                    }
+                });
+            }
         }
     });
 }

@@ -125,14 +125,14 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "RIR"
         )), new ItemStack(FunctionalBlocks.ANNOUNCEMENT_BOX_ITEM.asItem()));
         // 蜂蜜瓶
-        shapeless(output, "", "",
+        shapeless(output, "", "_from_glass_bottle",
                 new ItemStack(Items.HONEY_BOTTLE, 3),
                 Ingredient.of(ToolItems.HONEY_BUCKET.get()),
                 Ingredient.of(Items.GLASS_BOTTLE),
                 Ingredient.of(Items.GLASS_BOTTLE),
                 Ingredient.of(Items.GLASS_BOTTLE)
         );
-        shapeless(output, "", "",
+        shapeless(output, "", "_from_bottle",
                 new ItemStack(Items.HONEY_BOTTLE, 3),
                 Ingredient.of(ToolItems.HONEY_BUCKET.get()),
                 Ingredient.of(PotionItems.BOTTLE),

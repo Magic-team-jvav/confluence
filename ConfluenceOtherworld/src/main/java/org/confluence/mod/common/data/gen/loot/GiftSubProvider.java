@@ -944,18 +944,9 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 )
         );
         // 宝藏袋
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/wall_of_flesh/classic"), wallOfFleshTreasureBagCommon()
-        );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/wall_of_flesh/expert"), wallOfFleshTreasureBagCommon()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.DEMON_HEART))
-                )
-        );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/wall_of_flesh/master"), wallOfFleshTreasureBagCommon()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.DEMON_HEART))
-                )
-        );
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/wall_of_flesh/classic"), wallOfFleshTreasureBagCommon());
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/wall_of_flesh/expert"), wallOfFleshTreasureBagCommon());
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/wall_of_flesh/master"), wallOfFleshTreasureBagCommon());
 
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/skeletron/classic"), HealingPotionCommon()

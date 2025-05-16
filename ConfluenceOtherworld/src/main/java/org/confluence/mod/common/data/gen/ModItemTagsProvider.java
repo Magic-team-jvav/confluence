@@ -1490,7 +1490,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 CrateBlocks.HELL_STONE_CRATE.asItem(),
                 CrateBlocks.BEACH_CRATE.asItem(),
                 LanceItems.DARK_LANCE.get(),
-                HookItems.STATIC_HOOK.get()
+                HookItems.STATIC_HOOK.get(),
+                TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG.get()
         );
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);

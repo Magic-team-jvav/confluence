@@ -1,19 +1,27 @@
 package org.confluence.mod.common.init.item;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
-
-import java.util.function.Supplier;
+import org.confluence.terra_curio.TerraCurio;
+import org.confluence.terra_curio.common.init.TCCommonConfigs;
+import org.confluence.terra_curio.common.init.TCItems;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 public class TreasureBagItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
-    public static final Supplier<TreasureBagItem> KING_SLIME_TREASURE_BAG = ITEMS.register("king_slime_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/king_slime")));
-    public static final Supplier<TreasureBagItem> EYE_OF_CTHULHU_TREASURE_BAG = ITEMS.register("eye_of_cthulhu_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/eye_of_cthulhu"), (level, pos) -> {
+    public static final DeferredItem<TreasureBagItem> KING_SLIME_TREASURE_BAG = ITEMS.register("king_slime_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/king_slime")));
+    public static final DeferredItem<TreasureBagItem> EYE_OF_CTHULHU_TREASURE_BAG = ITEMS.register("eye_of_cthulhu_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/eye_of_cthulhu"), (level, pos) -> {
         String difficulty = LibUtils.switchByDifficulty(level, pos, "/classic", "/expert", "/master");
         long secretFlag = ((IMinecraftServer) level.getServer()).confluence$getSecretFlag();
         String biome;
@@ -28,8 +36,20 @@ public class TreasureBagItems {
         }
         return difficulty + biome;
     }));
-    public static final Supplier<TreasureBagItem> EATER_OF_WORLDS_TREASURE_BAG = ITEMS.register("eater_of_worlds_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/eater_of_worlds")));
-    public static final Supplier<TreasureBagItem> BRAIN_OF_CTHULHU_TREASURE_BAG = ITEMS.register("brain_of_cthulhu_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/brain_of_cthulhu")));
-    public static final Supplier<TreasureBagItem> QUEEN_BEE_TREASURE_BAG = ITEMS.register("queen_bee_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/queen_bee")));
-    public static final Supplier<TreasureBagItem> SKELETRON_TREASURE_BAG = ITEMS.register("skeletron_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/skeletron")));
+    public static final DeferredItem<TreasureBagItem> EATER_OF_WORLDS_TREASURE_BAG = ITEMS.register("eater_of_worlds_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/eater_of_worlds")));
+    public static final DeferredItem<TreasureBagItem> BRAIN_OF_CTHULHU_TREASURE_BAG = ITEMS.register("brain_of_cthulhu_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/brain_of_cthulhu")));
+    public static final DeferredItem<TreasureBagItem> QUEEN_BEE_TREASURE_BAG = ITEMS.register("queen_bee_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/queen_bee")));
+    public static final DeferredItem<TreasureBagItem> SKELETRON_TREASURE_BAG = ITEMS.register("skeletron_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/skeletron")));
+    // 巨鹿
+    public static final DeferredItem<TreasureBagItem> WALL_OF_FLESH_TREASURE_BAG = ITEMS.register("wall_of_flesh_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/wall_of_flesh")) {
+        @Override
+        protected void collectItems(ServerLevel serverLevel, Player player, ItemStack itemStack, ObjectArrayList<ItemStack> items) {
+            CuriosApi.getCuriosInventory(player).ifPresent(iCuriosItemHandler -> {
+                ICurioStacksHandler iCurioStacksHandler = iCuriosItemHandler.getCurios().get(TerraCurio.CURIO_SLOT);
+                if (TCCommonConfigs.MAX_ACCESSORIES.get() - iCurioStacksHandler.getSlots() > 0) {
+                    items.add(TCItems.DEMON_HEART.toStack());
+                }
+            });
+        }
+    });
 }

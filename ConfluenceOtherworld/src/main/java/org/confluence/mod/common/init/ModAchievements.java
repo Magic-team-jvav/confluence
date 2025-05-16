@@ -196,7 +196,7 @@ public final class ModAchievements {
                 if (firstNight == 0L && level.isNight()) {
                     serverPlayer.getPersistentData().putLong("confluence:you_can_do_it", level.getDayTime());
                 } else if (firstNight != 0L && level.getDayTime() - firstNight > 12000L) {
-                    AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource("achievements/you_can_do_it"));
+                    AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource(PREFIX + "you_can_do_it"));
                     if (advancement != null) {
                         serverPlayer.getAdvancements().award(advancement, "never");
                     }
@@ -212,7 +212,7 @@ public final class ModAchievements {
         int crouch = stats.getValue(Stats.CUSTOM.get(Stats.CROUCH_ONE_CM));
         int walk = stats.getValue(Stats.CUSTOM.get(Stats.WALK_ONE_CM));
         if (sprint + crouch + walk > 46112_00) {
-            AdvancementHolder advancement = player.server.getAdvancements().get(Confluence.asResource("achievements/marathon_medalist"));
+            AdvancementHolder advancement = player.server.getAdvancements().get(Confluence.asResource(ModAchievements.PREFIX + "marathon_medalist"));
             if (advancement != null) {
                 player.getAdvancements().award(advancement, "never");
             }
@@ -255,7 +255,7 @@ public final class ModAchievements {
         if (before > 10000) return;
         long total = before + cost;
         if (total >= 10000) {
-            AdvancementHolder advancement = player.server.getAdvancements().get(Confluence.asResource("achievements/the_frequent_flyer"));
+            AdvancementHolder advancement = player.server.getAdvancements().get(Confluence.asResource(ModAchievements.PREFIX + "the_frequent_flyer"));
             if (advancement != null) {
                 player.getAdvancements().award(advancement, "never");
             }

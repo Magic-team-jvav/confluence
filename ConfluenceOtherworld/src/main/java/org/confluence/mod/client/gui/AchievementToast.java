@@ -14,6 +14,7 @@ import net.minecraft.util.Mth;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -126,7 +127,7 @@ public class AchievementToast implements Toast {
     }
 
     public static void registerToast(String namespace, String path) {
-        registerToast(ResourceLocation.fromNamespaceAndPath(namespace, "achievements/" + path), new AchievementToast(
+        registerToast(ResourceLocation.fromNamespaceAndPath(namespace, ModAchievements.PREFIX + path), new AchievementToast(
                 ResourceLocation.fromNamespaceAndPath(namespace, "textures/achievement/" + path + ".png"),
                 new Display(AdvancementType.CHALLENGE,
                         Component.translatable("achievements." + namespace + "." + path + ".title"),

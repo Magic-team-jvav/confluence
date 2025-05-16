@@ -45,7 +45,7 @@ public class EffectThrowablePotionItem extends EffectPotionItem {
         }
 
         pPlayer.awardStat(Stats.ITEM_USED.get(this));
-        if (!pPlayer.getAbilities().instabuild) {
+        if (!pPlayer.hasInfiniteMaterials()) {
             itemstack.shrink(1);
         }
 

@@ -55,7 +55,7 @@ public class ThrowableDropSelfItem extends Item {
         }
 
         pPlayer.awardStat(Stats.ITEM_USED.get(this));
-        if (!pPlayer.getAbilities().instabuild) {
+        if (!pPlayer.hasInfiniteMaterials()) {
             itemstack.shrink(1);
         }
 

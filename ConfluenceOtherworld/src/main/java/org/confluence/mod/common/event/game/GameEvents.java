@@ -26,13 +26,16 @@ import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.ConfluenceCommand;
 import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModRecipes;
+import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
@@ -55,24 +58,36 @@ import java.util.Map;
 public final class GameEvents {
     @SubscribeEvent
     public static void itemStackedOnOther(ItemStackedOnOtherEvent event) {
-        ItemStack onSlot = event.getCarriedItem();
-        ItemStack carried = event.getStackedOnItem(); // 非常奇怪,但事实如此
-        Item item = onSlot.getItem();
-        if (event.getClickAction() == ClickAction.SECONDARY && carried.isEmpty()) {
-            // 需要注意创造模式物品栏是仅客户端的，所以创造模式无法正常使用
-            Player player = event.getPlayer();
-            if (item instanceof IFunctionCouldEnable couldEnable) {
-                if (player instanceof ServerPlayer serverPlayer) {
-                    couldEnable.cycleEnable(onSlot);
-                    VisibilityPacketS2C.sendEcho(serverPlayer);
+        ItemStack onSlot = event.getStackedOnItem();
+        ItemStack carried = event.getCarriedItem();
+        Item slotItem = onSlot.getItem();
+        Player player = event.getPlayer();
+        if (event.getClickAction() == ClickAction.SECONDARY) {
+            if (carried.isEmpty()) {
+                // 需要注意创造模式物品栏是仅客户端的，所以创造模式无法正常使用
+                if (slotItem instanceof IFunctionCouldEnable couldEnable) {
+                    if (player instanceof ServerPlayer serverPlayer) {
+                        couldEnable.cycleEnable(onSlot);
+                        VisibilityPacketS2C.sendEcho(serverPlayer);
+                    }
+                    event.setCanceled(true);
+                }
+            }
+            boolean isGoldenKey = carried.is(ToolItems.GOLDEN_DUNGEON_KEY);
+            if ((isGoldenKey && onSlot.is(ConsumableItems.GOLDEN_LOCK_BOX) || (carried.is(ToolItems.SHADOW_KEY) && onSlot.is(ConsumableItems.OBSIDIAN_LOCK_BOX)))) {
+                if (player instanceof ServerPlayer serverPlayer && LootComponent.open(serverPlayer, onSlot)) {
+                    if (!serverPlayer.hasInfiniteMaterials()) {
+                        if (isGoldenKey) {
+                            carried.shrink(1);
+                        }
+                        onSlot.shrink(1);
+                    }
                 }
                 event.setCanceled(true);
             }
         }
-        if (ItemStack.isSameItem(onSlot, carried)) {
-            if (item instanceof ColoredItem) {
-                ColoredItem.setColor(carried, ColoredItem.getColor(onSlot));
-            }
+        if (slotItem instanceof ColoredItem && ItemStack.isSameItem(onSlot, carried)) {
+            ColoredItem.setColor(carried, ColoredItem.getColor(onSlot));
         }
     }
 

@@ -43,8 +43,6 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> ILLUSION_CRATE = register("gameplay/crate/illusion_crate");
     public static final ResourceKey<LootTable> HELL_STONE_CRATE = register("gameplay/crate/hell_stone_crate");
     public static final ResourceKey<LootTable> BEACH_CRATE = register("gameplay/crate/beach_crate");
-    public static final ResourceKey<LootTable> GOLDEN_LOCK_BOX = register("gameplay/crate/golden_lock_box");
-    public static final ResourceKey<LootTable> OBSIDIAN_LOCK_BOX = register("gameplay/crate/obsidian_lock_box");
 
     public static final ResourceKey<LootTable> CLAM = register("gameplay/clam");
     public static final ResourceKey<LootTable> CHRISTMAS_GIFT = register("gameplay/christmas_gift");
@@ -67,12 +65,13 @@ public final class ModLootTables {
 
     public static final ResourceKey<LootTable> HERB_BAG_INNER = register("gameplay/herb_bag_inner");
 
-
     public static final ResourceKey<LootTable> INITIAL_WORLD_UNDERGROUND_CHEST = register("chests/initial_world_underground_chest");
     public static final ResourceKey<LootTable> CAVE_CHESTS = register("chests/cave_chests");
 
     public static final ResourceKey<LootTable> OPAL_BLOCK = register("archaeology/opal_ore");
 
+    public static final ResourceKey<LootTable> GOLDEN_LOCK_BOX = register("gameplay/crate/golden_lock_box");
+    public static final ResourceKey<LootTable> OBSIDIAN_LOCK_BOX = register("gameplay/crate/obsidian_lock_box");
 
     private static ResourceKey<LootTable> register(String name) {
         return Confluence.asResourceKey(Registries.LOOT_TABLE, name);

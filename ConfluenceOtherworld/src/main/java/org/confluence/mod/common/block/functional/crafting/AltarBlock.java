@@ -182,7 +182,7 @@ public class AltarBlock extends BaseEntityBlock {
     }
 
     public static boolean hurtPlayerIfBrokenNotAllowed(Player player, BlockState blockState) {
-        if (!player.getAbilities().instabuild &&
+        if (!player.hasInfiniteMaterials() &&
                 blockState.getBlock() instanceof AltarBlock &&
                 !player.getMainHandItem().is(ModTags.Items.ABLE_TO_DESTROY_ALTAR)
         ) {

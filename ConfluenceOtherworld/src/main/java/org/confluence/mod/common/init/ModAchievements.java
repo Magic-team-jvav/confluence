@@ -26,6 +26,7 @@ import java.util.Hashtable;
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_VANITY_ARMOR;
 
 public final class ModAchievements {
+    public static final String PREFIX = "achievements/";
     public static final Hashtable<ResourceLocation, Vec2> DISPLAY_OFFSET = new Hashtable<>();
 
     /*
@@ -173,14 +174,14 @@ public final class ModAchievements {
     }
 
     private static void offset(String path, float x, float y) {
-        DISPLAY_OFFSET.put(Confluence.asResource("achievements/" + path), new Vec2(x, y));
+        DISPLAY_OFFSET.put(Confluence.asResource(PREFIX + path), new Vec2(x, y));
     }
 
     public static void awardAchievement(ServerPlayer serverPlayer, String path) {
         CompoundTag data = serverPlayer.getPersistentData();
-        String key = Confluence.MODID + ":" + path;
+        String key = Confluence.MODID + ':' + path;
         if (!data.getBoolean(key)) {
-            AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource("achievements/" + path));
+            AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource(PREFIX + path));
             if (advancement != null) {
                 serverPlayer.getAdvancements().award(advancement, "never");
             }

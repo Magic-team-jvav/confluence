@@ -106,7 +106,7 @@ public class EverBeneficialItem extends TooltipItem {
             if (beneficial.pre.test(data)) {
                 beneficial.post.accept(beneficial.id, serverPlayer, data, false);
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
-                if (!player.getAbilities().instabuild) {
+                if (!player.hasInfiniteMaterials()) {
                     itemStack.shrink(1);
                 }
             }

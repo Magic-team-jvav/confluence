@@ -18,7 +18,10 @@ import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModLootTables;
-import org.confluence.mod.common.init.block.*;
+import org.confluence.mod.common.init.block.DecorativeBlocks;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.loot.DateLootItemCondition;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -96,7 +99,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(NestedLootTable.lootTableReference(ModLootTables.ENVIRONMENT_CRATE))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(CrateBlocks.OBSIDIAN_LOCK_BOX))
+                        .add(LootItem.lootTableItem(ConsumableItems.OBSIDIAN_LOCK_BOX))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MinecartItems.DEMONIC_HELLCART))
@@ -118,7 +121,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(NestedLootTable.lootTableReference(ModLootTables.ENVIRONMENT_CRATE))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(CrateBlocks.GOLDEN_LOCK_BOX))
+                        .add(LootItem.lootTableItem(ConsumableItems.GOLDEN_LOCK_BOX))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/golden_lock_box"), LootTable.lootTable()
@@ -479,7 +482,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(NestedLootTable.lootTableReference(ModLootTables.ENVIRONMENT_CRATE_HARDMODE))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(CrateBlocks.OBSIDIAN_LOCK_BOX))
+                        .add(LootItem.lootTableItem(ConsumableItems.OBSIDIAN_LOCK_BOX))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MinecartItems.DEMONIC_HELLCART))
@@ -491,7 +494,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(NestedLootTable.lootTableReference(ModLootTables.ENVIRONMENT_CRATE_HARDMODE))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(CrateBlocks.GOLDEN_LOCK_BOX))
+                        .add(LootItem.lootTableItem(ConsumableItems.GOLDEN_LOCK_BOX))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/golden_lock_box"), LootTable.lootTable()

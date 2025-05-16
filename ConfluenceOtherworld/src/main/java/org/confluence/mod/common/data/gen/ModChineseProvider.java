@@ -49,7 +49,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.hamaxe.mode.1","斧");
         add("message.confluence.hoe_shovel.mode.0","锹");
         add("message.confluence.hoe_shovel.mode.1","锄");
-        add("jukebox_song.confluence.song", "C418 - alpha");
+        add("jukebox_song.confluence.alpha", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
         add("generator.confluence.the_corruption", "腐化之地");
@@ -2151,8 +2151,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(CrateBlocks.HELL_STONE_CRATE.get(), "狱石匣");
         add(CrateBlocks.BEACH_CRATE.get(), "海滩匣");
 
-        add(CrateBlocks.GOLDEN_LOCK_BOX.get(), "金锁盒");
-        add(CrateBlocks.OBSIDIAN_LOCK_BOX.get(), "黑曜石锁盒");
+        add(ConsumableItems.GOLDEN_LOCK_BOX.get(), "金锁盒");
+        add(ConsumableItems.OBSIDIAN_LOCK_BOX.get(), "黑曜石锁盒");
 
 
         add(ArrowItems.FLAMING_ARROW.get(), "烈焰箭");

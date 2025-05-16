@@ -40,7 +40,7 @@ public class KegBlock extends HorizontalDirectionalBlock {
         if (stack.is(PotionItems.MUG)) {
             if (level.isClientSide) return ItemInteractionResult.SUCCESS;
             player.addItem(PotionItems.ALE.toStack());
-            if (!player.getAbilities().instabuild) {
+            if (!player.hasInfiniteMaterials()) {
                 stack.shrink(1);
             }
             return ItemInteractionResult.CONSUME;

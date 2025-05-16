@@ -37,7 +37,7 @@ public class ThrowableItem<T extends ThrowableItemProjectile> extends CustomRari
             level.addFreshEntity(projectile);
 
             player.awardStat(Stats.ITEM_USED.get(this));
-            if (!player.getAbilities().instabuild) {
+            if (!player.hasInfiniteMaterials()) {
                 itemStack.shrink(1);
             }
         }

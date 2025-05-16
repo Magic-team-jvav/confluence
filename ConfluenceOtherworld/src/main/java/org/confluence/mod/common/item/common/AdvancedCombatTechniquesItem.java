@@ -37,7 +37,7 @@ public class AdvancedCombatTechniquesItem extends TooltipItem {
                 for (ServerPlayer serverPlayer : serverLevel.players()) {
                     serverPlayer.sendSystemMessage(Component.translatable("message.confluence.advancement_combat_techniques").withColor(GlobalColors.MESSAGE.getRGB()));
                 }
-                if (!player.getAbilities().instabuild) {
+                if (!player.hasInfiniteMaterials()) {
                     itemStack.shrink(1);
                 }
             }

@@ -85,7 +85,7 @@ public class BiomeChestBlock extends ChestBlock {
                     new BlockParticleOption(ParticleTypes.BLOCK, Blocks.CHAIN.defaultBlockState()),
                     posX, pos.getY() + 0.5, posZ, 200, 0.0625, 0.0625, 0.0625, 0.15
             );
-            if (!player.getAbilities().instabuild) {
+            if (!player.hasInfiniteMaterials()) {
                 stack.shrink(1);
             }
             ModAchievements.awardAchievement(serverPlayer, "big_booty");

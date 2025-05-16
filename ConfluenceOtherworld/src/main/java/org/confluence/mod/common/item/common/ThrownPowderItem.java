@@ -25,7 +25,7 @@ public class ThrownPowderItem extends Item {
             entity.setPos(player.getX(), player.getEyeY() - 0.1F, player.getZ());
             entity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 0.5F);
             level.addFreshEntity(entity);
-            if (!player.getAbilities().instabuild) {
+            if (!player.hasInfiniteMaterials()) {
                 itemStack.shrink(1);
             }
         }

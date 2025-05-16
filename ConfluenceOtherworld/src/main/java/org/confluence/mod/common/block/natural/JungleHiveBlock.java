@@ -32,7 +32,7 @@ public class JungleHiveBlock extends Block {
 
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
-        if (level.isClientSide || player.getAbilities().instabuild || !state.getValue(NATURAL)) return;
+        if (level.isClientSide || player.hasInfiniteMaterials() || !state.getValue(NATURAL)) return;
         int randomNumber = level.random.nextInt(3);
         if (randomNumber == 0) {
             level.setBlockAndUpdate(pos, ModBlocks.HONEY.get().defaultBlockState());

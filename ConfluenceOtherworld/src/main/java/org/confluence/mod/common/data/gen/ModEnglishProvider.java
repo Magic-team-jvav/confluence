@@ -59,7 +59,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.hamaxe.mode.1", "Axe");
         add("message.confluence.hoe_shovel.mode.0", "Shovel");
         add("message.confluence.hoe_shovel.mode.1", "Hoe");
-        add("jukebox_song.confluence.song", "C418 - alpha");
+        add("jukebox_song.confluence.alpha", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
         add("generator.confluence.the_corruption", "The Corruption");

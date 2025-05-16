@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init;
 
-import com.xiaohunao.enemybanner.EnemyBanner;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -182,8 +181,8 @@ public final class ModTabs {
                         LightPetItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                     }).withTabsAfter(TEItems.NEO_TERRA.getId()).withTabsBefore(MAGES.getId()).build());
     /* 生物 */
-    /* 事件 */
-    /* 敌怪旗 */
+    /* todo 事件 */
+    /* todo 敌怪旗 */
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> DEVELOPER = TABS.register("developer",
             () -> CreativeModeTab.builder().icon(() -> IconItems.DEVELOPER_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.developer"))
@@ -197,5 +196,8 @@ public final class ModTabs {
                         output.accept(SwordItems.DEVELOPER_SWORD.get());
                         output.accept(TEBoomerangItems.DEVELOPER_BOOMERANG.get());
                         output.accept(BowItems.DEVELOPER_BOW.get());
-                    }).withTabsBefore(EnemyBanner.TAB.getId()).build());
+                    })
+                    //.withTabsBefore(EnemyBanner.TAB.getId())
+                    .withTabsBefore(TEItems.NEO_TERRA.getId())
+                    .build());
 }

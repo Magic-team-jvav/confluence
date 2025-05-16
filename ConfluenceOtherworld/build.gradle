@@ -4,7 +4,7 @@ plugins {
 var projectName = ["Confluence-Magic-Lib","TerraEntity", "MineTeam", "EquipmentBenediction",
                    "TerraCurio", "HeavenDestinyMoment", "PhaseJourney",
                    "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture",
-                   "EntityTrackerHUD","EnemyBanner"
+                   "EntityTrackerHUD",/*"EnemyBanner"*/
 ]
 
 version = mod_version

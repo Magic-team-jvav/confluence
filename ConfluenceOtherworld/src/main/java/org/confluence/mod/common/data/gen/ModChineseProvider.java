@@ -364,7 +364,34 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.stardust.0", "可飞行和缓慢坠落");
 
         //设置
+        add("confluence.configuration.wrappedCrimson_heart", "裸露的猩红心脏");
+        add("confluence.configuration.wrappedCrimson_heart.tooltip", "启用后，新生成的猩红洞穴将会生成裸露的猩红心脏");
+        add("confluence.configuration.showItemPrice", "显示物品价格");
+        add("confluence.configuration.showItemPrice.tooltip", "启用以查看该物品出售于NPC时的价格");
+        add("confluence.configuration.Recipe", "合成配方机制");
+        add("confluence.configuration.Recipe.button", "合成配方机制");
+        add("confluence.configuration.Recipe.tooltip", "一些合成配方相关设置");
+        add("confluence.configuration.Spawning", "生成机制");
+        add("confluence.configuration.Spawning.button", "生成机制");
+        add("confluence.configuration.Spawning.tooltip", "一些生成相关设置");
+        add("confluence.configuration.Falling Star", "坠落之星");
+        add("confluence.configuration.Falling Star.button", "坠落之星");
+        add("confluence.configuration.Falling Star.tooltip", "控制坠落之星生成相关设置");
+        add("confluence.configuration.NPC", "NPC");
+        add("confluence.configuration.NPC.tooltip", "控制NPC生成相关设置");
+        add("confluence.configuration.doNPCSpawning", "NPC生成");
+        add("confluence.configuration.doNPCSpawning.button", "NPC生成");
+        add("confluence.configuration.doNPCSpawning.tooltip", "启用时，NPC将会生成");
+        add("confluence.configuration.npcSpawnInterval", "NPC生成间隔");
+        add("confluence.configuration.npcSpawnInterval.tooltip", "定义NPC生成间隔");
+        add("confluence.configuration.doMeteoriteSpawning", "陨石生成");
+        add("confluence.configuration.doMeteoriteSpawning.tooltip", "启用时，天空将会对未加载区域砸下陨石");
+        add("confluence.configuration.doFallingStarSpawning", "坠落之星生成");
+        add("confluence.configuration.doFallingStarSpawning.tooltip", "启用时，坠落之星将会在晚上生成");
+        add("confluence.configuration.fallingStarInterval", "坠星生成间隔");
+        add("confluence.configuration.fallingStarInterval.tooltip", "定义夜晚中坠星的生成间隔");
         add("confluence.configuration.WorldGeneration", "世界生成机制");
+        add("confluence.configuration.WorldGeneration.button", "世界生成机制");
         add("confluence.configuration.WorldGeneration.tooltip", "一些世界生成相关设置");
         add("confluence.configuration.brewing_stand_recipe", "泰拉药水酿造台配方");
         add("confluence.configuration.brewing_stand_recipe.tooltip", "启用时，酿造台可以酿造泰拉药水");
@@ -390,8 +417,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.fletchingMenu.tooltip", "启用时，将使用汇流来世的修改制箭台");
         add("confluence.configuration.shimmer_decompose", "微光分解");
         add("confluence.configuration.shimmer_decompose.tooltip", "启用时，微光液体能将物品分解为原材料");
-        add("confluence.configuration.fallingStarInterval", "坠星间隔");
-        add("confluence.configuration.fallingStarInterval.tooltip", "定义夜晚中坠星的生成间隔");
         add("confluence.configuration.returnPotionGlassBottle", "返还药水瓶");
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "决定你使用药水后是否返还瓶子");
         add("confluence.configuration.rightClickRideMinecart", "右键上矿车");

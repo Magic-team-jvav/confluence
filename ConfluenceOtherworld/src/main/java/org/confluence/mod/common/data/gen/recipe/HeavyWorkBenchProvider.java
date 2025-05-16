@@ -297,6 +297,25 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " /",
                 " /"
         )), HoeItems.CULTIVATOR.toStack());
+        // 锄锹
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, MaterialItems.METEORITE_INGOT),
+                '/',Ingredient.of(MaterialItems.METEORITE_INGOT)
+        ), List.of(
+                " aaa",
+                "  /a",
+                " /  ",
+                "/   "
+        )), HoeShovelItems.METEOR_HOE_SHOVEL.toStack());
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, MaterialItems.HELLSTONE_INGOT),
+                '/', Ingredient.of(Items.BLAZE_ROD)
+        ), List.of(
+                " aaa",
+                "  /a",
+                " /  ",
+                "/   "
+        )), HoeShovelItems.MOLTEN_HOE_SHOVEL.toStack());
     }
 
     private void buildBaseStatues(RecipeOutput recipeOutput) {

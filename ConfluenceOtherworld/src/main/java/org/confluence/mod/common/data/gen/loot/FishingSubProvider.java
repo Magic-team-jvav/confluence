@@ -21,6 +21,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
+import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemDamageFunction;
 import net.minecraft.world.level.storage.loot.functions.SetPotionFunction;
@@ -255,6 +256,26 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                                 )
                                         )
                                         .setWeight(60)
+                        )
+                        .add(
+                                LootItem.lootTableItem(ConsumableItems.CLAM)
+                                        .when(
+                                                LocationCheck.checkLocation(
+                                                        LocationPredicate.Builder.location()
+                                                                .setBiomes(
+                                                                        HolderSet.direct(
+                                                                                registrylookup.getOrThrow(Biomes.BADLANDS),
+                                                                                registrylookup.getOrThrow(Biomes.DESERT),
+                                                                                registrylookup.getOrThrow(Biomes.WOODED_BADLANDS),
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CORRUPTION_DESERT),
+                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON_DESERT),
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_HALLOW_DESERT)
+                                                                        )
+                                                                )
+                                                                .setY(MinMaxBounds.Doubles.between(-64.0, 260.0))
+                                                )
+                                        )
+                                        .setWeight(33)
                         )
                         // 海洋
                         .add(
@@ -665,6 +686,10 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                 .withPool(
                         LootPool.lootPool()
                                 .add(LootItem.lootTableItem(TCItems.FROG_LEG).setWeight(7).setQuality(2))
+                                .add(
+                                        LootItem.lootTableItem(Items.BOOK).setWeight(4).setQuality(1)
+                                                .apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries, ConstantValue.exactly(30.0F)))
+                                )
                                 .add(LootItem.lootTableItem(TCItems.BALLOON_PUFFERFISH).setWeight(7).setQuality(2))
                                 .add(LootItem.lootTableItem(ConsumableItems.BOMB_FISH).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 7))).setWeight(33))
                                 .add(
@@ -676,26 +701,6 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                                         )
                                                 )
                                                 .setWeight(7).setQuality(2)
-                                )
-                                .add(
-                                        LootItem.lootTableItem(ConsumableItems.CLAM)
-                                                .when(
-                                                        LocationCheck.checkLocation(
-                                                                LocationPredicate.Builder.location()
-                                                                        .setBiomes(
-                                                                                HolderSet.direct(
-                                                                                        registrylookup.getOrThrow(Biomes.BADLANDS),
-                                                                                        registrylookup.getOrThrow(Biomes.DESERT),
-                                                                                        registrylookup.getOrThrow(Biomes.WOODED_BADLANDS),
-                                                                                        registrylookup.getOrThrow(ModBiomes.THE_CORRUPTION_DESERT),
-                                                                                        registrylookup.getOrThrow(ModBiomes.TR_CRIMSON_DESERT),
-                                                                                        registrylookup.getOrThrow(ModBiomes.THE_HALLOW_DESERT)
-                                                                                )
-                                                                        )
-                                                                        .setY(MinMaxBounds.Doubles.between(-64.0, 260.0))
-                                                        )
-                                                )
-                                                .setWeight(33)
                                 )
                                 .add(
                                         LootItem.lootTableItem(SwordItems.PURPLE_CLUBBERFISH)

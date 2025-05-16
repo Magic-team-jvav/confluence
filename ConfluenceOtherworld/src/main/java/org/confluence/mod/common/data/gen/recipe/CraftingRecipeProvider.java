@@ -23,6 +23,8 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.init.item.PotionItems;
+import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.terraentity.init.TEItems;
 import org.jetbrains.annotations.NotNull;
 
@@ -122,6 +124,22 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "I#I",
                 "RIR"
         )), new ItemStack(FunctionalBlocks.ANNOUNCEMENT_BOX_ITEM.asItem()));
+        // 蜂蜜瓶
+        shapeless(output, "", "",
+                new ItemStack(Items.HONEY_BOTTLE, 3),
+                Ingredient.of(ToolItems.HONEY_BUCKET.get()),
+                Ingredient.of(Items.GLASS_BOTTLE),
+                Ingredient.of(Items.GLASS_BOTTLE),
+                Ingredient.of(Items.GLASS_BOTTLE)
+        );
+        shapeless(output, "", "",
+                new ItemStack(Items.HONEY_BOTTLE, 3),
+                Ingredient.of(ToolItems.HONEY_BUCKET.get()),
+                Ingredient.of(PotionItems.BOTTLE),
+                Ingredient.of(PotionItems.BOTTLE),
+                Ingredient.of(PotionItems.BOTTLE)
+        );
+
         // 石头及深板岩压力板
         shaped(output,"","", ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.STONE.asItem())
         ), List.of("##")), new ItemStack(FunctionalBlocks.STONE_PRESSURE_PLATE.asItem()));

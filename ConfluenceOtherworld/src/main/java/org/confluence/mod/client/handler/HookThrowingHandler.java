@@ -81,11 +81,11 @@ public final class HookThrowingHandler {
                         localPlayer.setDeltaMovement(localPlayer.getDeltaMovement().scale(0.96).add(motion));
                     }
                 }
-                PlayerJumpHandler.reset(true);
                 shouldSync = true;
             }
         }
         if (shouldSync) {
+            PlayerJumpHandler.reset(true);
             PacketDistributor.sendToServer(new PlayerJumpPacketC2S(RESET_FALL_DISTANCE, (float) localPlayer.getDeltaMovement().y));
         }
     }

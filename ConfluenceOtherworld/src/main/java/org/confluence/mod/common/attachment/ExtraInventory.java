@@ -1,6 +1,8 @@
 package org.confluence.mod.common.attachment;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,24 +37,42 @@ public class ExtraInventory extends ItemStackHandler implements Container {
     public static final int TRASH_START = EQUIPMENT_START + SIZE_EQUIPMENT;
     public static final int DYE_START = TRASH_START + SIZE_TRASH;
 
+    public static final StreamCodec<RegistryFriendlyByteBuf, ExtraInventory> STREAM_CODEC = new StreamCodec<>() {
+        @Override
+        public ExtraInventory decode(RegistryFriendlyByteBuf buffer) {
+            ExtraInventory extraInventory = new ExtraInventory(false);
+            int accessoryDye = buffer.readVarInt();
+            extraInventory.sizeAccessoryDye = accessoryDye;
+            extraInventory.initialized = true;
+            int size = SIZE_EXCEPT_ACCESSORY_DYE + accessoryDye;
+            extraInventory.previousStacks = NonNullList.withSize(size, ItemStack.EMPTY);
+            extraInventory.dirty = false;
+            List<ItemStack> list = ItemStack.OPTIONAL_LIST_STREAM_CODEC.decode(buffer);
+            if (list instanceof NonNullList<ItemStack> nonNullList) {
+                extraInventory.stacks = nonNullList;
+            } else {
+                extraInventory.stacks = NonNullList.copyOf(list);
+            }
+            return extraInventory;
+        }
+
+        @Override
+        public void encode(RegistryFriendlyByteBuf buffer, ExtraInventory extraInventory) {
+            buffer.writeVarInt(extraInventory.sizeAccessoryDye);
+            ItemStack.OPTIONAL_LIST_STREAM_CODEC.encode(buffer, extraInventory.stacks);
+        }
+    };
+
     private int sizeAccessoryDye = 0;
     private transient boolean initialized = false;
     private transient NonNullList<ItemStack> previousStacks;
     private transient boolean dirty = true;
 
-    public ExtraInventory() {
+    public ExtraInventory(boolean init) {
         super(SIZE_EXCEPT_ACCESSORY_DYE);
-        this.previousStacks = NonNullList.withSize(SIZE_EXCEPT_ACCESSORY_DYE, ItemStack.EMPTY);
-    }
-
-    public void setAccessoryDyes(int size) {
-        int all = SIZE_EXCEPT_ACCESSORY_DYE + size;
-        NonNullList<ItemStack> itemStacks = NonNullList.withSize(all, ItemStack.EMPTY);
-        for (int i = 0; i < stacks.size(); i++) {
-            itemStacks.set(i, stacks.get(i));
+        if (init) {
+            this.previousStacks = NonNullList.withSize(SIZE_EXCEPT_ACCESSORY_DYE, ItemStack.EMPTY);
         }
-        this.stacks = itemStacks;
-        this.sizeAccessoryDye = size;
     }
 
     public int getSizeAccessoryDye() {
@@ -177,6 +197,16 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         this.previousStacks = NonNullList.withSize(SIZE_EXCEPT_ACCESSORY_DYE + accessoryDye, ItemStack.EMPTY);
     }
 
+    public void setAccessoryDyes(int size) {
+        int all = SIZE_EXCEPT_ACCESSORY_DYE + size;
+        NonNullList<ItemStack> itemStacks = NonNullList.withSize(all, ItemStack.EMPTY);
+        for (int i = 0; i < stacks.size(); i++) {
+            itemStacks.set(i, stacks.get(i));
+        }
+        this.stacks = itemStacks;
+        this.sizeAccessoryDye = size;
+    }
+
     @Override
     public int getContainerSize() {
         return stacks.size();
@@ -233,6 +263,14 @@ public class ExtraInventory extends ItemStackHandler implements Container {
     @Override
     public void clearContent() {
         stacks.clear();
+    }
+
+    public void copyFrom(ExtraInventory other) {
+        this.sizeAccessoryDye = other.sizeAccessoryDye;
+        this.initialized = other.initialized;
+        this.previousStacks = other.previousStacks;
+        this.dirty = other.dirty;
+        this.stacks = other.stacks;
     }
 
     public static ItemStack getProjectile(ItemStack projectile, ItemStack weapon, LivingEntity living) {

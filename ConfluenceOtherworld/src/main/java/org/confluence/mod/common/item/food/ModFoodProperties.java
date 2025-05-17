@@ -1,5 +1,7 @@
 package org.confluence.mod.common.item.food;
 
+import net.minecraft.core.Holder;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -21,6 +23,13 @@ public class ModFoodProperties {
     //无效果食物
     public static FoodProperties noEffectProperties(int nutrition, float rawSaturation) {
         return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(calcSaturationModifier(rawSaturation, nutrition)).fast().alwaysEdible().build();
+    }
+
+    //自填效果食物
+    public static FoodProperties hasEffectProperties(int nutrition, float rawSaturation, Holder<MobEffect> effects, int duration, int level) {
+        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(calcSaturationModifier(rawSaturation, nutrition)).fast().alwaysEdible()
+                .effect(() -> new MobEffectInstance(effects, duration, level), 1.0f)
+                .build();
     }
 
     //吃得好

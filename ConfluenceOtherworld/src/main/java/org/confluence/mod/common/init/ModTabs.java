@@ -191,6 +191,7 @@ public final class ModTabs {
                         ModItems.HIDDEN.getEntries().forEach(item -> output.accept(item.get()));
                         output.accept(FoodItems.PINK_COLA.get());
                         output.accept(FoodItems.DONGDONGS_FLATBREAD.get());
+                        output.accept(FoodItems.PIGLIN_STEW.get());
                         output.accept(TEBoomerangItems.BeiDou_BOOMERANG.get());
                         output.accept(ToolItems.DEV_BUG_NET.get());
                         output.accept(SwordItems.DEVELOPER_SWORD.get());

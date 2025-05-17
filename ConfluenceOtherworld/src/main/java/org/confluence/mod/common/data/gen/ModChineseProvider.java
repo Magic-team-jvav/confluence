@@ -133,6 +133,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.ice_tofu_brick.0", "它现在不能吃了，但不妨碍它把你吃了");
         add("tooltip.item.confluence.pink_cola.0", "一瓶普通的粉色可乐，或许原来有一整箱？");
         add("tooltip.item.confluence.dongdongs_flatbread.0", "刚在下界岩上考好的饼，快来尝尝吧！");
+        add("tooltip.item.confluence.piglin_stew.0", "屁戈林在饿死前最想吃的东西，可他最终没能吃上…");
         add("tooltip.item.confluence.boredoms_pact_falling_resolve.0", "「无聊之咒·陨志」");
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.1", "(Boredom's Pact - Falling Resolve)");
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.2", "           ");
@@ -3405,6 +3406,7 @@ public class ModChineseProvider extends LanguageProvider {
         //赞助
         add(FoodItems.PINK_COLA.get(), "粉色可乐");
         add(FoodItems.DONGDONGS_FLATBREAD.get(), "东东的大饼");
+        add(FoodItems.PIGLIN_STEW.get(), "猪灵堡");
         // 鱼
         add(FoodItems.GOLDFISH.get(), "金鱼");
         add(FoodItems.SEA_BASS.get(), "鲈鱼");

@@ -196,7 +196,7 @@ public final class GameClientEvents {
         LocalPlayer player = (LocalPlayer) event.getEntity();
         boolean b = player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN);
         ((ILocalPlayer) player).confluence$setCanMove(!b);
-        if (!player.getAbilities().instabuild) {
+        if (!player.hasInfiniteMaterials()) {
             if ((b || player.hasEffect(ModEffects.SHIMMER))) {
                 input.jumping = false;
                 input.forwardImpulse = 0.0F;

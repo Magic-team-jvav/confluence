@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.common;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -51,15 +52,19 @@ public class TreasureBagItem extends CustomRarityItem {
                     .withLuck(player.getLuck())
                     .create(LootContextParamSets.GIFT);
             String string = LibUtils.getItemStackNbt(itemStack).getString("lootTable");
+            ResourceLocation table;
             if (string.isEmpty() && player.isCreative()) {
-                string = lootTable.withSuffix(suffix.apply(serverLevel, player.blockPosition())).toString();
+                table = lootTable.withSuffix(suffix.apply(serverLevel, player.blockPosition()));
+            } else {
+                table = ResourceLocation.parse(string);
             }
-            ResourceLocation table = ResourceLocation.parse(string);
             LootTable loottable = serverLevel.getServer().reloadableRegistries().getLootTable(ResourceKey.create(Registries.LOOT_TABLE, table));
             int count = 1;
             if (player.isCrouching()) count = itemStack.getCount();
             for (int i = 0; i < count; i++) {
-                for (ItemStack loot : loottable.getRandomItems(lootparams)) {
+                ObjectArrayList<ItemStack> items = loottable.getRandomItems(lootparams);
+                collectItems(serverLevel, player, itemStack, items);
+                for (ItemStack loot : items) {
                     if (!player.addItem(loot)) player.drop(loot, false, true);
                 }
             }
@@ -69,6 +74,8 @@ public class TreasureBagItem extends CustomRarityItem {
         }
         return InteractionResultHolder.success(itemStack);
     }
+
+    protected void collectItems(ServerLevel serverLevel, Player player, ItemStack itemStack, ObjectArrayList<ItemStack> items) {}
 
     public static @Nullable ItemStack getTreasureBag(LivingEntity living) {
         if (!(living.level() instanceof ServerLevel serverLevel)) return null;

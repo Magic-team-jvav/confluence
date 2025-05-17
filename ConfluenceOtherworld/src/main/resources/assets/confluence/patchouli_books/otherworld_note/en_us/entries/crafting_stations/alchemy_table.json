@@ -1,5 +1,5 @@
 {
-    "name": "patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.name",
+    "name": "block.confluence.alchemy_table",
     "icon": "confluence:alchemy_table",
     "category": "confluence:crafting_stations",
     "pages": [

@@ -44,7 +44,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.DeathChestBlock;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
@@ -127,7 +126,7 @@ public class BaseChestBlock extends ChestBlock {
             if ((isShadow && entity.variant == Variant.LOCKED_SHADOW) || (stack.is(ToolItems.GOLDEN_KEY) && entity.variant == Variant.LOCKED_GOLDEN) || (stack.is(ToolItems.GOLDEN_DUNGEON_KEY) && entity.variant == Variant.LOCKED_DUNGEON)) {
                 int unlock = entity.variant.unlock;
                 if (unlock > 0) {
-                    if (!isShadow && !player.getAbilities().instabuild) {
+                    if (!isShadow && !player.hasInfiniteMaterials()) {
                         stack.shrink(1);
                     }
                     entity.variant = Variant.byId(unlock);

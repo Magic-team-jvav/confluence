@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.block.functional.AbstractMechanicalBlock;
@@ -42,8 +41,7 @@ public class MechanicalBlockRenderer<E extends AbstractMechanicalBlock.Entity> i
 
     @Override
     public void render(E pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
-        Level level = pBlockEntity.getLevel();
-        long gameTime = level == null ? 0L : level.getGameTime();
+        long gameTime = System.currentTimeMillis() / 50;
         Vec3 vec31 = pBlockEntity.getBlockPos().getCenter();
         for (Int2ObjectMap.Entry<Set<BlockPos>> entry : pBlockEntity.getConnectedPoses().int2ObjectEntrySet()) {
             int color = entry.getIntKey();

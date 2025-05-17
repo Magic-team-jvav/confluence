@@ -30,7 +30,7 @@ public class SpikyBallItem extends Item {
         }
 
         player.awardStat(Stats.ITEM_USED.get(this));
-        if (!player.getAbilities().instabuild) {
+        if (!player.hasInfiniteMaterials()) {
             itemstack.shrink(1);
         }
 

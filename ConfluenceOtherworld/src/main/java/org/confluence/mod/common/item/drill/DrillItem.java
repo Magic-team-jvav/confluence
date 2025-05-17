@@ -3,6 +3,7 @@ package org.confluence.mod.common.item.drill;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -84,12 +85,18 @@ public class DrillItem extends PickaxeAxeItem implements GeoItem {
         return false;
     }
 
+    @Override
+    public double getBoneResetTime() {
+        return 1000000000;
+    }
+
     public static void drillAnimation(PlayerInteractEvent.LeftClickBlock event) {
-        if (event.getSide().isServer() && event.getItemStack().getItem() instanceof DrillItem drillItem) {
+        if (event.getEntity() instanceof ServerPlayer serverPlayer && event.getItemStack().getItem() instanceof DrillItem drillItem) {
+            long id = GeoItem.getOrAssignId(event.getItemStack(), serverPlayer.serverLevel());
             if (event.getAction() == PlayerInteractEvent.LeftClickBlock.Action.START) {
-                drillItem.triggerAnim(event.getEntity(), GeoItem.getId(event.getItemStack()), "drill", "rotate");
+                drillItem.triggerAnim(event.getEntity(), id, "drill", "rotate");
             } else if (event.getAction() == PlayerInteractEvent.LeftClickBlock.Action.ABORT) {
-                drillItem.stopTriggeredAnim(event.getEntity(), GeoItem.getId(event.getItemStack()), "drill", "rotate");
+                drillItem.stopTriggeredAnim(event.getEntity(), id, "drill", "rotate");
             }
         }
     }

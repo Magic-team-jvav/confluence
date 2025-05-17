@@ -52,7 +52,7 @@ public class SingleItemStackSwapperBlock extends Block {
             ItemStack result = function.apply(stack);
             if (!result.isEmpty()) {
                 player.addItem(result);
-                if (!player.getAbilities().instabuild) {
+                if (!player.hasInfiniteMaterials()) {
                     stack.shrink(shrink);
                 }
                 return ItemInteractionResult.CONSUME;

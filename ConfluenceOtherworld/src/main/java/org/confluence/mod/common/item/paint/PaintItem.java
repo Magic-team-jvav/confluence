@@ -23,7 +23,7 @@ public class PaintItem extends Item {
         ItemStack stack = inventory.offhand.getFirst();
         if (!stack.isEmpty() && stack.getItem() instanceof PaintItem paintItem) {
             int color = paintItem.getColor(stack);
-            if (!player.getAbilities().instabuild) {
+            if (!player.hasInfiniteMaterials()) {
                 stack.shrink(1);
             }
             return color;
@@ -31,7 +31,7 @@ public class PaintItem extends Item {
         for (ItemStack itemStack : inventory.items) {
             if (!itemStack.isEmpty() && itemStack.getItem() instanceof PaintItem paintItem) {
                 int color = paintItem.getColor(itemStack);
-                if (!player.getAbilities().instabuild) {
+                if (!player.hasInfiniteMaterials()) {
                     itemStack.shrink(1);
                 }
                 return color;

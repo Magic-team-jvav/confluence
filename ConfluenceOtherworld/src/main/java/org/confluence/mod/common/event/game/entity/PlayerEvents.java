@@ -151,7 +151,7 @@ public final class PlayerEvents {
             if (isWaterBottle && targetEntity.hasEffect(ModEffects.CHOKING)) {
                 targetEntity.removeEffect(ModEffects.CHOKING);
                 ItemStack emptyBottle = item.is(PotionItems.BOTTLED_WATER) ? PotionItems.BOTTLE.toStack() : Items.GLASS_BOTTLE.getDefaultInstance();
-                if (!serverPlayer.getAbilities().instabuild) {
+                if (!serverPlayer.hasInfiniteMaterials()) {
                     serverPlayer.getInventory().add(emptyBottle);
                     item.shrink(1);
                 }

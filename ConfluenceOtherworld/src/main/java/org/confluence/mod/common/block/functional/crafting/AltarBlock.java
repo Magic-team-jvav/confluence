@@ -50,6 +50,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.block.AltarBlockModel;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -123,7 +124,7 @@ public class AltarBlock extends BaseEntityBlock {
                 ).withColor(GlobalColors.MESSAGE.getRGB()), false);
             }
             if (serverPlayer.getMainHandItem().is(HammerItems.PWNHAMMER)) {
-                AdvancementHolder holder = serverLevel.getServer().getAdvancements().get(Confluence.asResource("achievements/begone_evil"));
+                AdvancementHolder holder = serverLevel.getServer().getAdvancements().get(Confluence.asResource(ModAchievements.PREFIX + "begone_evil"));
                 if (holder != null) {
                     serverPlayer.getAdvancements().award(holder, "never");
                 }
@@ -182,7 +183,7 @@ public class AltarBlock extends BaseEntityBlock {
     }
 
     public static boolean hurtPlayerIfBrokenNotAllowed(Player player, BlockState blockState) {
-        if (!player.getAbilities().instabuild &&
+        if (!player.hasInfiniteMaterials() &&
                 blockState.getBlock() instanceof AltarBlock &&
                 !player.getMainHandItem().is(ModTags.Items.ABLE_TO_DESTROY_ALTAR)
         ) {

@@ -30,7 +30,7 @@ public class HoneyBucketItem extends BucketItem {
             CriteriaTriggers.CONSUME_ITEM.trigger(serverplayer, pStack);
             serverplayer.awardStat(Stats.ITEM_USED.get(this));
         }
-        if (pEntityLiving instanceof Player && !((Player) pEntityLiving).getAbilities().instabuild) {
+        if (pEntityLiving instanceof Player && !((Player) pEntityLiving).hasInfiniteMaterials()) {
             pStack.shrink(1);
         }
         return pStack.isEmpty() ? new ItemStack(Items.BUCKET) : pStack;

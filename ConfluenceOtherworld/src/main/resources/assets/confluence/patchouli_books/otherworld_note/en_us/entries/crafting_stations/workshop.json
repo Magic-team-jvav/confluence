@@ -1,5 +1,5 @@
 {
-    "name": "patchouli.confluence.otherworld_note.crafting_stations.workshop.name",
+    "name": "block.confluence.workshop.name",
     "icon": "terra_curio:workshop",
     "category": "confluence:crafting_stations",
     "pages": [

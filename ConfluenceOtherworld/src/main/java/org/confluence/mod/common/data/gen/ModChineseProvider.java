@@ -49,7 +49,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.hamaxe.mode.1","斧");
         add("message.confluence.hoe_shovel.mode.0","锹");
         add("message.confluence.hoe_shovel.mode.1","锄");
-        add("jukebox_song.confluence.song", "C418 - alpha");
+        add("jukebox_song.confluence.alpha", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
         add("generator.confluence.the_corruption", "腐化之地");
@@ -363,7 +363,35 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.solar_wings.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.stardust.0", "可飞行和缓慢坠落");
 
+        //设置
+        add("confluence.configuration.wrappedCrimson_heart", "裸露的猩红心脏");
+        add("confluence.configuration.wrappedCrimson_heart.tooltip", "启用后，新生成的猩红洞穴将会生成裸露的猩红心脏");
+        add("confluence.configuration.showItemPrice", "显示物品价格");
+        add("confluence.configuration.showItemPrice.tooltip", "启用以查看该物品出售于NPC时的价格");
+        add("confluence.configuration.Recipe", "合成配方机制");
+        add("confluence.configuration.Recipe.button", "合成配方机制");
+        add("confluence.configuration.Recipe.tooltip", "一些合成配方相关设置");
+        add("confluence.configuration.Spawning", "生成机制");
+        add("confluence.configuration.Spawning.button", "生成机制");
+        add("confluence.configuration.Spawning.tooltip", "一些生成相关设置");
+        add("confluence.configuration.Falling Star", "坠落之星");
+        add("confluence.configuration.Falling Star.button", "坠落之星");
+        add("confluence.configuration.Falling Star.tooltip", "控制坠落之星生成相关设置");
+        add("confluence.configuration.NPC", "NPC");
+        add("confluence.configuration.NPC.tooltip", "控制NPC生成相关设置");
+        add("confluence.configuration.doNPCSpawning", "NPC生成");
+        add("confluence.configuration.doNPCSpawning.button", "NPC生成");
+        add("confluence.configuration.doNPCSpawning.tooltip", "启用时，NPC将会生成");
+        add("confluence.configuration.npcSpawnInterval", "NPC生成间隔");
+        add("confluence.configuration.npcSpawnInterval.tooltip", "定义NPC生成间隔");
+        add("confluence.configuration.doMeteoriteSpawning", "陨石生成");
+        add("confluence.configuration.doMeteoriteSpawning.tooltip", "启用时，天空将会对未加载区域砸下陨石");
+        add("confluence.configuration.doFallingStarSpawning", "坠落之星生成");
+        add("confluence.configuration.doFallingStarSpawning.tooltip", "启用时，坠落之星将会在晚上生成");
+        add("confluence.configuration.fallingStarInterval", "坠星生成间隔");
+        add("confluence.configuration.fallingStarInterval.tooltip", "定义夜晚中坠星的生成间隔");
         add("confluence.configuration.WorldGeneration", "世界生成机制");
+        add("confluence.configuration.WorldGeneration.button", "世界生成机制");
         add("confluence.configuration.WorldGeneration.tooltip", "一些世界生成相关设置");
         add("confluence.configuration.brewing_stand_recipe", "泰拉药水酿造台配方");
         add("confluence.configuration.brewing_stand_recipe.tooltip", "启用时，酿造台可以酿造泰拉药水");
@@ -389,8 +417,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.fletchingMenu.tooltip", "启用时，将使用汇流来世的修改制箭台");
         add("confluence.configuration.shimmer_decompose", "微光分解");
         add("confluence.configuration.shimmer_decompose.tooltip", "启用时，微光液体能将物品分解为原材料");
-        add("confluence.configuration.fallingStarInterval", "坠星间隔");
-        add("confluence.configuration.fallingStarInterval.tooltip", "定义夜晚中坠星的生成间隔");
         add("confluence.configuration.returnPotionGlassBottle", "返还药水瓶");
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "决定你使用药水后是否返还瓶子");
         add("confluence.configuration.rightClickRideMinecart", "右键上矿车");
@@ -477,6 +503,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.Entity.tooltip", "与生物有关的视觉效果");
         add("confluence.configuration.section.confluence.common.toml.title", "通用配置");
 
+        //生物群系
         add("biome.confluence.the_corruption", "腐化之地");
         add("biome.confluence.the_corruption_desert", "腐化沙漠");
         add("biome.confluence.the_corruption_tundra", "腐化苔原");
@@ -490,7 +517,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("biome.confluence.ash_wasteland", "灰烬荒地");
         add("biome.confluence.ash_forest", "白蜡木林");
 
-        // new
+        //成就
         add("achievements.toast.complete", "成就达成！");
         add("achievements.confluence.new_world.title", "旧的世界，新的旅途！");
         add("achievements.confluence.new_world.description", "汇合交流的来世。");
@@ -836,7 +863,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("container.confluence.cauldron", "大锅");
         add("container.confluence.fletching_table", "制箭台");
         add("container.confluence.piggy_bank", "猪猪存钱罐");
-        add("container.confluence.npc_shop", "npc商店");
+        add("container.confluence.npc_shop", "NPC商店");
         add("container.confluence.sawmill", "锯木机");
         add("container.confluence.tree_holes", "树洞");
         add("container.confluence.solidifier", "固化机");
@@ -1118,7 +1145,6 @@ public class ModChineseProvider extends LanguageProvider {
         //帕秋莉手册
         add("patchouli.confluence.otherworld_note.name", "来世手记");
         add("patchouli.confluence.otherworld_note.landing_text", "暗流涌动，世界的命运岌岌可危，邪恶势力的阴影笼罩着两个世界。命运的交汇之时，融合的时代悄然来临。你将在这两大世界的融合中，开始一段崭新的冒险之旅，挑战未知，拯救世界，或为自己谋求力量。");
-        add("patchouli.confluence.otherworld_note.terraria_wiki", "*cbot——摘自泰拉瑞亚中文Wiki");
 
         //章节
         add("patchouli.confluence.otherworld_note.accessories.name", "饰品");
@@ -1149,53 +1175,48 @@ public class ModChineseProvider extends LanguageProvider {
         //Boss 列表
         add("patchouli.confluence.otherworld_note.boss_checklist.how_to_summon", "召唤方式");
 
-        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.internal_link", "$(l:boss_checklist/brain_of_cthulhu)克苏鲁之脑*c");
         add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.name", "克苏鲁之脑");
         add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.0", "克苏鲁之脑看上去就是个裸露的大脑，不过真的非常大");
-        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.1", "*lo$(#AA0000)“出没在让人毛骨悚然的猩红之地的巨大恶魔大脑。”*w");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.1", "*z$(#AA0000)“出没在让人毛骨悚然的猩红之地的巨大恶魔大脑。”*c*w");
         add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.2", "在克苏鲁之脑的防御解除之前无法攻击它，需要杀死所有视神经元才能开始攻击。");
         add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.2.0", "视神经元");
         add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.3", "单片镜爱好者。");
-        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.4", "当视神经元被消灭完，克苏鲁之脑就会裸露出它的心脏并召唤出3个无法攻击的克苏鲁之脑幻象。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.4", "当视神经元被消灭完，克苏鲁之脑就会裸露出它的心脏并召唤出 3 个无法攻击的克苏鲁之脑幻象。");
         add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.4.0", "克苏鲁之脑幻象");
-        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.5", "*o“亦真亦假假作真时真亦假，无为有处有还无。”*bt——摘自《红楼梦》");
-        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.6", "在!w:cr!使用血腥脊椎，或者摧毁 3 个生成于血腥世界中的猩红心脏来召唤克苏鲁之脑。*b需要在晚上才能召唤。");
-        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.7", "血腥脊椎是一个用于召唤Boss的物品，看起来像是个被剥离的脊椎。*b它可以用来在猩红之地立刻召唤克苏鲁之脑。*2在!cs:a!中使用 30 个毒粉和 15 个椎骨合成血腥脊椎。");
-        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.8", "*o$(#555555)“一截被剥离下来了的身体组织，上面斑驳着血痂块与肌肉组织，很难想象它是从哪种生物体内，以何种方式取出来的。它似乎在尝试着与你对话...”");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.5", "*o“亦真亦假假作真时真亦假，无为有处有还无。”*b*t——摘自《红楼梦》*c");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.6", "在!w:cr!猩红之地*c使用血腥脊椎，或者摧毁 3 个生成于血腥世界中的猩红心脏来召唤克苏鲁之脑。*b需要在晚上才能召唤。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.7", "血腥脊椎是一个用于召唤Boss的物品，看起来像是个被剥离的脊椎。*b它可以用来在猩红之地立刻召唤克苏鲁之脑。*2在!cs:a!祭坛*c中使用 30 个毒粉和 15 个椎骨合成血腥脊椎。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.8", "*o$(#555555)“一截被剥离下来了的身体组织，上面斑驳着血痂块与肌肉组织，很难想象它是从哪种生物体内，以何种方式取出来的。它似乎在尝试着与你对话...*c");
 
-        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.internal_link", "$(l:boss_checklist/eater_of_worlds)世界吞噬怪*c");
         add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.name", "世界吞噬怪");
         add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.0", "世界吞噬怪是一只体型巨大的...蠕虫？看上去就挺像是地底蠕虫的腐化版。");
-        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.1", "*lo$(#AA00AA)“居住在腐化之地的巨虫。”*w");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.1", "*z$(#AA00AA)“居住在腐化之地的巨虫。”*c*w");
         add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.2", "当任何一段体节被击杀时，它会分裂！只有当所有体节被击杀才算真正击败世界吞噬怪。");
         add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.2.0", "世界吞噬怪体节");
         add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.3", "节节高升（字面意思）。");
-        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.4", "在!w:co!使用蠕虫诱饵，或者摧毁 3 个生成于腐化世界中的暗影珠来召唤世界吞噬怪。*b可以在任意时间召唤。");
-        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.5", "蠕虫诱饵是一个用于召唤Boss的物品，看起来像是一块腐烂的肉。*b它可以用来在!w:co!立刻召唤世界吞噬怪。*2在!cs:a!中使用 30 个魔粉和 15 个腐肉合成蠕虫诱饵。");
-        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.6", "*o$(#555555)“闻起来像一块烂掉了的排骨，似乎对那些病变了的泰拉生物有极强的吸引力。”");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.4", "在!w:co!腐化之地*c使用蠕虫诱饵，或者摧毁 3 个生成于腐化世界中的暗影珠来召唤世界吞噬怪。*b可以在任意时间召唤。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.5", "蠕虫诱饵是一个用于召唤Boss的物品，看起来像是一块腐烂的肉。*b它可以用来在腐化之地立刻召唤世界吞噬怪。*2在!cs:a!祭坛*c中使用 30 个魔粉和 15 个腐肉合成蠕虫诱饵。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.6", "*o$(#555555)“闻起来像一块烂掉了的排骨，似乎对那些病变了的泰拉生物有极强的吸引力。*c");
 
-        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.internal_link", "$(l:boss_checklist/eye_of_cthulhu)克苏鲁之眼*c");
         add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.name", "克苏鲁之眼");
         add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.0", "作为一只巨大的眼睛，克苏鲁之眼又快又狠（不太准）。*b当克苏鲁之眼血量低于一定数值，它会将其眼睛变为嘴发出吼叫声并进入狂暴。*b在狂暴时，克苏鲁之眼只会疯狂的向你冲刺。*2此时是真的快准狠了。");
-        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.1", "*lo$(#9A5CC6)“只在夜间出没的危险眼球怪。”*w");
-        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.2", "在任何地方使用可疑眼球来召唤世界吞噬怪。*b有时克苏鲁之眼会在晚上出现：$(#AA0000)“你感到有个邪恶的东西在看着你……”*c2需要在晚上才能召唤。");
-        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.3", "可疑眼球是一个用于召唤Boss的物品，看起来像是个被剥离的眼球。*b它可以用来在任何地点立刻召唤克苏鲁之眼。*2在!cs:a!中使用 6 个晶状体合成可疑眼球。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.1", "*z$(#9A5CC6)“只在夜间出没的危险眼球怪。”*c*w");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.2", "在任何地方使用可疑眼球来召唤世界吞噬怪。*b有时克苏鲁之眼会在晚上出现：$(#AA0000)“你感到有个邪恶的东西在看着你……”*c*2需要在晚上才能召唤。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.3", "可疑眼球是一个用于召唤Boss的物品，看起来像是个被剥离的眼球。*b它可以用来在任何地点立刻召唤克苏鲁之眼。*2在!cs:a!祭坛*c中使用 6 个晶状体合成可疑眼球。");
         add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.4", "*o$(#555555)“一颗死气沉沉，目光呆滞的眼球，尽管它不具备攻击性，但它似乎比那些夜间会在半空中飞来飞去的同僚们更为危险。它好像在看着你。”");
 
-        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.internal_link", "$(l:boss_checklist/king_slime)史莱姆王*c");
         add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.name", "史莱姆王");
         add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.0", "史莱姆王作为一只超大史莱姆，它不止比普通史莱姆跳的更高更远，当你离它过远时它还会瞬移！*2它还有顶巨大的王冠！");
-        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.1", "*lo$(#555555)“所有黏滑生物的首领。”*w");
+        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.1", "*z$(#555555)“所有黏滑生物的首领。”*c*w");
         add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.2", "在任何地方使用史莱姆皇冠，或者在史莱姆雨中击杀 150 只史莱姆来召唤世界吞噬怪。*2可以在任意时间召唤。");
-        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.3", "史莱姆皇冠是一个用于召唤Boss的物品，看起来像是个戴着王冠的小蓝色史莱姆。*b它可以用来在任何地点立刻召唤史莱姆王。*2在!cs:a!中使用 20 个凝胶和金冠/铂金冠合成史莱姆皇冠。");
-        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.4", "*o$(#555555)“一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。戴上它可能不是个好选择。”");
+        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.3", "史莱姆皇冠是一个用于召唤Boss的物品，看起来像是个戴着王冠的小蓝色史莱姆。*b它可以用来在任何地点立刻召唤史莱姆王。*2在!cs:a!祭坛*c中使用 20 个!ma:g!凝胶*c和金冠/铂金冠合成史莱姆皇冠。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.4", "*o$(#555555)“一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。戴上它可能不是个好选择。*c");
 
-        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.internal_link", "$(l:boss_checklist/queen_bee)蜂王*c");
         add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.name", "蜂王");
         add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.0", "字面意思，它是蜜蜂们的女王，所以当它开始抖动它的体节时会召唤大群的小蜜蜂来攻击你。*b它底下的蜂巢当然不是装饰，可是货真价实会发射毒针的！*b小心蜂王偶尔会朝你俯冲！*2*o绝对不要把蜂王带出丛林，当蜂王的眼睛变红时请尽快结束战斗或者……*c*l$(#FF0000)跑！");
-        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.1", "*lo$(#FFAA00)“统治丛林蜂巢的女王。”*w");
+        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.1", "*z$(#FFAA00)“统治丛林蜂巢的女王。”*c*w");
         add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.2", "在丛林使用憎恶之蜂，或者在蜂巢破坏幼虫来召唤世界吞噬怪。*2可以在任意时间召唤。");
-        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.3", "憎恶之蜂是一个用于召唤Boss的物品，看起来像是个蜜蜂。*b它可以用来在丛林中立刻召唤蜂王。*2在!cs:hwb!中使用 5 个蜂蜜块、5 个丛林蜂巢、毒刺和蜂蜜瓶合成憎恶之蜂。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.3", "憎恶之蜂是一个用于召唤Boss的物品，看起来像是个蜜蜂。*b它可以用来在丛林中立刻召唤蜂王。*2在!cs:hwb!重型工作台*c中使用 5 个蜂蜜块、5 个丛林蜂巢、毒刺和蜂蜜瓶合成憎恶之蜂。");
         add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.4", "*o$(#555555)“她似乎嫉妒厌恶那些荧光真菌孢子的气息。一团尚未成型的幼蜂，摸上去感觉像粘稠的蜂蜜...蜂王与她的下属们对它们甜蜜领地的保护欲不知何时渐渐发展为对非同类生物的嫉妒排斥与憎恶。群峰振翅值声撼动了丛林中最为厚重的叶片。”");
 
         //制作站
@@ -1204,53 +1225,38 @@ public class ModChineseProvider extends LanguageProvider {
         add("patchouli.confluence.otherworld_note.crafting_stations.gui", "GUI界面");
         add("patchouli.confluence.otherworld_note.crafting_stations.how_to_use", "使用方式");
 
-        add("patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.internal_link", "$(l:crafting_stations/alchemy_table)炼药桌*c");
-        add("patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.name", "炼药桌");
-        add("patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.0", "炼药桌差不多就是酿造台的Plus版，当然不能用于制作酿造台的配方，而是制作特殊的酿药配方。*b在!cs:hwb!中使用木板、酿造台、骷髅头颅、蜡烛和玻璃瓶制作而成。");
+        add("patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.0", "炼药桌差不多就是酿造台的Plus版，当然不能用于制作酿造台的配方，而是制作特殊的酿药配方。*b在!cs:hwb!重型工作台*c中使用木板、酿造台、骷髅头颅、蜡烛和玻璃瓶制作而成。");
         add("patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.1", "左右 6 个格子放材料，中上塞水瓶（或者其他特殊的东西），然后下方就会有成品了。");
         add("patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.2", "如果乱赛东西，你的合成可能会变得奇怪。");
 
-        add("patchouli.confluence.otherworld_note.crafting_stations.altar.internal_link", "$(l:crafting_stations/altar)祭坛*c");
         add("patchouli.confluence.otherworld_note.crafting_stations.altar.name", "祭坛");
-        add("patchouli.confluence.otherworld_note.crafting_stations.altar.0", "祭坛是天然生成的制作站，主要出现在!w:co!或!w:cr!中的裂隙或周围，较少出现在地下。*b它们用于制作许多Boss的召唤物品和其他特殊物品。*b它们不能被拿走、拾取、放置、或制作。");
+        add("patchouli.confluence.otherworld_note.crafting_stations.altar.0", "祭坛是天然生成的制作站，主要出现在!w:co!腐化之地*c或!w:cr!猩红之地*c中的裂隙或周围，较少出现在地下。*b它们用于制作许多Boss的召唤物品和其他特殊物品。*b它们不能被拿走、拾取、放置、或制作。");
         add("patchouli.confluence.otherworld_note.crafting_stations.altar.1", "将物品放入祭坛，潜行右击将物品取出，空手状态下左击使用祭坛进行合成");
         add("patchouli.confluence.otherworld_note.crafting_stations.altar.2", "恶魔祭坛通常出现在腐化之地的地下，在世界各地的地下少量出现。");
         add("patchouli.confluence.otherworld_note.crafting_stations.altar.3", "猩红祭坛通常出现在腐化之地的地下，在世界各地的地下少量出现。");
 
-        add("patchouli.confluence.otherworld_note.crafting_stations.extractinator.internal_link", "$(l:crafting_stations/extractinator)提炼机*c");
-        add("patchouli.confluence.otherworld_note.crafting_stations.extractinator.name", "提炼机");
         add("patchouli.confluence.otherworld_note.crafting_stations.extractinator.0", "提炼机是一种可以将砂砾、泥沙块、雪泥块、海洋砂砾和沙漠化石转换为更有价值的物品（例如矿石，钱币，和宝石），或将钓鱼垃圾转换为低级鱼饵的功能方块。*2*o垃圾回收站 3000。");
         add("patchouli.confluence.otherworld_note.crafting_stations.extractinator.1", "手持物品对着提炼机长按右键即可，手中的物品会以极快的速度被提炼，提炼的结果会以掉落物形式掉出。*2rua~狂~风~刀~法~！");
         add("patchouli.confluence.otherworld_note.crafting_stations.extractinator.2", "散落一地的物品。");
         add("patchouli.confluence.otherworld_note.crafting_stations.extractinator.3", "在木匣中可以获取提炼机。");
 
-        add("patchouli.confluence.otherworld_note.crafting_stations.heavy_work_bench.internal_link", "$(l:crafting_stations/heavy_work_bench)重型工作台*c");
-        add("patchouli.confluence.otherworld_note.crafting_stations.heavy_work_bench.name", "重型工作台");
         add("patchouli.confluence.otherworld_note.crafting_stations.heavy_work_bench.0", "重型工作台有点像工作台的升级版，但是不能用于制作工作台的 3x3 配方，而是制作属于重型工作台的 4x4 配方。*b它可用于制作各种建筑方块、工具和装饰物品。");
         add("patchouli.confluence.otherworld_note.crafting_stations.heavy_work_bench.1", "其实它差不多就是普通的工作台，不过使用 4x4 的配方。");
         add("patchouli.confluence.otherworld_note.crafting_stations.heavy_work_bench.2", "如果配方相同，可以使用右侧的箭头切换成品。");
 
-        add("patchouli.confluence.otherworld_note.crafting_stations.hellforge.internal_link", "$(l:crafting_stations/hellforge)地狱熔炉*c");
-        add("patchouli.confluence.otherworld_note.crafting_stations.hellforge.name", "地狱熔炉");
-        add("patchouli.confluence.otherworld_note.crafting_stations.hellforge.0", "比高炉还耐烧（而且兼容高炉的配方！），就是说这是个高炉的升级版。*b在!w:nt!的某个地方会里有概率生成地狱熔炉。");
+        add("patchouli.confluence.otherworld_note.crafting_stations.hellforge.0", "比高炉还耐烧（而且兼容高炉的配方！），就是说这是个高炉的升级版。*b在!w:nt!下界塔*c的某个地方会里有概率生成地狱熔炉。");
         add("patchouli.confluence.otherworld_note.crafting_stations.hellforge.1", "在中间 4 个地方输入材料，左下角放燃料，稍等片刻成品就会在右边出现了。");
         add("patchouli.confluence.otherworld_note.crafting_stations.hellforge.2", "不太符合熔炉和高炉的样子，是吧？但是也不是不好看。");
 
-        add("patchouli.confluence.otherworld_note.crafting_stations.lead_anvil.internal_link", "$(l:crafting_stations/lead_anvil)铅砧*c");
-        add("patchouli.confluence.otherworld_note.crafting_stations.lead_anvil.name", "铅砧");
         add("patchouli.confluence.otherworld_note.crafting_stations.lead_anvil.0", "其实铅砧就是铁砧的换皮，功能和铁砧一模一样。*b似乎...比铁砧便宜？");
         add("patchouli.confluence.otherworld_note.crafting_stations.lead_anvil.1", "就是铁砧，那不然呢。");
         add("patchouli.confluence.otherworld_note.crafting_stations.lead_anvil.2", "一模一样，是不是？");
 
-        add("patchouli.confluence.otherworld_note.crafting_stations.sky_mill.internal_link", "$(l:crafting_stations/sky_mill)天磨*c");
-        add("patchouli.confluence.otherworld_note.crafting_stations.sky_mill.name", "天磨");
-        add("patchouli.confluence.otherworld_note.crafting_stations.sky_mill.0", "听起来看上去很厉害，但是实际上就是个造家具的。*b在!w:hi!的箱子里有概率生成天磨。");
+        add("patchouli.confluence.otherworld_note.crafting_stations.sky_mill.0", "听起来看上去很厉害，但是实际上就是个造家具的。*b在!w:hi!天堂岛*c的箱子里有概率生成天磨。");
         add("patchouli.confluence.otherworld_note.crafting_stations.sky_mill.1", "就像切石机一样，即放即用。");
         add("patchouli.confluence.otherworld_note.crafting_stations.sky_mill.2", "下面三处放材料，右边选择配方，顶上就会有成品了。");
 
-        add("patchouli.confluence.otherworld_note.crafting_stations.workshop.internal_link", "$(l:crafting_stations/workshop)工匠作坊*c");
-        add("patchouli.confluence.otherworld_note.crafting_stations.workshop.name", "工匠作坊");
-        add("patchouli.confluence.otherworld_note.crafting_stations.workshop.0", "工匠作坊可以用来制作许多的饰品，而且不需要按顺序放！*b在!cs:hwb!中使用木板、红色羊毛、书、锻造台、铁砧/!cs:la!和皮革制作而成。*2一切都是哥布林商人的阴谋！");
+        add("patchouli.confluence.otherworld_note.crafting_stations.workshop.0", "工匠作坊可以用来制作许多的饰品，而且不需要按顺序放！*b在!cs:hwb!重型工作台*c中使用木板、红色羊毛、书、锻造台、铁砧或!cs:la!铅砧*c和皮革制作而成。*2一切都是哥布林商人的阴谋！");
         add("patchouli.confluence.otherworld_note.crafting_stations.workshop.1", "12 个材料格包围着中间的成品格即可合成。");
         add("patchouli.confluence.otherworld_note.crafting_stations.workshop.2", "如果配方相同，可以使用右侧的箭头切换成品。");
 
@@ -1264,69 +1270,58 @@ public class ModChineseProvider extends LanguageProvider {
         //世界
         add("patchouli.confluence.otherworld_note.world.appearance", "外观");
 
-        add("patchouli.confluence.otherworld_note.world.ash_forest.internal_link", "$(l:world/ash_forest)灰烬森林*c");
         add("patchouli.confluence.otherworld_note.world.ash_forest.name", "灰烬森林");
         add("patchouli.confluence.otherworld_note.world.ash_forest.0", "灰烬森林是一种会在下界生成的生物群系，这里生长着大量的白蜡木。*b灰烬森林几乎都由灰烬块组成，最上方则被灰烬草方块覆盖，灰烬草在其上生长。*2白蜡木在这里生长，玩家可以在这里获取到白蜡木及其衍生物。火焰花同样会在这里生成。");
         add("patchouli.confluence.otherworld_note.world.ash_forest.1", "*z$(#AAAAAA)“烬墟生芽启新痕。”");
         add("patchouli.confluence.otherworld_note.world.ash_forest.2", "*o*t灰暗的尘土死气沉沉，*b*t赤红的世界生机勃勃");
 
-        add("patchouli.confluence.otherworld_note.world.ash_wasteland.internal_link", "$(l:world/ash_wasteland)灰烬荒地*c");
         add("patchouli.confluence.otherworld_note.world.ash_wasteland.name", "灰烬荒地");
         add("patchouli.confluence.otherworld_note.world.ash_wasteland.0", "灰烬荒地是一种荒芜的生物群系，会在下界生成。*b灰烬荒地几乎都由灰烬块组成，地形则类似下界荒地。*2灰烬狱石会在这里较多地生成，并且相当显眼，所以这里算得上是一个挖掘狱石的好去处。*b火焰花同样会在这里生成。");
         add("patchouli.confluence.otherworld_note.world.ash_wasteland.1", "*z$(#AAAAAA)“灼世熔烬埋终章”");
         add("patchouli.confluence.otherworld_note.world.ash_wasteland.2", "*o*t灰暗的尘土隐藏宝物，*b*t赤红的世界危机四伏。");
 
-        add("patchouli.confluence.otherworld_note.world.enchanted_sword_shrine.internal_link", "$(l:world/enchanted_sword_shrine)附魔剑冢*c");
         add("patchouli.confluence.otherworld_note.world.enchanted_sword_shrine.name", "附魔剑冢");
         add("patchouli.confluence.otherworld_note.world.enchanted_sword_shrine.0", "附魔剑冢是一种会在世界中随机生成的结构，整体风格类似于繁茂洞穴。*b在正上方会有很长的狭长空间连通地面（尽管通常不会连通）。");
         add("patchouli.confluence.otherworld_note.world.enchanted_sword_shrine.1", "*z$(#B4684D)“隔绝世界的神器”");
         add("patchouli.confluence.otherworld_note.world.enchanted_sword_shrine.2", "*o*t深埋于月光流转的岩层，隐藏在邪恶祭坛的裂隙，青苔斑驳的岩石暗暗埋葬着星芒碎屑。*b*t躲避于尘世之外的洞穴，藏身在世间隐蔽的角落，深蓝锋利的宝剑仍然闪烁着点点星光。");
 
-        add("patchouli.confluence.otherworld_note.world.heaven_island.internal_link", "$(l:world/heaven_island)天堂岛*c");
         add("patchouli.confluence.otherworld_note.world.heaven_island.name", "天堂岛");
         add("patchouli.confluence.otherworld_note.world.heaven_island.0", "天堂岛是生成于世界上空的漂浮岛屿，有天堂岛和天堂湖两种变种。*2天堂岛由云朵包裹着一片陆地组成，包含一个天空小屋，小屋中必定包含两个箱子。*b天堂湖全部由云块和水组成，可以在这里钓鱼。*2*o钓鱼佬永不空军！！！");
         add("patchouli.confluence.otherworld_note.world.heaven_island.1", "*z$(#9A5CC6)“崇高的宝藏”");
         add("patchouli.confluence.otherworld_note.world.heaven_island.2", "*o*t浮岛悬于云霭之间，土石基座托起千年苔痕，残破神殿流淌着凝固的星辉。*b*t飘湖立于云顶之中，浮云包围支撑生命之源，隐秘蓝水保存着流淌的生命。");
         add("patchouli.confluence.otherworld_note.world.heaven_island.3", "*z$(#9A5CC6)“寂静的生命”");
 
-        add("patchouli.confluence.otherworld_note.world.living_tree.internal_link", "$(l:world/living_tree)生命树*c");
         add("patchouli.confluence.otherworld_note.world.living_tree.name", "生命树");
         add("patchouli.confluence.otherworld_note.world.living_tree.0", "生命树是一种大型的树形结构，它只会在森林群系生成。*b生命树地表部分的底部的内部是空心的，其中有一个箱子，内容与其他地表箱子一致。*b在其内部还有一条通往地下部分的通道，顺着通道往下走，可以发现一个小房间，房间内有一个包含独特物品的箱子。");
         add("patchouli.confluence.otherworld_note.world.living_tree.1", "*z$(#55FF55)“健康的生命之树”");
         add("patchouli.confluence.otherworld_note.world.living_tree.2", "*o*t滕阔的巨树屹立世间，*b*t森罗的邪恶引起质变。");
 
-        add("patchouli.confluence.otherworld_note.world.nether_tower.internal_link", "$(l:world/nether_tower)下界塔*c");
         add("patchouli.confluence.otherworld_note.world.nether_tower.name", "下界塔");
         add("patchouli.confluence.otherworld_note.world.nether_tower.0", "下界塔是一种会生成在下界岩浆海的附近的结构。只会生成在下界荒地和灰烬荒地两个生物群系中。*b由两个主塔和连接它们的桥梁组成，各区域都分布着资源。主塔共有三层，两塔存在着一些差异：一座底层为绯红木板，另一座则为诡异木板，通过建筑下半部分的色系即可区分它们。");
         add("patchouli.confluence.otherworld_note.world.nether_tower.1", "*z$(#FF5555)“炎热的藏宝地”");
         add("patchouli.confluence.otherworld_note.world.nether_tower.2", "*o*t酷热的塔中隐藏着宝藏，*b*t堵塞的冤魂诉说着肮脏。");
 
-        add("patchouli.confluence.otherworld_note.world.queen_bee_hive.internal_link", "$(l:world/queen_bee_hive)蜂王蜂巢*c");
         add("patchouli.confluence.otherworld_note.world.queen_bee_hive.name", "蜂王蜂巢");
         add("patchouli.confluence.otherworld_note.world.queen_bee_hive.0", "蜂王蜂巢是一个巨型蜂巢，自然生成于丛林群系的地下。*b主要由丛林蜂巢构成，在靠底部的部位有一摊较大的蜂蜜池。*2*l注意！在蜂蜜池中间会有一个以丛林蜂巢为底座、被稀薄蜂蜜块包裹的幼虫，如果将其破坏将会召唤出蜂王！");
         add("patchouli.confluence.otherworld_note.world.queen_bee_hive.1", "*z$(#FFFF55)“甜蜜的炸弹”");
         add("patchouli.confluence.otherworld_note.world.queen_bee_hive.2", "*o*t甜蜜的蜂蜜暗藏着剧毒，*b*t严密的淤泥包裹着诅猝。");
 
-        add("patchouli.confluence.otherworld_note.world.shimmer_lake.internal_link", "$(l:world/shimmer_lake)微光湖*c");
         add("patchouli.confluence.otherworld_note.world.shimmer_lake.name", "微光湖");
         add("patchouli.confluence.otherworld_note.world.shimmer_lake.0", "微光湖是一种会在世界中随机生成的结构，其中会大量生成微光。*b在微光湖的中央，有着一大池的微光，周围环绕着几棵宝石树。");
         add("patchouli.confluence.otherworld_note.world.shimmer_lake.1", "*z$(#FF55FF)“美丽而静谧，虚幻而空灵”");
         add("patchouli.confluence.otherworld_note.world.shimmer_lake.2", "*o*t微光湖似那星穹坠落的碎片，液态星光在寂静中泛起涟漪。*b*t秘境被柔蓝雾气笼罩，湖面如镜倒悬着永恒暮色，浸入其中便化作虚无剪影，与亿万星辰的呢喃共沉于无垠梦境。");
 
-        add("patchouli.confluence.otherworld_note.world.sky_village.internal_link", "$(l:world/sky_village)天空村庄*c");
         add("patchouli.confluence.otherworld_note.world.sky_village.name", "天空村庄");
         add("patchouli.confluence.otherworld_note.world.sky_village.0", "天空村庄是一种生成于世界上空的建筑，就像!w:hi!一样。天空村庄由多个浮岛组成，中心浮岛和其他浮岛之间由桥梁连接着，其它浮岛有农田浮岛和房屋浮岛，而房屋浮岛有以下类型：*i铁匠铺；*i石匠屋；*i天文台；*i马厩岛；*i大教堂；*i图书馆。");
         add("patchouli.confluence.otherworld_note.world.sky_village.1", "*z$(#B4684D)“漂浮的桃花源”");
         add("patchouli.confluence.otherworld_note.world.sky_village.2", "*o*t浮岛聚成集体，辅道链接文明，腐盗远离人间。*b*t桃园浮于孤寂，陶院保护孤独，涛冤断绝世间。");
         add("patchouli.confluence.otherworld_note.world.sky_village.3", "*z$(#B4684D)“孤寂之家”");
 
-        add("patchouli.confluence.otherworld_note.world.the_corruption.internal_link", "$(l:world/the_corruption)腐化之地*c");
         add("patchouli.confluence.otherworld_note.world.the_corruption.name", "腐化之地");
         add("patchouli.confluence.otherworld_note.world.the_corruption.0", "腐化之地是一种邪恶生物群系，有着深紫色的废土、死亡、与腐烂的主题，会生成腐化主题的敌怪。*b腐化之地群系会在邪恶生物群系为腐化的世界中自然生成。也可以自行创造腐化之地，当一个区块内的腐化系邪恶方块（例如黑檀石块）超过 256 个时，这个区块的生物群系会变为腐化之地。*b相应的，当邪恶方块不足 256 个时，这个区块的群系会变为原本的生物群系。");
         add("patchouli.confluence.otherworld_note.world.the_corruption.1", "*z$(#AA00AA)“正在使世界变得邪恶”");
         add("patchouli.confluence.otherworld_note.world.the_corruption.2", "*o*t腐化之地是一片充满裂隙和悬崖的危险区域，弥漫着邪恶与死亡的气息。*b*t它是由生物的邪念所产生的毒瘤，滋生出可怕的畸形怪物，这些怪物妒忌一切生灵。");
 
-        add("patchouli.confluence.otherworld_note.world.the_crimson.internal_link", "$(l:world/the_crimson)猩红之地*c");
         add("patchouli.confluence.otherworld_note.world.the_crimson.name", "猩红之地");
         add("patchouli.confluence.otherworld_note.world.the_crimson.0", "猩红之地是一种邪恶生物群系，有着肉体感染的红色血腥主题，会生成血腥主题的敌怪。*b猩红之地群系会在邪恶生物群系为猩红的世界中自然生成。也可以自行创造猩红之地，当一个区块内的猩红系邪恶方块（例如猩红石块）超过 256 个时，这个区块的生物群系会变为猩红之地。*b相应的，当邪恶方块不足 256 个时，这个区块的群系会变为原本的生物群系。");
         add("patchouli.confluence.otherworld_note.world.the_crimson.1", "*z$(#AA0000)“正在使世界变得血腥”");
@@ -2151,8 +2146,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(CrateBlocks.HELL_STONE_CRATE.get(), "狱石匣");
         add(CrateBlocks.BEACH_CRATE.get(), "海滩匣");
 
-        add(CrateBlocks.GOLDEN_LOCK_BOX.get(), "金锁盒");
-        add(CrateBlocks.OBSIDIAN_LOCK_BOX.get(), "黑曜石锁盒");
+        add(ConsumableItems.GOLDEN_LOCK_BOX.get(), "金锁盒");
+        add(ConsumableItems.OBSIDIAN_LOCK_BOX.get(), "黑曜石锁盒");
 
 
         add(ArrowItems.FLAMING_ARROW.get(), "烈焰箭");

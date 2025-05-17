@@ -81,7 +81,7 @@ public class HammerItem extends DiggerItem {
         float targetSpeed = targetState.getDestroySpeed(level, pos);
         boolean flag1 = targetState.canHarvestBlock(level, pos, player);
         boolean flag2 = speedOff > 0 ? targetSpeed >= 0 && speedOff >= targetSpeed : targetSpeed >= speedOff;
-        boolean flag3 = player.getAbilities().instabuild;
+        boolean flag3 = player.hasInfiniteMaterials();
         if (flag1 && flag2 || flag3) {
             level.destroyBlock(pos, flag1, player);
             return true;

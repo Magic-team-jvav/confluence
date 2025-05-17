@@ -40,10 +40,10 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.confluence.mod.client.ModKeyBindings.SHOW_DETAIL_SPECULAR;
-import static org.confluence.terraentity.client.util.ShaderUtil.renderDebugBlock;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
 import static org.confluence.mod.common.init.block.NatureBlocks.LIFE_CRYSTAL_BLOCK;
 import static org.confluence.mod.common.init.block.OreBlocks.*;
+import static org.confluence.terraentity.client.util.ShaderUtil.renderDebugBlock;
 
 
 /**
@@ -428,17 +428,12 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
 //                        System.out.println("block break");
                     centerCache.remove(blockProps);
-                    ArrayList<BlockPos> newCenters = new ArrayList<>();
-                    for (BlockPos centerPos : centers.get(n.getKey())) {//刷新周围中心块
-                        double distance = centerPos.distSqr(blockProps);
-                        if (distance > 25) {//附近有中心块，清除改块
-                            newCenters.add(centerPos);
-                            // 之前使用的方法是小于25时，从列表中清除元素，这会导致崩溃。
-                            //centers.get(n.getKey()).remove(centerPos);
-                        }
+                    ArrayList<BlockPos> list = centers.get(n.getKey());
+                    if (list != null && !list.isEmpty()) {
+                        // 刷新周围中心块
+                        // 附近有中心块，清除改块
+                        list.removeIf(centerPos -> centerPos.distSqr(blockProps) < 25);
                     }
-                    centers.get(n.getKey()).clear();
-                    centers.get(n.getKey()).addAll(newCenters);
                 }
 
                 if ((target != null && target.showType == ShowType.SPELUNKER) || n.getKey().defaultBlockState().is(Tags.Blocks.ORES)) {//矿透方块

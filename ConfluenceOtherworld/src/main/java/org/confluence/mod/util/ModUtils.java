@@ -29,6 +29,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
@@ -86,10 +87,10 @@ public final class ModUtils {
     }
 
     public static void summonBoss(Level level, Vec3 center, Mob boss) {
-        boss.setPos(center.x + level.random.nextInt(-50, 51), center.y, center.z + level.random.nextInt(-50, 51));
+        double x = center.x + level.random.nextInt(-50, 51);
+        double z = center.z + level.random.nextInt(-50, 51);
+        boss.setPos(x, center.y + level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)), z);
         level.addFreshEntity(boss);
-//        Player nearestPlayer = level.getNearestPlayer(boss, 200);
-//        if (nearestPlayer != null) boss.setTarget(nearestPlayer);
     }
 
     public static @Nullable BlockState getLeadAnvilDamage(BlockState state, DirectionProperty FACING) {

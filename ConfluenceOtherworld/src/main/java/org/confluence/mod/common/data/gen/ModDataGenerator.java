@@ -15,6 +15,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.recipe.*;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModDamageTypes;
+import org.confluence.mod.common.init.ModStructures;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -23,7 +24,8 @@ import java.util.concurrent.CompletableFuture;
 public final class ModDataGenerator {
     private static final RegistrySetBuilder DATA_BUILDER = new RegistrySetBuilder()
             .add(Registries.DAMAGE_TYPE, ModDamageTypes::createDamageTypes)
-            .add(Registries.BIOME, ModBiomes::boostrap);
+            .add(Registries.BIOME, ModBiomes::boostrap)
+            .add(Registries.STRUCTURE, ModStructures::boostrap);
 
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {

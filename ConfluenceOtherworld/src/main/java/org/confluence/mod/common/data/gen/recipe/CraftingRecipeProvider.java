@@ -23,6 +23,8 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.init.item.PotionItems;
+import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.terraentity.init.TEItems;
 import org.jetbrains.annotations.NotNull;
 
@@ -113,7 +115,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "XSX"
         )), new ItemStack(Items.ACTIVATOR_RAIL, 6));
         // 广播盒
-        shaped(output,"","", ShapedRecipePattern.of(Map.of(
+        shaped(output, "", "", ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ItemTags.SIGNS),
                 'I', Ingredient.of(ModTags.Items.LEAD_AND_IRON),
                 'R', Ingredient.of(Items.REDSTONE)
@@ -122,11 +124,27 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "I#I",
                 "RIR"
         )), new ItemStack(FunctionalBlocks.ANNOUNCEMENT_BOX_ITEM.asItem()));
+        // 蜂蜜瓶
+        shapeless(output, "", "_from_glass_bottle",
+                new ItemStack(Items.HONEY_BOTTLE, 3),
+                Ingredient.of(ToolItems.HONEY_BUCKET.get()),
+                Ingredient.of(Items.GLASS_BOTTLE),
+                Ingredient.of(Items.GLASS_BOTTLE),
+                Ingredient.of(Items.GLASS_BOTTLE)
+        );
+        shapeless(output, "", "_from_bottle",
+                new ItemStack(Items.HONEY_BOTTLE, 3),
+                Ingredient.of(ToolItems.HONEY_BUCKET.get()),
+                Ingredient.of(PotionItems.BOTTLE),
+                Ingredient.of(PotionItems.BOTTLE),
+                Ingredient.of(PotionItems.BOTTLE)
+        );
+
         // 石头及深板岩压力板
-        shaped(output,"","", ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.STONE.asItem())
-        ), List.of("##")), new ItemStack(FunctionalBlocks.STONE_PRESSURE_PLATE.asItem()));
-        shaped(output,"","", ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.DEEPSLATE.asItem())
-        ), List.of("##")), new ItemStack(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE.asItem()));
+        shaped(output, "", "", ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.STONE.asItem())), List.of("##")), new ItemStack(FunctionalBlocks.STONE_PRESSURE_PLATE.asItem()));
+        shaped(output, "", "", ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.DEEPSLATE.asItem())), List.of("##")), new ItemStack(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE.asItem()));
+
+        shapeless(output, "", "", ToolItems.NPC_INVITATION.toStack(), Ingredient.of(Items.PAPER), Ingredient.of(Items.HONEYCOMB, MaterialItems.ROYAL_WAX));
     }
 
     protected void shaped(RecipeOutput recipeOutput, String prefix, String suffix, ShapedRecipePattern pattern, ItemStack result) {

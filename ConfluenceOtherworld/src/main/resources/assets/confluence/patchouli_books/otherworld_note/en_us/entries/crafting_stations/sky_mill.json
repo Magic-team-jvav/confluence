@@ -1,5 +1,5 @@
 {
-    "name": "patchouli.confluence.otherworld_note.crafting_stations.sky_mill.name",
+    "name": "block.confluence.sky_mill.name",
     "icon": "confluence:sky_mill",
     "category": "confluence:crafting_stations",
     "pages": [

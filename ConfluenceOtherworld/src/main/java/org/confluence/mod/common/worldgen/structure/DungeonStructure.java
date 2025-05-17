@@ -82,7 +82,7 @@ public class DungeonStructure extends Structure {
     public static final String stairs_down = "dungeon/blue_stairs_down";
     public static final String gate = "dungeon/dungeon_gate";
 
-    protected DungeonStructure(StructureSettings settings) {
+    public DungeonStructure(StructureSettings settings) {
         super(settings);
     }
 

@@ -36,7 +36,7 @@ public class HellStoneBlock extends Block {
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
         super.playerDestroy(level, player, pos, state, blockEntity, tool);
-        if (!level.isClientSide && !player.getAbilities().instabuild) {
+        if (!level.isClientSide && !player.hasInfiniteMaterials()) {
             level.setBlockAndUpdate(pos, Blocks.LAVA.defaultBlockState());
         }
     }

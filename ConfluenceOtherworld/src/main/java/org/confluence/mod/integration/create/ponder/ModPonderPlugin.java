@@ -11,12 +11,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.AbstractMechanicalBlock;
+import org.confluence.mod.common.block.functional.DartTrapBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.MaterialItems;
@@ -84,8 +86,7 @@ public final class ModPonderPlugin implements PonderPlugin {
         scene.idle(5);
         scene.world().modifyBlockEntity(new BlockPos(1, 1, 3), AbstractMechanicalBlock.Entity.class, blockEntity -> {
             BlockPos switchPos = new BlockPos(3, 1, 1);
-            BlockEntity be = scene.getScene().getWorld().getBlockEntity(switchPos);
-            if (be instanceof INetworkEntity entity) {
+            if (scene.getScene().getWorld().getBlockEntity(switchPos) instanceof INetworkEntity entity) {
                 blockEntity.connectTo(0xFF0000, switchPos, entity);
             }
         });
@@ -95,7 +96,19 @@ public final class ModPonderPlugin implements PonderPlugin {
     private static void execute(SceneBuilder scene, SceneBuildingUtil util) {
         scene.title("executing", "Executing");
         scene.world().showSection(util.select().fromTo(0, 0, 0, 4, 2, 4), Direction.UP);
-
+        BlockPos switchPos = new BlockPos(3, 1, 1);
+        scene.world().modifyBlockEntity(new BlockPos(1, 1, 3), AbstractMechanicalBlock.Entity.class, blockEntity -> {
+            if (scene.getScene().getWorld().getBlockEntity(switchPos) instanceof INetworkEntity entity) {
+                blockEntity.connectTo(0xFF0000, switchPos, entity);
+            }
+        });
+        scene.idle(20);
+        scene.world().modifyBlock(switchPos, blockState -> blockState.cycle(StateProperties.SIGNAL), false);
+        scene.world().createEntity(level -> {
+            Arrow arrow = new Arrow(level, 1.5, 1.5, 2, DartTrapBlock.PICKUP_ITEM_STACK, null);
+            arrow.shoot(0, 0, -1, 1, 0);
+            return arrow;
+        });
         scene.idle(20);
     }
 

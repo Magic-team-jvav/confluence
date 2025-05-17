@@ -59,7 +59,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.hamaxe.mode.1", "Axe");
         add("message.confluence.hoe_shovel.mode.0", "Shovel");
         add("message.confluence.hoe_shovel.mode.1", "Hoe");
-        add("jukebox_song.confluence.song", "C418 - alpha");
+        add("jukebox_song.confluence.alpha", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
         add("generator.confluence.the_corruption", "The Corruption");
@@ -369,6 +369,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.hallowed_key.0", "“Unlocks a Hallowed Chest in the dungeon”");
         add("tooltip.item.confluence.frozen_key.0", "“Unlocks an Ice Chest in the dungeon”");
         add("tooltip.item.confluence.desert_key.0", "“Unlocks a Desert Chest in the dungeon”");
+        add("tooltip.item.confluence.golden_lock_box.0", "“Right click to open”");
+        add("tooltip.item.confluence.golden_lock_box.1", "“Requires a Dungeon Golden Key”");
+        add("tooltip.item.confluence.obsidian_lock_box.0", "“Right click to open”");
+        add("tooltip.item.confluence.obsidian_lock_box.1", "“Requires a Shadow Key”");
 
         add("tooltip.item.confluence.angel_wings.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.demon_wings.0", "Allows flight and slow fall");
@@ -399,8 +403,35 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.solar_wings.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.stardust.0", "Allows flight and slow fall");
 
+        add("confluence.configuration.wrappedCrimson_heart", "Exposed Crimson Heart");
+        add("confluence.configuration.wrappedCrimson_heart.tooltip", "When enabled, newly generated Crimson Caverns will spawn exposed Crimson Hearts");
+        add("confluence.configuration.showItemPrice", "Show Item Price");
+        add("confluence.configuration.showItemPrice.tooltip", "Enable to view the price when selling items to NPCs");
+        add("confluence.configuration.Recipe", "Crafting Recipe System");
+        add("confluence.configuration.Recipe.button", "Crafting Recipe System");
+        add("confluence.configuration.Recipe.tooltip", "Settings related to crafting recipes");
+        add("confluence.configuration.Spawning", "Spawning Mechanism");
+        add("confluence.configuration.Spawning.button", "Spawning Mechanism");
+        add("confluence.configuration.Spawning.tooltip", "Settings related to entity spawning");
+        add("confluence.configuration.Falling Star", "Falling Star");
+        add("confluence.configuration.Falling Star.button", "Falling Star");
+        add("confluence.configuration.Falling Star.tooltip", "Settings controlling the spawning of falling stars");
+        add("confluence.configuration.NPC", "NPC");
+        add("confluence.configuration.NPC.tooltip", "Settings controlling NPC spawning");
+        add("confluence.configuration.doNPCSpawning", "NPC Spawning");
+        add("confluence.configuration.doNPCSpawning.button", "NPC Spawning");
+        add("confluence.configuration.doNPCSpawning.tooltip", "When enabled, NPCs will spawn");
+        add("confluence.configuration.npcSpawnInterval", "NPC Spawn Interval");
+        add("confluence.configuration.npcSpawnInterval.tooltip", "Defines the interval between NPC spawns");
+        add("confluence.configuration.doMeteoriteSpawning", "Meteorite Spawning");
+        add("confluence.configuration.doMeteoriteSpawning.tooltip", "When enabled, meteorites will fall on unloaded areas");
+        add("confluence.configuration.doFallingStarSpawning", "Falling Star Spawning");
+        add("confluence.configuration.doFallingStarSpawning.tooltip", "When enabled, falling stars will spawn at night");
+        add("confluence.configuration.fallingStarInterval", "Falling Star Spawn Interval");
+        add("confluence.configuration.fallingStarInterval.tooltip", "Defines the interval between falling star spawns at night");
         add("confluence.configuration.WorldGeneration", "World Generation Mechanism");
-        add("confluence.configuration.WorldGeneration.tooltip", "Some settings related to world generation");
+        add("confluence.configuration.WorldGeneration.button", "World Generation Mechanism");
+        add("confluence.configuration.WorldGeneration.tooltip", "Settings related to world generation");
         add("confluence.configuration.brewing_stand_recipe", "Terra Potion Brewing Stand Recipe");
         add("confluence.configuration.brewing_stand_recipe.tooltip", "When enabled, the brewing stand can brew Terra potions.");
         add("confluence.configuration.alertPlayerDungeon", "Dungeon Guardian Warning");
@@ -425,8 +456,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.fletchingMenu.tooltip", "When enabled, the fletching table will be modified by Conflux");
         add("confluence.configuration.shimmer_decompose", "Shimmer Decompose");
         add("confluence.configuration.shimmer_decompose.tooltip", "When enabled, Shimmer liquid can decompose items into raw materials");
-        add("confluence.configuration.fallingStarInterval", "Falling Star Interval");
-        add("confluence.configuration.fallingStarInterval.tooltip", "Defines the interval of falling stars appearing at night");
         add("confluence.configuration.returnPotionGlassBottle", "Return Glass Bottles for Potions");
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "Decides whether to return the glass bottle after using a potion");
         add("confluence.configuration.rightClickRideMinecart", "Right click to ride a minecart");

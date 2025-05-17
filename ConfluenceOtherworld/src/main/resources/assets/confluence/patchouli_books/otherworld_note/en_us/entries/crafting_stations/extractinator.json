@@ -1,5 +1,5 @@
 {
-    "name": "patchouli.confluence.otherworld_note.crafting_stations.extractinator.name",
+    "name": "block.confluence.extractinator",
     "icon": "confluence:extractinator",
     "category": "confluence:crafting_stations",
     "pages": [

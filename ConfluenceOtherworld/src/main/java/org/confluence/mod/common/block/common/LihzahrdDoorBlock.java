@@ -60,7 +60,7 @@ public class LihzahrdDoorBlock extends DoorBlock {
         if (!level.isClientSide && stack.is(ToolItems.TEMPLE_KEY) && !state.getValue(UNLOCKED)) {
             level.setBlock(pos, state.setValue(UNLOCKED, true), Block.UPDATE_IMMEDIATE | Block.UPDATE_CLIENTS);
             level.gameEvent(player, isOpen(state) ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
-            if (!player.getAbilities().instabuild) {
+            if (!player.hasInfiniteMaterials()) {
                 stack.shrink(1);
             }
             return ItemInteractionResult.SUCCESS;

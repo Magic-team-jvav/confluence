@@ -9,6 +9,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.terra_curio.common.entity.BeeProjectile;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -17,7 +18,7 @@ import org.confluence.terra_curio.util.TCUtils;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class BeeGunItem extends ManaGunItem{
+public class BeeGunItem extends ManaGunItem {
     public BeeGunItem(Properties properties) {
         super(properties, 4, 1.8F, 1, 0.01f, 0.04f, 2, 1.5F, ModRarity.GREEN, 5);
     }
@@ -31,7 +32,7 @@ public class BeeGunItem extends ManaGunItem{
     @Override
     protected void prepareBulletEntity(List<Projectile> baseBulletEntities, ServerPlayer player, ItemStack bullet, ItemStack gun, float damage, float knockback, float velocity, int penetrate, float inaccuracy) {
         boolean hasHivePack = TCUtils.hasAccessoriesType(player, TCItems.HIVE$PACK);
-        int times = ThreadLocalRandom.current().nextInt(1, hasHivePack ? 5 :4);
+        int times = ThreadLocalRandom.current().nextInt(1, hasHivePack ? 5 : 4);
         for (int i = 0; i < times; i++) {
             BeeProjectile beeProjectile = new BeeProjectile(player.serverLevel(), player, hasHivePack && player.getRandom().nextBoolean());
             beeProjectile.setPos(player.getX(), player.getEyeY(), player.getZ());
@@ -49,7 +50,7 @@ public class BeeGunItem extends ManaGunItem{
                     player.getItemBySlot(EquipmentSlot.LEGS).is(ArmorItems.BEE_LEGGINGS.get()) ||
                     player.getItemBySlot(EquipmentSlot.FEET).is(ArmorItems.BEE_BOOTS.get())) {
                 ServerPlayer serverPlayer = (ServerPlayer) player;
-                AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource("achievements/not_the_bees"));
+                AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource(ModAchievements.PREFIX + "not_the_bees"));
                 if (advancement != null) {
                     serverPlayer.getAdvancements().award(advancement, "never");
                 }

@@ -71,13 +71,11 @@ public final class HookThrowingHandler {
                     } else {
                         localPlayer.setDeltaMovement(vx / dist * 0.5, vy / dist * 0.5, vz / dist * 0.5);
                     }
-                    PlayerJumpHandler.reset(true);
                 } else {
                     Vec3 subtract = hookEntity.position().subtract(localPlayer.position());
                     if (subtract.lengthSqr() < 1.0) {
                         Vec3 motion = localPlayer.getDeltaMovement().scale(0.05);
                         localPlayer.setDeltaMovement(motion.x, 0.0, motion.z);
-                        PlayerJumpHandler.reset(true);
                     } else {
                         Vec3 motion = subtract.normalize().scale(hookEntity.getPullVelocity());
                         localPlayer.setDeltaMovement(localPlayer.getDeltaMovement().scale(0.96).add(motion));
@@ -87,6 +85,7 @@ public final class HookThrowingHandler {
             }
         }
         if (shouldSync) {
+            PlayerJumpHandler.reset(true);
             PacketDistributor.sendToServer(new PlayerJumpPacketC2S(RESET_FALL_DISTANCE, (float) localPlayer.getDeltaMovement().y));
         }
     }

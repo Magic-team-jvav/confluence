@@ -1,5 +1,5 @@
 {
-    "name": "patchouli.confluence.otherworld_note.crafting_stations.hellforge.name",
+    "name": "block.confluence.hellforge.name",
     "icon": "confluence:hellforge",
     "category": "confluence:crafting_stations",
     "pages": [
@@ -23,7 +23,7 @@
         },
         {
             "type": "patchouli:crafting",
-            "recipe":"minecraft:diamond", 
+            "recipe":"minecraft:diamond",
             "text": "patchouli.confluence.otherworld_note.crafting_stations.example"
         }
     ]

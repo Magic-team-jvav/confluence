@@ -4,7 +4,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class ForwardSwordProjectile extends SwordProjectile {
+public class ForwardSwordProjectile extends SwordProjectile<ForwardSwordProjectile> {
 
     public ForwardSwordProjectile(EntityType<ForwardSwordProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);

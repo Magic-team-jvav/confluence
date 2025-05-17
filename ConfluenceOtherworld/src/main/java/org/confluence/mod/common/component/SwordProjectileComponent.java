@@ -95,6 +95,12 @@ public record SwordProjectileComponent (
                     Optional.empty(), ForwardGeneration.of(0,20),
                     Optional.of(EffectStrategyComponent.of(TimePossibilityAmplifierEffect.of("grass_effect", MobEffects.POISON, 100, 1, 0.5f))));
 
+    public static final Supplier<SwordProjectileComponent> NIGHT_PROJ =
+            ()->new SwordProjectileComponent(1,0.8f,0.9f,20, 0, 10,
+                    TESounds.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.NIGHT_EDGE_PROJECTILE.getId(),
+                    Optional.empty(), ForwardGeneration.of(0,20),
+                    Optional.empty());
+
 
 
 

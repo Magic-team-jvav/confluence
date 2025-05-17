@@ -1232,6 +1232,14 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CHISELED_GREEN_BRICKS.get(),
                 CHISELED_PINK_BRICKS.get()
         );
+        tag(ModTags.Blocks.UNBREAKABLE).add(
+                Blocks.BEDROCK,
+                Blocks.COMMAND_BLOCK,
+                Blocks.CHAIN_COMMAND_BLOCK,
+                Blocks.REPEATING_COMMAND_BLOCK,
+                Blocks.BARRIER,
+                Blocks.STRUCTURE_BLOCK
+        );
     }
 
     @Override

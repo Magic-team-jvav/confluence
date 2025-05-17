@@ -1,7 +1,7 @@
 plugins {
     id 'net.neoforged.moddev'
 }
-var projectName = ["Confluence-Magic-Lib","TerraEntity", "MineTeam", "EquipmentBenediction",
+var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam", "EquipmentBenediction",
                    "TerraCurio", "HeavenDestinyMoment", "PhaseJourney",
                    "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture",
                    "EntityTrackerHUD",/*"EnemyBanner"*/
@@ -42,6 +42,9 @@ neoForge {
                     // 启用 JetBrain Runtime 热重载功能
                     "-XX:+AllowEnhancedClassRedefinition"
             ])
+            if (isRunningInIdea()) {
+                systemProperty "terminal.jline", "true"
+            }
         }
     }
 
@@ -310,26 +313,29 @@ tasks.register("genVoilaRun") {
 //    return;
 
     def runConfig = """
-<component name="ProjectRunConfigurationManager">
-    <configuration default="false" name="Confluence" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="false">
-        <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
-        <option name="SPRING_BOOT_MAIN_CLASS" value="net.neoforged.devlaunch.Main" />
-        <module name="${moduleName}" />
-        <option name="VM_PARAMETERS" value="@${vmArgs} -Dfml.modFolders=${modId}%%${classesDir};${modId}%%${resDir} -cp &quot;${runtimeClasspath.asPath};${ideaRt}&quot;" />
-        <option name="PROGRAM_PARAMETERS" value="@${programParam}" />
-        <option name="WORKING_DIRECTORY" value="${workingDir}" />
-        <method v="2">
-            <option name="Make" enabled="true" />
-        </method>
-    </configuration>
-</component>
-"""
+            <component name="ProjectRunConfigurationManager">
+                <configuration default="false" name="Confluence" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="false">
+                    <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+                    <option name="SPRING_BOOT_MAIN_CLASS" value="net.neoforged.devlaunch.Main" />
+                    <module name="${moduleName}" />
+                    <option name="VM_PARAMETERS" value="@${vmArgs} -Dfml.modFolders=${modId}%%${classesDir};${modId}%%${resDir} -cp &quot;${runtimeClasspath.asPath};${ideaRt}&quot;" />
+                    <option name="PROGRAM_PARAMETERS" value="@${programParam}" />
+                    <option name="WORKING_DIRECTORY" value="${workingDir}" />
+                    <method v="2">
+                        <option name="Make" enabled="true" />
+                    </method>
+                </configuration>
+            </component>"""
     if (!runConfigDir.exists()) {
         runConfigDir.mkdirs()
     }
     new File(runConfigDir, "GeneratedRunConfig.xml").text = runConfig
 }
 
-jar{
+def isRunningInIdea() {
+    return System.getProperty("idea.active") == "true"
+}
+
+jar {
     exclude 'org/confluence/mod/common/data/gen'
 }

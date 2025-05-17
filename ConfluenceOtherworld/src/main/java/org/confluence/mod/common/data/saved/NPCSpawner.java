@@ -413,9 +413,9 @@ public class NPCSpawner implements IGlobalData {
                         if (piece instanceof SimpleTemplatePiece templatePiece && DungeonStructure.gate.equals(templatePiece.templateName)) {
                             BlockPos offset = switch (templatePiece.getRotation()) {
                                 case CLOCKWISE_90 -> templatePiece.templatePosition().offset(-15, 6, 15);
-                                case CLOCKWISE_180 -> templatePiece.templatePosition().offset(15, 6, 15);
+                                case CLOCKWISE_180 -> templatePiece.templatePosition().offset(-15, 6, -15);
                                 case COUNTERCLOCKWISE_90 -> templatePiece.templatePosition().offset(15, 6, -15);
-                                default -> templatePiece.templatePosition().offset(-15, 6, -15);
+                                default -> templatePiece.templatePosition().offset(15, 6, 15);
                             };
                             Region npcRegion = new Region(offset);
                             if (!hasNPCAlive(npcRegion, TENpcEntities.OLD_MAN.get())) {

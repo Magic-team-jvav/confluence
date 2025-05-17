@@ -28,7 +28,7 @@ import static org.confluence.mod.common.attachment.ExtraInventory.EQUIPMENT_STAR
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class EntityEvents {
     @SubscribeEvent
-    public static void entityMount(EntityMountEvent event) {
+    public static void mount(EntityMountEvent event) {
         Entity beingMounted = event.getEntityBeingMounted();
         if (beingMounted.isRemoved() || !(event.getEntityMounting() instanceof ServerPlayer player)) return;
         if (beingMounted instanceof LivingEntity) {
@@ -52,7 +52,7 @@ public final class EntityEvents {
     }
 
     @SubscribeEvent
-    public static void entityInvulnerabilityCheck(EntityInvulnerabilityCheckEvent event) {
+    public static void invulnerabilityCheck(EntityInvulnerabilityCheckEvent event) {
         if (event.isInvulnerable() || !(event.getEntity() instanceof LivingEntity living)) return;
         if (((ILivingEntity) living).confluence$getExtraInvulnerableTicks() > 0) return;
 

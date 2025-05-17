@@ -66,7 +66,7 @@ public class KillBoard implements IGlobalData {
     public void defeat(EntityType<?> entityType) {
         defeatedMap.put(entityType, true);
         if (entityType == TEBossEntities.SKELETRON.get()) {
-            KillBoard.INSTANCE.setGamePhase(ServerLifecycleHooks.getCurrentServer(), GamePhase.AFTER_SKELETRON);
+            setGamePhase(ServerLifecycleHooks.getCurrentServer(), GamePhase.AFTER_SKELETRON);
         }
     }
 

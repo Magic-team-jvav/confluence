@@ -1016,6 +1016,19 @@ public class ModEnglishProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.heim_set.data.3", "Increase underwater movement speed by 5% and increase melee damage by 1%");
         add("equipment_benediction.set_switcher.confluence.heim_set.data.4", "Grant you 4 HP of damage absorption, and grant it again every 3 seconds");
 
+        add("equipment_benediction.set_switcher.confluence.necro_set", "Necro Set");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.0", "5% increased ranged damage");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.1", "5% increased ranged damage");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.2", "2.5% increased ranged damage");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.3", "2.5% increased ranged damage");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.4", "10% increased ranged critical strike chance");
+
+        add("equipment_benediction.set_switcher.confluence.jungle_set", "Jungle Set");
+        add("equipment_benediction.set_switcher.confluence.jungle_set.data.0", "Increases maximum mana by 40，6% increased magic critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.jungle_set.data.1", "Increases maximum mana by 20，6% increased magic critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.jungle_set.data.2", "Increases maximum mana by 10，3% increased magic critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.jungle_set.data.3", "Increases maximum mana by 10，3% increased magic critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.jungle_set.data.4", "16% reduced mana costs");
         // npc dialogs
         add("dialogs.confluence.guide.0", "My job is to offer suggestions for your upcoming tasks. I recommend that you come and talk to me whenever you encounter any difficulties.");
         add("dialogs.confluence.guide.1", "They said there would be someone to tell you how to survive in this place... Oh, wait a moment. That person is me.");

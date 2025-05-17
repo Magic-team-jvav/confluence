@@ -1039,7 +1039,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.necro_set.data.1", "远程伤害提高5%");
         add("equipment_benediction.set_switcher.confluence.necro_set.data.2", "远程伤害提高2.5%");
         add("equipment_benediction.set_switcher.confluence.necro_set.data.3", "远程伤害提高2.5%");
-        add("equipment_benediction.set_switcher.confluence.necro_set.data.4", "远程暴击率提高10%，不消耗弹药几率提高20%");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.4", "暴击率提高10%");
 
         add("equipment_benediction.set_switcher.confluence.jungle_set", "丛林套装");
         add("equipment_benediction.set_switcher.confluence.jungle_set.data.0", "最大魔力增加40，暴击率提高6%");

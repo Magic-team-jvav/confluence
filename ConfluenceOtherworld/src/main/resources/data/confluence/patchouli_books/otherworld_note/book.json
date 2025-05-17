@@ -1,7 +1,7 @@
 {
     "name": "patchouli.confluence.otherworld_note.name",
     "landing_text": "patchouli.confluence.otherworld_note.landing_text",
-    "version": 4,
+    "version": 5,
     "creative_tab": "confluence:developer",
     "use_resource_pack": true,
     "book_texture": "confluence:textures/gui/otherworld_note.png",
@@ -38,12 +38,43 @@
         "!cs:sm!": "$(l:crafting_stations/sky_mill)",
         "!cs:w!": "$(l:crafting_stations/workshop)",
 
+        "!fi:b!": "$(l:fishing/bait)",
+        "!fi:c!": "$(l:fishing/crate)",
+
+        "!fo:cb!": "$(l:food/cloud_bread)",
+        "!fo:f!": "$(l:food/fruit)",
+
+        "!m:mc!": "$(l:mana/mana_capacity)",
+        "!m:mr!": "$(l:mana/mana_regeneration)",
+
         "!ma:c!": "$(l:material/coin)",
         "!ma:com!": "$(l:material/corruption_material)",
         "!ma:crm!": "$(l:material/crimson_material)",
         "!ma:fs!": "$(l:material/falling_star)",
         "!ma:g!": "$(l:material/gel)",
         "!ma:ge!": "$(l:material/gems)",
+
+        "!mo:s!": "$(l:mob/slime)",
+
+        "!t:a!": "$(l:tool/axe)",
+        "!t:bb!": "$(l:tool/bottomless_bucket)",
+        "!t:bn!": "$(l:tool/bug_net)",
+        "!t:fr!": "$(l:tool/fishing_rod)",
+        "!t:ha!": "$(l:tool/hammer)",
+        "!t:ho!": "$(l:tool/hook)",
+        "!t:m!": "$(l:tool/misc)",
+        "!t:pa!": "$(l:tool/paint)",
+        "!t:ri!": "$(l:tool/pickaxe)",
+        "!t:r!": "$(l:tool/rope)",
+
+        "!w:a!": "$(l:weapon/arrow)",
+        "!w:bo!": "$(l:weapon/bomb)",
+        "!w:bm!": "$(l:weapon/boomerang)",
+        "!w:bw!": "$(l:weapon/bow)",
+        "!w:d!": "$(l:weapon/dynamite)",
+        "!w:sb!": "$(l:weapon/short_bow)",
+        "!w:ss!": "$(l:weapon/short_sword)",
+        "!w:s!": "$(l:weapon/sword)",
 
         "!w:af!": "$(l:world/ash_forest)",
         "!w:aw!": "$(l:world/ash_wasteland)",

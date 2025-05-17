@@ -1,20 +1,19 @@
 {
-    "name": "坠落之星",
+    "name": "patchouli.confluence.otherworld_note.material.falling_star.name",
     "icon": "confluence:falling_star",
     "category": "confluence:material",
     "pages": [
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:nether_star",            
-            "text": "坠落之星会在整个夜间期间随机生成，坠落后在地上会发光，使其在夜晚中容易找到。它可以用来做魔力水晶从而提升自己的法力上限。*b坠落时，它会对砸到的生物造成 100 点（50 颗心）伤害。*2*o“夜晚，星星在坠落，洒满全世界。它们的用途极为广泛。"
+            "text": "patchouli.confluence.otherworld_note.material.falling_star.0"
         },
         {
             "type": "patchouli:image",
             "images":[
                 "minecraft:textures/block/grass_block.png"
             ],
-            "text": "*o如果你看到了，一定要拿到手，因为星星在日出后就会消失。”*t——向导",
-            "title": "坠落之星"
+            "text": "patchouli.confluence.otherworld_note.material.falling_star.1"
         }
     ]
 }

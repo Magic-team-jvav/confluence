@@ -1,32 +1,32 @@
 {
-    "name": "钱币",
+    "name": "patchouli.confluence.otherworld_note.material.coin.name",
     "icon": "confluence:platinum_coin",
     "category": "confluence:material",
     "pages": [
         {
             "type": "patchouli:spotlight",
             "item": "confluence:copper_coin",
-            "text": "钱币包括四种不同等级的材质：铜、银、金、铂金。还有特殊的绿宝石币，作用后面再说。*b可以这么获取钱币：*i击杀敌对生物有概率；*i战利品箱子；*i!cs:e!提炼机*c。*2*o“有了钱地球才会转，孩子。”   --蟹老板"
+            "text": "patchouli.confluence.otherworld_note.material.coin.0"
         },
         {
             "type": "patchouli:spotlight",
             "item": "confluence:silver_coin",
-            "text": "钱币的4个等级是可以相互转化的，使用百进制。*b例如：每100个铜币可以做成1个银币。*b1个铂金币等于：*i100个金币；*i10,000个银币*i1,000,000个铜币*b即一个铂金币等于1x10^6个铜币。"
+            "text": "patchouli.confluence.otherworld_note.material.coin.1"
         },
         {
             "type": "patchouli:spotlight",
             "item": "confluence:golden_coin",
-            "text": "你拾取的、通过快捷键放入的或从收纳物品（如箱子）中取出的钱币会自动结合成更高等级的钱币。*b然而，手动将钱币移入收纳物品时，它们不会自动结合，此时需要再拾取一次货币方可自动结合。*b也可以手动合并钱币。手持钱币潜行右击以合成上级钱币；!cs:hwb!重型工作台*c也可以将钱币结合为上级/下级钱币。"
+            "text": "patchouli.confluence.otherworld_note.material.coin.2"
         },
         {
             "type": "patchouli:spotlight",
             "item": "confluence:platinum_coin",
-            "text": "钱币还可以被放置在方块上。*b放置后的钱币堆可以被徒手破坏，在破坏后会返还所有钱币。手持钱币右击方块即可将钱币放下。方块形式的钱币可以单独成堆，也可以混杂叠放；没有堆叠高度限制，只要钱币足够多就可以一直放置下去；方块形式的钱币还拥有类似沙子的物理特性。"
+            "text": "patchouli.confluence.otherworld_note.material.coin.3"
         },
         {
             "type": "patchouli:spotlight",
             "item": "confluence:emerald_coin",
-            "text": "绿宝石币可以用于与银行家交易。*b银行家是一种新增的村民职业，工作站点是方块形式的金币/铂金币，可以与其交易一些东西。*2当玩家死亡时，所拥有的钱币都会掉落。"
+            "text": "patchouli.confluence.otherworld_note.material.coin.4"
         },
         {
             "type": "patchouli:crafting",
@@ -36,7 +36,7 @@
         {
             "type": "patchouli:crafting",
             "recipe": "confluence:golden_coin_from_platinum_coin",
-            "text": "金金金金金金金金金"
+            "text": "patchouli.confluence.otherworld_note.material.coin.5"
         }
     ]
 }

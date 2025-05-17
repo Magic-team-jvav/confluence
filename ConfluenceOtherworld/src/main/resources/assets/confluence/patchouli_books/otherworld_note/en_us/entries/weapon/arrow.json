@@ -1,37 +1,37 @@
 {
-    "name": "箭",
+    "name": "patchouli.confluence.otherworld_note.weapon.arrow.name",
     "icon": "minecraft:arrow",
     "category": "confluence:weapon",
     "pages": [
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:arrow",
-            "text": ""
+            "text": "patchouli.confluence.otherworld_note.weapon.arrow.0"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:arrow",
-            "text": ""
+            "text": "patchouli.confluence.otherworld_note.weapon.arrow.1"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:arrow",
-            "text": ""
+            "text": "patchouli.confluence.otherworld_note.weapon.arrow.2"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:arrow",
-            "text": ""
+            "text": "patchouli.confluence.otherworld_note.weapon.arrow.3"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:arrow",
-            "text": ""
+            "text": "patchouli.confluence.otherworld_note.weapon.arrow.4"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:arrow",
-            "text": ""
+            "text": "patchouli.confluence.otherworld_note.weapon.arrow.5"
         }
     ]
 }

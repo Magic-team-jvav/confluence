@@ -1,27 +1,27 @@
 {
-    "name": "炸弹",
+    "name": "patchouli.confluence.otherworld_note.world.ash_forest.name",
     "icon": "minecraft:tnt",
     "category": "confluence:weapon",
     "pages": [
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:tnt",
-            "text": "炸弹是一种道具，主要可用于采矿时的爆破。_br_可以在地下自然生成的金箱中开到，也有概率在罐子打碎后获得。"
+            "text": "patchouli.confluence.otherworld_note.world.ash_forest.0"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:tnt",
-            "text": "黏性炸弹可以用炸弹和凝胶合成获得。_br_黏性炸弹与炸弹的属性基本一致，区别是当抛出的黏性炸弹接触方块时会粘在方块上。"
+            "text": "patchouli.confluence.otherworld_note.world.ash_forest.1"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:tnt",
-            "text": "弹力炸弹可以用炸弹和粉凝胶合成获得。_br_弹力炸弹与炸弹的属性基本一致，区别是当抛出的弹力炸弹接触方块时会弹起，弹起的高度随下落的高度增高而增高，但不会超过下落时的高度。"
+            "text": "patchouli.confluence.otherworld_note.world.ash_forest.2"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:tnt",
-            "text": "甲虫炸弹是一种道具，主要可用于采矿时的爆破。_br_可以使用炸弹和坚固化石合成，也有概率在沙漠罐子打碎后获得。"
+            "text": "patchouli.confluence.otherworld_note.world.ash_forest.3"
         }
     ]
 }

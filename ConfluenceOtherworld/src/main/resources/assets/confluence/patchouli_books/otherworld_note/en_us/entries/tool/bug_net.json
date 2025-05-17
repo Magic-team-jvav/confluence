@@ -1,17 +1,17 @@
 {
-    "name": "虫网",
+    "name": "patchouli.confluence.otherworld_note.tool.bug_net.name",
     "icon": "minecraft:cobweb",
     "category": "confluence:tool",
     "pages": [
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:cobweb",
-            "text": "一把小虫网，可以用来抓虫，进而钓鱼。_br2_（不过目前版本并没有虫）（悲）"
+            "text": "patchouli.confluence.otherworld_note.tool.bug_net.0"
         },
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:cobweb",
-            "text": "一把黄金制成的虫网，甚至可以用来抓小型动物（比如猪、牛）！_br2_（但是还是不能抓虫）（悲）"
+            "text": "patchouli.confluence.otherworld_note.tool.bug_net.1"
         }
     ]
 }

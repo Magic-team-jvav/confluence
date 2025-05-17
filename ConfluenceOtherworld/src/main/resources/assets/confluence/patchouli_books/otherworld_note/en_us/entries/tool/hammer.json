@@ -1,27 +1,27 @@
 {
-    "name": "锤",
+    "name": "patchouli.confluence.otherworld_note.tool.hammer.name",
     "icon": "minecraft:wooden_pickaxe",
     "category": "confluence:tool",
     "pages": [
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:wooden_pickaxe",
-            "text": "锤是一种基本工具，可快速破坏如墙、泥土、树叶和木板这类硬度较低的物品。_br_当其破坏方块时，以被目标方块为中心，3x3 范围内的方块也会一起被破坏。"
+            "text": "patchouli.confluence.otherworld_note.tool.hammer.0"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:wooden_pickaxe",
-            "text": "金锤是使用金锭制作的锤。"
+            "text": "patchouli.confluence.otherworld_note.tool.hammer.1"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:golden_pickaxe",
-            "text": "魔锤是使用魔矿锭制作的锤。"
+            "text": "patchouli.confluence.otherworld_note.tool.hammer.2"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:golden_pickaxe",
-            "text": "血肉锤是使用猩红矿锭制作的锤。"
+            "text": "patchouli.confluence.otherworld_note.tool.hammer.3"
         }
     ]
 }

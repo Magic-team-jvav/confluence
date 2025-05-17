@@ -13,7 +13,7 @@
                 "minecraft:textures/block/grass_block.png"
             ],
             "text": "patchouli.confluence.otherworld_note.world.heaven_island.1",
-            "title": "patchouli.confluence.otherworld_note.world.appearance"
+            "title": "patchouli.confluence.otherworld_note.appearance"
         },
         {
             "type": "patchouli:text",
@@ -25,7 +25,7 @@
                 "minecraft:textures/block/grass_block.png"
             ],
             "text": "patchouli.confluence.otherworld_note.world.heaven_island.3",
-            "title": "patchouli.confluence.otherworld_note.world.appearance"
+            "title": "patchouli.confluence.otherworld_note.appearance"
         }
     ]
 }

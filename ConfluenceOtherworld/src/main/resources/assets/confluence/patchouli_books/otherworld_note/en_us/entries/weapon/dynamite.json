@@ -1,27 +1,27 @@
 {
-    "name": "雷管",
+    "name": "patchouli.confluence.otherworld_note.weapon.dynamite.name",
     "icon": "minecraft:tnt",
     "category": "confluence:weapon",
     "pages": [
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:tnt",
-            "text": "雷管是一种道具，主要可用于采矿时的爆破。_br_可以在地下自然生成的金箱中开到。"
+            "text": "patchouli.confluence.otherworld_note.weapon.dynamite.0"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:tnt",
-            "text": "黏性雷管可以用雷管和凝胶在工作台上合成获得。_br_黏性雷管与雷管的属性基本一致，区别是当抛出的黏性雷管接触方块时会粘在方块上。"
+            "text": "patchouli.confluence.otherworld_note.weapon.dynamite.1"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:tnt",
-            "text": "弹力雷管可以用雷管和粉凝胶在工作台上合成获得。_br_弹力雷管与雷管的属性基本一致，区别是当抛出的弹力雷管接触方块时会弹起，弹起的高度随下落的高度增高而增高，但不会超过下落时的高度。"
+            "text": "patchouli.confluence.otherworld_note.weapon.dynamite.2"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:tnt",
-            "text": "甲虫炸弹是一种道具，主要可用于采矿时的爆破。_br_可以使用炸弹和坚固化石合成，也有概率在沙漠罐子打碎后获得。"
+            "text": "patchouli.confluence.otherworld_note.weapon.dynamite.3"
         }
     ]
 }

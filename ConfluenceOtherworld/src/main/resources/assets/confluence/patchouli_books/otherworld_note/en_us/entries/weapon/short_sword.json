@@ -1,17 +1,17 @@
 {
-    "name": "短剑",
+    "name": "patchouli.confluence.otherworld_note.weapon.short_sword.name",
     "icon": "minecraft:diamond_sword",
     "category": "confluence:weapon",
     "pages": [
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:diamond_sword",
-            "text": "短剑是一种武器，相较于普通的剑/阔剑，它们的速度更快，所需材料较少，但伤害低。"
+            "text": "patchouli.confluence.otherworld_note.weapon.short_sword.0"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:diamond_sword",
-            "text": "小匕首可爱捏。"
+            "text": "patchouli.confluence.otherworld_note.weapon.short_sword.1"
         }
     ]
 }

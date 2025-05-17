@@ -1,37 +1,41 @@
 {
-    "name": "弓",
+    "name": "patchouli.confluence.otherworld_note.weapon.bow.name",
     "icon": "minecraft:bow",
     "category": "confluence:weapon",
     "pages": [
         {
-            "type": "patchouli:crafting",
-            "recipe": "minecraft:bow",
-            "text": "石骸弓是使用坚固化石制作的弓，会将木剑转化成化石箭。"
+            "type": "patchouli:text",
+            "text": "patchouli.confluence.otherworld_note.weapon.bow.0"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:bow",
-            "text": "金斧是使用红玉、金斧和金锭制作的斧，可在骷髅王前获得。_br__o_不要与原版的金斧混淆。"
+            "text": "patchouli.confluence.otherworld_note.weapon.bow.1"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:bow",
-            "text": "恶魔弓是使用魔矿锭制作的弓。"
+            "text": "patchouli.confluence.otherworld_note.weapon.bow.2"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:bow",
-            "text": "肌腱弓是使用猩红矿锭制作的弓。"
+            "text": "patchouli.confluence.otherworld_note.weapon.bow.3"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:bow",
-            "text": "浴火之怒弓是使用狱石矿锭制作的弓。"
+            "text": "patchouli.confluence.otherworld_note.weapon.bow.4"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:bow",
-            "text": "代达罗斯风暴弓。"
+            "text": "patchouli.confluence.otherworld_note.weapon.bow.5"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:bow",
+            "text": "patchouli.confluence.otherworld_note.weapon.bow.6"
         }
     ]
 }

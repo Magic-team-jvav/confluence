@@ -1,27 +1,27 @@
 {
-    "name": "云朵面包",
+    "name": "patchouli.confluence.otherworld_note.food.cloud_bread.name",
     "icon": "confluence:cloud_bread",
     "category": "confluence:food",
     "pages": [
         {
             "type": "patchouli:spotlight",
             "item": "confluence:cloud_bread",
-            "text": "云朵面团用于制作云朵面包的物品，使用 3 个飘飘麦合成云朵面团。"
+            "text": "patchouli.confluence.otherworld_note.food.cloud_bread.0"
         },
         {
             "type": "patchouli:spotlight",
             "item": "confluence:cloud_dough",
-            "text": "食用后恢复5点饥饿值，30点饱和度。*b且食用后会获得15秒漂浮II、30秒缓降II、5分钟膳食II。"
+            "text": "patchouli.confluence.otherworld_note.food.cloud_bread.1"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "confluence:cloud_dough",
-            "text": "相较于普通面包，它可不需要排成一条。"
+            "text": "patchouli.confluence.otherworld_note.food.cloud_bread.2"
         },
         {
             "type": "patchouli:smelting",
             "recipe": "confluence:cloud_bread",
-            "text": "我怎么在飞啊~"
+            "text": "patchouli.confluence.otherworld_note.food.cloud_bread.3"
         }
     ]
 }

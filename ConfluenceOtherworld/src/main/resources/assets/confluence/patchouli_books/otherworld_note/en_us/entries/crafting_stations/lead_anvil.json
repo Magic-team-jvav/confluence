@@ -1,5 +1,5 @@
 {
-    "name": "block.confluence.lead_anvil.name",
+    "name": "block.confluence.lead_anvil",
     "icon": "confluence:lead_anvil",
     "category": "confluence:crafting_stations",
     "pages": [
@@ -11,7 +11,7 @@
         {
             "type": "patchouli:text",
             "text": "patchouli.confluence.otherworld_note.crafting_stations.lead_anvil.1",
-            "title": "patchouli.confluence.otherworld_note.crafting_stations.how_to_use"
+            "title": "patchouli.confluence.otherworld_note.how_to_use"
         },
         {
             "type": "patchouli:image",
@@ -19,12 +19,12 @@
                 "minecraft:textures/block/grass_block.png"
             ],
             "text": "patchouli.confluence.otherworld_note.crafting_stations.lead_anvil.2",
-            "title": "patchouli.confluence.otherworld_note.crafting_stations.gui"
+            "title": "patchouli.confluence.otherworld_note.gui"
         },
         {
             "type": "patchouli:crafting",
             "recipe":"minecraft:anvil", 
-            "text": "patchouli.confluence.otherworld_note.crafting_stations.example"
+            "text": "patchouli.confluence.otherworld_note.example"
         }
     ]
 }

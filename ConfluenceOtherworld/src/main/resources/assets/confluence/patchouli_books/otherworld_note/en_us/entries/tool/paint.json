@@ -1,22 +1,22 @@
 {
-    "name": "油漆",
+    "name": "patchouli.confluence.otherworld_note.tool.paint.name",
     "icon": "minecraft:water_bucket",
     "category": "confluence:tool",
     "pages": [
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:water_bucket",
-            "text": "油漆可以用于改变方块的颜色，几乎所有可放置物品都可以被油漆涂色。_br_油漆需要使用漆刷或油漆滚刷来刷到方块上，若持有喷漆器，那么方块在放置时会自动被喷涂上色，每次上色都会消耗1个油漆。_br_基本的油漆可以在油漆工NPC处购买。"
+            "text": "patchouli.confluence.otherworld_note.tool.paint.0"
         },
         {
             "type": "patchouli:text",
-            "title": "油漆原理详解",
-            "text": "若玩家的物品栏中有多个颜色的油漆，那么在物品栏最前方的颜色会被最先使用（顺序为从上到下，从左到右）；_br_若玩家的物品栏和背包中均有油漆，且它们的颜色不同，那么物品栏中的颜色会被优先使用。"
+            "text": "patchouli.confluence.otherworld_note.tool.paint.1",
+            "title": "patchouli.confluence.otherworld_note.how_to_use"
         },
         {
             "type": "patchouli:text",
-            "title": "使用油漆",
-            "text": "漆刷是用于为整个方块上色的一种工具。_br2_油漆滚刷用于为方块单面上色的一种工具。_br2_其实直接挖掉方块也能使油漆失效……"
+            "text": "patchouli.confluence.otherworld_note.tool.paint.2",
+            "title": "patchouli.confluence.otherworld_note.how_to_use"
         },
         {
             "type": "patchouli:crafting",
@@ -26,12 +26,12 @@
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:iron_sword",
-            "text": "漆铲是一种用于移除油漆的工具，令玩家无需破坏并重新放置方块来去除油漆。_br2_手持漆铲右击需要除漆的方块，即可将方块上的油漆去除；_br_漆铲默认为整个方块除漆，若想为单面去漆，只需潜行右击方块即可。"
+            "text": "patchouli.confluence.otherworld_note.tool.paint.3"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:iron_sword",
-            "text": "看来还是直接挖掉更省事……"
+            "text": "patchouli.confluence.otherworld_note.tool.paint.4"
         }
     ]
 }

@@ -333,6 +333,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.hallowed_key.0", "“打开地牢中的神圣箱”");
         add("tooltip.item.confluence.frozen_key.0", "“打开地牢中的冰雪箱”");
         add("tooltip.item.confluence.desert_key.0", "“打开地牢中的沙漠箱”");
+        add("tooltip.item.confluence.golden_lock_box.0", "“使用钥匙在背包中右键打开”");
+        add("tooltip.item.confluence.golden_lock_box.1", "“需要地牢金钥匙”");
+        add("tooltip.item.confluence.obsidian_lock_box.0", "“使用钥匙在背包中右键打开”");
+        add("tooltip.item.confluence.obsidian_lock_box.1", "“需要暗影钥匙”");
+
 
         add("tooltip.item.confluence.angel_wings.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.demon_wings.0", "可飞行和缓慢坠落");

@@ -369,10 +369,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.hallowed_key.0", "“Unlocks a Hallowed Chest in the dungeon”");
         add("tooltip.item.confluence.frozen_key.0", "“Unlocks an Ice Chest in the dungeon”");
         add("tooltip.item.confluence.desert_key.0", "“Unlocks a Desert Chest in the dungeon”");
-        add("tooltip.item.confluence.golden_lock_box.0", "“Right click to open”");
-        add("tooltip.item.confluence.golden_lock_box.1", "“Requires a Dungeon Golden Key”");
-        add("tooltip.item.confluence.obsidian_lock_box.0", "“Right click to open”");
-        add("tooltip.item.confluence.obsidian_lock_box.1", "“Requires a Shadow Key”");
+        add("tooltip.item.confluence.golden_lock_box.0", "“Right-click in inventory with key to open”");
+        add("tooltip.item.confluence.golden_lock_box.1", "“Requires Golden Dungeon Key”");
+        add("tooltip.item.confluence.obsidian_lock_box.0", "“Right-click in inventory with key to open”");
+        add("tooltip.item.confluence.obsidian_lock_box.1", "“Requires Shadow Key”");
 
         add("tooltip.item.confluence.angel_wings.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.demon_wings.0", "Allows flight and slow fall");

@@ -115,7 +115,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "XSX"
         )), new ItemStack(Items.ACTIVATOR_RAIL, 6));
         // 广播盒
-        shaped(output,"","", ShapedRecipePattern.of(Map.of(
+        shaped(output, "", "", ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ItemTags.SIGNS),
                 'I', Ingredient.of(ModTags.Items.LEAD_AND_IRON),
                 'R', Ingredient.of(Items.REDSTONE)
@@ -141,10 +141,10 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         );
 
         // 石头及深板岩压力板
-        shaped(output,"","", ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.STONE.asItem())
-        ), List.of("##")), new ItemStack(FunctionalBlocks.STONE_PRESSURE_PLATE.asItem()));
-        shaped(output,"","", ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.DEEPSLATE.asItem())
-        ), List.of("##")), new ItemStack(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE.asItem()));
+        shaped(output, "", "", ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.STONE.asItem())), List.of("##")), new ItemStack(FunctionalBlocks.STONE_PRESSURE_PLATE.asItem()));
+        shaped(output, "", "", ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.DEEPSLATE.asItem())), List.of("##")), new ItemStack(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE.asItem()));
+
+        shapeless(output, "", "", ToolItems.NPC_INVITATION.toStack(), Ingredient.of(Items.PAPER), Ingredient.of(Items.HONEYCOMB, MaterialItems.ROYAL_WAX));
     }
 
     protected void shaped(RecipeOutput recipeOutput, String prefix, String suffix, ShapedRecipePattern pattern, ItemStack result) {

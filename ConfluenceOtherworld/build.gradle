@@ -158,7 +158,7 @@ dependencies {
     additionalRuntimeClasspath 'cn.6tail:lunar:1.4.0'
 
     compileOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
-    if (true) {
+    if (false) {
         runtimeOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
         runtimeOnly("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
         runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
@@ -226,7 +226,7 @@ dependencies {
 
     //runtimeOnly "curse.maven:worldedit-225608:5830452"
     //runtimeOnly "curse.maven:ars-nouveau-401955:6228434"
-    //runtimeOnly "curse.maven:spark-361579:6225208"
+    runtimeOnly "curse.maven:spark-361579:6225208"
     //runtimeOnly "curse.maven:lithium-360438:6290413"
     //runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
     //runtimeOnly "curse.maven:lootr-361276:6294335"

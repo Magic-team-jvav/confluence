@@ -40,8 +40,11 @@ public final class StarPhaseHandler {
             map.add(StarPhase.DEFAULT);
         }
     });
+    public static boolean enabled = false;
 
     public static void render(RenderLevelStageEvent event) {
+        if (!enabled) return;
+
         Minecraft minecraft = Minecraft.getInstance();
         ClientLevel level = minecraft.level;
         if (level == null || level.dimension() != Level.OVERWORLD) return;

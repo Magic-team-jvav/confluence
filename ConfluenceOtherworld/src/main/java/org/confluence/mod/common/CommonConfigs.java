@@ -13,6 +13,7 @@ public final class CommonConfigs {
     public static BooleanValue RIGHT_CLICK_RIDE_MINECART;
     public static IntValue ANNOUNCEMENT_BOX_DISTANCE;
     public static BooleanValue ALERT_PLAYER_IN_DUNGEON;
+    public static BooleanValue STAR_PHASE;
 
     public static BooleanValue FLETCHING_MENU;
     public static BooleanValue SHIMMER_DECOMPOSE;
@@ -45,13 +46,14 @@ public final class CommonConfigs {
             RIGHT_CLICK_RIDE_MINECART = BUILDER.define("rightClickRideMinecart", true);
             ANNOUNCEMENT_BOX_DISTANCE = BUILDER.defineInRange("announcementBoxDistance", 128, 0, Integer.MAX_VALUE);
             ALERT_PLAYER_IN_DUNGEON = BUILDER.define("alertPlayerDungeon", false);
+            STAR_PHASE = BUILDER.define("starPhase", false);
             BUILDER.pop();
         }
         {
             BUILDER.push("Recipe");
             FLETCHING_MENU = BUILDER.define("fletchingMenu", true);
-            SHIMMER_DECOMPOSE = BUILDER.define("shimmer_decompose", true);
-            BREWING_STAND_RECIPE = BUILDER.define("brewing_stand_recipe", false);
+            SHIMMER_DECOMPOSE = BUILDER.define("shimmerDecompose", true);
+            BREWING_STAND_RECIPE = BUILDER.define("brewingStandRecipe", false);
             BUILDER.pop();
         }
         {
@@ -83,7 +85,7 @@ public final class CommonConfigs {
         }
         {
             BUILDER.push("WorldGeneration");
-            WRAPPED_CRIMSON_HEART = BUILDER.define("wrappedCrimson_heart", false);
+            WRAPPED_CRIMSON_HEART = BUILDER.define("wrappedCrimsonHeart", false);
             BUILDER.pop();
         }
         container.registerConfig(ModConfig.Type.COMMON, BUILDER.build());

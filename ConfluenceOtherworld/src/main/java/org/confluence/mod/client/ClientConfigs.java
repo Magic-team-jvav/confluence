@@ -13,6 +13,8 @@ import org.confluence.mod.client.gui.hud.TerraStyleArmorHud;
 import org.confluence.mod.client.gui.hud.TerraStyleFoodHud;
 import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
 import org.confluence.mod.client.gui.hud.TerraStyleManaHud;
+import org.confluence.mod.client.handler.StarPhaseHandler;
+import org.confluence.mod.common.CommonConfigs;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
@@ -75,6 +77,7 @@ public final class ClientConfigs {
         goreEffect = GORE_EFFECT != null ? GORE_EFFECT.get() : GoreEffect.OFF;
         damageIndicator = DAMAGE_INDICATOR.get();
         healIndicator = HEAL_INDICATOR.get();
+        StarPhaseHandler.enabled = CommonConfigs.STAR_PHASE.get();
     }
 
     public static void register(ModContainer container) {

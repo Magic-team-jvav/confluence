@@ -11,6 +11,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
 import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
 import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
@@ -115,7 +116,7 @@ public class ConfluenceData extends SavedData {
     }
 
     public boolean setStarPhase(int index, int timeOffset, float radius, float angle) {
-        if (index >= STAR_PHASES_SIZE) return false;
+        if (index >= STAR_PHASES_SIZE || !CommonConfigs.STAR_PHASE.get()) return false;
         starPhases.put(index, new StarPhase(timeOffset, radius, angle));
         StarPhasesPacketS2C.sendToAll(index, timeOffset, radius, angle);
         setDirty();
@@ -123,7 +124,7 @@ public class ConfluenceData extends SavedData {
     }
 
     public StarPhase getStarPhase(int index) {
-        if (index >= STAR_PHASES_SIZE) return null;
+        if (index >= STAR_PHASES_SIZE || !CommonConfigs.STAR_PHASE.get()) return null;
         return starPhases.getOrDefault(index, StarPhase.DEFAULT);
     }
 

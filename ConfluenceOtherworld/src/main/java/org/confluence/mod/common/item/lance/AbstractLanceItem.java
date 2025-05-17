@@ -124,7 +124,7 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
         }
         if (currentFrame == null) currentFrame = keyframes.getLast();
         AnimationPoint point = new AnimationPoint(currentFrame, startTick, currentFrame.length(), currentFrame.startValue().get(), currentFrame.endValue().get());
-        return point.keyFrame().easingType().apply(point) * owner.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE) / -16;
+        return point.keyFrame().easingType().apply(point) * owner.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE) * 1.5 / -16;
     }
 
     @Override

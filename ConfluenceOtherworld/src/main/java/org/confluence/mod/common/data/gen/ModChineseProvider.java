@@ -333,6 +333,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.hallowed_key.0", "“打开地牢中的神圣箱”");
         add("tooltip.item.confluence.frozen_key.0", "“打开地牢中的冰雪箱”");
         add("tooltip.item.confluence.desert_key.0", "“打开地牢中的沙漠箱”");
+        add("tooltip.item.confluence.golden_lock_box.0", "“使用钥匙在背包中右键打开”");
+        add("tooltip.item.confluence.golden_lock_box.1", "“需要地牢金钥匙”");
+        add("tooltip.item.confluence.obsidian_lock_box.0", "“使用钥匙在背包中右键打开”");
+        add("tooltip.item.confluence.obsidian_lock_box.1", "“需要暗影钥匙”");
+
 
         add("tooltip.item.confluence.angel_wings.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.demon_wings.0", "可飞行和缓慢坠落");
@@ -364,8 +369,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.stardust.0", "可飞行和缓慢坠落");
 
         //设置
-        add("confluence.configuration.wrappedCrimson_heart", "裸露的猩红心脏");
-        add("confluence.configuration.wrappedCrimson_heart.tooltip", "启用后，新生成的猩红洞穴将会生成裸露的猩红心脏");
+        add("confluence.configuration.wrappedCrimsonHeart", "被包裹的猩红心脏");
+        add("confluence.configuration.wrappedCrimsonHeart.tooltip", "启用后，新生成的猩红洞穴将会生成被包裹的猩红心脏");
         add("confluence.configuration.showItemPrice", "显示物品价格");
         add("confluence.configuration.showItemPrice.tooltip", "启用以查看该物品出售于NPC时的价格");
         add("confluence.configuration.Recipe", "合成配方机制");
@@ -393,8 +398,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.WorldGeneration", "世界生成机制");
         add("confluence.configuration.WorldGeneration.button", "世界生成机制");
         add("confluence.configuration.WorldGeneration.tooltip", "一些世界生成相关设置");
-        add("confluence.configuration.brewing_stand_recipe", "泰拉药水酿造台配方");
-        add("confluence.configuration.brewing_stand_recipe.tooltip", "启用时，酿造台可以酿造泰拉药水");
+        add("confluence.configuration.brewingStandRecipe", "泰拉药水酿造台配方");
+        add("confluence.configuration.brewingStandRecipe.tooltip", "启用时，酿造台可以酿造泰拉药水");
         add("confluence.configuration.alertPlayerDungeon", "地牢守卫警告");
         add("confluence.configuration.alertPlayerDungeon.tooltip", "启用时，地牢守卫出现前将有三次吼叫警告");
         add("confluence.configuration.achievementToast", "启用泰拉样式成就");
@@ -415,8 +420,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.bannedModForPaints.tooltip", "如果本模组的油漆为其他模组的部分方块带来渲染问题，填入MODID以禁止该模组的方块使用油漆染色");
         add("confluence.configuration.fletchingMenu", "制箭台菜单");
         add("confluence.configuration.fletchingMenu.tooltip", "启用时，将使用汇流来世的修改制箭台");
-        add("confluence.configuration.shimmer_decompose", "微光分解");
-        add("confluence.configuration.shimmer_decompose.tooltip", "启用时，微光液体能将物品分解为原材料");
+        add("confluence.configuration.shimmerDecompose", "微光分解");
+        add("confluence.configuration.shimmerDecompose.tooltip", "启用时，微光液体能将物品分解为原材料");
         add("confluence.configuration.returnPotionGlassBottle", "返还药水瓶");
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "决定你使用药水后是否返还瓶子");
         add("confluence.configuration.rightClickRideMinecart", "右键上矿车");
@@ -478,6 +483,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.PlayerDeath.tooltip", "定义玩家死亡时的效果");
         add("confluence.configuration.showMoneyDrops", "死亡界面显示掉落钱币数");
         add("confluence.configuration.showMoneyDrops.tooltip", "启用以在死亡界面显示掉落钱币数");
+        add("confluence.configuration.starPhase", "星象");
+        add("confluence.configuration.starPhase.tooltip", "暂时没有任何用处，不建议开启");
         // 分割
         add("confluence.configuration.Mana.button", "魔力值");
         add("confluence.configuration.Armor.button", "护甲值");

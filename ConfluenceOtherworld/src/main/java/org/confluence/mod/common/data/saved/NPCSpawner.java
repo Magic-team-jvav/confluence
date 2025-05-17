@@ -381,7 +381,9 @@ public class NPCSpawner implements IGlobalData {
     private boolean trySpawnGoblinTinkerer(ServerPlayer serverPlayer, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.GOBLIN_TINKERER.get())) {
             // todo 等哥布林入侵事件
-            return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.GOBLIN_TINKERER.get());
+            if (KillBoard.INSTANCE.isAnyDefeated(TEBossEntities.EATER_OF_WORLDS.get(), TEBossEntities.BRAIN_OF_CTHULHU.get())) {
+                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.GOBLIN_TINKERER.get());
+            }
         }
         return false;
     }
@@ -411,9 +413,9 @@ public class NPCSpawner implements IGlobalData {
                         if (piece instanceof SimpleTemplatePiece templatePiece && DungeonStructure.gate.equals(templatePiece.templateName)) {
                             BlockPos offset = switch (templatePiece.getRotation()) {
                                 case CLOCKWISE_90 -> templatePiece.templatePosition().offset(-15, 6, 15);
-                                case CLOCKWISE_180 -> templatePiece.templatePosition().offset(15, 6, 15);
+                                case CLOCKWISE_180 -> templatePiece.templatePosition().offset(-15, 6, -15);
                                 case COUNTERCLOCKWISE_90 -> templatePiece.templatePosition().offset(15, 6, -15);
-                                default -> templatePiece.templatePosition().offset(-15, 6, -15);
+                                default -> templatePiece.templatePosition().offset(15, 6, 15);
                             };
                             Region npcRegion = new Region(offset);
                             if (!hasNPCAlive(npcRegion, TENpcEntities.OLD_MAN.get())) {

@@ -31,6 +31,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 @Mixin(BlockBehaviour.class)
@@ -55,9 +56,13 @@ public abstract class BlockBehaviourMixin {
         @Final
         private boolean isAir;
 
+        @Shadow
+        @Nullable
+        protected BlockBehaviour.BlockStateBase.Cache cache;
+
         @Inject(method = "getCollisionShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;", at = @At("RETURN"), cancellable = true)
         private void shimmer(BlockGetter pLevel, BlockPos pPos, CollisionContext pContext, CallbackInfoReturnable<VoxelShape> cir) {
-            if (asState().getDestroySpeed(pLevel, pPos) == -1) return;
+            if (cache == null || asState().getDestroySpeed(pLevel, pPos) == -1) return;
             if (pContext instanceof EntityCollisionContext context && context.getEntity() instanceof LivingEntity living && living.hasEffect(ModEffects.SHIMMER)) {
                 cir.setReturnValue(Shapes.empty());
             }

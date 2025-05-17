@@ -114,7 +114,9 @@ public final class PlayerUtils {
     public static void syncSavedData(ServerPlayer serverPlayer) {
         ConfluenceData data = ConfluenceData.get(serverPlayer.serverLevel());
         WindSpeedPacketS2C.sendToClient(serverPlayer, data.getWindSpeedX(), data.getWindSpeedZ());
-        StarPhasesPacketS2C.sendToClient(serverPlayer, data.getStarPhases());
+        if (CommonConfigs.STAR_PHASE.get()) {
+            StarPhasesPacketS2C.sendToClient(serverPlayer, data.getStarPhases());
+        }
         GamePhasePacketS2C.sendToClient(serverPlayer, KillBoard.INSTANCE.getGamePhase());
     }
 

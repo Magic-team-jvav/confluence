@@ -1,5 +1,6 @@
 package org.confluence.mod.client.event;
 
+import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
@@ -72,10 +73,7 @@ import org.confluence.mod.client.renderer.entity.projectile.sword.LightsBaneProj
 import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjectileRenderer;
 import org.confluence.mod.client.textures.GrayBlockModelSwapper;
 import org.confluence.mod.client.textures.GraySpriteShifterEntry;
-import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModFluids;
-import org.confluence.mod.common.init.ModMenuTypes;
-import org.confluence.mod.common.init.ModParticleTypes;
+import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -399,5 +397,10 @@ public final class ModClientEvents {
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void registerRecipeBookCategories(RegisterRecipeBookCategoriesEvent event) {
+        ModRecipes.TYPES.getEntries().forEach(holder -> event.registerRecipeCategoryFinder(holder.get(), recipeHolder -> RecipeBookCategories.UNKNOWN));
     }
 }

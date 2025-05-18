@@ -14,6 +14,14 @@
             "title": "patchouli.confluence.otherworld_note.how_to_use"
         },
         {
+            "type": "confluence:hellforge",
+            "title": "patchouli.confluence.otherworld_note.gui",
+            "input0": "confluence:raw_hellstone#3",
+            "input1": "minecraft:obsidian",
+            "result": "confluence:hellstone_ingot",
+            "text": "patchouli.confluence.otherworld_note.crafting_stations.hellforge.2"
+        },
+        {
             "type": "patchouli:image",
             "images": [
                 "minecraft:textures/block/grass_block.png"

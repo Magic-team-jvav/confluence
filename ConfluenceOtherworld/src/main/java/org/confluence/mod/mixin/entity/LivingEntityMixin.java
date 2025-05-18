@@ -122,7 +122,10 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
         if (fluidType == ModFluids.HONEY.type().get()) {
             if (!self.level().isClientSide) {
                 if (self instanceof Animal || self instanceof Player) {
-                    self.addEffect(new MobEffectInstance(TCEffects.HONEY, 600));
+                    MobEffectInstance effect = self.getEffect(TCEffects.HONEY);
+                    if (effect == null || effect.getDuration() < 220) {
+                        self.addEffect(new MobEffectInstance(TCEffects.HONEY, 600));
+                    }
                 } else if (self instanceof AbstractPiglin piglin) {
                     piglin.setImmuneToZombification(true);
                 }

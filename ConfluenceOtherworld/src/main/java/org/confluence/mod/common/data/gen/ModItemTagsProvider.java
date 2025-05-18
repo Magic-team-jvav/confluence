@@ -868,7 +868,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         tag(ModTags.Items.HARDMODE)
                 .addTag(ModTags.Items.HARDMODE_RAW_MATERIALS)
-                .add(NatureBlocks.PEARL_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new));
+                .add(NatureBlocks.PEARL_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
+                .add(NatureBlocks.PEARL_SAPLING.asItem());
 
         TESummonItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.SUMMONER_WEAPON).add(item.get()));
 

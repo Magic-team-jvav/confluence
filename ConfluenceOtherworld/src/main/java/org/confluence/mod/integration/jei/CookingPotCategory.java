@@ -16,6 +16,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -26,8 +27,8 @@ import java.util.Optional;
 
 import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
 
-public class CookingPotCategory implements IRecipeCategory<CookingPotRecipe> {
-    public static final RecipeType<CookingPotRecipe> TYPE = RecipeType.create(Confluence.MODID, "cooking_pot", CookingPotRecipe.class);
+public class CookingPotCategory implements IRecipeCategory<RecipeHolder<CookingPotRecipe>> {
+    public static final RecipeType<RecipeHolder<CookingPotRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("cooking_pot"));
     private static final Component TITLE = Component.translatable("title.confluence.cooking_pot");
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/cooking_pot.png");
     private final IDrawable icon;
@@ -37,7 +38,7 @@ public class CookingPotCategory implements IRecipeCategory<CookingPotRecipe> {
     }
 
     @Override
-    public RecipeType<CookingPotRecipe> getRecipeType() {
+    public RecipeType<RecipeHolder<CookingPotRecipe>> getRecipeType() {
         return TYPE;
     }
 
@@ -62,10 +63,10 @@ public class CookingPotCategory implements IRecipeCategory<CookingPotRecipe> {
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, CookingPotRecipe recipe, IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<CookingPotRecipe> recipe, IFocusGroup focuses) {
         int i = 0;
         int j = 0;
-        for (Ingredient ingredient : recipe.ingredients) {
+        for (Ingredient ingredient : recipe.value().ingredients) {
             addInput(builder, 13 + i * 18, 7 + j * 18, ingredient);
             if (i == 1) {
                 j++;
@@ -74,13 +75,13 @@ public class CookingPotCategory implements IRecipeCategory<CookingPotRecipe> {
                 i++;
             }
         }
-        builder.addSlot(RecipeIngredientRole.INPUT, 79, 1).addIngredients(recipe.getContainer());
-        if (recipe.getHeatSource().blocks().isPresent()) {
-            Ingredient heatSource = Ingredient.of(recipe.getHeatSource().blocks().get().map(
+        builder.addSlot(RecipeIngredientRole.INPUT, 79, 1).addIngredients(recipe.value().getContainer());
+        if (recipe.value().getHeatSource().blocks().isPresent()) {
+            Ingredient heatSource = Ingredient.of(recipe.value().getHeatSource().blocks().get().map(
                     tag -> Streams.stream(BuiltInRegistries.BLOCK.getTagOrEmpty(tag)), HolderSet::stream
             ).map(holder -> holder.value().asItem().getDefaultInstance()));
             builder.addSlot(RecipeIngredientRole.CATALYST, 79, 32).addIngredients(heatSource)
-                    .addRichTooltipCallback((slotView, tooltip) -> recipe.getHeatSource().properties().ifPresent(predicate -> {
+                    .addRichTooltipCallback((slotView, tooltip) -> recipe.value().getHeatSource().properties().ifPresent(predicate -> {
                         tooltip.add(Component.translatable("tooltip.jei.state_properties"));
                         for (StatePropertiesPredicate.PropertyMatcher property : predicate.properties()) {
                             String prefix = "  " + property.name() + '=';
@@ -95,16 +96,16 @@ public class CookingPotCategory implements IRecipeCategory<CookingPotRecipe> {
                         }
                     }));
         }
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 121, 16).addItemStack(recipe.getResultItem(null));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 121, 16).addItemStack(recipe.value().getResultItem(null));
     }
 
     @Override
-    public void draw(CookingPotRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(RecipeHolder<CookingPotRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         guiGraphics.blit(BACKGROUND, 0, 0, 0, 0, 142, 49, 159, 49);
-        if (recipe.getContainer().isEmpty()) {
+        if (recipe.value().getContainer().isEmpty()) {
             guiGraphics.blit(BACKGROUND, 79, 1, 143, 0, 16, 16, 159, 49);
         }
-        if (recipe.getHeatSource().blocks().isEmpty()) {
+        if (recipe.value().getHeatSource().blocks().isEmpty()) {
             guiGraphics.blit(BACKGROUND, 79, 32, 143, 33, 16, 16, 159, 49);
         }
     }

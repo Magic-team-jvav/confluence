@@ -12,6 +12,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.HardmodeAnvilRecipe;
@@ -19,8 +20,8 @@ import org.jetbrains.annotations.Nullable;
 
 import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
 
-public class HardmodeAnvilCategory implements IRecipeCategory<HardmodeAnvilRecipe> {
-    public static final RecipeType<HardmodeAnvilRecipe> TYPE = RecipeType.create(Confluence.MODID, "hardmode_anvil", HardmodeAnvilRecipe.class);
+public class HardmodeAnvilCategory implements IRecipeCategory<RecipeHolder<HardmodeAnvilRecipe>> {
+    public static final RecipeType<RecipeHolder<HardmodeAnvilRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("hardmode_anvil"));
     private static final Component TITLE = Component.translatable("title.confluence.hardmode_anvil");
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/hardmode_anvil.png");
     private final IDrawable icon;
@@ -30,7 +31,7 @@ public class HardmodeAnvilCategory implements IRecipeCategory<HardmodeAnvilRecip
     }
 
     @Override
-    public RecipeType<HardmodeAnvilRecipe> getRecipeType() {
+    public RecipeType<RecipeHolder<HardmodeAnvilRecipe>> getRecipeType() {
         return TYPE;
     }
 
@@ -55,8 +56,8 @@ public class HardmodeAnvilCategory implements IRecipeCategory<HardmodeAnvilRecip
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, HardmodeAnvilRecipe recipe, IFocusGroup focuses) {
-        recipe.either.ifLeft(shaped -> {
+    public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<HardmodeAnvilRecipe> recipe, IFocusGroup focuses) {
+        recipe.value().either.ifLeft(shaped -> {
             int width = shaped.width();
             int height = shaped.height();
             boolean symmetrical = shaped.symmetrical;
@@ -70,7 +71,7 @@ public class HardmodeAnvilCategory implements IRecipeCategory<HardmodeAnvilRecip
                 }
             }
         });
-        recipe.either.ifRight(shapeless -> {
+        recipe.value().either.ifRight(shapeless -> {
             builder.setShapeless();
             int i = 0, j = 0;
             for (Ingredient ingredient : shapeless) {
@@ -81,11 +82,11 @@ public class HardmodeAnvilCategory implements IRecipeCategory<HardmodeAnvilRecip
                 }
             }
         });
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33).addItemStack(recipe.getResultItem(null));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33).addItemStack(recipe.value().getResultItem(null));
     }
 
     @Override
-    public void draw(HardmodeAnvilRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(RecipeHolder<HardmodeAnvilRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         guiGraphics.blit(BACKGROUND, 0, 0, 0, 0, 144, 80, 144, 80);
     }
 }

@@ -10,7 +10,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Blocks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
@@ -20,8 +20,6 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.terra_curio.integration.jei.JeiBackGround;
-
-import java.util.List;
 
 @JeiPlugin
 public final class ModJeiPlugin implements IModPlugin {
@@ -60,22 +58,18 @@ public final class ModJeiPlugin implements IModPlugin {
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null) return;
         RecipeManager recipeManager = level.getRecipeManager();
-        registration.addRecipes(SkyMillCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.SKY_MILL_TYPE.get()));
-        registration.addRecipes(AltarCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.ALTAR_TYPE.get()));
-        registration.addRecipes(HellforgeCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.HELLFORGE_TYPE.get()));
-        registration.addRecipes(HeavyWorkBenchCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.HEAVY_WORK_BENCH_TYPE.get()));
-        registration.addRecipes(AlchemyTableCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.ALCHEMY_TABLE_TYPE.get()));
+        registration.addRecipes(SkyMillCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.SKY_MILL_TYPE.get()));
+        registration.addRecipes(AltarCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.ALTAR_TYPE.get()));
+        registration.addRecipes(HellforgeCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HELLFORGE_TYPE.get()));
+        registration.addRecipes(HeavyWorkBenchCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HEAVY_WORK_BENCH_TYPE.get()));
+        registration.addRecipes(AlchemyTableCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.ALCHEMY_TABLE_TYPE.get()));
         if (CommonConfigs.FLETCHING_MENU.get()) {
-            registration.addRecipes(FletchingTableCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.FLETCHING_TABLE_TYPE.get()));
+            registration.addRecipes(FletchingTableCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.FLETCHING_TABLE_TYPE.get()));
         }
-        registration.addRecipes(CookingPotCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.COOKING_POT_TYPE.get()));
-        registration.addRecipes(SawmillCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.SAWMILL_TYPE.get()));
-        registration.addRecipes(SolidifierCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.SOLIDIFIER_TYPE.get()));
-        registration.addRecipes(HardmodeAnvilCategory.TYPE, getAllRecipesFor(recipeManager, ModRecipes.HARDMODE_ANVIL_TYPE.get()));
-    }
-
-    private static <I extends RecipeInput, T extends Recipe<I>> List<T> getAllRecipesFor(RecipeManager recipeManager, RecipeType<T> recipeType) {
-        return recipeManager.getAllRecipesFor(recipeType).stream().map(RecipeHolder::value).toList();
+        registration.addRecipes(CookingPotCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.COOKING_POT_TYPE.get()));
+        registration.addRecipes(SawmillCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.SAWMILL_TYPE.get()));
+        registration.addRecipes(SolidifierCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.SOLIDIFIER_TYPE.get()));
+        registration.addRecipes(HardmodeAnvilCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HARDMODE_ANVIL_TYPE.get()));
     }
 
     @Override

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import dev.shadowsoffire.apothic_attributes.api.ALObjects;
 import net.minecraft.ChatFormatting;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;

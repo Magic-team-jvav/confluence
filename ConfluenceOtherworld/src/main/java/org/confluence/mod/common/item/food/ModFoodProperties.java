@@ -91,7 +91,7 @@ public class ModFoodProperties {
             .effect(() -> new MobEffectInstance(MobEffects.LEVITATION, 300, 1), 1.0F)
             .build();
     //巨石面包
-    public static final FoodProperties BOULDER_BREAD = new FoodProperties.Builder().nutrition(20).saturationModifier(0.5F).fast().alwaysEdible()
+    public static final FoodProperties BOULDER_BREAD = new FoodProperties.Builder().nutrition(20).saturationModifier(2.5F).fast().alwaysEdible()
             .effect(() -> new MobEffectInstance(ModEffects.CHOKING, 6000), 1.0f)
             .build();
     //青团

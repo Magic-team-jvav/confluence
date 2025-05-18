@@ -1,27 +1,27 @@
 {
-    "name": "钓竿",
+    "name": "patchouli.confluence.otherworld_note.tool.fishing_rod.name",
     "icon": "minecraft:fishing_rod",
     "category": "confluence:tool",
     "pages": [
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:fishing_rod",
-            "text": "相较于普通的钓竿，这些新增的钓竿更加好用！"
+            "text": "patchouli.confluence.otherworld_note.tool.fishing_rod.0"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:fishing_rod",
-            "text": "强化钓竿是使用铅锭/铁锭制作的钓竿。"
+            "text": "patchouli.confluence.otherworld_note.tool.fishing_rod.1"
         },
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:fishing_rod",
-            "text": "玻璃钢钓竿是在丛林地下小屋搜刮宝箱获得的钓竿。"
+            "text": "patchouli.confluence.otherworld_note.tool.fishing_rod.2"
         },
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:fishing_rod",
-            "text": "甲虫钓竿是在绿洲匣抽取获得的钓竿。"
+            "text": "patchouli.confluence.otherworld_note.tool.fishing_rod.3"
         }
     ]
 }

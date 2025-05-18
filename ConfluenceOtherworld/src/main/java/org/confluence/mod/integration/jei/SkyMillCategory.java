@@ -13,14 +13,15 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.SkyMillRecipe;
 
 import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
 
-public class SkyMillCategory implements IRecipeCategory<SkyMillRecipe> {
-    public static final RecipeType<SkyMillRecipe> TYPE = RecipeType.create(Confluence.MODID, "sky_mill", SkyMillRecipe.class);
+public class SkyMillCategory implements IRecipeCategory<RecipeHolder<SkyMillRecipe>> {
+    public static final RecipeType<RecipeHolder<SkyMillRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("sky_mill"));
     private static final Component TITLE = Component.translatable("title.confluence.sky_mill");
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/sky_mill.png");
     private final IDrawable icon;
@@ -30,7 +31,7 @@ public class SkyMillCategory implements IRecipeCategory<SkyMillRecipe> {
     }
 
     @Override
-    public RecipeType<SkyMillRecipe> getRecipeType() {
+    public RecipeType<RecipeHolder<SkyMillRecipe>> getRecipeType() {
         return TYPE;
     }
 
@@ -55,9 +56,9 @@ public class SkyMillCategory implements IRecipeCategory<SkyMillRecipe> {
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, SkyMillRecipe recipe, IFocusGroup focusGroup) {
+    public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<SkyMillRecipe> recipe, IFocusGroup focusGroup) {
         // input
-        NonNullList<Ingredient> ingredients = recipe.getIngredients();
+        NonNullList<Ingredient> ingredients = recipe.value().getIngredients();
         int size = ingredients.size();
         if (size == 1) {
             addInput(builder, 28, 51, ingredients.getFirst());
@@ -70,11 +71,11 @@ public class SkyMillCategory implements IRecipeCategory<SkyMillRecipe> {
             addInput(builder, 47, 32, ingredients.get(2));
         }
         // output
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 28, 8).addItemStack(recipe.getResultItem(null));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 28, 8).addItemStack(recipe.value().getResultItem(null));
     }
 
     @Override
-    public void draw(SkyMillRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(RecipeHolder<SkyMillRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         guiGraphics.blit(BACKGROUND, 0, 0, 0, 0, 72, 72, 72, 72);
     }
 }

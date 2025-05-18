@@ -1,11 +1,11 @@
 {
-    "name": "鱼饵",
+    "name": "patchouli.confluence.otherworld_note.fishing.bait.name",
     "icon": "minecraft:glow_berries",
     "category": "confluence:fishing",
     "pages": [
         {
             "type": "patchouli:text",
-            "text": "世界融合后，你不再强制需要鱼饵才能钓鱼，但是钓鱼时使用鱼饵有助于你钓到更好的渔获！"
+            "text": "patchouli.confluence.otherworld_note.fishing.bait.0"
         },
         {
             "type": "patchouli:empty",

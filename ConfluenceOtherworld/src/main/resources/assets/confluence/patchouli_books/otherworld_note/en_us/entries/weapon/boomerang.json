@@ -1,32 +1,32 @@
 {
-    "name": "回旋镖",
+    "name": "patchouli.confluence.otherworld_note.weapon.boomerang.name",
     "icon": "minecraft:tnt",
     "category": "confluence:weapon",
     "pages": [
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:stick",
-            "text": "木回旋镖是一把基础的回旋镖，后续可以升级成更高级的回旋镖。"
+            "text": "patchouli.confluence.otherworld_note.weapon.boomerang.0"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:stick",
-            "text": "附魔回旋镖是使用木回旋镖制作的回旋镖，增加了伤害还无法破坏。"
+            "text": "patchouli.confluence.otherworld_note.weapon.boomerang.1"
         },
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:stick",
-            "text": "蘑菇回旋镖是一把回旋镖，击杀孢子蝙蝠后有概率掉落。"
+            "text": "patchouli.confluence.otherworld_note.weapon.boomerang.2"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:stick",
-            "text": "烈焰回旋镖是使用附魔回旋镖制作的回旋镖。"
+            "text": "patchouli.confluence.otherworld_note.weapon.boomerang.3"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:stick",
-            "text": "三尖回旋镖是使用附魔回旋镖、附魔回旋镖和冰雪回旋镖制作的回旋镖。"
+            "text": "patchouli.confluence.otherworld_note.weapon.boomerang.4"
         }
     ]
 }

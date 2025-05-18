@@ -1,31 +1,31 @@
 {
-    "name": "无底桶",
+    "name": "patchouli.confluence.otherworld_note.tool.bottomless_bucket.name",
     "icon": "minecraft:lava_bucket",
     "category": "confluence:tool",
     "pages": [
         {
             "type": "patchouli:text",
-            "text": "无底桶可以看做是一个不会消耗的桶，可以源源不断的放置液体。_br2_无底桶在参与合成时不会被消耗！"
+            "text": "patchouli.confluence.otherworld_note.tool.bottomless_bucket.0"
         },
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:water_bucket",
-            "text": "无底水桶 vs 水槽_br_世纪对决。"
+            "text": "patchouli.confluence.otherworld_note.tool.bottomless_bucket.1"
         },
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:lava_bucket",
-            "text": "无底熔岩桶 vs 软管滑轮+10,000熔岩_br_机械动力版水槽。"
+            "text": "patchouli.confluence.otherworld_note.tool.bottomless_bucket.2"
         },
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:lava_bucket",
-            "text": "无底蜂蜜桶 vs 资源蜜蜂产线_br_蜜糖炸弹。"
+            "text": "patchouli.confluence.otherworld_note.tool.bottomless_bucket.3"
         },
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:water_bucket",
-            "text": "_o_无尽星光~"
+            "text": "patchouli.confluence.otherworld_note.tool.bottomless_bucket.4"
         }
     ]
 }

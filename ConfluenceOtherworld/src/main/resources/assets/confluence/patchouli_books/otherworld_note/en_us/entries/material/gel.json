@@ -1,17 +1,17 @@
 {
-    "name": "凝胶",
+    "name": "patchouli.confluence.otherworld_note.material.gel.name",
     "icon": "confluence:gel",
     "category": "confluence:material",
     "pages": [
         {
             "type": "patchouli:spotlight",
             "item": "confluence:gel",
-            "text": "凝胶是构成一些史莱姆的物品。*b击杀大多数种类的史莱姆生物即可获得凝胶。*2注意：凝胶并不是史莱姆球，而是一种可食的燃料，凝胶可燃但黏不住东西；*b史莱姆球黏附性大但不能燃烧。*2*o食品级和工业级的区别。"
+            "text": "patchouli.confluence.otherworld_note.material.gel.0"
         },
         {
             "type": "patchouli:spotlight",
             "item": "confluence:pink_gel",
-            "text": "据说还有种稀有的粉色凝胶..."
+            "text": "patchouli.confluence.otherworld_note.material.gel.1"
         }
     ]
 }

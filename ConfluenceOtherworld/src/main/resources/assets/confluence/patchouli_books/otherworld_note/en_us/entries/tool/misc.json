@@ -1,17 +1,16 @@
 {
-    "name": "杂项",
+    "name": "patchouli.confluence.otherworld_note.tool.misc.misc",
     "icon": "minecraft:flint_and_steel",
     "category": "confluence:tool",
     "pages": [
         {
-            "type": "patchouli:spotlight",
-            "item": "minecraft:iron_axe",
-            "text": "来自另一个世界的奇妙工具，目前，除了击破邪恶群系地下那些亮闪闪的东西我们还在寻找他的其他用途_br2_也许是武器？"
+            "type": "patchouli:text",
+            "text": "patchouli.confluence.otherworld_note.tool.misc.0"
         },
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:glass_pane",
-            "text": "一面美观的镜子，仔细看看里面的是谁呀？_br2_你可能不是最美的，但是魔镜起码认出来你是人了，对吧？"
+            "text": "patchouli.confluence.otherworld_note.tool.misc.1"
         },
         {
             "type": "patchouli:crafting",
@@ -21,7 +20,7 @@
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:glass_pane",
-            "text": "也是一面美观的镜子，不过可能有点冻手……_br2_（其实冰块是甜的，不信你可以填舔一下尝尝！）"
+            "text": "patchouli.confluence.otherworld_note.tool.misc.2"
         }
     ]
 }

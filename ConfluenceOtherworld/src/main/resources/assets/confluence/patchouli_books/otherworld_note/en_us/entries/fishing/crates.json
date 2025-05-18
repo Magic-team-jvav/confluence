@@ -1,11 +1,11 @@
 {
-    "name": "宝匣",
+    "name": "patchouli.confluence.otherworld_note.fishing.crates.name",
     "icon": "minecraft:barrel",
     "category": "confluence:fishing",
     "pages": [
         {
             "type": "patchouli:text",
-            "text": "宝匣是可堆叠的摸彩袋类型物品，其中包含的东西是随机的，包括药水、鱼饵、有用的物品、钱币、金属锭、甚至还有矿石。越是少见的宝匣类型内含的东西价值就越高。"
+            "text": "patchouli.confluence.otherworld_note.fishing.crates.0"
         },
         {
             "type": "patchouli:empty",

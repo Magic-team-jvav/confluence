@@ -11,7 +11,7 @@
         {
             "type": "patchouli:text",
             "text": "patchouli.confluence.otherworld_note.crafting_stations.extractinator.1",
-            "title": "patchouli.confluence.otherworld_note.crafting_stations.how_to_use"
+            "title": "patchouli.confluence.otherworld_note.how_to_use"
         },
         {
             "type": "patchouli:image",
@@ -19,7 +19,7 @@
                 "minecraft:textures/block/grass_block.png"
             ],
             "text": "patchouli.confluence.otherworld_note.crafting_stations.extractinator.2",
-            "title": "patchouli.confluence.otherworld_note.crafting_stations.appearance"
+            "title": "patchouli.confluence.otherworld_note.appearance"
         },
         {
             "type": "patchouli:text",

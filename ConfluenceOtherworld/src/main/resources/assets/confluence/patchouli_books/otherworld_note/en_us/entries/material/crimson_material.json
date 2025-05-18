@@ -1,31 +1,31 @@
 {
-    "name": "猩红材料",
+    "name": "patchouli.confluence.otherworld_note.material.crimson_material.name",
     "icon": "confluence:tr_crimson_cobblestone",
     "category": "confluence:material",
     "pages": [
         {
             "type": "patchouli:text",
-            "text": "!w:cr!猩红之地*c中生物的掉落物和结构里的宝箱会有各种各样的材料。*2邪恶...也是种力量。"
+            "text": "patchouli.confluence.otherworld_note.material.crimson_material.0"
         },
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:bone",            
-            "text": "击杀血爬虫、脸怪、猩红咯迈拉和血腥芽孢概率掉落。"
+            "text": "patchouli.confluence.otherworld_note.material.crimson_material.1"
         },
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:leather",            
-            "text": "击杀视神经元掉落，也会出现在克苏鲁之脑宝藏袋中。"
+            "text": "patchouli.confluence.otherworld_note.material.crimson_material.2"
         },
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:crimson_fungus",            
-            "text": "一种生成在猩红之地的蘑菇，用于制作毒粉进而制作血腥脊柱。"
+            "text": "patchouli.confluence.otherworld_note.material.crimson_material.3"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:redstone",            
-            "text": "小黑子你们闹够没！"
+            "text": "patchouli.confluence.otherworld_note.material.crimson_material.4"
         },
         {
             "type": "patchouli:empty",

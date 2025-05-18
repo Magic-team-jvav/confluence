@@ -1,17 +1,17 @@
 {
-    "name": "短弓",
+    "name": "patchouli.confluence.otherworld_note.weapon.short_bow.name",
     "icon": "minecraft:bow",
     "category": "confluence:weapon",
     "pages": [
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:bow",
-            "text": "短弓是一种武器，相较于普通的弓，它们的速度更快，所需材料较少，但伤害低。"
+            "text": "patchouli.confluence.otherworld_note.weapon.short_bow.0"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:bow",
-            "text": "不是取火钻！"
+            "text": "patchouli.confluence.otherworld_note.weapon.short_bow.1"
         }
     ]
 }

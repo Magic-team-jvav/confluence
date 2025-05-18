@@ -11,6 +11,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -20,8 +21,8 @@ import org.jetbrains.annotations.Nullable;
 
 import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
 
-public class SolidifierCategory implements IRecipeCategory<SolidifierRecipe> {
-    public static final RecipeType<SolidifierRecipe> TYPE = RecipeType.create(Confluence.MODID, "solidifier", SolidifierRecipe.class);
+public class SolidifierCategory implements IRecipeCategory<RecipeHolder<SolidifierRecipe>> {
+    public static final RecipeType<RecipeHolder<SolidifierRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("solidifier"));
     private static final Component TITLE = Component.translatable("title.confluence.solidifier");
     private static final ResourceLocation BACKGROUND = TerraFurniture.asResource("textures/gui/solidifier.png");
     private final IDrawable icon;
@@ -31,7 +32,7 @@ public class SolidifierCategory implements IRecipeCategory<SolidifierRecipe> {
     }
 
     @Override
-    public RecipeType<SolidifierRecipe> getRecipeType() {
+    public RecipeType<RecipeHolder<SolidifierRecipe>> getRecipeType() {
         return TYPE;
     }
 
@@ -56,25 +57,25 @@ public class SolidifierCategory implements IRecipeCategory<SolidifierRecipe> {
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, SolidifierRecipe recipe, IFocusGroup focuses) {
-        ShapedRecipePattern pattern = recipe.either.orThrow();
+    public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<SolidifierRecipe> recipe, IFocusGroup focuses) {
+        ShapedRecipePattern pattern = recipe.value().either.orThrow();
         int width = pattern.width();
         int height = pattern.height();
         boolean symmetrical = pattern.symmetrical;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (symmetrical) {
-                    addInput(builder, j * 18 + 6, i * 18 + 5, recipe.ingredients.get(width - j - 1 + i * width));
+                    addInput(builder, j * 18 + 6, i * 18 + 5, recipe.value().ingredients.get(width - j - 1 + i * width));
                 } else {
-                    addInput(builder, j * 18 + 6, i * 18 + 5, recipe.ingredients.get(j + i * width));
+                    addInput(builder, j * 18 + 6, i * 18 + 5, recipe.value().ingredients.get(j + i * width));
                 }
             }
         }
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33).addItemStack(recipe.getResultItem(null));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33).addItemStack(recipe.value().getResultItem(null));
     }
 
     @Override
-    public void draw(SolidifierRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(RecipeHolder<SolidifierRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         guiGraphics.blit(BACKGROUND, 0, 0, 0, 0, 144, 80, 144, 80);
     }
 }

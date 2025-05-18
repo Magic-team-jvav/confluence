@@ -1,27 +1,27 @@
 {
-    "name": "水果",
+    "name": "patchouli.confluence.otherworld_note.food.fruit.name",
     "icon": "minecraft:apple",
     "category": "confluence:food",
     "pages": [
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:apple",
-            "text": "水果是一种食物，除了砂糖橘外，都可以直接食用。*b食用所有的水果都可以恢复 4 点饥饿值和 12 点饱和度。*b食用水果还可以获得 5 分钟的膳食。*b杨桃、火龙果和葡萄是例外，它们可以恢复 6 点饥饿值和 42 点饱和度（由于溢出，所以实际上最多只有 20 点），并提供 5 分钟膳食II和 50 秒饥饿延缓。"
+            "text": "patchouli.confluence.otherworld_note.food.fruit.0"
         },
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:apple",
-            "text": "破坏各种树叶后有概率掉落各种水果。*b所有的水果都可以微光嬗变为仙馔密酒。"
+            "text": "patchouli.confluence.otherworld_note.food.fruit.1"
         },
         {
             "type": "patchouli:spotlight",
             "item": "confluence:sugar_tangerine",
-            "text": "砂糖橘是一种水果，无法直接食用。*b需要手持砂糖橘右击以拨开为拨开的砂糖橘。"
+            "text": "patchouli.confluence.otherworld_note.food.fruit.2"
         },
         {
             "type": "patchouli:spotlight",
             "item": "confluence:peeled_sugar_tangerine",
-            "text": "已拨开的砂糖橘，可食用。食用后给予 5 分钟膳食，恢复 4 点饥饿值和 12 点饱和度。"
+            "text": "patchouli.confluence.otherworld_note.food.fruit.3"
         }
     ]
 }

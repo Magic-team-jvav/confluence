@@ -63,6 +63,10 @@ import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
+import static org.confluence.mod.util.PlayerUtils.receiveMana;
+
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class LivingEntityEvents {
     @SubscribeEvent
@@ -366,6 +370,20 @@ public final class LivingEntityEvents {
             ItemStack resultItem = itemStack.finishUsingItem(player.level(), player);
             event.setResultStack(resultItem);
         }
+        if (itemStack.is(FoodItems.PIGLIN_STEW.get())) {
+            player.setHealth(player.getMaxHealth());
+            player.getFoodData().setFoodLevel(20);
+            player.getFoodData().setSaturation(20.0f);
+            receiveMana(player, () -> 1000);
+            List<Holder<MobEffect>> negativeEffects = player.getActiveEffects().stream()
+                    .map(MobEffectInstance::getEffect)
+                    .filter(effect -> !effect.value().isBeneficial())
+                    .toList();
+            for (int i = negativeEffects.size() - 1; i >= 0; i--) {
+                player.removeEffect(negativeEffects.get(i));
+            }
+        }
+
     }
 
     @SubscribeEvent

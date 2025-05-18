@@ -369,10 +369,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.hallowed_key.0", "“Unlocks a Hallowed Chest in the dungeon”");
         add("tooltip.item.confluence.frozen_key.0", "“Unlocks an Ice Chest in the dungeon”");
         add("tooltip.item.confluence.desert_key.0", "“Unlocks a Desert Chest in the dungeon”");
-        add("tooltip.item.confluence.golden_lock_box.0", "“Right-click in inventory with key to open”");
-        add("tooltip.item.confluence.golden_lock_box.1", "“Requires Golden Dungeon Key”");
-        add("tooltip.item.confluence.obsidian_lock_box.0", "“Right-click in inventory with key to open”");
-        add("tooltip.item.confluence.obsidian_lock_box.1", "“Requires Shadow Key”");
+        add("tooltip.item.confluence.golden_lock_box.0", "“Right click to open”");
+        add("tooltip.item.confluence.golden_lock_box.1", "“Requires a Dungeon Golden Key”");
+        add("tooltip.item.confluence.obsidian_lock_box.0", "“Right click to open”");
+        add("tooltip.item.confluence.obsidian_lock_box.1", "“Requires a Shadow Key”");
 
         add("tooltip.item.confluence.angel_wings.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.demon_wings.0", "Allows flight and slow fall");
@@ -403,8 +403,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.solar_wings.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.stardust.0", "Allows flight and slow fall");
 
-        add("confluence.configuration.wrappedCrimsonHeart", "Wrapped Crimson Heart");
-        add("confluence.configuration.wrappedCrimsonHeart.tooltip", "When enabled, newly generated Crimson Caverns will spawn Wrapped Crimson Hearts");
+        add("confluence.configuration.wrappedCrimson_heart", "Exposed Crimson Heart");
+        add("confluence.configuration.wrappedCrimson_heart.tooltip", "When enabled, newly generated Crimson Caverns will spawn exposed Crimson Hearts");
         add("confluence.configuration.showItemPrice", "Show Item Price");
         add("confluence.configuration.showItemPrice.tooltip", "Enable to view the price when selling items to NPCs");
         add("confluence.configuration.Recipe", "Crafting Recipe System");
@@ -432,8 +432,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.WorldGeneration", "World Generation Mechanism");
         add("confluence.configuration.WorldGeneration.button", "World Generation Mechanism");
         add("confluence.configuration.WorldGeneration.tooltip", "Settings related to world generation");
-        add("confluence.configuration.brewingStandRecipe", "Terra Potion Brewing Stand Recipe");
-        add("confluence.configuration.brewingStandRecipe.tooltip", "When enabled, the brewing stand can brew Terra potions.");
+        add("confluence.configuration.brewing_stand_recipe", "Terra Potion Brewing Stand Recipe");
+        add("confluence.configuration.brewing_stand_recipe.tooltip", "When enabled, the brewing stand can brew Terra potions.");
         add("confluence.configuration.alertPlayerDungeon", "Dungeon Guardian Warning");
         add("confluence.configuration.alertPlayerDungeon.tooltip", "When enabled, there will be three roars as warnings before the dungeon guardian appears.");
         add("confluence.configuration.achievementToast", "Enable Terra Style Achievements");
@@ -454,8 +454,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.bannedModForPaints.tooltip", "If the paints from this mod cause rendering issues with blocks from other mods, enter the MOD ID to prevent that mod's blocks from using the paint color");
         add("confluence.configuration.fletchingMenu", "Fletching Table Menu");
         add("confluence.configuration.fletchingMenu.tooltip", "When enabled, the fletching table will be modified by Conflux");
-        add("confluence.configuration.shimmerDecompose", "Shimmer Decompose");
-        add("confluence.configuration.shimmerDecompose.tooltip", "When enabled, Shimmer liquid can decompose items into raw materials");
+        add("confluence.configuration.shimmer_decompose", "Shimmer Decompose");
+        add("confluence.configuration.shimmer_decompose.tooltip", "When enabled, Shimmer liquid can decompose items into raw materials");
         add("confluence.configuration.returnPotionGlassBottle", "Return Glass Bottles for Potions");
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "Decides whether to return the glass bottle after using a potion");
         add("confluence.configuration.rightClickRideMinecart", "Right click to ride a minecart");
@@ -517,8 +517,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.PlayerDeath.tooltip", "Defines the effects when a player dies");
         add("confluence.configuration.showMoneyDrops", "Show Coin Drops on Death Screen");
         add("confluence.configuration.showMoneyDrops.tooltip", "Enable to display the amount of coins dropped on the death screen");
-        add("confluence.configuration.starPhase", "Star Phase");
-        add("confluence.configuration.starPhase.tooltip", "It is of no use for the time being, and it is not recommended to turn it on");
         // Separator
         add("confluence.configuration.Mana.button", "Mana");
         add("confluence.configuration.Armor.button", "Armor");

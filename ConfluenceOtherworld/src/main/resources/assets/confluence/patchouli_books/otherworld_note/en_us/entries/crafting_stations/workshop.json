@@ -1,5 +1,5 @@
 {
-    "name": "block.confluence.workshop.name",
+    "name": "block.confluence.workshop",
     "icon": "terra_curio:workshop",
     "category": "confluence:crafting_stations",
     "pages": [
@@ -10,7 +10,7 @@
         },
         {
             "type": "patchouli:text",
-            "title": "patchouli.confluence.otherworld_note.crafting_stations.how_to_use",
+            "title": "patchouli.confluence.otherworld_note.how_to_use",
             "text": "patchouli.confluence.otherworld_note.crafting_stations.workshop.1"
         },
         {
@@ -19,12 +19,12 @@
                 "minecraft:textures/block/grass_block.png"
             ],
             "text": "patchouli.confluence.otherworld_note.crafting_stations.workshop.2",
-            "title": "patchouli.confluence.otherworld_note.crafting_stations.gui"
+            "title": "patchouli.confluence.otherworld_note.gui"
         },
         {
             "type": "patchouli:crafting",
             "recipe":"minecraft:diamond", 
-            "text": "patchouli.confluence.otherworld_note.crafting_stations.example"
+            "text": "patchouli.confluence.otherworld_note.example"
         }
     ]
 }

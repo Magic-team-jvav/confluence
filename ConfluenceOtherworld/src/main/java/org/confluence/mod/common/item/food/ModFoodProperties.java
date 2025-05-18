@@ -1,5 +1,7 @@
 package org.confluence.mod.common.item.food;
 
+import net.minecraft.core.Holder;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -21,6 +23,13 @@ public class ModFoodProperties {
     //无效果食物
     public static FoodProperties noEffectProperties(int nutrition, float rawSaturation) {
         return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(calcSaturationModifier(rawSaturation, nutrition)).fast().alwaysEdible().build();
+    }
+
+    //自填效果食物
+    public static FoodProperties hasEffectProperties(int nutrition, float rawSaturation, Holder<MobEffect> effects, int duration, int level) {
+        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(calcSaturationModifier(rawSaturation, nutrition)).fast().alwaysEdible()
+                .effect(() -> new MobEffectInstance(effects, duration, level), 1.0f)
+                .build();
     }
 
     //吃得好
@@ -82,7 +91,7 @@ public class ModFoodProperties {
             .effect(() -> new MobEffectInstance(MobEffects.LEVITATION, 300, 1), 1.0F)
             .build();
     //巨石面包
-    public static final FoodProperties BOULDER_BREAD = new FoodProperties.Builder().nutrition(20).saturationModifier(0.5F).fast().alwaysEdible()
+    public static final FoodProperties BOULDER_BREAD = new FoodProperties.Builder().nutrition(20).saturationModifier(2.5F).fast().alwaysEdible()
             .effect(() -> new MobEffectInstance(ModEffects.CHOKING, 6000), 1.0f)
             .build();
     //青团

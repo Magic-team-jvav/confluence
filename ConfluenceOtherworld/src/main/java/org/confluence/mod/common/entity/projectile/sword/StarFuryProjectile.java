@@ -7,7 +7,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.mod.mixed.Immunity;
 
-public class StarFuryProjectile extends SwordProjectile implements Immunity {
+public class StarFuryProjectile extends SwordProjectile<StarFuryProjectile> implements Immunity {
 
     public StarFuryProjectile(EntityType<? extends SwordProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);

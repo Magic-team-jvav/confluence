@@ -13,7 +13,7 @@
                 "minecraft:textures/block/grass_block.png"
             ],
             "text": "patchouli.confluence.otherworld_note.world.sky_village.1",
-            "title": "patchouli.confluence.otherworld_note.world.appearance"
+            "title": "patchouli.confluence.otherworld_note.appearance"
         },
         {
             "type": "patchouli:text",
@@ -30,7 +30,7 @@
                 "minecraft:textures/block/grass_block.png"
             ],
             "text": "patchouli.confluence.otherworld_note.world.sky_village.3",
-            "title": "patchouli.confluence.otherworld_note.world.appearance"
+            "title": "patchouli.confluence.otherworld_note.appearance"
         }
     ]
 }

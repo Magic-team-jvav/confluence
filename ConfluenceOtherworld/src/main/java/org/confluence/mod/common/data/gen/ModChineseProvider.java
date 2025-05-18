@@ -133,6 +133,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.ice_tofu_brick.0", "它现在不能吃了，但不妨碍它把你吃了");
         add("tooltip.item.confluence.pink_cola.0", "一瓶普通的粉色可乐，或许原来有一整箱？");
         add("tooltip.item.confluence.dongdongs_flatbread.0", "刚在下界岩上考好的饼，快来尝尝吧！");
+        add("tooltip.item.confluence.piglin_stew.0", "屁戈林在饿死前最想吃的东西，可他最终没能吃上…");
         add("tooltip.item.confluence.boredoms_pact_falling_resolve.0", "「无聊之咒·陨志」");
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.1", "(Boredom's Pact - Falling Resolve)");
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.2", "           ");
@@ -1039,7 +1040,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.necro_set.data.1", "远程伤害提高5%");
         add("equipment_benediction.set_switcher.confluence.necro_set.data.2", "远程伤害提高2.5%");
         add("equipment_benediction.set_switcher.confluence.necro_set.data.3", "远程伤害提高2.5%");
-        add("equipment_benediction.set_switcher.confluence.necro_set.data.4", "远程暴击率提高10%，不消耗弹药几率提高20%");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.4", "暴击率提高10%");
 
         add("equipment_benediction.set_switcher.confluence.jungle_set", "丛林套装");
         add("equipment_benediction.set_switcher.confluence.jungle_set.data.0", "最大魔力增加40，暴击率提高6%");
@@ -1152,7 +1153,10 @@ public class ModChineseProvider extends LanguageProvider {
         //帕秋莉手册
         add("patchouli.confluence.otherworld_note.name", "来世手记");
         add("patchouli.confluence.otherworld_note.landing_text", "暗流涌动，世界的命运岌岌可危，邪恶势力的阴影笼罩着两个世界。命运的交汇之时，融合的时代悄然来临。你将在这两大世界的融合中，开始一段崭新的冒险之旅，挑战未知，拯救世界，或为自己谋求力量。");
-
+        add("patchouli.confluence.otherworld_note.appearance", "外观");
+        add("patchouli.confluence.otherworld_note.example", "一个例子");
+        add("patchouli.confluence.otherworld_note.gui", "GUI界面");
+        add("patchouli.confluence.otherworld_note.how_to_use", "使用方式");
         //章节
         add("patchouli.confluence.otherworld_note.accessories.name", "饰品");
         add("patchouli.confluence.otherworld_note.accessories.description", "两只手 两只脚 21个戒指🤔");
@@ -1227,11 +1231,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.4", "*o$(#555555)“她似乎嫉妒厌恶那些荧光真菌孢子的气息。一团尚未成型的幼蜂，摸上去感觉像粘稠的蜂蜜...蜂王与她的下属们对它们甜蜜领地的保护欲不知何时渐渐发展为对非同类生物的嫉妒排斥与憎恶。群峰振翅值声撼动了丛林中最为厚重的叶片。”");
 
         //制作站
-        add("patchouli.confluence.otherworld_note.crafting_stations.appearance", "外观");
-        add("patchouli.confluence.otherworld_note.crafting_stations.example", "一个例子");
-        add("patchouli.confluence.otherworld_note.crafting_stations.gui", "GUI界面");
-        add("patchouli.confluence.otherworld_note.crafting_stations.how_to_use", "使用方式");
-
         add("patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.0", "炼药桌差不多就是酿造台的Plus版，当然不能用于制作酿造台的配方，而是制作特殊的酿药配方。*b在!cs:hwb!重型工作台*c中使用木板、酿造台、骷髅头颅、蜡烛和玻璃瓶制作而成。");
         add("patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.1", "左右 6 个格子放材料，中上塞水瓶（或者其他特殊的东西），然后下方就会有成品了。");
         add("patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.2", "如果乱赛东西，你的合成可能会变得奇怪。");
@@ -1268,17 +1267,189 @@ public class ModChineseProvider extends LanguageProvider {
         add("patchouli.confluence.otherworld_note.crafting_stations.workshop.2", "如果配方相同，可以使用右侧的箭头切换成品。");
 
         //钓鱼
-        //食物
-        //魔法
-        //材料
-        //生物
-        //工具
-        //武器
-        //世界
-        add("patchouli.confluence.otherworld_note.world.appearance", "外观");
+        add("patchouli.confluence.otherworld_note.fishing.bait.name", "鱼饵");
+        add("patchouli.confluence.otherworld_note.fishing.bait.0", "当然不是必须要鱼饵才能钓鱼，但是有鱼饵能钓上更好的战利品！");
 
-        add("patchouli.confluence.otherworld_note.world.ash_forest.name", "灰烬森林");
-        add("patchouli.confluence.otherworld_note.world.ash_forest.0", "灰烬森林是一种会在下界生成的生物群系，这里生长着大量的白蜡木。*b灰烬森林几乎都由灰烬块组成，最上方则被灰烬草方块覆盖，灰烬草在其上生长。*2白蜡木在这里生长，玩家可以在这里获取到白蜡木及其衍生物。火焰花同样会在这里生成。");
+        add("patchouli.confluence.otherworld_note.fishing.crates.name", "宝匣");
+        add("patchouli.confluence.otherworld_note.fishing.crates.0", "宝匣是可堆叠的摸彩袋类型物品，其中包含的东西是随机的，包括药水、鱼饵、有用的物品、钱币、金属锭、甚至还有矿石。*b越是少见的宝匣类型内含的东西价值就越高。");
+
+        //食物
+        add("patchouli.confluence.otherworld_note.food.cloud_bread.name", "云朵面包");
+        add("patchouli.confluence.otherworld_note.food.cloud_bread.0", "云朵面团用于制作云朵面包的物品，使用 3 个飘飘麦合成云朵面团。");
+        add("patchouli.confluence.otherworld_note.food.cloud_bread.1", "食用后恢复5点饥饿值，30点饱和度。*b且食用后会获得15秒漂浮II、30秒缓降II、5分钟膳食II。");
+        add("patchouli.confluence.otherworld_note.food.cloud_bread.2", "相较于普通面包，它可不需要排成一条。");
+        add("patchouli.confluence.otherworld_note.food.cloud_bread.3", "我怎么在飞啊~");
+
+        add("patchouli.confluence.otherworld_note.food.fruit.name", "水果");
+        add("patchouli.confluence.otherworld_note.food.fruit.0", "水果是一种食物，除了砂糖橘外，都可以直接食用。*b食用所有的水果都可以恢复 4 点饥饿值和 12 点饱和度。*b食用水果还可以获得 5 分钟的膳食。*b杨桃、火龙果和葡萄是例外，它们可以恢复 6 点饥饿值和 42 点饱和度（由于溢出，所以实际上最多只有 20 点），并提供 5 分钟膳食II和 50 秒饥饿延缓。");
+        add("patchouli.confluence.otherworld_note.food.fruit.1", "破坏各种树叶后有概率掉落各种水果。*b所有的水果都可以微光嬗变为仙馔密酒。");
+        add("patchouli.confluence.otherworld_note.food.fruit.2", "砂糖橘是一种水果，无法直接食用。*b需要手持砂糖橘右击以拨开为拨开的砂糖橘。");
+        add("patchouli.confluence.otherworld_note.food.fruit.3", "已拨开的砂糖橘，可食用。食用后给予 5 分钟膳食，恢复 4 点饥饿值和 12 点饱和度。");
+
+        //魔法
+        add("patchouli.confluence.otherworld_note.mana.mana_regeneration.name", "恢复魔力");
+        add("patchouli.confluence.otherworld_note.mana.mana_regeneration.0", "魔力在不使用时会自行再生，直到达到玩家的当前最大值。自然再生速率会受玩家是否在移动中、和人物当前有多少魔力所影响。魔力也可以通过药水，饰品和拾取星星再生。");
+
+        add("patchouli.confluence.otherworld_note.mana.mana_capacity.name", "魔力容量");
+        add("patchouli.confluence.otherworld_note.mana.mana_capacity.0", "每个人物都会以 20 魔力容量（魔力条上一颗星星）开局。用魔力水晶可以将玩家的魔力容量永久性提升 20，为魔力条添上另一颗星星。这最多可以进行 9 次，加上一开始的那颗星星，一共会有 10 颗星星，代表 200 魔力。");
+
+        //材料
+        add("patchouli.confluence.otherworld_note.material.coin.name", "钱币");
+        add("patchouli.confluence.otherworld_note.material.coin.0", "钱币包括四种不同等级的材质：铜、银、金、铂金。还有特殊的绿宝石币，作用后面再说。*b可以这么获取钱币：*i击杀敌对生物有概率；*i战利品箱子；*i!cs:e!提炼机*c。*2*o“有了钱地球才会转，孩子。”   --蟹老板");
+        add("patchouli.confluence.otherworld_note.material.coin.1", "钱币的4个等级是可以相互转化的，使用百进制。*b例如：每100个铜币可以做成1个银币。*b1个铂金币等于：*i100个金币；*i10,000个银币*i1,000,000个铜币*b即一个铂金币等于1x10^6个铜币。");
+        add("patchouli.confluence.otherworld_note.material.coin.2", "你拾取的、通过快捷键放入的或从收纳物品（如箱子）中取出的钱币会自动结合成更高等级的钱币。*b然而，手动将钱币移入收纳物品时，它们不会自动结合，此时需要再拾取一次货币方可自动结合。*b也可以手动合并钱币。手持钱币潜行右击以合成上级钱币；!cs:hwb!重型工作台*c也可以将钱币结合为上级/下级钱币。");
+        add("patchouli.confluence.otherworld_note.material.coin.3", "钱币还可以被放置在方块上。*b放置后的钱币堆可以被徒手破坏，在破坏后会返还所有钱币。手持钱币右击方块即可将钱币放下。方块形式的钱币可以单独成堆，也可以混杂叠放；没有堆叠高度限制，只要钱币足够多就可以一直放置下去；方块形式的钱币还拥有类似沙子的物理特性。");
+        add("patchouli.confluence.otherworld_note.material.coin.4", "绿宝石币可以用于与银行家交易。*b银行家是一种新增的村民职业，工作站点是方块形式的金币/铂金币，可以与其交易一些东西。*2当玩家死亡时，所拥有的钱币都会掉落。");
+        add("patchouli.confluence.otherworld_note.material.coin.5", "金金金金金金金金金");
+
+        add("patchouli.confluence.otherworld_note.material.corruption_material.name", "腐化材料");
+        add("patchouli.confluence.otherworld_note.material.corruption_material.0", "!w:co!腐化之地*c中生物的掉落物和结构里的宝箱会有各种各样的材料。*2邪恶...也是种力量。");
+        add("patchouli.confluence.otherworld_note.material.corruption_material.1", "击杀噬魂怪、吞噬怪和腐骴概率掉落。");
+        add("patchouli.confluence.otherworld_note.material.corruption_material.2", "击杀吞噬怪掉落。");
+        add("patchouli.confluence.otherworld_note.material.corruption_material.3", "击杀世界吞噬怪掉落。");
+        add("patchouli.confluence.otherworld_note.material.corruption_material.4", "一种生成在腐化之地的蘑菇，用于制作魔粉进而制作蠕虫诱饵。");
+        add("patchouli.confluence.otherworld_note.material.corruption_material.5", "魔法灵感菇🍄~");
+
+        add("patchouli.confluence.otherworld_note.material.crimson_material.name", "猩红材料");
+        add("patchouli.confluence.otherworld_note.material.crimson_material.0", "!w:cr!猩红之地*c中生物的掉落物和结构里的宝箱会有各种各样的材料。*2邪恶...也是种力量。");
+        add("patchouli.confluence.otherworld_note.material.crimson_material.1", "击杀血爬虫、脸怪、猩红咯迈拉和血腥芽孢概率掉落。");
+        add("patchouli.confluence.otherworld_note.material.crimson_material.2", "击杀视神经元掉落，也会出现在克苏鲁之脑宝藏袋中。");
+        add("patchouli.confluence.otherworld_note.material.crimson_material.3", "一种生成在猩红之地的蘑菇，用于制作毒粉进而制作血腥脊柱。");
+        add("patchouli.confluence.otherworld_note.material.crimson_material.4", "小黑子你们闹够没！");
+
+        add("patchouli.confluence.otherworld_note.material.falling_star.name", "坠落之星");
+        add("patchouli.confluence.otherworld_note.material.falling_star.0", "坠落之星会在整个夜间期间随机生成，坠落后在地上会发光，使其在夜晚中容易找到。它可以用来做魔力水晶从而提升自己的法力上限。*b坠落时，它会对砸到的生物造成 100 点（50 颗心）伤害。*2*o“夜晚，星星在坠落，洒满全世界。它们的用途极为广泛。");
+        add("patchouli.confluence.otherworld_note.material.falling_star.1", "*o如果你看到了，一定要拿到手，因为星星在日出后就会消失。”*t--向导");
+
+        add("patchouli.confluence.otherworld_note.material.gel.name", "凝胶");
+        add("patchouli.confluence.otherworld_note.material.gel.0", "凝胶是构成一些史莱姆的物品。*b击杀大多数种类的史莱姆生物即可获得凝胶。*2注意：凝胶并不是史莱姆球，而是一种可食的燃料，凝胶可燃但黏不住东西；*b史莱姆球黏附性大但不能燃烧。*2*o食品级和工业级的区别。");
+        add("patchouli.confluence.otherworld_note.material.gel.1", "据说还有种稀有的粉色凝胶...");
+
+        add("patchouli.confluence.otherworld_note.material.gems.name", "宝石");
+        add("patchouli.confluence.otherworld_note.material.gems.0", "宝石是一种材料，用于合成。*b会在提炼机和箱子中出现。*2为了规避“紫水晶”，原“紫晶”改为“异域紫晶石”");
+
+        //生物
+        add("patchouli.confluence.otherworld_note.mob.slime.name", "史莱姆");
+        add("patchouli.confluence.otherworld_note.mob.slime.0", "相较于原有的史莱姆，这些新的史莱姆更加多元化。");
+        add("patchouli.confluence.otherworld_note.mob.slime.1", "绿色史莱姆≠Minecraft史莱姆。");
+        add("patchouli.confluence.otherworld_note.mob.slime.2", "这个不是腐化，可能是踩到青金石了。");
+        add("patchouli.confluence.otherworld_note.mob.slime.3", "这个不是猩红，可能是吃到虞美人了。");
+
+        //工具
+        add("patchouli.confluence.otherworld_note.tool.axe.name", "斧");
+        add("patchouli.confluence.otherworld_note.tool.axe.0", "斧作为一种兼备工具与武器为一体的工具，你会想要一把的！");
+        add("patchouli.confluence.otherworld_note.tool.axe.1", "再生之斧是使用食人怪藤蔓、丛林孢子、再生法杖制作的斧。");
+        add("patchouli.confluence.otherworld_note.tool.axe.2", "金斧是使用红玉、金斧和金锭制作的斧。*b*o不要与原版的金斧混淆。");
+        add("patchouli.confluence.otherworld_note.tool.axe.3", "暗夜战斧是使用魔矿锭制作的斧，特点是不会损坏！");
+        add("patchouli.confluence.otherworld_note.tool.axe.4", "嗜血狂斧是使用猩红矿锭制作的斧，特点是不会损坏！");
+
+        add("patchouli.confluence.otherworld_note.tool.bottomless_bucket.name", "无底桶");
+        add("patchouli.confluence.otherworld_note.tool.bottomless_bucket.0", "无底桶可以看做是一个不会消耗的桶，可以源源不断的放置液体。*2无底桶在参与合成时不会被消耗！");
+        add("patchouli.confluence.otherworld_note.tool.bottomless_bucket.1", "无底水桶 = 2个水桶");
+        add("patchouli.confluence.otherworld_note.tool.bottomless_bucket.2", "无底熔岩桶 = 无尽能源");
+        add("patchouli.confluence.otherworld_note.tool.bottomless_bucket.3", "纯天然无污染！");
+        add("patchouli.confluence.otherworld_note.tool.bottomless_bucket.4", "小心掉进去！");
+
+        add("patchouli.confluence.otherworld_note.tool.bug_net.name", "虫网");
+        add("patchouli.confluence.otherworld_note.tool.bug_net.0", "一把小虫网，可以用来抓虫，进而钓鱼。*2（不过目前版本并没有虫）（悲）");
+        add("patchouli.confluence.otherworld_note.tool.bug_net.1", "一把黄金制成的虫网，甚至可以用来抓小型动物（比如猪、牛）！*2（但是还是不能抓虫）（悲）");
+
+        add("patchouli.confluence.otherworld_note.tool.fishing_rod.name", "钓竿");
+        add("patchouli.confluence.otherworld_note.tool.fishing_rod.0", "那根木头棍子当然可以用一辈子，但是更高级的鱼竿会有更多的战利品！");
+        add("patchouli.confluence.otherworld_note.tool.fishing_rod.1", "强化钓竿是使用铅锭/铁锭制作的钓竿，比普通钓竿更耐用！");
+        add("patchouli.confluence.otherworld_note.tool.fishing_rod.2", "玻璃钢钓竿是在丛林地下小屋搜刮宝箱获得的钓竿。");
+        add("patchouli.confluence.otherworld_note.tool.fishing_rod.3", "甲虫钓竿是在绿洲匣抽取获得的钓竿。");
+
+        add("patchouli.confluence.otherworld_note.tool.hammer.name", "锤");
+        add("patchouli.confluence.otherworld_note.tool.hammer.0", "锤是一种基本工具，可快速破坏如墙、泥土、树叶和木板这类硬度较低的物品。*b当其破坏方块时，以被目标方块为中心，3x3 范围内的方块也会一起被破坏。");
+        add("patchouli.confluence.otherworld_note.tool.hammer.1", "金锤是使用金锭制作的锤，可能稍微有些不耐用？");
+        add("patchouli.confluence.otherworld_note.tool.hammer.2", "魔锤是使用魔矿锭制作的锤，特点是不会损坏！");
+        add("patchouli.confluence.otherworld_note.tool.hammer.3", "血肉锤是使用猩红矿锭制作的锤，特点是不会损坏！");
+
+        add("patchouli.confluence.otherworld_note.tool.hook.name", "抓钩");
+        add("patchouli.confluence.otherworld_note.tool.hook.0", "抓钩是一类有助于玩家穿越地形的工具。*b使用时，抓钩会发射链条来钩住方块表面并将玩家拉向它。*2将抓钩装备至饰品栏中的抓钩栏后，对准想要前往的地方按下F键即可发射抓钩。*b到达目标地点后跳跃即可。");
+        add("patchouli.confluence.otherworld_note.tool.hook.1", "抓钩主要有宝石钩和其他各种特殊抓钩。");
+
+        add("patchouli.confluence.otherworld_note.tool.misc.name", "杂项");
+        add("patchouli.confluence.otherworld_note.tool.misc.0", "各种各样的武器百花八门，千奇百怪的功能各式各样！");
+        add("patchouli.confluence.otherworld_note.tool.misc.1", "一面美观的镜子，可以送你回家！*2不，它不是魔镜，不会告诉你谁是最美的。");
+        add("patchouli.confluence.otherworld_note.tool.misc.2", "也是一面美观的镜子，不过可能有点冻手...*2其实冰块是甜的，不信你可以舔一下尝尝！");
+
+        add("patchouli.confluence.otherworld_note.tool.paint.name", "油漆");
+        add("patchouli.confluence.otherworld_note.tool.paint.0", "油漆可以用于改变方块的颜色，几乎所有可放置物品都可以被油漆涂色。*b油漆需要使用漆刷或油漆滚刷来刷到方块上，若持有喷漆器，那么方块在放置时会自动被喷涂上色，每次上色都会消耗 1 个油漆。*b基本的油漆可以在油漆工NPC处购买。");
+        add("patchouli.confluence.otherworld_note.tool.paint.1", "若有多个颜色的油漆，那么在物品栏最前方的颜色会被最先使用（顺序为从上到下，从左到右）；*b若玩家的物品栏和背包中均有油漆，且它们的颜色不同，那么物品栏中的颜色会被优先使用。");
+        add("patchouli.confluence.otherworld_note.tool.paint.2", "漆刷是用于为整个方块上色的一种工具。*2油漆滚刷用于为方块单面上色的一种工具。*2其实直接挖掉方块也能使油漆失效...");
+        add("patchouli.confluence.otherworld_note.tool.paint.3", "漆铲是一种用于移除油漆的工具，令玩家无需破坏并重新放置方块来去除油漆。*2手持漆铲右击需要除漆的方块，即可将方块上的油漆去除；*b漆铲默认为整个方块除漆，若想为单面去漆，只需潜行右击方块即可。");
+        add("patchouli.confluence.otherworld_note.tool.paint.4", "看来还是直接挖掉更省事...");
+
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.name", "镐");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.0", "镐作为一种兼备工具与武器为一体的工具，你会想要一把的！");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.1", "仙人掌镐是使用仙人掌制作的镐，非常的好用。");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.2", "金镐是使用红玉、金镐和金锭制作的镐。*b*o不要与原版的金镐混淆。");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.3", "恶魔镐是使用魔矿锭和暗影鳞片制作的镐，特点是不会损坏！");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.4", "死亡使者镐是使用猩红矿锭和组织样本制作的镐，特点是不会损坏！");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.5", "化石镐是使用坚固化石制作的镐，又老又坚固！");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.6", "熔岩镐是一个骷髅王前的镐，使用狱石矿锭和烈焰棒制作，十分坚固！");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.7", "骨镐是一把骷髅王前的镐，相较同等级的其他镐，它的挖掘速度更快。");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.8", "掠夺鲨是一把通过钓鱼获取的镐。*b*o鲨鲨，嘿嘿:P");
+
+        add("patchouli.confluence.otherworld_note.tool.rope.name", "绳索");
+        add("patchouli.confluence.otherworld_note.tool.rope.0", "几段看上去平平无奇的绳子，但是危机情况下也许会救你一命！");
+        add("patchouli.confluence.otherworld_note.tool.rope.1", "把零散的绳子集合起来，效果更佳！");
+
+        //武器
+        add("patchouli.confluence.otherworld_note.weapon.arrow.name", "箭");
+        add("patchouli.confluence.otherworld_note.weapon.arrow.0", "");
+        add("patchouli.confluence.otherworld_note.weapon.arrow.1", "");
+        add("patchouli.confluence.otherworld_note.weapon.arrow.2", "");
+        add("patchouli.confluence.otherworld_note.weapon.arrow.3", "");
+        add("patchouli.confluence.otherworld_note.weapon.arrow.4", "");
+        add("patchouli.confluence.otherworld_note.weapon.arrow.5", "");
+
+        add("patchouli.confluence.otherworld_note.weapon.bomb.name", "炸弹");
+        add("patchouli.confluence.otherworld_note.weapon.bomb.0", "炸弹是一种道具，主要可用于采矿时的爆破。*b可以在地下自然生成的金箱中开到，也有概率在罐子打碎后获得。");
+        add("patchouli.confluence.otherworld_note.weapon.bomb.1", "黏性炸弹可以用炸弹和凝胶合成获得。*b黏性炸弹与炸弹的属性基本一致，区别是当抛出的黏性炸弹接触方块时会粘在方块上。");
+        add("patchouli.confluence.otherworld_note.weapon.bomb.2", "弹力炸弹可以用炸弹和粉凝胶合成获得。*b弹力炸弹与炸弹的属性基本一致，区别是当抛出的弹力炸弹接触方块时会弹起，弹起的高度随下落的高度增高而增高，但不会超过下落时的高度。");
+        add("patchouli.confluence.otherworld_note.weapon.bomb.3", "甲虫炸弹是一种道具，主要可用于采矿时的爆破。*b可以使用炸弹和坚固化石合成，也有概率在沙漠罐子打碎后获得。");
+
+        add("patchouli.confluence.otherworld_note.weapon.boomerang.name", "回旋镖");
+        add("patchouli.confluence.otherworld_note.weapon.boomerang.0", "木回旋镖是一把基础的回旋镖，后续可以升级成更高级的回旋镖。");
+        add("patchouli.confluence.otherworld_note.weapon.boomerang.1", "附魔回旋镖是使用木回旋镖制作的回旋镖，增加了伤害还无法破坏。");
+        add("patchouli.confluence.otherworld_note.weapon.boomerang.2", "蘑菇回旋镖是一把回旋镖，击杀孢子蝙蝠后有概率掉落。");
+        add("patchouli.confluence.otherworld_note.weapon.boomerang.3", "烈焰回旋镖是使用附魔回旋镖制作的回旋镖。");
+        add("patchouli.confluence.otherworld_note.weapon.boomerang.4", "三尖回旋镖是使用附魔回旋镖、附魔回旋镖和冰雪回旋镖制作的回旋镖。");
+
+        add("patchouli.confluence.otherworld_note.weapon.bow.name", "弓");
+        add("patchouli.confluence.otherworld_note.weapon.bow.0", "作为射手的的武器之一，弓也不一定只有射手才能用。");
+        add("patchouli.confluence.otherworld_note.weapon.bow.1", "石骸弓是使用坚固化石制作的弓，会将剑转化成化石箭。");
+        add("patchouli.confluence.otherworld_note.weapon.bow.2", "");
+        add("patchouli.confluence.otherworld_note.weapon.bow.3", "恶魔弓是使用魔矿锭制作的弓，特点是不会损坏！");
+        add("patchouli.confluence.otherworld_note.weapon.bow.4", "肌腱弓是使用猩红矿锭制作的弓，特点是不会损坏！");
+        add("patchouli.confluence.otherworld_note.weapon.bow.5", "浴火之怒弓是使用狱石矿锭制作的弓，特点是不会损坏！");
+        add("patchouli.confluence.otherworld_note.weapon.bow.6", "");
+
+        add("patchouli.confluence.otherworld_note.weapon.dynamite.name", "雷管");
+        add("patchouli.confluence.otherworld_note.weapon.dynamite.0", "雷管是一种道具，主要可用于采矿时的爆破。*b可以在地下自然生成的金箱中开到。");
+        add("patchouli.confluence.otherworld_note.weapon.dynamite.1", "黏性雷管可以用雷管和凝胶在工作台上合成获得。*b黏性雷管与雷管的属性基本一致，区别是当抛出的黏性雷管接触方块时会粘在方块上。");
+        add("patchouli.confluence.otherworld_note.weapon.dynamite.2", "弹力雷管可以用雷管和粉凝胶在工作台上合成获得。*b弹力雷管与雷管的属性基本一致，区别是当抛出的弹力雷管接触方块时会弹起，弹起的高度随下落的高度增高而增高，但不会超过下落时的高度。");
+        add("patchouli.confluence.otherworld_note.weapon.dynamite.3", "甲虫炸弹是一种道具，主要可用于采矿时的爆破。*b可以使用炸弹和坚固化石合成，也有概率在沙漠罐子打碎后获得。");
+
+        add("patchouli.confluence.otherworld_note.weapon.short_bow.name", "短弓");
+        add("patchouli.confluence.otherworld_note.weapon.short_bow.0", "短弓是一种武器，相较于普通的弓，它们的速度更快，所需材料较少，但伤害低。");
+        add("patchouli.confluence.otherworld_note.weapon.short_bow.1", "不是取火钻!");
+
+        add("patchouli.confluence.otherworld_note.weapon.short_sword.name", "短剑");
+        add("patchouli.confluence.otherworld_note.weapon.short_sword.0", "短剑是一种武器，相较于普通的剑/阔剑，它们的速度更快，所需材料较少，但伤害低。");
+        add("patchouli.confluence.otherworld_note.weapon.short_sword.1", "小匕首可爱捏。");
+
+        add("patchouli.confluence.otherworld_note.weapon.sword.name", "阔剑");
+        add("patchouli.confluence.otherworld_note.weapon.sword.0", "作为战士的的武器之一，阔剑也不一定只有战士才能用。");
+        add("patchouli.confluence.otherworld_note.weapon.sword.1", "仙人掌剑是使用仙人掌制作的阔剑。");
+        add("patchouli.confluence.otherworld_note.weapon.sword.2", "金阔剑是使用红玉、金剑和金锭制作的镐。*b*o不要与原版的金剑混淆。");
+
+        //世界
+        add("patchouli.confluence.otherworld_note.world.ash_forest.name", "白蜡木林");
+        add("patchouli.confluence.otherworld_note.world.ash_forest.0", "白蜡木林是一种会在下界生成的生物群系，这里生长着大量的白蜡木。*b白蜡木林几乎都由灰烬块组成，最上方则被灰烬草方块覆盖，灰烬草在其上生长。*2白蜡木在这里生长，玩家可以在这里获取到白蜡木及其衍生物。火焰花同样会在这里生成。");
         add("patchouli.confluence.otherworld_note.world.ash_forest.1", "*z$(#AAAAAA)“烬墟生芽启新痕。”");
         add("patchouli.confluence.otherworld_note.world.ash_forest.2", "*o*t灰暗的尘土死气沉沉，*b*t赤红的世界生机勃勃");
 
@@ -3235,6 +3406,7 @@ public class ModChineseProvider extends LanguageProvider {
         //赞助
         add(FoodItems.PINK_COLA.get(), "粉色可乐");
         add(FoodItems.DONGDONGS_FLATBREAD.get(), "东东的大饼");
+        add(FoodItems.PIGLIN_STEW.get(), "猪灵堡");
         // 鱼
         add(FoodItems.GOLDFISH.get(), "金鱼");
         add(FoodItems.SEA_BASS.get(), "鲈鱼");

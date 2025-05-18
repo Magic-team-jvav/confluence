@@ -11,6 +11,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -19,8 +20,8 @@ import org.jetbrains.annotations.Nullable;
 
 import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
 
-public class SawmillCategory implements IRecipeCategory<SawmillRecipe> {
-    public static final RecipeType<SawmillRecipe> TYPE = RecipeType.create(Confluence.MODID, "sawmill", SawmillRecipe.class);
+public class SawmillCategory implements IRecipeCategory<RecipeHolder<SawmillRecipe>> {
+    public static final RecipeType<RecipeHolder<SawmillRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("sawmill"));
     private static final Component TITLE = Component.translatable("title.confluence.sawmill");
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/sawmill.png");
     private final IDrawable icon;
@@ -30,7 +31,7 @@ public class SawmillCategory implements IRecipeCategory<SawmillRecipe> {
     }
 
     @Override
-    public RecipeType<SawmillRecipe> getRecipeType() {
+    public RecipeType<RecipeHolder<SawmillRecipe>> getRecipeType() {
         return TYPE;
     }
 
@@ -55,25 +56,25 @@ public class SawmillCategory implements IRecipeCategory<SawmillRecipe> {
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, SawmillRecipe recipe, IFocusGroup focuses) {
-        ShapedRecipePattern pattern = recipe.either.orThrow();
+    public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<SawmillRecipe> recipe, IFocusGroup focuses) {
+        ShapedRecipePattern pattern = recipe.value().either.orThrow();
         int width = pattern.width();
         int height = pattern.height();
         boolean symmetrical = pattern.symmetrical;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (symmetrical) {
-                    addInput(builder, j * 18 + 6, i * 18 + 5, recipe.ingredients.get(width - j - 1 + i * width));
+                    addInput(builder, j * 18 + 6, i * 18 + 5, recipe.value().ingredients.get(width - j - 1 + i * width));
                 } else {
-                    addInput(builder, j * 18 + 6, i * 18 + 5, recipe.ingredients.get(j + i * width));
+                    addInput(builder, j * 18 + 6, i * 18 + 5, recipe.value().ingredients.get(j + i * width));
                 }
             }
         }
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33).addItemStack(recipe.getResultItem(null));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33).addItemStack(recipe.value().getResultItem(null));
     }
 
     @Override
-    public void draw(SawmillRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(RecipeHolder<SawmillRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         guiGraphics.blit(BACKGROUND, 0, 0, 0, 0, 144, 80, 144, 80);
     }
 }

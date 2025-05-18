@@ -1,17 +1,17 @@
 {
-    "name": "绳索",
+    "name": "patchouli.confluence.otherworld_note.tool.rope.name",
     "icon": "minecraft:lead",
     "category": "confluence:tool",
     "pages": [
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:lead",
-            "text": "几段看上去平平无奇的绳子，但是危机情况下也许会救你一命！_br2_但是我不会用x.x"
+            "text": "patchouli.confluence.otherworld_note.tool.rope.0"
         },
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:lead",
-            "text": "把零散的绳子集合起来，效果更佳！_br2_就是……看上去……有点……"
+            "text": "patchouli.confluence.otherworld_note.tool.rope.1"
         },
         {
             "type": "patchouli:crafting",

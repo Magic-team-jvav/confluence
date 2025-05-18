@@ -1,17 +1,22 @@
 {
-    "name": "阔剑",
+    "name": "patchouli.confluence.otherworld_note.weapon.sword.name",
     "icon": "minecraft:diamond_sword",
     "category": "confluence:weapon",
     "pages": [
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:diamond_sword",
-            "text": "仙人掌剑是使用仙人掌制作的阔剑。"
+            "text": "patchouli.confluence.otherworld_note.weapon.sword.0"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:golden_sword",
-            "text": "金阔剑是使用红玉、金剑和金锭制作的镐。_br__o_不要与原版的金剑混淆。"
+            "text": "patchouli.confluence.otherworld_note.weapon.sword.1"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:golden_sword",
+            "text": "patchouli.confluence.otherworld_note.weapon.sword.2"
         }
     ]
 }

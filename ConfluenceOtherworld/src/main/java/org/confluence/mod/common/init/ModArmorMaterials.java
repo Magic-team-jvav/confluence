@@ -180,9 +180,9 @@ public final class ModArmorMaterials {
             16, SoundEvents.ARMOR_EQUIP_LEATHER, MaterialItems.DUNGEON_DEMON_BONE,
             "necro", 2.0F, 0.0F);
     public static final Holder<ArmorMaterial> SPIDER_ARMOR_MATERIALS = registerArmorMaterial("spider_armor_materials",
-            5, 8, 4, 3,
-            16, SoundEvents.ARMOR_EQUIP_LEATHER, Items.BONE,
-            "spider", 0.0F, 0.0F);
+            3, 7, 7, 3,
+            17, SoundEvents.ARMOR_EQUIP_LEATHER, Items.BONE,
+            "spider", 2.0F, 0.0F);
 
     public static final Holder<ArmorMaterial> GOGGLES_MATERIAL = registerSingletonMaterial("goggles_material", ArmorItem.Type.HELMET, 1, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "goggles", 0, 0);
     public static final Holder<ArmorMaterial> GREEN_CAP_MATERIAL = registerSingletonMaterial("green_cap_material", ArmorItem.Type.HELMET, 2, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "green_cap", 0, 0);
@@ -200,39 +200,43 @@ public final class ModArmorMaterials {
 
     public static final Holder<ArmorMaterial> JUNGLE_ARMOR_MATERIALS = registerArmorMaterial("jungle_armor_materials", 3, 6, 6, 3, 15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.JUNGLE_SPORE), "jungle", 2, 0);
 
-    public static final Holder<ArmorMaterial> COBALT_MASK_MATERIAL = registerSingletonMaterial("cobalt_mask_material", ArmorItem.Type.HELMET, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.COBALT_INGOT), "cobalt_mask", 10000, 10000);
-    public static final Holder<ArmorMaterial> COBALT_HAT_MATERIAL = registerSingletonMaterial("cobalt_hat_material", ArmorItem.Type.HELMET, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.COBALT_INGOT), "cobalt_hat", 10000, 10000);
-    public static final Holder<ArmorMaterial> COBALT_ARMOR_MATERIALS = registerArmorMaterial("cobalt_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.COBALT_INGOT), "cobalt", 10000, 10000);
+    public static final Holder<ArmorMaterial> COBALT_MASK_MATERIAL = registerSingletonMaterial("cobalt_mask_material", ArmorItem.Type.HELMET, 3, 16, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.COBALT_INGOT), "cobalt_mask", 3.0F, 0);
+    public static final Holder<ArmorMaterial> COBALT_HAT_MATERIAL = registerSingletonMaterial("cobalt_hat_material", ArmorItem.Type.HELMET, 1, 16, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.COBALT_INGOT), "cobalt_hat", 3.0F, 0);
+    public static final Holder<ArmorMaterial> COBALT_ARMOR_MATERIALS = registerArmorMaterial("cobalt_armor_materials", 5, 7, 7, 6, 16, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.COBALT_INGOT), "cobalt", 3.0F, 0);
 
-    public static final Holder<ArmorMaterial> PALLADIUM_MASK_MATERIAL = registerSingletonMaterial("palladium_mask_material", ArmorItem.Type.HELMET, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.PALLADIUM_INGOT), "palladium_mask", 10000, 10000);
-    public static final Holder<ArmorMaterial> PALLADIUM_HEADGEAR_MATERIAL = registerSingletonMaterial("palladium_headgear_material", ArmorItem.Type.HELMET, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.PALLADIUM_INGOT), "palladium_headgear", 10000, 10000);
-    public static final Holder<ArmorMaterial> PALLADIUM_ARMOR_MATERIALS = registerArmorMaterial("palladium_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.PALLADIUM_INGOT), "palladium", 10000, 10000);
+    public static final Holder<ArmorMaterial> PALLADIUM_MASK_MATERIAL = registerSingletonMaterial("palladium_mask_material", ArmorItem.Type.HELMET, 5, 16, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.PALLADIUM_INGOT), "palladium_mask", 3.0F, 0);
+    public static final Holder<ArmorMaterial> PALLADIUM_HEADGEAR_MATERIAL = registerSingletonMaterial("palladium_headgear_material", ArmorItem.Type.HELMET, 1, 16, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.PALLADIUM_INGOT), "palladium_headgear", 3.0F, 0);
+    public static final Holder<ArmorMaterial> PALLADIUM_ARMOR_MATERIALS = registerArmorMaterial("palladium_armor_materials", 3, 7, 7, 6, 16, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.PALLADIUM_INGOT), "palladium", 3.0F, 0);
 
-    public static final Holder<ArmorMaterial> MYTHRIL_HOOD_MATERIAL = registerSingletonMaterial("mythril_hood_material", ArmorItem.Type.HELMET, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.MYTHRIL_INGOT), "mythril_hood", 10000, 10000);
-    public static final Holder<ArmorMaterial> MYTHRIL_HAT_MATERIAL = registerSingletonMaterial("mythril_hat_material", ArmorItem.Type.HELMET, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.MYTHRIL_INGOT), "mythril_hat", 10000, 10000);
-    public static final Holder<ArmorMaterial> MYTHRIL_ARMOR_MATERIALS = registerArmorMaterial("mythril_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.MYTHRIL_INGOT), "mythril", 10000, 10000);
+    // 2级新三矿，+1防
 
-    public static final Holder<ArmorMaterial> ORICHALCUM_HEADGEAR_MATERIAL = registerSingletonMaterial("orichalcum_headgear_material", ArmorItem.Type.HELMET, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.ORICHALCUM_INGOT), "orichalcum_headgear", 10000, 10000);
-    public static final Holder<ArmorMaterial> ORICHALCUM_MASK_MATERIAL = registerSingletonMaterial("orichalcum_mask_material", ArmorItem.Type.HELMET, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.ORICHALCUM_INGOT), "orichalcum_mask", 10000, 10000);
-    public static final Holder<ArmorMaterial> ORICHALCUM_ARMOR_MATERIALS = registerArmorMaterial("orichalcum_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.ORICHALCUM_INGOT), "orichalcum", 10000, 10000);
+    public static final Holder<ArmorMaterial> MYTHRIL_HOOD_MATERIAL = registerSingletonMaterial("mythril_hood_material", ArmorItem.Type.HELMET, 2, 17, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.MYTHRIL_INGOT), "mythril_hood", 3.0F, 0);
+    public static final Holder<ArmorMaterial> MYTHRIL_HAT_MATERIAL = registerSingletonMaterial("mythril_hat_material", ArmorItem.Type.HELMET, 4, 17, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.MYTHRIL_INGOT), "mythril_hat", 3.0F, 0);
+    public static final Holder<ArmorMaterial> MYTHRIL_ARMOR_MATERIALS = registerArmorMaterial("mythril_armor_materials", 6, 7, 7, 6, 17, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.MYTHRIL_INGOT), "mythril", 3.0F, 0);
 
-    public static final Holder<ArmorMaterial> ADAMANTITE_HEADGEAR_MATERIAL = registerSingletonMaterial("adamantite_headgear_material", ArmorItem.Type.HELMET, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.ADAMANTITE_INGOT), "adamantite_headgear", 10000, 10000);
-    public static final Holder<ArmorMaterial> ADAMANTITE_MASK_MATERIAL = registerSingletonMaterial("adamantite_mask_material", ArmorItem.Type.HELMET, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.ADAMANTITE_INGOT), "adamantite_mask", 10000, 10000);
-    public static final Holder<ArmorMaterial> ADAMANTITE_ARMOR_MATERIALS = registerArmorMaterial("adamantite_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.ADAMANTITE_INGOT), "adamantite", 10000, 10000);
+    public static final Holder<ArmorMaterial> ORICHALCUM_HEADGEAR_MATERIAL = registerSingletonMaterial("orichalcum_headgear_material", ArmorItem.Type.HELMET, 2, 17, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.ORICHALCUM_INGOT), "orichalcum_headgear", 3.0F, 0);
+    public static final Holder<ArmorMaterial> ORICHALCUM_MASK_MATERIAL = registerSingletonMaterial("orichalcum_mask_material", ArmorItem.Type.HELMET, 6, 17, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.ORICHALCUM_INGOT), "orichalcum_mask", 3.0F, 0);
+    public static final Holder<ArmorMaterial> ORICHALCUM_ARMOR_MATERIALS = registerArmorMaterial("orichalcum_armor_materials", 4, 7, 7, 6, 17, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.ORICHALCUM_INGOT), "orichalcum", 3.0F, 0);
 
-    public static final Holder<ArmorMaterial> TITANIUM_HEADGEAR_MATERIAL = registerSingletonMaterial("titanium_headgear_material", ArmorItem.Type.HELMET, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.TITANIUM_INGOT), "titanium_headgear", 10000, 10000);
-    public static final Holder<ArmorMaterial> TITANIUM_MASK_MATERIAL = registerSingletonMaterial("titanium_mask_material", ArmorItem.Type.HELMET, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.TITANIUM_INGOT), "titanium_mask", 10000, 10000);
-    public static final Holder<ArmorMaterial> TITANIUM_ARMOR_MATERIALS = registerArmorMaterial("titanium_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.TITANIUM_INGOT), "titanium", 10000, 10000);
+    // 3级新三矿，+1防
+
+    public static final Holder<ArmorMaterial> ADAMANTITE_HEADGEAR_MATERIAL = registerSingletonMaterial("adamantite_headgear_material", ArmorItem.Type.HELMET, 3, 18, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.ADAMANTITE_INGOT), "adamantite_headgear", 3.0F, 0);
+    public static final Holder<ArmorMaterial> ADAMANTITE_MASK_MATERIAL = registerSingletonMaterial("adamantite_mask_material", ArmorItem.Type.HELMET, 4, 18, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.ADAMANTITE_INGOT), "adamantite_mask", 3.0F, 0);
+    public static final Holder<ArmorMaterial> ADAMANTITE_ARMOR_MATERIALS = registerArmorMaterial("adamantite_armor_materials", 7, 8, 7, 7, 18, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.ADAMANTITE_INGOT), "adamantite", 3.0F, 0);
+
+    public static final Holder<ArmorMaterial> TITANIUM_HEADGEAR_MATERIAL = registerSingletonMaterial("titanium_headgear_material", ArmorItem.Type.HELMET, 3, 18, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.TITANIUM_INGOT), "titanium_headgear", 3.0F, 0);
+    public static final Holder<ArmorMaterial> TITANIUM_MASK_MATERIAL = registerSingletonMaterial("titanium_mask_material", ArmorItem.Type.HELMET, 7, 18, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.TITANIUM_INGOT), "titanium_mask", 3.0F, 0);
+    public static final Holder<ArmorMaterial> TITANIUM_ARMOR_MATERIALS = registerArmorMaterial("titanium_armor_materials", 4, 7, 7, 6, 18, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.TITANIUM_INGOT), "titanium", 3.0F, 0);
 
     public static final Holder<ArmorMaterial> CRYSTAL_ASSASSIN_ARMOR_MATERIALS = registerArmorMaterial("crystal_assassin_armor_materials",
             12, 14, 5, 5,
             16, SoundEvents.ARMOR_EQUIP_LEATHER, Items.BONE,
             "crystal_assassin", 0.0F, 0.0F);
 
-    public static final Holder<ArmorMaterial> HALLOWED_MASK_MATERIAL = registerSingletonMaterial("hallowed_mask_material", ArmorItem.Type.HELMET, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed_mask", 10000, 10000);
-    public static final Holder<ArmorMaterial> HALLOWED_HEADGEAR_MATERIAL = registerSingletonMaterial("hallowed_headgear_material", ArmorItem.Type.HELMET, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed_headgear", 10000, 10000);
-    public static final Holder<ArmorMaterial> HALLOWED_HOOD_MATERIAL = registerSingletonMaterial("hallowed_hood_material", ArmorItem.Type.HELMET, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed_hood", 10000, 10000);
-    public static final Holder<ArmorMaterial> HALLOWED_ARMOR_MATERIALS = registerArmorMaterial("hallowed_armor_materials", 10000, 10000, 10000, 10000, 10000, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed", 10000, 10000);
+    public static final Holder<ArmorMaterial> HALLOWED_MASK_MATERIAL = registerSingletonMaterial("hallowed_mask_material", ArmorItem.Type.HELMET, 7, 19, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed_mask", 3.0F, 19);
+    public static final Holder<ArmorMaterial> HALLOWED_HEADGEAR_MATERIAL = registerSingletonMaterial("hallowed_headgear_material", ArmorItem.Type.HELMET, 3, 19, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed_headgear", 3.0F, 19);
+    public static final Holder<ArmorMaterial> HALLOWED_HOOD_MATERIAL = registerSingletonMaterial("hallowed_hood_material", ArmorItem.Type.HELMET, 2, 19, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed_hood", 3.0F, 19);
+    public static final Holder<ArmorMaterial> HALLOWED_ARMOR_MATERIALS = registerArmorMaterial("hallowed_armor_materials", 4, 8, 7, 7, 19,  SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed", 3.0F, 19);
 
     public static Holder<ArmorMaterial> registerArmorMaterial(String name, int helmetArmor, int chestplateArmor, int leggingsArmor, int bootsArmor, int enchantmentValue, Holder<SoundEvent> equipSound, ItemLike fixItem, String layersName, float toughness, float knockbackResistance) {
         return ARMOR_MATERIALS.register(name, () -> new ArmorMaterial(

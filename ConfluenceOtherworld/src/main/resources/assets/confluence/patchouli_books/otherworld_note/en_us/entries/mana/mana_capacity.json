@@ -1,11 +1,11 @@
 {
-    "name": "魔力容量",
+    "name": "patchouli.confluence.otherworld_note.mana.mana_capacity.name",
     "icon": "minecraft:water_bucket",
     "category": "confluence:mana",
     "pages": [
         {
             "type": "patchouli:text",
-            "text": "每个人物都会以20魔力容量（魔力条上一颗星星）开局。用魔力水晶可以将玩家的魔力容量永久性提升20，为魔力条添上另一颗星星。这最多可以进行9次，加上一开始的那1颗星星，一共会有10颗星星，代表200魔力。"
+            "text": "patchouli.confluence.otherworld_note.mana.mana_capacity.0"
         },
         {
             "type": "patchouli:empty",

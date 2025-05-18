@@ -1,36 +1,36 @@
 {
-    "name": "腐化材料",
+    "name": "patchouli.confluence.otherworld_note.material.corruption_material.name",
     "icon": "confluence:ebony_cobblestone",
     "category": "confluence:material",
     "pages": [
         {
             "type": "patchouli:text",
-            "text": "!w:co!腐化之地*c中生物的掉落物和结构里的宝箱会有各种各样的材料。*2邪恶...也是种力量。"
+            "text": "patchouli.confluence.otherworld_note.material.corruption_material.0"
         },
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:rotten_flesh",            
-            "text": "击杀噬魂怪、吞噬怪和腐骴概率掉落。"
+            "text": "patchouli.confluence.otherworld_note.material.corruption_material.1"
         },
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:iron_nugget",            
-            "text": "击杀吞噬怪掉落。"
+            "text": "patchouli.confluence.otherworld_note.material.corruption_material.2"
         },
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:lapis_lazuli",            
-            "text": "击杀世界吞噬怪掉落。"
+            "text": "patchouli.confluence.otherworld_note.material.corruption_material.3"
         },
         {
             "type": "patchouli:spotlight",
             "item": "minecraft:warped_fungus",            
-            "text": "一种生成在腐化之地的蘑菇，用于制作魔粉进而制作蠕虫诱饵。"
+            "text": "patchouli.confluence.otherworld_note.material.corruption_material.4"
         },
         {
             "type": "patchouli:crafting",
             "recipe": "minecraft:redstone",            
-            "text": "魔法灵感菇🍄~"
+            "text": "patchouli.confluence.otherworld_note.material.corruption_material.5"
         }
     ]
 }

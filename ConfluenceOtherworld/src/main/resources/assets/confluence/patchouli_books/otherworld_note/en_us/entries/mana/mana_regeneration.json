@@ -1,11 +1,11 @@
 {
-    "name": "恢复魔力",
+    "name": "patchouli.confluence.otherworld_note.mana.mana_regeneration.name",
     "icon": "minecraft:fire_charge",
     "category": "confluence:mana",
     "pages": [
         {
             "type": "patchouli:text",
-            "text": "魔力在不使用时会自行再生，直到达到玩家的当前最大值。自然再生速率会受玩家是否在移动中、和人物当前有多少魔力所影响。魔力也可以通过药水，饰品和拾取星星再生。"
+            "text": "patchouli.confluence.otherworld_note.mana.mana_regeneration.0"
         },
         {
             "type": "patchouli:empty",

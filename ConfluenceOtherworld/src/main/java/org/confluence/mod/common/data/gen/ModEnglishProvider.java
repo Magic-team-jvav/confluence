@@ -59,6 +59,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.hamaxe.mode.1", "Axe");
         add("message.confluence.hoe_shovel.mode.0", "Shovel");
         add("message.confluence.hoe_shovel.mode.1", "Hoe");
+        add("message.confluence.altar_tips.0", "Right-click to put in an item, right-click crouching to take out an item.");
+        add("message.confluence.altar_tips.1", "Left-click to craft, left-click crouching to quickly craft.");
         add("jukebox_song.confluence.alpha", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
@@ -519,6 +521,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.PlayerDeath.tooltip", "Defines the effects when a player dies");
         add("confluence.configuration.showMoneyDrops", "Show Coin Drops on Death Screen");
         add("confluence.configuration.showMoneyDrops.tooltip", "Enable to display the amount of coins dropped on the death screen");
+        add("confluence.configuration.altarTips", "Altar Tips");
+        add("confluence.configuration.altarTips.tooltip", "You can turn off the tips by yourself after learning");
         // Separator
         add("confluence.configuration.Mana.button", "Mana");
         add("confluence.configuration.Armor.button", "Armor");

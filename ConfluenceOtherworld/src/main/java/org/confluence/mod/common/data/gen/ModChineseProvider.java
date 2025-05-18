@@ -49,6 +49,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.hamaxe.mode.1","斧");
         add("message.confluence.hoe_shovel.mode.0","锹");
         add("message.confluence.hoe_shovel.mode.1","锄");
+        add("message.confluence.altar_tips.0", "右键存入物品，潜行右键以拿出物品。");
+        add("message.confluence.altar_tips.1", "左键以合成，潜行左键以快速合成。");
         add("jukebox_song.confluence.alpha", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
@@ -488,6 +490,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.showMoneyDrops.tooltip", "启用以在死亡界面显示掉落钱币数");
         add("confluence.configuration.starPhase", "星象");
         add("confluence.configuration.starPhase.tooltip", "暂时没有任何用处，不建议开启");
+        add("confluence.configuration.altarTips", "祭坛使用提示");
+        add("confluence.configuration.altarTips.tooltip", "学会后可自行关闭提示");
         // 分割
         add("confluence.configuration.Mana.button", "魔力值");
         add("confluence.configuration.Armor.button", "护甲值");

@@ -49,6 +49,7 @@ import org.confluence.lib.common.recipe.ItemStackHandlerRecipeInput;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.block.AltarBlockModel;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModRecipes;
@@ -147,6 +148,10 @@ public class AltarBlock extends BaseEntityBlock {
                 player.addItem(entity.takeItem(-1));
             } else { // 存物品
                 player.setItemInHand(hand, entity.addItem(player.getItemInHand(hand)));
+                if (CommonConfigs.ALTAR_TIPS.get()) {
+                    player.sendSystemMessage(Component.translatable("message.confluence.altar_tips.0"));
+                    player.sendSystemMessage(Component.translatable("message.confluence.altar_tips.1"));
+                }
             }
         }
         return ItemInteractionResult.sidedSuccess(level.isClientSide);

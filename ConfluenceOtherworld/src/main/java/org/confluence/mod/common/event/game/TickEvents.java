@@ -14,7 +14,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import org.confluence.lib.util.GlobalColors;
+import org.confluence.lib.color.GlobalColors;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.functional.network.PathService;
@@ -58,7 +58,7 @@ public final class TickEvents {
                 }
                 if (attributeFactor && npcFactor && serverLevel.random.nextFloat() < 0.3333F) {
                     EntityDelaySpawner.INSTANCE.pushBoss(1350, new EyeOfCthulhu(serverLevel));
-                    serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("event.confluence.eye_of_cthulhu").withColor(GlobalColors.MESSAGE.getRGB()), false);
+                    serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("event.confluence.eye_of_cthulhu").withColor(GlobalColors.MESSAGE.get()), false);
                 }
             }
             if (KillBoard.INSTANCE.isAnyDefeated(TEBossEntities.EATER_OF_WORLDS.get(), TEBossEntities.BRAIN_OF_CTHULHU.get()) && serverLevel.random.nextFloat() < 0.02F) {

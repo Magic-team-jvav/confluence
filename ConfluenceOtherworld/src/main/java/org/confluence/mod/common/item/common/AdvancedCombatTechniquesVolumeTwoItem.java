@@ -11,9 +11,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityTypeTest;
+import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
-import org.confluence.lib.util.GlobalColors;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.init.ModSoundEvents;
@@ -35,7 +35,7 @@ public class AdvancedCombatTechniquesVolumeTwoItem extends TooltipItem {
                     return AbortableIterationConsumer.Continuation.CONTINUE;
                 });
                 for (ServerPlayer serverPlayer : serverLevel.players()) {
-                    serverPlayer.sendSystemMessage(Component.translatable("message.confluence.advancement_combat_techniques").withColor(GlobalColors.MESSAGE.getRGB()));
+                    serverPlayer.sendSystemMessage(Component.translatable("message.confluence.advancement_combat_techniques").withColor(GlobalColors.MESSAGE.get()));
                 }
                 if (!player.hasInfiniteMaterials()) {
                     itemStack.shrink(1);

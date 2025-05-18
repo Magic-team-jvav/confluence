@@ -86,7 +86,7 @@ public class HardmodeConvertor implements IGlobalData {
     }
 
     public void start(MinecraftServer server, boolean debug) {
-        if (completed) return;
+        if (started || completed) return;
         this.shouldContinue = false;
         this.started = true;
         print(server, Component.translatable("event.confluence.hardmode_conversion.starting"), debug);

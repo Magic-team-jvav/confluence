@@ -120,6 +120,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.abeemination.1", "她似乎极度那些厌恶荧光真菌孢子的气息");
         add("tooltip.item.confluence.abeemination.2", "一团尚未成型的幼蜂，摸上去感觉像黏稠的蜂蜜……蜂王与她的下属们对它们甜蜜领地的保护欲不知何时渐渐发展为对非同类生物的极度排斥与憎恶。");
         add("tooltip.item.confluence.abeemination.3", "“群蜂振翅之声憾动了丛林中最为厚重的叶片”");
+        add("tooltip.item.confluence.clothier_voodoo_doll.0", "“你这人真可怕”");
+        add("tooltip.item.confluence.guide_voodoo_doll.0", "“你这人真可怕”");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "一位自卑的少女如破碎的泰迪熊般说到：");
         add("tooltip.item.confluence.tokyo_teddy_bear.1", "           来让你听听");
@@ -2323,9 +2325,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(CrateBlocks.HELL_STONE_CRATE.get(), "狱石匣");
         add(CrateBlocks.BEACH_CRATE.get(), "海滩匣");
 
-        add(ConsumableItems.GOLDEN_LOCK_BOX.get(), "金锁盒");
-        add(ConsumableItems.OBSIDIAN_LOCK_BOX.get(), "黑曜石锁盒");
-
 
         add(ArrowItems.FLAMING_ARROW.get(), "烈焰箭");
         add(ArrowItems.UNHOLY_ARROW.get(), "邪箭");
@@ -2722,6 +2721,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.BLOODSTAINED_POWDER.get(), "血凝痂粉");
         add(ConsumableItems.ADVANCED_COMBAT_TECHNIQUES.get(), "先进战斗技术");
         add(ConsumableItems.ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO.get(), "先进战斗技术：卷二");
+        add(ConsumableItems.GOLDEN_LOCK_BOX.get(), "金锁盒");
+        add(ConsumableItems.OBSIDIAN_LOCK_BOX.get(), "黑曜石锁盒");
+        add(ConsumableItems.CLOTHIER_VOODOO_DOLL.get(), "服装商巫毒玩偶");
+        add(ConsumableItems.GUIDE_VOODOO_DOLL.get(), "向导巫毒玩偶");
 
         add(TreasureBagItems.KING_SLIME_TREASURE_BAG.get(), "史莱姆王宝藏袋");
         add(TreasureBagItems.EYE_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之眼宝藏袋");
@@ -2729,6 +2732,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(TreasureBagItems.BRAIN_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之脑宝藏袋");
         add(TreasureBagItems.QUEEN_BEE_TREASURE_BAG.get(), "蜂王宝藏袋");
         add(TreasureBagItems.SKELETRON_TREASURE_BAG.get(), "骷髅王宝藏袋");
+        add(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG.get(), "血肉墙宝藏袋");
 
         // 杂项
         add(ModItems.COPPER_COIN.get(), "铜币");

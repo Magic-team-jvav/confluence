@@ -89,6 +89,8 @@ public class ConsumableItems {
         Holder<Biome> biome = player.level().getBiome(player.blockPosition());
         return biome.is(Tags.Biomes.IS_JUNGLE) || biome.is(Tags.Biomes.IS_LUSH);
     }, QueenBee::new, BossSummoningItem.getTooltipsFromString("abeemination", 4, ChatFormatting.YELLOW)));
+    public static final DeferredItem<TooltipItem> CLOTHIER_VOODOO_DOLL = ITEMS.register("clothier_voodoo_doll", () -> new TooltipItem(new Item.Properties(), ModRarity.BLUE, "tooltip.item.confluence.clothier_voodoo_doll.0"));
+    public static final DeferredItem<TooltipItem> GUIDE_VOODOO_DOLL = ITEMS.register("guide_voodoo_doll", () -> new TooltipItem(new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.guide_voodoo_doll.0"));
 
     public static final DeferredItem<TooltipItem> GOLDEN_LOCK_BOX = ITEMS.register("golden_lock_box", () -> new TooltipItem(new Item.Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(ModLootTables.GOLDEN_LOCK_BOX)), ModRarity.GREEN, TooltipItem.getTooltipsFromString("golden_lock_box", 2, ChatFormatting.GRAY)));
     public static final DeferredItem<TooltipItem> OBSIDIAN_LOCK_BOX = ITEMS.register("obsidian_lock_box", () -> new TooltipItem(new Item.Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(ModLootTables.OBSIDIAN_LOCK_BOX)), ModRarity.GREEN, TooltipItem.getTooltipsFromString("obsidian_lock_box", 2, ChatFormatting.GRAY)));

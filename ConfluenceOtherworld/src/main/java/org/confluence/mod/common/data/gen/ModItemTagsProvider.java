@@ -1097,6 +1097,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ConsumableItems.ADVANCED_COMBAT_TECHNIQUES.get(),
                 ConsumableItems.ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO.get(),
                 ConsumableItems.OBSIDIAN_LOCK_BOX.get(),
+                ConsumableItems.GUIDE_VOODOO_DOLL.get(),
+                ConsumableItems.CLOTHIER_VOODOO_DOLL.get(),
                 PaintItems.ECHO_COATING.get(),
                 FoodItems.BOULDER_BREAD.get(),
                 ToolItems.SUPER_ABSORBANT_SPONGE.get(),

@@ -67,6 +67,8 @@ public class KillBoard implements IGlobalData {
         defeatedMap.put(entityType, true);
         if (entityType == TEBossEntities.SKELETRON.get()) {
             setGamePhase(ServerLifecycleHooks.getCurrentServer(), GamePhase.AFTER_SKELETRON);
+        } else if (entityType == TEBossEntities.WALL_OF_FLESH.get()) {
+            setGamePhase(ServerLifecycleHooks.getCurrentServer(), GamePhase.WALL_OF_FLESH);
         }
     }
 
@@ -81,6 +83,7 @@ public class KillBoard implements IGlobalData {
             ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.GRADUATED);
         } else if (gamePhase.isHardmode()) {
             ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
+            HardmodeConvertor.INSTANCE.start(server, false);
         }
     }
 

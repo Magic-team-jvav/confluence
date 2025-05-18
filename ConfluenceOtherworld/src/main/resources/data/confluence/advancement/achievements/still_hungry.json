@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "minecraft:barrier"
+            "id": "confluence:guide_voodoo_doll"
         },
         "title": {
             "translate": "achievements.confluence.still_hungry.title"

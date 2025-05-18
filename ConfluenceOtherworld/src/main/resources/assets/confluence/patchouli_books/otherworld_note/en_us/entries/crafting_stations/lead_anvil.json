@@ -12,19 +12,6 @@
             "type": "patchouli:text",
             "text": "patchouli.confluence.otherworld_note.crafting_stations.lead_anvil.1",
             "title": "patchouli.confluence.otherworld_note.how_to_use"
-        },
-        {
-            "type": "patchouli:image",
-            "images": [
-                "minecraft:textures/block/grass_block.png"
-            ],
-            "text": "patchouli.confluence.otherworld_note.crafting_stations.lead_anvil.2",
-            "title": "patchouli.confluence.otherworld_note.gui"
-        },
-        {
-            "type": "patchouli:crafting",
-            "recipe":"minecraft:anvil", 
-            "text": "patchouli.confluence.otherworld_note.example"
         }
     ]
 }

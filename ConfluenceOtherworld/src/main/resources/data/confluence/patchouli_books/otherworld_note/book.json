@@ -4,7 +4,7 @@
     "version": 5,
     "creative_tab": "confluence:developer",
     "use_resource_pack": true,
-    "book_texture": "confluence:textures/gui/otherworld_note.png",
+    "book_texture": "confluence:textures/gui/patchouli/otherworld_note.png",
     "model": "confluence:otherworld_note",
     "custom_book_item": "confluence:otherworld_note",
     "advancements_tab": "confluence:achievements/new_world",

@@ -9,7 +9,7 @@
         },
         {
             "type": "patchouli:entity",
-            "entity": "minecraft:pig",
+            "entity": "terra_entity:brain_of_cthulhu",
             "text": "patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.1"
         },
         {
@@ -19,7 +19,7 @@
         },
         {
             "type": "patchouli:entity",
-            "entity": "minecraft:sheep",
+            "entity": "terra_entity:visual_neuron",
             "text": "patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.3"
         },
         {
@@ -29,18 +29,18 @@
         },
         {
             "type": "patchouli:entity",
-            "entity": "minecraft:sheep",
+            "entity": "terra_entity:brain_fake",
             "text": "patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.5"
         },
         {
             "type": "patchouli:spotlight",
-            "item": "minecraft:diamond",
+            "item": "confluence:bloody_spine",
             "text": "patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.6",
             "title": "patchouli.confluence.otherworld_note.boss_checklist.how_to_summon"
         },
         {
             "type": "patchouli:spotlight",
-            "item": "minecraft:slime_ball",
+            "item": "confluence:bloody_spine",
             "text": "patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.7"
         },
         {
@@ -51,7 +51,7 @@
         {
             "type": "patchouli:image",
             "images":[
-                "minecraft:textures/block/grass_block.png"
+                "confluence:textures/gui/patchouli/boss_checklist/brain_of_cthulhu.png"
             ]
         }
     ]

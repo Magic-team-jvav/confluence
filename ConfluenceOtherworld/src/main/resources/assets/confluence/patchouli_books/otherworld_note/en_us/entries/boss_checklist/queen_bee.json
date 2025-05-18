@@ -9,18 +9,18 @@
         },
         {
             "type": "patchouli:entity",
-            "entity": "minecraft:bee",
+            "entity": "terra_entity:queen_bee",
             "text": "patchouli.confluence.otherworld_note.boss_checklist.queen_bee.1"
         },
         {
             "type": "patchouli:spotlight",
-            "item": "minecraft:diamond",
+            "item": "confluence:abeemination",
             "text": "patchouli.confluence.otherworld_note.boss_checklist.queen_bee.2",
             "title": "patchouli.confluence.otherworld_note.boss_checklist.how_to_summon"
         },
         {
             "type": "patchouli:spotlight",
-            "item": "minecraft:slime_ball",
+            "item": "confluence:abeemination",
             "text": "patchouli.confluence.otherworld_note.boss_checklist.queen_bee.3"
         },
         {
@@ -31,7 +31,7 @@
         {
             "type": "patchouli:image",
             "images":[
-                "minecraft:textures/block/grass_block.png"
+                "confluence:textures/gui/patchouli/boss_checklist/queen_bee.png"
             ]
         }
     ]

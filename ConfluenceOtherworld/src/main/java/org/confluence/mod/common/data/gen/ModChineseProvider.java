@@ -1256,7 +1256,6 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("patchouli.confluence.otherworld_note.crafting_stations.lead_anvil.0", "其实铅砧就是铁砧的换皮，功能和铁砧一模一样。*b似乎...比铁砧便宜？");
         add("patchouli.confluence.otherworld_note.crafting_stations.lead_anvil.1", "就是铁砧，那不然呢。");
-        add("patchouli.confluence.otherworld_note.crafting_stations.lead_anvil.2", "一模一样，是不是？");
 
         add("patchouli.confluence.otherworld_note.crafting_stations.sky_mill.0", "听起来看上去很厉害，但是实际上就是个造家具的。*b在!w:hi!天堂岛*c的箱子里有概率生成天磨。");
         add("patchouli.confluence.otherworld_note.crafting_stations.sky_mill.1", "就像切石机一样，即放即用。");

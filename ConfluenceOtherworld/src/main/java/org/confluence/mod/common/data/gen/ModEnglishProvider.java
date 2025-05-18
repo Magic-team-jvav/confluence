@@ -1484,6 +1484,365 @@ public class ModEnglishProvider extends LanguageProvider {
         add("patchouli.confluence.otherworld_note.world.the_crimson.2", "*o*tIn ancient times, the people of Terraria made a foolish mistake: they succumbed to scarlet, regarded it as a god, and sacrificed their flesh and blood.*b*tEventually, they are assimilated into twisted lives, spreading across the earth with scarlet ambitions.");
 
 
+        //Patchouli
+        add("patchouli.confluence.otherworld_note.name", "Otherworld Note");
+        add("patchouli.confluence.otherworld_note.landing_text", "*bHave you felt the dark undercurrents surging?*bThe fate of your world is at stake, but not only yours.*bThe shadow of evil forces shrouds two worlds, their fates converging.*bThe era of confluence has arrived.*bYou begin your adventure as these two worlds collide: challenge the unknown, save the world, or seek power for yourself.");
+
+        //Categories
+        add("patchouli.confluence.otherworld_note.accessories.name", "Accessories");
+        add("patchouli.confluence.otherworld_note.accessories.description", "2 Hands, 2 Feet, 21 Rings? \uD83E\uDD14");
+        add("patchouli.confluence.otherworld_note.boss_checklist.name", "Boss Checklist");
+        add("patchouli.confluence.otherworld_note.boss_checklist.description", "What's Scarier Than a Creeper?");
+        add("patchouli.confluence.otherworld_note.crafting_stations.name", "Crafting Stations");
+        add("patchouli.confluence.otherworld_note.crafting_stations.description", "Crafting Table.. Workbench.. Crafting Table..");
+        add("patchouli.confluence.otherworld_note.fishing.name", "Fishing");
+        add("patchouli.confluence.otherworld_note.fishing.description", "Teach a Man To Fish..");
+        add("patchouli.confluence.otherworld_note.food.name", "Food");
+        add("patchouli.confluence.otherworld_note.food.description", "What Even Is This? *bTakes a bite.");
+        add("patchouli.confluence.otherworld_note.mana.name", "Mana");
+        add("patchouli.confluence.otherworld_note.mana.description", "You're a Wizard, Harry.");
+        add("patchouli.confluence.otherworld_note.material.name", "Material");
+        add("patchouli.confluence.otherworld_note.material.description", "Show Me The Money!");
+        add("patchouli.confluence.otherworld_note.mob.name", "Mob");
+        add("patchouli.confluence.otherworld_note.mob.description", "Are Slimes Animals or Plants?\n");
+        add("patchouli.confluence.otherworld_note.tool.name", "Tool");
+        add("patchouli.confluence.otherworld_note.tool.description", "Let's Dig In!");
+        add("patchouli.confluence.otherworld_note.weapon.name", "Weapon");
+        add("patchouli.confluence.otherworld_note.weapon.description", "It's Dangerous To Go Alone!");
+        add("patchouli.confluence.otherworld_note.world.name", "World");
+        add("patchouli.confluence.otherworld_note.world.description", "Loading Terrain.. *iHiding loot*iHiding more loot*iHiding MORE loot");
+
+        //Entries
+        //Accessories
+        //Boss Checklist
+        add("patchouli.confluence.otherworld_note.boss_checklist.how_to_summon", "How to summon");
+
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.name", "Brain of Cthulhu");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.0", "Brains this size come with a side of madness.");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.1", "*z$(#AA0000)*'An enormous demon brain which haunts the creeping crimson.*'*w");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.2", "The Brain of Cthulhu will be invulnerable until its defenses are removed. You must first kill its 20 Visual Neuron");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.2.0", "Visual Neuron");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.3", "Monocle Enthusiast");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.4", "When all of the eyeballs are destroyed, the Brain of Cthulhu will summon 3 invincible illusions, but will expose its heart.");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.4.0", "Brain Fake");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.5", "*o“It is both true and false. When false is made true, true becomes false. When nothing is made, something becomes nothing..”*c*b*t--Excerpt from *'A Dream of Red Mansions*'");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.6", "Use a Bloody Spine in !w:cr!the Crimson biome*c, or destroy 3 Crimson Hearts generated in a Crimson world to summon the Brain of Cthulhu.*bMust be summoned at night.");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.7", "Bloody Spine is a craftable boss-summoning item that looks like a stripped spine. *bIt can be used to instantly summon the Brain of Cthulhu in the Crimson. *2To craft Bloody Spine, use 30 Vicious Powder and 15 Vertebra on the !cs:a!Altar*c.");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.8", "*z$(#9A5CC6)*'A piece of Cthulhu ripped from his body centuries ago in a bloody war. It wanders the night seeking its host body... and revenge.*'");
+
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.name", "Eater of Worlds");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.0", "Proof that corruption is contagious - even giant worms catch it.");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.1", "*z$(#AA00AA)*'A massive worm who dwells in the corruption.*'*c*w");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.2", "When any segment is killed, it will split! The Eater of Worlds is only truly defeated when all its segments are killed.");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.2.0", "Eater Of Worlds Segment");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.3", "Rising, Step-by-Step (literally)");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.4", "Use Worm Bait in !w:co!the Corruption*c, or destroy 3 Shadow Orbs that spawn in corrupted worlds, to summon the Eater of Worlds. *2Can be summoned at any time of day.");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.5", "Worm Bait is a craftable boss-summoning item that looks like a piece of rotten meat. *bIt can be used to instantly summon the Eater of Worlds in the Corruption. *2To craft Worm Bait, use 30 Vile Powder and 15 Rotten Flesh on the !cs:a!Altar*c.");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.6", "*z$(#555555)*'It smells like rotten pork ribs and seems to strongly attract those diseased subterranean creatures.*'");
+
+        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.name", "Eye of Cthulhu");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.0", "The Eye of Cthulhu is fast and fierce, but, as a giant eye, surprisingly inaccurate. *bWhen low on health, its retina will open with sharp teeth. *bIn this second phase, the Eye of Cthulhu goes berserk. *2While berserk, its accuracy, speed, and strength will all increase.");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.1", "*z$(#9A5CC6)*'An ocular menace who only appears at night.*'*c*w");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.2", "Use the Suspicious Looking Eye anywhere to summon the Eye of Cthulhu. *bSometimes the Eye of Cthulhu will appear at night： $(#AA0000)*'You feel that there is an evil thing watching you..*'*c*2Must be summoned at night.");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.3", "The Suspicious Looking Eye is a craftable boss-summoning item that looks like a gouged eye. *bIt can be used to instantly summon the Eye of Cthulhu at any location. *2To craft Worm Bait, *cuse 6 lenses on the !cs:a!Altar*c.");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.4", "*o$(#555555)*'$(#555555)“A lifeless glassy eye. Although not always aggressive, it seems much more dangerous than its counterparts that fly around in the air at night. It seems to be watching you.*'");
+
+        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.name", "King Slime");
+        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.0", "The King Slime is a massive slime. Not only can it jump higher and farther than ordinary slimes, but it can also teleport when you get too far away from it. *2Well, it also has a huge crown！");
+        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.1", "*z$(#555555)*'The lord of all things slimy.*'*c*w");
+        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.2", "Use the Slime Crown anywhere, or kill 150 slimes in Slime Rain, to summon the King Slime. *2Can be summoned at any time.");
+        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.3", "The Slime Crown is a craftable boss-summoning item that looks like a small blue slime wearing a crown. *bIt can be used to instantly summon the King Slime at any location. *2To craft a Slime Crown, *cuse 20 Gel and a Gold or Platinum Crown on the !cs:a!Altar*c.");
+        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.4", "*o$(#555555)*'A tiny crown that looks like it was made for the coronation of one of those cute, harmless gelatin creatures. Probably not a good idea to wear it.*'");
+
+        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.name", "Queen Bee");
+        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.0", "The Queen Bee is the ruler of all bees, so, by shaking its body segments, it will summon a large swarm of bees to attack you. *bThe beehive which hangs underneath it is certainly not decorative and will shoot poisonous stingers! *br*Be mindful that the Queen Bee occasionally dives in at you.*2*oNever take the Queen Bee out of the jungle. When the Queen Bee's eyes turn red, end the fight as soon as possible or..*c*l$(#FF0000) RUN*c");
+        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.1", "*z$(#FFAA00)“The matriarch of the jungle hives.。”*c*w");
+        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.2", "Use the Abomination Bee in the jungle, or destroy the larvae in the beehive to summon the World-Eater monster. *2can be summoned at any time.");
+        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.3", "The Abeemination is a craftable boss-summoning item that looks like a Baby Bee. *bIt can be used to instantly summon the King Bee at Jungle. *2To craft a Abeemination, *cuse 5 Honey Block, 5 Jungle Hive Block, Stinger and Honey Bottle on the !cs:a!Altar*c.");
+        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.4", "*o$(#555555)*'She seemed to be jealous and disgusted by the scent of those fluorescent fungus spores. A cluster of still-undeveloped young bees felt like sticky honey to the touch... The queen bee's protective instinct for her sweet territory gradually transformed into jealousy, exclusion, and hatred towards non-kindred beings. The flapping of wings shook the heaviest leaves in the jungle.*'");
+
+        //制作站
+        add("patchouli.confluence.otherworld_note.crafting_stations.appearance", "appearance");
+        add("patchouli.confluence.otherworld_note.crafting_stations.example", "A Example");
+        add("patchouli.confluence.otherworld_note.crafting_stations.gui", "GUI");
+        add("patchouli.confluence.otherworld_note.crafting_stations.how_to_use", "How to Use");
+
+        add("patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.0", "The Alchemy Table is almost the Plus version of the brewing table. Of course, it cannot be used to make the brewing table formula, but to make special brewing formulas. *b is made of wood boards, brewing tables, skulls, candles and glass bottles in!cs:hwb! Heavy duty tables*c.");
+        add("patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.1", "Put materials on the 6 grids on the left and right, stuff the water bottle (or other special things) in the middle and upper, and then there will be finished products below.");
+        add("patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.2", "If you race something randomly, your synthesis may become weird.");
+
+        add("patchouli.confluence.otherworld_note.crafting_stations.altar.name", "Altar");
+        add("patchouli.confluence.otherworld_note.crafting_stations.altar.0", " are naturally-occurring crafting stations found mainly in and around!w:co!The Corruption*c or !w:cr!The Crimson*c, rarely seen underground。*bThey are used to make many boss-summoning and other special items.*bThey cannot be taken away, picked up, placed, or made.");
+        add("patchouli.confluence.otherworld_note.crafting_stations.altar.1", "Place the item on the altar, right-click to take the item out while sneaking, and left-click to use the altar for synthesis when hands are empty.");
+        add("patchouli.confluence.otherworld_note.crafting_stations.altar.2", "Demon Altar usually appear underground in corruption lands, with a few appearing underground in various parts of the world.");
+        add("patchouli.confluence.otherworld_note.crafting_stations.altar.3", "Crimson Altar usually appear underground in corruption lands, with a few appearing underground in various parts of the world.");
+
+        add("patchouli.confluence.otherworld_note.crafting_stations.extractinator.0", "A refiner is a functional block that can convert gravel, silt blocks, snow silt blocks, marine gravel and desert fossils into more valuable items (such as ores, coins, and gems), or convert fishing waste into low-level baits.*2*oGarbage Recycle Bin 3000.");
+        add("patchouli.confluence.otherworld_note.crafting_stations.extractinator.1", "Just press the right button to the refiner by holding the item in your hand. The items in your hand will be refined at an extremely fast speed, and the result of the refining will fall out in the form of a drop.*2MAX SPEED!!!");
+        add("patchouli.confluence.otherworld_note.crafting_stations.extractinator.2", "Items scattered all over the floor.");
+        add("patchouli.confluence.otherworld_note.crafting_stations.extractinator.3", "You can get a refiner in a Wooden Crate.");
+
+        add("patchouli.confluence.otherworld_note.crafting_stations.heavy_work_bench.0", "The heavy workbench is a bit like an upgraded version of the workbench, but it cannot be used to make the 3x3 formula for the workbench, but instead makes the 4x4 formula for the heavy workbench.*bIt can be used to make a variety of building blocks, tools and decorative items.");
+        add("patchouli.confluence.otherworld_note.crafting_stations.heavy_work_bench.1", "In fact, it's almost an ordinary workbench, but uses a 4x4 formula.");
+        add("patchouli.confluence.otherworld_note.crafting_stations.heavy_work_bench.2", "If the recipe is the same, you can use the arrow on the right to switch the finished product.");
+
+        add("patchouli.confluence.otherworld_note.crafting_stations.hellforge.0", "It is more resistant to burning than blast furnace (and compatible with the formula of blast furnace!), which means this is an upgraded version of blast furnace.*bSomewhere in !w:nt!Nether Tower*c there will be a probability of generating the Hell furnace.");
+        add("patchouli.confluence.otherworld_note.crafting_stations.hellforge.1", "Enter the material in the middle 4 places, put fuel in the lower left corner, and wait for a moment and the finished product will appear on the right.");
+        add("patchouli.confluence.otherworld_note.crafting_stations.hellforge.2", "It doesn't fit the appearance of a furnace and a blast furnace, right? But it's not bad.");
+
+        add("patchouli.confluence.otherworld_note.crafting_stations.lead_anvil.0", "In fact, lead anvil is the skin replacement of anvil, and its function is exactly the same as that of anvil.*2It seems... cheaper than anvil?");
+        add("patchouli.confluence.otherworld_note.crafting_stations.lead_anvil.1", "It's an anvil, otherwise.");
+
+        add("patchouli.confluence.otherworld_note.crafting_stations.sky_mill.0", "It sounds amazing, but it is actually a furniture builder.*bIn the box of !w:hi!Heaven Island*c, there is a chance to generate a heavenly grind.");
+        add("patchouli.confluence.otherworld_note.crafting_stations.sky_mill.1", "Just like a stone cutting machine, it is ready to use.");
+        add("patchouli.confluence.otherworld_note.crafting_stations.sky_mill.2", "Place the materials below three places, select the formula on the right, and there will be a finished product on the top.");
+
+        add("patchouli.confluence.otherworld_note.crafting_stations.workshop.0", "Craftsman workshops can be used to make many accessories, and they do not need to be placed in order!*bMade in!cs:hwb!Heavy Work Bench*c with Wooden Planks, Red Wool, Book, Smithing Table, Anvil or !cs:la!Lead Anvil*c and Leather.*2Everything is the scheme of the Goblin Tinkerer!");
+        add("patchouli.confluence.otherworld_note.crafting_stations.workshop.1", "12 material grids can be synthesized by surrounding the finished product in the middle.");
+        add("patchouli.confluence.otherworld_note.crafting_stations.workshop.2", "If the recipe is the same, you can use the arrow on the right to switch the finished product.");
+
+        //钓鱼
+        add("patchouli.confluence.otherworld_note.fishing.bait.name", "Fishing Bait");
+        add("patchouli.confluence.otherworld_note.fishing.bait.0", "While not strictly required for fishing, using bait will yield better loot!");
+
+        add("patchouli.confluence.otherworld_note.fishing.crates.name", "Crates");
+        add("patchouli.confluence.otherworld_note.fishing.crates.0", "Crates are stackable loot bag-type items containing randomized contents, including Potions, Fishing Bait, useful items, Coins, Bars, and even Ores.*bThe rarer the type of crate, the more valuable its contents.");
+
+        //食物
+        add("patchouli.confluence.otherworld_note.food.cloud_bread.name", "Cloud Bread");
+        add("patchouli.confluence.otherworld_note.food.cloud_bread.0", "Cloud Dough is used to craft Cloud Bread, which requires 3 Floating Wheat to synthesize.");
+        add("patchouli.confluence.otherworld_note.food.cloud_bread.1", "Restores 5 hunger and 30 saturation.*bGrants Levitation II (0:15), Slow Falling II (0:30), and Nourishment II (5:00).");
+        add("patchouli.confluence.otherworld_note.food.cloud_bread.2", "Unlike regular bread, it doesn't require linear arrangement for crafting.");
+        add("patchouli.confluence.otherworld_note.food.cloud_bread.3", "Why am I floating~");
+
+        add("patchouli.confluence.otherworld_note.food.fruit.name", "Fruits");
+        add("patchouli.confluence.otherworld_note.food.fruit.0", "Fruits are edible food items (except Mandarin Orange) that restore 4 hunger and 12 saturation.*bConsuming any fruit grants 5-minute Nourishment.*bStar Fruit, Dragon Fruit, and Grapes are exceptions - they restore 6 hunger and 42 saturation (capped at 20 due to overflow), providing 5-minute Nourishment II and 50-second Hunger Delay.");
+        add("patchouli.confluence.otherworld_note.food.fruit.1", "Breaking various leaves may yield fruits.*bAll fruits can be prismatically transmuted into Ambrosia.");
+        add("patchouli.confluence.otherworld_note.food.fruit.2", "Mandarin Orange is a special fruit that cannot be consumed directly.*bIt must be peeled by right-clicking while holding to obtain Peeled Mandarin Orange.");
+        add("patchouli.confluence.otherworld_note.food.fruit.3", "Edible peeled citrus. Restores 4 hunger and 12 saturation, granting 5-minute Nourishment.");
+
+        //魔法
+        add("patchouli.confluence.otherworld_note.mana.mana_regeneration.name", "Mana Regeneration");
+        add("patchouli.confluence.otherworld_note.mana.mana_regeneration.0", "Mana naturally regenerates when not in use until reaching the character's current maximum capacity.*bNatural regeneration rate is affected by movement state and current Mana level.*bAdditional regeneration can be achieved through potions, accessories, or collecting Mana Stars.");
+
+        add("patchouli.confluence.otherworld_note.mana.mana_capacity.name", "Mana Capacity");
+        add("patchouli.confluence.otherworld_note.mana.mana_capacity.0", "Each character starts with 20 Mana Capacity (represented by one star on the Mana Bar).*bUsing Mana Crystals permanently increases capacity by 20 per crystal, adding another star.*bThis enhancement can be applied 9 times, totaling 10 stars (including the initial one) for 200 Mana.");
+
+        //材料
+        add("patchouli.confluence.otherworld_note.material.coin.name", "Coins");
+        add("patchouli.confluence.otherworld_note.material.coin.0", "Coins come in four tiers: Copper, Silver, Gold, Platinum.*bSpecial Emerald Coin has unique functions explained later.*bAcquisition methods:*iDropped by hostile mobs;*iLoot chests;*i!cs:e!Refiner*c.*2*o\"Money makes the world go 'round, kid.\"   --Mr. Krabs");
+        add("patchouli.confluence.otherworld_note.material.coin.1", "Coins can be converted between tiers using base-100 system.*bExample: 100 Copper Coins = 1 Silver Coin.*b1 Platinum Coin equals:*i100 Gold Coins;*i10,000 Silver Coins;*i1,000,000 Copper Coins*b(1 Platinum = 1x10^6 Copper).");
+        add("patchouli.confluence.otherworld_note.material.coin.2", "Coins picked up, hotkey-deposited, or taken from containers auto-stack.*bManual container transfers require re-pickup for auto-stacking.*bManual merging: Hold coins and sneak right-click to upgrade.*b!cs:hwb!Heavy Workbench*c handles tier conversion.");
+        add("patchouli.confluence.otherworld_note.material.coin.3", "Coins can be placed as blocks.*bCoin piles break into coins when destroyed.*bRight-click blocks while holding coins to place.*bPlaced coins have sand-like physics, no stacking limits.");
+        add("patchouli.confluence.otherworld_note.material.coin.4", "Emerald Coins trade with Bankers.*bBankers use Gold/Platinum blocks as workstations.*2All coins drop on player death.");
+        add("patchouli.confluence.otherworld_note.material.coin.5", "GoldGoldGoldGoldGoldGoldGoldGoldGold");
+
+        add("patchouli.confluence.otherworld_note.material.corruption_material.name", "Corruption Materials");
+        add("patchouli.confluence.otherworld_note.material.corruption_material.0", "!w:co!Corrupted Lands*c yield special drops from mobs and chests.*2Evil... is power.");
+        add("patchouli.confluence.otherworld_note.material.corruption_material.1", "Dropped by Soul Eaters, Devourers, and Rotten Corpses.");
+        add("patchouli.confluence.otherworld_note.material.corruption_material.2", "Dropped by Devourers.");
+        add("patchouli.confluence.otherworld_note.material.corruption_material.3", "Dropped by World Devourers.");
+        add("patchouli.confluence.otherworld_note.material.corruption_material.4", "Corruption-exclusive mushroom for crafting Worm Bait.");
+        add("patchouli.confluence.otherworld_note.material.corruption_material.5", "Arcane Inspiration Shroom🍄~");
+
+        add("patchouli.confluence.otherworld_note.material.crimson_material.name", "Crimson Materials");
+        add("patchouli.confluence.otherworld_note.material.crimson_material.0", "!w:cr!Crimson Lands*c yield special drops from mobs and chests.*2Evil... is power.");
+        add("patchouli.confluence.otherworld_note.material.crimson_material.1", "Dropped by Blood Crawlers, Face Horrors, and Crimson Chimeras.");
+        add("patchouli.confluence.otherworld_note.material.crimson_material.2", "Dropped by Oculi Neurons, found in Brain of Cthulhu treasure bags.");
+        add("patchouli.confluence.otherworld_note.material.crimson_material.3", "Crimson-exclusive mushroom for crafting Bloody Spine.");
+        add("patchouli.confluence.otherworld_note.material.crimson_material.4", "Enough with the blackpink jokes!");
+
+        add("patchouli.confluence.otherworld_note.material.falling_star.name", "Falling Stars");
+        add("patchouli.confluence.otherworld_note.material.falling_star.0", "Stars randomly fall at night, glowing for easy spotting.*bUsed to craft Mana Crystals for capacity upgrades.*bDeals 100 damage (50❤) on impact.*2*o\"Stars fall through the night sky, their uses manifold...");
+        add("patchouli.confluence.otherworld_note.material.falling_star.1", "*o...Claim them before dawn, lest they vanish with daylight.\"*t--Guide");
+
+        add("patchouli.confluence.otherworld_note.material.gel.name", "Gel");
+        add("patchouli.confluence.otherworld_note.material.gel.0", "Slime constituent material from most slime mobs.*2Note: Gel ≠ Slimeballs.*bEdible fuel (flammable/non-sticky)*bSlimeballs (sticky/non-flammable)*2*oFood-grade vs industrial-grade");
+        add("patchouli.confluence.otherworld_note.material.gel.1", "Rumored existence of rare Pink Gel...");
+
+        add("patchouli.confluence.otherworld_note.material.gems.name", "Gems");
+        add("patchouli.confluence.otherworld_note.material.gems.0", "Crafting materials found in Refiners and chests.*2\"Amethyst\" renamed to \"Exotic Amethyst\" to avoid conflicts.");
+
+        //生物
+        add("patchouli.confluence.otherworld_note.mob.slime.name", "Slimes");
+        add("patchouli.confluence.otherworld_note.mob.slime.0", "These new slimes exhibit greater diversity compared to original variants.");
+        add("patchouli.confluence.otherworld_note.mob.slime.1", "Green Slime ≠ Minecraft Slime.");
+        add("patchouli.confluence.otherworld_note.mob.slime.2", "This coloration isn't corruption - perhaps stepped on lapis lazuli.");
+        add("patchouli.confluence.otherworld_note.mob.slime.3", "This hue isn't crimson - maybe ate too many poppies.");
+
+        //工具
+        add("patchouli.confluence.otherworld_note.tool.axe.name", "Axe");
+        add("patchouli.confluence.otherworld_note.tool.axe.0", "Axes serve dual purposes as tools and weapons - you'll want one!");
+        add("patchouli.confluence.otherworld_note.tool.axe.1", "Rejuvenation Axe: Crafted with Maneater Vine, Jungle Spores, and Rejuvenation Staff.");
+        add("patchouli.confluence.otherworld_note.tool.axe.2", "Golden Axe: Made from Ruby, Gold Axe, and Gold Bars.*b*oNot to be confused with Vanilla Gold Axe.");
+        add("patchouli.confluence.otherworld_note.tool.axe.3", "Night's Edge Axe: Demonite Bar-crafted, unbreakable!");
+        add("patchouli.confluence.otherworld_note.tool.axe.4", "Bloodlust Axe: Crimson Bar-forged, indestructible!");
+
+        add("patchouli.confluence.otherworld_note.tool.bottomless_bucket.name", "Bottomless Bucket");
+        add("patchouli.confluence.otherworld_note.tool.bottomless_bucket.0", "Infinite liquid container - never depletes when placing.*2Not consumed in crafting!");
+        add("patchouli.confluence.otherworld_note.tool.bottomless_bucket.1", "Bottomless Water Bucket = 2 Water Buckets");
+        add("patchouli.confluence.otherworld_note.tool.bottomless_bucket.2", "Bottomless Lava Bucket = Unlimited Power");
+        add("patchouli.confluence.otherworld_note.tool.bottomless_bucket.3", "100% eco-friendly!");
+        add("patchouli.confluence.otherworld_note.tool.bottomless_bucket.4", "Watch your step!");
+
+        add("patchouli.confluence.otherworld_note.tool.bug_net.name", "Bug Net");
+        add("patchouli.confluence.otherworld_note.tool.bug_net.0", "Catches insects for fishing...*2(No bugs in current version) (sad)");
+        add("patchouli.confluence.otherworld_note.tool.bug_net.1", "Golden net captures small animals (pigs/cows)!*2(Still no bugs) (sadder)");
+
+        add("patchouli.confluence.otherworld_note.tool.fishing_rod.name", "Fishing Rod");
+        add("patchouli.confluence.otherworld_note.tool.fishing_rod.0", "Basic rods last forever, but upgraded versions yield better loot!");
+        add("patchouli.confluence.otherworld_note.tool.fishing_rod.1", "Reinforced Rod: Lead/Iron Bars construction, extra durable!");
+        add("patchouli.confluence.otherworld_note.tool.fishing_rod.2", "Fiberglass Rod: Found in underground jungle chests.");
+        add("patchouli.confluence.otherworld_note.tool.fishing_rod.3", "Beetle Rod: Obtained from Oasis Crates.");
+
+        add("patchouli.confluence.otherworld_note.tool.hammer.name", "Hammer");
+        add("patchouli.confluence.otherworld_note.tool.hammer.0", "Base tool for breaking walls/dirt/leaves with 3x3 area effect.*bDestroys adjacent blocks when breaking targets.");
+        add("patchouli.confluence.otherworld_note.tool.hammer.1", "Golden Hammer: Gold Bar-made, slightly fragile?");
+        add("patchouli.confluence.otherworld_note.tool.hammer.2", "Demon Hammer: Demonite Bar-forged, unbreakable!");
+        add("patchouli.confluence.otherworld_note.tool.hammer.3", "Flesh Hammer: Crimson Bar-crafted, indestructible!");
+
+        add("patchouli.confluence.otherworld_note.tool.hook.name", "Grappling Hook");
+        add("patchouli.confluence.otherworld_note.tool.hook.0", "Terrain traversal tool that launches chains.*bEquip in accessory slot, press F to fire.*bJump to detach.");
+        add("patchouli.confluence.otherworld_note.tool.hook.1", "Includes gem hooks and special variants.");
+
+        add("patchouli.confluence.otherworld_note.tool.misc.name", "Miscellaneous");
+        add("patchouli.confluence.otherworld_note.tool.misc.0", "Weapons with bizarre functions and whimsical designs!");
+        add("patchouli.confluence.otherworld_note.tool.misc.1", "Magic Mirror: Teleports you home!*2No, it won't name the fairest.");
+        add("patchouli.confluence.otherworld_note.tool.misc.2", "Frozen Mirror: Chilly to hold...*bThe ice is actually sweet - try licking it!");
+
+        add("patchouli.confluence.otherworld_note.tool.paint.name", "Paint");
+        add("patchouli.confluence.otherworld_note.tool.paint.0", "Recolors blocks using Brushes/Rollers/Sprayers.*bConsumes 1 paint per use.*bBasic paints sold by Painter NPC.");
+        add("patchouli.confluence.otherworld_note.tool.paint.1", "Inventory order priority: Top-left first.*bHotbar takes precedence over backpack.");
+        add("patchouli.confluence.otherworld_note.tool.paint.2", "Paint Brush: Full-block coloring.*bPaint Roller: Single-face application.*bMining removes paint.");
+        add("patchouli.confluence.otherworld_note.tool.paint.3", "Paint Scraper: Removes paint without breaking blocks.*bSneak+right-click for single-face removal.");
+        add("patchouli.confluence.otherworld_note.tool.paint.4", "Honestly, just break the block...");
+
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.name", "Pickaxe");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.0", "Essential dual-purpose tool - a must-have!");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.1", "Cactus Pickaxe: Surprisingly effective desert tool.");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.2", "Golden Pickaxe: Ruby-enhanced.*b*oDistinct from Vanilla version.");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.3", "Nightmare Pickaxe: Demonite+Scales, unbreakable!");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.4", "Deathbringer Pickaxe: Crimson+Tissue, indestructible!");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.5", "Fossil Pickaxe: Ancient yet sturdy!");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.6", "Molten Pickaxe: Hellstone Bars+Blaze Rods, pre-Skeletron!");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.7", "Bone Pickaxe: Faster mining pre-Skeletron.");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.8", "Reaver Shark: Obtained by fishing.*b*oShorky sharky :P");
+
+        add("patchouli.confluence.otherworld_note.tool.rope.name", "Rope");
+        add("patchouli.confluence.otherworld_note.tool.rope.0", "Ordinary ropes that could save your life in peril!");
+        add("patchouli.confluence.otherworld_note.tool.rope.1", "Combine strands for enhanced functionality!");
+
+        //武器
+        add("patchouli.confluence.otherworld_note.weapon.arrow.name", "Arrows");
+        add("patchouli.confluence.otherworld_note.weapon.arrow.0", "");
+        add("patchouli.confluence.otherworld_note.weapon.arrow.1", "");
+        add("patchouli.confluence.otherworld_note.weapon.arrow.2", "");
+        add("patchouli.confluence.otherworld_note.weapon.arrow.3", "");
+        add("patchouli.confluence.otherworld_note.weapon.arrow.4", "");
+        add("patchouli.confluence.otherworld_note.weapon.arrow.5", "");
+
+        add("patchouli.confluence.otherworld_note.weapon.bomb.name", "Bombs");
+        add("patchouli.confluence.otherworld_note.weapon.bomb.0", "Explosives for mining, found in Golden Chests or broken pots.");
+        add("patchouli.confluence.otherworld_note.weapon.bomb.1", "Sticky Bomb: Bomb + Gel.*bAdheres to surfaces on impact.");
+        add("patchouli.confluence.otherworld_note.weapon.bomb.2", "Bouncy Bomb: Bomb + Pink Gel.*bRebounds with height matching fall distance.");
+        add("patchouli.confluence.otherworld_note.weapon.bomb.3", "Beetle Bomb: Bomb + Sturdy Fossil.*bFound in desert pots.");
+
+        add("patchouli.confluence.otherworld_note.weapon.boomerang.name", "Boomerangs");
+        add("patchouli.confluence.otherworld_note.weapon.boomerang.0", "Wooden Boomerang - foundational throwable weapon.");
+        add("patchouli.confluence.otherworld_note.weapon.boomerang.1", "Enchanted Boomerang: Upgraded version with unbreakable trait.");
+        add("patchouli.confluence.otherworld_note.weapon.boomerang.2", "Shroomerang: Dropped by Spore Bats.");
+        add("patchouli.confluence.otherworld_note.weapon.boomerang.3", "Flamearang: Enchanted Boomerang + Hellstone.");
+        add("patchouli.confluence.otherworld_note.weapon.boomerang.4", "Tri-point Boomerang: Combines enchanted and frost variants.");
+
+        add("patchouli.confluence.otherworld_note.weapon.bow.name", "Bows");
+        add("patchouli.confluence.otherworld_note.weapon.bow.0", "Ranger's weapon, usable by all classes.");
+        add("patchouli.confluence.otherworld_note.weapon.bow.1", "Fossilized Bow: Converts swords into fossil arrows.");
+        add("patchouli.confluence.otherworld_note.weapon.bow.2", "");
+        add("patchouli.confluence.otherworld_note.weapon.bow.3", "Demon Bow: Demonite Bars - unbreakable!");
+        add("patchouli.confluence.otherworld_note.weapon.bow.4", "Tendon Bow: Crimson Bars - indestructible!");
+        add("patchouli.confluence.otherworld_note.weapon.bow.5", "Hellfire Bow: Hellstone Bars - eternal flame!");
+        add("patchouli.confluence.otherworld_note.weapon.bow.6", "");
+
+        add("patchouli.confluence.otherworld_note.weapon.dynamite.name", "Dynamite");
+        add("patchouli.confluence.otherworld_note.weapon.dynamite.0", "High-powered explosive found in Golden Chests.");
+        add("patchouli.confluence.otherworld_note.weapon.dynamite.1", "Sticky Dynamite: Clings to surfaces.");
+        add("patchouli.confluence.otherworld_note.weapon.dynamite.2", "Bouncy Dynamite: Ricochets with momentum.");
+        add("patchouli.confluence.otherworld_note.weapon.dynamite.3", "Beetle Dynamite: Sturdy Fossil variant for desert mining.");
+
+        add("patchouli.confluence.otherworld_note.weapon.short_bow.name", "Shortbows");
+        add("patchouli.confluence.otherworld_note.weapon.short_bow.0", "Rapid-fire bows with lower damage output.");
+        add("patchouli.confluence.otherworld_note.weapon.short_bow.1", "*oNot a flint drill!*c");
+
+        add("patchouli.confluence.otherworld_note.weapon.short_sword.name", "Shortswords");
+        add("patchouli.confluence.otherworld_note.weapon.short_sword.0", "Fast-attacking blades with reduced damage.");
+        add("patchouli.confluence.otherworld_note.weapon.short_sword.1", "Such a cute little dagger~");
+
+        add("patchouli.confluence.otherworld_note.weapon.sword.name", "Broadswords");
+        add("patchouli.confluence.otherworld_note.weapon.sword.0", "Warrior's weapon, accessible to all.");
+        add("patchouli.confluence.otherworld_note.weapon.sword.1", "Cactus Sword: Prickly desert weapon.");
+        add("patchouli.confluence.otherworld_note.weapon.sword.2", "Golden Broadsword: Ruby-enhanced.*b*oDistinct from Vanilla Gold Sword.");
+
+        //世界
+        add("patchouli.confluence.otherworld_note.world.appearance", "Appearance");
+
+        add("patchouli.confluence.otherworld_note.world.ash_forest.name", "Ash Forest");
+        add("patchouli.confluence.otherworld_note.world.ash_forest.0", "Ashwood is a biome that will generate in the lower realm, where a large amount of ash grows.*bThe ash forest is almost all composed of ashes blocks, and the top is covered by ash grass blocks, which grow on it.*2Ash grows here, and players can obtain ash and its derivatives here.*bFlame flowers will also be generated here.");
+        add("patchouli.confluence.otherworld_note.world.ash_forest.1", "*z$(#AAAAAA)“The buds and new marks are born in the ashes.”");
+        add("patchouli.confluence.otherworld_note.world.ash_forest.2", "*o*tThe gray dust is lifeless and dull,*b*tThe crimson world is fraught with danger.");
+
+        add("patchouli.confluence.otherworld_note.world.ash_wasteland.name", "Ash Wasteland");
+        add("patchouli.confluence.otherworld_note.world.ash_wasteland.0", "Ash Wasteland is a barren biome that generates in the lower realms.*bAsh Wasteland is almost all composed of ashes, and the terrain is similar to the lower boundary wasteland.*2Ashes Prison Stones will be generated more here and are quite conspicuous, so this is a good place to dig out Prison Stones.*bFlame flowers will also be generated here.");
+        add("patchouli.confluence.otherworld_note.world.ash_wasteland.1", "*z$(#AAAAAA)“The Final Chapter of the Burning Ember”");
+        add("patchouli.confluence.otherworld_note.world.ash_wasteland.2", "*o*tThe dark dust hides treasures,*b*tThe crimson world is fraught with danger.");
+
+        add("patchouli.confluence.otherworld_note.world.enchanted_sword_shrine.name", "Enchanted Sword Shrine");
+        add("patchouli.confluence.otherworld_note.world.enchanted_sword_shrine.0", "Enchanted Sword Shrine is a structure that will randomly generate in the world, with an overall style similar to a lush cave.*bThere will be a long and narrow space directly above that connects the ground (although it is not usually connected).");
+        add("patchouli.confluence.otherworld_note.world.enchanted_sword_shrine.1", "*z$(#B4684D)“The magical artifact that isolates the world”");
+        add("patchouli.confluence.otherworld_note.world.enchanted_sword_shrine.2", "*o*tBuried deep in the rock formations flowing through the moonlight, hidden in the cracks of the evil altar, the mottled rocks are hidden secretly with star-black debris.*b*tHiding from caves outside the world and hiding in hidden corners of the world, the deep blue and sharp sword still shines with starlight.");
+
+        add("patchouli.confluence.otherworld_note.world.heaven_island.name", "Heaven Island");
+        add("patchouli.confluence.otherworld_note.world.heaven_island.0", "Heaven Island is a floating island generated over the world, with two variants: Heaven Island and Paradise Lake.*2Heaven Island is composed of clouds wrapped in a piece of land, containing a sky hut, which must contain two boxes.*bHeaven Lake is all made up of clouds and water, and you can fish here.*2*oFishing on Aky!");
+        add("patchouli.confluence.otherworld_note.world.heaven_island.1", "*z$(#9A5CC6)“The noble treasure”");
+        add("patchouli.confluence.otherworld_note.world.heaven_island.2", "*o*tThe floating island hangs among the clouds, the earth and stone bases hold up the marks of thousands of years of moss, and the broken temple is filled with solidified starlight.*b*tThe floating lake stands in the top of the clouds, the floating clouds surround the source of life, and the hidden blue water preserves the flowing life.");
+        add("patchouli.confluence.otherworld_note.world.heaven_island.3", "*z$(#9A5CC6)“Silent life”");
+
+        add("patchouli.confluence.otherworld_note.world.living_tree.name", "Living Tree");
+        add("patchouli.confluence.otherworld_note.world.living_tree.0", "The Living Tree is a large tree-like structure that only generates in forest ecosystems.*bThe inside of the bottom part of the Living Tree's surface is hollow, containing a box with contents consistent with other surface boxes.*bInside, there is also a passage leading to the underground section. If you follow the passage down, you can find a small room containing a box with unique items.");
+        add("patchouli.confluence.otherworld_note.world.living_tree.1", "*z$(#55FF55)“Healthy Tree of Life”");
+        add("patchouli.confluence.otherworld_note.world.living_tree.2", "*o*tThe towering giant trees stand firm in the world,*b*tSenluo's evil causes qualitative change.");
+
+        add("patchouli.confluence.otherworld_note.world.nether_tower.name", "Nether Tower");
+        add("patchouli.confluence.otherworld_note.world.nether_tower.0", "The Netherlands Tower is a structure that generates near the Nether Magma Sea. It will only spawn in the Nether Wasteland and Ash Wasteland biomes.*bIt consists of two main towers and the bridge connecting them, and resources are distributed in each area. The main tower has three floors, and there are some differences between the two towers: one is a crimson wood board on the bottom, and the other is a weird wood board on the bottom half of the building. They can be distinguished by the color system of the lower half of the building.");
+        add("patchouli.confluence.otherworld_note.world.nether_tower.1", "*z$(#FF5555)“Hot treasure land”");
+        add("patchouli.confluence.otherworld_note.world.nether_tower.2", "*o*tThere are treasures hidden in the scorching tower.*b*tThe blocked wronged soul tells the dirty.");
+
+        add("patchouli.confluence.otherworld_note.world.queen_bee_hive.name", "Queen Bee Hive");
+        add("patchouli.confluence.otherworld_note.world.queen_bee_hive.0", "Queen Bee Hive is a giant hive that naturally arises from the underground of the jungle cluster.*bIt is mainly composed of jungle honeycombs, and there is a larger honey pool near the bottom.*2*lNotice! In the middle of the honey pool there will be a larva covered with thin honey blocks based on the jungle hive. If it is destroyed, the queen bee will be summoned!");
+        add("patchouli.confluence.otherworld_note.world.queen_bee_hive.1", "*z$(#FFFF55)“Sweet bomb”");
+        add("patchouli.confluence.otherworld_note.world.queen_bee_hive.2", "*o*tSweet honey is hidden in poison.*b*tThe silt is wrapped in the silt.");
+
+        add("patchouli.confluence.otherworld_note.world.shimmer_lake.name", "Shimmer Lake");
+        add("patchouli.confluence.otherworld_note.world.shimmer_lake.0", "Shimmer Lake is a structure that will randomly generate in the world where a large number of shimmer lights are generated.*bIn the middle of Shimmer Lake, there is a large pool of shimmering light surrounded by several gem trees.");
+        add("patchouli.confluence.otherworld_note.world.shimmer_lake.1", "*z$(#FF55FF)“Beautiful and quiet, illusory and empty”");
+        add("patchouli.confluence.otherworld_note.world.shimmer_lake.2", "*o*tShimmer Lake is like the falling fragments of the starry sky, and the liquid starlight ripples in the silence.*b*tThe secret realm is shrouded in soft blue mist, and the lake is hanging upside down like a mirror with the eternal twilight. When it is immersed in it, it turns into a silhouette of nothingness, sinking into the endless dream with the whispers of billions of stars.");
+
+        add("patchouli.confluence.otherworld_note.world.sky_village.name", "Sky Village");
+        add("patchouli.confluence.otherworld_note.world.sky_village.0", "Sky Village is a building generated over the world, just like!w:hi! Paradise Island*c. Sky Village consists of multiple floating islands, the central floating island and other floating islands are connected by bridges. Other floating islands include farmland floating islands and house floating islands, and house floating islands have the following types: *iBlacksmith shop; *iStonemason House; *iObservatory; *iStable Island; *iCathedral; *iLibrary.");
+        add("patchouli.confluence.otherworld_note.world.sky_village.1", "*z$(#B4684D)“The floating peach blossom source.”");
+        add("patchouli.confluence.otherworld_note.world.sky_village.2", "*o*tThe floating island gathers into a collective, the auxiliary roads connect civilization, and the corrupt thieves stay away from the world.*b*tPeach orchards float in solitude, courtyard safeguards loneliness, and the waves sever ties with the world.");
+        add("patchouli.confluence.otherworld_note.world.sky_village.3", "*z$(#B4684D)“The lonely home”");
+
+        add("patchouli.confluence.otherworld_note.world.the_corruption.name", "The Corruption");
+        add("patchouli.confluence.otherworld_note.world.the_corruption.0", "The Corruption is an evil biome with deep purple wasteland, death, and decay themes that generate corruption-themed enemies.*bThe Corruption group will naturally generate in a world where the evil biome is corrupted. You can also create The Corruption yourself. When there are more than 256 corrupt evil blocks (such as ebony stones) in a block, the biome of this block will become The Corruption.*bCorrespondingly, when there are less than 256 evil blocks, the cluster of this block will become the original biome.");
+        add("patchouli.confluence.otherworld_note.world.the_corruption.1", "*z$(#AA00AA)“Making the world evil”");
+        add("patchouli.confluence.otherworld_note.world.the_corruption.2", "*o*tThe Corruption is a dangerous area filled with rifts and cliffs, filled with the breath of evil and death.*b*tIt is a cancer produced by the evil thoughts of living beings, breeding terrible deformed monsters, which are jealous of all living beings.");
+
+        add("patchouli.confluence.otherworld_note.world.the_crimson.name", "The Crimson");
+        add("patchouli.confluence.otherworld_note.world.the_crimson.0", "The Crimson is an evil biome with a red bloody theme of physical infection that generates bloody enemies.*bThe Crimson group will naturally spawn in a world where the evil biome is scarlet. You can also create The Crimson by yourself. When there are more than 256 scarlet evil blocks (such as scarlet stones) in a block, the biome of this block will become The Crimson.*bCorrespondingly, when there are less than 256 evil blocks, the cluster of this block will become the original biome.");
+        add("patchouli.confluence.otherworld_note.world.the_crimson.1", "*z$(#AA0000)“Making the world bloody”");
+        add("patchouli.confluence.otherworld_note.world.the_crimson.2", "*o*tIn ancient times, the people of Terraria made a foolish mistake: they succumbed to scarlet, regarded it as a god, and sacrificed their flesh and blood.*b*tEventually, they are assimilated into twisted lives, spreading across the earth with scarlet ambitions.");
+
+
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
         CrateBlocks.BLOCKS.getEntries().forEach(blockAction);
         DecorativeBlocks.BLOCKS.getEntries().forEach(blockAction);

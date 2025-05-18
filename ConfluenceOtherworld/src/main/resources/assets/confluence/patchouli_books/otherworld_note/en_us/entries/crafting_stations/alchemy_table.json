@@ -16,7 +16,7 @@
         {
             "type": "patchouli:image",
             "images": [
-                "minecraft:textures/block/grass_block.png"
+                "confluence:textures/patchouli/gui/crafting_stations/alchemy_table.png"
             ],
             "text": "patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.2",
             "title": "patchouli.confluence.otherworld_note.gui"

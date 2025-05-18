@@ -1118,8 +1118,9 @@ public class ModEnglishProvider extends LanguageProvider {
         // Patchouli Guide
         // - A selection of alternative translations is provided here, which are commented out.
         // - Hope to carefully consider the choice of translation results.
-        // - I can't split which are human translations and which are machine translations.
-        // - If machine translation, I hope to directly replace it with the alternative translation.
+        // - I can't split which are human translations and which are machine translations (or even AI translations?!).
+        // - If machine/AI translation, I hope to directly replace it with the alternative translation.
+        // - 中文：拜托别用AI翻译...
         add("patchouli.confluence.otherworld_note.name", "Otherworld Note");
         add("patchouli.confluence.otherworld_note.landing_text", "*bHave you felt the dark undercurrents surging?*bThe fate of your world is at stake, but not only yours.*bThe shadow of evil forces shrouds two worlds, their fates converging.*bThe era of confluence has arrived.*bYou begin your adventure as these two worlds collide: challenge the unknown, save the world, or seek power for yourself.");
         //"Undercurrents are surging, the fate of the world is at stake, and the shadow of evil forces looms over the two worlds. When fate converges, the era of fusion quietly arrives. You will embark on a brand new adventure in the fusion of these two worlds, challenge the unknown, save the world, or seek power for yourself."

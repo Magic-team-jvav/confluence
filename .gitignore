@@ -24,14 +24,12 @@ run
 run-data
 
 ConfluenceOtherworld/src/generated
-otherworldly
 
 
 TerraEntity/run
 MineTeam/run
 EquipmentBenediction/run
 TerraCurio/run
-ParticleStorm/run
 HeavenDestinyMoment/run
 PhaseJourney/run
 TerraMoment/run
@@ -43,7 +41,6 @@ TerraEntity/build
 MineTeam/build
 EquipmentBenediction/build
 TerraCurio/build
-ParticleStorm/build
 HeavenDestinyMoment/build
 PhaseJourney/build
 TerraMoment/build
@@ -55,9 +52,9 @@ TerraEntity/src/generated
 MineTeam/src/generated
 EquipmentBenediction/src/generated
 TerraCurio/src/generated
-ParticleStorm/src/generated
 HeavenDestinyMoment/src/generated
 PhaseJourney/src/generated
 TerraMoment/src/generated
 TerraGuns/src/generated
 TerraFurniture/src/generated
+EnemyBanner/src/generated

@@ -106,7 +106,7 @@ public class SwordItems {
     //弹幕剑
     public static final DeferredItem<SwordItem> ICE_BLADE = register("ice_blade", ModTiers.UNBREAKABLE, 7, 3, ModRarity.BLUE, PROJ_SWORD
             .apply(SwordProjectileComponent.ICE_PROJ));
-    public static final DeferredItem<SwordItem> STARFURY = register("starfury", ModTiers.UNBREAKABLE, 8, 0.9F, ModRarity.GREEN, PROJ_SWORD
+    public static final DeferredItem<SwordItem> STARFURY = register("starfury", ModTiers.UNBREAKABLE, 8, 2.9F, ModRarity.GREEN, PROJ_SWORD
             .apply(SwordProjectileComponent.STAR_FURY_PROJ).addTooltip(p -> p.withColor(0xe44189)).addTooltip(p -> p.withColor(0xe44189)));
     public static final DeferredItem<SwordItem> ENCHANTED_SWORD = register("enchanted_sword", ModTiers.UNBREAKABLE, 9, 2.9F, ModRarity.ORANGE, PROJ_SWORD
             .apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ).addTooltip(p -> p.withColor(0x4156e4)).addTooltip(p -> p.withColor(0x4156e4)));

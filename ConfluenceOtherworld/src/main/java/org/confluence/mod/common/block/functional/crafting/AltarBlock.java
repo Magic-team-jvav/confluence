@@ -43,9 +43,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.recipe.ItemStackHandlerRecipeInput;
-import org.confluence.lib.util.GlobalColors;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.block.AltarBlockModel;
@@ -121,7 +121,7 @@ public class AltarBlock extends BaseEntityBlock {
             if (data.increaseRevealStep(serverLevel)) {
                 serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable(
                         "event.confluence.reveal_step" + data.getRevealStep()
-                ).withColor(GlobalColors.MESSAGE.getRGB()), false);
+                ).withColor(GlobalColors.MESSAGE.get()), false);
             }
             if (serverPlayer.getMainHandItem().is(HammerItems.PWNHAMMER)) {
                 AdvancementHolder holder = serverLevel.getServer().getAdvancements().get(Confluence.asResource(ModAchievements.PREFIX + "begone_evil"));

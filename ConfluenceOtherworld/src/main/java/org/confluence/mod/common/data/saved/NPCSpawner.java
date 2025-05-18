@@ -33,9 +33,9 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.neoforged.neoforge.common.Tags;
+import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
-import org.confluence.lib.util.GlobalColors;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModStructures;
@@ -160,7 +160,7 @@ public class NPCSpawner implements IGlobalData {
         npc.confluence$setRegion(new Region(living.chunkPosition()));
         setNPCAlive(npc.confluence$getRegion(), living.getType(), true);
         applyBenedictions(living);
-        broadcastMessageToRegion(living.level(), living, Component.translatable("event.confluence.npc.arrived", living.getType().getDescription(), living.getName()).withColor(GlobalColors.NPC_ARRIVED.getRGB()));
+        broadcastMessageToRegion(living.level(), living, Component.translatable("event.confluence.npc.arrived", living.getType().getDescription(), living.getName()).withColor(GlobalColors.NPC_ARRIVED.get()));
     }
 
     public void applyBenedictions(AbstractTerraNPC living) {
@@ -182,7 +182,7 @@ public class NPCSpawner implements IGlobalData {
         } else { // todo 旅商已离去！
             message = Component.translatable("event.confluence.npc.slain", living.getType().getDescription(), living.getName());
         }
-        broadcastMessageToRegion(living.level(), living, message.withColor(GlobalColors.NPC_SLAIN.getRGB()));
+        broadcastMessageToRegion(living.level(), living, message.withColor(GlobalColors.NPC_SLAIN.get()));
     }
 
     @Override

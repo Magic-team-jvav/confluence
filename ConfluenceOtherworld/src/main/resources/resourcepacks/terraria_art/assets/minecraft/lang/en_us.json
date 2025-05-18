@@ -1,6 +1,10 @@
 {
     "options.difficulty.peaceful": "§dJourney",
+    "options.difficulty.peaceful.info": "With great power comes great responsibility",
     "options.difficulty.easy": "§fClassic",
+    "options.difficulty.easy.info": "Your Adventure Begins...",
     "options.difficulty.normal": "§6Expert",
-    "options.difficulty.hard": "§cMaster"
+    "options.difficulty.normal.info": "Fortune & Glory, Kid.",
+    "options.difficulty.hard": "§cMaster",
+    "options.difficulty.hard.info": "Game over man, game over!"
 }

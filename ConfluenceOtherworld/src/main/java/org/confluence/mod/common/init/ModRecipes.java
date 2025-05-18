@@ -295,7 +295,7 @@ public final class ModRecipes {
             }, PotionItems.THORNS_POTION.toStack());
             // 泰坦
             registerMix(new Item[]{
-                    Items.BONE,
+                    MaterialItems.DUNGEON_DEMON_BONE.get(),
                     MaterialItems.DEATHWEED.get(),
                     MaterialItems.SHIVERTHORN.get()
             }, PotionItems.TITAN_POTION.toStack());
@@ -341,6 +341,16 @@ public final class ModRecipes {
                     MaterialItems.SHIVERTHORN.get(),
                     MaterialItems.WATERLEAF.get()
             }, PotionItems.CRATE_POTION.toStack());
+            // 弹药储备
+            registerMix(new Item[]{
+                    FoodItems.PISCES_FIN_COD.get(),
+                    MaterialItems.MOONGLOW.get()
+            }, PotionItems.AMMO_RESERVATION_POTION.toStack());
+            // 召唤
+            registerMix(new Item[]{
+                    FoodItems.MOTTLED_OILFISH.get(),
+                    MaterialItems.MOONGLOW.get()
+            }, PotionItems.SUMMONING_POTION.toStack());
         }
 
         private static void registerMaterial(Item material) {

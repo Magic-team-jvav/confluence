@@ -91,7 +91,7 @@ public class SwordItems {
             .apply(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get()));
     public static final DeferredItem<SwordItem> BLOOD_BUTCHERER = register("blood_butcherer", ModTiers.UNBREAKABLE, 9, 1.3F, ModRarity.BLUE, EFFECT_SWORD
             .apply(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get()));
-    public static final DeferredItem<SwordItem> VOLCANO = register("volcano", ModTiers.UNBREAKABLE, 20, 1, ModRarity.ORANGE, EFFECT_SWORD
+    public static final DeferredItem<SwordItem> VOLCANO = register("volcano", ModTiers.UNBREAKABLE, 25, 1.2f, ModRarity.ORANGE, EFFECT_SWORD
             .apply(TEEffectStrategies.Components.HELL_FIRE_EFFECT.get())
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2f, AttributeModifier.Operation.ADD_VALUE)
             .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.5f, AttributeModifier.Operation.ADD_VALUE));
@@ -112,7 +112,7 @@ public class SwordItems {
             .apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ).addTooltip(p -> p.withColor(0x4156e4)).addTooltip(p -> p.withColor(0x4156e4)));
     public static final DeferredItem<SwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.UNBREAKABLE, 7, 2.9F, ModRarity.GREEN, PROJ_SWORD
             .apply(SwordProjectileComponent.GRASS_PROJ));
-    public static final DeferredItem<SwordItem> NIGHT_EDGE = register("night_edge", ModTiers.UNBREAKABLE, 7, 2.9F, ModRarity.GREEN, PROJ_SWORD
+    public static final DeferredItem<SwordItem> NIGHT_EDGE = register("night_edge", ModTiers.UNBREAKABLE, 25, 2.5F, ModRarity.GREEN, PROJ_SWORD
             .apply(SwordProjectileComponent.NIGHT_PROJ));
 
     // 光剑 todo 重命名为phaseblade

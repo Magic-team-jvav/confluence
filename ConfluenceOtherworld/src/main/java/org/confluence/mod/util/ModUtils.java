@@ -117,14 +117,16 @@ public final class ModUtils {
             }
         }
         boolean stickySituation = type == TEBossEntities.KING_SLIME.get() && MomentInstanceManager.of(level).hasMoment(TMMoments.SLIME_RAIN.getKey().location());
+        boolean is$WallOrMountain$OfFlesh = type == TEBossEntities.WALL_OF_FLESH.get(); // todo 肉山
         ResourceKey<Level> dimension = living.level().dimension();
         level.players().stream().filter(player -> player.level().dimension() == dimension).forEach(player -> {
             TreasureBagItem.createItemEntity(living, player);
             if (isEaterOfWorlds) {
                 ModAchievements.awardAchievement(player, "worm_fodder");
-            }
-            if (stickySituation) {
+            } else if (stickySituation) {
                 ModAchievements.awardAchievement(player, "sticky_situation");
+            } else if (is$WallOrMountain$OfFlesh) {
+                ModAchievements.awardAchievement(player, "still_hungry");
             }
         });
     }

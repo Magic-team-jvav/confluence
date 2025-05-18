@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "bcb",
+        "cac",
+        "bcb"
+    ],
+    "key": {
+        "a": {
+            "item": "confluence:silk"
+        },
+        "b": {
+            "tag": "confluence:lead_and_iron"
+        },
+        "c": {
+            "tag": "minecraft:planks"
+        }
+    },
+    "result": {
+        "id": "enemybanner:banner_box"
+    }
+}

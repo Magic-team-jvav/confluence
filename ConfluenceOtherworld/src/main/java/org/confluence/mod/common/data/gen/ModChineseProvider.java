@@ -2492,6 +2492,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.VOLCANO.get(), "火山");
         add(SwordItems.BEE_KEEPER.get(), "养蜂人");
         add(SwordItems.BLADE_OF_GRASS.get(), "草剑");
+        add(SwordItems.NIGHT_EDGE.get(), "永夜");
 
         add(SwordItems.DEVELOPER_SWORD.get(), "开发者剑");
         // 光剑
@@ -3512,6 +3513,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(PotionItems.CHAOS_POTION.get(), "混沌药水");
         add(PotionItems.STINK_POTION.get(), "臭味药水");
         add(PotionItems.RED_POTION.get(), "红药水");
+        add(PotionItems.AMMO_RESERVATION_POTION.get(), "弹药储备药水");
+        add(PotionItems.SUMMONING_POTION.get(), "召唤药水");
 
         // 饰品
         add(AccessoryItems.ADHESIVE_BANDAGE.get(), "黏性绷带");

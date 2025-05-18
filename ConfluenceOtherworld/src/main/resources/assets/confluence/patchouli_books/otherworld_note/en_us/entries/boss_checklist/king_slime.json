@@ -9,18 +9,18 @@
         },
         {
             "type": "patchouli:entity",
-            "entity": "minecraft:pig",
+            "entity": "terra_entity:king_slime",
             "text": "patchouli.confluence.otherworld_note.boss_checklist.king_slime.1"
         },
         {
             "type": "patchouli:spotlight",
-            "item": "minecraft:diamond",
+            "item": "confluence:slime_crown",
             "text": "patchouli.confluence.otherworld_note.boss_checklist.king_slime.2",
             "title": "patchouli.confluence.otherworld_note.boss_checklist.how_to_summon"
         },
         {
             "type": "patchouli:spotlight",
-            "item": "minecraft:slime_ball",
+            "item": "confluence:slime_crown",
             "text": "patchouli.confluence.otherworld_note.boss_checklist.king_slime.3"
         },
         {
@@ -31,7 +31,7 @@
         {
             "type": "patchouli:image",
             "images":[
-                "minecraft:textures/block/grass_block.png"
+                "confluence:textures/gui/patchouli/boss_checklist/king_slime.png"
             ]
         }
     ]

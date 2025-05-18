@@ -1194,7 +1194,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.3", "单片镜爱好者。");
         add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.4", "当视神经元被消灭完，克苏鲁之脑就会裸露出它的心脏并召唤出 3 个无法攻击的克苏鲁之脑幻象。");
         add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.4.0", "克苏鲁之脑幻象");
-        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.5", "*o“亦真亦假假作真时真亦假，无为有处有还无。”*b*t——摘自《红楼梦》*c");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.5", "*o“假作真时真亦假，无为有处有还无。”*b*t——摘自《红楼梦》*c");
         add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.6", "在!w:cr!猩红之地*c使用血腥脊椎，或者摧毁 3 个生成于血腥世界中的猩红心脏来召唤克苏鲁之脑。*b需要在晚上才能召唤。");
         add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.7", "血腥脊椎是一个用于召唤Boss的物品，看起来像是个被剥离的脊椎。*b它可以用来在猩红之地立刻召唤克苏鲁之脑。*2在!cs:a!祭坛*c中使用 30 个毒粉和 15 个椎骨合成血腥脊椎。");
         add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.8", "*o$(#555555)“一截被剥离下来了的身体组织，上面斑驳着血痂块与肌肉组织，很难想象它是从哪种生物体内，以何种方式取出来的。它似乎在尝试着与你对话...*c");
@@ -1256,7 +1256,6 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("patchouli.confluence.otherworld_note.crafting_stations.lead_anvil.0", "其实铅砧就是铁砧的换皮，功能和铁砧一模一样。*b似乎...比铁砧便宜？");
         add("patchouli.confluence.otherworld_note.crafting_stations.lead_anvil.1", "就是铁砧，那不然呢。");
-        add("patchouli.confluence.otherworld_note.crafting_stations.lead_anvil.2", "一模一样，是不是？");
 
         add("patchouli.confluence.otherworld_note.crafting_stations.sky_mill.0", "听起来看上去很厉害，但是实际上就是个造家具的。*b在!w:hi!天堂岛*c的箱子里有概率生成天磨。");
         add("patchouli.confluence.otherworld_note.crafting_stations.sky_mill.1", "就像切石机一样，即放即用。");

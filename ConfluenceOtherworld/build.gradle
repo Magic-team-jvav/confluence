@@ -4,7 +4,7 @@ plugins {
 var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam", "EquipmentBenediction",
                    "TerraCurio", "HeavenDestinyMoment", "PhaseJourney",
                    "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture",
-                   "EntityTrackerHUD",/*"EnemyBanner"*/
+                   "EntityTrackerHUD", "EnemyBanner"
 ]
 
 version = mod_version
@@ -147,7 +147,8 @@ repositories {
 
 boolean vanillin = false // 香兰素
 boolean observable = false // 可视性能侦测
-boolean ftb = false
+boolean ftb = true
+boolean ipn = true
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
@@ -247,10 +248,16 @@ dependencies {
     //runtimeOnly "curse.maven:dynamictrees-252818:6360173"
     if (observable) {
         runtimeOnly "curse.maven:observable-509575:5733591"
-        runtimeOnly "curse.maven:kotlin-for-forge-351264:5978393"
+    }
+    if (ipn) {
+        runtimeOnly "maven.modrinth:inventory-profiles-next:neoforge-1.21.1-2.1.8"
+        runtimeOnly "maven.modrinth:libipn:neoforge-1.21.1-6.5.0"
     }
     if (observable || ftb) {
         runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
+    }
+    if (observable || ipn) {
+        runtimeOnly "curse.maven:kotlin-for-forge-351264:5978393"
     }
     if (true) {
         runtimeOnly "curse.maven:tweakerge-915857:6387063"

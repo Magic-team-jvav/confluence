@@ -19,7 +19,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.confluence.lib.util.GlobalColors;
+import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.ModAchievements;
@@ -73,7 +73,7 @@ public class CrimsonHeartBlock extends Block {
             }
 
             if (count != 2) {
-                Component component = Component.translatable("event.confluence.crimson_heart_broken." + count).withColor(GlobalColors.MESSAGE.getRGB());
+                Component component = Component.translatable("event.confluence.crimson_heart_broken." + count).withColor(GlobalColors.MESSAGE.get());
                 serverLevel.getServer().getPlayerList().broadcastSystemMessage(component, false);
             }
 

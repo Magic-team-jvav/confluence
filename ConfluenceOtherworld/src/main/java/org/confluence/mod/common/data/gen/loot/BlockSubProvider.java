@@ -272,6 +272,11 @@ public class BlockSubProvider extends BlockLootSubProvider {
 
 
         dropSelf(CRISPY_HONEY_BLOCK.get());
+        dropSelf(THIN_HONEY_BLOCK.get());
+        dropSelf(LOOSE_HONEY_BLOCK.get());
+        dropSelf(HONEY_CAULDRON.get());
+        dropSelf(AETHERIUM_CAULDRON.get());
+        dropSelf(CURSED_FLAME_BLOCK.get());
         dropSelf(POO.get());
 
         dropSelf(ROPE.get());
@@ -409,7 +414,6 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropWhenSilkTouch(PINK_PURE_GLASS.get());
 
 
-
         //chain
         dropSelf(RUBY_CHAIN.get());
         dropSelf(AMBER_CHAIN.get());
@@ -425,8 +429,6 @@ public class BlockSubProvider extends BlockLootSubProvider {
         this.add(SKYWARE_DOOR.get(), this::createDoorTable);
         this.add(SKYWARE_GLASS_DOOR.get(), this::createDoorTable);
         this.add(DUNGEON_DOOR.get(), this::createDoorTable);
-
-
 
 
         for (LogBlockSet logBlocks : LogBlockSet.LOG_BLOCK_SETS) {
@@ -463,11 +465,11 @@ public class BlockSubProvider extends BlockLootSubProvider {
         add(NatureBlocks.AMBER_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(AMBER))
-                                .add(EmptyLootItem.emptyItem().setWeight(59)))
-                        .withPool(LootPool.lootPool()
-                                .add(LootItem.lootTableItem(AMBER_SAPLING))
-                                .add(EmptyLootItem.emptyItem().setWeight(59)))
-                        );
+                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(AMBER_SAPLING))
+                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+        );
         add(NatureBlocks.RUBY_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(RUBY))

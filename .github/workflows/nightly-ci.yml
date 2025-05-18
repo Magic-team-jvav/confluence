@@ -38,15 +38,3 @@ jobs:
           files: |
             ./Confluence-Magic-Lib/build/libs/*.jar
             ./ConfluenceOtherworld/build/libs/*.jar
-            ./EntityTrackerHUD/build/libs/*.jar
-            ./EquipmentBenediction/build/libs/*.jar
-            ./HeavenDestinyMoment/build/libs/*.jar
-            ./IsekaiInvaded/build/libs/*.jar
-            ./MineTeam/build/libs/*.jar
-            ./ParticleStorm/build/libs/*.jar
-            ./PhaseJourney/build/libs/*.jar
-            ./TerraCurio/build/libs/*.jar
-            ./TerraEntity/build/libs/*.jar
-            ./TerraFurniture/build/libs/*.jar
-            ./TerraGuns/build/libs/*.jar
-            ./TerraMoment/build/libs/*.jar

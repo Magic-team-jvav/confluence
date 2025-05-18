@@ -13,7 +13,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
-import org.confluence.lib.util.GlobalColors;
+import org.confluence.lib.color.GlobalColors;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
@@ -37,7 +37,7 @@ public class MeteoriteTracker {
         if (spawnAtNextNight && level.getDayTime() % 24000L == 18000L) { // midnight
             this.spawnAtNextNight = false;
             generateLandingDetail(level, level.random.nextInt(200, 401));
-            Component message = Component.translatable("event.confluence.meteorite.ready").withColor(GlobalColors.EVENT.getRGB());
+            Component message = Component.translatable("event.confluence.meteorite.ready").withColor(GlobalColors.EVENT.get());
             level.getServer().getPlayerList().broadcastSystemMessage(message, false);
         }
         if (tickUntilLanding.get() == 0) {
@@ -143,7 +143,7 @@ public class MeteoriteTracker {
             return placed;
         }, Util.backgroundExecutor()).thenAccept(success -> {
             if (success) {
-                Component message = Component.translatable("event.confluence.meteorite").withColor(GlobalColors.MESSAGE.getRGB());
+                Component message = Component.translatable("event.confluence.meteorite").withColor(GlobalColors.MESSAGE.get());
                 level.getServer().getPlayerList().broadcastSystemMessage(message, false);
                 Confluence.LOGGER.debug("A meteorite has been landed, which at [{}]", origin.toShortString());
             }

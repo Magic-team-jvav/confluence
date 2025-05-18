@@ -1,0 +1,56 @@
+{
+  "components": [
+    {
+      "type": "patchouli:header",
+      "text": "#title",
+      "x": -1,
+      "y": -3
+    },
+    {
+      "type": "patchouli:image",
+      "image": "confluence:textures/gui/hellforge_guide.png",
+      "x": 18,
+      "y": 5,
+      "width": 84,
+      "height": 46,
+      "texture_width": 84,
+      "texture_height": 46
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input0",
+      "x": 23,
+      "y": 10
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input1",
+      "x": 42,
+      "y": 10
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input2",
+      "x": 23,
+      "y": 29
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input3",
+      "x": 42,
+      "y": 29
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#result",
+      "x": 80,
+      "y": 20
+    },
+    {
+      "type": "patchouli:text",
+      "text": "#text",
+      "x": 0,
+      "y": 50
+    }
+  ]
+}

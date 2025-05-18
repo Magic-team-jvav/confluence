@@ -43,10 +43,13 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
         RandomSource random = pContext.random();
         BlockPos blockPos = pContext.origin();
         if (!FeatureUtils.isPosAir(level, blockPos)) return false;
+
         BlockPos.MutableBlockPos mutablePos = blockPos.mutable();
         for (int v = 1; v <= config.maxSearchDown && FeatureUtils.isPosAir(level, mutablePos); ++v) {
             mutablePos.move(0, -1, 0);
         }
+        if (level.isStateAtPosition(mutablePos, BlockBehaviour.BlockStateBase::liquid)) return false;
+
         BlockPos chestPos = mutablePos.above();
         BlockState chestState = StructurePiece.reorient(level, chestPos, FunctionalBlocks.DEATH_CHEST_BLOCK.get().defaultBlockState().setValue(BaseChestBlock.UNLOCKED, true));
         if (FeatureUtils.safeSetBlock(level, chestPos, chestState, ModFeatures.IS_REPLACEABLE)) {
@@ -165,7 +168,8 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
         return succeed;
     }
 
-    public record Config(int maxDartDistance, BlockState boulder, int boulderAmount, int maxBoulderHeight, int tntAmount, int maxSearchDown, ResourceKey<LootTable> lootTable) implements FeatureConfiguration {
+    public record Config(int maxDartDistance, BlockState boulder, int boulderAmount, int maxBoulderHeight, int tntAmount, int maxSearchDown,
+                         ResourceKey<LootTable> lootTable) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_dart_distance", 24).forGetter(Config::maxDartDistance),
                 BlockState.CODEC.fieldOf("boulder").orElseGet(() -> FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState()).forGetter(Config::boulder),

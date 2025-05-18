@@ -2,12 +2,9 @@ package org.confluence.mod.integration.terra_entity.trail;
 
 import com.mojang.blaze3d.platform.GlConst;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
@@ -22,8 +19,6 @@ import org.joml.Vector3f;
 
 import java.util.Iterator;
 import java.util.Queue;
-
-import static net.minecraft.client.renderer.RenderStateShard.*;
 
 public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
     TrailProperties properties;
@@ -43,7 +38,7 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
             holder.trailQueue.poll();
         }
 
-        if(ticks > 1) {
+        if(ticks > 1 && holder.getOwner() != null) {
             holder.trailQueue.add(holder.position().subtract(holder.getOwner().position()));
         }
     }

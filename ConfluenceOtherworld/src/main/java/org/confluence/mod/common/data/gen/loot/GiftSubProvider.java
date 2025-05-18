@@ -104,7 +104,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/obsidian_lock_box"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(LanceItems.DARK_LANCE))
+                        // todo .add(LootItem.lootTableItem(LanceItems.DARK_LANCE))
                         .add(LootItem.lootTableItem(ManaWeaponItems.FLOWER_OF_FIRE))
                 )
                 .withPool(LootPool.lootPool()
@@ -460,18 +460,6 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/fencing_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(NestedLootTable.lootTableReference(ModLootTables.ENVIRONMENT_CRATE_HARDMODE)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.GOLDEN_LOCK_BOX)))
-        );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/golden_lock_box"), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SwordItems.MURAMASA))
-                        .add(LootItem.lootTableItem(TCItems.COBALT_SHIELD))
-                        .add(LootItem.lootTableItem(TGItems.HAND_GUN))
-                        .add(LootItem.lootTableItem(ManaWeaponItems.AQUA_SCEPTER))
-                )
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ToolItems.SHADOW_KEY))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
-                )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/providential_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(NestedLootTable.lootTableReference(ModLootTables.ENVIRONMENT_CRATE_HARDMODE)))

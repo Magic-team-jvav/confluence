@@ -39,7 +39,7 @@ import java.util.function.Supplier;
 public class BaseArrowEntity extends AbstractArrow {
 
     protected float minSpeedAttackFactor = 0.5f;//速度影响伤害的最小系数
-    Item arrowItem;
+    @Nullable Item arrowItem;
 
     public static class Tuple {
         public String path;
@@ -71,10 +71,10 @@ public class BaseArrowEntity extends AbstractArrow {
      * @param firedFromWeapon 发射的武器
      * @param arrow 预定义的箭的类型
      */
-    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType,LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @NotNull BaseArrowItem arrow) {
+    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType,LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @Nullable BaseArrowItem arrow) {
         super(pEntityType, owner, owner.level(), pickupItemStack, firedFromWeapon);
         this.arrowItem = arrow;
-        this.baseArrowTuple = arrow.getModifier();
+        this.baseArrowTuple = arrow == null ? null : arrow.getModifier();
         if(baseArrowTuple==null)// 这时候应该为实体的木箭转化
             this.modify = new Builder();
         else

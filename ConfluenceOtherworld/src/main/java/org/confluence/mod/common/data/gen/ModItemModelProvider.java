@@ -36,8 +36,8 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         ModelFile.UncheckedModelFile templateReverse24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_reverse24x"));
-
         ModelFile.UncheckedModelFile templateNormal24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_normal24x"));
+
         separateModel(SwordItems.BEE_KEEPER, templateReverse24x, "sword/");
         separateModel(SwordItems.ICE_BLADE, templateReverse24x, "sword/");
         separateModel(SwordItems.MURAMASA, templateReverse24x, "sword/");
@@ -56,6 +56,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         separateModel(AxeItems.WAR_AXE_OF_THE_NIGHT, templateReverse24x, "axe/");
         separateModel(AxeItems.BLOOD_LUST_CLUSTER, templateNormal24x, "axe/");
         separateModel(PickaxeItems.REAVER_SHARK_PICKAXE, templateReverse24x, "pickaxe/");
+
+        getBuilder(SwordItems.NIGHT_EDGE.getId().getPath()).parent(templateReverse24x).texture("layer0", SwordItems.NIGHT_EDGE.getId().withPrefix("item/sword/"));
+        skip.add(SwordItems.NIGHT_EDGE);
 
         ResourceLocation templateDye = Confluence.asResource("item/template_dye");
         for (DeferredHolder<Item, ? extends Item> item : VanityArmorItems.DYE_ITEMS) {

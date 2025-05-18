@@ -12,14 +12,15 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.AltarRecipe;
 
 import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
 
-public class AltarCategory implements IRecipeCategory<AltarRecipe> {
-    public static final RecipeType<AltarRecipe> TYPE = RecipeType.create(Confluence.MODID, "altar", AltarRecipe.class);
+public class AltarCategory implements IRecipeCategory<RecipeHolder<AltarRecipe>> {
+    public static final RecipeType<RecipeHolder<AltarRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("altar"));
     private static final Component TITLE = Component.translatable("title.confluence.altar");
     private final IDrawable icon;
 
@@ -28,7 +29,7 @@ public class AltarCategory implements IRecipeCategory<AltarRecipe> {
     }
 
     @Override
-    public RecipeType<AltarRecipe> getRecipeType() {
+    public RecipeType<RecipeHolder<AltarRecipe>> getRecipeType() {
         return TYPE;
     }
 
@@ -49,9 +50,9 @@ public class AltarCategory implements IRecipeCategory<AltarRecipe> {
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, AltarRecipe recipe, IFocusGroup focusGroup) {
+    public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<AltarRecipe> recipe, IFocusGroup focusGroup) {
         // input
-        NonNullList<Ingredient> ingredients = recipe.getIngredients();
+        NonNullList<Ingredient> ingredients = recipe.value().getIngredients();
         int size = ingredients.size();
         if (size == 1) {
             addInput(builder, 24, 8, ingredients.getFirst());
@@ -69,11 +70,11 @@ public class AltarCategory implements IRecipeCategory<AltarRecipe> {
             addInput(builder, 32, 16, ingredients.get(3));
         }
         // output
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 88, 8).addItemStack(recipe.getResultItem(null));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 88, 8).addItemStack(recipe.value().getResultItem(null));
     }
 
     @Override
-    public void draw(AltarRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(RecipeHolder<AltarRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         ModJeiPlugin.drawArrowRight(guiGraphics, 50, 6, true);
     }
 }

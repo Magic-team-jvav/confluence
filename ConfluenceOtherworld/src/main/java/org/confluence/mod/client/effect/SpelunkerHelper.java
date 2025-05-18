@@ -10,6 +10,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -71,6 +72,8 @@ public class SpelunkerHelper extends AbstractBufferManager {
      */
     public void reloadSpecular() {
         this.targets.clear();
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player == null) return;
         Minecraft.getInstance().getResourceManager().getResource(Confluence.asResource("spelunker/config.json")).ifPresentOrElse(r -> {
             try {
                 var reader = r.openAsReader();
@@ -79,16 +82,16 @@ public class SpelunkerHelper extends AbstractBufferManager {
                 while (lock) {
                     Thread.onSpinWait();
                 }
-                this.targets.putAll(Tuple.BLOCK_MAP_CODEC.codec().decode(JsonOps.INSTANCE, jsonobject).result().get().getFirst());
-                Minecraft.getInstance().player.sendSystemMessage(Component.literal("successfully load spelunker config"));
+                this.targets.putAll(Tuple.BLOCK_MAP_CODEC.codec().parse(JsonOps.INSTANCE, jsonobject).getOrThrow());
+                player.sendSystemMessage(Component.literal("successfully load spelunker config"));
             } catch (Exception e) {
                 defaultBlocks();
-                Minecraft.getInstance().player.sendSystemMessage(Component.literal("failed to load spelunker config"));
+                player.sendSystemMessage(Component.literal("failed to load spelunker config"));
 
             }
         }, ()->{
             this.defaultBlocks();
-            Minecraft.getInstance().player.sendSystemMessage(Component.literal("failed to load spelunker config"));
+            player.sendSystemMessage(Component.literal("failed to load spelunker config"));
         });
     }
 
@@ -402,18 +405,17 @@ public class SpelunkerHelper extends AbstractBufferManager {
             centers.put(n.getKey(), new ArrayList<>());
 
             Tuple target = blockGen.targets.get(n.getKey());
-            Color color = new Color(0xFFFFFF);
+            Color color;
             if (target != null){
                 color = target.color();
             }else {
                 color = new Color(n.getKey().defaultBlockState().getMapColor(player.level(),n.getValue().getFirst()).calculateRGBColor(MapColor.Brightness.HIGH));
             }
-            int colorInt = color.getRGB();
             if (n.getValue() == null) return;
             int r = color.getRed();
             int g = color.getGreen();
             int b = color.getBlue();
-            int a = (int) (255 * 0.2);
+            int a;
 
             for (BlockPos blockProps : n.getValue()) {//每个矿石
                 if (blockProps == null) {
@@ -480,6 +482,8 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
     @Override
     protected void afterRender(PoseStack poseStack) {
+        Player player = Minecraft.getInstance().player;
+        if (player==null) return;
 
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_BLEND);
@@ -493,13 +497,13 @@ public class SpelunkerHelper extends AbstractBufferManager {
         AtomicInteger count = new AtomicInteger();
         float scale = 20;
         int textDir = blockGen.textRenderType;
-        Player player = Minecraft.getInstance().player;
         for (var n : centerCacheFrame.entrySet()) {
             var pos = n.getKey();
             var block = n.getValue();
             if (block.asItem() == Blocks.ANCIENT_DEBRIS.asItem()) count.getAndIncrement();
             if (playerPos.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < textRange * textRange) {
-                if (SHOW_DETAIL_SPECULAR.get().isDown() && map.get(block)!= null && map.get(block).showText()) {
+                Tuple tuple;
+                if (SHOW_DETAIL_SPECULAR.get().isDown() && (tuple = map.get(block)) != null && tuple.showText()) {
                     double x = pos.getX() + 0.5;
                     double y = pos.getY() + 0.5;
                     double z = pos.getZ() + 0.5;
@@ -528,8 +532,8 @@ public class SpelunkerHelper extends AbstractBufferManager {
                         poseStack.translate(-component.getString().length() / 5.0 * scale, 0.7 * scale, 0);//旋转后偏移
 
 
-                        Minecraft.getInstance().font.renderText(Component.literal(component.getString()).withStyle(style -> style.withColor(map.get(block).color().getRGB())).getVisualOrderText(),
-                                -5, -5f, map.get(block).color().getRGB(),
+                        Minecraft.getInstance().font.renderText(Component.literal(component.getString()).withStyle(style -> style.withColor(tuple.color().getRGB())).getVisualOrderText(),
+                                -5, -5f, tuple.color().getRGB(),
                                 false, poseStack.last().pose(), Minecraft.getInstance().renderBuffers().bufferSource(), Font.DisplayMode.SEE_THROUGH, 0, 15 << 20 | 15 << 4);
 
                         poseStack.popPose();
@@ -548,6 +552,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
 
     public static void renderLevel(RenderLevelStageEvent event) {
+        LocalPlayer player = Minecraft.getInstance().player;
         if (
 //                event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER ||
                         event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS
@@ -557,15 +562,15 @@ public class SpelunkerHelper extends AbstractBufferManager {
 //                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_CUTOUT_MIPPED_BLOCKS_BLOCKS
 //                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES
 //                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_BLOCK_ENTITIES
+                || player == null
         ) return;
         SpelunkerHelper blockGen = SpelunkerHelper.getSingleton();
         //效果消失，清除缓存
-        if (!Minecraft.getInstance().player.hasEffect(ModEffects.SPELUNKER)
-                && !Minecraft.getInstance().player.hasEffect(ModEffects.DANGER_SENSE)
+        if (!player.hasEffect(ModEffects.SPELUNKER)
+                && !player.hasEffect(ModEffects.DANGER_SENSE)
         ) {
             blockGen.centerCache.clear();
             blockGen.centers.clear();
-            ;
             blockGen.blockMap.clear();
             blockGen.centerCacheFrame.clear();
             return;

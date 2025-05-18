@@ -13,6 +13,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.container.HellforgeScreen;
@@ -22,8 +23,8 @@ import org.jetbrains.annotations.Nullable;
 
 import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
 
-public class HellforgeCategory implements IRecipeCategory<HellforgeRecipe> {
-    public static final RecipeType<HellforgeRecipe> TYPE = RecipeType.create(Confluence.MODID, "hellforge", HellforgeRecipe.class);
+public class HellforgeCategory implements IRecipeCategory<RecipeHolder<HellforgeRecipe>> {
+    public static final RecipeType<RecipeHolder<HellforgeRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("hellforge"));
     private static final Component TITLE = Component.translatable("title.confluence.hellforge");
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/hellforge.png");
     private final IDrawable icon;
@@ -33,7 +34,7 @@ public class HellforgeCategory implements IRecipeCategory<HellforgeRecipe> {
     }
 
     @Override
-    public RecipeType<HellforgeRecipe> getRecipeType() {
+    public RecipeType<RecipeHolder<HellforgeRecipe>> getRecipeType() {
         return TYPE;
     }
 
@@ -58,10 +59,10 @@ public class HellforgeCategory implements IRecipeCategory<HellforgeRecipe> {
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, HellforgeRecipe recipe, IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<HellforgeRecipe> recipe, IFocusGroup focuses) {
         int i = 0;
         int j = 0;
-        for (Ingredient ingredient : recipe.ingredients) {
+        for (Ingredient ingredient : recipe.value().ingredients) {
             addInput(builder, 4 + i * 18, 7 + j * 18, ingredient);
             if (i == 1) {
                 j++;
@@ -70,13 +71,13 @@ public class HellforgeCategory implements IRecipeCategory<HellforgeRecipe> {
                 i++;
             }
         }
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 85, 16).addItemStack(recipe.getResultItem(null));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 85, 16).addItemStack(recipe.value().getResultItem(null));
     }
 
     @Override
-    public void draw(HellforgeRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(RecipeHolder<HellforgeRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         guiGraphics.blit(BACKGROUND, 0, 0, 0, 0, 112, 48, 112, 48);
-        if (recipe.isRequiresFuel()) {
+        if (recipe.value().isRequiresFuel()) {
             guiGraphics.blit(HellforgeScreen.SUPER_LIT_PROGRESS, 54, 25, 0, 0, 14, 14, 14, 14);
             if (mouseX >= 54 && mouseX <= 68 && mouseY >= 25 && mouseY <= 39) {
                 Component text = Component.translatable("condition.confluence.requires_fuel").withColor(ModRarity.CYAN.color());

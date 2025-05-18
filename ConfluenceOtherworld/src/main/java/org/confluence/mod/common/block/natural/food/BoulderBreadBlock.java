@@ -38,7 +38,7 @@ public class BoulderBreadBlock extends Block {
 
     protected static InteractionResult eat(LevelAccessor level, BlockPos pos, BlockState state, Player player) {
         if (!player.canEat(false)) return InteractionResult.PASS;
-        player.getFoodData().eat(20, 20.0F);
+        player.getFoodData().eat(20, 10.0F);
         player.addEffect(new MobEffectInstance(ModEffects.CHOKING, 6000));
         player.playSound(SoundEvents.GENERIC_EAT);
         level.gameEvent(player, GameEvent.EAT, pos);
